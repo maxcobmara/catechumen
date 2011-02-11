@@ -1,0 +1,24 @@
+<div class="score">
+	<% new_or_existing = score.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "grade[#{new_or_existing}_score_attributes][]" %>
+	
+	<% fields_for prefix, score do | score_form | -%>
+
+    <table width=100%>
+	   <tr>
+	     <td width=210px><%= score_form.select :type_id, Score::TYPES, :prompt => "Select" %></td>
+         <td width=270px><%= score_form.text_field :description, :size => 15 %></td>
+         <td width=290px><%= score_form.text_field :marks, :size => 5 %></td>
+		<td width=290px><%= score_form.text_field :weightage, :size => 5 %></td>
+		<td width=290px><%= score_form.text_field :actual_score, :size => 5 %></td>
+		<td width=290px><%= score_form.text_field :score, :size => 5 %></td>
+		<td width=290px><%= score_form.text_field :completion, :size => 5 %></td>
+		<td width=290px><%= score_form.check_box :formative%></td>
+         <td width=170px><%= link_to_function "remove", "$(this).up('.score').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>
+

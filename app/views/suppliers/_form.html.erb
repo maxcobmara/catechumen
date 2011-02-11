@@ -1,0 +1,99 @@
+<div class="tform">
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>Office Supplies</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="suplycode">Supplier Code:</label></td>
+		<td><%= f.text_field :supplycode%>
+		   
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="Category">Category:</label></td>
+		<td><%= f.text_field :category %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="unittype">Unit Type:</label></td>
+		<td><%= f.text_field :unittype %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="maxquantity">Max Quantity:</label></td>
+		<td><%= f.text_field :maxquantity %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="minquantity">Min Quantity:</label></td>
+		<td><%= f.text_field :minquantity %></td>
+	</tr>
+	
+<!--Addsupplies Details-->	
+		    <tr>
+			  <th colspan=2>Add Supplies</th>
+			</tr>
+			<tr>
+			  <td colspan=2>
+			    <table width=95%>
+				  <tr>
+			        <td width=220px ><label for="lpono"><b>LPO No:</b></label></td>
+			        <td width=220px><label for="document"><b>Document:</b></label></td>
+			        <td width=260px><label for="quantity"><b>Quantity:</b></label></td>
+			        <td width=230px><label for="unitcost"><b>Unit Cost:</b></label></td>
+			        <td width=180px><label for="received"><b>Received:</b></label></td>
+			         <td width=10px></td>
+		          </tr>
+			    </table>
+		      </td>
+		    </tr>
+
+		    <tr>
+			  <td colspan=2>
+			    <!-- Code Block for Add Supplies Repeating Field -->
+			     <div id="addsuppliers">
+					  <%= render :partial => 'addsupplier', :collection => @supplier.addsuppliers %>
+				</div>
+			  </td>
+			</tr>
+			<!-- End Code Block for Addsupplies Repeating Field -->
+			<tr>
+			  <td colspan=2><%= add_addsupplier_link "Add More" %></td>
+			</tr>
+			
+			
+			<!--usesupply Details                                     -->	
+					    <tr>
+						  <th colspan=2>Use/Issue Supplies</th>
+						</tr>
+						<tr>
+						  <td colspan=2>
+						    <table width=95%>
+							  <tr>
+						        <td width=220px ><label for="issuedby"><b>Issues By:</b></label></td>
+						        <td width=100px><label for="receivedby"><b>Received By:</b></label></td>
+						        <td width=70px><label for="quantity"><b>Quantity:</b></label></td>
+						        <td width=100px><label for="issuedate"><b>Issue Date:</b></label></td>
+						         <td width=10px></td>
+					          </tr>
+						    </table>
+					      </td>
+					    </tr>
+
+					    <tr>
+						  <td colspan=2>
+						    <!-- Code Block for Add Supplies Repeating Field -->
+						     <div id="usesupplies">
+								  <%= render :partial => 'usesupply', :collection => @supplier.usesupplies %>
+							</div>
+						  </td>
+						</tr>
+						<!-- End Code Block for usesupply Repeating Field -->
+						<tr>
+						  <td colspan=2><%= add_usesupply_link "Add More" %></td>
+						</tr>
+	
+
+	
+
+	
+	
+</table>
+</div>

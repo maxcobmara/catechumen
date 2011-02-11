@@ -1,0 +1,51 @@
+<div class="tform">
+  <table width=100% >
+	
+	
+<!--User Info-->
+	<tr>
+		<th colspan = 2>User Details</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="name">Name: </label></td>
+		<td><%=h @user.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="login">Login: </label></td>
+		<td><%=h @user.login %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="email">Email: </label></td>
+		<td><%=h @user.email %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="person">Person: </label></td>
+		<td><%=h @user.isstaff? ? @user.staff.mykad_with_staff_name : @user.student.formatted_mykad_and_student_name %>
+	</tr>
+	
+	
+	
+	
+	
+
+	
+	<td><% for role in @user.roles %></td>
+	
+
+	<tr>
+		<td class="leftcol"><label for="name"><b>Role Name:</b></label></td>
+		<td> <%=h role.name %></td>
+	</tr>
+	
+		<% end %>
+
+
+</table>		
+</div>
+
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

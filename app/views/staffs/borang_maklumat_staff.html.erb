@@ -1,0 +1,413 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+	<form>
+
+<div id="title" width=21cm>	
+<H3 text-indent: 70px>Kolej Sains Kesihatan Bersekutu Johor</H3>
+<H3>BORANG MAKLUMAT STAFF BAGI SISTEM ICMS</H3>
+
+<BR>
+	
+<div id="borangmaklumatstaff">
+<table width=100%>
+	<tr>
+		<td width="3%">1</th>
+		<td width="30%"><label for="code">Staff Code</label></th>
+		<td width="1%">:</th>
+		<td><%=h @staff.code %></td>
+	</tr>
+	
+	<tr>
+			<td>2</td>
+			<td><label for="fileno">No Fail Peribadi</label></td>
+			<td>:</td>
+			<td><%=h @staff.fileno %></td>
+	</tr>
+
+	<tr>
+			<td>3</td>
+			<td><label for="name">Nama</label></td>
+			<td>:</td>
+			<td><%=h @staff.name %></td>
+	</tr>
+
+	<tr>
+			<td>4</td>
+			<td><label for="title">Gelaran</label></td>
+			<td>:</td>
+			<td><%=h @staff.title.name %></td>
+	</tr>
+
+	<tr>
+			<td>5</td>
+			<td><label for="position_id">Jawatan</label></td>
+			<td>:</td>
+			<td><%=h @staff.position.positionname %></td>
+	</tr>	
+	
+	<tr>
+			<td>6</td>
+			<td><label for="employscheme">Skim Perkhidmatan</label></td>
+			<td>:</td>
+			<td><%=h @staff.employscheme %></td>
+	</tr>
+
+	<tr>
+			<td>7</td>
+			<td><label for="staffgrade_id">Gred</label></td>
+			<td>:</td>
+			<td><%=h @staff.staffgrade_id.blank? ? "" : @staff.staffgrade.sgname %></td>
+	</tr>
+	
+	<tr>
+			<td>8</td>
+			<td><label for="employstatus">Status Perkhidmatan</label></td>
+			<td>:</td>
+			<td><%=h (Staff::STATUS.find_all{|disp, value| value == @staff.employstatus}).map {|disp, value| disp} %></td>
+	</tr>
+
+	<tr>
+			<td>9</td>
+			<td><label for="appointstatus">Status Lantikan</label></td>
+			<td>:</td>
+			<td><%=h (Staff::APPOINTMENT.find_all{|disp, value| value == @staff.appointstatus.to_s}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>10</td>
+			<td><label for="bosses">Pelulus/Penyokong Cuti</label></td>
+			<td>:</td>
+			<td><%=h @staff.position.parent_id.blank? ? "N/A" : @staff.position.bosses.staff.name %></td>
+	</tr>
+	<tr>
+			<td>11</td>
+			<td><label for="appointdt">Tarikh Lantikan Pertama Ke Perkhidmatan Awam</label></td>
+			<td>:</td>
+			<td><%=h @staff.appointdt.strftime('%d-%m-%Y')  %></td>
+	</tr>
+	
+	<tr>
+			<td>12</td>
+			<td><label for="schemedt">Tarikh Lantikan Ke Skim Perkhidmatan Sekarang </label></td>
+			<td>:</td>
+			<td><%=h @staff.schemedt.strftime('%d- %m - %Y')  %></td>
+	</tr>
+	
+	<tr>
+			<td>13</td>
+			<td><label for="confirmdt">Tarikh Sah perkhidmatan Ke Perkhidmatan Awam</label></td>
+			<td>:</td>
+			<td><%=h @staff.confirmdt.strftime('%d - %m - %Y') %></td>
+	</tr>
+	
+	<tr>
+			<td>14</td>
+			<td><label for="posconfirmdate">Tarikh Sah Perkhidmatan Ke Jawatan Sekarang</label></td>
+			<td>:</td>
+			<td><%=h @staff.posconfirmdate.strftime('%d - %m - %Y') %></td>
+	</tr>
+	<tr>
+			<td>15</td>
+			<td><label for="appointby">Kuasa Melantik</label></td>
+			<td>:</td>
+			<td><%=h (Staff::APPOINTED.find_all{|disp, value| value == @staff.appointby }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>16</td>
+			<td><label for="svchead">Ketua Perkhidmatan</label></td>
+			<td>:</td>
+			<td><%=h (Staff::HOS.find_all{|disp, value| value == @staff.svchead }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>17</td>
+			<td><label for="svctype">Kod Jenis Perkhidmatan</label></td>
+			<td>:</td>
+			<td><%=h (Staff::TOS.find_all{|disp, value| value == @staff.svctype }).map {|disp, value| disp} %></td>
+	</tr>
+
+	<tr>
+			<td>18</td>
+			<td><label for="pensionstat">Status Pencen</label></td>
+			<td>:</td>
+			<td><%=h (Staff::PENSION.find_all{|disp, value| value == @staff.pensionstat}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>19</td>
+			<td><label for="kwspcode">No KWSP</label></td>
+			<td>:</td>
+			<td><%=h @staff.kwspcode %></td>
+	</tr>
+	
+	<tr>
+			<td>20</td>
+			<td><label for="pensiondt">Tarikh Berpencen</label></td>
+			<td>:</td>
+			<td><%=h @staff.pensiondt.strftime('%d - %m - %Y') %></td>
+	</tr>
+<% for qualification in @staff.qualifications %>
+  <tr><td colspan=4><HR></td></tr>
+	<tr>
+			<td>21</td>
+			<td><label for="level_id">Kelayakan Akademik</label></td>
+			<td>:</td>
+			<td><%=h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp} %> - </td>
+	</tr>
+	<tr>
+			<td>22</td>
+			<td><label for="qname">Bidang Pengkhususan (Maj)</label></td>
+			<td>:</td>
+			<td><%=h qualification.qname %></td>
+	</tr>
+	<tr>
+			<td>23</td>
+			<td><label for="qname">Bidang Pengkhususan (Min)</label></td>
+			<td>:</td>
+			<td></td>
+	</tr>
+	<tr>
+			<td>24</td>
+			<td><label for="qname">Tarikh Penganugerahan</label></td>
+			<td>:</td>
+			<td></td>
+	</tr>
+	<tr>
+			<td>25</td>
+			<td><label for="qname">Class/CGPA</label></td>
+			<td>:</td>
+			<td></td>
+	</tr>
+  <tr><td colspan=4><HR></td></tr>
+<% end %>
+	<tr>
+			<td>29</td>
+			<td><label for="coemail">Email Id</label></td>
+			<td>:</td>
+			<td><%=h @staff.coemail %></td>
+	</tr>
+	
+	<tr>
+			<td>30</td>
+			<td><label for="cobirthdt">Tarikh Lahir</label></td>
+			<td>:</td>
+			<td><%=h @staff.cobirthdt.strftime('%d-%m-%Y') %></td>
+	</tr>
+	
+	<tr>
+			<td>31</td>
+			<td><label for="age">Umur</label></td>
+			<td>:</td>
+			<td><%=h @staff.age %> Tahun</td>
+	</tr>
+	<tr>
+			<td>32</td>
+			<td><label for="statecd">Negeri Kelahiran</label></td>
+			<td>:</td>
+			<td><%=h (Staff::STATECD.find_all{|disp, value| value == @staff.statecd}).map {|disp, value| disp} %></td>
+	</tr>
+	<tr>
+			<td>34</td>
+			<td><label for="country_cd">Warganegara</label></td>
+			<td>:</td>
+			<td><%=h (Staff::NATIONALITY.find_all{|disp, value| value == @staff.country_cd}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>37</td>
+			<td><label for="race">Bangsa</label></td>
+			<td>:</td>
+			<td><%=h (Staff::RACE.find_all{|disp, value| value == @staff.race}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>39</td>
+			<td><label for="gender">Jantina</label></td>
+			<td>:</td>
+			<td><%=h (Staff::GENDER.find_all{|disp, value| value == @staff.gender.to_s}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>39</td>
+			<td><label for="icno">No Kad Pengenalan Baru</label></td>
+			<td>:</td>
+			<td><%=h @staff.icno %></td>
+	</tr>
+	
+	<tr>
+			<td>47</td>
+			<td><label for="religion">Agama</label></td>
+			<td>:</td>
+			<td><%=h (Staff::RELIGION.find_all{|disp, value| value == @staff.religion}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>48</td>
+			<td><label for="bloodtype">Kumpulan Darah</label></td>
+			<td>:</td>
+			<td><%=h (Staff::BLOOD_TYPE.find_all{|disp, value| value == @staff.bloodtype}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>49</td>
+			<td><label for="cooftelno">No. Tel Pejabat & Samb</label></td>
+			<td>:</td>
+			<td><%=h @staff.cooftelno %> samb <%=h @staff.cooftelext %></td>
+	</tr>
+	
+	<tr>
+			<td>50</td>
+			<td><label for="phonecell">No. Tel Bimbit</label></td>
+			<td>:</td>
+			<td><%=h @staff.phonecell %> </td>
+	</tr>
+	
+	<tr>
+			<td>53</td>
+			<td><label for="mrtlstatuscd">Taraf Perkahwinan</label></td>
+			<td>:</td>
+			<td><%=h (Staff::MARITAL_STATUS.find_all{|disp, value| value == @staff.mrtlstatuscd }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>54</td>
+			<td><label for="taxcode">No Cukai Pendapatan</label></td>
+			<td>:</td>
+			<td><%=h @staff.taxcode %></td>
+	</tr>
+	
+	<tr>
+			<td>55</td>
+			<td><label for="bankaccno">No Akaun Bank</label></td>
+			<td>:</td>
+			<td><%=h @staff.bankaccno %></td>
+	</tr>
+	
+	<tr>
+			<td>56</td>
+			<td><label for="bank">Nama Bank</label></td>
+			<td>:</td>
+			<td><%=h (Staff::BANK.find_all{|disp, value| value == @staff.bank }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>57</td>
+			<td><label for="bankacctype">Jenis Akaun</label></td>
+			<td>:</td>
+			<td><%=h (Staff::BANKTYPE.find_all{|disp, value| value == @staff.bankacctype }).map {|disp, value| disp} %></td>
+	</tr>
+	<% for loan in @staff.loans %>
+	<tr><td colspan=4><HR></td></tr>
+	<tr>
+			<td>58</td>
+			<td>Pinjaman : Sudah di ambil : </td>
+			<td>:</td>
+			<td><%=h (Loan::LTYPE.find_all{|disp, value| value == loan.ltype}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td></td>
+			<td>a. No Fail</td>
+			<td>:</td>
+			<td><%=h loan.accno %></td>
+	</tr>
+	
+	<tr>
+			<td></td>
+			<td>b. Tarikh Pinjaman</td>
+			<td>:</td>
+			<td><%=h loan.startdt %></td>
+	</tr>
+	
+	<tr>
+			<td></td>
+			<td>c. Tempoh Bayaran Balik </td>
+			<td>:</td>
+			<td><%=h loan.durationmn %> Bulan</td>
+	</tr>
+	
+	<tr>
+			<td></td>
+			<td>d. Ansuran Bulanan </td>
+			<td>:</td>
+			<td>RM <%=h loan.deductions %> </td>
+	</tr>
+	<tr><td colspan=4><HR></td></tr>
+  <% end %>
+
+	<tr>
+			<td>59</td>
+			<td><label for="mrtlstatuscd">Status Perkahwinan</label></td>
+			<td>:</td>
+			<td><%=h (Staff::MARITAL_STATUS.find_all{|disp, value| value == @staff.mrtlstatuscd }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>60</td>
+			<td><label for="uniformstat">Status Uniform</label></td>
+			<td>:</td>
+			<td><%=h (Staff::UNIFORM.find_all{|disp, value| value == @staff.uniformstat }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+			<td>61</td>
+			<td>Maklumat Keluarga</td>
+			<td>:</td>
+			<td></td>
+	</tr>
+	<tr><td colspan=4><HR></td></tr>
+	<% for kin in @staff.kins %>
+	<tr>
+			<td></td>
+			<td>a. Hubungan</td>
+			<td>:</td>
+			<td><%=h (Kin::KTYPE.find_all{|disp, value| value == kin.kintype_id}).map {|disp, value| disp} %></td>
+	</tr>
+	<tr>
+			<td></td>
+			<td>b. Nama</td>
+			<td>:</td>
+			<td><%=h kin.name.blank? ? "" : kin.name %></td>
+	</tr>
+	
+	<tr>
+			<td></td>
+			<td>c. Tarikh Lahir</td>
+			<td>:</td>
+			<td><%=h kin.kinbirthdt %></td>
+	</tr>
+	
+	<tr>
+			<td></td>
+			<td>d. No Tel</td>
+			<td>:</td>
+			<td><%=h kin.phone %></td>
+	</tr>
+	
+	<tr>
+			<td></td>
+			<td>e. Address</td>
+			<td>:</td>
+			<td><%=h kin.kinaddr %></td>
+	</tr>
+	<tr><td colspan=4></td></tr>
+	<% end %>
+	
+	<tr><td colspan=4><HR></td></tr>
+
+</table>
+<BR>
+</div>
+</form>
+</div>
+</form>
+</div>

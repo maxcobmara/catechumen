@@ -1,0 +1,54 @@
+<div class="tform">
+  <table width=100% >
+	
+<!--Staff Details-->	
+
+<tr>
+	<th colspan = 2>Staff Details</th>
+</tr>
+
+	<tr>
+		<td class="leftcol"><label for="staff_id"><b>Select Staff:</b></label><font color="red"> * </font></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true, :order => :icno  %></td>
+		
+	</tr>
+	
+<!--Attendance Details-->	
+	<tr>
+		<th colspan = 2>Attendance Details</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="attdate"><b>Select Date:</b></label><font color="red"> * </font></td>
+		<td><%= f.date_select :attdate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+    </tr>
+
+ 	<tr>
+		<td class="leftcol"><label for="time_in"><b>Time In:</b></label><font color="red"> * </font></td>
+	<!-->	<td><#%= f.time_select :time_in, :default => {:hour => 8, :minute => 30}%></td>-->
+		<td><%= f.time_select :time_in, :default => {:hour => 8, :minute => 30}, :id => "stafflate", :onchange => "showStaffLate(this.value)" %></td>
+    </tr>
+
+	<tr>
+		<td class="leftcol"><label for="time_out"><b>Time Out:</b></label><font color="red"> * </font></td>
+		<td><%= f.time_select :time_out, :default => {:hour => 17, :minute => 30} %></td>
+    </tr>
+
+	<tr id="reason" >
+		<td class="leftcol"><label for="reason"><b>Reason If Late:</b></label><font color="red"> * </font></td>
+		<td><%= f.text_area :reason, :size => "30x5" %></td>
+    </tr>
+
+   	<tr id="approver" >
+		<td class="leftcol"><label for="approve_id"><b>Approving Officer:</b></label><font color="red"> * </font></td>
+		<td><%= f.collection_select :approve_id, Staff.find(:all), :id, :position_with_name, :include_blank => true %></td>
+    </tr>
+
+  
+   	<tr id="approvingstatus" >
+		<td class="leftcol"><label for="approvestatus"><b>Approving Status:</b></label><font color="red"> * </font></td>
+		<td><%= f.radio_button :approvestatus,'false' %>Not Approved<%= f.radio_button :approvestatus,'true' %>Approved</td>
+    </tr>
+
+
+</table>
+<BR>

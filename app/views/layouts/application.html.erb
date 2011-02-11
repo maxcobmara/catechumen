@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <%= javascript_include_tag :defaults %>
+	<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title><%= @pagetitle || (@page && @page.title) || 'Kolej Sains Kesihatan Bersekutu - Johor Baru' %></title>
+		<%= stylesheet_link_tag 'ICMS', :media => :screen %>
+		<%= stylesheet_link_tag 'print', :media => :print %>
+		
+	</head>
+	<body>
+		
+	<div id='pagewrapper'>
+	<div id='header'>
+			<% form_tag '', :method => 'GET', :class => 'locale' do %>
+			 <%= select_tag 'locale', options_for_select(LANGUAGES, I18n.locale), :onchange => 'this.form.submit()' %>
+			 <%= submit_tag 'submit' %>
+			 <%= javascript_tag "$$('.locale input').each(Element.hide)" %>
+			<% end %>
+
+		
+		<% if logged_in? %>
+			<%= link_to "Log Out", logout_path %>
+		<% else %>
+			<%= link_to "Log In", login_path %>
+		<% end %>
+	<%= image_tag("kskb.png") %>
+	</div>
+	
+		
+
+
+
+
+	<div id='navbar'>
+	<ul>
+	   <% @tabs.each do |page| -%>
+		  <li <%= "id='current'" if @page && (@page == page || @page.parent == page)  %>>
+			<%if page.redirect? %>
+			<%= link_to page.navlabel, :action => page.action_name, :controller => page.controller_name, :name => page.name, :order => page.position %>
+			<% else %>
+			  <%= link_to page.navlabel, view_page_path(page.name) %>
+			<% end %>
+			</li>
+			<% end -%>
+			
+			<li><% if logged_in? %>
+				<%= link_to I18n.t('icms.logout'), logout_path %>
+			<% else %>
+				<%= link_to I18n.t('icms.login'), login_path %>
+			<% end %>
+			</li>
+	</ul>
+			
+	</div>
+	
+	<div id='content'>
+		<h3><%= flash[:notice] %></h3>
+		<h3><%= flash[:error] %></h3>
+		<%= yield %>
+	</div>
+	
+	
+	<div id="sidebar_event_area">
+    <% if (request.request_uri == "/" || request.request_uri == "/home") %>
+	  <div id="event_bar">
+		          <H5><%= link_to "Events ", { :controller => "events", :action => "index" } %></H5>
+	            <% dash_events = Event.find(:all, :order => 'eventendt desc', :limit => 5) %>
+	            <% dash_events.each do |e| %>
+	            <div class="sidebar_event_item<%= cycle("0", "1") %>">
+	              <h5><%= link_to e.eventname, :controller => 'event', :action => 'show', :id => e.id %></h5>
+	              <small><%= e.location %></small><BR>
+	              <small><%= e.eventstdt %> to <%= e.eventendt %></small>
+	            </div>
+	            <% end %>
+	  </div>
+	  <% end %>
+	</div>
+	 
+	<div id="bulletin_top_bar">
+		 <% if (request.request_uri == "/" || request.request_uri == "/home") %>
+				
+	 <div id="bulletin_bar"><marquee bgcolor="#fff" scrollamount="2" 
+			direction="up" loop="true">
+		 
+         <% dash_bulletins = Bulletin.find(:all, :order => 'publishdt desc', :limit => 5) %>
+         <% dash_bulletins.each do |b| %>
+     <div class="bulletin_item">
+	    <h5><li><%= link_to b.headline, :controller => 'bulletin', :action => 'show', :id => b.id %></li></h5>
+        <small><b>Content: </b><%= b.content %></small><BR>
+        <small><b>Publish Date:</b> <%= b.publishdt %></small>
+        <small><b>Posted By: </b><%= b.staff.mykad_with_staff_name %></small>
+        </div>
+        <% end %>
+    </marquee></div>
+		<div id="bulletin_title_item">
+			<p><%= link_to "[view more] ", { :controller => "bulletins", :action => "index" } %></p>
+    <% end %>
+    </div>
+	     
+
+
+			
+
+			<div id='footer'>
+			<p>ICMS version 2.00 © Integrated Computing Technologies Sdn Bhd / </p>
+			
+			</div>
+		</div>
+		<div id='text'>
+		<p align="center"><font size=-2 >debug info : [controller name: <%= controller_name %> ] &nbsp
+		             [controller action name: <%= controller.action_name %> ]&nbsp
+		             [current user: <%= logged_in? ? current_user.name : "" %> <%=h logged_in? ? User.current_user.roles  : "" %>] &nbsp
+		             [current url: <%= request.request_uri %>]
+		             <!--><#%=h  User.current_user.isstaff? ?  User.current_user.staff.mykad_with_staff_name :  User.current_user.student.formatted_mykad_and_student_name %> </font></p>-->
+		</div>
+	</body>
+</html>

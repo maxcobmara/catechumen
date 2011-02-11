@@ -1,0 +1,13 @@
+<h3>Create a New User</h3>
+<% form_for(@user) do |f| %>
+  <%= f.error_messages %>
+<% @user.password = @user.password_confirmation = nil %>
+
+<%=render :partial => 'form', :locals => {:f => f} %> 
+
+<p><%= submit_tag 'Sign up' %></p>
+
+<% end -%>
+
+
+<%= link_to 'Back', users_path %>

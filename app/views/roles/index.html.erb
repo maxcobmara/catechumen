@@ -1,0 +1,26 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Roles</h2>
+	</div>
+	<div class="tlist">
+	    <table width=90% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    <th>Name</th>
+<th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @roles.each do |role| %>
+  <tr>
+    <td><%=h role.name %></td>
+    <td width=10px ><%= link_to 'Show', role %></td>
+    <td width=10px ><%= link_to 'Edit', edit_role_path(role) %></td>
+    <td width=10px ><%= link_to 'Destroy', role, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New role', new_role_path %>

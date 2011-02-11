@@ -1,0 +1,32 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+  <div class="box-head">
+    <h2 class="left">Course Evaluation</h2>
+	<div class="right">
+		</div></div>
+
+<div class="tlist">
+<table width=100%>
+  <tr>
+    <th>Student</th>
+    <th>Programme</th>
+    <th>Subject</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @courseevaluations.each do |courseevaluation| %>
+  <tr>
+    <td><%=h courseevaluation.student_id %></td>
+    <td><%=h courseevaluation.programme_id %></td>
+    <td><%=h courseevaluation.subject_id %></td>
+    <td><%= link_to 'Show', courseevaluation %></td>
+    <td><%= link_to 'Edit', edit_courseevaluation_path(courseevaluation) %></td>
+    <td><%= link_to 'Destroy', courseevaluation, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New CourseEvaluation', new_courseevaluation_path %>

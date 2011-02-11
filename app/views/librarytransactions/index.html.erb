@@ -1,0 +1,39 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left"><%= t 'librarytransaction.list' %></h2>
+	</div>
+	<div class="tlist">
+	    <table width=100%>
+		  <tr>
+    <th><%= t 'librarytransaction.book_id' %></th>
+    <th><%= t 'book.title' %></th>
+    <th><%= t 'librarytransaction.borrower' %></th>
+    <th><%= t 'librarytransaction.checkoutdate' %></th>
+    <th><%= t 'librarytransaction.duedate' %></th>
+    <th><%= t 'librarytransaction.extend' %></th>
+    <th><%= t 'librarytransaction.returneddate' %></th>
+    <th colspan=3><%= t 'action' %><th>
+  </tr>
+
+<% @librarytransactions.each do |librarytransaction| %>
+  <tr>
+    <td><%=h librarytransaction.book_id %></td>
+    <td><%=h librarytransaction.book.title %></td>
+    <td><%=h librarytransaction.isitstaff? ?  librarytransaction.staff.name : librarytransaction.student.name %></td>
+    <td><%=h librarytransaction.checkoutdate %></td>
+    <td><%=h librarytransaction.returnduedate %></td>
+    <td><%=h librarytransaction.extended %></td>
+    <td><%=h librarytransaction.returneddate %></td>
+    <td><%= link_to 'Show', librarytransaction %></td>
+    <td><%= link_to 'Edit', edit_librarytransaction_path(librarytransaction) %></td>
+    <td><%= link_to 'Destroy', librarytransaction, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+</div>
+<%= link_to (t 'librarytransaction.newrec'), new_librarytransaction_path %>
+</div>

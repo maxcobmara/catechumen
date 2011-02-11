@@ -1,0 +1,45 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Event List</h2>
+		<div class="right">
+			<% form_tag events_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search] %>
+			<%= submit_tag "Search", :eventname => nil %>
+			<% end %>
+		</div>
+    </div>
+
+    <div class="tlist">
+	  	<table width=100% border="0" cellpadding="0" cellspacing="0">
+	        <tr>
+    <th><a href="?sort_by=evenstdt">Start Date</a></th>
+    <th>End Date</th>
+    <th>Event Name</th>
+    <th>Location</th>
+    <th>Participants</th>
+    <th>Officiated By</th>
+    <th>Created By</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @events.each do |event| %>
+  <tr>
+    <td><%=h event.eventstdt %></td>
+    <td><%=h event.eventendt %></td>
+    <td><%=h event.eventname %></td>
+    <td><%=h event.location %></td>
+    <td><%=h event.participants %></td>
+    <td><%=h event.officiated %></td>
+    <td><%=h event.createdby %></td>
+    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => event %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => event %></td>
+    <td><%= link_to 'Destroy', event, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Event', new_event_path %>

@@ -1,0 +1,81 @@
+<div class="tform">
+  <table width=100% >
+	
+	
+<!--User Info-->
+	<tr>
+		<th colspan = 2>User Details</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="name">Name: </label></td>
+		<td><%= f.text_field :name, :size => 12 %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="login">Login: </label></td>
+		<td><%= f.text_field :login, :size => 12 %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="email">Email: </label></td>
+		<td><%= f.text_field :email, :size => 12 %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="password">Password: </label></td>
+		<td><%= f.text_field :password, :size => 12 %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="password_confirmation">Confirm Password: </label></td>
+		<td><%= f.text_field :password_confirmation, :size => 12 %></td>
+	</tr>
+	
+
+	<script type="text/javascript">
+		  function switchvisibility(el) {
+		    if (document.getElementById(el).checked) {
+		      document.getElementById('bstaff').style.display = "table-row";
+		      document.getElementById('bstudent').style.display = "none";
+		    } else {
+		      document.getElementById('bstaff').style.display = "none";
+		      document.getElementById('bstudent').style.display = "table-row";
+		    }
+		  }
+		</script>
+	
+	<tr>
+		<td class="leftcol"><label for="isstaff"><b>Staff?</b></label></td>
+		<td><%= f.check_box :isstaff, :id => "isstaff", :onchange => "switchvisibility('isstaff')" %></td>
+	</tr>
+	
+	<tr id="bstaff" style="display: none;">
+		<td class="leftcol" ><label for="staff_id"><b>Staff Name:</b></label></td>
+	  <td><%= f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true, :default => 0 %></td>
+	</tr>
+	
+	<tr id="bstudent" style="display: table-row;">
+		<td class="leftcol" ><label for="student_id"><b>Student Name:</b></label></td>
+	  <td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true, :default => 0 %></td>
+	</tr>
+
+	<tr>
+		<td colspan=2><b>Select role to add to this user</b></td>
+		<td></td>
+	</tr>
+
+	<% for role in Role.find(:all) %>
+	<tr>
+		<td></td>
+		<td><%= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role) %>
+    <%= role.name %>
+    </td>
+  </tr>
+  <% end %>
+
+
+	
+
+
+</table>		
+</div>

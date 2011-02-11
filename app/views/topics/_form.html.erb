@@ -1,0 +1,77 @@
+<div class="tform">
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>Topics</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="subject_id">Subject</label></td>
+		<td><!--#%= f.collection_select :subject_id, Subject.find(:all), :id, :subject, :include_blank => true %>-->
+		    <%= f.collection_select :subject_id, Subject.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="topic_code">Topic Code</label></td>
+		<td><%= f.text_field :topic_code %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="sequenceno">Sequence No</label></td>
+		<td><%= f.select :sequenceno, options_for_select([1,2,3,4,5,6,7,8,9,10,11,12]) %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="name">Topic Name/Title</label></td>
+		<td><%= f.text_field :name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="duration">Duration for Topic</label></td>
+		<td><%= f.time_select :duration, :minute_step => 15 %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="version">Version No</label></td>
+		<td><%= f.text_field :version %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="objective">Objective</label></td>
+		<td><%= f.text_area :objective, :size => '45x3' %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="content">Content</label></td>
+		<td><%= f.text_area :content, :size => '45x5' %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="activity">Activity</label></td>
+		<td><%= f.text_area :activity, :size => '45x3' %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="creator_id">Created By</label></td>
+		<td><%= f.collection_select :creator_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td>
+	</tr>
+	<tr>
+		<th colspan = 2>Approval</th>
+	<tr>
+		<td class="leftcol"><label for="approved">Approved?</label></td>
+		<td> <%= f.check_box :approved %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="approved_date">Approved On</label></td>
+		<td><%= f.date_select :approved_date, :order => [:day, :month, :year] , :include_blank => true %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="approvedby_id">Approved By</label></td>
+		<td><%= f.collection_select :approvedby_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td>
+	</tr>
+	<tr>
+		<th colspan = 2>Checking</th>
+	<tr>
+		<td class="leftcol"><label for="remarks">Remarks</label></td>
+		<td> <%= f.text_area :remarks, :size => '45x2' %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="checkcode">Checking Code</label></td>
+		<td><%= f.text_field :checkcode %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="checkdate">Check Date</label></td>
+		<td><%= f.date_select :checkdate, :order => [:day, :month, :year] , :include_blank => true %></td>
+	</tr>
+</table>
+</div>

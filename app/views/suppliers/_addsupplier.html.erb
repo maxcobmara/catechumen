@@ -1,0 +1,22 @@
+<div class="addsupplier">
+	<% new_or_existing = addsupplier.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "supplier[#{new_or_existing}_addsupplier_attributes][]" %>
+	
+	<% fields_for prefix, addsupplier do | addsupplier_form | -%>
+
+    <table width=100%>
+	   <tr>
+		
+	     <td width=200px><%= addsupplier_form.text_field :lpono, :size => 10 %></td>
+         <td width=220px><%= addsupplier_form.text_field :document, :size => 15 %></td>
+         <td width=180px><%= addsupplier_form.text_field :quantity, :size => 10 %></td>
+         <td width=200px><%= addsupplier_form.text_field :unitcost, :size => 10 %></td>
+         <td width=350px><%= addsupplier_form.text_field :received, :size => 12 %></td>
+         <td width=10px><%= link_to_function "remove", "$(this).up('.addsupplier').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>
+

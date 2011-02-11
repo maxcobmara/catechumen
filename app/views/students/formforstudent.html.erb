@@ -1,0 +1,260 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+	<form>
+
+<div id="title" width=21cm>	
+<H3 text-indent: 70px>KOLEJ KEJURURAWATAN JOHOR BAHRU</H3>
+<H3>KUMPULAN:<%=h @student.intake_id.blank? ? " " : @student.intakestudent.name %></H3>
+<H3>BORANG MAKLUMAT PELATIH</H3>
+
+<BR>
+	
+<div id="borangmaklumat">
+<table>
+	<tr>
+		<th colspan = 4><b>Personal Details</b></th>
+	</tr>
+	<tr></tr>
+	<tr>
+		<td width="3%">1</th>
+		<td width="30%"><label for="icno">No Kad Pengenalan</label></th>
+		<td width="1%">:</th>
+		<td><%=h @student.formatted_mykad %></td>
+	</tr>
+	
+	<tr>
+			<td>2</td>
+			<td><label for="name">Nama</label></td>
+			<td>:</td>
+			<td><%=h @student.name %></td>
+	</tr>
+
+	<tr>
+			<td>3</td>
+			<td><label for="matrixno">No Matrik</label></td>
+			<td>:</td>
+			<td><%=h @student.matrixno %></td>
+	</tr>
+
+
+		<tr>
+			<td>4</td>
+			<td><label for="sstatus">Status</label></td>
+			<td>:</td>
+			<td><%=h @student.sstatus %></td>
+		</tr>
+
+		<tr>
+			<td>5</td>
+			<td><label for="stelno">No.Telefon</label></td>
+			<td>:</td>
+			<td><%=h @student.stelno %></td>
+		</tr>
+
+		<tr>
+			<td>6</td>
+			<td><label for="ssponsor">Penganjur</label></td>
+			<td>:</td>
+			<td><%=h @student.ssponsor %></td>
+		</tr>
+
+		<tr>
+			<td>7</th>
+			<td><label for="gender">Jantina</label></th>
+			<td>:</td>
+			<td><%=h (Student::GENDER.find_all{|disp, value| value == @student.gender.to_s}).map {|disp, value| disp} %></td>
+		</tr>
+
+		<tr>
+			<td>8</th>
+			<td><label for="sbirthdt">Tarikh Lahir</label></th>
+			<td>:</td>
+			<td><%=h @student.sbirthdt %></td>
+		</tr>
+
+		<tr>
+			<td>9</th>
+			<td><label for="maritalstatus">Taraf Perkahwinan</label></th>
+			<td>:</td>
+			<td><%=h (Student::MARITAL_STATUS.find_all{|disp, value| value == @student.mrtlstatuscd.to_s}).map {|disp, value| disp} %></td>
+		</tr>
+
+		<tr>
+			<td>10</th>
+			<td><label for="semail">Email</label></th>
+			<td>:</th>
+			<td><%=h @student.semail %></td>
+		</tr>
+
+		<tr>
+			<td>11</th>
+			<td><label for="regdate">Tarikh Pendaftaran</label></th>
+			<td>:</th>
+			<td><%=h @student.regdate %></td>
+		</tr>
+		<tr></tr>
+		<tr>
+			<th colspan = 4><b>Maklumat Kursus</b></th>
+		</tr>
+		<tr></tr>
+		
+		<tr>
+			<td>12</th>
+			<td><label for="course_id">Nama Kursus</label></th>
+			<td>:</th>
+			<td><%=h @student.course_id.blank? ? " " : @student.course.name %></td>
+		</tr>
+		
+		<tr>
+			<td>13</th>
+			<td><label for="specialisation">Bidang/Pengkhususan</label></th>
+			<td>:</th>
+			<td><%=h @student.specilisation %></td>
+		</tr>
+		
+		<tr>
+			<td>14</th>
+			<td><label for="session">Sesi Pengambilan</label></th>
+			<td>:</th>
+			<td><%=h @student.intake_id.blank? ? " " : @student.intakestudent.name %></td>
+		</tr>
+		
+		
+		<tr></tr>
+		<tr>
+			<th colspan = 4><b>Status Kesihatan</b></th>
+		</tr>
+		<tr></tr>
+		
+		<tr>
+			<td>17</th>
+			<td><label for="physical">Fizikal</label></th>
+			<td>:</th>
+			<td><%=h @student.physical %></td>
+		</tr>
+		
+		<tr>
+			<td>17</th>
+			<td><label for="allergy">Alergik</label></th>
+			<td>:</th>
+			<td><%=h @student.allergy %></td>
+		</tr>
+		
+		<tr>
+			<td>18</th>
+			<td><label for="disease">Penyakit</label></th>
+			<td>:</th>
+			<td><%=h @student.disease %></td>
+		</tr>
+		
+		<tr>
+			<td>18</th>
+			<td><label for="bloodtype">Jenis Darah</label></th>
+			<td>:</th>
+			<td><%=h (Student::BLOOD_TYPE.find_all{|disp, value| value == @student.bloodtype}).map {|disp, value| disp} %></td>
+		</tr>
+		
+		<tr>
+			<td>19</th>
+			<td><label for="medication">Ubat</label></th>
+			<td>:</th>
+			<td><%=h @student.medication %></td>
+		</tr>
+		
+		<tr>
+			<td>20</th>
+			<td><label for="remarks">Remarks</label></th>
+			<td>:</th>
+			<td><%=h @student.remarks %></td>
+		</tr>
+		
+		<tr></tr>
+		<tr>
+			<th colspan = 4><b>Kelayakan Akademik</b></th>
+		</tr>
+		<tr></tr>
+		<td><% for qualification in @student.qualifications %></td>
+		<tr>
+			<td>21</th>
+			<td><label for="level_id">Level</label></th>
+			<td>:</th>
+			<td><%=h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp} %></td>
+		</tr>
+		
+		<tr>
+			<td>22</th>
+			<td><label for="qname">Kelayakan</label></th>
+			<td>:</th>
+			<td><%=h qualification.qname %></td>
+		</tr>
+		
+		<tr>
+			<td>23</th>
+			<td><label for="institute">Institut</label></th>
+			<td>:</th>
+			<td><%=h qualification.institute %></td>
+		</tr>
+		
+		<% end %>
+		<tr></tr>
+		<tr>
+			<th colspan = 4><b>Saudara Mara</b></th>
+		</tr>
+		<tr></tr>
+		 <td><% for kin in @student.kins %></td>
+		<tr>
+			<td>24</th>
+			<td><label for="relationship">Hubungan</label></th>
+			<td>:</th>
+			<td><%=h (Kin::KTYPE.find_all{|disp, value| value == kin.kintype_id}).map {|disp, value| disp} %></td>
+		</tr>
+		
+		<tr>
+			<td>25</th>
+			<td><label for="name">Nama</label></th>
+			<td>:</th>
+			<td><%=h kin.name.blank? ? "" : kin.name %></td>
+		</tr>
+		
+		<tr>
+			<td>26</th>
+			<td><label for="kinbirthdt">Tarikh Lahir</label></th>
+			<td>:</th>
+			<td><%=h kin.kinbirthdt %></td>
+		</tr>
+		
+		<tr>
+			<td>27</th>
+			<td><label for="phone">No Telefon</label></th>
+			<td>:</th>
+			<td><%=h kin.phone %></td>
+		</tr>
+		
+		<tr>
+			<td>28</th>
+			<td><label for="kinaddr">Alamat</label></th>
+			<td>:</th>
+			<td><%=h kin.kinaddr %></td>
+		</tr>
+		
+		<% end %>
+
+</table>
+<BR>
+</div>
+</form>
+</div>
+</form>
+</div>
+
+
+
+

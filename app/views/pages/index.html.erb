@@ -1,0 +1,44 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Pages</h2>
+		<div class="right">
+			<% form_tag pages_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search] %>
+			<%= submit_tag I18n.t('search'), :navlabel => nil %>
+			<% end %>
+		</div>
+    </div>
+
+    <div class="tlist">
+  	<table width=100% border="0" cellpadding="0" cellspacing="0">
+        <tr>
+	        
+	        <th>Position</th>
+	        <th>Nav Label</th>
+          <th>Name</th>
+          <th>Admin</th>
+          <th>Redirect</th>
+          <th colspan=3 class="ac">Control</th>
+        </tr>
+
+        <% @pages.each do |page| %>
+        <tr>
+	        <td width=5%><%=h page.position %></td>
+	        <td><%=h page.navlabel %></td> 
+          <td><%=h page.name %></td>
+          <td><%=  page.admin? ? "Yes" : "No" %></td>
+          <td><%=  page.redirect? ? "Yes" : "No" %></td>
+          <td width=5px><%= link_to 'Show', page %></td>
+          <td width=5px><%= link_to 'Edit', edit_page_path(page) %></td>
+          <td width=5px><%= link_to 'Destroy', page, :confirm => 'Are you sure?', :method => :delete %></td>
+        </tr>
+        <% end %>
+</table>
+
+<br />
+</div>
+<%= link_to 'New page', new_page_path %>
+
+</div>

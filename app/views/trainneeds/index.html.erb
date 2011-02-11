@@ -1,0 +1,34 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Training Needs</h2>
+	</div>
+	<div class="tlist">
+	    <table width=90% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    <th>Evaluation</th>
+    <th>Name</th>
+    <th>Reason</th>
+    <th>Confirmed By</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @trainneeds.each do |trainneed| %>
+  <tr>
+    <td><%=h trainneed.evaluation_id %></td>
+    <td><%=h trainneed.name %></td>
+    <td><%=h trainneed.reason %></td>
+    <td><%=h trainneed.confirmedby_id.blank? ? "" : trainneed.confirmedby.mykad_with_staff_name %></td>
+    <td><%= link_to 'Show', trainneed %></td>
+    <td><%= link_to 'Edit', edit_trainneed_path(trainneed) %></td>
+    <td><%= link_to 'Destroy', trainneed, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+
+<br />
+
+
+<%= link_to 'New Trainneed', new_trainneed_path %>

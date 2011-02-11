@@ -1,0 +1,28 @@
+<h1>Listing usesupplies</h1>
+
+<table>
+  <tr>
+    <th>Supplies</th>
+    <th>Issuedby</th>
+    <th>Receivedby</th>
+    <th>Quantity</th>
+    <th>Issuedate</th>
+  </tr>
+
+<% @usesupplies.each do |usesupply| %>
+  <tr>
+    <td><%=h usesupply.supplies_id %></td>
+    <td><%=h usesupply.issuedby %></td>
+    <td><%=h usesupply.receivedby %></td>
+    <td><%=h usesupply.quantity %></td>
+    <td><%=h usesupply.issuedate %></td>
+    <td><%= link_to 'Show', usesupply %></td>
+    <td><%= link_to 'Edit', edit_usesupply_path(usesupply) %></td>
+    <td><%= link_to 'Destroy', usesupply, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New usesupply', new_usesupply_path %>

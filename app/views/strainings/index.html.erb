@@ -1,0 +1,28 @@
+<h1>Listing strainings</h1>
+
+<table>
+  <tr>
+    <th>Evaluation</th>
+    <th>Staff</th>
+    <th>Name</th>
+    <th>Place</th>
+    <th>Sdate</th>
+  </tr>
+
+<% @strainings.each do |straining| %>
+  <tr>
+    <td><%=h straining.evaluation_id %></td>
+    <td><%=h straining.staff_id %></td>
+    <td><%=h straining.name %></td>
+    <td><%=h straining.place %></td>
+    <td><%=h straining.sdate %></td>
+    <td><%= link_to 'Show', straining %></td>
+    <td><%= link_to 'Edit', edit_straining_path(straining) %></td>
+    <td><%= link_to 'Destroy', straining, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New straining', new_straining_path %>

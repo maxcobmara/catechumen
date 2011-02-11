@@ -1,0 +1,63 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Bulletins</h2>
+		<div class="right">
+			<% form_tag bulletins_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search] %>
+			<%= submit_tag I18n.t('search'), :headline => nil %>
+			<% end %>
+		</div>
+	</div>
+	<div class="tlist">
+	    <table width=90% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    <th>Headline</th>
+    <th>Content</th>
+    <th>Posted By</th>
+    <th>Publish Date</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @bulletins.each do |bulletin| %>
+  <tr>
+    <td><%=h bulletin.headline %></td>
+    <td><%=h bulletin.content %></td>
+    <!--><td><#%=h bulletin.postedby_id.blank? ? "" : bulletin.bulletin.mykad_with_staff_name %></td>
+
+
+    Seriously!!!  
+    # :posted_by is validated (see line 22 of bullettin.rb), why do you need to check if its blank?
+      it cant be blank, because its validated and required therefore you dont need to check if it is blank
+
+      You have done this a lot... I don't know why...
+     Jangan suka-suka cut and paste code without knowing WHY!!!!
+
+     NOW read the code. 
+     if bulletin postedby_id is blank, show nothing, else show the mykadwith staff name of the bulletin of bulletin
+
+
+
+
+      for the bulletin, show the the staff (as posted_by) detail mykad with staff name
+
+     READ YOUR CODE... LEARN YOUR ENGLISH
+     IF YOUR CODE READS BAD.... IT IS BAD
+  
+     -->
+
+     <td><%=h bulletin.staff.mykad_with_staff_name %></td>
+
+
+    <td><%=h bulletin.publishdt %></td>
+    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => bulletin %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => bulletin %></td>
+    <td width=10px><%= link_to 'Destroy', bulletin, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Bulletin', new_bulletin_path %>

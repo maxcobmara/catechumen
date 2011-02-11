@@ -1,0 +1,18 @@
+<div class="qualification">
+	<% new_or_existing = qualification.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "student[#{new_or_existing}_qualification_attributes][]" %>
+	
+	<% fields_for prefix, qualification do | qualification_form | -%>
+	
+ <table width=100%>
+	   <tr>
+	     <td width=210px><%= qualification_form.select :level_id, Qualification::QTYPE, :prompt => "Select" %></td>
+         <td width=270px><%= qualification_form.text_field :qname %></td>
+         <td><%= qualification_form.text_field :institute %></td>
+         <td width=250px><%= link_to_function "remove", "$(this).up('.qualification').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>

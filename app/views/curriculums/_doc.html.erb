@@ -1,0 +1,17 @@
+<div class="doc">
+	<% new_or_existing = doc.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "curriculum[#{new_or_existing}_doc_attributes][]" %>
+	
+	<% fields_for prefix, doc do | doc_form | -%>
+
+    <table>
+	   <tr>
+         <td><%= doc_form.submit 'Upload File' %> <%= doc_form.text_field :description %></td>
+         <td><%= link_to_function "remove", "$(this).up('.doc').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>
+

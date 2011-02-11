@@ -1,0 +1,28 @@
+<h1>Listing evactivities</h1>
+
+<table>
+  <tr>
+    <th>Evaluation</th>
+    <th>Evaldt</th>
+    <th>Evactivity</th>
+    <th>Actlevel</th>
+    <th>Actdt</th>
+  </tr>
+
+<% @evactivities.each do |evactivity| %>
+  <tr>
+    <td><%=h evactivity.evaluation_id %></td>
+    <td><%=h evactivity.evaldt %></td>
+    <td><%=h evactivity.evactivity %></td>
+    <td><%=h evactivity.actlevel %></td>
+    <td><%=h evactivity.actdt %></td>
+    <td><%= link_to 'Show', evactivity %></td>
+    <td><%= link_to 'Edit', edit_evactivity_path(evactivity) %></td>
+    <td><%= link_to 'Destroy', evactivity, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New evactivity', new_evactivity_path %>

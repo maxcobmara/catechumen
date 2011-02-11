@@ -1,0 +1,116 @@
+<table id="form">
+	<tr class="toprow">
+		<td>Programme Core</td>
+		<td></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="currcode"><b>Course/Subject/Topic Code</b><font color="red"> *           </font></label></td>
+		<td><%= f.text_field :currcode %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="curcategory"><b>Category</b><font color="red"> *           </font></label></td>
+		<td><%= f.select :curcategory, 
+		                 Curriculum::CATEGORY,
+		                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="name"><b>Course/Subject/Topic Name</b><font color="red"> *           </font></label></td>
+		<td><%= f.text_field :name %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="abbrev"><b>Abbreviation</b><font color="red"> *           </font></label></td>
+		<td><%= f.text_field :abbrev %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="duration"><b>Duration</b><font color="red"> *           </font></label></td>
+		<td><%= f.text_field :duration, :size => 10 %> Hours </td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="currversion"><b>Version</b><font color="red"> *           </font></label></td>
+		<td><%= f.text_field :currversion %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="currobjective"><b>Objective</b><font color="red"> *           </font></label></td>
+		<td><%= f.text_area :currobjective, :size => "30x5" %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="currcontent"><b>Content</b><font color="red"> *           </font></label></td>
+		<td><%= f.text_area :currcontent, :size => "30x5" %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="curractivity"><b>Activities</b><font color="red"> *           </font></label></td>
+		<td><%= f.text_area :curractivity, :size => "30x5" %></td>
+	</tr>
+	
+
+
+	<tr>
+	<td class="leftcol"><label for="currefs"><b>References</b><font color="red"> *           </font></label></td>
+		<td><%= f.text_area :currefs, :size => "30x5" %></td>
+	</tr>
+	
+	
+	<tr>
+	<td class="leftcol"><label for="currscope"><b>Scope</b><font color="red"> * </font></label></td>
+		<td><%= f.text_area :currscope, :size => "30x5" %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="currdefinition"><b>Definition</b><font color="red"> * </font></label></td>
+		<td><%= f.text_area :currdefinition, :size => "30x5" %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="currqualrec"><b>Quality Record</b><font color="red"> * </font></label></td>
+		<td><%= f.text_area :currqualrec, :size => "30x5" %></td>
+	</tr>
+	
+</table>
+<BR>
+	
+<!-- Code Block for Attach Documents Repeating Field -->
+<table id="form">
+	<tr class="toprow">
+		<td>Attach Document</td>
+		<td></td>
+	</tr>
+		<tr>
+		 <td class="leftcol"><label for="description"></label></td>
+		</tr>
+</table>
+	<div id="docs">
+	<%= render :partial => 'doc', :collection => @curriculum.docs %>
+	</div>
+
+	<%= add_doc_link "Add more" %></td>
+
+<BR><BR>
+<!-- Code Block for Approval  -->
+
+	
+<table id="form">
+	<tr class="toprow">
+		<td>Approval</td>
+		<td></td>
+	</tr>
+	<tr>
+	 <td class="leftcol"><label for="approved_id"><b>Approved By</b><font color="red"> * </font></label></td>
+	<td><%= f.collection_select :approved_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+	 <td class="leftcol"><label for="approvedt"><b>Approved Date</b></label></td>
+		<td><%= f.date_select :approvedt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+
+</table>
+<BR>

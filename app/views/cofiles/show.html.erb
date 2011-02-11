@@ -1,0 +1,55 @@
+<div class="tform">
+  <table width=100% >
+	
+	<tr>
+		<th colspan = 2>Files Details</th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="cofileno"><b>File No:</b></label></td>
+		<td><%=h @cofile.cofileno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name"><b>File Name:</b></label></td>
+		<td>  <%=h @cofile.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="location"><b>Location:</b></label></td>
+		<td>  <%=h @cofile.location %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="owner_id"><b>Owner:</b></label></td>
+	<td> <%=h @cofile.owner.mykad_with_staff_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="onloan"><b>On Loan:</b></label></td>
+		<td> <%=h @cofile.onloan %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staffloan_id"><b>On Loan To:</b></label></td>
+	<td><%=h @cofile.staffloan_id.blank? ? "Not On Loan" : @cofile.borrower.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="onloandt"><b>Loaned Date:</b></label></td>
+		<td><%=h @cofile.onloandt %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="onloanxdt"><b>Returned Date:</b></label></td>
+		<td> <%=h @cofile.onloanxdt %></td>
+	</tr>
+	
+</table>
+<BR>
+	</div>
+
+
+<%= link_to 'Edit', edit_cofile_path(@cofile) %> |
+<%= link_to 'Back', cofiles_path %>

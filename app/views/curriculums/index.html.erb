@@ -1,0 +1,52 @@
+<h1>List of Lessons</h1>
+
+<table border="0" cellpadding="3" cellspacing="2">
+  <tr class="toprow">
+    <th>Course/Subject/Code</th>
+    <th>Category</th>
+    <th>Course/Subject/Code Name</th>
+    <th>Duration</th>
+   <!--> <th>Currversion</th>
+    <th>Durationtype</th>
+    <th>Currobjective</th>
+    <th>Currcontent</th>
+    <th>Currversions</th>
+    <th>Curractivity</th>
+    <th>Currefs</th>
+    <th>Currscope</th>
+    <th>Currdefinition</th>
+    <th>Abbrev</th>
+    <th>Currqualrec</th>-->
+    <th>Approved By</th>
+    <th>Approved Date</th>
+  </tr>
+
+<% @curriculums.each do |curriculum| %>
+  <tr>
+    <td><%=h curriculum.currcode %></td>
+    <td><%=h curriculum.curcategory %></td>
+    <td><%=h curriculum.name %></td>
+    <td><%=h curriculum.duration %></td>
+  <!-->  <td><%=h curriculum.currversion %></td>
+    <td><%=h curriculum.durationtype %></td>
+    <td><%=h curriculum.currobjective %></td>
+    <td><%=h curriculum.currcontent %></td>
+    <td><%=h curriculum.currversions %></td>
+    <td><%=h curriculum.curractivity %></td>
+    <td><%=h curriculum.currefs %></td>
+    <td><%=h curriculum.currscope %></td>
+    <td><%=h curriculum.currdefinition %></td>
+    <td><%=h curriculum.abbrev %></td>
+    <td><%=h curriculum.currqualrec %></td>-->
+    <td><%=h curriculum.approved_id %></td>
+    <td><%=h curriculum.approvedt %></td>
+    <td><%= link_to 'Show', curriculum %></td>
+    <td><%= link_to 'Edit', edit_curriculum_path(curriculum) %></td>
+    <td><%= link_to 'Destroy', curriculum, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Curriculum', new_curriculum_path %>

@@ -1,0 +1,22 @@
+<div class="straining">
+	<% new_or_existing = straining.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "appraisal[#{new_or_existing}_straining_attributes][]" %>
+	
+	<% fields_for prefix, straining do | straining_form | -%>
+
+    <table>
+	   <tr>
+	     <td><%= straining_form.collection_select :appraisal_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+         <td><%= straining_form.collection_select :staff_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+          <td><%= straining_form.text_field :name, :size => 12 %></td>
+         <td><%= straining_form.text_field :place, :size => 12 %></td>
+          <td><%= straining_form.date_select :sdate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+         
+
+         <td><%= link_to_function "remove", "$(this).up('.straining').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>

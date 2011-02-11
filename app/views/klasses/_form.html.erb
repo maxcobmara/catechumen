@@ -1,0 +1,31 @@
+<div class="tform">
+  <table width=100% >
+
+<table id="form">
+	<tr>
+		<th colspan = 2>New Class</th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="klass_no">Class No:</label></td>
+		<td><%= f.text_field :klass_no %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="klass_name">Class Name:</label></td>
+		<td><%= f.text_field :klass_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="intake_id">Intake Name:</label></td>
+		<td><%= f.collection_select :intake_id, Intake.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="programme_id ">Programme Name:</label></td>
+		<td><%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_code_with_programme_name, :include_blank => true %></td>
+	</tr>
+	
+	
+</table>
+<BR>

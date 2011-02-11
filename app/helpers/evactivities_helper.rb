@@ -1,0 +1,2 @@
+module EvactivitiesHelper
+end

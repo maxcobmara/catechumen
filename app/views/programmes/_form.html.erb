@@ -1,0 +1,40 @@
+<div class="tform">
+  <table width=100% >
+	
+	<tr>
+		<th colspan = 2>Programme Details</th>
+	</tr>
+	
+	<tr>
+			<td class="leftcol"><label for="code"><b>Programme Code:</b></label></td>
+			<td><%= f.text_field :code %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name"><b>Programme Name:</b></label></td>
+			<td><%= f.text_field :name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="specialisation"><b>Specialisation:</b></label></td>
+		<td><%= f.text_field :specialisation %></td>
+	</tr>
+	<tr>
+		<td colspan=2><b>Select subjects to add to this programme</b></td>
+		<td></td>
+	</tr>
+	
+	<% for subject in Subject.find(:all) %>
+	<tr>
+		<td></td>
+		<td><%= check_box_tag "programme[subject_ids][]", subject.id, @programme.subjects.include?(subject) %>
+    <%= subject.name %>
+    </td>
+  </tr>
+  <% end %>
+	
+	
+</table>  
+<BR>
+</div>
+

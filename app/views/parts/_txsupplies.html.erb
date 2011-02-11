@@ -1,0 +1,18 @@
+<div class="txsupplies">
+	<% new_or_existing = txsupplies.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "part[#{new_or_existing}_txsupplies_attributes][]" %>
+	
+	<% fields_for prefix, txsupplies do | txsupplies_form | -%>
+
+    <table>
+	   <tr>
+	     <td><%= txsupplies_form.collection_select :receiver_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+         <td><%= txsupplies_form.text_field :quantity  %></td>
+         <td><%= txsupplies_form.date_select :tdate, :start_year => 2010, :end_year => 2050, :order => [:day, :month, :year] %></td>
+         <td><%= link_to_function "remove", "$(this).up('.txsupplies').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>

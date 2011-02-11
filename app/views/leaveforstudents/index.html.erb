@@ -1,0 +1,47 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+  <div class="box-head">
+    <h2 class="left">Lists of Leaves</h2>
+	  <div class="right">
+		   <!-- Put Search Here -->
+	  </div>
+	</div>
+
+<div class="tlist">
+<table width=100%>
+  <tr>
+    <th>Student Name</th>
+    <th>Leave Type</th>
+    <th>Request Date</th>
+    <th>On Leave Starting</th>
+    <th>Submitted?</th>
+    <th>Approved?</th>
+    <th>Approved By?</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @leaveforstudents.each do |leaveforstudent| %>
+  <tr>
+	<td><%=h leaveforstudent.student_id.blank? ? "No Student" : leaveforstudent.student.formatted_mykad_and_student_name %></td>
+	<td><%=h leaveforstudent.leavetype %></td>
+    <td><%=h leaveforstudent.requestdate %></td>
+    <td><%=h leaveforstudent.leave_startdate %></td>
+    <td><%=h leaveforstudent.studentsubmit? ? "Submitted" : "" %></td>
+    <td><%=h leaveforstudent.approved? ? "Approved" : "" %></td>
+    <td><%=h leaveforstudent.staff_id.blank? ? "No Staff" : leaveforstudent.staff.name %></td>
+	
+    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => leaveforstudent %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => leaveforstudent %></td>
+    <td width=10px><%= link_to 'Destroy', leaveforstudent, :confirm => 'Are you sure?', :method => :delete %></td>
+   
+  </tr>
+<% end %>
+</table>
+
+<br />
+</div>
+
+<%= link_to 'Apply For Leave', new_leaveforstudent_path %>
+
+</div>

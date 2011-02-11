@@ -1,0 +1,38 @@
+<div class="tform">
+  <table width=100% >
+	
+	<tr>
+		<th colspan = 2>Programme Details</th>
+	</tr>
+	
+	<tr>
+			<td class="leftcol"><label for="code"><b>Programme Code:</b></label></td>
+			<td> <%=h @programme.code %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name"><b>Programme Name:</b></label></td>
+			<td> <%=h @programme.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="specialisation"><b>Specialisation:</b></label></td>
+		<td> <%=h @programme.specialisation %></td>
+	</tr>
+	
+
+	
+   	<td><% for subject in @programme.subjects %></td>
+
+	<tr>
+		<td class="leftcol"><label for="name"><b>Subject Name:</b></label></td>
+		<td><%=h subject.name %></td>
+	</tr>
+	
+   <% end %>
+
+</table>
+<BR>
+</div>
+<%= link_to 'Edit', edit_programme_path(@programme) %> |
+<%= link_to 'Back', programmes_path %>

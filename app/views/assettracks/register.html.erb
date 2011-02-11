@@ -1,0 +1,84 @@
+<%= stylesheet_link_tag 'report' %> 
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+	<fieldset width=10px >
+
+<div id="title" width=21cm>	
+<H2>KEW PA-6</H2> 
+
+<BR>
+<H3>DAFTAR PERGERAKAN HARTA MODAL DAN INVENTORI</H3>
+
+<BR>
+<div id="tprintreport">	
+	<table width=90% border=1px cellpadding=0px>
+		
+		<tr>
+		<td colspan=2 width=40px><b>Jenis :</b></td>
+		<td colspan=3 width=150px><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.name %></td>
+		<td width=400px rowspan=4 colspan=4 align ="center"><b>Pegawai Pengeluar</b></td>
+		<td rowspan=7 align="center" width=100px><b>Catatan</b></td>
+		
+		
+		</tr>
+	
+		<tr>
+			<td colspan=2><b>Jenama dan Model :<b></td>
+			<td colspan=3 width=250px></td>
+			
+		</tr>
+		<tr>
+			<td colspan=2><b>No. Siri Pembuat :</b></td>
+			<td colspan=3><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.serialno %></td>
+			
+			
+		</tr>
+		<tr>
+			<td colspan=2><b>No. Siri Pendaftaran :</b></td>
+			<td colspan=3><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.assetcode %></td>
+			
+		</tr>
+		<tr>
+			<td width=30px align="center" rowspan=3><b>Bil<b></td>
+			<td rowspan=3 align="center" width=150px><b>Nama Peminjam</b></td>
+			<td colspan=2 rowspan=2 align="center"><b>Tarikh</b></td>
+			<td rowspan=3 align="center"><b>Tandatangan Peminjam</b></td>
+			<td rowspan=2 colspan=2 align="center"><b>Ketika Dikeluarkan</b></td>
+			<td rowspan=2 colspan=2 align="center"><b>Ketika Dipulangkan</b></td>
+		
+		</tr>
+		<tr></tr>
+		<tr>
+			<td align="center"><b>Dikeluarkan<b></td>
+			<td align="center"><b>Jangka Dipulangkan<b></td>
+			<td align="center"><b>Tandatangan<b></td>
+			<td align="center"><b>Tarikh<b></td>
+			<td align="center"><b>Tandatangan<b></td>
+			<td align="center"><b>Tarikh<b></td>	
+		</tr>
+		
+			 <% bil = 0 %>
+             <% bil += 1 %>
+		<tr>
+			<td align="center"><%=h bil %></td>
+			<td><%=h @assettrack.staff_id.blank? ? " " : @assettrack.staffinassettrack.name %></td>
+			<td align="center"><%=h @assettrack.issuedate %></td>
+			<td align="center"><%=h @assettrack.expectedreturndate %></td>
+			<td></td>
+			<td></td>
+			<td align="center"><%=h @assettrack.issuedate %></td>
+			<td></td>
+			<td align="center"><%=h @assettrack.expectedreturndate %>
+			<td></td>
+		</tr>
+	
+	</table>
+	<BR>
+	
+

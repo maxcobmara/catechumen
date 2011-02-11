@@ -1,0 +1,71 @@
+<div class="tform">
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>Student Leave Request Details</th>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
+		<td><%=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="leavetype"><b>Leave Type:</b></label></td>
+		<td><%=h @leaveforstudent.leavetype %></td>
+	</tr>
+	
+	<tr>
+	    <td class="leftcol"><label for="requestdate"><b>Request Date:</b></label></td>
+		<td><%=h @leaveforstudent.requestdate %></td>
+	</tr>
+	
+	<tr>
+	    <td class="leftcol"><label for="reason"><b>Reason:</b></label></td>
+		<td><%=h @leaveforstudent.reason %></td>
+	</tr>
+	
+	<tr>
+	    <td class="leftcol"><label for="address"><b>Address:</b></label></td>
+		<td><%=h @leaveforstudent.address %></td>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="telno"><b>Telephone No:</b></label></td>
+		<td><%=h @leaveforstudent.telno %></td>
+	</tr>
+
+	<tr>
+	    <td class="leftcol"><label for="leave_startdate"><b>Start Date:</b></label></td>
+		<td><%=h @leaveforstudent.leave_startdate %></td>
+	</tr>
+
+	<tr>
+	    <td class="leftcol"><label for="leave_enddate"><b>End Date:</b></label></td>
+		<td><%=h @leaveforstudent.leave_enddate %></td>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="studentsubmit"><b>Submit for Approval:</b></label></td>
+		<td><%=h @leaveforstudent.studentsubmit %></td>
+	</tr>
+
+	<tr>
+		<th colspan = 2>Approve Student Leave Request</th>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="approved"><b>Approve Student Leave:</b></label></td>
+		<td><%=h @leaveforstudent.approved %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id"><b>Approved By:</b></label></td>
+		<td><%=h @leaveforstudent.staff_id.blank? ? "Not Staff" : @leaveforstudent.staff.mykad_with_staff_name %></td>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="approvedate"><b>End Date:</b></label></td>
+		<td><%=h @leaveforstudent.approvedate %></td>
+	</tr>
+  </table>
+</div>
+
+
+<%= link_to 'Edit', edit_leaveforstudent_path(@leaveforstudent) %> |
+<%= link_to 'Back', leaveforstudents_path %>

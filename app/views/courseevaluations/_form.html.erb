@@ -1,0 +1,25 @@
+<div class="tform">
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>New Course Evaluation</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
+		<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="programme_id"><b>Programme Name:</b></label></td>
+		<td><%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_code_with_programme_name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id"><b>Subject Name:</b></label></td>
+		<td><%= f.collection_select :subject_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
+	</tr>
+
+
+</table>
+<BR>
+	</div>

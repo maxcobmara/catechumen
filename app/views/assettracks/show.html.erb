@@ -1,0 +1,217 @@
+
+<div id="A4potrait1">
+<form action="#">
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+<form>	
+
+	
+<div id="title" width=21cm>	
+<H4 align="right"><b>KEW. PA 2<br>No Siri Pendaftaran: <%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.assetcode %></b></H4>
+
+<H3 align="center">DAFTAR HARTA MODAL</H3>
+
+<P indent=20px>Kementerian/Jabatan  :  KKM</P>
+<P indent=20px>Bahagian  :  KSKB JB</P>
+
+<div id="borangmaklumat">
+<table width=90% border=1px padding=0px cellspacing=0px>
+	<tr>
+		<td width=160px>Kod Nasional</td>
+		<td colspan=4></td>
+	</tr>
+	<tr>
+		<td>Kategori</td>
+		<td colspan=4><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.cardno %></td>
+	</tr>
+	<tr>
+		<td>Sub Kategori</td>
+		<td colspan=4><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.category %></td>
+	</tr>
+	
+	<tr>
+		<td>Jenis/Jenama/Model</td>
+		<td colspan=4></td>
+	</tr>
+	
+	<tr>
+		<td>Buatan</td>
+		<td colspan=2 width=100px></td>
+		<td  width=160px>Harga Perolehan Asal</td>
+		<td colspan=2>RM <%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.purchaseprice %></td>
+	</tr>
+	<tr>
+		<td>Jenis Dan No.Enjin</td>
+		<td colspan=2></td>
+		<td>Tarikh Diterima</td>
+		<td colspan=2><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.receiveddate %></td>
+	</tr>
+	
+<!-->	<#% for assetnum in @assettrack.assetinassettrack.assetnums %>-->
+	<tr>
+		<td>No Casis/Siri Pembuat</td>
+		<td colspan=2></td>
+		<td>No Pesanan Rasmi Kerajaan</td>
+		<td colspan=2><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.orderno %></td>
+	</tr>
+	
+	<tr>
+		<td>No Pendaftaran <BR>(Bagi Kenderaan)</td>
+		<td colspan=2></td>
+		<td>Tempoh Jaminan</td>
+		<td colspan=2><%=h @assettrack.duration%> </td>
+		
+	</tr>
+
+	<tr>
+		<BR><BR>
+		<td colspan=3 rowspan=2 valign="top">KOMPONEN/AKSESORI:</td>
+			
+		<td colspan=2>Nama Pembekal Dan Alamat :
+				<BR>
+				<BR>
+				<BR>
+				<BR>
+			    <BR></td>
+			
+			
+	</tr>
+	<tr>
+		<td colspan=2><BR><BR><center>..................................</center>
+				<BR><center>Tandatangan Ketua Jabatan</center>
+			<BR>Nama: <%=h @assettrack.staff_id.blank? ? " " : @assettrack.staffinassettrack.name %>
+			<BR>Jawatan: <%=h @assettrack.staff_id.blank? ? " " : @assettrack.staffinassettrack.position_name %>
+			<BR>Tarikh: <%=h Date.today %>
+			<BR>Cop:
+			<BR>
+			<BR>
+			<BR>
+		</tr>
+	
+</table>
+<BR>
+<table width=90% border=1px padding=5px cellspacing=0px>
+	<tr>
+		<th BGCOLOR="#D8D8D8" colspan=8 align="center">PENEMPATAN</th>
+	</tr>
+
+	<tr>
+		<td width=160px>Lokasi</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Tarikh</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		
+	</tr>
+	<tr>
+		<td>Nama Pegawai</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		
+	</tr>
+	<tr>
+		<td>Tandatangan</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	
+	</tr>
+
+</table>
+<BR>
+<table width=90% border=1px padding=5px cellspacing=0px>
+	<tr>
+		<th colspan=8 align="center">PEMERIKSAAN</th>
+	</tr>
+	<tr>
+		<td width=160px>Tarikh</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Status Aset</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Nama Pemeriksa</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Tandatangan</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+
+</table>
+<BR>
+<table width=90% border=1px padding=5px cellspacing=0px>
+	<tr>
+		<th BGCOLOR="#DDD" colspan=8 align="center">PELUPUSAN / HAPUSKIRA</th>
+	</tr>
+	<tr>
+		<td align="center">Rujukan Kelulusan</td>
+		<td align="center">Tarikh</td>
+		<td align="center">Kaedah Pelupusan</td>
+		<td align="center">Tandatangan</td>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td align="center"><%=h Date.today %></td>
+		<td></td>
+		<td></td>
+	</tr>
+
+	
+
+</table>
+</form>
+</div>
+</div>
+</div>
+</form>
+
+<BR>
+
+<%= link_to 'Edit', edit_assettrack_path(@assettrack) %> |
+<%= link_to 'Back', assettracks_path %>

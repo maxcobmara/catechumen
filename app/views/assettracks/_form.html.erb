@@ -1,0 +1,59 @@
+<div class="tform">
+  <table width=100% >
+	<tr>
+		<th colspan=2>Asset Reservation</th>
+	</tr>
+	<tr>
+	<td class="leftcol"><label for="asset_id"><b>Asset Name:</b></label></td>
+      <td><%= f.collection_select :asset_id, Asset.find(:all, :conditions => {:bookable => true}), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id"><b>Reserved/Borrowed By:</b></label></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :position_with_name, :include_blank => true %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="reservationdate"><b>Reservation Date:</b></label></td>
+		<td><%= f.date_select :reservationdate, :start_year => 2011, :end_year => 2015, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="use_startdate"><b>To be used from:</b></label></td>
+		<td><%= f.date_select :use_startdate, :start_year => 2011, :end_year => 2015, :order => [:day, :month, :year], :include_blank => true %>
+		  to <%= f.date_select :use_enddate, :start_year => 2011, :end_year => 2015, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+
+  <tr>
+		<td class="leftcol"><label for="issuedby"><b>Issued By:</b></label></td>
+		<td><%= f.collection_select :issuedby, Staff.find(:all), :id, :position_with_name, :include_blank => true %></td>
+		<!-- should actually get asset.owners name -->
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="issuedate"><b>Issue Date:</b></label></td>
+		<td><%= f.date_select :issuedate, :start_year => 2011, :end_year => 2015, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="expectedreturndate"><b>Expected Return Date:</b></label></td>
+		<td><%= f.date_select :expectedreturndate, :start_year => 2011, :end_year => 2015, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+
+  <tr>
+		<td class="leftcol"><label for="returnedto"><b>Returned To:</b></label></td>
+		<td><%= f.collection_select :returnedto, Staff.find(:all), :id, :position_with_name, :include_blank => true %></td>
+		<!-- should actually get asset.owners name -->
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="actualreturndate"><b>Actual Return Date:</b></label></td>
+		<td><%= f.date_select :actualreturndate, :start_year => 2011, :end_year => 2015, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="remarks"><b>Remarks:</b></label></td>
+		<td><%= f.text_area :remarks, :size => "30x5" %></td>
+	</tr>
+	</table>
+</div>

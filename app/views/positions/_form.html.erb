@@ -1,0 +1,49 @@
+<div class="tform">
+<table width=100%>
+	<tr>
+		<th colspan=2>Position</td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="positioncode">Position Code:</label></td>
+		<td><%= f.text_field :positioncode %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="positionname">Position Name:</label></td>
+		<td><%= f.text_field :positionname %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="positionname">Person Name:</label></td>
+		<td><%=h @position.staff.blank? ? "-" : @position.staff.name %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="parent_id">Subordinate Of:</label></td>
+		<td><%= f.collection_select :parent_id, Position.find(:all), :id, :position_with_code, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staffgrade_id">Minimum Grade Requirement:</label></td>
+		<td><%= f.collection_select :staffgrade_id, Staffgrade.find(:all), :id, :sgname, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="unit">Unit:</label></td>
+		<td><%= f.text_field :unit %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="taskmain">Main Tasks:</label></td>
+		<td><%= f.text_area :taskmain, :size => "30x7" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="taskother">Other Tasks:</label></td>
+		<td><%= f.text_area :taskother, :size => "30x7" %></td>
+	</tr>
+	
+</table>
+<BR>

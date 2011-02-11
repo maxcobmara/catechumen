@@ -1,0 +1,2 @@
+module CofilesHelper
+end

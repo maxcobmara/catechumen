@@ -1,0 +1,47 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Asset Tracks</h2>
+	</div>
+	<div class="tlist">
+	    <table width=90% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    <th>Asset Name</th>
+    <th>Reserved/Borrowed By</th>
+    <th>Reservation Date</th>
+    <th>Used From</th>
+    <th>To</th>
+    <!--><th>Issuedby</th>
+    <th>Issuedate</th>
+    <th>Expectedreturndate</th>
+    <th>Returnedto</th>
+    <th>Actualreturndate</th>-->
+    <th>Remarks</th>
+   <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @assettracks.each do |assettrack| %>
+  <tr>
+    <td><%=h assettrack.asset_id.blank? ? "" : assettrack.assetinassettrack.name %></td>
+    <td><%=h assettrack.staff_id.blank? ? "" : assettrack.staffinassettrack.position_with_name %></td>
+    <td><%=h assettrack.reservationdate %></td>
+    <td><%=h assettrack.use_startdate %></td>
+    <td><%=h assettrack.use_enddate %></td>
+    <!--><td><%=h assettrack.issuedby %></td>
+    <td><%=h assettrack.issuedate %></td>
+    <td><%=h assettrack.expectedreturndate %></td>
+    <td><%=h assettrack.returnedto %></td>
+    <td><%=h assettrack.actualreturndate %></td>-->
+    <td><%=h assettrack.remarks %></td>
+    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => assettrack %></td>
+    <td width=10px><%= link_to image_tag("report.png", :border => 0, :title => 'Borang Harta Modal'), :action => 'register', :id => assettrack %></td>
+    <td width=10px ><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => assettrack %></td>
+    <td><%= link_to 'Destroy', assettrack, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Asset Track', new_assettrack_path %>

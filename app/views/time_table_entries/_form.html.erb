@@ -1,0 +1,72 @@
+<div class="tform">
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>New Time Table Entry</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="intake_id"><b>Intake Name:</b></label></td>
+		<td><%= f.collection_select :intake_id, Intake.find(:all), :id, :name, :include_blank => true%></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="programme_id"><b>Programme:</b></label></td>
+		<td><%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_code_with_programme_name, :include_blank => true%></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id"><b>Subject:</b></label></td>
+		<td><%= f.collection_select :subject_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true%></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="topic_id"><b>Topic:</b></label></td>
+		<td><%= f.collection_select :topic_id, Topic.find(:all), :id, :name, :include_blank => true%></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="timing_id"><b>Period Timing:</b></label></td>
+		<td><%= f.collection_select :timing_id, PeriodTiming.find(:all), :id, :name, :include_blank => true%></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="klass_id"><b>Class:</b></label></td>
+		<td><%= f.collection_select :klass_id, Klass.find(:all), :id, :klass_name, :include_blank => true%></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="timetable_week_day"><b>Time Table Week Day:</b></label></td>
+		<td><%= f.select :timetable_week_day, 
+		                 TimeTableEntry::WEEK_DAY,
+		                 :prompt => "Select"  %></td>
+	</tr>
+	
+   	<tr>
+		<td class="leftcol"><label for="timetable_date"><b>Time Table Date:</b></label></td>
+		<td><%= f.date_select :timetable_date %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :position_with_name, :include_blank => true%></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="residence_id"><b>Location:</b></label></td>
+		<td><%= f.collection_select :residence_id, Residence.find(:all), :id, :resname, :include_blank => true%></td>
+	</tr>
+	
+</table>
+<BR>
+
+
+
+
+
+ 
+  
+  
+ 
+ 
+  
+ 

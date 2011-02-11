@@ -1,0 +1,46 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+  <div class="box-head">
+    <h2 class="left">Lists of Attendances</h2>
+	<div class="right">
+		</div></div>
+
+<div class="tlist">
+<table width=100%>
+  <tr class="toprow">
+	 <th> Date</th>
+    <th>MyKad No</th>
+    <th>Name</th>
+    <th>Approving Officer</th>
+   
+<th colspan=3 class="ac">Control</th>
+    <!--><th>Reason</th>
+    <th>Approve</th>
+    <th>Approvestatus</th>-->
+  </tr>
+<% @attendance_attdate.sort.each do |attdate, attendances| %>
+
+
+<% for attendance in attendances %>
+  <tr>
+
+	<td><%=h attendance.attdate %></td>
+    <td><%=h attendance.staffthatattend.mykad_with_staff_name %></td>
+    <td><%=h attendance.staff_id.blank? ? "No Staff" : attendance.staffthatattend.name %></td>
+    <td><%=h attendance.approve_id.blank? ? "No Staff" : attendance.staffthatapprovesattendance.position_with_name %></td>
+    
+    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => attendance %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => attendance %></td>
+    <td><%= link_to 'Destroy', attendance, :confirm => 'Are you sure?', :method => :delete %></td>
+    
+  </tr>
+
+
+<% end %>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Attendance', new_attendance_path %>

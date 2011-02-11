@@ -1,0 +1,67 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Student Discipline Issues</h2>
+	</div>
+	<div class="tlist">
+	    <table width=90% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    <th>Reported By</th>
+    <th>Student Name</th>
+    <th>Details</th>
+    <th>Reported Date</th>
+    <th>File No</th>
+    <!--><th>Casedt</th>
+    <th>Referredby</th>
+    <th>Investigation</th>
+    <th>Status</th>
+    <th>Action</th>
+    <th>Closedtcollege</th>-->
+    <th>Location</th>
+    <th>Otherinfo</th>
+    <!--><th>Bplsenddt</th>
+    <th>Jtkpdt</th>
+    <th>Jtkpdecision</th>
+    <th>Jtkpdescisionrxdt</th>
+    <th>Appealdt</th>
+    <th>Appealdecision</th>
+    <th>Appealdecisionrxdt</th>
+    <th>Supplier</th>-->
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @sdiciplines.each do |sdicipline| %>
+  <tr>
+    <td><%=h sdicipline.staff.name%></td>
+    <td><%=h sdicipline.student_id.blank? ? "-" : sdicipline.studentwithcase.name %></td>
+    <td><%=h sdicipline.details %></td>
+    <td><%=h sdicipline.reporteddt %></td>
+    <td><%=h sdicipline.cofile_id.blank? ? "-" : sdicipline.file.name %></td>
+    <!--><td><%=h sdicipline.casedt %></td>
+    <td><%=h sdicipline.referredby %></td>
+    <td><%=h sdicipline.investigation %></td>
+    <td><%=h sdicipline.status %></td>
+    <td><%=h sdicipline.action %></td>
+    <td><%=h sdicipline.closedtcollege %></td>-->
+    <td><%=h sdicipline.location %></td>
+    <td><%=h sdicipline.otherinfo %></td>
+   <!--> <td><%=h sdicipline.bplsenddt %></td>
+    <td><%=h sdicipline.jtkpdt %></td>
+    <td><%=h sdicipline.jtkpdecision %></td>
+    <td><%=h sdicipline.jtkpdescisionrxdt %></td>
+    <td><%=h sdicipline.appealdt %></td>
+    <td><%=h sdicipline.appealdecision %></td>
+    <td><%=h sdicipline.appealdecisionrxdt %></td>
+    <td><%=h sdicipline.supplier_id %></td>-->
+     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => sdicipline %></td>
+       <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => sdicipline %></td>
+    <td><%= link_to 'Destroy', sdicipline, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+</div>
+<%= link_to 'New Report', new_sdicipline_path %>
+</div>

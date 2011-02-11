@@ -1,0 +1,2 @@
+module AssetlossesHelper
+end

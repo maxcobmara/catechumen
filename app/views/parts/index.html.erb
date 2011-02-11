@@ -1,0 +1,36 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Office Supplies</h2>
+	</div>
+	<div class="tlist">
+	    <table width=90% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    <th>Supplies Code</th>
+    <th>Category</th>
+    <th>Unit Type</th>
+    <th>Quantity</th>
+    <th>Max Quantity</th>
+    <th>Min Quantity</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @parts.each do |part| %>
+  <tr>
+    <td><%=h part.partcode %></td>
+    <td><%=h part.category %></td>
+    <td><%=h part.unittype %></td>
+    <td><%=h part.quantity %></td>
+    <td><%=h part.maxquantity %></td>
+    <td><%=h part.minquantity %></td>
+    <td><%= link_to 'Show', part %></td>
+    <td><%= link_to 'Edit', edit_part_path(part) %></td>
+    <td><%= link_to 'Destroy', part, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Part', new_part_path %>

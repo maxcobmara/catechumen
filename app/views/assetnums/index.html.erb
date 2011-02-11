@@ -1,0 +1,24 @@
+<h1>Listing assetnums</h1>
+
+<table>
+  <tr>
+    <th>Asset</th>
+    <th>Assetnumname</th>
+    <th>Assetadnum</th>
+  </tr>
+
+<% @assetnums.each do |assetnum| %>
+  <tr>
+    <td><%=h assetnum.asset_id %></td>
+    <td><%=h assetnum.assetnumname %></td>
+    <td><%=h assetnum.assetadnum %></td>
+    <td><%= link_to 'Show', assetnum %></td>
+    <td><%= link_to 'Edit', edit_assetnum_path(assetnum) %></td>
+    <td><%= link_to 'Destroy', assetnum, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New assetnum', new_assetnum_path %>

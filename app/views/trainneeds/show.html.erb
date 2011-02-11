@@ -1,0 +1,32 @@
+<div class="tform">
+<table width=100%>
+	<tr>
+		<th colspan=2>TrainningNeeds Details</th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="evaluation_id"><b>Evaluation:</b></label></td>
+        <td><%=h @trainneed.evaluation_id %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name"><b>Name:</b></label></td>
+		<td><%=h @trainneed.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="reason"><b>Reason:</b></label></td>
+		<td><%=h @trainneed.reason %></td>
+	</tr>
+	
+	<tr>
+	   <td class="leftcol"><label for="confirmedby_id"><b>Confirmed By:</b></label></td>
+		<td><%=h @trainneed.confirmedby_id.blank? ? "" : @trainneed.confirmedby.mykad_with_staff_name %></td>
+	</tr>
+
+
+</table>
+</div>
+<BR>
+<%= link_to 'Edit', edit_trainneed_path(@trainneed) %> |
+<%= link_to 'Back', trainneeds_path %>

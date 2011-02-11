@@ -1,0 +1,125 @@
+<div class="tform">
+<h3>current asset form</h3>
+  <table width=100%>
+	
+	<tr>
+		<td><% f.text_field :assettype,  :value => 2 %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="assetcode">Registration Serial No:</label></td>
+		<td><%= f.text_field :assetcode,  :value => "KKM/KSKBJB/H/I", :size => '50' %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="cardno">Card No:</label></td>
+		<td><%= f.text_field :cardno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="dept_id">Department:</label></td>
+		<td><%= f.text_field :dept_id %></td>
+	</tr>
+
+	<tr>
+	<td class="leftcol"><label for="bookable">Bookable:</label></td>
+      <td><%= f.check_box :bookable %> This item can be booked </td>
+	</tr>
+
+	
+	
+<!--Asset Details-->
+
+	<tr>
+		<th colspan = 2>Asset Details</th>
+	</tr>
+		<tr>
+			<td class="leftcol"><label for="name">Name:</label></td>
+			<td><%= f.text_field :name %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="cardno">Category:</label></td>
+			<td><%= f.text_field :category %></td>
+		</tr>
+
+		<tr>
+		    <td class="leftcol"><label for="manufacturer_id">Manufacturer:</label></td>
+	      <td><%= f.collection_select :manufacturer_id, Addbook.find(:all), :id, :name, :include_blank => true %>add link add manufacturer</td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="model">Model:</label></td>
+			<td><%= f.text_field :model %> (FA)</td>
+	  </tr>
+				
+		<tr>
+			<td class="leftcol"><label for="serialno">Serial No:</label></td>
+	    	<td><%= f.text_field :serialno %>  (FA)</td>
+		</tr>
+    <!--  Show Group based on locassigned true -->
+		<!-->
+		<tr>
+			<td class="leftcol"><label for="locassigned">Location Assigned:</label></td>
+			<td><#%= f.radio_button :locassigned,'false' %>Yes<#%= f.radio_button :locassigned,'true' %>No</td>
+		</tr>
+		<-->					
+		<tr>
+			<td class="leftcol"><label for="location_id">Location:</label></td>
+			<td><%= f.collection_select :location_id, Residence.find(:all), :id, :resname, :include_blank => true %> (FA, CF) (show with Assign Location)</td>
+		</tr>
+			
+		<tr>
+			<td class="leftcol"><label for="assignedto_id">Assigned To:</label></td>
+			<td><%= f.collection_select :assignedto_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+		<!--  Group End -->
+		<tr>
+			<td class="leftcol"><label for="status">Status:</label></td>
+	    	<td><%= f.text_field :status %> </td>
+		</tr>
+					
+		<tr>
+			<td class="leftcol"><label for="otherinfo">Other Information:</label></td>
+			<td><%= f.text_area :otherinfo, :size => "30x7" %></td>
+		</tr>
+
+		         
+<!--Purchasing Information-->
+<tr>
+  <th colspan=2>Purchasing Information</th>
+</tr>
+
+	<tr>
+		<td class="leftcol"><label for="orderno">Order No:</label></td>
+		<td><%= f.text_field :orderno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="purchaseprice">Purchase Price:</label></td>
+		<td><b>RM</b> <%= f.text_field :purchaseprice, :size => 12 %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="purchasedate">Purchase Date:</label></td>
+		<td><%= f.date_select :purchasedate, :start_year => 2000, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="receiveddate">Date Received:</label></td>
+		<td><%= f.date_select :receiveddate, :start_year => 2000, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="receiver_id">Received By:</label></td>
+      <td><%= f.collection_select :receiver_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="supplier_id">Supplier:</label></td>
+      <td><%= f.collection_select :supplier_id, Addbook.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+</table>
+<BR>
+</div>

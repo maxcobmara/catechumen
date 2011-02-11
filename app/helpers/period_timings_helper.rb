@@ -1,0 +1,2 @@
+module PeriodTimingsHelper
+end

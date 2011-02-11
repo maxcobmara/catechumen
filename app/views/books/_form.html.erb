@@ -1,0 +1,156 @@
+<div class="tform">
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>Book Details</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="tagno"><b>No Bilangan:</b></label></td>
+		<td><%= f.text_field :tagno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="controlno"><b>Control No:</b></label></td>
+		<td><%= f.text_field :controlno %><font color="red"> * </font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="isbn"><b>ISBN No:</b></label></td>
+		<td><%= f.text_field :isbn %><font color="red"> * </font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="issn">ISSN:</label></td>
+	    <td><%= f.text_field :issn %><font color="red"> * </font></td>
+	</tr>
+	
+	
+	<tr>
+	<td class="leftcol"><label for="bookcode"><b>Library Code:</b></label></td>
+      <td><%= f.text_field :bookcode %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="accessionno"><b>Accession No:</b></label></td>
+		<td><%= f.text_field :accessionno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="catsource"><b>Catalouging Source To:</b></label></td>
+	    <td><%= f.text_field :catsource %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="classlcc"><b>Class No (NLM):</b></label></td>
+		<td><%= f.text_field :classlcc %><font color="red"> * </font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="classddc"><b>Class No (DDC):</b></label></td>
+	    <td><%= f.text_field :classddc %><font color="red"> * </font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="title">Title:</label></td>
+	    <td><%= f.text_field :title %><font color="red"> * </font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="author">Author:</label></td>
+	    <td><%= f.text_field :author %><font color="red"> * </font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="publisher">Publisher:</label></td>
+	    <td><%= f.text_field :publisher %><font color="red"> * </font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="description">Physical Description:</label></td>
+	    <td><%= f.text_field :description %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="loantype">Loan Type:</label></td>
+	    	<td><%= f.select :loantype, 
+			                  Book::LOAN,
+			                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="mediatype">Media Type:</label></td>
+	    	<td><%= f.select :mediatype, 
+			                  Book::MEDIA,
+			                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="status">Status:</label></td>
+	    	<td><%= f.select :status, 
+			                  Book::STATUS,
+			                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="series">Series:</label></td>
+	    <td><%= f.text_field :series %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="location">Location:</label></td>
+	    <td><%= f.text_field :location %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="topic">Subject:</label></td>
+	    <td><%= f.text_field :topic %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="edition">Edition:</label></td>
+	    <td><%= f.text_field :edition %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol">Upload Book Image</label></td>
+		<td><%= f.file_field :photo %></td>
+	</tr>
+	
+
+	<tr>
+		<th colspan = 2>Purchase Information</th>
+	</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="orderno">Order No:</label></td>
+			<td><%= f.text_field :orderno %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="purchaseprice">Purchase Price:</label></td>
+			<td><b>RM</b> <%= f.text_field :purchaseprice, :size => 12 %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="purchasedate">Purchase Date:</label></td>
+			<td><%= f.date_select :purchasedate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+
+
+		<tr>
+		<td class="leftcol"><label for="receiveddate">Date Received:</label></td>
+	      <td><%= f.date_select :receiveddate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="receiver_id">Received By:</label></td>
+			<td><%= f.collection_select :receiver_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="supplier_id">Supplier:</label></td>
+		    <td><%= f.collection_select :supplier_id, Addbook.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+</table>
+<BR>
+	
+	

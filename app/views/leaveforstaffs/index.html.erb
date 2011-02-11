@@ -1,0 +1,52 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+  <div class="box-head">
+    <h2 class="left">Lists of Leaves</h2>
+	  <div class="right">
+		   <!-- Put Search Here -->
+	  </div>
+	</div>
+
+<div class="tlist">
+<table width=100%>
+  <tr>
+    <th>Staff Name</th>
+    <th>Leave Type</th>
+    <th>Startdate</th>
+    <th>Enddate</th>
+   <!--> <th>Durations</th>
+    <th>Reason</th>
+    <th>Notes</th>-->
+    <th>Replacement Staff</th>
+    <!--><th>Submit</th>
+    <th>Approved By</th>
+    <th>Approver 1 Date</th>
+    <th>Approver 2 </th>
+    <th>Approver 2 Date</th>-->
+   <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @leaveforstaffs.each do |leaveforstaff| %>
+  <tr>
+    <td><%=h leaveforstaff.staffname.mykad_with_staff_name %></td>
+    <td><%=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} %></td>
+    <td><%=h leaveforstaff.leavestartdate %></td>
+    <td><%=h leaveforstaff.leavenddate %></td>
+    <td><%=h leaveforstaff.replacement_id %></td>
+    <!--><td><%=h leaveforstaff.submit %></td>-->
+    <!--><td><%=h leaveforstaff.approval1_id %></td>-->
+  <!-->  <td><#%=h leaveforstaff.approval1date %></td>
+    <td><#%=h leaveforstaff.approver2_idapproval2 %></td>
+    <td><#%=h leaveforstaff.approval2date %></td>-->
+    <td><%= link_to 'Show', leaveforstaff %></td>
+    <td><%= link_to 'Edit', edit_leaveforstaff_path(leaveforstaff) %></td>
+    <td><%= link_to 'Destroy', leaveforstaff, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+</div>
+<%= link_to 'New LeaveForStaff', new_leaveforstaff_path %>
+</div>

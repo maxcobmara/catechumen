@@ -1,0 +1,22 @@
+<div class="evactivity">
+	<% new_or_existing = evactivity.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "appraisal[#{new_or_existing}_evactivity_attributes][]" %>
+	
+	<% fields_for prefix, evactivity do | evactivity_form | -%>
+
+    <table>
+	   <tr>
+	     <td><%= evactivity_form.collection_select :appraisal_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+         <td><%= evactivity_form.date_select :evaldt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+          <td><%= evactivity_form.select :evactivity, Evactivity::EVACT, :prompt => "Select" %></td>
+         <td><%= evactivity_form.text_field :actlevel, :size => 12 %></td>
+          <td><%= evactivity_form.date_select :actdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+         
+
+         <td><%= link_to_function "remove", "$(this).up('.evactivity').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>

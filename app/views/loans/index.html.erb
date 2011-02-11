@@ -1,0 +1,30 @@
+<h1>Listing loans</h1>
+
+<table>
+  <tr>
+    <th>Staff</th>
+    <th>Type</th>
+    <th>Accno</th>
+    <th>Startdt</th>
+    <th>Durationmn</th>
+    <th>Deductions</th>
+  </tr>
+
+<% @loans.each do |loan| %>
+  <tr>
+    <td><%=h loan.staff_id %></td>
+    <td><%=h loan.ltype %></td>
+    <td><%=h loan.accno %></td>
+    <td><%=h loan.startdt %></td>
+    <td><%=h loan.durationmn %></td>
+    <td><%=h loan.deductions %></td>
+    <td><%= link_to 'Show', loan %></td>
+    <td><%= link_to 'Edit', edit_loan_path(loan) %></td>
+    <td><%= link_to 'Destroy', loan, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New loan', new_loan_path %>

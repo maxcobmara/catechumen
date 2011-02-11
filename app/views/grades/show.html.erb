@@ -1,0 +1,126 @@
+<div class="tform">
+  <table width=100% >
+
+<table id="form">
+	<tr>
+		<th colspan = 2>Grade Details</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="student_id">Student Name:</label></td>
+		<td><%=h @grade.student_id.blank? ? "" : @grade.studentgrade.formatted_mykad_and_student_name %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">Subject Name:</label></td>
+		<td><%=h @grade.subject_id.blank? ? "" : @grade.subjectgrade.subject_code_with_subject_name %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>
+		<td><%=h @grade.sent_to_BPL %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="sent_date">Sent Date:</label></td>
+		<td><%=h @grade.sent_date %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="total_formative">Total Formative:</label></td>
+		<td><%=h @grade.total_formative %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="score ">Score:</label></td>
+		<td><%=h @grade.score %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="eligible_for_exam">Eligible For Exam?:</label></td>
+		<td><%=h @grade.eligible_for_exam %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="carry_paper">Carry Paper?:</label></td>
+		<td><%=h @grade.carry_paper %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="total_summative ">Total Summative:</label></td>
+		<td><%=h @grade.total_summative %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="resit">Resit?:</label></td>
+		<td><%=h @grade.resit %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="total_marks ">Total Marks:</label></td>
+		<td><%=h @grade.total_marks %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="grading_id ">Grading:</label></td>
+		<td><%=h (Grade::GRADE.find_all{|disp, value| value == @grade.grading_id.to_s}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<th colspan = 2>Score Details</th>
+	</tr>
+	
+	<td><% for score in @grade.scores %></td>
+	<tr>
+		<td class="leftcol"><label for="type_id ">Type:</label></td>
+	<!-->	<td><#%=h qualification.level_id %></td>-->
+		<td><%=h (Score::TYPES.find_all{|disp, value| value == score.type_id}).map {|disp, value| disp} %></td>
+    <tr>
+	
+    <tr>
+		<td class="leftcol"><label for="description ">Description:</label></td>
+	   <td><%=h score.description %></td>
+	
+    </tr>
+
+     <tr>
+		<td class="leftcol"><label for="marks ">Marks:</label></td>
+		<td><%=h score.marks %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="weightage ">WeightAge:</label></td>
+		<td><%=h score.weightage %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="actual_score ">Actual Score:</label></td>
+		<td><%=h score.marks %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="score ">Score:</label></td>
+		<td><%=h score.marks %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="completion ">Completion:</label></td>
+		<td><%=h score.completion %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="formative ">Formative:</label></td>
+		<td><%=h score.formative %></td>
+	</tr>
+	
+	
+	<td bgcolor="#C0C0C0"></td><td bgcolor="#C0C0C0"></td>
+	
+	<% end %>
+	
+</table>
+<BR>
+</div>
+<%= link_to 'Edit', edit_grade_path(@grade) %> |
+<%= link_to 'Back', grades_path %>

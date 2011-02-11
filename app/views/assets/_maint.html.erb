@@ -1,0 +1,21 @@
+<div class="maint">
+	<% new_or_existing = maint.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "asset[#{new_or_existing}_maint_attributes][]" %>
+	
+	<% fields_for prefix, maint do | maint_form | -%>
+
+    <table>
+	   <tr>
+	     <td><%= maint_form.collection_select :maintainer_id, Addbook.find(:all), :id, :name, :include_blank => true %></td>
+         <td><%= maint_form.text_field :workorderno %></td>
+         <td><%= maint_form.text_field :maintcost %></td>
+         <td><%= maint_form.text_field :details %></td>
+         <td><%= link_to_function "remove", "$(this).up('.maint').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>
+
+

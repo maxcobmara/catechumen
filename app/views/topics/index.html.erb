@@ -1,0 +1,49 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+  <div class="box-head">
+    <h2 class="left">Topics</h2>
+	  <div class="right">
+		   <!-- Put Search Here -->
+	  </div>
+	</div>
+
+<div class="tlist">
+<table width=100%>
+  <tr>
+  <tr>
+	<th>Subject</th>
+    <th>Topic Code</th>
+    <th>Sequence No</th>
+    <th>Topic Name/Title</th>
+    <th>Version No</th>
+    <th>Created By</th>
+    <th>Approved By</th>
+    <th>Approved Date </th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @topic_sequenceno.sort.each do |sequenceno, topics| %>
+<% for topic in topics %>
+<!--<#% @topics.each do |topic| %>-->
+  <tr>
+	<td><%=h topic.subject_id.blank? ? "" : topic.subject.name %></td>
+    <td><%=h topic.topic_code %></td>
+    <td><%=h topic.sequenceno %></td>
+    <td><%=h topic.name %></td>
+    <td><%=h topic.version %></td>
+    <td><%=h topic.creator_id.blank? ? "-" : topic.tcreator.name %></td>
+    <td><%=h topic.approvedby_id.blank? ? "-" : topic.approvertopic.name %></td>
+    <td><%=h topic.approved_date %></td>
+    <td><%= link_to 'Show', topic %></td>
+    <td><%= link_to 'Edit', edit_topic_path(topic) %></td>
+    <td><%= link_to 'Destroy', topic, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+<% end %>
+</table>
+
+<br />
+
+
+<%= link_to 'New Topic', new_topic_path %>

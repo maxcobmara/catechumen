@@ -1,0 +1,64 @@
+<div class="tform">
+  <table width=100% >
+	
+	<tr>
+		<th colspan = 2>Time Table Details</th>
+	</tr>
+
+	
+	<tr>
+		<td class="leftcol"><label for="intake_id">Intake</label></td>
+		<td><%=h @time_table_entry.intake_id.blank? ? "" : @time_table_entry.intake.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="programme_id">Programme</label></td>
+		<td><%=h @time_table_entry.programme_id.blank? ? "" : @time_table_entry.programme.programme_code_with_programme_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">Subject</label></td>
+		<td><%=h @time_table_entry.subject_id.blank? ? "" : @time_table_entry.subjecttotime.subject_code_with_subject_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="topic_id">Topic</label></td>
+		<td><%=h @time_table_entry.topic_id.blank? ? "" : @time_table_entry.topic.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="timing_id">Period Timing</label></td>
+		<td><%=h @time_table_entry.timing_id.blank? ? "" : @time_table_entry.period.start_time.strftime("%I:%M %p")%> - <%=h @time_table_entry.timing_id.blank? ? "" : @time_table_entry.period.end_time.strftime("%I:%M %p")%></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="klass_id">Class</label></td>
+		<td><%=h @time_table_entry.klass_id.blank? ? "" : @time_table_entry.klasstime.klass_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="timetable_week_day">Time Table Week Day</label></td>
+		<td><%=h (TimeTableEntry::WEEK_DAY.find_all{|disp, value| value == @time_table_entry.timetable_week_day.to_s}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="timetable_date">Time Table Date</label></td>
+		<td><%=h @time_table_entry.timetable_date %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Staff Name</label></td>
+		<td><%=h @time_table_entry.staff_id.blank? ? "" : @time_table_entry.timetable.position_with_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="residence_id">Location</label></td>
+		<td><%=h @time_table_entry.residence_id.blank? ? "" : @time_table_entry.residence.resname %></td>
+	</tr>
+	
+</table>
+<BR>
+</div>
+
+<%= link_to 'Edit', edit_time_table_entry_path(@time_table_entry) %> |
+<%= link_to 'Back', time_table_entries_path %>

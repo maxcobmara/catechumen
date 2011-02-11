@@ -1,0 +1,58 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+	<fieldset width=10px >
+		
+<div id="title" width=21cm>	
+<H2>KEW.PA-5</H2>
+
+<div id="title" width=21cm>	
+<H3></H3>
+<H3></H3>
+<H3>SENARAI DAFTAR INVENTORI</H3>
+
+<BR>
+	
+	<div id="tprintreport">
+	<table width=100% border=1px cellspacing=0 align="center" >
+
+		<tr>
+			<th width="1%" valign="top" >BIL</th>
+			<th width="6%" valign="top">NOMBOR SIRI PENDAFTARAN</th>
+			<th width="20%" valign="top">NAMA ASET</th>
+			<th width="10%" valign="top">TARIKH PEROLEHAN</th>
+			<th width="10%" valign="top">HARGA PEROLEHAN ASAL (RM)</th>
+	    </tr>
+	
+		 <% bil = 0 %>
+		 <% @assets.each do |asset| %>
+		    <% bil += 1 %>
+	    <tr align="center">
+		<td><%=h bil %> </td>	
+		<td><%=h asset.assetcode %></td>	
+		<td align="left"><%=h asset.name %></td>
+		<td><%=h asset.receiveddate %> </td>
+		<td><%=h asset.purchaseprice %> </td>
+		
+		</tr>
+
+		<% end %>
+
+</table>
+<BR>
+</div>
+</fieldset>
+</div>
+</form>
+</div>
+
+
+
+

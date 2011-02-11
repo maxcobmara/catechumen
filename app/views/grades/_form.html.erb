@@ -1,0 +1,109 @@
+<div class="tform">
+  <table width=100% >
+
+<table id="form">
+	<tr>
+		<th colspan = 2>New Grade Details</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="student_id">Student Name:</label></td>
+		<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">Subject Name:</label></td>
+		<td><%= f.collection_select :subject_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>
+		<td><%= f.check_box :sent_to_BPL %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="sent_date">Sent Date:</label></td>
+		<td><%= f.date_select :sent_date, :start_year => 2011, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="total_formative">Total Formative:</label></td>
+		<td><%= f.text_field :total_formative %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="score ">Score:</label></td>
+		<td><%= f.text_field :score  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="eligible_for_exam">Eligible For Exam?:</label></td>
+		<td><%= f.check_box :eligible_for_exam %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="carry_paper">Carry Paper?:</label></td>
+		<td><%= f.check_box :carry_paper %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="total_summative ">Total Summative:</label></td>
+		<td><%= f.text_field :total_summative  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="resit">Resit?:</label></td>
+		<td><%= f.check_box :resit %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="total_marks ">Total Marks:</label></td>
+		<td><%= f.text_field :total_marks  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="grading_id ">Grade:</label></td>
+		<td><%= f.select :grading_id,
+		                 Grade::GRADE,
+		                 :prompt => "Select" %></td>
+	</tr>
+	
+<!--Score Details-->	
+	    <tr>
+		  <th colspan=2>Scores</th>
+		</tr>
+		<tr>
+		  <td colspan=2>
+		    <table width=95%>
+			  <tr>
+		        <td width=210px ><label for="type_id"><b>Type:</b></label></td>
+		        <td width=160px><label for="description"><b>Description:</b></label></td>
+		        <td width=90px><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
+				<td width=100px><label for="weightage"><b>WeightAge:</b></label></td>
+				<td width=80px><label for="actual_score"><b>Actual Score:</b></label></td>
+				<td width=50px><label for="score"><b>Score:</b></label></td>
+				<td width=50px><label for="completion"><b>Completion:</b></label></td>
+				<td width=50px><label for="formative"><b>Formative:</b></label></td>
+		         <td width=10px></td>
+	          </tr>
+		    </table>
+	      </td>
+	    </tr>
+
+	    <tr>
+		  <td colspan=2>
+		    <!-- Code Block for Score Repeating Field -->
+		    <div id="scores">
+			  <%= render :partial => 'score', :collection => @grade.scores %>
+			</div>
+		  </td>
+		</tr>
+		<!-- End Code Block for Score Repeating Field -->
+		<tr>
+		  <td colspan=2><%= add_score_link "Add More" %></td>
+		</tr>
+
+
+</table>
+<BR>

@@ -1,0 +1,93 @@
+<div class="tform">
+<table width=100%>
+	<tr>
+		<th colspan=2>Topics</td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="subject_id">Subject:</label></td>
+		<td><%=h @topic.subject_id.blank? ? "" : @topic.subject.name %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="topic_code">Topic Code:</label></td>
+		<td><%=h @topic.topic_code %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="sequenceno">Sequence No:</label></td>
+		<td><%=h @topic.sequenceno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name">Topic Name/Title:</label></td>
+		<td><%=h @topic.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="duration">Duration For Topic:</label></td>
+		<td> <%=h @topic.duration %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="version">Version No:</label></td>
+		<td> <%=h @topic.version %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="objective">Objective:</label></td>
+		<td> <%=h @topic.objective %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="content">Content:</label></td>
+		<td> <%=h @topic.content %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="activity">Activity:</label></td>
+		<td> <%=h @topic.activity %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="creator_id">Created By:</label></td>
+		<td> <%=h @topic.creator_id.blank? ? "" : @topic.creator.mykad_with_staff_name %></td>
+	</tr>
+	
+	<tr>
+		<th colspan = 2>Approval</th>
+	<tr>
+		<td class="leftcol"><label for="approved">Approved?:</label></td>
+		<td><%=h @topic.approved %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="approved_date">Approved On:</label></td>
+		<td><!--#%= f.collection_select :subject_id, Subject.find(:all), :id, :subject, :include_blank => true %>-->
+		    <%=h @topic.approved_date %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="approvedby_id">Approved By:</label></td>
+		<td><!--#%= f.collection_select :subject_id, Subject.find(:all), :id, :subject, :include_blank => true %>-->
+		    <%=h @topic.approvedby_id.blank? ? "" : @topic.approver.mykad_with_staff_name %></td>
+	</tr>
+	<tr>
+		<th colspan = 2>Checking</th>
+	<tr>
+		<td class="leftcol"><label for="remarks">Remarks:</label></td>
+		<td> <%=h @topic.remarks %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="checkcode">Checking Code:</label></td>
+		<td><%=h @topic.checkcode %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="checkdate">Check Date:</label></td>
+		<td><%=h @topic.checkdate %></td>
+	</tr>
+</table>
+<BR>
+</div>
+
+<%= link_to 'Edit', edit_topic_path(@topic) %> |
+<%= link_to 'Back', topics_path %>

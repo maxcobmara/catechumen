@@ -1,0 +1,87 @@
+<% form_for(@residence) do |f| %>
+  <%= f.error_messages %>
+
+<div class="tform">
+	<table width=100% >
+
+		<tr>
+			<th colspan = 2>Location Details</th>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="rescode ">Location No:</label></td>
+			<td> <%=h @residence.rescode %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="resname">Location Name:</label></td>
+			<td> <%=h @residence.resname %> <td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="parent_id">Part Of:</label></td>
+				<td>
+				<% if  @residence.parent_id.blank? %>
+				  <%= 'test' %>
+				<% else %>
+				  <%= h @residence.structure.parentlocation_with_code_and_name %>
+				<% end %>
+				</td>
+		</tr>
+
+
+		<tr>
+			<td class="leftcol"><label for="resclass">Location Class:</label></td>
+			<td><%=h (Residence::CLASS.find_all{|disp, value| value == @residence.resclass}).map {|disp, value| disp} %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="restype">Location Type:</label></td>
+			<td><%=h (Residence::TYPE.find_all{|disp, value| value == @residence.restype}).map {|disp, value| disp} %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="staffadmin_id">Administrator:</label></td>
+		<td> <%=h @residence.staffadmin_id.blank? ? "No Staff" : @residence.admin.position_with_name %></td>
+		</tr>
+
+
+<!--Asset Details-->	
+		<tr>
+			<th colspan = 2>Asset Details</th>
+		</tr>
+	<tr>
+	  <td colspan=2>
+	    <table width=95%>
+		  <tr>
+			<td width=20px ><label for="assetcode"><b>Registration Serial No:</b></label></td>
+	        <td width=140px ><label for="name"><b>Asset Name:</b></label></td>
+	        <!--><td width=50px ><label for="assettype"><b>Asset Type:</b></label></td>-->
+	         <td width=10px></td>
+          </tr>
+	    </table>
+      </td>
+    </tr>
+
+    <tr>
+	  <td colspan=2>
+	    <div id="assets">
+		  <%= render :partial => 'asset', :collection => @residence.assets %>
+		</div>
+	  </td>
+	</tr>
+
+	<tr>
+	<td colspan=2><%= add_asset_link "Add More" %></td>
+	</tr>
+	</table>
+   	
+	</div>
+	
+	  <p>
+	    <%= f.submit 'Update' %>
+	  </p>
+<% end %>
+
+	<%= link_to 'Show', @residence %> |
+	<%= link_to 'Back', residences_path %>

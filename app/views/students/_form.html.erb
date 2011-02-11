@@ -1,0 +1,218 @@
+<div class="tform">
+  <table width=100% >
+
+
+<!--Personal Info-->
+<tr>
+	<th colspan = 2>Personal Details</th>
+</tr>
+
+	<tr>
+		<td class="leftcol"><label for="icno">MyKadNo:</label></td>
+		<td><%= f.text_field :icno, :size => 12 %><font color="red"> * </font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name">Name:</label></td>
+		<td><%= f.text_field :name %><font color="red"> * </font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="matrixno">Matrix No:</label></td>
+		<td><%= f.text_field :matrixno %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="sstatus">Student Status:</label></td>
+		<td><%= f.select :sstatus, 
+		                 Student::STATUS,
+		                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="stelno">Telephone No:</label></td>
+		<td><%= f.text_field :stelno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="ssponsor">Sponsor:</label></td>
+		<td><%= f.select :ssponsor,
+		                 Student::SPONSOR,
+		                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="gender">Gender:</label></td>
+		<td><%= f.radio_button :gender,'1' %>Male<%= f.radio_button :gender,'2' %>Female</td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="sbirthdt">Date of Birth:</label></td>
+		<td><%= f.date_select :sbirthdt, :start_year => 1970, :end_year => 1995, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="mrtlstatuscd">Marital Status:</label></td>
+		<td><%= f.select :mrtlstatuscd, 
+		                 Staff::MARITAL_STATUS,
+		                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="semail">Email:</label></td>
+		<td><%= f.text_field :semail %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="regdate">Registration Date:</label></td>
+		<td><%= f.date_select :regdate, :start_year => 2007, :end_year => 2050, :order => [:day, :month, :year] %></td>
+	</tr>
+
+	
+<!--Course Details-->
+
+<tr>
+	<th colspan=2>Course Details</th>	
+</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="course_id">Course:</label></td>
+		<td><%= f.collection_select :course_id, Programme.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="specilisation">Specialisation:</label></td>
+	<td><%= f.text_field :specilisation %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="group_id">Group:</label></td>
+	<td><%= f.text_field :group_id %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="intake_id">Intake Session:</label></td>
+		<td><%= f.collection_select :intake_id, Intake.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+
+	
+
+	
+<!--Health Status-->
+
+<tr>
+  <th colspan=2>Health Status</th>
+</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="physical">Physical:</label></td>
+		<td><%= f.text_field :physical %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="allergy">Allergies:</label></td>
+		<td><%= f.text_field :allergy %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="allergy">Condition/Diseases:</label></td>
+		<td><%= f.text_field :disease %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="bloodtype">Blood Group:</label></td>
+		<td><%= f.select :bloodtype,
+		                 Student::BLOOD_TYPE,
+		                 :prompt => "Select" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="medication">Medication:</label></td>
+		<td><%= f.text_field :medication %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="remarks">Remarks:</label></td>
+		<td><%= f.text_area :remarks, :size => "30x7" %></td>
+	</tr>
+
+
+	
+<!--Qualification Details-->	
+  <tr>
+	  <th colspan=2>Qualifications</th>
+  </tr>
+		<tr>
+		  <td colspan=2>
+		    <table width=95%>
+			  <tr>
+		        <td width=210px ><label for="level_id"><b>Level:</b></label></td>
+		        <td width=270px><label for="qname"><b>Qualification:</b></label></td>
+		        <td><label for="institute"><b>Institute:</b></label></td>
+		         <td width=10px></td>
+	          </tr>
+		    </table>
+	      </td>
+	    </tr>
+
+	    <tr>
+		  <td colspan=2>
+		    <!-- Code Block for Qualification Repeating Field -->
+		    <div id="qualifications">
+			  <%= render :partial => 'qualification', :collection => @student.qualifications %>
+			</div>
+		  </td>
+		</tr>
+		<!-- End Code Block for Qualification Repeating Field -->
+		<tr>
+		  <td colspan=2><%= add_qualification_link "Add More" %></td>
+		</tr>
+		
+	
+	 	<!--Next Of Kin-->
+		<tr>
+		    <th colspan=2>Emergency Contact Information</th>
+	    </tr>
+		<tr>
+			<td colspan=2>
+				<!-- Code Block for Next of kins Labels -->
+				<table width=100%>
+					<tr>
+					  <td width=150px><label for="kintype_id"><b>Relationship:</b></label></td>
+					  <td width=235px><label for="name"><b>Name:</b></label></td>
+					  <td width=100px><label for="kinbirthdt"><b>DOB : </b><font color=#AAA size=-2>yyyymmdd</font> </label></td>
+					  <td width=85px><label for="phone"><b>Telephone:</b></label></td>
+					  <td><label for="kinaddr"><b>Address:</b></label></td>
+
+				    </tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan=2>
+				<!-- Code Block for Next of kins Repeating Field -->
+				<div id="kins">
+			       <%= render :partial => 'kin', :collection => @student.kins %>
+				</div>
+				<!-- Code Block for Next of kins Repeating Field -->
+			</td>
+		</tr>
+		<tr>
+		    <td colspan=2><%= add_kin_link "Add more" %></td>
+		</tr>
+
+</table>		
+</div>
+	
+	
+	
+	
+
+	
+
+
+
+	

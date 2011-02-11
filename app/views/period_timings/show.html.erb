@@ -1,0 +1,38 @@
+<div class="tform">
+<table width=100%>
+	<tr>
+		<th colspan=2>Period Timing Details</td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="intake_id">Intake Name:</label></td>
+		<td><%=h @period_timing.intake_id.blank? ? "" : @period_timing.intakename.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name">Name:</label></td>
+		<td><%=h @period_timing.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="start_time">Start Time:</label></td>
+		<td><%=h @period_timing.start_time.strftime("%I:%M %p") unless @period_timing.start_time.nil? %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="end_time">end Time:</label></td>
+		<td><%=h @period_timing.end_time.strftime("%I:%M %p") unless @period_timing.end_time.nil? %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="break">Break:</label></td>
+		<td><%=h @period_timing.break %></td>
+	</tr>
+	
+	
+	
+</table>
+<BR>
+</div>
+<%= link_to 'Edit', edit_period_timing_path(@period_timing) %> |
+<%= link_to 'Back', period_timings_path %>

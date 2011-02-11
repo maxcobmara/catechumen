@@ -1,0 +1,28 @@
+<h1>Listing docs</h1>
+
+<table>
+  <tr>
+    <th>Curriculum</th>
+    <th>Cofile</th>
+    <th>Name</th>
+    <th>Version</th>
+    <th>Description</th>
+  </tr>
+
+<% @docs.each do |doc| %>
+  <tr>
+    <td><%=h doc.curriculum_id %></td>
+    <td><%=h doc.cofile_id %></td>
+    <td><%=h doc.name %></td>
+    <td><%=h doc.version %></td>
+    <td><%=h doc.description %></td>
+    <td><%= link_to 'Show', doc %></td>
+    <td><%= link_to 'Edit', edit_doc_path(doc) %></td>
+    <td><%= link_to 'Destroy', doc, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New doc', new_doc_path %>

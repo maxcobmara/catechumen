@@ -1,0 +1,112 @@
+<div class="tform">
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>Location Details</th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="rescode ">Location Code:</label></td>
+		<td> <%=h @residence.rescode %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="resname">Location Name:</label></td>
+		 <td><%=h @residence.resname %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="parent_id">Part Of:</label></td>
+		<td>
+		<% if  @residence.parent_id.blank? %>
+		  <%= 'N/A' %>
+		<% else %>
+		  <%= h @residence.structure.parentlocation_with_code_and_name %>
+		<% end %>
+		</td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="resclass">Location Class:</label></td>
+			<td><%=h (Residence::CLASS.find_all{|disp, value| value == @residence.resclass}).map {|disp, value| disp} %></td>
+	</tr>
+	
+<!-->	<tr>
+		<td class="leftcol"><label for="restype">Location Type:</label></td>
+		<td><#%=h (Residence::TYPE.find_all{|disp, value| value == @residence.restype}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="allocatable">Allocatable:</label></td>
+		<td><#%=h @residence.allocatable %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Allocated To:</label></td>
+		<td><#%=h @residence.staff_id.blank? ? "No Staff" : @residence.staffname.mykad_with_staff_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="student_id">Allocated To:</label></td>
+			<#td><%=h @residence.student_id.blank? ? "No Student" : @residence.student.formatted_mykad_and_student_name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="keytxdt">Date Key Provided:</label></td>
+		<td><#%=h @residence.keytxdt %>
+	 </td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="keyreturndt">Date Key Returned:</label></td>
+		<td><#%=h @residence.keyreturndt %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="keyexpectdate">Date Key Expected:</label></td>
+		<td><#%=h @residence.keyexpectdate %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="keyrx">Return Key:</label></td>
+		<td><#%=h @residence.keyrx %></td>
+	</tr>-->
+	
+	<tr>
+		<td class="leftcol"><label for="staffadmin_id">Administrator:</label></td>
+	<td> <%=h @residence.staffadmin_id.blank? ? "No Staff" : @residence.admin.position_with_name %></td>
+	</tr>
+	
+	<tr>
+		<th colspan = 2>Asset Details</th>
+	</tr>
+	
+	<td><% for asset in @residence.assets %></td>
+
+	
+	
+    <tr>
+		<td class="leftcol"><label for="name ">Asset Name:</label></td>
+	   <td><%=h asset.name %></td>
+	
+    </tr>
+
+	<tr>
+		<td class="leftcol"><label for="assettype ">Asset Type:</label></td>
+	<!-->	<td><#%=h qualification.level_id %></td>-->
+		<td><%=h (Asset::TYPE.find_all{|disp, value| value == asset.assettype}).map {|disp, value| disp} %></td>
+    <tr>
+	
+<td bgcolor="#F0F8FF"><td bgcolor="#F0F8FF"></td>
+
+	<% end %>
+	
+	
+	
+</table>
+<BR>
+</div>
+	
+<%= link_to 'Edit', edit_residence_path(@residence) %> |
+<%= link_to 'Back', residences_path %>

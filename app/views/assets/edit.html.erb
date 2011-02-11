@@ -1,0 +1,19 @@
+<h3>Editing Asset</h3>
+
+<% form_for(@asset) do |f| %>
+  <%= f.error_messages %>
+
+  
+	        <% if @asset.assettype == 1 %> 
+	            <%=render :partial => 'form', :locals => {:f => f} %> 
+	        <% else %> 
+	            <%=render :partial => 'current', :locals => {:f => f} %> 
+	        <% end %>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @asset %> |
+<%= link_to 'Back', assets_path %>

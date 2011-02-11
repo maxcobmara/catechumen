@@ -1,0 +1,41 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+  <div class="box-head">
+    <h2 class="left">List of Office Supplies</h2>
+	  	<div class="right">
+		
+		</div>
+	</div>
+
+<div class="tlist">
+<table width=100%>
+  <tr>
+    <th>Supplier Code</th>
+    <th>Category</th>
+    <th>Current Quantity</th>
+    <th>Unit Type</th>
+    <th>Max Quantity</th>
+    <th>Min Quantity</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+
+<% @suppliers.each do |supplier| %>
+  <tr>
+    <td><%=h supplier.supplycode %></td>
+    <td><%=h supplier.category %></td>
+    <td><%=h supplier.current_quantity %></td>
+    <td><%=h supplier.unittype %></td>
+    <td><%=h supplier.maxquantity %></td>
+    <td><%=h supplier.minquantity %></td>
+    <td><%= link_to 'Show', supplier %></td>
+    <td><%= link_to 'Edit', edit_supplier_path(supplier) %></td>
+    <td><%= link_to 'Destroy', supplier, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Supplier', new_supplier_path %>

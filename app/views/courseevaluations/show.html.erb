@@ -1,0 +1,28 @@
+<div class="tform">
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>New Course Evaluation</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
+		<td><%=h @courseevaluation.student_id.blank? ? " - " : @courseevaluation.studentevaluate.formatted_mykad_and_student_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="programme_id"><b>Program Name:</b></label></td>
+		<td><%=h @courseevaluation.programme_id.blank? ? " - " : @courseevaluation.program.programme_code_with_programme_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id"><b>Subject Name:</b></label></td>
+		<td><%=h @courseevaluation.subject_id.blank? ? " - " : @courseevaluation.subjectevaluate.subject_code_with_subject_name %></td>
+	</tr>
+
+
+</table>
+<BR>
+</div>
+
+<%= link_to 'Edit', edit_courseevaluation_path(@courseevaluation) %> |
+<%= link_to 'Back', courseevaluations_path %>

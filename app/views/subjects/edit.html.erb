@@ -1,0 +1,54 @@
+<h3>Editing Subject</h3>
+
+<% form_for(@subject) do |f| %>
+  <%= f.error_messages %>
+
+ 
+<%= render :partial => 'form', :locals => {:f => f} %>
+
+<tr>
+	<td colspan=2><b>Select Topic:</b></td>
+	
+</tr>
+
+<!--Topic Details-->	
+    <tr>
+	  	<!--<#% topic_sequenceno.sort.each do |sequenceno,topics| %>-->
+	</tr>
+	<tr>
+	  <td colspan=2>
+	    <table width=95%>
+		  <tr>
+	        <td width=40px ><label for="name"><b>Topic Name:</b></label></td>
+	        <td width=120px ><label for="sequenceno"><b>Sequence No:</b></label></td>
+	         <td width=10px></td>
+          </tr>
+	    </table>
+      </td>
+    </tr>
+
+    <tr>
+	  <td colspan=2>
+	    <!-- Code Block for Topic Repeating Field -->
+	    <div id="topics">
+		  <%= render :partial => 'topic', :collection => @subject.topics.sort_by(&:sequenceno) %>
+		</div>
+	  </td>
+	</tr>
+
+	<tr>
+	<!-->  <td colspan=2><#%= add_topic_link "Add More" %></td>-->
+	</tr>
+
+
+
+<p>
+   <%= f.submit 'Update' %>
+ </p>
+
+<% end %>
+
+
+
+<%= link_to 'Show', @subject %> |
+<%= link_to 'Back', subjects_path %>

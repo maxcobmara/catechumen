@@ -1,0 +1,19 @@
+<div class="trainneed">
+	<% new_or_existing = trainneed.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "appraisal[#{new_or_existing}_trainneed_attributes][]" %>
+	
+	<% fields_for prefix, trainneed do | trainneed_form | -%>
+
+    <table width=100%>
+	   <tr>
+       <td width=100px><%= trainneed_form.text_field :evaluation_id, :size => 10 %>
+       <td width=150px><%= trainneed_form.collection_select(:name, Trainneed.all, :name, :name) %></td>
+       <td width=200px><%= trainneed_form.text_field :reason %>
+       <td width=300px><%= trainneed_form.text_field :confirmedby_id %>
+       <td width=300px><%= link_to_function "remove", "$(this).up('.trainneed').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>

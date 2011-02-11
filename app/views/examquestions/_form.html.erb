@@ -1,0 +1,108 @@
+<div class="tform">
+  <table width=100% >
+	
+	<tr>
+		<th colspan = 2>Exam Question Details</th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="curriculum_id"><b>Programme/Subject Code:</b></label><font color="red"> * </font></td>
+		<td><%= f.collection_select :curriculum_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
+		<!--><td><#%= f.text_field :curriculum_id %></td>-->
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="questiontype"><b>Question Type:</b><font color="red"> * </font></label></td>
+		<td><%= f.select :questiontype, 
+		                 Examquestion::QTYPE,
+		                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="question"><b>Question:</b></label><font color="red"> * </font></td>
+		<td><%= f.text_field :question %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="answer"><b>Answer:</b></label><font color="red"> * </font></td>
+		<td><%= f.text_area :answer, :size => "30x7" %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
+		<td><%= f.text_field :marks, :size => 12 %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="category"><b>Category:</b></label></td>
+		<td><%= f.text_field :category %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="qkeyword"><b>Keywords:</b></label></td>
+		<td><%= f.text_area :qkeyword, :size => "30x7" %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="qstatus"><b>Status:</b></label><font color="red"> * </font></td>
+		<td><%= f.select :qstatus, 
+		                 Examquestion::QSTATUS,
+		                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="creator_id"><b>Creator:</b></label></td>
+		<td><%= f.collection_select :creator_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+	 <td class="leftcol"><label for="createdt"><b>Creator Date:</b></label></td>
+		<td><%= f.date_select :createdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="status"><b>Status:</b></label></td>
+		<td><%= f.text_field :status %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="statusremark"><b>Remarks:</b></label></td>
+		<td><%= f.text_area :statusremark, :size => "30x7" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="editor_id"><b>Editor:</b></label></td>
+		<td><%= f.collection_select :editor_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+	 <td class="leftcol"><label for="editdt"><b>Editor Date:</b></label></td>
+		<td><%= f.date_select :editdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="approver_id"><b>Approver:</b></label></td>
+		<td><%= f.collection_select :approver_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+	 <td class="leftcol"><label for="approvedt"><b>Approver Date:</b></label></td>
+		<td><%= f.date_select :approvedt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+		<tr>
+		<td class="leftcol"><label for="bplreserve"><b>Reserve for BPL</b></label></td>
+	      <td><%= f.check_box :bplreserve %> </td>
+		</tr>
+		
+		<tr>
+		<td class="leftcol"><label for="bplsent"><b>Sent to BPL</b></label></td>
+	      <td><%= f.check_box :bplsent %> </td>
+		</tr>
+		
+		<tr>
+		 <td class="leftcol"><label for="bplsentdt"><b>Date Sent:</b></label></td>
+			<td><%= f.date_select :bplsentdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
+</table>
+<BR>

@@ -1,0 +1,20 @@
+<div class="loan">
+	<% new_or_existing = loan.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "staff[#{new_or_existing}_loan_attributes][]" %>
+	
+	<% fields_for prefix, loan do | loan_form | -%>
+
+    <table width=100%>
+	   <tr>
+	     <td width=130px><%= loan_form.select :ltype, Loan::LTYPE, :prompt => "Select" %></td>
+         <td width=150px><%= loan_form.text_field :accno, :size => 15 %></td>
+         <td width=190px><%= loan_form.text_field :startdt, :size => 12 %> <font color=#AAA size=-2>yyyymmdd</font> </td>
+         <td width=100px><%= loan_form.text_field :durationmn, :size => 5 %> (Months) </td>
+         <td width=100px>RM <%= loan_form.text_field :deductions, :size => 6 %></td>
+         <td width=10px><%= link_to_function "remove", "$(this).up('.loan').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>

@@ -1,0 +1,57 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Inventory</h2>
+		<div class="right">
+			<% form_tag assets_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search] %>
+			<%= submit_tag "Search", :name => nil %>
+			<% end %>
+		</div>
+    </div>
+    <BR />
+    <div class="tlist">
+	  	<table width=100%>
+		<tr>
+          <th>Registration No</th>
+          <th>AssetType</th>
+          <th>Name</th>
+          <th>Purchasedate</th>
+	      <th align="right"> Purchase Price</th>
+	      <th colspan=3 class="ac">Control</th>
+  <!-->  <th>Category</th>
+    <th>Manufacturer</th>
+    <th>Serialno</th>
+    <th>Location</th>
+    <th>Otherinfo</th>
+    <th>Orderno</th>
+    <th>Receiveddate</th>
+    <th>Receiver</th>
+    <th>Supplier</th>-->
+        </tr>
+
+<% @assets.each do |asset| %>
+  <tr>
+    <td><%=h asset.assetcode %></td>
+    <td><%=h (Asset::ASSETTYPE.find_all{|disp, value| value == asset.assettype}).map {|disp, value| disp} %></td>
+    <td><%=h asset.name %></td>
+    <td><%=h asset.purchasedate %></td>
+    <td align="right" width=90px>RM <%=h asset.purchaseprice %></td>
+   <!--> <td><%=h asset.serialno %></td>
+    <td><%=h asset.location %></td>
+    <td><%=h asset.otherinfo %></td>
+    <td><%=h asset.orderno %></td>
+    <td><%=h asset.receiveddate %></td>
+    <td><%=h asset.receiver_id %></td>
+    <td><%=h asset.supplier_id %></td>-->
+    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => asset %></td>
+	<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => asset %></td>
+    <td width=5px><%= link_to 'Destroy', asset, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+</div></div>
+<br />
+
+<%= link_to 'New Asset', new_asset_path %>

@@ -1,0 +1,61 @@
+<div class="tform">
+  <table width=100% >
+	
+	<tr>
+		<th colspan = 2>Files Details</th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="cofileno"><b>File No:</b></label></td>
+		<td><%= f.text_field :cofileno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name"><b>File Name:</b></label></td>
+		<td><%= f.text_field :name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="location"><b>Location:</b></label></td>
+		<td><%= f.text_field :location %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="owner_id"><b>Owner:</b></label></td>
+	<td><%= f.collection_select :owner_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td>
+	</tr>
+	<script type="text/javascript">
+	  function switchvisibility(el) {
+	    if (document.getElementById(el).checked) {
+	      document.getElementById('borrower').style.display = "table-row";
+	      document.getElementById('loaneddate').style.display = "table-row";
+	      document.getElementById('returneddate').style.display = "table-row";
+	    } else {
+	      document.getElementById('borrower').style.display = "none";
+	      document.getElementById('loaneddate').style.display = "none";
+	      document.getElementById('returneddate').style.display = "none";
+	    }
+	  }
+	</script>
+	<tr>
+		<td class="leftcol"><label for="onloan"><b>On Loan:</b></label></td>
+		<td><%= f.check_box :onloan, :id => "fileborrow", :onchange => "switchvisibility('fileborrow')" %></td>
+	</tr>
+	
+	<tr id="borrower" style="display: none;">
+		<td class="leftcol" ><label for="staffloan_id"><b>On Loan To:</b></label></td>
+	  <td><%= f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td><!--, :conditions => ["id != ?", @cofile.owner.id ]!-->
+	</tr>
+	<tr id="loaneddate" style="display: none;">
+		<td class="leftcol"><label for="onloandt"><b>Loaned Date:</b></label></td>
+		<td><%= f.date_select :onloandt, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	
+	<tr id="returneddate" style="display: none;">
+		<td class="leftcol"><label for="onloanxdt"><b>Returned Date:</b></label></td>
+		<td><%= f.date_select :onloanxdt, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	
+</table>
+<BR>

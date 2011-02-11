@@ -1,0 +1,35 @@
+<div class="tform">
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>New Bulletins</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="headline"><b>Headline:</b></label><font color="red"> * </font></td>
+		<td><%= f.text_field :headline %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="content"><b>Content:</b></label><font color="red"> * </font></td>
+		<td><%= f.text_area :content, :size => "30x7" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="postedby_id"><b>Posted By:</b></label><font color="red"> * </font></td>
+		<td><%= f.collection_select :postedby_id, Staff.find(:all), :id, :name %></td>
+	</tr>
+	<!-- if id validated for presence... no need to put , :include_blank => true -->
+	<tr>
+		<td class="leftcol"><label for="publishdt"><b>Publish Date:</b></label><font color="red"> * </font></td>
+		<td><%= f.date_select :publishdt, :start_year => 2011, :end_year => Date.current.year, :order => [:day, :month, :year], :default => 1.days.from_now  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="data">Upload File:</label></td>
+		<td><%= f.file_field :data %></td>
+	</tr>
+	
+
+
+</table>
+<BR>

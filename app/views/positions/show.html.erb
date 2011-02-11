@@ -1,0 +1,60 @@
+<div class="tform">
+<table width=100%>
+	<tr>
+		<th colspan=2>Position</td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="positioncode">Position Code:</label></td>
+		<td><%=h @position.positioncode %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="positionname">Position Name:</label></td>
+		<td><%=h @position.positionname %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="positionname">Person Name:</label></td>
+		<td><%=h @position.staff.blank? ? "-" : @position.staff.name %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="parent_id">Subordinate Of:</label></td>
+		<td><%=h @position.parent_id.blank? ? "" : @position.bosses.positionname %></td>
+	</tr>
+	
+	<!--><tr>
+		<td class="leftcol"><label for="positionname">Position Name:</label></td>
+		<td><#%=h @position.positionname %></td>
+	</tr>-->
+	
+	<tr>
+		<td class="leftcol"><label for="staffgrade_id">Staff Grade:</label></td>
+		<td><%=h @position.staffgrade_id.blank? ? "" : @position.staffgrade.sgname %></td>
+	</tr>
+
+	
+	<tr>
+		<td class="leftcol"><label for="unit">Unit:</label></td>
+		<td><%=h @position.unit %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="taskmain">Main Tasks:</label></td>
+		<td> <%=h @position.taskmain %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="taskother">Other Tasks:</label></td>
+		<td> <%=h @position.taskother %></td>
+	</tr>
+	
+</table>
+<BR>
+</div>
+
+
+<%= link_to 'Edit', edit_position_path(@position) %> |
+<%= link_to 'Back', positions_path %>

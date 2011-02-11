@@ -1,0 +1,2 @@
+module UsesuppliesHelper
+end

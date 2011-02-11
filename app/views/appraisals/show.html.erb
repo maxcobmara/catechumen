@@ -1,0 +1,397 @@
+<div class="tform">
+  <table width=100% >
+	<tr>
+		<th colspan=3><%= t 'evaluation.form.title_part1' %></th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id"><b><%= t 'evaluation.form.icno' %></b></label></td>
+		<td colspan=2><%=h @appraisal.appraisedstaff.formatted_mykad %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id"><b><%= t 'evaluation.form.name' %></label></td>
+		<td colspan=2><%=h @appraisal.appraisedstaff.title.name %> <%=h @appraisal.appraisedstaff.name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id"><b><%= t 'evaluation.form.position' %></label></td>
+		<td colspan=2><%=h @appraisal.appraisedstaff.position.positionname %></td>
+	</tr>
+	
+	<tr>
+	 <td class="leftcol"><label for="evaldt"><b><%= t 'evaluation.form.evaluationdate' %></b></label></td>
+		<td><%=h @appraisal.evaldt %></td>
+	</tr>
+    <tr>
+		<th colspan=3><%= t 'evaluation.form.title_partIIa' %></th>
+	</tr>
+	<tr>
+		<td colspan=3><%= t 'evaluation.form.label_001' %><td>
+    </tr>
+	<tr>
+	    <td colspan=3><font size=-2><%= t 'evaluation.form.label_002' %></font>
+		<td>
+	</tr>
+	<tr>
+        <td colspan=3 align='center'><BR>Will show the 'kegiatan' in last year here<BR></td><!-->
+		<table width=100%>
+			<tr>
+				<td class="leftcol"><label for="appraisal_id">Evaluate Name</label></td>
+				<td class="leftcol"><label for="staff_id">Staff Name</label></td>
+				<td class="leftcol"><label for="name">Name</label></td>
+				<td class="leftcol"><label for="place">Place</label></td>
+				<td class="leftcol"><label for="date">Date</label></td>
+			</tr>
+		</table>
+		</td>
+	<tr>
+		<td colspan=3 align='center'> 
+					<div id="stainings">
+					<#%= render :partial => 'straining', :collection => @appraisal.strainings %>
+					</div> 
+
+	 	            <#%= add_straining_link "Add more" %><-->
+	    </td>
+	</tr>
+	<tr>
+		<th colspan=3><%= t 'evaluation.form.title_part2b' %></th>
+	</tr>
+	<tr>
+		<td colspan=3><font size=-2><%= t 'evaluation.form.label_003' %></font></td>
+	</tr>
+	<tr>
+		<td colspan=3 align='center'><BR>Training Done is Here<BR></td>
+	</tr>
+	<tr>
+		<td colspan=3><font size=-2><%= t 'evaluation.form.label_004' %></font></td>
+	</tr>
+	<tr>
+	<td colspan=3 align='center'><BR>Training Needed is Here<BR></td>
+			
+	</tr>
+	
+	<!--><td><#% for trainneed in @appraisal.trainneeds %></td>
+	
+	<tr>
+		<td class="leftcol"><label for="name ">Name:</label></td>
+	   <td><#%=h trainneed.name %></td>
+
+    </tr>
+
+     <tr>
+		<td class="leftcol"><label for="reason ">Reason:</label></td>
+		<td><#%=h trainneed.reason %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="confirmedby_id ">Confirmed By:</label></td>
+		<td><#%=h trainneed.confirmedby_id %></td>
+	</tr>
+	
+		<#% end %>-->
+		
+	<tr>
+		<td colspan=3></td>
+	</tr>
+	<tr>
+	 <td class="leftcol"><label for="parttwodt"><%= t 'evaluation.form.parttwodate' %>:</label></td>
+		<td><%=h @appraisal.parttwodt %></td>
+	</tr>
+
+<!-- Code Block for Straining  -->
+<BR><BR>
+	
+	<!-- Code Block for trainneeds Repeating Field -->
+<!-->		<table id="form">
+			<tr class="toprow">
+				<td>Part II: Trainning Needs</td>
+				<td></td>
+			</tr>
+				<tr>
+				  <td class="leftcol"><label for="appraisal_id">Evaluate Name</label></td>
+				  <td class="leftcol"><label for="name">Name</label></td>
+				  <td class="leftcol"><label for="reason">Reason</label></td>
+				  <td class="leftcol"><label for="confimedby_id">Confirmed_by</label></td>
+			    </tr>
+		</table>
+			<div id="trainneeds">
+			<#%= render :partial => 'trainneed', :collection => @appraisal.trainneeds %>
+			</div>
+
+			<#%= add_trainneed_link "Add more" %></td>
+
+	<BR><BR><-->
+	<!-- Code Block for Straining  -->
+	
+<!--Part III-->
+<!-->
+<table id="form">
+	<tr class="toprow">
+		<td>Part III: Hasil Kerja (50%)</td>
+		<td></td>
+	</tr>
+<-->
+<tr>
+	<th colspan=3><%= t 'evaluation.form.label_005' %></th>
+<tr>
+</table>
+<table width=70% cellpadding=15px>
+
+	<tr>
+		<th><%= t 'evaluation.form.title_part3' %></th>
+		<th>PPP</th>
+		<th>PPK</th>
+	<tr valign=bottom>
+		<td><label for="pppquantity">
+			<b><%= t 'evaluation.form.quantity' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.quantity_desc' %>.</font>
+			</label></td>
+		<td><%=h @appraisal.pppquantity %></td>
+		<td><%=h @appraisal.ppkquantity %></td>
+	</tr>
+	<tr valign=bottom>
+		<td><label for="pppquantity">
+			<b><%= t 'evaluation.form.quality' %></b>
+			<font size=-1><ol><%= t 'evaluation.form.quanlity_desc1' %><BR>
+				              <%= t 'evaluation.form.quanlity_desc2' %></ol></font></label></td>
+		<td><%=h @appraisal.pppquality %></td>
+		<td><%=h @appraisal.ppkquality %></td>
+	</tr>
+	<tr>
+		<td><label for="pppquantity">
+			<b><%= t 'evaluation.form.ontime' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.ontime_desc' %>.</font></label></td>
+		<td><%=h @appraisal.pppontime %></td>
+		<td><%=h @appraisal.ppkontime %></td>
+	</tr>
+
+	<tr>
+		<td><label for="quality">
+		<b><%= t 'evaluation.form.effective' %></b><BR>
+		<font size=-1><%= t 'evaluation.form.effective_desc' %>.</font></label></td>
+		<td><%=h @appraisal.pppeffective %></td>
+		<td><%=h @appraisal.ppkeffective %></td>
+	</tr>
+	
+	<tr>
+		<th><%= t 'evaluation.form.title_part4' %></th>
+		<th>PPP</th>
+		<th>PPK</th>
+	</tr>
+
+	<tr>
+		<td><label for="knowledge">
+			<b><%= t 'evaluation.form.knowledge' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.knowledge_desc' %>.</font></label></td>
+		<td><%=h @appraisal.pppknowledge %></td>
+		<td><%=h @appraisal.ppkknowledge %></td>
+	</tr>
+
+	<tr>
+		<td><label for="rules">
+			<b><%= t 'evaluation.form.rules' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.rules_desc' %>.</font></label></td>
+		<td><%=h @appraisal.ppprules %></td>
+		<td><%=h @appraisal.ppkrules %></td>
+	</tr>
+
+	<tr>
+		<td><label for="communication">
+			<b><%= t 'evaluation.form.communication' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.communication_desc' %>.</font></label></td>
+		<td><%=h @appraisal.pppcommunication %></td>
+		<td><%=h @appraisal.ppkcommunication %></td>
+	</tr>
+
+
+
+	<tr>
+		<th><%= t 'evaluation.form.title_part5' %></th>
+		<th>PPP</th>
+		<th>PPK</th>
+	</tr>
+
+	<tr>
+		<td><label for="leadership">
+			<b><%= t 'evaluation.form.leadership' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.leadership_desc' %>.</font></label></td>
+		<td><%=h @appraisal.pppleader %></td>
+		<td><%=h @appraisal.ppkleader %></td>
+	</tr>
+
+	<tr>
+		<td><label for="management">
+			<b><%= t 'evaluation.form.management' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.management_desc' %>.</font></label></td>
+		<td><%=h @appraisal.pppmanage %></td>
+		<td><%=h @appraisal.ppkmanage %></td>
+	</tr>
+
+	<tr>
+		<td><label for="discipline">
+			<b><%= t 'evaluation.form.discipline' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.discipline_desc' %>.</font></label></td>
+		<td><%=h @appraisal.pppdiscipline %></td>
+		<td><%=h @appraisal.ppkdisipline %></td>
+	</tr>
+	
+	<tr>
+		<td><label for="proactive">
+			<b><%= t 'evaluation.form.proactive' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.proactive_desc' %>.</font></label></td>
+		<td><%=h @appraisal.pppproactive %></td>
+		<td><%=h @appraisal.ppkproactive %></td>
+	</tr>
+
+	<tr>
+		<td><label for="relate">
+			<b><%= t 'evaluation.form.relate' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.relate_desc' %>.</font></label></td>
+		<td><%=h @appraisal.ppprelate %></td>
+		<td><%=h @appraisal.ppkrelate %></td>
+	</tr>
+	
+	
+	
+	<tr>
+		<th><%= t 'evaluation.form.title_part6' %></th>
+		<th>PPP</th>
+		<th>PPK</th>
+	</tr>
+
+	<tr>
+		<td><label for="parttwo">
+			<b><%= t 'evaluation.form.parttwo' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.parttwo_desc' %>.</font></label></td>
+		<td><%=h @appraisal.pppparttwo %></td>
+		<td><%=h @appraisal.ppkparttwo %></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><%=h @appraisal.ppptotal %></td></td>
+		<td><%=h @appraisal.ppktotal %></td>
+	</tr>
+
+
+<BR>
+	
+<!--Part VII
+
+	<tr>
+		<th>Part VII: Total Marks</th>
+		<th>PPP</th>
+		<th>PPK</th>
+	</tr>
+
+	<tr>
+		<td><label for="ppptotals"><b>Totals:</b></label></td>
+		<td><%=h @appraisal.ppptotals %></td>
+		<td><%=h @appraisal.ppktotals %></td>
+	</tr>
+	<tr>
+		<td><label for="ppptotals"><b>Total with Weight:</b></label></td>
+		<td><%=h @appraisal.pppperc %>%</td>
+		<td><%=h @appraisal.ppktotals %>%</td>
+	</tr>
+	<tr>
+		<td><label for="ppptotals"><b>Average:</b></label></td>
+		<td colspan=2><%=h @appraisal.ppaverage %>%</td>
+		
+	</tr>
+
+	</table>
+	<table><!
+	<tr>
+		<td class="leftcol"><label for="ppppercent">PPP - Percents:</label></td>
+		<td><#%= f.text_field :ppppercent, :size => 5 %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="ppkpercent">PPK - Percents:</label></td>
+		<td><#%= f.text_field :ppkpercent, :size => 5 %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="pointsaverage">Points Average:</label></td>
+		<td><#%= f.text_field :pointsaverage, :size => 5 %></td>
+	</tr>
+	
+	
+
+</table>-->
+<BR>
+	
+<!--Part VIII-->
+<div class="tform">
+  <table width=100% >
+	
+	<tr>
+		<th colspan=3><%= t 'evaluation.form.title_part8' %></th>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="pppyears"><%= t 'evaluation.form.part8_desc' %>:</label></td>
+		<td><%=h @appraisal.pppyears %>  <%= t 'years_label' %> <%=h @appraisal.pppmonths %> <%= t 'months_label' %></td>
+	</tr>
+	
+	<tr>
+		<td colspan=3><b><%= t 'evaluation.form.part8i_desc' %></b><td>
+    </tr>
+
+	<tr>
+		<td class="leftcol"><label for="pppoverall"><%= t 'evaluation.form.part8i' %>:</label></td>
+		<td><%=h @appraisal.pppoverall %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="pppadvancemet"><%= t 'evaluation.form.part8ii' %>:</label></td>
+		<td><%=h @appraisal.pppadvancemet %></td>
+	</tr>
+	
+	<tr>
+		<td colspan=3><%= t 'evaluation.form.ppp_statement' %><td>
+    </tr>
+
+	<tr>
+		<td class="leftcol"><label for="ppp_id"><%= t 'evaluation.form.pppid' %>:</label></td>
+		<td><%=h @appraisal.ppp_id.blank? ? "No Staff" : @appraisal.ppp.mykad_with_staff_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="pppevaldt"><%= t 'datelabel' %>:</label></td>
+		<td><%=h @appraisal.pppevaldt %></td>
+	</tr>
+
+	<tr>
+		<th colspan=3><%= t 'evaluation.form.title_part9' %></th>
+	</tr>
+
+	 <tr>
+		<td class="leftcol"><label for="ppkyears"><%= t 'evaluation.form.part8_desc' %>:</label></td>
+		<td><%=h @appraisal.ppkyears %> <%= t 'years_label' %> <%=h @appraisal.ppkmonths %> <%= t 'months_label' %></td>
+		</tr>
+
+		<tr>
+		<td class="leftcol"><label for="ppkoverall"><%= t 'evaluation.form.part9_desc' %>:</label></td>
+		<td><%=h @appraisal.ppkoverall %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="ppk_id"><%= t 'evaluation.form.ppkid' %>:</label></td>
+			<td><%=h @appraisal.ppk_id %></td>
+		</tr>
+
+		<tr>
+		<td class="leftcol"><label for="ppkevaldt"><%= t 'datelabel' %>:</label></td>
+		<td><%=h @appraisal.ppkevaldt %></td>
+		</tr>
+
+</table>
+<BR>
+</div>	
+
+
+
+
+
+<%= link_to 'Edit', edit_appraisal_path(@appraisal) %> |
+<%= link_to 'Back', appraisals_path %>

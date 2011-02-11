@@ -1,0 +1,45 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Time Table Entry</h2>
+	</div>
+
+	<div class="tlist">
+    <table width=90% border="0" cellpadding="0" cellspacing="0">
+	  <tr>
+    <th>Intake</th>
+    <th>Programme</th>
+    <th>Subject</th>
+    <th>Topic</th>
+    <th>Timing</th>
+    <th>Class</th>
+    <th>Week Day</th>
+    <th>Date</th>
+    <th>Staff Name</th>
+    <th>Location</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @time_table_entries.each do |time_table_entry| %>
+  <tr>
+    <td><%=h time_table_entry.intake_id.blank? ? "" : time_table_entry.intake.name %></td>
+    <td><%=h time_table_entry.programme_id.blank? ? "" : time_table_entry.programme.name %></td>
+    <td><%=h time_table_entry.subject_id.blank? ? "" : time_table_entry.subjecttotime.name %></td>
+    <td><%=h time_table_entry.topic_id.blank? ? "" : time_table_entry.topic.name %></td>
+    <td><%=h time_table_entry.timing_id.blank? ? "" : time_table_entry.period.start_time.strftime("%I:%M %p")%> - <%=h time_table_entry.timing_id.blank? ? "" : time_table_entry.period.end_time.strftime("%I:%M %p")%> </td>
+    <td><%=h time_table_entry.klass_id.blank? ? "" : time_table_entry.klasstime.klass_name %></td>
+    <td><%=h (TimeTableEntry::WEEK_DAY.find_all{|disp, value| value == time_table_entry.timetable_week_day.to_s}).map {|disp, value| disp} %></td>
+    <td><%=h time_table_entry.timetable_date %></td>
+    <td><%=h time_table_entry.staff_id.blank? ? "" : time_table_entry.timetable.name %></td>
+    <td><%=h time_table_entry.residence_id.blank? ? "" : time_table_entry.residence.resname %></td>
+    <td><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => time_table_entry %></td>
+     <td><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => time_table_entry %></td>
+    <td><%= link_to 'Destroy', time_table_entry, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Time_Table_Entry', new_time_table_entry_path %>
