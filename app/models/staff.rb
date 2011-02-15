@@ -95,7 +95,7 @@ class Staff < ActiveRecord::Base
   
   
   #links to Model TravelRequest
-  has_many :travelrequests,     :class_name => 'Travelrequest', :foreign_key => 'staff_id' #staff name
+  has_many :stafftravel,     :class_name => 'Travelrequest', :foreign_key => 'staff_id' #staff name
   has_many :replacements,       :class_name => 'Travelrequest', :foreign_key => 'replacement_id' #replacement name
   has_many :hod,                :class_name => 'Travelrequest', :foreign_key => 'hod_id' #hod
   

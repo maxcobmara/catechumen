@@ -1,11 +1,11 @@
 class Travelrequest < ActiveRecord::Base
    has_many :travelclaims, :foreign_key =>'travelrequest_id'
-   #belongs_to :staff
+   belongs_to :staff
   
   #this works belongs_to :staff
   belongs_to :stafftravel,    :class_name => 'Staff',        :foreign_key => 'staff_id'
-  belongs_to :treplace, :class_name => 'Staff',         :foreign_key => 'replacement_id'
-  belongs_to :hod,      :class_name => 'Staff',         :foreign_key => 'hod_id'
+  belongs_to :treplace,       :class_name => 'Staff',         :foreign_key => 'replacement_id'
+  belongs_to :hod,            :class_name => 'Staff',         :foreign_key => 'hod_id'
   
   #has_many :travel, :class_name => 'Travelclaim', :foreign_key => 'travelrequest_id'
   
@@ -16,9 +16,9 @@ class Travelrequest < ActiveRecord::Base
       Travelrequest.find(:all, :condition => ['staff_id IS NULL'])
   end
   
-  #def self.find_main
-      #Staff.find(:all, :condition => ['staff_id IS NULL'])
-  #end
+  def self.find_main
+      Staff.find(:all, :condition => ['staff_id IS NULL'])
+  end
   
   def travel_request_key
     "#{trcode} for #{tstartdt} to #{destination} by #{staff.mykad_with_staff_name} "

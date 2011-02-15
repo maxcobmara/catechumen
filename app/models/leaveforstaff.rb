@@ -22,7 +22,7 @@ class Leaveforstaff < ActiveRecord::Base
     end
   end
   
-  STAFFLEAVETYPE = [
+STAFFLEAVETYPE = [
          #  Displayed       stored in db
          [ "Cuti Rehat",1 ],
          [ "Cuti Sakit",2],
@@ -31,5 +31,5 @@ class Leaveforstaff < ActiveRecord::Base
          [ "Cuti Tanpa Gaji",5 ],
          [ "Cuti Bersalin",6 ],
          [ "Cuti Haji",7 ]
-   ]
+ ]
 end
