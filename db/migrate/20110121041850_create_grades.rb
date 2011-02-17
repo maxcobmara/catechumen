@@ -4,7 +4,7 @@ class CreateGrades < ActiveRecord::Migration
       t.integer :student_id
       t.integer :subject_id
       t.boolean :sent_to_BPL
-      t.date :sent_date
+      t.date    :sent_date
       t.decimal :total_formative
       t.decimal :score
       t.boolean :eligible_for_exam
