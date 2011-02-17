@@ -24,6 +24,7 @@ class Staff < ActiveRecord::Base
   has_many :sdiciplines,  :foreign_key => 'reportedby_id'
   has_many :strainings,   :foreign_key => 'staff_id'
   has_many :librarytransactions
+  has_one  :position
   
   # has_many :topics, :foreign_key => 'creator_id' 
   #has_many :curriculums, :foreign_key => 'staff_id'
@@ -38,7 +39,6 @@ class Staff < ActiveRecord::Base
   #-----------------belongs_to other page-----------------------------------------------------
   
   belongs_to :title, :class_name => 'Title', :foreign_key => 'titlecd_id'
-  belongs_to :position
   belongs_to :level,  :class_name => 'Qualification', :foreign_key => 'level_id'
   belongs_to :staffgrade, :class_name => 'Staffgrade', :foreign_key => 'staffgrade_id'
   
