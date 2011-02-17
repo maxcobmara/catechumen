@@ -52,6 +52,9 @@ class Student < ActiveRecord::Base
 
   validates_length_of  :icno, :is =>12
   
+  validates_uniqueness_of :icno
+  
+  
 #----------------------Search------------------------------------------------------------------------------------------
  
   def self.search(search)
