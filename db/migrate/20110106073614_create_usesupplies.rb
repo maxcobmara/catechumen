@@ -5,7 +5,7 @@ class CreateUsesupplies < ActiveRecord::Migration
       t.integer :issuedby
       t.integer :receivedby
       t.decimal :quantity
-      t.date :issuedate
+      t.date    :issuedate
 
       t.timestamps
     end

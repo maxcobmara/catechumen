@@ -20,6 +20,10 @@ class CreateAssets < ActiveRecord::Migration
       t.date       :receiveddate
       t.integer    :receiver_id
       t.integer    :supplier_id
+      t.integer    :assignedto_id
+      t.integer    :location_id
+      t.boolean    :locassigned
+      t.integer    :status
 
       t.timestamps
     end

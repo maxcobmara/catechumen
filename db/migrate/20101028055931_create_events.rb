@@ -1,13 +1,13 @@
 class CreateEvents < ActiveRecord::Migration
   def self.up
     create_table :events do |t|
-      t.date :eventstdt
-      t.date :eventendt
-      t.string :eventname
-      t.string :location
-      t.text :participants
-      t.string :officiated
-      t.string :createdby
+      t.datetime :eventstdt
+      t.datetime :eventendt
+      t.string   :eventname
+      t.string   :location
+      t.text     :participants
+      t.string   :officiated
+      t.string   :createdby
 
       t.timestamps
     end

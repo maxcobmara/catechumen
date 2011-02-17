@@ -8,9 +8,11 @@ class CreateTimeTableEntries < ActiveRecord::Migration
       t.integer :timing_id
       t.integer :klass_id
       t.integer :timetable_week_day
-      t.date :timetable_date
+      t.date    :timetable_date
       t.integer :staff_id
       t.integer :location_id
+      t.integer :period_timing_id
+      t.integer :residence_id
 
       t.timestamps
     end
