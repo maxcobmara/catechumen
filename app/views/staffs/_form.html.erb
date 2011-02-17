@@ -135,11 +135,12 @@
 	<tr>
 		<td class="leftcol"><label for="staffgrade_id">StaffGrade</label><font color="red"> * </font></td>
 		<td><%= f.collection_select :staffgrade_id, Staffgrade.find(:all), :id, :sgname, :include_blank => true %></td>
-	</tr>
+	</tr>#:conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]
 
 	<tr>
 		<td class="leftcol"><label for="position_id">Position</label><font color="red"> * </font></td>
-		<td><%= f.collection_select :position_id, Position.find(:all), :id, :positionname, :include_blank => true %>
+		<td><%=h position_id.blank? ? "-" : @position.positionname %></td>
+		<!--><td><#%= f.collection_select :position_id, Position.find(:all), :id, :positionname, :include_blank => true %>-->
 		<%=h @staff.staffgrade_id %><%=h @staff.staffgrade_id %>
 		</td>
 	</tr>	
