@@ -12,12 +12,77 @@ en:
   new: Create
   update: Update
   control: Control
+  thank: "Staff was successfully created"
+  update: "Staff was successfully updated"
   
-  
+  activerecord:
+      models:
+          staff: "Staff"
+          attendance: "Attendance"
+          position: "Position"
+          leaveforstaff: "Leave For Staff"
+          travelrequest: "Travel Request"
+          asset: "Asset"
+          disposal: "Disposal"
+          assetloss: "Asset Loss"
+      attribute:
+          staff:
+              icno: "MyKad No"
+              name: "Name"
+              coemail: "Email"
+              code: "Staff Code"
+              fileno: "File No"
+              position: "Position"
+              bloodtype: "Blood Type"
+              addr: "Address"
+              poskod_id: "Poskod"
+              mrtlstatuscd: "Marital Status"
+              staffgrade_id: "Staff Grade"
+              statecd: "State of Birth"
+              country_cd: "Nationality"
+          position:
+              positioncode: "Position Code"
+          leaveforstaff:
+              staff_id: "Staff Name"
+          travelrequest:
+              staff_id: "Staff Name"
+              trcode: "Travel Code"
+              destination: "Destination"
+              purpose: "Purpose"
+          asset:
+             assettype: "Aset Type"
+             cardno: "Card No"
+             name: "Name"
+             assetcode: "Registration Serial No"
+          disposal:
+             asset_id: "Asset Code"
+             currentvalue: "Current Value"
+          assetloss:
+             reportcode: "Internal Loss Report Code"
+             losstype: "Lost Type"
+             sio_id: "Investigating Officer"
+                 
+      errors:
+          template:
+            body: "There were problems with the following fields:"
+            header:
+              one: "1 errors prohibited this {{model}} from being saved"
+              other: "{{count}} prohibited this {{model}} from being saved"
+          message:
+              blank: "cant't be blank"
+              not_a_number: "is not number"
+              too_short: "is too short (minimum is {{count}} characters)"
+              taken: "has already been taken"
+
   icms: 
     login:  Log In
     logout: Log Out
+    submit: Create
+    back: Back
+    add: Add More
+    
   staff: 
+    new: New Staff
     menu: Staff
     list: Staff List
     icno: MyKad No
@@ -32,10 +97,221 @@ en:
     age: Age
     bloodtype: Blood Type
     gender: Gender
+    coemail: Email
+    cooftelno: Telephone (Office)
+    phonecell: Telephone (HP)
+    phonehome: Telephone (H)
+    addr: Address
+    poskod_id: Post Code
+    mrtlstatuscd: Marital Status
+    statecd: State of Birth
+    race: Race
+    religion: Religion
+    country_cd: Nationality
+    upload: Upload Photo
+    employment_details: Employment Details
+    employscheme: Employment Scheme
+    staffgrade_id: Staff Grade
+    employstatus: Employment Status
+    appointstatus: Appointment Status
+    appointdt: Appointment Date
+    schemedt: Appointment To Scheme
+    confirmdt: Confirmation Date
+    posconfirmdate: Position Confirmation Date
+    appointby: Appointed By
+    svchead: Head Of Service
+    svctype: Type Of Service
+    pensionstat: Pension Status
+    pensiondt: Pension Date
+    uniformstat: Uniform Status
+    position_id: Position
     
+    tqualification: Qualifications
+    level_id: Level
+    qname: Qualification
+    institute: Institute
     
+    loans: Loans
+    ltype: Loan For
+    accno: Loan Account No
+    startdt: Loan Date
+    durationmn: Duration
+    deductions: Deductions
+    
+    finance: Finance Details
+    kwspcode: EPF No
+    taxcode: Tax No
+    bank: Bank
+    bankaccno: Account No
+    bankacctype: Account Type
+    
+    emencengy: Emergency Contact Information
+    kintype_id: Relationship
+    kinbirthdt: DOB
+    phone: Telephone
+    kinaddr: Address
+    
+  attendance:
+     new: New Attendance
+     list: Lists of Attendances
+     staff_details: Staff Details
+     staff_id: Select Staff
+     attendance_details: Attendance Details
+     attdate: Select Date
+     time_in: Time In
+     time_out: Time Out
+     reason: Reason If Late
+     approve_id: Approving Officer
+     approvestatus: Approving Status
+     create: Create New Attendance
+    # marked: Fields marked with an asterisk <font color="red"> * </font> are required
+    
+  positions:
+     list: List of Positions
+     new: New Positions
+     position: Position
+     positioncode: Position Code
+     positionname: Position Name
+     personname: Person Name
+     parent_id: Subordinate Of
+     grade_id: Minimum Grade Requirement
+     unit: Unit
+     taskmain: Main Tasks
+     taskother: Other Tasks
+     create: Create New Positions
+     
+  staffleave:
+     new: New Leave For Staff
+     list: Lists of Leaves
+     leavereq: Staff Leave Request Details
+     staff_id: Staff Name
+     leavetype: Leave Type
+     leavestartdate: Leave Start Date
+     leavenddate: Leave End Date
+     reason: Reason
+     notes: Notes
+     create: Create New Positions
+     
+  travel:
+     new: New Travel Request
+     list: Lists of Travel Requests
+     staff_details: Staff Details
+     sname: Staff Name
+     trcode: Travel Request Code
+     travel_details: Travel Details
+     destination: Destination
+     purpose: Purpose
+     tstartdt: Start Date
+     treturndt: Return Date
+     bplreserve: Transport
+     ifownwhy: Why Used Own Transport
+     claimtype: Claim Type
+     submission: Submission 
+     submissiondate: Submission Date
+     replacement_id: Replacement
+     hod_confrm: HOD Confirmation
+     hod_id: HOD Name
+     hodconfirmdt: Confirmed Date
+     approved: Approved By
+     create: New Travel Request
+   
+  training:
+     new: New Trainning Need
+     list: Lists of Training Needs
+     training_details: Trainning Needs Details
+     evaluation_id: Evaluation
+     name: Name
+     reason: Reason
+     confirmedby_id: Confirmed By
+     create: New Trainneed
+  
+  supplier:
+     list: List of Office Supplies
+     new: New Office Supplies
+     create: Create Office Supplies
+     supplier_details: Office Supplies
+     suplycode: Supplier Code
+     Category: Category
+     unittype: Unit Type
+     maxquantity: Max Quantity
+     minquantity: Min Quantity
+     current: Current Quantity
+     
+     add: Add Supplies
+     lpono: LPO No
+     unitcost: Unit Cost
+     document: Document
+     quantity: Quantity
+     received: Received
+     
+     use: Use/Issue Supplies   
+     issuedby: Issues By
+     receivedby: Received By
+     quantity: Quantity
+     issuedate: Issue Date     
+  
+  disposal:
+      list: Lists of Disposals
+      new: New Disposal
+      create: Create New Disposal
+      disposal_details: Disposals Details 
+      asset_id: Asset Code
+      used: Used
+      usedduration: Duration
+      currentvalue: Current Value
+      opinion: Opinion  
+      recommendation: Recommendation
+      gift: Gift
+      status: Status
+  
+  assetloses:
+      list: Lists of Asset Loss
+      new: Register New Asset Loss
+      create: Create New Asset Loss
+      assetloses_details: Lampiran J
+      reportcode: Internal Loss Report Code
+      losstype: Lost Type
+      asset_id: Asset Name
+      estvalue: Estimate Value
+      losslocation_id: Lost Location
+      lossdt: Loss Date
+      losshow: How did loss happen?
+      lossstafflast_id: Last staff to handle item
+      laststaffcase: Is a staff prima facie responsible for loss?
+      preventpast: What action has been taken previously to prevent this loss
+      laststaffstop: Has staff been suspended?
+      poreport: Has a police report been made i.a.w AP 315. If Yes enter Police Report Ref No Below
+      porepno: Police Report Ref No
+      preventfuture: What actions will be taken to prevent recurrence in future?
+      remarks: Other remarks (if any)
+      hod_id: Name of Head of Department
+      hodendorsedt: Head of Department Endorsement Date
+      
+      lampirank: Lampiran K
+      moneytype: In case of public funds select type
+      newitem: Used or new item?
+      sostop: Is the asset administrator suspended? If Yes state date below
+      sostopdt: Date asset administrator suspended
+      soaction: For asset administrator state offence and punishment
+      supstop: Has asset administrator's supervisor been suspended If yes state date below
+      supstopdt: Date asset administrator's supervisor was suspended
+      supaction: For asset administrator's supervisor state offence and punishment
+      poaction: If police report has been made state action that police has taken
+      ponoreportwhy: If no report to police has been made please state why
+      rulesbroken: Have any rules been broken? if yes state below
+      owneraction: Rules Broken and By Whom
+      
+      newrule: Steps and New rules put in place to prevent losses like this
+      newrule_id: Staff Name to enforce new rules
+      nrrecommend: What the recommended new rules or amendments to existing rules to be put in place
+      surcharge: Recommendations for Surcharge
+      sio_id: Investigating Officer
+      
   evaluation:
     form:
+      list: Lists of Appraisals
+      create: Create New Appraisals
+      new: New Appraisals
       title_part1:  'Part 1: Staff Details (filled by PYD)'
       name: Staff Name
       evaluationdate: Evaluation Date
@@ -90,7 +366,7 @@ en:
       part9_desc: 'PPK should provide an overall performance summary for the PYD bases on the full statement of the PPP'
       ppkid: 'Name of Second Evaluating Officer (PPK)'
       title_part10: 'Part IV: '
-      
+   
   student: Student
       
   librarytransaction:
@@ -115,6 +391,18 @@ en:
     reportlostdate: Report Lost Date
     replaceddate: Replaced Date
     report: Report Lost
+
+  asset:
+    new: New Asset
+    list: Inventory
+    create: Create New Asset
+    assettype: Asset Type
+    assetcode: Registration Serial No
+    cardno: Card No
+    name: Name
+    category: Category
+    purchasedate: Purchase Date
+    purchaseprice: Purchase Price
     
   book: 
     title: Title

@@ -1,4 +1,4 @@
-<h3>New Asset</h3>
+<h3><%= t 'asset.new' %></h3>
 
 <% form_for(@asset) do |f| %>
   <%= f.error_messages %>
@@ -9,28 +9,28 @@
 	  <table width=100% >
 
 		<tr>
-			<td class="leftcol"><label for="assettype">Asset Type:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="assettype"><b><%= t 'asset.assettype' %></b></label><font color="red"> * </font></td>
 			<td><%= f.select :assettype, 
 			                  Asset::ASSETTYPE,
 			                 :prompt => "Select"  %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="assetcode">Registration Serial No:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="assetcode"><b><%= t 'asset.assetcode' %></b></label><font color="red"> * </font></td>
 			<td><%= f.text_field :assetcode,  :value => "KKM/KSKBJB/H/I", :size => '50' %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="cardno">Card No:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="cardno"><b><%= t 'asset.cardno' %></b></label><font color="red"> * </font></td>
 			<td><%= f.text_field :cardno %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="name">Name:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="name"><b><%= t 'asset.name' %></b></label><font color="red"> * </font></td>
 			<td><%= f.text_field :name %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="cardno">Category:</label></td>
+			<td class="leftcol"><label for="cardno"><b><%= t 'asset.category' %></b></label></td>
 			<td><%= f.text_field :category %></td>
 		</tr>
 		</table>
@@ -39,8 +39,8 @@
 
 
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit (t 'icms.submit') %>
   </p>
 <% end %>
 
-<%= link_to 'Back', assets_path %>
+<%= link_to (t 'icms.back'), assets_path %>

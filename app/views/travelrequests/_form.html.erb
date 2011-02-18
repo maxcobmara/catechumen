@@ -1,83 +1,83 @@
 <div class="tform">
 <table width=100%>
 	<tr>
-		<th colspan=2>Staff Details</th>
+		<th colspan=2><%= t 'travel.staff_details' %></th>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="staff_id"><b><%= t 'travel.sname' %></b></label><font color="red"> * </font></td>
 		<td><%= f.collection_select :staff_id, Staff.find(:all, :order => "icno"), :id, :mykad_with_staff_name, :include_blank => true %></td>
 	</tr>
 	
 	<tr>
-	<td class="leftcol"><label for="trcode"><b>Travel Request Code:</b></label><font color="red"> * </font></td>
+	<td class="leftcol"><label for="trcode"><b><%= t 'travel.trcode' %></b></label><font color="red"> * </font></td>
 		<td><%= f.text_field :trcode %></td>
 	</tr>
 
 	<tr>
-		<th colspan=2>Travel Details</th>
+		<th colspan=2><%= t 'travel.travel_details' %></th>
 	</tr>
 
 	<tr>
-	<td class="leftcol"><label for="destination"><b>Destination:</b></label><font color="red"> * </font></td>
+	<td class="leftcol"><label for="destination"><b><%= t 'travel.destination' %></b></label><font color="red"> * </font></td>
 		<td><%= f.text_field :destination %></td>
 	</tr>
 
 	<tr>
-	   <td class="leftcol"><label for="purpose"><b>Purpose:</b></label><font color="red"> * </font></td>
+	   <td class="leftcol"><label for="purpose"><b><%= t 'travel.purpose' %></b></label><font color="red"> * </font></td>
 		<td><%= f.text_field :purpose %></td>
 	</tr>
-		
+	
 		<tr>
-		 <td class="leftcol"><label for="tstartdt"><b>Start Date:</b></label></td>
+		 <td class="leftcol"><label for="tstartdt"><b><%= t 'travel.tstartdt' %></b></label></td>
 			<td><%= f.date_select :tstartdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 		
 		<tr>
-		 <td class="leftcol"><label for="treturndt"><b>Return Date:</b></label></td>
+		 <td class="leftcol"><label for="treturndt"><b><%= t 'travel.treturndt' %></b></label></td>
 			<td><%= f.date_select :treturndt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="bplreserve"><b>Transport:</b></label></td>
+		<td class="leftcol"><label for="bplreserve"><b><%= t 'travel.bplreserve' %></b></label></td>
 		<td><%= f.check_box :owncar %>Own Car <%= f.check_box :officecar %>Office Car <%= f.check_box :otherscar %>Others Car <%= f.check_box :train %>Train Car <%= f.check_box :plane %>Flight Car <%= f.check_box :publict %>Public Car</td>
 	</tr>
 	
 	<tr>
-	   <td class="leftcol"><label for="ifownwhy"><b>Why Used Own Transport:</b></label></td>
+	   <td class="leftcol"><label for="ifownwhy"><b><%= t 'travel.ifownwhy' %></b></label></td>
 		<td><%= f.text_field :ifownwhy %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="claimtype"><b>Claim Type:</b></label></td>
+		<td class="leftcol"><label for="claimtype"><b><%= t 'travel.claimtype' %></b></label></td>
 		<td><%= f.radio_button :claimtype,'false' %>By KM<%= f.radio_button :claimtype,'true' %>Replaced</td>
 	</tr>
 	<tr>
-		<th colspan=2>Submission</th>
+		<th colspan=2><%= t 'travel.submission' %></th>
 	</tr>
 	    <tr>
-			<td class="leftcol"><label for="submission"><b>Submission Date:</b></label></td>
+			<td class="leftcol"><label for="submission"><b><%= t 'travel.submissiondate' %></b></label></td>
 			<td><%= f.date_select :submission, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 
 		<tr>
-		<td class="leftcol"><label for="replacement_id"><b>Replacement:</b></label></td>
+		<td class="leftcol"><label for="replacement_id"><b><%= t 'travel.replacement_id' %></b></label></td>
 		<td><%= f.collection_select :replacement_id, Staff.find(:all, :order => "icno"), :id, :mykad_with_staff_name, :include_blank => true %></td>
 			<!--><td><#%= f.collection_select :replacement_id, Staff.find(:all, :conditions => ["id != ?", @travelrequest.staffid.id ]), :id, :mykad_with_staff_name, :include_blank => true %></td>-->
 		</tr>
 
 	<tr>
-		<th colspan=2>HOD Confirmation</th>
+		<th colspan=2><%= t 'travel.hod_confrm' %></th>
 	</tr>
 
 		<tr>
-			<td class="leftcol"><label for="hod_id"><b>HOD Name:</b></label></td>
+			<td class="leftcol"><label for="hod_id"><b><%= t 'travel.hod_id' %></b></label></td>
 			<td><%= f.collection_select :hod_id, Staff.find(:all, :order => "icno"), :id, :mykad_with_staff_name, :include_blank => true %></td>
 		<!-->	<td><#%= f.collection_select :hod_id, Staff.find(:all, :conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]), :id, :mykad_with_staff_name, :include_blank => true %></td>-->
 		</tr>
 
 		<tr>
-		 <td class="leftcol"><label for="hodconfirmdt"><b>Confirmed Date:</b></label></td>
+		 <td class="leftcol"><label for="hodconfirmdt"><b><%= t 'travel.hodconfirmdt' %></b></label></td>
 		<td><%= f.date_select :hodconfirmdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 
