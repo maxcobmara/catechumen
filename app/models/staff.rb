@@ -150,11 +150,11 @@ class Staff < ActiveRecord::Base
   validates_numericality_of :icno#, :kwspcode
   validates_presence_of  :icno, :name, :coemail
   validates_format_of    :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
-  validates_presence_of  :code, :fileno, :position_id, :cobirthdt, :bloodtype, 
+  validates_presence_of  :code, :fileno, :cobirthdt, :bloodtype, 
                          :addr, :poskod_id, :mrtlstatuscd, :staffgrade_id,
                          :statecd, :country_cd#, #:taxcode, :bankaccno
 
-  validates_uniqueness_of   :icno, :scope => [:fileno, :coemail]
+  validates_uniqueness_of   :icno#, :scope => [:fileno, :coemail]
   validates_length_of       :icno, :is =>12
 
   #validates_length_of    :cooftelno, :is =>10
