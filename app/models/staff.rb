@@ -152,9 +152,9 @@ class Staff < ActiveRecord::Base
   validates_format_of    :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
   validates_presence_of  :code, :fileno, :cobirthdt, :bloodtype, 
                          :addr, :poskod_id, :mrtlstatuscd, :staffgrade_id,
-                         :statecd, :country_cd#, #:taxcode, :bankaccno
+                         :statecd, :country_cd
 
-  validates_uniqueness_of   :icno#, :scope => [:fileno, :coemail]
+  validates_uniqueness_of   :icno, :fileno, :coemail
   validates_length_of       :icno, :is =>12
 
   #validates_length_of    :cooftelno, :is =>10
