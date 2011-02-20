@@ -24,6 +24,7 @@ class Staff < ActiveRecord::Base
   has_many :sdiciplines,  :foreign_key => 'reportedby_id'
   has_many :strainings,   :foreign_key => 'staff_id'
   has_many :librarytransactions
+  has_one  :position
   
   # has_many :topics, :foreign_key => 'creator_id' 
   #has_many :curriculums, :foreign_key => 'staff_id'
@@ -38,7 +39,6 @@ class Staff < ActiveRecord::Base
   #-----------------belongs_to other page-----------------------------------------------------
   
   belongs_to :title, :class_name => 'Title', :foreign_key => 'titlecd_id'
-  belongs_to :position
   belongs_to :level,  :class_name => 'Qualification', :foreign_key => 'level_id'
   belongs_to :staffgrade, :class_name => 'Staffgrade', :foreign_key => 'staffgrade_id'
   
@@ -150,11 +150,11 @@ class Staff < ActiveRecord::Base
   validates_numericality_of :icno#, :kwspcode
   validates_presence_of  :icno, :name, :coemail
   validates_format_of    :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
-  validates_presence_of  :code, :fileno, :position_id, :cobirthdt, :bloodtype, 
+  validates_presence_of  :code, :fileno, :cobirthdt, :bloodtype, 
                          :addr, :poskod_id, :mrtlstatuscd, :staffgrade_id,
-                         :statecd, :country_cd#, #:taxcode, :bankaccno
+                         :statecd, :country_cd
 
-  validates_uniqueness_of   :icno, :scope => [:fileno, :coemail]
+  validates_uniqueness_of   :icno, :fileno, :coemail
   validates_length_of       :icno, :is =>12
 
   #validates_length_of    :cooftelno, :is =>10
