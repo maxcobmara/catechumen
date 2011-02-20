@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110217094143) do
+ActiveRecord::Schema.define(:version => 20110124053130) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20110217094143) do
     t.integer  "manufacturer_id"
     t.string   "model"
     t.string   "serialno"
+    t.string   "location"
     t.text     "otherinfo"
     t.string   "orderno"
     t.decimal  "purchaseprice"
@@ -162,6 +163,7 @@ ActiveRecord::Schema.define(:version => 20110217094143) do
     t.integer  "assignedto_id"
     t.boolean  "locassigned"
     t.integer  "status"
+    t.integer  "residence_id"
     t.integer  "location_id"
   end
 
@@ -463,7 +465,6 @@ ActiveRecord::Schema.define(:version => 20110217094143) do
 
   create_table "librarytransactions", :force => true do |t|
     t.integer  "book_id"
-    t.boolean  "staff"
     t.integer  "staff_id"
     t.integer  "student_id"
     t.date     "checkoutdate"
@@ -480,6 +481,7 @@ ActiveRecord::Schema.define(:version => 20110217094143) do
     t.date     "replaceddate"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "isitstaff"
   end
 
   create_table "loans", :force => true do |t|
@@ -549,7 +551,6 @@ ActiveRecord::Schema.define(:version => 20110217094143) do
     t.datetime "updated_at"
     t.integer  "parent_id"
     t.integer  "staffgrade_id"
-    t.integer  "staff_id"
   end
 
   create_table "programmes", :force => true do |t|
@@ -685,7 +686,7 @@ ActiveRecord::Schema.define(:version => 20110217094143) do
     t.integer  "titlecd_id"
     t.string   "code"
     t.string   "fileno"
-    t.integer  "position_old"
+    t.integer  "position_id"
     t.string   "coemail"
     t.date     "cobirthdt"
     t.string   "bloodtype"
@@ -728,6 +729,12 @@ ActiveRecord::Schema.define(:version => 20110217094143) do
     t.integer  "gender"
   end
 
+  create_table "stafftitles", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "strainings", :force => true do |t|
     t.integer  "appraisal_id"
     t.integer  "staff_id"
@@ -762,6 +769,12 @@ ActiveRecord::Schema.define(:version => 20110217094143) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "intake_id"
+  end
+
+  create_table "students_klasses_programmes", :id => false, :force => true do |t|
+    t.integer "student_id"
+    t.integer "klass_id"
+    t.integer "programme_id"
   end
 
   create_table "subjects", :force => true do |t|
@@ -834,6 +847,7 @@ ActiveRecord::Schema.define(:version => 20110217094143) do
     t.datetime "updated_at"
     t.integer  "confirmedby_id"
     t.integer  "evaluation_id"
+    t.integer  "appraisal_id"
   end
 
   create_table "travelclaims", :force => true do |t|
