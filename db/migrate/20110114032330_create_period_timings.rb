@@ -1,9 +1,9 @@
 class CreatePeriodTimings < ActiveRecord::Migration
   def self.up
     create_table :period_timings do |t|
-      t.string :name
-      t.time :start_time
-      t.time :end_time
+      t.string  :name
+      t.time    :start_time
+      t.time    :end_time
       t.boolean :break
       t.integer :intake_id
 

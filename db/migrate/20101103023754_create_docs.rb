@@ -3,9 +3,9 @@ class CreateDocs < ActiveRecord::Migration
     create_table :docs do |t|
       t.integer :curriculum_id
       t.integer :cofile_id
-      t.string :name
+      t.string  :name
       t.decimal :version
-      t.string :description
+      t.string  :description
 
       t.timestamps
     end
