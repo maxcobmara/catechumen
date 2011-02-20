@@ -98,7 +98,8 @@ def ruport
 
     respond_to do |format|
       if @staff.save
-        flash[:notice] = 'Staff was successfully created.'
+        flash[:notice] = t(:thank)
+        #flash[:notice] = 'Staff was successfully creat ed.'
         format.html { redirect_to staffs_path }
         format.xml  { render :xml => @staff, :status => :created, :location => @staff }
       else
@@ -117,7 +118,7 @@ def ruport
 
     respond_to do |format|
       if @staff.update_attributes(params[:staff])
-        flash[:notice] = 'Staff was successfully updated.'
+        flash[:notice] = t(:update)
         format.html { redirect_to staff_path(@staff) }
         format.xml  { head :ok }
       else

@@ -1,4 +1,4 @@
-<h3>New Leave For Staff</h3>
+<h3><%= t 'staffleave.new' %></h3>
 
 <% form_for(@leaveforstaff) do |f| %>
   <%= f.error_messages %>
@@ -7,45 +7,45 @@
 	  <table width=100% >
 
 		<tr>
-			<th colspan = 2>Staff Leave Request Details</th>
+			<th colspan = 2><%= t 'staffleave.leavereq' %></th>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
+			<td class="leftcol"><label for="staff_id"><b><%= t 'staffleave.staff_id' %></b></label><font color="red"> * </font></td>
 			<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :position_with_name, :include_blank => true %></td>
 		</tr>
 
 		<tr>
-		<td class="leftcol"><label for="leavetype"><b>Leave Type:</b></label></td>
+		<td class="leftcol"><label for="leavetype"><b><%= t 'staffleave.leavetype' %></b></label></td>
 			<td><%= f.select :leavetype, 
 			                 Leaveforstaff::STAFFLEAVETYPE,
 			                 :prompt => "Select"  %></td>
 		</tr>
 
 		<tr>
-		    <td class="leftcol"><label for="leavestartdate"><b>Leave Start Date:</b></label></td>
+		    <td class="leftcol"><label for="leavestartdate"><b><%= t 'staffleave.leavestartdate' %></b></label></td>
 			<td><%= f.date_select :leavestartdate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 
 		<tr>
-		    <td class="leftcol"><label for="leavenddate"><b>Leave End Date:</b></label></td>
+		    <td class="leftcol"><label for="leavenddate"><b><%= t 'staffleave.leavenddate' %></b></label></td>
 			<td><%= f.date_select :leavenddate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 
 		<tr>
-		    <td class="leftcol"><label for="reason"><b>Reason:</b></label></td>
+		    <td class="leftcol"><label for="reason"><b><%= t 'staffleave.reason' %></b></label></td>
 			<td><%= f.text_field :reason %></td>
 		</tr>
 		<tr>
-		    <td class="leftcol"><label for="notes"><b>Notes:</b></label></td>
+		    <td class="leftcol"><label for="notes"><b><%= t 'staffleave.notes' %></b></label></td>
 			<td><%= f.text_area :notes, :size => "30x5" %></td>
 		</tr>
   </table>
  
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit (t 'icms.submit') %>
   </p>
 <% end %>
 
-<%= link_to 'Back', leaveforstaffs_path %>
+<%= link_to (t 'icms.back'), leaveforstaffs_path %>
 </div>

@@ -10,4 +10,10 @@ class Intake < ActiveRecord::Base
   
   #Link to Student
   has_many :intakestudent,        :class_name => 'Student', :foreign_key => 'intake_id'
+
+
+#---------------------validations-----------------------------------
+
+validates_presence_of  :name, :intake_no, :year
+
 end

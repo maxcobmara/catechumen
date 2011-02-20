@@ -406,8 +406,9 @@ class Staff < ActiveRecord::Base
   
   UNIFORM = [
         #  Displayed       stored in db
-        [ "Beruniform","u" ],
-        [ "Tidak Beruniform","nu" ]
+        [ "Dibekalkan/Tidak dibekalkan", "1" ],
+        [ "Tarikh Akhir di beri", "2" ],
+        [ "Elaun Pakaian Panas/Pakaian Istiadat", "3" ]
 
 
   ]

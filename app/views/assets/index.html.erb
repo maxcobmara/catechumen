@@ -2,7 +2,7 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Inventory</h2>
+		<h2 class="left"><%= t 'asset.list' %></h2>
 		<div class="right">
 			<% form_tag assets_path, :method => 'get' do %>
 			<%= text_field_tag :search, params[:search] %>
@@ -14,11 +14,11 @@
     <div class="tlist">
 	  	<table width=100%>
 		<tr>
-          <th>Registration No</th>
-          <th>AssetType</th>
-          <th>Name</th>
-          <th>Purchasedate</th>
-	      <th align="right"> Purchase Price</th>
+          <th><%= t 'asset.assetcode' %></th>
+          <th><%= t 'asset.assettype' %></th>
+          <th><%= t 'asset.name' %></th>
+          <th><%= t 'asset.purchasedate' %></th>
+	      <th align="right"><%= t 'asset.purchaseprice' %></th>
 	      <th colspan=3 class="ac">Control</th>
   <!-->  <th>Category</th>
     <th>Manufacturer</th>
@@ -54,4 +54,4 @@
 </div></div>
 <br />
 
-<%= link_to 'New Asset', new_asset_path %>
+<%= link_to (t 'positions.create'), new_asset_path %>

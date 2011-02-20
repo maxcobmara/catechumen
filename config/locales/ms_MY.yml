@@ -12,32 +12,307 @@ ms_MY:
   update: Kemaskini
   control: Tindakan
   
-  
+  activerecord:
+        models:
+            staff: "Kakitangan"
+            attendance: "Kehadiran"
+            position: "Jawatan"
+            leaveforstaff: "Cuti Untuk Kakitangan"
+            travelrequest: "Permintaan Perjalanan"
+            asset: "Aset"
+            disposal: "Pembuangan"
+            assetloss: "Asset Loss"
+        attributes:
+            staff:
+              icno: "No MyKad"
+              name: "Nama"
+              coemail: "Emel"
+              code: "Kod Staf"
+              fileno: "No Fail"
+              position: "Jawatan"
+              bloodtype: "Jenis Darah"
+              addr: "Alamat"
+              poskod_id: "Poskod"
+              mrtlstatuscd: "Status Berkahwin"
+              staffgrade_id: "Staff Grade"
+              statecd: "Tempat Lahir"
+              country_cd: "Kewarganegaraan"
+            attendance:
+              staff_id: "Nama Kakitangan"
+            position:
+              positioncode: "Kod Jawatan"
+            leaveforstaff:
+              staff_id: "Nama Kakitangan"
+            travelrequest:
+              staff_id: "Nama Kakitangan"
+              trcode: "Kod Perjalanan"
+              destination: "Destinasi"
+              purpose: "Tujuan"
+            asset:
+              assettype: "Jenis Aset"
+              cardno: "No Kad"
+              name: "Nama"
+              assetcode: "No Siri Pendaftaran"
+            disposal:
+              asset_id: "Kod Aset"
+              currentvalue: "Nilai Semasa"
+            assetloss:
+              reportcode: "Internal Loss Report Code"
+              losstype: "Lost Type"
+              sio_id: "Investigating Officer"
+        errors:
+          template:
+            body: "Berikut adalah beberapa masalah:"
+            header:
+              one: "{{model}} ini mempunyai 1 kesalahan dari disimpan"
+              other: "{{model}} ini mempunyai {{count}} kesalahan dari yang disimpan"
+          messages:
+            blank: "tidak boleh dikosongkan"
+            not_a_number: "ialah bukan nombor"
+            too_short: "ialah sangat pendek (minimum ialah {{count}} huruf)"
+            wrong_length: "panjang salah (mesti {{count}} huruf)"
+            taken: "sudah diambil"
   icms: 
     login:  Daftar Masuk
     logout: Keluar
+    submit: Cipta
+    back: Kembali
+    add: Tambah
+    
   staff: 
+    new: Kakitangan Baru
     menu: Kakitangan
     list: Senarai Kakitangan
     icno: No MyKad
     name: Nama
-    create: Cipta Staf Baru
+    create: Cipta Kakitangan Baru
     position: Jawatan  #move to position when ready
     
     personal_details: Butir Peribadi
-    code: Kod Staf
+    code: Kod Kakitangan
     fileno: No Fail Peribadi
     cobirthdt: Tarikh Lahir
     age: Umur
     bloodtype: Jenis Darah
     gender: Jantina
+    coemail: Emel
+    cooftelno: Telefon (Pejabat)
+    phonecell: Telefon (HP)
+    phonehome: Telefon (H)
+    addr: Alamat
+    poskod_id: Poskod
+    mrtlstatuscd: Status Kahwin
+    statecd: Tempat Lahir
+    race: Bangsa
+    religion: Agama
+    country_cd: Kewarganegaraan
+    upload: Muat Naik Gambar
+    employment_details: Butir Perkerjaan
+    employscheme: Employment Scheme
+    staffgrade_id: Kelas Kakitangan
+    employstatus: Status Perkerjaan
+    appointstatus: Status Temujanji
+    appointdt: Tarikh Temujanji
+    schemedt: Appointment To Scheme
+    confirmdt: Tarikh Ditetapkan
+    posconfirmdate: Tarikh Jawatan Ditetapkan
+    appointby: Dirujuk Oleh
+    svchead: Ketua Perkhimatan
+    svctype: Jenis Perkhidmatan
+    pensionstat: Status Pencen
+    pensiondt: Tarikh Pencen
+    uniformstat: Status Uniform
+    position_id: Jawatan
+    
+    tqualification: Kelayakan
+    level_id: Tahap
+    qname: Kelayakan
+    institute: Institusi
+    
+    loans: Pinjaman
+    ltype: Jenis Pinjaman
+    accno: No Akaun Pinjaman
+    startdt: Tarikh Pinjaman
+    durationmn: Tempoh
+    deductions: Deduksi
+    
+    finance: Butir Kewangan
+    kwspcode: No EPF 
+    taxcode: No Cukai 
+    bank: Bank
+    bankaccno: No Akaun 
+    bankacctype: Jenis Akaun
+    
+    emencengy: Maklumat 
+    kintype_id: Hubungan
+    kinbirthdt: DOB
+    phone: Telefon
+    kinaddr: Alamat
+
+  attendance:
+    new: Kehadiran Baru
+    list: Senarai Kehadiran
+    staff_details: Butiran Kakitangan
+    staff_id: Pilih Kakitangan
+    attendance_details: Butiran Kehadiran 
+    attdate: Pilih Tarikh
+    time_in: Masa Masuk
+    time_out: Masa Keluar
+    reason: Tujuan Lambat
+    approve_id: Pengesahan Pejabat
+    approvestatus: Status Pengesahan 
+    create: Cipta Kehadiran Baru
+
+  positions:
+    list: Senarai Jawatan
+    new: Jawatan Baru
+    position: Jawatan
+    positioncode: Kod Jawatan
+    positionname: Nama Jawatan
+    personname: Nama
+    parent_id: Bawahan Dari
+    grade_id: Minimum Kelas Diperlukan
+    unit: Unit
+    taskmain: Tugas Utama
+    taskother: Tugas Lain
+    create: Cipta Jawatan Baru
+    
+  staffleave:
+    new: Cuti Baru Untuk Kakitangan 
+    list: Senarai Cuti
+    leavereq: Butiran Permintaan Cuti Kakitangan
+    staff_id: Nama Kakitangan
+    leavetype: Jenis Cuti
+    leavestartdate: Tarikh Mula Cuti
+    leavenddate: Tarikh Akhir Cuti
+    reason: Tujuan
+    notes: Nota
+    create: Cipta Cuti Baru
+
+  travel:
+    new: Permintaan Perjalanan Baru
+    list: Senarai Permintaan Perjalanan
+    staff_details: Butiran Kakitangan
+    sname: Nama Kakitangan
+    trcode: Kod Perjalanan
+    travel_details: Butiran Perjalanan
+    destination: Destinasi
+    purpose: Tujuan
+    tstartdt: Tarikh Mula
+    treturndt: Tarikh Pulang
+    bplreserve: Kenderaan
+    ifownwhy: Kenapa Menggunakan Kenderaan Sendiri
+    claimtype: Jenis Tuntutan
+    submission: Penghantaran 
+    submissiondate: Tarikh Hantar
+    replacement_id: Pengganti
+    hod_confrm: Pengesahan HOD 
+    hod_id: Nama HOD 
+    hodconfirmdt: Tarikh Disahkan
+    approved: Disetujui Oleh
+    create: Cipta Perjalanan Baru
+    
+  training:
+    new: Perlukan Latihan Baru
+    list: Senarai Perlukan Latihan 
+    training_details: Butiran Perlu Latihan
+    evaluation_id: Penilai
+    name: Nama
+    reason: Tujuan
+    confirmedby_id: Disahkan Oleh
+    create: Cipta Perlu Latihan Baru
+    
+  supplier:
+    list: Senarai Keperluan Pejabat
+    new: Keperluan Pejabat Baru
+    create: Cipta Keperluan Pejabat
+    supplier_details: Keperluan Pejabat
+    suplycode: Kod Keperluan
+    Category: Kategori
+    unittype: Jenis Unit
+    maxquantity: Max Kuantiti
+    minquantity: Min Kuantiti
+    current: Kuantiti Semasa
+        
+    add: Tambah Keperluan
+    lpono: No LPO 
+    unitcost: Unit Kos
+    document: Dokumen
+    quantity: Kuantiti
+    received: Diterima
+
+    use: Guna/Isu Keperluan
+    issuedby: Isu Oleh
+    receivedby: Diterima Oleh
+    quantity: Kuantiti
+    issuedate: Tarikh Isu
+
+  disposal:
+    list: Senarai Pembuangan
+    new: Pembuangan Baru
+    create: Cipta Pembuangan Baru
+    disposal_details: Butir Pembuangan 
+    asset_id: Kod Aset
+    used: Kegunaan
+    usedduration: Tempoh
+    currentvalue: Nilai Semasa
+    opinion: Pendapat  
+    recommendation: Cadangan
+    gift: Hadiah
+    status: Status
+    
+  assetloses:
+    list: Senarai Kehilangan Aset
+    new: Daftar Baru Kehilangan Aset 
+    create: Cipta Baru Kehilangan Aset
+    assetloses_details: Lampiran J
+    reportcode: Laporan Kod Internal Kehilangan 
+    losstype: Jenis Kehilangan
+    asset_id: Nama Aset
+    estvalue: Jumlah Dianggarkan 
+    losslocation_id: Tempat Kehilangan 
+    lossdt: Tarikh Kehilangan 
+    losshow: Bagaimana Kehilangan Berlaku?
+    lossstafflast_id: Kakitangan Terakhir Yang Menggunakan Item
+    laststaffcase: Adakah kakitangan prima facie bertanggungjawab atas kehilangan?
+    preventpast: Tindakan apa yang telah diambil dahulu untuk mengelakkan kehilangan ini
+    laststaffstop: Has staff been suspended?
+    poreport: Telah membuat laporan polis i.a.w AP 315. Jika Ya memasukkan Laporan Polis No Ref bawah
+    porepno: No Ref Laporan Polis
+    preventfuture: Tindakan apa yang akan diambil untuk mencegah terulangnya di masa depan?
+    remarks: Lain komen (jika ada)
+    hod_id: Nama Ketua Bahagian
+    hodendorsedt: Ketua Jabatan Tarikh Pengesahan
+
+    lampirank: Lampiran K
+    moneytype: In case of public funds select type
+    newitem: Digunakan atau item baru?
+    sostop: Apakah pentadbir aktiva ditangguhkan? Jika Ya nyatakan tarikh di bawah ini
+    sostopdt: Date asset administrator suspended
+    soaction: For asset administrator state offence and punishment
+    supstop: Has asset administrator's supervisor been suspended If yes state date below
+    supstopdt: Date asset administrator's supervisor was suspended
+    supaction: For asset administrator's supervisor state offence and punishment
+    poaction: If police report has been made state action that police has taken
+    ponoreportwhy: If no report to police has been made please state why
+    rulesbroken: Have any rules been broken? if yes state below
+    owneraction: Rules Broken and By Whom
+
+    newrule: Steps and New rules put in place to prevent losses like this
+    newrule_id: Staff Name to enforce new rules
+    nrrecommend: What the recommended new rules or amendments to existing rules to be put in place
+    surcharge: Recommendations for Surcharge
+    sio_id: Investigating Officer
     
   evaluation:
     form:
-      title_part1: 'Bahagian 1: Butiran Staff (diisi oleh PYD)'
-      name: Nama Staf
+      list: Senarai Penilai
+      create: Cipta Penilai Baru
+      new: Penilai Baru
+      title_part1: 'Bahagian 1: Butiran Kakitangan (diisi oleh PYD)'
+      name: Nama Kakitangan
       icno: MyKad No
-      position: Jawatan Staf
+      position: Jawatan Kakitangan
       evaluationdate: Tarikh Evaluasi
       title_partIIa: 'Bahagian IIa - Kegiatan'
       label_001: '1. Kegiatan dan Sumbangan Di Luar Tugas Rasmi'
@@ -89,9 +364,7 @@ ms_MY:
       part9_desc: 'PPK hendaklah memberi ulasan keseluruhan pencapaian PYD berasaskan ulasan keseluruhan oleh PPP'
       ppkid: 'Name Pegawai Penilai Kedua (PPK)'
       
-      
   student: Pelajar
-      
       
   librarytransaction:
     list: Senarai Transaksi Perpustakaan
@@ -116,6 +389,18 @@ ms_MY:
     replaceddate: Tarikh Ganti
     report: Laporan Kehilangan
     
+  asset:
+    new: Aset Baru
+    list: Inventori
+    create: Cipta Aset Baru
+    assettype: Jenis Aset
+    assetcode: No Siri Pendaftaran 
+    cardno: No Kad
+    name: Nama
+    category: Kategori
+    purchasedate: Tarikh Beli
+    purchaseprice: Harga Beli
+       
   book: 
     title: Tajuk
         

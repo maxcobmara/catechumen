@@ -5,114 +5,114 @@
 	
 <!--Personal Info-->
 	<tr>
-		<th colspan = 2>Personal Details</th>
+		<th colspan = 2><%= t 'staff.personal_details' %></th>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="icno">MyKadNo</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="icno"><b><%= t 'staff.icno' %></b></label><font color="red"> * </font></td>
 		<td><%= f.text_field :icno, :size => 12 %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="name">Name</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="name"><b><%= t 'staff.name' %></b></label><font color="red"> * </font></td>
 		<td><%= f.collection_select :titlecd_id, Title.find(:all), :id, :name, :include_blank => true %><%= f.text_field :name %></td>
 	</tr>
 		
 	<tr>
-		<td class="leftcol"><label for="code">StaffCode</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="code"><b><%= t 'staff.code' %></b></label><font color="red"> * </font></td>
 		<td><%= f.text_field :code %></td>
 	</tr>
 		
 	<tr>
-		<td class="leftcol"><label for="fileno">FileNo</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="fileno"><b><%= t 'staff.fileno' %></b></label><font color="red"> * </font></td>
 		<td><%= f.text_field :fileno %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="coemail">Email</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="coemail"><b><%= t 'staff.coemail' %></b></label><font color="red"> * </font></td>
 		<td><%= f.text_field :coemail %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="cobirthdt">Date of Birth</label></td>
+		<td class="leftcol"><label for="cobirthdt"><b><%= t 'staff.cobirthdt' %></b></label></td>
 		<td><%= f.datetime_select :cobirthdt, :start_year => 1945, :end_year => 1992, :order => [:day, :month, :year] %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="bloodtype">BloodType</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="bloodtype"><b><%= t 'staff.bloodtype' %></b></label><font color="red"> * </font></td>
 		<td><%= f.select :bloodtype,
 		                 Staff::BLOOD_TYPE,
 		                 :prompt => "Select" %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="gender"><b>Gender:</b></label></td>
+		<td class="leftcol"><label for="gender"><b><%= t 'staff.gender' %></b></label></td>
 		<td><%= f.radio_button :gender,'1' %>Male<%= f.radio_button :gender,'2' %>Female</td>
     </tr>
 	
 	<tr>
-		<td class="leftcol"><label for="cooftelno">Telephone (Office)</label></td>
+		<td class="leftcol"><label for="cooftelno"><b><%= t 'staff.cooftelno' %></b></label></td>
 		<td><%= f.text_field :cooftelno, :size => 14 %>
 		        <label for="cooftelext">Ext.</label>
 		        <%= f.text_field :cooftelext, :size => 5 %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="phonecell">Telephone (HP)</label></td>
+		<td class="leftcol"><label for="phonecell"><b><%= t 'staff.phonecell' %></b></label></td>
 		<td><%= f.text_field :phonecell, :size => 14 %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="phonehome">Telephone (H)</label></td>
+		<td class="leftcol"><label for="phonehome"><b><%= t 'staff.phonehome' %></b></label></td>
 		<td><%= f.text_field :phonehome, :size => 14 %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="addr">Address</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="addr"><b><%= t 'staff.addr' %></b></label><font color="red"> * </font></td>
 		<td><%= f.text_area :addr, :size => "40x5" %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="poskod_id">PostCode</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="poskod_id"><b><%= t 'staff.poskod_id' %></b></label><font color="red"> * </font></td>
 		<td><%= f.text_field :poskod_id %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="mrtlstatuscd">MaritalStatus</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="mrtlstatuscd"><b><%= t 'staff.mrtlstatuscd' %></b></label><font color="red"> * </font></td>
 		<td><%= f.select :mrtlstatuscd, 
 		                 Staff::MARITAL_STATUS,
 		                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="statecd">State of Birth</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="statecd"><b><%= t 'staff.statecd' %></b></label><font color="red"> * </font></td>
 		<td><%= f.select :statecd, 
 		                  Staff::STATECD,
 		                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="race">Race</label></td>
+		<td class="leftcol"><label for="race"><b><%= t 'staff.race' %></b></label></td>
 		<td><%= f.select :race, 
 		                  Staff::RACE,
 		                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="religion">Religion</label></td>
+		<td class="leftcol"><label for="religion"><b><%= t 'staff.religion' %></b></label></td>
 		<td><%= f.select :religion, 
 		                  Staff::RELIGION,
 		                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="country_cd">Nationality</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="country_cd"><b><%= t 'staff.country_cd' %></b></label><font color="red"> * </font></td>
 		<td><%= f.select :country_cd, 
 		                 Staff::NATIONALITY,
 		                 :prompt => "Select" %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol">Upload Photo</label></td>
+		<td class="leftcol"><label for="upload"><b><%= t 'staff.upload' %></b></label></td>
 		<td><%= f.file_field :photo %></td>
 	</tr>
 	
@@ -122,98 +122,103 @@
 <!--Employment Details-->
 
 	<tr>
-		<th colspan=2>Employment Details</th>	
+		<th colspan=2><%= t 'staff.employment_details' %></th>	
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="employscheme">Employment Scheme</label></td>
+		<td class="leftcol"><label for="employscheme"><b><%= t 'staff.employscheme' %></b></label></td>
 		<td><%= f.select :employscheme, 
 		                  Staff::SCHEME,
 		                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="staffgrade_id">StaffGrade</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="staffgrade_id"><b><%= t 'staff.staffgrade_id' %></b></label><font color="red"> * </font></td>
 		<td><%= f.collection_select :staffgrade_id, Staffgrade.find(:all), :id, :sgname, :include_blank => true %></td>
 	</tr>#:conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]
 
 	<tr>
+<<<<<<< HEAD
 		<td class="leftcol"><label for="position_id">Position</label><font color="red"> * </font></td>
 		<td><#%=h position..blank? ? "-" : @position.positionname %></td>
 		<!--><td><#%= f.collection_select :position_id, Position.find(:all), :id, :positionname, :include_blank => true %>-->
 		<%=h @staff.staffgrade_id %><%=h @staff.staffgrade_id %>
+=======
+		<td class="leftcol"><label for="position_id"><b><%= t 'staff.position_id' %></b></label><font color="red"> * </font></td>
+		<td><%= f.collection_select :position_id, Position.find(:all), :id, :positionname, :include_blank => true %>
+>>>>>>> 99e29f1f3ed3e2e742e45584aa41fdd8407d606f
 		</td>
 	</tr>	
 		
 	<tr>
-		<td class="leftcol"><label for="employstatus">Employment Status</label></td>
+		<td class="leftcol"><label for="employstatus"><b><%= t 'staff.employstatus' %></b></label></td>
 		<td><%= f.select :employstatus, 
 		                  Staff::STATUS,
 		                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="appointstatus">Appointment Status</label></td>
+		<td class="leftcol"><label for="appointstatus"><b><%= t 'staff.appointstatus' %></b></label></td>
 		<td><%= f.select :appointstatus, 
 		                  Staff::APPOINTMENT,
 		                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="appointdt">Appointment Date</label></td>
+		<td class="leftcol"><label for="appointdt"><b><%= t 'staff.appointdt' %></b></label></td>
 		<td><%= f.date_select :appointdt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year] %></td>
 	</tr>
 		
 	<tr>
-		<td class="leftcol"><label for="schemedt">Appointment To Scheme</label></td>
+		<td class="leftcol"><label for="schemedt"><b><%= t 'staff.schemedt' %></b></label></td>
 		<td><%= f.date_select :schemedt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year] %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="confirmdt">Confirmation Date</label></td>
+		<td class="leftcol"><label for="confirmdt"><b><%= t 'staff.confirmdt' %></b></label></td>
 		<td><%= f.date_select :confirmdt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year] %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="posconfirmdate">Position Confirmation Date</label></td>
+		<td class="leftcol"><label for="posconfirmdate"><b><%= t 'staff.posconfirmdate' %></b></label></td>
 		<td><%= f.date_select :posconfirmdate, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year] %></td>
 	</tr>
 		
 	<tr>
-		<td class="leftcol"><label for="appointby">Appointed By</label></td>
+		<td class="leftcol"><label for="appointby"><b><%= t 'staff.appointby' %></b></label></td>
 		<td><%= f.select :appointby, 
 		                  Staff::APPOINTED,
 		                 :prompt => "Select"  %></td>
 	</tr>
 		
 	<tr>
-		<td class="leftcol"><label for="svchead">Head Of Service</label></td>
+		<td class="leftcol"><label for="svchead"><b><%= t 'staff.svchead' %></b></label></td>
 		<td><%= f.select :svchead, 
 		                  Staff::HOS,
 		                 :prompt => "Select"  %></td>
 	</tr>
 		
 	<tr>
-		<td class="leftcol"><label for="svctype">Type Of Service</label></td>
+		<td class="leftcol"><label for="svctype"><b><%= t 'staff.svctype' %></b></label></td>
 		<td><%= f.select :svctype, 
 		                  Staff::TOS,
 		                 :prompt => "Select"  %></td>
 	</tr>	
 	
 	<tr>
-		<td class="leftcol"><label for="pensionstat">Pension Status</label></td>
+		<td class="leftcol"><label for="pensionstat"><b><%= t 'staff.pensionstat' %></b></label></td>
 		<td><%= f.select :pensionstat, 
 		                  Staff::PENSION,
 		                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="pensiondt">Pension Date</label></td>
+		<td class="leftcol"><label for="pensiondt"><b><%= t 'staff.pensiondt' %></b></label></td>
 		<td><%= f.date_select :pensiondt, :start_year => 2010, :end_year => 2050, :order => [:day, :month, :year] %></td>
 	</tr>	
 	
 	<tr>
-		<td class="leftcol"><label for="uniformstat">Uniform Status</label></td>
+		<td class="leftcol"><label for="uniformstat"><b><%= t 'staff.uniformstat' %></b></label></td>
 		<td><%= f.select :uniformstat, 
 		                  Staff::UNIFORM,
 		                 :prompt => "Select"  %></td>
@@ -222,15 +227,15 @@
 	
 <!--Qualification Details-->	
     <tr>
-	  <th colspan=2>Qualifications</th>
+	  <th colspan=2><%= t 'staff.tqualification' %></th>
 	</tr>
 	<tr>
 	  <td colspan=2>
 	    <table width=95%>
 		  <tr>
-	        <td width=210px ><label for="level_id"><b>Level:</b></label></td>
-	        <td width=270px><label for="qname"><b>Qualification:</b></label></td>
-	        <td width=250px><label for="institute"><b>Institute:</b></label></td>
+	        <td width=210px ><label for="level_id"><b><%= t 'staff.level_id' %></b></label></td>
+	        <td width=270px><label for="qname"><b><%= t 'staff.qname' %></b></label></td>
+	        <td width=250px><label for="institute"><b><%= t 'staff.institute' %></b></label></td>
 	         <td width=10px></td>
           </tr>
 	    </table>
@@ -247,7 +252,7 @@
 	</tr>
 	<!-- End Code Block for Qualification Repeating Field -->
 	<tr>
-	  <td colspan=2><%= add_qualification_link "Add More" %></td>
+	  <td colspan=2><%= add_qualification_link (t 'icms.add') %></td>
 	</tr>
 			
 
@@ -255,18 +260,18 @@
 
 <!-- Loan Details     -->	
     <tr>
-	  <th colspan=2>Loans</th>
+	  <th colspan=2><%= t 'staff.loans' %></th>
     </tr>
 
     <tr>
 	  <td colspan=2>
 		<table width=100%>
 		  <tr>
-	         <td width=130px><label for="ltype"><b>Loan For:</b></label></td>
-	         <td width=150px><label for="accno"><b>Loan Account No:</b></label></td>
-             <td width=190px><label for="startdt"><b>Loan Date:</b></label></td>
- 	         <td width=130px><label for="durationmn"><b>Duration:</b></label></td>
-	         <td><label for="deductions"><b>Deductions:</b></label></td>
+	         <td width=130px><label for="ltype"><b><%= t 'staff.ltype' %></b></label></td>
+	         <td width=150px><label for="accno"><b><%= t 'staff.accno' %></b></label></td>
+             <td width=190px><label for="startdt"><b><%= t 'staff.startdt' %></b></label></td>
+ 	         <td width=130px><label for="durationmn"><b><%= t 'staff.durationmn' %></b></label></td>
+	         <td><label for="deductions"><b><%= t 'staff.deductions' %></b></label></td>
 	         <td width=10px></td>
           </tr>
 	    </table>
@@ -283,35 +288,35 @@
 	</tr>
 	<!-- End Code Block for Loans Repeating Field -->
 	<tr>
-	  <td colspan=2><%= add_loan_link "Add more" %></td>
+	  <td colspan=2><%= add_loan_link (t 'icms.add') %></td>
 	</tr>
 
 		
 
 <!--Finance Details-->
     <tr>
-	  <th colspan=2>Finance Details</th>
+	  <th colspan=2><%= t 'staff.finance' %></th>
 	</tr>
     <tr>
-	  <td class="leftcol"><label for="kwspcode">EPF No</label></td>
+	  <td class="leftcol"><label for="kwspcode"><b><%= t 'staff.kwspcode' %></b></label></td>
 	  <td><%= f.text_field :kwspcode %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="taxcode">Tax No</label></td>
+		<td class="leftcol"><label for="taxcode"><b><%= t 'staff.taxcode' %></b></label></td>
 		<td><%= f.text_field :taxcode %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="bank">Bank</label></td>
+		<td class="leftcol"><label for="bank"><b><%= t 'staff.bank' %></b></label></td>
 		<td><%= f.select :bank, 
 			              Staff::BANK,
 			              :prompt => "Select"  %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="bankaccno">Account No</label></td>
+		<td class="leftcol"><label for="bankaccno"><b><%= t 'staff.bankaccno' %></b></label></td>
 		<td><%= f.text_field :bankaccno %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="bankacctype">Account Type</label></td>
+		<td class="leftcol"><label for="bankacctype"><b><%= t 'staff.bankacctype' %></b></label></td>
 		<td><%= f.select :bankacctype, 
 			              Staff::BANKTYPE,
 			              :prompt => "Select"  %></td>
@@ -321,18 +326,18 @@
 
     <!--Next Of Kin-->
 	<tr>
-	    <th colspan=2>Emergency Contact Information</th>
+	    <th colspan=2><%= t 'staff.emencengy' %></th>
     </tr>
 	<tr>
 		<td colspan=2>
 			<!-- Code Block for Next of kins Labels -->
 			<table width=100%>
 				<tr>
-				  <td width=150px><label for="kintype_id"><b>Relationship:</b></label></td>
-				  <td width=235px><label for="name"><b>Name:</b></label></td>
-				  <td width=100px><label for="kinbirthdt"><b>DOB : </b><font color=#AAA size=-2>yyyymmdd</font> </label></td>
-				  <td width=85px><label for="phone"><b>Telephone:</b></label></td>
-				  <td><label for="kinaddr"><b>Address:</b></label></td>
+				  <td width=150px><label for="kintype_id"><b><%= t 'staff.kintype_id' %></b></label></td>
+				  <td width=235px><label for="name"><b><%= t 'staff.name' %></b></label></td>
+				  <td width=100px><label for="kinbirthdt"><b><%= t 'staff.kinbirthdt' %></b><font color=#AAA size=-2>yyyymmdd</font> </label></td>
+				  <td width=85px><label for="phone"><b><%= t 'staff.phone' %></b></label></td>
+				  <td><label for="kinaddr"><b><%= t 'staff.kinaddr' %></b></label></td>
 				  
 			    </tr>
 			</table>
@@ -348,18 +353,9 @@
 		</td>
 	</tr>
 	<tr>
-	    <td colspan=2><%= add_kin_link "Add more" %></td>
+	    <td colspan=2><%= add_kin_link (t 'icms.add') %></td>
 	</tr>
 
 </table>		
 </div>	
-	
-	
-	
-	
-
-	
-
-
-
 	

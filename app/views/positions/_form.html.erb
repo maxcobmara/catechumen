@@ -1,47 +1,52 @@
 <div class="tform">
 <table width=100%>
 	<tr>
-		<th colspan=2>Position</td>
+		<th colspan=2><%= t 'positions.position' %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="positioncode">Position Code:</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="positioncode"><b><%= t 'positions.positioncode' %></b></label><font color="red"> * </font></td>
 		<td><%= f.text_field :positioncode %></td>
 	</tr>
 	
 	
 	<tr>
-		<td class="leftcol"><label for="positionname">Position Name:</label></td>
+		<td class="leftcol"><label for="positionname"><b><%= t 'positions.positionname' %></b></label></td>
 		<td><%= f.text_field :positionname %></td>
 	</tr>
 	
 	<tr>
+<<<<<<< HEAD
 		<td class="leftcol"><label for="staff_id">Person Name:</label></td>
 		<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id not in (?)", @position.people_assigned]), :id, :mykad_with_staff_name, :include_blank => true %></td>
+=======
+		<td class="leftcol"><label for="positionname"><b><%= t 'positions.personname' %></b></label></td>
+		<td><%=h @position.staff.blank? ? "-" : @position.staff.name %></td>
+>>>>>>> 99e29f1f3ed3e2e742e45584aa41fdd8407d606f
 	</tr>
 	
 	
 	<tr>
-		<td class="leftcol"><label for="parent_id">Subordinate Of:</label></td>
+		<td class="leftcol"><label for="parent_id"><b><%= t 'positions.parent_id' %></b></label></td>
 		<td><%= f.collection_select :parent_id, Position.find(:all), :id, :position_with_code, :include_blank => true %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="staffgrade_id">Minimum Grade Requirement:</label></td>
+		<td class="leftcol"><label for="staffgrade_id"><b><%= t 'positions.grade_id' %></b></label></td>
 		<td><%= f.collection_select :staffgrade_id, Staffgrade.find(:all), :id, :sgname, :include_blank => true %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="unit">Unit:</label></td>
+		<td class="leftcol"><label for="unit"><b><%= t 'positions.unit' %></b></label></td>
 		<td><%= f.text_field :unit %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="taskmain">Main Tasks:</label></td>
+		<td class="leftcol"><label for="taskmain"><b><%= t 'positions.taskmain' %></b></label></td>
 		<td><%= f.text_area :taskmain, :size => "30x7" %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="taskother">Other Tasks:</label></td>
+		<td class="leftcol"><label for="taskother"><b><%= t 'positions.taskother' %></b></label></td>
 		<td><%= f.text_area :taskother, :size => "30x7" %></td>
 	</tr>
 	
