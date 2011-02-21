@@ -2,8 +2,8 @@ class Leaveforstudent < ActiveRecord::Base
   belongs_to :student
   belongs_to :staff
 
+validates_presence_of :student_id, :leavetype
 validates_numericality_of :telno
-validates_presence_of :leavetype
   
   def self.find_main
     Student.find(:all, :condition => ['student_id IS NULL'])

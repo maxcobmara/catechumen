@@ -10,6 +10,22 @@ class LeaveforstudentsController < ApplicationController
     end
   end
 
+def update_matrixno
+  @leaveforstudent = Leaveforstudent.find (params [:id])
+  respond_to do |format|
+    format.html
+    format.js
+  end
+end
+
+def update_program
+  @leaveforstudent = Leaveforstudent.find (params [:id])
+  respond_to do |format|
+    format.html
+    format.js
+  end
+end
+
   # GET /leaveforstudents/1
   # GET /leaveforstudents/1.xml
   def show
@@ -25,7 +41,10 @@ class LeaveforstudentsController < ApplicationController
   # GET /leaveforstudents/new.xml
   def new
     @leaveforstudent = Leaveforstudent.new
-
+    @students = Students.all
+    @matrixno = []
+    @program = []
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @leaveforstudent }

@@ -6,27 +6,32 @@
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
-		<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %></td>
+		<td class="leftcol"><label for="student_id"><b>Student Name:</b></label><font color="red"> * </font></td>
+		<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %>
+		</td>
 	</tr>
-	
+	<tr>
+	    <td class="leftcol"><label for="matrixno"><b>Matrix No:</b></label></td>
+		<td><%= f.text_field :matrixno :url => {:action => "update_matrixno"}, :with => :leaveforstudent_id %></td>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="program"><b>Program:</b></label></td>
+		<td><%= f.text_field :program :url => {:action => "update_program"}, :with => :leaveforstudent_id %></td>
+	</tr>	
 	<tr>
 	<td class="leftcol"><label for="leavetype"><b>Leave Type:</b></label><font color="red"> * </font></td>
 		<td><%= f.select :leavetype, 
 		                 Leaveforstudent::STUDENTLEAVETYPE,
 		                 :prompt => "Select"  %></td>
-	</tr>
-	
+	</tr>	
 	<tr>
 	    <td class="leftcol"><label for="requestdt"><b>Request Date:</b></label></td>
 		<td><%= f.date_select :requestdate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
-	</tr>
-	
+	</tr>	
 	<tr>
 	    <td class="leftcol"><label for="reason"><b>Reason:</b></label></td>
 		<td><%= f.text_field :reason %></td>
-	</tr>
-	
+	</tr>	
 	<tr>
 	    <td class="leftcol"><label for="address"><b>Address:</b></label></td>
 		<td><%= f.text_area :address, :size => "30x5" %></td>
@@ -35,7 +40,6 @@
 	    <td class="leftcol"><label for="telno"><b>Telephone No:</b></label><font color="red"> * </font></td>
 		<td><%= f.text_field :telno %></td>
 	</tr>
-
 	<tr>
 	    <td class="leftcol"><label for="leave_startdate"><b>Start Date:</b></label></td>
 		<td><%= f.date_select :leave_startdate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
@@ -49,7 +53,6 @@
 	    <td class="leftcol"><label for="submit"><b>Submit for Approval:</b></label></td>
 		<td><%= f.check_box :studentsubmit %></td>
 	</tr>
-
 	<tr>
 		<th colspan = 2>Approve Student Leave Request</th>
 	</tr>
@@ -65,6 +68,15 @@
 	    <td class="leftcol"><label for="approvedate"><b>End Date:</b></label></td>
 		<td><%= f.date_select :approvedate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
 	</tr>
+	<tr>
+	    <td class="leftcol"><label for="position"><b>Position:</b></label></td>
+		<td><%= f.text_field :position %></td>
+	</tr>
+	 <tr>
+	    <td class="leftcol"><label for="notes"><b>Notes:</b></label></td>
+		<td><%= f.text_field :notes %></td>
+	 </tr>
+	
   </table>
 
 </div>
