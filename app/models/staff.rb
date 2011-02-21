@@ -12,6 +12,25 @@ class Staff < ActiveRecord::Base
  # validates_attachment_presence :photo
    validates_attachment_size :photo, :less_than => 50.kilobytes
    validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
+   
+   
+ #---------------Validations------------------------------------------------
+
+     validates_numericality_of :icno#, :kwspcode
+     validates_length_of       :icno, :is =>12
+     validates_presence_of     :icno, :name, :coemail, :code
+     validates_uniqueness_of   :icno, :fileno, :coemail, :code
+     validates_format_of       :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
+     validates_presence_of     :fileno, :cobirthdt, :addr, :poskod_id, :mrtlstatuscd, :staffgrade_id, :statecd, :country_cd
+     #validates_length_of    :cooftelno, :is =>10
+     #validates_length_of    :cooftelext, :is =>5
+     validates_length_of    :addr, :within => 1..180,:too_long => "Address Too Long"
+     validates_format_of    :coemail,
+                            :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,
+                            :message => "Email Not Valid"
+
+
+ #-----------------------------------------------------------------------------------------------------------
   
   
 #----------Link Foreign Key with other pages---------------------------------------------------
@@ -145,27 +164,7 @@ class Staff < ActiveRecord::Base
 #--------------------------------------------------------------------------
   
   
-#---------------Validations------------------------------------------------
-  
-  validates_numericality_of :icno#, :kwspcode
-  validates_presence_of  :icno, :name, :coemail
-  validates_format_of    :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
-  validates_presence_of  :code, :fileno, :cobirthdt, :bloodtype, 
-                         :addr, :poskod_id, :mrtlstatuscd, :staffgrade_id,
-                         :statecd, :country_cd
 
-  validates_uniqueness_of   :icno, :fileno, :coemail
-  validates_length_of       :icno, :is =>12
-
-  #validates_length_of    :cooftelno, :is =>10
-  #validates_length_of    :cooftelext, :is =>5
-  validates_length_of    :addr, :within => 1..180,:too_long => "Address Too Long"
-  validates_format_of    :coemail,
-                         :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,
-                         :message => "Email Not Valid"
-                         
-
-#-----------------------------------------------------------------------------------------------------------
 
 
 #----------------------------code for repeating field qualification------------------------------------------  

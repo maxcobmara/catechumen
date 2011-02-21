@@ -34,7 +34,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="cobirthdt"><b><%= t 'staff.cobirthdt' %></b></label></td>
-		<td><%= f.datetime_select :cobirthdt, :start_year => 1945, :end_year => 1992, :order => [:day, :month, :year] %></td>
+		<td><%= f.date_select :cobirthdt, :start_year => 1945, :end_year => 1992, :order => [:day, :month, :year] %></td>
 	</tr>
 	
 	<tr>
@@ -135,14 +135,8 @@
 	<tr>
 		<td class="leftcol"><label for="staffgrade_id"><b><%= t 'staff.staffgrade_id' %></b></label><font color="red"> * </font></td>
 		<td><%= f.collection_select :staffgrade_id, Staffgrade.find(:all), :id, :sgname, :include_blank => true %></td>
-	</tr>#:conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]
+	</tr><!-->#:conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]<-->
 
-	<tr>
-		<td class="leftcol"><label for="position_id">Position</label></td>
-		<td><%=h @staff.position.staff_id.blank? ? "-" : @staff.position.positionname %></td>
-		<%=h @staff.staffgrade_id %><%=h @staff.staffgrade_id %>
-		</td>
-	</tr>	
 		
 	<tr>
 		<td class="leftcol"><label for="employstatus"><b><%= t 'staff.employstatus' %></b></label></td>
@@ -160,22 +154,22 @@
 	
 	<tr>
 		<td class="leftcol"><label for="appointdt"><b><%= t 'staff.appointdt' %></b></label></td>
-		<td><%= f.date_select :appointdt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		<td><%= f.date_select :appointdt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %> %></td>
 	</tr>
 		
 	<tr>
 		<td class="leftcol"><label for="schemedt"><b><%= t 'staff.schemedt' %></b></label></td>
-		<td><%= f.date_select :schemedt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		<td><%= f.date_select :schemedt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %> %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="confirmdt"><b><%= t 'staff.confirmdt' %></b></label></td>
-		<td><%= f.date_select :confirmdt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		<td><%= f.date_select :confirmdt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %> %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="posconfirmdate"><b><%= t 'staff.posconfirmdate' %></b></label></td>
-		<td><%= f.date_select :posconfirmdate, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		<td><%= f.date_select :posconfirmdate, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %> %></td>
 	</tr>
 		
 	<tr>
