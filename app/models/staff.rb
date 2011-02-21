@@ -128,9 +128,9 @@ class Staff < ActiveRecord::Base
   #links to Model Course
   has_many :admin,        :class_name => 'Course', :foreign_key => 'staff_id'
   
-  #links to Model staffleave
-   has_many :staffname,        :class_name => 'Staffleave', :foreign_key => 'staff_id'
-   has_many :replacements,     :class_name => 'Staffleave', :foreign_key => 'replacement_id'
+  #links to Model leaveforstaffs
+   has_many :leave_applications,  :class_name => 'Leaveforstaff', :foreign_key => 'staff_id'
+   has_many :replacements,        :class_name => 'Leaveforstaff', :foreign_key => 'replacement_id'
   
   
   #links to Model Qualification
@@ -267,7 +267,7 @@ class Staff < ActiveRecord::Base
   end
 
   def position_with_name
-     "#{position.positionname}  #{name}"
+    "#{name}      (#{position.positionname})"
   end
   
   def staff_positiontemp

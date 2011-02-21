@@ -2,12 +2,12 @@ class Leaveforstaff < ActiveRecord::Base
   #has_many :staffs
   
   #belongs_to :staff
-  
+  belongs_to :applicant,  :class_name => 'Staff', :foreign_key => 'staff_id'
   belongs_to :replacement, :class_name => 'Staff', :foreign_key => 'replacement_id'
-  belongs_to :staffname, :class_name => 'Staff', :foreign_key => 'staff_id'
+  
   
   #---------Validation-----------------#
-  validates_presence_of :staff_id
+  validates_presence_of :staff_id, :leavetype
   #----------------------------------------#
   
   def self.find_main
@@ -21,6 +21,8 @@ class Leaveforstaff < ActiveRecord::Base
       (leavenddate - leavestartdate).to_i
     end
   end
+  
+  
   
 STAFFLEAVETYPE = [
          #  Displayed       stored in db
