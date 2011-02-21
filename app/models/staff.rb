@@ -15,21 +15,18 @@ class Staff < ActiveRecord::Base
    
    
  #---------------Validations------------------------------------------------
-
      validates_numericality_of :icno#, :kwspcode
      validates_length_of       :icno, :is =>12
      validates_presence_of     :icno, :name, :coemail, :code
      validates_uniqueness_of   :icno, :fileno, :coemail, :code
      validates_format_of       :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
      validates_presence_of     :fileno, :cobirthdt, :addr, :poskod_id, :mrtlstatuscd, :staffgrade_id, :statecd, :country_cd
-     #validates_length_of    :cooftelno, :is =>10
-     #validates_length_of    :cooftelext, :is =>5
-     validates_length_of    :addr, :within => 1..180,:too_long => "Address Too Long"
-     validates_format_of    :coemail,
-                            :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,
-                            :message => "Email Not Valid"
-
-
+     #validates_length_of      :cooftelno, :is =>10
+     #validates_length_of      :cooftelext, :is =>5
+     validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"
+     validates_format_of       :coemail,
+                               :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,
+                               :message => "Email Not Valid"
  #-----------------------------------------------------------------------------------------------------------
   
   
@@ -273,8 +270,19 @@ class Staff < ActiveRecord::Base
      "#{position.positionname}  #{name}"
   end
   
-  def position_name
-     "#{position.positionname}"
+  def staff_positiontemp
+    sid = staff.id
+    spo = Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
+    if spo = nil
+      "NA"
+    else 
+      @staff.position.positionname
+    end 
+  end
+  
+  def staff_position
+    sid = staff.id
+    Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
   end
   
  
