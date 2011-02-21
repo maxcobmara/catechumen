@@ -2,7 +2,7 @@ class IntakesController < ApplicationController
   # GET /intakes
   # GET /intakes.xml
   def index
-    @intakes = Intake.all
+    @intakes = Intake.find(:all, :order => "year DESC, intake_no DESC")
 
     respond_to do |format|
       format.html # index.html.erb
