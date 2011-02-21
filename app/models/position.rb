@@ -19,7 +19,19 @@ class Position < ActiveRecord::Base
   end
   
   def people_assigned
-    Position.find(:all, :select => "staff_id", :conditions => ["staff_id IS NOT ?", nil]).map(&:staff_id)
+    a = Array.new
+    pid = self.staff_id
+    a << pid
+    available_staff = Position.find(:all, :select => "staff_id", :conditions => ["staff_id IS NOT ?", nil]).map(&:staff_id)
+    if staff_id = nil
+      available_staff
+    else
+      available_staff - a
+    end
+  end
+  
+  def just_a_counter
+    v=1
   end
   
   

@@ -20,7 +20,7 @@ class Staff < ActiveRecord::Base
      validates_presence_of     :icno, :name, :coemail, :code
      validates_uniqueness_of   :icno, :fileno, :coemail, :code
      validates_format_of       :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
-     validates_presence_of     :fileno, :cobirthdt, :addr, :poskod_id, :mrtlstatuscd, :staffgrade_id, :statecd, :country_cd
+     validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd
      #validates_length_of      :cooftelno, :is =>10
      #validates_length_of      :cooftelext, :is =>5
      validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"
@@ -40,7 +40,7 @@ class Staff < ActiveRecord::Base
   has_many :sdiciplines,  :foreign_key => 'reportedby_id'
   has_many :strainings,   :foreign_key => 'staff_id'
   has_many :librarytransactions
-  has_one  :position
+  has_one  :position,     :foreign_key => 'staff_id'
   
   # has_many :topics, :foreign_key => 'creator_id' 
   #has_many :curriculums, :foreign_key => 'staff_id'
