@@ -5,6 +5,17 @@ class Book < ActiveRecord::Base
   belongs_to :addbook, :foreign_key => 'supplier_id'
   #belongs_to :cst, :class_name => 'Staff', :foreign_key => 'catsource'
   
+  
+  #-----------Attach Photo---------------
+  has_attached_file :photo
+  validates_attachment_size :photo, :less_than => 50.kilobytes
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']    
+  
+  #------------Validation-----------------------------------------
+  validates_presence_of  :controlno, :isbn, :issn, :classlcc, :classddc, :title, :author, :publisher, :loantype, :mediatype, :status
+  
+  
+  
    def self.find_main
      Staff.find(:all, :condition => ['staff_id IS NULL'])
    end
@@ -15,22 +26,14 @@ class Book < ActiveRecord::Base
     
     def self.search(search)
        if search
-        find(:all, :conditions => ['isbn LIKE ? or title ILIKE ?', "%#{search}%","%#{search}%"])
+        find(:all, :conditions => ['isbn LIKE ? or title ILIKE ? or author ILIKE ?', "%#{search}%","%#{search}%","%#{search}%"])
       else
        find(:all)
       end
     end
     
-   # def number_to_currency_br(number)
-   #    number_to_currency(number, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
-   #  end
-  #-----------Attach Photo---------------
-  has_attached_file :photo
-  validates_attachment_size :photo, :less_than => 50.kilobytes
-  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']    
+
   
-  #------------Validation-----------------------------------------
-  validates_presence_of  :controlno, :isbn, :issn, :classlcc, :classddc, :title, :author, :publisher
   
   LOAN = [
         #  Displayed       stored in db
