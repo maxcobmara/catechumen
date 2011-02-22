@@ -6,8 +6,23 @@
 	</tr>
 
 	<tr>
+		<td class="leftcol"><label for="student_id"><b>MyKad:</b></label></td>
+		<td><%=h @leaveforstudent.student_id.blank? ? "No MyKad" : @leaveforstudent.student.icno %></td>
+	</tr>
+	
+	<tr>
 		<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
-		<td><%=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name %></td>
+		<td><%=h @leaveforstudent.student_id.blank? ? "Not Student" : @leaveforstudent.student.name %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="matrixno"><b>Matrix No:</b></label></td>
+		<td><%=h @leaveforstudent.matrixno %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="programme_id"><b>Program:</b></label></td>
+		<td><%=h @leaveforstudent.programme_id.blank? ? "Not Programme" : @leaveforstudent.programme.programme_code_with_programme_name %></td>
 	</tr>
 	
 	<tr>
@@ -43,6 +58,11 @@
 	    <td class="leftcol"><label for="leave_enddate"><b>End Date:</b></label></td>
 		<td><%=h @leaveforstudent.leave_enddate %></td>
 	</tr>
+	
+	<tr>
+	    <td class="leftcol"><label for="notes"><b>Notes:</b></label></td>
+		<td><%=h @leaveforstudent.notes %></td>
+	</tr>
 	<tr>
 	    <td class="leftcol"><label for="studentsubmit"><b>Submit for Approval:</b></label></td>
 		<td><%=h @leaveforstudent.studentsubmit %></td>
@@ -53,11 +73,15 @@
 	</tr>
 	<tr>
 	    <td class="leftcol"><label for="approved"><b>Approve Student Leave:</b></label></td>
-		<td><%=h @leaveforstudent.approved %></td>
+		<td> <%=h @leaveforstudent.approved? ? "Approved" : "Not Approved"  %></td>
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="staff_id"><b>Approved By:</b></label></td>
-		<td><%=h @leaveforstudent.staff_id.blank? ? "Not Staff" : @leaveforstudent.staff.mykad_with_staff_name %></td>
+    	<td><%=h @leaveforstudent.staff_id.blank? ? "Not Staff" : @leaveforstudent.staff.name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="position"><b>Position:</b></label></td>
+		<td><%=h @leaveforstudent.position %></td>
 	</tr>
 	<tr>
 	    <td class="leftcol"><label for="approvedate"><b>End Date:</b></label></td>

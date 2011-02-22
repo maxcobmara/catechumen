@@ -19,6 +19,8 @@ class Programme < ActiveRecord::Base
   #links to Model Klass
   has_many :programclass,    :class_name => 'Klass', :foreign_key => 'programme_id'
   
+  #Link to LeaveStudent
+   has_many :leaveforstudents
    
   def programme_code_with_programme_name
      "#{code}  #{name}"

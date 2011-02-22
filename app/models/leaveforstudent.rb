@@ -1,6 +1,7 @@
 class Leaveforstudent < ActiveRecord::Base
   belongs_to :student
   belongs_to :staff
+  belongs_to :programme
 
 validates_presence_of :student_id, :leavetype
 validates_numericality_of :telno
@@ -11,6 +12,10 @@ validates_numericality_of :telno
   
   def self.find_main
     Staff.find(:all, :condition => ['staff_id IS NULL'])
+  end
+  
+  def self.find_main
+    Programme.find(:all, :condition => ['programme_id IS NULL'])
   end
   
  

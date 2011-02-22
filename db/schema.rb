@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110221020912) do
+ActiveRecord::Schema.define(:version => 20110222034436) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -463,6 +463,7 @@ ActiveRecord::Schema.define(:version => 20110221020912) do
     t.string   "matrixno"
     t.string   "program"
     t.text     "notes"
+    t.string   "programme_id"
   end
 
   create_table "librarytransactions", :force => true do |t|
