@@ -1,6 +1,7 @@
 class Residence < ActiveRecord::Base
+  
+  #Residence/Asset relationship see "code for repeating asset" below
   has_many :assetloss, :foreign_key => 'losslocation_id'
-  #has_many :assets, :foreign_key => 'residence_id'
   
   belongs_to :staffname, :class_name => 'Staff', :foreign_key => 'staff_id'
   belongs_to :admin, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
@@ -65,8 +66,8 @@ class Residence < ActiveRecord::Base
   validates_presence_of    :rescode, :resname 
   validates_uniqueness_of  :rescode
   
-  # code for repeating field qualification
-   has_many :assets, :dependent => :destroy, :foreign_key => 'residence_id'
+  # code for repeating asset
+   has_many :assets, :dependent => :destroy, :foreign_key => 'location_id'
 
    def new_asset_attributes=(asset_attributes)
      asset_attributes.each do |attributes|

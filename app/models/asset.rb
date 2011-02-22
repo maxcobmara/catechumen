@@ -7,10 +7,9 @@ class Asset < ActiveRecord::Base
   
   #belongs_to :asset, :foreign_key =>'location_id'
    
-  #Link to Residence(Repeating Fields)
-  belongs_to :residence, :foreign_key =>'asset_id'
-   
-
+ #Asset/Location Relationship
+ belongs_to :residence, :foreign_key =>'location_id'
+ 
   
  #----------------------Link to Other Page---------------------------------------------------
   
