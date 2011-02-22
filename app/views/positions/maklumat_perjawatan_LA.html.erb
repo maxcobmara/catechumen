@@ -1,0 +1,63 @@
+<%= stylesheet_link_tag 'report' %> 
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+	<fieldset width=10px >
+
+<div id="title" width=21cm>	
+<H2>LAMPIRAN A</H2> 
+
+
+<H3>MAKLUMAT PERJAWATAN DI KOLEJ-KOLEJ LATIHAN</H3>
+<H3>KEMENTERIAN KESIHATAN MALAYSIA</H3>
+<H3>SEHINGGA <%= Date.today.strftime('%d-%m-%Y') %></H3>
+
+<BR>
+
+<p>KOLEJ: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU </p>
+<BR>
+	
+<div id="tprintreport">
+<table width=100% border=1px cellspacing=0 align="center" >
+	
+	<tr>
+		<th width=1cm valign="top" >BIL</th>
+		<th width=1cm valign="top" >KOD</th>
+		<th width=4cm valign="top">JAWATAN</th>
+		<th width=2cm valign="top">GRED JAWATAN</th>
+		<th width=5cm valign="top">NAMA</th>
+		<th width=4cm valign="top">NO K/P</th>
+		<th width=4cm valign="top">TARIKH LAHIR</th>
+		<th width=4cm valign="top">TARIKH LANTIKAN PERTAMA</th>
+		<th width=4cm valign="top">TARIKH KENAIKAN PANGKAT KE GRED SEKARANG</th>
+		<th  valign="top">CATATAN *</th>
+	</tr>
+	
+	 <% just_a_counter = 0 %>
+	 <% @positions.each do |position| %>
+	    <% just_a_counter += 1 %>
+    <tr align="center">
+	<td><%=h just_a_counter %> </td>
+	<td align="left"><%=h position.positioncode %> </td>	
+	<td align="left"><%=h position.positionname %></td>	
+	<td><%=h position.staffgrade.blank? ? "-" : position.staffgrade.sgshortname %></td>
+	<td align="left"><%=h position.staff.blank? ? "-" : position.staff.name %></td>	
+	<td><%=h position.staff.blank? ? "-" : position.staff.formatted_mykad %></td>
+	<td><%=h position.staff.blank? ? "-" : position.staff.cobirthdt.strftime('%d-%m-%Y') %></td>
+	<td><%=h position.staff.blank? ? "-" : position.staff.appointdt.strftime('%d-%m-%Y') %></td>
+	<td><%=h position.staff.blank? ? "-" : position.staff.posconfirmdate.strftime('%d-%m-%Y') %></td>
+	<td> </td>
+	</tr>
+	
+	<% end %>
+	
+	
+</table>
+</div>
+</fieldset>
+</form>

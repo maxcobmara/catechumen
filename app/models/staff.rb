@@ -137,7 +137,8 @@ class Staff < ActiveRecord::Base
   has_many :qualification, :class_name => 'Qualification', :foreign_key => 'level_id'
   
   #links to Model Trainneeds
-   has_many :confirmedby, :class_name => 'Trainneed', :foreign_key => 'confirmedby_id'
+   has_many :staff_that_need_training, :class_name => 'Trainneed', :foreign_key => 'staff_id'
+   has_many :training_managers, :class_name => 'Trainneed', :foreign_key => 'confirmedby_id'
    
    
 #-------------Empty Field for Foreign Key Link------------------------
@@ -266,9 +267,22 @@ class Staff < ActiveRecord::Base
     "#{formatted_mykad}  #{name}"
   end
 
-  def position_with_name
-    "#{name}      (#{position.positionname})"
+  def position_with_name   #this currenlt works with staff leave
+      "#{name}  (#{position.positionname})"
   end
+  
+  def staff_name_with_position
+    "#{name}  (#{position_for_staff})"
+  end
+  
+  def position_for_staff
+    if position.blank?
+      "-"
+    else
+      position.positionname
+    end
+  end
+  
   
   def staff_positiontemp
     sid = staff.id
@@ -284,6 +298,8 @@ class Staff < ActiveRecord::Base
     sid = staff.id
     Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
   end
+  
+
   
  
 
