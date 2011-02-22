@@ -4,7 +4,7 @@ class Subject < ActiveRecord::Base
   has_and_belongs_to_many :programmes
   
   #Link to model topics
-  has_many :subject, :class_name => 'Topic', :foreign_key => 'subject_id'  
+  has_many :topics, :class_name => 'Topic', :foreign_key => 'subject_id'  
   
   #Link to model exam
   has_many :subject, :class_name => 'Examquestion', :foreign_key => 'curriculum_id' 
