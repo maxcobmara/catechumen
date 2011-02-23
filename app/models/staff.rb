@@ -283,6 +283,10 @@ class Staff < ActiveRecord::Base
     end
   end
   
+  def my_bank
+    (Staff::BANK.find_all{|disp, value| value == bank }).map {|disp, value| disp}
+  end
+  
   
   def staff_positiontemp
     sid = staff.id

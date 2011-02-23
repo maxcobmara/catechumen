@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :staffcourses
+
   map.resources :grades
 
   map.connect '/time_table_entries/select_intake', :controller => 'time_table_entries', :action => 'select_intake'

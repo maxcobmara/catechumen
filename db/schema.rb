@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110217094143) do
+ActiveRecord::Schema.define(:version => 20110223204834) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -459,11 +459,12 @@ ActiveRecord::Schema.define(:version => 20110217094143) do
     t.date     "approvedate"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "notes"
   end
 
   create_table "librarytransactions", :force => true do |t|
     t.integer  "book_id"
-    t.boolean  "staff"
+    t.boolean  "ru_staff"
     t.integer  "staff_id"
     t.integer  "student_id"
     t.date     "checkoutdate"
@@ -670,8 +671,21 @@ ActiveRecord::Schema.define(:version => 20110217094143) do
     t.datetime "updated_at"
   end
 
+  create_table "staffcourses", :force => true do |t|
+    t.string   "name"
+    t.integer  "coursetype"
+    t.string   "provider"
+    t.string   "location"
+    t.decimal  "duration",      :precision => 4, :scale => 1, :default => 0.0
+    t.integer  "duration_type"
+    t.string   "proponent"
+    t.decimal  "cost",          :precision => 8, :scale => 2, :default => 2.0
+    t.date     "course_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "staffgrades", :force => true do |t|
-    t.integer  "sgcode"
     t.string   "sgname"
     t.string   "sgshortname"
     t.integer  "sglevel"

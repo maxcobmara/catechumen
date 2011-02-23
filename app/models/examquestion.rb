@@ -30,7 +30,21 @@ class Examquestion < ActiveRecord::Base
           [ "OSCII", "OSCII" ],
           [ "MEQ", "MEQ" ]
           
-]
+   ]
+   
+   QCATEGORY = [
+           #  Displayed       stored in db
+           [ "SEQ","SEQ" ],
+           [ "MCQ","MCQ" ],
+           [ "ACQ", "ACQ" ],
+           [ "OSCI", "OSCI" ],
+           [ "OSCII", "OSCII" ],
+           [ "MEQ", "MEQ" ]
+
+    ]
+
+
+
 
 QSTATUS = [
         #  Displayed       stored in db
