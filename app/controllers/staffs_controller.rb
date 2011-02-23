@@ -51,14 +51,6 @@ end
     #end
   end
   
-  def reportforstaff
-    #@pages = Page.find(:all, :order => :position)
-    @staffs = Staff.find(:all, :order => :position_id)
-    render :layout => 'report'
-  end
-  
-  
-  
   #-----Test Ruport---------#
   
 def ruport

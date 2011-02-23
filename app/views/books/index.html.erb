@@ -19,11 +19,11 @@
     <th>Title</th>
     <th>Author</th>
     <th>Publisher</th>
-    <th>Description</th>
+	  <th>Description</th>
     <th>Loantype</th>
     <th>Mediatype</th>
     <th>Status</th>
-<th colspan=3 class="ac">Control</th>
+    <th colspan=3 class="ac">Control</th>
   </tr>
 
 <% @books.each do |book| %>
@@ -34,11 +34,11 @@
     <td><%=h book.author %></td>
     <td><%=h book.publisher %></td>
     <td><%=h book.description %></td>
-    <td><%=h book.loantype %></td>
-    <td><%=h book.mediatype %></td>
-    <td><%=h book.status %></td>
+    <td><%=h (Book::LOAN.find_all{|disp, value| value == book.loantype}).map {|disp, value| disp} %></td>
+    <td><%=h (Book::MEDIA.find_all{|disp, value| value == book.mediatype}).map {|disp, value| disp} %></td>
+    <td><%=h (Book::STATUS.find_all{|disp, value| value == book.status}).map {|disp, value| disp} %></td>
     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => book %></td>
-	<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => book %></td>
+	  <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => book %></td>
     <td width=10px><%= link_to 'Destroy', book, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

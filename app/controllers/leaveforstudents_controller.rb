@@ -25,8 +25,7 @@ class LeaveforstudentsController < ApplicationController
   # GET /leaveforstudents/new.xml
   def new
     @leaveforstudent = Leaveforstudent.new
-    @student = Student.all
-    @student = []
+    @student = [ ]
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @leaveforstudent }
@@ -85,10 +84,17 @@ class LeaveforstudentsController < ApplicationController
   end
   
   def update_matrixno
-    @student = Student.find(:all, :conditions => ["student_id = ?", params[:matrixno]])
+    @stdmatrix = Student.find(:all, :conditions => ["student_id like ?", "%" + params[:std_matrixno]])
+    
+    if params[:id]
+      @stdmatrix =Student.find(:all)
+      render :partial => 'stdmatrix', :collection => @stdmatrix
+    else
+      render :text => "Result not found", :layout =>false
+    end
     respond_to do |format|
     format.html
-    format.js
+    format.json {render :json => @student }
   end
   end
 

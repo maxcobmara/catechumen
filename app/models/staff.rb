@@ -12,6 +12,22 @@ class Staff < ActiveRecord::Base
  # validates_attachment_presence :photo
    validates_attachment_size :photo, :less_than => 50.kilobytes
    validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
+   
+   
+ #---------------Validations------------------------------------------------
+     validates_numericality_of :icno#, :kwspcode
+     validates_length_of       :icno, :is =>12
+     validates_presence_of     :icno, :name, :coemail, :code
+     validates_uniqueness_of   :icno, :fileno, :coemail, :code
+     validates_format_of       :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
+     validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd
+     #validates_length_of      :cooftelno, :is =>10
+     #validates_length_of      :cooftelext, :is =>5
+     validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"
+     validates_format_of       :coemail,
+                               :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,
+                               :message => "Email Not Valid"
+ #-----------------------------------------------------------------------------------------------------------
   
   
 #----------Link Foreign Key with other pages---------------------------------------------------
@@ -24,7 +40,7 @@ class Staff < ActiveRecord::Base
   has_many :sdiciplines,  :foreign_key => 'reportedby_id'
   has_many :strainings,   :foreign_key => 'staff_id'
   has_many :librarytransactions
-  has_one  :position
+  has_one  :position,     :foreign_key => 'staff_id'
   
   # has_many :topics, :foreign_key => 'creator_id' 
   #has_many :curriculums, :foreign_key => 'staff_id'
@@ -112,16 +128,17 @@ class Staff < ActiveRecord::Base
   #links to Model Course
   has_many :admin,        :class_name => 'Course', :foreign_key => 'staff_id'
   
-  #links to Model staffleave
-   has_many :staffname,        :class_name => 'Staffleave', :foreign_key => 'staff_id'
-   has_many :replacements,     :class_name => 'Staffleave', :foreign_key => 'replacement_id'
+  #links to Model leaveforstaffs
+   has_many :leave_applications,  :class_name => 'Leaveforstaff', :foreign_key => 'staff_id'
+   has_many :replacements,        :class_name => 'Leaveforstaff', :foreign_key => 'replacement_id'
   
   
   #links to Model Qualification
   has_many :qualification, :class_name => 'Qualification', :foreign_key => 'level_id'
   
   #links to Model Trainneeds
-   has_many :confirmedby, :class_name => 'Trainneed', :foreign_key => 'confirmedby_id'
+   has_many :staff_that_need_training, :class_name => 'Trainneed', :foreign_key => 'staff_id'
+   has_many :training_managers, :class_name => 'Trainneed', :foreign_key => 'confirmedby_id'
    
    
 #-------------Empty Field for Foreign Key Link------------------------
@@ -145,27 +162,7 @@ class Staff < ActiveRecord::Base
 #--------------------------------------------------------------------------
   
   
-#---------------Validations------------------------------------------------
-  
-  validates_numericality_of :icno#, :kwspcode
-  validates_presence_of  :icno, :name, :coemail
-  validates_format_of    :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
-  validates_presence_of  :code, :fileno, :cobirthdt, :bloodtype, 
-                         :addr, :poskod_id, :mrtlstatuscd, :staffgrade_id,
-                         :statecd, :country_cd
 
-  validates_uniqueness_of   :icno, :fileno, :coemail
-  validates_length_of       :icno, :is =>12
-
-  #validates_length_of    :cooftelno, :is =>10
-  #validates_length_of    :cooftelext, :is =>5
-  validates_length_of    :addr, :within => 1..180,:too_long => "Address Too Long"
-  validates_format_of    :coemail,
-                         :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,
-                         :message => "Email Not Valid"
-                         
-
-#-----------------------------------------------------------------------------------------------------------
 
 
 #----------------------------code for repeating field qualification------------------------------------------  
@@ -270,13 +267,39 @@ class Staff < ActiveRecord::Base
     "#{formatted_mykad}  #{name}"
   end
 
-  def position_with_name
-     "#{position.positionname}  #{name}"
+  def position_with_name   #this currenlt works with staff leave
+      "#{name}  (#{position.positionname})"
   end
   
-  def position_name
-     "#{position.positionname}"
+  def staff_name_with_position
+    "#{name}  (#{position_for_staff})"
   end
+  
+  def position_for_staff
+    if position.blank?
+      "-"
+    else
+      position.positionname
+    end
+  end
+  
+  
+  def staff_positiontemp
+    sid = staff.id
+    spo = Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
+    if spo = nil
+      "NA"
+    else 
+      @staff.position.positionname
+    end 
+  end
+  
+  def staff_position
+    sid = staff.id
+    Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
+  end
+  
+
   
  
 

@@ -7,7 +7,8 @@
 	<div class="tlist">
 	    <table width=100%>
 		  <tr>
-    <th><%= t 'librarytransaction.book_id' %></th>
+    <th>Accession No</th>
+    <th>ISBN No</th>
     <th><%= t 'book.title' %></th>
     <th><%= t 'librarytransaction.borrower' %></th>
     <th><%= t 'librarytransaction.checkoutdate' %></th>
@@ -19,9 +20,10 @@
 
 <% @librarytransactions.each do |librarytransaction| %>
   <tr>
-    <td><%=h librarytransaction.book_id %></td>
+    <td><%=h librarytransaction.book.accessionno %></td>
+    <td><%=h librarytransaction.book.isbn %></td>
     <td><%=h librarytransaction.book.title %></td>
-    <td><%=h librarytransaction.isitstaff? ?  librarytransaction.staff.name : librarytransaction.student.name %></td>
+    <td><%=h librarytransaction.staff? ?  librarytransaction.staff.name : librarytransaction.student.name %></td>
     <td><%=h librarytransaction.checkoutdate %></td>
     <td><%=h librarytransaction.returnduedate %></td>
     <td><%=h librarytransaction.extended %></td>

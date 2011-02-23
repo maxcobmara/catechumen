@@ -84,4 +84,10 @@ class PositionsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def maklumat_perjawatan_LA
+    #@pages = Page.find(:all, :order => :position)
+    @positions = Position.find(:all, :order => :positioncode)
+    render :layout => 'report'
+  end
 end

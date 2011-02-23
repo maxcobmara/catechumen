@@ -110,6 +110,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/students/formforstudent', :controller => 'students', :action => 'formforstudent'
   map.resources :students
 
+  map.connect '/position/maklumat_perjawatan_LA', :controller => 'positions', :action => 'maklumat_perjawatan_LA'
   map.resources :positions
 
   map.resources :cofiles
@@ -123,7 +124,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :stafftitles
   
   map.connect '/staffs/reportforstaff', :controller => 'staffs', :action => 'reportforstaff'
-  map.connect '/staffs/borang_maklumat_staff', :controller => 'staffs', :action => 'borang_maklumat_staff'
   map.resources :staffs
   
   

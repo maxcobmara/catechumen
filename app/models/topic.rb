@@ -6,11 +6,8 @@ class Topic < ActiveRecord::Base
   belongs_to :tcreator,  :class_name => 'Staff',   :foreign_key => 'creator_id'
   belongs_to :approvertopic,  :class_name => 'Staff',   :foreign_key => 'approvedby_id'
   
-  has_many :topics, :foreign_key => 'topic_id'
-  belongs_to :topics
-  
   #Link to Model Timetableentry
-  has_many :topic,  :class_name => 'Time_table_entry', :foreign_key => 'topic_id'
+  #has_many :topic,  :class_name => 'Time_table_entry', :foreign_key => 'topic_id'
   
   def self.find_main
     Topic.find(:all, :condition => ['topic_id IS NULL'])

@@ -36,7 +36,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="position_id"><%= t 'staff.position' %></label></td>
-		 <td><%=h @staff.position.positionname %></td>
+		 <td><%=h @staff.position.blank? ? "-" : @staff.position.positionname %></td>
 	</tr>
 	
 	<tr>
@@ -132,14 +132,8 @@
 	
 	<tr>
 		<td class="leftcol"><label for="position_id">Position:</label></td>
-		<td><%=h @staff.position.positionname %></td>
+		<td><%=h @staff.position.blank? ? "-" : @staff.position.positionname %></td>
 	</tr>
-	<!-->
-	<tr>
-		<td class="leftcol"><label for="code">Reports To:</label></td>
-	  <td><#%=h @staff.position.bosses.staff.name.blank? ? "NA" : @staff.position.bosses.staff.name %></td>
-
-	</tr>-->
 	
 	<tr>
 		<td class="leftcol"><label for="employstatus">Employment Status:</label></td>

@@ -1,5 +1,17 @@
 class Student < ActiveRecord::Base
   
+    #------------------Validations--------------------------------------------------------------------------------------
+
+    validates_presence_of     :icno, :name, :matrixno, :sstatus, :stelno, :ssponsor, :gender, :semail, :sbirthdt, 
+                              :mrtlstatuscd
+    validates_numericality_of :icno, :stelno
+    validates_length_of       :icno, :is =>12
+    validates_uniqueness_of   :icno, :matrixno
+
+
+  #----------------------Search------------------------------------------------------------------------------------------
+  
+  
   #----Link to klass---Self Join--------------------------------------------------------------------------------------
   has_and_belongs_to_many :klasses
   #has_and_belongs_to_many :programmes
@@ -44,18 +56,7 @@ class Student < ActiveRecord::Base
   # has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
   
   
-  #------------------Validations--------------------------------------------------------------------------------------
-  
-  validates_presence_of    :icno, :name, :matrixno, :sstatus, :stelno, :ssponsor, :gender, :semail, :sbirthdt, 
-                           :mrtlstatuscd
-  validates_numericality_of :icno, :stelno
 
-  validates_length_of  :icno, :is =>12
-  
-  validates_uniqueness_of :icno
-  
-  
-#----------------------Search------------------------------------------------------------------------------------------
  
   def self.search(search)
     if search

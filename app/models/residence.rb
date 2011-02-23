@@ -1,6 +1,7 @@
 class Residence < ActiveRecord::Base
+  
+  #Residence/Asset relationship see "code for repeating asset" below
   has_many :assetloss, :foreign_key => 'losslocation_id'
-  #has_many :assets, :foreign_key => 'residence_id'
   
   belongs_to :staffname, :class_name => 'Staff', :foreign_key => 'staff_id'
   belongs_to :admin, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
@@ -17,9 +18,9 @@ class Residence < ActiveRecord::Base
   has_many :substructure, :class_name => 'Residence', :foreign_key => 'parent_id'
   belongs_to :structure, :class_name => 'Residence', :foreign_key => 'parent_id'
   
-  validates_uniqueness_of :rescode, :message => "- Location code must be unique"
-  validates_presence_of  :rescode, :message => "- Location Code must be filled"
-  validates_presence_of :resname, :message => "- Location Name must be filled"
+  validates_uniqueness_of :rescode, :message => "must be unique"
+  validates_presence_of  :rescode, :message => "must be filled"
+  validates_presence_of :resname, :message => "must be filled"
 
   def self.find_main
      Staff.find(:all, :condition => ['staff_id IS NULL'])
@@ -65,8 +66,8 @@ class Residence < ActiveRecord::Base
   validates_presence_of    :rescode, :resname 
   validates_uniqueness_of  :rescode
   
-  # code for repeating field qualification
-   has_many :assets, :dependent => :destroy, :foreign_key => 'residence_id'
+  # code for repeating asset
+   has_many :assets, :dependent => :destroy, :foreign_key => 'location_id'
 
    def new_asset_attributes=(asset_attributes)
      asset_attributes.each do |attributes|

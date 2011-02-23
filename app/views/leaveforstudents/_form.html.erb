@@ -7,12 +7,16 @@
 
 	<tr>
 		<td class="leftcol"><label for="student_id"><b>Student Name:</b></label><font color="red"> * </font></td>
-		<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name,  :url=> {:action => "update_matrixno"}, :include_blank => true %>
-		</td>
+		<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name,  :include_blank => true %>
+		<%= observe_field :std_matrixno, 
+		:url => {:action => "update_matrixno"}, 
+		:with => :std_matrixno %>
+		</tds
 	</tr>
 	<tr
 	    <td class="leftcol"><label for="matrixno"><b>Matrix No:</b></label></td>
-		<td><%= f.text_field :matrixno, :url => {:action => 'update_matrixno'}, :with => :matrixno %></td>
+		<td><%= render :partial => 'stdmatrix', :collection => @stdmatrix%>
+		</td>
 	</tr>
 	<tr>
 	    <td class="leftcol"><label for="programme_id"><b>Program:</b></label></td>

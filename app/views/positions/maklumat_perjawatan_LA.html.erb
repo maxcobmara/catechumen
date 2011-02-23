@@ -27,6 +27,7 @@
 	
 	<tr>
 		<th width=1cm valign="top" >BIL</th>
+		<th width=1cm valign="top" >KOD</th>
 		<th width=4cm valign="top">JAWATAN</th>
 		<th width=2cm valign="top">GRED JAWATAN</th>
 		<th width=5cm valign="top">NAMA</th>
@@ -37,18 +38,19 @@
 		<th  valign="top">CATATAN *</th>
 	</tr>
 	
-	 <% bil = 0 %>
-	 <% @staffs.each do |staff| %>
-	    <% bil += 1 %>
+	 <% just_a_counter = 0 %>
+	 <% @positions.each do |position| %>
+	    <% just_a_counter += 1 %>
     <tr align="center">
-	<td><%=h just_a_counter %> </td>	
-	<td align="left"><%=h staff.position.positionname %></td>	
-	<td><%=h staff.staffgrade_id.blank? ? "" : staff.staffgrade.sgshortname %> </td>
-	<td align="left"><%=h staff.name %> </td>	
-	<td><%=h staff.formatted_mykad %> </td>
-	<td><%=h staff.cobirthdt.strftime('%d-%m-%Y') %> </td>
-	<td><%=h staff.appointdt.strftime('%d-%m-%Y') %> </td>
-	<td><%=h staff.posconfirmdate.strftime('%d-%m-%Y') %> </td>
+	<td><%=h just_a_counter %> </td>
+	<td align="left"><%=h position.positioncode %> </td>	
+	<td align="left"><%=h position.positionname %></td>	
+	<td><%=h position.staffgrade.blank? ? "-" : position.staffgrade.sgshortname %></td>
+	<td align="left"><%=h position.staff.blank? ? "-" : position.staff.name %></td>	
+	<td><%=h position.staff.blank? ? "-" : position.staff.formatted_mykad %></td>
+	<td><%=h position.staff.blank? ? "-" : position.staff.cobirthdt.strftime('%d-%m-%Y') %></td>
+	<td><%=h position.staff.blank? ? "-" : position.staff.appointdt.strftime('%d-%m-%Y') %></td>
+	<td><%=h position.staff.blank? ? "-" : position.staff.posconfirmdate.strftime('%d-%m-%Y') %></td>
 	<td> </td>
 	</tr>
 	
@@ -59,6 +61,3 @@
 </div>
 </fieldset>
 </form>
-
-
-
