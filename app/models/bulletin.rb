@@ -1,11 +1,14 @@
 class Bulletin < ActiveRecord::Base
   
+  before_save  :titleize_headline
+  
   def titleize_headline
     self.headline = headline.titleize
   end
   
+  validates_presence_of :headline, :content, :postedby_id, :publishdt
 
-    
+  belongs_to :staff,  :foreign_key => 'postedby_id'  #ok now see the index for this  
   
    #belongs_to :bulletin, :foreign_key => 'staff_id'
    #belongs_to :bulletin, :class_name => 'Staff', :foreign_key => 'staff_id'   ! why do you need TWO?! and they are both WRONG!!!!
@@ -17,9 +20,9 @@ class Bulletin < ActiveRecord::Base
    
    #read mine   ::: Bulletin belongs_to :staff where the foreign key is postedby_id
    
-   belongs_to :staff,  :foreign_key => 'postedby_id'  #ok now see the index for this
    
-   validates_presence_of :headline, :content, :postedby_id, :publishdt
+   
+   
   # validates_format_of    :headline, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters"
    
     def self.find_main

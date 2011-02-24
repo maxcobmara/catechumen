@@ -21,12 +21,13 @@
 	<!-- if id validated for presence... no need to put , :include_blank => true -->
 	<tr>
 		<td class="leftcol"><label for="publishdt"><b>Publish Date:</b></label></td>
-		<td><%= f.date_select :publishdt, :start_year => 2011, :end_year => Date.current.year, :order => [:day, :month, :year], :default => 1.days.from_now  %></td>
+		<td><%= f.date_select :publishdt, :start_year => Time.now.year, :order => [:day, :month, :year], :default => 1.days.from_now  %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="data">Upload File:</label></td>
-		<td><%= f.file_field :data %></td>
+		<td><%= f.file_field :data %><BR>
+			  <font color=#AAA size=-2>pdf/txt/doc/xls/jpg.  Max : 5MB</font></td>
 	</tr>
 	
 
