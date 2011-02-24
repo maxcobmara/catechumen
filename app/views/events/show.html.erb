@@ -7,13 +7,13 @@
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="eventstdt">Event Start Date:</label></td>
-		<td> <%=h @event.eventstdt %></td>
+		<td> <%=h @event.eventstdt.strftime("%I:%M%p, %A,  %d %B %Y ") unless @event.eventstdt.nil? %></td>
 	</tr>
 	
 	
 	<tr>
 		<td class="leftcol"><label for="eventendt">Event EndDate:</label></td>
-		<td> <%=h @event.eventendt %></td>
+		<td> <%=h @event.eventendt.strftime("%I:%M%p, %A,  %d %B %Y ") unless @event.eventendt.nil? %></td>
 	</tr>
 	
 	
@@ -39,7 +39,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="createdby ">Created By:</label></td>
-		<td> <%=h @event.createdby %></td>
+		<td><%=h @event.staff.blank? ? "-" : @event.staff.name %></td>
 	</tr>
 </table>
 <BR>

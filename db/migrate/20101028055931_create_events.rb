@@ -7,7 +7,7 @@ class CreateEvents < ActiveRecord::Migration
       t.string   :location
       t.text     :participants
       t.string   :officiated
-      t.string   :createdby
+      t.integer  :createdby
 
       t.timestamps
     end

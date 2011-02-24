@@ -1,7 +1,18 @@
 class Event < ActiveRecord::Base
-  validates_presence_of :eventname, :location
- # validates_format_of   :participants, :officiated, :createdby,
+  
+  belongs_to :staff, :foreign_key => 'createdby'
+  
+  validates_presence_of :eventname, :location, :eventstdt
+  # validates_format_of   :participants, :officiated
   #                      :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters"
+  
+  
+  before_save  :titleize_eventname
+
+  def titleize_eventname
+    self.eventname = eventname.titleize
+  end
+  
   
   def self.search(search)
       if search

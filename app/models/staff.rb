@@ -41,6 +41,7 @@ class Staff < ActiveRecord::Base
   has_many :strainings,   :foreign_key => 'staff_id'
   has_many :librarytransactions
   has_one  :position,     :foreign_key => 'staff_id'
+  has_many :events,        :foreign_key => 'createdby'                                      #link to created by in events
   
   # has_many :topics, :foreign_key => 'creator_id' 
   #has_many :curriculums, :foreign_key => 'staff_id'
