@@ -19,7 +19,13 @@ class Examquestion < ActiveRecord::Base
    
    def self.find_main
       Staff.find(:all, :condition => ['staff_id IS NULL'])
-    end
+   end
+   
+   
+   
+   def render_difficulty
+     (Examquestion::QLEVEL.find_all{|disp, value| value == status }).map {|disp, value| disp}
+   end
    
    QTYPE = [
           #  Displayed       stored in db
@@ -34,19 +40,25 @@ class Examquestion < ActiveRecord::Base
    
    QCATEGORY = [
            #  Displayed       stored in db
-           [ "SEQ","SEQ" ],
-           [ "MCQ","MCQ" ],
-           [ "ACQ", "ACQ" ],
-           [ "OSCI", "OSCI" ],
-           [ "OSCII", "OSCII" ],
-           [ "MEQ", "MEQ" ]
-
+           [ "Recall","Recall" ],
+           [ "Comprehension","Comprehension" ],
+           [ "Application", "Application" ],
+           [ "Analysis", "Analysis" ],
+           [ "Synthesis", "Synthesis" ]
     ]
+    
+    QLEVEL = [
+             #  Displayed       stored in db
+             [ "Easy | Mudah","1" ],
+             [ "Intermediate | Pertengahan","2" ],
+             [ "Difficult | Sukar", "3" ]
+    ]
+  
 
 
 
 
-QSTATUS = [
+    QSTATUS = [
         #  Displayed       stored in db
         [ "Created","Created" ],
         [ "Submitted","Submitted" ],
@@ -56,7 +68,6 @@ QSTATUS = [
         [ "Sent to KMM", "Sent to KMM" ],
         [ "Re-Edit", "Re-Edit" ],
         [ "Rejected", "Rejected" ]
-        
-]
+   ]
   
 end

@@ -20,7 +20,7 @@
 	
 	<tr>
 	<td class="leftcol"><label for="question"><b>Question:</b></label><font color="red"> * </font></td>
-		<td><%= f.text_field :question %></td>
+		<td><%= f.text_field :question, :size => 50 %></td>
 	</tr>
 	
 	<tr>
@@ -35,7 +35,16 @@
 	
 	<tr>
 	<td class="leftcol"><label for="category"><b>Category:</b></label></td>
-		<td><%= f.text_field :category %></td>
+		<td><%= f.select :category, 
+		                  Examquestion::QCATEGORY,
+		                  :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="status"><b>Difficulty:</b></label></td>
+		<td><%= f.select :status, 
+		                 Examquestion::QLEVEL,
+		                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
@@ -60,10 +69,7 @@
 		<td><%= f.date_select :createdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 	</tr>
 	
-	<tr>
-	<td class="leftcol"><label for="status"><b>Status:</b></label></td>
-		<td><%= f.text_field :status %></td>
-	</tr>
+
 	
 	<tr>
 	<td class="leftcol"><label for="statusremark"><b>Remarks:</b></label></td>

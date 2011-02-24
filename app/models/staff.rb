@@ -287,6 +287,18 @@ class Staff < ActiveRecord::Base
     (Staff::BANK.find_all{|disp, value| value == bank }).map {|disp, value| disp}
   end
   
+  def render_reports_to
+    if position.blank? 
+      ""
+    elsif position.bosses.blank?
+      "-"
+    elsif position.bosses.staff.blank?
+      "#{position.bosses.positionname}"
+    else 
+      "#{position.bosses.positionname} - #{position.bosses.staff.name}"
+    end
+  end
+  
   
   def staff_positiontemp
     sid = staff.id

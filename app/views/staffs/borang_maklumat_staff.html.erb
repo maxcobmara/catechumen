@@ -50,7 +50,7 @@
 			<td>5</td>
 			<td><label for="position_id">Jawatan</label></td>
 			<td>:</td>
-			<td><%=h @staff.position.positionname %></td>
+			<td><%=h @staff.position.blank? ? "" : @staff.position.positionname %></td>
 	</tr>	
 	
 	<tr>
@@ -85,34 +85,34 @@
 			<td>10</td>
 			<td><label for="bosses">Pelulus/Penyokong Cuti</label></td>
 			<td>:</td>
-			<td><%=h @staff.position.parent_id.blank? ? "N/A" : @staff.position.bosses.staff.name %></td>
+			<td><%=h @staff.render_reports_to %></td>
 	</tr>
 	<tr>
 			<td>11</td>
 			<td><label for="appointdt">Tarikh Lantikan Pertama Ke Perkhidmatan Awam</label></td>
 			<td>:</td>
-			<td><%=h @staff.appointdt.strftime('%d-%m-%Y')  %></td>
+			<td><%=h @staff.appointdt.strftime("%d-%m-%Y") unless @staff.appointdt.nil?  %></td>
 	</tr>
 	
 	<tr>
 			<td>12</td>
 			<td><label for="schemedt">Tarikh Lantikan Ke Skim Perkhidmatan Sekarang </label></td>
 			<td>:</td>
-			<td><%=h @staff.schemedt.strftime('%d- %m - %Y')  %></td>
+			<td><%=h @staff.schemedt.strftime('%d- %m - %Y') unless @staff.schemedt.nil?  %></td>
 	</tr>
 	
 	<tr>
 			<td>13</td>
 			<td><label for="confirmdt">Tarikh Sah perkhidmatan Ke Perkhidmatan Awam</label></td>
 			<td>:</td>
-			<td><%=h @staff.confirmdt.strftime('%d - %m - %Y') %></td>
+			<td><%=h @staff.confirmdt.strftime('%d - %m - %Y') unless @staff.confirmdt.nil? %></td>
 	</tr>
 	
 	<tr>
 			<td>14</td>
 			<td><label for="posconfirmdate">Tarikh Sah Perkhidmatan Ke Jawatan Sekarang</label></td>
 			<td>:</td>
-			<td><%=h @staff.posconfirmdate.strftime('%d - %m - %Y') %></td>
+			<td><%=h @staff.posconfirmdate.strftime('%d - %m - %Y') unless @staff.posconfirmdate.nil? %></td>
 	</tr>
 	<tr>
 			<td>15</td>
