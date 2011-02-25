@@ -1,9 +1,11 @@
 class Grade < ActiveRecord::Base
   
+  validates_presence_of :student_id, :subject_id
+  
   #Link to Model student
    belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'
    
-   #Link to Model subject
+  #Link to Model subject
     belongs_to :subjectgrade, :class_name => 'Subject', :foreign_key => 'subject_id'
     
 GRADE = [

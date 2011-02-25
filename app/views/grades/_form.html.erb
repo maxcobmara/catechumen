@@ -16,6 +16,45 @@
 		<td><%= f.collection_select :subject_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
 	</tr>
 	
+	<!--Score Details-->	
+	<tr>
+		<th colspan=2>Scores</th>
+	</tr>
+	<tr>
+		<td colspan=2>
+			 <table width=95%>
+				  <tr>
+			      <td width=210px ><label for="type_id"><b>Type:</b></label></td>
+			      <td width=160px><label for="description"><b>Description:</b></label></td>
+			      <td width=90px><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
+					  <td width=100px><label for="weightage"><b>WeightAge:</b></label></td>
+					  <td width=80px><label for="actual_score"><b>Actual Score:</b></label></td>
+					  <td width=50px><label for="score"><b>Score:</b></label></td>
+					  <td width=50px><label for="completion"><b>Completion:</b></label></td>
+					  <td width=50px><label for="formative"><b>Formative:</b></label></td>
+			      <td width=10px></td>
+		      </tr>
+			 </table>
+    </td>
+	</tr>
+
+	<tr>
+	  <td colspan=2>
+		<!-- Code Block for Score Repeating Field -->
+		  <div id="scores">
+			  <%= render :partial => 'score', :collection => @grade.scores %>
+			</div>
+	  </td>
+	</tr>
+	<!-- End Code Block for Score Repeating Field -->
+	<tr>
+		<td colspan=2><%= add_score_link "Add More" %></td>
+	</tr>
+	
+	<tr>
+		<th colspan=2>Results/Summary</th>
+	</tr>
+
 	
 	<tr>
 		<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>
@@ -69,40 +108,7 @@
 		                 :prompt => "Select" %></td>
 	</tr>
 	
-<!--Score Details-->	
-	    <tr>
-		  <th colspan=2>Scores</th>
-		</tr>
-		<tr>
-		  <td colspan=2>
-		    <table width=95%>
-			  <tr>
-		        <td width=210px ><label for="type_id"><b>Type:</b></label></td>
-		        <td width=160px><label for="description"><b>Description:</b></label></td>
-		        <td width=90px><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
-				<td width=100px><label for="weightage"><b>WeightAge:</b></label></td>
-				<td width=80px><label for="actual_score"><b>Actual Score:</b></label></td>
-				<td width=50px><label for="score"><b>Score:</b></label></td>
-				<td width=50px><label for="completion"><b>Completion:</b></label></td>
-				<td width=50px><label for="formative"><b>Formative:</b></label></td>
-		         <td width=10px></td>
-	          </tr>
-		    </table>
-	      </td>
-	    </tr>
 
-	    <tr>
-		  <td colspan=2>
-		    <!-- Code Block for Score Repeating Field -->
-		    <div id="scores">
-			  <%= render :partial => 'score', :collection => @grade.scores %>
-			</div>
-		  </td>
-		</tr>
-		<!-- End Code Block for Score Repeating Field -->
-		<tr>
-		  <td colspan=2><%= add_score_link "Add More" %></td>
-		</tr>
 
 
 </table>
