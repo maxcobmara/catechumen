@@ -12,7 +12,7 @@ class Book < ActiveRecord::Base
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']    
   
   #------------Validation-----------------------------------------
-  validates_presence_of  :controlno, :isbn, :issn, :classlcc, :classddc, :title, :author, :publisher, :loantype, :mediatype, :status
+  validates_presence_of  :controlno, :isbn, :issn, :classlcc, :classddc, :title, :author, :publisher, :loantype, :mediatype
   
   
   
@@ -57,10 +57,11 @@ class Book < ActiveRecord::Base
           [ "Dibaiki", 3 ],
           [ "On Loan", 4 ]
 ] 
-  STATUS = [
+  CATSOURCE = [
           #  Displayed       stored in db
           [ "Perustakaan Negara",1 ],
-          [ "Others",2 ],
+          [ "Amazon.com",2 ],
+          [ "Others",3 ]
 ]
   
 end

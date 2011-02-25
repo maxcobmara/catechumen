@@ -37,7 +37,9 @@
 	
 	<tr>
 		<td class="leftcol"><label for="catsource"><b>Catalouging Source To:</b></label></td>
-	    <td><%= f.text_field :catsource %></td>
+	    <td><%= f.select :catsource, 
+		                  Book::CATSOURCE,
+		                 :prompt => "Select"  %></td>
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="classlcc"><b>Class No (NLM):</b></label><font color="red"> * </font></td>
@@ -51,33 +53,33 @@
 	
 	<tr>
 		<td class="leftcol"><label for="title">Title:</label><font color="red"> * </font></td>
-	    <td><%= f.text_field :title %></td>
+	    <td><%= f.text_area :title, :size => '60x2' %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="author">Author:</label><font color="red"> * </font></td>
-	    <td><%= f.text_field :author %></td>
+	    <td><%= f.text_area :author, :size => '60x2' %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="publisher">Publisher:</label><font color="red"> * </font></td>
-	    <td><%= f.text_field :publisher %></td>
+	    <td><%= f.text_field :publisher, :size => 50 %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="description">Physical Description:</label></td>
-	    <td><%= f.text_field :description %></td>
+	    <td><%= f.text_field :description, :size => 50 %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="loantype">Loan Type:</label></td>
+		<td class="leftcol"><label for="loantype">Loan Type:</label><font color="red"> * </font></td>
 	    	<td><%= f.select :loantype, 
 			                  Book::LOAN,
 			                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="mediatype">Media Type:</label></td>
+		<td class="leftcol"><label for="mediatype">Media Type:</label><font color="red"> * </font></td>
 	    	<td><%= f.select :mediatype, 
 			                  Book::MEDIA,
 			                 :prompt => "Select"  %></td>
