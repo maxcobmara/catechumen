@@ -1,6 +1,25 @@
 <%= error_messages_for :user %>
 <% form_for @user do |f| -%>
 
+
+<!-- Edit User -->
+<div class="tform">
+  <table width=100% >
+	
+	
+<!--User Info-->
+	<tr>
+		<th colspan = 2>System User Details</th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" ><label for="staff_id"><b><%= @user.isstaff? ? 'Staff Name:' : 'Student Name' %></b></label></td>
+		<td><%= @user.isstaff? ?  
+		(f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true, :default => 0) : 
+		(f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true, :default => 0) %></td>
+	<tr>
+
+
 <%=render :partial => 'form', :locals => {:f => f} %> 
 
 
