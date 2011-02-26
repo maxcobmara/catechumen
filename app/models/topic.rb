@@ -1,10 +1,13 @@
 class Topic < ActiveRecord::Base
-  #belongs_to :subject
-  #belongs_to :staff
   
-  belongs_to :subject,   :class_name => 'Subject', :foreign_key => 'subject_id'
-  belongs_to :tcreator,  :class_name => 'Staff',   :foreign_key => 'creator_id'
-  belongs_to :approvertopic,  :class_name => 'Staff',   :foreign_key => 'approvedby_id'
+  before_save :save_my_vars
+  
+  belongs_to :subject#,   :class_name => 'Subject', :foreign_key => 'subject_id'
+  belongs_to :creator,   :class_name => 'Staff',   :foreign_key => 'creator_id'
+  belongs_to :approver,  :class_name => 'Staff',   :foreign_key => 'approvedby_id'
+  
+  validates_presence_of    :topic_code, :sequenceno, :name
+  validates_uniqueness_of  :sequenceno, :scope => :subject_id, :message => 'This sequence is already taken'
   
   #Link to Model Timetableentry
   #has_many :topic,  :class_name => 'Time_table_entry', :foreign_key => 'topic_id'
@@ -13,8 +16,13 @@ class Topic < ActiveRecord::Base
     Topic.find(:all, :condition => ['topic_id IS NULL'])
   end
   
-  #validates_presence_of    :topic_code, :sequenceno, :name
-  #validates_uniqueness_of  :topic_and_sequence, :message => 'This sequence is already taken'
+  def save_my_vars
+    self.duration	= make_minutes
+  end
+  
+  def make_minutes
+    (durahours * 60) + duramins
+  end
   
   #def self.find_main
      #Subject.find(:all, :condition => ['subject_id IS NULL'])
@@ -23,16 +31,21 @@ class Topic < ActiveRecord::Base
    #def self.find_main
      #Staff.find(:all, :condition => ['creator_id IS NULL'])
    #end
-  
-  #def topic_and_sequence
-    #{}"#{topic_code}  #{sequenceno}"
-  #end
-  
-  #def self.search(search)
-     #if search
-      #@topic = Topic.find(:all, :conditions => ["name LIKE ? or topic_code ILIKE ?", "%#{search}%","%#{search}%"], :order => :topic_code)
-     #else
-      #@topic = Topic.find(:all,  :order => :topic_code)
-     #end
-  #end
+   
+   def topics_grouped_by_subject
+     ds = Topic.find(:all, :order => "subject_id")
+     @ds.in_groups_by(&:subject_id)
+     # or the alternative syntax 
+     ds.in_groups_by { |r| r.subject_id }
+   end
+   
+   def booba
+       suid = subject.id
+       Subject.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
+   end
+   
+   def staff_position
+     sid = staff.id
+     Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
+   end
 end

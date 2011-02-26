@@ -25,28 +25,31 @@
 		<td><%=h (Subject::STATUS.find_all{|disp, value| value == @subject.status.to_s}).map {|disp, value| disp} %></td>
 	</tr>
 	</table>
-	<table width=70%>
+		<div class="tlist" style="position: relative; left: 180px;">
+	<table width=50%>
 	<tr>
-		<th colspan=2>Topic</td>
+		<th colspan=4><font color='black'>Topics</font></td>
 	</tr>
-	
-	<% for topic in @subject.topics %>
-	
-	<tr>
-		<td class="leftcol"><label for="name">Topic Name:</label></td>
-        <td><%=h topic.name %></td>
+
+		<tr>
+			<th>Sequence</th>
+			<th>Code</th>
+			<th>Subject</th>
+			<th>Duration</th>
+		</tr>	
+		<% for topic in @subject.topics.all(:order => "sequenceno") %>		
+	  <tr>
+		  <td width=50px><%=h topic.sequenceno %></td>
+      <td><%=h topic.topic_code %></td>
+      <td><%=h topic.name %></td>
+      <td><%=h topic.duration.strftime("%l:%M") %> Hours</td>
 	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="sequenceno">Sequence No:</label></td>
-        <td><%=h topic.sequenceno %></td>
-	</tr>
-	
-	<td></td>
 	
 	<% end %>
+	</div>
 </table>
 <BR>
+</div>
 </div>
 
 <%= link_to 'Edit', edit_subject_path(@subject) %> |

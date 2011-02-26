@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110224154509) do
+ActiveRecord::Schema.define(:version => 20110226052349) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -826,7 +826,6 @@ ActiveRecord::Schema.define(:version => 20110224154509) do
     t.string   "topic_code"
     t.integer  "sequenceno"
     t.string   "name"
-    t.time     "duration"
     t.string   "version"
     t.string   "objective"
     t.text     "content"
@@ -840,6 +839,9 @@ ActiveRecord::Schema.define(:version => 20110224154509) do
     t.date     "checkdate"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "durahours"
+    t.integer  "duramins"
+    t.integer  "duration"
   end
 
   create_table "trainneeds", :force => true do |t|

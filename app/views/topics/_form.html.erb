@@ -15,7 +15,7 @@
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="sequenceno">Sequence No</label></td>
-		<td><%= f.select :sequenceno, options_for_select([1,2,3,4,5,6,7,8,9,10,11,12]) %></td>
+		<td><%= f.select :sequenceno, options_for_select([1,2,3,4,5,6,7,8,9,10,11,12], @topic.sequenceno) %></td>
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="name">Topic Name/Title</label></td>
@@ -23,7 +23,9 @@
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="duration">Duration for Topic</label></td>
-		<td><%= f.time_select :duration, :minute_step => 15 %></td>
+		<td><%= f.select :durahours, options_for_select([0,1,2,3], @topic.durahours) %>:
+		    <%= f.select :duramins, options_for_select([0,15,30,45], @topic.duramins) %>
+		    <font color=#AAA size=-2>Hours:Minutes</font></td>
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="version">Version No</label></td>

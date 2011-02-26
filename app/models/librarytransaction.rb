@@ -3,7 +3,7 @@ class Librarytransaction < ActiveRecord::Base
   belongs_to :staff
   belongs_to :student
   
-  named_scope :all,         :conditions => [ "rating != ?", nil ]
+  named_scope :all,         :conditions => [ "id IS NOT ?", nil ]
   named_scope :borrowed,    :conditions => { :returned => false }
   named_scope :returned,    :conditions => { :returned => true }
   named_scope :overdue, lambda { |time| { :conditions => ["returnduedate < ?", Time.now] } }
@@ -11,7 +11,7 @@ class Librarytransaction < ActiveRecord::Base
   FILTERS = [
     {:scope => "all",        :label => "All Transactions"},
     {:scope => "borrowed",   :label => "Borrowed"},
-    {:scope => "overdue",    :label => "Returned"},
+    {:scope => "returned",    :label => "Returned"},
     {:scope => "overdue",    :label => "Overdue"}
   ]
   

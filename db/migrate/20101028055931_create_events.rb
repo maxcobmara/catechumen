@@ -8,6 +8,7 @@ class CreateEvents < ActiveRecord::Migration
       t.text     :participants
       t.string   :officiated
       t.integer  :createdby
+      t.boolean  :event_is_publik,
 
       t.timestamps
     end

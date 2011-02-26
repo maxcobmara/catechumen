@@ -3,8 +3,8 @@ class TopicsController < ApplicationController
   # GET /topics.xml
   def index
    # @topics = Topic.all
-    @topics = Topic.find(:all, :order => 'sequenceno, id', :limit => 50)
-    @topic_sequenceno = @topics.group_by { |t| t.sequenceno }
+    @topics = Topic.find(:all, :order => 'sequenceno', :limit => 50)
+    @topic_booba = @topics.group_by { |t| t.booba }
 
     respond_to do |format|
       format.html # index.html.erb

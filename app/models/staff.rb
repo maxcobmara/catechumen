@@ -101,8 +101,8 @@ class Staff < ActiveRecord::Base
   has_many :receivesupply,    :class_name => 'usesupply',   :foreign_key => 'receivedby'
   
   #Link to Model Topic
-  has_many :creator,    :class_name => 'Topic',    :foreign_key => 'creator_id'
-  has_many :approver,   :class_name => 'Topic',    :foreign_key => 'approvedby_id'
+  has_many :creators,    :class_name => 'Topic',    :foreign_key => 'creator_id'
+  has_many :approvers,   :class_name => 'Topic',    :foreign_key => 'approvedby_id'
   
   
   #link to model Examquestion

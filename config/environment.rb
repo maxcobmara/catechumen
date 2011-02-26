@@ -44,4 +44,23 @@ Rails::Initializer.run do |config|
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
+  
+  #Extends Array and creates a groupby
+  class Array
+    def in_groups_by
+      # Group elements into individual array's by the result of a block
+      # Similar to the in_groups_of function.
+      # NOTE: assumes array is already ordered/sorted by group !!
+      curr=nil.class 
+      result=[]
+      each do |element|
+         group=yield(element) # Get grouping value
+         result << [] if curr != group # if not same, start a new array
+         curr = group
+         result[-1] << element
+      end
+      result
+    end
+  end
+  
 end

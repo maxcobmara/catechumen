@@ -3,6 +3,9 @@
 	<!-- Box Head -->
 	<div class="box-head">
 		<h2 class="left"><%= t 'librarytransaction.list' %></h2>
+		<div class="right">
+			<%= select_tag_for_filter("librarytransactions", @filters, params) %>
+		</div>
 	</div>
 	<div class="tlist">
 	  <table width=100%>
@@ -13,25 +16,23 @@
 		    <th><%= t 'librarytransaction.borrower' %></th>
 		    <th><%= t 'librarytransaction.checkoutdate' %></th>
 		    <th><%= t 'librarytransaction.duedate' %></th>
-		    <th><%= t 'librarytransaction.extend' %></th>
 		    <th><%= t 'librarytransaction.returneddate' %></th>
 		    <th colspan=3><%= t 'action' %><th>
-  </tr>
+     </tr>
 
-<% @librarytransactions.each do |librarytransaction| %>
-  <tr>
-	  <td><%=h librarytransaction.book.id %></td>
-    <td><%=h librarytransaction.book.isbn %></td>
-    <td><%=h librarytransaction.book.title %></td>
-    <td><%=h librarytransaction.ru_staff? ?  librarytransaction.staff.name : librarytransaction.student.name %></td>
-    <td><%=h librarytransaction.checkoutdate %></td>
-    <td><%=h librarytransaction.returnduedate %></td>
-    <td><%=h librarytransaction.extended %></td>
-    <td><%=h librarytransaction.returneddate %></td>
-    <td><%= link_to 'Show', librarytransaction %></td>
-    <td><%= link_to 'Edit', edit_librarytransaction_path(librarytransaction) %></td>
-    <td><%= link_to 'Destroy', librarytransaction, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+     <% @librarytransactions.each do |librarytransaction| %>
+    <tr>
+	  	<td><%=h librarytransaction.book.id %></td>
+	    <td><%=h librarytransaction.book.isbn %></td>
+	    <td><%=h librarytransaction.book.title %></td>
+	    <td><%=h librarytransaction.ru_staff? ?  librarytransaction.staff.name : librarytransaction.student.name %></td>
+	    <td><%=h librarytransaction.checkoutdate %></td>
+	    <td><%=h librarytransaction.returnduedate %></td>
+	    <td><%=h librarytransaction.returneddate %></td>
+	    <td><%= link_to 'Show', librarytransaction %></td>
+	    <td><%= link_to 'Edit', edit_librarytransaction_path(librarytransaction) %></td>
+	    <td><%= link_to 'Destroy', librarytransaction, :confirm => 'Are you sure?', :method => :delete %></td>
+	  </tr>
 <% end %>
 </table>
 

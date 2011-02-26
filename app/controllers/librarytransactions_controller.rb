@@ -1,13 +1,22 @@
 class LibrarytransactionsController < ApplicationController
   # GET /librarytransactions
   # GET /librarytransactions.xml
-  def index
-    @librarytransactions = Librarytransaction.all
+  #def index
+    #@librarytransactions = Librarytransaction.all
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @librarytransactions }
-    end
+    #respond_to do |format|
+    #  format.html # index.html.erb
+    #  format.xml  { render :xml => @librarytransactions }
+    #end
+  #end
+  
+  def index
+    @filters = Librarytransaction::FILTERS
+    if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+      @librarytransactions = Librarytransaction.send(params[:show])
+    else
+      @librarytransactions = Librarytransaction.all
+    end  
   end
 
   # GET /librarytransactions/1
