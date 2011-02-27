@@ -9,6 +9,18 @@ class TimeTableEntriesController < ApplicationController
       format.xml  { render :xml => @time_table_entries }
     end
   end
+  
+  
+  def timetable_view
+    @time_table_entries = TimeTableEntry.all
+    @period_timing = PeriodTiming.find(:all, :order => :start_time)
+    @timetable_week_days = TimetableWeekDay.all
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @time_table_entries }
+    end
+    
+  end
 
   # GET /time_table_entries/1
   # GET /time_table_entries/1.xml

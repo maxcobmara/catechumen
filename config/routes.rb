@@ -1,9 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :timetable_week_days
+
   map.resources :staffcourses
 
   map.resources :grades
 
-  map.connect '/time_table_entries/select_intake', :controller => 'time_table_entries', :action => 'select_intake'
+  map.connect '/time_table_entries/timetable_view', :controller => 'time_table_entries', :action => 'timetable_view'
   map.resources :time_table_entries
 
   map.resources :period_timings

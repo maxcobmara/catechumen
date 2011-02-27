@@ -36,19 +36,19 @@
 	
 	<tr>
 		<td class="leftcol"><label for="timetable_week_day"><b>Time Table Week Day:</b></label></td>
-		<td><%= f.select :timetable_week_day, 
-		                 TimeTableEntry::WEEK_DAY,
-		                 :prompt => "Select"  %></td>
+		<td><#%= f.collection_select :tt_wd, Timetable_week_day.find(:all), :id, :name %>
+			 <%= f.text_field :tt_wd, :size => 12 %></td>
 	</tr>
 	
+	<!-- Not used for now >
    	<tr>
 		<td class="leftcol"><label for="timetable_date"><b>Time Table Date:</b></label></td>
-		<td><%= f.date_select :timetable_date %></td>
-	</tr>
+		<td><#%= f.date_select :timetable_date %></td>
+	</tr>-->
 	
 	<tr>
 		<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
-		<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :position_with_name, :include_blank => true%></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_position, :include_blank => true%></td>
 	</tr>
 	
 	<tr>

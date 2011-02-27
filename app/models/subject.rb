@@ -13,7 +13,7 @@ class Subject < ActiveRecord::Base
   has_many :subjectevaluate, :class_name => 'Courseevaluation', :foreign_key => 'subject_id'
   
   #Link to model timetableentry
-  has_many :subjecttotime, :class_name => 'Time_table_entry', :foreign_key => 'subject_id'
+  has_many :time_table_entries
   
   #Link to Model Grade
   has_many :subjectgrade,  :class_name => 'Grade', :foreign_key => 'subject_id'
