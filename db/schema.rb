@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110227031301) do
+ActiveRecord::Schema.define(:version => 20110227091327) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -376,16 +376,23 @@ ActiveRecord::Schema.define(:version => 20110227031301) do
     t.integer  "subject_id"
     t.boolean  "sent_to_BPL"
     t.date     "sent_date"
-    t.decimal  "total_formative"
+    t.decimal  "formative"
     t.decimal  "score"
     t.boolean  "eligible_for_exam"
     t.boolean  "carry_paper"
-    t.decimal  "total_summative"
+    t.decimal  "summative"
     t.boolean  "resit"
-    t.decimal  "total_marks"
+    t.decimal  "finalscore"
     t.integer  "grading_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "exam1name"
+    t.string   "exam1desc"
+    t.decimal  "exam1marks"
+    t.string   "exam2name"
+    t.string   "exam2desc"
+    t.decimal  "exam2marks"
+    t.decimal  "examweight"
   end
 
   create_table "intakes", :force => true do |t|
@@ -624,7 +631,6 @@ ActiveRecord::Schema.define(:version => 20110227031301) do
     t.string   "description"
     t.decimal  "marks"
     t.decimal  "weightage"
-    t.decimal  "actual_score"
     t.decimal  "score"
     t.decimal  "completion"
     t.boolean  "formative"

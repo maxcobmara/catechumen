@@ -4,18 +4,14 @@
 	
 	<% fields_for prefix, score do | score_form | -%>
 
-    <table width=100%>
+    <table width=100% border=0>
 	   <tr>
-	     <td width=210px><%= score_form.select :type_id, Score::TYPES, :prompt => "Select" %></td>
-         <td width=270px><%= score_form.text_field :description, :size => 15 %></td>
-         <td width=290px><%= score_form.text_field :marks, :size => 5 %></td>
-		<td width=290px><%= score_form.text_field :weightage, :size => 5 %></td>
-		<td width=290px><%= score_form.text_field :actual_score, :size => 5 %></td>
-		<td width=290px><%= score_form.text_field :score, :size => 5 %></td>
-		<td width=290px><%= score_form.text_field :completion, :size => 5 %></td>
-		<td width=290px><%= score_form.check_box :formative%></td>
-         <td width=170px><%= link_to_function "remove", "$(this).up('.score').remove()" %></td>
-       </tr>
+	     <td width=130px><%= score_form.select :type_id, Score::E_TYPES, :prompt => "Select" %></td>
+       <td width=240px><%= score_form.text_field :description, :size => 30 %></td>
+       <td width=120px><%= score_form.text_field :marks, :size => 5 %> in %</td>
+		   <td width=80px> <%= score_form.text_field :weightage, :size => 5 %></td>
+       <td width=70px><%= link_to_function "remove", "$(this).up('.score').remove()" %></td>
+     </tr>
     </table>
     
    

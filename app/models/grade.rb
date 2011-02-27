@@ -8,6 +8,41 @@ class Grade < ActiveRecord::Base
   #Link to Model subject
     belongs_to :subjectgrade, :class_name => 'Subject', :foreign_key => 'subject_id'
     
+    
+    def total_per
+      Score.sum(:weightage, :conditions => ["grade_id = ?", id])
+    end
+    
+    def total_formative
+      Score.sum(:score, :conditions => ["grade_id = ?", id])
+    end
+    
+    def total_summative
+      (exam1marks * examweight)/100
+    end
+    
+    def finale
+      ((exam1marks * examweight)/100) + ((total_formative * (100 - examweight)/100))
+    end
+    
+    def grade_it
+      if finale < 40
+        "F"
+      elsif finale < 50
+        "D"
+      elsif finale < 75
+        "C"
+      elsif finale < 85
+        "B"
+      else
+        "A"
+      end
+        
+    end
+    
+    
+    
+    
 GRADE = [
   #  Displayed       stored in db
     [ "75% - A","1" ],
@@ -15,6 +50,18 @@ GRADE = [
     [ "55% - C", "3" ],
     [ "35% - D", "4" ],
     [ "<34% - F", "5" ]
+
+]
+
+E_TYPES = [
+    #  Displayed       stored in db
+      [ "Clinical Work","1" ],
+      [ "Assignment","2" ],
+      [ "Project", "3" ],
+      [ "Clinical Report", "4" ],
+      [ "Test", "5" ],
+      [ "Exam", "6" ],
+      
 
 ]
 

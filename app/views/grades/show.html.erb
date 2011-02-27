@@ -1,9 +1,7 @@
 <div class="tform">
   <table width=100% >
-
-<table id="form">
 	<tr>
-		<th colspan = 2>Grade Details</th>
+		<th colspan = 6>Grade Details</th>
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="student_id">Student Name:</label></td>
@@ -15,109 +13,93 @@
 		<td class="leftcol"><label for="subject_id">Subject Name:</label></td>
 		<td><%=h @grade.subject_id.blank? ? "" : @grade.subjectgrade.subject_code_with_subject_name %></td>
 	</tr>
-	
-	
+	</table>
+	<table width=80% style="position: relative; left: 45px;">
+		<tr>
+			<th>Formative</th>
+			<th>Description</th>
+			<th>Marks</th>
+			<th>Weightage</th>
+			<th>Marks</th>
+		</tr>	
+		<% for score in @grade.scores.all(:order => "type_id") %>		
+	  <tr>
+		  <td><%=h (Score::E_TYPES.find_all{|disp, value| value == score.type_id}).map {|disp, value| disp} %></td>
+      <td><%=h score.description %></td>
+      <td><%=h score.marks %>%</td>
+			<td><%=h score.weightage %>% of total</td>
+			<td><%=h score.type_marks %></td>
+		</tr>
+		<% end %>
+		<tr>
+		  <td></td>
+      <td></td>
+      <td></td>
+			<td><%= @grade.total_per %>%</td>
+			<td><b><%= @grade.total_formative %>%</b></td>
+		</tr>
+	</table>
+	<table width=100%>
 	<tr>
-		<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>
-		<td><%=h @grade.sent_to_BPL %></td>
+		<th colspan=2>Send to BPL</th>
 	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="sent_date">Sent Date:</label></td>
-		<td><%=h @grade.sent_date %></td>
-	</tr>
-	
 	<tr>
 		<td class="leftcol"><label for="total_formative">Total Formative:</label></td>
-		<td><%=h @grade.total_formative %></td>
+		<td><%=h @grade.total_formative %>%</td>
 	</tr>
-	
 	<tr>
-		<td class="leftcol"><label for="score ">Score:</label></td>
-		<td><%=h @grade.score %></td>
+		<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>
+		<td><%=h @grade.sent_to_BPL? ? "Yes on " + (@grade.sent_date.strftime("%d %b %Y")).to_s : "Not Sent" %></td>
 	</tr>
-	
 	<tr>
 		<td class="leftcol"><label for="eligible_for_exam">Eligible For Exam?:</label></td>
-		<td><%=h @grade.eligible_for_exam %></td>
+		<td><%=h @grade.eligible_for_exam? ? "Yes" : "No" %> </td>
 	</tr>
+	</table>
+	
+	
+	<table width=80% style="position: relative; left: 45px;">
+	<tr>
+		<th>Summative<BR>Exam Name</th>
+		<th>Description</th>
+		<th>Marks</th>
+		<th>Weightage</th>
+		<th>Marks</th>
+	</tr>
+	
+	<tr>
+		<td><%=h @grade.exam1name %></td>
+		<td><%=h @grade.exam1desc %></td>
+		<td><%=h @grade.exam1marks %>%</td>
+		<td><%=h @grade.examweight %>%</td>
+		<td><%=h @grade.total_summative %>%</td>
+	</tr>
+	
+	</table>
+	<table width=100% >
+	
+	<tr>
+		<th colspan=2 >Final Details</th>
+	</tr>	
+	<tr>
+		<td class="leftcol"><label for="total_marks ">Final Score:</label></td>
+		<td><%=h @grade.finale %>% -- <b><%=h @grade.grade_it %></b>
+			  <font color=#AAA size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				Formative x <%= (100 - @grade.examweight)%>% + Summative x <%= @grade.examweight %>%</font></td>
+	</tr>
+	
+
 	
 	<tr>
 		<td class="leftcol"><label for="carry_paper">Carry Paper?:</label></td>
-		<td><%=h @grade.carry_paper %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="total_summative ">Total Summative:</label></td>
-		<td><%=h @grade.total_summative %></td>
+		<td><%=h @grade.carry_paper? ? "Required" : "Not Required" %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="resit">Resit?:</label></td>
-		<td><%=h @grade.resit %></td>
+		<td><%=h @grade.resit? ? "Required" : "Not Required" %></td>
 	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="total_marks ">Total Marks:</label></td>
-		<td><%=h @grade.total_marks %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="grading_id ">Grading:</label></td>
-		<td><%=h (Grade::GRADE.find_all{|disp, value| value == @grade.grading_id.to_s}).map {|disp, value| disp} %></td>
-	</tr>
-	
-	<tr>
-		<th colspan = 2>Score Details</th>
-	</tr>
-	
-	<td><% for score in @grade.scores %></td>
-	<tr>
-		<td class="leftcol"><label for="type_id ">Type:</label></td>
-	<!-->	<td><#%=h qualification.level_id %></td>-->
-		<td><%=h (Score::TYPES.find_all{|disp, value| value == score.type_id}).map {|disp, value| disp} %></td>
-    <tr>
-	
-    <tr>
-		<td class="leftcol"><label for="description ">Description:</label></td>
-	   <td><%=h score.description %></td>
-	
-    </tr>
 
-     <tr>
-		<td class="leftcol"><label for="marks ">Marks:</label></td>
-		<td><%=h score.marks %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="weightage ">WeightAge:</label></td>
-		<td><%=h score.weightage %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="actual_score ">Actual Score:</label></td>
-		<td><%=h score.marks %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="score ">Score:</label></td>
-		<td><%=h score.marks %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="completion ">Completion:</label></td>
-		<td><%=h score.completion %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="formative ">Formative:</label></td>
-		<td><%=h score.formative %></td>
-	</tr>
-	
-	
-	<td bgcolor="#C0C0C0"></td><td bgcolor="#C0C0C0"></td>
-	
-	<% end %>
 	
 </table>
 <BR>

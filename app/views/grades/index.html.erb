@@ -30,13 +30,13 @@
     <td><%=h grade.subject_id.blank? ? "" : grade.subjectgrade.subject_code_with_subject_name %></td>
    <!--> <td><%=h grade.sent_to_BPL %></td>-->
     <td><%=h grade.sent_date %></td>
-    <td><%=h grade.total_formative %></td>
+    <td><%=h grade.formative %></td>
     <td><%=h grade.score %></td>
     <!--><td><%=h grade.eligible_for_exam %></td>
     <td><%=h grade.carry_paper %></td>-->
-    <td><%=h grade.total_summative %></td>
+    <td><%=h grade.summative %></td>
    <!--> <td><%=h grade.resit %></td>-->
-    <td><%=h grade.total_marks %></td>
+    <td><%=h grade.finalscore %></td>
     <td><%=h (Grade::GRADE.find_all{|disp, value| value == grade.grading_id.to_s}).map {|disp, value| disp} %></td>
     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => grade %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => grade %></td>
