@@ -1,217 +1,107 @@
-
-<div id="A4potrait1">
-<form action="#">
-<script>
-document.write("<input type='button' " +
-"onClick='window.print()' " +
-"class='printbutton' " +
-"value='Print This Page'/>");
-</script>
-<form>	
-
+<div class="tform">
+  <table width=100% >
 	
-<div id="title" width=21cm>	
-<H4 align="right"><b>KEW. PA 2<br>No Siri Pendaftaran: <%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.assetcode %></b></H4>
+<!--Staff Details-->	
 
-<H3 align="center">DAFTAR HARTA MODAL</H3>
-
-<P indent=20px>Kementerian/Jabatan  :  KKM</P>
-<P indent=20px>Bahagian  :  KSKB JB</P>
-
-<div id="borangmaklumat">
-<table width=90% border=1px padding=0px cellspacing=0px>
-	<tr>
-		<td width=160px>Kod Nasional</td>
-		<td colspan=4></td>
-	</tr>
-	<tr>
-		<td>Kategori</td>
-		<td colspan=4><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.cardno %></td>
-	</tr>
-	<tr>
-		<td>Sub Kategori</td>
-		<td colspan=4><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.category %></td>
-	</tr>
-	
-	<tr>
-		<td>Jenis/Jenama/Model</td>
-		<td colspan=4></td>
-	</tr>
-	
-	<tr>
-		<td>Buatan</td>
-		<td colspan=2 width=100px></td>
-		<td  width=160px>Harga Perolehan Asal</td>
-		<td colspan=2>RM <%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.purchaseprice %></td>
-	</tr>
-	<tr>
-		<td>Jenis Dan No.Enjin</td>
-		<td colspan=2></td>
-		<td>Tarikh Diterima</td>
-		<td colspan=2><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.receiveddate %></td>
-	</tr>
-	
-<!-->	<#% for assetnum in @assettrack.assetinassettrack.assetnums %>-->
-	<tr>
-		<td>No Casis/Siri Pembuat</td>
-		<td colspan=2></td>
-		<td>No Pesanan Rasmi Kerajaan</td>
-		<td colspan=2><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.orderno %></td>
-	</tr>
-	
-	<tr>
-		<td>No Pendaftaran <BR>(Bagi Kenderaan)</td>
-		<td colspan=2></td>
-		<td>Tempoh Jaminan</td>
-		<td colspan=2><%=h @assettrack.duration%> </td>
-		
-	</tr>
+  <tr>
+	  <th colspan = 2>Asset Reservation Details</th>
+  </tr>
 
 	<tr>
-		<BR><BR>
-		<td colspan=3 rowspan=2 valign="top">KOMPONEN/AKSESORI:</td>
-			
-		<td colspan=2>Nama Pembekal Dan Alamat :
-				<BR>
-				<BR>
-				<BR>
-				<BR>
-			    <BR></td>
-			
-			
+		<td class="leftcol"><label for="staff_id">Asset Code:</label></td>
+		<td><%=h @asset.assetcode %></td>	
 	</tr>
 	<tr>
-		<td colspan=2><BR><BR><center>..................................</center>
-				<BR><center>Tandatangan Ketua Jabatan</center>
-			<BR>Nama: <%=h @assettrack.staff_id.blank? ? " " : @assettrack.staffinassettrack.name %>
-			<BR>Jawatan: <%=h @assettrack.staff_id.blank? ? " " : @assettrack.staffinassettrack.position_name %>
-			<BR>Tarikh: <%=h Date.today %>
-			<BR>Cop:
-			<BR>
-			<BR>
-			<BR>
-		</tr>
-	
-</table>
-<BR>
-<table width=90% border=1px padding=5px cellspacing=0px>
-	<tr>
-		<th BGCOLOR="#D8D8D8" colspan=8 align="center">PENEMPATAN</th>
-	</tr>
-
-	<tr>
-		<td width=160px>Lokasi</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td class="leftcol"><label for="staff_id">Asset Type:</label></td>
+		<td><%=h (Asset::ASSETTYPE.find_all{|disp, value| value == @asset.assettype}).map {|disp, value| disp} %></td>	
 	</tr>
 	<tr>
-		<td>Tarikh</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		
+		<td class="leftcol"><label for="staff_id">Card No:</label></td>
+		<td><%=h @asset.cardno %></td>	
 	</tr>
 	<tr>
-		<td>Nama Pegawai</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		
+		<td class="leftcol"><label for="staff_id">Dept ID:</label></td>
+		<td><%=h @asset.dept_id %></td>	
 	</tr>
 	<tr>
-		<td>Tandatangan</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-	
+		<td class="leftcol"><label for="staff_id">Category:</label></td>
+		<td><%=h @asset.category %></td>	
+	</tr>
+	<tr>
+	<td class="leftcol"><label for="bookable">Bookable:</label></td>
+	    <td><%=h @asset.bookable? ? "This item can be booked" : "No" %></td>
+	</tr>
+  <tr>
+	  <th colspan = 2>Asset Description</th>
+  </tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Name:</label></td>
+		<td><%=h @asset.name %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Type No:</label></td>
+		<td><%=h @asset.type %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Manufacturer:</label></td>
+		<td><%=h @asset.manufacturer_id.blank? ? "Not Recorded" : @asset.manufacturedby.name %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Model:</label></td>
+		<td><%=h @asset.model %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Serial No:</label></td>
+		<td><%=h @asset.serialno %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Located at:</label></td>
+		<td><%=h @asset.residence.resname %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Assigned to:</label></td>
+		<td><%=h @asset.assignedto_id.blank? ? "-" : @asset.assignedto.staff_name_with_position %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Status:</label></td>
+		<td><%=h @asset.status %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Other Information:</label></td>
+		<td><%=h @asset.otherinfo %></td>	
+	</tr>
+	<tr>
+	  <th colspan = 2>Purchasing Info</th>
+  </tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Order No:</label></td>
+		<td><%=h @asset.orderno %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Price:</label></td>
+		<td><%=h ringgols(@asset.purchaseprice) %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="purchasedate">Purchase Date:</label></td>
+		<td><%=h @asset.purchasedate.strftime("%d %B %Y") %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="purchasedate">Delivery Date:</label></td>
+		<td><%=h @asset.receiveddate.strftime("%d %B %Y") %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Received By:</label></td>
+		<td><%=h @asset.receivedby.blank? ? "-" : @asset.receivedby.staff_name_with_position %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Received By:</label></td>
+		<td><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %></td>	
 	</tr>
 
 </table>
 <BR>
-<table width=90% border=1px padding=5px cellspacing=0px>
-	<tr>
-		<th colspan=8 align="center">PEMERIKSAAN</th>
-	</tr>
-	<tr>
-		<td width=160px>Tarikh</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td>Status Aset</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td>Nama Pemeriksa</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td>Tandatangan</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-
-</table>
-<BR>
-<table width=90% border=1px padding=5px cellspacing=0px>
-	<tr>
-		<th BGCOLOR="#DDD" colspan=8 align="center">PELUPUSAN / HAPUSKIRA</th>
-	</tr>
-	<tr>
-		<td align="center">Rujukan Kelulusan</td>
-		<td align="center">Tarikh</td>
-		<td align="center">Kaedah Pelupusan</td>
-		<td align="center">Tandatangan</td>
-	</tr>
-	
-	<tr>
-		<td></td>
-		<td align="center"><%=h Date.today %></td>
-		<td></td>
-		<td></td>
-	</tr>
-
-	
-
-</table>
-</form>
 </div>
-</div>
-</div>
-</form>
 
-<BR>
 
 <%= link_to 'Edit', edit_assettrack_path(@assettrack) %> |
 <%= link_to 'Back', assettracks_path %>

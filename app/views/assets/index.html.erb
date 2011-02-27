@@ -15,7 +15,6 @@
 	  	<table width=100%>
 		<tr>
           <th><%= t 'asset.assetcode' %></th>
-          <th><%= t 'asset.assettype' %></th>
           <th><%= t 'asset.name' %></th>
           <th><%= t 'asset.purchasedate' %></th>
 	      <th align="right"><%= t 'asset.purchaseprice' %></th>
@@ -31,19 +30,22 @@
     <th>Supplier</th>-->
         </tr>
 
-<% @assets.each do |asset| %>
+
+
+<% @asset_gbtype.sort.each do |gbtype, assets| %>
   <tr>
+    <td><b><%=h gbtype %></b></td>
+  <tr>
+  <% for asset in assets %>
     <td><%=h asset.assetcode %></td>
-    <td><%=h (Asset::ASSETTYPE.find_all{|disp, value| value == asset.assettype}).map {|disp, value| disp} %></td>
     <td><%=h asset.name %></td>
     <td><%=h asset.purchasedate %></td>
     <td align="right" width=90px>RM <%=h asset.purchaseprice %></td>
-
-    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => asset %></td>
-	<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => asset %></td>
+		<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => asset %></td>
+	  <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => asset %></td>
     <td width=5px><%= link_to 'Destroy', asset, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+  <tr>
+<% end %><% end %>
 </table>
 </div></div>
 <br />

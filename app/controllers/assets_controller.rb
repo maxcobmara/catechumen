@@ -4,6 +4,7 @@ class AssetsController < ApplicationController
   # GET /assets.xml
   def index
     @assets = Asset.search(params[:search])
+    @asset_gbtype = @assets.group_by { |t| t.gbtype }
 
     respond_to do |format|
       format.html # index.html.erb

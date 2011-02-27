@@ -1,15 +1,15 @@
 class Asset < ActiveRecord::Base
   
-  #----------------belongs to other page---------------------------------------
-  
-  #belongs_to :book, :foreign_key =>'staff_id'
+  before_save :save_my_vars
+  belongs_to :manufacturedby, :class_name => 'Addbook', :foreign_key => 'manufacturer_id'
   belongs_to :suppliedby, :class_name => 'Addbook', :foreign_key => 'supplier_id'
-  
-  #belongs_to :asset, :foreign_key =>'location_id'
-   
- #Asset/Location Relationship
- belongs_to :residence, :foreign_key =>'location_id'
+  belongs_to :residence, :foreign_key =>'location_id'
+  belongs_to :assignedto, :class_name => 'Staff', :foreign_key => 'assignedto_id'
+  belongs_to :receivedby, :class_name => 'Staff', :foreign_key => 'receiver_id'
  
+  def save_my_vars
+    self.assetcode = suggested_serial_no
+  end
   
  #----------------------Link to Other Page---------------------------------------------------
   
@@ -32,7 +32,7 @@ class Asset < ActiveRecord::Base
   
   #------------------------Validations------------------------------------------------------------
   
-  validates_presence_of  :assettype, :assetcode, :cardno, :name
+  validates_presence_of  :assettype, :cardno, :name, :category
   validates_uniqueness_of :assetcode
   
 
@@ -119,7 +119,22 @@ class Asset < ActiveRecord::Base
 #------------------------Declaration----------------------------------------------------    
     def bil
        v=1
+    end
+    
+    def gbtype
+      (Asset::ASSETTYPE.find_all{|disp, value| value == assettype}).map {|disp, value| disp}
+    end
+    
+    def suggested_serial_no
+      st = "KKM/KSKBJB/"
+      if assettype == 1
+       md = "H/"
+      else
+       md = "I/"
       end
+      ed = id.to_s
+      st + md + ed
+    end
       
       
 
