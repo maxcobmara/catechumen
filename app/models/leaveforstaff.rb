@@ -2,8 +2,10 @@ class Leaveforstaff < ActiveRecord::Base
   #has_many :staffs
   
   #belongs_to :staff
-  belongs_to :applicant,  :class_name => 'Staff', :foreign_key => 'staff_id'
+  belongs_to :applicant,   :class_name => 'Staff', :foreign_key => 'staff_id'
   belongs_to :replacement, :class_name => 'Staff', :foreign_key => 'replacement_id'
+  belongs_to :seconder,     :class_name => 'Staff', :foreign_key => 'approval1_id'
+  belongs_to :approver,     :class_name => 'Staff', :foreign_key => 'approval2_id'
   
   
   #---------Validation-----------------#

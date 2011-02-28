@@ -133,6 +133,8 @@ class Staff < ActiveRecord::Base
   #links to Model leaveforstaffs
    has_many :leave_applications,  :class_name => 'Leaveforstaff', :foreign_key => 'staff_id'
    has_many :replacements,        :class_name => 'Leaveforstaff', :foreign_key => 'replacement_id'
+   has_many :seconders,        :class_name => 'Leaveforstaff', :foreign_key => 'approval1_id'
+   has_many :approvers,        :class_name => 'Leaveforstaff', :foreign_key => 'approval2_id'
   
   
   #links to Model Qualification

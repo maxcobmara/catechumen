@@ -8,94 +8,47 @@
   </tr>
 
 	<tr>
-		<td class="leftcol"><label for="staff_id">Asset Code:</label></td>
-		<td><%=h @asset.assetcode %></td>	
+		<td class="leftcol"><label for="staff_id">Asset Code Name:</label></td>
+		<td><%=h @assettrack.assetinassettrack.assetcode %> -- <%=h @assettrack.assetinassettrack.name %></td>	
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="staff_id">Asset Type:</label></td>
-		<td><%=h (Asset::ASSETTYPE.find_all{|disp, value| value == @asset.assettype}).map {|disp, value| disp} %></td>	
+		<td class="leftcol"><label for="staff_id">Reserved By :</label></td>
+		<td><%=h @assettrack.staffinassettrack.staff_name_with_position %></td>	
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="staff_id">Card No:</label></td>
-		<td><%=h @asset.cardno %></td>	
+		<td class="leftcol"><label for="staff_id">Reserved By :</label></td>
+		<td><%=h @assettrack.reservationdate.strftime("%d %B %Y") %></td>	
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="staff_id">Dept ID:</label></td>
-		<td><%=h @asset.dept_id %></td>	
+		<td class="leftcol"><label for="staff_id">To Be Used From :</label></td>
+		<td><%=h @assettrack.use_startdate.strftime("%d %B %Y") %> <==> 
+			  <%=h @assettrack.use_enddate.strftime("%d %B %Y") %> (Duration : <%= @assettrack.duration %> Days)</td>	
+	</tr>
+	<td class="leftcol"><label for="bookable">Issued By</label></td>
+	    <td><%=h @assettrack.isby.blank? ? "" : @assettrack.isby.staff_name_with_position %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="staff_id">Category:</label></td>
-		<td><%=h @asset.category %></td>	
+		<td class="leftcol"><label for="staff_id">Reserved By :</label></td>
+		<td><%=h @assettrack.issuedate.strftime("%d %B %Y") %></td>	
 	</tr>
 	<tr>
-	<td class="leftcol"><label for="bookable">Bookable:</label></td>
-	    <td><%=h @asset.bookable? ? "This item can be booked" : "No" %></td>
+		<td class="leftcol"><label for="staff_id">Expected Return Date :</label></td>
+		<td><%=h @assettrack.expectedreturndate.strftime("%d %B %Y") %></td>	
 	</tr>
-  <tr>
-	  <th colspan = 2>Asset Description</th>
+	<tr>
+	  <th colspan = 2>Returned</th>
   </tr>
 	<tr>
-		<td class="leftcol"><label for="staff_id">Name:</label></td>
-		<td><%=h @asset.name %></td>	
+		<td class="leftcol"><label for="staff_id">Returned To :</label></td>
+		<td><%=h @assettrack.assettrackreturn.blank? ? "Not Returned" : @assettrack.assettrackreturn.staff_name_with_position %></td>	
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="staff_id">Type No:</label></td>
-		<td><%=h @asset.type %></td>	
+		<td class="leftcol"><label for="staff_id">Actual Return Date :</label></td>
+		<td><%=h @assettrack.actualreturndate.strftime("%d %B %Y") unless @assettrack.actualreturndate.nil? %></td>	
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="staff_id">Manufacturer:</label></td>
-		<td><%=h @asset.manufacturer_id.blank? ? "Not Recorded" : @asset.manufacturedby.name %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Model:</label></td>
-		<td><%=h @asset.model %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Serial No:</label></td>
-		<td><%=h @asset.serialno %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Located at:</label></td>
-		<td><%=h @asset.residence.resname %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Assigned to:</label></td>
-		<td><%=h @asset.assignedto_id.blank? ? "-" : @asset.assignedto.staff_name_with_position %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Status:</label></td>
-		<td><%=h @asset.status %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Other Information:</label></td>
-		<td><%=h @asset.otherinfo %></td>	
-	</tr>
-	<tr>
-	  <th colspan = 2>Purchasing Info</th>
-  </tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Order No:</label></td>
-		<td><%=h @asset.orderno %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Price:</label></td>
-		<td><%=h ringgols(@asset.purchaseprice) %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="purchasedate">Purchase Date:</label></td>
-		<td><%=h @asset.purchasedate.strftime("%d %B %Y") %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="purchasedate">Delivery Date:</label></td>
-		<td><%=h @asset.receiveddate.strftime("%d %B %Y") %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Received By:</label></td>
-		<td><%=h @asset.receivedby.blank? ? "-" : @asset.receivedby.staff_name_with_position %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Received By:</label></td>
-		<td><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %></td>	
+		<td class="leftcol"><label for="staff_id">Remarks :</label></td>
+		<td><%=h @assettrack.remarks %></td>	
 	</tr>
 
 </table>
