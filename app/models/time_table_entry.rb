@@ -1,5 +1,6 @@
 class TimeTableEntry < ActiveRecord::Base
   
+  validates_presence_of :subject, :topic
   
   #belongs_to intake_id
   belongs_to :intake, :class_name => 'Intake', :foreign_key => 'intake_id'
@@ -8,7 +9,7 @@ class TimeTableEntry < ActiveRecord::Base
   belongs_to :programme, :class_name => 'Programme', :foreign_key => 'programme_id'
   
   #belongs_to subject_id
-   belongs_to :subject
+  belongs_to :subject
    
   #belongs_to topic_id
   belongs_to :topic, :class_name => 'Topic', :foreign_key => 'topic_id'

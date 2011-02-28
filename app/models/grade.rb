@@ -32,7 +32,7 @@ class Grade < ActiveRecord::Base
         "D"
       elsif finale < 75
         "C"
-      elsif finale < 85
+      elsif finale < 90
         "B"
       else
         "A"
