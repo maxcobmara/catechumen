@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110227091327) do
+ActiveRecord::Schema.define(:version => 20110301022602) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -866,18 +866,12 @@ ActiveRecord::Schema.define(:version => 20110227091327) do
   end
 
   create_table "travelclaims", :force => true do |t|
-    t.integer  "travelrequest_id"
-    t.datetime "tstartdt"
-    t.datetime "treturndt"
-    t.decimal  "distance"
-    t.decimal  "distancevalue"
     t.decimal  "ptclaimsvalue"
     t.decimal  "allclaimsvalue"
     t.decimal  "othclaimsvalue"
     t.decimal  "exchvalue"
     t.decimal  "exchloss"
     t.decimal  "gtotal"
-    t.string   "ifownwhy"
     t.boolean  "claimtype"
     t.date     "submission"
     t.integer  "hod_id"
@@ -886,6 +880,8 @@ ActiveRecord::Schema.define(:version => 20110227091327) do
     t.decimal  "payable"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "staff_id"
+    t.date     "claimsmonth"
   end
 
   create_table "travelrequests", :force => true do |t|
@@ -909,6 +905,7 @@ ActiveRecord::Schema.define(:version => 20110227091327) do
     t.date     "hodconfirmdt"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "travelclaims_id"
   end
 
   create_table "txsupplies", :force => true do |t|

@@ -18,7 +18,11 @@ class Grade < ActiveRecord::Base
     end
     
     def total_summative
-      (exam1marks * examweight)/100
+      if exam1marks = 0
+        0
+      else
+        (exam1marks * examweight)/100
+      end
     end
     
     def finale

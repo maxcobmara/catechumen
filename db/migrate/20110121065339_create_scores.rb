@@ -5,7 +5,6 @@ class CreateScores < ActiveRecord::Migration
       t.string  :description
       t.decimal :marks
       t.decimal :weightage
-      t.decimal :actual_score
       t.decimal :score
       t.decimal :completion
       t.boolean :formative

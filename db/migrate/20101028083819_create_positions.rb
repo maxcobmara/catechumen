@@ -8,6 +8,7 @@ class CreatePositions < ActiveRecord::Migration
       t.text      :taskmain
       t.text      :taskother
       t.integer   :staffgrade_id
+      t.integer   :staff_id
 
       t.timestamps
     end

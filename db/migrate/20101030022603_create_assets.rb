@@ -12,7 +12,6 @@ class CreateAssets < ActiveRecord::Migration
       t.integer    :manufacturer_id
       t.string     :model
       t.string     :serialno
-      t.string     :location
       t.text       :otherinfo
       t.string     :orderno
       t.decimal    :purchaseprice

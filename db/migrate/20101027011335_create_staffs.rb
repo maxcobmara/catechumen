@@ -8,7 +8,6 @@ class CreateStaffs < ActiveRecord::Migration
       t.integer :titlecd_id
       t.string  :code
       t.string  :fileno
-      t.integer :position_id
       t.string  :coemail
       t.date    :cobirthdt
       t.string  :bloodtype
