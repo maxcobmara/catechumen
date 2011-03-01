@@ -25,6 +25,10 @@ class TravelclaimsController < ApplicationController
   # GET /travelclaims/new.xml
   def new
     @travelclaim = Travelclaim.new
+    2.times do 
+      travelclaimrequest = @travelclaim.travelclaimrequests.build
+      3.times { travelclaimrequest.traveldetails.build }
+    end
 
     respond_to do |format|
       format.html # new.html.erb

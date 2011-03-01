@@ -1,15 +1,20 @@
 class Travelclaim < ActiveRecord::Base
   
-  before_save :varmyass
+  #before_save :varmyass
+  #traveclaim = survey, travelrequest = questions
+  
+  has_many :travelclaimrequests, :dependent => :destroy
+  accepts_nested_attributes_for :travelclaimrequests, :reject_if => lambda { |a| a[:travelrequest_id].blank? }, :allow_destroy =>true
+  
+  
   #display on show.html.erb
-  belongs_to :travelrequest, :foreign_key => 'travelrequest_id'
-  belongs_to :travelclaim, :foreign_key => 'staff_id'
-  belongs_to :hod,       :class_name => 'Staff', :foreign_key => 'hod_id'
+  #belongs_to :travelrequest, :foreign_key => 'travelrequest_id'
+  #belongs_to :travelclaim, :foreign_key => 'staff_id'
+  #belongs_to :hod,       :class_name => 'Staff', :foreign_key => 'hod_id'
   #belongs_to :travelcode,       :class_name => 'Travelrequest', :foreign_key => 'travelrequest_id'
   belongs_to :staff
   
-  validates_presence_of :travelrequest_id, :distance, :ptclaimsvalue
-  validates_uniqueness_of :travelrequest_id
+  validates_presence_of :claimsmonth, :staff_id
   
   def self.find_main
       Travelrequest.find(:all, :condition => ['travelrequest_id IS NULL'])

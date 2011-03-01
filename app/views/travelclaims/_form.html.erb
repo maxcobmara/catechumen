@@ -5,33 +5,25 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="travelrequest_id"><b>Travel Code:</b></label></td>
-		<td><%= f.collection_select :travelrequest_id, Travelrequest.find(:all), :id, :travel_request_key, :include_blank => true %></td>
+		<td class="leftcol"><label for="claimsmonth"><b>Start Date:</b></label></td>
+		<td><%= f.date_select :claimsmonth,  :order => [:month, :year] %> </td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="tstartdt"><b>Start Date:</b></label></td>
-		<td><%= f.date_select :tstartdt,  :order => [:day, :month, :year], :include_blank => true %> </td>
+		<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :name, :include_blank => true %>
+			  filter by current_user.id</td>
 	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="treturndt"><b>Return Date:</b></label></td>
-		<td><%= f.date_select :treturndt,  :order => [:day, :month, :year], :include_blank => true %></td>
-	</tr>
-	
-	<tr>
-	   <td class="leftcol"><label for="distance"><b>Distance:</b></label></td>
-		<td><%= f.text_field :distance, :size => 12 %>KM</td>
-	</tr>
-	
+</table>
+
+	<% f.fields_for :travelclaimrequests do |builder| %>
+	  <%= render 'tcr', :f => builder %>
+	<% end %>
+
+
+<table>
   <tr>
-	   <td class="leftcol"><label for="distancevalue"><b>Distance Value:</b></label></td>
-		 <td> RM <% f.text_field :distancevalue, :size => 12 %> <%=h @travelclaim.distance_value %> <font size=-2>First 500km x 70sen, 501km - 1000km x 50sen, 1001km - 1700km x 25sen, after that x 10sen</font></td>
-  </tr>
-	
-	
-	<tr>
-	   <td class="leftcol"><label for="ptclaimsvalue"><b>Transport Claim Value:</b></label></td>
+	  <td class="leftcol"><label for="ptclaimsvalue"><b>Transport Claim Value:</b></label></td>
 		<td>RM <%= f.text_field :ptclaimsvalue, :size => 12  %></td>
 	</tr>
 	
@@ -69,11 +61,6 @@
 		<td><%= f.text_field :gtotal %></td>
 	</tr>
 	
-	
-	<tr>
-	   <td class="leftcol"><label for="ifownwhy"><b>Why Use Own Transport:</b></label></td>
-		<td><%= f.text_field :ifownwhy %></td>
-	</tr>
 	
 	
 	<tr>

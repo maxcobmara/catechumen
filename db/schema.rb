@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110301022602) do
+ActiveRecord::Schema.define(:version => 20110301200154) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -865,6 +865,13 @@ ActiveRecord::Schema.define(:version => 20110301022602) do
     t.integer  "evaluation_id"
   end
 
+  create_table "travelclaimrequests", :force => true do |t|
+    t.integer  "travelclaim_id"
+    t.integer  "travelrequest_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "travelclaims", :force => true do |t|
     t.decimal  "ptclaimsvalue"
     t.decimal  "allclaimsvalue"
@@ -882,6 +889,22 @@ ActiveRecord::Schema.define(:version => 20110301022602) do
     t.datetime "updated_at"
     t.integer  "staff_id"
     t.date     "claimsmonth"
+  end
+
+  create_table "traveldetails", :force => true do |t|
+    t.integer  "travelclaimrequest_id"
+    t.date     "travelday"
+    t.time     "departure"
+    t.time     "arrival"
+    t.text     "description"
+    t.decimal  "distance"
+    t.decimal  "fare"
+    t.decimal  "value"
+    t.boolean  "lodging"
+    t.boolean  "meals"
+    t.boolean  "dinner"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "travelrequests", :force => true do |t|
@@ -905,7 +928,7 @@ ActiveRecord::Schema.define(:version => 20110301022602) do
     t.date     "hodconfirmdt"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.date     "travelclaims_id"
+    t.integer  "travelclaims_id"
   end
 
   create_table "txsupplies", :force => true do |t|

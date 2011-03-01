@@ -1,6 +1,7 @@
 class Travelrequest < ActiveRecord::Base
-   has_many :travelclaims, :foreign_key =>'travelrequest_id'
-   belongs_to :staff
+   
+  has_one :travelclaimrequest
+  #belongs_to :staff
   
   #this works belongs_to :staff
   belongs_to :stafftravel,    :class_name => 'Staff',        :foreign_key => 'staff_id'
@@ -20,8 +21,22 @@ class Travelrequest < ActiveRecord::Base
       Staff.find(:all, :condition => ['staff_id IS NULL'])
   end
   
+  def short_descr
+    purpose.split(" ").slice(0,2).join(" ")
+  end
+  def short_dest
+    wc = (destination.scan(/\w+/).size)
+    if wc < 2
+      destination
+    else
+      a = destination.split(" ").slice(0)
+      b = destination.split(" ").slice(wc-1)
+      a + " " + b
+    end
+  end
+  
   def travel_request_key
-    "#{trcode} for #{tstartdt} to #{destination} by #{staff.mykad_with_staff_name} "
+    "#{trcode} for #{short_descr} at #{short_dest}"
   end
   
   #def self.choices_for_name_by_group_and_event(group_id, event_id)

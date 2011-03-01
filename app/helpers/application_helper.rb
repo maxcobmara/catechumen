@@ -4,6 +4,10 @@ module ApplicationHelper
     number_to_currency(money, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
   end
   
+  def link_to_remove_fields(name, f)
+    f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)")
+  end
+  
   def select_tag_for_filter(model, nvpairs, params)
     options = { :query => params[:query] }
     _url = url_for(eval("#{model}_url(options)"))
