@@ -16,10 +16,25 @@
 	</tr>
 </table>
 
+<div>
 	<% f.fields_for :travelclaimrequests do |builder| %>
-	  <%= render 'tcr', :f => builder %>
+	  <%= render 'travelclaimrequest_fields', :f => builder %>
 	<% end %>
-
+	<p><%= link_to_add_fields "Add TravelRequest", f, :travelclaimrequests %></p>
+</div>
+	
+<table>
+	<tr>
+		<th>Type</td>
+		<th>Receipt No</td>
+		<th>Value (RM)</td>
+		<th></th>
+	</tr>
+	<% f.fields_for :travelclaimreceipts do |builder| %>
+	  <%= render 'travelclaimreceipt_fields', :f => builder %>
+	<% end %>
+</table>
+	<p><%= link_to_add_fields "Add Receipt", f, :travelclaimreceipts %></p>
 
 <table>
   <tr>

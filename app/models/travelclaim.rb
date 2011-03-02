@@ -6,6 +6,9 @@ class Travelclaim < ActiveRecord::Base
   has_many :travelclaimrequests, :dependent => :destroy
   accepts_nested_attributes_for :travelclaimrequests, :reject_if => lambda { |a| a[:travelrequest_id].blank? }, :allow_destroy =>true
   
+  has_many :travelclaimreceipts, :dependent => :destroy
+  accepts_nested_attributes_for :travelclaimreceipts, :allow_destroy =>true
+  
   
   #display on show.html.erb
   #belongs_to :travelrequest, :foreign_key => 'travelrequest_id'

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110301200154) do
+ActiveRecord::Schema.define(:version => 20110302044819) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -856,6 +856,20 @@ ActiveRecord::Schema.define(:version => 20110301200154) do
     t.integer  "duration"
   end
 
+  create_table "trainingrequests", :force => true do |t|
+    t.integer  "staffcourse_id"
+    t.integer  "staff_id"
+    t.integer  "appraisal_id"
+    t.string   "reason"
+    t.boolean  "submit"
+    t.date     "submitdate"
+    t.boolean  "approved"
+    t.integer  "approvedby_id"
+    t.date     "approveddate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "trainneeds", :force => true do |t|
     t.string   "name"
     t.string   "reason"
@@ -863,6 +877,15 @@ ActiveRecord::Schema.define(:version => 20110301200154) do
     t.datetime "updated_at"
     t.integer  "confirmedby_id"
     t.integer  "evaluation_id"
+  end
+
+  create_table "travelclaimreceipts", :force => true do |t|
+    t.integer  "travelclaim_id"
+    t.integer  "type_id"
+    t.string   "receiptnp"
+    t.decimal  "rvalue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "travelclaimrequests", :force => true do |t|
@@ -889,6 +912,15 @@ ActiveRecord::Schema.define(:version => 20110301200154) do
     t.datetime "updated_at"
     t.integer  "staff_id"
     t.date     "claimsmonth"
+  end
+
+  create_table "traveldetailreceipts", :force => true do |t|
+    t.integer  "traveldetail_id"
+    t.integer  "type_id"
+    t.string   "receiptnp"
+    t.decimal  "rvalue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "traveldetails", :force => true do |t|

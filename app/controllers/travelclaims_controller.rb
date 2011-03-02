@@ -29,6 +29,7 @@ class TravelclaimsController < ApplicationController
       travelclaimrequest = @travelclaim.travelclaimrequests.build
       3.times { travelclaimrequest.traveldetails.build }
     end
+    5.times { @travelclaim.travelclaimreceipts.build }
 
     respond_to do |format|
       format.html # new.html.erb
