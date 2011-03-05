@@ -71,6 +71,11 @@ class Staff < ActiveRecord::Base
   #Link to model bulletin
   #has_many :bulletin, :class_name => 'bulletin', :foreign_key => 'postedby_id'  #posted by
   
+  #Trainingrequest
+  has_many :applicants, :class_name => 'Trainingrequest', :foreign_key => 'staff_id'
+  has_many :approvers, :class_name => 'Trainingrequest', :foreign_key => 'approvedby_id'
+  #has_many :trainingrequests
+  
   #Link to model Residence
   has_many :staff, :class_name => 'Residence', :foreign_key => 'staff_id'  
   has_many :admin, :class_name => 'Residence', :foreign_key => 'staffadmin_id'
