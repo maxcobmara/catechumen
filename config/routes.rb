@@ -1,4 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :staffserveschemes
+
+  map.resources :staffgrades
+
+  map.resources :staff_serviceschemes
+
   map.resources :trainingrequests
 
   map.resources :timetable_week_days

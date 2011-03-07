@@ -7,17 +7,17 @@
 	<div class="tlist">
 	    <table width=90% border="0" cellpadding="0" cellspacing="0">
 		  <tr>
-    <th>Grade Name</th>
-    <th>Grade Short Name</th>
-    <th>Grade level</th>
+    <th>Classification (do a group_by here)</th>
+    <th>Group</th>
+    <th>Grade</th>
    <th colspan=3 class="ac">Control</th>
   </tr>
 
 <% @staffgrades.each do |staffgrade| %>
   <tr>
-    <td><%=h staffgrade.sgname %></td>
-    <td><%=h staffgrade.sgshortname %></td>
-    <td><%=h staffgrade.sglevel %></td>
+    <td><%=h (Staffgrade::CLASSIFICATION.find_all{|disp, value| value == staffgrade.classification_id}).map {|disp, value| disp} %></td>
+	  <td><%=h (Staffgrade::GROUP.find_all{|disp, value| value == staffgrade.group_id}).map {|disp, value| disp} %></td>
+    <td><%=h staffgrade.grade %></td>
     <td><%= link_to 'Show', staffgrade %></td>
     <td><%= link_to 'Edit', edit_staffgrade_path(staffgrade) %></td>
     <td><%= link_to 'Destroy', staffgrade, :confirm => 'Are you sure?', :method => :delete %></td>

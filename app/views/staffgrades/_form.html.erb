@@ -4,21 +4,29 @@
 <tr>
 	<th colspan = 2>Staff Grade Details</th>
 </tr>  
-	
 	<tr>
-		<td class="leftcol"><label for="sgname"><b>Grade Name:</b></label></td>
-	<td><%= f.text_field :sgname %></td>
+		<td class="leftcol"><label for="sgname"><b>Classification:</b></label></td>
+	<td><%= f.select :classification_id,
+		                Staffgrade::CLASSIFICATION,
+		                :prompt => "Select"%></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="sglevel"><b>Level:</b></label></td>
+		<td><%= f.text_field :level %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="sgname"><b>Group:</b></label></td>
+	<td><%= f.select :group_id,
+			              Staffgrade::GROUP,
+			              :prompt => "Select"%></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="sgshortname"><b>Grade Short Name:</b></label></td>
-		<td><%= f.text_field :sgshortname %></td>
+		<td class="leftcol"><label for="sgshortname"><b>Name:</b></label></td>
+		<td><%= f.text_field :name %></td>
 	</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="sglevel"><b>Grade Level:</b></label></td>
-		<td><%= f.text_field :sglevel %></td>
-	</tr>
+
 	
 </table>
 <BR>

@@ -1,12 +1,54 @@
 class Staffgrade < ActiveRecord::Base
   
-  has_many :staffs
-  has_many :positions
-  validates_presence_of :sgcode, :sgname, :sglevel
+  before_save :save_my_vars
   
-  def self.find_main
-    Staffgrades.find(:all, :condition => ['staffgrade_id IS NULL'])
+  def save_my_vars
+    self.grade = make_grade
   end
   
+  def make_grade
+    classification_id + level
+  end
   
+  CLASSIFICATION = [
+       #  Displayed       stored in db
+       [ "A   Pengangkutan"    , "A" ],
+       [ "B   Bakat dan Seni"  , "B" ],
+       [ "C   Sains"           , "C" ],
+       [ "DG  Pendidikan"      , "DG"],
+       [ "DGA Pendidikan"      , "DGA" ],
+       [ "DM  Pendidikan"      , "DM" ],
+       [ "DS  Pendidikan"      , "DS" ],
+       [ "DU  Pendidikan"      , "DU" ],
+       [ "E   Ekonomi"         , "E" ],
+       [ "F   Sistem Maklumat" , "F" ],
+       [ "FT  Sistem Maklumat" , "FT" ],
+       [ "G   Pertanian"       , "G" ],
+       [ "J   Kejuruteraan"    , "J" ],
+       [ "KB  Keselamatan & Pertahanan Awam", "KB" ],
+       [ "KP  Keselamatan & Pertahanan Awam", "KP" ],
+       [ "KR  Keselamatan & Pertahanan Awam", "KR" ],
+       [ "KX  Keselamatan & Pertahanan Awam", "KX" ],
+       [ "L   Perundangan & Kehakiman", "L" ],
+       [ "LS  Perundangan & Kehakiman (Syariah)", "LS" ],
+       [ "M   Tadbir & Diplomatik", "M" ],
+       [ "N   Pentadbiran & Sokongan", "N" ],
+       [ "NT  Pentadbiran & Sokongan", "NT" ],
+       [ "Q   Penyelidikan & Pembangunan", "Q" ],
+       [ "R   Mahir/Separuh Mahir/Tidak Mahir", "R" ],
+       [ "S   Perkhidmatan Sosial", "S" ],
+       [ "U   Perubatan & Kesihatan", "U" ],
+       [ "W   Kewangan", "W" ],
+       [ "X   Penguatkuasa Maritim", "X" ],
+       [ "Y   Polis", "Y" ],
+       [ "Z   Angkatan Tentera Malaysia", "Z" ]
+  ]
+  
+  GROUP = [
+       #  Displayed       stored in db
+       [ "Pengurusan & Professional"    , "P" ],
+       [ "Sokongan I"  , "S1" ],
+       [ "Sokongan II" , "S2" ],
+       [ "Bersepadu" , "B" ]
+  ]
 end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110302044819) do
+ActiveRecord::Schema.define(:version => 20110307031954) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -678,6 +678,17 @@ ActiveRecord::Schema.define(:version => 20110302044819) do
     t.datetime "updated_at"
   end
 
+  create_table "staff_grades", :force => true do |t|
+    t.string   "name"
+    t.string   "grade"
+    t.integer  "level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "classification_id"
+    t.string   "group_id"
+    t.string   "schemename"
+  end
+
   create_table "staffcourses", :force => true do |t|
     t.string   "name"
     t.integer  "coursetype"
@@ -693,9 +704,10 @@ ActiveRecord::Schema.define(:version => 20110302044819) do
   end
 
   create_table "staffgrades", :force => true do |t|
-    t.string   "sgname"
-    t.string   "sgshortname"
-    t.integer  "sglevel"
+    t.string   "classification_id"
+    t.string   "group_id"
+    t.string   "grade"
+    t.string   "level"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -747,6 +759,14 @@ ActiveRecord::Schema.define(:version => 20110302044819) do
     t.datetime "photo_updated_at"
     t.integer  "staffgrade_id"
     t.integer  "gender"
+  end
+
+  create_table "staffserveschemes", :force => true do |t|
+    t.string   "name"
+    t.string   "group_id"
+    t.string   "classification_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "strainings", :force => true do |t|
