@@ -126,15 +126,8 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="employscheme"><b><%= t 'staff.employscheme' %></b></label></td>
-		<td><%= f.select :employscheme, 
-		                  Staff::SCHEME,
-		                 :prompt => "Select"  %></td>
-	</tr>
-	
-	<tr>
 		<td class="leftcol"><label for="staffgrade_id"><b><%= t 'staff.staffgrade_id' %></b></label><font color="red"> * </font></td>
-		<td><%= f.collection_select :staffgrade_id, Staffgrade.find(:all), :id, :sgname, :include_blank => true %></td>
+		<td><%= f.collection_select :staffgrade_id, Staffgrade.find(:all), :id, :grade, :include_blank => true %></td>
 	</tr><!-->#:conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]<-->
 
 		

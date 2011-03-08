@@ -49,6 +49,15 @@ class ApplicationController < ActionController::Base
           User.current_user = @user
         end
       end
+      
+      def permission_denied
+        flash[:error] = "Sorry, your user permissions do not allow you to access this information"
+        redirect_to root_url
+      end
+      
+      def late_to_be_approved
+        Attendance.count(:all, :conditions => ["approve_id=? AND approvestatus IS ?", User.current_user.staff_id, nil])
+      end
     
     
 end

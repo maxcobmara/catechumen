@@ -2,12 +2,19 @@ class Staffgrade < ActiveRecord::Base
   
   before_save :save_my_vars
   
+  has_many :staffclassifications
+  has_many :staffserveschemes, :through => :staffclassifications
+  
   def save_my_vars
     self.grade = make_grade
   end
   
   def make_grade
     classification_id + level
+  end
+  
+  def classification_name
+    (Staffgrade::GROUP.find_all{|disp, value| value == group_id}).map {|disp, value| disp}
   end
   
   CLASSIFICATION = [

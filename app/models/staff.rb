@@ -124,7 +124,7 @@ class Staff < ActiveRecord::Base
   
   #links to Model Attendances
   has_many :attendingstaffs,        :class_name => 'Attendance', :foreign_key => 'staff_id' #attendance staff name
-  has_many :approvalsforstafflates, :class_name => 'Attendance', :foreign_key => 'approve_id' # approver name
+  has_many :approvers, :class_name => 'Attendance', :foreign_key => 'approve_id' # approver name
   
   #links to Model Assetloss
    has_many :laststaff,        :class_name => 'Assetloss',   :foreign_key => 'lossstafflast_id' 
@@ -387,14 +387,7 @@ class Staff < ActiveRecord::Base
        [ "Bukan Warganegara",2],
        [ "Penduduk Tetap", 3],
   ]
-  
-  SCHEME = [
-       #  Displayed       stored in db
-       [ "Sokongan I","Sokongan I" ],
-       [ "Sokongan II","Sokongan II" ],
-       [ "Professional","Professional" ]
-       
-  ]
+
   
   GRADE = [
        #  Displayed       stored in db

@@ -1,10 +1,15 @@
 class AttendancesController < ApplicationController
+  filter_resource_access
+  
   # GET /attendances
   # GET /attendances.xml
   def index
    # @attendances = Attendance.all
-   @attendances = Attendance.find(:all, :order => 'attdate, id', :limit => 50)
-   @attendance_attdate = @attendances.group_by { |t| t.attdate.beginning_of_day }
+   @attendances = Attendance.with_permissions_to(:index).find(:all, :order => 'attdate DESC, id', :limit => 50)
+   @mylate_attendances = Attendance.find_mylate
+   @approvelate_attendances = Attendance.find_approvelate
+   
+   #@attendance_attdate = @attendances.group_by { |t| t.attdate.beginning_of_day }
   
     respond_to do |format|
       format.html # index.html.erb
@@ -72,6 +77,12 @@ class AttendancesController < ApplicationController
       end
     end
   end
+  
+  def approve
+    @attendance = Attendance.find(params[:id])
+  end
+  
+  
 
   # DELETE /attendances/1
   # DELETE /attendances/1.xml

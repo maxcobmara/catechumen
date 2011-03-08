@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :staffclassifications
+
   map.resources :staffserveschemes
 
   map.resources :staffgrades
@@ -100,7 +102,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :documents
 
   map.resources :curriculums
-
+  
+  map.connect '/attendances/approve', :controller => 'attendances', :action => 'approve'
   map.resources :attendances
 
   map.resources :loans
