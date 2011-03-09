@@ -1,8 +1,10 @@
 class DocumentsController < ApplicationController
+  filter_resource_access
   # GET /documents
   # GET /documents.xml
   def index
     @documents = Document.search(params[:search])
+    @document_files = @documents.group_by { |t| t.filedocer }
 
     respond_to do |format|
       format.html # index.html.erb

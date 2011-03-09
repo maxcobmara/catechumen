@@ -21,27 +21,31 @@
         <th>Letter Date</th>
         <th>Received Date</th>
         <th>From</th>
-        <th>Filled By</th>
-        <th>File No</th>
+        <th>Filed By</th>
         <th>Closed</th>
         <th colspan=3 class="ac">Control</th>
       </tr>
-      <% @documents.each do |document| %>
-      <tr>
-       <td><%=h document.serialno %></td>
-       <td><%=h document.refno %></td>
-       <td><%=h (Document::CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} %></td>
-       <td><%=h document.title %></td>
-       <td><%=h document.letterdt %></td>
-       <td><%=h document.letterxdt %></td>
-       <td><%=h document.from %></td>
-       <td><%=h document.staff.name %></td>
-       <td><%=h document.cofile.name %></td>
-       <td><%=h document.closed %></td>
-       <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => document %></td>
-       <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => document %></td>
-       <td width=10px><%= link_to 'Destroy', document, :confirm => 'Are you sure?', :method => :delete %></td>
-      </tr>
+      <% @document_files.each do |filedocer, documents| %>
+
+        <tr>
+          <td colspan=12><BR> <b><%=h filedocer %><b></td>
+	      </tr>
+        <% for document in documents %>
+       <tr>
+       	 <td><%=h document.serialno %></td>
+	       <td><%=h document.refno %></td>
+	       <td><%=h (Document::CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} %></td>
+	       <td><%=h document.title %></td>
+	       <td><%=h document.letterdt %></td>
+	       <td><%=h document.letterxdt %></td>
+	       <td><%=h document.from %></td>
+	       <td><%=h document.staff.name %></td>
+	       <td><%=h document.closed %></td>
+	       <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
+	       <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %></td>
+	       <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %></td>
+       </tr>
+			<% end %>
       <% end %>
     </table>
   </div>

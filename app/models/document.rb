@@ -8,6 +8,11 @@ belongs_to :staff, :foreign_key => 'stafffiled_id'
 belongs_to :cofile, :foreign_key => 'file_id'
 
 
+  def filedocer
+    suid = file_id
+    Cofile.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
+  end
+
 
 
 
