@@ -5,18 +5,15 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="name">Name:</label><font color="red"> * </font></td>
-		<td><%= f.text_field :name %></td>
-	</tr>
-	
-	<tr>
 		<td class="leftcol"><label for="intake_no">Intake No:</label><font color="red"> * </font></td>
-		<td><%= f.text_field :intake_no %></td>
+		<td><%= f.select :intake_no, 
+		                   Intake::INTAKE_MONTH,
+		                   :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="year">Year:</label><font color="red"> * </font></td>
-		<td><%= f.date_select :year, :start_year => 2007, :end_year => 2020, :order => [:year] %></td>
+		<td><%= f.date_select :year, :options => { :discard_day => true, :discard_month => true }, :order => [:year] %></td>
 	</tr>
 	
 	<tr>

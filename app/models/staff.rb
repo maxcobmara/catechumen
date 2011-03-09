@@ -387,13 +387,6 @@ class Staff < ActiveRecord::Base
        [ "Bukan Warganegara",2],
        [ "Penduduk Tetap", 3],
   ]
-
-  
-  GRADE = [
-       #  Displayed       stored in db
-       [ "U29","U29" ],
-       [ "Jururawat","Jururawat" ],
-  ]
   
   STATUS = [
         #  Displayed       stored in db
