@@ -1,59 +1,26 @@
 class Student < ActiveRecord::Base
-  
-    #------------------Validations--------------------------------------------------------------------------------------
 
-    validates_presence_of     :icno, :name, :matrixno, :sstatus, :stelno, :ssponsor, :gender, :semail, :sbirthdt, 
-                              :mrtlstatuscd
-    validates_numericality_of :icno, :stelno
-    validates_length_of       :icno, :is =>12
-    validates_uniqueness_of   :icno, :matrixno
-
-
-  #----------------------Search------------------------------------------------------------------------------------------
+  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :semail, :sbirthdt, :mrtlstatuscd
+  validates_numericality_of :icno, :stelno
+  validates_length_of       :icno, :is =>12
+  validates_uniqueness_of   :icno
   
   
-  #----Link to klass---Self Join--------------------------------------------------------------------------------------
-  has_and_belongs_to_many :klasses
-  #has_and_belongs_to_many :programmes
+  has_and_belongs_to_many :klasses          #has_and_belongs_to_many :programmes
+  belongs_to :course,         :class_name => 'Programme', :foreign_key => 'course_id'       #Link to Programme
+  belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
   
-  
-  #--------belongs with other page-------------------------------------------------------------------------------------
-  
-  #Link to Programme
-  belongs_to :course, :class_name => 'Programme', :foreign_key => 'course_id'
-  
-  #Link to Model intake
-  belongs_to :intakestudent, :class_name => 'Intake', :foreign_key => 'intake_id'
-  
-  
-  #------------Link with Other Page-------------------------------------------------------------------------------------
-  #Link to Model user
-  has_one :user
-  
-  #Link to Model Grade
-  has_many :studentgrade,  :class_name => 'Grade', :foreign_key => 'student_id'
-  
-  #Link to Model Sdicipline
-  has_many :student,  :class_name => 'Sdicipline', :foreign_key => 'student_id'
-  
-  #Link to Model CourseEvaluation
-  has_many :studentevaluate,  :class_name => 'Courseevaluation', :foreign_key => 'student_id'
-  
-  #Link to LeaveStudent
-  has_many :leaveforstudents
-  
-  #Link to Model residence
-  has_many :student, :class_name => 'Residence', :foreign_key => 'student_id'
-  
-  #Link to Counselling
-  has_many :counsellings
+  has_one   :user                                                                           #Link to Model user
+  has_many  :leaveforstudents                                                               #Link to LeaveStudent
+  has_many  :counsellings                                                                   #Link to Counselling
+  has_many  :librarytransactions                                                            #Link to LibraryTransactions
+  has_many  :studentgrade,    :class_name => 'Grade',     :foreign_key => 'student_id'      #Link to Model Grade
+  has_many  :student,         :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
+  has_many  :studentevaluate, :class_name => 'Courseevaluation', :foreign_key => 'student_id'#Link to Model CourseEvaluation
+  has_many  :student,         :class_name => 'Residence', :foreign_key => 'student_id'      #Link to Model residence
   
   #has_many :sdiciplines, :foreign_key => 'student_id'
- 
- #Link to LibraryTransactions
-  has_many :librarytransactions
-  
-  # has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
+  #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
   
   
 
@@ -70,7 +37,31 @@ class Student < ActiveRecord::Base
       Programme.find(:all, :condition => ['programme_id IS NULL'])
   end
   
-
+#----------------------Declarations---------------------------------------------------------------------------------
+  def age
+    Date.today.year - sbirthdt.year
+  end
+  
+  #group by intake
+  def isorter
+    suid = intake_id
+    Intake.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
+  end
+  
+  def formatted_mykad
+    "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
+  end
+  
+  def formatted_mykad_and_student_name
+    " #{formatted_mykad} #{name}" 
+  end
+  
+  def bil
+    v=1
+  end
+   
+   
+   
 # ------------------------------code for repeating field qualification---------------------------------------------------
  has_many :qualifications, :dependent => :destroy
  
@@ -129,19 +120,7 @@ class Student < ActiveRecord::Base
     end
   end
   
-#----------------------Declarations-------------------------------------------------------------------------------------------------
-  
-  def formatted_mykad
-    "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
-  end
-  
-  def formatted_mykad_and_student_name
-    " #{formatted_mykad} #{name}" 
-  end
-  
-  def bil
-    v=1
-   end
+
    
 #----------------Coded List-----------------------------------------------------------------------------------------------------------
   

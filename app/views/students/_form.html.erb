@@ -1,11 +1,11 @@
 <div class="tform">
-  <table width=100% >
+<table width=100% >
 
 
 <!--Personal Info-->
-<tr>
-	<th colspan = 2>Personal Details</th>
-</tr>
+	<tr>
+		<th colspan = 2>Personal Details</th>
+	</tr>
 
 	<tr>
 		<td class="leftcol"><label for="icno">MyKadNo:</label><font color="red"> * </font></td>
@@ -18,7 +18,7 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="matrixno">Matrix No:</label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="matrixno">Matrix No:</label></td>
 		<td><%= f.text_field :matrixno %></td>
 	</tr>
 	
@@ -69,12 +69,11 @@
 		<td><%= f.date_select :regdate, :start_year => 2007, :end_year => 2050, :order => [:day, :month, :year] %></td>
 	</tr>
 
-	
-<!--Course Details-->
 
-<tr>
-	<th colspan=2>Course Details</th>	
-</tr>
+<!--Course Details-->
+	<tr>
+		<th colspan=2>Course Details</th>	
+	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="course_id">Course:</label></td>
@@ -96,15 +95,11 @@
 		<td><%= f.collection_select :intake_id, Intake.find(:all), :id, :name, :include_blank => true %></td>
 	</tr>
 	
-
-	
-
-	
 <!--Health Status-->
 
-<tr>
-  <th colspan=2>Health Status</th>
-</tr>
+	<tr>
+	  <th colspan=2>Health Status</th>
+	</tr>
 	
 	
 	<tr>
@@ -145,65 +140,63 @@
   <tr>
 	  <th colspan=2>Qualifications</th>
   </tr>
-		<tr>
-		  <td colspan=2>
-		    <table width=95%>
-			  <tr>
-		        <td width=210px ><label for="level_id"><b>Level:</b></label></td>
-		        <td width=270px><label for="qname"><b>Qualification:</b></label></td>
-		        <td><label for="institute"><b>Institute:</b></label></td>
-		         <td width=10px></td>
-	          </tr>
-		    </table>
-	      </td>
+	<tr>
+		<td colspan=2>
+		<table width=95%>
+			<tr>
+		  	<td width=210px ><label for="level_id"><b>Level:</b></label></td>
+	      <td width=270px><label for="qname"><b>Qualification:</b></label></td>
+	      <td><label for="institute"><b>Institute:</b></label></td>
+	      <td width=10px></td>
 	    </tr>
+		</table>
+	  </td>
+	</tr>
 
-	    <tr>
-		  <td colspan=2>
-		    <!-- Code Block for Qualification Repeating Field -->
-		    <div id="qualifications">
+	<tr>
+		<td colspan=2>
+		<!-- Code Block for Qualification Repeating Field -->
+		  <div id="qualifications">
 			  <%= render :partial => 'qualification', :collection => @student.qualifications %>
-			</div>
-		  </td>
-		</tr>
-		<!-- End Code Block for Qualification Repeating Field -->
-		<tr>
-		  <td colspan=2><%= add_qualification_link "Add More" %></td>
-		</tr>
+	    </div>
+		</td>
+	</tr>
+<!-- End Code Block for Qualification Repeating Field -->
+	<tr>
+	  <td colspan=2><%= add_qualification_link "Add More" %></td>
+	</tr>
 		
 	
-	 	<!--Next Of Kin-->
-		<tr>
-		    <th colspan=2>Emergency Contact Information</th>
-	    </tr>
-		<tr>
-			<td colspan=2>
-				<!-- Code Block for Next of kins Labels -->
-				<table width=100%>
-					<tr>
-					  <td width=150px><label for="kintype_id"><b>Relationship:</b></label></td>
-					  <td width=235px><label for="name"><b>Name:</b></label></td>
-					  <td width=100px><label for="kinbirthdt"><b>DOB : </b><font color=#AAA size=-2>yyyymmdd</font> </label></td>
-					  <td width=85px><label for="phone"><b>Telephone:</b></label></td>
-					  <td><label for="kinaddr"><b>Address:</b></label></td>
-
-				    </tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td colspan=2>
-				<!-- Code Block for Next of kins Repeating Field -->
-				<div id="kins">
+<!--Next Of Kin-->
+	<tr>
+	  <th colspan=2>Emergency Contact Information</th>
+	</tr>
+	<tr>
+	  <td colspan=2>
+		<!-- Code Block for Next of kins Labels -->
+		<table width=100%>
+			<tr>
+			  <td width=150px><label for="kintype_id"><b>Relationship:</b></label></td>
+			  <td width=235px><label for="name">      <b>Name:</b>        </label></td>
+			  <td width=100px><label for="kinbirthdt"><b>DOB : </b>       <font color=#AAA size=-2>yyyymmdd</font> </label></td>
+			  <td width=85px><label for="phone">      <b>Telephone:</b>   </label></td>
+			  <td><label for="kinaddr">               <b>Address:</b>     </label></td>
+		  </tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		<!-- Code Block for Next of kins Repeating Field -->
+		  <div id="kins">
 			       <%= render :partial => 'kin', :collection => @student.kins %>
-				</div>
-				<!-- Code Block for Next of kins Repeating Field -->
-			</td>
-		</tr>
-		<tr>
-		    <td colspan=2><%= add_kin_link "Add more" %></td>
-		</tr>
-
+			</div>
+		<!-- Code Block for Next of kins Repeating Field -->
+		</td>
+	</tr>
+	<tr>
+    <td colspan=2><%= add_kin_link "Add more" %></td>
+	</tr>
 </table>		
 </div>
 	

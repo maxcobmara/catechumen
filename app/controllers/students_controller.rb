@@ -4,7 +4,7 @@ class StudentsController < ApplicationController
   # GET /students.xml
   def index
     @students = Student.with_permissions_to(:index).search(params[:search])
-    
+    @student_intakes = @students.group_by { |t| t.isorter }
  
     
     respond_to do |format|

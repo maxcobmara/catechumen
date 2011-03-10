@@ -11,38 +11,37 @@
 		</div>
 	</div>
   
-    <div class="tlist">
-	  	<table width=100% border="0" cellpadding="0" cellspacing="0">
-	     <tr>
-             <th>MyKad No</th>
-             <th>Name</th>
-             <th>Matrixno</th>
-             <!--><th>Intake Session</th>
-             <th>Course</th>-->
-             <th colspan=4 class="ac">Control</th>
-            </tr>
-            <% @students.each do |student| %>
-            <tr>
-             <td><%=h student.formatted_mykad %></td>
-             <td><%=h student.name %></td>
-             <td><%=h student.matrixno %></td>
-             <!--><td><#%=h student.intake_id.blank? ? " " : student.intakestudent.name %></td>
-             <td><#%=h student.course_id.blank? ? " " : student.course.name %></td>-->
-             <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => student %></td>
-             <td width=10px><%= link_to image_tag("report.png", :border => 0, :title => 'Borang Maklumat Pelajar'), :action => 'formforstudent', :id => student %></td>
-             <td width=10px ><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => student %></td>
-             
-             <td width=10px >
-	             <% if permitted_to? :destroy, @student %>
-               <%= link_to 'Destroy', student, :confirm => 'Are you sure?', :method => :delete %>
-               <% end %>
-	           </td>
-             
-          </tr>
-          <% end %>
-	</table>
-
-</div></div>
+  <div class="tlist">
+		<table width=100% border="0" cellpadding="0" cellspacing="0">
+	  	<tr>
+       	<th>MyKad No</th>
+	      <th>Name</th>
+	      <th>Matrixno</th>
+	      <th colspan=4 class="ac">Control</th>
+      </tr>
+      <% @student_intakes.each do |isorter, students| %>
+      <tr><td colspan=7><BR><b>Intake <%= isorter %></b></td></tr>
+      <% for student in students %>
+      <tr>
+         <td><%=h student.formatted_mykad %></td>
+         <td><%=h student.name %></td>
+         <td><%=h student.matrixno %></td>
+         <!--><td><#%=h student.intake_id.blank? ? " " : student.intakestudent.name %></td>
+         <td><#%=h student.course_id.blank? ? " " : student.course.name %></td>-->
+         <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => student %></td>
+         <td width=10px><%= link_to image_tag("report.png",   :border => 0, :title => 'Borang Maklumat Pelajar'), :action => 'formforstudent', :id => student %></td>
+         <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => student %></td>
+         
+         <td width=10px >
+          <% if permitted_to? :destroy, @student %>
+	                  <%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), student, :confirm => 'Are you sure?', :method => :delete %></td>
+           <% end %>
+        </td>
+      </tr>
+      <% end %> <% end %>
+	  </table>
+  </div>
+</div>
 
 
 <% if permitted_to? :create, @student %>
