@@ -7,7 +7,7 @@
 
 	<tr>
 		<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label><font color="red"> * </font></td>
-		<td><%=h @leaveforstaff.applicant.mykad_with_staff_name %></td>
+		<td><%=h @leaveforstaff.applicant.mykad_with_staff_name %><%= @leaveforstaff.cuti_rehat_entitlement %></td>
 	</tr>
 	
 	<tr>
@@ -19,7 +19,7 @@
 	
 	<tr>
 	    <td class="leftcol"><label for="leavestartdate"><b>Leave Start Date:</b></label></td>
-		<td><%= f.date_select :leavestartdate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		<td><%= f.date_select :leavestartdate, :order => [:day, :month, :year], :default => 2.days.from_now %></td>
 	</tr>
 	
 	<tr>
@@ -47,42 +47,6 @@
 		  
 		</td>
 	</tr>
-	
-	<tr>
-		<th colspan = 2>Approval Staff Leave Request</th>
-	</tr>
-	
-	<tr>
-	    <td class="leftcol"><label for="approval1"><b>Approval 1:</b></label></td>
-		<td><%= f.check_box :approval1 %></td>
-	</tr>
-	
-	<tr>
-	    <td class="leftcol"><label for="approval1_id"><b>Approver Name:</b></label></td>
-	    <td><%= f.collection_select :approval1_id, Staff.find(:all, :conditions => ["id = ?", @leaveforstaff.applicant.position.bosses.staff.id ]), :id, :position_with_name, :include_blank => true %></td>  
-	</tr>
-
-	<tr>
-	    <td class="leftcol"><label for="approval1date"><b>Approved By Date:</b></label></td>
-		<td><%= f.date_select :approval1date, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
-	</tr>
-	
-	<tr>
-	    <td class="leftcol"><label for="approver2"><b>Approval 2:</b></label></td>
-		<td><%= f.check_box :approver2 %></td>
-	</tr>
-	
-	<tr>
-	    <td class="leftcol"><label for="approval2_id"><b>Approver Name:</b></label></td>
-		<td><%= f.collection_select :approval2_id, Staff.find(:all, :conditions => ["id = ?", @leaveforstaff.applicant.position.bosses.bosses.staff.id ]), :id, :position_with_name, :include_blank => true %></td>
-	</tr>
-	
-	<tr>
-	    <td class="leftcol"><label for="approval2date"><b>Approved By Date:</b></label></td>
-		<td><%= f.date_select :approval2date, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
-	</tr>
-
-	
   </table>
 
 </div>

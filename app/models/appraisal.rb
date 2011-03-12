@@ -3,7 +3,7 @@ class Appraisal < ActiveRecord::Base
   belongs_to :ppp, :class_name => 'Staff', :foreign_key => 'ppp_id'
   
   before_save :varmyass
-  
+
   validates_presence_of :staff_id
   
   def varmyass

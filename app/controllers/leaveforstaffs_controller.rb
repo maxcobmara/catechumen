@@ -1,8 +1,15 @@
 class LeaveforstaffsController < ApplicationController
+  filter_resource_access
   # GET /leaveforstaffs
   # GET /leaveforstaffs.xml
   def index
-    @leaveforstaffs = Leaveforstaff.all
+    #@leaveforstaffs = Leaveforstaff.with_permissions_to(:index).find(:all)
+    @filters = Leaveforstaff::FILTERS
+      if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+        @leaveforstaffs = Leaveforstaff.send(params[:show])
+      else
+        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index).find(:all)
+      end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -34,7 +41,7 @@ class LeaveforstaffsController < ApplicationController
 
   # GET /leaveforstaffs/1/edit
   def edit
-    @leaveforstaff = Leaveforstaff.find(params[:id])
+    #@leaveforstaff = Leaveforstaff.find(params[:id])
   end
 
   # POST /leaveforstaffs
@@ -69,6 +76,10 @@ class LeaveforstaffsController < ApplicationController
         format.xml  { render :xml => @leaveforstaff.errors, :status => :unprocessable_entity }
       end
     end
+  end
+  
+  def approve1
+    @leaveforstaff = Leaveforstaff.find(params[:id])
   end
 
   # DELETE /leaveforstaffs/1

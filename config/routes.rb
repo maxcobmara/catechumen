@@ -49,6 +49,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :librarytransactions
 
+  map.connect '/leaveforstaffs/approve1', :controller => 'leaveforstaffs', :action => 'approve1'
+  map.connect '/leaveforstaffs/approve2', :controller => 'leaveforstaffs', :action => 'approve2'
   map.resources :leaveforstaffs
 
   map.resources :staffgrades

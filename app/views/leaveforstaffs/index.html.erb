@@ -4,7 +4,7 @@
   <div class="box-head">
     <h2 class="left"><%= t 'staffleave.list' %></h2>
 	  <div class="right">
-		   <!-- Put Search Here -->
+		   <%= select_tag_for_filter("leaveforstaffs", @filters, params) %>
 	  </div>
 	</div>
 
@@ -13,11 +13,11 @@
   <tr>
     <th><%= t 'staffleave.staff_id' %></th>
     <th><%= t 'staffleave.leavetype' %></th>
-    <th><%= t 'staffleave.leavestartdate' %></th>
-    <th><%= t 'staffleave.leavenddate' %></th>
-   <!--> <th>Durations</th>
-    <th>Reason</th>
-    <th>Notes</th>-->
+    <th><%= t 'staffleave.from_to' %></th>
+    <th><%= t 'staffleave.reason' %></th>
+    <th><%= t 'staffleave.duration' %></th>
+    
+    <!--><th>Notes</th>-->
     <th>Replacement Staff</th>
     <!--><th>Submit</th>
     <th>Approved By</th>
@@ -31,17 +31,23 @@
   <tr>
     <td><%=h leaveforstaff.applicant.name %></td>
     <td><%=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} %></td>
-    <td><%=h leaveforstaff.leavestartdate %></td>
-    <td><%=h leaveforstaff.leavenddate %></td>
-    <td><%=h leaveforstaff.replacement_id %></td>
-    <!--><td><%=h leaveforstaff.submit %></td>-->
-    <!--><td><%=h leaveforstaff.approval1_id %></td>-->
-  <!-->  <td><#%=h leaveforstaff.approval1date %></td>
-    <td><#%=h leaveforstaff.approver2_idapproval2 %></td>
-    <td><#%=h leaveforstaff.approval2date %></td>-->
-    <td><%= link_to 'Show', leaveforstaff %></td>
-    <td><%= link_to 'Edit', edit_leaveforstaff_path(leaveforstaff) %></td>
-    <td><%= link_to 'Destroy', leaveforstaff, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%=h leaveforstaff.leavestartdate.strftime("%a, %d %b") %><%=h leaveforstaff.show_to_day %></td>
+    <td><%=h leaveforstaff.reason %>
+	  <td><%=h leaveforstaff.leave_for %> Days</td>
+    <td><%=h leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name  %></td>
+    <td width=10px><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => leaveforstaff %></td>
+    <% if permitted_to? :edit, @leaveforstaff %>
+    	<td width=10px><%= link_to image_tag("edit.png",     :border => 0,  :title => 'Edit'), :action => 'edit', :id => leaveforstaff %></td>
+    <% end %>
+    <% if (User.current_user.staff_id == leaveforstaff.approval1_id) %>
+	  	<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve1', :id => leaveforstaff %></td>
+		<% elsif (User.current_user.staff_id == leaveforstaff.approval2_id) %>
+			<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve2', :id => leaveforstaff %></td>
+		<% else %>
+		<% end %>
+		<% if permitted_to? :destroy, @leaveforstaff %>
+    	<td width=10px><%= link_to image_tag("delete.png",   :border => 0,  :title => 'Delete'), leaveforstaff, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>

@@ -3,9 +3,8 @@
 <% form_for(@leaveforstaff) do |f| %>
   <%= f.error_messages %>
 
- 	<div class="tform">
-	  <table width=100% >
-
+<div class="tform">
+  <table width=100% >
 		<tr>
 			<th colspan = 2><%= t 'staffleave.leavereq' %></th>
 		</tr>
@@ -23,21 +22,21 @@
 		</tr>
 
 		<tr>
-		    <td class="leftcol"><label for="leavestartdate"><b><%= t 'staffleave.leavestartdate' %></b></label></td>
-			<td><%= f.date_select :leavestartdate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	    <td class="leftcol"><label for="leavestartdate"><b><%= t 'staffleave.leavestartdate' %></b></label></td>
+			<td><%= f.date_select :leavestartdate, :order => [:day, :month, :year], :default => 2.days.from_now %></td>
 		</tr>
 
 		<tr>
-		    <td class="leftcol"><label for="leavenddate"><b><%= t 'staffleave.leavenddate' %></b></label></td>
-			<td><%= f.date_select :leavenddate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	    <td class="leftcol"><label for="leavenddate"><b><%= t 'staffleave.leavenddate' %></b></label></td>
+			<td><%= f.date_select :leavenddate, :order => [:day, :month, :year], :default => 3.days.from_now %></td>
 		</tr>
 
 		<tr>
-		    <td class="leftcol"><label for="reason"><b><%= t 'staffleave.reason' %></b></label></td>
+	    <td class="leftcol"><label for="reason"><b><%= t 'staffleave.reason' %></b></label></td>
 			<td><%= f.text_field :reason %></td>
 		</tr>
 		<tr>
-		    <td class="leftcol"><label for="notes"><b><%= t 'staffleave.notes' %></b></label></td>
+	    <td class="leftcol"><label for="notes"><b><%= t 'staffleave.notes' %></b></label></td>
 			<td><%= f.text_area :notes, :size => "30x5" %></td>
 		</tr>
   </table>

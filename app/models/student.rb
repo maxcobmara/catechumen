@@ -1,4 +1,6 @@
 class Student < ActiveRecord::Base
+  
+  before_save  :titleize_name
 
   validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :semail, :sbirthdt, :mrtlstatuscd
   validates_numericality_of :icno, :stelno
@@ -38,6 +40,10 @@ class Student < ActiveRecord::Base
   end
   
 #----------------------Declarations---------------------------------------------------------------------------------
+  def titleize_name
+    self.name = name.titleize
+  end
+  
   def age
     Date.today.year - sbirthdt.year
   end
