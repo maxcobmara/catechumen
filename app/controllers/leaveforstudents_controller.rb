@@ -1,8 +1,9 @@
 class LeaveforstudentsController < ApplicationController
+  filter_resource_access
   # GET /leaveforstudents
   # GET /leaveforstudents.xml
   def index
-    @leaveforstudents = Leaveforstudent.all
+    @leaveforstudents = Leaveforstudent.with_permissions_to(:index).find(:all)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -34,7 +35,7 @@ class LeaveforstudentsController < ApplicationController
 
   # GET /leaveforstudents/1/edit
   def edit
-    @leaveforstudent = Leaveforstudent.find(params[:id])
+    #@leaveforstudent = Leaveforstudent.find(params[:id])
   end
 
   # POST /leaveforstudents

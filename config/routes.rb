@@ -59,6 +59,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :subjects
 
+  map.connect '/leaveforstudents/approve', :controller => 'leaveforstaffs', :action => 'approve'
   map.resources :leaveforstudents
 
   map.resources :courses

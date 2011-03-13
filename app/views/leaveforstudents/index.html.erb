@@ -23,25 +23,33 @@
 
 <% @leaveforstudents.each do |leaveforstudent| %>
   <tr>
-	<td><%=h leaveforstudent.student_id.blank? ? "No Student" : leaveforstudent.student.formatted_mykad_and_student_name %></td>
-	<td><%=h leaveforstudent.leavetype %></td>
+		<td><%=h leaveforstudent.student_id.blank? ? "No Student" : leaveforstudent.student.formatted_mykad_and_student_name %></td>
+		<td><%=h leaveforstudent.leavetype %></td>
     <td><%=h leaveforstudent.requestdate %></td>
     <td><%=h leaveforstudent.leave_startdate %></td>
     <td><%=h leaveforstudent.studentsubmit? ? "Submitted" : "" %></td>
     <td><%=h leaveforstudent.approved? ? "Approved" : "" %></td>
-    <td><%=h leaveforstudent.staff_id.blank? ? "No Staff" : leaveforstudent.staff.name %></td>
+    <td><%=h leaveforstudent.staff_id.blank? ? "" : leaveforstudent.staff.name %></td>
 	
-    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => leaveforstudent %></td>
-    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => leaveforstudent %></td>
-    <td width=10px><%= link_to 'Destroy', leaveforstudent, :confirm => 'Are you sure?', :method => :delete %></td>
-   
-  </tr>
+    <td width=10px ><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), 	:action => 'show', :id => leaveforstudent %></td>
+    <% if permitted_to? :edit, leaveforstudent %>
+    <td width=10px><%= link_to image_tag("edit.png", 			:border => 0,  :title => 'Edit'), 	:action => 'edit', :id => leaveforstudent %></td>
+    <% end %>
+  	<% if permitted_to? :destroy, leaveforstudent %>
+		<td width=10px><%= link_to image_tag("delete.png",   	:border => 0,  :title => 'Delete'), leaveforstudent, :confirm => 'Are you sure?', :method => :delete %></td>
+  	<% end %>
+   	<% if permitted_to? :approve, leaveforstudent %>
+	  	<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => leaveforstudent %></td>
+	  <% end %>
+	
+	</tr>
 <% end %>
 </table>
 
 <br />
 </div>
-
-<%= link_to 'Apply For Leave', new_leaveforstudent_path %>
-
 </div>
+
+<% if permitted_to? :create, Leaveforstudent.new %>
+<%= link_to 'Apply For Leave', new_leaveforstudent_path %>
+ <% end %>

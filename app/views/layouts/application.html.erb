@@ -31,23 +31,36 @@
 	    <% end %>
 	    
 	    <% if logged_in? %>
-	    <% dash_attendance = Attendance.count(:all, :conditions => ["approve_id=? AND approvestatus IS ?", User.current_user.staff_id, nil]) %>
-	    <% a = Leaveforstaff.count(:all, :conditions => ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]) %>
-	    <% b = Leaveforstaff.count(:all, :conditions => ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]) %>
-	    <% dash_leave = a+b %>
+
 			  <div id='notifications'>
+				  <!-- Notification for Staff Leave Application -->
+				  <% a = Leaveforstaff.count(:all, :conditions => ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]) %>
+			    <% b = Leaveforstaff.count(:all, :conditions => ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]) %>
+			    <% dash_leave = a+b %>
 				  <% if dash_leave == 0 %>
 				    <p>
 				  <% else %>
 	          <p><%= dash_leave %> <%= link_to "leave application for approval", { :controller => "leaveforstaffs", :action => "index" } %></p>
 	        <% end %>
 				
-				
+				  <!-- Notification for Staff Late Approval -->
+				  <% dash_attendance = Attendance.count(:all, :conditions => ["approve_id=? AND approvestatus IS ?", User.current_user.staff_id, nil]) %>
 				  <% if dash_attendance == 0 %>
 				    <p>
 				  <% else %>
 	          <p><%= dash_attendance %> <%= link_to "late attendance for approval", { :controller => "attendances", :action => "index" } %></p>
 	        <% end %>
+	
+	        <!-- Notification for Student Leave Approval -->
+	        <% c = User.find(:all, :select => "id", :conditions => ['roles.id =?', 7], :include => :roles).map(&:id) %>
+	        <% d = User.current_user.id.to_a %>
+	        <% dash_lfs = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved IS ?", true, nil]) %>
+				  
+	        <% if (d & c == c) && dash_lfs > 0 %>
+          <p><%= dash_lfs %> <%= link_to "student leave request for approval", { :controller => "leaveforstudents", :action => "index" } %></p>
+	        <% else %>
+					<p><%= c.to_s %>
+					<% end %>
 	      </div>
 	    <% else %>
 	    <% end %>
