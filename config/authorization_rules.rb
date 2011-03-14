@@ -4,9 +4,8 @@ authorization do
     has_permission_on :students,    :to => [:index, :show, :new, :create, :edit, :update, :destroy, :formforstudent]
     has_permission_on :staffs,      :to => [:index, :show, :new, :create, :edit, :update, :destroy, :borang_maklumat_staff]
     has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update, :destroy, :approve]
-    has_permission_on :documents,   :to => [:index, :show, :new, :create, :edit, :update, :destroy]
     has_permission_on :leaveforstaffs, :to => [:index, :show, :new, :create, :edit, :update, :destroy, :approve1, :approve2]
-    has_permission_on :leaveforstudents,   :to => [:index, :show, :new, :create, :edit, :update, :destroy]
+    has_permission_on [:leaveforstudents, :documents, :users]  :to => [:index, :show, :new, :create, :edit, :update, :destroy]
 
   end
   

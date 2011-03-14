@@ -16,7 +16,8 @@ class LibrarytransactionsController < ApplicationController
       @librarytransactions = Librarytransaction.send(params[:show])
     else
       @librarytransactions = Librarytransaction.all
-    end  
+    end
+    @libtran_days =  @librarytransactions.group_by {|t| t.checkoutdate}
   end
 
   # GET /librarytransactions/1

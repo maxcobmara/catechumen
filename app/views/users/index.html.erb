@@ -15,16 +15,16 @@
 
 <% for user in @users %>
   <tr>
-	<td><%=h user.name %></td>
+		<td><%=h user.staff_id.blank? ? user.student.name.to_s + " (Student)": user.staff.name %></td>
     <td><%=h user.login %></td>
     <td><%=h user.email %></td>
-    <td><%= link_to 'Show', user %></td>
-    <td><%= link_to 'Edit', edit_user_path(user) %></td>
-    <td><%= link_to 'Delete', user, :confirm => "Are you sure you want to delete '#{user.login}'?", :method => :delete %></td>
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => user %></td>
+    <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => user %></td>
+    <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), user, :confirm => "Are you sure you want to delete '#{user.login}'?", :method => :delete %></td>
   </tr>
 <% end %>
 </table>
-
+</div>
 <br />
-
+</div>
 <%= link_to 'New User', new_user_path %>

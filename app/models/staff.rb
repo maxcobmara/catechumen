@@ -10,21 +10,19 @@ class Staff < ActiveRecord::Base
   #:styles => {:thumb => "100x100#" }
   
  # validates_attachment_presence :photo
-   validates_attachment_size :photo, :less_than => 50.kilobytes
-   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
-   
-   
+  validates_attachment_size         :photo, :less_than => 50.kilobytes
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
  #---------------Validations------------------------------------------------
-     validates_numericality_of :icno#, :kwspcode
-     validates_length_of       :icno, :is =>12
-     validates_presence_of     :icno, :name, :coemail, :code
-     validates_uniqueness_of   :icno, :fileno, :coemail, :code
-     validates_format_of       :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
-     validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd
-     #validates_length_of      :cooftelno, :is =>10
-     #validates_length_of      :cooftelext, :is =>5
-     validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"
-     validates_format_of       :coemail,
+  validates_numericality_of :icno#, :kwspcode
+  validates_length_of       :icno, :is =>12
+  validates_presence_of     :icno, :name, :coemail, :code
+  validates_uniqueness_of   :icno, :fileno, :coemail, :code
+  validates_format_of       :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
+  validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd
+  #validates_length_of      :cooftelno, :is =>10
+  #validates_length_of      :cooftelext, :is =>5
+  validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"
+  validates_format_of       :coemail,
                                :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,
                                :message => "Email Not Valid"
  #-----------------------------------------------------------------------------------------------------------
@@ -42,7 +40,7 @@ class Staff < ActiveRecord::Base
   has_many :strainings,   :foreign_key => 'staff_id'
   has_many :librarytransactions
   has_one  :position,     :foreign_key => 'staff_id'
-  has_many :events,        :foreign_key => 'createdby'                                      #link to created by in events
+  has_many :events,       :foreign_key => 'createdby'                                      #link to created by in events
   
   # has_many :topics, :foreign_key => 'creator_id' 
   #has_many :curriculums, :foreign_key => 'staff_id'
@@ -63,10 +61,10 @@ class Staff < ActiveRecord::Base
   #-------------display data for different table-----------------------------------------------
  
   #Link to model user
-  has_one :user
+  has_many :users
   
   #Link to Model TimetableEntry
-   has_many :timetable,  :class_name => 'TimeTableEntry', :foreign_key => 'staff_id'
+  has_many :timetable,  :class_name => 'TimeTableEntry', :foreign_key => 'staff_id'
   
   #Link to model bulletin
   #has_many :bulletin, :class_name => 'bulletin', :foreign_key => 'postedby_id'  #posted by
@@ -136,10 +134,10 @@ class Staff < ActiveRecord::Base
   has_many :admin,        :class_name => 'Course', :foreign_key => 'staff_id'
   
   #links to Model leaveforstaffs
-   has_many :leave_applications,  :class_name => 'Leaveforstaff', :foreign_key => 'staff_id'
-   has_many :replacements,        :class_name => 'Leaveforstaff', :foreign_key => 'replacement_id'
-   has_many :seconders,        :class_name => 'Leaveforstaff', :foreign_key => 'approval1_id'
-   has_many :approvers,        :class_name => 'Leaveforstaff', :foreign_key => 'approval2_id'
+   has_many :leave_applications, :class_name => 'Leaveforstaff', :foreign_key => 'staff_id'
+   has_many :replacements,       :class_name => 'Leaveforstaff', :foreign_key => 'replacement_id'
+   has_many :seconders,          :class_name => 'Leaveforstaff', :foreign_key => 'approval1_id'
+   has_many :approvers,          :class_name => 'Leaveforstaff', :foreign_key => 'approval2_id'
   
   
   #links to Model Qualification
@@ -151,15 +149,10 @@ class Staff < ActiveRecord::Base
    
    
 #-------------Empty Field for Foreign Key Link------------------------
-  has_many :courses  
-#----------------------------------------------------------------------
-   has_many :sdiciplines
-
-#-------------------------------------------------------------------------
+  has_many :courses
+  has_many :sdiciplines
   has_many :attendances
-#------------------------------------------------------------------------
-    #approval of student leave
-    has_many :leaveforstudents
+  has_many :leaveforstudents  #approval of student leave
 #---------------------------------------------------------------------
      #has_many :travelclaims
 
