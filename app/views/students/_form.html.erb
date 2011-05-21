@@ -8,30 +8,30 @@
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="icno">MyKadNo:</label><font color="red"> * </font></td>
+		<td class="leftcol"><%= t 'student.icno' %><font color="red"> * </font></td>
 		<td><%= f.text_field :icno, :size => 12 %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="name">Name:</label><font color="red"> * </font></td>
+		<td class="leftcol"><%= t 'student.name' %><font color="red"> * </font></td>
 		<td><%= f.text_field :name %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="matrixno">Matrix No:</label></td>
+		<td class="leftcol"><%= t 'student.matrixno' %></td>
 		<td><%= f.text_field :matrixno %></td>
 	</tr>
 	
 	
 	<tr>
-		<td class="leftcol"><label for="sstatus">Student Status:</label><font color="red"> * </font></td>
+		<td class="leftcol"><%= t 'student.sstatus' %><font color="red"> * </font></td>
 		<td><%= f.select :sstatus, 
 		                 Student::STATUS,
 		                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="stelno">Telephone No:</label><font color="red"> * </font></td>
+		<td class="leftcol"><%= t 'student.stelno' %><font color="red"> * </font></td>
 		<td><%= f.text_field :stelno %></td>
 	</tr>
 	
@@ -60,13 +60,23 @@
 	</tr>
 	
 	<tr>
+		<td class="leftcol"><%= t 'student.race' %></td>
+		<td><%= f.text_field :race %></td>
+	</tr>
+	
+	<tr>
 		<td class="leftcol"><label for="semail">Email:</label><font color="red"> * </font></td>
 		<td><%= f.text_field :semail %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="regdate">Registration Date:</label></td>
+		<td class="leftcol"><%= t 'student.regdate' %></td>
 		<td><%= f.date_select :regdate, :start_year => 2007, :end_year => 2050, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'student.offer_letter_serial' %></td>
+		<td><%= f.text_field :offer_letter_serial %></td>
 	</tr>
 
 
@@ -76,7 +86,7 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="course_id">Course:</label></td>
+		<td class="leftcol"><label for="course_id">Programme:</label></td>
 		<td><%= f.collection_select :course_id, Programme.find(:all), :id, :name, :include_blank => true %></td>
 	</tr>
 	
@@ -169,7 +179,7 @@
 	
 <!--Next Of Kin-->
 	<tr>
-	  <th colspan=2>Emergency Contact Information</th>
+	  <th colspan=2>Contact Information</th>
 	</tr>
 	<tr>
 		<td colspan=2>

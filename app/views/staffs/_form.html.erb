@@ -127,7 +127,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="staffgrade_id"><b><%= t 'staff.staffgrade_id' %></b></label><font color="red"> * </font></td>
-		<td><%= f.collection_select :staffgrade_id, Staffgrade.find(:all), :id, :grade, :include_blank => true %></td>
+		<td><%= f.collection_select :staffgrade_id, Employgrade.find(:all, :order => 'name'), :id, :name_and_group, :include_blank => true %></td>
 	</tr><!-->#:conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]<-->
 
 		
@@ -164,6 +164,38 @@
 		<td class="leftcol"><label for="posconfirmdate"><b><%= t 'staff.posconfirmdate' %></b></label></td>
 		<td><%= f.date_select :posconfirmdate, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
 	</tr>
+	
+	<!-- 14 April 2011  -->
+	<tr>
+		<td class="leftcol"><label for="pension_confirm_date"><b><%= t 'staff.pension_confirm_date' %></b></label></td>
+		<td><%= f.date_select :pension_confirm_date, :start_year => 2000, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="wealth_decleration_date"><b><%= t 'staff.wealth_decleration_date' %></b></label></td>
+		<td><%= f.date_select :wealth_decleration_date, :start_year => 2000, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="promotion_date"><b><%= t 'staff.promotion_date' %></b></label></td>
+		<td><%= f.date_select :promotion_date, :start_year => 2000, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="reconfirmation_date"><b><%= t 'staff.reconfirmation_date' %></b></label></td>
+		<td><%= f.date_select :reconfirmation_date, :start_year => 2000, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="to_current_grade_date"><b><%= t 'staff.current_grade_date' %></b></label></td>
+		<td><%= f.date_select :to_current_grade_date, :start_year => 2000, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="starting_salary"><b><%= t 'staff.starting_salary' %></b></label></td>
+		<td><%= f.text_field :starting_salary, :size => 14 %></td>
+	</tr>
+	
+	
+	<!-- End code block -->
 		
 	<tr>
 		<td class="leftcol"><label for="appointby"><b><%= t 'staff.appointby' %></b></label></td>
@@ -319,9 +351,7 @@
 				  <td width=100px><label for="kinbirthdt"><b><%= t 'staff.kinbirthdt' %></b><font color=#AAA size=-2>yyyymmdd</font> </label></td>
 				  <td width=85px><label for="phone"><b><%= t 'staff.phone' %></b></label></td>
 				  <td width=85px><label for="profession"><b>Profession</b></label></td>
-				  <td><label for="kinaddr"><b><%= t 'staff.kinaddr' %></b></label></td>
-				  
-			    </tr>
+			  </tr>
 			</table>
 		</td>
 	</tr>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110310070245) do
+ActiveRecord::Schema.define(:version => 20110513101341) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -226,6 +226,12 @@ ActiveRecord::Schema.define(:version => 20110310070245) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+    t.date     "publish_date"
+    t.string   "publish_location"
+    t.string   "language"
+    t.text     "links"
+    t.text     "subject"
+    t.integer  "quantity"
   end
 
   create_table "bulletins", :force => true do |t|
@@ -322,6 +328,13 @@ ActiveRecord::Schema.define(:version => 20110310070245) do
     t.string   "data_content_type"
     t.integer  "data_file_size"
     t.datetime "data_updated_at"
+  end
+
+  create_table "employgrades", :force => true do |t|
+    t.string   "name"
+    t.integer  "group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "evactivities", :force => true do |t|
@@ -690,13 +703,6 @@ ActiveRecord::Schema.define(:version => 20110310070245) do
     t.string   "schemename"
   end
 
-  create_table "staffclassifications", :force => true do |t|
-    t.integer  "staffgrade_id"
-    t.integer  "staffservescheme_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "staffcourses", :force => true do |t|
     t.string   "name"
     t.integer  "coursetype"
@@ -711,11 +717,17 @@ ActiveRecord::Schema.define(:version => 20110310070245) do
     t.datetime "updated_at"
   end
 
-  create_table "staffgrades", :force => true do |t|
-    t.string   "classification_id"
-    t.string   "group_id"
-    t.string   "grade"
-    t.string   "level"
+  create_table "staffemploygrades", :force => true do |t|
+    t.integer  "staffemployscheme_id"
+    t.integer  "employgrade_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "staffemployschemes", :force => true do |t|
+    t.string   "glass"
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -767,14 +779,12 @@ ActiveRecord::Schema.define(:version => 20110310070245) do
     t.datetime "photo_updated_at"
     t.integer  "staffgrade_id"
     t.integer  "gender"
-  end
-
-  create_table "staffserveschemes", :force => true do |t|
-    t.string   "name"
-    t.string   "group_id"
-    t.string   "classification_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.date     "pension_confirm_date"
+    t.date     "wealth_decleration_date"
+    t.date     "promotion_date"
+    t.date     "reconfirmation_date"
+    t.date     "to_current_grade_date"
+    t.decimal  "starting_salary"
   end
 
   create_table "strainings", :force => true do |t|
@@ -811,6 +821,8 @@ ActiveRecord::Schema.define(:version => 20110310070245) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "intake_id"
+    t.string   "offer_letter_serial"
+    t.string   "race"
   end
 
   create_table "subjects", :force => true do |t|

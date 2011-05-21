@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :employgrades
+
+  map.resources :staffemployschemes
+
   map.resources :staffclassifications
 
   map.resources :staffserveschemes

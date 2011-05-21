@@ -2,11 +2,17 @@ class Position < ActiveRecord::Base
   
   has_many :subordinates, :class_name => 'Position', :foreign_key => 'parent_id'
   belongs_to :bosses, :class_name => 'Position', :foreign_key => 'parent_id'
-  belongs_to :staffgrade
+  belongs_to :staffgrade, :class_name => 'Employgrade', :foreign_key => 'parent_id'
   belongs_to :staff
 
   validates_uniqueness_of :positioncode
   validates_presence_of :positioncode
+  
+  before_save  :titleize_name
+
+  def titleize_name
+    self.positionname = positionname.titleize
+  end
   
   def self.find_main
     Position.find(:all, :condition => ['parent_id IS NULL'])

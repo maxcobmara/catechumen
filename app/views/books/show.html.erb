@@ -10,7 +10,7 @@
 		<th colspan = 3>Book Details</th>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="tagno">No Bilangan:</label></td>
+		<td class="leftcol"><%= t 'book.tagno' %></td>
 		<td><%=h @book.id %></td>
 		<td rowspan=10 align=right><% if @book.photo.exists? then %>
 		  <%= image_tag @book.photo.url%>
@@ -60,18 +60,38 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="title">Title:</label></td>
+		<td class="leftcol"><%= t 'book.title' %></td>
 	    <td><%=h @book.title %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="author">Author:</label></td>
+		<td class="leftcol"><%= t 'book.language' %></td>
+	    <td><%=h (Book::LANGUAGE.find_all{|disp, value| value == @book.language}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.author' %></td>
 	    <td><%=h @book.author %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="publisher">Publisher:</label></td>
+		<td class="leftcol"><%= t 'book.subject' %></td>
+	    <td><%=h @book.subject %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.publisher' %></td>
 	    <td><%=h @book.publisher %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.publish_date' %></td>
+	    <td><%=h @book.publish_date %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.publish_location' %></td>
+	    <td><%=h @book.publish_location %></td>
 	</tr>
 	
 	<tr>
@@ -85,35 +105,43 @@
 	</tr>
 	
 	<tr>
+		<td class="leftcol"><%= t 'book.quantity' %></td>
+	  <td><%=h @book.quantity %></td>
+	</tr>
+	
+	<tr>
 		<td class="leftcol"><label for="mediatype">Media Type:</label></td>
 	    <td><%=h (Book::MEDIA.find_all{|disp, value| value == @book.mediatype}).map {|disp, value| disp} %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="status">Status:</label></td>
-	   <td><%=h (Book::STATUS.find_all{|disp, value| value == @book.status}).map {|disp, value| disp} %></td>
+	  <td><%=h (Book::STATUS.find_all{|disp, value| value == @book.status}).map {|disp, value| disp} %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="series">Series:</label></td>
-	    <td><%=h @book.series %></td>
+	  <td><%=h @book.series %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="location">Location:</label></td>
-	    <td><%=h @book.location %></td>
+	  <td><%=h @book.location %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="topic">Subject:</label></td>
-	    <td><%=h @book.topic %></td>
+	  <td><%=h @book.topic %></td>
 	</tr>
-	
-
 	
 	<tr>
 		<td class="leftcol"><label for="edition">Edition:</label></td>
-	    <td><%=h @book.edition %></td>
+	  <td><%=h @book.edition %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.links' %></td>
+	  <td><%=h @book.links %></td>
 	</tr>
 	
 

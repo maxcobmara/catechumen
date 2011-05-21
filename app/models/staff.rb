@@ -56,7 +56,7 @@ class Staff < ActiveRecord::Base
   
   belongs_to :title, :class_name => 'Title', :foreign_key => 'titlecd_id'
   belongs_to :level,  :class_name => 'Qualification', :foreign_key => 'level_id'
-  belongs_to :staffgrade, :class_name => 'Staffgrade', :foreign_key => 'staffgrade_id'
+  belongs_to :staffgrade, :class_name => 'Employgrade', :foreign_key => 'staffgrade_id'
   
   #-------------display data for different table-----------------------------------------------
  
@@ -417,9 +417,7 @@ class Staff < ActiveRecord::Base
   TOS = [
        #  Displayed       stored in db
        [ "Persekutuan","p" ],
-       [ "Negeri","n" ]
-
-       
+       [ "Negeri","n" ]   
   ]
   
   PENSION = [

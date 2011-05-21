@@ -120,8 +120,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="staffgrade_id">Staff Grade:</label></td>
-		<td><%=h @staff.staffgrade_id.blank? ? "" : @staff.staffgrade.classification_name %>  &nbsp  -- &nbsp 
-		    <%=h @staff.staffgrade_id.blank? ? "" : @staff.staffgrade.grade %></td>
+		<td><%=h @staff.staffgrade_id.blank? ? "" : @staff.staffgrade.grade_and_name %></td>
 	</tr>
 
 	<tr>
@@ -160,10 +159,36 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="posconfirmdate">Position Confirmation Date:</label></td>
+		<td class="leftcol"><%= t 'staff.posconfirmdate' %></td>
 		<td><%=h @staff.posconfirmdate  %></td>
 	</tr>
+	<!-- 14 April 2010 MYMN -->
+	<tr>
+		<td class="leftcol"><%= t 'staff.wealth_decleration_date' %></td>
+		<td><%=h @staff.wealth_decleration_date  %></td>
+	</tr>
 	
+	<tr>
+		<td class="leftcol"><%= t 'staff.promotion_date' %></td>
+		<td><%=h @staff.promotion_date  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'staff.reconfirmation_date' %></td>
+		<td><%=h @staff.reconfirmation_date  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'staff.current_grade_date' %></td>
+		<td><%=h @staff.to_current_grade_date  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'staff.starting_salary' %></td>
+		<td><%=h @staff.starting_salary  %></td>
+	</tr>
+	
+	<!-- EOF 14 April 2010 MYMN -->
 	<tr>
 		<td class="leftcol"><label for="appointby">Appointed By:</label></td>
 		<td><%=h (Staff::APPOINTED.find_all{|disp, value| value == @staff.appointby }).map {|disp, value| disp} %></td>
@@ -187,6 +212,10 @@
 	<tr>
 		<td class="leftcol"><label for="pensiondt">Pension Date:</label></td>
 		<td><%=h @staff.pensiondt  %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'staff.pension_confirm_date' %></td>
+		<td><%=h @staff.pension_confirm_date  %></td>
 	</tr>
 	
 	<tr>

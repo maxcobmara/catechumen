@@ -17,6 +17,12 @@ class Staffgrade < ActiveRecord::Base
     (Staffgrade::GROUP.find_all{|disp, value| value == group_id}).map {|disp, value| disp}
   end
   
+  def gelas_name
+    (Staffgrade::CLASSIFICATION.find_all{|disp, value| value == classification_id}).map {|disp, value| disp}
+  end
+  
+  
+  
   CLASSIFICATION = [
        #  Displayed       stored in db
        [ "A   Pengangkutan"    , "A" ],

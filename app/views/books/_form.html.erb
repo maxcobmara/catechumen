@@ -5,7 +5,7 @@
 		<th colspan = 2>Book Details</th>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="tagno"><b>No Bilangan:</b></label></td>
+		<td class="leftcol"><%= t 'book.tagno' %></td>
 		<td><%= f.text_field :tagno %></td>
 	</tr>
 	
@@ -21,7 +21,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="issn">ISSN:</label><font color="red"> * </font></td>
-	    <td><%= f.text_field :issn %></td>
+	    <td><%= f.text_area :issn, :size =>  '30x2' %></td>
 	</tr>
 	
 	
@@ -52,18 +52,38 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="title">Title:</label><font color="red"> * </font></td>
+		<td class="leftcol"><%= t 'book.title' %><font color="red"> * </font></td>
 	    <td><%= f.text_area :title, :size => '60x2' %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="author">Author:</label><font color="red"> * </font></td>
+		<td class="leftcol"><%= t 'book.language' %></td>
+	    	<td><%= f.select :language, 
+			                  Book::LANGUAGE,
+			                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.author' %><font color="red"> * </font></td>
 	    <td><%= f.text_area :author, :size => '60x2' %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="publisher">Publisher:</label><font color="red"> * </font></td>
+		<td class="leftcol"><%= t 'book.subject' %></td>
+	  <td><%= f.text_area :subject, :size => '60x6' %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.publisher' %><font color="red"> * </font></td>
 	    <td><%= f.text_field :publisher, :size => 50 %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'book.publish_date' %></td>
+	    <td><%= f.date_select :publish_date, :start_year => 1990, :order => [:day, :month, :year], :include_blank => true %></td></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'book.publish_location' %></td>
+	    <td><%= f.text_field :publish_location, :size => 50 %></td>
 	</tr>
 	
 	<tr>
@@ -76,6 +96,11 @@
 	    	<td><%= f.select :loantype, 
 			                  Book::LOAN,
 			                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.quantity' %></td>
+	  <td><%= f.text_field :quantity %></td>
 	</tr>
 	
 	<tr>
@@ -103,8 +128,8 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="topic">Subject:</label></td>
-	    <td><%= f.text_field :topic %></td>
+		<td class="leftcol"><label for="topic">Topic:</label></td>
+	    <td><%= f.text_area :topic, :size => '60x3' %></td>
 	</tr>
 	
 	<tr>
@@ -115,6 +140,11 @@
 	<tr>
 		<td class="leftcol">Upload Book Image</label></td>
 		<td><%= f.file_field :photo %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.links' %></td>
+	    <td><%= f.text_area :links, :size => '60x6' %></td>
 	</tr>
 	
 

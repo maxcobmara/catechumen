@@ -37,9 +37,14 @@ class Book < ActiveRecord::Base
   
   LOAN = [
         #  Displayed       stored in db
-        [ "Open",1 ],
-        [ "Shelf",2 ],
+        [ "Open Shelf",1 ],
         [ "Red Spot", 3 ]
+  ]
+  
+  LANGUAGE = [
+        #  Displayed       stored in db
+        [ "English", "EN" ],
+        [ "Bahasa Malaysia", "ms_MY" ]
   ]
   
   MEDIA = [
@@ -55,7 +60,7 @@ class Book < ActiveRecord::Base
           [ "Ada",1 ],
           [ "Pinjam",2 ],
           [ "Dibaiki", 3 ],
-          [ "On Loan", 4 ]
+          [ "Di Lupus", 4 ]
 ] 
   CATSOURCE = [
           #  Displayed       stored in db

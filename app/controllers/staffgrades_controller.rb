@@ -3,6 +3,7 @@ class StaffgradesController < ApplicationController
   # GET /staffgrades.xml
   def index
     @staffgrades = Staffgrade.all
+    @staffgrades_gelas = @staffgrades.group_by { |t| t.gelas_name }
 
     respond_to do |format|
       format.html # index.html.erb
