@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :locations
+  map.resources :locations, :collection => { :indextree => :get }
 
   map.resources :employgrades
 
