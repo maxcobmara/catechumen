@@ -3,7 +3,7 @@ class Asset < ActiveRecord::Base
   before_save :save_my_vars
   belongs_to :manufacturedby, :class_name => 'Addbook', :foreign_key => 'manufacturer_id'
   belongs_to :suppliedby, :class_name => 'Addbook', :foreign_key => 'supplier_id'
-  belongs_to :residence, :foreign_key =>'location_id'
+  belongs_to :location
   belongs_to :assignedto, :class_name => 'Staff', :foreign_key => 'assignedto_id'
   belongs_to :receivedby, :class_name => 'Staff', :foreign_key => 'receiver_id'
  
@@ -45,7 +45,7 @@ class Asset < ActiveRecord::Base
     end
     
      def self.find_main
-        Residence.find(:all, :condition => ['residence_id IS NULL'])
+        Location.find(:all, :condition => ['location_id IS NULL'])
       end
 
 #---------------------------------Search-------------------------------------------------------------

@@ -1,7 +1,7 @@
 class Assetloss < ActiveRecord::Base
   #belongs_to :asset 
   belongs_to :part, :foreign_key => 'part_id' 
-  belongs_to :residence, :foreign_key => 'residence_id'
+  belongs_to :location
   belongs_to :staff, :foreign_key => 'staff_id' 
   
   belongs_to :asslost, :class_name => 'Asset', :foreign_key => 'asset_id'
@@ -26,8 +26,8 @@ class Assetloss < ActiveRecord::Base
     end
     
     def self.find_main
-        Residence.find(:all, :condition => ['residence_id IS NULL'])
-      end
+        Location.find(:all, :condition => ['location_id IS NULL'])
+    end
     
     def self.find_main
         Staff.find(:all, :condition => ['staff_id IS NULL'])

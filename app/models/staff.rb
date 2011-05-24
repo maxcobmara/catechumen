@@ -32,7 +32,7 @@ class Staff < ActiveRecord::Base
 
   has_many :documents,    :foreign_key => 'stafffiled_id' 
   has_many :books,        :foreign_key => 'receiver_id' 
-  has_many :residence,    :foreign_key => 'staff_id'
+  has_many :locations,    :foreign_key => 'staff_id'
   has_many :assigned,     :class_name => 'Assets', :foreign_key => 'assignedto_id'
   has_many :rxassets,     :class_name => 'Assets', :foreign_key => 'receiver_id'
   has_many :bulletins,    :foreign_key => 'postedby_id'
@@ -48,7 +48,6 @@ class Staff < ActiveRecord::Base
   #has_many :bulletins, :foreign_key => 'staff_id'  seriously?!  theres no staff_id in this table!  
   # you also repeated this in line 66!!!!!   Now see the corresponding in bulletin.rb
   #has_many :assetloss, :foreign_key => 'staff_id'
-  #has_many :residence, :foreign_key => 'staff_id'
   #has_many :evactivities, :foreign_key => 'staff_id'
  
   

@@ -24,7 +24,7 @@ class ResidencesController < ApplicationController
   # GET /residences/new
   # GET /residences/new.xml
   def new
-    @residence = Residence.new
+    @residence = Residence.new(:parent_id => params[:parent_id])
     @residence.assets.build
 
     respond_to do |format|

@@ -1,6 +1,7 @@
 class Residence < ActiveRecord::Base
   
   #Residence/Asset relationship see "code for repeating asset" below
+  has_ancestry
   has_many :assetloss, :foreign_key => 'losslocation_id'
   
   belongs_to :staffname, :class_name => 'Staff', :foreign_key => 'staff_id'
@@ -15,12 +16,12 @@ class Residence < ActiveRecord::Base
   #has_many :residence,  :class_name => 'Time_table_entry', :foreign_key => 'residence_id'
   
   
-  has_many :substructure, :class_name => 'Residence', :foreign_key => 'parent_id'
-  belongs_to :structure, :class_name => 'Residence', :foreign_key => 'parent_id'
+  #has_many :substructure, :class_name => 'Residence', :foreign_key => 'parent_id'
+  #belongs_to :structure, :class_name => 'Residence', :foreign_key => 'parent_id'
   
   validates_uniqueness_of :rescode, :message => "- Location code must be unique"
-  validates_presence_of  :rescode, :message => "- Location Code must be filled"
-  validates_presence_of :resname, :message => "- Location Name must be filled"
+  validates_presence_of   :rescode, :message => "- Location Code must be filled"
+  validates_presence_of   :resname, :message => "- Location Name must be filled"
 
   def self.find_main
      Staff.find(:all, :condition => ['staff_id IS NULL'])
@@ -46,7 +47,7 @@ class Residence < ActiveRecord::Base
        "#{rescode} #{'      '} #{resname}"
    end
    
-  CLASS = [
+ CLASS = [
         #  Displayed       stored in db
         [ "Building",1 ],
         [ "Floor",2 ],

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110513101341) do
+ActiveRecord::Schema.define(:version => 20110523052301) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -516,6 +516,19 @@ ActiveRecord::Schema.define(:version => 20110513101341) do
     t.datetime "updated_at"
   end
 
+  create_table "locations", :force => true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.integer  "lclass"
+    t.integer  "type"
+    t.boolean  "allocatable"
+    t.boolean  "occupied"
+    t.integer  "staffadmin_id"
+    t.string   "ancestry"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "maints", :force => true do |t|
     t.integer  "asset_id"
     t.integer  "maintainer_id"
@@ -615,7 +628,10 @@ ActiveRecord::Schema.define(:version => 20110513101341) do
     t.integer  "staffadmin_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ancestry"
   end
+
+  add_index "residences", ["ancestry"], :name => "index_residences_on_ancestry"
 
   create_table "roles", :force => true do |t|
     t.string   "name"
