@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><-->
 <!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <%= javascript_include_tag "jquery", "jquery.treeTable", "prototype", "application" %>
+		
+		<%= javascript_include_tag "jquery", "jquery.treeTable", "prototype", "application" %>
 		<script>$j = jQuery.noConflict();</script>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -69,8 +70,8 @@
   </div>
 
   <div id='navbar'>
-  <ul>
-		<% @tabs.each do |page| -%>
+  	<ul class="dropdown">
+			<% @tabs.each do |page| -%>
 			<li> <% "id='current'" if @page && (@page == page || @page.parent == page)  %>
 			     <%if page.redirect? %>
 			       <%= link_to page.navlabel, :action => page.action_name, :controller => page.controller_name, :name => page.name, :order => page.position %>

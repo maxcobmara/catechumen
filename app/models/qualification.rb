@@ -1,10 +1,5 @@
 class Qualification < ActiveRecord::Base
-  belongs_to :staff
-#  validates_presence_of :level_id, :qname
-  
-  has_many :level, :class_name => 'Staff', :foreign_key => 'level_id'
-  
-  
+  belongs_to :staff  
   QTYPE = [
        #  Displayed       stored in db
        [ "Sekolah Rendah", 17 ],

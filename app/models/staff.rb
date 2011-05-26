@@ -140,7 +140,7 @@ class Staff < ActiveRecord::Base
   
   
   #links to Model Qualification
-  has_many :qualification, :class_name => 'Qualification', :foreign_key => 'level_id'
+  #has_many :qualification, :class_name => 'Qualification', :foreign_key => 'level_id'
   
   #links to Model Trainneeds
    has_many :staff_that_need_training, :class_name => 'Trainneed', :foreign_key => 'staff_id'
@@ -169,8 +169,9 @@ class Staff < ActiveRecord::Base
 #----------------------------code for repeating field qualification------------------------------------------  
  
   has_many :qualifications, :dependent => :destroy
+  accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
   
-  def new_qualification_attributes=(qualification_attributes)
+/  def new_qualification_attributes=(qualification_attributes)
     qualification_attributes.each do |attributes|
       qualifications.build(attributes)
     end
@@ -193,7 +194,7 @@ class Staff < ActiveRecord::Base
     qualifications.each do |qualification|
       qualification.save(false)
     end
-  end
+  end/
 #-----------------------------Code for Repeating Field Next OF Kin------------------------------------
 
   has_many :kins, :dependent => :destroy
