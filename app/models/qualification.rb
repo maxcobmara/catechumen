@@ -1,5 +1,6 @@
 class Qualification < ActiveRecord::Base
-  belongs_to :staff  
+  belongs_to :staff
+    
   QTYPE = [
        #  Displayed       stored in db
        [ "Sekolah Rendah", 17 ],

@@ -1,8 +1,6 @@
 class Kin < ActiveRecord::Base
   belongs_to :staff
   belongs_to :student
- # validates_presence_of :kintype_id, :name
- # validates_numericality_of :phone
   
   KTYPE = [
           #  Displayed       stored in db

@@ -86,7 +86,7 @@
 		<tr>
 			<td class="leftcol"><label for="staffgrade_id"><b><%= t 'staff.staffgrade_id' %></b></label><font color="red"> * </font></td>
 			<td><%= f.collection_select :staffgrade_id, Employgrade.find(:all, :order => 'name'), :id, :name_and_group, :include_blank => true %></td>
-		</tr><!-->#:conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]<-->
+		</tr><!--#:conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]-->
 		<tr>
 			<td class="leftcol"><label for="employstatus"><b><%= t 'staff.employstatus' %></b></label></td>
 			<td><%= f.select :employstatus, 
@@ -175,117 +175,70 @@
 		</tr>
 	</table>
 	
-<!--Qualification Details-->	
+
 	<div>
-	  <H2><%= t 'staff.tqualification' %> tet here</H2>
-		<p><strong> |  Level Type  |  Qualification Name   |  Name of Institute  </strong></p>
+	  <H2><%= t 'staff.tqualification' %></H2>
+		<p><strong>|  Level Type |  Qualification Name |  Name of Institute</strong></p>
 		<% f.fields_for :qualifications do |builder| %>
 			<%= render 'qualification_fields', :f => builder %>
 		<% end %>
 		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :qualifications %> - Add More </p>
 	</div>
+	
+	<div>
+	  <H2><%= t 'staff.loans' %></H2>
+		<p><strong> |  <%= t 'staff.ltype' %>  |  <%= t 'staff.accno' %>   |  <%= t 'staff.startdt' %>  |  
+									 <%= t 'staff.durationmn' %>  |  <%= t 'staff.deductions' %></strong></p>
+		<% f.fields_for :loans do |builder| %>
+			<%= render 'loan_fields', :f => builder %>
+		<% end %>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :loans %> - Add More </p>
+	</div>
 
-			
-
-
-<table>
-<!-- Loan Details     -->	
-    <tr>
-	  <th colspan=2><%= t 'staff.loans' %></th>
-    </tr>
-
-    <tr>
-	  <td colspan=2>
-		<table width=100%>
-		  <tr>
-	         <td width=130px><label for="ltype"><b><%= t 'staff.ltype' %></b></label></td>
-	         <td width=150px><label for="accno"><b><%= t 'staff.accno' %></b></label></td>
-             <td width=190px><label for="startdt"><b><%= t 'staff.startdt' %></b></label></td>
- 	         <td width=130px><label for="durationmn"><b><%= t 'staff.durationmn' %></b></label></td>
-	         <td><label for="deductions"><b><%= t 'staff.deductions' %></b></label></td>
-	         <td width=10px></td>
-          </tr>
-	    </table>
-      </td>
-    </tr>
-
-    <tr>
-	  <td colspan=2>
-	    <!-- Code Block for Loans Repeating Field -->
-	    <div id="loans">
-		  <%= render :partial => 'loan', :collection => @staff.loans %>
-		</div>
-	  </td>
-	</tr>
-	<!-- End Code Block for Loans Repeating Field -->
-	<tr>
-	  <td colspan=2><%= add_loan_link (t 'icms.add') %></td>
-	</tr>
-
-		
 
 <!--Finance Details-->
-    <tr>
-	  <th colspan=2><%= t 'staff.finance' %></th>
-	</tr>
-    <tr>
-	  <td class="leftcol"><label for="kwspcode"><b><%= t 'staff.kwspcode' %></b></label></td>
-	  <td><%= f.text_field :kwspcode %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="taxcode"><b><%= t 'staff.taxcode' %></b></label></td>
-		<td><%= f.text_field :taxcode %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="bank"><b><%= t 'staff.bank' %></b></label></td>
-		<td><%= f.select :bank, 
-			              Staff::BANK,
-			              :prompt => "Select"  %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="bankaccno"><b><%= t 'staff.bankaccno' %></b></label></td>
-		<td><%= f.text_field :bankaccno %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="bankacctype"><b><%= t 'staff.bankacctype' %></b></label></td>
-		<td><%= f.select :bankacctype, 
-			              Staff::BANKTYPE,
-			              :prompt => "Select"  %></td>
-	</tr>
-    <!--End Of Finance Details-->
+	<table   width=100% >
+	    <tr>
+		  <th colspan=2><%= t 'staff.finance' %></th>
+		</tr>
+	    <tr>
+		  <td class="leftcol"><label for="kwspcode"><b><%= t 'staff.kwspcode' %></b></label></td>
+		  <td><%= f.text_field :kwspcode %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="taxcode"><b><%= t 'staff.taxcode' %></b></label></td>
+			<td><%= f.text_field :taxcode %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="bank"><b><%= t 'staff.bank' %></b></label></td>
+			<td><%= f.select :bank, 
+				              Staff::BANK,
+				              :prompt => "Select"  %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="bankaccno"><b><%= t 'staff.bankaccno' %></b></label></td>
+			<td><%= f.text_field :bankaccno %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="bankacctype"><b><%= t 'staff.bankacctype' %></b></label></td>
+			<td><%= f.select :bankacctype, 
+				              Staff::BANKTYPE,
+				              :prompt => "Select"  %></td>
+		</tr>
+	</table>
+  <!--End Of Finance Details-->
 
 
-    <!--Next Of Kin-->
-	<tr>
-	    <th colspan=2><%= t 'staff.emencengy' %></th>
-    </tr>
-	<tr>
-		<td colspan=2>
-			<!-- Code Block for Next of kins Labels -->
-			<table width=100%>
-				<tr>
-				  <td width=150px><label for="kintype_id"><b><%= t 'staff.kintype_id' %></b></label>
-				  <td width=235px><label for="name"><b><%= t 'staff.name' %></b></label></td>
-				  <td width=100px><label for="kinbirthdt"><b><%= t 'staff.kinbirthdt' %></b><font color=#AAA size=-2>yyyymmdd</font> </label></td>
-				  <td width=85px><label for="phone"><b><%= t 'staff.phone' %></b></label></td>
-				  <td width=85px><label for="profession"><b>Profession</b></label></td>
-			  </tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan=2>
-			<!-- Code Block for Next of kins Repeating Field -->
-			<div id="kins">
-		       <%= render :partial => 'kin', :collection => @staff.kins %>
-			</div>
-			<!-- Code Block for Next of kins Repeating Field -->
-		</td>
-	</tr>
-	<tr>
-	    <td colspan=2><%= add_kin_link (t 'icms.add') %></td>
-	</tr>
+<!--Next Of Kin-->
+	<div>
+	  <H2><%= t 'staff.emencengy' %></H2>
+		<p><strong> |  <%= t 'staff.kintype_id' %> |  <%= t 'staff.name' %>   |  <%= t 'staff.kinbirthdt' %>  |  
+									 <%= t 'staff.phone' %> |  Profession</strong> <BR> | Address </p>
+		<% f.fields_for :kins do |builder| %>
+			<%= render 'kin_fields', :f => builder %>
+		<% end %>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :kins %> - Add More </p>
+	</div>
 
-</table>		
 </div>	
 	
