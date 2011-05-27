@@ -1,0 +1,36 @@
+<h1>Listing trainingrequests</h1>
+
+<table>
+  <tr>
+    <th>Staffcourse</th>
+    <th>Staff</th>
+    <th>Appraisal</th>
+    <th>Reason</th>
+    <th>Submit</th>
+    <th>Submitdate</th>
+    <th>Approved</th>
+    <th>Approvedby</th>
+    <th>Approveddate</th>
+  </tr>
+
+<% @trainingrequests.each do |trainingrequest| %>
+  <tr>
+    <td><%=h trainingrequest.staffcourse.name %></td>
+    <td><%=h trainingrequest.applicant.name %></td>
+    <td><%=h trainingrequest.appraisal_id %></td>
+    <td><%=h trainingrequest.reason %></td>
+    <td><%=h trainingrequest.submit? ? "submitted" : "-" %></td>
+    <td><%=h trainingrequest.submitdate %></td>
+    <td><%=h trainingrequest.approved? ? "approved" : "-" %></td>
+    <td><%=h trainingrequest.approvedby_id %>></td>
+    <td><%=h trainingrequest.approveddate %></td>
+    <td><%= link_to 'Show', trainingrequest %></td>
+    <td><%= link_to 'Edit', edit_trainingrequest_path(trainingrequest) %></td>
+    <td><%= link_to 'Destroy', trainingrequest, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New trainingrequest', new_trainingrequest_path %>

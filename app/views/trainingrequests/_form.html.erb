@@ -1,0 +1,36 @@
+<p>
+  <%= f.label :staffcourse_id %><br />
+  <%= f.collection_select :staffcourse_id, Staffcourse.find(:all), :id, :name %>
+</p>
+<p>
+  <%= f.label :staff_id %><br />
+  <%= f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_position %>
+</p>
+<p>
+  <% f.label :appraisal_id %><br />
+  <% f.text_field :appraisal_id %>
+</p>
+<p>
+  <%= f.label :reason %><br />
+  <%= f.text_field :reason %>
+</p>
+<p>
+  <%= f.label :submit %><br />
+  <%= f.check_box :submit %>
+</p>
+<p>
+  <%= f.label :submitdate %><br />
+  <%= f.date_select :submitdate %>
+</p>
+<p>
+  <%= f.label :approved %><br />
+  <%= f.check_box :approved %>
+</p>
+<p>
+  <%= f.label :approvedby_id %><br />
+  <%= f.collection_select :approvedby_id, Staff.find(:all), :id, :staff_name_with_position, :include_blank => true %>
+</p>
+<p>
+  <%= f.label :approveddate %><br />
+  <%= f.date_select :approveddate, :include_blank => true %>
+</p>

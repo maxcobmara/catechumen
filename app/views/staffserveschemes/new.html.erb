@@ -1,0 +1,21 @@
+<h1>New staffservescheme</h1>
+
+<% form_for(@staffservescheme) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :group_id %><br />
+    <%= f.select :group_id,
+				              Staffgrade::GROUP,
+				              :prompt => "Select"%></td>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', staffserveschemes_path %>

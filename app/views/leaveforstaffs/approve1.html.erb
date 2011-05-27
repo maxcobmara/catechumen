@@ -1,0 +1,38 @@
+<h3>Approve Staff Leave</h3>
+
+<% form_for(@leaveforstaff) do |f| %>
+  <%= f.error_messages %>
+
+<div class="tform">
+  <table width=100% >
+	<%= render :partial => 'applyshow' %>
+		<tr>
+		  <td class="leftcol"><label for="replacement_id"><b>Replacement Staff:</b></label></td>
+		  <td><%= f.collection_select :replacement_id, Staff.find(:all, :conditions => ["staffgrade_id = ?", @leaveforstaff.applicant.staffgrade_id]), :id, :name, :include_blank => true %></td>
+		</tr>
+
+		<tr>
+			<th colspan = 2>Approval for Staff Leave Request</th>
+		</tr>
+
+		<tr>
+		  <td class="leftcol"><label for="approval1"><b>Approve?:</b></label></td>
+			<td><%= f.radio_button :approval1,'false' %>Not Approved &nbsp<%= f.radio_button :approval1,'true' %>Approve</td>
+		</tr>
+
+		<tr>
+		  <td class="leftcol"><label for="approval1date"><b>Approved By Date:</b></label></td>
+			<td><%= f.date_select :approval1date, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
+  </table>
+</div>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+
+<% end %>
+
+
+<%= link_to 'Show', @leaveforstaff %> |
+<%= link_to 'Back', leaveforstaffs_path %>

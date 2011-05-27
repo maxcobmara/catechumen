@@ -1,0 +1,24 @@
+<h1>Listing staffserveschemes</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Group</th>
+    <th>Classification</th>
+  </tr>
+
+<% @staffserveschemes.each do |staffservescheme| %>
+  <tr>
+    <td><%=h staffservescheme.name %></td>
+    <td><%=h staffservescheme.group_id %></td>
+    <td><%=h staffservescheme.classification_id %></td>
+    <td><%= link_to 'Show', staffservescheme %></td>
+    <td><%= link_to 'Edit', edit_staffservescheme_path(staffservescheme) %></td>
+    <td><%= link_to 'Destroy', staffservescheme, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New staffservescheme', new_staffservescheme_path %>

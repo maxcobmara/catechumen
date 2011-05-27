@@ -1,0 +1,38 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Courses Available For Staff</h2>
+	</div>
+	<div class="tlist">
+	    <table width=90% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Provider</th>
+    <th>Location</th>
+    <th>Duration</th>
+    <th>Proponent</th>
+    <th>Cost</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @staffcourses.each do |staffcourse| %>
+  <tr>
+    <td><%=h staffcourse.name %></td>
+    <td><%=h staffcourse.rendered_course_type %></td>
+    <td><%=h staffcourse.provider %></td>
+    <td><%=h staffcourse.location %></td>
+    <td><%=h staffcourse.duration %> <%=h staffcourse.rendered_course_duration %></td>
+    <td><%=h staffcourse.proponent %></td>
+    <td><%=h ringgols(staffcourse.cost) %></td>
+    <td><%= link_to 'Show', staffcourse %></td>
+    <td><%= link_to 'Edit', edit_staffcourse_path(staffcourse) %></td>
+    <td><%= link_to 'Destroy', staffcourse, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Add New Course', new_staffcourse_path %>

@@ -1,0 +1,19 @@
+<h1>Editing employgrade</h1>
+
+<% form_for(@employgrade) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+		<%= f.select :group_id,
+				          Employgrade::GROUP,
+				          :prompt => "Select"%>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @employgrade %> |
+<%= link_to 'Back', employgrades_path %>

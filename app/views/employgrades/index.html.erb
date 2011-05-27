@@ -1,0 +1,21 @@
+<h1>Listing employgrades</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+
+<% @employgrades.each do |employgrade| %>
+  <tr>
+    <td><%=h employgrade.name %></td>
+		<td><%=h employgrade.booboo %></td> 
+    <td><%= link_to 'Show', employgrade %></td>
+    <td><%= link_to 'Edit', edit_employgrade_path(employgrade) %></td>
+    <td><%= link_to 'Destroy', employgrade, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New employgrade', new_employgrade_path %>

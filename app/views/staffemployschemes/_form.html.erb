@@ -1,0 +1,33 @@
+<div class="tform">
+  <table width=100% >
+<!--Personal Info-->
+<tr>
+	<th colspan = 2>Staff Grade Details</th>
+</tr>
+	<tr>
+		<td class="leftcol"><label for="sgname"><b>Classification:</b></label></td>
+	<td><%= f.select :glass,
+		                Staffemployscheme::CLASSIFICATION,
+		                :prompt => "Select"%></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="name"><b>name:</b></label></td>
+		<td><%= f.text_field :name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="group_id"><b>Group:</b></label></td>
+	</tr>
+	<tr>
+		<td class='leftcol'>Grades</td>
+		<td>
+			<% f.fields_for :staffemploygrades do |builder| %>
+  			<%= render 'staffemploygrade_fields', :f => builder %>
+			<% end %>
+			<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add'), f, :staffemploygrades %></p>
+		</td>
+		</tr>
+
+	
+</table>
+<p></p>
+<BR>

@@ -1,0 +1,53 @@
+<div class="tform">
+  <table width=100% >
+	
+	
+<!--Course Info-->
+	<tr>
+		<th colspan = 2>Course Information</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="name"><b>Course Name</b></label><font color="red"> * </font></td>
+		<td><%= f.text_field :name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="coursetype"><b>Type of Course</b></label><font color="red"> * </font></td>
+		<td><%= f.select :coursetype,
+		                 Staffcourse::COURSE_TYPE,
+		                 :prompt => "Select" %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="provider"><b>Training Provider</b></label></td>
+		<td><%= f.text_field :provider %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="location"><b>Training Location</b></label></td>
+		<td><%= f.text_field :location %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="duration and location"><b>Training Duration</b></label></td>
+		<td><%= f.text_field :duration, :size => 5 %>
+		    <%= f.select :duration_type, Staffcourse::DUR_TYPE, :prompt => "Select" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="proponent"><b>Training Proponent/Sponsor</b></label></td>
+		<td><%= f.text_field :proponent %>
+		   </td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="cost"><b>Cost</b></label></td>
+		<td><%= f.text_field :cost, :size => 5 %>
+		   </td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="course_date"><b>Course Date</b></label></td>
+		<td><%= f.date_select :course_date, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+
+ </table>
+ </div>

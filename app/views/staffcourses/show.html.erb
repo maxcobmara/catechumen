@@ -1,0 +1,50 @@
+<div class="tform">
+  <table width=100% >
+<!--Personal Info-->
+<tr>
+	<th colspan = 2>Staff Grades</th>
+</tr>  
+
+	<tr>
+		<td class="leftcol"><label for="name"><b>Course Name</b></label></td>
+		<td><%=h @staffcourse.name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="COURSE_TYPE"><b>Type of Course</b></label></td>
+		<td><%=h @staffcourse.rendered_course_type %>
+	</td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="name"><b>Training Provider</b></label></td>
+		<td><%=h @staffcourse.name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="provider"><b>Training Location</b></label></td>
+		<td><%=h @staffcourse.provider %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="location"><b>Training Location</b></label></td>
+		<td><%=h @staffcourse.location %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="duration"><b>Training Duration</b></label></td>
+		<td><%=h @staffcourse.duration %> <%=h @staffcourse.rendered_course_duration %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="proponent"><b>Training Proponent/Sponsor</b></label></td>
+		<td><%=h @staffcourse.proponent %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="cost"><b>Cost</b></label></td>
+		<td><%=h ringgols(@staffcourse.cost) %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="cost"><b>Date</b></label></td>
+		<td><%=h @staffcourse.course_date.blank? ? "No date" : @staffcourse.course_date.strftime('%d-%B-%Y') %></td>
+	</tr>
+ </table>
+
+
+<%= link_to 'Edit', edit_staffcourse_path(@staffcourse) %> |
+<%= link_to 'Back', staffcourses_path %>
+</div>

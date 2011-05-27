@@ -1,0 +1,26 @@
+<% if logged_in? %>
+	    <% dash_attendance = Attendance.count(:all, :conditions => ["approve_id=? AND approvestatus IS ?", User.current_user.staff_id, nil]) %>
+	    <% a = Leaveforstaff.count(:all, :conditions => ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]) %>
+	    <% b = Leaveforstaff.count(:all, :conditions => ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]) %>
+	    <% dash_leave = a+b %>
+			  <div id='notifications'>
+				  <% if dash_leave == 0 %>
+				    <p>
+				  <% else %>
+	          <p><%= dash_leave %> <%= link_to "leave application for approval", { :controller => "leaveforstaffs", :action => "index" } %></p>
+	        <% end %>
+				
+				
+				  <% if dash_attendance == 0 %>
+				    <p>
+				  <% else %>
+	          <p><%= dash_attendance %> <%= link_to "late attendance for approval", { :controller => "attendances", :action => "index" } %></p>
+	        <% end %>
+	
+	        <% if User.current_user.roles.name == "warden" %>
+	        "Yes"
+	        <% else %>
+					<% end %>
+	      </div>
+	    <% else %>
+	    <% end %>

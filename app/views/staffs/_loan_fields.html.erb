@@ -1,0 +1,10 @@
+<div class="fields">
+	|  <%= f.select :ltype, Loan::LTYPE, :prompt => "Select Loan Type" %>          
+	|  <%= f.text_field :accno, :size => 25, :placeholder => 'Account No' %>                                  
+  |  <%= f.text_field :startdt, :size => 15, :placeholder => 'Loan yyyyddmm' %>
+	|  <%= f.text_field :durationmn, :size => 15, :placeholder => 'Duration Months' %> 	                                
+	|  <%= f.text_field :deductions, :size => 15, :placeholder => 'Deductions (RM)' %><%= f.hidden_field :_destroy %>
+	<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>         
+</div>
+<% f.date_select :startdt, :start_year => 1970, :order => [:day, :month, :year], :include_blank => true %>
+

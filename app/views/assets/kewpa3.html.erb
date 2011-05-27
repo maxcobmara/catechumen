@@ -1,0 +1,230 @@
+<div id="A4landscape">
+<form action="#">
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+<form>	
+	
+	<!-- Box Head -->
+<H4 align="right"><b>KEW. PA 3</b></H4>
+<H4 align="right"><b>No Siri Pendaftaran <%=h @asset.assetcode %></b></H4>
+
+<H4 align="center">DAFTAR INVENTORY</H4>
+
+<P indent=20px>Kementerian/Jabatan  :  KKM</P>
+<P indent=20px>Bahagian  :  KSKB JB</P> 
+
+
+<div id="borangmaklumat">
+<table width=90% border=1px padding=0px cellspacing=0px>
+	<tr>
+		<td width=160px>Kod Nasional</td>
+		<td colspan=4></td>
+	</tr>
+	<tr>
+		<td>Kategori</td>
+		<td colspan=4><%=h @asset.cardno %></td>
+	</tr>
+	<tr>
+		<td>Sub Kategori</td>
+		<td colspan=4><%=h @asset.category %></td>
+	</tr>
+	<tr>
+		<td>Jenis</td>
+		<td colspan=2><%=h (Asset::ASSETTYPE.find_all{|disp, value| value == @asset.assettype}).map {|disp, value| disp} %></td>
+		<td  width=160px>Harga Perolehan Asal</td>
+		<td colspan=2>RM <%=h @asset.purchaseprice %></td>
+	</tr>
+	<tr>
+		<td>Kuantiti</td>
+		<td colspan=2>"Count Quantity of Subcategry & Place Here"</td>
+		<td  width=160px>Tarikh Diterima</td>
+		<td colspan=2><%=h @asset.receiveddate %></td>
+	</tr>
+	<tr>
+		<td>Unit Pengukuruan</td>
+		<td colspan=2></td>
+		<td rowspan=2 width=160px>No Pesanan Kerajaan</td>
+		<td rowspan=2 colspan=2><%=h @asset.orderno %></td>
+	</tr>
+	<tr>
+		<td>Tempoh Jaminan</td>
+		<td colspan=2></td>
+	</tr>
+	<tr>
+		<td colspan=2>Nama Pembekal Dan Alamat:
+			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %>
+			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.address %>	
+			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.phone %>
+			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.fax %>
+		    <BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.mail %></td>
+			
+		<td colspan=3>Nama:
+			<BR>Jawatan:
+			<BR>Tarikh:
+			<BR>Cop:
+			<BR><BR><b>..................................</b>
+					<BR>Tandatangan Ketua Jabatan
+			
+			
+	</tr>
+	
+</table>
+<BR>
+<table width=90% border=1px padding=5px cellspacing=0px>
+	<tr>
+		<th BGCOLOR="#DDD" colspan=8 align="center">PENEMPATAN</th>
+	</tr>
+	<tr>
+		<td width=160px>Kuantiti</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>No Siri Pendaftaran</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Lokasi</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Tarikh</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Nama Pegawai</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Tandatangan</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+</table>
+<BR>
+<table width=90% border=1px padding=5px cellspacing=0px>
+	<tr>
+		<th BGCOLOR="#DDD" colspan=8 align="center">PEMERIKSAAN</th>
+	</tr>
+	<tr>
+		<td width=160px>Tarikh</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Status Aset</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Nama Pemeriksa</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Tandatangan</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+
+</table>
+<BR>
+<table width=90% border=1px padding=5px cellspacing=0px>
+	<tr>
+		<th BGCOLOR="#DDD" colspan=8 align="center">PELUPUSAN HAPUSKIRA</th>
+	</tr>
+	<tr>
+		<td>Tarikh</td>
+		<td>Rujukan</td>
+		<td>Kaedah Pelupusan</td>
+		<td>Kuantiti</td>
+		<td>Lokasi</td>
+		<td>Tandatangan</td>
+	</tr>
+	<tr>
+		<td>Date </td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td> Date</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+
+
+</table>
+</form>
+</div>
+</div>
+</form>
+
+<BR>
+	
+
+<%= link_to 'Edit', edit_asset_path(@asset) %> |
+<%= link_to 'Back', assets_path %>

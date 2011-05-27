@@ -1,0 +1,34 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Staff Employment Scheme </h2>
+	</div>
+	<div class="tlist">
+	    <table width=90% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    <th>Name</th>
+    <th>Group</th>
+		<th>Grade</th>
+   <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @staffemployschemes_gelas.each do |gelas_name, staffemployscheme| %>
+	<tr><td colspan=6><BR><b>Classification : <%= gelas_name %></b></td></tr>
+		<% for staffemployscheme in staffemployscheme %>
+  <tr>
+		<td><%=h staffemployscheme.name %></td>
+	  <td><%=h (Staffemployscheme::GROUP.find_all{|disp, value| value == staffemployscheme.group_id}).map {|disp, value| disp} %></td>
+	  <td><% for employgrade in staffemployscheme.employgrades %>
+		<%= h employgrade.name %>, 
+		<% end %></td>
+		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => staffemployscheme %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => staffemployscheme %></td>
+    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), staffemployscheme, :confirm => 'Are you sure?', :method => :delete %>
+  </tr>
+<% end %><% end %>
+</table>
+
+<br />
+
+<%= link_to 'New staffemployscheme', new_staffemployscheme_path %>

@@ -1,0 +1,13 @@
+<h3>New Course Available</h3>
+
+<% form_for (@staffcourse, :html => { :multipart => true}) do |f| %>
+  <%= f.error_messages %>
+
+  <%=render :partial => 'form', :locals => {:f => f} %> 
+
+  <p>
+    <%= f.submit (t 'icms.submit') %>
+  </p>
+<% end %>
+
+<%= link_to (t 'icms.back'), staffcourses_path %>

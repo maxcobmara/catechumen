@@ -1,0 +1,44 @@
+<div class="tform">
+	<%= f.hidden_field :parent_id %>
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>Location Details</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="code ">Location Code:</label></td>
+		<td><%= f.text_field :code  %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="resname ">Location Name:</label></td>
+		<td><%= f.text_field :name  %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="lclass">Location Class:</label></td>
+			<td><%= f.select ("lclass", Location::CLASS,
+			                 {:include_blank => ""}, {:onchange => "showMenuForAllocatableRooms(this.value)"})  %></td>
+	</tr>
+	<tr id="restypes" style="display: none;">
+		<td class="leftcol" ><label for="type">Location Type:</label></td>
+		<td><%= f.select ("type",  Location::TYPE ,
+		                 {:include_blank => ""}, {:onchange => "showStudentStaffResidences(this.value)"})   %></td>
+	</tr>
+<!-->	<tr>
+		<td class="leftcol"><label for="resname">Location Name:</label></td>
+		<td><#%= f.text_field :resname %></td>
+	</tr>-->
+	
+	
+	<!--><tr>
+		<td class="leftcol"><label for="allocatable">Allocatable:</label></td>
+		<td><#%= f.check_box :allocatable %></td>
+	</tr>-->
+ </table>
+
+<BR>
+</div>
+
+
+	
+
+	

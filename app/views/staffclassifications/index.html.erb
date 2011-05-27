@@ -1,0 +1,22 @@
+<h1>Listing staffclassifications</h1>
+
+<table>
+  <tr>
+    <th>Staffgrade</th>
+    <th>Staffserveschemes</th>
+  </tr>
+
+<% @staffclassifications.each do |staffclassification| %>
+  <tr>
+    <td><%=h staffclassification.staffgrade.grade %></td>
+    <td><%=h staffclassification.staffservescheme.name %></td>
+    <td><%= link_to 'Show', staffclassification %></td>
+    <td><%= link_to 'Edit', edit_staffclassification_path(staffclassification) %></td>
+    <td><%= link_to 'Destroy', staffclassification, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New staffclassification', new_staffclassification_path %>

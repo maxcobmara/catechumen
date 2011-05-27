@@ -1,0 +1,44 @@
+<h3>Approve Staff Leave</h3>
+
+<% form_for(@leaveforstaff) do |f| %>
+  <%= f.error_messages %>
+
+<div class="tform">
+	<table width=100% >
+    <%= render :partial => 'applyshow' %>
+		<tr>
+		    <td class="leftcol"><label for="replacement_id"><b>Replacement Staff:</b></label></td>
+				<td><%h @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name %></td>
+		</tr>
+
+		<tr>
+			<th colspan = 2>Previous Approval for Staff Leave Request</th>
+		</tr>
+
+		<tr>
+		  <td class="leftcol"><label for="approval1"><b>Approve?:</b></label></td>
+			<td><%=h @leaveforstaff.approval1? ? "Approved" : "Not Approved" %> by 
+			    <%=h @leaveforstaff.seconder.name %> on 
+					<%=h @leaveforstaff.approval1date.strftime("%d - %b - %Y") %></td>
+		</tr>
+
+		<tr>
+		    <td class="leftcol"><label for="approver2"><b>Approval 2:</b></label></td>
+			<td><%= f.check_box :approver2 %></td>
+		</tr>
+		<tr>
+		    <td class="leftcol"><label for="approval2date"><b>Approved By Date:</b></label></td>
+			<td><%= f.date_select :approval2date, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+	</table>
+</div>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+
+<% end %>
+
+
+<%= link_to 'Show', @leaveforstaff %> |
+<%= link_to 'Back', leaveforstaffs_path %>
