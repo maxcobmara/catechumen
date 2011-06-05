@@ -70,7 +70,7 @@
   </div>
 
   <div id='navbar'>
-  	<ul class="dropdown">
+  	<ul>
 			<% @tabs.each do |page| -%>
 			<li> <% "id='current'" if @page && (@page == page || @page.parent == page)  %>
 			     <%if page.redirect? %>
@@ -79,56 +79,32 @@
 			       <%= link_to page.navlabel, view_page_path(page.name) %>
 			     <% end %>
 			</li>
-		<% end -%>
+		<% end %>
+		</ul>
     
 
 	  <div id='flotice'>
 		  <%= flash[:notice] %>
-	  </div>	</ul>
+	  </div>	
+  </div>
+
+  <div id="bulletin">
+   <%= render '/viewer/bulletin' %>
   </div>
 	
   <div id='content'>
 		<h3><%= flash[:error] %></h3>
-		<%= yield %>
+		  <%= yield %>
   </div>
+
+  <div id="event_bar">
+    <%= render '/viewer/event' %>
+  </div>
+
+
 	
 	
-  <div id="sidebar_event_area">
-	<% if (request.request_uri == "/" || request.request_uri == "/home") %>
-	  <div id="event_bar">
-		<H5><%= link_to "Events ", { :controller => "events", :action => "index" } %></H5>
-				<% dash_events = Event.find(:all, :order => 'eventendt desc', :limit => 5) %>
-				<% dash_events.each do |e| %>
-	      <div class="sidebar_event_item<%= cycle("0", "1") %>">
-	      	<h5><%= link_to e.eventname, :controller => 'event', :action => 'show', :id => e.id %></h5>
-	            <small><%= e.location %></small><BR>
-	            <small><%= e.eventstdt %> to <%= e.eventendt %></small>
-	      </div>
-	      <% end %>
-	  </div>
-	<% end %>
-  </div>
-	 
-  <div id="bulletin_top_bar">
-	<% if (request.request_uri == "/" || request.request_uri == "/home") %>
-	  <div id="bulletin_bar">
-		<marquee bgcolor="#fff" scrollamount="2" 
-			direction="up" loop="true">
-		 <% dash_bulletins = Bulletin.find(:all, :order => 'publishdt desc', :limit => 5) %>
-     <% dash_bulletins.each do |b| %>
-       <div class="bulletin_item">
-	   	  <h5><li><%= link_to b.headline, :controller => 'bulletin', :action => 'show', :id => b.id %></li></h5>
-        <small><%= b.headline %></small><BR>
-        <small><%= b.content %></small><BR>
-       </div>
-       <% end %>
-    </marquee>
-    </div>
-	  <div id="bulletin_title_item">
-		  <p><%= link_to "[view more] ", { :controller => "bulletins", :action => "index" } %></p>
-		</div>
-  <% end %>
-  </div>
+
 	     
   <div id='footer'>
 	  <p>ICMS version 2.00 © Integrated Computing Technologies Sdn Bhd / </p>

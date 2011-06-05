@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
 
   def role_symbols
     roles.map do |role|
-      role.name.underscore.to_sym
+      role.authname.to_sym
     end
   end
 

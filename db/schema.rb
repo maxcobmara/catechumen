@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110523052301) do
+ActiveRecord::Schema.define(:version => 20110604144322) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -637,6 +637,7 @@ ActiveRecord::Schema.define(:version => 20110523052301) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "authname"
   end
 
   create_table "roles_users", :id => false, :force => true do |t|
@@ -731,6 +732,7 @@ ActiveRecord::Schema.define(:version => 20110523052301) do
     t.date     "course_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "description"
   end
 
   create_table "staffemploygrades", :force => true do |t|

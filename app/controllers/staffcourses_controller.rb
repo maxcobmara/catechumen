@@ -82,4 +82,10 @@ class StaffcoursesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def indexapply
+    @staffcourses = Staffcourse.all
+    #@locations = Location.find(:all, :order => :loc_code)
+
+  end
 end

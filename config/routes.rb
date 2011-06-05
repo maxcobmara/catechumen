@@ -17,7 +17,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :timetable_week_days
 
-  map.resources :staffcourses
+  map.resources :staffcourses, :collection => { :indexapply => :get }
 
   map.resources :grades
 

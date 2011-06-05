@@ -1,6 +1,6 @@
 authorization do
   
-  role :admini do
+  role :administration do
     has_permission_on :students,    :to => [:index, :show, :new, :create, :edit, :update, :destroy, :formforstudent]
     has_permission_on :staffs,      :to => [:index, :show, :new, :create, :edit, :update, :destroy, :borang_maklumat_staff]
     has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update, :destroy, :approve]
