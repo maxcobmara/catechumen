@@ -22,7 +22,7 @@ select {font-family: courier,serif; font-size: 12px;}
 /*Main Layout*/
 
 #pagewrapper {
-	width: 95%;
+	width: 95%; z-index:0;
 	margin: 10px auto; padding: 0;
 	border: 1px solid #999;
 	font-family: Arial, Helvetica, sans-serif;
@@ -50,7 +50,7 @@ select {font-family: courier,serif; font-size: 12px;}
 						padding: 0px 0px; margin: 0;
 				    font-size: 9px; font-weight: bold; font-family: Verdana, Helvetica, sans-serif;
 				    color: #FCE8B4; text-decoration: none; text-align: right;}
-	
+/*
 #navbar {position:static; width: 100%; height:2.5em; background-color: #3B5998; 
 				 padding: 0; margin: 0;}
 			#navbar ul {
@@ -81,15 +81,15 @@ select {font-family: courier,serif; font-size: 12px;}
 					background-color: #dfffdf;
 					border-color: #9fcf9f;
 					color: #005f00;
-					float: right;}
+   				float: right;}*/
 					
-#bulletin { position:static; width: 100%;border: 1px solid white}
+#bulletin { position:static; width: 100%;border: 1px solid white; z-index:0;}
 
 			#bulletin_bar {
 				margin:2px auto;
 				background:#fff;
 				border: 1px solid #FFF;
-				float: left;
+				float: left; z-index:0;
 			}
 			#bulletin_title_item {margin:2px 10px auto; float: left;}
 			#bulletin_title_item p {padding:2px;font-size: 10px;}
@@ -151,7 +151,7 @@ select {font-family: courier,serif; font-size: 12px;}
 			    padding: 2px;
 			}
 
-	/* Navigation Bar  */
+	/* Navigation Bar 
 
 
 
@@ -182,7 +182,7 @@ select {font-family: courier,serif; font-size: 12px;}
 	#subnav ul li a:hover{
 	    background-color: #DDF;
 	    color: #000; 
-	}
+	}*/
 	.fieldWithErrors {
 	  padding: 2px;
 	  background-color: red;
@@ -461,11 +461,51 @@ div.flash.notice {
 /*	boxes for course application */
 
 
+/* Menu System */
+/* 
+	LEVEL ONE
+*/
+#navbar {position:static; width: 100%; height:2.5em; background: #3B5998;
+				 padding: 0; margin: 0; z-index:99;}
+#navbar ul {
+	    padding: 0;
+	    margin: 0; 
+	    float: left;
+	    font-weight: bold;
+	    border-bottom: 2px solid #333; 
+	}
+	
+	ul.dropdown                  { position: relative; width: 100%; background-color: #3B5998; z-index:99;}
+	ul.dropdown li               { font-weight: bold; float: left; zoom: 1;  list-style: none; font-size: 13px;}
+	ul.dropdown a:hover		       { color: #000; }
+	ul.dropdown a:active         { color: #ffa500; }
+	ul.dropdown li a             { display: block; padding: 4px 40px 4px 8px; border-right: 1px solid #333; color: White; text-decoration: none;}
+	ul.dropdown li:last-child a  { border-right: none; } /* Doesn't work in IE */
+	ul.dropdown li.hover,        
+	ul.dropdown li:hover         { background: #F3D673; color: black; position: relative; }
+	ul.dropdown li.hover a       { color: black; }
+
+
+	/* 
+		LEVEL TWO
+	*/
+	ul.dropdown ul 							 { width: 200px; visibility: hidden; position: absolute; top: 100%; left: 0; }
+	ul.dropdown ul li 					 { font-weight: normal; background: #f6f6f6; color: #000; border-bottom: 1px solid #ccc; float: none; }
+	                                    /* IE 6 & 7 Needs Inline Block */
+	ul.dropdown ul li a					 { border-right: none; width: 100%; display: inline-block; color: #000;} 
+
+	/* 
+		LEVEL THREE
+	*/
+	ul.dropdown ul ul 					 { left: 100%; top: 0; }
+	ul.dropdown li:hover > ul 	 { visibility: visible; }
 
 
 
 
 
+
+	/*  Menu System End */
 
 
 
