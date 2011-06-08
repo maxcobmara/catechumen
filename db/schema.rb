@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110604144322) do
+ActiveRecord::Schema.define(:version => 20110608085557) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -599,6 +599,49 @@ ActiveRecord::Schema.define(:version => 20110604144322) do
   create_table "programmes_subjects", :id => false, :force => true do |t|
     t.integer "programme_id"
     t.integer "subject_id"
+  end
+
+  create_table "ptbudgets", :force => true do |t|
+    t.decimal  "budget"
+    t.date     "fiscalstart"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ptcourses", :force => true do |t|
+    t.string   "name"
+    t.string   "provider"
+    t.decimal  "duration"
+    t.text     "description"
+    t.boolean  "approved"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ptdos", :force => true do |t|
+    t.integer  "ptcourse_id"
+    t.integer  "ptschedule_id"
+    t.integer  "staff_id"
+    t.string   "justification"
+    t.string   "unit_review"
+    t.boolean  "unit_approve"
+    t.string   "dept_review"
+    t.boolean  "dept_approve"
+    t.integer  "replacement_id"
+    t.boolean  "final_approve"
+    t.text     "trainee_report"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ptschedules", :force => true do |t|
+    t.integer  "ptcourse_id"
+    t.date     "start"
+    t.integer  "min_participants"
+    t.integer  "max_participants"
+    t.boolean  "budget_ok"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "qualifications", :force => true do |t|

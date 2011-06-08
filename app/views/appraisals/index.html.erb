@@ -3,11 +3,13 @@
 <!-- Box Head -->
   <div class="box-head">
     <h2 class="left"><%= t 'evaluation.form.list' %></h2>
-	<div class="right">
-		</div></div>
+		<div class="right">
+		</div>
+	</div>
+</div>
 
-<div class="tlist">
-<table border="0" cellpadding="3" cellspacing="2">
+<div class="indextable">
+<table>
   <tr class="toprow">
     <th><%= t 'evaluation.form.icno' %></th>
     <th><%= t 'evaluation.form.name' %></th>
@@ -18,18 +20,17 @@
   </tr>
 <% @appraisals.each do |appraisal| %>
   <tr>
-	<td><%=h appraisal.appraisedstaff.formatted_mykad %></td>
-	<td><%=h appraisal.appraisedstaff.name %></td>
-	<td><%=h appraisal.appraisedstaff.position.positionname %></td>
-	<td><%=h appraisal.evaldt %></td>
-	<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => appraisal %></td>
-    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => appraisal %></td>
-    <td width=10px><%= link_to 'Destroy', appraisal, :confirm => 'Are you sure?', :method => :delete %></td>
-    
+		<td><%=h appraisal.appraisedstaff.formatted_mykad %></td>
+		<td><%=h appraisal.appraisedstaff.name %></td>
+		<td><%=h appraisal.appraisedstaff.position.positionname %></td>
+		<td><%=h appraisal.evaldt %></td>
+		<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => appraisal %></td>
+	  <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => appraisal %></td>
+	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), appraisal, :confirm => 'Are you sure?', :method => :delete %></td>  
   </tr>
 <% end %>
 </table>
-
+</div>
 <br />
 
 <%= link_to (t 'evaluation.form.create'), new_appraisal_path %>

@@ -1,4 +1,12 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :ptdos
+
+  map.resources :ptschedules
+
+  map.resources :ptcourses
+
+  map.resources :ptbudgets
+
   map.resources :locations, :collection => { :indextree => :get }
 
   map.resources :employgrades
