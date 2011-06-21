@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :ptdos
 
-  map.resources :ptschedules
+  map.resources :ptschedules, :collection => { :apply => :get }
 
   map.resources :ptcourses
 

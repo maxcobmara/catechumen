@@ -12,32 +12,32 @@
 	    </label>
 	  </div>
 	</div>
+</div>
 
-	<div class="tlist">
-    <table width=90% border="0" cellpadding="0" cellspacing="0">
-	  <tr>
+<div class="indextable">
+	<table>
+		<tr>
 	   <th><%= t 'positions.positioncode' %></th>
 		 <th><%= t 'positions.positionname' %></th>
 		 <th><%= t 'positions.personname' %></th>
 		 <th><%= t 'positions.taskmain' %></th>
 		 <th colspan=3 class="ac">Control</th>
 	  </tr>
-      <% @positions.each do |position| %>
-      <tr>
-         <td><%=h position.positioncode %></td>
-         <td><%=h position.positionname %></td>
-        
-         <td><%=h position.staff.blank? ? "-" : position.staff.name %></td>
-         <td><%=h position.taskmain %></td>
-		     <td><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => position %></td>
-         <td><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => position %></td>
-	       <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), position, :confirm => 'Are you sure?', :method => :delete %></td>
-      </tr>
-      <% end %>
-    </table>
-  </div>
-</div>
+    <% @positions.each do |position| %>
+    <tr>
+       <td><%=h position.positioncode %></td>
+       <td><%=h position.positionname %></td>
+       <td><%=h position.staff.blank? ? "-" : position.staff.name %></td>
+       <td><%=h position.taskmain %></td>
+       <td><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => position %></td>
+       <td><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => position %></td>
+      <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), position, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+    <% end %>
+	</table>
 <br />
 
 <%= link_to (t 'positions.create'), new_position_path %>
+
+</div>
 

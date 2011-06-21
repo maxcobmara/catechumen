@@ -16,21 +16,15 @@ class Book < ActiveRecord::Base
   
   
   
-   def self.find_main
-     Staff.find(:all, :condition => ['staff_id IS NULL'])
-   end
-   
-   def self.find_main
-      Addbook.find(:all, :condition => ['addbook_id IS NULL'])
-    end
+
     
-    def self.search(search)
-       if search
-        find(:all, :conditions => ['isbn LIKE ? or title ILIKE ? or author ILIKE ?', "%#{search}%","%#{search}%","%#{search}%"])
-      else
-       find(:all)
-      end
+  def self.search(search)
+    if search
+        @book = Book.find(:all, :conditions => ["isbn LIKE ? or title ILIKE ? or author ILIKE ?", "%#{search}%","%#{search}%","%#{search}%"])
+    else
+       @book = Book.find(:all)
     end
+  end
     
 
   

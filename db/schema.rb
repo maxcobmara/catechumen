@@ -610,8 +610,12 @@ ActiveRecord::Schema.define(:version => 20110608085557) do
 
   create_table "ptcourses", :force => true do |t|
     t.string   "name"
-    t.string   "provider"
+    t.integer  "course_type"
+    t.integer  "provider"
     t.decimal  "duration"
+    t.integer  "duration_type"
+    t.string   "proponent"
+    t.decimal  "cost"
     t.text     "description"
     t.boolean  "approved"
     t.datetime "created_at"
@@ -637,8 +641,10 @@ ActiveRecord::Schema.define(:version => 20110608085557) do
   create_table "ptschedules", :force => true do |t|
     t.integer  "ptcourse_id"
     t.date     "start"
+    t.string   "location"
     t.integer  "min_participants"
     t.integer  "max_participants"
+    t.decimal  "final_price"
     t.boolean  "budget_ok"
     t.datetime "created_at"
     t.datetime "updated_at"
