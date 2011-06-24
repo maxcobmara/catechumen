@@ -1,0 +1,17 @@
+<h1>Apply For Training</h1>
+
+<% form_for(@ptdo) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%=h @ptdo.ptschedule.ptcourse.name %>
+  </p>
+  <p>
+    <%=h User.current_user.staff.name %>
+  </p>
+  <p>
+    <%= f.submit 'Apply' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', ptdos_path %>

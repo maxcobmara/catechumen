@@ -1,0 +1,23 @@
+<script type="text/javascript">
+
+$j(document).ready(function()  {
+  $j("ul#ticker01").liScroll({travelocity: 0.05});
+});
+
+</script>
+<%= javascript_include_tag "jquery.li-scroller.1.0" %>
+<%= stylesheet_link_tag 'li-scroller', :media => :screen %>
+
+<% if (request.request_uri == "/" || request.request_uri == "/home") %>
+<div id="bulletin_title_item">
+  <p><%= link_to "[view more]", bulletins_path %></p>
+</div>
+<div id="bulletin_bar">
+	 <% dash_bulletins = Bulletin.find(:all, :order => 'publishdt desc', :limit => 5) %>
+	 <ul id="ticker01">
+     <% dash_bulletins.each do |b| %>
+   	  <li><%= link_to b.headline, :controller => 'bulletins', :action => 'show', :id => b.id %> <%= b.content %></li>
+      <% end -%>
+  </ul>
+</div>
+<% end %>

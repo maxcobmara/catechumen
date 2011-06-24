@@ -1,0 +1,37 @@
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Training Schedule For Staff  &nbsp;
+		<h2><%= link_to image_tag("add.png", :border => 0, :title => 'Schedule A Training'), new_ptschedule_path %></h2>
+	</div>
+</div>
+
+<div class="indextable">
+<table>
+  <tr>
+		<th>Start</th>
+    <th>Ptcourse</th>
+    <th>Location</th>
+    <th>Min participants</th>
+    <th>Max participants</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @ptschedules.each do |ptschedule| %>
+  <tr>
+	  <td><%=h ptschedule.start.strftime('%e %B %Y') %></td>
+    <td><%=h ptschedule.ptcourse.name %></td>
+		<td><%=h ptschedule.location %></td>
+    <td><%=h ptschedule.min_participants %></td>
+    <td><%=h ptschedule.max_participants %></td>
+	  <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptschedule %></td>
+	  <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptschedule %></td>
+	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), ptschedule, :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Schedule A Training', new_ptschedule_path %>
+
+</div>

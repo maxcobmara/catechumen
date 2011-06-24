@@ -1,0 +1,12 @@
+<% if (request.request_uri == "/" || request.request_uri == "/home") %>
+	<H3><%= link_to "Events ", { :controller => "events", :action => "index" } %></H3>
+			<% todays_events = Event.find(:all, :order => 'eventendt desc', :limit => 6) %>
+			<% dash_events = Event.find(:all, :order => 'eventendt desc', :limit => 6) %>
+			<% dash_events.each do |e| %>
+      <div class="sidebar_event_item<%= cycle("0", "1") %>">
+      		<h5><%= link_to e.eventname, :controller => 'events', :action => 'show', :id => e.id %></h5>
+					<p><%= e.location %></p>
+          <p><%= e.eventstdt.strftime('%A, %e %b') %></p>
+      </div>
+      <% end %>
+<% end %>

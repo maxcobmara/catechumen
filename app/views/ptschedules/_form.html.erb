@@ -1,0 +1,30 @@
+<p>
+  <%= f.label :ptcourse_id %><br />
+		<%= f.collection_select :ptcourse_id, Ptcourse.find(:all), :id, :name, :prompt => "Select" %>
+</p>
+<p>
+  <%= f.label :start %><br />
+  <%= f.date_select :start %>
+</p>
+<p>
+  <%= f.label :location %><br />
+  <%= f.text_field :location %>
+</p>
+<p>
+  <%= f.label :min_participants %><br />
+  <%= f.text_field :min_participants, :size => 3 %>
+</p>
+<p>
+  <%= f.label :max_participants %><br />
+  <%= f.text_field :max_participants, :size => 3  %>
+</p>
+<p>
+  <%= f.label :final_price %><br />
+  <%= f.text_field :final_price %>
+</p>
+	<% permitted_to? :approve, :ptcourses do %>
+	<p>
+	  <%= f.label :budget_ok %><br />
+	  <%= f.check_box :budget_ok %>
+	</p>
+	<% end %>

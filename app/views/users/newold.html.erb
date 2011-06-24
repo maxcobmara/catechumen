@@ -1,0 +1,51 @@
+<h3>Create a New User</h3>
+<% form_for(@user) do |f| %>
+  <%= f.error_messages %>
+  <% @user.password = @user.password_confirmation = nil %>
+  
+
+  <!-- For New Users -->
+  <script type="text/javascript">
+		  function switchvisibility(el) {
+		    if (document.getElementById(el).checked) {
+		      document.getElementById('bstaff').style.display = "table-row";
+		      document.getElementById('bstudent').style.display = "none";
+		    } else {
+		      document.getElementById('bstaff').style.display = "none";
+		      document.getElementById('bstudent').style.display = "table-row";
+		    }
+		  }
+	</script>
+
+	<div class="tform">
+	  <table width=100% >
+	  <!--User Info-->
+		<tr>
+			<th colspan = 2>System User Details</th>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="isstaff"><b>Staff?</b></label></td>
+			<td><%= f.check_box :isstaff, :id => "isstaff", :onchange => "switchvisibility('isstaff')" %></td>
+		</tr>
+
+		<tr id="bstaff" style="display: none;">
+			<td class="leftcol" ><label for="staff_id"><b>Staff Name:</b></label></td>
+		  <td><%= f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true, :default => 0 %></td>
+		</tr>
+
+		<tr id="bstudent" style="display: table-row;">
+			<td class="leftcol" ><label for="student_id"><b>Student Name:</b></label></td>
+		  <td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true, :default => 0 %></td>
+		</tr>
+
+
+
+  <%=render :partial => 'form', :locals => {:f => f} %> 
+
+<p><%= submit_tag 'Sign up' %></p>
+
+<% end -%>
+
+
+<%= link_to 'Back', users_path %>

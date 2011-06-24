@@ -1,0 +1,47 @@
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Training Requests  &nbsp;
+	</div>
+</div>
+
+<div class="indextable">
+<table>
+  <tr>
+    <th>Ptschedule</th>
+		<th>Course Name</th>
+    <th>Staff</th>
+    <th>Justification</th>
+    <th>Unit review</th>
+    <th>Unit approve</th>
+    <th>Dept review</th>
+    <th>Dept approve</th>
+    <th>Replacement</th>
+    <th>Final approve</th>
+    <th>Trainee report</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @ptdos.each do |ptdo| %>
+  <tr>
+	  <td>Groupby<%=h ptdo.ptschedule_id %></td>
+    <td><%=h ptdo.ptschedule.ptcourse.name %></td>
+    <td><%=h ptdo.staff.name %></td>
+    <td><%=h ptdo.justification %></td>
+    <td><%=h ptdo.unit_review %></td>
+    <td><%=h ptdo.unit_approve %></td>
+    <td><%=h ptdo.dept_review %></td>
+    <td><%=h ptdo.dept_approve %></td>
+    <td><%=h ptdo.replacement_id %></td>
+    <td><%=h ptdo.final_approve %></td>
+    <td><%=h ptdo.trainee_report %></td>
+	  <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptdo %></td>
+	  <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptdo %></td>
+	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), ptdo, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New ptdo', new_ptdo_path %>
+</div>

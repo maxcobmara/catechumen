@@ -1,0 +1,73 @@
+<h1>Staff Training</h1>
+
+<% form_for(@ptdo) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <% f.label :ptcourse_id %><strong>Course :  </strong>
+    <%=h @ptdo.ptschedule.ptcourse.name %>
+  </p>
+  <p>
+    <% f.label :ptschedule_id %><strong>Date :  </strong>
+    <% f.text_field :ptschedule_id %>
+  </p>
+  <p>
+    <strong><%= f.label :staff_id %> :  </strong>
+    <%=h @ptdo.staff.name %>
+  </p>
+  <!--  Unit Approval Block -->
+  <% permitted_to? :approve, :ptdos do %>
+		<% if @ptdo.unit_approve.blank? %>
+		  <p>
+		    <%= f.label :justification %><br />
+		    <%= f.text_area :justification, :size => '45x2' %>
+		  </p>
+		  <p>
+		    <%= f.label :unit_review %><br />
+		    <%= f.text_area :unit_review, :size => '45x2' %>
+		  </p>
+		  <p>
+		    <%= f.label :unit_approve %><br />
+		    <%= f.check_box :unit_approve %>
+		  </p>
+		<% end %>
+  <% end %>
+
+
+  <!-- Department Approval Block -->
+  <% permitted_to? :approve, :ptdos do %>
+		<% if @ptdo.unit_approve? && @ptdo.dept_approve.blank? %>
+			  <p>
+			    <%= f.label :dept_review %><br />
+			    <%= f.text_field :dept_review %>
+			  </p>
+			  <p>
+			    <%= f.label :dept_approve %><br />
+			    <%= f.check_box :dept_approve %>
+			  </p>
+			  <p>
+			    <%= f.label :replacement_id %><br />
+			    <%= f.text_field :replacement_id %>
+			  </p>
+		<% end %>
+  <% end %>
+			
+  <% permitted_to? :approve, :ptdos do %>
+		<% if @ptdo.dept_approve? && @ptdo.final_approve.blank? %>
+		  <p>
+		    <%= f.label :final_approve %><br />
+		    <%= f.check_box :final_approve %>
+		  </p>
+		  <p>
+		    <%= f.label :trainee_report %><br />
+		    <%= f.text_area :trainee_report %>
+		  </p>
+		<% end %>
+  <% end %>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @ptdo %> |
+<%= link_to 'Back', ptdos_path %>

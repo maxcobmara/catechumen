@@ -1,0 +1,211 @@
+<ul class="dropdown">
+	<!-- Home -->
+	<li><%= link_to ' Home',  root_url %></li>
+	
+	
+	<!-- Staff Menu -->
+	<% permitted_to? :core, :staffs do %>
+  	<li><a href="#">Staff</a>
+			<ul class="sub_menu">
+				<li><%= link_to 'Staff Information', 	{:controller => 'staffs', 			:action => 'index'} %></li>
+				<li><%= link_to 'Staff Attendance', 	{:controller => 'attendances', 	:action => 'index'} %></li>
+				<li><%= link_to 'Staff Appraisal', 		{:controller => 'appraisals', 	:action => 'index'} %></li>
+				<li><%= link_to 'Tasks & Responsibilities', 		{:controller => 'positions', 	:action => 'index'} %></li>
+			  <li><a href="#">Leave ></a>
+					<ul class="sub_menu">
+							<li><%= link_to 'Apply', 				{:controller => 'leaveforstaffs', 	:action => 'new'} %></li>
+							<li><%= link_to 'Approve', 			{:controller => 'leaveforstaffs', 	:action => 'index'} %></li>
+					</ul>
+				</li>
+				<li><a href="#">Claims ></a>
+					<ul class="sub_menu">
+							<li><%= link_to 'Travel Request', 			{:controller => 'travelrequests', 	:action => 'index'} %></li>
+							<li><%= link_to 'Claims', 							{:controller => 'travelclaims', 		:action => 'index'} %></li>
+					</ul>
+				</li>
+				<li><a href="#">Professional Development ></a>
+					<ul class="sub_menu">
+						<% permitted_to? :manage, :ptbudgets do %>
+						  <li><%= link_to 'Training Budget', 	ptbudgets_path %> </li>
+							<% end %>
+						<% permitted_to? :manage, :ptcourses do %>
+							<li><%= link_to 'Training Courses', ptcourses_path %></li>
+							<% end %>
+						<% permitted_to? :manage, :ptschedules do %>
+							<li><%= link_to 'Training Schedule', ptschedules_path %></li>
+							<% end %>
+							<li><%= link_to 'Apply for Training', 	{:controller => 'ptschedules', :action => 'apply'} %></li>
+						<% permitted_to? :approve, :ptdos do %>	
+							<li><%= link_to 'Training Applications', ptdos_path %></li>
+						<% end %>
+							<li><a href="#">#Mark Training Complete</a></li>
+					</ul>
+				</li>
+				<li><%= link_to 'Status & Movement', 					{:controller => 'travelrequests', 	:action => 'index'} %></li>
+				<li><a href="#">Reports ></a>
+					<ul class="sub_menu">
+							<li><%= link_to 'Maklumat Perjawatan', 	{:controller => 'positions', 	:action => 'maklumat_perjawatan_LA'} %></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	<% end %>
+	
+	<!-- Asset Menu -->
+	<% permitted_to? :core, :assets do %>
+	<li><a href="#">Assets</a>
+		
+			<ul class="sub_menu">
+				<li><%= link_to 'Fixed Assets', 			{:controller => 'assets', 			:action => 'index'} %></li>
+				<li><%= link_to 'Current Assets', 		{:controller => 'assets', 			:action => 'index'} %></li>
+				<li><%= link_to 'Office Supplies', 		{:controller => 'suppliers', 		:action => 'index'} %></li>
+				<li><%= link_to 'Loss & Write Offs', 	{:controller => 'assetlosses', 	:action => 'index'} %></li>
+				<li><%= link_to 'Disposal', 					{:controller => 'disposals', 		:action => 'index'} %></li>
+				<li><%= link_to 'Reservations', 			{:controller => 'assettracks', 	:action => 'index'} %></li>
+			  <li><a href="#">Reports ></a>
+					<ul class="sub_menu">
+							<li><%= link_to 'KEW.PA 5', 		{:controller => 'assets', 	:action => 'registerinventory'} %></li>
+					</ul>
+				</li>
+			</ul>
+	</li>
+	<% end %>
+	
+	
+	<!-- Locations Menu -->
+	<% permitted_to? :core, :locations do %>
+	<li><a href="#">Locations</a>
+			<ul class="sub_menu">
+				<li><%= link_to '#Staff Residence', 	{:controller => 'locations', 		:action => 'index'} %></li>
+				<li><%= link_to '#Student Residence', {:controller => 'locations', 		:action => 'index'} %></li>
+				<li><%= link_to 'Student Leave', 			{:controller => 'leaveforstudents', 	:action => 'index'} %></li>
+				<li><%= link_to 'Location Tree',			{:controller => 'locations', 		:action => 'indextree'} %></li>
+			</ul>
+	</li>
+	<% end %>
+	
+	
+	<!-- E-Filing Menu -->
+	<% permitted_to? :core, :documents do %>
+	<li><a href="#">E-Filing</a>
+			<ul class="sub_menu">
+				<li><%= link_to 'Campus Info', 			  {:controller => 'assets', 			:action => 'index'} %></li>
+				<li><%= link_to 'Campus Events', 			{:controller => 'events', 			:action => 'index'} %></li>
+				<li><%= link_to '#Local Messaging', 	root_url %></li>
+				<li><%= link_to 'Bulletin Board', 	  {:controller => 'bulletins', 		:action => 'index'} %></li>
+				<li><%= link_to '#Equery/Reports', 		root_url %></li>
+				<li><%= link_to 'Document Registry', 	{:controller => 'documents', 		:action => 'index'} %></li>
+				<li><%= link_to 'File Registry', 			{:controller => 'cofiles', 			:action => 'index'} %></li>
+			</ul>
+	</li>
+	<% end %>
+	
+	
+	<!-- Student Menu -->
+	<% permitted_to? :core, :students do %>
+	<li><a href="#">Students</a>
+		<ul class="sub_menu">
+				<li><%= link_to 'Student Info', 			{:controller => 'students', 		:action => 'index'} %></li>
+			<% permitted_to? :read, :leaveforstudents do %>
+				<li><%= link_to 'Student Leave', 			{:controller => 'leaveforstudents', 	:action => 'index'} %></li>
+			<% end %>
+				<li><%= link_to '#Attendance', 			  root_url %></li>
+				<li><%= link_to 'Discipline', 				{:controller => 'sdiciplines', 	:action => 'index'} %></li>
+				<% permitted_to? :manage, :counsellings do %>
+					<li><%= link_to 'Counselling', 	  		{:controller => 'counsellings', :action => 'index'} %></li>
+				<% end %>
+			</ul>
+	</li>
+	<% end %>
+	
+	<!-- Examination Menu -->
+	<% permitted_to? :manage, :examquestions do %>
+	<li><a href="#">Exams</a>
+			<ul class="sub_menu">
+				<li><%= link_to 'Examination Development', {:controller => 'examquestions', :action => 'index'} %></li>
+				<li><%= link_to '#Examination Management', root_url %></li>
+				<li><%= link_to '#Feedback', root_url %></li>
+				<li><%= link_to '#Analysis', root_url %></li>
+			</ul>
+	</li>
+	<% end %>
+
+
+	<!-- Training Menu -->
+	<% permitted_to? :core, :programmes do %>
+	<li><a href="#">Training</a>
+			<ul class="sub_menu">
+				<li><a href="#">Scheduling ></a>
+					<ul class="sub_menu">
+							<li><%= link_to 'Set Period Timing', 	{:controller => 'period_timings', 		:action => 'index'} %></li>
+							<li><%= link_to 'Scheduling', 				{:controller => 'time_table_entries', :action => 'index'} %></li>	
+					</ul>
+				</li>
+				<li><%= link_to 'Curriculum Management',    {:controller => 'programmes', 	:action => 'index'} %></li>
+				<li><a href="#">Lesson Plan ></a>
+					<ul class="sub_menu">
+							<li><%= link_to 'Subjects', 			{:controller => 'subjects', 		:action => 'index'} %></li>
+							<li><%= link_to 'Topics', 				{:controller => 'topics', 			:action => 'index'} %></li>
+							<li><%= link_to '#Lesson Plan', 	 root_url %></li>
+							<li><%= link_to '#Lesson Plan Reporting', 	 root_url %></li>	
+					</ul>
+				</li>
+				<li><%= link_to '#Training Notes',    root_url %></li>
+				<li><%= link_to 'Personalised Time Table',    {:controller => 'time_table_entries', 	:action => 'timetable_view'} %></li>
+			</ul>
+	</li>
+	<% end %>
+	
+	
+	<!-- Library Menu -->
+	<li><a href="#">Library</a>
+			<ul class="sub_menu">
+				<li><%= link_to 'Rules & Regulations',    '/Rules & Regulations' %></li>
+				<% permitted_to? :manage, :librarytransactions do %>
+					<li><%= link_to 'Library Transactions',   {:controller => 'librarytransactions', 	:action => 'index'} %></li>
+				<% end %>
+					<li><%= link_to 'Resources',    					{:controller => 'books', 	:action => 'index'} %></li>
+				<% permitted_to? :manage, :librarytransactions do %>
+					<li><%= link_to '#Analysis',    					root_url %></li>
+					<li><%= link_to '#Notifications',    			root_url %></li>
+					<li><%= link_to '#Statistics',    			  root_url %></li>
+				<% end %>
+			</ul>
+	</li>
+	
+	<!-- Administration Menu -->
+	<% permitted_to? :core, :roles do %>
+	<li><a href="#">Administration</a>
+			<ul class="sub_menu">
+				<li><%= link_to 'Users',   				{:controller => 'users', 	:action => 'index'} %></li>
+				<li><%= link_to 'Roles',   				{:controller => 'roles', 	:action => 'index'} %></li>
+				<li><%= link_to 'Pages',   				{:controller => 'pages', 	:action => 'index'} %></li>
+				<li><%= link_to 'Address Book',   {:controller => 'addbooks', :action => 'index'} %></li>
+				<li><a href="#">Support Tables ></a>
+					<ul class="sub_menu">
+							<li><%= link_to 'Staff Titles', 		{:controller => 'titles', :action => 'index'} %></li>
+							<li><%= link_to 'Employee Schemes', {:controller => 'staffemployschemes', :action => 'index'} %></li>
+							<li><%= link_to 'Student Intakes', 	{:controller => 'intakes', :action => 'index'} %></li>
+					</ul>
+				</li>
+			</ul>
+	</li>
+	<% end %>
+	
+	
+</ul>
+				
+
+<!-- old code>
+<ul>
+			<#% @tabs.each do |page| -%>
+			<li> <#% "id='current'" if @page && (@page == page || @page.parent == page)  %>
+			     <#%if page.redirect? %>
+			       <#%= link_to page.navlabel, :action => page.action_name, :controller => page.controller_name, :name => page.name, :order => page.position %>
+			     <#% else %>
+			       <#%= link_to page.navlabel, view_page_path(page.name) %>
+			     <#% end %>
+			</li>
+		<#% end %>
+</ul>
+<-->
