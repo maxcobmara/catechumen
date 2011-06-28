@@ -6,6 +6,16 @@ class Supplier < ActiveRecord::Base
     a - b
   end
   
+  def set_row_color
+    if current_quantity > maxquantity
+      'blue'
+    elsif current_quantity < maxquantity && current_quantity > minquantity
+      'green'
+    else
+      'red'
+    end  
+  end
+  
   
   #-----Repeating fields-----------------------------------------------------------------------  
   # code for repeating field add supplies

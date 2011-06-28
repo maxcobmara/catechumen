@@ -45,17 +45,16 @@
   <div id='navbar'>
     <%= render '/viewer/menus' %>	
   </div>
-	
-	<% if logged_in? %>
-  <% if (request.request_uri == "/" || request.request_uri == "/home") %>  <!-- show only if at root -->
-		<%= render '/viewer/notifications' %>
-  <% end %>
-  <% end %>
 
   <div id='content'>
 		<% flash.each do |key, msg| %>
 			<%= content_tag :div, msg, :id => key %>
 		<% end %>
+		<% if logged_in? %>
+	  <% if (request.request_uri == "/" || request.request_uri == "/home") %>  <!-- show only if at root -->
+			<%= render '/viewer/notifications' %>
+	  <% end %>
+	  <% end %>
 		<div>
 		<%= yield %>
 		</div>

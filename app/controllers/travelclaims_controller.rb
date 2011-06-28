@@ -87,4 +87,9 @@ class TravelclaimsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def claimprint
+    @travelclaim = Travelclaim.find(params[:id])
+  end
+  
 end

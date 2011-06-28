@@ -78,7 +78,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :courses
 
-  map.resources :travelclaims
+  map.resources :travelclaims, :collection => { :claimprint => :get }
 
   map.resources :appraisals
 

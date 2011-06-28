@@ -51,7 +51,7 @@ class Leaveforstaff < ActiveRecord::Base
   
 
   def cuti_rehat_entitlement
-    a = (applicant.staffgrade.level).to_i
+    a = (applicant.staffgrade.name)[-2,4].to_i
     b = Date.today.year - applicant.appointdt.year
     if    a < 21 && b < 10
       20
