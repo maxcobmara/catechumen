@@ -14,6 +14,7 @@ class TravelclaimsController < ApplicationController
   # GET /travelclaims/1.xml
   def show
     @travelclaim = Travelclaim.find(params[:id])
+    @travelclaimreceipt = @travelclaim.travelclaimreceipts.all
 
     respond_to do |format|
       format.html # show.html.erb
@@ -90,6 +91,8 @@ class TravelclaimsController < ApplicationController
   
   def claimprint
     @travelclaim = Travelclaim.find(params[:id])
+    @travelclaimreceipt = @travelclaim.travelclaimreceipts.all
+    render :layout => 'report'
   end
   
 end

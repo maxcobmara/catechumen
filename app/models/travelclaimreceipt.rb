@@ -1,6 +1,12 @@
 class Travelclaimreceipt < ActiveRecord::Base
   belongs_to :travelclaim
   
+  def teksi
+    a = Travelclaimreceipt.sum(:rvalue, :conditions => ["type_id = ?", 1]).to_s
+    a
+  end
+  
+  
   RECEIPTTYPE = [
         #  Displayed       stored in db
         [ "Teksi",1 ],

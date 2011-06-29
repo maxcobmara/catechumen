@@ -27,6 +27,12 @@ class Travelclaim < ActiveRecord::Base
       Staff.find(:all, :condition => ['staff_id IS NULL'])
   end
   
+ 
+  def teks00
+    a = Travelclaimreceipt.sum(:rvalue, :conditions => ["type_id = ?", 1])
+    a
+  end
+  
   
   def distance_value
    d = distance
