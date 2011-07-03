@@ -1,23 +1,21 @@
-<h3><%= t 'asset.new' %></h3>
+
 
 <% form_for(@asset) do |f| %>
   <%= f.error_messages %>
-
-
-  <div class="tform">
+<div class="tform">
+	
+	<H2><%= t 'asset.new' %></H2>
 
 	  <table width=100% >
 
 		<tr>
-			<td class="leftcol"><label for="assettype"><b><%= t 'asset.assettype' %></b></label><font color="red"> * </font></td>
-			<td><%= f.select :assettype, 
-			                  Asset::ASSETTYPE,
-			                 :prompt => "Select"  %></td>
-		</tr>
-
-		<tr>
-			<td class="leftcol"><label for="cardno"><b><%= t 'asset.cardno' %></b></label><font color="red"> * </font></td>
-			<td><%= f.text_field :cardno %></td>
+			<td class="leftcol"><label for="assettype"><b><%= t 'asset.assetcode' %></b></label><font color="red"> * </font></td>
+			<td><strong>KKM/BPL/010619/
+					<%= f.select :assettype, 
+			                  Asset::ASSETTYPE %>/
+					<%= f.date_select :receiveddate,  :end_year => (Time.now.year), :order => [:year] %>/  
+					<%= f.text_field :cardno, :size => 6, :value => (Asset.last.id + 1).to_s %>
+			</strong></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="name"><b><%= t 'asset.name' %></b></label><font color="red"> * </font></td>

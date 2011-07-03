@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :assetcategories
+
   map.resources :ptdos
 
   map.resources :ptschedules, :collection => { :apply => :get }
@@ -132,7 +134,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :assetnums
 
   map.connect '/assets/registerinventory', :controller => 'assets', :action => 'registerinventory'
-  map.resources :assets
+  map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get }
 
   map.resources :books
 

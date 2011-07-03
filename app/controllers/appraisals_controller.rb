@@ -25,9 +25,7 @@ class AppraisalsController < ApplicationController
   # GET /appraisals/new.xml
   def new
     @appraisal = Appraisal.new
-    @appraisal.evactivities.build
-    @appraisal.strainings.build
-  #@appraisal.trainneeds.build
+    2.times { @appraisal.evactivities.build }
 
     respond_to do |format|
       format.html # new.html.erb

@@ -1,0 +1,24 @@
+<h1>Listing assetcategories</h1>
+
+<table>
+  <tr>
+    <th>Parent</th>
+    <th>Description</th>
+    <th>Cattype</th>
+  </tr>
+
+<% @assetcategories.each do |assetcategory| %>
+  <tr>
+    <td><%=h assetcategory.parent_id %></td>
+    <td><%=h assetcategory.description %></td>
+    <td><%=h assetcategory.cattype_id %></td>
+    <td><%= link_to 'Show', assetcategory %></td>
+    <td><%= link_to 'Edit', edit_assetcategory_path(assetcategory) %></td>
+    <td><%= link_to 'Destroy', assetcategory, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New assetcategory', new_assetcategory_path %>

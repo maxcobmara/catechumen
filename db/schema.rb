@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110608085557) do
+ActiveRecord::Schema.define(:version => 20110703205549) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -79,6 +79,14 @@ ActiveRecord::Schema.define(:version => 20110608085557) do
     t.text     "ppkoverall"
     t.integer  "ppk_id"
     t.date     "ppkevaldt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "assetcategories", :force => true do |t|
+    t.integer  "parent_id"
+    t.string   "description"
+    t.integer  "cattype_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

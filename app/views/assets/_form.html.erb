@@ -9,12 +9,7 @@
 
 	<tr>
 		<td class="leftcol"><label for="assetcode">Registration Serial No:</label></td>
-		<td><%= f.text_field :assetcode, :size => '50' %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="cardno">Card No:</label></td>
-		<td><%= f.text_field :cardno %></td>
+		<td><strong><%=h @asset.assetcode %></strong></td>
 	</tr>
 	
 	<tr>
@@ -41,7 +36,7 @@
 
 		<tr>
 			<td class="leftcol"><label for="cardno">Category:</label></td>
-			<td><%= f.text_field :category %></td>
+			<td><%= f.text_field :category %><BR>Need to add category & subcategory, will require support page with ancestry?</td>
 		</tr>
 		
 
@@ -65,15 +60,15 @@
 	    <td><%= f.text_field :serialno %>  (FA)</td>
 		</tr>
     <!--  Show Group based on locassigned true -->
-		<!-->
+		<!--
 		<tr>
 			<td class="leftcol"><label for="locassigned">Location Assigned:</label></td>
 			<td><#%= f.radio_button :locassigned,'false' %>Yes<#%= f.radio_button :locassigned,'true' %>No</td>
 		</tr>
-		<-->					
+		-->					
 		<tr>
 			<td class="leftcol"><label for="location_id">Location:</label></td>
-			<td><%= f.collection_select :location_id, Residence.find(:all), :id, :resname, :include_blank => true %> (FA, CF) (show with Assign Location)</td>
+			<td><%= f.collection_select :location_id, Location.find(:all, :order => 'code'), :id, :location_list, :include_blank => true %> (FA, CF) (show with Assign Location)</td>
 		</tr>
 			
 		<tr>
@@ -95,14 +90,14 @@
 <!-- Code Block for Additional Number Repeating Field -->
 
 	<tr>
-	  <th colspan=2>Additional Numbers</th>
+	  <th colspan=2>Additional Information</th>
     </tr>
 
     <tr>
 	  <td colspan=2>
 		<table width=100%>
 		  <tr>
-		  <td width=130px><label for="assetnumname"><b>Number Type:</b></label></td>
+		  <td width=130px><label for="assetnumname"><b>Number Type:  set additional information types</b></label></td>
 		  <td width=240px><label for="assetadnum"><b>Number:</b></label></td>
 			<td width=10px></td>
         </tr>

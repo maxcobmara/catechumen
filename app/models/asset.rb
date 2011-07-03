@@ -2,13 +2,15 @@ class Asset < ActiveRecord::Base
   
   before_save :save_my_vars
   belongs_to :manufacturedby, :class_name => 'Addbook', :foreign_key => 'manufacturer_id'
-  belongs_to :suppliedby, :class_name => 'Addbook', :foreign_key => 'supplier_id'
+  belongs_to :suppliedby,     :class_name => 'Addbook', :foreign_key => 'supplier_id'
   belongs_to :location
   belongs_to :assignedto, :class_name => 'Staff', :foreign_key => 'assignedto_id'
   belongs_to :receivedby, :class_name => 'Staff', :foreign_key => 'receiver_id'
+  
+  validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
  
   def save_my_vars
-    self.assetcode = suggested_serial_no
+    self.assetcode = (suggested_serial_no).to_s
   end
   
  #----------------------Link to Other Page---------------------------------------------------
@@ -33,7 +35,6 @@ class Asset < ActiveRecord::Base
   #------------------------Validations------------------------------------------------------------
   
   validates_presence_of  :assettype, :cardno, :name, :category
-  validates_uniqueness_of :assetcode
   
 
     def self.find_main
@@ -125,15 +126,24 @@ class Asset < ActiveRecord::Base
       (Asset::ASSETTYPE.find_all{|disp, value| value == assettype}).map {|disp, value| disp}
     end
     
+    def syear
+      receiveddate.year.to_s
+    end
+
+
+    def sv
+      Asset.last.id + 1
+    end
+    
+    
     def suggested_serial_no
-      st = "KKM/KSKBJB/"
+      st = "KKM/BPL/010619/"
       if assettype == 1
        md = "H/"
       else
        md = "I/"
       end
-      ed = id.to_s
-      st + md + ed
+      st + md + syear + '/' + cardno
     end
       
       
@@ -142,8 +152,8 @@ class Asset < ActiveRecord::Base
 
 ASSETTYPE = [
            #  Displayed       stored in db
-           ["Harta Modal(KEW2)",1],
-           ["Inventori(KEW3)",2]
+           ["H",1],
+           ["I",2]
 ]
     
 end

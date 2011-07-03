@@ -28,9 +28,10 @@ class Travelclaim < ActiveRecord::Base
   end
   
  
-  def teks00
-    a = Travelclaimreceipt.sum(:rvalue, :conditions => ["type_id = ?", 1])
-    a
+  def mo_mileage
+    #m = Travelclaimrequest.find(:all, :include => 'traveldetails', :conditions => ["travelclaimrequest.traveldetails_id = ?", id])
+    #Travelclaimrequest.sum('mileage', :conditions => ["travelclaim_id = ?", id])
+    2
   end
   
   

@@ -3,6 +3,7 @@ class Ptdo < ActiveRecord::Base
   
   belongs_to  :ptschedule
   belongs_to  :staff
+  has_many    :appraisals, :through => :staff
   
   def whoami
     self.staff_id = User.current_user.staff_id

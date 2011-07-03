@@ -61,7 +61,7 @@ class AssetsController < ApplicationController
     respond_to do |format|
       if @asset.save
         flash[:notice] = 'Asset was successfully created.'
-        format.html { redirect_to(@asset) }
+        format.html { redirect_to (@asset) }
         format.xml  { render :xml => @asset, :status => :created, :location => @asset }
       else
         format.html { render :action => "new" }
@@ -97,6 +97,16 @@ class AssetsController < ApplicationController
       format.html { redirect_to(assets_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def kewpa3
+    @asset = Asset.find(params[:id])
+    render :layout => 'report'
+  end
+  
+  def kewpa2
+    @asset = Asset.find(params[:id])
+    render :layout => 'report'
   end
   
   def accepted_terms

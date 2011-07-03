@@ -40,6 +40,12 @@
 	    <td><%=h asset.name %></td>
 	    <td><%=h asset.purchasedate %></td>
 	    <td align="right" width=90px>RM <%=h asset.purchaseprice %></td>
+	    <td width=10px >
+	    		<% if asset.assettype == 2 %>
+	 						<%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA3'), :action => 'kewpa3', :id => asset %>
+					<% else %>
+							<%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA2'), :action => 'kewpa2', :id => asset %>
+					<% end %></td>
 			<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => asset %></td>
 		  <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => asset %></td>
 		  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset, :confirm => 'Are you sure?', :method => :delete %></td>

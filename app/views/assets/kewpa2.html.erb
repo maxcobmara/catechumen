@@ -1,4 +1,4 @@
-<div class="A4potrait">
+<div id="A4potrait">
 <form action="#">
 <script>
 document.write("<input type='button' " +
@@ -6,73 +6,83 @@ document.write("<input type='button' " +
 "class='printbutton' " +
 "value='Print This Page'/>");
 </script>
-<form>	
-	
+</form>	
+<fieldset width=10px >	
 
-	
-	<!-- Box Head -->
-<H4 align="right"><b>KEW. PA 3</b></H4>
-<H4 align="right"><b>No Siri Pendaftaran <%=h @asset.assetcode %></b></H4>
-
-<H4 align="center">DAFTAR INVENTORY</H4>
-
-<P indent=20px>Kementerian/Jabatan  :  KKM</P>
-<P indent=20px>Bahagian  :  KSKB JB</P> 
-
-
+<!-- Box Head -->
 <div id="kewpa">
+<H4 align="right"><b>KEW. PA 2</b></H4>
+<H5 align="right"><b>No Siri Pendaftaran <%=h @asset.assetcode %></b></H5>
+
+<H4 align="center">DAFTAR HARTA MODAL</H4>
+
+<P indent=20px>	Kementerian/Jabatan  :  KKM<BR>
+								Bahagian  :  KSKB JB</P> 
+
+<P align="center"><b>BAHAGIAN A</b><BR><%=h (Asset::ASSETTYPE.find_all{|disp, value| value == @asset.assettype}).map {|disp, value| disp} %></P>
 <table width=90% border=1px padding=0px cellspacing=0px>
 	<tr>
-		<td width=160px>Kod Nasional</td>
-		<td colspan=4></td>
+		<td width=20%>Kod Nasional</td>
+		<td colspan=3></td>
 	</tr>
 	<tr>
 		<td>Kategori</td>
-		<td colspan=4><%=h @asset.cardno %></td>
+		<td colspan=3><%=h @asset.cardno %></td>
 	</tr>
 	<tr>
 		<td>Sub Kategori</td>
-		<td colspan=4><%=h @asset.category %></td>
+		<td colspan=3><%=h @asset.category %></td>
 	</tr>
 	<tr>
-		<td>Jenis</td>
-		<td colspan=2><%=h (Asset::ASSETTYPE.find_all{|disp, value| value == @asset.assettype}).map {|disp, value| disp} %></td>
-		<td  width=160px>Harga Perolehan Asal</td>
-		<td colspan=2>RM <%=h @asset.purchaseprice %></td>
+		<td>Jenis/Jenama/Model</td>
+		<td colspan=3> <%=h @asset.type %>/
+			             <%=h @asset.manufacturedby.name %>/ <%=h @asset.model %></td>
 	</tr>
 	<tr>
-		<td>Kuantiti</td>
-		<td colspan=2>"Count Quantity of Subcategry & Place Here"</td>
-		<td  width=160px>Tarikh Diterima</td>
-		<td colspan=2><%=h @asset.receiveddate %></td>
+		<td>Buatan</td>
+		<td width=30%>Country_ID</td>
+		<td width=20%>Harga Perolehan Asal</td>
+		<td width=30% align="center"><%=h ringgols(@asset.purchaseprice) %></td>
+	</tr>
+	
+	<tr>
+		<td>Jenis Dan No Engine</td>
+		<td>If category - transport then do else N/A</td>
+		<td width=25%>Tarikh Diterima</td>
+		<td align="center"><%=h @asset.receiveddate.strftime("%d %b %Y") %></td>
 	</tr>
 	<tr>
-		<td>Unit Pengukuruan</td>
-		<td colspan=2></td>
-		<td rowspan=2 width=160px>No Pesanan Kerajaan</td>
-		<td rowspan=2 colspan=2><%=h @asset.orderno %></td>
+		<td>No Casis/Siri Pembuat</td>
+		<td><%=h @asset.serialno %></td>
+		<td width=160px>No Pesanan Kerajaan</td>
+		<td align="center"><%=h @asset.orderno %></td>
 	</tr>
 	<tr>
-		<td>Tempoh Jaminan</td>
-		<td colspan=2></td>
+		<td rowspan=2>No Pendaftaran<BR>Bagi Kenderaan</td>
+		<td rowspan=2>Print Registration Number</td>
+		<td width=160px>Tempoh Jaminan</td>
+		<td>warranty length</td>
 	</tr>
 	<tr>
-		<td colspan=2>Nama Pembekal Dan Alamat:
+		<td rowspan=2 colspan=2>Nama Pembekal Dan Alamat:
 			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %>
 			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.address %>	
 			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.phone %>
 			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.fax %>
-		    <BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.mail %></td>
-			
-		<td colspan=3>Nama:
-			<BR>Jawatan:
-			<BR>Tarikh:
-			<BR>Cop:
-			<BR><BR><b>..................................</b>
-					<BR>Tandatangan Ketua Jabatan
-			
-			
-	</tr>
+		  <BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.mail %></td>
+	 </tr>
+	 <tr>
+		 	<td rowspan=3 colspan=2>Komponen & Aksesori</td>
+	 </tr>
+	 <tr>
+		  <td colspan=2>Nama:
+				<BR>Jawatan:
+				<BR>Tarikh:
+				<BR>Cop:
+				<BR><BR><b>..................................</b>
+				<BR>Tandatangan Ketua Jabatan
+			</td>
+		</tr>
 	
 </table>
 <BR>
@@ -81,27 +91,7 @@ document.write("<input type='button' " +
 		<th BGCOLOR="#DDD" colspan=8 align="center">PENEMPATAN</th>
 	</tr>
 	<tr>
-		<td width=160px>Kuantiti</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td>No Siri Pendaftaran</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td>Lokasi</td>
+		<td width=160px>Lokasi</td>
 		<td></td>
 		<td></td>
 		<td></td>
@@ -140,6 +130,7 @@ document.write("<input type='button' " +
 		<td></td>
 		<td></td>
 	</tr>
+
 </table>
 <BR>
 <table width=90% border=1px padding=5px cellspacing=0px>
@@ -191,39 +182,23 @@ document.write("<input type='button' " +
 <BR>
 <table width=90% border=1px padding=5px cellspacing=0px>
 	<tr>
-		<th BGCOLOR="#DDD" colspan=8 align="center">PELUPUSAN HAPUSKIRA</th>
+		<th BGCOLOR="#DDD" colspan=4 align="center">PELUPUSAN HAPUSKIRA</th>
 	</tr>
 	<tr>
+		<td>Rujukan Kelulusan</td>
 		<td>Tarikh</td>
-		<td>Rujukan</td>
 		<td>Kaedah Pelupusan</td>
-		<td>Kuantiti</td>
-		<td>Lokasi</td>
 		<td>Tandatangan</td>
 	</tr>
 	<tr>
-		<td>Date </td>
+		<td>Some Text</td>
 		<td></td>
 		<td></td>
 		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td> Date</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-
-
+	</tr> 
+	
 </table>
-</form>
-</div>
-</div>
-</form>
+</div></fieldset></div>
 
 <BR>
 	

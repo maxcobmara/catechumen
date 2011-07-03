@@ -19,15 +19,17 @@ class Location < ActiveRecord::Base
      gls
    end
    
+   def location_list
+      "#{code}  #{name}"
+   end
+   
  
  
  CLASS = [
         #  Displayed       stored in db
         [ "Building",1 ],
         [ "Floor",2 ],
-        [ "Unit", 3 ],
-        [ "Room", 4 ],
-        [ "Bed", 5 ]
+        [ "Unit/Room", 3 ],
   ]
 
  TYPE = [
@@ -36,7 +38,8 @@ class Location < ActiveRecord::Base
          [ "Student Residence",2 ],
          [ "Facility",3 ],
          [ "Staff Area",4 ],
-         [ "Other",5 ],
+         [ "Public Area",5 ],
+         [ "Other",6 ]
  ]
 
 end

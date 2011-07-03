@@ -1,0 +1,25 @@
+<h1>Editing assetcategory</h1>
+
+<% form_for(@assetcategory) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :parent_id %><br />
+		<%= f.collection_select :parent_id, Assetcategory.find(:all), :id, :description, :include_blank => true %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </p>
+  <p>
+    <%= f.label :cattype_id %><br />
+		<%= f.select :cattype_id, 
+                  Assetcategory::ASSETTYPE %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @assetcategory %> |
+<%= link_to 'Back', assetcategories_path %>
