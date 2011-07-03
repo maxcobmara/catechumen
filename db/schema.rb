@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110703205549) do
+ActiveRecord::Schema.define(:version => 20110703211655) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20110703205549) do
     t.string   "fax"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "shortname"
   end
 
   create_table "addsuppliers", :force => true do |t|
@@ -154,9 +155,9 @@ ActiveRecord::Schema.define(:version => 20110703205549) do
     t.boolean  "bookable"
     t.string   "name"
     t.string   "category"
-    t.string   "type"
+    t.string   "typename"
     t.integer  "manufacturer_id"
-    t.string   "model"
+    t.string   "modelname"
     t.string   "serialno"
     t.text     "otherinfo"
     t.string   "orderno"
@@ -171,6 +172,10 @@ ActiveRecord::Schema.define(:version => 20110703205549) do
     t.boolean  "locassigned"
     t.integer  "status"
     t.integer  "location_id"
+    t.integer  "country_id"
+    t.integer  "warranty_length"
+    t.integer  "warranty_length_type"
+    t.integer  "category_id"
   end
 
   create_table "assettracks", :force => true do |t|
@@ -860,6 +865,8 @@ ActiveRecord::Schema.define(:version => 20110703205549) do
     t.date     "reconfirmation_date"
     t.date     "to_current_grade_date"
     t.decimal  "starting_salary"
+    t.string   "transportclass_id"
+    t.integer  "country_id"
   end
 
   create_table "strainings", :force => true do |t|
@@ -1008,6 +1015,7 @@ ActiveRecord::Schema.define(:version => 20110703205549) do
     t.integer  "travelrequest_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "mileage"
   end
 
   create_table "travelclaims", :force => true do |t|

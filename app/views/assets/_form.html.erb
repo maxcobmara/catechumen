@@ -36,7 +36,8 @@
 
 		<tr>
 			<td class="leftcol"><label for="cardno">Category:</label></td>
-			<td><%= f.text_field :category %><BR>Need to add category & subcategory, will require support page with ancestry?</td>
+			<td><%= f.collection_select :category, Assetcategory.find(:all, :conditions => ['parent_id IS ?', nil]), :id, :description, :include_blank => true %><BR>
+			<%= f.collection_select :category_id, Assetcategory.find(:all, :conditions => ['parent_id IS NOT ?', nil]), :id, :description, :include_blank => true %></td>
 		</tr>
 		
 
@@ -52,7 +53,7 @@
 		
 		<tr>
 			<td class="leftcol"><label for="model">Model:</label></td>
-			<td><%= f.text_field :model %> (FA)</td>
+			<td><%= f.text_field :modelname %> (FA)</td>
 	  </tr>
 				
 		<tr>

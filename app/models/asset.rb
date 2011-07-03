@@ -6,6 +6,7 @@ class Asset < ActiveRecord::Base
   belongs_to :location
   belongs_to :assignedto, :class_name => 'Staff', :foreign_key => 'assignedto_id'
   belongs_to :receivedby, :class_name => 'Staff', :foreign_key => 'receiver_id'
+  belongs_to :assetcategory
   
   validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
  
