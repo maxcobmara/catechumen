@@ -1,6 +1,8 @@
 class Location < ActiveRecord::Base
   
   has_ancestry
+  has_many :tenants
+  has_many :assets
   
   def self.search(search)
       if search
@@ -9,6 +11,22 @@ class Location < ActiveRecord::Base
       find(:all, :order => :code)
      end
    end
+   
+   #-----
+   named_scope :staff,      :conditions => { :typename => 1 }
+   named_scope :student,    :conditions => { :typename => 2 }
+   named_scope :facility,   :conditions => { :typename => 3 }
+   
+   FILTERS = [
+     {:scope => "all",        :label => "All"},
+     {:scope => "staff",      :label => "Staff Residences"},
+     {:scope => "student",    :label => "Student Residences"},
+     {:scope => "facility",   :label => "Facilities"}
+   ]
+   
+   
+   
+   #---
    
    def tree_gelas
      if is_root?
@@ -23,6 +41,8 @@ class Location < ActiveRecord::Base
       "#{code}  #{name}"
    end
    
+   
+   
  
  
  CLASS = [
@@ -34,12 +54,12 @@ class Location < ActiveRecord::Base
 
  TYPE = [
          #  Displayed       stored in db
-         [ "Staff Residence",1 ],
-         [ "Student Residence",2 ],
-         [ "Facility",3 ],
-         [ "Staff Area",4 ],
-         [ "Public Area",5 ],
-         [ "Other",6 ]
+         [ "Staff Residence",   1 ],
+         [ "Student Residence", 2 ],
+         [ "Facility",          3 ],
+         [ "Staff Area",        4 ],
+         [ "Public Area",       5 ],
+         [ "Other",             6 ]
  ]
 
 end

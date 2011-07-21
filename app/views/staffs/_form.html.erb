@@ -24,6 +24,11 @@
 			<td class="leftcol"><label for="cobirthdt"><b><%= t 'staff.cobirthdt' %></b></label></td>
 			<td><%= f.date_select :cobirthdt, :start_year => 1945, :end_year => 1992, :order => [:day, :month, :year] %></td></tr>
 		<tr>
+			<td class="leftcol"><label for="birthcertno"><b>Birth Cert No </b></label></td>
+			<td><%= f.text_field :birthcertno %></td>
+		</tr>
+		<tr>	
+		<tr>
 			<td class="leftcol"><label for="bloodtype"><b><%= t 'staff.bloodtype' %></b></label></td>
 			<td><%= f.select :bloodtype,
 			                 Staff::BLOOD_TYPE,
@@ -73,6 +78,10 @@
 			<td><%= f.select :country_cd, 
 			                 Staff::NATIONALITY,
 			                 :prompt => "Select" %></td></tr>
+		<tr>
+			<td class="leftcol"><label for="transportclass_id"><b>Transport Class</b></td>
+			<td><%= f.select :transportclass_id, options_for_select(('A'..'F').to_a, @staff.transportclass_id) %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="upload"><b><%= t 'staff.upload' %></b></label></td>
 			<td><%= f.file_field :photo %></td></tr>

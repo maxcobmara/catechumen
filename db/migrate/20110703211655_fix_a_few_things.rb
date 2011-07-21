@@ -6,7 +6,8 @@ class FixAFewThings < ActiveRecord::Migration
     add_column :assets,   :warranty_length,       :integer
     add_column :assets,   :warranty_length_type,  :integer
     add_column :assets,   :category_id,           :integer
-    add_column :staffs,   :country_id,             :integer
+    add_column :assets,   :subcategory_id,        :integer
+    add_column :staffs,   :country_id,            :integer
 
     add_column :travelclaimrequests,   :mileage,  :decimal
 
@@ -21,6 +22,7 @@ class FixAFewThings < ActiveRecord::Migration
     remove_column :assets,   :warranty_length
     remove_column :assets,   :warranty_length_type
     remove_column :assets,   :category_id
+    remove_column :assets,   :subcategory_id
     remove_column :staffs,   :country_id
 
     remove_column :travelclaimrequests,   :mileage

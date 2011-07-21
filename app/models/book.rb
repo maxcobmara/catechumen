@@ -1,5 +1,5 @@
 class Book < ActiveRecord::Base
-  has_many :librarytransactions
+  has_many :librarytransactions, :dependent => :nullify
   #belongs_to :addbook, :foreign_key => 'addbook_id'
   belongs_to :staff  , :foreign_key => 'receiver_id'
   belongs_to :addbook, :foreign_key => 'supplier_id'
@@ -12,15 +12,23 @@ class Book < ActiveRecord::Base
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']    
   
   #------------Validation-----------------------------------------
-  validates_presence_of  :controlno, :isbn, :issn, :classlcc, :classddc, :title, :author, :publisher, :loantype, :mediatype
+  validates_presence_of  :isbn, :issn, :classlcc, :classddc, :title, :author, :publisher, :loantype, :mediatype
+  validates_presence_of  :accessionno, :subject, :publish_date, :publish_location, :description
+  validates_uniqueness_of :accessionno
   
-  
+  def tag_suggest
+    if Book.last.id == nil
+      1
+    else
+      (Book.last.id + 1).to_s
+    end
+  end
   
 
     
   def self.search(search)
     if search
-        @book = Book.find(:all, :conditions => ["isbn LIKE ? or title ILIKE ? or author ILIKE ?", "%#{search}%","%#{search}%","%#{search}%"])
+        @book = Book.find(:all, :conditions => ["isbn LIKE ? or title ILIKE ? or author ILIKE ? or location ILIKE ?" , "%#{search}%","%#{search}%","%#{search}%", "%#{search}%"])
     else
        @book = Book.find(:all)
     end

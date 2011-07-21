@@ -6,22 +6,22 @@
 	</tr>
 	<tr>
 		<td class="leftcol"><%= t 'book.tagno' %></td>
-		<td><%= f.text_field :tagno %></td>
+		<td><%= f.text_field :tagno, :value => ((Book.last.id + 1).to_s unless Book.last.nil?) %></td>
 	</tr>
 	
-	<tr>
+	<!--><tr>
 		<td class="leftcol"><label for="controlno"><b>Control No:</b></label><font color="red"> * </font></td>
-		<td><%= f.text_field :controlno %></td>
-	</tr>
+		<td><% f.text_field :controlno %></td>
+	</tr>-->
 	
 	<tr>
 		<td class="leftcol"><label for="isbn"><b>ISBN No:</b></label><font color="red"> * </font></td>
-		<td><%= f.text_field :isbn %></td>
+		<td><%= f.text_area :isbn, :size =>  '30x2' %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="issn">ISSN:</label><font color="red"> * </font></td>
-	    <td><%= f.text_area :issn, :size =>  '30x2' %></td>
+	    <td><%= f.text_field :issn %></td>
 	</tr>
 	
 	
@@ -79,17 +79,42 @@
 	</tr>
 	<tr>
 		<td class="leftcol"><%= t 'book.publish_date' %></td>
-	    <td><%= f.date_select :publish_date, :start_year => 1990, :order => [:day, :month, :year], :include_blank => true %></td></td>
+	    <td><%= f.text_field :publish_date, :size => 7, :placeholder => "YYYY" %></td></td>
 	</tr>
 	<tr>
 		<td class="leftcol"><%= t 'book.publish_location' %></td>
-	    <td><%= f.text_field :publish_location, :size => 50 %></td>
+	  <td><%= f.text_field :publish_location, :size => 50 %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="description">Physical Description:</label></td>
-	    <td><%= f.text_field :description, :size => 50 %></td>
+	  <td><%= f.text_field :description, :size => 50 %></td>
 	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'book.roman' %><font color="red"> * </font>:</td>
+	  <td><%= f.text_field :roman %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'book.size' %><font color="red"> * </font>:</td>
+	  <td><%= f.text_field :size %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'book.pages' %><font color="red"> * </font>:</td>
+	  <td><%= f.text_field :pages %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="description">Bilbliographies:</label></td>
+	  <td><%= f.text_field :bibliography %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="description">Index:</label></td>
+	  <td><%= f.text_field :indice %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'book.notes' %>:</td>
+	  <td><%= f.text_field :notes %></td>
+	</tr>
+	
 	
 	<tr>
 		<td class="leftcol"><label for="loantype">Loan Type:</label><font color="red"> * </font></td>
@@ -98,10 +123,10 @@
 			                 :prompt => "Select"  %></td>
 	</tr>
 	
-	<tr>
+	<!--><tr>
 		<td class="leftcol"><%= t 'book.quantity' %></td>
-	  <td><%= f.text_field :quantity %></td>
-	</tr>
+	  <td><% f.text_field :quantity %></td>
+	</tr>-->
 	
 	<tr>
 		<td class="leftcol"><label for="mediatype">Media Type:</label><font color="red"> * </font></td>
@@ -127,10 +152,10 @@
 	    <td><%= f.text_field :location %></td>
 	</tr>
 	
-	<tr>
+	<!--><tr>
 		<td class="leftcol"><label for="topic">Topic:</label></td>
-	    <td><%= f.text_area :topic, :size => '60x3' %></td>
-	</tr>
+	    <td><% f.text_area :topic, :size => '60x3' %></td>
+	</tr>-->
 	
 	<tr>
 		<td class="leftcol"><label for="edition">Edition:</label></td>

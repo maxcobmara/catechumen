@@ -2,7 +2,7 @@ class Student < ActiveRecord::Base
   
   before_save  :titleize_name
 
-  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :semail, :sbirthdt, :mrtlstatuscd
+  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd
   validates_numericality_of :icno, :stelno
   validates_length_of       :icno, :is =>12
   validates_uniqueness_of   :icno
@@ -143,6 +143,7 @@ SPONSOR = [
          #  Displayed       stored in db
          [ "Kementerian Kesihatan Malaysia","KKM" ],
          [ "Suruhanjaya Perkhidmatan Awam","SPA" ],
+         [ "Swasta","swasta" ],
          [ "Sendiri", "FaMa" ]
 ] 
   
@@ -160,13 +161,10 @@ SESSION = [
   
 MARITAL_STATUS = [
         #  Displayed       stored in db
-        [ "Tidak Pernah Berkahwin","1" ],
+        [ "Bujang","1" ],
         [ "Berkahwin","2" ],
-        [ "Balu", "3" ],
-        [ "Duda", "4" ],
-        [ "Bercerai", "5" ],
-        [ "Berpisah", "6" ],
-        [ "Tiada Maklumat", "9" ]
+        [ "Lain Lain", "3"]
+        #[ "Balu", "3" ],[ "Duda", "4" ],[ "Bercerai", "5" ],[ "Berpisah", "6" ],[ "Tiada Maklumat", "9" ]
 ]
       
 CLASS= [

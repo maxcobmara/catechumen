@@ -60,12 +60,12 @@
 <% @assetlosses.each do |assetloss| %>
   <tr>
     <td><%=h assetloss.losstype %></td>
-    <td>RM <%=h assetloss.estvalue %></td>
-    <td><%=h assetloss.asset_id %></td>
+    <td align='center'><%=h ringgols(assetloss.estvalue) %></td>
+    <td><%=h assetloss.asslost.assetcode unless assetloss.asset_id.nil? %></td>
     <!--<td><#%=h assetloss.asset_id.blank? ? "" : assetloss.asslost.name %></td>-->
     <!-- <td><%=h assetloss.part_id %></td>-->
-    <td><%=h assetloss.losslocation_id %></td>
-    <td><%=h assetloss.lossdt %></td>
+    <td><%=h assetloss.asslost.location.name unless assetloss.asset_id.nil? %></td>
+    <td><%=h assetloss.lossdt.strftime('%d %b %Y - %H:%M') %></td>
   <!-- <td><%=h assetloss.losshow %></td>
     <td><%=h assetloss.lossstafflast_id %></td>
     <td><%=h assetloss.laststaffcase %></td>
@@ -102,9 +102,11 @@
     <td><%=h assetloss.sio_id %></td>
     <td><%=h assetloss.ssecurity_id %></td>
     <td><%=h assetloss.closedt %></td>-->
-    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => assetloss %></td>
-	  <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => assetloss %></td>
-    <td width=10px><%= link_to 'Destroy', assetloss, :confirm => 'Are you sure?', :method => :delete %></td>
+
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => assetloss %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => assetloss %></td>
+    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), assetloss, :confirm => 'Are you sure?', :method => :delete %></td>
+    
   </tr>
 <% end %>
 </table>

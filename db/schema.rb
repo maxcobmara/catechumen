@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110703211655) do
+ActiveRecord::Schema.define(:version => 20110706071933) do
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -150,11 +150,10 @@ ActiveRecord::Schema.define(:version => 20110703211655) do
   create_table "assets", :force => true do |t|
     t.string   "assetcode"
     t.string   "cardno"
-    t.integer  "dept_id"
+    t.string   "dept_id"
     t.integer  "assettype"
     t.boolean  "bookable"
     t.string   "name"
-    t.string   "category"
     t.string   "typename"
     t.integer  "manufacturer_id"
     t.string   "modelname"
@@ -176,6 +175,7 @@ ActiveRecord::Schema.define(:version => 20110703211655) do
     t.integer  "warranty_length"
     t.integer  "warranty_length_type"
     t.integer  "category_id"
+    t.integer  "subcategory_id"
   end
 
   create_table "assettracks", :force => true do |t|
@@ -239,12 +239,18 @@ ActiveRecord::Schema.define(:version => 20110703211655) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
-    t.date     "publish_date"
+    t.string   "publish_date"
     t.string   "publish_location"
     t.string   "language"
     t.text     "links"
     t.text     "subject"
     t.integer  "quantity"
+    t.string   "roman"
+    t.string   "size"
+    t.string   "pages"
+    t.string   "bibliography"
+    t.string   "indice"
+    t.string   "notes"
   end
 
   create_table "bulletins", :force => true do |t|
@@ -441,6 +447,7 @@ ActiveRecord::Schema.define(:version => 20110703211655) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "profession"
+    t.string   "mykadno"
   end
 
   create_table "klasses", :force => true do |t|
@@ -533,7 +540,7 @@ ActiveRecord::Schema.define(:version => 20110703211655) do
     t.string   "code"
     t.string   "name"
     t.integer  "lclass"
-    t.integer  "type"
+    t.integer  "typename"
     t.boolean  "allocatable"
     t.boolean  "occupied"
     t.integer  "staffadmin_id"
@@ -867,6 +874,7 @@ ActiveRecord::Schema.define(:version => 20110703211655) do
     t.decimal  "starting_salary"
     t.string   "transportclass_id"
     t.integer  "country_id"
+    t.string   "birthcertno"
   end
 
   create_table "strainings", :force => true do |t|
@@ -922,6 +930,18 @@ ActiveRecord::Schema.define(:version => 20110703211655) do
     t.string   "unittype"
     t.decimal  "maxquantity"
     t.decimal  "minquantity"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tenants", :force => true do |t|
+    t.integer  "location_id"
+    t.integer  "staff_id"
+    t.integer  "student_id"
+    t.date     "keyaccept"
+    t.date     "keyexpectedreturn"
+    t.date     "keyreturned"
+    t.boolean  "force_vacate"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

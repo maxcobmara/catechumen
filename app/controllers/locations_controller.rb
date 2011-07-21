@@ -2,8 +2,13 @@ class LocationsController < ApplicationController
   # GET /locations
   # GET /locations.xml
   def index
-    @locations = Location.search(params[:search])
-
+      @filters = Location::FILTERS
+      if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+        @locations = Location.send(params[:show])
+      else
+        @locations = Location.search(params[:search])
+      end
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @locations }

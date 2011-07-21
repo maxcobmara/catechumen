@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :tenants
+
   map.resources :assetcategories
 
   map.resources :ptdos

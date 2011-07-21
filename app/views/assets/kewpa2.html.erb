@@ -12,14 +12,15 @@ document.write("<input type='button' " +
 <!-- Box Head -->
 <div id="kewpa">
 <H4 align="right"><b>KEW. PA 2</b></H4>
-<H5 align="right"><b>No Siri Pendaftaran <%=h @asset.assetcode %></b></H5>
+<H5 align="right"><b>No Siri Pendaftaran : <%=h @asset.assetcode %></b></H5>
 
 <H4 align="center">DAFTAR HARTA MODAL</H4>
 
 <P indent=20px>	Kementerian/Jabatan  :  KKM<BR>
 								Bahagian  :  KSKB JB</P> 
 
-<P align="center"><b>BAHAGIAN A</b><BR><%=h (Asset::ASSETTYPE.find_all{|disp, value| value == @asset.assettype}).map {|disp, value| disp} %></P>
+<P align="center"><b>BAHAGIAN A</b><BR>
+<!-- <#%=h (Asset::ASSETTYPE.find_all{|disp, value| value == @asset.assettype}).map {|disp, value| disp} %></P> -->
 <table width=90% border=1px padding=0px cellspacing=0px>
 	<tr>
 		<td width=20%>Kod Nasional</td>
@@ -27,16 +28,16 @@ document.write("<input type='button' " +
 	</tr>
 	<tr>
 		<td>Kategori</td>
-		<td colspan=3><%=h @asset.cardno %></td>
+		<td colspan=3><%=h @asset.category.description unless @asset.category_id.nil?  %></td>
 	</tr>
 	<tr>
 		<td>Sub Kategori</td>
-		<td colspan=3><%=h @asset.category %></td>
+		<td colspan=3><%=h @asset.subcategory.description unless @asset.subcategory_id.nil?  %></td>
 	</tr>
 	<tr>
 		<td>Jenis/Jenama/Model</td>
 		<td colspan=3> <%=h @asset.type %>/
-			             <%=h @asset.manufacturedby.name %>/ <%=h @asset.model %></td>
+			             <%=h @asset.manufacturedby.name unless @asset.manufacturedby.nil? %>/ <%=h @asset.modelname %></td>
 	</tr>
 	<tr>
 		<td>Buatan</td>

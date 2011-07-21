@@ -1,99 +1,53 @@
 <div class="tform">
-  <table width=100% >
-
-	<tr>
-		<th colspan = 2><%= t 'supplier.supplier_details' %></th>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="suplycode"><b><%= t 'supplier.suplycode' %></b></label></td>
-		<td><%= f.text_field :supplycode%>
-		   
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="Category"><b><%= t 'supplier.Category' %></b></label></td>
-		<td><%= f.text_field :category %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="unittype"><b><%= t 'supplier.unittype' %></b></label></td>
-		<td><%= f.text_field :unittype %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="maxquantity"><b><%= t 'supplier.maxquantity' %></b></label></td>
-		<td><%= f.text_field :maxquantity %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="minquantity"><b><%= t 'supplier.minquantity' %></b></label></td>
-		<td><%= f.text_field :minquantity %></td>
-	</tr>
+	
+	<H2><%= t 'supplier.supplier_details' %></H2>
+  <table>
+		<tr>
+			<td class="leftcol"><label for="supplycode"><b><%= t 'supplier.supplycode' %></b></label></td>
+			<td><%= f.text_field :supplycode %> 
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="Category"><b><%= t 'supplier.category' %></b></label></td>
+			<td><%= f.text_field :category %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="unittype"><b><%= t 'supplier.unittype' %></b></label></td>
+			<td><%= f.text_field :unittype, :size => '12' %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="maxquantity"><b><%= t 'supplier.maxquantity' %></b></label></td>
+			<td><%= f.text_field :maxquantity, :size => '5' %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="minquantity"><b><%= t 'supplier.minquantity' %></b></label></td>
+			<td><%= f.text_field :minquantity, :size => '5' %></td>
+		</tr>
+	</table>
 	
 <!--Addsupplies Details-->	
-		    <tr>
-			  <th colspan=2><%= t 'supplier.add' %></th>
-			</tr>
-			<tr>
-			  <td colspan=2>
-			    <table width=95%>
-				  <tr>
-			        <td width=120px align='left'><label for="lpono"><b><%= t 'supplier.lpono' %></b></label></td>
-			        <td width=150px><label for="document"><b><%= t 'supplier.document' %></b></label></td>
-			        <td width=100px><label for="quantity"><b><%= t 'supplier.quantity' %></b></label></td>
-			        <td width=140px><label for="unitcost"><b><%= t 'supplier.unitcost' %></b></label></td>
-			        <td ><label for="received"><b><%= t 'supplier.received' %></b></label></td>
-			         <td width=10px></td>
-		          </tr>
-			    </table>
-		      </td>
-		    </tr>
-
-		    <tr>
-			  <td colspan=2>
-			    <!-- Code Block for Add Supplies Repeating Field -->
-			     <div id="addsuppliers">
-					  <%= render :partial => 'addsupplier', :collection => @supplier.addsuppliers %>
-				</div>
-			  </td>
-			</tr>
-			<!-- End Code Block for Addsupplies Repeating Field -->
-			<tr>
-			  <td colspan=2><%= add_addsupplier_link (t 'icms.add') %></td>
-			</tr>
-			
-			
-			<!--usesupply Details                                     -->	
-					    <tr>
-						  <th colspan=2>Use/Issue Supplies</th>
-						</tr>
-						<tr>
-						  <td colspan=2>
-						    <table width=95%>
-							  <tr>
-						        <td width=220px ><label for="issuedby"><b><%= t 'supplier.issuedby' %></b></label></td>
-						        <td width=220px><label for="receivedby"><b><%= t 'supplier.receivedby' %></b></label></td>
-						        <td width=120px><label for="quantity"><b><%= t 'supplier.quantity' %></b></label></td>
-						        <td><label for="issuedate"><b><%= t 'supplier.issuedate' %></b></label></td>
-						         <td width=10px></td>
-					          </tr>
-						    </table>
-					      </td>
-					    </tr>
-
-					    <tr>
-						  <td colspan=2>
-						    <!-- Code Block for Add Supplies Repeating Field -->
-						     <div id="usesupplies">
-								  <%= render :partial => 'usesupply', :collection => @supplier.usesupplies %>
-							</div>
-						  </td>
-						</tr>
-						<!-- End Code Block for usesupply Repeating Field -->
-						<tr>
-						  <td colspan=2><%= add_usesupply_link (t 'icms.add') %></td>
-						</tr>
+	<div>
+	  <H2><%= t 'supplier.add' %></H2>
+		<p><strong>|  <%= t 'supplier.lpono' %> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|  
+									<%= t 'supplier.document' %> &nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|
+									<%= t 'supplier.quantity' %>  &nbsp; &nbsp; &nbsp; &nbsp; | 
+									<%= t 'supplier.unitcost' %>  &nbsp; &nbsp; &nbsp; &nbsp;   &nbsp;   | 
+									<%= t 'supplier.received' %></strong></p>
+		<% f.fields_for :addsuppliers do |builder| %>
+			<%= render 'addsupplier_fields', :f => builder %>
+		<% end %>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :addsuppliers %> - Add More </p>
+	</div>
 	
-
-	
-
-	
-	
-</table>
+<!--usesupply Details-->		
+	<div>
+		<H2>Use/Issue Supplies</H2>
+			<p><strong>   <div style="width: 22.5em; float: left;">|  <%= t 'supplier.issuedby' %></div>
+										<div style="width: 22.5em; float: left;">|  <%= t 'supplier.receivedby' %></div>
+										<div style="width: 7.5em; float: left;">|  <%= t 'supplier.quantity' %></div>|
+										<%= t 'supplier.issuedate' %></strong></p>
+			<% f.fields_for :usesupplies do |builder| %>
+				<%= render 'usesupply_fields', :f => builder %>
+			<% end %>
+			<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :usesupplies %> - Add More </p>
+		</div>
 </div>

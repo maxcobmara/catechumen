@@ -1,23 +1,10 @@
 <div class="tform">
-  <table width=100% >
 	
-<!--Staff Details-->	
-
-  <tr>
-	  <th colspan = 2>Asset Details</th>
-  </tr>
-
+	<H2>Asset Details</H2>
+  <table width=100% >
 	<tr>
 		<td class="leftcol"><label for="staff_id">Asset Code:</label></td>
 		<td><%=h @asset.assetcode %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Asset Type:</label></td>
-		<td><%=h (Asset::ASSETTYPE.find_all{|disp, value| value == @asset.assettype}).map {|disp, value| disp} %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Card No:</label></td>
-		<td><%=h @asset.cardno %></td>	
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="staff_id">Dept ID:</label></td>
@@ -25,7 +12,11 @@
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="staff_id">Category:</label></td>
-		<td><%=h @asset.category %></td>	
+		<td><%=h @asset.category.description %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Subcategory:</label></td>
+		<td><%=h @asset.subcategory.description %></td>	
 	</tr>
 	<tr>
 	<td class="leftcol"><label for="bookable">Bookable:</label></td>

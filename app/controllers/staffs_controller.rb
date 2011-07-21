@@ -105,7 +105,7 @@ def ruport
   # PUT /staffs/1
   # PUT /staffs/1.xml
   def update
-    params[:staff][:existing_qualification_attributes] ||= {}
+    #params[:staff][:existing_qualification_attributes] ||= {}
     
     @staff = Staff.find(params[:id])
 

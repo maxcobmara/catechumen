@@ -2,11 +2,13 @@ class Asset < ActiveRecord::Base
   
   before_save :save_my_vars
   belongs_to :manufacturedby, :class_name => 'Addbook', :foreign_key => 'manufacturer_id'
-  belongs_to :suppliedby,     :class_name => 'Addbook', :foreign_key => 'supplier_id'
+  belongs_to :suppliedby,   :class_name => 'Addbook', :foreign_key => 'supplier_id'
   belongs_to :location
-  belongs_to :assignedto, :class_name => 'Staff', :foreign_key => 'assignedto_id'
-  belongs_to :receivedby, :class_name => 'Staff', :foreign_key => 'receiver_id'
-  belongs_to :assetcategory
+  belongs_to :assignedto,   :class_name => 'Staff', :foreign_key => 'assignedto_id'
+  belongs_to :receivedby,   :class_name => 'Staff', :foreign_key => 'receiver_id'
+  belongs_to :category,     :class_name => 'Assetcategory', :foreign_key => 'category_id'
+  belongs_to :subcategory,  :class_name => 'Assetcategory', :foreign_key => 'subcategory_id'
+  
   
   validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
  
@@ -35,7 +37,7 @@ class Asset < ActiveRecord::Base
   
   #------------------------Validations------------------------------------------------------------
   
-  validates_presence_of  :assettype, :cardno, :name, :category
+  validates_presence_of  :assettype, :cardno, :name
   
 
     def self.find_main
@@ -60,7 +62,18 @@ class Asset < ActiveRecord::Base
       end
     end
     
-    
+#----------------------- stuff for category
+  
+  def subcategory_name
+    subcategory.description if subcategory
+  end
+  
+  def subcategory_name=(name)
+    self.subcategory = Subcategory.find_by_description(description) unless description.blank?
+  end
+
+
+ 
 #----------------------- code for repeating field additional number----------------------------------------
     has_many :assetnums, :dependent => :destroy
 

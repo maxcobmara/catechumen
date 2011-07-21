@@ -7,6 +7,7 @@
 			<%= select_tag_for_filter("librarytransactions", @filters, params) %>
 		</div>
 	</div>
+</div>
 	<div class="tlist">
 	  <table width=100%>
 		  <tr>
@@ -28,10 +29,10 @@
 	  	<td><%=h librarytransaction.book.id %></td>
 	    <td><%=h librarytransaction.book.isbn %></td>
 	    <td><%=h librarytransaction.book.title %></td>
-	    <td><%=h librarytransaction.ru_staff? ?  librarytransaction.staff.staff_name_with_position : librarytransaction.student.name.to_s + " (Student)" %></td>
+	    <td><%=h librarytransaction.loaner %></td>
 	    <td><%=h librarytransaction.book.classddc %></td>
 			<td><%=h librarytransaction.book.orderno %></td>
-			<td><%=h librarytransaction.returnduedate %></td>
+			<td><%=h librarytransaction.returnduedate.strftime('%d %b %Y') %><%=h librarytransaction.extoond  %></td>
 	    <td><%=h librarytransaction.returneddate %></td>
 	    <td width=10px><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => librarytransaction %></td>
 	    <td width=10px><%= link_to image_tag("edit.png",     :border => 0,  :title => 'Edit'), :action => 'edit', :id => librarytransaction %></td>
@@ -41,6 +42,6 @@
 </table>
 
 <br />
-</div>
+
 <%= link_to (t 'librarytransaction.newrec'), new_librarytransaction_path %>
 </div>

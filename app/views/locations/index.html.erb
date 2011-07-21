@@ -9,6 +9,9 @@
 			<%= submit_tag "Search", :name => nil %>
 			<% end %>
 		</div>
+		<div class="right">
+			<%= select_tag_for_filter("locations", @filters, params) %>
+		</div>
   </div>
 </div>
 
@@ -19,7 +22,7 @@
     <th>Location Name</th>
 		<th>Location Class</th>
     <th>Location Type Description</th>
-    <th colspan=4 class="ac">Control</th>
+    <th colspan=5 class="ac">Control</th>
   </tr>
 
   <% @locations.each do |location| %>
@@ -28,11 +31,14 @@
 				<%= link_to "(+)", new_location_path(:parent_id => location) %></td>
   	<td><%=h location.name %></td>
 		<td><%=h (Location::CLASS.find_all{|disp, value| value == location.lclass}).map {|disp, value| disp} %></td>
-		<td><%=h (Location::TYPE.find_all{|disp, value| value == location.type}).map {|disp, value| disp} %></td>
+		<td><%=h (Location::TYPE.find_all{|disp, value| value == location.typename}).map {|disp, value| disp} %></td>
+		<td><% if location.typename == 2 %>
+				<%= link_to image_tag("user_add.png", :border => 0, :title => 'Assign'), new_tenant_path(:location_id => location) %>
+				<% end %></td>
     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => location %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => location %></td>
     <td width=10px><%= link_to image_tag("duplicate.png", :border => 0, :title => 'Add Asset'), :action => 'addasset', :id => location %></td>
-    <td width=5px><%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), location, :confirm => 'Are you sure?', :method => :delete %>
   </tr>
   <% end %>
 </table>

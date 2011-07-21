@@ -29,7 +29,7 @@ class Position < ActiveRecord::Base
     pid = self.staff_id
     a << pid
     available_staff = Position.find(:all, :select => "staff_id", :conditions => ["staff_id IS NOT ?", nil]).map(&:staff_id)
-    if staff_id = nil
+    if staff_id == nil
       available_staff
     else
       available_staff - a

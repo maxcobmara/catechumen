@@ -18,7 +18,7 @@ class Staff < ActiveRecord::Base
   validates_presence_of     :icno, :name, :coemail, :code
   validates_uniqueness_of   :icno, :fileno, :coemail, :code
   validates_format_of       :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
-  validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd
+  validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd, :fileno
   #validates_length_of      :cooftelno, :is =>10
   #validates_length_of      :cooftelext, :is =>5
   validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"
@@ -74,11 +74,11 @@ class Staff < ActiveRecord::Base
   #has_many :trainingrequests
   
   #Link to model Residence
-  has_many :staff, :class_name => 'Residence', :foreign_key => 'staff_id'  
-  has_many :admin, :class_name => 'Residence', :foreign_key => 'staffadmin_id'
+  #has_many :staff, :class_name => 'Residence', :foreign_key => 'staff_id'  
+  #has_many :admin, :class_name => 'Residence', :foreign_key => 'staffadmin_id'
   
   #Link to model Appraisal                                                      
-  has_many :appraised, :class_name => 'Appraisal', :foreign_key => 'staff_id'
+  has_many :appraised, :class_name => 'Appraisal', :foreign_key => 'staff_id'#, :dependant => :destroy
   has_many :ppp,       :class_name => 'Appraisal', :foreign_key => 'ppp_id'
   has_many :ppk,       :class_name => 'Appraisal', :foreign_key => 'ppk_id' 
   
@@ -115,12 +115,12 @@ class Staff < ActiveRecord::Base
   
   
   #links to Model TravelRequest
-  has_many :stafftravel,     :class_name => 'Travelrequest', :foreign_key => 'staff_id' #staff name
+  has_many :stafftravel,     :class_name => 'Travelrequest', :foreign_key => 'staff_id', :dependent => :destroy #staff name
   has_many :replacements,       :class_name => 'Travelrequest', :foreign_key => 'replacement_id' #replacement name
   has_many :hod,                :class_name => 'Travelrequest', :foreign_key => 'hod_id' #hod
   
   #links to Model Attendances
-  has_many :attendingstaffs,        :class_name => 'Attendance', :foreign_key => 'staff_id' #attendance staff name
+  has_many :attendingstaffs,        :class_name => 'Attendance', :foreign_key => 'staff_id'#, :dependent => :destroy #attendance staff name
   has_many :approvers, :class_name => 'Attendance', :foreign_key => 'approve_id' # approver name
   
   #links to Model Assetloss
@@ -133,7 +133,7 @@ class Staff < ActiveRecord::Base
   has_many :admin,        :class_name => 'Course', :foreign_key => 'staff_id'
   
   #links to Model leaveforstaffs
-   has_many :leave_applications, :class_name => 'Leaveforstaff', :foreign_key => 'staff_id'
+   has_many :leave_applications, :class_name => 'Leaveforstaff', :foreign_key => 'staff_id'#, :dependent => :destroy
    has_many :replacements,       :class_name => 'Leaveforstaff', :foreign_key => 'replacement_id'
    has_many :seconders,          :class_name => 'Leaveforstaff', :foreign_key => 'approval1_id'
    has_many :approvers,          :class_name => 'Leaveforstaff', :foreign_key => 'approval2_id'
@@ -234,7 +234,7 @@ class Staff < ActiveRecord::Base
   def staff_positiontemp
     sid = staff.id
     spo = Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
-    if spo = nil
+    if spo == nil
       "NA"
     else 
       @staff.position.positionname
@@ -333,13 +333,18 @@ class Staff < ActiveRecord::Base
   
   APPOINTED = [
        #  Displayed       stored in db
-       [ "Kementerian Kesihatan Malaysia","kkm" ]
+       [ "Kementerian Kesihatan Malaysia","kkm" ],
+       [ "Suruhanjaya Perkhidmatan Awam","spa" ],
+       [ "Jabatan Perkihidmatan Awam","jpa" ]
        
   ]
   
   HOS = [
        #  Displayed       stored in db
-       [ "Suruhanjaya Perkihidmatan Awam","spa" ]
+       [ "Suruhanjaya Perkhidmatan Awam","spa" ],
+       [ "Kementerian Kesihatan Malaysia","kkm" ],
+       [ "Jabatan Perkhidmatan Awam","jpa" ],
+       [ "Jabatan Perpustakaan Negara","jpn" ]
        
   ]
   

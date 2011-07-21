@@ -1,6 +1,7 @@
 <h1>Listing assetcategories</h1>
 
-<table>
+<div class="indextable">
+<table style="width:60%">
   <tr>
     <th>Parent</th>
     <th>Description</th>
@@ -9,16 +10,18 @@
 
 <% @assetcategories.each do |assetcategory| %>
   <tr>
-    <td><%=h assetcategory.parent_id %></td>
+    <td><%=h assetcategory.parent.description unless assetcategory.parent_id.nil? %></td>
     <td><%=h assetcategory.description %></td>
-    <td><%=h assetcategory.cattype_id %></td>
-    <td><%= link_to 'Show', assetcategory %></td>
-    <td><%= link_to 'Edit', edit_assetcategory_path(assetcategory) %></td>
-    <td><%= link_to 'Destroy', assetcategory, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%=h (Assetcategory::ASSETTYPE.find_all{|disp, value| value == assetcategory.cattype_id}).map {|disp, value| disp} %></td>
+
+		<td width=10px><%= link_to image_tag("document.png",	:border => 0, :title => 'Show'), assetcategory %></td>
+    <td width=10px><%= link_to image_tag("edit.png", 			:border => 0, :title => 'Edit'), edit_assetcategory_path(assetcategory) %></td>
+    <td width=10px><%= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), assetcategory, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
+</div>
 
 <%= link_to 'New assetcategory', new_assetcategory_path %>

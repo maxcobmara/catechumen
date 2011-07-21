@@ -3,7 +3,6 @@ class Assetloss < ActiveRecord::Base
   belongs_to :part, :foreign_key => 'part_id' 
   belongs_to :location
   belongs_to :staff, :foreign_key => 'staff_id' 
-  
   belongs_to :asslost, :class_name => 'Asset', :foreign_key => 'asset_id'
   
   #Residence
@@ -36,7 +35,7 @@ class Assetloss < ActiveRecord::Base
   LOSS = [
         #  Displayed       stored in db
         [ "Cash","Cash" ],
-        [ "Asset","AB" ],
+        [ "Asset","Asset" ],
         [ "Supplies","Supplies" ]
   ]
   

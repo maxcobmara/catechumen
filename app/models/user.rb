@@ -56,6 +56,18 @@ class User < ActiveRecord::Base
   def email=(value)
     write_attribute :email, (value ? value.downcase : nil)
   end
+  
+  def user_nama
+    if student_id == nil && staff_id == nil
+      ""
+    elsif student_id != nil
+     " #{student.name} + (Student)"
+    elsif staff_id != nil
+       staff.name
+   else
+     ""
+    end 
+  end
 
   
 end
