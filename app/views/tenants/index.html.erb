@@ -1,0 +1,41 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Tenants</h2>
+		<div class="right">
+		</div>
+  </div>
+</div>
+
+<div class="tlist">
+<table width=100% border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <th>Location</th>
+    <th>Staff</th>
+    <th>Student</th>
+    <th>Keyaccept</th>
+    <th>Keyexpectedreturn</th>
+    <th>Keyreturned</th>
+    <th>Force vacate</th>
+  </tr>
+
+<% @tenants.each do |tenant| %>
+  <tr>
+    <td><%=h tenant.location_id %></td>
+    <td><%=h tenant.staff_id %></td>
+    <td><%=h tenant.student_id %></td>
+    <td><%=h tenant.keyaccept %></td>
+    <td><%=h tenant.keyexpectedreturn %></td>
+    <td><%=h tenant.keyreturned %></td>
+    <td><%=h tenant.force_vacate %></td>
+    <td><%= link_to 'Show', tenant %></td>
+    <td><%= link_to 'Edit', edit_tenant_path(tenant) %></td>
+    <td><%= link_to 'Destroy', tenant, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+
+<%= link_to 'New tenant', new_tenant_path %>
