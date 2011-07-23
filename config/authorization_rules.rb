@@ -40,10 +40,13 @@ authorization do
   
   
   role :staff do
-    has_permission_on [:attendances, :assets, :locations, :documents],     :to => :core              # Access for Menus
+    has_permission_on [:attendances, :assets, :documents],     :to => :menu              # Access for Menus
     has_permission_on :books, :to => :core
     has_permission_on :ptdos, :to => :create
-    has_permission_on :staffs, :to => [:index, :show, :edit, :update] do
+    has_permission_on :ptdos, :to => :index do
+      if_attribute :staff_id => is {User.current_user.staff_id}
+    end
+    has_permission_on :staffs, :to => [:index, :show, :edit, :update, :menu] do
       if_attribute :id => is {User.current_user.staff_id}
     end
     has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update] do
@@ -66,6 +69,10 @@ authorization do
     end
   end
   
+  role :staff_administrator do
+     has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
+  end
+  
   role :student do
     has_permission_on :programmes, :to => :core
     has_permission_on :books, :to => :core
@@ -76,6 +83,10 @@ authorization do
       if_attribute :student_id => is {User.current_user.student_id}
     end
     has_permission_on :leaveforstudents, :to => [:create]
+  end
+  
+  role :student_administrator do
+     has_permission_on :students, :to => [:manage, :formforstudent]
   end
   
 
@@ -102,6 +113,11 @@ authorization do
     has_permission_on :programmes, :to => :core
   end
   
+  role :librarian do
+    has_permission_on :books, :to => :manage
+    has_permission_on :librarytransactions, :to => :manage
+  end 
+  
   
   
   role :warden do
@@ -125,7 +141,8 @@ end
   
   privileges do
     privilege :approve,:includes => [:read, :update]
-    privilege :manage, :includes => [:create, :read, :update, :delete, :core, :approve]
+    privilege :manage, :includes => [:create, :read, :update, :delete, :core, :approve, :menu]
+    privilege :menu,   :includes => [:read]
     privilege :core,   :includes => [:read]
     privilege :read,   :includes => [:index, :show]
     privilege :create, :includes => :new

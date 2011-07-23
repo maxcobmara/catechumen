@@ -2,7 +2,7 @@ class PtdosController < ApplicationController
   # GET /ptdos
   # GET /ptdos.xml
   def index
-    @ptdos = Ptdo.all
+    @ptdos = Ptdo.with_permissions_to(:index)
 
     respond_to do |format|
       format.html # index.html.erb

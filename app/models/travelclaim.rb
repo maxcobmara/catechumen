@@ -1,6 +1,6 @@
 class Travelclaim < ActiveRecord::Base
   
-  #before_save :varmyass
+  before_save :varmyass
   #traveclaim = survey, travelrequest = questions
   
   has_many :travelclaimrequests, :dependent => :destroy
@@ -19,6 +19,10 @@ class Travelclaim < ActiveRecord::Base
   
   validates_presence_of :claimsmonth, :staff_id
   
+  def varmyass
+    self.ptclaimsvalue = value_km
+  end
+  
   def self.find_main
       Travelrequest.find(:all, :condition => ['travelrequest_id IS NULL'])
   end
@@ -28,18 +32,22 @@ class Travelclaim < ActiveRecord::Base
   end
   
   def total_claims
-    distancevalue + ptclaimsvalue + allclaimsvalue + othclaimsvalue
+    if ptclaimsvalue == nil
+     receipts
+    else 
+     receipts + ptclaimsvalue
+    end
   end
   
   
   
-  def varmyass
-    self.distancevalue = distance_value
+
+  
+  
+  
+  def receipts
+    travelclaimreceipts.sum(:rvalue)
   end
-  
-  
-  
-  
   
   
   
@@ -50,7 +58,7 @@ class Travelclaim < ActiveRecord::Base
   
  # This Stuff is for the mileage calculations try put other stuff above this
   def mo_mileage
-    gettcr = Travelclaimrequest.find(:all, :conditions => ["travelclaim_id = ?", id], :select => :id)#.map(&:id)
+    gettcr = Travelclaimrequest.find(:all, :conditions => ["travelclaim_id = ?", id], :select => :id).map(&:id)
     getkm = Traveldetail.find(:all, :conditions => ["travelclaimrequest_id IN (?)", gettcr], :select => :distance).map(&:distance)
     getkm.inject(:+)
   end
@@ -104,7 +112,7 @@ class Travelclaim < ActiveRecord::Base
     elsif staff.transportclass_id == 'E'  
       40
     else 
-      'NR'
+      0
     end
   end
   
@@ -120,7 +128,7 @@ class Travelclaim < ActiveRecord::Base
     elsif staff.transportclass_id == 'E'  
       35
     else 
-      'NR'
+      0
     end
   end
   
@@ -136,7 +144,7 @@ class Travelclaim < ActiveRecord::Base
     elsif staff.transportclass_id == 'E'  
       30
     else 
-      'NR'
+      0
     end
   end
   
@@ -152,7 +160,7 @@ class Travelclaim < ActiveRecord::Base
     elsif staff.transportclass_id == 'E'  
       25
     else 
-      'NR'
+      0
     end
   end
   

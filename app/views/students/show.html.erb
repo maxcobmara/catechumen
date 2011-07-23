@@ -77,6 +77,19 @@
 	</table>
 	<BR><BR>
 		
+	<H2>Guarantor</H2>
+	<% puid = @student.id %>
+	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  99 ]) %>
+	<table>
+		<% garantor.each do |e| %>
+		<tr>
+			<td class="leftcol">Penjamin 1</td>
+			<td><%=h e.name.blank? ? "" : e.name %></td>
+		</tr>
+		<% end %>
+	</table>
+			
+		
 	<H2><%= t 'student.health_status' %></H2>
 	<table>	
 		<tr>
@@ -127,32 +140,33 @@
 	<BR><BR>
 		
 	<H2><%= t 'student.institute' %></H2>
-	<% for kin in @student.kins %>
+	<% thekins = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id != ? ", puid,  99 ]) %>
+	<% thekins.each do |e| %>
 	<table>
 		<tr>
 			<td class="leftcol"><label for="kintype_id "><%= t 'student.kintype_id' %> :</label></td>
-		  <td><%=h (Kin::KTYPE.find_all{|disp, value| value == kin.kintype_id}).map {|disp, value| disp} %></td>
+		  <td><%=h (Kin::KTYPE.find_all{|disp, value| value == e.kintype_id}).map {|disp, value| disp} %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="name "><%= t 'student.name' %> :</label></td>
-		  <!--<td><%=h kin.name %></td>-->
-			<td><%=h kin.name.blank? ? "" : kin.name %></td>
+		  <!--<td><#%=h kin.name %></td>-->
+			<td><%=h e.name.blank? ? "" : e.name %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="icno "><%= t 'student.icno' %> :</label></td>
-		    <td><%=h kin.mykadno %></td>
+		    <td><%=h e.mykadno %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="profession "><%= t 'student.profession' %> :</label></td>
-		  <td><%=h kin.profession %></td>
+		  <td><%=h e.profession %></td>
 		</tr>	
 		<tr>
 			<td class="leftcol"><label for="phone "><%= t 'student.stelno' %> :</label></td>
-		  <td><%=h kin.phone %></td>
+		  <td><%=h e.phone %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="kinaddr "><%= t 'student.kinaddr' %> :</label></td>
-		  <td><%=h kin.kinaddr %></td>
+		  <td><%=h e.kinaddr %></td>
 		</tr>
 	</table>
 	<HR>

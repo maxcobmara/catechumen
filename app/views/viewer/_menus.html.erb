@@ -4,13 +4,15 @@
 	
 	
 	<!-- Staff Menu -->
-	<% permitted_to? :core, :staffs do %>
+	<% permitted_to? :menu, :staffs do %>
   	<li><a href="#">Staff</a>
 			<ul class="sub_menu">
 				<li><%= link_to 'Staff Information', 	{:controller => 'staffs', 			:action => 'index'} %></li>
 				<li><%= link_to 'Staff Attendance', 	{:controller => 'attendances', 	:action => 'index'} %></li>
 				<li><%= link_to 'Staff Appraisal', 		{:controller => 'appraisals', 	:action => 'index'} %></li>
+				<% permitted_to? :manage, :staffs do %>
 				<li><%= link_to 'Tasks & Responsibilities', 		{:controller => 'positions', 	:action => 'index'} %></li>
+				<% end %>
 			  <li><a href="#">Leave ></a>
 					<ul class="sub_menu">
 							<li><%= link_to 'Apply', 				{:controller => 'leaveforstaffs', 	:action => 'new'} %></li>
@@ -35,7 +37,7 @@
 							<li><%= link_to 'Training Schedule', ptschedules_path %></li>
 							<% end %>
 							<li><%= link_to 'Apply for Training', 	{:controller => 'ptschedules', :action => 'apply'} %></li>
-						<% permitted_to? :approve, :ptdos do %>	
+						<% permitted_to? :index, :ptdos do %>	
 							<li><%= link_to 'Training Applications Status', ptdos_path %></li>
 						<% end %>
 					</ul>
@@ -51,21 +53,25 @@
 	<% end %>
 	
 	<!-- Asset Menu -->
-	<% permitted_to? :core, :assets do %>
+	<% permitted_to? :menu, :assets do %>
 	<li><a href="#">Assets</a>
 		
 			<ul class="sub_menu">
+				<% permitted_to? :manage, :assets do %>
 				<li><%= link_to 'Fixed Assets', 			{:controller => 'assets', 			:action => 'index'} %></li>
 				<li><%= link_to 'Current Assets', 		{:controller => 'assets', 			:action => 'index'} %></li>
 				<li><%= link_to 'Office Supplies', 		{:controller => 'suppliers', 		:action => 'index'} %></li>
 				<li><%= link_to 'Loss & Write Offs', 	{:controller => 'assetlosses', 	:action => 'index'} %></li>
 				<li><%= link_to 'Disposal', 					{:controller => 'disposals', 		:action => 'index'} %></li>
+				<% end %>
 				<li><%= link_to 'Reservations', 			{:controller => 'assettracks', 	:action => 'index'} %></li>
+				<% permitted_to? :manage, :assets do %>
 			  <li><a href="#">Reports ></a>
 					<ul class="sub_menu">
 							<li><%= link_to 'KEW.PA 5', 		{:controller => 'assets', 	:action => 'registerinventory'} %></li>
 					</ul>
 				</li>
+				<% end %>
 			</ul>
 	</li>
 	<% end %>
@@ -188,6 +194,7 @@
 							<li><%= link_to 'Asset Categories', 	{:controller => 'assetcategories', :action => 'index'} %></li>
 					</ul>
 				</li>
+				<li><%= link_to 'Release Notes',   '/releasenotes' %>
 			</ul>
 	</li>
 	<% end %>
