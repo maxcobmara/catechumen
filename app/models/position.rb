@@ -2,7 +2,7 @@ class Position < ActiveRecord::Base
   
   has_many :subordinates, :class_name => 'Position', :foreign_key => 'parent_id'
   belongs_to :bosses, :class_name => 'Position', :foreign_key => 'parent_id'
-  belongs_to :staffgrade, :class_name => 'Employgrade', :foreign_key => 'parent_id'
+  belongs_to :staffgrade, :class_name => 'Employgrade', :foreign_key => 'staffgrade_id'
   belongs_to :staff
 
   validates_uniqueness_of :positioncode

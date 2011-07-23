@@ -1,44 +1,34 @@
 <div class="tform">
-<table width=100%>
-	<tr>
-		<th colspan=2>Office Supplies Details</td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="supplycode">Supplier Code:</label></td>
-		<td><%=h @supplier.supplycode %></td>
-	</tr>
+	<H2><%= t 'supplier.supplier_details' %></H2>
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><label for="supplycode"><%= t 'supplier.supplycode' %> :</label></td>
+			<td><%=h @supplier.supplycode %></td>
+		</tr>
 	
+		<tr>
+			<td class="leftcol"><label for="category"><%= t 'supplier.category' %> :</label></td>
+			<td><%=h @supplier.category %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="category">Category:</label></td>
-		<td><%=h @supplier.category %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="maxquantity"><%= t 'supplier.current'%> :</label></td>
+			<td><%=h @supplier.current_quantity %><%=h @supplier.unittype %></td>
+		</tr>
 	
+		<tr>
+			<td class="leftcol"><label for="maxquantity"><%= t 'supplier.maxquantity'%> :</label></td>
+			<td><%=h @supplier.maxquantity %><%=h @supplier.unittype %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="unittype">Unit Type:</label></td>
-		<td><%=h @supplier.unittype %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="maxquantity">Quantity:</label></td>
-		<td><%=h @supplier.current_quantity %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="maxquantity">Max Quantity:</label></td>
-		<td><%=h @supplier.maxquantity %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="minquantity">Min Quantity:</label></td>
-		<td><%=h @supplier.minquantity %></td>
-	</tr>
-		
+		<tr>
+			<td class="leftcol"><label for="minquantity"><%= t 'supplier.minquantity' %> :</label></td>
+			<td><%=h @supplier.minquantity %><%=h @supplier.unittype %></td>
+		</tr>	
 	</table>
 	<BR>
-	</div>
+</div>
 
-<%= link_to 'Edit', edit_supplier_path(@supplier) %> |
-<%= link_to 'Back', suppliers_path %>
+<%= link_to (t 'icms.update'), edit_supplier_path(@supplier) %> |
+<%= link_to (t 'icms.back'), suppliers_path %>
 

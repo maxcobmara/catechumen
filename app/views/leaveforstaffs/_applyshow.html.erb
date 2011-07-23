@@ -1,28 +1,27 @@
-<tr>
-	<th colspan = 2>Applicant Details</th>
-</tr>
+<H2>Applicant Details</H2>
+<table>
+	<tr>
+		<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
+		<td><%=h @leaveforstaff.applicant.mykad_with_staff_name %></td>
+	</tr>
 
-<tr>
-	<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
-	<td><%=h @leaveforstaff.applicant.mykad_with_staff_name %></td>
-</tr>
+	<tr>
+		<td class="leftcol"><label for="leavetype"><b>Leave Type:</b></label></td>
+		<td><%=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp} %></td>
+	</tr>
 
-<tr>
-	<td class="leftcol"><label for="leavetype"><b>Leave Type:</b></label></td>
-	<td><%=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp} %></td>
-</tr>
-
-<tr>
-	<td class="leftcol"><label for="leavestartdate"><b>From : </b></label></td>
-	<td><%=h @leaveforstaff.leavestartdate.strftime("%d - %b - %Y") %>
-  		<%=h @leaveforstaff.show_to_day %>&nbsp &nbsp <b>For</b>
-  		<%=h @leaveforstaff.leave_for %> Days</td>
-</tr>
-<tr>
-	<td class="leftcol"><label for="reason"><b>Reason:</b></label></td>
-	<td><%=h @leaveforstaff.reason %></td>
-</tr>
-<tr>
-	<td class="leftcol"><label for="notes"><b>Notes:</b></label></td>
-	<td><%=h @leaveforstaff.notes %></td>
-</tr>
+	<tr>
+		<td class="leftcol"><label for="leavestartdate"><b>From : </b></label></td>
+		<td><%=h @leaveforstaff.leavestartdate.strftime("%d - %b - %Y") %>
+	  		<%=h @leaveforstaff.show_to_day %>&nbsp &nbsp <b>For</b>
+	  		<%=h @leaveforstaff.leave_for %> Days</td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="reason"><b>Reason:</b></label></td>
+		<td><%=h @leaveforstaff.reason %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="notes"><b>Notes:</b></label></td>
+		<td><%=h @leaveforstaff.notes %></td>
+	</tr>
+</table>

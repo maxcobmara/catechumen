@@ -1,50 +1,44 @@
 
 <div class="tform">
+	<H2><%= t 'attendance.staff_details' %></H2>
   <table width=100% >
-	
-<!--Staff Details-->	
-
-<tr>
-	<th colspan = 2>Staff Details</th>
-</tr>
-
-	<tr>
-		<td class="leftcol"><label for="staff_id">Staff Name:</label></td>
-		<td><%=h @attendance.staffthatattend.mykad_with_staff_name %></td>
-		
-	</tr>
+	<!--Staff Details-->	
+		<tr>
+			<td class="leftcol"><label for="staff_id"><%= t 'attendance.staff_id' %>:</label></td>
+			<td><%=h @attendance.staffthatattend.mykad_with_staff_name %></td>	
+		</tr>
 	
 
-<!--Attendance Details-->	
+	<!--Attendance Details-->	
 	<tr>
-		<th colspan = 2>Attendance Details</th>
+		<th colspan = 2><%= t 'attendance.attendance_details' %></th>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="attdate">Date:</label></td>
-		<td><%=h @attendance.attdate %></td>
+		<td class="leftcol"><label for="attdate"><%= t 'attendance.attdate' %> :</label></td>
+		<td><%=h l(@attendance.attdate) %></td>
     </tr>
 
  	<tr>
-		<td class="leftcol"><label for="time_in">Time In:</label></td>
+		<td class="leftcol"><label for="time_in"><%= t 'attendance.time_in' %> :</label></td>
 		<td><%=h @attendance.time_in.strftime("%I:%M %p") %></td>
     </tr>
 
 	<tr>
-		<td class="leftcol"><label for="time_out">Time Out:</label></td>
+		<td class="leftcol"><label for="time_out"><%= t 'attendance.time_out' %> :</label></td>
 		<td><%=h @attendance.time_out.strftime("%I:%M %p") %></td>
     </tr>
 
 	<tr>
-		<td class="leftcol"><label for="reason">Reason If Late:</label></td>
+		<td class="leftcol"><label for="reason"><%= t 'attendance.reason' %> :</label></td>
 		<td> <%=h @attendance.reason %></td>
     </tr>
 	<tr>
-		<td class="leftcol"><label for="approve_id">Approving Officer:</label></td>
+		<td class="leftcol"><label for="approve_id"><%= t 'attendance.approve_id' %> :</label></td>
 		<td><%=h @attendance.approve_id.blank? ? "No Staff" : @attendance.approvedby.position_with_name %></td>
     </tr>
 
 	<tr>
-		<td class="leftcol"><label for="approvestatus">Approving Status:</label></td>
+		<td class="leftcol"><label for="approvestatus"><%= t 'attendance.approvestatus' %> :</label></td>
 		<td> <%=h @attendance.approvestatus? ? "Approved" : "Not Approved"  %></td>
     </tr>
 
@@ -56,5 +50,5 @@
 
 
 
-<%= link_to 'Edit', edit_attendance_path(@attendance) %> |
-<%= link_to 'Back', attendances_path %>
+<%= link_to (t 'icms.update'), edit_attendance_path(@attendance) %> |
+<%= link_to (t 'icms.back'), attendances_path %>

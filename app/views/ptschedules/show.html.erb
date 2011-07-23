@@ -1,43 +1,46 @@
-
-
-<p>
-  <b>Type:</b>
-	<%=h @ptschedule.ptcourse.rendered_course_type %>
-</p>
-
-<p>
-  <b>Name:</b>
-  <%=h @ptschedule.ptcourse.name %>
-</p>
-
-<p>
-  <b>Description:</b>
-  <%=h @ptschedule.ptcourse.description %>
-</p>
-
-<p>
-  <b>Starts on:</b>
-  <%=h @ptschedule.start.strftime('%e %B %Y') %> for <%=h @ptschedule.ptcourse.duration %> <%=h @ptschedule.ptcourse.rendered_course_duration %>
-</p>
-
-<p>
-  <b>Location:</b>
-  <%=h @ptschedule.location %>
-</p>
-
-<p>
-  <b>Participants:</b>
-  Min :<%=h @ptschedule.min_participants %>  Max : <%=h @ptschedule.max_participants %>
-</p>
-
-<p>
-  <b>Conducted by:</b>
-  <%=h @ptschedule.ptcourse.trainer.name %>
-</p>
-
+<div class="tform">
+	<H2><%= t 'ptschedule.schedule_details' %></H2>
+	<table width=100% >
+		<tr>
+			<td class="leftcol"><label for="type"><%= t 'ptschedule.course_type' %> : </label></td>
+			<td><%=h @ptschedule.ptcourse.rendered_course_type %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="ptcourse_id"><%= t 'ptschedule.ptcourse_id' %> : </label></td>
+			<td><%=h @ptschedule.ptcourse.name %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="description"><%= t 'ptschedule.description' %> : </label></td>
+			<td><%=h @ptschedule.ptcourse.description %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="start"><%= t 'ptschedule.start' %> : </label></td>
+			<td><%=h l(@ptschedule.start) %> for <%=h @ptschedule.ptcourse.duration %> <%=h @ptschedule.ptcourse.rendered_course_duration %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="location"><%= t 'ptschedule.location' %> : </label></td>
+			<td><%=h @ptschedule.location %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="min_participants"><%= t 'ptschedule.participant' %> : </label></td>
+			<td>Min :<%=h @ptschedule.min_participants %> &nbsp; &nbsp; Max : <%=h @ptschedule.max_participants %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="Conducted by"><%= t 'ptschedule.conducted_by' %> : </label></td>
+			<td><%=h @ptschedule.ptcourse.trainer.name %></td>
+		</tr>
+	</table>		
+</div>
+<BR>
 
 <% permitted_to? :manage, :ptschedules do %>
-<%= link_to 'Edit', edit_ptschedule_path(@ptschedule) %> |
-<%= link_to 'Back', ptschedules_path %>
+<%= link_to (t 'icms.update'), edit_ptschedule_path(@ptschedule) %> |
+<%= link_to (t 'icms.back'), ptschedules_path %>
 <% end %>|
 <%= link_to 'Overview', apply_ptschedules_path %>

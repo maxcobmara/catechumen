@@ -173,9 +173,6 @@ class Staff < ActiveRecord::Base
   
   has_many :loans, :dependent => :destroy
   accepts_nested_attributes_for :loans, :reject_if => lambda { |a| a[:ltype].blank? }
-  
-
-#-----------------------------Code for Repeating Field Next OF Kin------------------------------------
 
   has_many :kins, :dependent => :destroy
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }

@@ -1,0 +1,44 @@
+<div class="tform">
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>New Bulletins</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="headline"><b>Headline:</b></label></td>
+		<td> <%=h @bulletin.headline %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="content"><b>Content:</b></label></td>
+		<td> <%=h @bulletin.content %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="postedby_id"><b>Posted By:</b></label></td>
+		<td><%=h @bulletin.staff.mykad_with_staff_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="publishdt"><b>Publish Date:</b></label></td>
+		<td> <%=h @bulletin.publishdt %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="data"><b>File Uploaded:</b></label></td>
+		<td><% if @bulletin.data.exists? then %>
+		    <%= @bulletin.data_file_name %>
+		    <%= link_to "Download", @bulletin.data.url %> ||
+	        <%= link_to "ALT", @bulletin.data.url %>
+		    <% else %>
+		    No File Available
+		    <% end %></td>
+	</tr>
+	
+
+
+</table>
+<BR>
+</div>
+<%= link_to 'Edit', edit_bulletin_path(@bulletin) %> |
+<%= link_to 'Back', bulletins_path %>

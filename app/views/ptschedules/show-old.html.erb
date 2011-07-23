@@ -1,0 +1,43 @@
+
+
+<p>
+  <b>Type:</b>
+	<%=h @ptschedule.ptcourse.rendered_course_type %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%=h @ptschedule.ptcourse.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @ptschedule.ptcourse.description %>
+</p>
+
+<p>
+  <b>Starts on:</b>
+  <%=h @ptschedule.start.strftime('%e %B %Y') %> for <%=h @ptschedule.ptcourse.duration %> <%=h @ptschedule.ptcourse.rendered_course_duration %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%=h @ptschedule.location %>
+</p>
+
+<p>
+  <b>Participants:</b>
+  Min :<%=h @ptschedule.min_participants %>  Max : <%=h @ptschedule.max_participants %>
+</p>
+
+<p>
+  <b>Conducted by:</b>
+  <%=h @ptschedule.ptcourse.trainer.name %>
+</p>
+
+
+<% permitted_to? :manage, :ptschedules do %>
+<%= link_to 'Edit', edit_ptschedule_path(@ptschedule) %> |
+<%= link_to 'Back', ptschedules_path %>
+<% end %>|
+<%= link_to 'Overview', apply_ptschedules_path %>

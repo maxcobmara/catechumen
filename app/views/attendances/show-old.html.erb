@@ -1,0 +1,60 @@
+
+<div class="tform">
+  <table width=100% >
+	
+<!--Staff Details-->	
+
+<tr>
+	<th colspan = 2>Staff Details</th>
+</tr>
+
+	<tr>
+		<td class="leftcol"><label for="staff_id">Staff Name:</label></td>
+		<td><%=h @attendance.staffthatattend.mykad_with_staff_name %></td>
+		
+	</tr>
+	
+
+<!--Attendance Details-->	
+	<tr>
+		<th colspan = 2>Attendance Details</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="attdate">Date:</label></td>
+		<td><%=h @attendance.attdate %></td>
+    </tr>
+
+ 	<tr>
+		<td class="leftcol"><label for="time_in">Time In:</label></td>
+		<td><%=h @attendance.time_in.strftime("%I:%M %p") %></td>
+    </tr>
+
+	<tr>
+		<td class="leftcol"><label for="time_out">Time Out:</label></td>
+		<td><%=h @attendance.time_out.strftime("%I:%M %p") %></td>
+    </tr>
+
+	<tr>
+		<td class="leftcol"><label for="reason">Reason If Late:</label></td>
+		<td> <%=h @attendance.reason %></td>
+    </tr>
+	<tr>
+		<td class="leftcol"><label for="approve_id">Approving Officer:</label></td>
+		<td><%=h @attendance.approve_id.blank? ? "No Staff" : @attendance.approvedby.position_with_name %></td>
+    </tr>
+
+	<tr>
+		<td class="leftcol"><label for="approvestatus">Approving Status:</label></td>
+		<td> <%=h @attendance.approvestatus? ? "Approved" : "Not Approved"  %></td>
+    </tr>
+
+
+</table>
+<BR>
+</div>
+
+
+
+
+<%= link_to 'Edit', edit_attendance_path(@attendance) %> |
+<%= link_to 'Back', attendances_path %>

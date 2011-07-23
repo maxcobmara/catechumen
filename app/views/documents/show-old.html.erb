@@ -1,0 +1,75 @@
+<div class="tform">
+  <table width=100% >
+
+	<tr>
+		<th colspan = 2>Document Details</th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="serialno"><b>Serial No:</b></label></td>
+		<td><%=h @document.serialno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="refno"><b>Ref No:</b></label></td>
+		<td><%=h @document.refno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="title"><b>Title:</b></label></td>
+		<td><%=h @document.title %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="category"><b>Category:</b></label></td>
+		<td> <%=h (Document::CATEGORY.find_all{|disp, value| value == @document.category.to_s}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="letterdt"><b>Letter Date:</b></label></td>
+		<td> <%=h @document.letterdt %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="letterxdt"><b>Received Date:</b></label></td>
+		<td><%=h @document.letterxdt %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="from"><b>From:</b></label></td>
+		<td> <%=h @document.from %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="stafffiled_id"><b>Filled By:</b></label></td>
+	<td><%=h @document.staff.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="file_id"><b>File No:</b></label></td>
+		<td><%=h @document.cofile.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="closed"><b>Closed:</b></label></td>
+		<td><%=h @document.closed %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="data"><b>File Uploaded:</b></label></td>
+		<td><% if @document.data.exists? then %>
+		    <%= @document.data_file_name %>
+		    <%= link_to "Download", @document.data.url %> ||
+	        <%= link_to "ALT", @document.data.url %>
+		    <% else %>
+		    No File Available
+		    <% end %></td>
+	</tr>
+	
+</table>
+<BR>
+</div>
+
+<%= link_to 'Edit', edit_document_path(@document) %> |
+<%= link_to 'Back', documents_path %>

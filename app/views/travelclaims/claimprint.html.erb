@@ -11,37 +11,36 @@
 	<fieldset width=10px >
 
 <div id="title" width=21cm>	 
-<H3></H3>
-<H3></H3>
-<H3>SENARAI TUNTUTAN</H3>
-
-<BR>
+	<H3></H3>
+	<H3></H3>
+	<H3>SENARAI TUNTUTAN</H3>
+	<BR>
 	
 <div id="tprintreport">
-<table width=100% border=2 cellspacing=0 align="center" >
-	<tr>
-		<th colspan="6" >KENYATAAN TUNTUTAN</th>
-	</tr>
-	<tr align="center">
-		<th rowspan="2">Tarikh</th>	
-		<th colspan="2">Waktu</th>
-		<th rowspan="2">Tujuan/Tempat</th>
-		<th rowspan="2">Jarak(km) RM</th>
-		<th rowspan="2">Tambang</th>
-	</tr>
-	<tr>
-		<th>Bertolak</th>
-		<th>Sampai</th>
-	</tr>
-	<!-- Travel Details -->
-	<% for travelclaimrequest in @travelclaim.travelclaimrequests %>
-	<tr class="grey">
-		<td colspan="6">
-				<%=h travelclaimrequest.travelrequest.purpose %>
-				<%=h travelclaimrequest.travelrequest.destination %>
-				<%=h travelclaimrequest.travelrequest.trcode %>
-		</td>
-	</tr>
+	<table width=100% border=2 cellspacing=0 align="center" >
+		<tr>
+			<th colspan="6" >KENYATAAN TUNTUTAN</th>
+		</tr>
+		<tr align="center">
+			<th rowspan="2">Tarikh</th>	
+			<th colspan="2">Waktu</th>
+			<th rowspan="2">Tujuan/Tempat</th>
+			<th rowspan="2">Jarak(km) RM</th>
+			<th rowspan="2">Tambang</th>
+		</tr>
+		<tr>
+			<th>Bertolak</th>
+			<th>Sampai</th>
+		</tr>
+		<!-- Travel Details -->
+		<% for travelclaimrequest in @travelclaim.travelclaimrequests %>
+		<tr class="grey">
+			<td colspan="6">
+					<%=h travelclaimrequest.travelrequest.purpose %>
+					<%=h travelclaimrequest.travelrequest.destination %>
+					<%=h travelclaimrequest.travelrequest.trcode %>
+			</td>
+		</tr>
 		<% for traveldetail in travelclaimrequest.traveldetails %>
 		<tr>
 			<td><%= traveldetail.travelday.strftime("%d/%m/%Y")%><BR><%= traveldetail.travelday.strftime("(%A)")%>
@@ -52,10 +51,64 @@
 			<td>-</td>
 		</tr>
 		<% end %>
-	<% end %>
-</table>
+		<% end %>
+		<tr>
+			<td colspan=4>Total KM</td>
+			<td><%= @travelclaim.mo_mileage %></td>
+			<td>-</td>
+	</table>
 <BR>
-	
+	<table width=100% border=1px cellspacing=0 align="center">
+		<tr class="grey">
+			<td colspan=7>TUNTUTAN ELAUN PERJALANAN KENDERAAN</td>
+		</tr>
+		<tr>
+			<td colspan=7>Bagi</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>500 km pertama</td>
+			<td align=right><%= @travelclaim.km500 %></td>
+			<td>km x </td>
+			<td align=right><%= @travelclaim.sen_per_km500 %></td>
+			<td>sen/km :</td>
+			<td align=right><%= ringgols(@travelclaim.value_km500) %></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>501 km - 1,000 km</td>
+			<td align=right><%= @travelclaim.km1000 %></td>
+			<td>km x </td>
+			<td align=right><%= @travelclaim.sen_per_km1000 %></td>
+			<td>sen/km :</td>
+			<td align=right><%= ringgols(@travelclaim.value_km1000) %></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>1,001 km - 1,700 km</td>
+			<td align=right><%= @travelclaim.km1700 %></td>
+			<td>km x </td>
+			<td align=right><%= @travelclaim.sen_per_km1700 %></td>
+			<td>sen/km :</td>
+			<td align=right><%= ringgols(@travelclaim.value_km1700) %></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>1,701 km dan seterusnya</td>
+			<td align=right><%= @travelclaim.kmmo %></td>
+			<td>km x </td>
+			<td align=right><%= @travelclaim.sen_per_kmmo %></td>
+			<td>sen/km :</td>
+			<td align=right><%= ringgols(@travelclaim.value_kmmo) %></td>
+		</tr>
+		<tr>
+			<td colspan=6 align=right><strong>Jumlah</strong></td>
+			<td align=right><strong><%= ringgols(@travelclaim.value_km) %></strong></td>
+		</tr>
+
+		
+	</table>
+	<BR>
 	
 	<!--Tuntutan Elaun -- >
 	<table  width=100% border=1px cellspacing=0 align="center" >
@@ -125,8 +178,8 @@
 				<table>
 				   <tr>
 						 <td>Teksi</td>
-						 <td>[Resit ]:
-								<%= 	@travelclaim.travelclaimreceipts.find(:all, :select => 'receiptnp', :conditions => ["type_id = ?", 1]).map(&:receiptnp).join(", ") %>
+						 <td>[Resit :
+								<%= 	@travelclaim.travelclaimreceipts.find(:all, :select => 'receiptnp', :conditions => ["type_id = ?", 1]).map(&:receiptnp).join(", ") %>]:
 							</td>
 						 <td><%= ringgols(@travelclaim.travelclaimreceipts.sum(:rvalue, :conditions => ["type_id = ?", 1])) %></td>
 				   </tr>
