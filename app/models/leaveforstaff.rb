@@ -68,6 +68,19 @@ class Leaveforstaff < ActiveRecord::Base
     end
   end
   
+  def applicant_details 
+       suid = staff_id.to_a
+       exists = Staff.find(:all, :select => "id").map(&:id)
+       checker = suid & exists     
+   
+       if staff_id == nil
+          "" 
+        elsif checker == []
+          "Staff No Longer Exists" 
+       else
+         applicant.mykad_with_staff_name
+       end
+  end
   
 STAFFLEAVETYPE = [
          #  Displayed       stored in db

@@ -14,6 +14,10 @@
 		<td><%= f.text_field :name  %></td>
 	</tr>
 	<tr>
+		<td class="leftcol"><label for="staffadmin_id ">Administered by:</label></td>
+		<td><%= f.collection_select :staffadmin_id, Staff.find(:all), :id, :name, :include_blank => true, :select => "Select Administrator" %></td>
+	</tr>
+	<tr>
 		<td class="leftcol"><label for="lclass">Location Class:</label></td>
 			<td><%= f.select ("lclass", Location::CLASS,
 			                 {:include_blank => ""}, {:onchange => "showMenuForAllocatableRooms(this.value)"})  %></td>

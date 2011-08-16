@@ -53,4 +53,60 @@ class Appraisal < ActiveRecord::Base
     (pppperc + ppkperc)/2
   end
   
+  def appraisedstaff_details 
+       suid = staff_id.to_a
+       exists = Staff.find(:all, :select => "id").map(&:id)
+       checker = suid & exists     
+   
+       if staff_id == nil
+          "" 
+        elsif checker == []
+          "MyKad No Longer Exists" 
+       else
+         appraisedstaff.formatted_mykad
+       end
+  end
+  
+  def staffname_details 
+       suid = staff_id.to_a
+       exists = Staff.find(:all, :select => "id").map(&:id)
+       checker = suid & exists     
+   
+       if staff_id == nil
+          "" 
+        elsif checker == []
+          "Staff No Longer Exists" 
+       else
+         appraisedstaff.name
+       end
+  end
+  
+  def staffname_details 
+       suid = staff_id.to_a
+       exists = Staff.find(:all, :select => "id").map(&:id)
+       checker = suid & exists     
+   
+       if staff_id == nil
+          "" 
+        elsif checker == []
+          "Staff No Longer Exists" 
+       else
+         appraisedstaff.name
+       end
+  end
+  
+  def position_details 
+       suid = staff_id.to_a
+       exists = Staff.find(:all, :select => "id").map(&:id)
+       checker = suid & exists     
+   
+       if staff_id == nil
+          "" 
+        elsif checker == []
+          "Position No Longer Exists" 
+       else
+         appraisedstaff.position_for_staff
+       end
+  end
+  
 end

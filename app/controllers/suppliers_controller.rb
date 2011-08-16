@@ -2,8 +2,7 @@ class SuppliersController < ApplicationController
   # GET /suppliers
   # GET /suppliers.xml
   def index
-    @suppliers = Supplier.all
-
+    @suppliers = Supplier.search(params[:search])
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @suppliers }

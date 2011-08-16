@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :accessions
+
   map.resources :tenants
 
   map.resources :assetcategories
@@ -11,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :ptbudgets
 
-  map.resources :locations, :collection => { :indextree => :get }
+  map.resources :locations, :collection => { :indextree => :get, :kewpa7 => :get  }
 
   map.resources :employgrades
 
@@ -136,7 +138,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :assetnums
 
   map.connect '/assets/registerinventory', :controller => 'assets', :action => 'registerinventory'
-  map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get }
+  map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get, :kewpa4 => :get }
 
   map.resources :books
 

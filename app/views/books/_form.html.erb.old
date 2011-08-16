@@ -1,0 +1,225 @@
+<div class="tform">
+	<H2>Book Details</H2>
+  <table width=100% >
+			<tr>
+				<td class="leftcol"><%= t 'book.tagno' %></td>
+				<td><%= f.text_field :tagno, :value => ((Book.last.id + 1).to_s unless Book.last.nil?) %></td>
+			</tr>
+	
+			<!--><tr>
+				<td class="leftcol"><label for="controlno"><b>Control No:</b></label><font color="red"> * </font></td>
+				<td><% f.text_field :controlno %></td>
+			</tr>-->
+	
+			<tr>
+				<td class="leftcol"><label for="isbn"><b>ISBN No:</b></label><font color="red"> * </font></td>
+				<td><%= f.text_area :isbn, :size =>  '30x2' %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="issn">ISSN:</label><font color="red"> * </font></td>
+			  <td><%= f.text_field :issn %></td>
+			</tr>
+	
+	
+			<tr>
+				<td class="leftcol"><label for="bookcode"><b>Library Code:</b></label></td>
+		    <td><%= f.text_field :bookcode %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="accessionno"><b>Accession No:</b></label></td>
+				<td><%= f.text_field :accessionno %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="catsource"><b>Catalouging Source To:</b></label></td>
+		    <td><%= f.select :catsource, 
+			                  Book::CATSOURCE,
+			                 :prompt => "Select"  %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="classlcc"><b>Class No (NLM):</b></label><font color="red"> * </font></td>
+				<td><%= f.text_field :classlcc %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="classddc"><b>Class No (DDC):</b></label><font color="red"> * </font></td>
+			    <td><%= f.text_field :classddc %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><%= t 'book.title' %><font color="red"> * </font></td>
+			    <td><%= f.text_area :title, :size => '60x2' %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><%= t 'book.language' %></td>
+			    	<td><%= f.select :language, 
+					                  Book::LANGUAGE,
+					                 :prompt => "Select"  %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><%= t 'book.author' %><font color="red"> * </font></td>
+			  <td><%= f.text_area :author, :size => '60x2' %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><%= t 'book.subject' %></td>
+			  <td><%= f.text_area :subject, :size => '60x6' %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><%= t 'book.publisher' %><font color="red"> * </font></td>
+			  <td><%= f.text_field :publisher, :size => 50 %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= t 'book.publish_date' %></td>
+			  <td><%= f.text_field :publish_date, :size => 7, :placeholder => "YYYY" %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= t 'book.publish_location' %></td>
+			  <td><%= f.text_field :publish_location, :size => 50 %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="description">Physical Description:</label></td>
+			  <td><%= f.text_field :description, :size => 50 %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= t 'book.roman' %><font color="red"> * </font>:</td>
+			  <td><%= f.text_field :roman %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= t 'book.size' %><font color="red"> * </font>:</td>
+			  <td><%= f.text_field :size %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= t 'book.pages' %><font color="red"> * </font>:</td>
+			  <td><%= f.text_field :pages %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="description">Bilbliographies:</label></td>
+			  <td><%= f.text_field :bibliography %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="description">Index:</label></td>
+			  <td><%= f.text_field :indice %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= t 'book.notes' %>:</td>
+			  <td><%= f.text_field :notes %></td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><label for="loantype">Loan Type:</label><font color="red"> * </font></td>
+			    	<td><%= f.select :loantype, 
+					                  Book::LOAN,
+					                 :prompt => "Select"  %></td>
+			</tr>
+	
+			<!--><tr>
+				<td class="leftcol"><%= t 'book.quantity' %></td>
+			  <td><% f.text_field :quantity %></td>
+			</tr>-->
+	
+			<tr>
+				<td class="leftcol"><label for="mediatype">Media Type:</label><font color="red"> * </font></td>
+			    	<td><%= f.select :mediatype, 
+					                  Book::MEDIA,
+					                 :prompt => "Select"  %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="status">Status:</label></td>
+			    	<td><%= f.select :status, 
+					                  Book::STATUS,
+					                 :prompt => "Select"  %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="series">Series:</label></td>
+			  <td><%= f.text_field :series %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="location">Location:</label></td>
+			  <td><%= f.text_field :location %></td>
+			</tr>
+	
+			<!--<tr>
+				<td class="leftcol"><label for="topic">Topic:</label></td>
+			    <td><#% f.text_area :topic, :size => '60x3' %></td>
+			</tr>-->
+	
+			<tr>
+				<td class="leftcol"><label for="edition">Edition:</label></td>
+			  <td><%= f.text_field :edition %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol">Upload Book Image</td>
+				<td><%= f.file_field :photo %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><%= t 'book.links' %></td>
+			  <td><%= f.text_area :links, :size => '60x6' %></td>
+			</tr>
+	</table>
+	
+	<div>
+		<H2>Accessions</H2>
+		<table width=100%>
+			<tr>
+				<td class='leftcol'>Accession No's</td>
+				<td>
+					<% f.fields_for :accessions do |builder| %>
+						<%= render 'accession_fields', :f => builder %>
+					<% end %>
+					<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More No.'), f, :accessions %> - Add More </p>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<table width=100%>
+	<tr>
+		<th colspan = 2>Purchase Information</th>
+	</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="orderno">Order No:</label></td>
+			<td><%= f.text_field :orderno %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="purchaseprice">Purchase Price:</label></td>
+			<td><b>RM</b> <%= f.text_field :purchaseprice, :size => 12 %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="purchasedate">Purchase Date:</label></td>
+			<td><%= f.date_select :purchasedate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+
+
+		<tr>
+		<td class="leftcol"><label for="receiveddate">Date Received:</label></td>
+	      <td><%= f.date_select :receiveddate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="receiver_id">Received By:</label></td>
+			<td><%= f.collection_select :receiver_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="supplier_id">Supplier:</label></td>
+		    <td><%= f.collection_select :supplier_id, Addbook.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+</table>
+<BR>
+	
+	

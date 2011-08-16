@@ -3,6 +3,12 @@
 	<!-- Box Head -->
 	<div class="box-head">
 		<h2 class="left"><%= t 'travel.list' %></h2>
+			<div class="right">
+				<% form_tag travelrequests_path, :method => 'get' do %>
+				<%= text_field_tag :search, params[:search], :placeholder => "Destination" %>
+				<%= submit_tag "Search", :destination => nil %>
+				<% end %>
+			</div>
 	</div>
 </div>
 
@@ -11,7 +17,7 @@
 		<tr>
 			<th><%= t 'travel.sname' %></th>
 			<th><%= t 'travel.destination' %></th>
-			<th><%= t 'travel.tstartdt' %></th>
+			<th><%= t 'travel.purpose' %></th>
 			<th>reference</th>
 			<th><%= t 'travel.approved' %></th>
 			<th colspan=3 class="ac">Control</th>

@@ -116,4 +116,15 @@ class AssetsController < ApplicationController
       render_text "You cannot continue without agreeing to the Terms and Conditions."
     end
   end
+  
+  def kewpa4
+    #@asset = Asset.find(params[:id])  
+    @assets = Asset.search(params[:all])
+    @assets = Asset.find(:all, :conditions => {:assettype => '1'})
+    render :layout => 'report'
+    #respond_to do |format|
+        #format.html # index.html.erb  { render :action => "report.css" }
+        #format.xml  { render :xml => @staffs }
+    #end
+  end
 end

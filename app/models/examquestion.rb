@@ -69,5 +69,62 @@ class Examquestion < ActiveRecord::Base
         [ "Re-Edit", "Re-Edit" ],
         [ "Rejected", "Rejected" ]
    ]
+   
+   def subject_details 
+         suid = curriculum_id.to_a
+         exists = Examquestion.find(:all, :select => "id").map(&:id)
+         checker = suid & exists     
+
+         if curriculum_id == nil
+            "" 
+          elsif checker == []
+            "Subject No Longer Exists" 
+         else
+           subject.subject_code_with_subject_name
+         end
+    end
+   
+     def creator_details 
+           suid = creator_id.to_a
+           exists = Staff.find(:all, :select => "id").map(&:id)
+           checker = suid & exists     
+
+           if creator_id == nil
+              "" 
+            elsif checker == []
+              "Staff No Longer Exists" 
+           else
+             creator.mykad_with_staff_name
+           end
+      end
+      
+       def editor_details 
+             suid = editor_id.to_a
+             exists = Staff.find(:all, :select => "id").map(&:id)
+             checker = suid & exists     
+
+             if editor_id == nil
+                "" 
+              elsif checker == []
+                "Staff No Longer Exists" 
+             else
+               editor.mykad_with_staff_name
+             end
+        end
+        
+        def approver_details 
+               suid = approver_id.to_a
+               exists = Staff.find(:all, :select => "id").map(&:id)
+               checker = suid & exists     
+
+               if approver_id == nil
+                  "" 
+                elsif checker == []
+                  "Staff No Longer Exists" 
+               else
+                 approver.name
+               end
+          end
+   
   
 end

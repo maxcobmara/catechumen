@@ -1,0 +1,32 @@
+<h1>Listing accessions</h1>
+
+<table>
+  <tr>
+    <th>Book</th>
+    <th>Accession no</th>
+    <th>Order no</th>
+    <th>Purchase price</th>
+    <th>Received</th>
+    <th>Received by</th>
+    <th>Supplied by</th>
+  </tr>
+
+<% @accessions.each do |accession| %>
+  <tr>
+    <td><%=h accession.book_id %></td>
+    <td><%=h accession.Accession_no %></td>
+    <td><%=h accession.order_no %></td>
+    <td><%=h accession.purchase_price %></td>
+    <td><%=h accession.received %></td>
+    <td><%=h accession.received_by %></td>
+    <td><%=h accession.supplied_by %></td>
+    <td><%= link_to 'Show', accession %></td>
+    <td><%= link_to 'Edit', edit_accession_path(accession) %></td>
+    <td><%= link_to 'Destroy', accession, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New accession', new_accession_path %>

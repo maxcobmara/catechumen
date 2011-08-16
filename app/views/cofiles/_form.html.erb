@@ -1,28 +1,25 @@
 <div class="tform">
-  <table width=100% >
+	<H2>Files Details</H2>
+  <table width=100% >	
+			
+			<tr>
+				<td class="leftcol"><label for="cofileno"><b><%= t 'cofile.cofileno' %> :</b></label><font color="red"> * </font></td>
+				<td>()KSKBJB/<%= f.text_field :cofileno %></td>
+			</tr>
+				
+			<tr>
+				<td class="leftcol"><label for="name"><b><%= t 'cofile.name' %> :</b></label><font color="red"> * </font></td>
+				<td><%= f.text_field :name %></td>
+			</tr>
 	
-	<tr>
-		<th colspan = 2>Files Details</th>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="cofileno"><b>File No:</b></label><font color="red"> * </font></td>
-		<td><%= f.text_field :cofileno %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="name"><b>File Name:</b></label><font color="red"> * </font></td>
-		<td><%= f.text_field :name %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="location"><b>Location:</b></label><font color="red"> * </font></td>
-		<td><%= f.text_field :location %></td>
-	</tr>
+			<tr>
+				<td class="leftcol"><label for="location"><b><%= t 'cofile.location' %> :</b></label><font color="red"> * </font></td>
+				<td><%= f.text_field :location %></td>
+			</tr>
 	
 	
 	<tr>
-		<td class="leftcol"><label for="owner_id"><b>Owner:</b></label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="owner_id"><b><%= t 'cofile.owner' %> :</b></label><font color="red"> * </font></td>
 	<td><%= f.collection_select :owner_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td>
 	</tr>
 	<script type="text/javascript">
@@ -39,21 +36,21 @@
 	  }
 	</script>
 	<tr>
-		<td class="leftcol"><label for="onloan"><b>On Loan:</b></label></td>
+		<td class="leftcol"><label for="onloan"><b><%= t 'cofile.onloan' %> :</b></label></td>
 		<td><%= f.check_box :onloan, :id => "fileborrow", :onchange => "switchvisibility('fileborrow')" %></td>
 	</tr>
 	
 	<tr id="borrower" style="display: none;">
-		<td class="leftcol" ><label for="staffloan_id"><b>On Loan To:</b></label></td>
+		<td class="leftcol" ><label for="staffloan_id"><b><%= t 'cofile.onloan_to' %> :</b></label></td>
 	  <td><%= f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td><!--, :conditions => ["id != ?", @cofile.owner.id ]!-->
 	</tr>
 	<tr id="loaneddate" style="display: none;">
-		<td class="leftcol"><label for="onloandt"><b>Loaned Date:</b></label></td>
+		<td class="leftcol"><label for="onloandt"><b><%= t 'cofile.onloandt' %> :</b></label></td>
 		<td><%= f.date_select :onloandt, :order => [:day, :month, :year], :include_blank => true %></td>
 	</tr>
 	
 	<tr id="returneddate" style="display: none;">
-		<td class="leftcol"><label for="onloanxdt"><b>Returned Date:</b></label></td>
+		<td class="leftcol"><label for="onloanxdt"><b><%= t 'cofile.onloanxdt' %> :</b></label></td>
 		<td><%= f.date_select :onloanxdt, :order => [:day, :month, :year], :include_blank => true %></td>
 	</tr>
 	

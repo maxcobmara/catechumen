@@ -4,31 +4,37 @@
 	<div class="box-head">
 		<h2 class="left"><%= t 'disposal.list' %></h2>
 	</div>
-	<div class="tlist">
-	    <table width=90% border="0" cellpadding="0" cellspacing="0">
-		  <tr>
-    <th><%= t 'disposal.asset_id' %></th>
-    <th><%= t 'disposal.usedduration' %></th>
-    <th><%= t 'disposal.currentvalue' %></th>
-    <th><%= t 'disposal.opinion' %></th>
-    <th><%= t 'disposal.status' %></th>
-    <th colspan=3 class="ac">Control</th>
-  </tr>
+</div>
+<div class="tlist">
+	<table width=100% border="0" cellpadding="0" cellspacing="0">
+		<tr>
+	    <th><%= t 'disposal.asset_id' %></th>
+	    <th>Asset Description</th>
+			<th>Purchase Date</th>
+	    <th><%= t 'disposal.usedduration' %></th>
+	    <th><%= t 'disposal.currentvalue' %></th>
+	    <th><%= t 'disposal.opinion' %></th>
+	    <th><%= t 'disposal.status' %></th>
+	    <th colspan=3 class="ac">Control</th>
+	  </tr>
 
-<% @disposals.each do |disposal| %>
-  <tr>
-	<td><%=h disposal.asset_id.blank? ? "" : disposal.asscd.name %></td>
-    <td><%=h disposal.usedduration %></td>
-    <td><%=h disposal.currentvalue %></td>
-    <td><%=h disposal.opinion %></td>
-    <td><%=h disposal.status %></td>
-    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => disposal %></td>
-	<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => disposal %></td>
-    <td width=10px ><%= link_to 'Destroy', disposal, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+		<% @disposals.each do |disposal| %>
+		<tr>
+			<td><%=h disposal.asset.assetcode %></td>
+			<td><%=h disposal.asset.typename %> / <%=h disposal.asset.name %> / <%=h disposal.asset.modelname %></td>
+			<td><%=h disposal.asset.purchasedate.strftime("%d %b %Y") unless disposal.asset.purchasedate.blank? %></td>
+			<td><%=h disposal.age %> days</td>
+			<td><%=h ringgols(disposal.currentvalue) %></td>
+			<td><%=h disposal.opinion %></td>
+			<td><%=h disposal.gift? ? "Gift" : "Musnah" %></td>
+			<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => disposal %></td>
+		  <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => disposal %></td>
+		  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), disposal, :confirm => 'Are you sure?', :method => :delete %></td>
+		</tr>
 <% end %>
 </table>
+</div>
 
 <br />
 
-<%= link_to (t 'disposal.create'), new_disposal_path %>
+<% link_to (t 'disposal.create'), new_disposal_path %>

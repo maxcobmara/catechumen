@@ -3,12 +3,24 @@
 <% form_for(@document, :html => { :multipart => true }) do |f| %>
   <%= f.error_messages %>
 
- <%=render :partial => 'form', :locals => {:f => f} %> 
+	<% if current_user.staff_id == @document.stafffiled_id %>
+		<%=render :partial => 'form', :locals => {:f => f} %> 
+	<% end %>
+	<% if current_user.staff_id == @document.cc1staff_id || current_user.staff_id == @document.cc2staff_id %>
+   <%= render 'show' %>
+	<% end %>
+	<% if current_user.staff_id == @document.cc1staff_id %>
+   <%= render  :partial => 'action1', :locals => {:f => f} %>
+	<% end %>
+	<% if current_user.staff_id == @document.cc2staff_id %>
+   <%= render  :partial => 'action2', :locals => {:f => f} %>
+	<% end %>
+	
+
   <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>
-</div>
 
 <%= link_to 'Show', @document %> |
 <%= link_to 'Back', documents_path %>

@@ -12,11 +12,6 @@
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="dept_id">Department:</label></td>
-				<td><%= f.text_field :dept_id %></td>
-			</tr>
-	
-			<tr>
 			<td class="leftcol"><label for="bookable">Bookable:</label></td>
 		      <td><%= f.check_box :bookable %> This item can be booked </td>
 			</tr>
@@ -25,96 +20,105 @@
 	
   <!--Asset Details-->
 	<H2>Asset Details</H2>
-	
-	<table>
-		<tr>
-			<td class="leftcol"><label for="name"><%= t 'asset.name' %></label></td>
-			<td><%= f.text_field :name %></td>
-		</tr>
-
+	<table width=100%>
 		<tr>
 			<td class="leftcol"><label for="category_id"><%= t 'asset.category_id' %></label></td>
 			<td><%= f.collection_select :category_id, Assetcategory.find(:all, :conditions => ['parent_id IS ?', nil]), :id, :description, :include_blank => true %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="subcategory_name"><%= t 'asset.subcategory_name' %></label></td>
-			<td><%= f.text_field	 :subcategory_name %>
+			<td><%= f.text_field	 :subcategory %>
 			<!-- <#% f.collection_select :subcategory_id, Assetcategory.find(:all, :conditions => ['parent_id IS NOT ?', nil]), :id, :description, :include_blank => true %></td> -->
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="type">Type No:</label></td>
-			<td><%= f.text_field :type %></td>
-		</tr>
-
-		<tr>
-		<td class="leftcol"><label for="manufacturer_id">Manufacturer:</label></td>
-	      <td><%= f.collection_select :manufacturer_id, Addbook.find(:all), :id, :name, :include_blank => true %>add link add manufacturer</td>
+			<td class="leftcol"><label for="type">Type</label></td>
+			<td><%= f.text_field :typename %></td>
 		</tr>
 		
-		<tr>
-			<td class="leftcol"><label for="model">Model/Jenis/Jenama</label></td>
-			<td><%= f.text_field :modelname %></td>
-	  </tr>
+		<% if @asset.assettype == 1 %>
+				<tr>
+					<td class="leftcol"><label for="name"><%= t 'asset.name' %></label></td>
+					<td><%= f.text_field :name %></td>
+				</tr>		
+				<tr>
+					<td class="leftcol"><label for="model">Model</label></td>
+					<td><%= f.text_field :modelname %></td>
+			  </tr>
+				<tr>
+					<td class="leftcol"><label for="country_id"><b><%= t 'asset.country_id' %></b></label></td>
+					<td><%= f.select :country_id,
+					                 Asset::SCN,
+					                 :prompt => "Select" %></td>
+				</tr>
+		
+				<% if @asset.category_id == 3%>
+				<tr>
+					<td class="leftcol"><label for="country_id"><b><%= t 'asset.engine' %></b></label></td>
+					<td><%= f.select :engine_type_id,
+					                 Asset::ETI,
+					                 :prompt => "Select" %>&nbsp;&nbsp;
+					    <%= t 'asset.engineno' %>&nbsp;<%= f.text_field :engine_no %>
+					</td>
+				</tr>
+		
+				<% end %>
+		
+				<tr>
+					<td class="leftcol"><label for="serialno">
+						<% if @asset.category_id == 3 %>
+						  Chassis No:
+						<% else %>
+							Serial No:
+						<% end %>
+						</label></td>
+			    <td><%= f.text_field :serialno %></td>
+				</tr>
+		
+				<% if @asset.category_id == 3%>
+				<tr>
+					<td class="leftcol"><label for="registration"><%= t 'asset.registration' %></label></td>
+					<td><%= f.text_field :registration, :size => 10 %></td>
+			  </tr>
+		
+				<% end %>
+		
+				<tr>
+					<td class="leftcol"><label for="otherinfo"><%= t 'asset.otherinfo' %>:</label></td>
+					<td><%= f.text_area :otherinfo, :size => "40x7" %></td>
+				</tr>
 				
+				<tr>
+					<td class="leftcol"><label for="category_id">Location</label></td>
+					<td><%= f.collection_select :location_id, Location.find(:all), :id, :location_list, :include_blank => true %></td>
+				</tr>
+		
+		<% end %>
+		
+		<% if @asset.assettype == 2 %>
+			<tr>
+				<td class="leftcol"><label for="type">Quantity</label></td>
+				<td><%= f.text_field :quantity, :size => 5 %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="type">Unit Type</label></td>
+				<td><%= f.text_field :quantity_type, :placeholder => 'e.g pcs, units' %></td>
+			</tr>
+		
+		
+		<% end %>
+		
 		<tr>
-			<td class="leftcol"><label for="serialno">Serial No/Chassis No:</label></td>
-	    <td><%= f.text_field :serialno %></td>
+			<td class="leftcol"><label for="mark_disposal">Mark For Disposal</label></td>
+			<td><%= f.check_box :mark_disposal %></td>
 		</tr>
-    <!--  Show Group based on locassigned true -->
-		<!--
-		<tr>
-			<td class="leftcol"><label for="locassigned">Location Assigned:</label></td>
-			<td><#%= f.radio_button :locassigned,'false' %>Yes<#%= f.radio_button :locassigned,'true' %>No</td>
-		</tr>
-		-->					
-		<tr>
-			<td class="leftcol"><label for="location_id">Location:</label></td>
-			<td><%= f.collection_select :location_id, Location.find(:all, :order => 'code'), :id, :location_list, :include_blank => true %> (FA, CF) (show with Assign Location)</td>
-		</tr>
-			
+		
 		<tr>
 			<td class="leftcol"><label for="assignedto_id">Assigned To:</label></td>
 			<td><%= f.collection_select :assignedto_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
 		</tr>
-		<!--  Group End -->
-		<tr>
-			<td class="leftcol"><label for="status">Status:</label></td>
-	    <td><%= f.text_field :status %> </td>
-		</tr>
-			
-		<tr>
-			<td class="leftcol"><label for="otherinfo">Other Information:</label></td>
-			<td><%= f.text_area :otherinfo, :size => "30x7" %></td>
-		</tr>
-	</table>
-
-	
-<!-- Code Block for Additional Number Repeating Field -->
-
-	<H2>Additional Information</H2>
-	<table>
-		<tr>
-		  <td width=130px><label for="assetnumname"><b>Number Type:  set additional information types</b></label></td>
-		  <td width=240px><label for="assetadnum"><b>Number:</b></label></td>
-			<td width=10px></td>
-     </tr>
-	</table>
-  <table>
-
-  <tr>
-	  <td colspan=2>
-	    <div id="assetnums">
-		  <%= render :partial => 'assetnum', :collection => @asset.assetnums %>
-		</div>
-	  </td>
-	</tr>
-
-	<tr>
-	  <td colspan=2><%= add_assetnum_link "Add more" %></td>
-	</tr>
-	
 	</table>
 	
+		
 	<H2><%= t 'asset.buyinfo' %></H2>
 	<table>
 		<tr>
@@ -149,10 +153,42 @@
 		<td class="leftcol"><label for="warranty_length">Warranty Length:</label></td>
 	      <td><%= f.text_field :warranty_length, :size => 4 %>Months</td>
 		</tr>
-	</table>
+	</table>	
+		
+		
+		
+		
+		
+		
+		
+		
+
+	  
+				
+
+		<!--
+		<tr>
+			<td class="leftcol"><label for="location_id">Location:</label></td>
+			<td><#%= f.collection_select :location_id, Location.find(:all, :order => 'code'), :id, :location_list, :include_blank => true %> (FA, CF) (show with Assign Location)</td>
+		</tr>
+			
+
+		Group End
+		<tr>
+			<td class="leftcol"><label for="status">Status:</label></td>
+	    <td><#%= f.text_field :status %> </td>
+		</tr>
+		
+	-->
+	
 
 	
 
+	
+
+
+	
+<% if @asset.assettype == 1 %>
 <!-- Code Block for Maintainance Information Repeating Field -->
 	<H2>Maintenance Information</H2>
 	<table width=100%>
@@ -178,5 +214,6 @@
 		</tr>
 		
 </table>
+<% end %>
 <BR>
 </div>				

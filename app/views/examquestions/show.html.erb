@@ -8,11 +8,11 @@
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="curriculum_id"><b>Programme/Subject Code:</b></label></td>
-		<td><%=h @examquestion.curriculum_id.blank? ? "" : @examquestion.subject.subject_code_with_subject_name %></td>
+		 <td><%=h @examquestion.curriculum_id? ? @examquestion.subject_details : "" %></td>
 	</tr>
 	
 	<tr>
-	<td class="leftcol"><label for="questiontype"><b>Question Type:</b><font color="red"> *           </font></label></td>
+	<td class="leftcol"><label for="questiontype"><b>Question Type:</b></label></td>
 		<td><%=h @examquestion.questiontype %></td>
 	</tr>
 	
@@ -48,7 +48,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="creator_id"><b>Creator:</b></label></td>
-		<td><%=h @examquestion.creator_id.blank? ? "" : @examquestion.creator.mykad_with_staff_name %></td>
+		<td><%=h @examquestion.creator_id? ? "" : @examquestion.creator_details %></td>
 		
 	</tr>
 	
@@ -69,7 +69,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="editor_id"><b>Editor:</b></label></td>
-		<td><%=h @examquestion.editor_id.blank? ? "" : @examquestion.editor.mykad_with_staff_name %></td>
+		<td><%=h @examquestion.editor_id? ? "" : @examquestion.editor_details %></td>
 	</tr>
 	
 	<tr>
@@ -79,7 +79,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="approver_id"><b>Approver:</b></label></td>
-		<td><%=h @examquestion.approver_id.blank? ? "" : @examquestion.approver.mykad_with_staff_name %></td>
+			<td><%=h @examquestion.approver_id? ? @examquestion.approver_details : "" %></td>
 	</tr>
 	
 	<tr>

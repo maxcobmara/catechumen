@@ -1,16 +1,24 @@
 class Asset < ActiveRecord::Base
   
   before_save :save_my_vars
+  
+  validates_presence_of  :assettype, :cardno, :category_id
+  validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
+  
   belongs_to :manufacturedby, :class_name => 'Addbook', :foreign_key => 'manufacturer_id'
   belongs_to :suppliedby,   :class_name => 'Addbook', :foreign_key => 'supplier_id'
   belongs_to :location
   belongs_to :assignedto,   :class_name => 'Staff', :foreign_key => 'assignedto_id'
   belongs_to :receivedby,   :class_name => 'Staff', :foreign_key => 'receiver_id'
   belongs_to :category,     :class_name => 'Assetcategory', :foreign_key => 'category_id'
-  belongs_to :subcategory,  :class_name => 'Assetcategory', :foreign_key => 'subcategory_id'
+  #belongs_to :subcategory,  :class_name => 'Assetcategory', :foreign_key => 'subcategory_id'
   
   
-  validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
+  has_one :disposals      #Link to Model Disposals
+  has_many :asslost,    :class_name => 'Assetloss', :foreign_key => 'asset_id' #Link to Model AssetLoss
+  
+  
+  
  
   def save_my_vars
     self.assetcode = (suggested_serial_no).to_s
@@ -18,11 +26,10 @@ class Asset < ActiveRecord::Base
   
  #----------------------Link to Other Page---------------------------------------------------
   
-  #Link to Model Disposals
-  has_many :asscd,    :class_name => 'Disposal', :foreign_key => 'asset_id' 
   
-  #Link to Model AssetLoss
-  has_many :asslost,    :class_name => 'Assetloss', :foreign_key => 'asset_id' #Assetname
+  
+  
+  
   
   #Link to Model AssetTrack
   has_many :assetinassettrack,    :class_name => 'Assettrack', :foreign_key => 'asset_id' #Assetname
@@ -37,7 +44,7 @@ class Asset < ActiveRecord::Base
   
   #------------------------Validations------------------------------------------------------------
   
-  validates_presence_of  :assettype, :cardno, :name
+  
   
 
     def self.find_main
@@ -64,13 +71,13 @@ class Asset < ActiveRecord::Base
     
 #----------------------- stuff for category
   
-  def subcategory_name
-    subcategory.description if subcategory
-  end
+  #def subcategory_name
+ #   subcategory.description if subcategory
+  #end
   
-  def subcategory_name=(name)
-    self.subcategory = Subcategory.find_by_description(description) unless description.blank?
-  end
+ # def subcategory_name=(name)
+ #   self.subcategory = Subcategory.find_by_description(description) unless description.blank?
+ # end
 
 
  
@@ -168,6 +175,23 @@ ASSETTYPE = [
            #  Displayed       stored in db
            ["H",1],
            ["I",2]
+]
+
+SCN = [
+           #  Displayed       stored in db
+           ["Malaysia",       60],
+           ["United States",  1],
+           ["United Kingdom", 44],
+           ["Taiwan",         886],
+           ["Phillipines",    63]
+]
+
+ETI = [
+           #  Displayed       stored in db
+           ["Petrol",   1],
+           ["Diesel",   2],
+           ["Gas",      3],
+           ["Hybrid",   4]
 ]
     
 end

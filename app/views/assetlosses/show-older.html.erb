@@ -1,0 +1,199 @@
+<div class="tform">
+	<H2>Lampiran J</H2>
+  <table width=100% >
+			<tr>
+				<td class="leftcol"><label for="reportcode"><b>Internal Loss Report Code:</b></label></td>
+				<td><%=h @assetloss.reportcode %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="losstype"><b>Lost Type:</b></label></td>
+					<td><%=h @assetloss.losstype %></td>
+			</tr>
+	
+			<tr>
+			<td class="leftcol"><label for="asset_id"><b>Asset Name:</b></label></td>
+		      <td><%=h @assetloss.asslost.assetcode unless @assetloss.asset_id.nil? %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="estvalue"><b>Estimate Value:</b></label></td>
+				<td><%=h ringgols(@assetloss.estvalue) %></td>
+			</tr>
+	
+
+			<!-->
+			<tr>
+			<td class="leftcol"><label for="part_id"><b>Supplies Code:</b></label></td>
+		      <td><#%= f.collection_select :part_id, Part.find(:all), :id, :partcode, :include_blank => true %></td>
+			</tr>
+			<-->
+	
+			<tr>
+				<td class="leftcol"><label for="losslocation_id"><b>Lost Location:</b></label></td>
+				<td><%=h @assetloss.losslocation_id.blank? ? "" : @assetloss.assetlocation.resname %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="lossdt"><b>Loss Date:</b></label></td>
+				<td><%=h @assetloss.lossdt.strftime("%I:%M%p  %d-%b-%Y") unless @assetloss.lossdt.blank? %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="losshow"><b>How did loss happen?:</b></label></td>
+				<td><%=h @assetloss.losshow %></td>
+			</tr>
+	
+			<tr>
+			<td class="leftcol"><label for="lossstafflast_id"><b>Last staff to handle item:</b></label></td>
+		      <td><%=h @assetloss.lossstafflast_id.blank? ? "" : @assetloss.laststaff.name %></td>
+			</tr>
+	
+			<tr>
+			<td class="leftcol"><label for="laststaffcase"><b>Is a staff prima facie responsible for loss?:</b></label></td>
+		      	<td><%=h @assetloss.laststaffcase %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="preventpast"><b>What action has been taken previously to prevent this loss:</b></label></td>
+				<td><%=h @assetloss.preventpast %></td>
+			</tr>
+			<tr>
+			<td class="leftcol"><label for="laststaffstop"><b>Has staff been suspended?:</b></label></td>
+		      	<td><%=h @assetloss.laststaffstop %></td>
+			</tr>
+	
+			<tr>
+			<td class="leftcol"><label for="poreport"><b>Has a police report been made i.a.w AP 315. If Yes enter Police Report Ref No Below:</b></label></td>
+		      	<td><%=h @assetloss.poreport %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="porepno"><b><b>Police Report Ref No:</b></label></td>
+				<td><%=h @assetloss.porepno %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="preventfuture"><b>What actions will be taken to prevent recurrence in future?:</b></label></td>
+				<td><%=h @assetloss.preventfuture %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="remarks"><b>Other remarks (if any):</b></label></td>
+				<td><%=h @assetloss.remarks %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="hod_id"><b>Name of Head of Department:</b></label></td>
+				<td><%=h @assetloss.hod_id.blank? ? "" : @assetloss.hod.name %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="hodendorsedt"><b>Head of Department Endorsement Date:</b></label></td>
+				<td><%=h l(@assetloss.hodendorsedt) unless @assetloss.hodendorsedt.blank? %></td>
+			</tr>
+	</table>
+
+	<H2>Lampiran K</H2>
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><label for="moneytype"><b>In case of public funds select type:</b></label></td>
+			<td><%=h @assetloss.moneytype %></td>
+		</tr>
+		<!-->enter purchase date & price here<-->
+		<tr>
+		<td class="leftcol"><label for="new"><b>Used or new item?:</b></label></td>
+	      <td><%=h @assetloss.new %></td>
+		</tr>
+		
+		<!-->display :estvalue again here<-->
+		
+		<!-->need to display some details from asset here<-->
+		<!-->state or federal? value?<-->
+		<!-->repeat display loss how?<-->
+		
+		<!-->display asset.owner.staff.name + 
+		     display asset.owner.staff.position.positionname +
+		     display assset.owner.staff.position.maintasks<-->
+		
+		<tr>
+				<td class="leftcol"><label for="sostop"><b>Is the asset administrator suspended? If Yes state date below:</b></label></td>
+				<td><%=h @assetloss.sostop %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="sostopdt"><b>Date asset administrator suspended:</b></label></td>
+			<td><%=h l(@assetloss.sostopdt) unless @assetloss.sostopdt.blank? %></td>
+		</tr>
+		
+			<tr>
+				<td class="leftcol"><label for="soaction"><b>For asset administrator, state offence & punishment:</b></label></td>
+				<td><%=h @assetloss.soaction %></td>
+			</tr>
+		
+		<!-->display asset.owner.staff.pensiondate<-->
+		
+		<!-->display asset.owner.staff.bosses.name + 
+		     display asset.owner.staff.bosses.position.positionname +
+		     display asset.owner.staff.bosses.position.maintasks<-->
+		
+			<tr>
+				<td class="leftcol"><label for="supstop"><b>Has asset administrator's supervisor been suspended, If yes state date below:</b></label></td>
+				<td><%=h @assetloss.supstop %></td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><label for="supstopdt"><b>Date asset administrator's supervisor was suspended:</b></label></td>
+				<td><%=h l(@assetloss.supstopdt) unless @assetloss.supstopdt.blank? %></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol"><label for="supaction"><b>For asset administrator's supervisor, state offence & punishment:</b></label></td>
+				<td><%=h @assetloss.supaction %></td>
+			</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="poaction"><b>If police report has been made, state action that police has taken:</b></label></td>
+			<td><%=h @assetloss.poaction %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="ponoreportwhy"><b>If no report to police has been made, please state why.:</b></label></td>
+			<td><%=h @assetloss.ponoreportwhy %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="rulesbroken"><b>Have any rules been broken? if yes state below:</b></label></td>
+			<td><%=h @assetloss.rulesbroken %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="owneraction"><b>Rules Broken & By Whom:</b></label></td>
+			<td><%=h @assetloss.owneraction %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="newrule"><b>Steps & New rules put in place to prevent losses like this:</b></label></td>
+			<td><%=h @assetloss.newrule %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="newrule_id"><b>Staff Name to enforce new rules:</b></label></td>
+			<td><%=h @assetloss.newrule_id.blank? ? "" : @assetloss.enforce.name %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="nrrecommend"><b>What the recommended new rules or amendments to existing rules to be put in place:</b></label></td>
+			<td><%=h @assetloss.nrrecommend %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="surcharge"><b>Recommendations for Surcharge:</b></label></td>
+			<td><%=h @assetloss.surcharge %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="sio_id"><b>Investigating Officer:</b></label></td>
+			<td><%=h @assetloss.sio_id.blank? ? "" : @assetloss.officer.name %></td>
+		</tr>			
+	</table>
+<BR>
+</div>
+	
+<%= link_to 'Edit', edit_assetloss_path(@assetloss) %> |
+<%= link_to 'Back', assetlosses_path %>

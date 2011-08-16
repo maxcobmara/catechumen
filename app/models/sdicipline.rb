@@ -23,11 +23,36 @@ class Sdicipline < ActiveRecord::Base
     end
     
     #-----------------------------------------------
+  INFRACTION = [
+         #  Displayed       stored in db
+         [ "Merokok", 1  ],
+         [ "Ponteng Kelas", 2 ],
+         [ "Bergaduh", 3 ],
+         [ "Lain Lain", 4 ]
+      ]
+    
+    
    STATUS = [
          #  Displayed       stored in db
          [ "No Case","No Case" ],
+         [ "New","New" ],
          [ "Open","Open" ],
          [ "Closed", "Closed" ],
          [ "Refer to BPL", "Refer to BPL" ]
     ]
+    
+    def reporter_details 
+          suid = reportedby_id.to_a
+          exists = Staff.find(:all, :select => "id").map(&:id)
+          checker = suid & exists     
+
+          if reportedby_id == nil
+             "" 
+           elsif checker == []
+             "Staff No Longer Exists" 
+          else
+            staff.mykad_with_staff_name
+          end
+    end
+    
 end

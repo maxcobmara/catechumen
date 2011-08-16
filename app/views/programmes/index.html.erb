@@ -4,28 +4,31 @@
 	<div class="box-head">
 		<h2 class="left">Lists of Programmes</h2>
 	</div>
-	<div class="tlist">
-	    <table width=90% border="0" cellpadding="0" cellspacing="0">
-		  <tr>
-    <th>Code</th>
-    <th>Name</th>
-    <th>Specialisation</th>
-    <th colspan=3 class="ac">Control</th>
-  </tr>
+</div>
+<div class="tlist">
+	<table width=100%>
+		<tr>
+			<th>Code</th>
+			<th>Name</th>
+			<th>Specialisation</th>
+			<th colspan=3 class="ac">Control</th>
+		</tr>
 
-<% @programmes.each do |programme| %>
-  <tr>
-    <td><%=h programme.code %></td>
-    <td><%=h programme.name %></td>
-    <td><%=h programme.specialisation %></td>
-    <td width=10px><%= link_to 'Show', programme %></td>
-    <td width=10px><%= link_to 'Edit', edit_programme_path(programme) %></td>
-    <td width=10px><%= link_to 'Destroy', programme, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+		<% @programmes.each do |programme| %>
+		<tr>
+			<td><%=h programme.code %></td>
+			<td><%=h programme.name %></td>
+			<td><%=h programme.specialisation %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => programme %></td>
+			<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => programme %></td>
+			<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), programme, :confirm => 'Are you sure?', :method => :delete %></td>
+		</tr>
+		<% end %>
+	</table>
 
-<br />
+
+<BR>
+</div>
 
 
 <%= link_to 'New Programme', new_programme_path %>

@@ -1,0 +1,56 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+<form action="#">
+			<script>
+			document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+			</script>
+</form>	
+<fieldset width=10px >
+		
+<div id="title">
+<p class="marginright" align="right"><b>KEW. PA-4</b></p><BR>
+
+<H4 align="center"><b>SENARAI DAFTAR HARTA MODAL</b></H4>
+</div>
+<div id="tprintreport">	
+<table width=100% border=1px cellspacing=0 align="center" >
+
+	  <tr>
+			<th width="1%">BIL</th>
+			<th width="11%">NOMBOR SIRI<BR>PENDAFTARAN</th>
+			<th width="20%">NAMA ASET</th>
+			<th width="5%">TARIKH<BR>PEROLEHAN</th>
+			<th width="5%">HARGA PEROLEHAN ASAL (RM)</th>
+	  </tr>
+	
+		 <% bil = 0 %>
+		 <% @assets.each do |asset| %>
+		 <% bil += 1 %>
+		
+       <tr>
+				<td align="center"><%=h bil %></td>	
+				<td>&nbsp;&nbsp;<%=h asset.assetcode %></td>	
+				<td>&nbsp;&nbsp;<%=h asset.typename %>  <%=h asset.name %>  <%=h asset.modelname %></td>
+				<td align="center"><%=h l(asset.receiveddate) unless asset.receiveddate.blank? %>&nbsp;&nbsp; </td>
+				<td align="right"> <%=h ringgols(asset.purchaseprice) %>&nbsp;&nbsp; </td>
+		</tr>
+	
+
+		<% end %>
+
+</table>
+</div>
+</fieldset>
+<BR>
+<div id="hideLink">
+<%= link_to 'Back', assets_path %>
+</div>
+<div id="footer"></div>
+
+
+
+
+

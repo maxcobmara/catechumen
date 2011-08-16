@@ -19,6 +19,33 @@ class Leaveforstudent < ActiveRecord::Base
         #  Displayed       stored in db
         [ "Weekend Day","Weekend Day" ],
         [ "Weekend Overnight","Weekend Overnight" ],
-        [ "Emergency","Emergency" ]
+        [ "Emergency","Emergency" ],
+        [ "Cuti Perayaan","Cuti Perayaan" ],
+        [ "Mid Term Break","Mid Term Break" ],
+        [ "End of Semester","End of Semester" ]
   ]
+  
+  
+def self.search(search)
+     if search
+       @leaveforstudent = Leaveforstudent.find(:all, :conditions => ['leavetype LIKE ?' , "%#{search}%"])
+     else
+      @leaveforstudent = Leaveforstudent.find(:all)
+     end
+end
+
+def approver_details 
+      suid = staff_id.to_a
+      exists = Staff.find(:all, :select => "id").map(&:id)
+      checker = suid & exists     
+  
+      if staff_id == nil
+         "" 
+       elsif checker == []
+         "Staff No Longer Exists" 
+      else
+        staff.mykad_with_staff_name
+      end
+end
+
 end

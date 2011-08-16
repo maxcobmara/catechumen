@@ -2,7 +2,7 @@ class TravelrequestsController < ApplicationController
   # GET /travelrequests
   # GET /travelrequests.xml
   def index
-    @travelrequests = Travelrequest.all
+    @travelrequests = Travelrequest.search(params[:search])
 
     respond_to do |format|
       format.html # index.html.erb

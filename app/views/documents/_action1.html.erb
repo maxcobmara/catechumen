@@ -1,0 +1,31 @@
+<script type="text/javascript">
+  function switchvisibility(forward) {
+    if (document.getElementById(forward).checked) {
+      document.getElementById('fwdto').style.display = "inline";
+    } else {
+      document.getElementById('fwdto').style.display = "none";
+    }
+  }
+</script>
+
+<div class="tform">
+	<H2>Circulation 1</H2>
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><label for="closed">Action:</label></td>
+			<td><%= f.text_field :cc1action %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="closed">Remarks:</label></td>
+			<td><%= f.text_area :cc1remarks, :size => '40x3' %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="closed">Close or Forward?:</label></td>
+			<td><%= f.radio_button :cc1closed,'true' %>Close
+					<%= f.radio_button :cc1closed,'false', :id => "forward", :onchange => "switchvisibility('forward')" %>Forward &nbsp;
+					<SPAN id="fwdto" style="display: none;"><%= f.collection_select :cc2staff_id, Staff.find(:all), :id, :name, :prompt => 'Select Person For Action'  %></SPAN>
+			</td>
+		</tr>
+	</table>
+	<%= f.hidden_field :cc1date, :value => Time.now %>
+</div>

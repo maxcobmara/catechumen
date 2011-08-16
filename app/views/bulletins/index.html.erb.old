@@ -1,0 +1,40 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Bulletins</h2>
+		<div class="right">
+			<% form_tag bulletins_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search] %>
+			<%= submit_tag I18n.t('search'), :headline => nil %>
+			<% end %>
+		</div>
+	</div>
+</div>
+<div class="tlist">
+	 <table width=90% border="0" cellpadding="0" cellspacing="0">
+		<tr>
+    <th>Headline</th>
+    <th>Content</th>
+    <th>Posted By</th>
+    <th>Publish Date</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @bulletins.each do |bulletin| %>
+  <tr>
+    <td><%=h bulletin.headline %></td>
+    <td><%=h bulletin.content %></td>
+    <td><%=h bulletin.staff.mykad_with_staff_name %></td>
+    <td><%=h bulletin.publishdt %></td>
+    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => bulletin %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => bulletin %></td>
+	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), bulletin, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+</div>
+
+<br />
+
+<%= link_to 'New Bulletin', new_bulletin_path %>

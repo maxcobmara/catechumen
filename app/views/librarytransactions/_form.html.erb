@@ -4,7 +4,7 @@
   <table width=100%>
 		<tr>
 			<td class="leftcol"><label for="book_id"><b><%= t 'book.accessionno' %></b></label></td>
-			<td><%= f.collection_select :book_id, Book.find(:all), :id, :accessionno %></td>
+			<td><%= f.collection_select :book_id, Accession.find(:all), :id, :accession_no %></td>
 		</tr>
 	
 	<script type="text/javascript">
@@ -48,7 +48,7 @@
 	
 		<tr>
 			<td class="leftcol" ><label for="extended"><b><%= t 'librarytransaction.extend' %></b></label></td>
-		  <td><%= f.check_box :extended %>To implement will change duedate to duedat + 2 days</td>
+		  <td><%= f.check_box :extended %></td>
 		</tr>
 	
 		<tr>
@@ -63,7 +63,7 @@
 	
 		<tr>
 			<td class="leftcol" ><label for="fine"><b><%= t 'librarytransaction.fine' %></b></label></td>
-		  <td><%= f.text_field :fine %>to implement fine = returned date - duedate * RM1/day</td>
+		  <td><%= f.text_field :fine %><!-- to implement fine = returned date - duedate * RM1/day --></td>
 		</tr>
 	
 		<tr>
@@ -75,19 +75,16 @@
 			<td class="leftcol" ><label for="finepaydate"><b><%= t 'librarytransaction.finepaydate' %></b></label></td>
 		  <td><%= f.date_select :finepaydate, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
+	</table>
 	
-		<tr>
-			<th colspan=2><%= t 'librarytransaction.report' %></td>
-		</tr>
-	
-
-	
+	<H2><%= t 'librarytransaction.report' %></H2>
+	<table width=100%>
 		<tr>
 			<td class="leftcol" ><label for="reportlost"><b><%= t 'librarytransaction.lost' %></b></label></td>
-		  <td><%= f.check_box :reportlost, :id => "reportlost", :onchange => "switchvisibility('reportlost')"%></td>
+		  <td><%= f.check_box :reportlost %></td>
 		</tr>
 	
-		<tr id="breport" style="display: table-row;">>
+		<tr id="breport" style="display: table-row;">
 		<td class="leftcol" ><label for="report"><b><%= t 'librarytransaction.reportdetails' %></b></label></td>
 		  <td><%= f.text_area :report, :size => '40x5' %></td>
 		</tr>

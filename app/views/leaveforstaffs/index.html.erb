@@ -19,18 +19,18 @@
     <th><%= t 'staffleave.duration' %></th>
     
     <!--<th>Notes</th>-->
-    <th>Replacement Staff</th>
+    <th><%= t 'staffleave.replacement_id' %></th>
     <!--<th>Submit</th>
     <th>Approved By</th>
     <th>Approver 1 Date</th>
     <th>Approver 2 </th>
     <th>Approver 2 Date</th>-->
-   <th colspan=3 class="ac">Control</th>
+   <th colspan=3 class="ac"><%= t 'control' %></th>
   </tr>
 
 <% @leaveforstaffs.each do |leaveforstaff| %>
   <tr>
-    <td><%=h leaveforstaff.applicant.name %></td>
+    <td><%=h leaveforstaff.applicant_details %></td>
     <td><%=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} %></td>
     <td><%=h leaveforstaff.leavestartdate.strftime("%a, %d %b") %><%=h leaveforstaff.show_to_day %></td>
     <td><%=h leaveforstaff.reason %>

@@ -1,66 +1,81 @@
 <div class="tform">
-  <table width=100% >
-
-	<tr>
-		<th colspan = 2>Document Details</th>
-	</tr>
+	<H2><%= t 'document.doc_details' %></H2>
+	<table>
+		<tr>
+			<td class="leftcol"><label for="serialno">Serial No:</label><font color="red"> * </font></td>
+			<td><%= f.text_field :serialno %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="serialno">Serial No:</label><font color="red"> * </font></td>
-		<td><%= f.text_field :serialno %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="refno">Ref No:</label><font color="red"> * </font></td>
+			<td><%= f.text_field :refno %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="refno">Ref No:</label><font color="red"> * </font></td>
-		<td><%= f.text_field :refno %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="title">Title:</label><font color="red"> * </font></td>
+			<td><%= f.text_field :title %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="title">Title:</label><font color="red"> * </font></td>
-		<td><%= f.text_field :title %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="category">Category:</label><font color="red"> * </font></td>
+			<td><%= f.select :category, 
+			                 Document::CATEGORY,
+			                 :prompt => "Select"  %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="category">Category:</label><font color="red"> * </font></td>
-		<td><%= f.select :category, 
-		                 Document::CATEGORY,
-		                 :prompt => "Select"  %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="letterdt">Letter Date:</label></td>
+			<td><%= f.date_select :letterdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
 	
+		<tr>
+			<td class="leftcol"><label for="letterxdt">Received Date:</label></td>
+			<td><%= f.date_select :letterxdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="letterdt">Letter Date:</label></td>
-		<td><%= f.date_select :letterdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="from">From:</label><font color="red"> * </font></td>
+			<td><%= f.text_field :from %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="letterxdt">Received Date:</label></td>
-		<td><%= f.date_select :letterxdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="stafffiled_id">Filed By:</label></td>
+		<td><%= f.collection_select :stafffiled_id, Staff.find(:all), :id, :name, { :selected => @current_user.staff_id }   %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="closed">Other Information</label></td>
+			<td><%= f.text_area :otherinfo, :size => '40x3' %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="from">From:</label><font color="red"> * </font></td>
-		<td><%= f.text_field :from %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="file_id">File No:</label><font color="red"> * </font></td>
+			<td><%= f.collection_select :file_id, Cofile.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="closed">Closed:</label></td>
+			<td><%= f.check_box :closed %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="stafffiled_id">Filed By:</label></td>
-	<td><%= f.collection_select :stafffiled_id, Staff.find(:all), :id, :name%></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="file_id">File No:</label><font color="red"> * </font></td>
-		<td><%= f.collection_select :file_id, Cofile.find(:all), :id, :name, :include_blank => true %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="closed">Closed:</label></td>
-		<td><%= f.check_box :closed %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="data">Upload File:</label></td>
-		<td><%= f.file_field :data %></td>
-	</tr>
-</table>
+		<tr>
+			<td class="leftcol"><label for="data">Upload File:</label></td>
+			<td><%= f.file_field :data %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="closed">Circulation 1:</label></td>
+			<td><%= f.collection_select :cc1staff_id, Staff.find(:all), :id, :name, :prompt => 'Select Person For Action'  %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="category">Action:</label><font color="red"> * </font></td>
+			<td><%= f.select :cctype_id, 
+			                 Document::ACTION,
+			                 :prompt => "Select"  %></td>
+		</tr>
+		
+		
+	</table>
+</div>
 <BR>

@@ -30,9 +30,10 @@ class Staff < ActiveRecord::Base
   
 #----------Link Foreign Key with other pages---------------------------------------------------
 
-  has_many :documents,    :foreign_key => 'stafffiled_id' 
+  has_many :documents,    :class_name => 'Documents', :foreign_key => 'stafffiled_id' 
+  has_many :cc1s,         :class_name => 'Documents', :foreign_key => 'cc1staff_id' 
   has_many :books,        :foreign_key => 'receiver_id' 
-  has_many :locations,    :foreign_key => 'staff_id'
+  has_many :locations,    :class_name => 'Locations', :foreign_key => 'staffadmin_id'
   has_many :assigned,     :class_name => 'Assets', :foreign_key => 'assignedto_id'
   has_many :rxassets,     :class_name => 'Assets', :foreign_key => 'receiver_id'
   has_many :bulletins,    :foreign_key => 'postedby_id'

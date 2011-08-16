@@ -19,13 +19,13 @@
 		</tr>
 		<% @examquestions.each do |examquestion| -%>
   	<tr>
-		  <td><%=h examquestion.curriculum_id.blank? ? "" : examquestion.subject.subject_code_with_subject_name %></td>
+		  <td><%=h examquestion.curriculum_id? ? examquestion.subject_details : "" %></td>
 		  <td><%=h examquestion.questiontype %></td>
 		  <td><%=h examquestion.marks %></td>
 		  <td><%=h examquestion.category %></td>
 		  <td><%=h examquestion.render_difficulty %></td>
 	    <td><%=h examquestion.qstatus %></td>
-	    <td><%=h examquestion.creator_id.blank? ? "" : examquestion.creator.name %></td>
+	    <td><%=h examquestion.creator_id? ? examquestion.creator_details : "" %></td>
 	    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => examquestion %></td>
 	    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => examquestion %></td>
 	    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), examquestion, :confirm => 'Are you sure?', :method => :delete %></td>

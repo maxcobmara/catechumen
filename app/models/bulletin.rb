@@ -1,11 +1,5 @@
 class Bulletin < ActiveRecord::Base
   
-  before_save  :titleize_headline
-  
-  def titleize_headline
-    self.headline = headline.titleize
-  end
-  
   validates_presence_of :headline, :content, :postedby_id, :publishdt
 
   belongs_to :staff,  :foreign_key => 'postedby_id' 

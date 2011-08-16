@@ -1,0 +1,81 @@
+<div id="A4potrait">
+<form action="#">
+		<script>
+		document.write("<input type='button' " +
+		"onClick='window.print()' " +
+		"class='printbutton' " +
+		"value='Print This Page'/>");
+		</script>
+</form>	
+<fieldset width=10px >	
+<!-- Box Head -->
+<div id="kewpa">
+<p class="marginright" align="right"><b>KEW. PA-7</b></p>
+<H4 align="center"><b>SENARAI ASET ALIH KERAJAAN</b></H4>
+<BR><BR>
+<p class="marginleft" style="margin-left:150px">Bahagian	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :</p>
+<p class="marginleft" style="margin-left:150px">Lokasi   
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=h @location.code  %> - <%=h @location.name  %> <i> </i>
+	</p>
+
+<div id="tprintreport">
+<table width=100% border=1px cellspacing=0 align="center" >
+
+<tr>
+	<th width="2%"  >BIL</th>
+	<th width="60%" style="vertical-align:top">KETERANGAN ASET</th>
+	<th width="30%" style="vertical-align:top">KUANTITI</th>
+</tr>
+
+	<% bil = 0 %>
+	<% for @asset in @location.assets %>
+	<% bil += 1 %>
+
+<tr>
+	<td align="center"><%=h bil %></td>	
+	<td>&nbsp;&nbsp;<%=h @asset.assetcode %><BR>
+		&nbsp;<%=h @asset.typename %>  <%=h @asset.name %>  <%=h @asset.modelname %></td>	
+	<td align="centre"><%=h @asset.quantity %>	&nbsp;&nbsp;<%=h @asset.quantity %></td>
+</tr>
+<% end %>
+</table>
+<BR><BR><BR><BR>
+<font size=0.6em>
+<table id="sigs" >
+		<tr>
+			<td>(a) Disediakan oleh :</td>
+			<td>(b) Disahkan oleh :</td>
+		</tr>
+		<tr>
+			<td><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..............................</td>
+			<td><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..............................</td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tandatangan</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tandatangan<BR></td>
+		</tr>
+		<tr>
+			<td><BR></td>
+			<td><BR></td>
+		</tr>
+		<tr>
+			<td>Nama : </td>
+			<td>Nama :  <%=h @location.administrator.name unless @location.staffadmin_id.blank? %></td>
+		</tr>
+		<tr>
+			<td>Jawatan :</td>
+			<td>Jawatan :  <%=h @location.administrator.position.positionname unless @location.staffadmin_id.blank? %></td>
+		</tr>
+		<tr>
+			<td>Tarikh : </td>
+			<td>Tarikh : <%= l(Date.today()) %></td>
+		</tr>
+</table>
+</font>
+<BR>
+</div>
+</fieldset>
+<BR>
+<div id="hideLink">
+<%= link_to 'Back', locations_path %>
+</div>

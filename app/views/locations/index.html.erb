@@ -5,7 +5,7 @@
 		<h2 class="left">Locations</h2>
 		<div class="right">
 			<% form_tag residences_path, :method => 'get' do %>
-			<%= text_field_tag :search, params[:search] %>
+			<%= text_field_tag :search, params[:search],:placeholder => "Location Code,Location Name" %>
 			<%= submit_tag "Search", :name => nil %>
 			<% end %>
 		</div>
@@ -32,12 +32,14 @@
   	<td><%=h location.name %></td>
 		<td><%=h (Location::CLASS.find_all{|disp, value| value == location.lclass}).map {|disp, value| disp} %></td>
 		<td><%=h (Location::TYPE.find_all{|disp, value| value == location.typename}).map {|disp, value| disp} %></td>
-		<td><% if location.typename == 2 %>
+		<td width=10px><% if location.typename == 2 %>
 				<%= link_to image_tag("user_add.png", :border => 0, :title => 'Assign'), new_tenant_path(:location_id => location) %>
+				<% end %></td>
+		<td width=10px><% if location.assets != [] %>
+					<%= link_to image_tag("duplicate.png", :border => 0, :title => 'KEW-PA7'), :action => 'kewpa7', :id => location %>
 				<% end %></td>
     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => location %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => location %></td>
-    <td width=10px><%= link_to image_tag("duplicate.png", :border => 0, :title => 'Add Asset'), :action => 'addasset', :id => location %></td>
     <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), location, :confirm => 'Are you sure?', :method => :delete %>
   </tr>
   <% end %>

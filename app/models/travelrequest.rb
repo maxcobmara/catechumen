@@ -39,6 +39,14 @@ class Travelrequest < ActiveRecord::Base
     "#{trcode} for #{short_descr} at #{short_dest}"
   end
   
+  def self.search(search)
+    if search
+      @travelrequest = Travelrequest.find(:all, :conditions => ['destination LIKE ?' , "%#{search}%"])
+    else
+     @travelRequest = Travelrequest.find(:all)
+    end
+  end
+  
   #def self.choices_for_name_by_group_and_event(group_id, event_id)
   #     find(:all, :conditions => ['group_id = ? AND event_id = ?',
    #                               group_id, event_id]).

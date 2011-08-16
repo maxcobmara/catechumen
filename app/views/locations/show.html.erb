@@ -2,23 +2,27 @@
 	
 	<H2>Location Details</H2>
   <table width=100% >
-	<tr>
-		<td class="leftcol"><label for="code ">Location Code:</label></td>
-		<td><%=h @location.id  %>-<%=h @location.code  %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="resname ">Location Name:</label></td>
-		<td><%=h @location.name  %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="lclass">Location Class:</label></td>
-		<td><%=h (Location::CLASS.find_all{|disp, value| value == @location.lclass}).map {|disp, value| disp} %></td>
-			</td>
-	</tr>
-	<tr id="restypes">
-		<td class="leftcol" ><label for="type">Location Type:</label></td>
-		<td><%=h (Location::TYPE.find_all{|disp, value| value == @location.typename}).map {|disp, value| disp} %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="code ">Location Code:</label></td>
+			<td><%=h @location.code  %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="resname ">Location Name:</label></td>
+			<td><%=h @location.name  %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="lclass">Location Class:</label></td>
+			<td><%=h (Location::CLASS.find_all{|disp, value| value == @location.lclass}).map {|disp, value| disp} %></td>
+				</td>
+		</tr>
+		<tr id="restypes">
+			<td class="leftcol" ><label for="type">Location Type:</label></td>
+			<td><%=h (Location::TYPE.find_all{|disp, value| value == @location.typename}).map {|disp, value| disp} %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="staffadmin_id ">Administrator:</label></td>
+			<td><%=h @location.administrator.name unless @location.staffadmin_id.blank? %></td>
+		</tr>
  </table>
  
 
@@ -32,7 +36,7 @@
 			</tr>
 			<% for asset in @location.assets %>
 			<tr>
-			   <td><%= asset.assetcode %></td>
+			  <td><%= asset.assetcode %></td>
 				<td><%= asset.name %></td>
 				<td><%= asset.modelname %></td>
 			</tr>

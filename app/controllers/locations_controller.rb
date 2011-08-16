@@ -94,4 +94,13 @@ class LocationsController < ApplicationController
     #@locations = Location.find(:all)
     #@locations = Location.order(:names_depth_cache).map { |c| ["-" * c.depth + c.name,c.id] }
   end
+  
+  def kewpa7
+    @location = Location.find(params[:id])
+    render :layout => 'report'
+    #respond_to do |format|
+      #format.html # show.html.erb
+      #format.xml  { render :xml => @location }
+    #end
+  end
 end

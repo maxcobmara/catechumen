@@ -1,0 +1,71 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left"><%= t 'asset.list' %></h2>
+		<div class="right">
+			<% form_tag assets_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search] %>
+			<%= submit_tag "Search", :name => nil %>
+			<% end %>
+		</div>
+  </div>
+</div>
+
+<div class="indextable">
+	<table>
+		<tr>
+    	<th><%= t 'asset.assetcode' %></th>
+      <th><%= t 'asset.name' %></th>
+      <th><%= t 'asset.purchasedate' %></th>
+	    <th align="right"><%= t 'asset.purchaseprice' %></th>
+	    <th colspan=5 class="ac">Control</th>
+  		<!--  <th>Category</th>
+    	<th>Manufacturer</th>
+    	<th>Serialno</th>
+    	<th>Location</th>
+    	<th>Otherinfo</th>
+    	<th>Orderno</th>
+    	<th>Receiveddate</th>
+    	<th>Receiver</th>
+    	<th>Supplier</th>-->
+    </tr>
+		<% @asset_gbtype.sort.each do |gbtype, assets| %>
+  	<tr>
+    	<td colspan=8><b>
+				<% if gbtype.to_s == "I" %>
+				 <BR><BR>Harta Inventori
+				<% else %>
+				 Harta Modal
+				<% end %>
+				<% h gbtype %></b></td>
+  	</tr>
+		<tr>
+  	<% for asset in assets %>
+	    <td><%=h asset.assetcode %></td>
+	    <td><%=h asset.subcategory %> - <%=h asset.typename %> - <%=h asset.name %> - <%=h asset.modelname %></td>
+	    <td><%=h asset.purchasedate %></td>
+	    <td align="right" width=90px><%=h ringgols(asset.purchaseprice) %></td>
+	    <td width=10px>
+				<% if asset.mark_disposal == true %> 
+				<%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_disposal_path(:asset_id => asset) %>
+				<% end%>
+				</td>
+				
+	    <td width=10px >
+	    		<% if asset.assettype == 2 %>
+	 						<%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA3'), :action => 'kewpa3', :id => asset %>
+					<% else %>
+							<%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA2'), :action => 'kewpa2', :id => asset %>
+					<% end %></td>
+			<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => asset %></td>
+		  <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => asset %></td>
+		  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset, :confirm => 'Are you sure?', :method => :delete %></td>
+  	</tr>
+		<% end %>
+		<% end %>
+</table>
+</div>
+<br>
+
+<%= link_to 'Register New Asset', new_asset_path %>

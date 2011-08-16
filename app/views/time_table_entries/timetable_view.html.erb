@@ -10,7 +10,7 @@
 	  <tr>
 	    <td><%=h time_table_entry.intake_id.blank? ? "" : time_table_entry.intake.name %></td>
 	    <td><%=h time_table_entry.programme_id.blank? ? "" : time_table_entry.programme.name %></td>
-	    <td><%=h time_table_entry.subject_id.blank? ? "" : time_table_entry.subject.name %></td>
+	    <td><%=h time_table_entry.subject_id? ? "" : time_table_entry.subject_details %></td>
 	    <td><%=h time_table_entry.topic_id.blank? ? "" : time_table_entry.topic.name %></td>
 	    <td>C<%=h time_table_entry.timing_id.blank? ? "" : time_table_entry.period_timing.id %></td>
 	    <td>R<%=h time_table_entry.tt_wd %></td>
@@ -45,10 +45,9 @@
 	     <td><!-- <%=h gridh %>, <%=h gridv %> This is test code -->
 	     <% @wookie.each do |foo| %>
 	        <%= foo.intake.name %><BR>
-	        <%= foo.subject.subjectcode %><BR>
-		      <%= foo.subject.name %><BR>
-			    <%= foo.timetable.name %><BR>
-				  <%= foo.residence.resname %><BR><P>
+	        <%= foo.subject_details %><BR>
+			<%= foo.timetable.name %><BR>
+		    <%= foo.residence.resname %><BR><P>
 	     <% end %>
 	     </td>
 	   <% end %>

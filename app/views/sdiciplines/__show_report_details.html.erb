@@ -1,0 +1,34 @@
+<H2>Report Details</H2>
+  <table width=100% >
+	<tr>
+		<td class="leftcol"><label for="reportedby_id"><b>Reported By:</b></label></td>
+		<td><%=h @sdicipline.reporter_details %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
+		<td> <%=h @sdicipline.student_id.blank? ? "" : @sdicipline.studentwithcase.formatted_mykad_and_student_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="details"><b>Infraction:</b></label></td>
+		<td><%=h (Sdicipline::INFRACTION.find_all{|disp, value| value == @sdicipline.infraction}).map {|disp, value| disp} %></td>
+	</tr>		
+  
+  <% if @sdicipline.infraction == 4 %>
+	<tr>
+		<td class="leftcol"><label for="details"><b>Details:</b></label></td>
+		<td><%=h @sdicipline.details %></td>
+	</tr>
+	<% end %>
+
+	<tr>
+		<td class="leftcol"><label for="reporteddt"><b>Date:</b></label></td>
+		<td> <%=h l(@sdicipline.reporteddt) %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="cofile_id"><b>File No:</b></label></td>
+		<td><%=h @sdicipline.cofile_id.blank? ? "No File" : @sdicipline.file.name %></td>
+	</tr>
+</table>

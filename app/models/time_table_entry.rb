@@ -41,4 +41,19 @@ WEEK_DAY = [
      "A1"
    end
    
+    def subject_details 
+          suid = subject_id.to_a
+          exists = Subject.find(:all, :select => "id").map(&:id)
+          checker = suid & exists     
+
+          if subject_id == nil
+             "" 
+           elsif checker == []
+             "Subject No Longer Exists" 
+          else
+            subject.subject_code_with_subject_name
+          end
+     end
+
+   
 end

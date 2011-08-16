@@ -1,0 +1,190 @@
+<div class="tform">
+	<div class="photo">
+		
+	</div>
+	
+
+  <table width=100% >
+
+	<tr>
+		<th colspan = 3>Book Details</th>
+	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'book.tagno' %></td>
+		<td><%=h @book.id %></td>
+		<td rowspan=10 align=right><% if @book.photo.exists? then %>
+		  <%= image_tag @book.photo.url%>
+		<% else %>
+		  No Photo<BR>Available
+		<% end %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="controlno">Control No:</label></td>
+		<td><%=h @book.controlno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="isbn">ISBN No:</label></td>
+		<td><%=h @book.isbn %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="issn">ISSN:</label></td>
+	    <td><%=h @book.issn %></td>
+	</tr>
+	
+	
+	<tr>
+	<td class="leftcol"><label for="bookcode">Library Code:</label></td>
+      <td><%=h @book.bookcode %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="accessionno">Accession No:</label></td>
+		<td><%=h @book.accessionno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="catsource">Catalouging Source To:</label></td>
+	    <td><%=h @book.catsource %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="classlcc">Class No (NLM):</label></td>
+		<td><%=h @book.classlcc %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="classddc">Class No (DDC):</label></td>
+	    <td><%=h @book.classddc %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.title' %></td>
+	    <td><%=h @book.title %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.language' %></td>
+	    <td><%=h (Book::LANGUAGE.find_all{|disp, value| value == @book.language}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.author' %></td>
+	    <td><%=h @book.author %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.subject' %></td>
+	    <td><%=h @book.subject %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.publisher' %></td>
+	    <td><%=h @book.publisher %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.publish_date' %></td>
+	    <td><%=h @book.publish_date %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.publish_location' %></td>
+	    <td><%=h @book.publish_location %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="description">Physical Description:</label></td>
+	    <td><%=h @book.description %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="loantype">Loan Type:</label></td>
+	    <td><%=h (Book::LOAN.find_all{|disp, value| value == @book.loantype}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.quantity' %></td>
+	  <td><%=h @book.quantity %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="mediatype">Media Type:</label></td>
+	    <td><%=h (Book::MEDIA.find_all{|disp, value| value == @book.mediatype}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="status">Status:</label></td>
+	  <td><%=h (Book::STATUS.find_all{|disp, value| value == @book.status}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="series">Series:</label></td>
+	  <td><%=h @book.series %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="location">Location:</label></td>
+	  <td><%=h @book.location %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="topic">Subject:</label></td>
+	  <td><%=h @book.topic %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="edition">Edition:</label></td>
+	  <td><%=h @book.edition %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'book.links' %></td>
+	  <td><%=h @book.links %></td>
+	</tr>
+	
+<% permitted_to? :manage, :books do %>
+	<tr>
+		<th colspan = 3>Purchase Information</th>
+	</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="orderno">Order No:</label></td>
+			<td><%=h @book.orderno %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="purchaseprice">Purchase Price:</label></td>
+			<td><%=h ringgols(@book.purchaseprice) %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="purchasedate">Purchase Date:</label></td>
+			<td><%=h @book.purchasedate %></td>
+		</tr>
+
+
+		<tr>
+		<td class="leftcol"><label for="receiveddate">Date Received:</label></td>
+	      <td><%=h @book.receiveddate %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="receiver_id">Received By:</label></td>
+			<td><%=h @book.receiver_id.blank? ? "" : @book.staff.name %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="supplier_id">Supplier:</label></td>
+		    <td><%=h @book.supplier_id.blank? ? "" : @book.addbook.name %></td>
+		</tr>
+		<% end %>
+</table>
+<BR>
+</div>
+
+<% permitted_to? :manage, :books do %>
+<%= link_to 'Edit', edit_book_path(@book) %> |
+<% end %>
+<%= link_to 'Back', books_path %>

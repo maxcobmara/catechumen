@@ -9,7 +9,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110706071933) do
+ActiveRecord::Schema.define(:version => 20110816074634) do
+
+  create_table "accessions", :force => true do |t|
+    t.integer  "book_id"
+    t.string   "accession_no"
+    t.string   "order_no"
+    t.decimal  "purchase_price"
+    t.date     "received"
+    t.integer  "received_by"
+    t.integer  "supplied_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -150,7 +162,6 @@ ActiveRecord::Schema.define(:version => 20110706071933) do
   create_table "assets", :force => true do |t|
     t.string   "assetcode"
     t.string   "cardno"
-    t.string   "dept_id"
     t.integer  "assettype"
     t.boolean  "bookable"
     t.string   "name"
@@ -175,7 +186,14 @@ ActiveRecord::Schema.define(:version => 20110706071933) do
     t.integer  "warranty_length"
     t.integer  "warranty_length_type"
     t.integer  "category_id"
-    t.integer  "subcategory_id"
+    t.string   "subcategory"
+    t.integer  "quantity"
+    t.string   "quantity_type"
+    t.integer  "engine_type_id"
+    t.string   "engine_no"
+    t.string   "registration"
+    t.string   "nationcode"
+    t.boolean  "mark_disposal"
   end
 
   create_table "assettracks", :force => true do |t|
@@ -347,6 +365,18 @@ ActiveRecord::Schema.define(:version => 20110706071933) do
     t.string   "data_content_type"
     t.integer  "data_file_size"
     t.datetime "data_updated_at"
+    t.text     "otherinfo"
+    t.integer  "cctype_id"
+    t.integer  "cc1staff_id"
+    t.date     "cc1date"
+    t.string   "cc1action"
+    t.text     "cc1remarks"
+    t.boolean  "cc1closed"
+    t.integer  "cc2staff_id"
+    t.date     "cc2date"
+    t.string   "cc2action"
+    t.text     "cc2remarks"
+    t.boolean  "cc2closed"
   end
 
   create_table "employgrades", :force => true do |t|
@@ -776,6 +806,7 @@ ActiveRecord::Schema.define(:version => 20110706071933) do
     t.integer  "supplier_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "infraction"
   end
 
   create_table "staff_grades", :force => true do |t|
@@ -922,6 +953,7 @@ ActiveRecord::Schema.define(:version => 20110706071933) do
     t.datetime "updated_at"
     t.integer  "credit"
     t.integer  "status"
+    t.integer  "semester"
   end
 
   create_table "suppliers", :force => true do |t|

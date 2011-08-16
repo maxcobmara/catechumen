@@ -2,7 +2,7 @@ class Librarytransaction < ActiveRecord::Base
   
   before_save :varmyass
   
-  belongs_to :book, :foreign_key => 'book_id'
+  belongs_to :accession, :foreign_key => 'book_id'
   belongs_to :staff
   belongs_to :student
   

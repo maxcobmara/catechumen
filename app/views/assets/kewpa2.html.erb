@@ -1,5 +1,7 @@
+<%= stylesheet_link_tag 'report' %>
+<!--A4Potrait-->
 <div id="A4potrait">
-<form action="#">
+<form action="#">	
 <script>
 document.write("<input type='button' " +
 "onClick='window.print()' " +
@@ -11,198 +13,208 @@ document.write("<input type='button' " +
 
 <!-- Box Head -->
 <div id="kewpa">
-<H4 align="right"><b>KEW. PA 2</b></H4>
-<H5 align="right"><b>No Siri Pendaftaran : <%=h @asset.assetcode %></b></H5>
+<p class="marginright" align="right"><b>KEW. PA-2</b><BR>( No. Siri Pendaftaran : &nbsp;&nbsp;&nbsp;&nbsp; <%=h @asset.assetcode %> )</p>
 
-<H4 align="center">DAFTAR HARTA MODAL</H4>
+<H4 align="center"><b>DAFTAR HARTA MODAL</b></H4>
 
-<P indent=20px>	Kementerian/Jabatan  :  KKM<BR>
-								Bahagian  :  KSKB JB</P> 
+<p class="marginleft">Kementerian/Jabatan &nbsp;&nbsp;&nbsp;&nbsp;:<i> Kolej Kesihatan Kesihatan Bersekutu Johor Bahru</i><BR>
+				Bahagian &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <i> </i>
+</p> 
 
-<P align="center"><b>BAHAGIAN A</b><BR>
-<!-- <#%=h (Asset::ASSETTYPE.find_all{|disp, value| value == @asset.assettype}).map {|disp, value| disp} %></P> -->
-<table width=90% border=1px padding=0px cellspacing=0px>
+<P align="center"><b>BAHAGIAN A</b></P>
+<table width=100% border=1px padding=0px cellspacing=0px>
 	<tr>
-		<td width=20%>Kod Nasional</td>
-		<td colspan=3></td>
+		<td width=23%>Kod Nasional</td>
+		<td colspan=3><PRE></td>
 	</tr>
 	<tr>
 		<td>Kategori</td>
-		<td colspan=3><%=h @asset.category.description unless @asset.category_id.nil?  %></td>
+		<td colspan=3></td>
 	</tr>
 	<tr>
 		<td>Sub Kategori</td>
-		<td colspan=3><%=h @asset.subcategory.description unless @asset.subcategory_id.nil?  %></td>
+		<td colspan=3><%=h @asset.subcategory  %></td>
 	</tr>
 	<tr>
 		<td>Jenis/Jenama/Model</td>
-		<td colspan=3> <%=h @asset.type %>/
-			             <%=h @asset.manufacturedby.name unless @asset.manufacturedby.nil? %>/ <%=h @asset.modelname %></td>
+		<td colspan=3> <%=h @asset.typename %>/
+					   <%=h @asset.name %>/ <%=h @asset.modelname %></td>
+		
 	</tr>
 	<tr>
 		<td>Buatan</td>
-		<td width=30%>Country_ID</td>
-		<td width=20%>Harga Perolehan Asal</td>
-		<td width=30% align="center"><%=h ringgols(@asset.purchaseprice) %></td>
+		<td width=30%><PRE><%=h (Asset::SCN.find_all{|disp, value| value == @asset.country_id}).map {|disp, value| disp} %></td>
+		<td width=27%>Harga Perolehan Asal</td>
+		<td width=30% align="center"><PRE><%=h ringgols(@asset.purchaseprice) %></td>
 	</tr>
 	
 	<tr>
-		<td>Jenis Dan No Engine</td>
-		<td>If category - transport then do else N/A</td>
-		<td width=25%>Tarikh Diterima</td>
-		<td align="center"><%=h @asset.receiveddate.strftime("%d %b %Y") %></td>
+		<td>Jenis Dan No Enjin</td>
+		<td><%=h (Asset::ETI.find_all{|disp, value| value == @asset.engine_type_id}).map {|disp, value| disp} %> - <%=h @asset.engine_no %></td>
+		<td width=25%>Tarikh Terima</td>
+		<td align="center"><%=h l(@asset.receiveddate) unless @asset.receiveddate.blank?  %></td>
 	</tr>
 	<tr>
 		<td>No Casis/Siri Pembuat</td>
-		<td><%=h @asset.serialno %></td>
-		<td width=160px>No Pesanan Kerajaan</td>
-		<td align="center"><%=h @asset.orderno %></td>
+		<td><PRE><%=h @asset.serialno %></td>
+		<td width=160px>No. Pesanan Rasmi Kerajaan</td>
+		<td><PRE><%=h @asset.orderno %></td>
 	</tr>
 	<tr>
-		<td rowspan=2>No Pendaftaran<BR>Bagi Kenderaan</td>
-		<td rowspan=2>Print Registration Number</td>
-		<td width=160px>Tempoh Jaminan</td>
-		<td>warranty length</td>
+		<td rowspan=2 valign="top">No Pendaftaran<BR>(Bagi Kenderaan)</td>
+		<td rowspan=2><PRE><%=h @asset.registration %></td>
+		<td>Tempoh Jaminan</td>
+		<td align="center"><%=h @asset.warranty_length %> Bulan</td>
 	</tr>
 	<tr>
 		<td rowspan=2 colspan=2>Nama Pembekal Dan Alamat:
-			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %>
-			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.address %>	
-			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.phone %>
-			<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.fax %>
-		  <BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.mail %></td>
+		<P align="center"><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %>
+		<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.address %>	
+		<BR><%=h @asset.supplier_id.blank? ? "-" : 'Phone: ' + @asset.suppliedby.phone %>
+		<BR><%=h @asset.supplier_id.blank? ? "-" : 'Fax: ' + @asset.suppliedby.fax %>
+		<BR><%=h @asset.supplier_id.blank? ? "-" : 'Email: ' + @asset.suppliedby.mail %></P></td>
+	</tr>
+	
+	 <tr>
+		 	<td rowspan=3 colspan=2 valign="top"><BR>KOMPONEN/AKSESORI :<BR><%=h @asset.otherinfo %></td>
 	 </tr>
 	 <tr>
-		 	<td rowspan=3 colspan=2>Komponen & Aksesori</td>
-	 </tr>
-	 <tr>
-		  <td colspan=2>Nama:
-				<BR>Jawatan:
-				<BR>Tarikh:
-				<BR>Cop:
-				<BR><BR><b>..................................</b>
-				<BR>Tandatangan Ketua Jabatan
+		  <td colspan=2>
+			    <BR><BR> 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			.........................................
+			    <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				    Tandatangan Ketua Jabatan
+			    <BR>Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=h @asset.assignedto.name unless @asset.assignedto_id.blank? %>
+				<BR>Jawatan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=h @asset.assignedto.position.positionname unless @asset.assignedto_id.blank? %>
+				<BR>Tarikh &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%= l(Date.today()) %>
+				<BR>Cop &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
 			</td>
 		</tr>
 	
 </table>
 <BR>
-<table width=90% border=1px padding=5px cellspacing=0px>
+<!--table1-->
+<div id="table1">
+<table width=100% border=1px padding=5px cellspacing=0px>
+
 	<tr>
-		<th BGCOLOR="#DDD" colspan=8 align="center">PENEMPATAN</th>
+		<th colspan=8 align="center" BGCOLOR="#FEFE56">PENEMPATAN</th>
 	</tr>
 	<tr>
 		<td width=160px>Lokasi</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
 	</tr>
 	<tr>
 		<td>Tarikh</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
 	</tr>
 	<tr>
 		<td>Nama Pegawai</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
 	</tr>
 	<tr>
 		<td>Tandatangan</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
 	</tr>
 
 </table>
 <BR>
-<table width=90% border=1px padding=5px cellspacing=0px>
+<table width=100% border=1px padding=5px cellspacing=0px>
 	<tr>
-		<th BGCOLOR="#DDD" colspan=8 align="center">PEMERIKSAAN</th>
+		<th colspan=8 align="center" BGCOLOR="#FEFE56">PEMERIKSAAN</th>
 	</tr>
 	<tr>
 		<td width=160px>Tarikh</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
 	</tr>
 	<tr>
 		<td>Status Aset</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
 	</tr>
 	<tr>
 		<td>Nama Pemeriksa</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
 	</tr>
 	<tr>
 		<td>Tandatangan</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
 	</tr>
 
 </table>
 <BR>
-<table width=90% border=1px padding=5px cellspacing=0px>
+<table width=100% border=1px padding=5px cellspacing=0px>
 	<tr>
-		<th BGCOLOR="#DDD" colspan=4 align="center">PELUPUSAN HAPUSKIRA</th>
+		<th colspan=4 align="center" BGCOLOR="#FEFE56">PELUPUSAN/HAPUSKIRA</th>
 	</tr>
 	<tr>
-		<td>Rujukan Kelulusan</td>
-		<td>Tarikh</td>
-		<td>Kaedah Pelupusan</td>
-		<td>Tandatangan</td>
+		<td align="center">Rujukan Kelulusan</td>
+		<td align="center">Tarikh</td>
+		<td align="center">Kaedah Pelupusan</td>
+		<td align="center">Tandatangan</td>
 	</tr>
 	<tr>
 		<td>Some Text</td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
 	</tr> 
-	
 </table>
-</div></fieldset></div>
+</div>	
+</div>
+</fieldset>
 
-<BR>
-	
-
+<BR>	
+<div id="hideLink">
 <%= link_to 'Edit', edit_asset_path(@asset) %> |
 <%= link_to 'Back', assets_path %>
+</div>
+</div><BR>

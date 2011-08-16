@@ -1,9 +1,8 @@
 class Book < ActiveRecord::Base
-  has_many :librarytransactions, :dependent => :nullify
-  #belongs_to :addbook, :foreign_key => 'addbook_id'
   belongs_to :staff  , :foreign_key => 'receiver_id'
   belongs_to :addbook, :foreign_key => 'supplier_id'
-  #belongs_to :cst, :class_name => 'Staff', :foreign_key => 'catsource'
+  has_many  :accessions
+  accepts_nested_attributes_for :accessions
   
   
   #-----------Attach Photo---------------
@@ -13,8 +12,8 @@ class Book < ActiveRecord::Base
   
   #------------Validation-----------------------------------------
   validates_presence_of  :isbn, :issn, :classlcc, :classddc, :title, :author, :publisher, :loantype, :mediatype
-  validates_presence_of  :accessionno, :subject, :publish_date, :publish_location, :description
-  validates_uniqueness_of :accessionno
+  validates_presence_of  :subject, :publish_date, :publish_location, :roman, :size, :pages
+  
   
   def tag_suggest
     if Book.last.id == nil
@@ -32,6 +31,10 @@ class Book < ActiveRecord::Base
     else
        @book = Book.find(:all)
     end
+  end
+  
+  def book_quantity
+      counter = Accession.count(:all, :conditions => ["book_id = ?", id])
   end
     
 

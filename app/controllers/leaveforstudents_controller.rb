@@ -3,7 +3,7 @@ class LeaveforstudentsController < ApplicationController
   # GET /leaveforstudents
   # GET /leaveforstudents.xml
   def index
-    @leaveforstudents = Leaveforstudent.with_permissions_to(:index).find(:all)
+    @leaveforstudents = Leaveforstudent.with_permissions_to(:index).search(params[:search])
 
     respond_to do |format|
       format.html # index.html.erb

@@ -37,6 +37,13 @@
 		<% end %>
 	<% end %>
 	
+	<!-- Notification for Documents-->
+	<% mydocs = Document.count(:all, :conditions => ["cc1staff_id=? AND cc2staff_id =?", User.current_user.staff_id, User.current_user.staff_id]) %>
+  <% if mydocs > 0 %>
+  	<p><%= mydocs %> <%= link_to "new documents for your attention", { :controller => "documents", :action => "index" } %></p>
+  <% else %>
+	<% end %>
+	
 	
 	
 

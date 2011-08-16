@@ -24,6 +24,7 @@ class BooksController < ApplicationController
   # GET /books/new.xml
   def new
     @book = Book.new
+    5.times { @book.accessions.build }
 
     respond_to do |format|
       format.html # new.html.erb

@@ -17,13 +17,24 @@
 					<%= f.text_field :cardno, :size => 6, :value => (Asset.last.id + 1).to_s %>
 			</strong></td>
 		</tr>
+		
 		<tr>
-			<td class="leftcol"><label for="name"><b><%= t 'asset.name' %></b></label><font color="red"> * </font></td>
-			<td><%= f.text_field :name %></td>
+			<td class="leftcol"><label for="category_id"><%= t 'asset.category_id' %></label></td>
+			<td><%= f.collection_select :category_id, Assetcategory.find(:all, :conditions => ['parent_id IS ?', nil]), :id, :description, :include_blank => true %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="subcategory_name"><%= t 'asset.subcategory_name' %></label></td>
+			<td><%= f.text_field	 :subcategory %>
+			<!-- <#% f.collection_select :subcategory_id, Assetcategory.find(:all, :conditions => ['parent_id IS NOT ?', nil]), :id, :description, :include_blank => true %></td> -->
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="type">Type:</label></td>
+			<td><%= f.text_field :typename %></td>
 		</tr>
 
-		</table>
-	</div>
+	</table>
+</div>
 
 
 

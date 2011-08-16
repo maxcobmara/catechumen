@@ -58,16 +58,29 @@ class User < ActiveRecord::Base
   end
   
   def user_nama
-    if student_id == nil && staff_id == nil
-      ""
-    elsif student_id != nil
-     " #{student.name} + (Student)"
-    elsif staff_id != nil
-       staff.name
-   else
-     ""
-    end 
+    stid = staff_id.to_a
+    suid = student_id.to_a
+    stexists = Staff.find(:all, :select => "id").map(&:id)
+    suexists = Student.find(:all, :select => "id").map(&:id)
+    staffchecker = stid & stexists
+    studentchecker = suid & suexists
+    
+      if student_id == nil && staffchecker == nil
+        ""
+      elsif staff_id == nil && stexists == []
+        "Student No Longer Exists"
+      elsif student_id == nil && studentchecker == []
+        "Staff No Longer Exists"
+      elsif staff_id == nil
+        " #{student.name} + (Student)"   
+      else
+        staff.name
+      end 
   end
+  
+  
+
+  
 
   
 end

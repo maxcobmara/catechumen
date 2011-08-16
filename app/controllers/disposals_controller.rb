@@ -24,7 +24,7 @@ class DisposalsController < ApplicationController
   # GET /disposals/new
   # GET /disposals/new.xml
   def new
-    @disposal = Disposal.new
+    @disposal = Disposal.new(:asset_id => params[:asset_id])
 
     respond_to do |format|
       format.html # new.html.erb

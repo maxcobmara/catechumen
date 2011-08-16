@@ -1,0 +1,53 @@
+<div class="tform">
+	
+	<H2><%= t 'cofile.file_details' %></H2>
+  <table width=100% >
+		<tr>
+			<td class="leftcol"><label for="cofileno"><b><%= t 'cofile.cofileno' %> :</b></label></td>
+			<td><%=h @cofile.cofileno %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="name"><b><%= t 'cofile.name' %> :</b></label></td>
+			<td>  <%=h @cofile.name %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="location"><b><%= t 'cofile.location' %> :</b></label></td>
+			<td>  <%=h @cofile.location %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="owner_id"><b><%= t 'cofile.owner' %> :</b></label></td>
+		<td> <%=h @cofile.owner.mykad_with_staff_name %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="onloan"><b><%= t 'cofile.onloan' %> :</b></label></td>
+			<td><%=h @cofile.onloan? ? "Yes" : "No"  %></td>
+		</tr>
+	
+	<% if @cofile.onloan == true %>
+		<tr>
+			<td class="leftcol"><label for="staffloan_id"><b><%= t 'cofile.onloan_to' %> :</b></label></td>
+		<td><%=h @cofile.staffloan_id.blank? ? "Not On Loan" : @cofile.borrower.name %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="onloandt"><b><%= t 'cofile.onloandt' %> :</b></label></td>
+			<td><%=h @cofile.onloandt %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="onloanxdt"><b><%= t 'cofile.onloanxdt' %> :</b></label></td>
+			<td> <%=h @cofile.onloanxdt %></td>
+		</tr>
+	<% end %>
+	
+</table>
+<BR>
+</div>
+
+
+<%= link_to (t 'update'), edit_cofile_path(@cofile) %> |
+<%= link_to (t 'icms.back'), cofiles_path %>

@@ -3,52 +3,53 @@
 <!-- Box Head -->
   <div class="box-head">
     <h2 class="left">Lists of Documents</h2>
-	<div class="right">
+		<div class="right">
       <% form_tag documents_path, :method => 'get' do %>
-	  <%= text_field_tag :search, params[:search] %>
-	  <%= submit_tag "Search", :title => nil %>
-	<% end %>
-	</div>
-  </div>
-
-  <div class="tlist">
-    <table width=100% border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <th>Serial No</th>
-        <th>Ref No</th>
-        <th>Category</th>
-        <th>Title</th>
-        <th>Letter Date</th>
-        <th>Received Date</th>
-        <th>From</th>
-        <th>Filed By</th>
-        <th>Closed</th>
-        <th colspan=3 class="ac">Control</th>
-      </tr>
-      <% @document_files.each do |filedocer, documents| %>
-
-        <tr>
-          <td colspan=12><BR> <b><%=h filedocer %><b></td>
-	      </tr>
-        <% for document in documents %>
-       <tr>
-       	 <td><%=h document.serialno %></td>
-	       <td><%=h document.refno %></td>
-	       <td><%=h (Document::CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} %></td>
-	       <td><%=h document.title %></td>
-	       <td><%=h document.letterdt %></td>
-	       <td><%=h document.letterxdt %></td>
-	       <td><%=h document.from %></td>
-	       <td><%=h document.staff.name %></td>
-	       <td><%=h document.closed %></td>
-	       <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
-	       <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %></td>
-	       <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %></td>
-       </tr>
+	  		<%= text_field_tag :search, params[:search], :placeholder => "RefNo,Title" %>
+	  		<%= submit_tag I18n.t('search'), :title => nil %>
 			<% end %>
-      <% end %>
-    </table>
+		</div>
   </div>
+</div>
+
+<div class="tlist">
+	<table width=100% border="0" cellpadding="0" cellspacing="0">
+		<tr>
+		  <th>Serial No</th>
+		  <th>Ref No</th>
+		  <th>Category</th>
+		  <th>Title</th>
+		  <th>Letter Date</th>
+		  <th>Received Date</th>
+		  <th>From</th>
+		  <th>Filed By</th>
+		  <th>Closed</th>
+		  <th colspan=3 class="ac">Control</th>
+		</tr>
+
+    <% @document_files.each do |filedocer, documents| %>
+    <tr>
+      <td colspan=12><BR> <b><%=h filedocer %><b></td>
+   	</tr>
+        
+			<% for document in documents %>
+			<tr>
+				<td><%=h document.serialno %></td>
+				<td><%=h document.refno %></td>
+				<td><%=h (Document::CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} %></td>
+				<td><%=h document.title %></td>
+				<td><%=h l(document.letterdt) %></td>
+				<td><%=h l(document.letterxdt) %></td>
+				<td><%=h document.from %></td>
+				<td><%=h document.stafffiled_details %></td>
+				<td><%=h document.closed %></td>
+				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
+				<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %></td>
+				<td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %></td>
+			</tr>
+			<% end %>
+		<% end %>
+  </table> 
 </div>
 
 <br />

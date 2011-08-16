@@ -27,5 +27,13 @@ class Supplier < ActiveRecord::Base
     end  
   end
   
+  def self.search(search)
+     if search
+      @supplier = Supplier.find(:all, :conditions => ['category ILIKE ?', "%#{search}%"])
+     else
+      @Supplier = Supplier.find(:all,  :order => :category)
+     end
+  end
+  
  
 end
