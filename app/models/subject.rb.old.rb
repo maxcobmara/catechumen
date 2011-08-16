@@ -25,25 +25,20 @@ class Subject < ActiveRecord::Base
   
   
     
-SEMESTER = [
+STATUS = [
             #  Displayed       stored in db
-            [ "Tahun 1/Semester I","1" ],
-            [ "Tahun 1/Semester II","2" ],
-            [ "Tahun 2/Semester I","3" ],
-            [ "Tahun 2/Semester II","4" ],
-            [ "Tahun 3/Semester I","5" ],
-            [ "Tahun 3/Semester II","6" ],
+            [ "Major","1" ],
+            [ "Minor","2" ],
+            [ "Elective","3" ]
             
 ]
 
-
-STATUS = [
-                #  Displayed       stored in db
-                [ "Major","1" ],
-                [ "Minor","2" ],
-                [ "Elective","3" ]
-
-    ]
-    
+def self.search(search)
+  if search
+    @subjects = Subject.find(:all, :conditions => ["subjectcode LIKE ? or name ILIKE ?", "%#{search}%","%#{search}%"])
+  else
+   @subjects = Subject.find(:all)
+  end
+end   
      
 end
