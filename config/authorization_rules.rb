@@ -55,6 +55,7 @@ authorization do
     has_permission_on :attendances, :to => [:index, :show, :approve, :update] do
         if_attribute :approve_id => is {User.current_user.staff_id}
     end
+    has_permission_on :leaveforstaffs, :to => :create
     has_permission_on :leaveforstaffs, :to => [:index, :show, :new, :create, :edit, :update] do
       if_attribute :staff_id => is {User.current_user.staff_id}
     end

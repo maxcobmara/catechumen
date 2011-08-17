@@ -65,13 +65,13 @@ class User < ActiveRecord::Base
     staffchecker = stid & stexists
     studentchecker = suid & suexists
     
-      if student_id == nil && staffchecker == nil
+      if student_id == nil && staff_id == nil
         ""
-      elsif staff_id == nil && stexists == []
+      elsif staff_id == nil && studentchecker == []
         "Student No Longer Exists"
-      elsif student_id == nil && studentchecker == []
+      elsif isstaff == true && staffchecker == []
         "Staff No Longer Exists"
-      elsif staff_id == nil
+      elsif isstaff == false
         " #{student.name} + (Student)"   
       else
         staff.name

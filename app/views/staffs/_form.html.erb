@@ -206,11 +206,9 @@
 
 
 <!--Finance Details-->
+  <H2><%= t 'staff.finance' %></H2>
 	<table   width=100% >
-	    <tr>
-		  <th colspan=2><%= t 'staff.finance' %></th>
-		</tr>
-	    <tr>
+	  <tr>
 		  <td class="leftcol"><label for="kwspcode"><b><%= t 'staff.kwspcode' %></b></label></td>
 		  <td><%= f.text_field :kwspcode %></td>
 		</tr>
@@ -218,25 +216,21 @@
 			<td class="leftcol"><label for="taxcode"><b><%= t 'staff.taxcode' %></b></label></td>
 			<td><%= f.text_field :taxcode %></td>
 		</tr>
-		<tr>
-			<td class="leftcol"><label for="bank"><b><%= t 'staff.bank' %></b></label></td>
-			<td><%= f.select :bank, 
-				              Staff::BANK,
-				              :prompt => "Select"  %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="bankaccno"><b><%= t 'staff.bankaccno' %></b></label></td>
-			<td><%= f.text_field :bankaccno %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="bankacctype"><b><%= t 'staff.bankacctype' %></b></label></td>
-			<td><%= f.select :bankacctype, 
-				              Staff::BANKTYPE,
-				              :prompt => "Select"  %></td>
-		</tr>
 	</table>
-  <!--End Of Finance Details-->
+	
+	<div>
+	  <H2>Bank Accounts</H2>
+		<p><strong>
+			<div style="width: 170px; float: left;">| <%= t 'staff.bank' %> </div>
+			<div style="width: 170px; float: left;">| <%= t 'staff.bankaccno' %> </div>
+									|  <%= t 'staff.bankacctype' %><strong></p>
+		<% f.fields_for :bankaccounts do |builder| %>
+			<%= render 'bankaccount_fields', :f => builder -%>
+		<% end %>
 
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :bankaccounts %> - Add More </p>
+	</div>
+	
 
 <!--Next Of Kin-->
 	<div>

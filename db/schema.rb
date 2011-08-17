@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110816074634) do
+ActiveRecord::Schema.define(:version => 20110817175037) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -220,6 +220,23 @@ ActiveRecord::Schema.define(:version => 20110816074634) do
     t.string   "reason"
     t.integer  "approve_id"
     t.boolean  "approvestatus"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "bankaccounts", :force => true do |t|
+    t.integer  "staff_id"
+    t.integer  "student_id"
+    t.integer  "bank_id"
+    t.string   "account_no"
+    t.integer  "account_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "banks", :force => true do |t|
+    t.string   "short_name"
+    t.integer  "long_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -807,6 +824,15 @@ ActiveRecord::Schema.define(:version => 20110816074634) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "infraction"
+  end
+
+  create_table "spmresults", :force => true do |t|
+    t.integer  "student_id"
+    t.string   "spm_subject"
+    t.integer  "spmsubject_id"
+    t.integer  "grade"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "staff_grades", :force => true do |t|

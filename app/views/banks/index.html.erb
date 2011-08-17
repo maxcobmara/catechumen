@@ -1,0 +1,22 @@
+<h1>Listing banks</h1>
+
+<table>
+  <tr>
+    <th>Short name</th>
+    <th>Long name</th>
+  </tr>
+
+<% @banks.each do |bank| %>
+  <tr>
+    <td><%=h bank.short_name %></td>
+    <td><%=h bank.long_name %></td>
+    <td><%= link_to 'Show', bank %></td>
+    <td><%= link_to 'Edit', edit_bank_path(bank) %></td>
+    <td><%= link_to 'Destroy', bank, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New bank', new_bank_path %>

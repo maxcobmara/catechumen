@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :banks
+
   map.resources :accessions
 
   map.resources :tenants

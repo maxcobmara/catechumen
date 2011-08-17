@@ -228,129 +228,117 @@
 			<td class="leftcol"><label for="uniformstat "><%= t 'staff.uniformstat' %> :</label></td>
 			<td><%=h (Staff::UNIFORM.find_all{|disp, value| value == @staff.uniformstat }).map {|disp, value| disp} %></td>
 		</tr>
+	</table>
 	
-	<tr>
-		<th colspan = 2><%= t 'staff.tqualification' %></th>
-	</tr>
-	
-	<td><% for qualification in @staff.qualifications %></td>
-	<tr>
-		<td class="leftcol"><label for="level_id "><%= t 'staff.level_id' %> :</label></td>
-	<!-->	<td><#%=h qualification.level_id %></td>-->
-		<td><%=h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp} %></td>
-    <tr>
-	
-    <tr>
-		<td class="leftcol"><label for="qname "> <%= t 'staff.qname' %> :</label></td>
-	   <td><%=h qualification.qname %></td>
-	
-    </tr>
+	<H2><%= t 'staff.tqualification' %></H2>
+	<table width=100%>
+	<% for qualification in @staff.qualifications %>
+		<tr>
+			<td class="leftcol"><label for="level_id "><%= t 'staff.level_id' %> :</label></td>
+			<!--	<td><#%=h qualification.level_id %></td>-->
+			<td><%=h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp} %></td>
+		</tr>
 
-     <tr>
-		<td class="leftcol"><label for="institute "><%= t 'staff.institute' %> :</label></td>
-		<td><%=h qualification.institute %></td>
-	</tr>
-	
-	<tr><td colspan=4><HR></td></tr>
-	
+		<tr>
+			<td class="leftcol"><label for="qname "> <%= t 'staff.qname' %> :</label></td>
+			<td><%=h qualification.qname %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="institute "><%= t 'staff.institute' %> :</label></td>
+			<td><%=h qualification.institute %></td>
+		</tr>
+
+		<tr><td colspan=4><HR></td></tr>
 	<% end %>
+	</table>
 	
-	<tr>
-	  <th colspan=2><%= t 'staff.loans' %></th>
-    </tr>
+	<H2><%= t 'staff.loans' %></H2>
+	<table width=100%>
+	<% for loan in @staff.loans %>	
+		<tr>
+			<td class="leftcol"><label for="ltype "> <%= t 'staff.ltype' %> :</label></td>
+			<td><%=h (Loan::LTYPE.find_all{|disp, value| value == loan.ltype}).map {|disp, value| disp} %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="accno "><%= t 'staff.accno' %> :</label></td>
+			<td><%=h loan.accno %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="startdt "><%= t 'staff.startdt' %> :</label></td>
+			<td><%=h loan.startdt %></td>
+		</tr>
 
-	<% for loan in @staff.loans %>
-	
-	<tr>
-		<td class="leftcol"><label for="ltype "> <%= t 'staff.ltype' %> :</label></td>
-	    	<td><%=h (Loan::LTYPE.find_all{|disp, value| value == loan.ltype}).map {|disp, value| disp} %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="accno "><%= t 'staff.accno' %> :</label></td>
-	    <td><%=h loan.accno %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="startdt "><%= t 'staff.startdt' %> :</label></td>
-        <td><%=h loan.startdt %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="durationmn "><%= t 'staff.durationmn' %> : </label></td>
-	<td><%=h loan.durationmn %> Months</td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="deductions "><%= t 'staff.deductions' %> :</label></td>
-		<td>RM <%=h loan.deductions %></td>
-	</tr>
-	
-	<tr><td colspan=4><HR></td></tr>
-	
+		<tr>
+			<td class="leftcol"><label for="durationmn "><%= t 'staff.durationmn' %> : </label></td>
+			<td><%=h loan.durationmn %> Months</td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="deductions "><%= t 'staff.deductions' %> :</label></td>
+			<td>RM <%=h loan.deductions %></td>
+		</tr>
+
+		<tr><td colspan=4><HR></td></tr>
 	<% end %>
-
-	<tr>
-	  <th colspan=2><%= t 'staff.finance' %></th>
-	</tr>
+	</table>
 	
-	<tr>
-	  <td class="leftcol"><label for="kwspcode"><%= t 'staff.kwspcode' %> :</label></td>
-	  <td><%=h @staff.kwspcode %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="taxcode"><%= t 'staff.taxcode' %> :</label></td>
-		<td><%=h @staff.taxcode %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="bank"><%= t 'staff.bank' %> :</label></td>
-		<!--><td><#%=h @staff.bank %></td>-->
-		<td><%=h (Staff::BANK.find_all{|disp, value| value == @staff.bank }).map {|disp, value| disp} %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="bankaccno"><%= t 'staff.bankaccno' %> :</label></td>
-		<td><%=h @staff.bankaccno %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="bankacctype"><%= t 'staff.bankacctype' %> :</label></td>
-		<td><%=h (Staff::BANKTYPE.find_all{|disp, value| value == @staff.bankacctype }).map {|disp, value| disp} %></td>
-	</tr>
 	
-	<tr>
-	    <th colspan=2><%= t 'staff.emencengy' %></th>
-    </tr>
+	<H2><%= t 'staff.finance' %></H2>
+	<table width=100%>
+			<tr>
+			  <td class="leftcol"><label for="kwspcode"><%= t 'staff.kwspcode' %> :</label></td>
+			  <td><%=h @staff.kwspcode %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="taxcode"><%= t 'staff.taxcode' %> :</label></td>
+				<td><%=h @staff.taxcode %></td>
+			</tr>
+			<tr>
+				<td class="leftcol">Bank Accounts</td>
+				<td>
+					<% for bankaccount in @staff.bankaccounts %>
+							<%=h (Bankaccount::BANK.find_all{|disp, value| value == bankaccount.bank_id }).map {|disp, value| disp} %>   -   
+							<%=h bankaccount.account_no %>  -   
+							<%=h (Bankaccount::BANKTYPE.find_all{|disp, value| value == bankaccount.account_type }).map {|disp, value| disp} %><BR>
+					<% end %>
+				</td>
+			</tr>
+	</table>
+	
+	<H2><%= t 'staff.emencengy' %></H2>
+	<table width=100%>
 		<% for kin in @staff.kins %>
-	<tr>
-		<td class="leftcol"><label for="kintype_id "> <%= t 'staff.kintype_id' %> :</label></td>
-	    <td><%=h (Kin::KTYPE.find_all{|disp, value| value == kin.kintype_id}).map {|disp, value| disp} %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="name "><%= t 'staff.name' %> : </label></td>
-	<td><%=h kin.name.blank? ? "" : kin.name %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="kinbirthdt "><%= t 'staff.kinbirthdt' %> :</label></td>
-	    <td><%=h kin.kinbirthdt %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="phone "><%= t 'staff.phone' %> :</label></td>
-	    <td><%=h kin.phone %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="profession "><%= t 'staff.profession' %> :</label></td>
-	    <td><%=h kin.profession %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="kinaddr "><%= t 'staff.kinaddr' %> :</label></td>
-	    <td><%=h kin.kinaddr %></td>
-	</tr>
-	
-	<tr><td colspan=4><HR></td></tr>
-	
-	<% end %>
+			<tr>
+				<td class="leftcol"><label for="kintype_id "> <%= t 'staff.kintype_id' %> :</label></td>
+				<td><%=h (Kin::KTYPE.find_all{|disp, value| value == kin.kintype_id}).map {|disp, value| disp} %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="name "><%= t 'staff.name' %> : </label></td>
+				<td><%=h kin.name.blank? ? "" : kin.name %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="kinbirthdt "><%= t 'staff.kinbirthdt' %> :</label></td>
+				<td><%=h kin.kinbirthdt %></td>
+			</tr>
 
-</table>
+			<tr>
+				<td class="leftcol"><label for="phone "><%= t 'staff.phone' %> :</label></td>
+				<td><%=h kin.phone %></td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><label for="profession "><%= t 'staff.profession' %> :</label></td>
+				<td><%=h kin.profession %></td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><label for="kinaddr "><%= t 'staff.kinaddr' %> :</label></td>
+				<td><%=h kin.kinaddr %></td>
+			</tr>
+			<tr><td colspan=4><HR></td></tr>
+		<% end %>
+	</table>
 
 <BR>
 </div>	

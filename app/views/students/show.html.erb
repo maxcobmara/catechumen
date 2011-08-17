@@ -120,23 +120,26 @@
 	<BR><BR>
 		
 	<H2><%= t 'student.qualification' %></H2>
-	<% for qualification in @student.qualifications %>
-	<table>	
-		<tr>
-			<td class="leftcol"><label for="level_id "><%= t 'student.level_id' %> :</label></td>
-			<td><%=h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp} %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="qname "><%= t 'student.qname' %> :</label></td>
-		  <td><%=h qualification.qname %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="institute "><%= t 'student.institute' %> :</label></td>
-		  <td><%=h qualification.institute %></td>
-		</tr>
+	<table width=100%>	
+		<% for qualification in @student.qualifications %>
+			<tr>
+				<td class="leftcol"><label for="level_id ">
+						<%=h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp} %>:</label>
+				</td>
+				<td><%=h qualification.qname %> &nbsp &nbsp from &nbsp &nbsp <%=h qualification.institute %></td>
+			</tr>
+  	<% end %>
+			<tr>
+				<td class="leftcol">SPM Results</td>
+				<td>
+						<% for spmresult in @student.spmresults %>
+								<%=h spmresult.spm_subject %>  &nbsp &nbsp  -  &nbsp &nbsp <%=h spmresult.grade %><BR>
+						<% end %>
+				</td>
+			</tr>
 	</table>
 	<HR>
-	<% end %>
+	
 	<BR><BR>
 		
 	<H2><%= t 'student.institute' %></H2>

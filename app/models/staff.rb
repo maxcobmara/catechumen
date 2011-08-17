@@ -134,10 +134,10 @@ class Staff < ActiveRecord::Base
   has_many :admin,        :class_name => 'Course', :foreign_key => 'staff_id'
   
   #links to Model leaveforstaffs
-   has_many :leave_applications, :class_name => 'Leaveforstaff', :foreign_key => 'staff_id'#, :dependent => :destroy
-   has_many :replacements,       :class_name => 'Leaveforstaff', :foreign_key => 'replacement_id'
-   has_many :seconders,          :class_name => 'Leaveforstaff', :foreign_key => 'approval1_id'
-   has_many :approvers,          :class_name => 'Leaveforstaff', :foreign_key => 'approval2_id'
+   has_many :leave_applications, :class_name => 'Leaveforstaff', :foreign_key => 'staff_id', :dependent => :destroy
+   has_many :replacements,       :class_name => 'Leaveforstaff', :foreign_key => 'replacement_id', :dependent => :nullify
+   has_many :seconders,          :class_name => 'Leaveforstaff', :foreign_key => 'approval1_id', :dependent => :nullify
+   has_many :approvers,          :class_name => 'Leaveforstaff', :foreign_key => 'approval2_id', :dependent => :nullify
   
   
   #links to Model Qualification
@@ -177,6 +177,9 @@ class Staff < ActiveRecord::Base
 
   has_many :kins, :dependent => :destroy
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
+  
+  has_many :bankaccounts, :dependent => :destroy
+  accepts_nested_attributes_for :bankaccounts, :reject_if => lambda { |a| a[:account_no].blank? }
   
  
      
@@ -368,28 +371,6 @@ class Staff < ActiveRecord::Base
         [ "Elaun Pakaian Panas/Pakaian Istiadat", "3" ]
 
 
-  ]
-  
-  BANK = [
-        #  Displayed       stored in db
-        [ "Affin Bank Berhad","AFF" ],
-        [ "Alliance Bank Berhad","ALB" ],
-        [ "AmBank Berhad","AmB" ],
-        [ "CIMB Bank Berhad","CIMB" ],
-        [ "EON Bank Berhad","EON" ],
-        [ "Hong Leong Bank Berhad","HLB" ],
-        [ "Maybank","MBB" ],
-        [ "Public Bank Berhad","PBB" ],
-        [ "RHB Bank Berhad","RHB" ],
-        [ "Bank Simpanan Nasional","BSN" ]
-  ]
-  
-  BANKTYPE = [
-        #  Displayed       stored in db
-        [ "Simpanan","1" ],
-        [ "Simpanan Bersama","2" ],
-        [ "Semasa","3" ],
-        [ "Simpanan Tetap","4" ],
   ]
   
   RACE = [

@@ -70,65 +70,14 @@ class Student < ActiveRecord::Base
    
 # ------------------------------code for repeating field qualification---------------------------------------------------
  has_many :qualifications, :dependent => :destroy
+ accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
  
- def new_qualification_attributes=(qualification_attributes)
-   qualification_attributes.each do |attributes|
-     qualifications.build(attributes)
-   end
- end
- 
- after_update :save_qualifications
- 
- def existing_qualification_attributes=(qualification_attributes)
-   qualifications.reject(&:new_record?).each do |qualification|
-     attributes = qualification_attributes[qualification.id.to_s]
-     if attributes
-       qualification.attributes = attributes
-     else
-       qualifications.delete(qualification)
-     end
-   end
- end
- 
- def save_qualifications
-   qualifications.each do |qualification|
-     qualification.save(false)
-   end
- end
- 
-# ----------------------------Code for Repeating Field Next OF Kin------------------------------------------------------------
- 
-
  has_many :kins, :dependent => :destroy
+ accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
  
- def new_kin_attributes=(kin_attributes)
-    kin_attributes.each do |attributes|
-      kins.build(attributes)
-    end
-  end
-
-  after_update :save_kins
-
-  def existing_kin_attributes=(kin_attributes)
-    kins.reject(&:new_record?).each do |kin|
-      attributes = kin_attributes[kin.id.to_s]
-      if attributes
-        kin.attributes = attributes
-      else
-        kins.delete(kin)
-      end
-    end
-  end
-
-  def save_kins
-    kins.each do |kin|
-      kin.save(false)
-    end
-  end
-  
-
-   
-#----------------Coded List-----------------------------------------------------------------------------------------------------------
+ has_many :spmresults, :dependent => :destroy
+ accepts_nested_attributes_for :spmresults, :reject_if => lambda { |a| a[:spm_subject].blank? }
+ 
   
 STATUS = [
            #  Displayed       stored in db

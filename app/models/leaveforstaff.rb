@@ -27,8 +27,24 @@ class Leaveforstaff < ActiveRecord::Base
   end
   
   def save_my_approvers
-   self.approval1_id = applicant.position.bosses.staff.id
-   self.approval2_id = applicant.position.bosses.bosses.staff.id
+   self.approval1_id = set_approver1
+   self.approval2_id = set_approver2
+  end
+  
+  def set_approver1
+    if applicant.position.bosses.staff.id == []
+      approver1 = nil
+    else
+      approver1 = applicant.position.bosses.staff.id
+    end    
+  end
+  
+  def set_approver2
+    if applicant.position.bosses.bosses.staff.id == []
+      approver2 = nil
+    else
+      approver2 = applicant.position.bosses.bosses.staff.id
+    end    
   end
   
   
@@ -51,7 +67,12 @@ class Leaveforstaff < ActiveRecord::Base
   
 
   def cuti_rehat_entitlement
-    a = (applicant.staffgrade.name)[-2,4].to_i
+    getdata = applicant.staffgrade.name
+      if getdata == nil
+        a = 0
+      else
+       a = (applicant.staffgrade.name)[-2,4].to_i
+      end
     b = Date.today.year - applicant.appointdt.year
     if    a < 21 && b < 10
       20
