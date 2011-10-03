@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110817175037) do
+ActiveRecord::Schema.define(:version => 20110919031021) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -602,6 +602,14 @@ ActiveRecord::Schema.define(:version => 20110817175037) do
     t.string   "workorderno"
     t.decimal  "maintcost"
     t.text     "details"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "messages", :force => true do |t|
+    t.integer  "from_id"
+    t.integer  "to_id"
+    t.text     "message"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

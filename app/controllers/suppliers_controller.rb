@@ -83,4 +83,9 @@ class SuppliersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def kewpa11
+       @supplier = Supplier.search(params[:search])
+       render :layout => 'report'
+  end
 end

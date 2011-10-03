@@ -2,7 +2,7 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.xml
   def index
-    @books = Book.search(params[:search])
+    @books = Book.search(params[:search]).paginate(:per_page => 25, :page => params[:page])
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @books }

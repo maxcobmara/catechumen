@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :messages
+
   map.resources :banks
 
   map.resources :accessions
@@ -46,8 +48,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :klasses
 
-  map.resources :suppliers
-
+  map.resources :suppliers, :collection => { :kewpa11 => :get }
   map.resources :suppliers
 
   map.resources :usesupplies

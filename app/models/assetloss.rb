@@ -6,7 +6,7 @@ class Assetloss < ActiveRecord::Base
   belongs_to :asslost, :class_name => 'Asset', :foreign_key => 'asset_id'
   
   #Residence
-  belongs_to :assetlocation,  :class_name => 'Residence', :foreign_key => 'losslocation_id'
+  belongs_to :assetlocation,  :class_name => 'Location', :foreign_key => 'losslocation_id'
   
   #Staff
   belongs_to :laststaff,        :class_name => 'Staff', :foreign_key => 'lossstafflast_id' 
@@ -49,4 +49,47 @@ class Assetloss < ActiveRecord::Base
         [ "Lain-Lain","Lain-Lain" ]
         
   ]
+  
+  
+  def location_details 
+       suid = losslocation_id.to_a
+       exists = Location.find(:all, :select => "id").map(&:id)
+       checker = suid & exists     
+   
+       if losslocation_id == nil
+          "" 
+        elsif checker == []
+          "Location No Longer Exists" 
+       else
+         assetlocation.name
+       end
+  end
+  
+  def hod_details 
+        suid = hod_id.to_a
+        exists = Staff.find(:all, :select => "id").map(&:id)
+        checker = suid & exists     
+
+        if hod_id == nil
+           "" 
+         elsif checker == []
+           "Staff No Longer Exists" 
+        else
+          hod.staff_name_with_position
+        end
+   end
+   
+   def officer_details 
+         suid = sio_id.to_a
+         exists = Staff.find(:all, :select => "id").map(&:id)
+         checker = suid & exists     
+
+         if sio_id == nil
+            "" 
+          elsif checker == []
+            "Staff No Longer Exists" 
+         else
+           officer.staff_name_with_position
+         end
+    end
 end

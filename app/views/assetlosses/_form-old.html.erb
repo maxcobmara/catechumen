@@ -1,0 +1,258 @@
+<div class="tform">
+  <table width=100% >
+	<tr>
+		<th colspan=2><%= t 'assetloses.assetloses_details' %></th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="reportcode"><b><%= t 'assetloses.reportcode' %></b></label><font color="red"> * </font></td>
+		<td><%= f.text_field :reportcode %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="losstype"><b><%= t 'assetloses.losstype' %></b></label><font color="red"> * </font></td>
+			<td><%= f.select :losstype, 
+			                  Assetloss::LOSS,
+			                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="asset_id"><b><%= t 'assetloses.asset_id' %></b></label></td>
+      <td><%= f.collection_select :asset_id, Asset.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="estvalue"><b><%= t 'assetloses.estvalue' %></b></label></td>
+		<td><b>RM</b> <%= f.text_field :estvalue, :size => 12 %></td>
+	</tr>
+	
+
+	<!-->
+	<tr>
+	<td class="leftcol"><label for="part_id"><b>Supplies Code:</b></label></td>
+      <td><#%= f.collection_select :part_id, Part.find(:all), :id, :partcode, :include_blank => true %></td>
+	</tr>
+	<-->
+	
+	<tr>
+		<td class="leftcol"><label for="losslocation_id"><%= t 'assetloses.losslocation_id' %></b></label></td>
+		<td><%= f.collection_select :losslocation_id, Residence.find(:all), :id, :resname, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="lossdt"><b><%= t 'assetloses.lossdt' %></b></b></label></td>
+		<td><%= f.datetime_select :lossdt, :start_year => 2005, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="losshow"><b><%= t 'assetloses.losshow' %></b></b></label></td>
+		<td><%= f.text_area :losshow, :size => "30x7" %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="lossstafflast_id"><b><%= t 'assetloses.lossstafflast_id' %></b></b></label></td>
+      <td><%= f.collection_select :lossstafflast_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="laststaffcase"><b><%= t 'assetloses.laststaffcase' %></b></b></label></td>
+      	<td><%= f.radio_button :laststaffcase,'false' %>Yes<%= f.radio_button :laststaffcase,'true' %>No</td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="preventpast"><b><%= t 'assetloses.preventpast' %></b></b></label></td>
+		<td><%= f.text_area :preventpast, :size => "30x7" %></td>
+	</tr>
+	<tr>
+	<td class="leftcol"><label for="laststaffstop"><b><%= t 'assetloses.laststaffstop' %></b></label></td>
+      	<td><%= f.radio_button :laststaffstop,'false' %>Yes<%= f.radio_button :laststaffstop,'true' %>No</td>
+	</tr>
+	
+	<tr>
+	<td class="leftcol"><label for="poreport"><b><%= t 'assetloses.poreport' %></b></label></td>
+      	<td><%= f.radio_button :poreport,'false' %>Yes<%= f.radio_button :poreport,'true' %>No</td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="porepno"><b><b><%= t 'assetloses.porepno' %></b></label></td>
+		<td><%= f.text_field :porepno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="preventfuture"><b><%= t 'assetloses.preventfuture' %></b></label></td>
+		<td><%= f.text_area :preventfuture, :size => "30x7" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="remarks"><b><%= t 'assetloses.remarks' %></b></label></td>
+		<td><%= f.text_area :remarks, :size => "30x7" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="hod_id"><b><%= t 'assetloses.hod_id' %></b></label></td>
+		<td><%= f.collection_select :hod_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="hodendorsedt"><b><%= t 'assetloses.hodendorsedt' %></b></label></td>
+		<td><%= f.date_select :hodendorsedt, :start_year => 2005, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+
+		<tr>
+			<th colspan=2><%= t 'assetloses.lampirank' %></th>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="moneytype"><b><%= t 'assetloses.moneytype' %></b></label></td>
+				<td><%= f.select :moneytype, 
+				                  Assetloss::MONEY,
+				                 :prompt => "Select"  %></td>
+		</tr>
+		<!-->enter purchase date & price here<-->
+		<tr>
+		<td class="leftcol"><label for="new"><b><%= t 'assetloses.new' %></b></label></td>
+	      <td><%= f.check_box :new %> New <%= f.check_box :new %> Used </td>
+		</tr>
+		
+		<!-->display :estvalue again here<-->
+		
+		<!-->need to display some details from asset here<-->
+		<!-->state or federal? value?<-->
+		<!-->repeat display loss how?<-->
+		
+		<!-->display asset.owner.staff.name + 
+		     display asset.owner.staff.position.positionname +
+		     display assset.owner.staff.position.maintasks<-->
+		
+		<tr>
+				<td class="leftcol"><label for="sostop"><b><%= t 'assetloses.sostop' %></b></label></td>
+				<td><%= f.radio_button :sostop,'false' %>Yes<%= f.radio_button :sostop,'true' %>No</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="sostopdt"><b><%= t 'assetloses.sostopdt' %></b></label></td>
+			<td><%= f.date_select :sostopdt, :start_year => 2005, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
+		
+			<tr                           
+				<td class="leftcol"><label for="soaction"><b><%= t 'assetloses.soaction' %></b></label></td>
+				<td><%= f.text_field :soaction %></td>
+			</tr>
+		
+		<!-->display asset.owner.staff.pensiondate<-->
+		
+		<!-->display asset.owner.staff.bosses.name + 
+		     display asset.owner.staff.bosses.position.positionname +
+		     display asset.owner.staff.bosses.position.maintasks<-->
+		
+			<tr>
+				<td class="leftcol"><label for="supstop"><b><%= t 'assetloses.supstop' %></b></label></td>
+				<td><%= f.radio_button :supstop,'false' %>Yes<%= f.radio_button :supstop,'true' %>No</td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><label for="supstopdt"><b><%= t 'assetloses.supstopdt' %></b></label></td>
+				<td><%= f.date_select :supstopdt, :start_year => 2005, :end_year => 2020, :order => [:day, :month, :year] %></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol"><label for="supaction"><b><%= t 'assetloses.supaction' %></b></label></td>
+				<td><%= f.text_field :supaction %></td>
+			</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="poaction"><b><%= t 'assetloses.poaction' %></b></label></td>
+			<td><%= f.text_field :poaction %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="ponoreportwhy"><b><%= t 'assetloses.ponoreportwhy' %></b></label></td>
+			<td><%= f.text_field :ponoreportwhy %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="rulesbroken"><b><%= t 'assetloses.rulesbroken' %></b></label></td>
+			<td><%= f.radio_button :rulesbroken,'false' %>Yes<%= f.radio_button :rulesbroken,'true' %>No</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="owneraction"><b><%= t 'assetloses.owneraction' %></b></label></td>
+			<td><%= f.text_area :owneraction, :size => "30x7" %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="newrule"><b><%= t 'assetloses.newrule' %></b></label></td>
+			<td><%= f.text_area :newrule, :size => "30x7" %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="newrule_id"><b><%= t 'assetloses.newrule_id' %></b></label></td>
+			<td><%= f.collection_select :newrule_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="nrrecommend"><b><%= t 'assetloses.nrrecommend' %></b></label></td>
+			<td><%= f.text_area :nrrecommend, :size => "30x7" %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="surcharge"><b><%= t 'assetloses.surcharge' %></b></label></td>
+			<td><%= f.radio_button :surcharge,'false' %>Yes<%= f.radio_button :surcharge,'true' %>No</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="sio_id"><b><%= t 'assetloses.sio_id' %></b></label><font color="red"> * </font></td>
+			<td><%= f.collection_select :sio_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+		
+		
+</table>
+<BR>
+	
+<!--Rules Broken-->
+<!-->
+	<table id="form">
+		<tr class="toprow">
+			<td>Rules Broken</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="ownerstop"><b>Owner Stop:</b></label></td>
+			<td><#%= f.radio_button :ownerstop,'false' %>Yes<%= f.radio_button :ownerstop,'true' %>No</td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="ownerstopdt"><b>Owner Stop Date:</b></label></td>
+			<td><#%= f.date_select :ownerstopdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="owneraction"><b>Owner Action:</b></label></td>
+			<td><#%= f.text_field :owneraction %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="so_id"><b>Staff Name:</b></label></td>
+			<td><#%= f.collection_select :so_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="scvalue"><b>SurCharge Value:</b></label></td>
+			<td><b>RM</b> <#%= f.text_field :scvalue, :size => 12 %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="screason"><b>SurCharge Reason:</b></label></td>
+			<td><#%= f.text_field :screason %></td>
+		</tr>
+		
+
+		
+		<tr>
+			<td class="leftcol"><label for="ssecurity_id"><b>Security:</b></label></td>
+			<td><#%= f.collection_select :ssecurity_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="closedt"><b>Closed Date:</b></label></td>
+			<td><#%= f.date_select :closedt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
+				
+</table>
+<BR>
+<-->
+</div>
