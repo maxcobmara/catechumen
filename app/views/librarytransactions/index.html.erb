@@ -11,7 +11,7 @@
 	<div class="tlist">
 	  <table width=100%>
 		  <tr>
-			  <th>Accession No</th>
+			  <th>Book ID</th>
         <th>ISBN No</th>
    		  <th><%= t 'book.title' %></th>
 		    <th><%= t 'librarytransaction.borrower' %></th>
@@ -26,10 +26,10 @@
     <tr><td colspan=11><%= checkoutdate.strftime("%A, %v") %></td></tr>
     <% for librarytransaction in librarytransactions%>
     <tr>
-	  	<td><%=h librarytransaction.accession.accession_no unless librarytransaction.accession.blank? %></td>
-	    <td><%=h librarytransaction.accession.book.isbn unless librarytransaction.book_id.blank?  %></td>
+	  	<td><%=h librarytransaction.book_id  %></td>
+	    <td><%=h librarytransaction.accession.book.isbn  %></td>
 	    <td><%=h librarytransaction.accession.book.title unless librarytransaction.book_id.blank? %></td>
-	    <td><%=h librarytransaction.loaner %></td>
+	    <td><%=h librarytransaction.borrower_name %></td>
 	    <td><%=h librarytransaction.accession.book.classddc unless librarytransaction.book_id.blank? %></td>
 			<td><%=h librarytransaction.accession.book.orderno unless librarytransaction.book_id.blank?%></td>
 			<td><%=h librarytransaction.returnduedate.strftime('%d %b %Y') %><%=h librarytransaction.extoond  %></td>

@@ -77,19 +77,7 @@
 	</table>
 	<BR><BR>
 		
-	<H2>Guarantor</H2>
-	<% puid = @student.id %>
-	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  99 ]) %>
-	<table>
-		<% garantor.each do |e| %>
-		<tr>
-			<td class="leftcol">Penjamin 1</td>
-			<td><%=h e.name.blank? ? "" : e.name %></td>
-		</tr>
-		<% end %>
-	</table>
-			
-		
+	
 	<H2><%= t 'student.health_status' %></H2>
 	<table>	
 		<tr>
@@ -129,21 +117,76 @@
 				<td><%=h qualification.qname %> &nbsp &nbsp from &nbsp &nbsp <%=h qualification.institute %></td>
 			</tr>
   	<% end %>
-			<tr>
+			<tr><!-- 06/10/2011 - Shaliza Update to display grade such as 1A,2A,3B and so on as user requested -->
 				<td class="leftcol">SPM Results</td>
 				<td>
 						<% for spmresult in @student.spmresults %>
-								<%=h spmresult.spm_subject %>  &nbsp &nbsp  -  &nbsp &nbsp <%=h spmresult.grade %><BR>
+								<%=h spmresult.spm_subject %>  &nbsp &nbsp  -  &nbsp &nbsp <%=h (Spmresult::GRADE.find_all{|disp, value| value == spmresult.grade}).map {|disp, value| disp} %><BR>
 						<% end %>
 				</td>
 			</tr>
 	</table>
-	<HR>
+
 	
-	<BR><BR>
+
 		
-	<H2><%= t 'student.institute' %></H2>
-	<% thekins = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id != ? ", puid,  99 ]) %>
+	<H2>Guarantor</H2>
+	<!--
+	<% just_a_counter = 0 %>
+	<% puid = @student.id %>
+	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  98 ], :limit => 2) %>
+	<% garantor.each do |e| %>
+		<% just_a_counter += 1 %>
+	<table>
+	<tr>
+		<td class="leftcol"><%= t 'student.kintype_id' %> :</td>
+		<td>Penjamin <%=h just_a_counter %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="kintype "><%= t 'student.name' %> :</label></td>
+		<td><%=h e.name.blank? ? "" : e.name %></td>
+	</tr>
+    <tr>
+		<td class="leftcol"><label for="icno "><%= t 'student.icno' %> :</label></td>
+		<td><%=h e.mykadno %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="kinaddr "><%= t 'student.kinaddr' %> :</label></td>
+		<td><%=h e.kinaddr %></td>
+	</tr>
+	<% end %>
+	</table>
+	-->	
+	<% puid = @student.id %>
+	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  99 ], :limit => 2) %>
+		
+		<% just_a_counter = 0 %>
+		<% garantor.each do |e| %>
+		<% just_a_counter += 1 %>
+		<table>
+			<tr>
+				<td class="leftcol"><%= t 'student.kintype_id' %> :</td>
+				<td>Penjamin <%=h just_a_counter %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="kintype "><%= t 'student.name' %> :</label></td>
+				<td><%=h e.name.blank? ? "" : e.name %></td>
+			</tr>
+		    <tr>
+				<td class="leftcol"><label for="icno "><%= t 'student.icno' %> :</label></td>
+				<td><%=h e.mykadno %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="kinaddr "><%= t 'student.kinaddr' %> :</label></td>
+				<td><%=h e.kinaddr %></td>
+			</tr>
+		</table>
+		<HR>
+	<% end %>
+
+		
+	<H2>Contact Information</H2>
+	<% thekins = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id != ? AND kintype_id != ? ", puid,  98, 99 ]) %>
 	<% thekins.each do |e| %>
 	<table>
 		<tr>

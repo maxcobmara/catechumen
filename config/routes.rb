@@ -62,10 +62,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :roles
 
-  map.resources :roles
-
-  map.resources :roles
-
   map.resources :courseevaluations
 
   map.resources :programmes
@@ -141,7 +137,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :assetnums
 
   map.connect '/assets/registerinventory', :controller => 'assets', :action => 'registerinventory'
-  map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get, :kewpa4 => :get }
+  map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get, :kewpa4 => :get, :kewpa8 => :get }
 
   map.resources :books
 

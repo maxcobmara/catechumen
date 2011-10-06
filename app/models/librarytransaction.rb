@@ -37,6 +37,43 @@ class Librarytransaction < ActiveRecord::Base
      ""
     end 
   end
+  
+  def borrower_name
+   stid = staff_id.to_a
+   suid = student_id.to_a
+   stexists = Staff.find(:all, :select => "id").map(&:id)
+   stuexists = Student.find(:all, :select => "id").map(&:id)
+   staffchecker = stid & stexists
+   studentchecker = suid & stuexists
+   
+      if student_id == nil && staff_id == nil
+           "" 
+      elsif staff_id == nil && stexists == []
+           "Student No Longer Exists" 
+      elsif student_id == nil && stuexists == []
+           "Staff No Longer Exists" 
+      elsif staff_id == nil
+           " #{student.name}"   
+      else
+        staff.name
+      end 
+  end
+  
+  
+  
+   def book_details 
+          suid = book_id.to_a
+          exists = Book.find(:all, :select => "id").map(&:id)
+          checker = suid & exists     
+
+          if book_id == nil
+             "" 
+           elsif checker == []
+             "Book No Longer Exists" 
+          else
+            book.isbn
+          end
+    end
 
   
   named_scope :all,         :conditions => [ "id IS NOT ?", nil ]

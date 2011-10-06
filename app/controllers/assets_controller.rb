@@ -127,4 +127,9 @@ class AssetsController < ApplicationController
         #format.xml  { render :xml => @staffs }
     #end
   end
+  
+  def kewpa8
+    @asset = Asset.all #search(params[:search])
+    render :layout => 'report'
+  end
 end
