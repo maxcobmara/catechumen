@@ -1,31 +1,11 @@
-<h1>New tenant</h1>
+<h3>New tenant</h3>
 
 <% form_for(@tenant) do |f| %>
   <%= f.error_messages %>
+  <%= f.hidden_field :location_id %>
 
-  <p>
-	 <%=h @tenant.location.location_list %>
+  <%=render :partial => 'form', :locals => {:f => f} %> 
 
-  <p>
-    <%= f.label :student_id %><br />
-    <%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name %></td>
-  </p>
-  <p>
-    <%= f.label :keyaccept %><br />
-    <%= f.date_select :keyaccept %>
-  </p>
-  <p>
-    <%= f.label :keyexpectedreturn %><br />
-    <%= f.date_select :keyexpectedreturn, :default => Time.now + 6.months %>
-  </p>
-  <p>
-    <%= f.label :keyreturned %><br />
-    <%= f.date_select :keyreturned, :include_blank => true %>
-  </p>
-  <p>
-    <%= f.label :force_vacate %><br />
-    <%= f.check_box :force_vacate %>
-  </p>
   <p>
     <%= f.submit 'Create' %>
   </p>

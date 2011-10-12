@@ -10,6 +10,17 @@
     <p><%= dash_leave %> <%= link_to "leave application for approval", { :controller => "leaveforstaffs", :action => "index" } %></p>
   <% end %>
 
+	<!-- Notification for Messages -->
+  <% dash_messages = Message.count(:all, :conditions => ["to_id=?", User.current_user.staff_id]) %>
+  <% if dash_messages == 0 %>
+    
+  <% else %>
+    <p><%= dash_messages %> <%= link_to "new messages", { :controller => "messages", :action => "index" } %></p>
+  <% end %>
+
+
+
+
   <!-- Notification for Staff Late Approval -->
   <% dash_attendance = Attendance.count(:all, :conditions => ["approve_id=? AND approvestatus IS ?", User.current_user.staff_id, nil]) %>
   <% if dash_attendance == 0 %>

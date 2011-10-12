@@ -14,8 +14,8 @@ class Location < ActiveRecord::Base
    end
    
    #-----
-   named_scope :staff,      :conditions => { :typename => 1 }
-   named_scope :student,    :conditions => { :typename => 2 }
+   named_scope :staff,      :conditions => { :typename => 1  }
+   named_scope :student,    :conditions => { :typename => 2  }
    named_scope :facility,   :conditions => { :typename => 3 }
    
    FILTERS = [
@@ -43,6 +43,20 @@ class Location < ActiveRecord::Base
    end
    
    
+   def occstatus
+     myid = id
+     occ = Tenant.find(:all, :select => "keyreturned", :conditions => ["keyaccept < ? AND location_id =? AND keyreturned IS ?", Time.now, myid, nil])
+    if occ == []
+    else
+      "occupied"
+    end
+   end
+   
+   def currenttenant
+     myid = id
+     Tenant.find(:all, :select => "id", :conditions => ["location_id =?", myid]).map(&:id)
+   end
+     
    
  
  

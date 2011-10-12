@@ -32,8 +32,13 @@
   	<td><%=h location.name %></td>
 		<td><%=h (Location::CLASS.find_all{|disp, value| value == location.lclass}).map {|disp, value| disp} %></td>
 		<td><%=h (Location::TYPE.find_all{|disp, value| value == location.typename}).map {|disp, value| disp} %></td>
-		<td width=10px><% if location.typename == 2 %>
-				<%= link_to image_tag("user_add.png", :border => 0, :title => 'Assign'), new_tenant_path(:location_id => location) %>
+		<td width=10px>
+				<% if location.typename == 2 && location.occstatus == "occupied" || location.typename == 1 && location.occstatus == "occupied" %>
+				<%= link_to image_tag("user_red.png", :border => 0, :title => 'Occupied'), {:controller => 'tenants',  :action => 'edit',  :id => location.currenttenant} %>
+				<% end %>
+				
+				<% if location.typename == 2 && location.occstatus != "occupied" || location.typename == 1 && location.occstatus != "occupied" %>
+				<%= link_to image_tag("key_go.png", :border => 0, :title => 'Assign'), new_tenant_path(:location_id => location) %>
 				<% end %></td>
 		<td width=10px><% if location.assets != [] %>
 					<%= link_to image_tag("duplicate.png", :border => 0, :title => 'KEW-PA7'), :action => 'kewpa7', :id => location %>

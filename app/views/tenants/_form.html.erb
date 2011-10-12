@@ -1,0 +1,40 @@
+<div class="tform">
+<H2>Tenancy</H2>
+<table width=100%>
+	<tr>
+		<td class="leftcol">Location</font></td>
+		<td><%=h @tenant.location.location_list %></td>
+	</tr>
+	<tr>
+		<% if @tenant.location.typename == 2 %>
+			<td class="leftcol">Student</td>
+			<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name %></td>
+		<% end %>
+		<% if @tenant.location.typename == 1 %>
+			<td class="leftcol">Staff</td>
+			<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name %></td>
+		<% end %>
+	</tr>
+	<tr>
+		<td class="leftcol">Date Key Provided</td>
+		<td><%= f.date_select :keyaccept %></td>
+	</tr>
+	<tr>
+		<td class="leftcol">Date Key Expected For Return</td>
+		<td><%= f.date_select :keyexpectedreturn, :include_blank => true  %></td>
+	</tr>
+	<tr>
+		<td class="leftcol">Date Key Returned</td>
+		<td><%= f.date_select :keyreturned, :include_blank => true %></td>
+	</tr>
+	<tr>
+		<td class="leftcol">Force Vacate</td>
+		<td><%= f.check_box :force_vacate %></td>
+	</tr>
+</table>
+</div>
+
+				
+				
+		   
+				

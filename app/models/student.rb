@@ -13,9 +13,9 @@ class Student < ActiveRecord::Base
   belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
   
   has_one   :user                                                                           #Link to Model user
-  has_many  :leaveforstudents                                                               #Link to LeaveStudent
+  has_many  :leaveforstudents, :dependent => :destroy                                       #Link to LeaveStudent
   has_many  :counsellings                                                                   #Link to Counselling
-  has_many  :librarytransactions                                                            #Link to LibraryTransactions
+  has_many  :librarytransactions, :dependent => :destroy                                    #Link to LibraryTransactions
   has_many  :studentgrade,    :class_name => 'Grade',     :foreign_key => 'student_id'      #Link to Model Grade
   has_many  :student,         :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
   has_many  :studentevaluate, :class_name => 'Courseevaluation', :foreign_key => 'student_id'#Link to Model CourseEvaluation

@@ -3,7 +3,7 @@ class Document < ActiveRecord::Base
 #belongs_to :documents, :foreign_key => 'staff_id'
 # has_one :title
 
-validates_presence_of :serialno, :refno, :category, :title, :letterdt, :letterxdt, :from, :stafffiled_id, :file_id
+validates_presence_of :serialno, :refno, :category, :title, :letterdt, :letterxdt, :from, :stafffiled_id
 
 belongs_to :stafffilled,    :class_name => 'Staff', :foreign_key => 'stafffiled_id'
 belongs_to :cc1staff, :class_name => 'Staff', :foreign_key => 'cc1staff_id' 
@@ -83,6 +83,38 @@ CATEGORY = [
            stafffilled.mykad_with_staff_name
          end
     end
+    
+    # 7/10/2011-Shaliza fixed error for cc1staff
+     def cc1staff_details 
+           suid = cc1staff_id.to_a
+           exists = Staff.find(:all, :select => "id").map(&:id)
+           checker = suid & exists     
+
+           if cc1staff_id == nil
+              "-" 
+            elsif checker == []
+              "Staff No Longer Exists" 
+           else
+             cc1staff.mykad_with_staff_name
+           end
+      end
+    
+    # 7/10/2011-Shaliza fixed error for cc1staff 
+    def file_details 
+           suid = file_id.to_a
+           exists = Cofile.find(:all, :select => "id").map(&:id)
+           checker = suid & exists     
+
+           if file_id == nil
+              "" 
+            elsif checker == []
+              "File No Longer Exists" 
+           else
+             cofile.file_no_and_name
+           end
+      end
+    
+    
 
   
 end

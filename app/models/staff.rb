@@ -64,7 +64,7 @@ class Staff < ActiveRecord::Base
   has_many :users
   
   #Link to Model TimetableEntry
-  has_many :timetable,  :class_name => 'TimeTableEntry', :foreign_key => 'staff_id'
+  has_many :timetable,  :class_name => 'TimeTableEntry', :foreign_key => 'staff_id', :dependent => :nullify
   
   #Link to model bulletin
   #has_many :bulletin, :class_name => 'bulletin', :foreign_key => 'postedby_id'  #posted by
