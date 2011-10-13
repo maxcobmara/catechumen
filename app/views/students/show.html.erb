@@ -1,5 +1,10 @@
 <div class="tform">
-	<H2><%= t 'student.stu_details' %></H2>
+	<H2>
+				<% if @student.photo_file_name == nil %>
+				<% else %>
+					<%= image_tag @student.photo.url, :class => 'list-image' %>
+				<% end %>
+				<%= t 'student.stu_details' %></H2>
   <table width=100%>
 		<tr>
 			<td class="leftcol"><%= t 'student.icno' %> :</td>
@@ -20,6 +25,10 @@
 		<tr>
 			<td class="leftcol"><%= t 'student.stelno' %> :</td>
 			 <td><%=h @student.stelno %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="remarks">Address :</label></td>
+			<td><%=h @student.address %></td>
 		</tr>	
 		<tr>
 			<td class="leftcol"><label for="ssponsor"><%= t 'student.ssponsor' %>:</label></td>
@@ -73,6 +82,14 @@
 		<tr>
 			<td class="leftcol"><label for="intake_id"><%= t 'student.intake_id' %> :</label></td>
 			<td><%=h @student.intake_id.blank? ? " " : @student.intakestudent.name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="remarks">Address Pos Basik :</label></td>
+			<td><%=h @student.address_posbasik %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Date End Of Studies: :</label></td>
+			<td><%=h l(@student.end_training) unless @student.end_training.blank?  %></td>
 		</tr>
 	</table>
 	<BR><BR>

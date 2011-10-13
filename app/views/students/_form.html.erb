@@ -24,6 +24,10 @@
 					<td><%= f.text_field :stelno %></td>
 			</tr>
 			<tr>
+					<td class="leftcol"><label for="remarks">Address:</label></td>
+					<td><%= f.text_area :address, :size => "40x7" %></td>
+			</tr>
+			<tr>
 					<td class="leftcol"><label for="ssponsor">Sponsor:</label><font color="red"> * </font></td>
 					<td><%= f.select :ssponsor,
 					           Student::SPONSOR,
@@ -59,6 +63,10 @@
 					<td class="leftcol"><%= t 'student.offer_letter_serial' %></td>
 					<td><%= f.text_field :offer_letter_serial %></td>
 			</tr>
+			<tr>
+				<td class="leftcol"><label for="upload"><b><%= t 'staff.upload' %></b></label></td>
+				<td><%= f.file_field :photo %></td>
+			</tr>
 	</table><BR><BR>
 
 
@@ -79,6 +87,14 @@
 			<tr>
 					<td class="leftcol"><label for="intake_id">Intake Session:</label></td>
 					<td><%= f.collection_select :intake_id, Intake.find(:all), :id, :name, :include_blank => true %></td>
+			</tr>
+			<tr>
+					<td class="leftcol"><label for="remarks">Address Pos Basik:</label></td>
+					<td><%= f.text_area :address_posbasik, :size => "40x7" %></td>
+			</tr>
+			<tr>
+					<td class="leftcol"><label for="sbirthdt">Date End Of Studies:</label></td>
+					<td><%= f.date_select :end_training, :order => [:day, :month, :year] %></td>
 			</tr>
 	</table><BR><BR>
 	
@@ -145,7 +161,7 @@
 		<p><strong>
 				<div style="width: 170px; float: left;">|  <%= t 'student.kintype_id' %> </div>
 				<div style="width: 250px; float: left;">|  <%= t 'student.name' %> </div>
-				<div style="width: 160px; float: left;">|  <%= t 'staff.kinbirthdt' %> </div>
+				<div style="width: 160px; float: left;">|  MYKad No </div>
 				<div style="width: 150px; float: left;">|  <%= t 'staff.phone' %> </div>
 				<div style="width: 170px; float: left;">|  Profession </div><BR>
 				<div style="width: 170px; float: left;">|  Address </div><BR></strong></p>

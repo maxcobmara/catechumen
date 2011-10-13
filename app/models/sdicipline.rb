@@ -2,10 +2,9 @@ class Sdicipline < ActiveRecord::Base
   belongs_to :staff
   belongs_to :cofile
   #belongs_to :reportingstaff,  :class_name => 'Staff',   :foreign_key => 'reportedby_id'
-  belongs_to :studentwithcase, :class_name => 'Student', :foreign_key => 'student_id'
+  belongs_to :student
   belongs_to :file,       :class_name => 'Cofile', :foreign_key => 'cofile_id'
-  #belongs_to :staff,   :foreign_key => 'reportedby_id'
-  belongs_to :student, :foreign_key => 'student_id'
+  #belongs_to :student, :foreign_key => 'student_id'
   belongs_to :staff, :foreign_key => 'reportedby_id'
   
   validates_presence_of :reportedby_id, :student_id
@@ -55,4 +54,45 @@ class Sdicipline < ActiveRecord::Base
           end
     end
     
+    def student_name
+      suid = student_id.to_a
+      suexists = Student.find(:all, :select => "id").map(&:id)
+      studentchecker = suid & suexists
+
+        if student_id == nil
+          ""
+        elsif studentchecker == []
+          "Student No Longer Exists"
+        else
+          " #{student.formatted_mykad_and_student_name}"   
+        end 
+    end
+    
+    def file_name
+      suid = cofile_id.to_a
+      suexists = Cofile.find(:all, :select => "id").map(&:id)
+      filechecker = suid & suexists
+
+        if cofile_id == nil
+          ""
+        elsif filechecker == []
+          "File No Longer Exists"
+        else
+          " #{file.name}"   
+        end 
+    end
+    
+    def room_no
+      suid = student_id.to_a
+      suexists = Tenant.find(:all, :select => "student_id").map(&:student_id)
+      roomchecker = suid & suexists
+
+        if student_id == nil
+          ""
+        elsif roomchecker == []
+          "Not Assigned"
+        else
+          student.tenant.id#.location.name  
+        end 
+    end
 end

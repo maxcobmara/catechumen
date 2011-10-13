@@ -7,6 +7,13 @@ class Student < ActiveRecord::Base
   validates_length_of       :icno, :is =>12
   validates_uniqueness_of   :icno
   
+  has_attached_file :photo,
+                    :url => "/assets/students/:id/:style/:basename.:extension",
+                    :path => ":rails_root/public/assets/students/:id/:style/:basename.:extension"
+                    
+  validates_attachment_size         :photo, :less_than => 50.kilobytes
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
+  
   
   has_and_belongs_to_many :klasses          #has_and_belongs_to_many :programmes
   belongs_to :course,         :class_name => 'Programme', :foreign_key => 'course_id'       #Link to Programme
@@ -17,11 +24,12 @@ class Student < ActiveRecord::Base
   has_many  :counsellings                                                                   #Link to Counselling
   has_many  :librarytransactions, :dependent => :destroy                                    #Link to LibraryTransactions
   has_many  :studentgrade,    :class_name => 'Grade',     :foreign_key => 'student_id'      #Link to Model Grade
-  has_many  :student,         :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
+  has_many  :cases,           :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
   has_many  :studentevaluate, :class_name => 'Courseevaluation', :foreign_key => 'student_id'#Link to Model CourseEvaluation
   has_many  :student,         :class_name => 'Residence', :foreign_key => 'student_id'      #Link to Model residence
   
-  #has_many :sdiciplines, :foreign_key => 'student_id'
+  has_many :sdiciplines, :foreign_key => 'student_id', :dependent => :nullify
+  belongs_to :tenant
   #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
   
   

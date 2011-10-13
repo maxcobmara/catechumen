@@ -116,9 +116,9 @@ class Staff < ActiveRecord::Base
   
   
   #links to Model TravelRequest
-  has_many :stafftravel,     :class_name => 'Travelrequest', :foreign_key => 'staff_id', :dependent => :destroy #staff name
-  has_many :replacements,       :class_name => 'Travelrequest', :foreign_key => 'replacement_id' #replacement name
-  has_many :hod,                :class_name => 'Travelrequest', :foreign_key => 'hod_id' #hod
+  has_many :stafftravel,    :class_name => 'Travelrequest', :foreign_key => 'staff_id',       :dependent => :destroy #staff name
+  has_many :replacements,   :class_name => 'Travelrequest', :foreign_key => 'replacement_id', :dependent => :nullify #replacement name
+  has_many :hod,            :class_name => 'Travelrequest', :foreign_key => 'hod_id',         :dependent => :nullify #hod
   
   #links to Model Attendances
   has_many :attendingstaffs,        :class_name => 'Attendance', :foreign_key => 'staff_id'#, :dependent => :destroy #attendance staff name

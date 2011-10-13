@@ -4,9 +4,9 @@ class Travelrequest < ActiveRecord::Base
   #belongs_to :staff
   
   #this works belongs_to :staff
-  belongs_to :stafftravel,    :class_name => 'Staff',        :foreign_key => 'staff_id'
-  belongs_to :treplace,       :class_name => 'Staff',         :foreign_key => 'replacement_id'
-  belongs_to :hod,            :class_name => 'Staff',         :foreign_key => 'hod_id'
+  belongs_to :stafftravel,  :class_name => 'Staff',   :foreign_key => 'staff_id'
+  belongs_to :treplace,     :class_name => 'Staff',   :foreign_key => 'replacement_id'
+  belongs_to :hod,          :class_name => 'Staff',   :foreign_key => 'hod_id'
   
   #has_many :travel, :class_name => 'Travelclaim', :foreign_key => 'travelrequest_id'
   

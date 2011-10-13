@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110919031021) do
+ActiveRecord::Schema.define(:version => 20111013033004) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -978,6 +978,13 @@ ActiveRecord::Schema.define(:version => 20110919031021) do
     t.integer  "intake_id"
     t.string   "offer_letter_serial"
     t.string   "race"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+    t.text     "address"
+    t.text     "address_posbasik"
+    t.date     "end_training"
   end
 
   create_table "subjects", :force => true do |t|
