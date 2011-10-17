@@ -86,13 +86,17 @@ class Sdicipline < ActiveRecord::Base
       suid = student_id.to_a
       suexists = Tenant.find(:all, :select => "student_id").map(&:student_id)
       roomchecker = suid & suexists
+      curroom = Tenant.find(:all, :select => "location_id", :conditions => {:student_id => roomchecker}, :limit => 1).map(&:location_id)
+      romname = Location.find(:all, :conditions => {:id => curroom}).map(&:name)
+      romcode = Location.find(:all, :conditions => {:id => curroom}).map(&:code)
+      
 
         if student_id == nil
           ""
         elsif roomchecker == []
           "Not Assigned"
         else
-          student.tenant.id#.location.name  
+          romcode.to_s + " - " + romname.to_s
         end 
     end
 end
