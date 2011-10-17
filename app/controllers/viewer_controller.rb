@@ -5,5 +5,8 @@ class ViewerController < ApplicationController
     @pagetitle = @page.title
     login_required if @page.admin?
   end
+  
+  def librarystats
+  end
 
 end

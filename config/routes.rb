@@ -177,7 +177,13 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :pages
   
+  map.with_options :controller => 'viewer' do |viewer|
+    viewer.librarystats 'librarystats', :action => 'librarystats'
+  end
+  
   map.view_page ':name', :controller => 'viewer', :action => 'show'
+  
+
 
   # The priority is based upon order of creation: first created -> highest priority.
 
