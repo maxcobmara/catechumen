@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111013033004) do
+ActiveRecord::Schema.define(:version => 20111019035825) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -838,7 +838,7 @@ ActiveRecord::Schema.define(:version => 20111013033004) do
     t.integer  "student_id"
     t.string   "spm_subject"
     t.integer  "spmsubject_id"
-    t.integer  "grade"
+    t.string   "grade"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

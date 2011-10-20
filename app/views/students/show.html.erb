@@ -138,7 +138,7 @@
 				<td class="leftcol">SPM Results</td>
 				<td>
 						<% for spmresult in @student.spmresults %>
-								<%=h spmresult.spm_subject %>  &nbsp &nbsp  -  &nbsp &nbsp <%=h (Spmresult::GRADE.find_all{|disp, value| value == spmresult.grade}).map {|disp, value| disp} %><BR>
+								<%=h spmresult.spm_subject %>  &nbsp &nbsp  -  &nbsp &nbsp <%=h spmresult.grade %><BR>
 						<% end %>
 				</td>
 			</tr>
@@ -148,16 +148,13 @@
 
 		
 	<H2>Guarantor</H2>
-	<!--
-	<% just_a_counter = 0 %>
 	<% puid = @student.id %>
-	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  98 ], :limit => 2) %>
+	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  98 ]) %>
 	<% garantor.each do |e| %>
-		<% just_a_counter += 1 %>
 	<table>
 	<tr>
 		<td class="leftcol"><%= t 'student.kintype_id' %> :</td>
-		<td>Penjamin <%=h just_a_counter %></td>
+		<td>Penjamin I</td>
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="kintype "><%= t 'student.name' %> :</label></td>
@@ -173,7 +170,8 @@
 	</tr>
 	<% end %>
 	</table>
-	-->	
+	<BR>
+	
 	<% puid = @student.id %>
 	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  99 ], :limit => 2) %>
 		
@@ -183,7 +181,7 @@
 		<table>
 			<tr>
 				<td class="leftcol"><%= t 'student.kintype_id' %> :</td>
-				<td>Penjamin <%=h just_a_counter %></td>
+				<td>Penjamin II -<%=h just_a_counter %></td>
 			</tr>
 			<tr>
 				<td class="leftcol"><label for="kintype "><%= t 'student.name' %> :</label></td>

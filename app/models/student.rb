@@ -78,13 +78,13 @@ class Student < ActiveRecord::Base
    
 # ------------------------------code for repeating field qualification---------------------------------------------------
  has_many :qualifications, :dependent => :destroy
- accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
+ accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }, :allow_destroy => true
  
  has_many :kins, :dependent => :destroy
- accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
+ accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }, :allow_destroy => true
  
  has_many :spmresults, :dependent => :destroy
- accepts_nested_attributes_for :spmresults, :reject_if => lambda { |a| a[:spm_subject].blank? }
+ accepts_nested_attributes_for :spmresults, :reject_if => lambda { |a| a[:spm_subject].blank? }, :allow_destroy => true
  
   
 STATUS = [

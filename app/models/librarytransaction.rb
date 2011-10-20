@@ -74,6 +74,13 @@ class Librarytransaction < ActiveRecord::Base
             book.isbn
           end
     end
+    
+    
+  def top_ten
+    dash_student = Librarytransaction.find(:all, :select => 'student_id', :conditions => ["student_id IS NOT ?", nil ]).map(&:student_id)
+    b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h }
+    
+  end
 
   
   named_scope :all,         :conditions => [ "id IS NOT ?", nil ]

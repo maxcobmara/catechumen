@@ -14,6 +14,7 @@ class Kin < ActiveRecord::Base
           [ "Penjaga", 12 ],
           [ "Bekas Isteri", 13 ],
           [ "Bekas Suami", 14 ],
-          [ "Penjamin", 99 ]
+          [ "Penjamin I", 98 ],
+          [ "Penjamin II", 99 ]
    ]
 end

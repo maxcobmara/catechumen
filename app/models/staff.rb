@@ -170,16 +170,16 @@ class Staff < ActiveRecord::Base
 #----------------------------code for repeating fields------------------------------------------  
  
   has_many :qualifications, :dependent => :destroy
-  accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
+  accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }, :allow_destroy => true
   
   has_many :loans, :dependent => :destroy
-  accepts_nested_attributes_for :loans, :reject_if => lambda { |a| a[:ltype].blank? }
+  accepts_nested_attributes_for :loans, :reject_if => lambda { |a| a[:ltype].blank? }, :allow_destroy => true
 
   has_many :kins, :dependent => :destroy
-  accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
+  accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }, :allow_destroy => true
   
   has_many :bankaccounts, :dependent => :destroy
-  accepts_nested_attributes_for :bankaccounts, :reject_if => lambda { |a| a[:account_no].blank? }
+  accepts_nested_attributes_for :bankaccounts, :reject_if => lambda { |a| a[:account_no].blank? }, :allow_destroy => true
   
  
      

@@ -1,3 +1,33 @@
+Quicklinks  : <a href="#LatestBooks">Latest Books</a> 
+
+
+
+
+<a name="LatestBooks"></a>
+<% latest_books = Book.find(:all, :order => 'updated_at desc', :limit => 10) %>
+<table id="easytable" >
+	<caption>Latest Titles In Library</caption>
+	<tr>
+		<th>Image</th>
+		<th>Title</th>
+		<th>Quantity</th>
+	</tr>
+	<% latest_books.each do |e| %>
+	<tr>
+		<td><% if e.photo_file_name == nil %>
+			no image
+		<% else %>
+			<%= image_tag e.photo.url, :class => 'list-image' %>
+		<% end %></td>
+		<td><b><span STYLE="font-size:1.1em"><%=h e.title %></span></b><BR><%=h e.author %><BR>ISBN : <%=h e.isbn %></td></td>
+		<td><%=h e.book_quantity %></td>
+	</tr>
+	<% end %>
+</table>
+
+
+
+
 <!--Library Resource Statistics-->
 Total Number of Titles in Library : <%= Book.count(:all) %><BR>
 Total Number of Books In Library  : <%= Accession.count(:all) %><BR>
@@ -20,3 +50,21 @@ Notification for Staff Late Approval
   <p><%= dash_attendance %> <%= link_to "late attendance for approval", { :controller => "attendances", :action => "index" } %></p>
 <% end %>
 Total Number Books In Library -->
+Top Borrowers (Student)
+<% dash_student = Librarytransaction.find(:all, :select => 'student_id', :conditions => ["student_id IS NOT ?", nil ]).map(&:student_id) %>
+<% b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h } %>
+<% top_ten = b.to_a.each {|who, visits|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
+<table border=1>
+<% top_ten.each do |who, visits| %>
+	<tr>
+		<td><%= "#{visits}" %></td>
+		<% stuid = ("#{who}").to_i %>
+		<td><%= Student.find(:all, :select => 'name', :conditions => ["id = ?", stuid ]).map(&:name)%></td>
+	</tr>
+<% end %>
+</table>
+	
+<#%= Student.find(:all, :select => 'name', :conditions => ["student_id IS  ?", "#{who}" ]).map(&:name)%>
+
+
+<% dash_staff = Librarytransaction.find(:all, :select => 'staff_id', :conditions => ["staff_id IS NOT ?", nil ]).map(&:staff_id) %>
