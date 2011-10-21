@@ -1,13 +1,13 @@
 <div id='notifications_nuovo'>
-	<p><u>Notification Area</u></p>
+	<h4>Notification Area</h4>
+	<p>
 	<!-- Notification for Staff Leave Application -->
   <% a = Leaveforstaff.count(:all, :conditions => ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]) %>
   <% b = Leaveforstaff.count(:all, :conditions => ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]) %>
   <% dash_leave = a+b %>
   <% if dash_leave == 0 %>
-    <p>
   <% else %>
-    <p><%= dash_leave %> <%= link_to "leave application for approval", { :controller => "leaveforstaffs", :action => "index" } %></p>
+    <%= dash_leave %> <%= link_to "leave application for approval", { :controller => "leaveforstaffs", :action => "index" } %><br>
   <% end %>
 
 	<!-- Notification for Messages -->
@@ -15,7 +15,7 @@
   <% if dash_messages == 0 %>
     
   <% else %>
-    <p><%= dash_messages %> <%= link_to "new messages", { :controller => "messages", :action => "index" } %></p>
+    <%= dash_messages %> <%= link_to "new messages", { :controller => "messages", :action => "index" } %><br>
   <% end %>
 
 
@@ -26,7 +26,7 @@
   <% if dash_attendance == 0 %>
     <p>
   <% else %>
-    <p><%= dash_attendance %> <%= link_to "late attendance for approval", { :controller => "attendances", :action => "index" } %></p>
+    <%= dash_attendance %> <%= link_to "late attendance for approval", { :controller => "attendances", :action => "index" } %><br>
   <% end %>
 
   <!-- Notification for Student Leave Approval -->
@@ -44,14 +44,14 @@
 		<% users_wo_roles = User.count(:all, :select => "id", :conditions => ["student_id=? AND staff_id IS ?", nil, nil]) %>
 		<% if users_wo_roles == 0 %>
 		<% else %>
-			<p><% users_wo_roles %> <% link_to "New Users", users_path %>
+			<% users_wo_roles %> <% link_to "New Users", users_path %><br>
 		<% end %>
 	<% end %>
 	
 	<!-- Notification for Documents-->
 	<% mydocs = Document.count(:all, :conditions => ["cc1staff_id=? AND cc2staff_id =?", User.current_user.staff_id, User.current_user.staff_id]) %>
   <% if mydocs > 0 %>
-  	<p><%= mydocs %> <%= link_to "new documents for your attention", { :controller => "documents", :action => "index" } %></p>
+  	<%= mydocs %> <%= link_to "new documents for your attention", { :controller => "documents", :action => "index" } %><br>
   <% else %>
 	<% end %>
 	
@@ -59,6 +59,6 @@
 	
 
 	
-	
+</p>
 	
 </div>

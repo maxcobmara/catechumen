@@ -1,11 +1,64 @@
-Quicklinks  : <a href="#LatestBooks">Latest Books</a> 
+Quicklinks  : <a href="#LatestBooks">Latest Books</a>, <a href="#mastu">Most Active Students</a>, <a href="#masta">Most Active Staff</a>   
 
+<div class="stats">
+	<p><%= Book.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0">Total Number of Titles in Library</p>
+	<p STYLE="font-size:72px; color: #ee842f"><%= Accession.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0">Total Number of Books In Library </p>
+  <p><%= Librarytransaction.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0">Total Library Transactions</p>
+	<p STYLE="font-size:72px; color: #ee842f">
+		<% lib_tran_today = Librarytransaction.count(:all, :conditions => ["created_at = ? ", Date.today ]) %>
+		<% if lib_tran_today == 0 %>
+			0
+		<% else %>
+			<% lib_tran_today %>
+		<% end %><SPAN STYLE="font-size:14px; color: #90C3C0">Books Borrowed Today</p>
+</div>
+<BR><BR><BR><BR>
 
+<a name="mastu"></a>
+<% dash_student = Librarytransaction.find(:all, :select => 'student_id', :conditions => ["student_id IS NOT ?", nil ]).map(&:student_id) %>
+<% b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h } %>
+<% top_ten = b.to_a.each {|who, visits|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
+	
+	<table id="easytable" align="center" >
+		<caption>Most Active Students</caption>
+		<tr>
+			<th>Transactions</th>
+			<th>Name</th>
+		</tr>
+		<% top_ten[(0..9)].each do |who, visits| %>
+		<tr>
+			<td><%= "#{visits}" %></td>
+			<% stuid = ("#{who}").to_i %>
+			<td><%= Student.find(:all, :select => 'name', :conditions => ["id = ?", stuid ]).map(&:name)%></td>
+		</tr>
+		<% end %>
+	</table>
+	<BR><BR><BR><BR>
+	
+<a name="masta"></a>
+<% dash_staff = Librarytransaction.find(:all, :select => 'staff_id', :conditions => ["staff_id IS NOT ?", nil ]).map(&:staff_id) %>
+<% b = dash_staff.inject(Hash.new(0)) {|h,i| h[i] += 1; h } %>
+<% top_ten = b.to_a.each {|who, visits|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
 
+	<table id="easytable" align="center" >
+		<caption>Most Active Staff</caption>
+		<tr>
+			<th>Transactions</th>
+			<th>Name</th>
+		</tr>
+		<% top_ten[(0..9)].each do |who, visits| %>
+		<tr>
+			<td><%= "#{visits}" %></td>
+			<% staid = ("#{who}").to_i %>
+			<td><%= Staff.find(:all, :select => 'name', :conditions => ["id = ?", staid ]).map(&:name)%></td>
+		</tr>
+		<% end %>
+	</table>
+<BR><BR><BR><BR>
 
 <a name="LatestBooks"></a>
 <% latest_books = Book.find(:all, :order => 'updated_at desc', :limit => 10) %>
-<table id="easytable" >
+<table id="easytable" align="center" >
 	<caption>Latest Titles In Library</caption>
 	<tr>
 		<th>Image</th>
@@ -25,46 +78,30 @@ Quicklinks  : <a href="#LatestBooks">Latest Books</a>
 	<% end %>
 </table>
 
-
-
-
-<!--Library Resource Statistics-->
-Total Number of Titles in Library : <%= Book.count(:all) %><BR>
-Total Number of Books In Library  : <%= Accession.count(:all) %><BR>
-Total Library Transactions : <%= Librarytransaction.count(:all) %><BR>
-Books Borrowed Today : <% Librarytransaction.count(:all, :conditions => ["created_at = ? ", Date.today ]) %><BR>
-Latest Books : 
-<ol>
-<% latest_books = Book.find(:all, :order => 'updated_at desc', :limit => 10) %>
-	<% latest_books.each do |e| %>
-			<li><%= e.title %></li>
-<% end %>
-</ol>
-<!-- Most Borrowed Titles
-
-Notification for Staff Late Approval 
-<% dash_attendance = Book.count(:all) %>
-<% if dash_attendance == 0 %>
-  <p>
-<% else %>
-  <p><%= dash_attendance %> <%= link_to "late attendance for approval", { :controller => "attendances", :action => "index" } %></p>
-<% end %>
-Total Number Books In Library -->
-Top Borrowers (Student)
-<% dash_student = Librarytransaction.find(:all, :select => 'student_id', :conditions => ["student_id IS NOT ?", nil ]).map(&:student_id) %>
-<% b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h } %>
-<% top_ten = b.to_a.each {|who, visits|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
-<table border=1>
-<% top_ten.each do |who, visits| %>
-	<tr>
-		<td><%= "#{visits}" %></td>
-		<% stuid = ("#{who}").to_i %>
-		<td><%= Student.find(:all, :select => 'name', :conditions => ["id = ?", stuid ]).map(&:name)%></td>
-	</tr>
-<% end %>
-</table>
+<a name="repeated"></a>
+<% repeated_books = Book.find(:all, :select => 'classlcc').map(&:classlcc) %>
+<% b = repeated_books.inject(Hash.new(0)) {|h,i| h[i] += 1; h } %>
+<% repeat = b.to_a.each {|book, repeats|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
 	
-<#%= Student.find(:all, :select => 'name', :conditions => ["student_id IS  ?", "#{who}" ]).map(&:name)%>
+	<table id="easytable" align="center" >
+		<caption>Possibly Repeated Books</caption>
+		<tr>
+			<th>Repeats</th>
+			<th>Title</th>	
+		</tr>
+		<% repeat.each do |book, repeats| %>
+			<% if ("#{repeats}").to_i > 1 %>
+			<tr>
+				<td><%= "#{repeats}" %></td>
+				<% stuid = "#{book}" %>
+				<td><%= Book.find(:all, :conditions => ["classlcc = ?", stuid ]).map {|f| f.id} %>:
+						<%= Book.find(:all, :conditions => ["classlcc = ?", stuid ]).map {|f| f.title} %></td>
+			</tr>
+			<% else %>
+			<% end %>
+		<% end %>
+			
+	</table>
 
+<BR><BR><BR><BR>
 
-<% dash_staff = Librarytransaction.find(:all, :select => 'staff_id', :conditions => ["staff_id IS NOT ?", nil ]).map(&:staff_id) %>
