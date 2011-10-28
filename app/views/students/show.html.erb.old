@@ -1,10 +1,10 @@
 <div class="tform">
 	<H2>
-					<% if @student.photo_file_name == nil %>
-					<% else %>
-						<%= image_tag @student.photo.url, :class => 'list-image' %>
-					<% end %>
-					<%= t 'student.stu_details' %></H2>
+				<% if @student.photo_file_name == nil %>
+				<% else %>
+					<%= image_tag @student.photo.url, :class => 'list-image' %>
+				<% end %>
+				<%= t 'student.stu_details' %></H2>
   <table width=100%>
 		<tr>
 			<td class="leftcol"><%= t 'student.icno' %> :</td>
@@ -25,6 +25,10 @@
 		<tr>
 			<td class="leftcol"><%= t 'student.stelno' %> :</td>
 			 <td><%=h @student.stelno %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="remarks">Address :</label></td>
+			<td><%=h @student.address %></td>
 		</tr>	
 		<tr>
 			<td class="leftcol"><label for="ssponsor"><%= t 'student.ssponsor' %>:</label></td>
@@ -76,8 +80,16 @@
 			<td><%=h @student.specilisation %></td>
 		</tr>	
 		<tr>
-			<td class="leftcol"><label for="intake"><%= t 'student.intake_id' %> :</label></td>
-			<td><%=h @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y") %></td>
+			<td class="leftcol"><label for="intake_id"><%= t 'student.intake_id' %> :</label></td>
+			<td><%=h @student.intake_id.blank? ? " " : @student.intakestudent.name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="remarks">Address Pos Basik :</label></td>
+			<td><%=h @student.address_posbasik %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Date End Of Studies: :</label></td>
+			<td><%=h l(@student.end_training) unless @student.end_training.blank?  %></td>
 		</tr>
 	</table>
 	<BR><BR>
@@ -126,7 +138,7 @@
 				<td class="leftcol">SPM Results</td>
 				<td>
 						<% for spmresult in @student.spmresults %>
-								<%=h spmresult.spm_subject %>  &nbsp &nbsp  -  &nbsp &nbsp <%=h (Spmresult::GRADE.find_all{|disp, value| value == spmresult.grade}).map {|disp, value| disp} %><BR>
+								<%=h spmresult.spm_subject %>  &nbsp &nbsp  -  &nbsp &nbsp <%=h spmresult.grade %><BR>
 						<% end %>
 				</td>
 			</tr>
@@ -137,7 +149,7 @@
 		
 	<H2>Guarantor</H2>
 	<% puid = @student.id %>
-	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  98]) %>
+	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  98 ]) %>
 	<% garantor.each do |e| %>
 	<table>
 	<tr>
@@ -158,29 +170,35 @@
 	</tr>
 	<% end %>
 	</table>
-	<HR>	
+	<BR>
+	
 	<% puid = @student.id %>
-	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  99 ]) %>
-	<% garantor.each do |e| %>
-	<table>
-	<tr>
-		<td class="leftcol"><%= t 'student.kintype_id' %> :</td>
-		<td>Penjamin II</td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="kintype "><%= t 'student.name' %> :</label></td>
-		<td><%=h e.name.blank? ? "" : e.name %></td>
-	</tr>
-    <tr>
-		<td class="leftcol"><label for="icno "><%= t 'student.icno' %> :</label></td>
-		<td><%=h e.mykadno %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="kinaddr "><%= t 'student.kinaddr' %> :</label></td>
-		<td><%=h e.kinaddr %></td>
-	</tr>
+	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  99 ], :limit => 2) %>
+		
+		<% just_a_counter = 0 %>
+		<% garantor.each do |e| %>
+		<% just_a_counter += 1 %>
+		<table>
+			<tr>
+				<td class="leftcol"><%= t 'student.kintype_id' %> :</td>
+				<td>Penjamin II -<%=h just_a_counter %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="kintype "><%= t 'student.name' %> :</label></td>
+				<td><%=h e.name.blank? ? "" : e.name %></td>
+			</tr>
+		    <tr>
+				<td class="leftcol"><label for="icno "><%= t 'student.icno' %> :</label></td>
+				<td><%=h e.mykadno %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="kinaddr "><%= t 'student.kinaddr' %> :</label></td>
+				<td><%=h e.kinaddr %></td>
+			</tr>
+		</table>
+		<HR>
 	<% end %>
-	</table>		
+
 		
 	<H2>Contact Information</H2>
 	<% thekins = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id != ? AND kintype_id != ? ", puid,  98, 99 ]) %>

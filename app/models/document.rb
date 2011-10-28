@@ -47,7 +47,9 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
     
   
 #---------------------AttachFile------------------------------------------------------------------------
- has_attached_file :data
+ has_attached_file :data,
+                    :url => "/assets/documents/:id/:style/:basename.:extension",
+                    :path => ":rails_root/public/assets/documents/:id/:style/:basename.:extension"
  validates_attachment_content_type :data, :content_type => ['application/pdf', 'application/msword','application/msexcel','image/png','text/plain'],
                         :storage => :file_system,
                         :message => "Invalid File Format" 

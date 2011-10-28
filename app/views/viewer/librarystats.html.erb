@@ -79,7 +79,7 @@ Quicklinks  : <a href="#LatestBooks">Latest Books</a>, <a href="#mastu">Most Act
 </table>
 
 <a name="repeated"></a>
-<% repeated_books = Book.find(:all, :select => 'classlcc').map(&:classlcc) %>
+<% repeated_books = Book.find(:all, :select => 'isbn').map(&:isbn) %>
 <% b = repeated_books.inject(Hash.new(0)) {|h,i| h[i] += 1; h } %>
 <% repeat = b.to_a.each {|book, repeats|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
 	
@@ -94,8 +94,8 @@ Quicklinks  : <a href="#LatestBooks">Latest Books</a>, <a href="#mastu">Most Act
 			<tr>
 				<td><%= "#{repeats}" %></td>
 				<% stuid = "#{book}" %>
-				<td><%= Book.find(:all, :conditions => ["classlcc = ?", stuid ]).map {|f| f.id} %>:
-						<%= Book.find(:all, :conditions => ["classlcc = ?", stuid ]).map {|f| f.title} %></td>
+				<td><%= Book.find(:all, :conditions => ["isbn = ?", stuid ]).map {|f| f.id} %>:
+						<%= Book.find(:all, :conditions => ["isbn = ?", stuid ]).map {|f| f.title} %></td>
 			</tr>
 			<% else %>
 			<% end %>

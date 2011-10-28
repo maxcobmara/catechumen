@@ -6,7 +6,9 @@ class Book < ActiveRecord::Base
   
   
   #-----------Attach Photo---------------
-  has_attached_file :photo
+  has_attached_file :photo,
+                    :url => "/assets/books/:id/:style/:basename.:extension",
+                    :path => ":rails_root/public/assets/books/:id/:style/:basename.:extension"
   validates_attachment_size :photo, :less_than => 50.kilobytes
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']    
   
@@ -22,18 +24,19 @@ class Book < ActiveRecord::Base
       (Book.last.id + 1).to_s
     end
   end
-  
+
+
 
     
-  def self.search(search)
+def self.search(search)
     if search
         @book = Book.find(:all, :conditions => ["isbn LIKE ? or title ILIKE ? or author ILIKE ? or location ILIKE ?" , "%#{search}%","%#{search}%","%#{search}%", "%#{search}%"])
     else
        @book = Book.find(:all)
     end
-  end
+end
   
-  def book_quantity
+ def book_quantity
       counter = Accession.count(:all, :conditions => ["book_id = ?", id])
   end
     

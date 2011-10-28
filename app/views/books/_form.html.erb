@@ -6,7 +6,7 @@
 				<td><%= f.text_field :tagno, :value => ((Book.last.id + 1).to_s unless Book.last.nil?) %></td>
 			</tr>
 	
-			<!--><tr>
+			<!--<tr>
 				<td class="leftcol"><label for="controlno"><b>Control No:</b></label><font color="red"> * </font></td>
 				<td><% f.text_field :controlno %></td>
 			</tr>-->
@@ -114,7 +114,7 @@
 					                 :prompt => "Select"  %></td>
 			</tr>
 	
-			<!--><tr>
+			<!--<tr>
 				<td class="leftcol"><%= t 'book.quantity' %></td>
 			  <td><% f.text_field :quantity %></td>
 			</tr>-->
@@ -155,7 +155,9 @@
 	
 			<tr>
 				<td class="leftcol">Upload Book Image</td>
-				<td><%= f.file_field :photo %></td>
+				<td><%= f.file_field :photo %>
+						<%=h @book.photo_file_name unless @book.photo_file_name.blank?  %>
+						<%=h (@book.photo_file_size/1024) unless @book.photo_file_name.blank? %>Kb</td>
 			</tr>
 	
 			<tr>
@@ -179,11 +181,9 @@
 		</table>
 	</div>
 	
+	
+	<H2>Purchase Information</H2>
 	<table width=100%>
-	<tr>
-		<th colspan = 2>Purchase Information</th>
-	</tr>
-		
 		<tr>
 			<td class="leftcol"><label for="orderno">Order No:</label></td>
 			<td><%= f.text_field :orderno %></td>
@@ -214,7 +214,8 @@
 			<td class="leftcol"><label for="supplier_id">Supplier:</label></td>
 		    <td><%= f.collection_select :supplier_id, Addbook.find(:all), :id, :name, :include_blank => true %></td>
 		</tr>
-</table>
+	</table>
 <BR>
+</div>
 	
 	

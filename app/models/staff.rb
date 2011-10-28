@@ -6,7 +6,9 @@ class Staff < ActiveRecord::Base
     self.name = name.titleize
   end
   
-  has_attached_file :photo#, :styles => {:thumb => "40x60"}
+  has_attached_file :photo,
+                      :url => "/assets/staffs/:id/:style/:basename.:extension",
+                      :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
   #:styles => {:thumb => "100x100#" }
   
  # validates_attachment_presence :photo

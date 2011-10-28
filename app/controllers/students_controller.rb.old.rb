@@ -4,7 +4,7 @@ class StudentsController < ApplicationController
   # GET /students.xml
   def index
     @students = Student.with_permissions_to(:index).search(params[:search])
-    @student_intakes = @students.group_by { |t| t.intake } # 21/10/2011 - Shaliza changed with group by intake
+    @student_intakes = @students.group_by { |t| t.isorter }
  
     
     respond_to do |format|

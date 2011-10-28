@@ -21,12 +21,9 @@
 				<th>Matrixno</th>
 				<th colspan=4 class="ac">Control</th>
 			</tr>
-			
-			<!-- 21/10/2011 - Shaliza changed group_ by.filter fetch from intake -->
-   	        <% @student_intakes.each do |month, students| %>
-			<tr><td colspan=8><BR><b>Intake <%= month.strftime('%B/%Y') unless month.blank? %></b></td></tr>
+		<% @student_intakes.each do |isorter, students| %>
+			<tr><td colspan=8><BR><b>Intake <%= isorter %></b></td></tr>
 			<% for student in students %>
-		<!--	<#% @students.each do |student| %>-->
 			<tr>
 				<td><%=h student.course_id.blank? ? " " : student.course.name %></td>
 				<td><%=h student.formatted_mykad %></td>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111019035825) do
+ActiveRecord::Schema.define(:version => 20111021062239) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -975,7 +975,6 @@ ActiveRecord::Schema.define(:version => 20111019035825) do
     t.text     "remarks"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "intake_id"
     t.string   "offer_letter_serial"
     t.string   "race"
     t.string   "photo_file_name"
@@ -985,6 +984,7 @@ ActiveRecord::Schema.define(:version => 20111019035825) do
     t.text     "address"
     t.text     "address_posbasik"
     t.date     "end_training"
+    t.date     "intake"
   end
 
   create_table "subjects", :force => true do |t|

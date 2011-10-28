@@ -1,6 +1,6 @@
 class Grade < ActiveRecord::Base
   
-  validates_presence_of :student_id, :subject_id
+  validates_presence_of :student_id, :scope => :subject_id, :message => "This student has already taken this subject"
   
   #Link to Model student
    belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'

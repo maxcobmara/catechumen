@@ -23,9 +23,9 @@
     <!--<th>Submit</th>
     <th>Approved By</th>
     <th>Approver 1 Date</th>
-    <th>Approver 2 </th>
-    <th>Approver 2 Date</th>-->
-   <th colspan=3 class="ac"><%= t 'control' %></th>
+    <th>Approver 2 </th>-->
+    <th>For Approval?</th>
+   	<th colspan=3 class="ac"><%= t 'control' %></th>
   </tr>
 
 <% @leaveforstaffs.each do |leaveforstaff| %>
@@ -35,17 +35,21 @@
     <td><%=h leaveforstaff.leavestartdate.strftime("%a, %d %b") %><%=h leaveforstaff.show_to_day %></td>
     <td><%=h leaveforstaff.reason %>
 	  <td><%=h leaveforstaff.leave_for %> Days</td>
-    <td><%=h leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name  %></td>
+	  <td><%=h leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name  %></td>
+	  <td width=10px>
+				<% if (User.current_user.staff_id == leaveforstaff.approval1_id) %>
+			  	<%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve1', :id => leaveforstaff %>
+				<% elsif (User.current_user.staff_id == leaveforstaff.approval2_id) %>
+					<%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve2', :id => leaveforstaff %>
+				<% else %>
+				<% end %></td>
+		
     <td width=10px><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => leaveforstaff %></td>
-    <% if permitted_to? :edit, @leaveforstaff %>
-    	<td width=10px><%= link_to image_tag("edit.png",     :border => 0,  :title => 'Edit'), :action => 'edit', :id => leaveforstaff %></td>
-    <% end %>
-    <% if (User.current_user.staff_id == leaveforstaff.approval1_id) %>
-	  	<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve1', :id => leaveforstaff %></td>
-		<% elsif (User.current_user.staff_id == leaveforstaff.approval2_id) %>
-			<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve2', :id => leaveforstaff %></td>
-		<% else %>
-		<% end %>
+		<td width=10px>
+    			<% if permitted_to? :edit, @leaveforstaff %>
+    				<%= link_to image_tag("edit.png",     :border => 0,  :title => 'Edit'), :action => 'edit', :id => leaveforstaff %>
+    			<% end %></td>
+
 		<% if permitted_to? :destroy, leaveforstaff %>
     	<td width=10px><%= link_to image_tag("delete.png",   :border => 0,  :title => 'Delete'), leaveforstaff, :confirm => 'Are you sure?', :method => :delete %></td>
     <% end %>

@@ -166,8 +166,22 @@ class Asset < ActiveRecord::Base
       end
       st + md + syear + '/' + cardno
     end
-      
-      
+    
+#25/10/2011 - Shaliza corrected for staff no longer exists  
+    def assigned_details
+    suid = assignedto_id.to_a
+    exists = Staff.find(:all, :select => "id").map(&:id)
+    checker = suid & exists
+    
+    if assignedto_id == nil
+      ""
+    elsif checker == []
+      "Staff No Longer Exists"
+    else
+      assignedto.staff_name_with_position
+    end
+  end
+    
 
 #-----------------------Coded List-------------------------------------------------------- -  
 

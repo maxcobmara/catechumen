@@ -2,7 +2,7 @@ class Leaveforstudent < ActiveRecord::Base
   belongs_to :student
   belongs_to :staff
 
-  validates_presence_of :student_id, :leavetype
+  validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate
   validates_numericality_of :telno
   
   
