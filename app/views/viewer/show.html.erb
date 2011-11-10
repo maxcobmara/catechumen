@@ -11,7 +11,8 @@
 		</ul>
 	</div>
 <% end %>
-<% if logged_in? %>
+<% if logged_in? && (request.request_uri == "/" || request.request_uri == "/home") %>
 <% else %>
-<%= @page.body %>
+	<%= @page.body %>
 <% end %>
+

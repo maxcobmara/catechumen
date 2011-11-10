@@ -117,8 +117,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :curriculums
 
-  map.resources :curriculums
-
   map.resources :docs
 
   map.resources :documents
@@ -181,7 +179,7 @@ ActionController::Routing::Routes.draw do |map|
     viewer.librarystats 'librarystats', :action => 'librarystats'
   end
   
-  map.view_page ':name', :controller => 'viewer', :action => 'home'
+  map.view_page ':name', :controller => 'viewer', :action => 'show'
   
 
 
