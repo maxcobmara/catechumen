@@ -1,15 +1,27 @@
-<h1>Apply For Training</h1>
+<h3>Apply For Training</h3>
+
 
 <% form_for(@ptdo) do |f| %>
   <%= f.error_messages %>
  <%= f.hidden_field :ptschedule_id %>
 
-  <p>
-    <%=h @ptdo.ptschedule.ptcourse.name %>
-  </p>
-  <p>
-    <%=h User.current_user.staff.name %>
-  </p>
+<div class="tform">
+<H2>Training Application</H2>
+<table width=50% >
+
+	<tr>
+		<td class="leftcol"><label for="name">Course Name :</label></td>
+		<td> <%=h @ptdo.ptschedule.ptcourse.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name">Staff Name : </label></td>
+		<td> <%=h User.current_user.staff.name %> </td>
+	</tr>
+ 
+
+</table>
+</div>
   <p>
     <%= f.submit 'Apply' %>
   </p>

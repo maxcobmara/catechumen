@@ -5,7 +5,7 @@
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="subject_id">Subject:</label></td>
-		<td><%=h @topic.subject_id.blank? ? "" : @topic.subject.name %></td>
+		<td><%=h @topic.subject_details %></td>
 	</tr>
 	
 	
@@ -50,9 +50,9 @@
 		<td><%=raw sanitize(simple_format(@topic.activity), :tags => %w(br p) ) %></td>
 	</tr>
 	
-	<tr>
+	<tr><!--18/10/2011 - Shaliza fixed error for approver if staff no longer exists -->
 		<td class="leftcol"><label for="creator_id">Created By:</label></td>
-		<td> <%=h @topic.creator.blank? ? "" : @topic.creator.mykad_with_staff_name %></td>
+		<td> <%=h @topic.created_details %></td>
 	</tr>
 	
 	<tr>
@@ -66,10 +66,10 @@
 		<td><!--#%= f.collection_select :subject_id, Subject.find(:all), :id, :subject, :include_blank => true %>-->
 		    <%=h @topic.approved_date %></td>
 	</tr>
-	<tr>
+	<tr><!--18/10/2011 - Shaliza fixed error for approver if staff no longer exists -->
 		<td class="leftcol"><label for="approvedby_id">Approved By:</label></td>
 		<td><!--#%= f.collection_select :subject_id, Subject.find(:all), :id, :subject, :include_blank => true %>-->
-		    <%=h @topic.approvedby_id.blank? ? "" : @topic.approver.mykad_with_staff_name %></td>
+		    <%=h @topic.approver_details %></td>
 	</tr>
 	<tr>
 		<th colspan = 2>Checking</th>
@@ -86,8 +86,8 @@
 		<td><%=h @topic.checkdate %></td>
 	</tr>
 </table>
-<BR>
 </div>
-
+<BR>
+	
 <%= link_to 'Edit', edit_topic_path(@topic) %> |
 <%= link_to 'Back', topics_path %>

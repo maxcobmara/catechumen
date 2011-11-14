@@ -6,7 +6,8 @@
 	  <div class="right">
 		   <!-- Put Search Here -->
 	  </div>
-	</div>
+</div>
+</div><!--18/10/2011 - Shaliza fixed error for DIVs -->
 
 <div class="tlist">
 <table width=100%>
@@ -24,26 +25,27 @@
 
 	
 
-		<% @topic_booba.each do |booba, topics| %>
+	<% @topic_booba.each do |booba, topics| %>
 		  <tr>
-		    <td><b><%=h booba %></b></td>
+		  <td colspan=12><b><%=h booba %></b></td>
 		  <tr>
 		<% for topic in topics %>
-		<!--<#% @topics.each do |topic| %>-->
+	<!--	<#% @topics.each do |topic| %>-->
 		  <tr>
 		    <td><%=h topic.topic_code %></td>
 		    <td><%=h topic.sequenceno %></td>
 		    <td><%=h topic.name %></td>
 		    <td><%=h topic.durahours %>:<%=h topic.duramins %> Hours</td>
 		    <td><%=h topic.version %></td>
-		    <td>-<!--<#%=h topic.creator_id.blank? ? "-" : topic.creator.name %>--></td>
-		    <td>-<!--<#%=h topic.approvedby_id.blank? ? "-" : topic.approver.name %>--></td>
+		    <td><%=h topic.created_details %></td><!--18/10/2011 - Shaliza fixed error for approver if staff no longer exists -->
+			<td><%=h topic.approver_details %></td><!--18/10/2011 - Shaliza fixed error for approver if staff no longer exists -->
 		    <td><%=h topic.approved_date %></td>
-		    <td><%= link_to 'Show', topic %></td>
-		    <td><%= link_to 'Edit', edit_topic_path(topic) %></td>
-		    <td><%= link_to 'Destroy', topic, :confirm => 'Are you sure?', :method => :delete %></td>
+		    <!--18/10/2011 - Shaliza fixed with add the icons -->
+		    <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => topic %></td>
+		    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => topic %></td>
+		    <td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), topic, :confirm => 'Are you sure?', :method => :delete %></td>
 		  </tr>
-		<% end %>
+	<% end %>
 		<% end %>
 		</table>
 		

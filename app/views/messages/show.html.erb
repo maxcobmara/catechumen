@@ -1,18 +1,24 @@
-<p>
-  <b>From:</b>
-  <%=h @message.from_id %>
-</p>
+<div class="tform">
+	<H2>Message Details</H2>
+  <table width=100% >
 
-<p>
-  <b>To:</b>
-  <%=h @message.to_id %>
-</p>
-
-<p>
-  <b>Message:</b>
-  <%=h @message.message %>
-</p>
-
-
+	<tr>
+		<td class="leftcol"><label for="from_id">From:</label></td>
+	    <td><%=h @message.from.staff.name  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="to_id">To :</label></td>
+		<td><%=h @message.staff.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="message">Message:</label></td>
+		<td><%=h @message.message %></td>
+	</tr>
+	
+</table>
+<BR>
+</div>
 <%= link_to 'Edit', edit_message_path(@message) %> |
 <%= link_to 'Back', messages_path %>

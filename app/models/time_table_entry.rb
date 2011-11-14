@@ -55,5 +55,51 @@ WEEK_DAY = [
           end
      end
 
+     #<18/10/2011 - Shaliza fixed error for timing >
+     def timing_start_details 
+           suid = timing_id.to_a
+           exists = PeriodTiming.find(:all, :select => "id").map(&:id)
+           checker = suid & exists     
+
+           if timing_id == nil
+              "" 
+            elsif checker == []
+              "Timing No Longer Available" 
+           else
+             period_timing.start_time
+           end
+      end
+      
+      #<18/10/2011 - Shaliza fixed error for timing >
+      def timing_end_details 
+             suid = timing_id.to_a
+             exists = PeriodTiming.find(:all, :select => "id").map(&:id)
+             checker = suid & exists     
+
+             if timing_id == nil
+                "" 
+              elsif checker == []
+                "Timing No Longer Available" 
+             else
+               period_timing.end_time
+             end
+        end
+        
+        #<18/10/2011 - Shaliza fixed error if staff does not have position >
+        def staff_details 
+               suid = staff_id.to_a
+               exists = Staff.find(:all, :select => "id").map(&:id)
+               checker = suid & exists     
+
+               if staff_id == nil
+                  "" 
+                elsif checker == []
+                  "Staff No Longer Exists" 
+               else
+                 timetable.staff_name_with_position
+               end
+        end
+        
+        
    
 end

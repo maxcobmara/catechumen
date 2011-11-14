@@ -1,17 +1,10 @@
-<h1>New message</h1>
+<h3>New Message</h3>
 
 <% form_for(@message) do |f| %>
   <%= f.error_messages %>
 
-  <p>
-    <%= f.label :to_name %><br />
-    <%= f.collection_select :to_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td>
-    <!--<#%= f.text_field_with_auto_complete :staff,  :to_id %>-->
-  </p>
-  <p>
-    <%= f.label :message %><br />
-    <%= f.text_area :message %>
-  </p>
+  <%=render :partial => 'form', :locals => {:f => f} %> 
+
   <p>
     <%= f.submit 'Create' %>
   </p>

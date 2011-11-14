@@ -1,30 +1,45 @@
-<p>
-  <%= f.label :ptcourse_id %><br />
-		<%= f.collection_select :ptcourse_id, Ptcourse.find(:all), :id, :name, :prompt => "Select" %>
-</p>
-<p>
-  <%= f.label :start %><br />
-  <%= f.date_select :start %>
-</p>
-<p>
-  <%= f.label :location %><br />
-  <%= f.text_field :location %>
-</p>
-<p>
-  <%= f.label :min_participants %><br />
-  <%= f.text_field :min_participants, :size => 3 %>
-</p>
-<p>
-  <%= f.label :max_participants %><br />
-  <%= f.text_field :max_participants, :size => 3  %>
-</p>
-<p>
-  <%= f.label :final_price %><br />
-  <%= f.text_field :final_price %>
-</p>
-	<% permitted_to? :approve, :ptcourses do %>
-	<p>
-	  <%= f.label :budget_ok %><br />
-	  <%= f.check_box :budget_ok %>
-	</p>
-	<% end %>
+<div class="tform">
+<H2><%= t 'ptschedule.schedule_details' %></H2>
+ <table width=100% >
+	<tr>
+		<td class="leftcol"><label for="ptcourse_id"><%= t 'ptschedule.ptcourse_id' %> : </label></td>
+		<td><%= f.collection_select :ptcourse_id, Ptcourse.find(:all), :id, :name, :prompt => "Select" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="start"><%= t 'ptschedule.start' %> : </label></td>
+		<td><%= f.date_select :start, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="location"><%= t 'ptschedule.location' %> : </label></td>
+		<td><%= f.text_field :location %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="min_participants"><%= t 'ptschedule.minparticipant' %> : </label></td>
+		<td><%= f.text_field :min_participants, :size => 3 %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="max_participants"><%= t 'ptschedule.maxparticipant' %> : </label></td>
+		<td><%= f.text_field :max_participants, :size => 3  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="final_price"><%= t 'ptschedule.final_price' %>: </label></td>
+		<td> RM <%= f.text_field :final_price, :size => 12 %></td>
+	</tr>
+
+    <% permitted_to? :approve, :ptcourses do %>
+
+    <tr>
+		<td class="leftcol"><label for="budget_ok"><%= t 'ptschedule.budget_ok' %> : </label></td>
+		<td> <%= f.check_box :budget_ok %></td>
+	</tr>
+
+	
+<% end %>
+	
+</table>		
+</div>
