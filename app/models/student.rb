@@ -2,7 +2,7 @@ class Student < ActiveRecord::Base
   
   before_save  :titleize_name
 
-  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd
+  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake
   validates_numericality_of :icno, :stelno
   validates_length_of       :icno, :is =>12
   validates_uniqueness_of   :icno
@@ -10,9 +10,6 @@ class Student < ActiveRecord::Base
   has_attached_file :photo,
                     :url => "/assets/students/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/students/:id/:style/:basename.:extension"
-                    
-  validates_attachment_size         :photo, :less_than => 50.kilobytes
-  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
   
   
   has_and_belongs_to_many :klasses          #has_and_belongs_to_many :programmes
@@ -20,24 +17,23 @@ class Student < ActiveRecord::Base
   belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
   
   has_one   :user                                                                           #Link to Model user
-  has_many  :leaveforstudents, :dependent => :destroy                                       #Link to LeaveStudent
+  has_many  :leaveforstudents                                                               #Link to LeaveStudent
   has_many  :counsellings                                                                   #Link to Counselling
-  has_many  :librarytransactions, :dependent => :destroy                                    #Link to LibraryTransactions
+  has_many  :librarytransactions                                                            #Link to LibraryTransactions
   has_many  :studentgrade,    :class_name => 'Grade',     :foreign_key => 'student_id'      #Link to Model Grade
-  has_many  :cases,           :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
+  has_many  :student,         :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
   has_many  :studentevaluate, :class_name => 'Courseevaluation', :foreign_key => 'student_id'#Link to Model CourseEvaluation
   has_many  :student,         :class_name => 'Residence', :foreign_key => 'student_id'      #Link to Model residence
   
-  has_many :sdiciplines, :foreign_key => 'student_id', :dependent => :nullify
-  belongs_to :tenant
+  #has_many :sdiciplines, :foreign_key => 'student_id'
   #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
   
   
-
+ #named_scope :programme,      {:course => {:course_id => programme.id}}
  
   def self.search(search)
     if search
-      @students = Student.find(:all, :conditions => ["icno LIKE ? or name ILIKE ? or matrixno ILIKE ?", "%#{search}%","%#{search}%","%#{search}%"], :order => :icno)
+      @students = Student.find(:all, :conditions => ['students.name ILIKE ? OR course_id LIKE ?', "%#{search}%","%#{search}%"], :order => 'students.id DESC')
     else
      @students = Student.find(:all)
     end
@@ -57,10 +53,10 @@ class Student < ActiveRecord::Base
   end
   
   #group by intake
-  def isorter
-    suid = intake_id
-    Intake.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
-  end
+ # def isorter
+ #   suid = intake_id
+ #   Intake.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
+ # end
   
   def formatted_mykad
     "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
@@ -73,18 +69,33 @@ class Student < ActiveRecord::Base
   def bil
     v=1
   end
+  
+  def student_name_with_programme
+    "#{name} - #{programme_for_student}"
+  end
+  
+  def programme_for_student
+    if course.blank?
+      "N/A"
+    else
+      course.name
+    end
+  end
    
+   def bil
+      v=1
+   end
    
    
 # ------------------------------code for repeating field qualification---------------------------------------------------
  has_many :qualifications, :dependent => :destroy
- accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }, :allow_destroy => true
+ accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
  
  has_many :kins, :dependent => :destroy
- accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }, :allow_destroy => true
+ accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
  
  has_many :spmresults, :dependent => :destroy
- accepts_nested_attributes_for :spmresults, :reject_if => lambda { |a| a[:spm_subject].blank? }, :allow_destroy => true
+ accepts_nested_attributes_for :spmresults, :reject_if => lambda { |a| a[:spm_subject].blank? }
  
   
 STATUS = [
@@ -142,7 +153,8 @@ BLOOD_TYPE = [
              [ "A+", "4" ],
              [ "B-", "5" ],
              [ "B+", "6" ],
-             [ "AB-", "7" ]
+             [ "AB-", "7" ],
+             [ "AB+", "8" ]
     ]
     
 

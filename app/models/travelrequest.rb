@@ -1,12 +1,12 @@
 class Travelrequest < ActiveRecord::Base
    
   has_one :travelclaimrequest
-  #belongs_to :staff
+  belongs_to :staff
   
   #this works belongs_to :staff
-  belongs_to :stafftravel,  :class_name => 'Staff',   :foreign_key => 'staff_id'
-  belongs_to :treplace,     :class_name => 'Staff',   :foreign_key => 'replacement_id'
-  belongs_to :hod,          :class_name => 'Staff',   :foreign_key => 'hod_id'
+  belongs_to :stafftravel,    :class_name => 'Staff',        :foreign_key => 'staff_id'
+  belongs_to :treplace,       :class_name => 'Staff',         :foreign_key => 'replacement_id'
+  belongs_to :hod,            :class_name => 'Staff',         :foreign_key => 'hod_id'
   
   #has_many :travel, :class_name => 'Travelclaim', :foreign_key => 'travelrequest_id'
   
@@ -37,6 +37,36 @@ class Travelrequest < ActiveRecord::Base
   
   def travel_request_key
     "#{trcode} for #{short_descr} at #{short_dest}"
+  end
+  
+  #04/10/2011 - Shaliza fixed the error for positioname
+  def position_details 
+       suid = staff_id.to_a
+       exists = Staff.find(:all, :select => "id").map(&:id)
+       checker = suid & exists     
+   
+       if staff_id == nil
+          "" 
+        elsif checker == []
+          "Position No Longer Exists" 
+       else
+         staff.position_for_staff
+       end
+  end
+  
+  #04/10/2011 - Shaliza fixed the error for positioname
+  def hod_details 
+      suid = hod_id.to_a
+      exists = Staff.find(:all, :select => "id").map(&:id)
+      checker = suid & exists     
+
+      if hod_id == nil
+       "" 
+      elsif checker == []
+      "Staff No Longer Exists" 
+      else
+      hod.mykad_with_staff_name
+      end
   end
   
   def self.search(search)

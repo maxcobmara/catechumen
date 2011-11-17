@@ -1,6 +1,6 @@
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Set Annual Training Budget  &nbsp;
+		<h2 class="left"><%= t 'ptbudget.list' %>  &nbsp;
 		<h2><%= link_to image_tag("add.png", :border => 0, :title => 'Create New Fiscal Year'), new_ptbudget_path %></h2>
 	</div>
 </div>
@@ -13,15 +13,15 @@
     <th>Budget</th>
     <th>Used</th>
     <th>Balance</th>
-    <th colspan=3 class="ac">Control</th>
+    <th colspan=3 class="ac"><%= t 'control' %></th>
   </tr>
 
 <% @ptbudgets.each do |ptbudget| %>
   <tr>
-    <td><%=h ptbudget.fiscalstart %></td>
-    <td><%=h ringgols(ptbudget.budget) %></td>
-		<td>-</td>
-		<td>-</td>
+    <td><%=h l(ptbudget.fiscalstart) %></td><!--19/10/2011-Shaliza changed date format -->
+    <td><%=h ringgols(ptbudget.budget) %></td><!--19/10/2011-Shaliza remove word RM-->
+	<td>-</td>
+	<td>-</td>
     <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptbudget %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptbudget %></td>
     <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), ptbudget, :confirm => 'Are you sure?', :method => :delete %></td>
@@ -32,7 +32,7 @@
 <br />
 </div>
 
-<%= link_to 'New Annual Budget', new_ptbudget_path %>
+<%= link_to (t 'ptbudget.create'), new_ptbudget_path %>
 
 <!-- will need to create logic -->
 <!-- 1. countdown to new budget -->

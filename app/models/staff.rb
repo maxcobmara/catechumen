@@ -6,9 +6,7 @@ class Staff < ActiveRecord::Base
     self.name = name.titleize
   end
   
-  has_attached_file :photo,
-                      :url => "/assets/staffs/:id/:style/:basename.:extension",
-                      :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
+  has_attached_file :photo#, :styles => {:thumb => "40x60"}
   #:styles => {:thumb => "100x100#" }
   
  # validates_attachment_presence :photo
@@ -66,7 +64,7 @@ class Staff < ActiveRecord::Base
   has_many :users
   
   #Link to Model TimetableEntry
-  has_many :timetable,  :class_name => 'TimeTableEntry', :foreign_key => 'staff_id', :dependent => :nullify
+  has_many :timetable,  :class_name => 'TimeTableEntry', :foreign_key => 'staff_id'
   
   #Link to model bulletin
   #has_many :bulletin, :class_name => 'bulletin', :foreign_key => 'postedby_id'  #posted by
@@ -118,9 +116,9 @@ class Staff < ActiveRecord::Base
   
   
   #links to Model TravelRequest
-  has_many :stafftravel,    :class_name => 'Travelrequest', :foreign_key => 'staff_id',       :dependent => :destroy #staff name
-  has_many :replacements,   :class_name => 'Travelrequest', :foreign_key => 'replacement_id', :dependent => :nullify #replacement name
-  has_many :hod,            :class_name => 'Travelrequest', :foreign_key => 'hod_id',         :dependent => :nullify #hod
+  has_many :stafftravel,     :class_name => 'Travelrequest', :foreign_key => 'staff_id', :dependent => :destroy #staff name
+  has_many :replacements,       :class_name => 'Travelrequest', :foreign_key => 'replacement_id' #replacement name
+  has_many :hod,                :class_name => 'Travelrequest', :foreign_key => 'hod_id' #hod
   
   #links to Model Attendances
   has_many :attendingstaffs,        :class_name => 'Attendance', :foreign_key => 'staff_id'#, :dependent => :destroy #attendance staff name
@@ -172,16 +170,16 @@ class Staff < ActiveRecord::Base
 #----------------------------code for repeating fields------------------------------------------  
  
   has_many :qualifications, :dependent => :destroy
-  accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }, :allow_destroy => true
+  accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
   
   has_many :loans, :dependent => :destroy
-  accepts_nested_attributes_for :loans, :reject_if => lambda { |a| a[:ltype].blank? }, :allow_destroy => true
+  accepts_nested_attributes_for :loans, :reject_if => lambda { |a| a[:ltype].blank? }
 
   has_many :kins, :dependent => :destroy
-  accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }, :allow_destroy => true
+  accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
   
   has_many :bankaccounts, :dependent => :destroy
-  accepts_nested_attributes_for :bankaccounts, :reject_if => lambda { |a| a[:account_no].blank? }, :allow_destroy => true
+  accepts_nested_attributes_for :bankaccounts, :reject_if => lambda { |a| a[:account_no].blank? }
   
  
      
@@ -217,8 +215,10 @@ class Staff < ActiveRecord::Base
     end
   end
   
+  
+  
   def my_bank
-    (Staff::BANK.find_all{|disp, value| value == bank }).map {|disp, value| disp}
+    (Bankaccount::BANK.find_all{|disp, value| value == bank }).map {|disp, value| disp}
   end
   
   def render_reports_to
@@ -248,6 +248,8 @@ class Staff < ActiveRecord::Base
     sid = staff.id
     Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
   end
+  
+ 
   
 
   
@@ -282,7 +284,9 @@ class Staff < ActiveRecord::Base
       [ "A+", "4" ],
       [ "B-", "5" ],
       [ "B+", "6" ],
-      [ "AB-", "7" ]
+      [ "AB-", "7" ],
+      [ "AB+", "8" ]
+      
   ]
          
   STATECD = [
@@ -338,7 +342,7 @@ class Staff < ActiveRecord::Base
        #  Displayed       stored in db
        [ "Kementerian Kesihatan Malaysia","kkm" ],
        [ "Suruhanjaya Perkhidmatan Awam","spa" ],
-       [ "Jabatan Perkihidmatan Awam","jpa" ]
+       [ "Jabatan Perkhidmatan Awam","jpa" ]
        
   ]
   

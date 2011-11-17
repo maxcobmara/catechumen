@@ -1,19 +1,27 @@
-<h1>New ptbudget</h1>
+<h3><%= t 'ptbudget.new' %></h3>
 
 <% form_for(@ptbudget) do |f| %>
   <%= f.error_messages %>
 
+<div class="tform">
+<H2><%= t 'ptbudget.budget_details' %></H3>
+  <table width=100% >
+	<tr><!--19/10/2011-Shaliza add placeholder -->
+		<td class="leftcol"><label for="budget"><%= t 'ptbudget.budget' %> : </label></td>
+		<td><%= f.text_field :budget, :placeholder => 'RM', :size => 12 %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="fiscalstart"><%= t 'ptbudget.fiscalstart' %> : </label></td>
+		<td><%= f.date_select :fiscalstart, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+
+	</tr>
+
+</table>		
+</div>
   <p>
-    <%= f.label :budget %><br />
-    <%= f.text_field :budget %>
-  </p>
-  <p>
-    <%= f.label :fiscalstart %><br />
-    <%= f.date_select :fiscalstart %>
-  </p>
-  <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit  (t 'icms.submit') %>
   </p>
 <% end %>
 
-<%= link_to 'Back', ptbudgets_path %>
+<%= link_to  (t 'icms.back'), ptbudgets_path %>

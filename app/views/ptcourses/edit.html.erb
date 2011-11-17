@@ -1,9 +1,55 @@
-<h1>Editing ptcourse</h1>
+<h3><%= t 'ptcourse.edit' %></h3>
 
 <% form_for(@ptcourse) do |f| %>
   <%= f.error_messages %>
 
-<%=render :partial => 'form', :locals => {:f => f} %> 
+<div class="tform">
+<H2><%= t 'ptcourse.courses_details' %></H2>
+<table width=100% >	
+	<tr>
+		<td class="leftcol"><label for="name"><%= t 'ptcourse.name' %>: </label></td>
+		<td> <%= f.text_field :name, :size => '40' %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="course_type"><%= t 'ptcourse.course_type' %> : </label></td>
+		<td><%= f.select :course_type,
+		                 Ptcourse::COURSE_TYPE,
+		                 :prompt => "Select" %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="provider"><%= t 'ptcourse.provider' %> : </label></td>
+		<td><%= f.collection_select :provider, Addbook.find(:all), :id, :name, :prompt => "Select" %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="duration"><%= t 'ptcourse.duration' %> : </label></td>
+		<td><%= f.text_field :duration, :size => '5' %>
+			<%= f.select :duration_type, Ptcourse::DUR_TYPE, :prompt => "Select" %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="description"><%= t 'ptcourse.description' %> : </label></td>
+		<td><%= f.text_area :description, :size => '40x8' %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="cost"><%= t 'ptcourse.cost' %> : </label></td>
+		<td><%= f.text_field :cost, :size => '5', :placeholder => 'RM' %></td>
+	</tr>
+
+
+    <% permitted_to? :approve, :ptcourses do %>
+
+	<tr>
+		<td class="leftcol"><label for="approved"><%= t 'ptcourse.approved' %>? : </label></td>
+		<td><%= f.check_box :approved %></td>
+	</tr>
+
+<% end %>
+</table>
+</div>
   
   <p>
     <%= f.submit 'Update' %>

@@ -28,7 +28,7 @@
 			<% for student in students %>
 		<!--	<#% @students.each do |student| %>-->
 			<tr>
-				<td><%=h student.course_id.blank? ? " " : student.course.name %></td>
+				<td><%=h student.course_id.blank? ? " " : student.course.programme_with_specialisation %></td>
 				<td><%=h student.formatted_mykad %></td>
 				<td><%=h student.name %></td>
 				<td><%=h student.matrixno %></td>
@@ -44,8 +44,9 @@
 			<% end %>
 		<% end %>
 	</table>
-</div>
 
+</div>
+<BR>
 
 <% if permitted_to? :create, @student %>
 <%= link_to 'New Student', new_student_path %>

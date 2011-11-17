@@ -1,19 +1,17 @@
 <div class="tform">
-  <table width=100% >
+
 
 	<%= render :partial => 'applyshow' %>
 
-
-	<tr>
-		<th colspan = 2>Approve Student Leave Request</th>
-	</tr>
+<H2>Approve Student Leave Request</H2>
+<table>
 	<tr>
 	    <td class="leftcol"><label for="approved"><b>Approve Student Leave:</b></label></td>
 		<td><%=h @leaveforstudent.approved? ? "Approved" : "Not Approved" %></td>
 	</tr>
-	<tr>
+	<tr><!--18/10/2011 - Shaliza fixed for error when staff no longer exists -->
 		<td class="leftcol"><label for="staff_id"><b>Approved By:</b></label></td>
-		<td><%=h @leaveforstudent.staff_id? ? "" : @leaveforstudent.approver_details %></td>
+		<td><%=h @leaveforstudent.approver_details %></td>
 	</tr>
 	<tr>
 	    <td class="leftcol"><label for="approvedate"><b>Approved On:</b></label></td>

@@ -24,6 +24,8 @@ en:
           asset: "Asset"
           disposal: "Disposal"
           assetloss: "Asset Loss"
+          librarytransaction: "Library Transaction"
+          
       attribute:
           staff:
               icno: "MyKad No"
@@ -60,7 +62,8 @@ en:
              reportcode: "Internal Loss Report Code"
              losstype: "Lost Type"
              sio_id: "Investigating Officer"
-                 
+          librarytransaction:
+             book_id: "Accession No"          
       errors:
           template:
             body: "There were problems with the following fields:"
@@ -202,6 +205,7 @@ en:
     leavetype: Leave Type
     leavestartdate: Leave Start Date
     leavenddate: Leave End Date
+    back: Show My Leave
     reason: Reason
     notes: Notes
     create: Apply for Leave
@@ -323,7 +327,7 @@ en:
   ptschedule:
     create: New Schedule Training
     new: New Training Schedule
-    edit: Editing Training Schedule
+    edit: Edit Training Schedule
     list: Training Schedulr For Staff List
     schedule_details: Training Course Details
     start: Start
@@ -334,7 +338,7 @@ en:
     final_price: Final Price
     budget_ok: Budget
     description: Description
-    participant: Participant
+    participant: Participants
     conducted_by: Conducted By
     course_type: Course Type
     course_available: Courses Available For Staff
@@ -347,8 +351,9 @@ en:
     edit: Editing Offices Supplies
     create: Create Office Supplies
     supplier_details: Office Supplies
-    supplycode: Supplies Code
-    category: Category
+    supplycode: Supplier Code
+    category: Product Name
+    supplier_id: Supplier Name
     unittype: Unit Type
     maxquantity: Max Quantity
     minquantity: Min Quantity
@@ -372,7 +377,7 @@ en:
       new: New Disposal
       create: Create New Disposal
       disposal_details: Disposals Details 
-      asset_id: Asset Code
+      asset_id: Serial Registration No
       used: Used
       usedduration: Duration Used
       currentvalue: Current Value
@@ -380,6 +385,11 @@ en:
       recommendation: Recommendation
       gift: Gift
       status: Status
+      asset_description: Asset Description
+      purchasedt: Purchase Date
+      quantity: Quantity
+      purchaseprice: Purchase Price
+      depreciation: Depreciation
   
   assetloses:
       list: Lists of Asset Loss
@@ -425,66 +435,66 @@ en:
       sio_id: Investigating Officer
       
   evaluation:
-     form:
-       list: Lists of Appraisals
-       create: Create New Appraisals
-       new: New Appraisals
-       title_part1:  'Part 1: Staff Details (filled by PYD)'
-       name: Staff Name
-       icno: MykadNo
-       position: Position
-       evaluationdate: Evaluation Date
-       title_partIIa: 'Part IIa - Activities'
-       label_001: '1. Activities and contributions outside of official duties'
-       label_002: 'List activities and contributions outside of official duties such as sports, organisations or creative contributions at the community, department, district, state or international level that have benefitted the organisation, community of country for the year of evaluation.'
-       title_part2b: 'Part IIb:  Training'
-       label_003: '(i) List training programmes (seminar, courses, workshops, etc that have ben attended this year.'
-       label_004: '(ii). List Training Needed'
-       parttwodate: Date
-       label_005: Evaluation Criteria
-       title_part3: 'Part III: Work Output (50%)'
-       quantity: 1. WORK OUTPUT QUANTITY
-       quantity_desc: 'Work output quantity such as total, count, rate, frequency and others in relation to the target work output quantity as described'
-       quality: 2. QUALITY OF WORK
-       quanlity_desc1: '1. Evaluated in terms of completeness, orderly and tidy.'
-       quanlity_desc2: '2. Evaluated in terms of efforts and initiatives to achieve the perfection of the work.'
-       ontime: 3. TIMELINESS
-       ontime_desc: 'Ability to produce work or perform tasks in a specified time period..'
-       effective: 4. EFFECTIVENESS OF THE WORK
-       effective_desc: 'Evaluated in terms of stake-holder requirements or customer.'
-       title_part4: 'Part IV: Skills (20%)'
-       knowledge: 5. KNOWLEDGE AND SKILLS IN THE FIELD OF WORK
-       knowledge_desc: 'Have the knowledge and skills / expertise in producing work includes the ability to identify, analyze and solve problems.'
-       rules: 6. POLICY IMPLEMENTATION ADMINISTRATIVE RULES AND INSTRUCTIONS
-       rules_desc: 'The ability to appreciate and implement policies, regulations and administrative instructions relating to the terms of reference.'
-       communication: 7. Komunikasi
-       communication_desc: 'Able to express opinions, ideas, understanding or oral or written instructions relating to the terms of reference include domination using good grammar and presentation.'
-       title_part5: 'Part V: Personal (20%)'
-       leadership: 8. LEADERSHIP CRITERIA
-       leadership_desc: 'Have a vision, commitment, ability, decision making, move and motivate officers to the achievement of the objectives orgnisation.'
-       management: 9. KEBOLEHAN MENGELOLA
-       management_desc: 'Capacity and capability to mobilize all the resources within its control such as finance, manpower, equipment and information to plan, organize, distribute and operate an organization of task to achieve objective.'
-       discipline: 10. DISCIPLINE
-       discipline_desc: 'Have a sense of self-restraint in terms of mental and physical, including compliance with regulations, on time, keep its promises and to be patient.'
-       proactive: 11. PROACTIVE and INOVATIVE
-       proactive_desc: 'The ability to anticipate the possibility of inventing and producing new ideas and to innovate to improve the quality and productivity of the organization.'
-       relate: 12. RELATIONS AND COOPERATION LINKS
-       relate_desc: 'The ability of officers to create a harmonious atmosphere of cooperation and friendly and can adapt to all situations.'
-       title_part6: 'Part VI: Contribution (5%)'
-       parttwo: 13. OUTSIDE ACTIVITIES AND CONTRIBUTIONS OFFICIAL DUTIES
-       parttwo_desc: 'Based on the information in Part II paragraph 1, the Assessing Officer is required to provide ratings using a scale of 1 to 10. There were no marks can be given (empty) if PYD does not record activities or contributions.'
-
-       title_part8: 'Part VIII: Summary and Authentication by First Evaluating Officer (PPP)'
-       part8_desc: 'Duration PYD has served under you'
-       part8i_desc: 'First Evaluating Officer (PPP) should provide a summary of Evaluated Officer (PYD)`s overall performance'
-       part8i: '(i) Overall Performance'
-       part8ii: '(ii) Career Progress'
-       ppp_statement: 'Hereby authenticated that this staff`s performance has been provided to him/her'
-       pppid: 'Name of First Evaluating Officer (PPP)'
-       title_part9: 'Part IX - Summary by Second Evaluating Officer (PPK)'
-       part9_desc: 'PPK should provide an overall performance summary for the PYD bases on the full statement of the PPP'
-       ppkid: 'Name of Second Evaluating Officer (PPK)'
-       title_part10: 'Part IV: '
+    form:
+      list: Lists of Appraisals
+      create: Create New Appraisals
+      new: New Appraisals
+      title_part1:  'Part 1: Staff Details (filled by PYD)'
+      name: Staff Name
+      icno: MykadNo
+      position: Position
+      evaluationdate: Evaluation Date
+      title_partIIa: 'Part IIa - Activities'
+      label_001: '1. Activities and contributions outside of official duties'
+      label_002: 'List activities and contributions outside of official duties such as sports, organisations or creative contributions at the community, department, district, state or international level that have benefitted the organisation, community of country for the year of evaluation.'
+      title_part2b: 'Part IIb:  Training'
+      label_003: '(i) List training programmes (seminar, courses, workshops, etc that have ben attended this year.'
+      label_004: '(ii). List Training Needed'
+      parttwodate: Date
+      label_005: Evaluation Criteria
+      title_part3: 'Part III: Work Output (50%)'
+      quantity: 1. WORK OUTPUT QUANTITY
+      quantity_desc: 'Work output quantity such as total, count, rate, frequency and others in relation to the target work output quantity as described'
+      quality: 2. QUALITY OF WORK
+      quanlity_desc1: '1. Evaluated in terms of completeness, orderly and tidy.'
+      quanlity_desc2: '2. Evaluated in terms of efforts and initiatives to achieve the perfection of the work.'
+      ontime: 3. TIMELINESS
+      ontime_desc: 'Ability to produce work or perform tasks in a specified time period..'
+      effective: 4. EFFECTIVENESS OF THE WORK
+      effective_desc: 'Evaluated in terms of stake-holder requirements or customer.'
+      title_part4: 'Part IV: Skills (20%)'
+      knowledge: 5. KNOWLEDGE AND SKILLS IN THE FIELD OF WORK
+      knowledge_desc: 'Have the knowledge and skills / expertise in producing work includes the ability to identify, analyze and solve problems.'
+      rules: 6. POLICY IMPLEMENTATION ADMINISTRATIVE RULES AND INSTRUCTIONS
+      rules_desc: 'The ability to appreciate and implement policies, regulations and administrative instructions relating to the terms of reference.'
+      communication: 7. Komunikasi
+      communication_desc: 'Able to express opinions, ideas, understanding or oral or written instructions relating to the terms of reference include domination using good grammar and presentation.'
+      title_part5: 'Part V: Personal (20%)'
+      leadership: 8. LEADERSHIP CRITERIA
+      leadership_desc: 'Have a vision, commitment, ability, decision making, move and motivate officers to the achievement of the objectives orgnisation.'
+      management: 9. KEBOLEHAN MENGELOLA
+      management_desc: 'Capacity and capability to mobilize all the resources within its control such as finance, manpower, equipment and information to plan, organize, distribute and operate an organization of task to achieve objective.'
+      discipline: 10. DISCIPLINE
+      discipline_desc: 'Have a sense of self-restraint in terms of mental and physical, including compliance with regulations, on time, keep its promises and to be patient.'
+      proactive: 11. PROACTIVE and INOVATIVE
+      proactive_desc: 'The ability to anticipate the possibility of inventing and producing new ideas and to innovate to improve the quality and productivity of the organization.'
+      relate: 12. RELATIONS AND COOPERATION LINKS
+      relate_desc: 'The ability of officers to create a harmonious atmosphere of cooperation and friendly and can adapt to all situations.'
+      title_part6: 'Part VI: Contribution (5%)'
+      parttwo: 13. OUTSIDE ACTIVITIES AND CONTRIBUTIONS OFFICIAL DUTIES
+      parttwo_desc: 'Based on the information in Part II paragraph 1, the Assessing Officer is required to provide ratings using a scale of 1 to 10. There were no marks can be given (empty) if PYD does not record activities or contributions.'
+      
+      title_part8: 'Part VIII: Summary and Authentication by First Evaluating Officer (PPP)'
+      part8_desc: 'Duration PYD has served under you'
+      part8i_desc: 'First Evaluating Officer (PPP) should provide a summary of Evaluated Officer (PYD)`s overall performance'
+      part8i: '(i) Overall Performance'
+      part8ii: '(ii) Career Progress'
+      ppp_statement: 'Hereby authenticated that this staff`s performance has been provided to him/her'
+      pppid: 'Name of First Evaluating Officer (PPP)'
+      title_part9: 'Part IX - Summary by Second Evaluating Officer (PPK)'
+      part9_desc: 'PPK should provide an overall performance summary for the PYD bases on the full statement of the PPP'
+      ppkid: 'Name of Second Evaluating Officer (PPK)'
+      title_part10: 'Part IV: '
     
   bulletin:
      new: New Bulletin
@@ -587,7 +597,7 @@ en:
     publish_date: Publish Date
     publish_location: Publish Location
     links: Links/URL
-    bookcode: Book Code
+    bookcode: Library Code
     accessionno: Accession No
     catsource: Cataloging Source To
     classno: Class No
@@ -595,6 +605,8 @@ en:
     roman: Roman
     size: Size
     pages: Pages
+    notes: Notes
+    quantity: Quantity
     series: Series
     location: Location
     edition: Edition
@@ -604,7 +616,7 @@ en:
     purchaseprice: Purchase Price
     purchasedate: Purchase Date
     receiveddate: Receive Date
-    receiver_id: received By
+    receiver_id: Received By
     supplier_id: Supplier
       
       
@@ -651,25 +663,6 @@ en:
     engineno: "Engine No.:"
     registration: "Registration No."
     otherinfo: "Components & Accessories"
-    
-  disposal:
-       list: Lists of Disposals
-       new: New Disposal
-       create: Create New Disposal
-       disposal_details: Disposals Details 
-       asset_id: Serial Registration No
-       used: Used
-       usedduration: Duration Used
-       currentvalue: Current Value
-       opinion: Opinion  
-       recommendation: Recommendation
-       gift: Gift
-       status: Status
-       asset_description: Asset Description
-       purchasedt: Purchase Date
-       quantity: Quantity
-       purchaseprice: Purchase Price
-       depreciation: Depreciation
     
       
   date:

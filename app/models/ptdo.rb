@@ -5,8 +5,10 @@ class Ptdo < ActiveRecord::Base
   belongs_to  :staff
   has_many    :appraisals, :through => :staff
   
+  
+  
   def whoami
-    self.staff_id = User.current_user.staff_id
+    self.staff_id = User.current_user.staff.id
     self.ptcourse_id = ptschedule.ptcourse.id
   end
   
@@ -26,18 +28,21 @@ class Ptdo < ActiveRecord::Base
     end
   end
   
-  def staff_details 
-          suid = staff_id.to_a
-          exists = Staff.find(:all, :select => "id").map(&:id)
-          checker = suid & exists     
+  def applicant_details 
+       suid = staff_id.to_a
+       exists = Staff.find(:all, :select => "id").map(&:id)
+       checker = suid & exists     
+   
+       if staff_id == nil
+          "" 
+        elsif checker == []
+          "Staff No Longer Exists" 
+       else
+         applicant.mykad_with_staff_name
+       end
+  end
+  
+  
 
-          if staff_id == nil
-             "" 
-           elsif checker == []
-             "Staff No Longer Exists" 
-          else
-            staff.mykad_with_staff_name
-          end
-    end
   
 end
