@@ -25,7 +25,17 @@
 		<tr>
 			<td class="leftcol"><%= t 'student.stelno' %> :</td>
 			 <td><%=h @student.stelno %></td>
+		</tr>
+		
+		<tr><!-- 17/11/2011 - Shaliza added Address -->
+			<td class="leftcol"><%= t 'student.address' %> :</td>
+		    <td><%=h @student.address %></td>
 		</tr>	
+		<tr><!-- 17/11/2011 - Shaliza added Address Duty -->
+			<td class="leftcol"><%= t 'student.address_posbasik' %> :</td>
+			 <td><%=h @student.address_posbasik %></td>
+		</tr>
+			
 		<tr>
 			<td class="leftcol"><label for="ssponsor"><%= t 'student.ssponsor' %>:</label></td>
 			 <td><%=h @student.ssponsor %></td>
@@ -127,7 +137,7 @@
 				<td class="leftcol">SPM Results</td>
 				<td>
 						<% for spmresult in @student.spmresults %>
-								<%=h spmresult.spm_subject %>  &nbsp &nbsp  -  &nbsp &nbsp <%=h (Spmresult::GRADE.find_all{|disp, value| value == spmresult.grade}).map {|disp, value| disp} %><BR>
+								<%=h spmresult.spm_subject %>  &nbsp &nbsp  -  &nbsp &nbsp <%=h spmresult.grade %><BR>
 						<% end %>
 				</td>
 			</tr>

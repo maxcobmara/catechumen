@@ -152,6 +152,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :documents
 
+  map.calendar '/calendar/:year/:month', :controller => 'calendar', :action => 'index', :requirements => {:year => /\d{4}/, :month => /\d{1,2}/}, :year => nil, :month => nil
   map.resources :events
 
   map.resources :titles
@@ -161,7 +162,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/staffs/reportforstaff', :controller => 'staffs', :action => 'reportforstaff'
   map.resources :staffs
   
-  
+  #map.calendar '/calendar/:year/:month', :controller => 'calendar', :action => 'index', :requirements => {:year => /\d{4}/, :month => /\d{1,2}/}, :year => nil, :month => ni
   
   
 

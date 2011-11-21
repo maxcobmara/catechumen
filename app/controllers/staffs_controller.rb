@@ -1,12 +1,13 @@
 class StaffsController < ApplicationController
   filter_resource_access
+  helper_method :sort_column, :sort_direction
   
   # GET /staffs
   # GET /staffs.xml
 def index
   #@staffs = Staff.all
-  @staffs = Staff.find(:all, :conditions => ['name ILIKE ?', "%#{params[:search]}%"])
-  #@staffs = Staff.with_permissions_to(:index).search(params[:search])
+  #@staffs = Staff.find(:all, :order => sort_column + " " + sort_direction, :conditions => ['name ILIKE ?', "%#{params[:search]}%"])
+  @staffs = Staff.with_permissions_to(:index).find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['name ILIKE ?', "%#{params[:search]}%"])
   respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @staffs }
@@ -133,5 +134,14 @@ def ruport
       format.html { redirect_to(staffs_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  private
+
+  def sort_column
+      Staff.column_names.include?(params[:sort]) ? params[:sort] : "icno" 
+  end
+  def sort_direction
+      %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
   end
 end

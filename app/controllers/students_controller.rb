@@ -3,11 +3,10 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.xml
   def index
-    @students = Student.with_permissions_to(:index).search(params[:search])
+    @students = Student.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page])#17/11/2011 - Shaliza added pagination for student
     @student_intakes = @students.group_by { |t| t.intake } # 21/10/2011 - Shaliza changed with group by intake
- 
-    
     respond_to do |format|
+     # flash[:notice] = "Sorry, your search didn't return any results."
       format.html # index.html.erb
       format.xml  { render :xml => @students }
     end
@@ -42,7 +41,7 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
   end
   
-def formforstudent
+  def formforstudent
      @student = Student.find(params[:id])  
      #@students = Student.search(params[:search])
      render :layout => 'report'
@@ -50,8 +49,14 @@ def formforstudent
          #format.html # index.html.erb  { render :action => "report.css" }
          #format.xml  { render :xml => @staffs }
      #end
-end
-  
+  end
+
+  def report  
+    @students = Student.search(params[:all])
+    @students = Student.find(:all)
+    render :layout => 'report'
+    
+  end
  
   # POST /students
   # POST /students.xml

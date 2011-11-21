@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111021062239) do
+ActiveRecord::Schema.define(:version => 20111117050903) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -420,8 +420,8 @@ ActiveRecord::Schema.define(:version => 20111021062239) do
     t.string   "officiated"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "eventstdt"
-    t.datetime "eventendt"
+    t.datetime "start_at"
+    t.datetime "end_at"
     t.integer  "createdby"
     t.boolean  "event_is_publik"
   end
@@ -985,6 +985,7 @@ ActiveRecord::Schema.define(:version => 20111021062239) do
     t.text     "address_posbasik"
     t.date     "end_training"
     t.date     "intake"
+    t.string   "specialisation"
   end
 
   create_table "subjects", :force => true do |t|

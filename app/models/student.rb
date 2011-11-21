@@ -28,12 +28,10 @@ class Student < ActiveRecord::Base
   #has_many :sdiciplines, :foreign_key => 'student_id'
   #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
   
-  
- #named_scope :programme,      {:course => {:course_id => programme.id}}
- 
   def self.search(search)
     if search
-      @students = Student.find(:all, :conditions => ['students.name ILIKE ? OR course_id LIKE ?', "%#{search}%","%#{search}%"], :order => 'students.id DESC')
+     @students = Student.find(:all, :conditions => ["icno LIKE ? or name ILIKE ? or matrixno ILIKE ?", "%#{search}%","%#{search}%","%#{search}%"], :order => :icno)
+     # @students = Student.find(:all, :condition => ["course_id LIKE ?", "%#{search}"])
     else
      @students = Student.find(:all)
     end
@@ -85,6 +83,9 @@ class Student < ActiveRecord::Base
    def bil
       v=1
    end
+   
+
+   
    
    
 # ------------------------------code for repeating field qualification---------------------------------------------------
