@@ -1,0 +1,65 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+<form action="#">
+			<script>
+			document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+			</script>
+</form>	
+<fieldset width=10px >
+		
+<div id="title">
+<table width=100% border="0">
+	<tr>
+		<th width="2%"><img border="0" src="/images/kkm.gif" alt="KKM" width="90" height="85"/></th>
+		<th><align ='center'>KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU <BR>LOT 8173, JALAN PERSIARAN KEMPAS BARU <BR>
+				81200 JOHOR BAHRU <BR>JOHOR DARUL TAKZIM</th>
+		<th width="2%"><img border="0" src="" alt="" width="90" height="85"/></th>
+	</tr>
+</table>
+
+<BR>
+<H4 align="center">SENARAI NAMA PELATIH AMBILAN ______________________  <BR>NAMA KURSUS ______________________</H4>
+</div>
+<div id="tprintreport">	
+<table width=100% border=1px cellspacing=0 align="center" >
+	
+	
+	
+	  <tr>
+			<th width="1%">Bil</th>
+			<th width="20%">Nama</th>
+			<th width="15%">No Kad Pengenalan</th>
+			<th width="10%">No Matrik</th>
+			
+	  </tr>
+		<!-- update from YM  -->
+
+		<% bil = 0 %>
+		
+		<% @students.each do |student| %>
+		        <% bil += 1 %>
+		       <tr>
+		               <td align="center"><%=h bil %></td>
+		               <td><%=h student.name %>&nbsp;</td>
+		               <td><%=h student.icno %></td>
+		               <td><%=h student.matrixno %></td>
+
+		       </tr>
+		<% end %>
+
+
+</table>
+</fieldset>
+<BR>
+<div id="hideLink">
+<%= link_to 'BACK', students_path %>
+</div>
+<div id="footer"></div>
+
+
+
+
+

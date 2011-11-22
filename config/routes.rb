@@ -142,6 +142,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/residences/addasset', :controller => 'residences', :action => 'addasset'
   map.resources :residences
 
+  map.connect '/students/maklumat_pelatih_intake', :controller => 'students', :action => 'maklumat_pelatih_intake'
   map.connect '/students/formforstudent', :controller => 'students', :action => 'formforstudent'
   map.resources :students
 

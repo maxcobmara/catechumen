@@ -1,7 +1,5 @@
 <div class="fields">
-	<%= f.select :bank_id, 
-		              Bankaccount::BANK,
-		              :prompt => "Select"  %>
+	<%= f.collection_select :bank_id, Bank.find(:all), :id, :long_name, :include_blank => true %>
 	<%= f.text_field :account_no, :size => 20, :placeholder => "account_no" %>
 	<%= f.select :account_type, 
 		              Bankaccount::BANKTYPE,

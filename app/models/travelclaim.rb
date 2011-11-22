@@ -64,15 +64,17 @@ class Travelclaim < ActiveRecord::Base
   end
   
   def km500
-    if mo_mileage < 501
+    if mo_mileage == nil 
+      0.0 
+    elsif mo_mileage != nil && mo_mileage < 501
       mo_mileage
     else
-      500.0
+      500
     end
   end
   
   def km1000
-    if mo_mileage < 501
+    if mo_mileage == nil || mo_mileage < 501
       0.0
     elsif mo_mileage < 1001
       mo_mileage - 500
@@ -82,7 +84,7 @@ class Travelclaim < ActiveRecord::Base
   end
   
   def km1700
-    if mo_mileage < 1001
+    if mo_mileage == nil || mo_mileage < 501
       0.0
     elsif mo_mileage < 1701
       mo_mileage - 1000
@@ -92,7 +94,7 @@ class Travelclaim < ActiveRecord::Base
   end
   
   def kmmo
-    if mo_mileage < 1701
+    if mo_mileage == nil || mo_mileage < 501
       0.0
     else
       mo_mileage - 1700
@@ -165,23 +167,33 @@ class Travelclaim < ActiveRecord::Base
   end
   
   def value_km500
-   (km500 * sen_per_km500)/100
+    if mo_mileage != nil
+     (km500 * sen_per_km500)/100
+    end
   end
   
   def value_km1000
-   (km1000 * sen_per_km1000)/100
+    if mo_mileage != nil
+      (km1000 * sen_per_km1000)/100
+    end
   end
   
   def value_km1700
-   (km1700 * sen_per_km1700)/100
+    if mo_mileage != nil
+      (km1700 * sen_per_km1700)/100
+    end
   end
   
   def value_kmmo
-   (kmmo * sen_per_kmmo)/100
+    if mo_mileage != nil
+      (kmmo * sen_per_kmmo)/100
+    end
   end
   
   def value_km
-    value_km500 + value_km1000 + value_km1700 + value_kmmo
+    if mo_mileage != nil
+      value_km500 + value_km1000 + value_km1700 + value_kmmo
+    end
   end
   
 

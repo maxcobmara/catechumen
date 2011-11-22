@@ -216,10 +216,16 @@ class Staff < ActiveRecord::Base
   end
   
   
-  
   def my_bank
-    (Bankaccount::BANK.find_all{|disp, value| value == bank }).map {|disp, value| disp}
+    sid = id
+    b = Bankaccount.find(:first, :conditions => {:staff_id => sid})
+    if b == nil
+      "No Account Registered"
+    else 
+      Bank.find(:all, :select => "long_name", :conditions => {:id => b}).map(&:long_name).to_s
+    end
   end
+
   
   def render_reports_to
     if position.blank? 
@@ -259,8 +265,8 @@ class Staff < ActiveRecord::Base
     "#{icno}  #{name}"
   end
   
- def bil
-   v=1
+  def bil
+    v=1
   end
   
 

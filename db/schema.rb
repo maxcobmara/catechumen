@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111117050903) do
+ActiveRecord::Schema.define(:version => 20111122175629) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -236,9 +236,10 @@ ActiveRecord::Schema.define(:version => 20111117050903) do
 
   create_table "banks", :force => true do |t|
     t.string   "short_name"
-    t.integer  "long_name"
+    t.string   "long_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active"
   end
 
   create_table "books", :force => true do |t|

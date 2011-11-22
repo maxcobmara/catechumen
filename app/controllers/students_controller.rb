@@ -1,5 +1,6 @@
 class StudentsController < ApplicationController
-  filter_resource_access
+  #filter_resource_access
+  filter_access_to :all
   # GET /students
   # GET /students.xml
   def index
@@ -102,5 +103,11 @@ class StudentsController < ApplicationController
       format.html { redirect_to(students_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  
+  def maklumat_pelatih_intake
+    @students = Student.all
+    render :layout => 'report'
   end
 end

@@ -22,7 +22,7 @@ authorization do
     has_permission_on :documents,   :to => :manage                                #e-filing items
     
     #Student Menu Items
-    has_permission_on :students,        :to => [:manage, :formforstudent]
+    has_permission_on :students,        :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
     has_permission_on [:leaveforstudents],  :to => :manage #
     
     #Exam Menu Items
@@ -87,7 +87,7 @@ authorization do
   end
   
   role :student_administrator do
-     has_permission_on :students, :to => [:manage, :formforstudent]
+     has_permission_on :students, :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
   end
   
 

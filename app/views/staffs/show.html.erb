@@ -298,7 +298,7 @@
 				<td class="leftcol">Bank Accounts</td>
 				<td>
 					<% for bankaccount in @staff.bankaccounts %>
-							<%=h (Bankaccount::BANK.find_all{|disp, value| value == bankaccount.bank_id }).map {|disp, value| disp} %>   -   
+							<%=h bankaccount.bank.long_name %>   -   
 							<%=h bankaccount.account_no %>  -   
 							<%=h (Bankaccount::BANKTYPE.find_all{|disp, value| value == bankaccount.account_type }).map {|disp, value| disp} %><BR>
 					<% end %>
