@@ -1,38 +1,45 @@
-<p>
-  <b>Location:</b>
-  <%=h @tenant.location_id %>
-</p>
+<div class="tform">
+	<H2>Tenant Details</H2>
+  <table width=100%>
 
-<p>
-  <b>Staff:</b>
-  <%=h @tenant.staff_id %>
-</p>
-
-<p>
-  <b>Student:</b>
-  <%=h @tenant.student_id %>
-</p>
-
-<p>
-  <b>Keyaccept:</b>
-  <%=h @tenant.keyaccept %>
-</p>
-
-<p>
-  <b>Keyexpectedreturn:</b>
-  <%=h @tenant.keyexpectedreturn %>
-</p>
-
-<p>
-  <b>Keyreturned:</b>
-  <%=h @tenant.keyreturned %>
-</p>
-
-<p>
-  <b>Force vacate:</b>
-  <%=h @tenant.force_vacate %>
-</p>
-
+	<tr>
+		<td class="leftcol"><label for="location">Location:</label></td>
+	    <td><%=h @tenant.location_id %></td>
+		   
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Staff Name:</label></td>
+	    <td><%=h @tenant.staff_name %>
+		   
+	</tr>
+		
+	<tr>
+		<td class="leftcol"><label for="student_id">Student Name:</label></td>
+	    <td><%=h @tenant.student_name %></td>
+		   
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="keyaccept">Key Accept Date:</label></td>
+		<td><%=h l(@tenant.keyaccept) %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="keyexpectedreturn">Key Expected Return Date:</label></td>
+		<td><%=h l(@tenant.keyexpectedreturn) unless @tenant.keyexpectedreturn.blank? %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="keyreturned">Key Returned Date :</label></td>
+		<td><%=h l(@tenant.keyreturned) unless @tenant.keyreturned.blank? %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="force_vacate">Force Vacate:</label></td>
+		<td><%=h @tenant.force_vacate? ? "Yes" : "No" %></td><!--16/11/2011 - Shaliza added code to display Yes or No not true or false-->
+	</tr>
+	
+</table>
+</div>
 
 <%= link_to 'Edit', edit_tenant_path(@tenant) %> |
 <%= link_to 'Back', tenants_path %>

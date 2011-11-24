@@ -186,7 +186,7 @@
 			<td>24</td>
 			<td><label for="bankacctype">Jenis Akaun</label></td>
 			<td>:</td>
-			<td><#%=h (Staff::BANKTYPE.find_all{|disp, value| value == @staff.bankacctype }).map {|disp, value| disp} %></td>
+			<!--	<td><#%=h (Staff::BANKTYPE.find_all{|disp, value| value == @staff.bankacctype }).map {|disp, value| disp} %></td>-->
 	</tr>
 	
 	<tr>
@@ -446,18 +446,51 @@
 	<tr><td colspan=4><HR></td></tr>
   <% end %>
 
-	<% for kin in @staff.kins %>
+	<tr>
+		<th colspan = 4><b>Butiran Kewangan</b></th>
+	</tr>
+	
+    <tr>
+	          <td>49</td>
+			  <td class="leftcol"><label for="kwspcode"><%= t 'staff.kwspcode' %></label></td>
+			  <td>:</td>
+			  <td><%=h @staff.kwspcode %></td>
+	</tr>
+	<tr>
+		      <td>50</td>
+			  <td class="leftcol"><label for="taxcode"><%= t 'staff.taxcode' %></label></td>
+			  <td>:</td>
+			  <td><%=h @staff.taxcode %></td>
+	</tr>
+	<!-- oops wrong! 24/11/11
+	<tr>
+				<td class="leftcol">Bank Accounts</td><!--23/11/2011 - added list for bank and bank type
+				<td>
+					<#% for bankaccount in @staff.bankaccounts %>
+						<#%=h bankaccount.bank.long_name %> -
+						<#%=h bankaccount.account_no %> -
+						<#%=h (Bankaccount::BANKTYPE.find_all{|disp, value| value == bankaccount.account_type }).map {|disp, value| disp} %><BR>
+						<#% end %>
+				</td>
+	</tr>-->
+
+	
+	
+
+
 	
 	<tr>
 		<th colspan = 4><b>Waris Terdekat</b></th>
 	</tr>
 	
+	
 	<tr>
-			<td>49</td>
-			<td>Maklumat Keluarga : </td>
+			<td>52</td>
+			<td>Maklumat Keluarga</td>
 			<td>:</td>
 			<td></td>
 	</tr>
+		<% for kin in @staff.kins %>
 	<tr>
 			<td></td>
 			<td>a. Hubungan</td>
@@ -491,10 +524,10 @@
 			<td>:</td>
 			<td><%=h kin.kinaddr %></td>
 	</tr>
-	<tr><td colspan=4></td></tr>
+	<tr><td colspan=4><HR></td></tr>
 	<% end %>
 	
-	<tr><td colspan=4><HR></td></tr>
+
 
 </table>
 <BR>

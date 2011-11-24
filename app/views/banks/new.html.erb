@@ -1,16 +1,9 @@
-<h1>New bank</h1>
+<h3>New bank</h3>
 
 <% form_for(@bank) do |f| %>
   <%= f.error_messages %>
 
-  <p>
-    <%= f.label :short_name %><br />
-    <%= f.text_field :short_name %>
-  </p>
-  <p>
-    <%= f.label :long_name %><br />
-    <%= f.text_field :long_name %>
-  </p>
+ <%=render :partial => 'form', :locals => {:f => f} %> 
   <p>
     <%= f.submit 'Create' %>
   </p>

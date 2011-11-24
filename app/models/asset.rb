@@ -166,22 +166,8 @@ class Asset < ActiveRecord::Base
       end
       st + md + syear + '/' + cardno
     end
-    
-#25/10/2011 - Shaliza corrected for staff no longer exists  
-    def assigned_details
-    suid = assignedto_id.to_a
-    exists = Staff.find(:all, :select => "id").map(&:id)
-    checker = suid & exists
-    
-    if assignedto_id == nil
-      ""
-    elsif checker == []
-      "Staff No Longer Exists"
-    else
-      assignedto.staff_name_with_position
-    end
-  end
-    
+      
+      
 
 #-----------------------Coded List-------------------------------------------------------- -  
 
@@ -207,5 +193,33 @@ ETI = [
            ["Gas",      3],
            ["Hybrid",   4]
 ]
+
+def assigned_details 
+   suid = assignedto_id.to_a
+   exists = Staff.find(:all, :select => "id").map(&:id)
+   checker = suid & exists     
+  
+   if assignedto_id == nil
+      "" 
+   elsif checker == []
+     "Staff No Longer Exists" 
+   else
+     assignedto.name #21/11/2011 - shaliza changed 'staff_name_with_position' to name only
+   end
+ end
+ 
+ def position_details #21/11/2011 - Shaliza added code for position if no longer exist.(avoid in kewpa2 error)
+    suid = assignedto_id.to_a
+    exists = Staff.find(:all, :select => "id").map(&:id)
+    checker = suid & exists     
+
+    if assignedto_id == nil
+       "" 
+    elsif checker == []
+      "Position No Longer Exists" 
+    else
+      assignedto.position_for_staff
+    end
+  end
     
 end

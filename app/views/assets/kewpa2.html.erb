@@ -14,9 +14,7 @@ document.write("<input type='button' " +
 <!-- Box Head -->
 <div id="kewpa">
 <p class="marginright" align="right"><b>KEW. PA-2</b><BR>( No. Siri Pendaftaran : &nbsp;&nbsp;&nbsp;&nbsp; <%=h @asset.assetcode %> )</p>
-
 <H4 align="center"><b>DAFTAR HARTA MODAL</b></H4>
-
 <p class="marginleft">Kementerian/Jabatan &nbsp;&nbsp;&nbsp;&nbsp;:<i> Kolej Kesihatan Kesihatan Bersekutu Johor Bahru</i><BR>
 				Bahagian &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <i> </i>
 </p> 
@@ -25,58 +23,58 @@ document.write("<input type='button' " +
 <table width=100% border=1px padding=0px cellspacing=0px>
 	<tr>
 		<td width=23%>Kod Nasional</td>
-		<td colspan=3><PRE></td>
+		<td colspan=3>&nbsp;</td>
 	</tr>
 	<tr>
 		<td>Kategori</td>
-		<td colspan=3></td>
+		<td colspan=3>&nbsp;</td>
 	</tr>
 	<tr>
 		<td>Sub Kategori</td>
-		<td colspan=3><%=h @asset.subcategory  %></td>
+		<td colspan=3><%=h @asset.subcategory  %> &nbsp;</td>
 	</tr>
 	<tr>
 		<td>Jenis/Jenama/Model</td>
-		<td colspan=3> <%=h @asset.typename %>/
-					   <%=h @asset.name %>/ <%=h @asset.modelname %></td>
+		<td colspan=3> <%=h @asset.typename %> &nbsp;/
+					   <%=h @asset.name %> &nbsp;/ <%=h @asset.modelname %> &nbsp;</td>
 		
 	</tr>
 	<tr>
 		<td>Buatan</td>
-		<td width=30%><PRE><%=h (Asset::SCN.find_all{|disp, value| value == @asset.country_id}).map {|disp, value| disp} %></td>
+		<td width=30%><%=h (Asset::SCN.find_all{|disp, value| value == @asset.country_id}).map {|disp, value| disp} %> &nbsp;</td>
 		<td width=27%>Harga Perolehan Asal</td>
-		<td width=30% align="center"><PRE><%=h ringgols(@asset.purchaseprice) %></td>
+		<td width=30% align="center"><%=h ringgols(@asset.purchaseprice) %> &nbsp;</td>
 	</tr>
 	
 	<tr>
 		<td>Jenis Dan No Enjin</td>
-		<td><%=h (Asset::ETI.find_all{|disp, value| value == @asset.engine_type_id}).map {|disp, value| disp} %> - <%=h @asset.engine_no %></td>
+		<td><%=h (Asset::ETI.find_all{|disp, value| value == @asset.engine_type_id}).map {|disp, value| disp} %> - <%=h @asset.engine_no %> &nbsp;</td>
 		<td width=25%>Tarikh Terima</td>
-		<td align="center"><%=h l(@asset.receiveddate) unless @asset.receiveddate.blank?  %></td>
+		<td align="center"><%=h l(@asset.receiveddate) unless @asset.receiveddate.blank?  %> &nbsp;</td>
 	</tr>
 	<tr>
 		<td>No Casis/Siri Pembuat</td>
-		<td><PRE><%=h @asset.serialno %></td>
+		<td><%=h @asset.serialno %> &nbsp;</td>
 		<td width=160px>No. Pesanan Rasmi Kerajaan</td>
-		<td><PRE><%=h @asset.orderno %></td>
+		<td><%=h @asset.orderno %> &nbsp;</td>
 	</tr>
 	<tr>
 		<td rowspan=2 valign="top">No Pendaftaran<BR>(Bagi Kenderaan)</td>
-		<td rowspan=2><PRE><%=h @asset.registration %></td>
+		<td rowspan=2><%=h @asset.registration %> &nbsp;</td>
 		<td>Tempoh Jaminan</td>
-		<td align="center"><%=h @asset.warranty_length %> Bulan</td>
+		<td align="center"><%=h @asset.warranty_length %> &nbsp; Bulan</td>
 	</tr>
 	<tr>
 		<td rowspan=2 colspan=2>Nama Pembekal Dan Alamat:
-		<P align="center"><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %>
-		<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.address %>	
-		<BR><%=h @asset.supplier_id.blank? ? "-" : 'Phone: ' + @asset.suppliedby.phone %>
-		<BR><%=h @asset.supplier_id.blank? ? "-" : 'Fax: ' + @asset.suppliedby.fax %>
-		<BR><%=h @asset.supplier_id.blank? ? "-" : 'Email: ' + @asset.suppliedby.mail %></P></td>
+	 	<P align="center"><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %> &nbsp;
+		<BR><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.address %>	 &nbsp;
+		<BR><%=h @asset.supplier_id.blank? ? "-" : 'Phone: ' + @asset.suppliedby.phone %> &nbsp;
+		<BR><%=h @asset.supplier_id.blank? ? "-" : 'Fax: ' + @asset.suppliedby.fax %> &nbsp;
+		<BR><%=h @asset.supplier_id.blank? ? "-" : 'Email: ' + @asset.suppliedby.mail %> &nbsp;</P></td>
 	</tr>
 	
 	 <tr>
-		 	<td rowspan=3 colspan=2 valign="top"><BR>KOMPONEN/AKSESORI :<BR><%=h @asset.otherinfo %></td>
+		 	<td rowspan=3 colspan=2 valign="top"><BR>KOMPONEN/AKSESORI :<BR><%=h @asset.otherinfo %> &nbsp;</td>
 	 </tr>
 	 <tr>
 		  <td colspan=2>
@@ -84,9 +82,9 @@ document.write("<input type='button' " +
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			.........................................
 			    <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				    Tandatangan Ketua Jabatan
+				    Tandatangan Ketua Jabatan <BR>
 			    <BR>Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=h @asset.assigned_details %>
-				<BR>Jawatan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=h @asset.assignedto.position.positionname unless @asset.assignedto_id.blank? %>
+				<BR>Jawatan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=h @asset.position_details  %><!--21/11/2011 - Shaliza added code for position if no longer exist.-->
 				<BR>Tarikh &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%= l(Date.today()) %>
 				<BR>Cop &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
 			</td>
@@ -103,43 +101,43 @@ document.write("<input type='button' " +
 	</tr>
 	<tr>
 		<td width=160px>Lokasi</td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<td>Tarikh</td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<td>Nama Pegawai</td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<td>Tandatangan</td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
 
 </table>
@@ -150,43 +148,43 @@ document.write("<input type='button' " +
 	</tr>
 	<tr>
 		<td width=160px>Tarikh</td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<td>Status Aset</td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<td>Nama Pemeriksa</td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
 	<tr>
 		<td>Tandatangan</td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
 
 </table>
@@ -202,10 +200,10 @@ document.write("<input type='button' " +
 		<td align="center">Tandatangan</td>
 	</tr>
 	<tr>
-		<td>Some Text</td>
-		<td><PRE></td>
-		<td><PRE></td>
-		<td><PRE></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr> 
 </table>
 </div>	

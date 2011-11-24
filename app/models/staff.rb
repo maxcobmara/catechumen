@@ -218,11 +218,12 @@ class Staff < ActiveRecord::Base
   
   def my_bank
     sid = id
-    b = Bankaccount.find(:first, :conditions => {:staff_id => sid})
+    b = Bankaccount.find(:all, :select => "bank_id", :conditions => {:staff_id => sid}).map(&:bank_id)
     if b == nil
       "No Account Registered"
-    else 
-      Bank.find(:all, :select => "long_name", :conditions => {:id => b}).map(&:long_name).to_s
+    else
+      id = b[0]
+      Bank.find(:all, :select => "long_name", :conditions => {:id => id}).map(&:long_name).to_s
     end
   end
 
@@ -254,11 +255,6 @@ class Staff < ActiveRecord::Base
     sid = staff.id
     Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
   end
-  
- 
-  
-
-  
  
 
   def icno_with_staff_name
