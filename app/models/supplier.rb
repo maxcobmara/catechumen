@@ -15,6 +15,16 @@ class Supplier < ActiveRecord::Base
     a - b
   end
   
+  def total_value
+    sid = id
+    cost = addsuppliers.find(:all, :conditions => {:supplier_id => sid})
+    if b == nil
+      "No Account Registered"
+    else 
+      Bank.find(:all, :select => "long_name", :conditions => {:id => b}).map(&:long_name).to_s
+    end
+  end
+  
   def set_row_color
     if maxquantity == nil || minquantity == nil
       '#FFFF00'

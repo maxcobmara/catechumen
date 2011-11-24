@@ -27,6 +27,24 @@
 		</tr>	
 	</table>
 	<BR>
+		
+		<H2>Additions</H2>
+		<table width=100%>
+			<tr>
+				<td>LPO No</td>
+				<td>Quantity</td>
+				<td>Unit Cost</td>
+				<td>Total</td>
+			</tr>
+		<% for addsuppliers in @supplier.addsuppliers %>
+			<tr>
+				<td><%= addsuppliers.lpono %></td>
+				<td><%= addsuppliers.quantity %></td>
+				<td><%= ringgols(addsuppliers.unitcost) %></td>
+				<td><%= ringgols(addsuppliers.line_item_value) %></td>
+			</tr>
+		<% end %>
+		</table>
 </div>
 
 <%= link_to (t 'icms.update'), edit_supplier_path(@supplier) %> |
