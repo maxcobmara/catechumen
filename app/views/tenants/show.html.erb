@@ -2,23 +2,25 @@
 	<H2>Tenant Details</H2>
   <table width=100%>
 
-	<tr>
-		<td class="leftcol"><label for="location">Location:</label></td>
-	    <td><%=h @tenant.location_name %></td>
-		   
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="location">Location:</label></td>
+		  <td><%=h @tenant.location_name %></td>	   
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="staff_id">Staff Name:</label></td>
-	    <td><%=h @tenant.staff_name %>
-		   
-	</tr>
+	  <% if @tenant.location_typename == 1 %>
+		<tr>
+			<td class="leftcol"><label for="staff_id">Staff Name:</label></td>
+		  <td><%=h @tenant.staff_name %>
+		</tr>
+		<% end %>
 		
-	<tr>
-		<td class="leftcol"><label for="student_id">Student Name:</label></td>
-	    <td><%=h @tenant.student_name %></td>
-		   
-	</tr>
+		<% if @tenant.location_typename == 2 %>
+		<tr>
+			<td class="leftcol"><label for="student_id">Student Name:</label></td>
+	    <td><%=h @tenant.student_name %></td>   
+		</tr>
+		<% end %>
+		
 	<tr>
 		<td class="leftcol"><label for="keyaccept">Key Accept Date:</label></td>
 		<td><%=h l(@tenant.keyaccept) %></td>

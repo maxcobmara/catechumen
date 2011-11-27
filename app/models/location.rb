@@ -3,6 +3,7 @@ class Location < ActiveRecord::Base
   has_ancestry
   has_many :tenants
   has_many :assets
+  has_many :timetables
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
   
   def self.search(search)

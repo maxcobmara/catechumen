@@ -6,7 +6,9 @@ class Staff < ActiveRecord::Base
     self.name = name.titleize
   end
   
-  has_attached_file :photo#, :styles => {:thumb => "40x60"}
+  has_attached_file :photo,
+                    :url => "/assets/staffs/:id/:style/:basename.:extension",
+                    :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
   #:styles => {:thumb => "100x100#" }
   
  # validates_attachment_presence :photo
@@ -64,7 +66,7 @@ class Staff < ActiveRecord::Base
   has_many :users
   
   #Link to Model TimetableEntry
-  has_many :timetable,  :class_name => 'TimeTableEntry', :foreign_key => 'staff_id'
+  has_many :timetables
   
   #Link to model bulletin
   #has_many :bulletin, :class_name => 'bulletin', :foreign_key => 'postedby_id'  #posted by

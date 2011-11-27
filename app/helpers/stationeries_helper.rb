@@ -1,0 +1,2 @@
+module StationeriesHelper
+end

@@ -17,7 +17,7 @@ class Supplier < ActiveRecord::Base
   
   def total_value
     sid = id
-    cost = addsuppliers.find(:all, :conditions => {:supplier_id => sid})
+    cost = addsuppliers.find(:all, :conditions => {:supplier_id => sid}, :select => "line_item_value")
     if b == nil
       "No Account Registered"
     else 

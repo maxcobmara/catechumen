@@ -5,10 +5,10 @@
 
   <%=render :partial => 'form', :locals => {:f => f} %> 
 
-	<% for student in Student.find(:all, :conditions => @student.intake_id == @klass.intake_id) %>
+	<% for student in Student.find(:all) %><!-- add back when intake solved-->
 	<tr>
 		<td></td>
-		<td><%= check_box_tag "klass[students_ids][]", student.id, @klass.students.include?(student) %>
+		<td><%= check_box_tag "klass[student_ids][]", student.id, @klass.students.include?(student) %>
             <%= student.name %>
     </td>
   </tr>

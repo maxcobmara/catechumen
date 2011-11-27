@@ -25,6 +25,8 @@ class ExamquestionsController < ApplicationController
   # GET /examquestions/new.xml
   def new
     @examquestion = Examquestion.new
+    @examquestion.exammcqanswers.build
+    @examquestion.examsubquestions.build
 
     respond_to do |format|
       format.html # new.html.erb

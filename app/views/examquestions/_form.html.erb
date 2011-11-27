@@ -1,84 +1,175 @@
 <div class="tform">
-  <table width=100% >
+  <H2>Exam Question Details</H2>
+	<table width=100% >
+		<tr>
+		<td class="leftcol"><label for="questiontype"><b>Question Type:</b><font color="red"> * </font></label></td>
+			<td><%= f.select :questiontype, 
+			                 Examquestion::QTYPE,
+			                 :prompt => "Select"  %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="creator_id"><b>Creator:</b></label></td>
+			<td><%= f.collection_select :creator_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="curriculum_id"><b>Programme/Subject Code:</b></label><font color="red"> * </font></td>
+			<td><%= f.collection_select :curriculum_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
+		</tr>
+		<tr>
+		 <td class="leftcol"><label for="createdt"><b>Creator Date:</b></label></td>
+		 <td><%= f.date_select :createdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
+		<tr>
+		 <td class="leftcol"><label for="createdt"><b>Topic</b></label></td>
+		 <td><!-- Select Topic Here --></td>
+		</tr>
+	</table>
+	<HR>
+	<table  width=100%>
+		<tr>
+			<td class="leftcol"><label for="category"><b>Classification:</b></label></td>
+			<td><%= f.select :category, 
+			                  Examquestion::QCATEGORY,
+			                  :prompt => "Select"  %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="status"><b>Construction</b></label></td>
+			<td><%= f.text_field :construct, :size => 50 %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="status"><b>Difficulty:</b></label></td>
+			<td><%= f.select :difficulty, 
+			                 Examquestion::QLEVEL,
+			                 :prompt => "Select"  %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Add Attachement</td>
+			<td><%= f.file_field :diagram %></td>
+		</tr>
+		<tr>
+		<td class="leftcol"><label for="question"><b>Question:</b></label><font color="red"> * </font></td>
+			<td><%= f.text_area :question, :size => '60x2' %></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td class="leftcol"></td>
+			<td>
+			<div>
+				<% f.fields_for :examsubquestions do |builder| %>
+					<%= render 'examsubquestion_fields', :f => builder %>
+				<% end %>
+				<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :examsubquestions %> - Add More </p>
+				</td>
+			</div>
+		</td>
+			
+	</table>
+	<HR>
+	<table width 100%>
+		<tr>
+			<td class="leftcol">MCQ Answers</td>
+			<td>
+		<div>
+			<p><strong>
+					<div style="width: 65px; float: left;">  Seq </div>
+					<div style="width: 100px; float: left;">  Answer </div>
+					</strong></p><BR>
+			<% f.fields_for :exammcqanswers do |builder| %>
+				<%= render 'exammcqanswer_fields', :f => builder %>
+			<% end %>
+			<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :exammcqanswers %> - Add More </p>
+		</div>
+		</td><BR><BR></tr></table>
+		
+	<HR>
+	<table>
+		<tr>
+			<td class="leftcol"><label for="answer"><b>Answer:</b></label><font color="red"> * </font></td>
+			<td><%= f.text_area :answer, :size => "30x7" %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
+			<td><%= f.text_field :marks, :size => 12 %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="qkeyword"><b>Keywords:</b></label></td>
+			<td><%= f.text_area :qkeyword, :size => "30x7" %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="editor_id"><b>Editor:</b></label></td>
+			<td><%= f.collection_select :editor_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+	</table>
+	<HR>
 	
-	<tr>
-		<th colspan = 2>Exam Question Details</th>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="curriculum_id"><b>Programme/Subject Code:</b></label><font color="red"> * </font></td>
-		<td><%= f.collection_select :curriculum_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
-	</tr>
-	
-	<tr>
-	<td class="leftcol"><label for="questiontype"><b>Question Type:</b><font color="red"> * </font></label></td>
-		<td><%= f.select :questiontype, 
-		                 Examquestion::QTYPE,
-		                 :prompt => "Select"  %></td>
-	</tr>
-	
-	<tr>
-	<td class="leftcol"><label for="question"><b>Question:</b></label><font color="red"> * </font></td>
-		<td><%= f.text_field :question, :size => 50 %></td>
-	</tr>
-	
-	<tr>
-	<td class="leftcol"><label for="answer"><b>Answer:</b></label><font color="red"> * </font></td>
-		<td><%= f.text_area :answer, :size => "30x7" %></td>
-	</tr>
-	
-	<tr>
-	<td class="leftcol"><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
-		<td><%= f.text_field :marks, :size => 12 %></td>
-	</tr>
-	
-	<tr>
-	<td class="leftcol"><label for="category"><b>Category:</b></label></td>
-		<td><%= f.select :category, 
-		                  Examquestion::QCATEGORY,
-		                  :prompt => "Select"  %></td>
-	</tr>
-	
-	<tr>
-	<td class="leftcol"><label for="status"><b>Difficulty:</b></label></td>
-		<td><%= f.select :status, 
-		                 Examquestion::QLEVEL,
-		                 :prompt => "Select"  %></td>
-	</tr>
-	
-	<tr>
-	<td class="leftcol"><label for="qkeyword"><b>Keywords:</b></label></td>
-		<td><%= f.text_area :qkeyword, :size => "30x7" %></td>
-	</tr>
-	
-	<tr>
-	<td class="leftcol"><label for="qstatus"><b>Status:</b></label><font color="red"> * </font></td>
-		<td><%= f.select :qstatus, 
+	<table  width=100%>
+		<tr>
+			<td class="leftcol">Conformity</td>
+			<td>
+							<table border=1 width=50% >
+								<tr>
+									<td align=center style="font-size:80%">curriculum</td>
+									<td align=center style="font-size:80%">specification</td>
+									<td align=center style="font-size:80%">opportunity</td>
+								</tr>
+								<tr>
+									<td align=center><%= f.check_box :conform_curriculum %> </td>
+									<td align=center><%= f.check_box :conform_specification %> </td>
+									<td align=center><%= f.check_box :conform_opportunity %> </td> 
+								</tr>
+							</table></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Accuracy</td>
+			<td>
+							<table border=1 width=50%>
+								<tr>
+									<td align=center style="font-size:80%">construct</td>
+									<td align=center style="font-size:80%">topic</td>
+									<td align=center style="font-size:80%">component</td>
+								</tr>
+								<tr>
+									<td align=center><%= f.check_box :accuracy_construct %> </td>
+									<td align=center><%= f.check_box :accuracy_topic %> </td>
+									<td align=center><%= f.check_box :accuracy_component %> </td>
+								</tr>
+							</table></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Fit</td>
+			<td>	
+						<table border=1 width=50% >
+							<tr>
+								<td align=center style="font-size:80%">difficulty</td>
+								<td align=center style="font-size:80%">importance</td>
+								<td align=center style="font-size:80%">Fairness</td>
+							</tr>
+							<tr>
+								<td align=center><%= f.check_box :fit_difficulty %> </td>
+								<td align=center><%= f.check_box :fit_important %> </td>
+								<td align=center><%= f.check_box :fit_fairness %> </td>
+							</tr>
+						</table></td>
+		</tr>
+	</table>
+	<HR>
+	<table  width=100%>	
+		<tr>
+			<td class="leftcol"><label for="qstatus"><b>Status:</b></label><font color="red"> * </font></td>
+			<td><%= f.select :qstatus, 
 		                 Examquestion::QSTATUS,
 		                 :prompt => "Select"  %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="creator_id"><b>Creator:</b></label></td>
-		<td><%= f.collection_select :creator_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
-	</tr>
-	
-	<tr>
-	 <td class="leftcol"><label for="createdt"><b>Creator Date:</b></label></td>
-		<td><%= f.date_select :createdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
-	</tr>
-	
+		</tr>
 
-	
 	<tr>
 	<td class="leftcol"><label for="statusremark"><b>Remarks:</b></label></td>
 		<td><%= f.text_area :statusremark, :size => "30x7" %></td>
 	</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="editor_id"><b>Editor:</b></label></td>
-		<td><%= f.collection_select :editor_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
-	</tr>
+
 	
 	<tr>
 	 <td class="leftcol"><label for="editdt"><b>Editor Date:</b></label></td>

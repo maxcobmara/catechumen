@@ -1,13 +1,15 @@
 class Topic < ActiveRecord::Base
   
   before_save :save_my_vars
+  
+  has_many :timetables
 
-    belongs_to :subject#, :class_name => 'Subject', :foreign_key => 'subject_id'
-    belongs_to :creator, :class_name => 'Staff', :foreign_key => 'creator_id'
-    belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approvedby_id'
+  belongs_to :subject#, :class_name => 'Subject', :foreign_key => 'subject_id'
+  belongs_to :creator, :class_name => 'Staff', :foreign_key => 'creator_id'
+  belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approvedby_id'
 
-    validates_presence_of :topic_code, :sequenceno, :name
-    validates_uniqueness_of :sequenceno, :scope => :subject_id, :message => 'This sequence is already taken'
+  validates_presence_of :topic_code, :sequenceno, :name
+  validates_uniqueness_of :sequenceno, :scope => :subject_id, :message => 'This sequence is already taken'
 
     #Link to Model Timetableentry
     #has_many :topic, :class_name => 'Time_table_entry', :foreign_key => 'topic_id'

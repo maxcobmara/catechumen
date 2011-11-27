@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :timetables
+
+  map.resources :stationeries
+
   map.resources :messages
 
   map.resources :banks
@@ -153,7 +157,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :documents
 
-  map.calendar '/calendar/:year/:month', :controller => 'calendar', :action => 'index', :requirements => {:year => /\d{4}/, :month => /\d{1,2}/}, :year => nil, :month => nil
+  map.calendar '/calendar/:year/:month', :controller => 'calendar', :action => 'event', :requirements => {:year => /\d{4}/, :month => /\d{1,2}/}, :year => nil, :month => nil
   map.resources :events
 
   map.resources :titles

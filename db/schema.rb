@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111122175629) do
+ActiveRecord::Schema.define(:version => 20111127052605) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -427,6 +427,14 @@ ActiveRecord::Schema.define(:version => 20111122175629) do
     t.boolean  "event_is_publik"
   end
 
+  create_table "exammcqanswers", :force => true do |t|
+    t.integer  "examquestion_id"
+    t.string   "sequence"
+    t.string   "answer"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "examquestions", :force => true do |t|
     t.integer  "curriculum_id"
     t.string   "questiontype"
@@ -438,7 +446,7 @@ ActiveRecord::Schema.define(:version => 20111122175629) do
     t.string   "qstatus"
     t.integer  "creator_id"
     t.date     "createdt"
-    t.string   "status"
+    t.string   "difficulty"
     t.text     "statusremark"
     t.integer  "editor_id"
     t.date     "editdt"
@@ -447,6 +455,33 @@ ActiveRecord::Schema.define(:version => 20111122175629) do
     t.boolean  "bplreserve"
     t.boolean  "bplsent"
     t.date     "bplsentdt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "diagram_file_name"
+    t.string   "diagram_content_type"
+    t.integer  "diagram_file_size"
+    t.datetime "diagram_updated_at"
+    t.integer  "topic_id"
+    t.string   "construct"
+    t.boolean  "conform_curriculum"
+    t.boolean  "conform_specification"
+    t.boolean  "conform_opportunity"
+    t.boolean  "accuracy_construct"
+    t.boolean  "accuracy_topic"
+    t.boolean  "accuracy_component"
+    t.boolean  "fit_difficulty"
+    t.boolean  "fit_important"
+    t.boolean  "fit_fairness"
+  end
+
+  create_table "examsubquestions", :force => true do |t|
+    t.integer  "examquestion_id"
+    t.integer  "parent_id"
+    t.string   "sequence"
+    t.string   "question"
+    t.string   "classification"
+    t.integer  "marks"
+    t.text     "answer"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -499,19 +534,17 @@ ActiveRecord::Schema.define(:version => 20111122175629) do
   end
 
   create_table "klasses", :force => true do |t|
-    t.integer  "klass_no"
-    t.string   "klass_name"
+    t.string   "name"
     t.integer  "intake_id"
     t.integer  "programme_id"
+    t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "klasses_students", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "klass_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "klasses_students", :id => false, :force => true do |t|
+    t.integer "klass_id"
+    t.integer "student_id"
   end
 
   create_table "leaveforstaffs", :force => true do |t|
@@ -943,6 +976,16 @@ ActiveRecord::Schema.define(:version => 20111122175629) do
     t.string   "birthcertno"
   end
 
+  create_table "stationeries", :force => true do |t|
+    t.string   "code"
+    t.string   "category"
+    t.string   "unittype"
+    t.decimal  "maxquantity"
+    t.decimal  "minquantity"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "strainings", :force => true do |t|
     t.integer  "appraisal_id"
     t.integer  "staff_id"
@@ -989,6 +1032,16 @@ ActiveRecord::Schema.define(:version => 20111122175629) do
     t.string   "specialisation"
   end
 
+  create_table "subexamquestions", :force => true do |t|
+    t.integer  "examquestion_id"
+    t.integer  "parent_id"
+    t.string   "question"
+    t.string   "classification"
+    t.integer  "marks"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "subjects", :force => true do |t|
     t.string   "subjectcode"
     t.string   "name"
@@ -1021,23 +1074,19 @@ ActiveRecord::Schema.define(:version => 20111122175629) do
     t.datetime "updated_at"
   end
 
-  create_table "time_table_entries", :force => true do |t|
-    t.integer  "intake_id"
-    t.integer  "programme_id"
-    t.integer  "subject_id"
-    t.integer  "topic_id"
-    t.integer  "klass_id"
-    t.integer  "tt_wd"
-    t.date     "timetable_date"
-    t.integer  "staff_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "residence_id"
-    t.integer  "timing_id"
-  end
-
   create_table "timetable_week_days", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "timetables", :force => true do |t|
+    t.integer  "klass_id"
+    t.integer  "topic_id"
+    t.integer  "location_id"
+    t.integer  "staff_id"
+    t.datetime "start_at"
+    t.datetime "end_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,0 +1,39 @@
+<div class="tform">
+	<H2>Time Table Details</H2>
+  <table width=100% >
+		<tr>
+			<td class="leftcol"><label for="intake_id">Intake</label></td>
+			<td><%=h @timetable.klass_id.blank? ? "" : @timetable.klass.name %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="topic_id">Topic</label></td>
+			<td><%=h @timetable.topic_id.blank? ? "" : @timetable.topic.name %></td>
+		</tr>
+		
+		<tr><!--18/10/2011 - Shaliza fixed error if staff does not have position -->
+			<td class="leftcol"><label for="staff_id">Staff Name</label></td>
+			<td><%=h @timetable.staff_details %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="residence_id">Location</label></td>
+			<td><%=h @timetable.location_id.blank? ? "" : @timetable.location.name %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="subject_id">Start At</label></td>
+			<td><%=h @timetable.start_at? ? @timetable.start_at : "" %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="subject_id">End At</label></td>
+			<td><%=h @timetable.end_at %></td>
+		</tr>
+	
+	
+</table>
+<BR>
+</div>
+
+<%= link_to 'Edit', edit_timetable_path(@timetable) %> |
+<%= link_to 'Back', timetables_path %>

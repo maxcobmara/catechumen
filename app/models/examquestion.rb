@@ -1,13 +1,25 @@
 class Examquestion < ActiveRecord::Base
- # belongs_to :subject, :foreign_key => 'curriculum_id'
-  #belongs_to :staff, :foreign_key => 'staff_id' 
-  belongs_to :creator,       :class_name => 'Staff', :foreign_key => 'creator_id'
-  belongs_to :approver,       :class_name => 'Staff', :foreign_key => 'approver_id'
-  belongs_to :editor,       :class_name => 'Staff', :foreign_key => 'editor_id'
-  belongs_to :subject,       :class_name => 'Subject', :foreign_key => 'curriculum_id'
-  #belongs_to :staff
+
+  belongs_to :creator,  :class_name => 'Staff', :foreign_key => 'creator_id'
+  belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approver_id'
+  belongs_to :editor,   :class_name => 'Staff', :foreign_key => 'editor_id'
+  belongs_to :subject,  :class_name => 'Subject', :foreign_key => 'curriculum_id'
   
+  has_attached_file :diagram,
+                    :url => "/assets/examquestions/:id/:style/:basename.:extension",
+                    :path => ":rails_root/public/assets/examquestions/:id/:style/:basename.:extension"
+                    
+                    #may require validation
+                    
   validates_presence_of :curriculum_id, :questiontype, :question, :answer, :marks, :qstatus
+  
+  has_many :examsubquestions, :dependent => :destroy
+  accepts_nested_attributes_for :examsubquestions, :reject_if => lambda { |a| a[:question].blank? }
+  
+  has_many :exammcqanswers, :dependent => :destroy
+  accepts_nested_attributes_for :exammcqanswers, :reject_if => lambda { |a| a[:answer].blank? }
+  
+
   
   #def self.find_main
   #    Examquestion.find(:all, :condition => ['staff_id IS NULL'])
@@ -24,17 +36,17 @@ class Examquestion < ActiveRecord::Base
    
    
    def render_difficulty
-     (Examquestion::QLEVEL.find_all{|disp, value| value == status }).map {|disp, value| disp}
+     (Examquestion::QLEVEL.find_all{|disp, value| value == difficulty }).map {|disp, value| disp}
    end
    
    QTYPE = [
           #  Displayed       stored in db
-          [ "SEQ","SEQ" ],
-          [ "MCQ","MCQ" ],
+          [ "Objektif - MCQ","MCQ" ],
+          [ "Subjektif - MEQ","MEQ" ],
+          [ "Subjektif - SEQ","SEQ" ],
           [ "ACQ", "ACQ" ],
           [ "OSCI", "OSCI" ],
-          [ "OSCII", "OSCII" ],
-          [ "MEQ", "MEQ" ]
+          [ "OSCII", "OSCII" ]
           
    ]
    
@@ -49,9 +61,9 @@ class Examquestion < ActiveRecord::Base
     
     QLEVEL = [
              #  Displayed       stored in db
-             [ "Easy | Mudah","1" ],
-             [ "Intermediate | Pertengahan","2" ],
-             [ "Difficult | Sukar", "3" ]
+             [ "(R) Easy | Mudah","1" ],
+             [ "(S) Intermediate | Pertengahan","2" ],
+             [ "(T) Difficult | Sukar", "3" ]
     ]
   
 
