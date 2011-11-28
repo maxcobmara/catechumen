@@ -19,6 +19,8 @@ class Examquestion < ActiveRecord::Base
   has_many :exammcqanswers, :dependent => :destroy
   accepts_nested_attributes_for :exammcqanswers, :reject_if => lambda { |a| a[:answer].blank? }
   
+  has_and_belongs_to_many :exammakers
+  
 
   
   #def self.find_main

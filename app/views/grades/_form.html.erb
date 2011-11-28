@@ -1,120 +1,101 @@
 <div class="tform">
-  <table width=100% >
-
-<table id="form">
-	<tr>
-		<th colspan = 2>New Grade Details</th>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="student_id">Student Name:</label></td>
-		<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %></td>
-	</tr>
+	<H2>New Grade Details</H2>
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><label for="student_id">Student Name:</label></td>
+			<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="subject_id">Subject Name:</label></td>
+			<td><%= f.collection_select :subject_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
+		</tr>
+	</table>
 	
-	
-	<tr>
-		<td class="leftcol"><label for="subject_id">Subject Name:</label></td>
-		<td><%= f.collection_select :subject_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
-	</tr>
-	
-	<!--Score Details-->	
-	<tr>
-		<th colspan=2>Formative Scores</th>
-	</tr>
-	<tr>
-		<td colspan=2>
-			 <table width=100% border=0>
-				  <tr>
-			      <td width=130px ><label for="type_id"><b>Type:</b></label></td>
-			      <td width=240px ><label for="description"><b>Description:</b></label></td>
-			      <td width=120px><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
-					  <td width=80px><label for="weightage"><b>WeightAge:</b></label></td>
-			      <td width=70px></td>
-		      </tr>
-			 </table>
-    </td>
-	</tr>
+	<H2>Formative Scores</H2><!--Score Details-->	
+	<table width=100%>
+		<tr>
+			<td colspan=2>
+				 <table width=100% border=0>
+					  <tr>
+				      <td width=130px ><label for="type_id"><b>Type:</b></label></td>
+				      <td width=240px ><label for="description"><b>Description:</b></label></td>
+				      <td width=120px><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
+						  <td width=80px><label for="weightage"><b>Weightage:</b></label></td>
+				      <td width=70px></td>
+			      </tr>
+				 </table>
+	    </td>
+		</tr>
 
 	<tr>
 	  <td colspan=2>
 		<!-- Code Block for Score Repeating Field -->
 		  <div id="scores">
-			  <%= render :partial => 'score', :collection => @grade.scores %>
+				<% f.fields_for :scores do |builder| %>
+					<%= render 'score_fields', :f => builder %>
+				<% end %>
+				<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :scores %> - Add More </p>
 			</div>
 	  </td>
 	</tr>
 	<!-- End Code Block for Score Repeating Field -->
-	<tr>
-		<td colspan=2><%= add_score_link "Add More" %></td>
-	</tr>
-	
-	<tr>
-		<th colspan=2>Send to BPL</th>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>
-		<td><%= f.check_box :sent_to_BPL %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="sent_date">Sent Date:</label></td>
-		<td><%= f.date_select :sent_date, :start_year => 2011, :end_year => 2020, :order => [:day, :month, :year] %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="eligible_for_exam">Eligible For Exam?:</label></td>
-		<td><%= f.check_box :eligible_for_exam %><font color=#AAA size=-2>(need other inputs for automatic)</font></td>
-	</tr>
 	</table>
 	
+	<H2>Send to BPL</H2><!--Score Details-->	
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>
+			<td><%= f.check_box :sent_to_BPL %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="sent_date">Sent Date:</label></td>
+			<td><%= f.date_select :sent_date, :start_year => 2011, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="eligible_for_exam">Eligible For Exam?:</label></td>
+			<td><%= f.check_box :eligible_for_exam %><font color=#AAA size=-2>(need other inputs for automatic)</font></td>
+		</tr>
+	</table>
 	
+	<H2>Summative</H2>
 	<table width=78% border=0>
-	<tr>
-		<th>Summative<BR>Exam Name</th>
-		<th>Description</th>
-		<th>Marks</th>
-	</tr>
+		<tr>
+			<th>Exam Name</th>
+			<th>Description</th>
+			<th>Marks</th>
+		</tr>
 	
-	<tr>
-		<td><%= f.text_field :exam1name, :size => 15 %></td>
-		<td><%= f.text_field :exam1desc %></td>
-		<td><%= f.text_field :exam1marks, :size => 5 %>%</td>
-	</tr>
+		<tr>
+			<td><%= f.text_field :exam1name, :size => 15 %></td>
+			<td><%= f.text_field :exam1desc %></td>
+			<td><%= f.text_field :exam1marks, :size => 5 %>%</td>
+		</tr>
 	</table>
 	
-	
+	<H2>Details</H2>
 	<table width=78%>
 		<tr>
-			<th colspan=2>Details</th>
+			<td class="leftcol"><label for="examweight ">Summative Weightage:</label></td>
+			<td><%= f.text_field :examweight, :size => 5  %>%</td>
 		</tr>
-	<tr>
-		<td class="leftcol"><label for="examweight ">Summative Weightage:</label></td>
-		<td><%= f.text_field :examweight, :size => 5  %>%</td>
-	</tr>
-	
-
-	
-	<tr>
-		<td class="leftcol"><label for="carry_paper">Carry Paper?:</label></td>
-		<td><%= f.check_box :carry_paper %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="resit">Resit?:</label></td>
-		<td><%= f.check_box :resit %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="total_marks ">Total Marks:</label></td>
-		<td><%= f.text_field :finalscore  %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="grading_id ">Grade:</label></td>
-		<td><%= f.select :grading_id,
-		                 Grade::GRADE,
-		                 :prompt => "Select" %></td>
-	</tr>
-	
-
-
-
-</table>
+		<tr>
+			<td class="leftcol"><label for="carry_paper">Carry Paper?:</label></td>
+			<td><%= f.check_box :carry_paper %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="resit">Resit?:</label></td>
+			<td><%= f.check_box :resit %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="total_marks ">Total Marks:</label></td>
+			<td><%= f.text_field :finalscore  %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="grading_id ">Grade:</label></td>
+			<td><%= f.select :grading_id,
+			                 Grade::GRADE,
+			                 :prompt => "Select" %></td>
+		</tr>
+	</table>
 <BR>
+</div>

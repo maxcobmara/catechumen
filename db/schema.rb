@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111127052605) do
+ActiveRecord::Schema.define(:version => 20111127195643) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -425,6 +425,21 @@ ActiveRecord::Schema.define(:version => 20111127052605) do
     t.datetime "end_at"
     t.integer  "createdby"
     t.boolean  "event_is_publik"
+  end
+
+  create_table "exammakers", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "creator_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "exammakers_examquestions", :id => false, :force => true do |t|
+    t.integer  "exammaker_id"
+    t.integer  "examquestion_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "exammcqanswers", :force => true do |t|

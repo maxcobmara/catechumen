@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :exammakers
+
   map.resources :timetables
 
   map.resources :stationeries

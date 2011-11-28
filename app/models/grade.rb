@@ -1,12 +1,13 @@
 class Grade < ActiveRecord::Base
   
-  validates_presence_of :student_id, :scope => :subject_id, :message => "This student has already taken this subject"
+  validates_presence_of   :student_id, :subject_id
+  validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
   
-  #Link to Model student
-   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'
-   
-  #Link to Model subject
-    belongs_to :subjectgrade, :class_name => 'Subject', :foreign_key => 'subject_id'
+  belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
+  belongs_to :subjectgrade, :class_name => 'Subject', :foreign_key => 'subject_id'  #Link to Model subject
+
+  has_many :scores, :dependent => :destroy
+  accepts_nested_attributes_for :scores, :reject_if => lambda { |a| a[:description].blank? }
     
     
     def total_per
@@ -72,30 +73,5 @@ E_TYPES = [
 
 # code for repeating field score
 # ---------------------------------------------------------------------------------
- has_many :scores, :dependent => :destroy
- 
- def new_score_attributes=(score_attributes)
-   score_attributes.each do |attributes|
-     scores.build(attributes)
-   end
- end
- 
- after_update :save_scores
- 
- def existing_score_attributes=(score_attributes)
-   scores.reject(&:new_record?).each do |score|
-     attributes = score_attributes[score.id.to_s]
-     if attributes
-       score.attributes = attributes
-     else
-       scores.delete(score)
-     end
-   end
- end
- 
- def save_scores
-   scores.each do |score|
-     score.save(false)
-   end
- end
+
 end
