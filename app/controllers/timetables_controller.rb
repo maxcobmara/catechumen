@@ -1,8 +1,10 @@
 class TimetablesController < ApplicationController
+  filter_access_to :all
   # GET /timetables
   # GET /timetables.xml
   def index
-    @timetables = Timetable.all
+    @timetables = Timetable.with_permissions_to(:index).find(:all)
+    @date = params[:month] ? Date.parse(params[:month]) : Date.today
 
     respond_to do |format|
       format.html # index.html.erb
@@ -80,6 +82,16 @@ class TimetablesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(timetables_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  def calendar
+    @timetables = Timetable.with_permissions_to(:index).find(:all)
+    @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @timetables }
     end
   end
 end

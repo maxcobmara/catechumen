@@ -42,8 +42,6 @@ class Topic < ActiveRecord::Base
      end
 
      def booba
-         #<changed from subject.id to subject_id to solve error RuntimeError in TopicsController#index 
-         #Called id for nil, which would mistakenly be 4 -- if you really wanted the id of nil, use object_id
          suid = subject_id 
          Subject.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
      end

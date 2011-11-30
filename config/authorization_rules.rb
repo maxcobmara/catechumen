@@ -29,7 +29,8 @@ authorization do
     has_permission_on :examquestions,   :to => :manage
     
     #Training Menu Items
-    has_permission_on :programmes, :to => :core
+    has_permission_on :programmes, :to => :manage
+    has_permission_on :timetables, :to => :manage
     
     #Library Menu Items
     has_permission_on [:librarytransactions, :books], :to => :manage
@@ -112,6 +113,11 @@ authorization do
   role :lecturer do
     has_permission_on :examquestions, :to => :manage
     has_permission_on :programmes, :to => :core
+    has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar] do
+      if_attribute :id => is {User.current_user.staff_id}
+    end
+    has_permission_on :timetables, :to => [:create] do
+    end
   end
   
   role :librarian do

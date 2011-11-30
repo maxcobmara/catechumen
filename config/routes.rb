@@ -1,7 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :exammakers
-
-  map.resources :timetables
+ 
+  map.connect '/timetables/calendar/', :controller => 'timetables', :action => 'calendar'
+  map.resources :timetables#, :collection => { :calendar => :get }
 
   map.resources :stationeries
 
@@ -45,8 +46,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :grades
 
-  map.connect '/time_table_entries/timetable_view', :controller => 'time_table_entries', :action => 'timetable_view'
-  map.resources :time_table_entries
+  #map.connect '/time_table_entries/timetable_view', :controller => 'time_table_entries', :action => 'timetable_view'
+  #map.resources :time_table_entries
 
   map.resources :period_timings
 
@@ -159,7 +160,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :documents
 
-  map.calendar '/calendar/:year/:month', :controller => 'calendar', :action => 'event', :requirements => {:year => /\d{4}/, :month => /\d{1,2}/}, :year => nil, :month => nil
+  #map.calendar '/calendar/:year/:month', :controller => 'calendar', :action => 'event', :requirements => {:year => /\d{4}/, :month => /\d{1,2}/}, :year => nil, :month => nil
   map.resources :events
 
   map.resources :titles

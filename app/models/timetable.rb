@@ -1,4 +1,5 @@
 class Timetable < ActiveRecord::Base
+  
   validates_presence_of :klass_id,:topic_id, :location_id, :staff_id, :start_at, :end_at
   belongs_to :klass     
   belongs_to :topic     

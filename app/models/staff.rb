@@ -44,7 +44,8 @@ class Staff < ActiveRecord::Base
   has_many :librarytransactions
   has_one  :position
   has_many :events,       :foreign_key => 'createdby'                                      #link to created by in events
-  
+  has_many :users
+  has_many :timetables
   # has_many :topics, :foreign_key => 'creator_id' 
   #has_many :curriculums, :foreign_key => 'staff_id'
   #has_many :txsuppliess, :foreign_key => 'staff_id'
@@ -62,12 +63,6 @@ class Staff < ActiveRecord::Base
   has_many   :ptdos #staff training
   #-------------display data for different table-----------------------------------------------
  
-  #Link to model user
-  has_many :users
-  
-  #Link to Model TimetableEntry
-  has_many :timetables
-  
   #Link to model bulletin
   #has_many :bulletin, :class_name => 'bulletin', :foreign_key => 'postedby_id'  #posted by
   

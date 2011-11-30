@@ -5,6 +5,11 @@
 			<td class="leftcol"><label for="intake_id">Intake</label></td>
 			<td><%=h @timetable.klass_id.blank? ? "" : @timetable.klass.name %></td>
 		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="topic_id">Programme</label></td>
+			<td><%=h @timetable.topic_id.blank? ? "" : @timetable.klass.subject.subject_code_with_subject_name %></td>
+		</tr>
 	
 		<tr>
 			<td class="leftcol"><label for="topic_id">Topic</label></td>
@@ -22,18 +27,20 @@
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="subject_id">Start At</label></td>
-			<td><%=h @timetable.start_at? ? @timetable.start_at : "" %></td>
+			<td class="leftcol"><label for="subject_id">Time</label></td>
+			<td><%=h @timetable.start_at? ? @timetable.start_at.strftime("%I:%M%p") + ' to ' + @timetable.end_at.strftime("%I:%M%p  %d-%b-%Y") : "" %></td>
 		</tr>
+		<!--
 		<tr>
 			<td class="leftcol"><label for="subject_id">End At</label></td>
-			<td><%=h @timetable.end_at %></td>
-		</tr>
+			<td><%=h @timetable.end_at.strftime("%I:%M%p  %d-%b-%Y") %></td>
+		</tr>-->
 	
 	
 </table>
-<BR>
-</div>
 
+</div>
+<BR>
 <%= link_to 'Edit', edit_timetable_path(@timetable) %> |
-<%= link_to 'Back', timetables_path %>
+<%= link_to 'Back', timetables_path %>  | 
+<%= link_to 'Calendar', {:controller => 'timetables', :action => 'calendar'} %>
