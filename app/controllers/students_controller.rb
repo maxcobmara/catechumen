@@ -6,6 +6,7 @@ class StudentsController < ApplicationController
   def index
     @students = Student.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page])#17/11/2011 - Shaliza added pagination for student
     @student_intakes = @students.group_by { |t| t.intake } # 21/10/2011 - Shaliza changed with group by intake
+    @student_programmes = @students.group_by { |t| t.course_id }
     respond_to do |format|
      # flash[:notice] = "Sorry, your search didn't return any results."
       format.html # index.html.erb

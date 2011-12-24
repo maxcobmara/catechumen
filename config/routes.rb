@@ -1,6 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :trainingnotes
+
+  map.resources :trainingreports
+
+  map.resources :studentattendances
+
   map.resources :exammakers
  
+  map.connect '/events/calendar/', :controller => 'events', :action => 'calendar' 
   map.connect '/timetables/calendar/', :controller => 'timetables', :action => 'calendar'
   map.resources :timetables#, :collection => { :calendar => :get }
 

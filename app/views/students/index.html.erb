@@ -18,7 +18,6 @@
 	</div>
 	<table width=100%>
 			<tr>
-				<th>Programme</th>
 				<th>MyKad No</th>
 				<th>Name</th>
 				<th>Matrixno</th>
@@ -26,24 +25,27 @@
 			</tr>
 			
 			<!-- 21/10/2011 - Shaliza changed group_ by.filter fetch from intake -->
-   	        <% @student_intakes.each do |month, students| %>
-			<tr><td colspan=8><BR><b>Intake <%= month.strftime('%B/%Y') unless month.blank? %></b></td></tr>
-			<% for student in students %>
-		<!--	<#% @students.each do |student| %>-->
-			<tr>
-				<td><%=h student.course_id.blank? ? " " : student.course.programme_with_specialisation %></td>
-				<td><%=h student.formatted_mykad %></td>
-				<td><%=h student.name %></td>
-				<td><%=h student.matrixno %></td>
-				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => student %></td>
-				<td width=10px><%= link_to image_tag("printer.png",   :border => 0, :title => 'Borang Maklumat Pelajar'), :action => 'formforstudent', :id => student %></td>
-				<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => student %></td>
-				<td width=10px >
-					<% if permitted_to? :destroy, @student %>
-						<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), student, :confirm => 'Are you sure?', :method => :delete %></td>
-						<% end %>
-				</td>
-			</tr>
+   	  <% @student_intakes.each do |month, students| %>
+				<tr><td colspan=8><BR><b>Intake <%= month.strftime('%B/%Y') unless month.blank? %></b></td></tr>
+					<% @student_programmes.each do |programme, students| %>
+						<tr><td colspan=8><BR><b>Course : <%= Programme.find(:all, :select => "name", :conditions => {:id => programme}).map(&:name) %></b></td></tr>
+						<% for student in students %>
+							<!--	<#% @students.each do |student| %>-->
+								<tr>
+									<!-- ><td><#%=h student.course_id.blank? ? " " : student.course.programme_with_specialisation %></td> -->
+									<td><%=h student.formatted_mykad %></td>
+									<td><%=h student.name %></td>
+									<td><%=h student.matrixno %></td>
+									<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => student %></td>
+									<td width=10px><%= link_to image_tag("printer.png",   :border => 0, :title => 'Borang Maklumat Pelajar'), :action => 'formforstudent', :id => student %></td>
+									<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => student %></td>
+									<td width=10px >
+										<% if permitted_to? :destroy, @student %>
+											<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), student, :confirm => 'Are you sure?', :method => :delete %></td>
+											<% end %>
+									</td>
+								</tr>
+					<% end %>
 			<% end %>
 		<% end %>
 	</table>

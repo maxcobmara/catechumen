@@ -1,0 +1,46 @@
+<% form_for(@timetable) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'show', :locals => {:f => f} %>
+
+  
+	<div class="tform">
+		<H2>Time Table Details</H2>
+	  <table width=100% >
+			<tr>
+				<td class="leftcol"><label for="intake_id">Intake</label></td>
+				<td><%=h @timetable.klass_id.blank? ? "" : @timetable.klass.name %></td>
+			</tr>
+		
+			<tr>
+				<td class="leftcol"><label for="topic_id">Programme</label></td>
+				<td><%=h @timetable.topic_id.blank? ? "" : @timetable.klass.subject.subject_code_with_subject_name %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="topic_id">Topic</label></td>
+				<td><%=h @timetable.topic_id.blank? ? "" : @timetable.topic.name %></td>
+			</tr>
+		
+			<tr>
+				<td class="leftcol"><label for="residence_id">Location</label></td>
+				<td><%=h @timetable.location_id.blank? ? "" : @timetable.location.name %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="subject_id">Time</label></td>
+				<td><%=h @timetable.start_at? ? @timetable.start_at.strftime("%I:%M%p") + ' to ' + @timetable.end_at.strftime("%I:%M%p  %d-%b-%Y") : "" %></td>
+			</tr>	
+		</table>
+		<H2>Take Attendance</H2>
+
+	</div>
+	<BR>
+	
+	  <p>
+	    <%= f.submit 'Update' %>
+	  </p>
+	<% end %>
+<%= link_to 'Edit', edit_timetable_path(@timetable) %> |
+<%= link_to 'Back', timetables_path %>  | 
+<%= link_to 'Calendar', {:controller => 'timetables', :action => 'calendar'} %>

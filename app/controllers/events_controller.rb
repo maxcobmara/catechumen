@@ -82,4 +82,15 @@ class EventsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  
+  def calendar
+    @events = Event.find(:all)
+    @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @timetables }
+    end
+  end
 end

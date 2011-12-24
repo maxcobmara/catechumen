@@ -10,6 +10,9 @@ class Topic < ActiveRecord::Base
 
   validates_presence_of :topic_code, :sequenceno, :name
   validates_uniqueness_of :sequenceno, :scope => :subject_id, :message => 'This sequence is already taken'
+  
+  has_many :trainingnotes, :dependent => :destroy
+   accepts_nested_attributes_for :trainingnotes, :reject_if => lambda { |a| a[:title].blank? }
 
     #Link to Model Timetableentry
     #has_many :topic, :class_name => 'Time_table_entry', :foreign_key => 'topic_id'

@@ -20,8 +20,11 @@
 			<td><%=h programme.name %></td>
 			<td><%=h programme.specialisation %></td>
 			<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => programme %></td>
+			
+			<% permitted_to? :manage, :programmes do %>
 			<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => programme %></td>
 			<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), programme, :confirm => 'Are you sure?', :method => :delete %></td>
+			<% end %>
 		</tr>
 		<% end %>
 	</table>

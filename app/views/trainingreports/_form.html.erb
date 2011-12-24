@@ -1,0 +1,56 @@
+<div class="tform">
+	<H2>Lesson Plan Reporting</H2>
+	<% if @trainingreport.tpa_id != current_user.staff_id %>
+	
+  <table width=100% >
+			<tr>
+				<td class="leftcol"><label for="classtype"><b>Type of Lecture</b></label></td>
+				<td><%= f.radio_button :classtype, 1 %>Kuliah  &nbsp; &nbsp;
+						<%= f.radio_button :classtype, 2 %>Tutorial &nbsp; &nbsp;
+						<%= f.radio_button :classtype, 3 %>Amali</td>
+
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="location_state"><b>State of classroom</b></label></td>
+				<td><%= f.radio_button :location_state, true %>Memuaskan  &nbsp; &nbsp;
+						<%= f.radio_button :location_state, false %>Tidak Memuaskan &nbsp; &nbsp;</td>
+			</tr>
+			
+		  <tr>
+					<td class="leftcol"><label for="ls_comment">Classroom Comment:</label></td>
+					<td><%= f.text_area :ls_comment, :size => '60x3' %></td>
+			</tr>
+			<tr>
+					<td class="leftcol"><label for="staff_comment">General Comment:</label></td>
+					<td><%= f.text_area :staff_comment, :size => '60x3' %></td>
+			</tr>
+			<tr>
+					<td class="leftcol"><label for="staff_id">Reporting:</label></td>
+					<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %></td>
+			</tr>
+			<tr>
+					<td class="leftcol"><label for="staff_id">Submit?</label></td>
+			    <td><%= f.check_box :submit %></td>
+			</tr>
+			<tr>
+					<td class="leftcol"><label for="staff_id">TPA/KP</label></td>
+					<td><%= f.collection_select :tpa_id, Staff.find(:all, :conditions => ["id != ?", current_user.staff_id]), :id, :staff_name_with_position %></td>
+			</tr>
+	</table>
+<% end %>
+	
+	<% if @trainingreport.tpa_id == current_user.staff_id %>
+		<%= render 'show.html.erb' %>
+		<table>
+			<tr>
+					<td class="leftcol"><label for="tpa_comment">General Comment:</label></td>
+					<td><%= f.text_area :tpa_comment, :size => '60x3' %></td>
+			</tr>
+		</table>
+		<% end %>
+		
+	  
+	
+	
+	
+</div>

@@ -27,6 +27,7 @@ class TopicsController < ApplicationController
   # GET /topics/new.xml
   def new
     @topic = Topic.new
+    @topic.trainingnotes.build
 
     respond_to do |format|
       format.html # new.html.erb

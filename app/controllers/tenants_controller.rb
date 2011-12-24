@@ -1,8 +1,9 @@
 class TenantsController < ApplicationController
+  filter_access_to :all
   # GET /tenants
   # GET /tenants.xml
   def index
-    @tenants = Tenant.all
+    @tenants = Tenant.with_permissions_to(:index)
 
     respond_to do |format|
       format.html # index.html.erb

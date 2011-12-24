@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111127195643) do
+ActiveRecord::Schema.define(:version => 20111130212506) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -352,16 +352,6 @@ ActiveRecord::Schema.define(:version => 20111127195643) do
     t.string   "recommendation"
     t.boolean  "gift"
     t.boolean  "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "docs", :force => true do |t|
-    t.integer  "curriculum_id"
-    t.integer  "cofile_id"
-    t.string   "name"
-    t.decimal  "version"
-    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1011,6 +1001,14 @@ ActiveRecord::Schema.define(:version => 20111127195643) do
     t.datetime "updated_at"
   end
 
+  create_table "studentattendances", :force => true do |t|
+    t.integer  "timetable_id"
+    t.integer  "student_id"
+    t.boolean  "attend"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "students", :force => true do |t|
     t.string   "icno"
     t.string   "name"
@@ -1135,6 +1133,36 @@ ActiveRecord::Schema.define(:version => 20111127195643) do
     t.integer  "durahours"
     t.integer  "duramins"
     t.integer  "duration"
+  end
+
+  create_table "trainingnotes", :force => true do |t|
+    t.integer  "timetable_id"
+    t.string   "title"
+    t.string   "reference"
+    t.string   "version"
+    t.string   "staff_id"
+    t.date     "release"
+    t.integer  "topic_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "document_file_name"
+    t.string   "document_content_type"
+    t.integer  "document_file_size"
+    t.datetime "document_updated_at"
+  end
+
+  create_table "trainingreports", :force => true do |t|
+    t.integer  "classtype"
+    t.integer  "timetable_id"
+    t.boolean  "location_state"
+    t.text     "ls_comment"
+    t.text     "staff_comment"
+    t.integer  "staff_id"
+    t.boolean  "submit"
+    t.text     "tpa_comment"
+    t.integer  "tpa_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "trainingrequests", :force => true do |t|

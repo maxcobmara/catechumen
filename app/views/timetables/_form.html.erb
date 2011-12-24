@@ -33,6 +33,25 @@
 	
 	
 	</table>
+	
+	<table width=100%>
+		<tr>
+			<td class="leftcol">Training Notes</td>
+			<td>
+				<div>
+				<% f.fields_for :trainingnotes do |builder| %>
+					<%= render 'trainingnote_fields', :f => builder %>
+				<% end %>
+				<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :trainingnotes %> - Add More </p>
+				</div></td>
+		</tr>
+	</table>
+	<!--
+		<#% for student in @timetable.students %>
+		<p> <#%= student.name %> <#%= f.check_box :attend, :default => true %>
+		<#%= check_box_tag "timetable[student_ids][]", student.id, @timetable.student.include?(student) %> </p>
+	  <#% end %>-->
+
 <BR>
 
 

@@ -25,6 +25,10 @@ class Student < ActiveRecord::Base
   has_many  :studentevaluate, :class_name => 'Courseevaluation', :foreign_key => 'student_id'#Link to Model CourseEvaluation
   has_many  :student,         :class_name => 'Residence', :foreign_key => 'student_id'      #Link to Model residence
   
+  
+  has_many :studentattendances
+  has_many :timetables, :through => :studentattendances
+  
   #has_many :sdiciplines, :foreign_key => 'student_id'
   #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
   
@@ -78,6 +82,11 @@ class Student < ActiveRecord::Base
     else
       course.name
     end
+  end
+  
+  def list_programme
+    suid = course_id 
+    Programme.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
   end
    
    def bil

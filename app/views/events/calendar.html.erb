@@ -1,0 +1,33 @@
+<% if @events == [] %>
+<% else %>
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Event Calendar</h2>
+		<div class="right"><%= link_to image_tag("application_form_add.png", :border => 0), {:controller => 'events', :action => 'new'} %></div>
+	</div>
+
+
+<div id="calendar">
+  <h2 id="month">
+    <%= link_to "<", :month => (@date.beginning_of_month-1).strftime("%Y-%m") %>
+    <%=h @date.strftime("%B %Y") %>
+    <%= link_to ">", :month => (@date.end_of_month+1).strftime("%Y-%m") %>
+  </h2>
+
+  <% calendar_for @events, :year => @date.year, :month => @date.month do |calendar| %>
+    <%= calendar.head('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') %>
+    <% calendar.day(:day_method => :start_at) do |date, events| %>
+      <%= date.day %>
+				
+			      <ul>
+			        <% for event in events %>
+			          <li><%= link_to h(event.eventname), event %></li>
+			        <% end %>
+			      </ul>
+				
+    <% end %>
+  <% end %>
+</div>
+<% end %>
+</div>

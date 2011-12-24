@@ -1,8 +1,9 @@
 authorization do
   
   role :administration do
+    has_omnipotence
     #Staff Menu Items
-    has_permission_on :staffs,          :to => [:manage, :borang_maklumat_staff]
+    #has_permission_on :staffs,          :to => [:manage, :borang_maklumat_staff]
     has_permission_on :attendances,     :to => [:manage, :approve]
     #appraisals
     #positions
@@ -19,11 +20,11 @@ authorization do
     has_permission_on :locations,   :to => :manage                              #location items
     
     #E-Filing Menu Items
-    has_permission_on :documents,   :to => :manage                                #e-filing items
+    #has_permission_on :documents,   :to => :manage                                #e-filing items
     
     #Student Menu Items
-    has_permission_on :students,        :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
-    has_permission_on [:leaveforstudents],  :to => :manage #
+    #has_permission_on :students,        :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
+    #has_permission_on [:leaveforstudents],  :to => :manage #
     
     #Exam Menu Items
     has_permission_on :examquestions,   :to => :manage
@@ -57,7 +58,7 @@ authorization do
         if_attribute :approve_id => is {User.current_user.staff_id}
     end
     has_permission_on :leaveforstaffs, :to => :create
-    has_permission_on :leaveforstaffs, :to => [:index, :show, :new, :create, :edit, :update] do
+    has_permission_on :leaveforstaffs, :to => [:index, :show, :edit, :update] do
       if_attribute :staff_id => is {User.current_user.staff_id}
     end
     has_permission_on :leaveforstaffs, :to => [:index, :show, :approve1, :update] do
@@ -76,15 +77,23 @@ authorization do
   end
   
   role :student do
-    has_permission_on :programmes, :to => :core
-    has_permission_on :books, :to => :core
-    has_permission_on :students, :to => [:read, :update, :core] do
-      if_attribute :id => is {User.current_user.student_id}
-    end
-    has_permission_on :leaveforstudents, :to => [:manage] do
-      if_attribute :student_id => is {User.current_user.student_id}
-    end
-    has_permission_on :leaveforstudents, :to => [:create]
+    
+      has_permission_on :locations, :to => :menu
+    
+      has_permission_on :tenants, :to => :read do
+        if_attribute :student_id => is {User.current_user.student_id}
+      end
+    
+    
+      has_permission_on :programmes, :to => :menu
+      has_permission_on :books, :to => :core
+      has_permission_on :students, :to => [:read, :update, :menu] do
+        if_attribute :id => is {User.current_user.student_id}
+      end
+      has_permission_on :leaveforstudents, :to => [:manage] do
+        if_attribute :student_id => is {User.current_user.student_id}
+      end
+      has_permission_on :leaveforstudents, :to => [:create]
   end
   
   role :student_administrator do
@@ -149,8 +158,7 @@ end
   privileges do
     privilege :approve,:includes => [:read, :update]
     privilege :manage, :includes => [:create, :read, :update, :delete, :core, :approve, :menu]
-    privilege :menu,   :includes => [:read]
-    privilege :core,   :includes => [:read]
+    privilege :menu,   :includes => [:index]
     privilege :read,   :includes => [:index, :show]
     privilege :create, :includes => :new
     privilege :update, :includes => :edit

@@ -30,17 +30,23 @@
 			<td class="leftcol"><label for="subject_id">Time</label></td>
 			<td><%=h @timetable.start_at? ? @timetable.start_at.strftime("%I:%M%p") + ' to ' + @timetable.end_at.strftime("%I:%M%p  %d-%b-%Y") : "" %></td>
 		</tr>
-		<!--
 		<tr>
-			<td class="leftcol"><label for="subject_id">End At</label></td>
-			<td><%=h @timetable.end_at.strftime("%I:%M%p  %d-%b-%Y") %></td>
-		</tr>-->
-	
-	
+			<td class="leftcol"><label for="subject_id">Student Count</label></td>
+			<td><%=h @timetable.student_count %><BR>
+					<% for student in @timetable.my_students%>
+						<%= (student.name).upcase %><BR>
+					<% end %>
+				
+				</td>
+		</tr>
 </table>
 
+
+
+			
 </div>
 <BR>
 <%= link_to 'Edit', edit_timetable_path(@timetable) %> |
 <%= link_to 'Back', timetables_path %>  | 
-<%= link_to 'Calendar', {:controller => 'timetables', :action => 'calendar'} %>
+<%= link_to 'Calendar', {:controller => 'timetables', :action => 'calendar'} %>  |
+<%= link_to 'Submit Report', new_trainingreport_path(:timetable_id => @timetable.id) %>

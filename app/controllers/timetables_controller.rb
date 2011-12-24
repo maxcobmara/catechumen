@@ -27,7 +27,7 @@ class TimetablesController < ApplicationController
   # GET /timetables/new.xml
   def new
     @timetable = Timetable.new
-
+    @timetable.trainingnotes.build
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @timetable }
