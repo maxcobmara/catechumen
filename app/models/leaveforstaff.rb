@@ -9,9 +9,13 @@ class Leaveforstaff < ActiveRecord::Base
   
   validates_presence_of :staff_id, :leavetype
   
-  named_scope :mine,        :conditions =>  ["staff_id=?", User.current_user.staff_id]
-  named_scope :forsupport,  :conditions =>  ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]
-  named_scope :forapprove,  :conditions =>  ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]
+  def moo
+    User.current_user.staff_id unless User.current_user.staff_id.blank?
+  end
+  
+  #named_scope :mine,        :conditions =>  ["staff_id=?", User.current_user[:staff_id]]
+  #named_scope :forsupport,  :conditions =>  ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]
+  #named_scope :forapprove,  :conditions =>  ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]
 
 
   FILTERS = [
