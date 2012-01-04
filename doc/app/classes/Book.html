@@ -86,9 +86,9 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000182">book_quantity</a>&nbsp;&nbsp;
-      <a href="#M000181">search</a>&nbsp;&nbsp;
-      <a href="#M000180">tag_suggest</a>&nbsp;&nbsp;
+      <a href="#M000223">book_quantity</a>&nbsp;&nbsp;
+      <a href="#M000222">search</a>&nbsp;&nbsp;
+      <a href="#M000221">tag_suggest</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -143,28 +143,28 @@
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000181" class="method-detail">
-        <a name="M000181"></a>
+      <div id="method-M000222" class="method-detail">
+        <a name="M000222"></a>
 
         <div class="method-heading">
-          <a href="#M000181" class="method-signature">
+          <a href="#M000222" class="method-signature">
           <span class="method-name">search</span><span class="method-args">(search)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000181-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000181-source">
+            onclick="toggleCode('M000222-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000222-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/book.rb, line 28</span>
-28:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">search</span>)
-29:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">search</span>
-30:         <span class="ruby-ivar">@book</span> = <span class="ruby-constant">Book</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;isbn LIKE ? or title ILIKE ? or author ILIKE ? or location ILIKE ?&quot;</span> , <span class="ruby-node">&quot;%#{search}%&quot;</span>,<span class="ruby-node">&quot;%#{search}%&quot;</span>,<span class="ruby-node">&quot;%#{search}%&quot;</span>, <span class="ruby-node">&quot;%#{search}%&quot;</span>])
-31:     <span class="ruby-keyword kw">else</span>
-32:        <span class="ruby-ivar">@book</span> = <span class="ruby-constant">Book</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>)
-33:     <span class="ruby-keyword kw">end</span>
-34:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/book.rb, line 31</span>
+31: <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">search</span>)
+32:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">search</span>
+33:         <span class="ruby-ivar">@book</span> = <span class="ruby-constant">Book</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;isbn LIKE ? or title ILIKE ? or author ILIKE ? or location ILIKE ?&quot;</span> , <span class="ruby-node">&quot;%#{search}%&quot;</span>,<span class="ruby-node">&quot;%#{search}%&quot;</span>,<span class="ruby-node">&quot;%#{search}%&quot;</span>, <span class="ruby-node">&quot;%#{search}%&quot;</span>])
+34:     <span class="ruby-keyword kw">else</span>
+35:        <span class="ruby-ivar">@book</span> = <span class="ruby-constant">Book</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>)
+36:     <span class="ruby-keyword kw">end</span>
+37: <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -172,51 +172,51 @@
 
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000182" class="method-detail">
-        <a name="M000182"></a>
+      <div id="method-M000223" class="method-detail">
+        <a name="M000223"></a>
 
         <div class="method-heading">
-          <a href="#M000182" class="method-signature">
+          <a href="#M000223" class="method-signature">
           <span class="method-name">book_quantity</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000182-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000182-source">
+            onclick="toggleCode('M000223-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000223-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/book.rb, line 36</span>
-36:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">book_quantity</span>
-37:       <span class="ruby-identifier">counter</span> = <span class="ruby-constant">Accession</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;book_id = ?&quot;</span>, <span class="ruby-identifier">id</span>])
-38:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/book.rb, line 39</span>
+39:  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">book_quantity</span>
+40:       <span class="ruby-identifier">counter</span> = <span class="ruby-constant">Accession</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;book_id = ?&quot;</span>, <span class="ruby-identifier">id</span>])
+41:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000180" class="method-detail">
-        <a name="M000180"></a>
+      <div id="method-M000221" class="method-detail">
+        <a name="M000221"></a>
 
         <div class="method-heading">
-          <a href="#M000180" class="method-signature">
+          <a href="#M000221" class="method-signature">
           <span class="method-name">tag_suggest</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000180-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000180-source">
+            onclick="toggleCode('M000221-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000221-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/book.rb, line 18</span>
-18:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">tag_suggest</span>
-19:     <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Book</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
-20:       <span class="ruby-value">1</span>
-21:     <span class="ruby-keyword kw">else</span>
-22:       (<span class="ruby-constant">Book</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">to_s</span>
-23:     <span class="ruby-keyword kw">end</span>
-24:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/book.rb, line 20</span>
+20:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">tag_suggest</span>
+21:     <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Book</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
+22:       <span class="ruby-value">1</span>
+23:     <span class="ruby-keyword kw">else</span>
+24:       (<span class="ruby-constant">Book</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">to_s</span>
+25:     <span class="ruby-keyword kw">end</span>
+26:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

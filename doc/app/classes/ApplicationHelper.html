@@ -87,10 +87,11 @@ application.
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000705">link_to_add_fields</a>&nbsp;&nbsp;
-      <a href="#M000704">link_to_remove_fields</a>&nbsp;&nbsp;
-      <a href="#M000703">ringgols</a>&nbsp;&nbsp;
-      <a href="#M000706">select_tag_for_filter</a>&nbsp;&nbsp;
+      <a href="#M000801">link_to_add_fields</a>&nbsp;&nbsp;
+      <a href="#M000800">link_to_remove_fields</a>&nbsp;&nbsp;
+      <a href="#M000799">ringgols</a>&nbsp;&nbsp;
+      <a href="#M000803">select_tag_for_filter</a>&nbsp;&nbsp;
+      <a href="#M000802">sortable</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -112,19 +113,19 @@ application.
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000705" class="method-detail">
-        <a name="M000705"></a>
+      <div id="method-M000801" class="method-detail">
+        <a name="M000801"></a>
 
         <div class="method-heading">
-          <a href="#M000705" class="method-signature">
+          <a href="#M000801" class="method-signature">
           <span class="method-name">link_to_add_fields</span><span class="method-args">(name, f, association)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000705-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000705-source">
+            onclick="toggleCode('M000801-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000801-source">
 <pre>
     <span class="ruby-comment cmt"># File app/helpers/application_helper.rb, line 11</span>
 11:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">link_to_add_fields</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">f</span>, <span class="ruby-identifier">association</span>)
@@ -139,19 +140,19 @@ application.
         </div>
       </div>
 
-      <div id="method-M000704" class="method-detail">
-        <a name="M000704"></a>
+      <div id="method-M000800" class="method-detail">
+        <a name="M000800"></a>
 
         <div class="method-heading">
-          <a href="#M000704" class="method-signature">
+          <a href="#M000800" class="method-signature">
           <span class="method-name">link_to_remove_fields</span><span class="method-args">(name, f)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000704-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000704-source">
+            onclick="toggleCode('M000800-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000800-source">
 <pre>
    <span class="ruby-comment cmt"># File app/helpers/application_helper.rb, line 7</span>
 7:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">link_to_remove_fields</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">f</span>)
@@ -162,19 +163,19 @@ application.
         </div>
       </div>
 
-      <div id="method-M000703" class="method-detail">
-        <a name="M000703"></a>
+      <div id="method-M000799" class="method-detail">
+        <a name="M000799"></a>
 
         <div class="method-heading">
-          <a href="#M000703" class="method-signature">
+          <a href="#M000799" class="method-signature">
           <span class="method-name">ringgols</span><span class="method-args">(money)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000703-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000703-source">
+            onclick="toggleCode('M000799-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000799-source">
 <pre>
    <span class="ruby-comment cmt"># File app/helpers/application_helper.rb, line 3</span>
 3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ringgols</span>(<span class="ruby-identifier">money</span>)
@@ -185,37 +186,63 @@ application.
         </div>
       </div>
 
-      <div id="method-M000706" class="method-detail">
-        <a name="M000706"></a>
+      <div id="method-M000803" class="method-detail">
+        <a name="M000803"></a>
 
         <div class="method-heading">
-          <a href="#M000706" class="method-signature">
+          <a href="#M000803" class="method-signature">
           <span class="method-name">select_tag_for_filter</span><span class="method-args">(model, nvpairs, params)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000706-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000706-source">
+            onclick="toggleCode('M000803-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000803-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/helpers/application_helper.rb, line 26</span>
+26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_tag_for_filter</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">nvpairs</span>, <span class="ruby-identifier">params</span>)
+27:     <span class="ruby-identifier">options</span> = { <span class="ruby-identifier">:query</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:query</span>] }
+28:     <span class="ruby-identifier">_url</span> = <span class="ruby-identifier">url_for</span>(<span class="ruby-identifier">eval</span>(<span class="ruby-node">&quot;#{model}_url(options)&quot;</span>))
+29:     <span class="ruby-identifier">_html</span> = <span class="ruby-value str">%{&lt;label for=&quot;show&quot;&gt;Show:&lt;/label&gt;}</span>
+30:     <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">%{&lt;select name=&quot;show&quot; id=&quot;show&quot;}</span>
+31:     <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">%{onchange=&quot;window.location='#{_url}' + '?show=' + this.value&quot;&gt;}</span>
+32:     <span class="ruby-identifier">nvpairs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pair</span><span class="ruby-operator">|</span>
+33:       <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">%{&lt;option value=&quot;#{pair[:scope]}&quot;}</span>
+34:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:show</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">pair</span>[<span class="ruby-identifier">:scope</span>] <span class="ruby-operator">||</span> ((<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:show</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:show</span>].<span class="ruby-identifier">empty?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">pair</span>[<span class="ruby-identifier">:scope</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;all&quot;</span>)
+35:         <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">%{ selected=&quot;selected&quot;}</span>
+36:       <span class="ruby-keyword kw">end</span>
+37:       <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">%{&gt;#{pair[:label]}}</span>
+38:       <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">%{&lt;/option&gt;}</span>
+39:     <span class="ruby-keyword kw">end</span>
+40:     <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">%{&lt;/select&gt;}</span>
+41:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000802" class="method-detail">
+        <a name="M000802"></a>
+
+        <div class="method-heading">
+          <a href="#M000802" class="method-signature">
+          <span class="method-name">sortable</span><span class="method-args">(column, title = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000802-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000802-source">
 <pre>
     <span class="ruby-comment cmt"># File app/helpers/application_helper.rb, line 19</span>
-19:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_tag_for_filter</span>(<span class="ruby-identifier">model</span>, <span class="ruby-identifier">nvpairs</span>, <span class="ruby-identifier">params</span>)
-20:     <span class="ruby-identifier">options</span> = { <span class="ruby-identifier">:query</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:query</span>] }
-21:     <span class="ruby-identifier">_url</span> = <span class="ruby-identifier">url_for</span>(<span class="ruby-identifier">eval</span>(<span class="ruby-node">&quot;#{model}_url(options)&quot;</span>))
-22:     <span class="ruby-identifier">_html</span> = <span class="ruby-value str">%{&lt;label for=&quot;show&quot;&gt;Show:&lt;/label&gt;}</span>
-23:     <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">%{&lt;select name=&quot;show&quot; id=&quot;show&quot;}</span>
-24:     <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">%{onchange=&quot;window.location='#{_url}' + '?show=' + this.value&quot;&gt;}</span>
-25:     <span class="ruby-identifier">nvpairs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pair</span><span class="ruby-operator">|</span>
-26:       <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">%{&lt;option value=&quot;#{pair[:scope]}&quot;}</span>
-27:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:show</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">pair</span>[<span class="ruby-identifier">:scope</span>] <span class="ruby-operator">||</span> ((<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:show</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:show</span>].<span class="ruby-identifier">empty?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">pair</span>[<span class="ruby-identifier">:scope</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;all&quot;</span>)
-28:         <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">%{ selected=&quot;selected&quot;}</span>
-29:       <span class="ruby-keyword kw">end</span>
-30:       <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">%{&gt;#{pair[:label]}}</span>
-31:       <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">%{&lt;/option&gt;}</span>
-32:     <span class="ruby-keyword kw">end</span>
-33:     <span class="ruby-identifier">_html</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">%{&lt;/select&gt;}</span>
-34:   <span class="ruby-keyword kw">end</span>
+19:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sortable</span>(<span class="ruby-identifier">column</span>, <span class="ruby-identifier">title</span> = <span class="ruby-keyword kw">nil</span>)
+20:     <span class="ruby-identifier">title</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">titleize</span>
+21:     <span class="ruby-identifier">css_class</span> = <span class="ruby-identifier">column</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">sort_column</span> <span class="ruby-value">? </span><span class="ruby-node">&quot;current #{sort_direction}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">nil</span>
+22:     <span class="ruby-identifier">direction</span> = <span class="ruby-identifier">column</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">sort_column</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">sort_direction</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;asc&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-value str">&quot;desc&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-value str">&quot;asc&quot;</span> 
+23:     <span class="ruby-identifier">link_to</span> <span class="ruby-identifier">title</span>, {<span class="ruby-identifier">:sort</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">column</span>, <span class="ruby-identifier">:direction</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">direction</span>}, {<span class="ruby-identifier">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">css_class</span>}
+24:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

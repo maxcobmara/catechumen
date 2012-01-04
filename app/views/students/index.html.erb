@@ -28,7 +28,8 @@
    	  <% @student_intakes.each do |month, students| %>
 				<tr><td colspan=8><BR><b>Intake <%= month.strftime('%B/%Y') unless month.blank? %></b></td></tr>
 					<% @student_programmes.each do |programme, students| %>
-						<tr><td colspan=8><BR><b>Course : <%= Programme.find(:all, :select => "name", :conditions => {:id => programme}).map(&:name) %></b></td></tr>
+						<tr><td colspan=8><BR><b><%= Programme.find(:all, :select => "name", :conditions => {:id => programme}).map(&:name) %>
+																		 <%= Programme.find(:all, :select => "specialisation", :conditions => {:id => programme}).map(&:specialisation) %></b></td></tr>
 						<% for student in students %>
 							<!--	<#% @students.each do |student| %>-->
 								<tr>

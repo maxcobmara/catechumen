@@ -59,10 +59,6 @@
                 app/models/subject.rb
                 </a>
         <br />
-                <a href="../files/app/models/subject_rb_old_rb.html">
-                app/models/subject.rb.old.rb
-                </a>
-        <br />
             </td>
         </tr>
 
@@ -90,9 +86,8 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000225">search</a>&nbsp;&nbsp;
-      <a href="#M000224">subject_code_with_subject_name</a>&nbsp;&nbsp;
-      <a href="#M000223">subject_code_with_subject_name</a>&nbsp;&nbsp;
+      <a href="#M000260">search</a>&nbsp;&nbsp;
+      <a href="#M000261">subject_code_with_subject_name</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -119,11 +114,6 @@
           <td>=</td>
           <td class="context-item-value">[                 #  Displayed       stored in db                 [ &quot;Major&quot;,&quot;1&quot; ],                 [ &quot;Minor&quot;,&quot;2&quot; ],                 [ &quot;Elective&quot;,&quot;3&quot; ]</td>
         </tr>
-        <tr class="top-aligned-row context-row">
-          <td class="context-item-name">STATUS</td>
-          <td>=</td>
-          <td class="context-item-value">[             #  Displayed       stored in db             [ &quot;Major&quot;,&quot;1&quot; ],             [ &quot;Minor&quot;,&quot;2&quot; ],             [ &quot;Elective&quot;,&quot;3&quot; ]</td>
-        </tr>
         </table>
       </div>
     </div>
@@ -137,28 +127,28 @@
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000225" class="method-detail">
-        <a name="M000225"></a>
+      <div id="method-M000260" class="method-detail">
+        <a name="M000260"></a>
 
         <div class="method-heading">
-          <a href="#M000225" class="method-signature">
+          <a href="#M000260" class="method-signature">
           <span class="method-name">search</span><span class="method-args">(search)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000225-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000225-source">
+            onclick="toggleCode('M000260-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000260-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/subject.rb.old.rb, line 36</span>
-36: <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">search</span>)
-37:   <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">search</span>
-38:     <span class="ruby-ivar">@subjects</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;subjectcode LIKE ? or name ILIKE ?&quot;</span>, <span class="ruby-node">&quot;%#{search}%&quot;</span>,<span class="ruby-node">&quot;%#{search}%&quot;</span>])
-39:   <span class="ruby-keyword kw">else</span>
-40:    <span class="ruby-ivar">@subjects</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>)
-41:   <span class="ruby-keyword kw">end</span>
-42: <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/subject.rb, line 13</span>
+13:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">search</span>)
+14:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">search</span>
+15:       <span class="ruby-ivar">@subjects</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;subjectcode LIKE ? or name ILIKE ?&quot;</span>, <span class="ruby-node">&quot;%#{search}%&quot;</span>,<span class="ruby-node">&quot;%#{search}%&quot;</span>])
+16:     <span class="ruby-keyword kw">else</span>
+17:      <span class="ruby-ivar">@subjects</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>)
+18:     <span class="ruby-keyword kw">end</span>
+19:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -166,47 +156,24 @@
 
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000224" class="method-detail">
-        <a name="M000224"></a>
+      <div id="method-M000261" class="method-detail">
+        <a name="M000261"></a>
 
         <div class="method-heading">
-          <a href="#M000224" class="method-signature">
+          <a href="#M000261" class="method-signature">
           <span class="method-name">subject_code_with_subject_name</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000224-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000224-source">
+            onclick="toggleCode('M000261-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000261-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/subject.rb.old.rb, line 22</span>
-22:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">subject_code_with_subject_name</span>
-23:      <span class="ruby-node">&quot;#{subjectcode}  #{name}&quot;</span>
-24:    <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000223" class="method-detail">
-        <a name="M000223"></a>
-
-        <div class="method-heading">
-          <a href="#M000223" class="method-signature">
-          <span class="method-name">subject_code_with_subject_name</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000223-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000223-source">
-<pre>
-    <span class="ruby-comment cmt"># File app/models/subject.rb, line 22</span>
-22:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">subject_code_with_subject_name</span>
-23:      <span class="ruby-node">&quot;#{subjectcode}  #{name}&quot;</span>
-24:    <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/subject.rb, line 24</span>
+24:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">subject_code_with_subject_name</span>
+25:      <span class="ruby-node">&quot;#{subjectcode}  #{name}&quot;</span>
+26:    <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

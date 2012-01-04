@@ -86,9 +86,9 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000087">apply_dept_status</a>&nbsp;&nbsp;
-      <a href="#M000088">staff_details</a>&nbsp;&nbsp;
-      <a href="#M000086">whoami</a>&nbsp;&nbsp;
+      <a href="#M000100">applicant_details</a>&nbsp;&nbsp;
+      <a href="#M000099">apply_dept_status</a>&nbsp;&nbsp;
+      <a href="#M000098">whoami</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -110,93 +110,93 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000087" class="method-detail">
-        <a name="M000087"></a>
+      <div id="method-M000100" class="method-detail">
+        <a name="M000100"></a>
 
         <div class="method-heading">
-          <a href="#M000087" class="method-signature">
+          <a href="#M000100" class="method-signature">
+          <span class="method-name">applicant_details</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000100-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000100-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/ptdo.rb, line 31</span>
+31:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">applicant_details</span> 
+32:        <span class="ruby-identifier">suid</span> = <span class="ruby-identifier">staff_id</span>.<span class="ruby-identifier">to_a</span>
+33:        <span class="ruby-identifier">exists</span> = <span class="ruby-constant">Staff</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;id&quot;</span>).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
+34:        <span class="ruby-identifier">checker</span> = <span class="ruby-identifier">suid</span> <span class="ruby-operator">&amp;</span> <span class="ruby-identifier">exists</span>     
+35:    
+36:        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">staff_id</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
+37:           <span class="ruby-value str">&quot;&quot;</span> 
+38:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">checker</span> <span class="ruby-operator">==</span> []
+39:           <span class="ruby-value str">&quot;Staff No Longer Exists&quot;</span> 
+40:        <span class="ruby-keyword kw">else</span>
+41:          <span class="ruby-identifier">applicant</span>.<span class="ruby-identifier">mykad_with_staff_name</span>
+42:        <span class="ruby-keyword kw">end</span>
+43:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000099" class="method-detail">
+        <a name="M000099"></a>
+
+        <div class="method-heading">
+          <a href="#M000099" class="method-signature">
           <span class="method-name">apply_dept_status</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000087-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000087-source">
+            onclick="toggleCode('M000099-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000099-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/ptdo.rb, line 13</span>
-13:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">apply_dept_status</span>
-14:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">unit_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
-15:       <span class="ruby-value str">&quot;Awaiting unit approval&quot;</span>
-16:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">unit_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">false</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">dept_review</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">false</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">final_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">false</span>
-17:       <span class="ruby-value str">&quot;rejected&quot;</span>
-18:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">unit_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">dept_review</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
-19:       <span class="ruby-value str">&quot;approved by unit head, awaiting dept approval&quot;</span>
-20:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">unit_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">dept_review</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
-21:       <span class="ruby-value str">&quot;approved by dept head, awaiting pengarah approval&quot;</span>
-22:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">final_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
-23:       <span class="ruby-value str">&quot; All approvals complete&quot;</span>
-24:     <span class="ruby-keyword kw">else</span>
-25:       <span class="ruby-value str">&quot;No Status available&quot;</span>
-26:     <span class="ruby-keyword kw">end</span>
-27:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/ptdo.rb, line 15</span>
+15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">apply_dept_status</span>
+16:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">unit_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
+17:       <span class="ruby-value str">&quot;Awaiting unit approval&quot;</span>
+18:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">unit_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">false</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">dept_review</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">false</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">final_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">false</span>
+19:       <span class="ruby-value str">&quot;rejected&quot;</span>
+20:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">unit_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">dept_review</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
+21:       <span class="ruby-value str">&quot;approved by unit head, awaiting dept approval&quot;</span>
+22:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">unit_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">dept_review</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
+23:       <span class="ruby-value str">&quot;approved by dept head, awaiting pengarah approval&quot;</span>
+24:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">final_approve</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>
+25:       <span class="ruby-value str">&quot; All approvals complete&quot;</span>
+26:     <span class="ruby-keyword kw">else</span>
+27:       <span class="ruby-value str">&quot;No Status available&quot;</span>
+28:     <span class="ruby-keyword kw">end</span>
+29:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000088" class="method-detail">
-        <a name="M000088"></a>
+      <div id="method-M000098" class="method-detail">
+        <a name="M000098"></a>
 
         <div class="method-heading">
-          <a href="#M000088" class="method-signature">
-          <span class="method-name">staff_details</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000088-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000088-source">
-<pre>
-    <span class="ruby-comment cmt"># File app/models/ptdo.rb, line 29</span>
-29:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">staff_details</span> 
-30:           <span class="ruby-identifier">suid</span> = <span class="ruby-identifier">staff_id</span>.<span class="ruby-identifier">to_a</span>
-31:           <span class="ruby-identifier">exists</span> = <span class="ruby-constant">Staff</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;id&quot;</span>).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
-32:           <span class="ruby-identifier">checker</span> = <span class="ruby-identifier">suid</span> <span class="ruby-operator">&amp;</span> <span class="ruby-identifier">exists</span>     
-33: 
-34:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">staff_id</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
-35:              <span class="ruby-value str">&quot;&quot;</span> 
-36:            <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">checker</span> <span class="ruby-operator">==</span> []
-37:              <span class="ruby-value str">&quot;Staff No Longer Exists&quot;</span> 
-38:           <span class="ruby-keyword kw">else</span>
-39:             <span class="ruby-identifier">staff</span>.<span class="ruby-identifier">mykad_with_staff_name</span>
-40:           <span class="ruby-keyword kw">end</span>
-41:     <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000086" class="method-detail">
-        <a name="M000086"></a>
-
-        <div class="method-heading">
-          <a href="#M000086" class="method-signature">
+          <a href="#M000098" class="method-signature">
           <span class="method-name">whoami</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000086-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000086-source">
+            onclick="toggleCode('M000098-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000098-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/ptdo.rb, line 8</span>
- 8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">whoami</span>
- 9:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">staff_id</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">staff_id</span>
-10:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ptcourse_id</span> = <span class="ruby-identifier">ptschedule</span>.<span class="ruby-identifier">ptcourse</span>.<span class="ruby-identifier">id</span>
-11:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/ptdo.rb, line 10</span>
+10:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">whoami</span>
+11:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">staff_id</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">staff</span>.<span class="ruby-identifier">id</span>
+12:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ptcourse_id</span> = <span class="ruby-identifier">ptschedule</span>.<span class="ruby-identifier">ptcourse</span>.<span class="ruby-identifier">id</span>
+13:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

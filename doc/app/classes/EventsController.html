@@ -88,13 +88,14 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000060">create</a>&nbsp;&nbsp;
-      <a href="#M000062">destroy</a>&nbsp;&nbsp;
-      <a href="#M000059">edit</a>&nbsp;&nbsp;
-      <a href="#M000056">index</a>&nbsp;&nbsp;
-      <a href="#M000058">new</a>&nbsp;&nbsp;
-      <a href="#M000057">show</a>&nbsp;&nbsp;
-      <a href="#M000061">update</a>&nbsp;&nbsp;
+      <a href="#M000071">calendar</a>&nbsp;&nbsp;
+      <a href="#M000068">create</a>&nbsp;&nbsp;
+      <a href="#M000070">destroy</a>&nbsp;&nbsp;
+      <a href="#M000067">edit</a>&nbsp;&nbsp;
+      <a href="#M000064">index</a>&nbsp;&nbsp;
+      <a href="#M000066">new</a>&nbsp;&nbsp;
+      <a href="#M000065">show</a>&nbsp;&nbsp;
+      <a href="#M000069">update</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -116,11 +117,40 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000060" class="method-detail">
-        <a name="M000060"></a>
+      <div id="method-M000071" class="method-detail">
+        <a name="M000071"></a>
 
         <div class="method-heading">
-          <a href="#M000060" class="method-signature">
+          <a href="#M000071" class="method-signature">
+          <span class="method-name">calendar</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000071-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000071-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/events_controller.rb, line 87</span>
+87:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">calendar</span>
+88:     <span class="ruby-ivar">@events</span> = <span class="ruby-constant">Event</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>)
+89:     <span class="ruby-ivar">@date</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:month</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:month</span>].<span class="ruby-identifier">gsub</span>(<span class="ruby-value str">'-'</span>, <span class="ruby-value str">'/'</span>)) <span class="ruby-operator">:</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>
+90: 
+91:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+92:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-comment cmt"># index.html.erb</span>
+93:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@timetables</span> }
+94:     <span class="ruby-keyword kw">end</span>
+95:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000068" class="method-detail">
+        <a name="M000068"></a>
+
+        <div class="method-heading">
+          <a href="#M000068" class="method-signature">
           <span class="method-name">create</span><span class="method-args">()</span>
           </a>
         </div>
@@ -130,8 +160,8 @@
 POST /events POST /events.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000060-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000060-source">
+            onclick="toggleCode('M000068-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000068-source">
 <pre>
     <span class="ruby-comment cmt"># File app/controllers/events_controller.rb, line 42</span>
 42:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
@@ -153,11 +183,11 @@ POST /events POST /events.xml
         </div>
       </div>
 
-      <div id="method-M000062" class="method-detail">
-        <a name="M000062"></a>
+      <div id="method-M000070" class="method-detail">
+        <a name="M000070"></a>
 
         <div class="method-heading">
-          <a href="#M000062" class="method-signature">
+          <a href="#M000070" class="method-signature">
           <span class="method-name">destroy</span><span class="method-args">()</span>
           </a>
         </div>
@@ -167,8 +197,8 @@ POST /events POST /events.xml
 DELETE /events/1 DELETE /events/1.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000062-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000062-source">
+            onclick="toggleCode('M000070-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000070-source">
 <pre>
     <span class="ruby-comment cmt"># File app/controllers/events_controller.rb, line 76</span>
 76:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
@@ -185,11 +215,11 @@ DELETE /events/1 DELETE /events/1.xml
         </div>
       </div>
 
-      <div id="method-M000059" class="method-detail">
-        <a name="M000059"></a>
+      <div id="method-M000067" class="method-detail">
+        <a name="M000067"></a>
 
         <div class="method-heading">
-          <a href="#M000059" class="method-signature">
+          <a href="#M000067" class="method-signature">
           <span class="method-name">edit</span><span class="method-args">()</span>
           </a>
         </div>
@@ -199,8 +229,8 @@ DELETE /events/1 DELETE /events/1.xml
 GET /events/1/edit
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000059-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000059-source">
+            onclick="toggleCode('M000067-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000067-source">
 <pre>
     <span class="ruby-comment cmt"># File app/controllers/events_controller.rb, line 36</span>
 36:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
@@ -211,11 +241,11 @@ GET /events/1/edit
         </div>
       </div>
 
-      <div id="method-M000056" class="method-detail">
-        <a name="M000056"></a>
+      <div id="method-M000064" class="method-detail">
+        <a name="M000064"></a>
 
         <div class="method-heading">
-          <a href="#M000056" class="method-signature">
+          <a href="#M000064" class="method-signature">
           <span class="method-name">index</span><span class="method-args">()</span>
           </a>
         </div>
@@ -225,8 +255,8 @@ GET /events/1/edit
 GET /events GET /events.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000056-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000056-source">
+            onclick="toggleCode('M000064-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000064-source">
 <pre>
     <span class="ruby-comment cmt"># File app/controllers/events_controller.rb, line 4</span>
  4:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
@@ -242,11 +272,11 @@ GET /events GET /events.xml
         </div>
       </div>
 
-      <div id="method-M000058" class="method-detail">
-        <a name="M000058"></a>
+      <div id="method-M000066" class="method-detail">
+        <a name="M000066"></a>
 
         <div class="method-heading">
-          <a href="#M000058" class="method-signature">
+          <a href="#M000066" class="method-signature">
           <span class="method-name">new</span><span class="method-args">()</span>
           </a>
         </div>
@@ -256,8 +286,8 @@ GET /events GET /events.xml
 GET /events/new GET /events/new.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000058-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000058-source">
+            onclick="toggleCode('M000066-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000066-source">
 <pre>
     <span class="ruby-comment cmt"># File app/controllers/events_controller.rb, line 26</span>
 26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
@@ -273,11 +303,11 @@ GET /events/new GET /events/new.xml
         </div>
       </div>
 
-      <div id="method-M000057" class="method-detail">
-        <a name="M000057"></a>
+      <div id="method-M000065" class="method-detail">
+        <a name="M000065"></a>
 
         <div class="method-heading">
-          <a href="#M000057" class="method-signature">
+          <a href="#M000065" class="method-signature">
           <span class="method-name">show</span><span class="method-args">()</span>
           </a>
         </div>
@@ -287,8 +317,8 @@ GET /events/new GET /events/new.xml
 GET /events/1 GET /events/1.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000057-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000057-source">
+            onclick="toggleCode('M000065-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000065-source">
 <pre>
     <span class="ruby-comment cmt"># File app/controllers/events_controller.rb, line 15</span>
 15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
@@ -304,11 +334,11 @@ GET /events/1 GET /events/1.xml
         </div>
       </div>
 
-      <div id="method-M000061" class="method-detail">
-        <a name="M000061"></a>
+      <div id="method-M000069" class="method-detail">
+        <a name="M000069"></a>
 
         <div class="method-heading">
-          <a href="#M000061" class="method-signature">
+          <a href="#M000069" class="method-signature">
           <span class="method-name">update</span><span class="method-args">()</span>
           </a>
         </div>
@@ -318,8 +348,8 @@ GET /events/1 GET /events/1.xml
 PUT /events/1 PUT /events/1.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000061-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000061-source">
+            onclick="toggleCode('M000069-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000069-source">
 <pre>
     <span class="ruby-comment cmt"># File app/controllers/events_controller.rb, line 59</span>
 59:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>

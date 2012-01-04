@@ -1,55 +1,62 @@
 <div class="tform">
-  
-<!--Personal Info-->
-	<table width=100% >
-		<tr>
-			<th colspan = 2><%= t 'staff.personal_details' %></th>
-		</tr>
+	<H2><%= t 'staff.personal_details' %></H2>
+  <table width=100% >
 		<tr>
 			<td class="leftcol"><label for="icno"><b><%= t 'staff.icno' %></b></label><font color="red"> * </font></td>
-			<td><%= f.text_field :icno, :size => 12 %></td></tr>
+			<td><%= f.text_field :icno, :size => 12 %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="name"><b><%= t 'staff.name' %></b></label><font color="red"> * </font></td>
-			<td><%= f.collection_select :titlecd_id, Title.find(:all), :id, :name, :include_blank => true %><%= f.text_field :name %></td></tr>	
+			<td><%= f.collection_select :titlecd_id, Title.find(:all), :id, :name, :include_blank => true %><%= f.text_field :name %></td>
+		</tr>	
 		<tr>
 			<td class="leftcol"><label for="code"><b><%= t 'staff.code' %></b></label><font color="red"> * </font></td>
-			<td><%= f.text_field :code %></td></tr>
+			<td><%= f.text_field :code %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="fileno"><b><%= t 'staff.fileno' %></b></label><font color="red"> * </font></td>
-			<td><%= f.text_field :fileno %></td></tr>
+			<td><%= f.text_field :fileno %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="coemail"><b><%= t 'staff.coemail' %></b></label><font color="red"> * </font></td>
-			<td><%= f.text_field :coemail %></td></tr>
+			<td><%= f.text_field :coemail %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="cobirthdt"><b><%= t 'staff.cobirthdt' %></b></label></td>
-			<td><%= f.date_select :cobirthdt, :start_year => 1945, :end_year => 1992, :order => [:day, :month, :year] %></td></tr>
-		<tr>
-			<td class="leftcol"><label for="birthcertno"><b>Birth Cert No </b></label></td>
-			<td><%= f.text_field :birthcertno %></td>
+			<td><%= f.date_select :cobirthdt, :start_year => 1945, :end_year => 1992, :order => [:day, :month, :year] %></td>
 		</tr>
-		<tr>	
+		<tr>
+			<td class="leftcol"><label for="birthcertno"><%= t 'staff.birthcertno' %></label></td>
+			<td><%= f.text_field :birthcertno %></td>
+		</tr>	
 		<tr>
 			<td class="leftcol"><label for="bloodtype"><b><%= t 'staff.bloodtype' %></b></label></td>
 			<td><%= f.select :bloodtype,
 			                 Staff::BLOOD_TYPE,
-			                 :prompt => "Select" %></td></tr>
+			                 :prompt => "Select" %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="gender"><b><%= t 'staff.gender' %></b></label></td>
-			<td><%= f.radio_button :gender,'1' %>Male<%= f.radio_button :gender,'2' %>Female</td></tr>
+			<td><%= f.radio_button :gender,'1' %><%= t 'people.male' %>&nbsp; &nbsp;<%= f.radio_button :gender,'2' %><%= t 'people.female' %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="cooftelno"><b><%= t 'staff.cooftelno' %></b></label></td>
 			<td><%= f.text_field :cooftelno, :size => 14 %>
 			        <label for="cooftelext">Ext.</label>
-			        <%= f.text_field :cooftelext, :size => 5 %></td></tr>
+			        <%= f.text_field :cooftelext, :size => 5 %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="phonecell"><b><%= t 'staff.phonecell' %></b></label></td>
-			<td><%= f.text_field :phonecell, :size => 14 %></td></tr>
+			<td><%= f.text_field :phonecell, :size => 14 %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="phonehome"><b><%= t 'staff.phonehome' %></b></label></td>
-			<td><%= f.text_field :phonehome, :size => 14 %></td></tr>
+			<td><%= f.text_field :phonehome, :size => 14 %></td>
+		</tr>
 		<tr>
-			<td class="leftcol"><label for="addr"><b><%= t 'staff.addr' %></b></label><font color="red"> * </font></td>
-			<td><%= f.text_area :addr, :size => "40x5" %></td></tr>
+			<td class="leftcol"><label for="addr"><b><%= t 'staff.address' %></b></label><font color="red"> * </font></td>
+			<td><%= f.text_area :addr, :size => "40x5" %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="poskod_id"><b><%= t 'staff.poskod_id' %></b></label><font color="red"> * </font></td>
 			<td><%= f.text_field :poskod_id %></td></tr>
@@ -57,27 +64,32 @@
 			<td class="leftcol"><label for="mrtlstatuscd"><b><%= t 'staff.mrtlstatuscd' %></b></label></td>
 			<td><%= f.select :mrtlstatuscd, 
 			                 Staff::MARITAL_STATUS,
-			                 :prompt => "Select"  %></td></tr>
+			                 :prompt => "Select"  %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="statecd"><b><%= t 'staff.statecd' %></b></label><font color="red"> * </font></td>
 			<td><%= f.select :statecd, 
 			                  Staff::STATECD,
-			                 :prompt => "Select"  %></td></tr>
+			                 :prompt => "Select"  %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="race"><b><%= t 'staff.race' %></b></label></td>
 			<td><%= f.select :race, 
 			                  Staff::RACE,
-			                 :prompt => "Select"  %></td></tr>
+			                 :prompt => "Select"  %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="religion"><b><%= t 'staff.religion' %></b></label></td>
 			<td><%= f.select :religion, 
 			                  Staff::RELIGION,
-			                 :prompt => "Select"  %></td></tr>
+			                 :prompt => "Select"  %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="country_cd"><b><%= t 'staff.country_cd' %></b></label><font color="red"> * </font></td>
 			<td><%= f.select :country_cd, 
 			                 Staff::NATIONALITY,
-			                 :prompt => "Select" %></td></tr>
+			                 :prompt => "Select" %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="transportclass_id"><b>Transport Class</b></td>
 			<td><%= f.select :transportclass_id, options_for_select(('A'..'F').to_a, @staff.transportclass_id) %></td>
@@ -86,12 +98,11 @@
 			<td class="leftcol"><label for="upload"><b><%= t 'staff.upload' %></b></label></td>
 			<td><%= f.file_field :photo %></td></tr>
 	</table>
+	
+	<H2><%= t 'staff.employment_details' %></H2>
  	
 <!--Employment Details-->
 	<table  width=100% >
-		<tr>
-			<th colspan=2><%= t 'staff.employment_details' %></th>	
-		</tr>
 		<tr>
 			<td class="leftcol"><label for="staffgrade_id"><b><%= t 'staff.staffgrade_id' %></b></label><font color="red"> * </font></td>
 			<td><%= f.collection_select :staffgrade_id, Employgrade.find(:all, :order => 'name'), :id, :name_and_group, :include_blank => true %></td>
@@ -140,10 +151,11 @@
 			<td class="leftcol"><label for="reconfirmation_date"><b><%= t 'staff.reconfirmation_date' %></b></label></td>
 			<td><%= f.date_select :reconfirmation_date, :start_year => 2000, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
+		<!--
 		<tr>
 			<td class="leftcol"><label for="to_current_grade_date"><b><%= t 'staff.current_grade_date' %></b></label></td>
-			<td><%= f.date_select :to_current_grade_date, :start_year => 2000, :order => [:day, :month, :year], :include_blank => true %></td>
-		</tr>
+			<td><#%= f.date_select :to_current_grade_date, :start_year => 2000, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>-->
 		<tr>
 			<td class="leftcol"><label for="starting_salary"><b><%= t 'staff.starting_salary' %></b></label></td>
 			<td><%= f.text_field :starting_salary, :size => 14 %></td>
@@ -195,12 +207,19 @@
 	</div>
 	
 	<div>
-	  <H2><%= t 'staff.loans' %></H2>
-		<p><strong> |  <%= t 'staff.ltype' %>  |  <%= t 'staff.accno' %>   |  <%= t 'staff.startdt' %>  |  
-									 <%= t 'staff.durationmn' %>  |  <%= t 'staff.deductions' %></strong></p>
+	  <H2><%= t 'staff.loan.loans' %></H2>
+		<p><strong>
+			 				<div style="width: 150px; float: left;">|  <%= t 'staff.loan.ltype' %>      </div>
+							<div style="width: 210px; float: left;">|  <%= t 'staff.loan.accno' %>      </div>
+							<div style="width: 120px; float: left;">|  <%= t 'staff.loan.startdt' %>    </div>
+							<div style="width: 120px; float: left;">|  <%= t 'staff.loan.durationmn' %> </div>
+							<div style="width: 100px; float: left;">|  <%= t 'staff.loan.amount' %>     </div>
+							<div style="width: 100px; float: left;">|  <%= t 'staff.loan.deductions' %> </div>
+						</strong></p><BR>
+					
 		<% f.fields_for :loans do |builder| %>
-			<%= render 'loan_fields', :f => builder %>
-		<% end %>
+			<p><%= render 'loan_fields', :f => builder %></p>
+		<% end %><BR>
 		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :loans %> - Add More </p>
 	</div>
 
@@ -219,28 +238,35 @@
 	</table>
 	
 	<div>
-	  <H2>Bank Accounts</H2>
+	  <H2><%= t 'staff.bank.banks' %></H2>
 		<p><strong>
-			<div style="width: 170px; float: left;">| <%= t 'staff.bank' %> </div>
-			<div style="width: 170px; float: left;">| <%= t 'staff.bankaccno' %> </div>
-									|  <%= t 'staff.bankacctype' %><strong></p>
+			<div style="width: 170px; float: left;">| <%= t 'staff.bank.bankname' %> </div>
+			<div style="width: 170px; float: left;">| <%= t 'staff.bank.bankaccno' %> </div>
+									|  <%= t 'staff.bank.bankacctype' %><strong></p>
 		<% f.fields_for :bankaccounts do |builder| %>
 			<%= render 'bankaccount_fields', :f => builder -%>
 		<% end %>
 
-		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :bankaccounts %> - Add More </p>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :bankaccounts %> - <%= t 'addmore' %> </p>
 	</div>
 	
 
 <!--Next Of Kin-->
 	<div>
-	  <H2><%= t 'staff.emencengy' %></H2>
-		<p><strong> |  <%= t 'staff.kintype_id' %> |  <%= t 'staff.name' %>   |  <%= t 'staff.kinbirthdt' %>  |  
-									 <%= t 'staff.phone' %> |  Profession</strong> <BR> | Address </p>
+	  <H2><%= t 'staff.emergency' %></H2>
+		<p><strong>
+			 			<div style="width: 150px; float: left;">|  <%= t 'staff.kintype_id' %></div> 
+						<div style="width: 250px; float: left;">|  <%= t 'staff.name' %>   		</div>
+						<div style="width: 150px; float: left;">|  <%= t 'staff.icno' %>			</div>
+						<div style="width: 120px; float: left;">|  <%= t 'staff.phone' %>			</div>
+						 |  Profession</strong> <BR> | Address </p>
+		<HR>
 		<% f.fields_for :kins do |builder| %>
 			<%= render 'kin_fields', :f => builder %>
 		<% end %>
+		<HR>
 		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :kins %> - Add More </p>
+		
 	</div>
 
 </div>	

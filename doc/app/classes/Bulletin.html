@@ -86,8 +86,9 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000386">find_main</a>&nbsp;&nbsp;
-      <a href="#M000387">search</a>&nbsp;&nbsp;
+      <a href="#M000446">find_main</a>&nbsp;&nbsp;
+      <a href="#M000448">posted_details</a>&nbsp;&nbsp;
+      <a href="#M000447">search</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -109,56 +110,93 @@
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000386" class="method-detail">
-        <a name="M000386"></a>
+      <div id="method-M000446" class="method-detail">
+        <a name="M000446"></a>
 
         <div class="method-heading">
-          <a href="#M000386" class="method-signature">
+          <a href="#M000446" class="method-signature">
           <span class="method-name">find_main</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
-          <p>
-validates_format_of :headline, :with =&gt; /^[a-zA-Z&#8217;` ]+$/, :message
-=&gt; &quot;contains illegal characters&quot;
-</p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000386-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000386-source">
+            onclick="toggleCode('M000446-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000446-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/bulletin.rb, line 8</span>
- 8:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find_main</span>
- 9:       <span class="ruby-constant">Staff</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:condition</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'staff_id IS NULL'</span>])     
-10:     <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/bulletin.rb, line 18</span>
+18:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find_main</span>
+19:       <span class="ruby-constant">Staff</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:condition</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'staff_id IS NULL'</span>])     
+20:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000387" class="method-detail">
-        <a name="M000387"></a>
+      <div id="method-M000447" class="method-detail">
+        <a name="M000447"></a>
 
         <div class="method-heading">
-          <a href="#M000387" class="method-signature">
+          <a href="#M000447" class="method-signature">
           <span class="method-name">search</span><span class="method-args">(search)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000387-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000387-source">
+            onclick="toggleCode('M000447-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000447-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/bulletin.rb, line 12</span>
-12:      <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">search</span>)
-13:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">search</span>
-14:          <span class="ruby-ivar">@bulletin</span> = <span class="ruby-constant">Bulletin</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;headline ILIKE ? or content ILIKE ?&quot;</span>, <span class="ruby-node">&quot;%#{search}%&quot;</span>,<span class="ruby-node">&quot;%#{search}%&quot;</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:publishdt</span>)
-15:         
-16:        <span class="ruby-keyword kw">else</span>
-17:         <span class="ruby-ivar">@bulletin</span> = <span class="ruby-constant">Bulletin</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>,  <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:publishdt</span>)
-18:        <span class="ruby-keyword kw">end</span>
-19:      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/bulletin.rb, line 22</span>
+22:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">search</span>)
+23:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">search</span>
+24:         <span class="ruby-ivar">@bulletin</span> = <span class="ruby-constant">Bulletin</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;headline ILIKE ? or content ILIKE ?&quot;</span>, <span class="ruby-node">&quot;%#{search}%&quot;</span>,<span class="ruby-node">&quot;%#{search}%&quot;</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:publishdt</span>)
+25:       <span class="ruby-keyword kw">else</span>
+26:         <span class="ruby-ivar">@bulletin</span> = <span class="ruby-constant">Bulletin</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>,  <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:publishdt</span>)
+27:       <span class="ruby-keyword kw">end</span>
+28:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000448" class="method-detail">
+        <a name="M000448"></a>
+
+        <div class="method-heading">
+          <a href="#M000448" class="method-signature">
+          <span class="method-name">posted_details</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+def self.publishdt
+</p>
+<pre>
+  @bulletin = Bulletin.find_by_date([ Date.today, Date.today + 1])
+ end
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000448-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000448-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/bulletin.rb, line 36</span>
+36:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">posted_details</span> 
+37:       <span class="ruby-identifier">suid</span> = <span class="ruby-identifier">postedby_id</span>.<span class="ruby-identifier">to_a</span>
+38:       <span class="ruby-identifier">exists</span> = <span class="ruby-constant">Staff</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;id&quot;</span>).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
+39:       <span class="ruby-identifier">checker</span> = <span class="ruby-identifier">suid</span> <span class="ruby-operator">&amp;</span> <span class="ruby-identifier">exists</span>     
+40: 
+41:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">postedby_id</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
+42:          <span class="ruby-value str">&quot;&quot;</span> 
+43:       <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">checker</span> <span class="ruby-operator">==</span> []
+44:           <span class="ruby-value str">&quot;Staff No Longer Exists&quot;</span> 
+45:       <span class="ruby-keyword kw">else</span>
+46:         <span class="ruby-identifier">staff</span>.<span class="ruby-identifier">mykad_with_staff_name</span>
+47:       <span class="ruby-keyword kw">end</span>
+48:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

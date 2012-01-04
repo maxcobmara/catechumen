@@ -88,13 +88,13 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000376">create</a>&nbsp;&nbsp;
-      <a href="#M000378">destroy</a>&nbsp;&nbsp;
-      <a href="#M000375">edit</a>&nbsp;&nbsp;
-      <a href="#M000372">index</a>&nbsp;&nbsp;
-      <a href="#M000374">new</a>&nbsp;&nbsp;
-      <a href="#M000373">show</a>&nbsp;&nbsp;
-      <a href="#M000377">update</a>&nbsp;&nbsp;
+      <a href="#M000430">create</a>&nbsp;&nbsp;
+      <a href="#M000432">destroy</a>&nbsp;&nbsp;
+      <a href="#M000429">edit</a>&nbsp;&nbsp;
+      <a href="#M000426">index</a>&nbsp;&nbsp;
+      <a href="#M000428">new</a>&nbsp;&nbsp;
+      <a href="#M000427">show</a>&nbsp;&nbsp;
+      <a href="#M000431">update</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -116,11 +116,11 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000376" class="method-detail">
-        <a name="M000376"></a>
+      <div id="method-M000430" class="method-detail">
+        <a name="M000430"></a>
 
         <div class="method-heading">
-          <a href="#M000376" class="method-signature">
+          <a href="#M000430" class="method-signature">
           <span class="method-name">create</span><span class="method-args">()</span>
           </a>
         </div>
@@ -130,34 +130,34 @@
 POST /tenants POST /tenants.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000376-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000376-source">
+            onclick="toggleCode('M000430-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000430-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 42</span>
-42:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
-43:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:tenant</span>])
-44: 
-45:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-46:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@tenant</span>.<span class="ruby-identifier">save</span>
-47:         <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'Tenant was successfully created.'</span>
-48:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-ivar">@tenant</span>) }
-49:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span>, <span class="ruby-identifier">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:created</span>, <span class="ruby-identifier">:location</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span> }
-50:       <span class="ruby-keyword kw">else</span>
-51:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;new&quot;</span> }
-52:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:unprocessable_entity</span> }
-53:       <span class="ruby-keyword kw">end</span>
-54:     <span class="ruby-keyword kw">end</span>
-55:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 43</span>
+43:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
+44:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:tenant</span>])
+45: 
+46:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+47:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@tenant</span>.<span class="ruby-identifier">save</span>
+48:         <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'Tenant was successfully created.'</span>
+49:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-ivar">@tenant</span>) }
+50:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span>, <span class="ruby-identifier">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:created</span>, <span class="ruby-identifier">:location</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span> }
+51:       <span class="ruby-keyword kw">else</span>
+52:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;new&quot;</span> }
+53:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:unprocessable_entity</span> }
+54:       <span class="ruby-keyword kw">end</span>
+55:     <span class="ruby-keyword kw">end</span>
+56:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000378" class="method-detail">
-        <a name="M000378"></a>
+      <div id="method-M000432" class="method-detail">
+        <a name="M000432"></a>
 
         <div class="method-heading">
-          <a href="#M000378" class="method-signature">
+          <a href="#M000432" class="method-signature">
           <span class="method-name">destroy</span><span class="method-args">()</span>
           </a>
         </div>
@@ -167,29 +167,29 @@ POST /tenants POST /tenants.xml
 DELETE /tenants/1 DELETE /tenants/1.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000378-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000378-source">
+            onclick="toggleCode('M000432-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000432-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 76</span>
-76:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
-77:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
-78:     <span class="ruby-ivar">@tenant</span>.<span class="ruby-identifier">destroy</span>
-79: 
-80:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-81:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">tenants_url</span>) }
-82:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-identifier">:ok</span> }
-83:     <span class="ruby-keyword kw">end</span>
-84:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 77</span>
+77:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
+78:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+79:     <span class="ruby-ivar">@tenant</span>.<span class="ruby-identifier">destroy</span>
+80: 
+81:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+82:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">tenants_url</span>) }
+83:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-identifier">:ok</span> }
+84:     <span class="ruby-keyword kw">end</span>
+85:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000375" class="method-detail">
-        <a name="M000375"></a>
+      <div id="method-M000429" class="method-detail">
+        <a name="M000429"></a>
 
         <div class="method-heading">
-          <a href="#M000375" class="method-signature">
+          <a href="#M000429" class="method-signature">
           <span class="method-name">edit</span><span class="method-args">()</span>
           </a>
         </div>
@@ -199,23 +199,23 @@ DELETE /tenants/1 DELETE /tenants/1.xml
 GET /tenants/1/edit
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000375-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000375-source">
+            onclick="toggleCode('M000429-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000429-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 36</span>
-36:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
-37:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
-38:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 37</span>
+37:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
+38:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+39:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000372" class="method-detail">
-        <a name="M000372"></a>
+      <div id="method-M000426" class="method-detail">
+        <a name="M000426"></a>
 
         <div class="method-heading">
-          <a href="#M000372" class="method-signature">
+          <a href="#M000426" class="method-signature">
           <span class="method-name">index</span><span class="method-args">()</span>
           </a>
         </div>
@@ -225,28 +225,28 @@ GET /tenants/1/edit
 GET /tenants GET /tenants.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000372-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000372-source">
+            onclick="toggleCode('M000426-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000426-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 4</span>
- 4:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
- 5:     <span class="ruby-ivar">@tenants</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">all</span>
- 6: 
- 7:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
- 8:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-comment cmt"># index.html.erb</span>
- 9:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenants</span> }
-10:     <span class="ruby-keyword kw">end</span>
-11:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 5</span>
+ 5:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
+ 6:     <span class="ruby-ivar">@tenants</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">with_permissions_to</span>(<span class="ruby-identifier">:index</span>)
+ 7: 
+ 8:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+ 9:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-comment cmt"># index.html.erb</span>
+10:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenants</span> }
+11:     <span class="ruby-keyword kw">end</span>
+12:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000374" class="method-detail">
-        <a name="M000374"></a>
+      <div id="method-M000428" class="method-detail">
+        <a name="M000428"></a>
 
         <div class="method-heading">
-          <a href="#M000374" class="method-signature">
+          <a href="#M000428" class="method-signature">
           <span class="method-name">new</span><span class="method-args">()</span>
           </a>
         </div>
@@ -256,28 +256,28 @@ GET /tenants GET /tenants.xml
 GET /tenants/new GET /tenants/new.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000374-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000374-source">
+            onclick="toggleCode('M000428-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000428-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 26</span>
-26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
-27:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:location_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:location_id</span>])
-28: 
-29:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-30:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-comment cmt"># new.html.erb</span>
-31:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span> }
-32:     <span class="ruby-keyword kw">end</span>
-33:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 27</span>
+27:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
+28:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:location_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:location_id</span>])
+29: 
+30:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+31:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-comment cmt"># new.html.erb</span>
+32:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span> }
+33:     <span class="ruby-keyword kw">end</span>
+34:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000373" class="method-detail">
-        <a name="M000373"></a>
+      <div id="method-M000427" class="method-detail">
+        <a name="M000427"></a>
 
         <div class="method-heading">
-          <a href="#M000373" class="method-signature">
+          <a href="#M000427" class="method-signature">
           <span class="method-name">show</span><span class="method-args">()</span>
           </a>
         </div>
@@ -287,28 +287,28 @@ GET /tenants/new GET /tenants/new.xml
 GET /tenants/1 GET /tenants/1.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000373-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000373-source">
+            onclick="toggleCode('M000427-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000427-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 15</span>
-15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
-16:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
-17: 
-18:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-19:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-comment cmt"># show.html.erb</span>
-20:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span> }
-21:     <span class="ruby-keyword kw">end</span>
-22:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 16</span>
+16:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
+17:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+18: 
+19:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+20:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-comment cmt"># show.html.erb</span>
+21:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span> }
+22:     <span class="ruby-keyword kw">end</span>
+23:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000377" class="method-detail">
-        <a name="M000377"></a>
+      <div id="method-M000431" class="method-detail">
+        <a name="M000431"></a>
 
         <div class="method-heading">
-          <a href="#M000377" class="method-signature">
+          <a href="#M000431" class="method-signature">
           <span class="method-name">update</span><span class="method-args">()</span>
           </a>
         </div>
@@ -318,24 +318,24 @@ GET /tenants/1 GET /tenants/1.xml
 PUT /tenants/1 PUT /tenants/1.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000377-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000377-source">
+            onclick="toggleCode('M000431-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000431-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 59</span>
-59:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
-60:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
-61: 
-62:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-63:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@tenant</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:tenant</span>])
-64:         <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'Tenant was successfully updated.'</span>
-65:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-ivar">@tenant</span>) }
-66:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-identifier">:ok</span> }
-67:       <span class="ruby-keyword kw">else</span>
-68:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;edit&quot;</span> }
-69:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:unprocessable_entity</span> }
-70:       <span class="ruby-keyword kw">end</span>
-71:     <span class="ruby-keyword kw">end</span>
-72:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/tenants_controller.rb, line 60</span>
+60:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
+61:     <span class="ruby-ivar">@tenant</span> = <span class="ruby-constant">Tenant</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+62: 
+63:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+64:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@tenant</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:tenant</span>])
+65:         <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'Tenant was successfully updated.'</span>
+66:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-ivar">@tenant</span>) }
+67:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-identifier">:ok</span> }
+68:       <span class="ruby-keyword kw">else</span>
+69:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;edit&quot;</span> }
+70:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tenant</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:unprocessable_entity</span> }
+71:       <span class="ruby-keyword kw">end</span>
+72:     <span class="ruby-keyword kw">end</span>
+73:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

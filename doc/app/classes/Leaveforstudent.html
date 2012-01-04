@@ -86,10 +86,11 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000273">approver_details</a>&nbsp;&nbsp;
-      <a href="#M000271">find_main</a>&nbsp;&nbsp;
-      <a href="#M000270">find_main</a>&nbsp;&nbsp;
-      <a href="#M000272">search</a>&nbsp;&nbsp;
+      <a href="#M000319">approver_details</a>&nbsp;&nbsp;
+      <a href="#M000317">find_main</a>&nbsp;&nbsp;
+      <a href="#M000316">find_main</a>&nbsp;&nbsp;
+      <a href="#M000318">search</a>&nbsp;&nbsp;
+      <a href="#M000320">student_details</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -124,19 +125,19 @@
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000271" class="method-detail">
-        <a name="M000271"></a>
+      <div id="method-M000317" class="method-detail">
+        <a name="M000317"></a>
 
         <div class="method-heading">
-          <a href="#M000271" class="method-signature">
+          <a href="#M000317" class="method-signature">
           <span class="method-name">find_main</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000271-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000271-source">
+            onclick="toggleCode('M000317-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000317-source">
 <pre>
     <span class="ruby-comment cmt"># File app/models/leaveforstudent.rb, line 13</span>
 13:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find_main</span>
@@ -147,19 +148,19 @@
         </div>
       </div>
 
-      <div id="method-M000270" class="method-detail">
-        <a name="M000270"></a>
+      <div id="method-M000316" class="method-detail">
+        <a name="M000316"></a>
 
         <div class="method-heading">
-          <a href="#M000270" class="method-signature">
+          <a href="#M000316" class="method-signature">
           <span class="method-name">find_main</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000270-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000270-source">
+            onclick="toggleCode('M000316-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000316-source">
 <pre>
     <span class="ruby-comment cmt"># File app/models/leaveforstudent.rb, line 9</span>
  9:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find_main</span>
@@ -170,19 +171,19 @@
         </div>
       </div>
 
-      <div id="method-M000272" class="method-detail">
-        <a name="M000272"></a>
+      <div id="method-M000318" class="method-detail">
+        <a name="M000318"></a>
 
         <div class="method-heading">
-          <a href="#M000272" class="method-signature">
+          <a href="#M000318" class="method-signature">
           <span class="method-name">search</span><span class="method-args">(search)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000272-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000272-source">
+            onclick="toggleCode('M000318-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000318-source">
 <pre>
     <span class="ruby-comment cmt"># File app/models/leaveforstudent.rb, line 29</span>
 29: <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">search</span>)
@@ -199,34 +200,73 @@
 
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000273" class="method-detail">
-        <a name="M000273"></a>
+      <div id="method-M000319" class="method-detail">
+        <a name="M000319"></a>
 
         <div class="method-heading">
-          <a href="#M000273" class="method-signature">
+          <a href="#M000319" class="method-signature">
           <span class="method-name">approver_details</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
+          <p>
+&lt;07/10/2011 - Shaliza fixed for error when staff no longer exists&gt;
+</p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000273-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000273-source">
+            onclick="toggleCode('M000319-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000319-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/leaveforstudent.rb, line 37</span>
-37: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">approver_details</span> 
-38:       <span class="ruby-identifier">suid</span> = <span class="ruby-identifier">staff_id</span>.<span class="ruby-identifier">to_a</span>
-39:       <span class="ruby-identifier">exists</span> = <span class="ruby-constant">Staff</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;id&quot;</span>).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
-40:       <span class="ruby-identifier">checker</span> = <span class="ruby-identifier">suid</span> <span class="ruby-operator">&amp;</span> <span class="ruby-identifier">exists</span>     
-41:   
-42:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">staff_id</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
-43:          <span class="ruby-value str">&quot;&quot;</span> 
-44:        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">checker</span> <span class="ruby-operator">==</span> []
-45:          <span class="ruby-value str">&quot;Staff No Longer Exists&quot;</span> 
-46:       <span class="ruby-keyword kw">else</span>
-47:         <span class="ruby-identifier">staff</span>.<span class="ruby-identifier">mykad_with_staff_name</span>
-48:       <span class="ruby-keyword kw">end</span>
-49: <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/leaveforstudent.rb, line 38</span>
+38: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">approver_details</span> 
+39:       <span class="ruby-identifier">suid</span> = <span class="ruby-identifier">staff_id</span>.<span class="ruby-identifier">to_a</span>
+40:       <span class="ruby-identifier">exists</span> = <span class="ruby-constant">Staff</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;id&quot;</span>).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
+41:       <span class="ruby-identifier">checker</span> = <span class="ruby-identifier">suid</span> <span class="ruby-operator">&amp;</span> <span class="ruby-identifier">exists</span>     
+42:   
+43:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">staff_id</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
+44:          <span class="ruby-value str">&quot;&quot;</span> 
+45:        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">checker</span> <span class="ruby-operator">==</span> []
+46:          <span class="ruby-value str">&quot;Staff No Longer Exists&quot;</span> 
+47:       <span class="ruby-keyword kw">else</span>
+48:         <span class="ruby-identifier">staff</span>.<span class="ruby-identifier">mykad_with_staff_name</span>
+49:       <span class="ruby-keyword kw">end</span>
+50: <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000320" class="method-detail">
+        <a name="M000320"></a>
+
+        <div class="method-heading">
+          <a href="#M000320" class="method-signature">
+          <span class="method-name">student_details</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+&lt;18/10/2011 - Shaliza fixed for error when student no longer exists&gt;
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000320-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000320-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/leaveforstudent.rb, line 53</span>
+53: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">student_details</span> 
+54:       <span class="ruby-identifier">suid</span> = <span class="ruby-identifier">student_id</span>.<span class="ruby-identifier">to_a</span>
+55:       <span class="ruby-identifier">exists</span> = <span class="ruby-constant">Student</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;id&quot;</span>).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
+56:       <span class="ruby-identifier">checker</span> = <span class="ruby-identifier">suid</span> <span class="ruby-operator">&amp;</span> <span class="ruby-identifier">exists</span>     
+57:   
+58:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">student_id</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
+59:          <span class="ruby-value str">&quot;&quot;</span> 
+60:        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">checker</span> <span class="ruby-operator">==</span> []
+61:          <span class="ruby-value str">&quot;Student No Longer Exists&quot;</span> 
+62:       <span class="ruby-keyword kw">else</span>
+63:         <span class="ruby-identifier">student</span>.<span class="ruby-identifier">formatted_mykad_and_student_name</span>
+64:       <span class="ruby-keyword kw">end</span>
+65: <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
