@@ -40,4 +40,19 @@ module ApplicationHelper
     _html << %{</select>}
   end
   
+  #-------------- 23 Apr 2012 --------------------#
+  # app/helpers/application_helper.rb --> date:9th March 2012 --> source : http://groups.google.com/group/rubyonrails-talk/browse_thread/thread/fbaffb284d7e504c/d1e2047bd214ed1b
+  # title : Using observe_field on an field inside a fields_for Options.
+  def sanitized_object_name(object_name) 
+    object_name.gsub(/\]\[|[^-a-zA-Z0-9:.]/,"_").sub(/_$/,"") 
+  end 
+  def sanitized_method_name(method_name)                   # original source --> def sanitized_method_nam(method_name) 
+    method_name.sub(/\?$/, "") 
+  end 
+  def form_tag_id(object_name, method_name)                 # original source --> def form_tag_id(object_name, method_name) 
+    "#{sanitized_object_name(object_name.to_s)}_#{sanitized_method_name(method_name.to_s)}" 
+  end
+  
+  #---------------23 Apr 2012 --------------------#
+  
 end

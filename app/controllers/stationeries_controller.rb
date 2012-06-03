@@ -1,9 +1,10 @@
 class StationeriesController < ApplicationController
+  helper_method :sort_column, :sort_direction
+  
   # GET /stationeries
   # GET /stationeries.xml
   def index
-    @stationeries = Stationery.search(params[:search])
-
+    @stationeries = Stationery.find(:all, :order => sort_column + ' ' + sort_direction, :conditions => ['category ILIKE ?', "%#{params[:search]}%"])
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @stationeries }
@@ -86,5 +87,12 @@ class StationeriesController < ApplicationController
   def kewpa11
        @stationery = Stationery.search(params[:search])
        render :layout => 'report'
+  end
+  
+  def sort_column
+      Stationery.column_names.include?(params[:sort]) ? params[:sort] : "code" 
+  end
+  def sort_direction
+      %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
   end
 end

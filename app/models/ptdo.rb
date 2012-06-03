@@ -38,7 +38,7 @@ class Ptdo < ActiveRecord::Base
         elsif checker == []
           "Staff No Longer Exists" 
        else
-         applicant.mykad_with_staff_name
+         staff.mykad_with_staff_name
        end
   end
   

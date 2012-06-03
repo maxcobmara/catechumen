@@ -28,7 +28,7 @@ class Timetable < ActiveRecord::Base
   end
                          
   def staff_details 
-    suid = staff_id.to_a
+    suid = Array(staff_id)
     exists = Staff.find(:all, :select => "id").map(&:id)
     checker = suid & exists     
 
@@ -39,5 +39,13 @@ class Timetable < ActiveRecord::Base
     else
      staff.staff_name_with_position
     end
+  end
+  
+  def tt_entry
+    return klass.subject.subjectcode unless klass.blank? and klass.subject.blank?
+  end
+  
+  def klass_subject_name
+    return klass.subject.name unless klass.blank? and klass.subject.blank?
   end
 end

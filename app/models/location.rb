@@ -8,9 +8,9 @@ class Location < ActiveRecord::Base
   
   def self.search(search)
       if search
-       find(:all, :conditions => ['code ILIKE ? or name ILIKE ?', "%#{search}%","%#{search}%"], :order => :rcode)
+       find(:all, :conditions => ['code ILIKE ? or name ILIKE ?', "%#{search}%","%#{search}%"], :order => :code)
      else
-      find(:all, :order => :code)
+      find(:all, :order => :ancestry)
      end
    end
    

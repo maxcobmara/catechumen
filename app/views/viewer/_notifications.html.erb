@@ -31,7 +31,7 @@
 
   <!-- Notification for Student Leave Approval -->
   <% c = User.find(:all, :select => "id", :conditions => ['roles.id =?', 7], :include => :roles).map(&:id) %>
-  <% d = User.current_user.id.split %>
+  <% d = Array(User.current_user.id) %>
   <% dash_lfs = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved IS ?", true, nil]) %>
   
   <% if (d & c == c) && dash_lfs > 0 %>

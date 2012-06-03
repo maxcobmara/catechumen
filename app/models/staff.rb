@@ -1,5 +1,5 @@
 class Staff < ActiveRecord::Base
-  acts_as_reportable
+  #acts_as_reportable
   before_save  :titleize_name
 
   def titleize_name
