@@ -2,28 +2,33 @@
 	<!-- Box Head -->
 	<div class="box-head">
 		<h2 class="left">Listing Messages</h2>
-  </div>
+	</div>
 </div>
-  <div class="tlist">
-	  <table width=80% border="0" cellpadding="0" cellspacing="0">
-		  <tr>
-    		<th>From</th>
-		    <th>To Whom</th>
-		    <th>Message</th>
-		    <th colspan=3 class="ac">Control</th>
-		  </tr>
 
-<% @messages.each do |message| %>
-  <tr>
-   	  <!--  <td><#%=h message.from.staff.name  %></td>
-	    <td><#%=h message.staff.name %></td>
-	    <td><#%=h message.message %></td>-->
-	    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => message %></td>
-	    <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => message %></td>
-	    <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), message, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+
+<div class="tlist">
+	<table width=80% border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<th>From</th>
+			<th>To Whom</th>
+			<th>Message</th>
+			<th colspan=3 class="ac">Control</th>
+		</tr>
+
+		<% @messages.each do |message| %>
+		<tr>
+			<td><%=h message.from.staff.name  %>-<%=h message.from.name  %></td>
+			<td>
+				<#% for message_staffs in message.staffs %>
+						<#%=h message_staffs.name %><br>
+				<#% end %></td>
+	    <td><%=h message.message %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => message %></td>
+			<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => message %></td>
+			<td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), message, :confirm => 'Are you sure?', :method => :delete %></td>
+		</tr>
+		<% end %>
+	</table>
 </div>
 <BR />
 

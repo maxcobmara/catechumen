@@ -3,13 +3,19 @@
 	<tr>
 		<th colspan = 2>New Message</th>
 	</tr>
-	
-	
+	<tr>
+		<td class="leftcol"><label for="message">RECIPIENT(S):</label></td>
+		<td></td>
+	</tr>
 	<tr>
 		<td class="leftcol"><label for="to_id">To :</label></td>
-		<td><%= f.collection_select :to_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td>
+		<td><%= text_field_with_auto_complete :message, :to_name ,{ :size => 100 }, 
+										{ :tokens => ",",:url => formatted_staffs_path(:js), 
+										  :method => :get,
+										  :param_name => 'search' } %>
+				<i>	Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma (','), followed by an alphabet and make your selection. </i>
+		</td>
 	</tr>
-	
 	<tr>
 		<td class="leftcol"><label for="message">Message:</label></td>
 		<td><%= f.text_area :message %></td>

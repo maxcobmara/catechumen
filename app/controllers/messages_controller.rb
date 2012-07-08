@@ -40,7 +40,20 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.xml
   def create
-    @message = Message.new(params[:message])
+    #@message = Message.new(params[:message])
+    @to_names = params[:message][:to_name]										#sample - "Saadah,Sulijah"
+   	@to_name_A = @to_names.split(",") 											#will become - ["Saadah","Sulijah"]
+   	@to_id_A = []
+   	@to_name_A.each do |to_name|
+   		aa = Staff.find_by_name(to_name).id										#result(sample)- ["1","7"]
+   		@to_id_A << aa.to_i
+   	end
+
+   	@message = Message.new
+   	@message.staff_ids = []
+   	#@message.staff_ids = ["1","7"] 											#the BEST-correct format for this association
+   	@message.staff_ids = @to_id_A 
+   	@message.message = params[:message][:message]
 
     respond_to do |format|
       if @message.save
@@ -57,19 +70,36 @@ class MessagesController < ApplicationController
   # PUT /messages/1
   # PUT /messages/1.xml
   def update
-    @message = Message.find(params[:id])
 
-    respond_to do |format|
-      if @message.update_attributes(params[:message])
-        flash[:notice] = 'Message was successfully updated.'
-        format.html { redirect_to(@message) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @message.errors, :status => :unprocessable_entity }
+    #--27-29 Apr 2012--	
+  	@to_names = params[:message][:to_name]										#sample - "Saadah,Sulijah"
+  	@to_name_A = @to_names.split(",") 											#will become - ["Saadah","Sulijah"]
+  	@to_id_A = []
+  	@to_name_A.each do |to_name|
+  		aa = Staff.find_by_name(to_name).id										#result(sample)- ["1","7"]
+  		@to_id_A << aa.to_i
+  	end
+
+  	@message = Message.find(params[:id])
+  	@message.staff_ids = []
+  	#@message.staff_ids = ["1","7"] 											#the BEST-correct format for this association
+  	@message.staff_ids = @to_id_A 
+  	@message.message = params[:message][:message]
+    #--27-29 Apr 2012--	
+      respond_to do |format|
+  	  if @message.update_attributes(:staff_ids => @message.staff_ids, :message => @message.message )	
+        #if @message.update_attributes(params[:message])
+          flash[:notice] = 'Message was successfully updated.'
+          format.html { redirect_to(@message) }
+          format.xml  { head :ok }
+        else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @message.errors, :status => :unprocessable_entity }
+        end
       end
     end
-  end
+ 
+
 
   # DELETE /messages/1
   # DELETE /messages/1.xml
