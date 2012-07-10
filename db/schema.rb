@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111225031326) do
+ActiveRecord::Schema.define(:version => 20120710105846) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -654,6 +654,11 @@ ActiveRecord::Schema.define(:version => 20111225031326) do
     t.datetime "updated_at"
   end
 
+  create_table "messages_staffs", :id => false, :force => true do |t|
+    t.integer "message_id"
+    t.integer "staff_id"
+  end
+
   create_table "pages", :force => true do |t|
     t.string   "name"
     t.string   "title"
@@ -701,7 +706,10 @@ ActiveRecord::Schema.define(:version => 20111225031326) do
     t.integer  "parent_id"
     t.integer  "staffgrade_id"
     t.integer  "staff_id"
+    t.string   "ancestry"
   end
+
+  add_index "positions", ["ancestry"], :name => "index_positions_on_ancestry"
 
   create_table "programmes", :force => true do |t|
     t.string   "code"
@@ -726,7 +734,7 @@ ActiveRecord::Schema.define(:version => 20111225031326) do
   create_table "ptcourses", :force => true do |t|
     t.string   "name"
     t.integer  "course_type"
-    t.integer  "provider"
+    t.integer  "provider_id"
     t.decimal  "duration"
     t.integer  "duration_type"
     t.string   "proponent"
@@ -1044,6 +1052,16 @@ ActiveRecord::Schema.define(:version => 20111225031326) do
     t.date     "end_training"
     t.date     "intake"
     t.string   "specialisation"
+  end
+
+  create_table "subexamquestions", :force => true do |t|
+    t.integer  "examquestion_id"
+    t.integer  "parent_id"
+    t.string   "question"
+    t.string   "classification"
+    t.integer  "marks"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "subjects", :force => true do |t|

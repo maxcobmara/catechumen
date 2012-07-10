@@ -3,7 +3,7 @@
   <table id="form" width=100% >
 		<tr>
 			<td class="leftcol"><label for="klass_no">Class No/Name:</label></td>
-			<td><%= f.text_field :name %></td>
+			<td><%= f.text_field :name %><%#= @klass.name %></td>
 		</tr>
 	  
 	 <!-- hold until can find solution to intake link
@@ -14,13 +14,34 @@
 		-->
 		<tr>
 			<td class="leftcol"><label for="programme_id ">Programme Name:</label></td>
-			<td><%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_code_with_programme_name, :include_blank => true %></td>
+			<td>
+				<!-- 4 May 2012 -->
+				<%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_code_with_programme_name,
+										{:prompt => "Select a programme", :selected => @klass.programme_id},
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+																:url => {:action => 'view_subject' }, 
+																:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+				<%#= f.collection_select :programme_id, Programme.find(:all), :id, :name, 
+										{:prompt => "Select a programme",  :selected => @timetable.selected_programme(@timetable.id)},
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :klass), 
+																:url => {:action => 'view_klass' }, 
+																:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ")	%>
+				<!-- 4 May 2012 -->
+			</td>
 		</tr>	
 		
 		<!-- This should filter based on above field -->
 		<tr>
 			<td class="leftcol"><label for="intake_id">Subject Name:</label></td>
-			<td><%= f.collection_select :subject_id, Subject.find(:all), :id, :name, :include_blank => true %></td>
+			<td>
+				<!-- 4 May 2012 -->
+				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+					<!-- for edit part -->
+					<%= f.collection_select :subject_id, Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?',@klass.programme_id]), :id, :name %>
+					<!-- for edit part -->
+				</div>
+				<!-- 4 May 2012 -->
+			</td>
 		</tr>
 	</table>
 <BR>

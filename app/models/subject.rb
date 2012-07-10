@@ -19,7 +19,20 @@ class Subject < ActiveRecord::Base
     end
   end
   
-  
+  #-------- 24 Apr 2012 ----------for search by programme
+  def self.search2(search2)
+    if search2 
+        if search2 != '0'
+           #@subjects = Subject.find(:all, :include => :programmes_subjects ,:conditions => ["programmes_subjects.programme_id=?", search2 ])
+           @subjects = Programme.find(search2).subjects
+        else
+           @subjects = Subject.find(:all, :order => 'name')
+        end
+    else
+        @subjects = Subject.find(:all, :order => 'name')
+    end
+  end
+  #-------- 24 Apr 2012 ----------for search by programme
   
   
   def subject_code_with_subject_name

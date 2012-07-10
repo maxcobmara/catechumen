@@ -13,6 +13,8 @@ class Timetable < ActiveRecord::Base
   has_many :trainingnotes, :dependent => :destroy
    accepts_nested_attributes_for :trainingnotes, :reject_if => lambda { |a| a[:title].blank? }
   
+  attr_accessor :programme_id #-------23 Apr 2012
+  
   def student_count
     this_id = id
     my_klass = Timetable.find(:all, :conditions => {:id => this_id}, :select => :klass_id).map(&:klass_id)
@@ -48,4 +50,13 @@ class Timetable < ActiveRecord::Base
   def klass_subject_name
     return klass.subject.name unless klass.blank? and klass.subject.blank?
   end
+  
+  # -- 25 Apr 2012 -- for collection select -- edit & new timetable_entry
+  def selected_programme(timetable_id)
+    if timetable_id
+      return Timetable.find(timetable_id).klass.programme_id
+    end  
+  end
+  #-- 25 Apr 2012 ---
+
 end

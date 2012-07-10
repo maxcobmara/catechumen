@@ -94,4 +94,13 @@ class TimetablesController < ApplicationController
       format.xml  { render :xml => @timetables }
     end
   end
+  
+  def view_klass
+	  @programme_id = params[:programmeid]
+	  unless @programme_id.blank? 
+	    @klasses = Klass.find(:all, :conditions => ["programme_id=?", @programme_id])
+    end
+	  render :partial => 'form_klass', :layout => false
+  end
+
 end

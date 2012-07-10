@@ -1,9 +1,39 @@
 <div class="tform">
 	<H2>Timetable Entry</H2>
   <table width=100% >
+			<!-- 23-25 Apr 2012-->
+			<tr>
+				<td class="leftcol"><label for="programme_id"><b>Programme Name:</b></label></td>
+				<td>
+					<!-- testing section  25 Apr 2012-->
+					<!--
+					Semak programme id : <%#= @timetable.klass.programme_id %> - Time table id :<%#=@timetable.id%><br>
+					cuba baca value method (programme id): <%#= @timetable.selected_programme(@timetable.id) %><%#= self.id %>-<%#= @timetable.id%><br>
+					
+					<%#= f.collection_select :programme_id, Programme.find(:all), :id, :name, {:prompt => 'Select a Programme'},
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :klass), 
+										:url => {:action => 'view_klass' }, 
+										:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ")	%>
+					-->
+					<!-- end of testing section 25 Apr 2012 -->
+					
+					<%= f.collection_select :programme_id, Programme.find(:all), :id, :name, {:prompt => "Select a programme",  :selected => @timetable.selected_programme(@timetable.id)},
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :klass), 
+										:url => {:action => 'view_klass' }, 
+										:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ")	%>
+	
+				</td>
+			</tr>
+			<!-- 23-25 Apr 2012 -->
 			<tr>
 				<td class="leftcol"><label for="intake_id"><b>Class Name:</b></label></td>
-				<td><%= f.collection_select :klass_id, Klass.find(:all), :id, :name, :include_blank => true %></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :klass)) %>
+					<!-- revised on 4 May 2012 -->
+						<%= f.collection_select :klass_id, Klass.find(:all, :conditions => ["programme_id=?", @timetable.selected_programme(@timetable.id)]), :id, :name %>
+					<!-- revised on 4 May 2012 -->
+					</div>
+				</td>
 			</tr>
 	
 			<tr>

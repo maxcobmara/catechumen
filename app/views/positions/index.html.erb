@@ -14,6 +14,7 @@
 	</div>
 </div>
 
+<%= link_to image_tag("add.png", :border => 0, :title => 'Add New Position'), new_position_path %>
 <div class="indextable">
 	<table>
 		<tr>
@@ -28,10 +29,10 @@
        <td><%=h position.positioncode %></td>
        <td><%=h position.positionname %></td>
        <td><%=h position.staff.blank? ? "-" : position.staff.name %></td>
-       <td><%=h position.taskmain %></td>
-       <td><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => position %></td>
-       <td><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => position %></td>
-      <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), position, :confirm => 'Are you sure?', :method => :delete %></td>
+       <td><%=h truncate(position.taskmain, :length => 60) %>
+       <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => position %></td>
+       <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => position %></td>
+       <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), position, :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>
     <% end %>
 	</table>

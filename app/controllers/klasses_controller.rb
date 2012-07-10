@@ -2,8 +2,26 @@ class KlassesController < ApplicationController
   # GET /klasses
   # GET /klasses.xml
   def index
-    @klasses = Klass.all
-
+    #raise params.inspect
+    #---- search by programme --------- 24 Apr 2012------------------------------
+    #@programme_id = params[:klass]#[:programme_id]
+    #@programme_id2 = params[:klass][:programme_id]
+  #	if @programme_id
+  	 # @klasses = Klass.find(:all, :conditions => ["programme_id=?", params[:klass][:programme_id]])
+   # else
+     # @klasses = Klass.all 
+   # end
+ @klasses = Klass.search2(params[:programmeid])      #tak ok - kena specify nil value if no option selected!
+  #@klasses = Klass.search2(nil)                                #ok
+  #@klasses = Klass.search2(1)                                  #ok
+  
+  	
+  	#@pages = Page.search(params[:search])
+    #---- search by programme --------- 24 Apr 2012------------------------------
+    
+    #@klasses = Klass.search(params[:search]) #--------- 24 Apr 2012 ------- (search by class name)
+    #@klasses = Klass.all 
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @klasses }
@@ -82,4 +100,14 @@ class KlassesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  # Start - Filter subject by programme name -- 4 May 2012
+  def view_subject
+    @programme_id = params[:programmeid]
+    unless @programme_id.blank? 
+      @subjects = Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?', @programme_id])
+    end
+    render :partial => 'view_subject', :layout => false
+  end
+  # End -Filter subject by programme name -- 4 May 2012
 end

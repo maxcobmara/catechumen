@@ -4,7 +4,7 @@ class CreateMessagesStaffsJoin < ActiveRecord::Migration
        t.integer :message_id
        t.integer :staff_id
      end 
-   end
+  end
 
   def self.down
     drop_table :messages_staffs

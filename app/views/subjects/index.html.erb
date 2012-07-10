@@ -2,8 +2,24 @@
 <div class="box">
 <!-- Box Head -->
   <div class="box-head">
-    <h2 class="left">Subject</h2>
+	<!-- 30 Apr 2012 -->
+  	<% if params[:programmeid] %>
+	    <% if params[:programmeid] != '0'%>
+			<h2 class="left">Subjects for <%= Programme.find(params[:programmeid]).name  %></h2>
+		<% else %>
+			<h2 class="left">All Subjects</h2>
+		<% end %>
+	<% else %>
+		<h2 class="left">All Subjects</h2>
+	<% end %>
+	<!-- 30 Apr 2012 -->
 	  		<div class="right">
+				<!-- for search by programme -->
+				<% form_tag subjects_path, :method => 'get' do %>
+					<%= select_tag('programmeid',  "<option value='0'>Select a Programme</option>" +options_from_collection_for_select(Programme.find(:all), :id, :name)) %>
+					<%= submit_tag I18n.t('search'), :programme_id => nil %>
+				<% end %>
+				<!-- for search by programme -->
 				<% form_tag subjects_path, :method => 'get' do %>
 				<%= text_field_tag :search, params[:search], :placeholder => "SubjectCode,SubjectName" %>
 				<%= submit_tag I18n.t('search'), :subjectcode => nil %>

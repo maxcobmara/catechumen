@@ -1,4 +1,5 @@
 class Position < ActiveRecord::Base
+  has_ancestry
   
   has_many :subordinates, :class_name => 'Position', :foreign_key => 'parent_id'
   belongs_to :bosses, :class_name => 'Position', :foreign_key => 'parent_id'
@@ -6,7 +7,7 @@ class Position < ActiveRecord::Base
   belongs_to :staff
 
   validates_uniqueness_of :positioncode
-  validates_presence_of :positioncode
+  validates_presence_of :positionname
   
   before_save  :titleize_name
 
