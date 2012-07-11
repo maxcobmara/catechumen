@@ -1,6 +1,6 @@
 class Ptcourse < ActiveRecord::Base
   belongs_to :provider, :class_name => 'Addbook', :foreign_key => 'provider_id'
-  has_many :ptschedules
+  has_many :ptschedules, :dependent => :destroy
   
   validates_presence_of :name, :provider
   

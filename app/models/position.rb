@@ -41,6 +41,15 @@ class Position < ActiveRecord::Base
     v=1
   end
   
+  def tree_nd
+    if is_root?
+      gls = ""
+    else
+      gls = "class=\"child-of-node-#{parent_id}\""
+    end
+    gls
+  end
+  
   
   
   def self.search(search)
