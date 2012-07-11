@@ -13,13 +13,7 @@
 		<td class="leftcol"><label for="positionname"><b><%= t 'positions.positionname' %></b><font color="red"> * </font></label></td>
 		<td><%= f.text_field :positionname %></td>
 	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="staff_id">Person Name:</label></td>
-		<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id not in (?)", @position.people_assigned]), :id, :mykad_with_staff_name, :include_blank => true %>
-	</tr>
-	
-	
+		
 	<tr>
 		<td class="leftcol"><label for="parent_id"><b><%= t 'positions.parent_id' %></b></label></td>
 		<td><%= f.collection_select :parent_id, Position.find(:all), :id, :position_with_code, :include_blank => true %></td>
@@ -40,6 +34,10 @@
 		<td><%= f.text_area :taskmain, :size => "60x7" %></td>
 	</tr>
 	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Person Name:</label></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id not in (?) AND ", @position.people_assigned]), :id, :mykad_with_staff_name, :include_blank => true %>
+	</tr>
 	<tr>
 		<td class="leftcol"><label for="taskother"><b><%= t 'positions.taskother' %></b></label></td>
 		<td><%= f.text_area :taskother, :size => "60x7" %></td>

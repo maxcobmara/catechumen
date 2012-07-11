@@ -1,9 +1,9 @@
 <div class="box">
 	<div class="box-head">
 		<h2 class="left">Training Courses For Staff  &nbsp;
-		<h2><%= link_to image_tag("add.png", :border => 0, :title => 'New Course'), new_ptcourse_path %></h2>
 	</div>
 </div>
+<%= link_to image_tag("add.png", :border => 0, :title => 'New Course'), new_ptcourse_path %>
 
 <div class="indextable">
 <table>
@@ -23,7 +23,7 @@
     <td><%=h ptcourse.provider.name %></td>
     <td><%=h ptcourse.duration %> Days</td>
 		<td><%=h ringgols(ptcourse.cost) %></td>
-    <td><%=h truncate(ptcourse.description, :length => 80, :omission => '... (show for more)') %></td>
+    <td><%=  truncate(ptcourse.description, :length => 65, :omission => (link_to '... [more]', ptcourse)) %></td>
     <td><%=h ptcourse.approved? ? "Approved" : "" %></td>
     <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptcourse %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptcourse %></td>

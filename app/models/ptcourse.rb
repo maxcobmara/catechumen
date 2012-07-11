@@ -1,5 +1,5 @@
 class Ptcourse < ActiveRecord::Base
-  belongs_to :provider, :class_name => 'Addbook', :foreign_key => 'provider'
+  belongs_to :provider, :class_name => 'Addbook', :foreign_key => 'provider_id'
   has_many :ptschedules
   
   validates_presence_of :name, :provider
