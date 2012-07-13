@@ -57,7 +57,8 @@
 		
 		<tr>
 			<td class="leftcol"><label for="replacement_id">Replacement Staff : </label></td>
-			<td><%= f.text_field :replacement_id %></td>
+			<td><%= f.collection_select :replacement_id, Staff.find(:all, :order => :name), :id, :staff_name_with_position %></td>
+			<!-- try to do not in then in same dept tree -->
 		</tr>
 		<% end %>
   <% end %>

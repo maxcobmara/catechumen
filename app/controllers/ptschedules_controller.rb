@@ -2,7 +2,7 @@ class PtschedulesController < ApplicationController
   # GET /ptschedules
   # GET /ptschedules.xml
   def index
-    @ptschedules = Ptschedule.find(:all, :order => "start ASC")
+    @ptschedules = Ptschedule.find(:all, :order => "start DESC")
 
     respond_to do |format|
       format.html # index.html.erb

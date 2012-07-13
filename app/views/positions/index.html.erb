@@ -27,20 +27,20 @@ $j(document).ready(function()  {
 <table id="tree">
 	<thead>
 		<tr>
-	   <th><%= t 'positions.positioncode' %></th>
-		 <th><%= t 'positions.positionname' %></th>
+	   <th><%= t 'positions.positioncode' %> - <%= t 'positions.positionname' %></th>
 		 <th><%= t 'positions.personname' %></th>
 		 <th><%= t 'positions.taskmain' %></th>
-		 <th colspan=3 class="ac">Control</th>
+		 <th colspan=4 class="ac">Control</th>
 	  </tr>
 	</thead>
+	
 	<tbody>
     <% @positions.each do |position| %>
     <tr id="node-<%= (position.id) %>" <%= position.tree_nd %>>
-       <td><%=h position.positioncode %></td>
-       <td><%=h position.positionname %></td>
+       <td><%=h position.ancestry.blank? ? "" : "|_  "%>  &nbsp; <%=h position.positioncode %>  -  <%=h position.positionname %></td>
        <td><%=h position.staff.blank? ? "-" : position.staff.name %></td>
        <td><%=h truncate(position.taskmain, :length => 60) %>
+	     <td width=10px><%= link_to "(+)", new_position_path(:parent_id => position)%></td>
        <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => position %></td>
        <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => position %></td>
        <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), position, :confirm => 'Are you sure?', :method => :delete %></td>

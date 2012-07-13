@@ -24,7 +24,7 @@ class Student < ActiveRecord::Base
   has_many  :student,         :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
   has_many  :studentevaluate, :class_name => 'Courseevaluation', :foreign_key => 'student_id'#Link to Model CourseEvaluation
   has_many  :student,         :class_name => 'Residence', :foreign_key => 'student_id'      #Link to Model residence
-  
+  has_many   :tenants
   
   has_many :studentattendances
   has_many :timetables, :through => :studentattendances

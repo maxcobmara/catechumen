@@ -3,6 +3,21 @@ class Tenant < ActiveRecord::Base
   belongs_to :staff
   belongs_to :student
   
+  
+  def student_tenant
+    a = Array.new
+    pid = self.student_id
+    a << pid
+    available_student = Tenant.find(:all, :select => "student_id", :conditions => ["student_id IS NOT ?", nil]).map(&:student_id)
+    if student_id == nil
+      available_student
+    else
+      available_student - a
+    end
+  end
+  
+  
+  
   def student_name #16/11/2011 - Shaliza added code for student if no longer exist.
       suid = student_id.to_a
       exists = Student.find(:all, :select => "id").map(&:id)

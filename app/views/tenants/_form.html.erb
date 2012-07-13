@@ -3,12 +3,14 @@
 <table width=100%>
 	<tr>
 		<td class="leftcol">Location</font></td>
-		<td><%=h @tenant.location_name %></td> <!-- 16/11/2011 - Shaliza added code for location if no longer exist.-->
+		<td><%=h @tenant.location_name %>
+			<!--<#%= f.collection_select :location_id, Location.find(:all, :conditions => {:typename => 1} || {:typename => 2} ), :id, :location_list %></td>
+-->
 	</tr>
 	<tr>
 		<% if @tenant.location_typename == 2 %> <!-- 16/11/2011 - Shaliza added code for typename if no longer exist.-->
 			<td class="leftcol">Student</td>
-			<td><%= f.collection_select :student_id, Student.find(:all), :id, :student_name_with_programme %></td>
+			<td><%= f.collection_select :student_id, Student.find(:all, :conditions => ["id not in (?)", @tenant.student_tenant], :order => :name), :id, :student_name_with_programme %></td>
 		<% end %>
 		<% if @tenant.location_typename == 1 %> <!-- 16/11/2011 - Shaliza added code for typename if no longer exist.-->
 			<td class="leftcol">Staff</td>

@@ -16,7 +16,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="name">Staff Name : </label></td>
-		<td> <%=h User.current_user.staff.name %> </td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %></td>
 	</tr>
  
 

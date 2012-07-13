@@ -3,12 +3,16 @@ class Ptdo < ActiveRecord::Base
   
   belongs_to  :ptschedule
   belongs_to  :staff
+  belongs_to  :applicant, :class_name => 'Staff',   :foreign_key => 'staff_id'
+  belongs_to  :replacement, :class_name => 'Staff', :foreign_key => 'replacement_id'
+  
+  
   has_many    :appraisals, :through => :staff
   
   
   
   def whoami
-    self.staff_id = User.current_user.staff.id
+    #self.staff_id = User.current_user.staff.id
     self.ptcourse_id = ptschedule.ptcourse.id
   end
   

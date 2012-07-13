@@ -1,7 +1,7 @@
 class Location < ActiveRecord::Base
   
   has_ancestry
-  has_many :tenants
+  has_many :tenants, :dependent => :destroy
   has_many :assets
   has_many :timetables
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
@@ -46,8 +46,11 @@ class Location < ActiveRecord::Base
    
    def occstatus
      myid = id
-     occ = Tenant.find(:all, :select => "keyreturned", :conditions => ["keyaccept < ? AND location_id =? AND keyreturned IS ?", Time.now, myid, nil])
+     #occ = Tenant.find(:all, :select => "keyreturned", :conditions => ["keyaccept < ? AND location_id =? AND keyreturned IS ?", Time.now, myid, nil])
+     occ = Tenant.find(:all, :select => "keyreturned", :conditions => ["location_id =? AND keyreturned IS ?", myid, nil])
+
     if occ == []
+      "vacant"
     else
       "occupied"
     end

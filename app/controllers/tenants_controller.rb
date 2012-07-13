@@ -3,7 +3,7 @@ class TenantsController < ApplicationController
   # GET /tenants
   # GET /tenants.xml
   def index
-    @tenants = Tenant.with_permissions_to(:index)
+    @tenants = Tenant.all#with_permissions_to(:index)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -42,7 +42,6 @@ class TenantsController < ApplicationController
   # POST /tenants.xml
   def create
     @tenant = Tenant.new(params[:tenant])
-
     respond_to do |format|
       if @tenant.save
         flash[:notice] = 'Tenant was successfully created.'
@@ -82,5 +81,10 @@ class TenantsController < ApplicationController
       format.html { redirect_to(tenants_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def borang_asrama
+    @tenant = Tenant.find(params[:id])
+    render :layout => 'report'
   end
 end

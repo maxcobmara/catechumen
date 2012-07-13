@@ -23,7 +23,7 @@
     <th>Key Expected Return</th>
     <th>Key Returned</th>
     <th>Force vacate</th>
-     <th colspan=3 class="ac">Control</th>
+    <th colspan=4 class="ac">Control</th>
   </tr>
 
 <% @tenants.each do |tenant| %>
@@ -32,10 +32,13 @@
     <td><%=h tenant.staff_name %></td> <!-- 16/11/2011 - Shaliza added code for staff if no longer exist.-->
     <td><%=h tenant.student_name %></td> <!-- 16/11/2011 - Shaliza added code for student if no longer exist.-->
     <td><%=h tenant.course_details %></td> <!-- 16/11/2011 - Shaliza added code for course if no longer exist.-->
-    <td><%=h l(tenant.keyaccept) %></td>
+    <td><%=h l(tenant.keyaccept) unless tenant.keyaccept.blank? %></td>
     <td><%=h l(tenant.keyexpectedreturn) unless tenant.keyexpectedreturn.blank? %></td>
     <td><%=h l(tenant.keyreturned) unless tenant.keyreturned.blank? %></td>
     <td><%=h tenant.force_vacate? ? "Yes" : "No" %></td><!--16/11/2011 - Shaliza added code to display Yes or No not true or false-->
+	  <td width=10px>	<% if tenant.location_typename == 2 %> <%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant %>
+		<% end %></td>
+
     <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => tenant %></td>
 	<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => tenant %></td>
 	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), tenant, :confirm => 'Are you sure?', :method => :delete %></td>

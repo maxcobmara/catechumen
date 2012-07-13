@@ -26,7 +26,7 @@ class PositionsController < ApplicationController
   # GET /positions/new
   # GET /positions/new.xml
   def new
-    @position = Position.new
+    @position = Position.new(:parent_id => params[:parent_id])
 
     respond_to do |format|
       format.html # new.html.erb

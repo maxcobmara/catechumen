@@ -19,7 +19,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :accessions
 
-  map.resources :tenants
+  map.resources :tenants, :collection => { :borang_asrama => :get }
 
   map.resources :assetcategories
 

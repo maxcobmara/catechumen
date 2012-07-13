@@ -37,7 +37,7 @@
 				<%= link_to image_tag("user_red.png", :border => 0, :title => 'Occupied'), {:controller => 'tenants',  :action => 'edit',  :id => location.currenttenant} %>
 				<% end %>
 				
-				<% if location.typename == 2 && location.occstatus != "occupied" || location.typename == 1 && location.occstatus != "occupied" %>
+				<% if location.typename == 2 && location.occstatus == "vacant" || location.typename == 1 && location.occstatus == "vacant" %>
 				<%= link_to image_tag("key_go.png", :border => 0, :title => 'Assign'), new_tenant_path(:location_id => location) %>
 				<% end %></td>
 		<td width=10px><% if location.assets != [] %>
