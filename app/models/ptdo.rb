@@ -25,8 +25,10 @@ class Ptdo < ActiveRecord::Base
       "Approved by Unit head, awaiting Dept approval"
     elsif dept_approve == true && dept_approve == true && final_approve.nil? == true
       "Approved by Dept head, awaiting Pengarah approval"
-    elsif dept_approve == true && dept_approve == true && final_approve == true
+    elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == true
       "All approvals complete"
+    elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == false
+      "Report Submitted"
     else
       "Status Not Available"
     end

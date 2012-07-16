@@ -3,7 +3,7 @@ class AssetsController < ApplicationController
   # GET /assets
   # GET /assets.xml
   def index
-    @assets = Asset.search(params[:search])
+    @assets = Asset.search(params[:search]).paginate(:per_page => 30, :page => params[:page])
     @asset_gbtype = @assets.group_by { |t| t.gbtype }
 
     respond_to do |format|
