@@ -17,18 +17,18 @@ class Ptdo < ActiveRecord::Base
   end
   
   def apply_dept_status
-    if unit_approve == nil
-      "Awaiting unit approval"
-    elsif unit_approve == false || dept_review == false || final_approve == false
-      "rejected"
-    elsif unit_approve == true && dept_review == nil
-      "approved by unit head, awaiting dept approval"
-    elsif unit_approve == true && dept_review == true
-      "approved by dept head, awaiting pengarah approval"
-    elsif final_approve == true
-      " All approvals complete"
+    if (unit_approve == false || dept_approve == false || final_approve == false)
+      "Application Rejected"
+    elsif unit_approve.nil? == true
+      "Awaiting Unit Approval"
+    elsif unit_approve == true && dept_approve.nil? == true
+      "Approved by Unit head, awaiting Dept approval"
+    elsif dept_approve == true && dept_approve == true && final_approve.nil? == true
+      "Approved by Dept head, awaiting Pengarah approval"
+    elsif dept_approve == true && dept_approve == true && final_approve == true
+      "All approvals complete"
     else
-      "No Status available"
+      "Status Not Available"
     end
   end
   
