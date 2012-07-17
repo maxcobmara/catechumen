@@ -22,11 +22,17 @@ class Programme < ActiveRecord::Base
    
   def programme_code_with_programme_name
      "#{code}  #{name}"
-   end 
+  end 
+  
+  def append
+    if "#{specialisation}" != ""
+      " - #{specialisation}"
+    end
+  end
 
 #15/11/2011 - Shaliza added for combination name and specialisation
   def programme_with_specialisation
-    "#{name}  #{specialisation}"
+    "#{name} #{append}"
   end
    
   attr_accessible :code, :name, :specialisation
