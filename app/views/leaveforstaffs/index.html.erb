@@ -37,9 +37,9 @@
 	  <td><%=h leaveforstaff.leave_for %> Days</td>
 	  <td><%=h leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name  %></td>
 	  <td width=10px>
-				<% if (User.current_user.staff_id == leaveforstaff.approval1_id) %>
+				<% if (User.current_user.staff_id == leaveforstaff.approval1_id && leaveforstaff.approval1 == nil ) %>
 			  	<%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve1', :id => leaveforstaff %>
-				<% elsif (User.current_user.staff_id == leaveforstaff.approval2_id) %>
+				<% elsif (User.current_user.staff_id == leaveforstaff.approval2_id && leaveforstaff.approver2 == nil) %>
 					<%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve2', :id => leaveforstaff %>
 				<% else %>
 				<% end %></td>

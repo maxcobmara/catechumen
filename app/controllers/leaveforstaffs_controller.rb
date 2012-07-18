@@ -81,6 +81,10 @@ class LeaveforstaffsController < ApplicationController
   def approve1
     @leaveforstaff = Leaveforstaff.find(params[:id])
   end
+  
+  def approve2
+    @leaveforstaff = Leaveforstaff.find(params[:id])
+  end
 
   # DELETE /leaveforstaffs/1
   # DELETE /leaveforstaffs/1.xml
