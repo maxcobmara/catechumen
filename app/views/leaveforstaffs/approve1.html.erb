@@ -4,11 +4,12 @@
   <%= f.error_messages %>
 
 <div class="tform">
-  <table width=100% >
 	<%= render :partial => 'applyshow' %>
+  <table width=100% >
+	
 		<tr>
 		  <td class="leftcol"><label for="replacement_id"><b>Replacement Staff:</b></label></td>
-		  <td><%= f.collection_select :replacement_id, Staff.find(:all, :conditions => ["staffgrade_id = ?", @leaveforstaff.applicant.staffgrade_id]), :id, :name, :include_blank => true %></td>
+		  <td><%= f.collection_select :replacement_id, Staff.find(:all, :conditions => ["id IN (?)", @leaveforstaff.replacement_staff]), :id, :name, :include_blank => true %></td>
 		</tr>
 
 		<tr>

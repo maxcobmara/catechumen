@@ -127,6 +127,13 @@ class Leaveforstaff < ActiveRecord::Base
     end
   end
   
+  def replacement_staff
+    sibpos = applicant.position.sibling_ids
+    sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
+    applicant = Array(staff_id)
+    sibs - applicant
+  end
+  
 STAFFLEAVETYPE = [
          #  Displayed       stored in db
          [ "Cuti Rehat",1 ],
