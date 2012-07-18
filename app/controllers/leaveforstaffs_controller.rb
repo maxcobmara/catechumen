@@ -1,14 +1,14 @@
 class LeaveforstaffsController < ApplicationController
-  filter_resource_access
+  filter_access_to :all
   # GET /leaveforstaffs
   # GET /leaveforstaffs.xml
   def index
     #@leaveforstaffs = Leaveforstaff.with_permissions_to(:index).find(:all)
     @filters = Leaveforstaff::FILTERS
       if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-        @leaveforstaffs = Leaveforstaff.send(params[:show])
+        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index).send(params[:show])
       else
-        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index).find(:all)
+        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index).relevant
       end
 
     respond_to do |format|
@@ -41,7 +41,7 @@ class LeaveforstaffsController < ApplicationController
 
   # GET /leaveforstaffs/1/edit
   def edit
-    #@leaveforstaff = Leaveforstaff.find(params[:id])
+    @leaveforstaff = Leaveforstaff.find(params[:id])
   end
 
   # POST /leaveforstaffs

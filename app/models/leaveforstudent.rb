@@ -16,11 +16,11 @@ class Leaveforstudent < ActiveRecord::Base
   
   validate :validate_end_date_before_start_date
 
-    def validate_end_date_before_start_date
-      if leave_enddate && leave_startdate
-        errors.add(:end_date, "Your leave must begin before it ends") if leave_enddate < leave_startdate || leave_startdate < DateTime.now
-      end
+  def validate_end_date_before_start_date
+    if leave_enddate && leave_startdate
+      errors.add(:end_date, "Your leave must begin before it ends") if leave_enddate < leave_startdate || leave_startdate < DateTime.now
     end
+  end
   
  
  STUDENTLEAVETYPE = [
