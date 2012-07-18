@@ -43,7 +43,7 @@
 	<% al = Leaveforstudent.find(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', User.current_user.student_id, true, DateTime.now]).map(&:leave_startdate) %>
 	<% alc = Leaveforstudent.count(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', User.current_user.student_id, true, DateTime.now]) %>
 	<% if alc > 0 %>
-		<p>You leave request on <%= al %> has been Approved</p>
+		<p><%= link_to "Your leave request on #{al} has been Approved", { :controller => "leaveforstudents", :action => "index" } %></p>
 	<% end %>
 	
 	

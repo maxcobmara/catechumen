@@ -15,7 +15,7 @@
 		<td class="leftcol"><label for="login">Attach User : </label></td>
 		<td>
 		<% if @user.isstaff? == true %>
-				<%= (f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true, :default => 0, :prompt => 'Select Staff') %>	
+				<%= (f.collection_select :staff_id, Staff.find(:all, :order => :name, :conditions => ["id not in (?)", @user.assigned_staff]), :id, :mykad_with_staff_name, :include_blank => true, :default => 0, :prompt => 'Select Staff') %>	
 		<% else %>
 				<%= 	(f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true, :default => 0, :prompt => 'Select Student') %>
 		<% end %>

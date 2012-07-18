@@ -78,6 +78,9 @@ class User < ActiveRecord::Base
       end 
   end
   
+  def assigned_staff
+    User.find(:all, :select => "staff_id", :conditions => ["staff_id IS NOT ?", nil]).map(&:staff_id)
+  end
   
 
   
