@@ -90,7 +90,7 @@ authorization do
       has_permission_on :students, :to => [:read, :update, :menu] do
         if_attribute :id => is {User.current_user.student_id}
       end
-      has_permission_on :leaveforstudents, :to => [:manage] do
+      has_permission_on :leaveforstudents, :to => [:read, :update] do
         if_attribute :student_id => is {User.current_user.student_id}
       end
       has_permission_on :leaveforstudents, :to => [:create]

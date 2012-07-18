@@ -13,6 +13,13 @@
 <% end %>
 <% if logged_in? && (request.request_uri == "/" || request.request_uri == "/home") %>
 <% else %>
+  <div  class="right">
+	<% permitted_to? :manage, :librarytransactions do %>
+		<% if request.request_uri == "/rules" %>
+			<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit') + "Edit Page", :controller => "pages", :action => "edit", :id => 52 %>
+		<% end %>
+	<% end %>
+	</div>
 	<%= @page.body %>
 <% end %>
 

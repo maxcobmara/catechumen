@@ -21,7 +21,7 @@
     <th>Submitted?</th>
     <th>Approved?</th>
     <th>Approved By</th>
-    <th colspan=3 class="ac">Control</th>
+    <th colspan=4 class="ac">Control</th>
   </tr>
 
 <% @leaveforstudents.each do |leaveforstudent| %>
@@ -32,7 +32,12 @@
     <td><%=h leaveforstudent.leave_startdate %></td>
     <td><%=h leaveforstudent.studentsubmit? ? "Submitted" : "" %></td>
     <td><%=h leaveforstudent.approved? ? "Approved" : "" %></td>
-    <td><%=h leaveforstudent.staff_id? ? "" : leaveforstudent.approver_details %></td>
+    <td><%=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : "" %></td>
+   	<td width=10px>
+			<% if permitted_to? :approve, leaveforstudent %>
+			  <% if leaveforstudent.approved == false %>
+					<%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => leaveforstudent %>
+	  		<% end %><% end %></td>
     <td width=10px ><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), 	:action => 'show', :id => leaveforstudent %></td>
     <% if permitted_to? :edit, leaveforstudent %>
     <td width=10px><%= link_to image_tag("edit.png", 			:border => 0,  :title => 'Edit'), 	:action => 'edit', :id => leaveforstudent %></td>
@@ -40,9 +45,6 @@
   	<% if permitted_to? :destroy, leaveforstudent %>
 		<td width=10px><%= link_to image_tag("delete.png",   	:border => 0,  :title => 'Delete'), leaveforstudent, :confirm => 'Are you sure?', :method => :delete %></td>
   	<% end %>
-   	<% if permitted_to? :approve, leaveforstudent %>
-	  	<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => leaveforstudent %></td>
-	  <% end %>
 	
 	</tr>
 <% end %>

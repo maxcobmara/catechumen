@@ -24,7 +24,7 @@
 		<td></td>
 	</tr>
 	
-	<% for subject in Subject.find(:all) %>
+	<% for subject in Subject.find(:all, :order => :name) %>
 	<tr>
 		<td></td>
 		<td><%= check_box_tag "programme[subject_ids][]", subject.id, @programme.subjects.include?(subject) %>

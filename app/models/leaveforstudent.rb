@@ -2,7 +2,7 @@ class Leaveforstudent < ActiveRecord::Base
   belongs_to :student
   belongs_to :staff
 
-  validates_presence_of :student_id, :leavetype
+  validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate
   validates_numericality_of :telno
   
   
@@ -13,6 +13,14 @@ class Leaveforstudent < ActiveRecord::Base
   def self.find_main
     Staff.find(:all, :condition => ['staff_id IS NULL'])
   end
+  
+  validate :validate_end_date_before_start_date
+
+    def validate_end_date_before_start_date
+      if leave_enddate && leave_startdate
+        errors.add(:end_date, "Your leave must begin before it ends") if leave_enddate < leave_startdate || leave_startdate < DateTime.now
+      end
+    end
   
  
  STUDENTLEAVETYPE = [
@@ -45,7 +53,7 @@ def approver_details
        elsif checker == []
          "Staff No Longer Exists" 
       else
-        staff.mykad_with_staff_name
+        staff.name
       end
 end
 

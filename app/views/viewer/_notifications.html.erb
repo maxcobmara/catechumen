@@ -34,10 +34,20 @@
   <% d = Array(User.current_user.id) %>
   <% dash_lfs = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved IS ?", true, nil]) %>
   
-  <% if (d & c == c) && dash_lfs > 0 %>
+  <% if (d & c == d) && dash_lfs > 0 %>
   <p><%= dash_lfs %> <%= link_to "student leave request for approval", { :controller => "leaveforstudents", :action => "index" } %></p>
   <% else %>
 	<% end %>
+	
+	<!-- Notification for Students Leave is approved -->
+	<% al = Leaveforstudent.find(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', User.current_user.student_id, true, DateTime.now]).map(&:leave_startdate) %>
+	<% alc = Leaveforstudent.count(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', User.current_user.student_id, true, DateTime.now]) %>
+	<% if alc > 0 %>
+		<p>You leave request on <%= al %> has been Approved</p>
+	<% end %>
+	
+	
+	
 	
 	<!-- Notification for New User -->
 	<% permitted_to? :manage, :users do %>

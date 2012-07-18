@@ -16,15 +16,15 @@ class Student < ActiveRecord::Base
   belongs_to :course,         :class_name => 'Programme', :foreign_key => 'course_id'       #Link to Programme
   belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
   
-  has_one   :user                                                                           #Link to Model user
-  has_many  :leaveforstudents                                                               #Link to LeaveStudent
+  has_one   :user,              :dependent => :destroy                                      #Link to Model user
+  has_many  :leaveforstudents,  :dependent => :destroy                                      #Link to LeaveStudent
   has_many  :counsellings                                                                   #Link to Counselling
   has_many  :librarytransactions                                                            #Link to LibraryTransactions
   has_many  :studentgrade,    :class_name => 'Grade',     :foreign_key => 'student_id'      #Link to Model Grade
   has_many  :student,         :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
   has_many  :studentevaluate, :class_name => 'Courseevaluation', :foreign_key => 'student_id'#Link to Model CourseEvaluation
   has_many  :student,         :class_name => 'Residence', :foreign_key => 'student_id'      #Link to Model residence
-  has_many   :tenants
+  has_many  :tenants
   
   has_many :studentattendances
   has_many :timetables, :through => :studentattendances
