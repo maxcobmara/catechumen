@@ -19,13 +19,24 @@
 		<tr>
 			<td class="leftcol"><label for="name"><b>Subject Name:</b></label></td>
 			<td>
-			<% for subject in @programme.subjects %>
-				<%=h subject.name %>, &nbsp;
-			<% end %>
-			</td>
+				
+							<table width=100% border=0 padding=0>
+								<% Subject.find(:all, :order => :subjectcode).in_groups_of(2, false) do |row_subjects| %>
+
+								<tr>
+									<% for subject in row_subjects %>
+										<td><%= subject.subjectcode %> - <%= subject.name %></td>
+								  <% end %>
+								</tr>
+								<% end %>
+
+							</table></td>
 		</tr>
 	</table>
 <BR>
 </div>
+
+
+</table>
 <%= link_to 'Edit', edit_programme_path(@programme) %> |
 <%= link_to 'Back', programmes_path %>

@@ -16,7 +16,7 @@
 			<td class="leftcol"><label for="programme_id ">Programme Name:</label></td>
 			<td>
 				<!-- 4 May 2012 -->
-				<%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_code_with_programme_name,
+				<%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_with_specialisation,
 										{:prompt => "Select a programme", :selected => @klass.programme_id},
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 																:url => {:action => 'view_subject' }, 
@@ -37,11 +37,11 @@
 				<!-- 4 May 2012 -->
 				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
 					<!-- for edit part -->
-					<%= f.collection_select :subject_id, Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?',@klass.programme_id]), :id, :name %>
+					<%= f.collection_select :subject_id, Subject.find(:all, :joins => :programmes, :conditions => ['programme_id=?',@klass.programme_id], :order => :subjectcode), :id, :name %>
 					<!-- for edit part -->
 				</div>
 				<!-- 4 May 2012 -->
 			</td>
 		</tr>
-	</table>
+	</table></div>
 <BR>

@@ -3,6 +3,7 @@ class ExamquestionsController < ApplicationController
   # GET /examquestions.xml
   def index
     @examquestions = Examquestion.all
+    #@examquestions = Examquestion.search(params[:programmeid])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -83,5 +84,13 @@ class ExamquestionsController < ApplicationController
       format.html { redirect_to(examquestions_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def view_subject
+    @programme_id = params[:programmeid]
+    unless @programme_id.blank? 
+      @subjects = Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?', @programme_id])
+    end
+    render :partial => 'view_subject', :layout => false
   end
 end

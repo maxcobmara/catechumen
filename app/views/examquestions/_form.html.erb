@@ -1,20 +1,36 @@
 <div class="tform">
-  <H2>Exam Question Details</H2>
-	<table width=100% >
-		<tr>
+<H2>Exam Question Details</H2>
+<table width=100% >
+	<tr>
 		<td class="leftcol"><label for="questiontype"><b>Question Type:</b><font color="red"> * </font></label></td>
-			<td><%= f.select :questiontype, 
-			                 Examquestion::QTYPE,
-			                 :prompt => "Select"  %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="creator_id"><b>Creator:</b></label></td>
-			<td><%= f.collection_select :creator_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="curriculum_id"><b>Programme/Subject Code:</b></label><font color="red"> * </font></td>
-			<td><%= f.collection_select :curriculum_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
-		</tr>
+		<td><%= f.select :questiontype, 
+		                 Examquestion::QTYPE,
+		                 :prompt => "Select"  %></td>
+	</tr>
+		
+	<tr>
+		<td class="leftcol"><label for="creator_id"><b>Creator:</b></label></td>
+		<td><%= f.collection_select :creator_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="curriculum_id"><b>Programme/Subject Code:</b></label><font color="red"> * </font></td>
+		<!--<td><#%= f.collection_select :curriculum_id, Subject.find(:all, :order => :subjectcode), :id, :subject_code_with_subject_name, :include_blank => true %></td>-->
+		<td>
+			<%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_with_specialisation,
+								{:prompt => "Select a programme", :selected => @examquestion.programme_id},
+								:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+														:url => {:action => 'view_subject' }, 
+														:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %></td>
+
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="intake_id">Subject Name:</label></td>
+		<td><%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+				<%= f.collection_select :subject_id, Subject.find(:all, :joins => :programmes, :conditions => ['programme_id=?',@examquestion.programme_id], :order => :subjectcode), :id, :name %>
+				</div></td>
+	</tr>
 		<tr>
 		 <td class="leftcol"><label for="createdt"><b>Creator Date:</b></label></td>
 		 <td><%= f.date_select :createdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>

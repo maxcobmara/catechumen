@@ -7,10 +7,12 @@ class Topic < ActiveRecord::Base
   belongs_to :subject#, :class_name => 'Subject', :foreign_key => 'subject_id'
   belongs_to :creator, :class_name => 'Staff', :foreign_key => 'creator_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approvedby_id'
+  
 
-  validates_presence_of :topic_code, :sequenceno, :name
+  validates_presence_of :subject_id, :creator_id, :topic_code, :sequenceno, :name
   validates_uniqueness_of :sequenceno, :scope => :subject_id, :message => 'This sequence is already taken'
   
+  has_many :examquestions
   has_many :trainingnotes, :dependent => :destroy
    accepts_nested_attributes_for :trainingnotes, :reject_if => lambda { |a| a[:title].blank? }
 
@@ -23,6 +25,9 @@ class Topic < ActiveRecord::Base
 
     def save_my_vars
       self.duration = make_minutes
+      if approvedby_id == nil
+        self.approvedby_id = set_approver
+      end
     end
 
     def make_minutes
@@ -71,6 +76,22 @@ class Topic < ActiveRecord::Base
         subject.subject_code_with_subject_name
       end
     end
+    
+    def save_my_approvers
+      if approvedby_id == nil
+        self.approvedby_id = set_approver
+      end
+    end
+
+    def set_approver
+      if creator.position.parent.staff.id == []
+        approver = nil
+      else
+        approver = creator.position.parent.staff.id
+      end    
+    end
+    
+    #creator.position.parent.staff_id
     
      # <18/10/2011 - Shaliza fixed for the approver if staff no longer exists>
     def created_details

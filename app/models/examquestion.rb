@@ -3,7 +3,9 @@ class Examquestion < ActiveRecord::Base
   belongs_to :creator,  :class_name => 'Staff', :foreign_key => 'creator_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approver_id'
   belongs_to :editor,   :class_name => 'Staff', :foreign_key => 'editor_id'
-  belongs_to :subject,  :class_name => 'Subject', :foreign_key => 'curriculum_id'
+  belongs_to :subject
+  belongs_to :programme
+  belongs_to :topic
   
   has_attached_file :diagram,
                     :url => "/assets/examquestions/:id/:style/:basename.:extension",
@@ -11,7 +13,7 @@ class Examquestion < ActiveRecord::Base
                     
                     #may require validation
                     
-  validates_presence_of :curriculum_id, :questiontype, :question, :answer, :marks, :qstatus
+  validates_presence_of :subject_id, :questiontype, :question, :answer, :marks, :qstatus
   
   has_many :examsubquestions, :dependent => :destroy
   accepts_nested_attributes_for :examsubquestions, :reject_if => lambda { |a| a[:question].blank? }
@@ -21,7 +23,17 @@ class Examquestion < ActiveRecord::Base
   
   has_and_belongs_to_many :exammakers
   
-
+  def self.search(search)
+     if search
+       if search != '0'
+         @examquestions = Examquestion.find(:all, :conditions => ["programme_id=?", search2 ])
+       else
+         @examquestions = Examquestion.find(:all)
+       end
+     else
+       @examquestions = Examquestion.find(:all)
+     end
+  end
   
   #def self.find_main
   #    Examquestion.find(:all, :condition => ['staff_id IS NULL'])
@@ -85,11 +97,11 @@ class Examquestion < ActiveRecord::Base
    ]
    
    def subject_details 
-         suid = curriculum_id.to_a
+         suid = subject_id.to_a
          exists = Examquestion.find(:all, :select => "id").map(&:id)
          checker = suid & exists     
 
-         if curriculum_id == nil
+         if subject_id == nil
             "" 
           elsif checker == []
             "Subject No Longer Exists" 

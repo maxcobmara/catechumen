@@ -7,15 +7,16 @@ class Subject < ActiveRecord::Base
   has_many :subjectevaluate, :class_name => 'Courseevaluation', :foreign_key => 'subject_id'#Link to model courseevaluation
   #has_many :time_table_entries, :dependent => :delete_all#Link to model timetableentry
   has_many :klasses
+  has_many :examquestions
   
   #Link to Model Grade
   has_many :subjectgrade,  :class_name => 'Grade', :foreign_key => 'subject_id'
   
   def self.search(search)
     if search
-      @subjects = Subject.find(:all, :conditions => ["subjectcode LIKE ? or name ILIKE ?", "%#{search}%","%#{search}%"])
+      @subjects = Subject.find(:all, :conditions => ["subjectcode LIKE ? or name ILIKE ?", "%#{search}%","%#{search}%"], :order => :subjectcode)
     else
-     @subjects = Subject.find(:all)
+      @subjects = Subject.find(:all, :order => :subjectcode)
     end
   end
   
@@ -26,10 +27,10 @@ class Subject < ActiveRecord::Base
            #@subjects = Subject.find(:all, :include => :programmes_subjects ,:conditions => ["programmes_subjects.programme_id=?", search2 ])
            @subjects = Programme.find(search2).subjects
         else
-           @subjects = Subject.find(:all, :order => 'name')
+          @subjects = Subject.find(:all, :conditions => ["subjectcode LIKE ? or name ILIKE ?", "%#{search}%","%#{search}%"], :order => :subjectcode)
         end
     else
-        @subjects = Subject.find(:all, :order => 'name')
+        @subjects = Subject.find(:all, :order => :subjectcode)
     end
   end
   #-------- 24 Apr 2012 ----------for search by programme

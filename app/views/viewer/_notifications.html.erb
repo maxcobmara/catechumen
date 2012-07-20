@@ -41,7 +41,7 @@
   <% dash_lfs = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved IS ?", true, nil]) %>
   
   <% if (d & c == d) && dash_lfs > 0 %>
-  <p><%= dash_lfs %> <%= link_to "student leave request for approval", { :controller => "leaveforstudents", :action => "index" } %></p>
+  <p><%= dash_lfs %> <%= link_to "Student leave request for approval", { :controller => "leaveforstudents", :action => "index" } %></p>
   <% else %>
 	<% end %>
 	
@@ -52,6 +52,13 @@
 		<p><%= link_to "Your leave request on #{al} has been Approved", { :controller => "leaveforstudents", :action => "index" } %></p>
 	<% end %>
 	
+	<!-- Notification for Topic Approval -->
+	<% topic_need_approve = Topic.count(:all, :conditions => ['approvedby_id=? AND approved =?', User.current_user.staff_id, false]) %>
+		<% if topic_need_approve == 0 %>
+		<% else %>
+			<%= topic_need_approve %> <%= link_to "Lesson plan topics need your approval", topics_path %><br>
+		<% end %>
+	
 	
 	
 	
@@ -60,7 +67,7 @@
 		<% users_wo_roles = User.count(:all, :select => "id", :conditions => ["student_id=? AND staff_id IS ?", nil, nil]) %>
 		<% if users_wo_roles == 0 %>
 		<% else %>
-			<% users_wo_roles %> <% link_to "New Users", users_path %><br>
+			<%= users_wo_roles %> <%= link_to "New Users", users_path %><br>
 		<% end %>
 	<% end %>
 	

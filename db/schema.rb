@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120712072855) do
+ActiveRecord::Schema.define(:version => 20120719014110) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -441,7 +441,7 @@ ActiveRecord::Schema.define(:version => 20120712072855) do
   end
 
   create_table "examquestions", :force => true do |t|
-    t.integer  "curriculum_id"
+    t.integer  "subject_id"
     t.string   "questiontype"
     t.string   "question"
     t.text     "answer"
@@ -477,6 +477,7 @@ ActiveRecord::Schema.define(:version => 20120712072855) do
     t.boolean  "fit_difficulty"
     t.boolean  "fit_important"
     t.boolean  "fit_fairness"
+    t.integer  "programme_id"
   end
 
   create_table "examsubquestions", :force => true do |t|

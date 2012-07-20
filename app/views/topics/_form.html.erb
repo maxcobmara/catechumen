@@ -3,12 +3,14 @@
 	<table width=100%>
 		<tr>
 			<td class="leftcol"><label for="subject_id">Subject</label></td>
-			<td><!--#%= f.collection_select :subject_id, Subject.find(:all), :id, :subject, :include_blank => true %>-->
-			    <%= f.collection_select :subject_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
+			<td><%= f.collection_select :subject_id, Subject.find(:all, :order => :subjectcode), :id, :subject_code_with_subject_name, :include_blank => true %>
+					<font color="red"> * </font>
+				  <%= link_to image_tag("add.png", :border => 0, :title => 'Add a Subject'), new_subject_path, :target => '_blank' %>
+					</td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="topic_code">Topic Code</label></td>
-			<td><%= f.text_field :topic_code %></td>
+			<td><%= f.text_field :topic_code %><font color="red"> * </font></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="sequenceno">Sequence No</label></td>
@@ -16,7 +18,7 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="name">Topic Name/Title</label></td>
-			<td><%= f.text_field :name %></td>
+			<td><%= f.text_field :name %><font color="red"> * </font></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="duration">Duration for Topic</label></td>
@@ -42,7 +44,7 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="creator_id">Created By</label></td>
-			<td><%= f.collection_select :creator_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td>
+			<td><%= f.collection_select :creator_id, Staff.find(:all, :order => :name), :id, :mykad_with_staff_name, :include_blank => true %><font color="red"> * </font></td>
 		</tr>
 		</table>
 		
@@ -60,7 +62,7 @@
 		</table>
 			
 		
-		
+		<% if @topic.approvedby_id == User.current_user.staff_id %>
 		<table width=100%>
 		<tr>
 			<th colspan = 2>Approval</th>
@@ -74,7 +76,7 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="approvedby_id">Approved By</label></td>
-			<td><%= f.collection_select :approvedby_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td>
+			<td><%= f.collection_select :approvedby_id, Staff.find(:all, :order => :name), :id, :mykad_with_staff_name, :include_blank => true %></td>
 		</tr>
 		<tr>
 			<th colspan = 2>Checking</th>
@@ -91,4 +93,5 @@
 			<td><%= f.date_select :checkdate, :order => [:day, :month, :year] , :include_blank => true %></td>
 		</tr>
 	</table>
+	<% end %>
 </div>

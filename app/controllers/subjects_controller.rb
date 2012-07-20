@@ -2,9 +2,9 @@ class SubjectsController < ApplicationController
   # GET /subjects
   # GET /subjects.xml
   def index
-    @subjects = Subject.search2(params[:programmeid])    
+    @subjects = Subject.search2(params[:programmeid])
     #@subjects = Subject.search(params[:search])
-   # @subjects = Subject.find(:all, :order => 'name')
+    #@subjects = Subject.find(:all, :order => :subjectcode)
 
     respond_to do |format|
       format.html # index.html.erb

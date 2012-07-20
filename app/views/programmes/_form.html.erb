@@ -1,20 +1,19 @@
 <div class="tform">
-  <table width=100% >
-	
+<table width=100% >	
 	<tr>
 		<th colspan = 2>Programme Details</th>
 	</tr>
-	
+
 	<tr>
-			<td class="leftcol"><label for="code"><b>Programme Code:</b></label></td>
-			<td><%= f.text_field :code %></td>
+		<td class="leftcol"><label for="code"><b>Programme Code:</b></label></td>
+		<td><%= f.text_field :code %></td>
 	</tr>
-	
+
 	<tr>
 		<td class="leftcol"><label for="name"><b>Programme Name:</b></label></td>
-			<td><%= f.text_field :name %></td>
+		<td><%= f.text_field :name %></td>
 	</tr>
-	
+
 	<tr>
 		<td class="leftcol"><label for="specialisation"><b>Specialisation:</b></label></td>
 		<td><%= f.text_field :specialisation %></td>
@@ -23,18 +22,31 @@
 		<td colspan=2><b>Select subjects to add to this programme</b></td>
 		<td></td>
 	</tr>
+</table>
+<table width=100% border=0 padding=0>
+	<% Subject.find(:all, :conditions => ['id in (?)', @programme.subjects]).in_groups_of(4, false) do |row_subjects| %>
 	
-	<% for subject in Subject.find(:all, :order => :name) %>
 	<tr>
-		<td></td>
-		<td><%= check_box_tag "programme[subject_ids][]", subject.id, @programme.subjects.include?(subject) %>
-    <%= subject.name %>
-    </td>
-  </tr>
-  <% end %>
+		<% for subject in row_subjects %>
+			<td width=5px><%= check_box_tag "programme[subject_ids][]", subject.id, @programme.subjects.include?(subject) %></td>
+			<td><%= subject.name %></td>
+	  <% end %>
+	</tr>
+	<% end %>
+
+</table>
+<table width=100% border=0 padding=0>
+	<% Subject.find(:all, :conditions => ['id not in (?)', @programme.subjects]).in_groups_of(4, false) do |row_subjects| %>
 	
-	
-</table>  
+	<tr>
+		<% for subject in row_subjects %>
+			<td width=5px><%= check_box_tag "programme[subject_ids][]", subject.id, @programme.subjects.include?(subject) %></td>
+			<td><%= subject.name %></td>
+	  <% end %>
+	</tr>
+	<% end %>
+
+</table>
+
 <BR>
 </div>
-

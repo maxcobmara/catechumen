@@ -74,7 +74,8 @@ class Location < ActiveRecord::Base
  TYPE = [
          #  Displayed       stored in db
          [ "Staff Residence",   1 ],
-         [ "Student Residence", 2 ],
+         [ "Student Room",      6 ],
+         [ "Bed (Student)",     2 ],
          [ "Facility",          3 ],
          [ "Staff Area",        4 ],
          [ "Public Area",       5 ],

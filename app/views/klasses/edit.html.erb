@@ -1,0 +1,23 @@
+<h3>Editing Class</h3>
+
+<% form_for(@klass) do |f| %>
+  <%= f.error_messages %>
+
+  <%=render :partial => 'form', :locals => {:f => f} %> 
+
+	<% for student in Student.find(:all) %><!-- add back when intake solved-->
+	<tr>
+		<td></td>
+		<td><ol><%= check_box_tag "klass[student_ids][]", student.id, @klass.students.include?(student) %>
+            <%= student.name %></ol>
+    </td>
+  </tr>
+  <% end %>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+</div>
+<%= link_to 'Show', @klass %> |
+<%= link_to 'Back', klasses_path %>

@@ -2,7 +2,7 @@ class ProgrammesController < ApplicationController
   # GET /programmes
   # GET /programmes.xml
   def index
-    @programmes = Programme.all
+    @programmes = Programme.find(:all, :order => :name)
 
     respond_to do |format|
       format.html # index.html.erb
