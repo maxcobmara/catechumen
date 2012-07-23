@@ -12,6 +12,8 @@ class Subject < ActiveRecord::Base
   #Link to Model Grade
   has_many :subjectgrade,  :class_name => 'Grade', :foreign_key => 'subject_id'
   
+  validates_presence_of :subjectcode, :name 
+  
   def self.search(search)
     if search
       @subjects = Subject.find(:all, :conditions => ["subjectcode LIKE ? or name ILIKE ?", "%#{search}%","%#{search}%"], :order => :subjectcode)

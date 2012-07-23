@@ -1,44 +1,42 @@
-<p>
-  <b>Classtype:</b>
-  <%=h @trainingreport.classtype %>
-</p>
 
-<p>
-  <b>Timetable:</b>
-  <%=h @trainingreport.timetable_id %>
-</p>
-
-<p>
-  <b>Location state:</b>
-  <%=h @trainingreport.location_state %>
-</p>
-
-<p>
-  <b>Ls comment:</b>
-  <%=h @trainingreport.ls_comment %>
-</p>
-
-<p>
-  <b>Staff comment:</b>
-  <%=h @trainingreport.staff_comment %>
-</p>
-
-<p>
-  <b>Staff:</b>
-  <%=h @trainingreport.staff_id %>
-</p>
-
-<p>
-  <b>Submit:</b>
-  <%=h @trainingreport.submit %>
-</p>
-
-<p>
-  <b>Tpa comment:</b>
-  <%=h @trainingreport.tpa_comment %>
-</p>
-
-<p>
-  <b>Tpa:</b>
-  <%=h @trainingreport.tpa_id %>
-</p>
+  <table width=100% >
+		<tr>
+			<td class="leftcol"><label for="classtype">Classtype</label></td>
+			<td><%=h (Trainingreport::CTYPE.find_all{|disp, value| value == @trainingreport.classtype}).map {|disp, value| disp} %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="classtype">Lecturer</label></td>
+			<td><%=h @trainingreport.creator.name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="classtype">Subject</label></td>
+			<td><%=h @trainingreport.timetable.klass.subject.subject_code_with_subject_name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="classtype">Topic</label></td>
+			<td><%=h @trainingreport.timetable.topic.name %></td>
+		</tr>
+	 	<tr>
+			<td class="leftcol"><label for="classtype">Date</label></td>
+			<td><%=h @trainingreport.timetable.start_at? ? @trainingreport.timetable.start_at.strftime("%I:%M%p") + ' to ' + @trainingreport.timetable.end_at.strftime("%I:%M%p  %d-%b-%Y") : "" %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="classtype">Location</label></td>
+			<td><%=h @trainingreport.timetable.location.name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="classtype">Student Count</label></td>
+			<td><%=h @trainingreport.timetable.student_count %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="classtype">Room Condition</label></td>
+			<td><%=h @trainingreport.location_state? ? "Memuaskan" : "Tidak Memuaskan" %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="classtype">Room Condition Comments</label></td>
+			<td><%=h @trainingreport.ls_comment %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="classtype"><%=h @trainingreport.submit? ? "Submitted To" : "Not Yet Submitted To" %></label></td>
+			<td> <%=h @trainingreport.tpa.name %></td>
+		</tr>

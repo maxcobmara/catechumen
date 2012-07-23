@@ -1,6 +1,6 @@
 <div class="tform">
 	<H2>Lesson Plan Reporting</H2>
-	<% if @trainingreport.tpa_id != current_user.staff_id %>
+	<% if @trainingreport.staff_id == User.current_user.staff_id && @trainingreport.tpa_id != User.current_user.staff_id  %>
 	
   <table width=100% >
 			<tr>
@@ -34,12 +34,12 @@
 			</tr>
 			<tr>
 					<td class="leftcol"><label for="staff_id">TPA/KP</label></td>
-					<td><%= f.collection_select :tpa_id, Staff.find(:all, :conditions => ["id != ?", current_user.staff_id]), :id, :staff_name_with_position %></td>
+					<td><%= f.collection_select :tpa_id, Staff.find(:all, :conditions => ["id != ?", current_user.staff_id], :order => :name), :id, :staff_name_with_position %></td>
 			</tr>
 	</table>
 <% end %>
 	
-	<% if @trainingreport.tpa_id == current_user.staff_id %>
+	<% if @trainingreport.tpa_id == User.current_user.staff_id && @trainingreport.staff_id != User.current_user.staff_id  %>
 		<%= render 'show.html.erb' %>
 		<table>
 			<tr>
@@ -47,7 +47,7 @@
 					<td><%= f.text_area :tpa_comment, :size => '60x3' %></td>
 			</tr>
 		</table>
-		<% end %>
+	<% end %>
 		
 	  
 	

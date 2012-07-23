@@ -1,24 +1,20 @@
-<!-- Box -->
 <div class="box">
-<!-- Box Head -->
   <div class="box-head">
-	<!-- 30 Apr 2012 -->
   	<% if params[:programmeid] %>
 	    <% if params[:programmeid] != '0'%>
-			<h2 class="left">Subjects for <%= Programme.find(params[:programmeid]).name  %></h2>
+					<h2 class="left">Subjects for <%= Programme.find(params[:programmeid]).name  %></h2>
+				<% else %>
+					<h2 class="left">All Subjects</h2>
+			<% end %>
 		<% else %>
 			<h2 class="left">All Subjects</h2>
 		<% end %>
-	<% else %>
-		<h2 class="left">All Subjects</h2>
-	<% end %>
-	<!-- 30 Apr 2012 -->
 	  		<div class="right">
-				<!-- for search by programme -->
-				<% form_tag subjects_path, :method => 'get' do %>
-					<%= select_tag('programmeid',  "<option value='0'>Select a Programme</option>" +options_from_collection_for_select(Programme.find(:all, :order => 'name, specialisation'), :id, :programme_with_specialisation)) %>
-					<%= submit_tag I18n.t('search'), :programme_id => nil %>
-				<% end %>
+						<!-- for search by programme -->
+						<% form_tag subjects_path, :method => 'get' do %>
+							<%= select_tag('programmeid',  "<option value='0'>Select a Programme</option>" +options_from_collection_for_select(Programme.find(:all, :order => 'name, specialisation'), :id, :programme_with_specialisation)) %>
+							<%= submit_tag I18n.t('search'), :programme_id => nil %>
+						<% end %>
 				</div>
 				<!--
 				<div class="right">
@@ -34,6 +30,9 @@
 
 <div class="indextable">
 	<table width=100%>
+		<tr>
+			<th colspan=7><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Subject') + "New", new_subject_path %></th>
+		</tr>
 	  <tr>
 	    <th>Subject Code</th>
 	    <th>Name</th>
@@ -57,5 +56,4 @@
 </div>
 <br />
 
-
-<%= link_to 'New Subject', new_subject_path %>
+<%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Subject') + "New Subject", new_subject_path %>

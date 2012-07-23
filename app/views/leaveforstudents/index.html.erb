@@ -35,7 +35,7 @@
     <td><%=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : "" %></td>
    	<td width=10px>
 			<% if permitted_to? :approve, leaveforstudent %>
-			  <% if leaveforstudent.approved == false %>
+			  <% if leaveforstudent.approved != true %>
 					<%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => leaveforstudent %>
 	  		<% end %><% end %></td>
     <td width=10px ><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), 	:action => 'show', :id => leaveforstudent %></td>

@@ -58,6 +58,13 @@
 		<% else %>
 			<%= topic_need_approve %> <%= link_to "Lesson plan topics need your approval", topics_path %><br>
 		<% end %>
+		
+	<!-- Notification for Training Plan Report-->
+	<% report_need_comment = Trainingreport.count(:all, :conditions => ['tpa_id=? AND tpa_comment IS ?', User.current_user.staff_id, nil]) %>
+		<% if report_need_comment == 0 %>
+		<% else %>
+			<%= report_need_comment %> <%= link_to "Lesson Plan Reports for your comment", trainingreports_path %><br>
+		<% end %>
 	
 	
 	

@@ -15,6 +15,14 @@ class Timetable < ActiveRecord::Base
   
   attr_accessor :programme_id #-------23 Apr 2012
   
+  validate :validate_end_date_before_start_date
+
+  def validate_end_date_before_start_date
+    if end_at && start_at
+      errors.add(:end_at, "Your class must begin before it ends") if end_at < start_at || start_at < DateTime.now
+    end
+  end
+  
   def student_count
     this_id = id
     my_klass = Timetable.find(:all, :conditions => {:id => this_id}, :select => :klass_id).map(&:klass_id)
