@@ -12,7 +12,7 @@ class Staff < ActiveRecord::Base
   #:styles => {:thumb => "100x100#" }
   
  # validates_attachment_presence :photo
-  validates_attachment_size         :photo, :less_than => 50.kilobytes
+  validates_attachment_size         :photo, :less_than => 500.kilobytes
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
  #---------------Validations------------------------------------------------
   validates_numericality_of :icno#, :kwspcode
@@ -194,7 +194,10 @@ class Staff < ActiveRecord::Base
     "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
   end
   
-
+  def staff_name_then_mykad
+    "#{name}  (#{formatted_mykad})"
+  end
+  
   def mykad_with_staff_name
     "#{formatted_mykad}  #{name}"
   end

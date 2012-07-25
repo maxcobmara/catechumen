@@ -7,8 +7,8 @@
 		<tr>
 			<td class="leftcol"><%= t 'book.tagno' %> :</td>
 			<td><%=h @book.tagno %></td>
-			<td rowspan=10 align=right><% if @book.photo.exists? then %>
-			  <%= image_tag @book.photo.url%>
+			<td rowspan=12 align=right><% if @book.photo.exists? then %>
+			  <%= image_tag @book.photo.url, :class => 'show-image'%>
 			<% else %>
 			  No Photo<BR>Available
 			<% end %></td>
@@ -142,6 +142,25 @@
 		  <td><%= auto_link(@book.links) %></td>
 		</tr>
 	</table>
+	
+	<H2>Accessions</H2>
+		<table>
+			<tr>
+				<td class="leftcol">Accession Nos :</label></td>
+				<td>
+						<table width=100% border=0 padding=0>
+							<% @book.accessions.find(:all, :order => :accession_no).in_groups_of(10, false) do |row_accessions| %>
+
+							<tr>
+								<% for accession in row_accessions %>
+									<td><%= accession.accession_no %></td>
+							  <% end %>
+							</tr>
+							<% end %>
+
+						</table></td>
+		</table>
+			
 	
 	<% permitted_to? :manage, :books do %>
 	<H2><%= t 'book.purchase_info' %></H2>

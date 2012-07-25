@@ -1,7 +1,7 @@
 class Book < ActiveRecord::Base
   belongs_to :staff  , :foreign_key => 'receiver_id'
   belongs_to :addbook, :foreign_key => 'supplier_id'
-  has_many  :accessions
+  has_many  :accessions, :dependent => :destroy
   accepts_nested_attributes_for :accessions
   
   
@@ -9,7 +9,7 @@ class Book < ActiveRecord::Base
   has_attached_file :photo,
                     :url => "/assets/books/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/books/:id/:style/:basename.:extension"
-  validates_attachment_size :photo, :less_than => 50.kilobytes
+  validates_attachment_size :photo, :less_than => 500.kilobytes
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']    
   
   #------------Validation-----------------------------------------
@@ -30,9 +30,9 @@ class Book < ActiveRecord::Base
     
 def self.search(search)
     if search
-        @book = Book.find(:all, :conditions => ["isbn LIKE ? or title ILIKE ? or author ILIKE ? or location ILIKE ?" , "%#{search}%","%#{search}%","%#{search}%", "%#{search}%"])
+        @book = Book.find(:all, :conditions => ["isbn LIKE ? or title ILIKE ? or author ILIKE ? or location ILIKE ?" , "%#{search}%","%#{search}%","%#{search}%", "%#{search}%"], :order => :title)
     else
-       @book = Book.find(:all)
+       @book = Book.find(:all, :order => :title)
     end
 end
   

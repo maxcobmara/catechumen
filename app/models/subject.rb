@@ -39,7 +39,7 @@ class Subject < ActiveRecord::Base
   
   
   def subject_code_with_subject_name
-     "#{subjectcode}  #{name}"
+     "#{subjectcode} - #{name}"
   end
   
   

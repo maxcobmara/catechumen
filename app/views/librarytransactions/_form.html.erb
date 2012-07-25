@@ -4,7 +4,7 @@
   <table width=100%>
 		<tr>
 			<td class="leftcol"><label for="book_id"><b><%= t 'book.accessionno' %></b></label></td>
-			<td><%= f.collection_select :book_id, Accession.find(:all), :id, :accession_no %></td>
+			<td><%= f.collection_select :book_id, Accession.find(:all, :order => :accession_no), :id, :accession_no, :include_blank => :true %></td>
 		</tr>
 	
 	<script type="text/javascript">
@@ -28,7 +28,7 @@
 	
 		<tr id="bstaff" style="display: none;">
 			<td class="leftcol" ><label for="staff_id"><b>Staff</b></label></td>
-		  <td><%= f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td>
+		  <td><%= f.collection_select :staff_id, Staff.find(:all, :order => :name), :id, :staff_name_then_mykad, :include_blank => true %></td>
 		</tr>
 	
 		<tr id="bstudent" style="display: table-row;">

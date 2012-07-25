@@ -7,6 +7,15 @@ class Librarytransaction < ActiveRecord::Base
   belongs_to :student
   
   
+  validates_presence_of :book_id
+  
+  validate :at_least_one_name
+
+  def at_least_one_name
+    self.staff_id  && self.student_id
+    errors.add(:staff_id, "Please Select Borrower")
+  end
+  
   
   
   def varmyass
@@ -86,7 +95,7 @@ class Librarytransaction < ActiveRecord::Base
   named_scope :all,         :conditions => [ "id IS NOT ?", nil ]
   named_scope :borrowed,    :conditions => { :returned => false }
   named_scope :returned,    :conditions => { :returned => true }
-  named_scope :overdue, lambda { |time| { :conditions => ["returnduedate < ?", Time.now] } }
+  named_scope :overdue, lambda { |time| { :conditions => ["returnduedate < ? AND returneddate !=?", Time.now, nil] } }
   
   FILTERS = [
     {:scope => "all",        :label => "All Transactions"},

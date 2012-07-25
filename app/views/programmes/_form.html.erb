@@ -1,8 +1,6 @@
 <div class="tform">
+<H2>Programme Details</H2>
 <table width=100% >	
-	<tr>
-		<th colspan = 2>Programme Details</th>
-	</tr>
 
 	<tr>
 		<td class="leftcol"><label for="code"><b>Programme Code:</b></label></td>
@@ -11,42 +9,53 @@
 
 	<tr>
 		<td class="leftcol"><label for="name"><b>Programme Name:</b></label></td>
-		<td><%= f.text_field :name %></td>
+		<td><%= f.text_field :name, :size => '80' %></td>
 	</tr>
 
 	<tr>
 		<td class="leftcol"><label for="specialisation"><b>Specialisation:</b></label></td>
-		<td><%= f.text_field :specialisation %></td>
+		<td><%= f.text_field :specialisation, :size => '80' %></td>
 	</tr>
 	<tr>
 		<td colspan=2><b>Select subjects to add to this programme</b></td>
 		<td></td>
 	</tr>
-</table>
-<table width=100% border=0 padding=0>
-	<% Subject.find(:all, :conditions => ['id in (?)', @programme.subjects]).in_groups_of(4, false) do |row_subjects| %>
 	
 	<tr>
-		<% for subject in row_subjects %>
-			<td width=5px><%= check_box_tag "programme[subject_ids][]", subject.id, @programme.subjects.include?(subject) %></td>
-			<td><%= subject.name %></td>
-	  <% end %>
-	</tr>
-	<% end %>
+		<td>
+				<table width=100% border=0 padding=0 bgcolor="#FAA">
+				<!--
+					<#% Subject.find(:all, :conditions => ['id not in (?)', @programme.subjects]).in_groups_of(4, false) do |row_subjects| %>
+					<#% Subject.all.in_groups_of(2, false) do |row_subjects| %>-->
 
-</table>
-<table width=100% border=0 padding=0>
-	<% Subject.find(:all, :conditions => ['id not in (?)', @programme.subjects]).in_groups_of(4, false) do |row_subjects| %>
-	
-	<tr>
-		<% for subject in row_subjects %>
-			<td width=5px><%= check_box_tag "programme[subject_ids][]", subject.id, @programme.subjects.include?(subject) %></td>
-			<td><%= subject.name %></td>
-	  <% end %>
-	</tr>
-	<% end %>
 
+					<% for subject in Subject.find(:all, :order => :subjectcode) %>
+					<tr>
+					<!--	<#% for subject in row_subjects %>-->
+
+							<td><span style="font-size: 0.8em; font-color: #FFF;"><%= check_box_tag "programme[subject_ids][]", subject.id, @programme.subjects.include?(subject) %> <%= subject.subject_code_with_subject_name %></td>
+
+					</tr>
+					<!--<#% end %>-->
+					<% end %>
+				</table>
+
+		<td>	
+			<table width=100% border=0 padding=0>
+				<% Subject.find(:all, :conditions => ['id in (?)', @programme.subjects], :order => :subjectcode).in_groups_of(2, false) do |row_subjects| %>
+
+				<tr>
+					<% for subject in row_subjects %>
+						<td width=5px><%= subject.subject_code_with_subject_name %></td>
+				  <% end %>
+				</tr>
+				<% end %>
+
+			</table></td>
+	</tr>
 </table>
+
+
 
 <BR>
 </div>

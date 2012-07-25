@@ -22,12 +22,12 @@
 		    <th colspan=3><%= t 'action' %></th>
      </tr>
 
-    <% @libtran_days.sort.each do |checkoutdate, librarytransactions| %>
+    <% @libtran_days.sort.reverse.each do |checkoutdate, librarytransactions| %>
     <tr><td colspan=11><%= checkoutdate.strftime("%A, %v") %></td></tr>
     <% for librarytransaction in librarytransactions%>
     <tr>
 	  	<td><%=h librarytransaction.book_id  %></td>
-	    <td><%=h librarytransaction.accession.book.isbn  %></td>
+	    <td><%=h librarytransaction.accession.book.isbn unless librarytransaction.book_id.blank?  %></td>
 	    <td><%=h librarytransaction.accession.book.title unless librarytransaction.book_id.blank? %></td>
 	    <td><%=h librarytransaction.borrower_name %></td>
 	    <td><%=h librarytransaction.accession.book.classddc unless librarytransaction.book_id.blank? %></td>
