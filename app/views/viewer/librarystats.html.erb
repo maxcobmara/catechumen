@@ -13,6 +13,31 @@ Quicklinks  : <a href="#LatestBooks">Latest Books</a>, <a href="#mastu">Most Act
 		<% end %><SPAN STYLE="font-size:14px; color: #90C3C0">Books Borrowed Today</p>
 </div>
 <BR><BR><BR><BR>
+	
+<a name="oot"></a>
+
+<% oot_books = Librarytransaction.find(:all, :select => 'accession_id', :conditions => ["returned = ?", false ]).map(&:accession_id) %>
+<!--<#% av_books = Accession.find(:all, :select => 'id', :conditions => ["id is in = (?)", oot_books ]).map(&:id) %>-->
+
+
+
+	<table id="easytable" align="center" >
+		<caption>Borrowed Books</caption>
+		<tr>
+			<th>Accession ID</th>
+			<th>Title</th>
+		</tr>
+		<% for accession in Accession.find(:all, :conditions => ["id in (?)", oot_books ]) %>
+		<tr>
+			<td><%= accession.accession_no %></td>
+			<td><%= accession.book.title %></td>
+		</tr>
+		<% end %>
+	</table>
+	<BR><BR><BR><BR>	
+	
+	
+	
 
 <a name="mastu"></a>
 <% dash_student = Librarytransaction.find(:all, :select => 'student_id', :conditions => ["student_id IS NOT ?", nil ]).map(&:student_id) %>

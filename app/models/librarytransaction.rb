@@ -7,14 +7,34 @@ class Librarytransaction < ActiveRecord::Base
   belongs_to :student
   
   
-  validates_presence_of :book_id
+  validates_presence_of :accession_id
   
-  validate :at_least_one_name
-
+  #validate :at_least_one_name
+  
   def at_least_one_name
-    self.staff_id  && self.student_id
+    self.staff_id && self.student_id
     errors.add(:staff_id, "Please Select Borrower")
   end
+  
+  
+  named_scope :all,       :conditions => [ "id IS NOT ?", nil ]
+  named_scope :borrowed,  :conditions => { :returned => false }
+  named_scope :returned,  :conditions => ["returned = ? AND returneddate > ?", true, 8.days.ago]
+  named_scope :overdue,   :conditions => ["returnduedate < ? AND returned = ?", 1.day.ago, false]
+  #named_scope :overdue, lambda { |time| { :conditions => ["returnduedate < ? AND returneddate !=?", Time.now, nil] } }
+  
+  FILTERS = [
+    {:scope => "all",        :label => "All Transactions"},
+    {:scope => "borrowed",   :label => "Out"},
+    {:scope => "returned",    :label => "Recent"},
+    {:scope => "overdue",    :label => "Overdue"}
+  ]
+  
+  
+  def books_that_are_out
+    Librarytransaction.find(:all, :select => 'accession_id', :conditions => ["returned = ?", false ]).map(&:accession_id)
+  end
+  
   
   
   
@@ -92,16 +112,6 @@ class Librarytransaction < ActiveRecord::Base
   end
 
   
-  named_scope :all,         :conditions => [ "id IS NOT ?", nil ]
-  named_scope :borrowed,    :conditions => { :returned => false }
-  named_scope :returned,    :conditions => { :returned => true }
-  named_scope :overdue, lambda { |time| { :conditions => ["returnduedate < ? AND returneddate !=?", Time.now, nil] } }
-  
-  FILTERS = [
-    {:scope => "all",        :label => "All Transactions"},
-    {:scope => "borrowed",   :label => "Borrowed"},
-    {:scope => "returned",    :label => "Returned"},
-    {:scope => "overdue",    :label => "Overdue"}
-  ]
+
   
 end
