@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120719014110) do
+ActiveRecord::Schema.define(:version => 20120725060824) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -592,7 +592,7 @@ ActiveRecord::Schema.define(:version => 20120719014110) do
   end
 
   create_table "librarytransactions", :force => true do |t|
-    t.integer  "book_id"
+    t.integer  "accession_id"
     t.boolean  "ru_staff"
     t.integer  "staff_id"
     t.integer  "student_id"
