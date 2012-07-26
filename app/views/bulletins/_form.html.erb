@@ -26,8 +26,12 @@
 	
 	<tr>
 		<td class="leftcol"><label for="data">Upload File:</label></td>
-		<td><%= f.file_field :data %><BR>
-			  <font color=#AAA size=-2>pdf/txt/doc/xls/jpg.  Max : 5MB</font></td>
+		<td><font color=#444 size=-2>Current file is : 
+				<% if @bulletin.data.exists? then %>
+		    	<%= @bulletin.data_file_name %><BR>
+				<% end %> Or </font>
+	      <%= f.file_field :data %><BR>
+			  <font color=#BBB size=-2>pdf/txt/doc/xls/jpg.  Max : 5MB</font></td>
 	</tr>
 	
 
