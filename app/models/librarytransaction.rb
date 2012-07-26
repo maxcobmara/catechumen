@@ -42,9 +42,9 @@ class Librarytransaction < ActiveRecord::Base
   
   
   def varmyass
-    if extended == true
+    if extended == true && (returnduedate - checkoutdate).to_i < 15
       self.returnduedate = returnduedate + 14.days
-      self.extended = false
+      #self.extended = false
     end
   end
   

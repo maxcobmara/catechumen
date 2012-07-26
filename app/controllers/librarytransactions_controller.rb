@@ -92,4 +92,12 @@ class LibrarytransactionsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def extend
+    @librarytransaction = Librarytransaction.find(params[:id])
+  end
+  
+  def return
+    @librarytransaction = Librarytransaction.find(params[:id])
+  end
 end

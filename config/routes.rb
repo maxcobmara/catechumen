@@ -80,6 +80,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :programmes
 
+  map.connect '/librarytransactions/return', :controller => 'librarytransactions', :action => 'return'
+  map.connect '/librarytransactions/extend', :controller => 'librarytransactions', :action => 'extend'
   map.resources :librarytransactions
 
   map.connect '/leaveforstaffs/approve1', :controller => 'leaveforstaffs', :action => 'approve1'

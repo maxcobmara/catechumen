@@ -1,0 +1,40 @@
+<h3><%= t 'librarytransaction.newrec' %></h3>
+
+<% form_for(@librarytransaction) do |f| %>
+  <%= f.error_messages %>
+ 
+	<%=render :partial => 'show' %>
+	<div class="tform">
+		<tr>
+			<td class="leftcol" ><label for="Returned"><b><%= t 'librarytransaction.returned' %></b></label></td>
+		  <td><%= f.check_box :returned %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol" ><label for="returneddate"><b><%= t 'librarytransaction.returneddate' %></b></label></td>
+		  <td><%= f.date_select :returneddate, :order => [:day, :month, :year], :include_blank => true  %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol" ><label for="fine"><b><%= t 'librarytransaction.fine' %></b></label></td>
+		  <td><%= f.text_field :fine %><!-- to implement fine = returned date - duedate * RM1/day --></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol" ><label for="finepay"><b><%= t 'librarytransaction.finepay' %></b></label></td>
+		  <td><%= f.check_box :finepay %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol" ><label for="finepaydate"><b><%= t 'librarytransaction.finepaydate' %></b></label></td>
+		  <td><%= f.date_select :finepaydate, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+		</table>
+	</div>
+	<p>
+    <%= f.submit (t 'update') %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @librarytransaction %> |
+<%= link_to 'Back', librarytransactions_path %>
