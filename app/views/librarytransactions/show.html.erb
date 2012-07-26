@@ -1,49 +1,57 @@
 <div class="tform">
-<H2><%= t 'librarytransaction.details' %></H2>
-<table width=100%>
+	<H2><%= t 'librarytransaction.details' %></H2>
+	<table width=100%>
 	<tr>
 		<td class="leftcol"><label for="book_id"><b><%= t 'book.title' %></b></label></td>
 		<td>  <%=h @librarytransaction.accession.accession_no unless @librarytransaction.accession_id.blank? %> -  
 					<%=h @librarytransaction.accession.book.title unless @librarytransaction.accession_id.blank? %></td>
 	</tr>
 
-<tr>
-	<td class="leftcol"><label for="isitstaff"><b><%= t 'librarytransaction.studentname' %></b></label></td>
-	<td><%=h @librarytransaction.ru_staff? ?  @librarytransaction.borrower_name : @librarytransaction.borrower_name %></td>
-</tr>
+	<tr>
+		<td class="leftcol"><label for="isitstaff"><b><%= t 'librarytransaction.studentname' %></b></label></td>
+		<td><%=h @librarytransaction.ru_staff? ?  @librarytransaction.borrower_name : @librarytransaction.borrower_name %></td>
+	</tr>
 
-<tr>
-	<td class="leftcol"><label for="checkoutdate"><b><%= t 'librarytransaction.checkoutdate' %></b></label></td>
-	<td> <%=h @librarytransaction.checkoutdate %></td>
-</tr>
+	<tr>
+		<td class="leftcol"><label for="checkoutdate"><b><%= t 'librarytransaction.checkoutdate' %></b></label></td>
+		<td> <%=h l(@librarytransaction.checkoutdate) unless @librarytransaction.checkoutdate.blank? %></td>
+	</tr>
 
-<tr>
-	<td class="leftcol"><label for="returndate"><b><%= t 'librarytransaction.duedate' %></b></label></td>
-	<td><%=h @librarytransaction.returnduedate %></td>
-</tr>
+	<tr>
+		<td class="leftcol"><label for="returndate"><b><%= t 'librarytransaction.duedate' %></b></label></td>
+		<td><%=h l(@librarytransaction.returnduedate) unless @librarytransaction.checkoutdate.blank? %></td>
+	</tr>
 
-<tr>
-	<td class="leftcol"><label for="extend"><b><%= t 'librarytransaction.extend' %></b></label></td>
-	<td><%=h @librarytransaction.extended? ? "Yes" : "Once" %></td>
-</tr>
+	<tr>
+		<td class="leftcol"><label for="extend"><b><%= t 'librarytransaction.extend' %></b></label></td>
+		<td><%=h @librarytransaction.extended? ? "Yes" : "No Extension Taken" %></td>
+	</tr>
 
-<tr>
-	<td class="leftcol" ><label for="returneddate"><b><%= t 'librarytransaction.returneddate' %></b></label></td>
-  <td><%=h @librarytransaction.returneddate %></td>
-</tr>
+	<% if @librarytransaction.returned? %>
+			<tr>
+				<td class="leftcol" ><label for="returneddate"><b><%= t 'librarytransaction.returneddate' %></b></label></td>
+			  <td><%=h @librarytransaction.returneddate %></td>
+			</tr>
+	<% end %>
+	
+	<% if @librarytransaction.finepay?%>
+	<tr>
+		<td class="leftcol" ><label for="finepay"><b><%= t 'librarytransaction.finepay' %></b></label></td>
+	   <td><%=h @librarytransaction.finepay? ? "Yes" : "Not Required"  %></td>
+	</tr>
 
-
-<tr>
-	<td class="leftcol" ><label for="finepay"><b><%= t 'librarytransaction.finepay' %></b></label></td>
-   <td><%=h @librarytransaction.finepay? ? "Yes" : "Not Required"  %></td>
-</tr>
-
-<tr>
-	<td class="leftcol" ><label for="finepaydate"><b><%= t 'librarytransaction.finepaydate' %></b></label></td>
-  <td><%=h @librarytransaction.finepaydate %></td>
-</tr>
+	<tr>
+		<td class="leftcol" ><label for="finepaydate"><b><%= t 'librarytransaction.finepaydate' %></b></label></td>
+	  <td><%=h @librarytransaction.finepaydate %></td>
+	</tr>
+	<% end %>
+	
 </table>
+
+<% if @librarytransaction.reportlost? %>
 <H2><%= t 'librarytransaction.report' %></H2>
+
+
 <table width=100%>
 	<tr>
 	<td class="leftcol" ><label for="reportlost"><b><%= t 'librarytransaction.lost' %></b></label></td>
@@ -66,7 +74,10 @@
 	</tr>
 	
 	</table>
-</div>
+	
+<% end %>
 
+</div>
+<BR/>
 <%= link_to 'Edit', edit_librarytransaction_path(@librarytransaction) %> |
 <%= link_to 'Back', librarytransactions_path %>

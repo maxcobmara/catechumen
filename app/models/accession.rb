@@ -1,5 +1,5 @@
 class Accession < ActiveRecord::Base
-  has_many :librarytransactions#, :dependent => :delete_all
+  has_many :librarytransactions
   belongs_to :book
   
   def acc_book

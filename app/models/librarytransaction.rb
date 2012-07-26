@@ -9,16 +9,19 @@ class Librarytransaction < ActiveRecord::Base
   
   validates_presence_of :accession_id
   
-  #validate :at_least_one_name
   
-  def at_least_one_name
-    self.staff_id && self.student_id
-    errors.add(:staff_id, "Please Select Borrower")
+  validate :staff_or_student_borrower
+
+  def staff_or_student_borrower
+    if %w(staff_id student_id).all?{|attr| self[attr].blank?}
+      errors.add_to_base("A borrower is required")
+    end
   end
+
   
   
   named_scope :all,       :conditions => [ "id IS NOT ?", nil ]
-  named_scope :borrowed,  :conditions => { :returned => false }
+  named_scope :borrowed,  :conditions => [ "returned = ? OR returned IS ?", false, nil ]
   named_scope :returned,  :conditions => ["returned = ? AND returneddate > ?", true, 8.days.ago]
   named_scope :overdue,   :conditions => ["returnduedate < ? AND returned = ?", 1.day.ago, false]
   #named_scope :overdue, lambda { |time| { :conditions => ["returnduedate < ? AND returneddate !=?", Time.now, nil] } }
@@ -32,7 +35,7 @@ class Librarytransaction < ActiveRecord::Base
   
   
   def books_that_are_out
-    Librarytransaction.find(:all, :select => 'accession_id', :conditions => ["returned = ?", false ]).map(&:accession_id)
+    Librarytransaction.find(:all, :select => 'accession_id', :conditions => ["returned = ? OR returned IS ?", false, nil ]).map(&:accession_id)
   end
   
   
@@ -46,11 +49,11 @@ class Librarytransaction < ActiveRecord::Base
   end
   
   def extoond
-    if extended == false
+    if extended == true
       '(Extended)'
-    elsif extended == nil
-      'never'
-    else
+    #elsif extended == nil
+      #'never'
+    #else
     end
       
   end

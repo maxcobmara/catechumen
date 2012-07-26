@@ -68,6 +68,10 @@ class Student < ActiveRecord::Base
     " #{formatted_mykad} #{name}" 
   end
   
+  def matrix_name
+    " #{matrixno} #{name}" 
+  end
+  
   def bil
     v=1
   end

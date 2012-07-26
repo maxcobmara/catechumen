@@ -5,18 +5,18 @@ Quicklinks  : <a href="#LatestBooks">Latest Books</a>, <a href="#mastu">Most Act
 	<p STYLE="font-size:72px; color: #ee842f"><%= Accession.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0">Total Number of Books In Library </p>
   <p><%= Librarytransaction.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0">Total Library Transactions</p>
 	<p STYLE="font-size:72px; color: #ee842f">
-		<% lib_tran_today = Librarytransaction.count(:all, :conditions => ["created_at = ? ", Date.today ]) %>
+		<% lib_tran_today = Librarytransaction.count(:all, :conditions => ["created_at > ? ", 1.day.ago ]) %>
 		<% if lib_tran_today == 0 %>
 			0
 		<% else %>
-			<% lib_tran_today %>
+			<%= lib_tran_today %>
 		<% end %><SPAN STYLE="font-size:14px; color: #90C3C0">Books Borrowed Today</p>
 </div>
 <BR><BR><BR><BR>
 	
 <a name="oot"></a>
 
-<% oot_books = Librarytransaction.find(:all, :select => 'accession_id', :conditions => ["returned = ?", false ]).map(&:accession_id) %>
+<% oot_books = Librarytransaction.find(:all, :select => 'accession_id', :conditions => ["returned = ? OR returned IS ?", false, nil ]).map(&:accession_id) %>
 <!--<#% av_books = Accession.find(:all, :select => 'id', :conditions => ["id is in = (?)", oot_books ]).map(&:id) %>-->
 
 

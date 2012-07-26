@@ -4,7 +4,9 @@
   <table width=100%>
 		<tr>
 			<td class="leftcol"><label for="book_id"><b><%= t 'book.accessionno' %></b></label></td>
-			<td><%= f.collection_select :accession_id, Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :accession_no, :include_blank => :true %></td>
+			<td><#% f.collection_select :accession_id, Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :accession_no, :include_blank => :true %>
+			
+	<%= f.collection_select :accession_id, Accession.find(:all, :order => :accession_no), :id, :accession_no %></td>
 		</tr>
 	
 	<script type="text/javascript">
