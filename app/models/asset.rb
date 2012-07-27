@@ -2,8 +2,8 @@ class Asset < ActiveRecord::Base
   
   before_save :save_my_vars
   
-  validates_presence_of  :assettype, :cardno, :category_id
-  validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
+  #validates_presence_of  :assettype, :cardno, :category_id
+  #validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
   
   belongs_to :manufacturedby, :class_name => 'Addbook', :foreign_key => 'manufacturer_id'
   belongs_to :suppliedby,   :class_name => 'Addbook', :foreign_key => 'supplier_id'

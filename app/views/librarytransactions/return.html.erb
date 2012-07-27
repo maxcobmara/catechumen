@@ -5,19 +5,23 @@
  
 	<%=render :partial => 'show' %>
 	<div class="tform">
+		<table>
 		<tr>
-			<td class="leftcol" ><label for="Returned"><b><%= t 'librarytransaction.returned' %></b></label></td>
+			<td class="leftcol" ><label for="Returned"><b>Return</b></label></td>
 		  <td><%= f.check_box :returned %></td>
 		</tr>
 	
 		<tr>
 			<td class="leftcol" ><label for="returneddate"><b><%= t 'librarytransaction.returneddate' %></b></label></td>
-		  <td><%= f.date_select :returneddate, :order => [:day, :month, :year], :include_blank => true  %></td>
+		  <td><%= f.date_select :returneddate, :order => [:day, :month, :year], :default => Date.today  %></td>
 		</tr>
 	
+		<% if (@librarytransaction.returnduedate - Date.today).to_i < 0 %>
 		<tr>
 			<td class="leftcol" ><label for="fine"><b><%= t 'librarytransaction.fine' %></b></label></td>
-		  <td><%= f.text_field :fine %><!-- to implement fine = returned date - duedate * RM1/day --></td>
+		  <td><%= f.text_field :fine, :placeholder => (@librarytransaction.recommended_fine_value).to_s %> 
+					<font color=#AAA size=-2> late by <%= @librarytransaction.recommended_fine_value %> days x RM1/day</font>
+		<!-- to implement fine = returned date - duedate * RM1/day --></td>
 		</tr>
 	
 		<tr>
@@ -27,8 +31,9 @@
 	
 		<tr>
 			<td class="leftcol" ><label for="finepaydate"><b><%= t 'librarytransaction.finepaydate' %></b></label></td>
-		  <td><%= f.date_select :finepaydate, :order => [:day, :month, :year], :include_blank => true %></td>
+		  <td><%= f.date_select :finepaydate, :order => [:day, :month, :year], :default => Date.today %></td>
 		</tr>
+		<% end %>
 		</table>
 	</div>
 	<p>

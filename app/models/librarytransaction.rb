@@ -44,7 +44,14 @@ class Librarytransaction < ActiveRecord::Base
   def varmyass
     if extended == true && (returnduedate - checkoutdate).to_i < 15
       self.returnduedate = returnduedate + 14.days
-      #self.extended = false
+    end
+    
+    if returned == false
+      self.returneddate = nil
+    end
+    
+    if finepay == false
+      self.finepaydate = nil
     end
   end
   
@@ -58,6 +65,10 @@ class Librarytransaction < ActiveRecord::Base
       
   end
   
+  def recommended_fine_value
+    (returnduedate - Date.today).to_i * -1
+  end
+  
   def loaner
     if student_id == nil && staff_id == nil
       ""
@@ -69,6 +80,8 @@ class Librarytransaction < ActiveRecord::Base
      ""
     end 
   end
+  
+  
   
   def borrower_name
    stid = staff_id.to_a
