@@ -11,7 +11,7 @@
 	<div class="tlist">
 	  <table width=100%>
 			<tr>
-				<td  colspan=12><%= link_to image_tag("book_go.png", :border => 0, :title => 'New Library Transaction') + "New Borrowing", new_librarytransaction_path %></th></td>
+				<td  colspan=12><%= link_to image_tag("book_go.png", :border => 0, :title => 'New Library Transaction') + "New Loan", new_librarytransaction_path %></th></td>
 			</td>
 		  <tr>
 			  <th>Book ID</th>
@@ -22,11 +22,13 @@
 				<th> No</th>
 		    <th><%= t 'librarytransaction.duedate' %></th>
 		    <th><%= t 'librarytransaction.returneddate' %></th>
+				<% permitted_to? :manage, :librarytransactions do %>
 		    <th colspan=4><%= t 'action' %></th>
+				<% end %>
      </tr>
 
     <% @libtran_days.sort.reverse.each do |checkoutdate, librarytransactions| %>
-    <tr><td colspan=12><%= checkoutdate.strftime("%A, %v") %></td></tr>
+		<tr><td colspan=12><%= checkoutdate.strftime("%A, %v") %></td></tr>
     <% for librarytransaction in librarytransactions%>
     <tr>
 	  	<td><%=h librarytransaction.accession.accession_no unless librarytransaction.accession_id.blank? %></td>
@@ -37,21 +39,28 @@
 			<td><%=h librarytransaction.accession.book.orderno unless librarytransaction.accession_id.blank?%></td>
 			<td><%=h librarytransaction.returnduedate.strftime('%d %b %Y') %></td>
 	    <td><%=h librarytransaction.returneddate %></td>
-			<td width=10px>
+			<% permitted_to? :manage, :librarytransactions do %>
+			<td width=10px>				  
 					<% if librarytransaction.extended != true && librarytransaction.returned != true %>
 						<%= link_to image_tag("clock_add.png", :border => 0, :title => 'Extend'), :action => 'extend', :id => librarytransaction %>
-	    		<% end %>
+	    		<% end %></td>
 			<td width=10px>
 					<% if librarytransaction.returned != true %>
 						<%= link_to image_tag("book_previous.png", :border => 0, :title => 'Return'), :action => 'return', :id => librarytransaction %>
-	    		<% end %>
+	    		<% end %></td>
 			<td width=10px><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => librarytransaction %></td>
 	    <!--<td width=10px><%= link_to image_tag("edit.png",     :border => 0,  :title => 'Edit'), :action => 'edit', :id => librarytransaction %></td>-->
-    	<td width=10px><%= link_to image_tag("delete.png",   :border => 0,  :title => 'Delete'), librarytransaction, :confirm => 'Are you sure?', :method => :delete %></td>
+    	<td width=10px>
+						<%= link_to image_tag("delete.png",   :border => 0,  :title => 'Delete'), librarytransaction, :confirm => 'Are you sure?', :method => :delete %></td>
 	  </tr>
-<% end %><% end %>
+			<% end %>
+		<% end %>
+		<% end %>
+
 </table>
 
 <br />
 </div>
-<%= link_to image_tag("book_go.png", :border => 0, :title => (t 'librarytransaction.newrec')) + "New Borrowing", new_librarytransaction_path %>
+<% permitted_to? :manage, :librarytransactions do %>
+<%= link_to image_tag("book_go.png", :border => 0, :title => (t 'librarytransaction.newrec')) + "New Loan", new_librarytransaction_path %>
+<% end %>

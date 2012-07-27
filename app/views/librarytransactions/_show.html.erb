@@ -32,19 +32,19 @@
 	<% if @librarytransaction.returned? %>
 			<tr>
 				<td class="leftcol" ><label for="returneddate"><b><%= t 'librarytransaction.returneddate' %></b></label></td>
-			  <td><%=h @librarytransaction.returneddate %></td>
+			  <td><%=h l(@librarytransaction.returneddate) unless @librarytransaction.returneddate.blank? %></td>
 			</tr>
 	<% end %>
 	
 	<% if @librarytransaction.finepay?%>
 	<tr>
 		<td class="leftcol" ><label for="finepay"><b><%= t 'librarytransaction.finepay' %></b></label></td>
-	   <td><%=h @librarytransaction.finepay? ? "Yes" : "Not Required"  %></td>
+	   <td><%=h @librarytransaction.finepay? ? "Yes" : "Not Required"  %> - <%=h @librarytransaction.finepay? ? ringgols(@librarytransaction.fine) : ""  %></td>
 	</tr>
 
 	<tr>
 		<td class="leftcol" ><label for="finepaydate"><b><%= t 'librarytransaction.finepaydate' %></b></label></td>
-	  <td><%=h @librarytransaction.finepaydate %></td>
+	  <td><%=h l(@librarytransaction.finepaydate) unless @librarytransaction.finepaydate.blank? %></td>
 	</tr>
 	<% end %>
 	

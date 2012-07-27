@@ -89,7 +89,7 @@
 	<!-- Overdue Library Books for Staff -->
 	<% latestaff = Librarytransaction.count(:all, :conditions => ["staff_id=? AND returnduedate < ? AND returneddate IS ?", User.current_user.staff_id, Time.now, nil]) %>
 	<% if latestaff > 0 %>
-	   <%= latestaff %> Late Books at the library
+	   <%= latestaff %> <%= link_to "Late Books at the library", { :controller => "librarytransactions", :action => "index" } %><br>
 	<% else %>
 	<% end %>
   

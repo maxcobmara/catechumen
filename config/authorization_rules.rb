@@ -70,6 +70,9 @@ authorization do
     has_permission_on :ptdos, :to => :delete do
         if_attribute :staff_id => is {User.current_user.staff_id}
     end
+    has_permission_on :librarytransactions, :to => :read do
+      if_attribute :staff_id => is {User.current_user.staff_id}
+    end
   end
   
   role :staff_administrator do

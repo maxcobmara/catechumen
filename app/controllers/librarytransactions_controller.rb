@@ -1,4 +1,5 @@
 class LibrarytransactionsController < ApplicationController
+  filter_access_to :all
   # GET /librarytransactions
   # GET /librarytransactions.xml
   #def index
@@ -13,9 +14,9 @@ class LibrarytransactionsController < ApplicationController
   def index
     @filters = Librarytransaction::FILTERS
     if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-      @librarytransactions = Librarytransaction.send(params[:show])
+      @librarytransactions = Librarytransaction.with_permissions_to.send(params[:show])
     else
-      @librarytransactions = Librarytransaction.all
+      @librarytransactions = Librarytransaction.with_permissions_to.all
     end
     @libtran_days =  @librarytransactions.group_by {|t| t.checkoutdate}
   end
