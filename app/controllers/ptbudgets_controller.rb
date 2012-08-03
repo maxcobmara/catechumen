@@ -3,7 +3,7 @@ class PtbudgetsController < ApplicationController
   # GET /ptbudgets
   # GET /ptbudgets.xml
   def index
-    @ptbudgets = Ptbudget.all
+    @ptbudgets = Ptbudget.find(:all, :order => 'fiscalstart DESC')
 
     respond_to do |format|
       format.html # index.html.erb

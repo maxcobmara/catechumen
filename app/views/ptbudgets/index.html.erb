@@ -18,10 +18,10 @@
 
 <% @ptbudgets.each do |ptbudget| %>
   <tr>
-    <td><%=h l(ptbudget.fiscalstart) %></td><!--19/10/2011-Shaliza changed date format -->
+    <td><%=h l(ptbudget.fiscalstart) %> to <%=h l(ptbudget.fiscal_end) %></td><!--19/10/2011-Shaliza changed date format -->
     <td><%=h ringgols(ptbudget.budget) %></td><!--19/10/2011-Shaliza remove word RM-->
-	<td>-</td>
-	<td>-</td>
+	<td><%=h ringgols(ptbudget.used_budget) %></td>
+	<td><%=h ringgols(ptbudget.budget_balance) %></td>
     <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptbudget %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptbudget %></td>
     <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), ptbudget, :confirm => 'Are you sure?', :method => :delete %></td>

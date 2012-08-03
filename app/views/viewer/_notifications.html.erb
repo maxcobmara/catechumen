@@ -13,7 +13,7 @@
 	<!-- Notification for Staff Leave is approved -->
 	<% asl = Leaveforstaff.find(:all, :select => "leavestartdate", :conditions => ['staff_id=? AND approval1 =? AND approver2 =? AND leavestartdate >?', User.current_user.staff_id, true, true, DateTime.now]).map(&:leavestartdate) %>
 	<% if asl.size > 0 %>
-		<p><%= link_to "Your leave request for #{asl} has been Approved", { :controller => "leaveforstaff", :action => "index" } %></p>
+		<p><%= link_to "Your leave request for #{asl} has been Approved", { :controller => "leaveforstaffs", :action => "index" } %></p>
 	<% end %>
 
 	<!-- Notification for Messages -->

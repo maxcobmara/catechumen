@@ -39,11 +39,14 @@ class Leaveforstaff < ActiveRecord::Base
   end
   
   def save_my_approvers
-    if approval1_id == nil
-      self.approval1_id = set_approver1
-    end
-    if approval2_id == nil
-      self.approval2_id = set_approver2
+    if applicant.position.nil?
+    else
+      if approval1_id == nil
+        self.approval1_id = set_approver1
+      end
+      if approval2_id == nil
+        self.approval2_id = set_approver2
+      end
     end
   end
   
