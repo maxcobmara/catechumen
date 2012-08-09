@@ -217,9 +217,16 @@
 					<td class="leftcol"> SPM Results</td>
 					<td>:</td>
 					<td>
+						<table>
 							<% for spmresult in @student.spmresults %>
-									<%=h spmresult.spm_subject %>  &nbsp &nbsp  -  &nbsp &nbsp  <%=h (Spmresult::GRADE.find_all{|disp, value| value == spmresult.grade}).map {|disp, value| disp} %><BR>
+								<tr>
+									<td><%=h spmresult.spm_subject %></td>
+									<td>-</td>
+									<td><%=h spmresult.grade %></td>
+								</tr>
+							
 							<% end %>
+							</table>
 					</td>
 				</tr>
 	
