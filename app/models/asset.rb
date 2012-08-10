@@ -44,7 +44,18 @@ class Asset < ActiveRecord::Base
   
   #------------------------Validations------------------------------------------------------------
   
-  
+  named_scope :all
+  named_scope :fixed,         :conditions =>  ["assettype =? ", 1]
+  named_scope :inventory,     :conditions =>  ["assettype =? ", 2]
+  named_scope :disposal,      :conditions =>  ["mark_disposal =?", true]
+
+
+  FILTERS = [
+    {:scope => "all",       :label => "All"},
+    {:scope => "fixed",     :label => "Fixed Assets"},
+    {:scope => "inventory", :label => "Inventory"},
+    {:scope => "disposal",  :label => "For Disposal"}
+    ]
   
 
     def self.find_main

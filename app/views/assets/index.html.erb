@@ -17,6 +17,10 @@
 <div class="indextable">
 	<table>
 		<tr>
+			<th colspan=2><% link_to image_tag("money_add.png", :border => 0, :title => 'Enter New Budget') + "New Budget", new_ptbudget_path %></th>
+			<th colspan=5><div class="right"><%= select_tag_for_filter("assets", @filters, params) %></div></th>
+		</tr>
+		<tr>
     	<th><%= t 'asset.assetcode' %></th>
       <th><%= t 'asset.name' %></th>
       <th><%= t 'asset.purchasedate' %></th>
@@ -49,9 +53,9 @@
 	    <td><%=h asset.purchasedate %></td>
 	    <td align="right" width=90px><%=h ringgols(asset.purchaseprice) %></td>
 	    <td width=10px>
-				<% if asset.mark_disposal == true %> 
-				<%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_disposal_path(:asset_id => asset) %>
-				<% end%>
+					<% if asset.mark_disposal == true %>
+						<%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_disposal_path(:asset_id => asset) %>
+					<% end %>
 				</td>
 				
 	    <td width=10px >

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120725060824) do
+ActiveRecord::Schema.define(:version => 20120809143417) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -1305,6 +1305,7 @@ ActiveRecord::Schema.define(:version => 20120725060824) do
     t.integer  "staff_id"
     t.integer  "student_id"
     t.boolean  "isstaff"
+    t.string   "icno"
   end
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true

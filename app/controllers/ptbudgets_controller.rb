@@ -45,7 +45,7 @@ class PtbudgetsController < ApplicationController
 
     respond_to do |format|
       if @ptbudget.save
-        flash[:notice] = 'Ptbudget was successfully created.'
+        flash[:notice] = 'A new budget was successfully created.'
         format.html { redirect_to(@ptbudget) }
         format.xml  { render :xml => @ptbudget, :status => :created, :location => @ptbudget }
       else
@@ -62,7 +62,7 @@ class PtbudgetsController < ApplicationController
 
     respond_to do |format|
       if @ptbudget.update_attributes(params[:ptbudget])
-        flash[:notice] = 'Ptbudget was successfully updated.'
+        flash[:notice] = 'Your training budget was successfully updated.'
         format.html { redirect_to(@ptbudget) }
         format.xml  { head :ok }
       else

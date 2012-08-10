@@ -71,10 +71,10 @@
 	
 	<!-- Notification for New User -->
 	<% permitted_to? :manage, :users do %>
-		<% users_wo_roles = User.count(:all, :select => "id", :conditions => ["student_id=? AND staff_id IS ?", nil, nil]) %>
+		<% users_wo_roles = User.count(:all, :select => "id", :conditions => ["student_id IS? AND staff_id IS ?", nil, nil]) %>
 		<% if users_wo_roles == 0 %>
 		<% else %>
-			<%= users_wo_roles %> <%= link_to "New Users", users_path %><br>
+			<%= users_wo_roles %> <%= link_to "New users require authentication", users_path %><br>
 		<% end %>
 	<% end %>
 	

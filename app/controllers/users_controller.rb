@@ -7,7 +7,16 @@ class UsersController < ApplicationController
   
   
   def index
-     @users = User.find(:all)
+    #@users = User.find(:all)
+    @filters = User::FILTERS
+      if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+        #@users = User.with_permissions_to(:index).send(params[:show])
+        @users = User.send(params[:show])
+      else
+        #@users = User.with_permissions_to(:index).relevant
+        @users = User.find(:all)
+    end
+     
    end
 
    def show
@@ -53,7 +62,7 @@ class UsersController < ApplicationController
       # reset session
       self.current_user = @user # !! now logged in
       redirect_back_or_default('/')
-      flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
+      flash[:notice] = "Thanks for signing up!  The IT team will process your application asap"
     else
       flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
       render :action => 'new'

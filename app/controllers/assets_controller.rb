@@ -3,8 +3,16 @@ class AssetsController < ApplicationController
   # GET /assets
   # GET /assets.xml
   def index
-    @assets = Asset.search(params[:search]).paginate(:per_page => 30, :page => params[:page])
-    @asset_gbtype = @assets.group_by { |t| t.gbtype }
+    #@assets = Asset.search(params[:search]).paginate(:per_page => 30, :page => params[:page])
+    #@asset_gbtype = @assets.group_by { |t| t.gbtype }
+    @filters = Asset::FILTERS
+      if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+        @assets = Asset.send(params[:show]).paginate(:per_page => 30, :page => params[:page])
+        @asset_gbtype = @assets.group_by { |t| t.gbtype }
+      else
+        @assets = Asset.find(:all).paginate(:per_page => 30, :page => params[:page])
+        @asset_gbtype = @assets.group_by { |t| t.gbtype }
+    end
 
     respond_to do |format|
       format.html # index.html.erb

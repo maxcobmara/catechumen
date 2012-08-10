@@ -14,10 +14,12 @@ class User < ActiveRecord::Base
   validates_length_of       :name,     :maximum => 100
 
   validates_presence_of     :email
-  validates_length_of       :email,    :within => 6..100 #r@a.wk
+  validates_length_of       :email,    :within => 3..100 #r@a.wk
   validates_uniqueness_of   :email
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
-
+  
+  validates_presence_of     :icno,     :within => 3..100
+  validates_length_of       :icno,     :is => 12, :message => "MyKad no is 12 characters"
   has_and_belongs_to_many :roles
   belongs_to :staff
   belongs_to :student
@@ -82,7 +84,18 @@ class User < ActiveRecord::Base
     User.find(:all, :select => "staff_id", :conditions => ["staff_id IS NOT ?", nil]).map(&:staff_id)
   end
   
+  named_scope :all
+  named_scope :approval,  :conditions =>  ["student_id IS? AND staff_id IS ?", nil, nil]
+  named_scope :staff,     :conditions =>  ["student_id IS? AND staff_id IS NOT ?", nil, nil]
+  named_scope :student,   :conditions =>  ["student_id IS NOT ? AND staff_id IS ?", nil, nil]
 
+
+  FILTERS = [
+    {:scope => "all",       :label => "All"},
+    {:scope => "approval", :label => "Verify"},
+    {:scope => "staff",     :label => "Staff"},
+    {:scope => "student",   :label => "Student"}
+    ]
   
 
   
