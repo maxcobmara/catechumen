@@ -27,7 +27,7 @@ document.write("<input type='button' " +
 	</tr>
 	<tr>
 		<td>Kategori</td>
-		<td colspan=3>&nbsp;</td>
+		<td colspan=3><%=h @asset.category.description unless @asset.category.blank?  %>&nbsp;</td>
 	</tr>
 	<tr>
 		<td>Sub Kategori</td>
@@ -41,7 +41,7 @@ document.write("<input type='button' " +
 	</tr>
 	<tr>
 		<td>Buatan</td>
-		<td width=30%><%=h (Asset::SCN.find_all{|disp, value| value == @asset.country_id}).map {|disp, value| disp} %> &nbsp;</td>
+		<td width=30%><%=h ((Asset::COUNTRYLIST.find_all{|disp, value| value == @asset.country_id}).map {|disp, value| disp}).to_s[3..-1] %> &nbsp;</td>
 		<td width=27%>Harga Perolehan Asal</td>
 		<td width=30% align="center"><%=h ringgols(@asset.purchaseprice) %> &nbsp;</td>
 	</tr>

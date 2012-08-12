@@ -10,7 +10,7 @@ class AssetsController < ApplicationController
         @assets = Asset.send(params[:show]).paginate(:per_page => 30, :page => params[:page])
         @asset_gbtype = @assets.group_by { |t| t.gbtype }
       else
-        @assets = Asset.find(:all).paginate(:per_page => 30, :page => params[:page])
+        @assets = Asset.search(params[:search]).paginate(:per_page => 30, :page => params[:page])
         @asset_gbtype = @assets.group_by { |t| t.gbtype }
     end
 
@@ -68,7 +68,7 @@ class AssetsController < ApplicationController
 
     respond_to do |format|
       if @asset.save
-        flash[:notice] = 'Asset was successfully created.'
+        flash[:notice] = 'Asset was successfully registered.'
         format.html { redirect_to (@asset) }
         format.xml  { render :xml => @asset, :status => :created, :location => @asset }
       else

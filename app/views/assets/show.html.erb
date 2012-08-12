@@ -15,23 +15,28 @@
 		<td><%=h @asset.subcategory %></td>	
 	</tr>
 	<tr>
+		<td class="leftcol"><label for="staff_id">Type No:</label></td>
+		<td><%=h @asset.typename %></td>	
+	</tr>
+	<tr>
 	<td class="leftcol"><label for="bookable">Bookable:</label></td>
 	    <td><%=h @asset.bookable? ? "This item can be booked" : "No" %></td>
 	</tr>
   <tr>
 	  <th colspan = 2>Asset Description</th>
   </tr>
+	<!--
 	<tr>
-		<td class="leftcol"><label for="staff_id">Name:</label></td>
-		<td><%=h @asset.name %></td>	
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="staff_id">Type No:</label></td>
-		<td><%=h @asset.typename %></td>	
-	</tr>
+			<td class="leftcol"><label for="staff_id">Name:</label></td>
+			<td><%=h @asset.name %></td>	
+		</tr>-->
 	<tr>
 		<td class="leftcol"><label for="staff_id">Manufacturer:</label></td>
 		<td><%=h @asset.manufacturer_id.blank? ? "Not Recorded" : @asset.manufacturedby.name %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Country:</label></td>
+		<td><%=h ((Asset::COUNTRYLIST.find_all{|disp, value| value == @asset.country_id}).map {|disp, value| disp}).to_s[3..-1] %></td>
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="staff_id">Model:</label></td>
@@ -81,7 +86,7 @@
 		<td><%=h @asset.receivedby.blank? ? "-" : @asset.receivedby.staff_name_with_position %></td>	
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="staff_id">Received By:</label></td>
+		<td class="leftcol"><label for="staff_id">Supplied By:</label></td>
 		<td><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %></td>	
 	</tr>
 

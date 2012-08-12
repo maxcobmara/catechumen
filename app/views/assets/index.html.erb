@@ -17,8 +17,8 @@
 <div class="indextable">
 	<table>
 		<tr>
-			<th colspan=2><% link_to image_tag("money_add.png", :border => 0, :title => 'Enter New Budget') + "New Budget", new_ptbudget_path %></th>
-			<th colspan=5><div class="right"><%= select_tag_for_filter("assets", @filters, params) %></div></th>
+			<th colspan=3><%= link_to image_tag("add.png", :border => 0, :title => 'Register a new asset') + "New Asset", new_asset_path %></th>
+			<th colspan=6><div class="right"><%= select_tag_for_filter("assets", @filters, params) %></div></th>
 		</tr>
 		<tr>
     	<th><%= t 'asset.assetcode' %></th>
@@ -38,7 +38,7 @@
     </tr>
 		<% @asset_gbtype.sort.each do |gbtype, assets| %>
   	<tr>
-    	<td colspan=8><b>
+    	<td colspan=9><b>
 				<% if gbtype.to_s == "I" %>
 				 <BR><BR>Harta Inventori
 				<% else %>
@@ -77,4 +77,4 @@
 </div>
 <br>
 
-<%= link_to 'Register New Asset', new_asset_path %>
+<%= link_to image_tag("add.png", :border => 0, :title => 'Register a new asset') + "New Asset", new_asset_path %>

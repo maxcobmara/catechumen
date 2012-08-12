@@ -47,7 +47,7 @@
 				<tr>
 					<td class="leftcol"><label for="country_id"><b><%= t 'asset.country_id' %></b></label></td>
 					<td><%= f.select :country_id,
-					                 Asset::SCN,
+					                 Asset::COUNTRYLIST,
 					                 :prompt => "Select" %></td>
 				</tr>
 		
@@ -89,7 +89,7 @@
 				
 				<tr>
 					<td class="leftcol"><label for="category_id">Location</label></td>
-					<td><%= f.collection_select :location_id, Location.find(:all), :id, :location_list, :include_blank => true %></td>
+					<td><%= f.collection_select :location_id, Location.find(:all, :order => :code), :id, :location_list, :include_blank => true %></td>
 				</tr>
 		
 		<% end %>
@@ -114,7 +114,7 @@
 		
 		<tr>
 			<td class="leftcol"><label for="assignedto_id">Assigned To:</label></td>
-			<td><%= f.collection_select :assignedto_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+			<td><%= f.collection_select :assignedto_id, Staff.find(:all, :order => :name), :id, :name, :include_blank => true %></td>
 		</tr>
 	</table>
 	
