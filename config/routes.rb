@@ -151,6 +151,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :assetnums
 
   map.connect '/assets/registerinventory', :controller => 'assets', :action => 'registerinventory'
+  map.connect '/assets/maintenance', :controller => 'assets', :action => 'maintenance'
   map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get, :kewpa4 => :get, :kewpa8 => :get }
 
   map.resources :books

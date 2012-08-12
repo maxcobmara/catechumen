@@ -6,7 +6,7 @@ class Asset < ActiveRecord::Base
   #validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
   
   belongs_to :manufacturedby, :class_name => 'Addbook', :foreign_key => 'manufacturer_id'
-  belongs_to :suppliedby,   :class_name => 'Addbook', :foreign_key => 'supplier_id'
+  belongs_to :suppliedby,     :class_name => 'Addbook', :foreign_key => 'supplier_id'
   belongs_to :location
   belongs_to :assignedto,   :class_name => 'Staff', :foreign_key => 'assignedto_id'
   belongs_to :receivedby,   :class_name => 'Staff', :foreign_key => 'receiver_id'
@@ -21,7 +21,9 @@ class Asset < ActiveRecord::Base
   
  
   def save_my_vars
-    self.assetcode = (suggested_serial_no).to_s
+    if assetcode == nil
+      self.assetcode = (suggested_serial_no).to_s
+    end
   end
   
  #----------------------Link to Other Page---------------------------------------------------
@@ -58,23 +60,23 @@ class Asset < ActiveRecord::Base
     ]
   
 
-    def self.find_main
-      Staff.find(:all, :condition => ['staff_id IS NULL'])
-    end
+    #def self.find_main
+      #3Staff.find(:all, :condition => ['staff_id IS NULL'])
+    #3end
     
-    def self.find_main
-        Addbook.find(:all, :condition => ['addbook_id IS NULL'])
-    end
+    #3def self.find_main
+       #3Addbook.find(:all, :condition => ['addbook_id IS NULL'])
+    #end
     
-     def self.find_main
-        Location.find(:all, :condition => ['location_id IS NULL'])
-      end
+     #def self.find_main
+        #Location.find(:all, :condition => ['location_id IS NULL'])
+      #end
 
 #---------------------------------Search-------------------------------------------------------------
     
     def self.search(search)
        if search
-        find(:all, :conditions => ['name ILIKE ? OR typename ILIKE ?', "%#{search}%", "%#{search}%"])
+        find(:all, :conditions => ['name ILIKE ? OR typename ILIKE ? OR assetcode ILIKE?', "%#{search}%", "%#{search}%", "%#{search}%"])
       else
        find(:all)
       end
@@ -93,61 +95,69 @@ class Asset < ActiveRecord::Base
 
  
 #----------------------- code for repeating field additional number----------------------------------------
-    has_many :assetnums, :dependent => :destroy
+    
+    
+    
+    #
+    #has_many :assetnums, :dependent => :destroy
 
-    def new_assetnum_attributes=(assetnum_attributes)
-      assetnum_attributes.each do |attributes|
-        assetnums.build(attributes)
-      end
-    end
+    #def new_assetnum_attributes=(assetnum_attributes)
+      #assetnum_attributes.each do |attributes|
+        #assetnums.build(attributes)
+     # end
+   # end
 
-    after_update :save_assetnums
+    #after_update :save_assetnums
 
-    def existing_assetnum_attributes=(assetnum_attributes)
-      assetnums.reject(&:new_record?).each do |assetnum|
-        attributes = assetnum_attributes[assetnum.id.to_s]
-        if attributes
-          assetnum.attributes = attributes
-        else
-          assetnums.delete(assetnum)
-        end
-      end
-    end
+    #def existing_assetnum_attributes=(assetnum_attributes)
+      #assetnums.reject(&:new_record?).each do |assetnum|
+      #  attributes = assetnum_attributes[assetnum.id.to_s]
+      #  if attributes
+       #   assetnum.attributes = attributes
+       # else
+       #   assetnums.delete(assetnum)
+       # end
+     # end
+    #end
 
-    def save_assetnums
-      assetnums.each do |assetnum|
-        assetnum.save(false)
-      end
-    end
+    #def save_assetnums
+     # assetnums.each do |assetnum|
+     #   assetnum.save(false)
+     # end
+   # end
     
 
 #------------------------code for repeating field maintenance information-------------------------------------
+ #has_many :qualifications, :dependent => :destroy
+ #accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
+ 
     has_many :maints, :dependent => :destroy
+    accepts_nested_attributes_for :maints, :reject_if => lambda { |a| a[:asset_id].blank? }
 
-    def new_maint_attributes=(maint_attributes)
-           maint_attributes.each do |attributes|
-           maints.build(attributes)
-    end
-    end
+    #def new_maint_attributes=(maint_attributes)
+           #maint_attributes.each do |attributes|
+          # maints.build(attributes)
+    #end
+    #end
 
-        after_update :save_maints
+        #after_update :save_maints
 
-    def existing_maint_attributes=(maint_attributes)
-           maints.reject(&:new_record?).each do |maint|
-          attributes = maint_attributes[maint.id.to_s]
-            if attributes
-             maint.attributes = attributes
-             else
-              maints.delete(maint)
-             end
-           end
-    end
+    #def existing_maint_attributes=(maint_attributes)
+         #  maints.reject(&:new_record?).each do |maint|
+        #  attributes = maint_attributes[maint.id.to_s]
+       #     if attributes
+        #     maint.attributes = attributes
+         #    else
+          #    maints.delete(maint)
+           #  end
+           #end
+    #end
 
-         def save_maints
-          maints.each do |maint|
-            maint.save(false)
-          end
-    end
+     #    def save_maints
+       #   maints.each do |maint|
+      #      maint.save(false)
+        #  end
+    #end
 
 #------------------------Declaration----------------------------------------------------    
     def bil

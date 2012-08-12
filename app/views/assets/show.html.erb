@@ -89,12 +89,43 @@
 		<td class="leftcol"><label for="staff_id">Supplied By:</label></td>
 		<td><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %></td>	
 	</tr>
+</table>
+<table>
+	<tr>
+	  <th colspan = 5>Maint Info</th>
+  </tr>
+	<tr><B>
+		<td><B>Done On</B></td>
+		<td><B>Maintained By</B></td>
+		<td><B>Order No</B></td>
+		<td><B>Details</B></td>
+		<td><B>Costs</B></td></B>
+	</tr>
+	<tr>
+	  <td colspan = 5><HR></th>
+  </tr>
+	
+	<% for maint in @asset.maints %>
+	<tr>
+		<td><%= maint.created_at %></td>
+		<td><%= maint.maintainedby.name %></td>
+		<td><%= maint.workorderno %></td>
+		<td><%= maint.details %></td>
+		<td>RM <%= maint.maintcost %></td>
+	</tr>
+	<% end %>
 
 </table>
-<BR>
+
+
 </div>
+<BR>
+
 
 
 
 <%= link_to 'Edit', edit_asset_path(@asset) %> |
+	<% if @asset.assettype == 1 %>
+		<%= link_to 'Maintenance', :action => 'maintenance', :id => @asset %> |
+	<% end %>
 <%= link_to 'Back', assets_path %>

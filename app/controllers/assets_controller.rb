@@ -7,10 +7,10 @@ class AssetsController < ApplicationController
     #@asset_gbtype = @assets.group_by { |t| t.gbtype }
     @filters = Asset::FILTERS
       if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-        @assets = Asset.send(params[:show]).paginate(:per_page => 30, :page => params[:page])
+        @assets = Asset.send(params[:show]).paginate(:order => :assetcode, :per_page => 30, :page => params[:page])
         @asset_gbtype = @assets.group_by { |t| t.gbtype }
       else
-        @assets = Asset.search(params[:search]).paginate(:per_page => 30, :page => params[:page])
+        @assets = Asset.search(params[:search]).paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])
         @asset_gbtype = @assets.group_by { |t| t.gbtype }
     end
 
@@ -59,6 +59,10 @@ class AssetsController < ApplicationController
         #format.html # index.html.erb  { render :action => "report.css" }
         #format.xml  { render :xml => @staffs }
     #end
+  end
+  
+  def maintenance
+    @asset = Asset.find(params[:id])  
   end
 
   # POST /assets
