@@ -1,0 +1,90 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<% if @edit_type == "Edit Checked" %>
+			<h2 class="left">Edit Multiple Students Grade</h2>
+		<% elsif @edit_type == "Edit by Subject" %>
+			<h2 class="left">Edit Multiple Students Grade By Subject - <%=@subject_name%></h2>
+		<% else %>
+			<h2 class="left">Edit Multiple Students Grade - To revise subject </h2>
+		<% end %>
+	</div>
+</div>
+
+
+<div class="tlist">
+<% form_for :grade, :url => update_multiple_grades_path, :html => {:method => :put} do |f| %>
+<!--<table><tr><th></th></tr></table> -->	
+	<table>
+		<tr>
+			<th>Student Name</th>
+			<th>Mykad No</th>
+			<% if @edit_type == "Edit Checked" || @edit_type.nil? %>
+				<th>Subject Name</th>
+			<% end %>
+			<th>Exam Name</th>
+			<th>Marks</th>
+			<th>Summative Weightage</th>
+		</tr>
+		<% for grade in @grades %>
+			<%= hidden_field_tag "grade_ids[]", grade.id %><%#result ==> "grade_ids"=>["4","3","2","1"]  == grade_ids[]  %>
+			
+			<tr>
+				<td><%=h grade.student_id.blank? ? "" : grade.studentgrade.name %></td>
+				<td>
+					<%=h grade.student_id.blank? ? "" : grade.studentgrade.formatted_mykad %>
+					<%#= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %>
+					<%#= f.text_field :student_id %>
+				</td>
+<% if @edit_type == "Edit Checked" || @edit_type.nil? %>	
+				<td>
+					<%#= f.collection_select :subject_id, Subject.find(:all), :id, :subject_code_with_subject_name, :selected => grade.subject_id %>
+					
+					<%#= f.collection_select "subject_ids[]", Subject.find(:all), :id, :subject_code_with_subject_name, :selected => grade.subject_id %>
+					<%# result ==> "grade"=>{"subject_ids"=>[nil, nil, nil, nil]}     == grade[subject_ids[]] %>
+					<%#= collection_select "grade", "subject_ids[]", Subject.find(:all), :id, :subject_code_with_subject_name,{:selected => grade.subject_id} %>
+					<%# result ==> "grade"=>{"subject_ids"=>[nil, nil, nil, nil]}   ==  grade[subject_ids[]]  %>
+					
+					<%#= f.collection_select "subject_ids", Subject.find(:all), :id, :subject_code_with_subject_name, :selected => grade.subject_id %>
+					<%# result ==>  "grade"=>{"subject_ids"=>"3"}   ==   grade[subject_ids] %>
+					
+					<!-- WORKING SOLUTION - start of-display of all subject records -->
+					<%#= select_tag("subject_ids[]", options_from_collection_for_select( Subject.find(:all), :id, :subject_code_with_subject_name, :selected => grade.subject_id))  %> 
+					<%# result ==> "subject_ids"=>["3","8","7","3"]  == subject_ids[]  %>
+					<!-- WORKING SOLUTION - end of-display of all subject records -->
+		
+					<%= select_tag("subject_ids[]", "<option value="+grade.subject_id.to_s+">"+grade.subjectgrade.subject_code_with_subject_name.to_s+"</option>"+options_from_collection_for_select(Grade.set_subject_for_multiple_edit(grade.student_id), :id, :subject_code_with_subject_name, :selected => grade.subject_id))  %> 
+
+					
+				</td>
+<% elsif @edit_type == "Edit by Subject" %>
+	<%= hidden_field_tag "subject_ids[]", @subject_id %>
+<% end %>
+				<!--3 August 2012-assign value of total marks obtained for an exam to Final Exam (exam1marks) field-->
+					<% @value_total = 0.0 %>
+					<% @exammarks = Exammark.find(:all, :conditions=> ['student_id=?',grade.student_id]) %>
+					<% @exammarks.each do |exammark| %>
+						<% if grade.subject_id == exammark.exampaper.subject_id %>
+							<% @value_total = Mark.sum(:mark, :conditions => ["exammark_id=?", exammark.id]) %>
+						<% else %>
+							<% @value_total = grade.exam1marks %>
+						<% end %>
+					<% end %>
+				<!--instead of key-in Final Exam marks (exam1marks) separately, this part will retrieve total marks for -->
+				<!--exam taken from table marks (exammark-marks)-otherwise use value that previously entered in grade table-3 August 2012-->
+				<td><%= text_field_tag "exam1names[]", grade.exam1name, :size=> 12 %></td>
+				<td><%#= text_field_tag "exam1markss[]", grade.exam1marks, :size=> 5 %>
+					<%= text_field_tag "exam1markss[]", @value_total, :size=> 5 %></td>
+				<td><%= text_field_tag "examweights[]", grade.examweight, :size=> 5 %></td>
+			</tr>	
+		<% end%>
+	</table>
+<%= f.submit "Submit" %>
+<%#= submit_tag "Edit Checked", :name => :grade_submit_button %>
+<%#= link_to 'New Grade', new_grade_path(:new_type => "0")%>
+
+
+<% end %>
+</div>
+
