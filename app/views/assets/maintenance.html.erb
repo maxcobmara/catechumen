@@ -46,26 +46,29 @@
 <BR>
 
 	<H2>Maintenance Information</H2>
-	<table>
-	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :maints %> - Add More </p>
+	<div>
+
+	
 	
 		
 		<% f.fields_for :maints do |builder| %>
-		<tr>
 			<%= render 'maint_fields', :f => builder %>
-		</tr>
-		<% end %>
-		
 
-	</table>	
+		<% end %>
+
+		<%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :maints %> - Add More</td>
+
+
+	</div>
 	
 	
 	
 </div>
 
-
-
-<%= link_to 'Edit', edit_asset_path(@asset) %> |
-<%= link_to 'Back', assets_path %>
-
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
 <% end %>
+
+<%= link_to 'Show', @asset %> |
+<%= link_to 'Back', assets_path %>
