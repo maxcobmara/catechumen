@@ -15,9 +15,12 @@ class Asset < ActiveRecord::Base
   
   
   has_one :disposals      #Link to Model Disposals
-  has_many :asslost,    :class_name => 'Assetloss', :foreign_key => 'asset_id' #Link to Model AssetLoss
+  has_many :asslost,    :class_name => 'Assetloss', :foreign_key => 'asset_id' #Link to Model AssetLoss  
+  has_many :assettracks
+  #has_many :assetinassettrack,    :class_name => 'Assettrack', :foreign_key => 'asset_id' #Link to Model AssetTrack
   
-  
+  has_many :maints, :dependent => :destroy
+  accepts_nested_attributes_for :maints, :reject_if => lambda { |a| a[:asset_id].blank? }
   
  
   def save_my_vars
@@ -26,37 +29,43 @@ class Asset < ActiveRecord::Base
     end
   end
   
- #----------------------Link to Other Page---------------------------------------------------
-  
-  
-  
-  
-  
-  
-  #Link to Model AssetTrack
-  has_many :assetinassettrack,    :class_name => 'Assettrack', :foreign_key => 'asset_id' #Assetname
-  #has_many :modelass, :class_name => 'Assettrack', :foreign_key => 'model'
-  
 
-  #has_many :assets, :foreign_key => 'asset_id'
-
-  #has_many :assetlosses, :foreign_key => 'asset_id'
-  #has_many :disposals, :foreign_key => 'disposal_id'
-  has_many :assettracks
   
-  #------------------------Validations------------------------------------------------------------
   
-  named_scope :all
+  #------------------------Filters------------------------------------------------------------
+ 
+  def self.search(search)
+     if search
+      find(:all, :conditions => ['name ILIKE ? OR typename ILIKE ? OR assetcode ILIKE?', "%#{search}%", "%#{search}%", "%#{search}%"])
+    else
+     find(:all)
+    end
+  end
+  
+  def assets_that_are_lost
+    Assetloss.find(:all, :select => :asset_id).map(&:asset_id)
+  end
+  
+  def assets_that_are_disposed
+    Disposal.find(:all, :select => :asset_id).map(&:asset_id)
+  end
+ 
+  
+  named_scope :all,           :conditions =>  ["id not in (?)", @assets_that_are_lost]
   named_scope :fixed,         :conditions =>  ["assettype =? ", 1]
   named_scope :inventory,     :conditions =>  ["assettype =? ", 2]
   named_scope :disposal,      :conditions =>  ["mark_disposal =?", true]
+  named_scope :disposed,      :conditions =>  ["id in (?)", Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :lost,          :conditions =>  ["id in (?)", Assetloss.find(:all, :select => :asset_id).map(&:asset_id)]
 
 
   FILTERS = [
     {:scope => "all",       :label => "All"},
     {:scope => "fixed",     :label => "Fixed Assets"},
     {:scope => "inventory", :label => "Inventory"},
-    {:scope => "disposal",  :label => "For Disposal"}
+    {:scope => "disposal",  :label => "For Disposal"},
+    {:scope => "disposed",  :label => "Disposed"},
+    {:scope => "lost",      :label => "Lost"}
     ]
   
 
@@ -74,13 +83,7 @@ class Asset < ActiveRecord::Base
 
 #---------------------------------Search-------------------------------------------------------------
     
-    def self.search(search)
-       if search
-        find(:all, :conditions => ['name ILIKE ? OR typename ILIKE ? OR assetcode ILIKE?', "%#{search}%", "%#{search}%", "%#{search}%"])
-      else
-       find(:all)
-      end
-    end
+
     
 #----------------------- stuff for category
   
@@ -93,71 +96,6 @@ class Asset < ActiveRecord::Base
  # end
 
 
- 
-#----------------------- code for repeating field additional number----------------------------------------
-    
-    
-    
-    #
-    #has_many :assetnums, :dependent => :destroy
-
-    #def new_assetnum_attributes=(assetnum_attributes)
-      #assetnum_attributes.each do |attributes|
-        #assetnums.build(attributes)
-     # end
-   # end
-
-    #after_update :save_assetnums
-
-    #def existing_assetnum_attributes=(assetnum_attributes)
-      #assetnums.reject(&:new_record?).each do |assetnum|
-      #  attributes = assetnum_attributes[assetnum.id.to_s]
-      #  if attributes
-       #   assetnum.attributes = attributes
-       # else
-       #   assetnums.delete(assetnum)
-       # end
-     # end
-    #end
-
-    #def save_assetnums
-     # assetnums.each do |assetnum|
-     #   assetnum.save(false)
-     # end
-   # end
-    
-
-#------------------------code for repeating field maintenance information-------------------------------------
- #has_many :qualifications, :dependent => :destroy
- #accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
- 
-    has_many :maints, :dependent => :destroy
-    accepts_nested_attributes_for :maints, :reject_if => lambda { |a| a[:asset_id].blank? }
-
-    #def new_maint_attributes=(maint_attributes)
-           #maint_attributes.each do |attributes|
-          # maints.build(attributes)
-    #end
-    #end
-
-        #after_update :save_maints
-
-    #def existing_maint_attributes=(maint_attributes)
-         #  maints.reject(&:new_record?).each do |maint|
-        #  attributes = maint_attributes[maint.id.to_s]
-       #     if attributes
-        #     maint.attributes = attributes
-         #    else
-          #    maints.delete(maint)
-           #  end
-           #end
-    #end
-
-     #    def save_maints
-       #   maints.each do |maint|
-      #      maint.save(false)
-        #  end
-    #end
 
 #------------------------Declaration----------------------------------------------------    
     def bil
