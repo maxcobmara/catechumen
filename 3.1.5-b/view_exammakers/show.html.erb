@@ -1,0 +1,75 @@
+<div class="tform">
+	<H2>Examination Paper Details</H2>
+  	<table width=100% >
+		<tr>
+			<td class="leftcol"><label for="name">Name</label></td>
+			<td><%=h @exammaker.render_examtype %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="description">Description</label></td>
+			<td><%=h @exammaker.description %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="creator">Creator</label></td>
+			<td><%=h @exammaker.examcreator.name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="description">Programme</label></td>
+			<td><%=h @exammaker.examination.subject_code_with_subject_name %></td>
+		</tr>
+	</table>
+	
+	<H2>Questions</H2>
+	
+		<% if @exammaker.examquestions.mcqq.count !=0 %>
+			<table width=90%>
+				<tr>
+					<td colspan=4><strong>MCQ</strong><BR><HR></td>
+				</tr>
+				<% for examquestion in @exammaker.examquestions.mcqq %>
+				<tr>
+					<td><%=h examquestion.subject.subject_code_with_subject_name %></td>
+					<td><%=h examquestion.question %></td>
+					<td><%=h examquestion.category %></td>
+				</tr>
+	  			<% end %>
+			</table>
+			<br><br>
+		<% end %>
+		
+		<% if @exammaker.examquestions.meqq.count !=0 %>
+			<table width=90%>
+				<tr>
+					<td colspan=4><strong>MEQ</strong><BR><HR></td>
+				</tr>
+				<% for examquestion in @exammaker.examquestions.meqq %>
+				<tr>
+					<td><%=h examquestion.subject.subject_code_with_subject_name %></td>
+					<td><%=h examquestion.question %></td>
+					<td><%=h examquestion.category %></td>
+				</tr>
+	  			<% end %>
+			</table>
+			<br><br>
+		<% end %>
+		
+		<% if @exammaker.examquestions.seqq.count !=0 %>
+			<table width=90%>
+				<tr>
+					<td colspan=4><strong>SEQ</strong><BR><HR></td>
+				</tr>
+				<% for examquestion in @exammaker.examquestions.seqq %>
+				<tr>
+					<td><%=h examquestion.subject.subject_code_with_subject_name %></td>
+					<td><%=h examquestion.question %></td>
+					<td><%=h examquestion.category %></td>
+				</tr>
+	  			<% end %>
+			</table>
+		<% end %>
+	
+</div>
+
+<br>
+<%= link_to 'Edit', edit_exammaker_path(@exammaker) %> |
+<%= link_to 'Back', exammakers_path %>

@@ -1,0 +1,114 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<!--replace this line <h2 class="left">Lists of Grades</h2> with line 7-24-->
+		<!-- 22 May 2012 -->
+		<% if params[:subjectid] %>
+		    <% if params[:subjectid] != '0'%>
+				<h2 class="left">Grades for <%= Subject.find(params[:subjectid]).name  %></h2>
+			<% else %>
+				<h2 class="left">Grade Listing for All Subjects</h2>
+			<% end %>
+		<% else %>
+			<h2 class="left">Grade Listing for All Subjects</h2>
+		<% end %>
+	
+			<div class="right">
+				<!-- for search by subject -->
+				<% form_tag grades_path, :method => 'get' do %>
+					<%= select_tag('subjectid', "<option value='0'>All subjects</option>" + options_from_collection_for_select(Subject.find(:all), :id, :subject_code_with_subject_name)) %>
+					<%= submit_tag I18n.t('search'), :subject_id => nil %>
+				<% end %>
+			</div>
+		<!-- 22 May 2012 -->
+	</div>
+</div>
+
+<div class="tlist">
+	<!-- 15 May 2012 -->
+	<% form_tag edit_multiple_grades_path, :id => "form1" do %>
+	<!-- 15 May 2012 -->
+	<table width=100% border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<th> &nbsp;</th>
+    		<th>Student</th>
+    		<th>Subject</th>
+   			<!--<th>Sent to bpl</th>-->
+    		<th>Sent date</th>
+    		<th>Total Formative</th>
+    		<th>Score</th>
+    		<!--<th>Eligible for Exam</th>-->
+    		<!--<th>Carry Paper</th>-->
+    		<th>Total Summative</th>
+    		<!--<th>Resit</th>-->
+    		<th>Total Marks</th>
+    		<th>Grade</th>
+    		<th colspan=3 class="ac">Control</th>
+		</tr>
+
+	<% @grades.each do |grade| %><!-- 15 May 2012 -->
+
+  		<tr>
+			<!-- 15 May 2012 -->
+			<td><%= check_box_tag "grade_ids[]", grade.id, :class => "check" %></td><!-- 15 May 2012-->
+			<!-- 15 May 2012 -->
+    		<td><%=h grade.student_id.blank? ? "" : grade.studentgrade.formatted_mykad_and_student_name %></td>
+    		<td><%#=h grade.subject_id %><%=h grade.subject_id.blank? ? "" : grade.subjectgrade.subject_code_with_subject_name %></td>
+    		<!-- <td><%=h grade.sent_to_BPL %></td>-->
+    		<td><%=h grade.sent_date %></td>
+    		<td><%=h grade.formative %> | <%=h grade.total_formative %></td><!-- 21 May 2012 -->
+    		<td><%=h grade.score %></td>
+    		<!--<td><%=h grade.eligible_for_exam %></td>
+    		<td><%=h grade.carry_paper %></td>-->
+    		<td><%=h grade.summative %> | <%=h grade.total_summative %></td><!-- 21 May 2012 -->
+    		<!--<td><%=h grade.resit %></td>-->
+    		<td><%=h grade.finalscore %> | <%=h grade.finale %></td><!-- 21 May 2012 -->
+    		<td>
+				<%=h (Grade::GRADE.find_all{|disp, value| value == grade.grading_id.to_s}).map {|disp, value| disp} %>  
+	 			| <%=h grade.set_gred %><%#=h grade.grade_it %> <!--21 May 2012-->
+			</td>
+    		<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => grade %></td>
+    		<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => grade %></td>
+    		<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), grade, :confirm => 'Are you sure?', :method => :delete %></td>
+  		</tr>
+
+	<% end %>
+		
+	</table>
+	<br>
+	<!-- ref: http://railsforum.com/viewtopic.php?id=2151 rleblic2007-10-25 08:43:07 -->
+	<!--http://www.ryboe.com/2008/07/10/select-all-checkboxes-with-prototype-js.html -->
+	<input id="check_all" name="check_all" type="checkbox" checked="checked" onclick="
+	Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_all').checked})" />
+	<b>Check/Uncheck 				all</b>&nbsp;&nbsp;
+
+	<!-- 15 -22 May 2012 -->
+	<%= submit_tag "Edit Checked", :name => :grade_submit_button %>
+	<%= submit_tag "Edit by Subject", :name => :grade_submit_button %>
+	<% end %>
+	<!-- 15 - 22May 2012 -->
+	
+</div>
+<br />
+
+<table>
+	<tr>
+		<td>
+			<%= link_to 'New Grade', new_grade_path(:new_type => "0")%> &nbsp;
+			<%= link_to 'Multiple New Grades', new_grade_path(:new_type => "1") %>
+		</td>
+		<td>
+			<% form_tag :action => 'new' do %>
+				<%= hidden_field_tag( "new_type","2" )%>
+				<%= select_tag('subjectid', "<option value='0'>All subjects</option>" + options_from_collection_for_select(Subject.find(:all), :id, :subject_code_with_subject_name)) %>
+				<%= submit_tag I18n.t('multiple_grade_by_subject'), :subject_id => nil %>
+			<% end %>
+		</td>
+	</tr>
+</table>
+
+
+
+
+
