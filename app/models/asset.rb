@@ -38,8 +38,14 @@ class Asset < ActiveRecord::Base
      if search
       find(:all, :conditions => ['name ILIKE ? OR typename ILIKE ? OR assetcode ILIKE?', "%#{search}%", "%#{search}%", "%#{search}%"])
     else
-     find(:all)
+      find.active
     end
+  end
+  
+  def non_active_assets
+    lost = Assetloss.find(:all, :select => :asset_id).map(&:asset_id)
+    disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
+    lost + disposed
   end
   
   def assets_that_are_lost
@@ -51,7 +57,7 @@ class Asset < ActiveRecord::Base
   end
  
   
-  named_scope :all,           :conditions =>  ["id not in (?)", @assets_that_are_lost]
+  named_scope :active,        :conditions =>  ["id not in (?) OR id not in (?)", Disposal.find(:all, :select => :asset_id).map(&:asset_id), Assetloss.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :fixed,         :conditions =>  ["assettype =? ", 1]
   named_scope :inventory,     :conditions =>  ["assettype =? ", 2]
   named_scope :disposal,      :conditions =>  ["mark_disposal =?", true]
@@ -60,7 +66,7 @@ class Asset < ActiveRecord::Base
 
 
   FILTERS = [
-    {:scope => "all",       :label => "All"},
+    {:scope => "active",    :label => "Active"},
     {:scope => "fixed",     :label => "Fixed Assets"},
     {:scope => "inventory", :label => "Inventory"},
     {:scope => "disposal",  :label => "For Disposal"},
