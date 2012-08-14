@@ -1,0 +1,23 @@
+<div class="tform">
+	<H2>Examination Analysis by Paper - Details</H2>
+	<table width=100% >
+		<tr>
+			<td class="leftcol"><%= t 'exammakeranalysis.exammaker_id' %> - <%= t 'exammakeranalysis.examtype' %></td>
+			<td><%=h @exammakeranalysis.exampaper.subject_and_examtype_of_exammaker %></td>
+		</tr>
+		<tr>
+			<td colspan=2>
+				<%#= tag("div", :id => form_tag_id(f.object_name, :students_marks_listing)) %>
+				<div id="students_marks_listing">
+					<% @exammaker_id = @exammakeranalysis.exammaker_id %>
+					<% @job = 'show'%>
+					<%= render :partial => 'students_and_marks', :locals => {:exammakerid=>@exammaker_id,:job=>@job} %> 
+				</div>
+			</td>
+		</tr>
+ 	</table>
+<br/>
+</div>
+
+<%= link_to 'Edit', {:controller => 'exammakeranalyses', :action => 'edit', :id => @exammakeranalysis} %> |
+<%= link_to 'Back', exammakeranalyses_path %>
