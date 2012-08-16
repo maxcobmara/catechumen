@@ -1,5 +1,4 @@
 class Position < ActiveRecord::Base
-  has_ancestry
   
   has_many :subordinates, :class_name => 'Position', :foreign_key => 'parent_id'
   belongs_to :bosses, :class_name => 'Position', :foreign_key => 'parent_id'
@@ -7,7 +6,7 @@ class Position < ActiveRecord::Base
   belongs_to :staff
 
   validates_uniqueness_of :positioncode
-  validates_presence_of :positionname
+  validates_presence_of :positioncode
   
   before_save  :titleize_name
 
@@ -41,16 +40,41 @@ class Position < ActiveRecord::Base
     v=1
   end
   
-  def tree_nd
-    if is_root?
-      gls = ""
-    else
-      gls = "class=\"child-of-node-#{parent_id}\""
+  #---start-15 Aug 2012--Create excel file--------- 
+  def count_no
+    @positions = Position.find(:all,  :order => :positioncode)
+    @positions.each_with_index do |position, index|
+      if position.id == "#{id}".to_i
+          @bil = index+1
+      end
     end
-    gls
+    # ..."#{id}"  #compare using current record id (unique)
+    @bil
   end
   
+  def self.header_excel
+		["BIL","KOD","JAWATAN","GRED JAWATAN","NAMA","NO K/P","TARIKH LAHIR","TARIKH LANTIKAN PERTAMA", "TARIKH KENAIKAN PANGKAT KE GRED SEKARANG","CATATAN*"]
+  end
+   
+  def self.column_excel
+		[:count_no,:positioncode, :positionname, {:staffgrade=> [:name]}, {:staff => [:name,:formatted_mykad,:cobirthdt,:appointdt,:posconfirmdate]}]
+  end
+  #---end-15 Aug 2012--Create excel file---------
   
+  def compile_4_excel
+    #@positions_excel=[]
+    @positions.each_with_index do |position,index|
+      
+        @positions_excel = {'Bil'=>position.id}
+        #@positions_excel << {'Kod'=>position.positioncode}
+				#<% if index==0 %>
+				#	<% @hashmeq = {index.to_s=>@arrayfirst} %>
+				#<% else %>
+				#	<% @hashmeq = @hashmeq.merge({index.to_s=>@arrayfirst}) %>
+				#<% end %>
+      
+    end
+  end
   
   def self.search(search)
      if search
