@@ -92,19 +92,12 @@ class PositionsController < ApplicationController
     @positions = Position.find(:all, :order => :positioncode)
     respond_to do |format|
       format.html{ render :layout => 'report' }
-      #**********
-       #@positions_excel=[]
-        #@positions.each_with_index do |position,index|
-
-            #@positions_excel << {'Bil'=>position.id}
-            #@positions_excel << {'Kod'=>position.positioncode}
-        #end
-      #**********
+  
       #---
       #ref:book-pg 465
       #format.xls { send_data @positions.to_xls(:name=>"Positions",:headers => Position.header_excel, :columns => Position.column_excel ), :file_name => 'positions.xls' }
       #format.xls { send_data @positions.to_xls, :file_name => 'positions.xls' }
-      format.xls { send_data @positions.to_xls(:headers => Position.header_excel, :columns => Position.column_excel,:name => 'Positions'), :filename => 'Maklumat_Perjawatan.xls',:type=>'application/vnd.ms-excel' }
+      format.xls { send_data @positions.to_xls(:title => Position.title_excel,:title2 => Position.title2_excel,:headers => Position.header_excel, :columns => Position.column_excel,:name => 'Positions'), :filename => 'Maklumat_Perjawatan.xls',:type=>'application/vnd.ms-excel' }
       #format.xls { send_data @positions.to_xls, :filename => 'positions2.xls' } #ok but data not properly displayed as required.
       #----
       format.xml { render :xml => @positions }

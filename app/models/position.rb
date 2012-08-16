@@ -52,6 +52,14 @@ class Position < ActiveRecord::Base
     @bil
   end
   
+  def self.title_excel
+    ["MAKLUMAT PERJAWATAN DI KOLEJ-KOLEJ LATIHAN KEMENTERIAN KESIHATAN MALAYSIA SEHINGGA #{Date.today.strftime('%d-%m-%Y')}"]
+  end
+  
+  def self.title2_excel
+    ["KOLEJ: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU"]
+  end
+  
   def self.header_excel
 		["BIL","KOD","JAWATAN","GRED JAWATAN","NAMA","NO K/P","TARIKH LAHIR","TARIKH LANTIKAN PERTAMA", "TARIKH KENAIKAN PANGKAT KE GRED SEKARANG","CATATAN*"]
   end
@@ -60,21 +68,7 @@ class Position < ActiveRecord::Base
 		[:count_no,:positioncode, :positionname, {:staffgrade=> [:name]}, {:staff => [:name,:formatted_mykad,:cobirthdt,:appointdt,:posconfirmdate]}]
   end
   #---end-15 Aug 2012--Create excel file---------
-  
-  def compile_4_excel
-    #@positions_excel=[]
-    @positions.each_with_index do |position,index|
-      
-        @positions_excel = {'Bil'=>position.id}
-        #@positions_excel << {'Kod'=>position.positioncode}
-				#<% if index==0 %>
-				#	<% @hashmeq = {index.to_s=>@arrayfirst} %>
-				#<% else %>
-				#	<% @hashmeq = @hashmeq.merge({index.to_s=>@arrayfirst}) %>
-				#<% end %>
-      
-    end
-  end
+
   
   def self.search(search)
      if search
