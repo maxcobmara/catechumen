@@ -45,12 +45,12 @@
 	    <td><%=h asset.purchasedate %></td>
 	    <td align="right" width=90px><%=h ringgols(asset.purchaseprice) %></td>
 	    <td width=10px>
-					<% if asset.mark_disposal == true %>
+					<% if asset.mark_disposal == true && asset.am_i_disposed == false %>
 						<%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_disposal_path(:asset_id => asset) %>
 					<% end %>
 				</td>
 			<td width=10px>
-				<% if asset.assettype == 1 %>
+				<% if asset.assettype == 1 && asset.am_i_disposed == false %>
 					<%= link_to image_tag("bullet_wrench.png", :border => 0), :action => 'maintenance', :id => asset %>
 				<% end %></td>
 				
@@ -62,7 +62,11 @@
 					<% else %>
 							<%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA2'), :action => 'kewpa2', :id => asset %>
 					<% end %></td>
-		  <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => asset %></td>
+			
+		  <td width=10px>
+			<% if asset.am_i_disposed == false %>
+							<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => asset %>
+			<% end %></td>
 		  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset, :confirm => 'Are you sure?', :method => :delete %></td>
   	</tr>
 		<% end %>

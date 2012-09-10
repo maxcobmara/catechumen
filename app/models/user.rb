@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
   
   validates_presence_of     :icno,     :within => 3..100
   validates_length_of       :icno,     :is => 12, :message => "MyKad no is 12 characters"
+  validates_uniqueness_of   :icno,     :message => "Your IC no already has a registered account"
   has_and_belongs_to_many :roles
   belongs_to :staff
   belongs_to :student

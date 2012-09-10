@@ -62,7 +62,7 @@ class UsersController < ApplicationController
       # reset session
       self.current_user = @user # !! now logged in
       redirect_back_or_default('/')
-      flash[:notice] = "Thanks for signing up!  The IT team will process your application asap"
+      flash[:notice] = "Thanks for signing up!  The IT team will process your application as soon as possible"
     else
       flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
       render :action => 'new'

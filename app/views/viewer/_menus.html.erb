@@ -102,15 +102,19 @@
 	
 	
 	<!-- E-Filing Menu -->
-	<% permitted_to? :core, :documents do %>
+	<% permitted_to? :read, :documents do %>
 	<li><a href="#">E-Filing</a>
 			<ul class="sub_menu">
+				<% permitted_to? :manage, :pages do %>
 				<li><%= link_to 'Campus Info', 			  {:controller => 'pages', 				:action => 'edit',  :id => 1} %></li>
+				<% end %>
 				<li><%= link_to 'Campus Events', 			{:controller => 'events', 			:action => 'index'} %></li>
 				<li><%= link_to 'Campus Events Calendar', {:controller => 'events', :action => 'calendar'} %></li>
 				<li><%= link_to 'Local Messaging', 		{:controller => 'messages', 		:action => 'index'} %></li>
 				<li><%= link_to 'Bulletin Board', 	  {:controller => 'bulletins', 		:action => 'index'} %></li>
+				<% permitted_to? :manage, :pages do %>
 				<li><%= link_to 'Equery/Reports', 		'/Reports' %></li>
+				<% end %>
 				<li><%= link_to 'Document Registry', 	{:controller => 'documents', 		:action => 'index'} %></li>
 				<li><%= link_to 'File Registry', 			{:controller => 'cofiles', 			:action => 'index'} %></li>
 			</ul>

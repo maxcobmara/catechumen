@@ -38,7 +38,7 @@ class Asset < ActiveRecord::Base
      if search
       find(:all, :conditions => ['name ILIKE ? OR typename ILIKE ? OR assetcode ILIKE?', "%#{search}%", "%#{search}%", "%#{search}%"])
     else
-      find.active
+      find(:all)
     end
   end
   
@@ -53,19 +53,32 @@ class Asset < ActiveRecord::Base
   end
   
   def assets_that_are_disposed
-    Disposal.find(:all, :select => :asset_id).map(&:asset_id)
+    disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
+  end
+  
+  def am_i_disposed
+    asset = Array(self.id)
+    disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
+    am_i = asset & disposed
+    if am_i == []
+      false
+    else
+      true
+    end
   end
  
-  
+  named_scope :all 
   named_scope :active,        :conditions =>  ["id not in (?) OR id not in (?)", Disposal.find(:all, :select => :asset_id).map(&:asset_id), Assetloss.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :fixed,         :conditions =>  ["assettype =? ", 1]
   named_scope :inventory,     :conditions =>  ["assettype =? ", 2]
-  named_scope :disposal,      :conditions =>  ["mark_disposal =?", true]
+  named_scope :disposal,      :conditions =>  ["mark_disposal =? AND id not in (?)", true, Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
+  #named_scope :disposal,      :conditions =>  ["mark_disposal =?", true]
   named_scope :disposed,      :conditions =>  ["id in (?)", Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :lost,          :conditions =>  ["id in (?)", Assetloss.find(:all, :select => :asset_id).map(&:asset_id)]
 
 
   FILTERS = [
+    {:scope => "all",       :label => "All"},
     {:scope => "active",    :label => "Active"},
     {:scope => "fixed",     :label => "Fixed Assets"},
     {:scope => "inventory", :label => "Inventory"},

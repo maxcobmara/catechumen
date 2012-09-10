@@ -44,7 +44,7 @@ class DisposalsController < ApplicationController
 
     respond_to do |format|
       if @disposal.save
-        flash[:notice] = 'Disposal was successfully created.'
+        flash[:notice] = 'Asset disposal was registered'
         format.html { redirect_to(@disposal) }
         format.xml  { render :xml => @disposal, :status => :created, :location => @disposal }
       else
