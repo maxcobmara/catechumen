@@ -41,7 +41,7 @@ class MessagesController < ApplicationController
   # POST /messages.xml
   def create
     #@message = Message.new(params[:message])
-    @to_names = params[:message][:to_name]										#sample - "Saadah,Sulijah"
+    @to_names = params[:message][:to_name].gsub(/,\s+/,',')	#sample - "Saadah,Sulijah"
    	@to_name_A = @to_names.split(",") 											#will become - ["Saadah","Sulijah"]
    	@to_id_A = []
    	@to_name_A.each do |to_name|
@@ -72,7 +72,7 @@ class MessagesController < ApplicationController
   def update
 
     #--27-29 Apr 2012--	
-  	@to_names = params[:message][:to_name]										#sample - "Saadah,Sulijah"
+  	@to_names = params[:message][:to_name].gsub(/,\s+/,',')		#sample - "Saadah,Sulijah"
   	@to_name_A = @to_names.split(",") 											#will become - ["Saadah","Sulijah"]
   	@to_id_A = []
   	@to_name_A.each do |to_name|
