@@ -12,7 +12,11 @@
   </div>
 </div>
 
-<div class="tlist">
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Document') + "New", new_document_path %></p>
+</div>
+
+<div class="indextable">
 	<table width=100% border="0" cellpadding="0" cellspacing="0">
 		<tr>
 		  <th>Serial No</th>
@@ -44,8 +48,14 @@
 				<td><%=h document.stafffiled_details %></td>
 				<td><%=h document.closed %></td>
 				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
-				<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %></td>
-				<td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %></td>
+				<td width=10px>
+						<% if document.owner_ids.include? current_user.staff_id %>
+							<%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %>
+						<% end %></td>
+				<td width=10px>
+					  <% if document.stafffiled_id == current_user.staff_id %>
+				    	<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %>
+						<% end %></td>
 			</tr>
 			<% end %>
 		<% end %>

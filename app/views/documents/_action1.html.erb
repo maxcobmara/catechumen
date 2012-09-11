@@ -23,7 +23,7 @@
 			<td class="leftcol"><label for="closed">Close or Forward?:</label></td>
 			<td><%= f.radio_button :cc1closed,'true' %>Close
 					<%= f.radio_button :cc1closed,'false', :id => "forward", :onchange => "switchvisibility('forward')" %>Forward &nbsp;
-					<SPAN id="fwdto" style="display: none;"><%= f.collection_select :cc2staff_id, Staff.find(:all), :id, :name, :prompt => 'Select Person For Action'  %></SPAN>
+					<SPAN id="fwdto" style="display: none;"><%= f.collection_select :cc2staff_id, Staff.find(:all, :order => :name), :id, :name, :prompt => 'Select Person For Action'  %></SPAN>
 			</td>
 		</tr>
 	</table>

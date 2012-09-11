@@ -1,5 +1,5 @@
 class StaffsController < ApplicationController
-  filter_resource_access
+  #filter_resource_access
   helper_method :sort_column, :sort_direction
   
   # GET /staffs
@@ -8,6 +8,8 @@ def index
   #@staffs = Staff.all
   #@staffs = Staff.find(:all, :order => sort_column + " " + sort_direction, :conditions => ['name ILIKE ?', "%#{params[:search]}%"])
   @staffs = Staff.with_permissions_to(:index).find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
+  #@staffs = Staff.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
+
   respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @staffs }

@@ -45,6 +45,17 @@
   <% else %>
 	<% end %>
 	
+	<!-- Notification for Documents-->
+	<!-- Case for CC1 -->
+	<% mycc1docs = Document.count(:all, :conditions => ["cc1staff_id=? AND cc1closed IS ?", User.current_user.staff_id, nil]) %>
+	<% mycc2docs = Document.count(:all, :conditions => ["cc2staff_id=? AND cc2closed IS ?", User.current_user.staff_id, nil]) %>
+	<% mydocs = mycc1docs + mycc2docs %>
+  <% if mydocs > 0 %>
+  	<%= mydocs %> <%= link_to "New documents for your attention", { :controller => "documents", :action => "index" } %><br>
+  <% else %>
+	<% end %>
+	
+	
 	<!-- Notification for Students Leave is approved -->
 	<% al = Leaveforstudent.find(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', User.current_user.student_id, true, DateTime.now]).map(&:leave_startdate) %>
 	<% alc = Leaveforstudent.count(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', User.current_user.student_id, true, DateTime.now]) %>
@@ -78,12 +89,7 @@
 		<% end %>
 	<% end %>
 	
-	<!-- Notification for Documents-->
-	<% mydocs = Document.count(:all, :conditions => ["cc1staff_id=? AND cc2staff_id =?", User.current_user.staff_id, User.current_user.staff_id]) %>
-  <% if mydocs > 0 %>
-  	<%= mydocs %> <%= link_to "new documents for your attention", { :controller => "documents", :action => "index" } %><br>
-  <% else %>
-	<% end %>
+
 	
 	
 	<!-- Overdue Library Books for Staff -->

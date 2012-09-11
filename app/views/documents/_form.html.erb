@@ -40,7 +40,7 @@
 	
 		<tr>
 			<td class="leftcol"><label for="stafffiled_id">Filed By:</label></td>
-		<td><%= f.collection_select :stafffiled_id, Staff.find(:all), :id, :name, { :selected => @current_user.staff_id }   %></td>
+		<td><%= f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, { :selected => @current_user.staff_id }   %></td>
 		</tr>
 		
 		<tr>
@@ -50,22 +50,26 @@
 	
 		<tr>
 			<td class="leftcol"><label for="file_id">File No:</label><font color="red"> * </font></td>
-			<td><%= f.collection_select :file_id, Cofile.find(:all), :id, :name, :include_blank => true %></td>
+			<td><%= f.collection_select :file_id, Cofile.find(:all, :order => :cofileno), :id, :file_no_and_name, :include_blank => true %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="closed">Closed:</label></td>
-			<td><%= f.check_box :closed %></td>
-		</tr>
-	
+			<td class="leftcol"><label for="data">Current Attachment:</label></td>
+			<td><% if @document.data.exists? then %>
+			    	<%= @document.data_file_name %> &nbsp;&nbsp;&nbsp;
+			    	<%= link_to (t 'document.download'), @document.data.url %> ||
+		        <%= link_to "ALT", @document.data.url %>
+			    <% else %>
+			    No Attachment yet
+			    <% end %></td>
 		<tr>
-			<td class="leftcol"><label for="data">Upload File:</label></td>
+			<td class="leftcol"><label for="data">Upload/Change File:</label></td>
 			<td><%= f.file_field :data %></td>
 		</tr>
 		
 		<tr>
 			<td class="leftcol"><label for="closed">Circulation 1:</label></td>
-			<td><%= f.collection_select :cc1staff_id, Staff.find(:all), :id, :name, :prompt => 'Select Person For Action'  %></td>
+			<td><%= f.collection_select :cc1staff_id, Staff.find(:all, :order => :name), :id, :name, :prompt => 'Select Person For Action'  %></td>
 		</tr>
 		
 		<tr>
@@ -73,6 +77,11 @@
 			<td><%= f.select :cctype_id, 
 			                 Document::ACTION,
 			                 :prompt => "Select"  %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="closed">Closed:</label></td>
+			<td><%= f.check_box :closed %></td>
 		</tr>
 		
 		

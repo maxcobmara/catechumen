@@ -41,6 +41,8 @@ authorization do
   end
   
   
+  #Group Staff
+  
   role :staff do
     has_permission_on [:attendances, :assets, :documents],     :to => :menu              # Access for Menus
     has_permission_on :books, :to => :core
@@ -70,7 +72,11 @@ authorization do
     has_permission_on :ptdos, :to => :delete do
         if_attribute :staff_id => is {User.current_user.staff_id}
     end
-    has_permission_on :documents, :to => :read 
+    
+    has_permission_on :documents, :to => :approve do
+        if_attribute :staff_id => is {User.current_user.staff_id}
+    end
+
     has_permission_on :librarytransactions, :to => :read do
       if_attribute :staff_id => is {User.current_user.staff_id}
     end
@@ -80,6 +86,39 @@ authorization do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
   end
   
+  role :training_manager do
+    has_permission_on [:ptbudgets, :ptcourses, :ptschedules], :to => :manage
+  end
+  
+  role :training_administration do
+    has_permission_on [:ptcourses, :ptschedules], :to => :manage
+    has_permission_on :ptdos, :to => :approve
+  end
+  
+  #Group Assets  -------------------------------------------------------------------------------
+  role :asset_administrator do
+    has_permission_on :assets, :to => :manage
+  end
+  
+  #Group Locations  -------------------------------------------------------------------------------
+  role :facilities_administrator do
+    has_permission_on :locations, :to => :manage
+  end
+  
+  role :warden do
+    has_permission_on :locations, :to => :core
+    has_permission_on :leaveforstudents, :to => [:index, :show, :update, :approve] do
+      if_attribute :studentsubmit => true
+    end
+  end
+  
+  #Group E-Filing ------------------------------------------------------------------------------- 
+  role :e_filing do
+    has_permission_on :cofiles, :to => :manage
+    has_permission_on :documents, :to => :manage
+   
+  
+  #Group Student --------------------------------------------------------------------------------
   role :student do
     
       has_permission_on :locations, :to => :menu
@@ -104,25 +143,13 @@ authorization do
      has_permission_on :students, :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
   end
   
+  role :student_counsellor do
+    has_permission_on :counsellings, :to => :manage
+    has_permission_on :students, :to => :core
+  end
+  
+  #Group Training  -------------------------------------------------------------------------------
 
-  
-  role :training_manager do
-    has_permission_on [:ptbudgets, :ptcourses, :ptschedules], :to => :manage
-  end
-  
-  role :training_administration do
-    has_permission_on [:ptcourses, :ptschedules], :to => :manage
-    has_permission_on :ptdos, :to => :approve
-  end
-  
-  role :asset_administrator do
-    has_permission_on :assets, :to => :manage
-  end
-  
-  role :facilities_administrator do
-    has_permission_on :locations, :to => :manage
-  end
-  
   role :programme_manager do
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar]
@@ -142,6 +169,11 @@ authorization do
     has_permission_on :timetables, :to => [:create]
   end
   
+  
+  #Group Exams   -------------------------------------------------------------------------------
+  
+  #Group Library   -------------------------------------------------------------------------------
+  
   role :librarian do
     has_permission_on :books, :to => :manage
     has_permission_on :librarytransactions, :to => :manage
@@ -149,17 +181,9 @@ authorization do
   
   
   
-  role :warden do
-    has_permission_on :locations, :to => :core
-    has_permission_on :leaveforstudents, :to => [:index, :show, :update, :approve] do
-      if_attribute :studentsubmit => true
-    end
-  end
+
   
-  role :student_counsellor do
-    has_permission_on :counsellings, :to => :manage
-    has_permission_on :students, :to => :core
-  end
+
   
   role :guest do
     has_permission_on :users, :to => :create

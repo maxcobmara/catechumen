@@ -2,8 +2,7 @@ class RolesController < ApplicationController
   # GET /roles
   # GET /roles.xml
   def index
-    @roles = Role.all
-
+    @roles = Role.find(:all, :order => :name)
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @roles }
