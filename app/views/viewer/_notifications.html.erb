@@ -63,6 +63,13 @@
 		<p><%= link_to "Your leave request on #{al} has been Approved", { :controller => "leaveforstudents", :action => "index" } %></p>
 	<% end %>
 	
+	<!-- Notification for Students Dicsipline is approved -->
+	<% cases = Sdicipline.count(:all, :conditions => ['status =?', "New"]) %>
+		<% if cases == 0 %>
+		<% else %>
+			<%= cases %> <%= link_to "New student discipline cases", sdiciplines_path %><br>
+		<% end %>
+	
 	<!-- Notification for Topic Approval -->
 	<% topic_need_approve = Topic.count(:all, :conditions => ['approvedby_id=? AND approved =?', User.current_user.staff_id, false]) %>
 		<% if topic_need_approve == 0 %>

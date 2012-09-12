@@ -2,8 +2,43 @@
 
 <% form_for(@sdicipline) do |f| %>
   <%= f.error_messages %>
-
- <%=render :partial => 'form', :locals => {:f => f} %> 
+  <div class="tform">
+  <H2>Report Details</H2>
+  <table width=100%>
+		<tr>
+			<td class="leftcol"><label for="reportedby_id"><b>Reported By:</b></label></td>
+			<td><%= f.collection_select :reportedby_id, Staff.find(:all, :order => :name), :id, :name, { :selected => @current_user.staff_id } %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
+		<td><%= f.collection_select :student_id, Student.find(:all, :order => :icno), :id, :formatted_mykad_and_student_name, :prompt => 'Select Student' %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="infraction"><b>Details</b></label></td>
+			<td><%= f.select :infraction,
+			                 Sdicipline::INFRACTION,
+			                 :prompt => "Select" %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="details"><b>If Others, Please Specify</b></label></td>
+			<td><%= f.text_area :details, :size => "40x5" %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="reporteddt"><b>Date:</b></label></td>
+			<td><%= f.date_select :reporteddt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="cofile_id"><b>File No:</b></label></td>
+			<td><%= f.collection_select :cofile_id, Cofile.find(:all), :id, :file_no_and_name, :include_blank => true %></td>
+		</tr>
+	</table>
+ 	<%=render :partial => 'status', :locals => {:f => f} %> 
+	</div>
   <p>
     <%= f.submit 'Create' %>
   </p>

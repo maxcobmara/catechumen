@@ -1,5 +1,5 @@
 class StaffsController < ApplicationController
-  #filter_resource_access
+  filter_resource_access
   helper_method :sort_column, :sort_direction
   
   # GET /staffs

@@ -2,6 +2,7 @@ authorization do
   
   role :administration do
     has_omnipotence
+    has_permission_on :authorization_rules, :to => :read
     #Staff Menu Items
     #has_permission_on :staffs,          :to => [:manage, :borang_maklumat_staff]
     has_permission_on :attendances,     :to => [:manage, :approve]
@@ -44,6 +45,7 @@ authorization do
   #Group Staff
   
   role :staff do
+    has_permission_on :authorization_rules, :to => :read
     has_permission_on [:attendances, :assets, :documents],     :to => :menu              # Access for Menus
     has_permission_on :books, :to => :core
     has_permission_on :ptdos, :to => :create
@@ -75,6 +77,11 @@ authorization do
     
     has_permission_on :documents, :to => :approve do
         if_attribute :staff_id => is {User.current_user.staff_id}
+    end
+    
+    has_permission_on :sdiciplines, :to => :create
+    has_permission_on :sdiciplines, :to => :approve do
+      if_attribute :reportedby_id => is {User.current_user.staff_id}
     end
 
     has_permission_on :librarytransactions, :to => :read do
@@ -116,7 +123,7 @@ authorization do
   role :e_filing do
     has_permission_on :cofiles, :to => :manage
     has_permission_on :documents, :to => :manage
-   
+  end
   
   #Group Student --------------------------------------------------------------------------------
   role :student do
@@ -141,6 +148,10 @@ authorization do
   
   role :student_administrator do
      has_permission_on :students, :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
+  end
+  
+  role :disciplinary_officer do
+    has_permission_on :sdiciplines, :to => :manage
   end
   
   role :student_counsellor do

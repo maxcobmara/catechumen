@@ -1,98 +1,53 @@
-<div class="tform">
-	<% if @sdicipline.status == nil %>
-	<H2>Report Details</H2>
-  <table width=100%>
-		<tr>
-			<td class="leftcol"><label for="reportedby_id"><b>Reported By:</b></label></td>
-			<td><%= f.collection_select :reportedby_id, Staff.find(:all), :id, :name%></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
-		<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name%></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="infraction"><b>Details</b></label></td>
-			<td><%= f.select :infraction,
-			                 Sdicipline::INFRACTION,
-			                 :prompt => "Select" %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="details"><b>If Others, Please Specify</b></label></td>
-			<td><%= f.text_area :details, :size => "40x5" %></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="reporteddt"><b>Date:</b></label></td>
-			<td><%= f.date_select :reporteddt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="cofile_id"><b>File No:</b></label></td>
-			<td><%= f.collection_select :cofile_id, Cofile.find(:all), :id, :file_no_and_name, :include_blank => true %></td>
-		</tr>
-	</table>
-	<% end %>
-	
-	<% if @sdicipline.status == "New" %>
-  <%= render :partial => '_show_report_details' %>
-	<H2>Case Details</H2>
+<div class="tform">	
+  <%= render :partial => 'show_report_details' %>
 
-
-	<table width=100%>		
-		<tr>
-			<td class="leftcol"><label for="casedt"><b>Date:</b></label></td>
-			<td><%= f.date_select :casedt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="referredby"><b>Referred By:</b></label></td>
-			<td><%= f.text_field :referredby %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="investigation"><b>Investigation Summary:</b></label></td>
-			<td><%= f.text_area :investigation, :size => "40x5" %></td>
-		</tr>
-	</table>
+  <% if ["New", "Open"].include? (@sdicipline.status) %>
+		<H2>Case Details : (<%=h @sdicipline.status %>)</H2>
+		<table width=100%>		
+			<!--
+					<tr>
+						<td class="leftcol"><label for="referredby"><b>Referred By:</b></label></td>
+						<td><%= f.text_field :referredby %></td>
+					</tr>-->
+			<tr>
+				<td class="leftcol"><label for="investigation"><b>Investigation Summary:</b></label></td>
+				<td><%= f.text_area :investigation, :size => "60x5" %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="casedt"><b>Date:</b></label></td>
+				<td><%= f.date_select :casedt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
+			</tr>
+		</table>
 	<% end %>
 
 	
 	
-	<% if @sdicipline.status == "Open" %>	
-	<%= render :partial => '_show_report_details' %>
-	
-	<%= render :partial => '_show_case_info' %>
-	<table width=100%>	
-		<tr>
-			<td class="leftcol"><label for="action"><b>Action Taken:</b></label></td>
-			<td><%= f.text_area :action, :size => "40x5" %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="closedtcollege"><b>Date Closed (College):</b></label></td>
-			<td><%= f.date_select :closedtcollege, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="location"><b>Location:</b></label></td>
-			<td><%= f.text_field :location %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="otherinfo"><b>Other Information:</b></label></td>
-			<td><%= f.text_area :otherinfo, :size => "40x5" %></td>
-		</tr>
-	</table>
+	<% if ["Open"].include? (@sdicipline.status) %>	
+	<H2>Action Details</H2>
+		<table width=100%>	
+			<tr>
+				<td class="leftcol"><label for="action"><b>Action Taken:</b></label></td>
+				<td><%= f.text_area :action, :size => "40x5" %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="location"><b>Location:</b></label></td>
+				<td><%= f.text_field :location %></td>
+			</tr>		
+			<tr>
+				<td class="leftcol"><label for="otherinfo"><b>Other Information:</b></label></td>
+				<td><%= f.text_area :otherinfo, :size => "40x5" %></td>
+			</tr>		
+			<tr>
+				<td class="leftcol"><label for="closedtcollege"><b>Date Closed (College):</b></label></td>
+				<td><%= f.date_select :closedtcollege, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
+			</tr>
+		</table>
 	<% end %>
 	
 	
-	<% if @sdicipline.status == "Refer to BPL" %>	
-	<%= render :partial => '_show_report_details' %>
-	
-	<%= render :partial => '_show_case_info' %>
+	<% if @sdicipline.status == "Refer to BPL" %>		
+	<%= render :partial => 'show_case_info' %>
+	<%= render :partial => 'show_action_taken' %>
 	<H2>Refer To BPL</H2>
 	<table width=100%>
 		<tr>
@@ -131,15 +86,8 @@
 		</tr>
 	</table>
 	<% end %>
-	
-	<table width=100%>	
-		<tr>
-			<td class="leftcol"><label for="status"><b>Status:</b></label></td>
-			<td><%= f.select :status, 
-			                  Sdicipline::STATUS,
-			                 :prompt => "Select"  %></td>
-		</tr>
-	</table>
+	<%=render :partial => 'status', :locals => {:f => f} %>
+
 <BR>
 </div>		
 		

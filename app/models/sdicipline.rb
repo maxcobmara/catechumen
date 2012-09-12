@@ -1,27 +1,14 @@
 class Sdicipline < ActiveRecord::Base
-  belongs_to :staff
-  belongs_to :cofile
-  #belongs_to :reportingstaff,  :class_name => 'Staff',   :foreign_key => 'reportedby_id'
-  belongs_to :student
-  belongs_to :file,       :class_name => 'Cofile', :foreign_key => 'cofile_id'
-  #belongs_to :student, :foreign_key => 'student_id'
-  belongs_to :staff, :foreign_key => 'reportedby_id'
   
-  validates_presence_of :reportedby_id, :student_id
+  belongs_to :staff, :foreign_key => 'reportedby_id'
+  belongs_to :student
+  belongs_to :cofile
+  
+  validates_presence_of :reportedby_id, :student_id, :status, :infraction
    
-    def self.find_main
-      Staff.find(:all, :condition => ['staff_id IS NULL'])
-    end
+
     
-    def self.find_main
-        Student.find(:all, :condition => ['student_id IS NULL'])
-    end
-      
-    def self.find_main
-            Cofile.find(:all, :condition => ['cofile_id IS NULL'])
-    end
-    
-    #-----------------------------------------------
+  # Data Stuff-----------------------------------------------
   INFRACTION = [
          #  Displayed       stored in db
          [ "Merokok", 1  ],
@@ -30,12 +17,27 @@ class Sdicipline < ActiveRecord::Base
          [ "Lain Lain", 4 ]
       ]
     
+    def status_workflow
+    flow = Array.new
+    if status == nil
+      flow << "New"
+    elsif status == "New"
+      flow << "Open" 
+    elsif status == "Open"
+      flow << "Open" << "No Case" << "Refer to BPL" << "Closed" 
+    elsif status == "Refer to BPL"
+      flow << "Refer to BPL" << "Closed"
+    else
+    end
+    flow
+    end
+
     
    STATUS = [
          #  Displayed       stored in db
-         [ "No Case","No Case" ],
          [ "New","New" ],
          [ "Open","Open" ],
+         [ "No Case","No Case" ],
          [ "Closed", "Closed" ],
          [ "Refer to BPL", "Refer to BPL" ]
     ]
@@ -69,16 +71,15 @@ class Sdicipline < ActiveRecord::Base
     end
     
     def file_name
-      suid = cofile_id.to_a
-      suexists = Cofile.find(:all, :select => "id").map(&:id)
-      filechecker = suid & suexists
-
+      fileid = Array(cofile_id)
+      doesfileexists = Cofile.find(:all, :select => "id").map(&:id)
+      filechecker = fileid & doesfileexists
         if cofile_id == nil
           ""
         elsif filechecker == []
-          "File No Longer Exists"
+          "File Does Not Exist"
         else
-          " #{file.name}"   
+          " #{cofile.name}"   
         end 
     end
     

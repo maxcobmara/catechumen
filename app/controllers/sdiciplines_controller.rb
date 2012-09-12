@@ -1,8 +1,9 @@
 class SdiciplinesController < ApplicationController
+  filter_resource_access
   # GET /sdiciplines
   # GET /sdiciplines.xml
   def index
-    @sdiciplines = Sdicipline.all
+    @sdiciplines = Sdicipline.with_permissions_to(:index).find(:all, :order => "reporteddt DESC")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,7 +45,7 @@ class SdiciplinesController < ApplicationController
 
     respond_to do |format|
       if @sdicipline.save
-        flash[:notice] = 'Sdicipline was successfully created.'
+        flash[:notice] = 'Your new case was successfully registered'
         format.html { redirect_to(@sdicipline) }
         format.xml  { render :xml => @sdicipline, :status => :created, :location => @sdicipline }
       else
@@ -61,7 +62,7 @@ class SdiciplinesController < ApplicationController
 
     respond_to do |format|
       if @sdicipline.update_attributes(params[:sdicipline])
-        flash[:notice] = 'Sdicipline was successfully updated.'
+        flash[:notice] = 'The case was successfully updated'
         format.html { redirect_to(@sdicipline) }
         format.xml  { head :ok }
       else

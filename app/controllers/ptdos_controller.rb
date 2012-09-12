@@ -82,4 +82,14 @@ class PtdosController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def show_total_days
+    @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and staff_id=? and trainee_report is not null',true,params[:id]]) 
+    #to retrieve --> http://localhost:3000/ptdos/show_total_days/1.....http://localhost:3000/ptdos/show_total_days/3.....1,3 --> staff_id!
+   
+   respond_to do |format|
+      format.html # show_total_days.html.erb
+      format.xml  { render :xml => @ptdos }
+    end
+  end
 end
