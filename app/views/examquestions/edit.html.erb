@@ -3,7 +3,60 @@
 <% form_for(@examquestion, :html => { :multipart => true}) do |f| %>
   <%= f.error_messages %>
 
-<%=render :partial => 'form', :locals => {:f => f} %> 
+<div class="tform">
+	
+	<!--  Staff Creates Question    -->
+	<% if [nil, "New", "Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus) %>
+		<%= render :partial => 'form_question', :locals => {:f => f} %>
+	<% else %>
+		<%= render :partial => 'show_question' %>
+	<% end %>		
+	
+	<!--  Superior Edits Question    -->
+	<% if ["Submit", "Open/Editing", "Re-Edit"].include? (@examquestion.qstatus) %>
+		<%=render :partial => 'form_checklist', :locals => {:f => f} %>
+	<% end %>
+	
+	<% if ["Ready For Approval", "For Approval", "Approved", "Reserve for BPL"].include? (@examquestion.qstatus) %>
+		<%=render :partial => 'show_checklist' %>
+	<% end %>
+	
+	<!--  Approval   -->
+	<% if ["Ready For Approval", "For Approval"].include? (@examquestion.qstatus) %>
+		<%= render :partial => 'form_approval', :locals => {:f => f} %>
+	<% end %>
+	
+	<% if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus) %>
+		<%=render :partial => 'show_approval' %>
+	<% end %>
+	
+	<% if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus) %>
+			<HR>
+			<H2>Reserve for BPL</H2>
+			<table  width=100%>	
+				<tr>
+					<td class="leftcol"><label for="bplreserve"><b>Reserve for BPL</b></label></td>
+					<td><%= f.check_box :bplreserve %> </td>
+				</tr>
+
+				<tr>
+					<td class="leftcol"><label for="bplsent"><b>Sent to BPL</b></label></td>
+					<td><%= f.check_box :bplsent %> </td>
+				</tr>
+
+				<tr>
+					<td class="leftcol"><label for="bplsentdt"><b>Date Sent:</b></label></td>
+					<td><%= f.date_select :bplsentdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+				</tr>
+			</table>
+	<% end %>
+	
+	
+	
+	
+	<%=render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"%>
+	
+	
   <p>
     <%= f.submit 'Update' %>
   </p>

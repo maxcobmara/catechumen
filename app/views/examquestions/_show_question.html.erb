@@ -1,0 +1,93 @@
+<H2>Exam Question Details</H2>
+
+<fieldset>
+	<legend>Question Creation</legend>
+		<table>
+			<tr>
+				<td class="leftcol"><label for="creator_id">Creator:</label></td>
+				<td><%=h @examquestion.creator_id? ? @examquestion.creator_details : "" %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="curriculum_id">Programme/Subject Code:</label></td>
+				<td><%=h @examquestion.subject_id? ? @examquestion.subject_details : "" %></td>
+			</tr>
+			<!--
+			<tr>
+								<td class="leftcol"><label for="curriculum_id"><b>Topic:</b></label></td>
+								<td></td>
+							</tr>-->
+		</table>
+</fieldset>
+
+<fieldset>
+	<legend>Status</legend>
+		<table>
+			<tr>
+				<td class="leftcol"><label for="qstatus"><b>Status:</b></label></td>
+				<td><%=h @examquestion.qstatus %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="updated_at"><b>Last Edited:</b></label></td>
+				<td><%=h l(@examquestion.updated_at) unless @examquestion.updated_at.blank? %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="updated_at"><b>Created On:</b></label></td>
+				<td><%=h l(@examquestion.created_at) unless @examquestion.created_at.blank? %></td>
+			</tr>
+		</table>
+</fieldset>
+
+<fieldset>
+	<legend>Question Details</legend>
+		<table>
+			<tr>
+				<td><label for="questiontype">Details</td>
+				<td>
+										<table id="subtable">
+											<thead>
+												<tr>
+													<th>Type</td>
+													<th>Classification</td>
+													<th>Construct</td>
+													<th>Topic</td>
+													<th>Difficulty</b></td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td><%=h @examquestion.questiontype %></td>
+													<td><%=h @examquestion.category %></td>
+													<td><%=h @examquestion.construct %></td>
+													<td>Topic</td>
+													<td><%=h (Examquestion::QLEVEL.find_all{|disp, value| value == @examquestion.difficulty}).map {|disp, value| disp} %></td>
+												</tr>
+											</tbody>
+										</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">Diagramme</td>
+				<td><% if @examquestion.diagram_file_name == nil %>
+									no diagram attached
+						<% else %>
+									<%= image_tag @examquestion.diagram.url, :class => 'diagram' %>
+						<% end %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="question"><b>Question:</b></label></td>
+				<td><%= @examquestion.question %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="answer"><b>Answer:</b></label></td>
+				<td><%= @examquestion.answer %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="marks"><b>Marks:</b></label></td>
+				<td><%=h @examquestion.marks %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="qkeyword"><b>Keywords:</b></label></td>
+				<td><%=h @examquestion.qkeyword %></td>
+			</tr>
+		</table>
+</fieldset>

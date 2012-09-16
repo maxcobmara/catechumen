@@ -1,0 +1,21 @@
+<fieldset>
+	<legend>Approval Details : <%=h @examquestion.qstatus %> </legend>
+	<table>
+		<tr>
+			<td class="leftcol"><label for="approver_id"><b>Approver:</b></label></td>
+			<td><%=h @examquestion.approver_details %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="approver_id"><b>Remarks:</b></label></td>
+			<td><%=h @examquestion.statusremark %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="approvedt"><b>Approval Date:</b></label></td>
+			<td><% if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus) %>
+						<%=h l(@examquestion.approvedt) unless @examquestion.approvedt.blank? %>
+					<% end %></td>
+		</tr>
+	</table>
+</fieldset>
