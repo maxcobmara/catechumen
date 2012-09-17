@@ -2,9 +2,10 @@ class ExamquestionsController < ApplicationController
   # GET /examquestions
   # GET /examquestions.xml
   def index
-    @examquestions = Examquestion.all
+    @examquestions = Examquestion.search2(params[:programmid])
+    @subject_exams = @examquestions.group_by { |t| t.subject_details }
     #@examquestions = Examquestion.search(params[:programmeid])
-
+    #@klasses = Klass.search2(params[:programmeid]) 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @examquestions }
@@ -26,8 +27,8 @@ class ExamquestionsController < ApplicationController
   # GET /examquestions/new.xml
   def new
     @examquestion = Examquestion.new
-    @examquestion.exammcqanswers.build
-    @examquestion.examsubquestions.build
+    #@examquestion.exammcqanswers.build
+    #@examquestion.examsubquestions.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -61,6 +62,7 @@ class ExamquestionsController < ApplicationController
   # PUT /examquestions/1.xml
   def update
     @examquestion = Examquestion.find(params[:id])
+    #@subject_exams = @examquestions.group_by { |t| t.subject_details }
 
     respond_to do |format|
       if @examquestion.update_attributes(params[:examquestion])

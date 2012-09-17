@@ -14,14 +14,14 @@ class Examquestion < ActiveRecord::Base
                     
                     #may require validation
                     
-  validates_presence_of :subject_id, :questiontype, :question, :answer, :marks, :qstatus
+  #validates_presence_of :questiontype, :question, :answer, :marks, :qstatus
   
   
-  has_many :examsubquestions, :dependent => :destroy
-  accepts_nested_attributes_for :examsubquestions, :reject_if => lambda { |a| a[:question].blank? }
+  #has_many :examsubquestions, :dependent => :destroy
+  #accepts_nested_attributes_for :examsubquestions, :reject_if => lambda { |a| a[:question].blank? }
   
-  has_many :exammcqanswers, :dependent => :destroy
-  accepts_nested_attributes_for :exammcqanswers, :reject_if => lambda { |a| a[:answer].blank? }
+  #has_many :exammcqanswers, :dependent => :destroy
+  #accepts_nested_attributes_for :exammcqanswers, :reject_if => lambda { |a| a[:answer].blank? }
   
   
   
@@ -50,9 +50,9 @@ class Examquestion < ActiveRecord::Base
   end
   
   
-  def self.search(search)
-     if search
-       if search != '0'
+  def self.search2(search2)
+     if search2 
+       if search2 != '0'
          @examquestions = Examquestion.find(:all, :conditions => ["programme_id=?", search2 ])
        else
          @examquestions = Examquestion.find(:all)
@@ -123,33 +123,22 @@ class Examquestion < ActiveRecord::Base
         [ "Rejected", "Rejected" ]
    ]
    
-   def subject_details 
-         suid = subject_id.to_a
-         exists = Examquestion.find(:all, :select => "id").map(&:id)
-         checker = suid & exists     
-
-         if subject_id == nil
-            "" 
-          elsif checker == []
-            "Subject No Longer Exists" 
-         else
-           subject.subject_code_with_subject_name
-         end
-    end
+  def subject_details
+     if subject.blank? 
+       "None Assigned"
+     else 
+       subject.subject_code_with_subject_name
+     end
+  end
+     
    
-     def creator_details 
-           suid = creator_id.to_a
-           exists = Staff.find(:all, :select => "id").map(&:id)
-           checker = suid & exists     
-
-           if creator_id == nil
-              "" 
-            elsif checker == []
-              "Staff No Longer Exists" 
-           else
-             creator.mykad_with_staff_name
-           end
-      end
+  def creator_details 
+    if creator.blank? 
+       "None Assigned"
+     else 
+       creator.name #mykad_with_staff_name
+     end
+  end
       
   def editor_details         
     if editor.blank?
