@@ -52,7 +52,8 @@ authorization do
     has_permission_on :ptdos, :to => :index do
       if_attribute :staff_id => is {User.current_user.staff_id}
     end
-    has_permission_on :staffs, :to => [:index, :show, :edit, :update, :menu] do
+    has_permission_on :staffs, :to => [:show, :menu]
+    has_permission_on :staffs, :to => [:edit, :update, :menu] do
       if_attribute :id => is {User.current_user.staff_id}
     end
     has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update] do

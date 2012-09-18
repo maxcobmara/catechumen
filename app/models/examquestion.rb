@@ -14,7 +14,7 @@ class Examquestion < ActiveRecord::Base
                     
                     #may require validation
                     
-  #validates_presence_of :questiontype, :question, :answer, :marks, :qstatus
+  validates_presence_of :questiontype, :question, :answer, :marks, :qstatus
   
   
   #has_many :examsubquestions, :dependent => :destroy
