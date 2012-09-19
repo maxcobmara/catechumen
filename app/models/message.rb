@@ -1,10 +1,12 @@
 class Message < ActiveRecord::Base
-  has_and_belongs_to_many   :staffs
-  belongs_to                :from, :class_name => 'User', :foreign_key => 'from_id'
+  has_and_belongs_to_many   :staffs, :join_table => :messages_staffs
+  belongs_to                :from, :class_name => 'Staff', :foreign_key => 'from_id'
+  
+  validates_presence_of :message
   
   before_save :varmyass
   def varmyass
-    self.from_id	= User.current_user.id
+    self.from_id	= User.current_user.staff_id
   end
   
   def to_name

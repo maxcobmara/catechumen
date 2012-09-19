@@ -17,7 +17,7 @@
 	<% end %>
 
 	<!-- Notification for Messages -->
-  <% dash_messages = Message.count(:all, :conditions => ["to_id=?", User.current_user.staff_id]) %>
+  <% dash_messages = Message.count(:all, :include => :staffs, :conditions => ['staff_id =? AND messages.created_at > ?' , User.current_user.staff_id, DateTime.now - 1.day]) %>
   <% if dash_messages == 0 %>
     
   <% else %>

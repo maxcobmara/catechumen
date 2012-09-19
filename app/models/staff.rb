@@ -85,6 +85,10 @@ class Staff < ActiveRecord::Base
   has_many :isby,              :class_name => 'assettrack', :foreign_key => 'issuedby'
   has_many :assettrackreturn,  :class_name => 'assettrack', :foreign_key => 'returnedto'  
   
+  #
+  has_and_belongs_to_many :messages
+  has_many :from, :class_name => 'Staff', :foreign_key => 'from_id'
+  
   #links to Model Cofile
   has_many :owners,    :class_name => 'Cofiles', :foreign_key => 'owner_id'
   has_many :borrowers, :class_name => 'Cofiles', :foreign_key => 'staffloan_id'
