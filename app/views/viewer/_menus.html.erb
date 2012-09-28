@@ -135,8 +135,15 @@
 				<% permitted_to? :manage, :students do %>
 				<li><%= link_to '#Attendance', 			  root_url %></li>
 				<% end %>
-				<% permitted_to? :create, :sdiciplines do %>
-				<li><%= link_to 'Discipline', 				{:controller => 'sdiciplines', 	:action => 'index'} %></li>
+				<!--  Deprecated to Student_discipline_cases
+
+								<% permitted_to? :create, :sdiciplines do %>
+								<li><%= link_to 'Discipline', 				{:controller => 'sdiciplines', 	:action => 'index'} %></li>
+								<% end %>-->
+				
+				
+				<% permitted_to? :create, :student_discipline_cases do %>
+				<li><%= link_to 'Discipline', 				{:controller => 'Student_discipline_cases', 	:action => 'index'} %></li>
 				<% end %>
 				<% permitted_to? :manage, :counsellings do %>
 					<li><%= link_to 'Counselling', 	  		{:controller => 'counsellings', :action => 'index'} %></li>

@@ -1,4 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+  
+  map.connect '/exams/exampaper', :controller => 'exams', :action => 'exampaper'
+  map.resources :exams
+
+  map.resources :student_discipline_cases
+
   map.resources :trainingnotes
 
   map.resources :trainingreports

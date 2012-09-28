@@ -27,5 +27,13 @@ class Message < ActiveRecord::Base
   def to_name=(name)
 	  self.staffs = Staff.find_by_name(name) unless name.blank?
   end  
+  
+  def message_from_name
+    if from.blank? 
+      "None Assigned"
+    else 
+      from.name
+    end
+  end
 
 end

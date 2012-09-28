@@ -118,6 +118,11 @@ class Staff < ActiveRecord::Base
   has_many :creator,    :class_name => 'Examquestion',   :foreign_key => 'creator_id'  #creator name
   has_many :editor,     :class_name => 'Examquestion',   :foreign_key => 'editor_id'   #editor name
   
+  #link to model Exams
+  has_many :creators,          :class_name => 'Exam',   :foreign_key => 'created_by'
+  
+  
+  
   
   #links to Model TravelRequest
   has_many :stafftravel,     :class_name => 'Travelrequest', :foreign_key => 'staff_id', :dependent => :destroy #staff name

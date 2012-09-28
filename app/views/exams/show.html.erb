@@ -1,0 +1,24 @@
+<div class="showform">
+  <%=render :partial => 'show_exam' %>
+	
+<fieldset>
+	<legend>Questions</legend>
+	<table border=0 >
+	<% bil = 0 %>
+	<% for examquestion in @exam.examquestions %>
+	<% bil += 1 %>
+		<tr>
+			<td colspan=2><b><%=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion.questiontype}).map {|disp, value| disp} %></b></td>
+		</tr>
+		<tr>
+			<td><center><%=h bil %></center></td>
+			<td><%=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %> <BR> <%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %> </td>
+		</tr>
+	<% end %>
+	</table>
+
+</div>
+<BR>
+
+<%= link_to 'Edit', edit_exam_path(@exam) %> |
+<%= link_to 'Back', exams_path %>

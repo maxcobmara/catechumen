@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120809143417) do
+ActiveRecord::Schema.define(:version => 20120927145721) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -425,13 +425,6 @@ ActiveRecord::Schema.define(:version => 20120809143417) do
     t.datetime "updated_at"
   end
 
-  create_table "exammakers_examquestions", :id => false, :force => true do |t|
-    t.integer  "exammaker_id"
-    t.integer  "examquestion_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "exammcqanswers", :force => true do |t|
     t.integer  "examquestion_id"
     t.string   "sequence"
@@ -478,6 +471,27 @@ ActiveRecord::Schema.define(:version => 20120809143417) do
     t.boolean  "fit_important"
     t.boolean  "fit_fairness"
     t.integer  "programme_id"
+  end
+
+  create_table "examquestions_exams", :id => false, :force => true do |t|
+    t.integer  "exam_id"
+    t.integer  "examquestion_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "exams", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "created_by"
+    t.integer  "course_id"
+    t.integer  "subject_id"
+    t.integer  "klass_id"
+    t.date     "exam_on"
+    t.integer  "duration"
+    t.integer  "full_marks"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "examsubquestions", :force => true do |t|
@@ -1006,6 +1020,31 @@ ActiveRecord::Schema.define(:version => 20120809143417) do
     t.string   "name"
     t.string   "place"
     t.date     "sdate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "student_discipline_cases", :force => true do |t|
+    t.integer  "reported_by"
+    t.integer  "student_id"
+    t.integer  "infraction_id"
+    t.text     "description"
+    t.date     "reported_on"
+    t.string   "status"
+    t.integer  "file_id"
+    t.date     "case_created_on"
+    t.text     "investigation_notes"
+    t.text     "action"
+    t.date     "closed_at_college_on"
+    t.integer  "location_id"
+    t.text     "other_info"
+    t.date     "sent_to_board_on"
+    t.date     "board_meeting_on"
+    t.date     "board_decision_on"
+    t.text     "board_decision"
+    t.date     "appeal_on"
+    t.text     "appeal_decision"
+    t.date     "appeal_decision_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

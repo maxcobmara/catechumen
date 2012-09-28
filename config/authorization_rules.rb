@@ -84,6 +84,11 @@ authorization do
     has_permission_on :sdiciplines, :to => :approve do
       if_attribute :reportedby_id => is {User.current_user.staff_id}
     end
+    
+    has_permission_on :Student_discipline_cases, :to => :create
+    has_permission_on :Student_discipline_cases, :to => :approve do
+      if_attribute :reported_by => is {User.current_user.staff_id}
+    end
 
     has_permission_on :librarytransactions, :to => :read do
       if_attribute :staff_id => is {User.current_user.staff_id}
@@ -152,7 +157,7 @@ authorization do
   end
   
   role :disciplinary_officer do
-    has_permission_on :sdiciplines, :to => :manage
+    has_permission_on :Student_discipline_cases, :to => :manage
   end
   
   role :student_counsellor do

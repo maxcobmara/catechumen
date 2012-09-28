@@ -1,0 +1,41 @@
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Exam Maker</h2>
+	</div>
+</div>
+
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Exam Question') + "New", new_exam_path %></p>
+</div>
+
+<div class="indextable">
+	<table>
+	  <tr>
+	    <th>Name</th>
+	    <th>Description</th>
+	    <th>Creator</th>
+			<th>Duration</th>
+			<th>Marks</th>
+			<th colspan=3 class="ac">Control</th>
+	  </tr>
+
+		<% @exams.each do |exam| %>
+		  <tr>
+		    <td><%=h exam.name %></td>
+		    <td><%=h exam.description %></td>
+		    <td><%=h exam.creator_details %></td>
+				<td><%=h exam.duration %></td>
+				<td><%=h exam.full_marks %></td>
+		
+		    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => exam %></td>
+		    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => exam %></td>
+				<td width=10px><%= link_to image_tag("printer.png",   :border => 0, :title => 'Exam Paper'), :action => 'exampaper', :id => exam %></td>
+
+		    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), exam, :confirm => 'Are you sure?', :method => :delete %></td>
+		  </tr>
+		<% end %>
+		</table>
+
+<br />
+</div>
+<%= link_to 'New Exam', new_exam_path %>

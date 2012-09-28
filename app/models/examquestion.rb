@@ -6,7 +6,7 @@ class Examquestion < ActiveRecord::Base
   belongs_to :subject
   belongs_to :programme
   belongs_to :topic
-  has_and_belongs_to_many :exammakers
+  has_and_belongs_to_many :exams
   
   has_attached_file :diagram,
                     :url => "/assets/examquestions/:id/:style/:basename.:extension",
@@ -82,12 +82,12 @@ class Examquestion < ActiveRecord::Base
    
    QTYPE = [
           #  Displayed       stored in db
-          [ "Objektif - MCQ","MCQ" ],
+          [ "Objektif - MCQ", "MCQ" ],
           [ "Subjektif - MEQ","MEQ" ],
           [ "Subjektif - SEQ","SEQ" ],
-          [ "ACQ", "ACQ" ],
-          [ "OSCI", "OSCI" ],
-          [ "OSCII", "OSCII" ]
+          [ "ACQ",            "ACQ" ],
+          [ "OSCI",           "OSCI" ],
+          [ "OSCII",          "OSCII" ]
           
    ]
    
