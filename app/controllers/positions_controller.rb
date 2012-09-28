@@ -9,6 +9,8 @@ class PositionsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @positions }
+      #format.xls {send_data @positions.to_xls(:name=>"Positions",:headers => Position.header_excel, 
+  		 # :columns => Position.column_excel ), :file_name => 'positions.xls' }
     end
   end
 
@@ -26,7 +28,7 @@ class PositionsController < ApplicationController
   # GET /positions/new
   # GET /positions/new.xml
   def new
-    @position = Position.new(:parent_id => params[:parent_id])
+    @position = Position.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -88,6 +90,19 @@ class PositionsController < ApplicationController
   def maklumat_perjawatan_LA
     #@pages = Page.find(:all, :order => :position)
     @positions = Position.find(:all, :order => :positioncode)
-    render :layout => 'report'
+    respond_to do |format|
+      format.html{ render :layout => 'report' }
+  
+      #---
+      #ref:book-pg 465
+      #format.xls { send_data @positions.to_xls(:name=>"Positions",:headers => Position.header_excel, :columns => Position.column_excel ), :file_name => 'positions.xls' }
+      #format.xls { send_data @positions.to_xls, :file_name => 'positions.xls' }
+      format.xls { send_data @positions.to_xls(:title => Position.title_excel,:title2 => Position.title2_excel,:headers => Position.header_excel, :columns => Position.column_excel,:name => 'Positions'), :filename => 'Maklumat_Perjawatan.xls',:type=>'application/vnd.ms-excel' }
+      #format.xls { send_data @positions.to_xls, :filename => 'positions2.xls' } #ok but data not properly displayed as required.
+      #----
+      format.xml { render :xml => @positions }
+    end
+
   end
+
 end

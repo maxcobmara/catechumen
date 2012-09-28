@@ -1,0 +1,161 @@
+<% if index == 0 %>
+	<table>
+		<tr>
+			<td><b>Subject : </b><font color=red>*</font></td>
+			<td>
+				<!-- start of subject selection by user -->
+				<%= f.collection_select :subject_id_all, Subject.find(:all), :id, :subject_code_with_subject_name,
+										{:include_blank => true},
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_div), 
+										:url => {:action => 'update_subject' }, 
+										:with => "'subjectselect='+$('"+form_tag_id(f.object_name, :subject_id_all)+"').value
+																 +'&gradescount='+'#{@grades.count}' ") %>
+				<!-- end of subject selection by user --> 
+			</td>
+			<td>
+				<!-- start of subject_id fields value assignment -->
+					<!-- upon selection of subject from the above collection_select(:subject_id_all), -->
+					<!-- field (subject_id) of all records will be assigned with the same value as per selected subject -->
+					<%= tag("div", :id => form_tag_id(f.object_name, :subject_div)) %>
+						<%#------required for repeated submission due to previously invalid data sent------%>
+						
+						<!--for 6 grades & below, @subject_id_4_all works well but for more grades record fails-->
+						<% if @subject_id_4_all.blank? || @subject_id_4_all == 0 || @subject_id_4_all == '0' %>
+							<% @subject_id_4_all = @grades[0].subject_id_all %>
+						<% end %>
+						<!--and this portion gives solution for this problem -->
+						<%= render :partial => 'selected_subject', :locals => {:subjectselect=> @subject_id_4_all, :gradescount => @grades.count} %> 
+						<%#------required for repeated submission due to previously invalid data sent------%>
+					</div>
+				<!-- end of subject_id fields value assignment -->
+			</td>
+		</tr>
+		<tr>
+			<td>	
+				<b>Formative Score Type : </b> 							
+			</td>
+			<td>
+				<%= f.select :formativecount, 1..6, {:include_blank => true}, :onchange => remote_function(:update=>form_tag_id(f.object_name, :formativecount_div),
+													:url => {:action => 'update_formative_count'},
+													:with => "'formativecount='+$('"+form_tag_id(f.object_name, :formativecount)+"').value 
+													+'&index2='+'#{index}' 
+													+'&gradescount='+'#{@grades.count}' ")%>
+			</td>
+		</tr>
+		<tr>
+			<td colspan=2>
+				<p><font color="red">* Indicates mandatory fields. To include <b>Formative Scores</b>, please select <i><b>quantity of formative score type</b></i> and fill in all fields accordingly. </font></p>
+			</td>
+		</tr>
+	</table>
+	
+	<div class="tlist">													<!-- refer closing line 57, new.html.erb-->
+		<table width=100% border="1" cellpadding="0" cellspacing="0">	<!-- refer closing line 56, new.html.erb-->
+			
+<% end %>	<!-- end of - if index == 0 - line 1-->
+		
+<% if @count != 0 %> 
+	<% if @count == 1 %>
+			<tr height=65>
+				<td><b>No</b></td>
+				<td><b>Student</b> <font color=red>*</font><br><font color=#AAA size=-2>Only one record permitted for each student</font></td>
+				<td rowspan="11">
+					<!-- start of formative_count partial (formative score entry)-upon selection of Formative Score Type (quantity) line 38-42 -->
+						<%= tag("div", :id => form_tag_id(f.object_name, :formativecount_div)) %>
+							<%#------required for repeated submission due to previously invalid data sent---------------------------------%>
+							
+							<!--for 6 grades & below, @formativetype_ids_main works well but for more grades record..it fails-->
+							<% if @grades[0].formativecount != 0 %>
+								<% @formativecount_main = @grades[0].formativecount %>
+							
+								<% if @grades[0].formativetype_ids %>
+									<% @formativetype_ids_main = @grades[0].formativetype_ids %>
+								<% end %>
+						
+								<%if @grades[0].formative_weightages %>
+									<% @formative_weightages_main = @grades[0].formative_weightages %>
+								<% end %>
+							
+								<% if @all_grades_scores_attributes %>
+									<% @all_grades_scores_attributes.each do |value| %>
+										<% unless value.nil? || value.blank? %>
+											<% @scores_attributes_value = @all_grades_scores_attributes %>
+										<% else %>
+											<% @scores_attributes_value = 0 %>
+										<% end %>
+									<% end %>
+								<% end %>
+								
+							<% end %>
+							<!--and this portion gives solution for this problem -->
+							
+							<% if @formativecount_main %><%#-----------if user already selected qty of formative score type-------------------%>
+								<%= render :partial => 'formative_count', :locals => {:gradescount => @grades.count,
+																					  :formativecount_main => @formativecount_main,
+																					  :formativetypes_ids_main=> @formativetype_ids_main, 
+																					  :formative_weightages_main => @formative_weightages_main, 
+																					  :scores_attributes_value => @scores_attributes_value } %> 
+							<% end %>	<%# end of ---- if @formativecount_main %>
+							<%#------required for repeated submission due to previously invalid data sent---------------------------------%>
+						</div>
+					<!-- end of formative_count partial (formative score entry)- upon selection of Formative Score Type (quantity) line 42-46 -->
+				</td>
+				<td align=center>
+					<table><tr><td><b>Final Exam</b></td></tr></table>
+					<%#---required for all records regardless either newly entered data or re-submit one---%>
+					<% 0.upto(@grades_count.to_i - 1) do |count| %>
+						<%= hidden_field "grades[#{count}]", :exam1name, :value => 'Final Exam' %> 
+					<% end %>
+					<%#---required for all records regardless either newly entered data or re-submit one---%>
+					Weightage : <font color=red>*</font> <br><%= f.select :examweight_all, Grade.weightage_range_summative,
+										{:include_blank => true},
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :summativeweightage_div), 
+										:url => {:action => 'update_summative_weightage' }, 
+										:with => "'summativeweightage='+$('"+form_tag_id(f.object_name, :examweight_all)+"').value 
+										+'&gradescount='+'#{@grades.count}' ") %>
+					
+					<%= tag("div", :id => form_tag_id(f.object_name, :summativeweightage_div)) %>
+						<%#------required for repeated submission due to previously invalid data sent------%>
+						
+						<!--for 6 grades & below, @subject_id_4_all works well but for more grades record fails-->
+						<% if @examweight_4_all.blank? || @examweight_4_all == 0 || @examweight_4_all == '0' %>
+							<%= @examweight_4_all = @grades[0].examweight_all %>
+						<% end %>
+						<!--and this portion gives solution for this problem -->
+						
+						<%= render :partial => 'summative_weightage', :locals => {:summativeweightage=> @examweight_4_all, :gradescount => @grades.count } %> 
+						<%#------required for repeated submission due to previously invalid data sent------%>
+					</div>
+				</td>
+				<!--<td>Summative Weightage</td>-->
+			</tr>
+	<% end %>	<!-- end for if @count == 1 -->
+			<tr>
+				<td><%= @count %><% @count+=1 %></td>
+				<td>
+					<% if @count == 1 %><br><p>&nbsp;</p><% end %>
+					<%= f.collection_select :student_id, Student.find(:all), :id, :name, :include_blank => true %><!-- grades_0_student_id -->
+					<%#= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %>
+				</td>
+				<td>
+					<!--3 August 2012-assign value of total marks obtained for an exam to Final Exam (exam1marks) field-->
+					<% unless @grades[index].student_id.nil? || @grades[index].student_id.blank? %>
+						<% @value_total = 0.0 %>
+						<% @exammarks = Exammark.find(:all, :conditions=> ['student_id=?',@grades[index].student_id ]) %>
+						<% @exammarks.each do |exammark| %>
+							<% if @grades[index].subject_id == exammark.exampaper.subject_id %>
+								<% @value_total = Mark.sum(:mark, :conditions => ["exammark_id=?", exammark.id]) %>
+							<% else %>
+								<% @value_total = @grades[index].exam1marks %>
+							<% end %>
+						<% end %>
+					<% end %>
+					<!--instead of key-in Final Exam marks (exam1marks) separately, this part will retrieve total marks for -->
+					<!--exam taken from table marks (exammark-marks)-otherwise use value that previously entered in grade table-3 August 2012-->
+					<%= f.text_field :exam1marks, :size => 2, :value=> @value_total %>%
+				
+				</td>
+				<!--<td><%#= f.text_field :examweight, :size => 2 %>%</td>-->
+			</tr>
+			
+<% end %>		<!-- end for if @count != 0 -->
