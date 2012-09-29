@@ -12,11 +12,14 @@ class AssetsController < ApplicationController
       else
         @assets = Asset.search(params[:search]).paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])
         @asset_gbtype = @assets.group_by { |t| t.gbtype }
-    end
+      end
+      
+    @assetforloss = Asset.find(:all, :conditions => ['name ILIKE ?', "%#{params[:search]}%"])
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @assets }
+      format.js   { render :js => @assetforloss }
     end
   end
 
@@ -143,5 +146,15 @@ class AssetsController < ApplicationController
   def kewpa8
     @asset = Asset.all #search(params[:search])
     render :layout => 'report'
+  end
+  
+  def asset_autocomplete
+    @asset_autocompletes = Asset.find(:all, :conditions => ['assetcode ILIKE ? OR name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
+    #@boo = Asset.find(:all, :conditions => ['assetcode ILIKE ? OR name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
+    #@asset_autocompletes = @boo.each do |asset| {asset_list << [assetcode, name]}
+    
+    respond_to do |format|
+      format.js   { render :js => @asset_autocomplete }
+    end
   end
 end

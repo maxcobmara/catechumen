@@ -14,8 +14,8 @@ class Asset < ActiveRecord::Base
   #belongs_to :subcategory,  :class_name => 'Assetcategory', :foreign_key => 'subcategory_id'
   
   
-  has_one :disposals      #Link to Model Disposals
-  has_many :asslost,    :class_name => 'Assetloss', :foreign_key => 'asset_id' #Link to Model AssetLoss  
+  has_one :disposals        #Link to Model Disposals
+  has_one :assetloss        #Link to Model AssetLoss  
   has_many :assettracks
   #has_many :assetinassettrack,    :class_name => 'Assettrack', :foreign_key => 'asset_id' #Link to Model AssetTrack
   
@@ -27,6 +27,10 @@ class Asset < ActiveRecord::Base
     if assetcode == nil
       self.assetcode = (suggested_serial_no).to_s
     end
+  end
+  
+  def code_asset
+    "#{assetcode} - #{name}"
   end
   
 
@@ -173,7 +177,7 @@ ETI = [
 ]
 
 def assigned_details 
-   suid = assignedto_id.to_a
+   suid = Array(assignedto_id)
    exists = Staff.find(:all, :select => "id").map(&:id)
    checker = suid & exists     
   

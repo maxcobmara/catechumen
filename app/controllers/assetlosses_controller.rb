@@ -1,4 +1,5 @@
 class AssetlossesController < ApplicationController
+  
   # GET /assetlosses
   # GET /assetlosses.xml
   def index

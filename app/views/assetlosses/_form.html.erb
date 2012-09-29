@@ -1,29 +1,42 @@
 <div class="tform">
+	<H2><%= t 'assetloses.assetloses_details' %></H2>
   <table width=100% >
-	<tr>
-		<th colspan=2><%= t 'assetloses.assetloses_details' %></th>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="reportcode"><b><%= t 'assetloses.reportcode' %></b></label><font color="red"> * </font></td>
-		<td><%= f.text_field :reportcode %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="losstype"><b><%= t 'assetloses.losstype' %></b></label><font color="red"> * </font></td>
+		<tr>
+			<td class="leftcol"><label for="reportcode"><b><%= t 'assetloses.reportcode' %></b></label><font color="red"> * </font></td>
+			<td><%= f.text_field :reportcode %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="losstype"><b><%= t 'assetloses.losstype' %></b></label><font color="red"> * </font></td>
 			<td><%= f.select :losstype, 
 			                  Assetloss::LOSS,
 			                 :prompt => "Select"  %></td>
-	</tr>
+		</tr>
 	
-	<tr>
-	<td class="leftcol"><label for="asset_id"><b><%= t 'assetloses.asset_id' %></b></label></td>
-      <td><%= f.collection_select :asset_id, Asset.find(:all), :id, :name, :include_blank => true %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="asset_id"><b><%= t 'assetloses.asset_id' %></b></label></td>
+	     <td><#%= f.collection_select :asset_id, Asset.find(:all, :order => :assetcode), :id, :code_asset, :include_blank => true %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="asset_id"><b>autocomplete asset</b></label></td>
+			<td><%= text_field_with_auto_complete :assetloss, :asset_name, {:size => 60}, 
+							{ :url => '/asset_autocomplete', 
+								:method => :get, 
+								:with => "'search=' + element.value + '&asset_name='"} %></td>
+			
+	     <!--
+	     <td><#%= text_field_with_auto_complete :assetloss, :asset_name, {:size => 60}, 
+	     							{ :url => formatted_assets_path(:js), 
+	     								:method => :get, 
+	     								:with => "'search=' + element.value"} %></td>-->
+	     
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="estvalue"><b><%= t 'assetloses.estvalue' %></b></label></td>
-		<td><b>RM</b> <%= f.text_field :estvalue, :size => 12 %></td>
-	</tr>
-	
+		<tr>
+			<td class="leftcol"><label for="estvalue"><b><%= t 'assetloses.estvalue' %></b></label></td>
+			<td><b>RM</b> <%= f.text_field :estvalue, :size => 12 %></td>
+		</tr>
 
 	<!-- 3/10/2011 - Shaliza Fixes it
 	<tr>
@@ -32,80 +45,82 @@
 	</tr>
 	<--><!--end of fix-->
 	
-	<tr>
-		<td class="leftcol"><label for="losslocation_id"><%= t 'assetloses.losslocation_id' %></b></label></td>
-		<td><%= f.collection_select :losslocation_id, Residence.find(:all), :id, :resname, :include_blank => true %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="losslocation_id"><%= t 'assetloses.losslocation_id' %></b></label></td>
+			<td><%= f.collection_select :losslocation_id, Residence.find(:all), :id, :resname, :include_blank => true %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="lossdt"><b><%= t 'assetloses.lossdt' %></b></b></label></td>
-		<td><%= f.datetime_select :lossdt, :start_year => 2005, :end_year => 2020, :order => [:day, :month, :year] %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="lossdt"><b><%= t 'assetloses.lossdt' %></b></b></label></td>
+			<td><%= f.datetime_select :lossdt, :start_year => 2005, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="losshow"><b><%= t 'assetloses.losshow' %></b></b></label></td>
-		<td><%= f.text_area :losshow, :size => "30x7" %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="losshow"><b><%= t 'assetloses.losshow' %></b></b></label></td>
+			<td><%= f.text_area :losshow, :size => "30x7" %></td>
+		</tr>
 	
-	<tr>
-	<td class="leftcol"><label for="lossstafflast_id"><b><%= t 'assetloses.lossstafflast_id' %></b></b></label></td>
-      <td><%= f.collection_select :lossstafflast_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="lossstafflast_id"><b><%= t 'assetloses.lossstafflast_id' %></b></b></label></td>
+	    <td><%= f.collection_select :lossstafflast_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
 	
-	<tr>
-	<td class="leftcol"><label for="laststaffcase"><b><%= t 'assetloses.laststaffcase' %></b></b></label></td>
-      	<td><%= f.radio_button :laststaffcase,'false' %>Yes<%= f.radio_button :laststaffcase,'true' %>No</td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="laststaffcase"><b><%= t 'assetloses.laststaffcase' %></b></b></label></td>
+      <td><%= f.radio_button :laststaffcase,'false' %>Yes<%= f.radio_button :laststaffcase,'true' %>No</td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="preventpast"><b><%= t 'assetloses.preventpast' %></b></b></label></td>
-		<td><%= f.text_area :preventpast, :size => "30x7" %></td>
-	</tr>
-	<tr>
-	<td class="leftcol"><label for="laststaffstop"><b><%= t 'assetloses.laststaffstop' %></b></label></td>
-      	<td><%= f.radio_button :laststaffstop,'false' %>Yes<%= f.radio_button :laststaffstop,'true' %>No</td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="preventpast"><b><%= t 'assetloses.preventpast' %></b></b></label></td>
+			<td><%= f.text_area :preventpast, :size => "30x7" %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="laststaffstop"><b><%= t 'assetloses.laststaffstop' %></b></label></td>
+	     <td><%= f.radio_button :laststaffstop,'false' %>Yes<%= f.radio_button :laststaffstop,'true' %>No</td>
+		</tr>
 	
-	<tr>
-	<td class="leftcol"><label for="poreport"><b><%= t 'assetloses.poreport' %></b></label></td>
-      	<td><%= f.radio_button :poreport,'false' %>Yes<%= f.radio_button :poreport,'true' %>No</td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="poreport"><b><%= t 'assetloses.poreport' %></b></label></td>
+	    <td><%= f.radio_button :poreport,'false' %>Yes<%= f.radio_button :poreport,'true' %>No</td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="porepno"><b><b><%= t 'assetloses.porepno' %></b></label></td>
-		<td><%= f.text_field :porepno %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="porepno"><b><b><%= t 'assetloses.porepno' %></b></label></td>
+			<td><%= f.text_field :porepno %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="preventfuture"><b><%= t 'assetloses.preventfuture' %></b></label></td>
-		<td><%= f.text_area :preventfuture, :size => "30x7" %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="preventfuture"><b><%= t 'assetloses.preventfuture' %></b></label></td>
+			<td><%= f.text_area :preventfuture, :size => "30x7" %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="remarks"><b><%= t 'assetloses.remarks' %></b></label></td>
-		<td><%= f.text_area :remarks, :size => "30x7" %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="remarks"><b><%= t 'assetloses.remarks' %></b></label></td>
+			<td><%= f.text_area :remarks, :size => "30x7" %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="hod_id"><b><%= t 'assetloses.hod_id' %></b></label></td>
-		<td><%= f.collection_select :hod_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="hod_id"><b><%= t 'assetloses.hod_id' %></b></label></td>
+			<td><%= f.collection_select :hod_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="hodendorsedt"><b><%= t 'assetloses.hodendorsedt' %></b></label></td>
-		<td><%= f.date_select :hodendorsedt, :start_year => 2005, :end_year => 2020, :order => [:day, :month, :year] %></td>
-	</tr>
+		<tr>
+			<td class="leftcol"><label for="hodendorsedt"><b><%= t 'assetloses.hodendorsedt' %></b></label></td>
+			<td><%= f.date_select :hodendorsedt, :start_year => 2005, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
 
 		<tr>
 			<th colspan=2><%= t 'assetloses.lampirank' %></th>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="moneytype"><b><%= t 'assetloses.moneytype' %></b></label></td>
+				<td class="leftcol"><label for="moneytype"><b><%= t 'assetloses.moneytype' %></b></label></td>
 				<td><%= f.select :moneytype, 
 				                  Assetloss::MONEY,
 				                 :prompt => "Select"  %></td>
 		</tr>
+		
 		<!--enter purchase date & price here<-->
 		<tr>
 		<td class="leftcol"><label for="new"><b><%= t 'assetloses.new' %></b></label></td>
