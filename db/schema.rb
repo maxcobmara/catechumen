@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120927145721) do
+ActiveRecord::Schema.define(:version => 20121002092836) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -92,6 +92,48 @@ ActiveRecord::Schema.define(:version => 20120927145721) do
     t.text     "ppkoverall"
     t.integer  "ppk_id"
     t.date     "ppkevaldt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "asset_losses", :force => true do |t|
+    t.boolean  "form_type"
+    t.string   "loss_type"
+    t.integer  "asset_id"
+    t.string   "cash_type"
+    t.decimal  "est_value"
+    t.boolean  "is_used"
+    t.boolean  "ownership"
+    t.decimal  "value_state"
+    t.decimal  "value_federal"
+    t.integer  "location_id"
+    t.datetime "lost_at"
+    t.text     "how_desc"
+    t.string   "report_code"
+    t.integer  "last_handled_by"
+    t.boolean  "is_prima_facie"
+    t.boolean  "is_staff_action"
+    t.boolean  "is_police_report_made"
+    t.string   "police_report_code"
+    t.text     "why_no_report"
+    t.text     "police_action_status"
+    t.boolean  "is_rule_broken"
+    t.text     "rules_broken_desc"
+    t.text     "preventive_action_dept"
+    t.integer  "prev_action_enforced_by"
+    t.text     "preventive_measures"
+    t.text     "new_measures"
+    t.text     "surcharge_notes"
+    t.text     "notes"
+    t.integer  "investigated_by"
+    t.string   "investigation_code"
+    t.date     "investigation_completed_on"
+    t.text     "security_officer_notes"
+    t.integer  "security_officer_id"
+    t.string   "security_code"
+    t.boolean  "is_submit_to_hod"
+    t.integer  "endorsed_hod_by"
+    t.date     "endorsed_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -194,6 +236,7 @@ ActiveRecord::Schema.define(:version => 20120927145721) do
     t.string   "registration"
     t.string   "nationcode"
     t.boolean  "mark_disposal"
+    t.boolean  "mark_as_lost"
   end
 
   create_table "assettracks", :force => true do |t|
@@ -721,6 +764,7 @@ ActiveRecord::Schema.define(:version => 20120927145721) do
     t.integer  "staffgrade_id"
     t.integer  "staff_id"
     t.string   "ancestry"
+    t.integer  "ancestry_depth", :default => 0
   end
 
   add_index "positions", ["ancestry"], :name => "index_positions_on_ancestry"

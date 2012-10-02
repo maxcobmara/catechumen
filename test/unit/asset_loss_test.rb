@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ResidenceTest < ActiveSupport::TestCase
+class AssetLossTest < ActiveSupport::TestCase
   # Replace this with your real tests.
   test "the truth" do
     assert true

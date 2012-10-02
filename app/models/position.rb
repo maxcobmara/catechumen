@@ -1,8 +1,8 @@
 class Position < ActiveRecord::Base
-  has_ancestry
+  has_ancestry :cache_depth => true
   
-  has_many :subordinates, :class_name => 'Position', :foreign_key => 'parent_id'
-  belongs_to :bosses, :class_name => 'Position', :foreign_key => 'parent_id'
+  #has_many :subordinates, :class_name => 'Position', :foreign_key => 'parent_id'
+  #belongs_to :bosses, :class_name => 'Position', :foreign_key => 'parent_id'
   belongs_to :staffgrade, :class_name => 'Employgrade', :foreign_key => 'staffgrade_id'
   belongs_to :staff
 
@@ -48,6 +48,9 @@ class Position < ActiveRecord::Base
       gls = "class=\"child-of-node-#{parent_id}\""
     end
     gls
+  end
+  
+  def hod
   end
   
   

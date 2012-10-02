@@ -1,107 +1,145 @@
 <div class="tform">
-	<H2><%= t 'assetloses.assetloses_details' %></H2>
-  <table width=100% >
-			<tr>
-				<td class="leftcol"><label for="reportcode"><b><%= t 'assetloses.reportcode' %> :</b></label></td>
-				<td><%=h @assetloss.reportcode %></td>
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="losstype"><b><%= t 'assetloses.losstype' %> :</b></label></td>
-					<td><%=h @assetloss.losstype %></td>
-			</tr>
+<H2>Asset Loss Management - Details</H2>
+<table width=100% >
+		<tr>
+			<td class="leftcolwide"><label for="reportcode"><b><%= t 'assetlosses.reportcode' %> :</b></label></td>
+			<td><%=h @assetloss.reportcode %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcolwide"><label for="hod_id"><b><%= t 'assetlosses.hod_id' %> :</b></label></td>
+			<td><%=h @assetloss.hod_details %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcolwide"><label for="hodendorsedt"><b><%= t 'assetlosses.hodendorsedt' %> :</b></label></td>
+			<td><%=h l(@assetloss.hodendorsedt) unless @assetloss.hodendorsedt.blank? %></td>
+		</tr>
+</table>
+		
+		
+		
+		
+<article class="tabs">  
+	<section id="tab1">  
+		<h2><a href="#tab1">Lampiran J</a></h2>
+			<table  width=800px >
+				<tr>
+						<td class="leftcolwide"><label for="losstype"><b><%= t 'assetlosses.losstype' %> :</b></label></td>
+						<td><%=h @assetloss.losstype %>
+							  <% if @assetloss.losstype == "Asset" %>
+								<BR><%= @assetloss.asset_details %><% end -%></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcolwide"><label for="estvalue"><b><%= t 'assetlosses.estvalue' %> :</b></label></td>
+					<td><%=h ringgols(@assetloss.estvalue) %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcolwide"><label for="losslocation_id"><b><%= t 'assetlosses.losslocation_id' %> :</b></label></td>
+					<td><%=h @assetloss.location_details %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcolwide"><label for="lossdt"><b><%= t 'assetlosses.lossdt' %> :</b></label></td>
+					<td><%=h @assetloss.lossdt.strftime("%I:%M%p  %d-%b-%Y") unless @assetloss.lossdt.blank? %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcolwide"><label for="losshow"><b><%= t 'assetlosses.losshow' %>? :</b></label></td>
+					<td><%=h @assetloss.losshow %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcolwide"><label for="lossstafflast_id"><b><%= t 'assetlosses.lossstafflast_id' %> :</b></label></td>
+			    <td><%=h @assetloss.last_staff_to_handle %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcolwide"><label for="laststaffcase"><b><%= t 'assetlosses.laststaffcase' %>? :</b></label></td>
+			    <td><%=h @assetloss.laststaffcase? ? "Yes" : "No" %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcolwide"><label for="laststaffstop"><b><%= t 'assetlosses.laststaffstop' %>?:</b></label></td>
+			    <td><%=h @assetloss.laststaffstop? ? "Yes" : "No" %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcolwide"><label for="poreport"><b><%= t 'assetlosses.poreport' %> :</b></label></td>
+			    <td><%=h @assetloss.poreport? ? ("Yes, Police Report No :" +  @assetloss.porepno ) : "No" %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcolwide"><label for="preventpast"><b><%= t 'assetlosses.preventpast' %> :</b></label></td>
+					<td><%=h @assetloss.preventpast %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcolwide"><label for="preventfuture"><b><%= t 'assetlosses.preventfuture' %> ?:</b></label></td>
+					<td><%=h @assetloss.preventfuture %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcolwide"><label for="remarks"><b><%= t 'assetlosses.remarks' %> :</b></label></td>
+					<td><%=h @assetloss.remarks %></td>
+				</tr>	
+			</table>
+	</section> 
 	
-			<tr>
-			<td class="leftcol"><label for="asset_id"><b><%= t 'assetloses.asset_id' %> :</b></label></td>
-		      <td><%=h @assetloss.asslost.assetcode unless @assetloss.asset_id.nil? %></td>
-			</tr>
 	
+	
+	 
+	<section id="tab2"> 
+	<h2><a href="#tab2">Lampiran K</a></h2>
+		<table  width=800px >
 			<tr>
-				<td class="leftcol"><label for="estvalue"><b><%= t 'assetloses.estvalue' %> :</b></label></td>
-				<td><%=h ringgols(@assetloss.estvalue) %></td>
+				<td class="leftcolwide"><label for="moneytype"><b><%= t 'assetlosses.moneytype' %> :</b></label></td>
+				<td><%=h @assetloss.moneytype %></td>
 			</tr>
+			<tr>
+				<td class="leftcolwide"><label for="asset_purchasedate"><b><%= t 'asset.purchasedate' %> :</b></label></td>
+				<td><%=h l(@assetloss.asset.purchasedate) unless @assetloss.asset.blank? %></td>
+			</tr>
+			<tr>
+				<td class="leftcolwide"><label for="purchaseprice"><b><%= t 'asset.purchaseprice' %> :</b></label></td>
+				<td><%=h ringgols(@assetloss.asset.purchaseprice) unless @assetloss.asset.blank? %></td>
+			</tr>
+		</table>
+	</section>  
+	<section id="tab3">  
+	<h2><a href="#tab3">Tab 3</a></h2>  
+	<p>This content appears on tab 3.</p>  
+	</section>  
+	</article>
+	</div>
+	<div class="tform">
+	
+	
+	
 	
 
-			<!--
-			<tr>
-			<td class="leftcol"><label for="part_id"><b>Supplies Code:</b></label></td>
-		      <td><#%= f.collection_select :part_id, Part.find(:all), :id, :partcode, :include_blank => true %></td>
-			</tr>
-			<-->
 	
-			<tr>
-				<td class="leftcol"><label for="losslocation_id"><b><%= t 'assetloses.losslocation_id' %> :</b></label></td>
-				<td><%=h @assetloss.losslocation_id? ? @assetloss.location_details : "" %></td>
-			</tr>
-	
-			<tr>
-				<td class="leftcol"><label for="lossdt"><b><%= t 'assetloses.lossdt' %> :</b></label></td>
-				<td><%=h @assetloss.lossdt.strftime("%I:%M%p  %d-%b-%Y") unless @assetloss.lossdt.blank? %></td>
-			</tr>
-	
-			<tr>
-				<td class="leftcol"><label for="losshow"><b><%= t 'assetloses.losshow' %>? :</b></label></td>
-				<td><%=h @assetloss.losshow %></td>
-			</tr>
-	
-			<tr>
-			<td class="leftcol"><label for="lossstafflast_id"><b><%= t 'assetloses.lossstafflast_id' %> :</b></label></td>
-		      <td><%=h @assetloss.lossstafflast_id.blank? ? "" : @assetloss.laststaff.name %></td>
-			</tr>
-	
-			<tr>
-			<td class="leftcol"><label for="laststaffcase"><b><%= t 'assetloses.laststaffcase' %>? :</b></label></td>
-		      	<td><%=h @assetloss.laststaffcase %></td>
-			</tr>
-	
-			<tr>
-				<td class="leftcol"><label for="preventpast"><b><%= t 'assetloses.preventpast' %> :</b></label></td>
-				<td><%=h @assetloss.preventpast %></td>
-			</tr>
-			<tr>
-			<td class="leftcol"><label for="laststaffstop"><b><%= t 'assetloses.laststaffstop' %>?:</b></label></td>
-		      	<td><%=h @assetloss.laststaffstop %></td>
-			</tr>
-	
-			<tr>
-			<td class="leftcol"><label for="poreport"><b><%= t 'assetloses.poreport' %> :</b></label></td>
-		      	<td><%=h @assetloss.poreport %></td>
-			</tr>
-	
-			<tr>
-				<td class="leftcol"><label for="porepno"><b><b><%= t 'assetloses.porepno' %> :</b></label></td>
-				<td><%=h @assetloss.porepno %></td>
-			</tr>
-	
-			<tr>
-				<td class="leftcol"><label for="preventfuture"><b><%= t 'assetloses.preventfuture' %> ?:</b></label></td>
-				<td><%=h @assetloss.preventfuture %></td>
-			</tr>
-	
-			<tr>
-				<td class="leftcol"><label for="remarks"><b><%= t 'assetloses.remarks' %> :</b></label></td>
-				<td><%=h @assetloss.remarks %></td>
-			</tr>
-	
-			<tr>
-				<td class="leftcol"><label for="hod_id"><b><%= t 'assetloses.hod_id' %> :</b></label></td>
-				<td><%=h @assetloss.hod_id? ? @assetloss.hod_details : "" %></td>
-			</tr>
-	
-			<tr>
-				<td class="leftcol"><label for="hodendorsedt"><b><%= t 'assetloses.hodendorsedt' %> :</b></label></td>
-				<td><%=h l(@assetloss.hodendorsedt) unless @assetloss.hodendorsedt.blank? %></td>
-			</tr>
-	</table>
 
-	<H2><%= t 'assetloses.lampirank' %></H2>
+	
+	
+	
+	
+	
+	
+
+
+
+	<H2><%= t 'assetlosses.lampirank' %></H2>
 	<table width=100%>
 		<tr>
-			<td class="leftcol"><label for="moneytype"><b><%= t 'assetloses.moneytype' %> :</b></label></td>
+			<td class="leftcolwide"><label for="moneytype"><b><%= t 'assetlosses.moneytype' %> :</b></label></td>
 			<td><%=h @assetloss.moneytype %></td>
 		</tr>
 		<!--enter purchase date & price here<-->
 		<tr>
-		<td class="leftcol"><label for="new"><b><%= t 'assetloses.new' %> ?:</b></label></td>
+		<td class="leftcolwide"><label for="new"><b><%= t 'assetlosses.new' %> ?:</b></label></td>
 	      <td><%=h @assetloss.new %></td>
 		</tr>
 		
@@ -116,16 +154,16 @@
 		     display assset.owner.staff.position.maintasks<-->
 		
 		<tr>
-				<td class="leftcol"><label for="sostop"><b><%= t 'assetloses.sostop' %> :</b></label></td>
+				<td class="leftcolwide"><label for="sostop"><b><%= t 'assetlosses.sostop' %> :</b></label></td>
 				<td><%=h @assetloss.sostop %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="sostopdt"><b><%= t 'assetloses.sostopdt' %> :</b></label></td>
+			<td class="leftcolwide"><label for="sostopdt"><b><%= t 'assetlosses.sostopdt' %> :</b></label></td>
 			<td><%=h l(@assetloss.sostopdt) unless @assetloss.sostopdt.blank? %></td>
 		</tr>
 		
 			<tr>
-				<td class="leftcol"><label for="soaction"><b><%= t 'assetloses.soaction' %> :</b></label></td>
+				<td class="leftcolwide"><label for="soaction"><b><%= t 'assetlosses.soaction' %> :</b></label></td>
 				<td><%=h @assetloss.soaction %></td>
 			</tr>
 		
@@ -136,59 +174,59 @@
 		     display asset.owner.staff.bosses.position.maintasks<-->
 		
 			<tr>
-				<td class="leftcol"><label for="supstop"><b><%= t 'assetloses.supstop' %> :</b></label></td>
+				<td class="leftcolwide"><label for="supstop"><b><%= t 'assetlosses.supstop' %> :</b></label></td>
 				<td><%=h @assetloss.supstop %></td>
 			</tr>
 
 			<tr>
-				<td class="leftcol"><label for="supstopdt"><b><%= t 'assetloses.supstopdt' %> :</b></label></td>
+				<td class="leftcolwide"><label for="supstopdt"><b><%= t 'assetlosses.supstopdt' %> :</b></label></td>
 				<td><%=h l(@assetloss.supstopdt) unless @assetloss.supstopdt.blank? %></td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="supaction"><b><%= t 'assetloses.supaction' %> :</b></label></td>
+				<td class="leftcolwide"><label for="supaction"><b><%= t 'assetlosses.supaction' %> :</b></label></td>
 				<td><%=h @assetloss.supaction %></td>
 			</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="poaction"><b><%= t 'assetloses.poaction' %> :</b></label></td>
+			<td class="leftcolwide"><label for="poaction"><b><%= t 'assetlosses.poaction' %> :</b></label></td>
 			<td><%=h @assetloss.poaction %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="ponoreportwhy"><b><%= t 'assetloses.ponoreportwhy' %> :</b></label></td>
+			<td class="leftcolwide"><label for="ponoreportwhy"><b><%= t 'assetlosses.ponoreportwhy' %> :</b></label></td>
 			<td><%=h @assetloss.ponoreportwhy %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="rulesbroken"><b><%= t 'assetloses.rulesbroken' %> :</b></label></td>
+			<td class="leftcolwide"><label for="rulesbroken"><b><%= t 'assetlosses.rulesbroken' %> :</b></label></td>
 			<td><%=h @assetloss.rulesbroken %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="owneraction"><b><%= t 'assetloses.owneraction' %> :</b></label></td>
+			<td class="leftcolwide"><label for="owneraction"><b><%= t 'assetlosses.owneraction' %> :</b></label></td>
 			<td><%=h @assetloss.owneraction %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="newrule"><b><%= t 'assetloses.newrule' %> :</b></label></td>
+			<td class="leftcolwide"><label for="newrule"><b><%= t 'assetlosses.newrule' %> :</b></label></td>
 			<td><%=h @assetloss.newrule %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="newrule_id"><b><%= t 'assetloses.newrule_id' %> :</b></label></td>
+			<td class="leftcolwide"><label for="newrule_id"><b><%= t 'assetlosses.newrule_id' %> :</b></label></td>
 			<td><%=h @assetloss.newrule_id.blank? ? "" : @assetloss.enforce.name %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="nrrecommend"><b><%= t 'assetloses.nrrecommend' %> :</b></label></td>
+			<td class="leftcolwide"><label for="nrrecommend"><b><%= t 'assetlosses.nrrecommend' %> :</b></label></td>
 			<td><%=h @assetloss.nrrecommend %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="surcharge"><b><%= t 'assetloses.surcharge' %> :</b></label></td>
+			<td class="leftcolwide"><label for="surcharge"><b><%= t 'assetlosses.surcharge' %> :</b></label></td>
 			<td><%=h @assetloss.surcharge %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="sio_id"><b><%= t 'assetloses.sio_id' %> :</b></label></td>
+			<td class="leftcolwide"><label for="sio_id"><b><%= t 'assetlosses.sio_id' %> :</b></label></td>
 			<td><%=h @assetloss.sio_id? ? @assetloss.officer_details : "" %></td>
 		</tr>			
 	</table>

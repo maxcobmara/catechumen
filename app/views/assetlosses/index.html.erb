@@ -1,117 +1,40 @@
-<!-- Box -->
 <div class="box">
-	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left"><%= t 'assetloses.list' %></h2>
+		<h2 class="left"><%= t 'assetlosses.list' %></h2>
 	</div>
 </div>
+
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'Register Loss/Write Off') + "New", new_assetloss_path %></p>
+</div>
+
+
 <div class="indextable">
 	<table>
 		<tr>
-		    <th><%= t 'assetloses.losstype' %></th>
-		    <th><%= t 'assetloses.estvalue' %></th>
-		    <th><%= t 'assetloses.asset_id' %></th>
-		    <!--<th>Part</th>-->
-		    <th><%= t 'assetloses.losslocation_id' %></th>
-		    <th><%= t 'assetloses.lossdt' %></th>
-		   <!--<th>Losshow</th>
-		    <th>Lossstafflast</th>
-		    <th>Laststaffcase</th>
-		    <th>Laststaffstop</th>
-		    <th>Poreport</th>
-		    <th>Porepno</th>
-		    <th>Poaction</th>
-		    <th>Ponoreportwhy</th>
-		    <th>Preventpast</th>
-		    <th>Preventfuture</th>
-		    <th>Remarks</th>
-		    <th>Hod</th>
-		    <th>Hodendorsedt</th>
-
-		#Data for Lampiran K
-		    <th>Moneytype</th>
-		    <th>New</th>
-		    <th>Reportcode</th>
-		    <th>So</th>
-		    <th>Sostop</th>
-		    <th>Sostopdt</th>
-		    <th>Soaction</th>
-		    <th>Ownerstop</th>
-		    <th>Ownerstopdt</th>
-		    <th>Owneraction</th>
-		    <th>Supstop</th>
-		    <th>Supstopdt</th>
-		    <th>Supaction</th>
-		    <th>Rulesbroken</th>
-
-		#rulesbroken repeating
-		    <th>Newrule</th>
-		    <th>Newrule</th>
-		    <th>Nrrecommend</th>
-		    <th>Surcharge</th>
-		    <th>Scvalue</th>
-		    <th>Screason</th>
-		    <th>Sio</th>
-		    <th>Ssecurity</th>
-		    <th>Closedt</th>-->
+		    <th><%= t 'assetlosses.losstype' %></th>
+		    <th><%= t 'assetlosses.estvalue' %></th>
+		    <th><%= t 'assetlosses.asset_id' %></th>
+		    <th><%= t 'assetlosses.losslocation_id' %></th>
+		    <th><%= t 'assetlosses.lossdt' %></th>
 		    <th colspan=3 class="ac">Control</th>
-  </tr>
+  	</tr>
 
-<% @assetlosses.each do |assetloss| %>
-  <tr>
-    <td><%=h assetloss.losstype %></td>
-    <td align='center'><%=h ringgols(assetloss.estvalue) %></td>
-    <td><%=h assetloss.asset.assetcode unless assetloss.asset_id.blank? %></td>
-    <!--<td><#%=h assetloss.asset_id.blank? ? "" : assetloss.asslost.name %></td>-->
-    <!-- <td><%=h assetloss.part_id %></td>-->
-    <td><%=h assetloss.asslost.location.name unless assetloss.asset_id? %></td>
-    <td><%=h assetloss.lossdt.strftime('%d %b %Y - %H:%M') %></td>
-  <!-- <td><%=h assetloss.losshow %></td>
-    <td><%=h assetloss.lossstafflast_id %></td>
-    <td><%=h assetloss.laststaffcase %></td>
-    <td><%=h assetloss.laststaffstop %></td>
-    <td><%=h assetloss.poreport %></td>
-    <td><%=h assetloss.porepno %></td>
-    <td><%=h assetloss.poaction %></td>
-    <td><%=h assetloss.ponoreportwhy %></td>
-    <td><%=h assetloss.preventpast %></td>
-    <td><%=h assetloss.preventfuture %></td>
-    <td><%=h assetloss.remarks %></td>
-    <td><%=h assetloss.hod_id %></td>
-    <td><%=h assetloss.hodendorsedt %></td>
-    <td><%=h assetloss.moneytype %></td>
-    <td><%=h assetloss.new %></td>
-    <td><%=h assetloss.reportcode %></td>
-    <td><%=h assetloss.so_id %></td>
-    <td><%=h assetloss.sostop %></td>
-    <td><%=h assetloss.sostopdt %></td>
-    <td><%=h assetloss.soaction %></td>
-    <td><%=h assetloss.ownerstop %></td>
-    <td><%=h assetloss.ownerstopdt %></td>
-    <td><%=h assetloss.owneraction %></td>
-    <td><%=h assetloss.supstop %></td>
-    <td><%=h assetloss.supstopdt %></td>
-    <td><%=h assetloss.supaction %></td>
-    <td><%=h assetloss.rulesbroken %></td>
-    <td><%=h assetloss.newrule %></td>
-    <td><%=h assetloss.newrule_id %></td>
-    <td><%=h assetloss.nrrecommend %></td>
-    <td><%=h assetloss.surcharge %></td>
-    <td><%=h assetloss.scvalue %></td>
-    <td><%=h assetloss.screason %></td>
-    <td><%=h assetloss.sio_id %></td>
-    <td><%=h assetloss.ssecurity_id %></td>
-    <td><%=h assetloss.closedt %></td>-->
-
-    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => assetloss %></td>
-    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => assetloss %></td>
-    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), assetloss, :confirm => 'Are you sure?', :method => :delete %></td>
-    
-  </tr>
-<% end %>
-</table>
+		<% @assetlosses.each do |assetloss| %>
+	  <tr>
+	    <td><%=h assetloss.losstype %></td>
+	    <td align='center'><%=h ringgols(assetloss.estvalue) %></td>
+	    <td><%=h assetloss.asset.assetcode unless assetloss.asset_id.blank? %></td>
+	    <td><%=h assetloss.asslost.location.name unless assetloss.asset_id? %></td>
+	    <td><%=h assetloss.lossdt.strftime('%d %b %Y - %H:%M') %></td>
+	    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => assetloss %></td>
+	    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => assetloss %></td>
+	    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), assetloss, :confirm => 'Are you sure?', :method => :delete %></td>   
+	  </tr>
+		<% end %>
+	</table>
 </div>
 
 <br />
 
-<%= link_to (t 'assetloses.create'), new_assetloss_path %>
+<%= link_to (t 'assetlosses.create'), new_assetloss_path %>

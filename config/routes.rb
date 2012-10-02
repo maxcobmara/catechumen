@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :asset_losses
+
   
   map.connect '/exams/exampaper', :controller => 'exams', :action => 'exampaper'
   map.resources :exams
@@ -164,8 +166,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :books
 
   map.connect '/residences/addasset', :controller => 'residences', :action => 'addasset'
-  map.resources :residences
-
   map.connect '/students/maklumat_pelatih_intake', :controller => 'students', :action => 'maklumat_pelatih_intake'
   map.connect '/students/formforstudent', :controller => 'students', :action => 'formforstudent'
   map.resources :students

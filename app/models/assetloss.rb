@@ -1,7 +1,7 @@
 class Assetloss < ActiveRecord::Base
-  belongs_to :part, :foreign_key => 'part_id' 
-  belongs_to :location
-  belongs_to :staff, :foreign_key => 'staff_id' 
+  belongs_to :part,     :foreign_key => 'part_id' 
+  belongs_to :location, :foreign_key => 'losslocation_id' 
+  #belongs_to :staff, :foreign_key => 'staff_id' 
   belongs_to :asset
   
   #Residence
@@ -13,7 +13,7 @@ class Assetloss < ActiveRecord::Base
   belongs_to :enforce,          :class_name => 'Staff', :foreign_key => 'newrule_id'
   belongs_to :officer,          :class_name => 'Staff', :foreign_key => 'sio_id'
   
-  validates_presence_of :reportcode, :losstype, :sio_id
+  validates_presence_of :reportcode, :sio_id, :losstype
   
   
   #------Autocomplete on Asset
@@ -63,30 +63,45 @@ class Assetloss < ActiveRecord::Base
         
   ]
   
-  
-  def asset_details
-    if asset.any?
-      asset.code_asset
-    else
+  #association error checking
+    def asset_details         
+      if asset.blank?
+        "None Assigned"
+      elsif asset_id?
+        asset.code_asset
+      else 
+        "None Assigned"
+      end
     end
-  end
   
+    def location_details 
+      if location.blank?
+        "Not Registered"
+      elsif losslocation_id?
+        location.location_list
+      else 
+        "Location has been removed"
+      end
+    end
   
-  def location_details 
-       suid = losslocation_id.to_a
-       exists = Location.find(:all, :select => "id").map(&:id)
-       checker = suid & exists     
-   
-       if losslocation_id == nil
-          "" 
-        elsif checker == []
-          "Location No Longer Exists" 
-       else
-         assetlocation.name
+    def last_staff_to_handle
+       if laststaff.blank?
+          "Not Registered"
+        elsif lossstafflast_id?
+          laststaff.staff_name_with_position
+        else 
+          "Location has been removed"
+        end
+    end
+  
+    def hod_details 
+      if hod.blank?
+         "Not Registered"
+       elsif hod_id?
+         hod.staff_name_with_position
+       else 
        end
-  end
-  
-  def hod_details 
+    
         suid = hod_id.to_a
         exists = Staff.find(:all, :select => "id").map(&:id)
         checker = suid & exists     
