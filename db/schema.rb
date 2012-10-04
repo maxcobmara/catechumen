@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121002092836) do
+ActiveRecord::Schema.define(:version => 20121002093626) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(:version => 20121002092836) do
     t.string   "cash_type"
     t.decimal  "est_value"
     t.boolean  "is_used"
-    t.boolean  "ownership"
+    t.string   "ownership"
     t.decimal  "value_state"
     t.decimal  "value_federal"
     t.integer  "location_id"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20121002092836) do
     t.integer  "prev_action_enforced_by"
     t.text     "preventive_measures"
     t.text     "new_measures"
+    t.text     "recommendations"
     t.text     "surcharge_notes"
     t.text     "notes"
     t.integer  "investigated_by"
@@ -841,27 +842,6 @@ ActiveRecord::Schema.define(:version => 20121002092836) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "residences", :force => true do |t|
-    t.string   "rescode"
-    t.string   "resname"
-    t.integer  "parent_id"
-    t.integer  "resclass"
-    t.integer  "restype"
-    t.boolean  "allocatable"
-    t.integer  "staff_id"
-    t.integer  "student_id"
-    t.date     "keytxdt"
-    t.date     "keyreturndt"
-    t.date     "keyexpectdate"
-    t.boolean  "keyrx"
-    t.integer  "staffadmin_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "ancestry"
-  end
-
-  add_index "residences", ["ancestry"], :name => "index_residences_on_ancestry"
 
   create_table "roles", :force => true do |t|
     t.string   "name"

@@ -11,7 +11,7 @@ class Assetloss < ActiveRecord::Base
   belongs_to :laststaff,        :class_name => 'Staff', :foreign_key => 'lossstafflast_id' 
   belongs_to :hod,              :class_name => 'Staff', :foreign_key => 'hod_id'
   belongs_to :enforce,          :class_name => 'Staff', :foreign_key => 'newrule_id'
-  belongs_to :officer,          :class_name => 'Staff', :foreign_key => 'sio_id'
+  belongs_to :officer,          :class_name => 'Staff', :foreign_key => 'endorsed_hod_by'
   
   validates_presence_of :reportcode, :sio_id, :losstype
   

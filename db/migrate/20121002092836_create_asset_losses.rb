@@ -7,7 +7,7 @@ class CreateAssetLosses < ActiveRecord::Migration
       t.string    :cash_type
       t.decimal   :est_value
       t.boolean   :is_used
-      t.boolean   :ownership
+      t.string    :ownership
       t.decimal   :value_state
       t.decimal   :value_federal
       t.integer   :location_id
@@ -27,6 +27,7 @@ class CreateAssetLosses < ActiveRecord::Migration
       t.integer   :prev_action_enforced_by
       t.text      :preventive_measures
       t.text      :new_measures
+      t.text      :recommendations
       t.text      :surcharge_notes
       t.text      :notes
       t.integer   :investigated_by

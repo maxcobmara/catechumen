@@ -15,7 +15,7 @@ class Asset < ActiveRecord::Base
   
   
   has_one :disposals        #Link to Model Disposals
-  has_one :assetloss        #Link to Model AssetLoss  
+  has_one :asset_loss        #Link to Model AssetLoss  
   has_many :assettracks
   #has_many :assetinassettrack,    :class_name => 'Assettrack', :foreign_key => 'asset_id' #Link to Model AssetTrack
   

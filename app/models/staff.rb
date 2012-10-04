@@ -134,10 +134,13 @@ class Staff < ActiveRecord::Base
   has_many :approvers, :class_name => 'Attendance', :foreign_key => 'approve_id' # approver name
   
   #links to Model Assetloss
-   has_many :laststaff,        :class_name => 'Assetloss',   :foreign_key => 'lossstafflast_id' 
-   has_many :hod,              :class_name => 'Assetloss',   :foreign_key => 'hod_id'
-   has_many :enforce,          :class_name => 'Assetloss',   :foreign_key => 'newrule_id'
-   has_many :officer,          :class_name => 'Assetloss',   :foreign_key => 'sio_id'
+   has_many :handlers,      :class_name => 'AssetLoss',   :foreign_key => 'last_handled_by' 
+   has_many :enforcers,     :class_name => 'AssetLoss',   :foreign_key => 'prev_action_enforced_by' 
+   has_many :investigators, :class_name => 'AssetLoss',   :foreign_key => 'investigated_by' 
+   has_many :sec_officers,  :class_name => 'AssetLoss',   :foreign_key => 'security_officer_id'
+   has_many :hods,          :class_name => 'AssetLoss',   :foreign_key => 'security_officer_id'
+
+
    
   #links to Model Course
   has_many :admin,        :class_name => 'Course', :foreign_key => 'staff_id'

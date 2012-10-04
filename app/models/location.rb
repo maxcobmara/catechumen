@@ -4,7 +4,7 @@ class Location < ActiveRecord::Base
   has_many :tenants, :dependent => :destroy
   has_many :assets
   has_many :timetables
-  has_many :assetlosses, :foreign_key => 'losslocation_id' 
+  has_many :asset_losses
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
   
   def self.search(search)
