@@ -1,0 +1,52 @@
+<h1>Listing student_counseling_sessions</h1>
+
+<table>
+  <tr>
+    <th>Student</th>
+    <th>Requested at</th>
+    <th>Alt dates</th>
+    <th>C type</th>
+    <th>C scope</th>
+    <th>Duration</th>
+    <th>Is confirmed</th>
+    <th>Confirmd at</th>
+    <th>Issue desc</th>
+    <th>Notes</th>
+    <th>File</th>
+    <th>Suggestions</th>
+    <th>Staff</th>
+    <th>Created by</th>
+    <th>Created by type</th>
+    <th>Confirmed by</th>
+    <th>Confirmed by type</th>
+  </tr>
+
+<% @student_counseling_sessions.each do |student_counseling_session| %>
+  <tr>
+    <td><%=h student_counseling_session.student_id %></td>
+    <td><%=h student_counseling_session.requested_at %></td>
+    <td><%=h student_counseling_session.alt_dates %></td>
+    <td><%=h student_counseling_session.c_type %></td>
+    <td><%=h student_counseling_session.c_scope %></td>
+    <td><%=h student_counseling_session.duration %></td>
+    <td><%=h student_counseling_session.is_confirmed %></td>
+    <td><%=h student_counseling_session.confirmd_at %></td>
+    <td><%=h student_counseling_session.issue_desc %></td>
+    <td><%=h student_counseling_session.notes %></td>
+    <td><%=h student_counseling_session.file_id %></td>
+    <td><%=h student_counseling_session.suggestions %></td>
+    <td><%=h student_counseling_session.staff_id %></td>
+    <td><%=h student_counseling_session.created_by %></td>
+    <td><%=h student_counseling_session.created_by_type %></td>
+    <td><%=h student_counseling_session.confirmed_by %></td>
+    <td><%=h student_counseling_session.confirmed_by_type %></td>
+    <td><%= link_to 'Show', student_counseling_session %></td>
+    <td><%= link_to 'Edit', edit_student_counseling_session_path(student_counseling_session) %></td>
+    <td><%= link_to 'Destroy', student_counseling_session, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New student_counseling_session', new_student_counseling_session_path %>

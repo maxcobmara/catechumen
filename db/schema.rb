@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121002093626) do
+ActiveRecord::Schema.define(:version => 20121004205329) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -1044,6 +1044,28 @@ ActiveRecord::Schema.define(:version => 20121002093626) do
     t.string   "name"
     t.string   "place"
     t.date     "sdate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "student_counseling_sessions", :force => true do |t|
+    t.integer  "student_id"
+    t.datetime "requested_at"
+    t.text     "alt_dates"
+    t.string   "c_type"
+    t.string   "c_scope"
+    t.integer  "duration"
+    t.boolean  "is_confirmed"
+    t.datetime "confirmd_at"
+    t.text     "issue_desc"
+    t.text     "notes"
+    t.integer  "file_id"
+    t.text     "suggestions"
+    t.integer  "staff_id"
+    t.integer  "created_by"
+    t.string   "created_by_type"
+    t.integer  "confirmed_by"
+    t.string   "confirmed_by_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

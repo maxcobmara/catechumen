@@ -12,11 +12,11 @@ class AssetLoss < ActiveRecord::Base
   
   
   def item_name
-    if loss_type == 'Asset'
+    if loss_type == 'asset'
       asset.code_asset
-    elsif loss_type == 'Cash'
-      asset.cash_type
-    elsif loss_type == 'Supplies'
+    elsif loss_type == 'cash'
+      cash_type
+    elsif loss_type == 'supplies'
       "Some Stationery"
     else
     end

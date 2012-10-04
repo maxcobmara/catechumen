@@ -1,0 +1,2 @@
+module StudentCounselingSessionsHelper
+end

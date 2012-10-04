@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :student_counseling_sessions
+
   map.resources :asset_losses
 
   
