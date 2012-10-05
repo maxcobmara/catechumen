@@ -6,6 +6,14 @@ class StudentDisciplineCase < ActiveRecord::Base
   
   
   validates_presence_of :reported_by, :student_id, :status, :infraction_id
+  
+  #validate :confimed_date
+  
+  #def validate_end_date_before_start_date
+    #if leavenddate && leavestartdate
+      #errors.add(:leavenddate, "Your leave must begin before it ends") if leavenddate < leavestartdate || leavestartdate < DateTime.now
+    #end
+  #end
    
 
     

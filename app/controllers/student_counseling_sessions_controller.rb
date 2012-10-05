@@ -2,8 +2,9 @@ class StudentCounselingSessionsController < ApplicationController
   # GET /student_counseling_sessions
   # GET /student_counseling_sessions.xml
   def index
-    @student_counseling_sessions = StudentCounselingSession.all
-
+    @student_counseling_sessions = StudentCounselingSession.find(:all, :order => 'confirmd_at DESC')
+    @appointments = StudentCounselingSession.find_appointment(params[:search])
+    @session_dones = StudentCounselingSession.find_session_done(params[:search])
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @student_counseling_sessions }

@@ -18,14 +18,15 @@ class Student < ActiveRecord::Base
   
   has_one   :user,              :dependent => :destroy                                      #Link to Model user
   has_many  :leaveforstudents,  :dependent => :destroy                                      #Link to LeaveStudent
-  has_many  :counsellings                                                                   #Link to Counselling
-  has_many  :librarytransactions                                                            #Link to LibraryTransactions
+  has_many  :student_counseling_sessions                                                    #Link to Counselling
+  
   has_many  :studentgrade,    :class_name => 'Grade',     :foreign_key => 'student_id'      #Link to Model Grade
   has_many  :student,         :class_name => 'Sdicipline',:foreign_key => 'student_id'      #Link to Model Sdicipline
   has_many  :studentevaluate, :class_name => 'Courseevaluation', :foreign_key => 'student_id'#Link to Model CourseEvaluation
   has_many  :student,         :class_name => 'Residence', :foreign_key => 'student_id'      #Link to Model residence
   has_many  :tenants
   
+  has_many  :librarytransactions                                                            #Link to LibraryTransactions
   has_many :studentattendances
   has_many :timetables, :through => :studentattendances
   

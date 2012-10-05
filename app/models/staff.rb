@@ -175,6 +175,7 @@ class Staff < ActiveRecord::Base
   #has_many :travelrequests
 #--------------------------------------------------------------------------
   
+  has_many :student_counseling_sessions, :as => :created_by,  :foreign_key => 'created_by' 
   
 
 

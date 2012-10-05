@@ -161,7 +161,7 @@ authorization do
   end
   
   role :student_counsellor do
-    has_permission_on :counsellings, :to => :manage
+    has_permission_on :student_counseling_sessions, :to => :manage
     has_permission_on :students, :to => :core
   end
   
