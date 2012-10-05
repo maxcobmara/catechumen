@@ -1,134 +1,30 @@
 <div class="tform">
-	<fieldset>
-	<legend>Appointment  </legend>
-	<table width=100%>
-
-		<tr>
-			<td class="leftcol"><label for="student_id">Student:</label></td>
-			<td><%= @student_counseling_session.student.formatted_mykad_and_student_name %><font color="red"> * </font></td>
-		</tr>
-
-		<tr>
-			<td class="leftcol">Requested at</td>
-			<td><%= @student_counseling_session.requested_at%></td>
-		</tr>
-
-		<tr>
-			<td class="leftcol">Duration</td>
-			<td><%= @student_counseling_session.duration %> Minutes</td>
-		</tr>
-
-		<tr>
-			<td class="leftcol"><label for="student_id">Suggest Alternative Dates:</label></td>
-			<td><%= @student_counseling_session.alt_dates %></td>
-		</tr>
-
-		<tr>
-			<td class="leftcol"><label for="c_scope">Scope of session</label></td>
-			<td><%= @student_counseling_session.c_scope %></td>                                                             
-		</tr>
-
-		<tr>
-			<td class="leftcol"><label for="c_type">Type of session</label></td>
-			<td><%= @student_counseling_session.c_type %></td>                                                             
-		</tr>
-
-		<tr>
-			<td class="leftcol">Confirmed?</td>
-			<td><%= @student_counseling_session.is_confirmed? ? "Confirmed" : "Not Confirmed" %></td>                                                             
-		</tr>
-	</table>
-</fieldset>
+<%=render :partial => 'appointment_show' %>
 
 <%if @student_counseling_session.is_confirmed? && @student_counseling_session.confirmd_at < Time.now %>
 
+<fieldset>
+	<legend>Session Notes</legend>
+		<table width=100%>
+			<tr>
+				<td class="leftcol"><label for="issue_desc">Description of Issues</label></td>
+				<td><%= @student_counseling_session.issue_desc %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="notes">Session Notes</label></td>
+				<td><%= @student_counseling_session.notes %></td>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><label for="suggestions">Suggestions made to student</label></td>
+				<td><%= @student_counseling_session.suggestions %></td>
+			</tr>
+		</table>
+</fieldset>
 
 
 
-<p>
-  <b>Student:</b>
-  <%=h @student_counseling_session.student_id %>
-</p>
-
-<p>
-  <b>Requested at:</b>
-  <%=h @student_counseling_session.requested_at %>
-</p>
-
-<p>
-  <b>Alt dates:</b>
-  <%=h @student_counseling_session.alt_dates %>
-</p>
-
-<p>
-  <b>C type:</b>
-  <%=h @student_counseling_session.c_type %>
-</p>
-
-<p>
-  <b>C scope:</b>
-  <%=h @student_counseling_session.c_scope %>
-</p>
-
-<p>
-  <b>Duration:</b>
-  <%=h @student_counseling_session.duration %>
-</p>
-
-<p>
-  <b>Is confirmed:</b>
-  <%=h @student_counseling_session.is_confirmed %>
-</p>
-
-<p>
-  <b>Confirmd at:</b>
-  <%=h @student_counseling_session.confirmd_at %>
-</p>
-
-<p>
-  <b>Issue desc:</b>
-  <%=h @student_counseling_session.issue_desc %>
-</p>
-
-<p>
-  <b>Notes:</b>
-  <%=h @student_counseling_session.notes %>
-</p>
-
-<p>
-  <b>File:</b>
-  <%=h @student_counseling_session.file_id %>
-</p>
-
-<p>
-  <b>Suggestions:</b>
-  <%=h @student_counseling_session.suggestions %>
-</p>
-
-<p>
-  <b>Staff:</b>
-  <%=h @student_counseling_session.staff_id %>
-</p>
-
-<p>
-  <b>Created by:</b>
-  <%=h @student_counseling_session.created_by %>
-</p>
-
-<p>
-  <b>Created by type:</b>
-  <%=h @student_counseling_session.created_by_type %>
-</p>
-
-<p>
-  <b>Confirmed by:</b>
-  <%=h @student_counseling_session.confirmed_by %>
-</p>
-
-<p>
-  <b>Confirmed by type:</b>
-  <%=h @student_counseling_session.confirmed_by_type %>
-</p>
 <% end %>
 </div>
 

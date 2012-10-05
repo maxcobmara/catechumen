@@ -8,7 +8,7 @@ class CreateStudentCounselingSessions < ActiveRecord::Migration
       t.string    :c_scope
       t.integer   :duration
       t.boolean   :is_confirmed
-      t.datetime  :confirmd_at
+      t.datetime  :confirmed_at
       t.text      :issue_desc
       t.text      :notes
       t.integer   :file_id
