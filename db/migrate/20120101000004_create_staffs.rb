@@ -10,6 +10,7 @@ class CreateStaffs < ActiveRecord::Migration
       t.string  :fileno
       t.string  :coemail
       t.date    :cobirthdt
+      t.string  :birthcertno
       t.string  :bloodtype
       t.string  :cooftelno
       t.string  :cooftelext
@@ -23,8 +24,9 @@ class CreateStaffs < ActiveRecord::Migration
       t.integer :gender
       t.string  :phonecell
       t.boolean :phonehome
+      t.integer :country_id
       
-      #Items for attaching photo
+      #Items for attaching photo - paperclip
       t.string   :photo_file_name
       t.string   :photo_content_type
       t.integer  :photo_file_size
@@ -46,6 +48,14 @@ class CreateStaffs < ActiveRecord::Migration
       t.date    :pensiondt
       t.string  :uniformstat
       t.integer :staffgrade_id
+      t.date    :pension_confirm_date
+      t.date    :wealth_decleration_date
+      t.date    :promotion_date        
+      t.date    :reconfirmation_date   
+      t.date    :to_current_grade_date
+      t.decimal :starting_salary
+      t.string  :transportclass_id
+
       
       #Finance
       t.string :kwspcode
@@ -53,6 +63,8 @@ class CreateStaffs < ActiveRecord::Migration
       t.string :bank
       t.string :bankaccno
       t.string :bankacctype
+      
+      
 
       t.timestamps
     end

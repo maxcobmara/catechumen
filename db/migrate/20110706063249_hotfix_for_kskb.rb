@@ -1,6 +1,6 @@
 class HotfixForKskb < ActiveRecord::Migration
     def self.up
-      add_column    :staffs,  :birthcertno,     :string
+      
       change_column :assets,  :dept_id,         :string
       add_column    :kins,    :mykadno,         :string
       add_column    :books,   :roman,           :string
@@ -14,7 +14,7 @@ class HotfixForKskb < ActiveRecord::Migration
     end
 
     def self.down
-      remove_column :staffs,  :birthcertno
+
       change_column :assets,  :dept_id,   :integer
       remove_column :kins,    :mykadno
       add_column    :books,   :roman
