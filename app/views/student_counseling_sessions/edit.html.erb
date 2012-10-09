@@ -2,9 +2,13 @@
   <%= f.error_messages %>
 	<div class="tform">
 		<H2>Edit Counseling Appointment / Session </H2>
-		 <if confirmd_at>
-				<%=render :partial => 'appointment', :locals => {:f => f} %>
+		 <% if @student_counseling_session.confirmed_at? %>
+				<%=render :partial => 'appointment_show', :locals => {:f => f} %>
 				<%=render :partial => 'form', :locals => {:f => f} %> 
+				
+		 <% else %>
+			<%=render :partial => 'appointment', :locals => {:f => f} %>
+		 <% end -%>
 
 
 	</div>

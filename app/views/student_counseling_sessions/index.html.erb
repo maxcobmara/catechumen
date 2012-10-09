@@ -46,7 +46,7 @@
 <tr class="red">
 <% end -%>
   <td><%=h appointment.student.name %>  &nbsp; <%=h appointment.c_type == 'involuntary' ? image_tag("flag_red.png") : ""  %></td>
-  <td><%=h appointment.is_confirmed? ?  l(appointment.confirmd_at) :  l(appointment.requested_at) %></td>
+  <td><%=h appointment.is_confirmed? ?  l(appointment.confirmed_at) :  l(appointment.requested_at) %></td>
   <td><%=h appointment.duration %></td>
   <td><%=h appointment.is_confirmed? ? image_tag("tick.png") : ""  %></td>
   <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => appointment %></td>
@@ -59,7 +59,7 @@
   <tr class="green">
     <td><%=h session_done.student.name %> &nbsp; <%=h session_done.c_type == 'involuntary' ? image_tag("flag_red.png") : ""  %></td>
 
-    <td><%=h l(session_done.confirmd_at) unless session_done.confirmd_at.blank? %></td>
+    <td><%=h l(session_done.confirmed_at) unless session_done.confirmed_at.blank? %></td>
     <td><%=h session_done.duration %></td>
     <td><%=h session_done.is_confirmed? ? image_tag("tick.png") : ""  %></td>
     <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => session_done %></td>

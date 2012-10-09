@@ -8,17 +8,17 @@ class StudentCounselingSession < ActiveRecord::Base
   
   def self.find_appointment(search)
     if search
-      find(:all, :include => :student, :conditions => ['requested_at > ? AND students.name ILIKE ?', Time.now, "%#{search}%" ], :order => 'confirmd_at DESC')
+      find(:all, :include => :student, :conditions => ['requested_at > ? AND students.name ILIKE ?', Time.now, "%#{search}%" ], :order => 'confirmed_at DESC')
     else
-      find(:all, :include => :student, :conditions => ['requested_at > ?', Time.now ], :order => 'confirmd_at DESC')
+      find(:all, :include => :student, :conditions => ['requested_at > ?', Time.now ], :order => 'confirmed_at DESC')
     end
   end
   
   def self.find_session_done(search)
     if search
-      find(:all, :include => :student, :conditions => ['confirmd_at < ? AND students.name ILIKE ?', Time.now, "%#{search}%" ], :order => 'confirmd_at DESC')
+      find(:all, :include => :student, :conditions => ['confirmed_at < ? AND students.name ILIKE ?', Time.now, "%#{search}%" ], :order => 'confirmed_at DESC')
     else
-      find(:all, :include => :student, :conditions => ['confirmd_at < ?', Time.now ], :order => 'confirmd_at DESC')
+      find(:all, :include => :student, :conditions => ['confirmed_at < ?', Time.now ], :order => 'confirmed_at DESC')
     end
   end
   
