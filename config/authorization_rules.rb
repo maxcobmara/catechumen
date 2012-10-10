@@ -76,9 +76,11 @@ authorization do
         if_attribute :staff_id => is {User.current_user.staff_id}
     end
     
-    has_permission_on :documents, :to => :approve do
-        if_attribute :staff_id => is {User.current_user.staff_id}
-    end
+    has_permission_on :documents, :to => :approve, :join_by => :or do 
+        if_attribute :stafffiled_id => is {User.current_user.staff_id}
+        if_attribute :cc1staff_id => is {User.current_user.staff_id}
+        if_attribute :cc2staff_id => is {User.current_user.staff_id}
+    end  
     
     has_permission_on :sdiciplines, :to => :create
     has_permission_on :sdiciplines, :to => :approve do
