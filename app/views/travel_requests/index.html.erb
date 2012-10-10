@@ -1,0 +1,82 @@
+<% if TravelRequest.in_need_of_approval.size > 0 %>
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Travel Requests For Approval</h2>
+	</div>
+</div>
+
+<div class="indextable">
+	<table>
+		<tr>
+			<th>Code</th>
+			<th><%= t 'travel.sname' %></th>
+			<th><%= t 'travel.destination' %></th>
+			<th>Depart at</th>
+			<th><%= t 'travel.purpose' %></th>
+			<th>Submitted?</th>
+			<th>Approved</th>
+			<th colspan=2 class="ac">Control</th>
+		</tr>
+		
+		<% @for_approvals.each do |for_approval| %>
+		<tr>
+			<td><%=h for_approval.request_code %></td>
+   		<td><%=h for_approval.applicant.staff_name_with_position unless for_approval.applicant.blank? %></td>
+      <td><%=h for_approval.destination %></td>
+      <td><%=h l(for_approval.depart_at) %></td>
+      <td><%=h for_approval.purpose %></td>
+			<td><%=h for_approval.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+			<td><%=h for_approval.hod_accept? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+      <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => for_approval %></td>
+			<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => for_approval %></td>
+    </tr>
+    <% end %>
+	</table>
+</div><BR/><BR/><BR/>
+<% end -%>
+
+
+
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">My Travel Requests</h2>
+	</div>
+</div>
+
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Travel Request') + "New", new_travel_request_path %></p>
+</div>
+
+<div class="indextable">
+	<table>
+		<tr>
+			<th>Code</th>
+			<th><%= t 'travel.sname' %></th>
+			<th><%= t 'travel.destination' %></th>
+			<th>Depart at</th>
+			<th><%= t 'travel.purpose' %></th>
+			<th>Submitted?</th>
+			<th>Approved</th>
+			<th colspan=3 class="ac">Control</th>
+		</tr>
+		
+		<% @travel_requests.each do |travel_request| %>
+		<tr>
+			<td><%=h travel_request.request_code %></td>
+   		<td><%=h travel_request.applicant.staff_name_with_position unless travel_request.applicant.blank? %></td>
+      <td><%=h travel_request.destination %></td>
+      <td><%=h l(travel_request.depart_at) %></td>
+      <td><%=h travel_request.purpose %></td>
+			<td><%=h travel_request.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+			<td><%=h travel_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+      <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => travel_request %></td>
+			<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => travel_request %></td>
+  		<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), travel_request, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+    <% end %>
+	</table>
+</div>
+
+<BR/>
+
+<%= link_to 'New travel_request', new_travel_request_path %>

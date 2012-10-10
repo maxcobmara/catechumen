@@ -1,0 +1,74 @@
+<fieldset>
+	<legend>Travel Request </legend>
+		<table width=100%>
+			<tr>
+				<td class="leftcol"><label for="staff_id"><b><%= t 'staffleave.staff_id' %></b></label></td>
+				<td><%=h @travel_request.applicant.staff_name_with_position unless @travel_request.applicant.blank? %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="request_code"><%= t 'travel.trcode' %></label></td>
+				<td><%=h @travel_request.request_code %></td>
+			</tr>
+		</table>
+</fieldset>
+
+<fieldset>
+	<legend>Travel Request </legend>
+		<table width=100% >
+			<tr>
+				<td class="leftcol"><label for="destination"><%= t 'travel.destination' %></label></td>
+				<td> <%=h @travel_request.destination %></td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><label for="purpose"><%= t 'travel.purpose' %></label></td>
+				<td><%=h @travel_request.purpose %></td>
+			</tr>
+
+			<tr>
+			 	<td class="leftcol"><label for="depart_at"><%= t 'travel.depart_at' %></label></td>
+				<td><%=h l(@travel_request.depart_at) %></td>
+			</tr>
+
+			<tr>
+			 	<td class="leftcol"><label for="return_at"><%= t 'travel.return_at' %></label></td>
+				<td><%=h l(@travel_request.return_at) %></td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><label for="transport_type">Transport Choice</label></td>
+				<td><%=h @travel_request.transport_type %></td>                                                        
+			</tr>
+
+      <% if @travel_request.transport_type == 'publik' %>
+			<tr>
+				<td class="leftcol">Other Transport Types</td>
+		    <td><%= f.label :train %> <%=h @travel_request.train %> &nbsp; &nbsp;
+						<%= f.label :plane %> <%=h @travel_request.plane %> &nbsp; &nbsp;
+						<label>Other Public Transport</label> <%=h @travel_request.other %>
+						<%= f.check_box :other, :id => 'other_transport' %></td>
+			</tr>
+			<% end -%>
+
+			<% if @travel_request.other == true %>
+			<tr>
+				<td class="leftcol">List (if Others)</td>
+		    <td><%=h @travel_request.other_desc %></td>
+			</tr>
+			<% end -%>
+			
+			<% if @travel_request.transport_type == 'own' %>
+			<tr>
+				<td class="leftcol">Reasons for taking own car</td>
+		    <td><%=h @travel_request.own_car_notes %></td>
+			</tr>
+			<% end -%>
+
+			<tr>
+				<td class="leftcol">Mileage</td>
+		    <td>Mileage Allowance : 	<%=h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png") %> &nbsp; &nbsp;  
+						Mileage Replacement : <%=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+				<td></td>
+			</tr>
+		</table>
+</fieldset>

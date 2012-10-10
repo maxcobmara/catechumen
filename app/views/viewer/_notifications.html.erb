@@ -15,6 +15,13 @@
 	<% if asl.size > 0 %>
 		<p><%= link_to "Your leave request for #{asl} has been Approved", { :controller => "leaveforstaffs", :action => "index" } %></p>
 	<% end %>
+	
+	
+	<!-- Notification for travel request -->
+	<% trvlreqst = TravelRequest.count(:all, :conditions => ['hod_id = ? AND is_submitted = ? AND hod_accept = ?', User.current_user.staff_id, true, false]) %>
+	<% if trvlreqst > 0 %>
+		<p><%= link_to "#{trvlreqst} travel request that requires your approval", { :controller => "travel_requests", :action => "index" } %></p>
+	<% end %>
 
 	<!-- Notification for Messages -->
   <% dash_messages = Message.count(:all, :include => :staffs, :conditions => ['staff_id =? AND messages.created_at > ?' , User.current_user.staff_id, DateTime.now - 1.day]) %>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121004205329) do
+ActiveRecord::Schema.define(:version => 20121010020839) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -1280,6 +1280,31 @@ ActiveRecord::Schema.define(:version => 20121004205329) do
     t.datetime "updated_at"
     t.integer  "confirmedby_id"
     t.integer  "evaluation_id"
+  end
+
+  create_table "travel_requests", :force => true do |t|
+    t.integer  "staff_id"
+    t.string   "request_code"
+    t.string   "destination"
+    t.string   "purpose"
+    t.datetime "depart_at"
+    t.datetime "return_at"
+    t.string   "transport_type"
+    t.boolean  "train"
+    t.boolean  "plane"
+    t.boolean  "other"
+    t.string   "other_desc"
+    t.text     "own_car_notes"
+    t.boolean  "mileage"
+    t.boolean  "mileage_replace"
+    t.boolean  "is_submitted"
+    t.date     "submitted_on"
+    t.integer  "replaced_by"
+    t.integer  "hod_id"
+    t.boolean  "hod_accept"
+    t.date     "hod_accept_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "travelclaimreceipts", :force => true do |t|

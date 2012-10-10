@@ -1,0 +1,33 @@
+<% form_for(@travel_request) do |f| %>
+  <%= f.error_messages %>
+	<div class="tform">
+		<% if @travel_request.is_submitted == false %>
+		<H2>Edit Travel Request</H2>
+		<table width=100% >
+			<tr>
+				<td class="leftcol"><label for="staff_id"><b><%= t 'staffleave.staff_id' %></b></label></td>
+				<td><%=h @travel_request.applicant.staff_name_with_position unless @travel_request.applicant.blank? %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="request_code"><%= t 'travel.trcode' %></label></td>
+				<td><%=h @travel_request.request_code %></td>
+				<td class="pagenote"></td>
+			</tr>
+		</table>
+		<%=render :partial => 'form', :locals => {:f => f} %> 
+		<% end -%>
+		
+		<% if @travel_request.is_submitted == true %>
+		    <%=render :partial => 'show_main' %>
+				<%=render :partial => 'approval', :locals => {:f => f} %>
+		<% end -%>
+		
+	</div>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @travel_request %> |
+<%= link_to 'Back', travel_requests_path %>
