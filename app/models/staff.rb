@@ -71,14 +71,10 @@ class Staff < ActiveRecord::Base
   has_many :approvers, :class_name => 'Trainingrequest', :foreign_key => 'approvedby_id'
   #has_many :trainingrequests
   
-  #Link to model Residence
-  #has_many :staff, :class_name => 'Residence', :foreign_key => 'staff_id'  
-  #has_many :admin, :class_name => 'Residence', :foreign_key => 'staffadmin_id'
-  
-  #Link to model Appraisal                                                      
-  has_many :appraised, :class_name => 'Appraisal', :foreign_key => 'staff_id'#, :dependant => :destroy
-  has_many :ppp,       :class_name => 'Appraisal', :foreign_key => 'ppp_id'
-  has_many :ppk,       :class_name => 'Appraisal', :foreign_key => 'ppk_id' 
+  #Link to model Staff Appraisal                                                      
+  has_many :appraisals,     :class_name => 'StaffAppraisal', :foreign_key => 'staff_id', :dependent => :destroy
+  has_many :eval1_officers, :class_name => 'StaffAppraisal', :foreign_key => 'evaluation1_by'
+  has_many :ppk,        :class_name => 'Appraisal', :foreign_key => 'ppk_id' 
   
   #Link to model AssetTrack
   has_many :staffinassettrack, :class_name => 'assettrack', :foreign_key => 'staff_id'

@@ -1,0 +1,22 @@
+<% form_for(@staff_appraisal) do |f| %>
+  <%= f.error_messages %>
+
+	<div class="tform">
+		<% if @staff_appraisal.submit_for_evaluation1 == false %>
+			<H2>Edit Appraisal</H2>
+			<%=render :partial => 'form_start', :locals => {:f => f} %> 
+		<% elsif @staff_appraisal.evaluation1_by == User.current_user.staff_id %>
+		  <H2>Evaluation of Staff by PPP (<%= @staff_appraisal.eval1_officer.name %>)</H2>
+			<%=render :partial => 'show_start', :locals => {:f => f} %> 
+			<%=render :partial => 'form_eval1', :locals => {:f => f} %>
+		<% end -%>
+	</div>
+	<BR/>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @staff_appraisal %> |
+<%= link_to 'Back', staff_appraisals_path %>

@@ -1,0 +1,158 @@
+<div class="box">
+	<div class="box-head">
+		<h2 class="left"><%= t 'evaluation.form.list' %></h2>
+		<div class="right">
+		</div>
+	</div>
+</div>
+
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'Create My Appraisal') + "New", new_staff_appraisal_path %></p>
+</div>
+
+<div class="indextable">
+	<table>
+	  <tr class="toprow">
+	    <th><%= t 'staff.icno' %></th>
+	    <th><%= t 'staff.name' %></th>
+	    <th><%= t 'staff.position' %></th>
+	    <th><%= t 'evaluation.form.evaluationdate' %></th>
+	    <th colspan=3 class="ac"><%= t 'action' %></th>
+	  </tr>
+	
+		<% @staff_appraisals.each do |appraised| %>
+		<% if appraised.editable_page == "edit" %>
+	  <tr>
+			<td><%=h appraised.appraised.icno %></td>
+			<td><%=h appraised.appraised.name %></td>
+			<td><%=h appraised.appraised.position.positionname %></td>
+			<td><%=h appraised.evaluation_year.strftime('%Y') %></td>
+
+			<td width=10px><%= link_to image_tag("document.png",	:border => 0, :title => 'Show'), :action => 'show', :id => appraised %></td>
+	    <td width=10px><%= link_to image_tag("edit.png", 			:border => 0, :title => 'Edit'), :action => 'edit', :id => appraised %></td>
+	    <td width=10px><%= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), appraised, :confirm => 'Are you sure?', :method => :delete %></td>
+	  </tr>
+		<% end %>
+		<% end %>
+		</table>
+
+<!--
+
+
+<table>
+  <tr>
+    <th>Staff</th>
+    <th>Evaluation year</th>
+    <th>Submit for evaluation1</th>
+    <th>Submit for appraisal1 on</th>
+    <th>Eval1 part ii</th>
+    <th>Eval1 quantity</th>
+    <th>Eval1 quality</th>
+    <th>Eval1 time</th>
+    <th>Eval1 effective</th>
+    <th>Eval1 knowledge</th>
+    <th>Eval1 rule</th>
+    <th>Eval1 communicate</th>
+    <th>Eval1 leader</th>
+    <th>Eval1 manage</th>
+    <th>Eval1 discipline</th>
+    <th>Eval1 proactive</th>
+    <th>Eval1 relate</th>
+    <th>Eval1 knowledge</th>
+    <th>Eval1 part iii total</th>
+    <th>Eval1 percent</th>
+    <th>Eval1 work months</th>
+    <th>Eval1 work years</th>
+    <th>Eval1 performance</th>
+    <th>Eval1 progress</th>
+    <th>Evaluation1 by</th>
+    <th>Submit for evaluation2</th>
+    <th>Submit for evaluation2 on</th>
+    <th>Submit for evaluation2 on</th>
+    <th>Eval2 part ii</th>
+    <th>Eval2 quantity</th>
+    <th>Eval2 quality</th>
+    <th>Eval2 time</th>
+    <th>Eval2 effective</th>
+    <th>Eval2 knowledge</th>
+    <th>Eval2 rule</th>
+    <th>Eval2 communicate</th>
+    <th>Eval2 leader</th>
+    <th>Eval2 manage</th>
+    <th>Eval2 discipline</th>
+    <th>Eval2 proactive</th>
+    <th>Eval2 relate</th>
+    <th>Eval2 knowledge</th>
+    <th>Eval2 part iii total</th>
+    <th>Eval2 percent</th>
+    <th>Eval2 work months</th>
+    <th>Eval2 work years</th>
+    <th>Eval2 performance</th>
+    <th>Evaluation2 by</th>
+    <th>Is complete</th>
+    <th>Is complete on</th>
+  </tr>
+
+<% @staff_appraisals.each do |staff_appraisal| %>
+  <tr>
+    <td><%=h staff_appraisal.staff_id %></td>
+    <td><%=h staff_appraisal.evaluation_year %></td>
+    <td><%=h staff_appraisal.submit_for_evaluation1 %></td>
+    <td><%=h staff_appraisal.submit_for_appraisal1_on %></td>
+    <td><%=h staff_appraisal.eval1_part_ii %></td>
+    <td><%=h staff_appraisal.eval1_quantity %></td>
+    <td><%=h staff_appraisal.eval1_quality %></td>
+    <td><%=h staff_appraisal.eval1_time %></td>
+    <td><%=h staff_appraisal.eval1_effective %></td>
+    <td><%=h staff_appraisal.eval1_knowledge %></td>
+    <td><%=h staff_appraisal.eval1_rule %></td>
+    <td><%=h staff_appraisal.eval1_communicate %></td>
+    <td><%=h staff_appraisal.eval1_leader %></td>
+    <td><%=h staff_appraisal.eval1_manage %></td>
+    <td><%=h staff_appraisal.eval1_discipline %></td>
+    <td><%=h staff_appraisal.eval1_proactive %></td>
+    <td><%=h staff_appraisal.eval1_relate %></td>
+    <td><%=h staff_appraisal.eval1_knowledge %></td>
+    <td><%=h staff_appraisal.eval1_part_iii_total %></td>
+    <td><%=h staff_appraisal.eval1_percent %></td>
+    <td><%=h staff_appraisal.eval1_work_months %></td>
+    <td><%=h staff_appraisal.eval1_work_years %></td>
+    <td><%=h staff_appraisal.eval1_performance %></td>
+    <td><%=h staff_appraisal.eval1_progress %></td>
+    <td><%=h staff_appraisal.evaluation1_by %></td>
+    <td><%=h staff_appraisal.submit_for_evaluation2 %></td>
+    <td><%=h staff_appraisal.submit_for_evaluation2_on %></td>
+    <td><%=h staff_appraisal.submit_for_evaluation2_on %></td>
+    <td><%=h staff_appraisal.eval2_part_ii %></td>
+    <td><%=h staff_appraisal.eval2_quantity %></td>
+    <td><%=h staff_appraisal.eval2_quality %></td>
+    <td><%=h staff_appraisal.eval2_time %></td>
+    <td><%=h staff_appraisal.eval2_effective %></td>
+    <td><%=h staff_appraisal.eval2_knowledge %></td>
+    <td><%=h staff_appraisal.eval2_rule %></td>
+    <td><%=h staff_appraisal.eval2_communicate %></td>
+    <td><%=h staff_appraisal.eval2_leader %></td>
+    <td><%=h staff_appraisal.eval2_manage %></td>
+    <td><%=h staff_appraisal.eval2_discipline %></td>
+    <td><%=h staff_appraisal.eval2_proactive %></td>
+    <td><%=h staff_appraisal.eval2_relate %></td>
+    <td><%=h staff_appraisal.eval2_knowledge %></td>
+    <td><%=h staff_appraisal.eval2_part_iii_total %></td>
+    <td><%=h staff_appraisal.eval2_percent %></td>
+    <td><%=h staff_appraisal.eval2_work_months %></td>
+    <td><%=h staff_appraisal.eval2_work_years %></td>
+    <td><%=h staff_appraisal.eval2_performance %></td>
+    <td><%=h staff_appraisal.evaluation2_by %></td>
+    <td><%=h staff_appraisal.is_complete %></td>
+    <td><%=h staff_appraisal.is_complete_on %></td>
+    <td><%= link_to 'Show', staff_appraisal %></td>
+    <td><%= link_to 'Edit', edit_staff_appraisal_path(staff_appraisal) %></td>
+    <td><%= link_to 'Destroy', staff_appraisal, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>-->
+
+</div>
+<br />
+
+<%= link_to 'New staff_appraisal', new_staff_appraisal_path %>

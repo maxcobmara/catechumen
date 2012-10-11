@@ -1,6 +1,18 @@
 <div id='notifications_nuovo'>
 	<h4>Notification Area</h4>
 	<p>
+		
+	<!-- Notification for Staff Leave Application -->
+	<% me_ppp = StaffAppraisal.count(:all, :conditions => ["evaluation1_by=? AND submit_for_evaluation1 =?", User.current_user.staff_id, true]) %>
+	<% me_ppk = StaffAppraisal.count(:all, :conditions => ["evaluation2_by=? AND submit_for_evaluation2 =?", User.current_user.staff_id, true]) %>
+	<% me_eval = me_ppp + me_ppk %>
+	<% if me_eval == 0 %>
+  <% else %>
+    <%= me_eval %> <%= link_to "staff appraisal for processing", { :controller => "staff_appraisals", :action => "index" } %><br>
+  <% end %>
+	
+
+	
 	<!-- Notification for Staff Leave Application -->
   <% a = Leaveforstaff.count(:all, :conditions => ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]) %>
   <% b = Leaveforstaff.count(:all, :conditions => ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]) %>

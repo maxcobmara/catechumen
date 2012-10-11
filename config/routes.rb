@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :staff_appraisals
+
   map.resources :travel_requests
 
   map.resources :student_counseling_sessions

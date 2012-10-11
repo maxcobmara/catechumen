@@ -1,4 +1,5 @@
 class Appraisal < ActiveRecord::Base
+  # befores, relationships, validations, before logic, validation logic, controller searches, variables, lists, relationship checking
   
   before_save :varmyass
   
@@ -6,8 +7,13 @@ class Appraisal < ActiveRecord::Base
   belongs_to :ppp, :class_name => 'Staff', :foreign_key => 'ppp_id'
   
   has_many :evactivities, :dependent => :destroy
+  accepts_nested_attributes_for :evactivities, :reject_if => lambda { |a| a[:evactivity].blank? }
+  
   has_many :ptdos, :through => :appraisedstaff
-  accepts_nested_attributes_for :evactivities
+  
+  #e.g
+  #has_many :qualifications, :dependent => :destroy
+  #accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
 
   validates_presence_of :staff_id
   

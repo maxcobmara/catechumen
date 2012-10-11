@@ -1,57 +1,67 @@
 <div class="tform">
-  <table>
-		<tr>
-			<th colspan=2><%= t 'evaluation.form.title_part1' %></th>
-		</tr>
+<H2><%= t 'evaluation.form.title_part1' %></H2>
+
+  <table width=100%>
 		<tr>
 			<td class="leftcol"><label for="staff_id"><b><%= t 'evaluation.form.name' %></b><font color="red"> * </font></label></td>
-			<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name%></td>
+			<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ['id = ?', User.current_user.staff_id]), :id, :mykad_with_staff_name%></td>
 		</tr>
 		<tr>
 		 <td class="leftcol"><label for="evaldt"><b><%= t 'evaluation.form.evaluationdate' %></b></label></td>
-			<td><%= f.date_select :evaldt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+			<td><%= f.date_select :evaldt,  :order => [:day, :month, :year] %></td>
 		</tr>
 	</table>
 	
 	
+		
+	
 	<div>
 		<H2><%= t 'evaluation.form.title_partIIa' %></H2>
-		<p>	<%= t 'evaluation.form.label_001' %><BR>
-				<font size=-2><%= t 'evaluation.form.label_002' %></font></p>
-		<p><strong> |  Date |  Activity   |  Level  | </p>
-	<% f.fields_for :evactivities do |builder| %>
-		<p>kegiatan</p>
-		<%= render 'evactivity_fields', :f => builder %>
-	<% end %>
+		<p>	<%= t 'evaluation.form.label_001' %></p>
+		<p><strong>
+							<div style="width: 220px; float: left;">|  Date </div>
+							<div style="width: 310px; float: left;">|  Activity </div> | Width </strong></p>
+		<% f.fields_for :evactivities do |builder| %>
+			<%= render 'evactivity_fields', :f => builder %>
+		<% end %>
 	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :evactivities %> - Add More </p>
 	
+	
+	<p><font size=-2><%= t 'evaluation.form.label_002' %></font></p>
 	<HR>
 	</div>
+	
 
-
-	<table>
-
-	<tr>
-		<th colspan=3><%= t 'evaluation.form.title_part2b' %></th>
-	</tr>
-	<tr>
-		<td colspan=3><font size=-2><%= t 'evaluation.form.label_003' %></font></td>
-	</tr>
-	<tr>
-		<td colspan=3 align='center'><BR>Training Done is Here<BR></td>
-	</tr>
+<H2><%= t 'evaluation.form.title_part2b' %></H2>
+<p><font size=-2><%= t 'evaluation.form.label_003' %></font></p>
+	<table width=75%>
+		<tr>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Date</th>
+			<th>Duration</th>
+		</tr>
+		<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', User.current_user.staff_id]) %>
+		<tr>
+			<td><%= ptdo.ptschedule.ptcourse.name %></td>
+			
+			<td><%= (Ptcourse::COURSE_TYPE.find_all{|disp, value| value == ptdo.ptschedule.ptcourse.course_type}).map {|disp, value| disp} %></td>
+			<td><%= l(ptdo.ptschedule.start) %></td>
+			<td><%= ptdo.ptschedule.ptcourse.duration %> Days</td>
+		</tr>
+	<% end -%>
 	<tr>
 		<td colspan=3><font size=-2><%= t 'evaluation.form.label_004' %></font></td>
 	</tr>
-
-
 	<tr>
-		<td colspan=3></td>
-	</tr>
-	<tr>
-	 <td class="leftcol"><label for="parttwodt"><%= t 'evaluation.form.parttwodate' %></label></td>
+	  <td class="leftcol"><label for="parttwodt"><%= t 'evaluation.form.parttwodate' %></label></td>
 		<td><%= f.date_select :parttwodt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 	</tr>
+</table>
+
+
+<table>
+
 
 
 
@@ -61,211 +71,18 @@
 
 	
 <!--Part III-->
-<table id="form">
-	<tr class="toprow">
-		<td>Part III: Hasil Kerja (50%)</td>
-		<td></td>
-	</tr>
-
-<tr>
-	<th colspan=3><%= t 'evaluation.form.label_005' %></th>
-<tr>
+<H2>Part III: Hasil Kerja (50%)</H2>
+<table width=100%>
+	<tr>
+		<th colspan=3><%= t 'evaluation.form.label_005' %></th>
+	<tr>
 </table>
-<table width=90% cellpadding=15px>
 
-	<tr>
-		<th><%= t 'evaluation.form.title_part3' %></th>
-		<th>PPP</th>
-		<th>PPK</th>
-		
-	<tr valign=bottom>
-		<td><label for="quantity">
-			<b><%= t 'evaluation.form.quantity' %></b><BR>
-			<font size=-1><%= t 'evaluation.form.quantity_desc' %></font></label></td>
-		<td><%= f.text_field :pppquantity, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkquantity, :size => 5, :value => 0 %></td>
-	</tr>
-	
-	<tr valign=bottom>
-		<td><label for="quality">
-			<b><%= t 'evaluation.form.quality' %></b><BR>
-			<font size=-1><ol><%= t 'evaluation.form.quanlity_desc1' %><BR>
-				              <%= t 'evaluation.form.quanlity_desc2' %></ol></font></label></td>
-		<td><%= f.text_field :pppquality, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkquality, :size => 5, :value => 0 %></td>
-	</tr>
-	<tr>
-		<td><label for="ontime">
-			<b><%= t 'evaluation.form.ontime' %></b><BR>
-			<font size=-1><%= t 'evaluation.form.ontime_desc' %></font>
-			</label></td>
-		<td><%= f.text_field :pppontime, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkontime, :size => 5, :value => 0 %></td>
-	</tr>
-
-	<tr>
-		<td><label for="effective">
-		<b><%= t 'evaluation.form.effective' %></b><BR>
-		<font size=-1><%= t 'evaluation.form.effective_desc' %></font>
-		</label></td>
-		<td><%= f.text_field :pppeffective, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkeffective, :size => 5, :value => 0 %></td>
-	</tr>
-	
-	<tr>
-		<th><%= t 'evaluation.form.title_part4' %></th>
-		<th>PPP</th>
-		<th>PPK</th>
-	</tr>
-
-	<tr>
-		<td><label for="knowledge">
-			<b><%= t 'evaluation.form.knowledge' %></b><BR>
-			<font size=-1><%= t 'evaluation.form.knowledge_desc' %></font></label></td>
-		<td><%= f.text_field :pppknowledge, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkknowledge, :size => 5, :value => 0 %></td>
-	</tr>
-
-	<tr>
-		<td><label for="rules">
-			<b><%= t 'evaluation.form.rules' %></b><BR>
-			<font size=-1><%= t 'evaluation.form.rules_desc' %></font></label></td>
-		<td><%= f.text_field :ppprules, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkrules, :size => 5, :value => 0 %></td>
-	</tr>
-
-	<tr>
-		<td><label for="communication">
-			<b><%= t 'evaluation.form.communication' %></b><BR>
-			<font size=-1><%= t 'evaluation.form.communication_desc' %></font></label></td>
-		<td><%= f.text_field :pppcommunication, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkcommunication, :size => 5, :value => 0 %></td>
-	</tr>
-
-
-
-	<tr>
-		<th><%= t 'evaluation.form.title_part5' %></th>
-		<th>PPP</th>
-		<th>PPK</th>
-	</tr>
-
-	<tr>
-		<td><label for="leadership">
-			<b><%= t 'evaluation.form.leadership' %></b><BR>
-			<font size=-1><%= t 'evaluation.form.leadership_desc' %></font></label></td>
-		<td><%= f.text_field :pppleader, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkleader, :size => 5, :value => 0 %></td>
-	</tr>
-
-	<tr>
-		<td><label for="management">
-			<b><%= t 'evaluation.form.management' %></b><BR>
-			<font size=-1><%= t 'evaluation.form.management_desc' %></font></label></td>
-		<td><%= f.text_field :pppmanage, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkmanage, :size => 5, :value => 0 %></td>
-	</tr>
-
-	<tr>
-		<td><label for="discipline">
-			<b><%= t 'evaluation.form.discipline' %></b><BR>
-			<font size=-1><%= t 'evaluation.form.discipline_desc' %></font></label></td>
-		<td><%= f.text_field :pppdiscipline, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkdisipline, :size => 5, :value => 0 %></td>
-	</tr>
-	
-	<tr>
-		<td><label for="proactive">
-			<b><%= t 'evaluation.form.proactive' %></b><BR>
-			<font size=-1><%= t 'evaluation.form.proactive_desc' %></font></label></td>
-		<td><%= f.text_field :pppproactive, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkproactive, :size => 5, :value => 0 %></td>
-	</tr>
-
-	<tr>
-		<td><label for="relate">
-			<b><%= t 'evaluation.form.relate' %></b><BR>
-			<font size=-1><%= t 'evaluation.form.relate_desc' %></font></label></td>
-		<td><%= f.text_field :ppprelate, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkrelate, :size => 5, :value => 0 %></td>
-	</tr>
-	
-	
-	
-	<tr>
-		<th><%= t 'evaluation.form.title_part6' %></th>
-		<th>PPP</th>
-		<th>PPK</th>
-	</tr>
-
-	<tr>
-		<td><label for="parttwo">
-			<b><%= t 'evaluation.form.parttwo' %></b><BR>
-			<font size=-1><%= t 'evaluation.form.parttwo_desc' %></font></label></td>
-		<td><%= f.text_field :pppparttwo, :size => 5, :value => 0 %></td>
-		<td><%= f.text_field :ppkparttwo, :size => 5, :value => 0 %></td>
-	</tr>
-	
-	<tr>
-		<td></td>
-		<td><%= f.text_field :ppptotals, :size => 5 %></td>
-		<td><%= f.text_field :ppktotals, :size => 5 %></td>
-	</tr>
-
-
+<%=render :partial => 'form_ppp', :locals => {:f => f} %> 
 
 <BR>
 	
-<!--Part VII-->
 
-<!--><#%=render :partial => 'totals', :locals => {:f => f} %> -->
-	
-	<tr>
-		
-	</tr>
-
-</table>
-<BR>
-	
-<!--Part VIII-->
-
-<table>
-	<tr class="toprow">
-		<th colspan=2><%= t 'evaluation.form.title_part8' %></td>
-	</tr>
-
-	<tr>
-		<td width=40%><label for="pppyears"><b><%= t 'evaluation.form.part8_desc' %></b></label></td>
-		<td><%= f.select :pppyears, 0..21  %> <%= t 'years_label' %> <%= f.select :pppmonths, 0..11 %> <%= t 'months_label' %></td>
-	</tr>
-
-	<tr>
-		<td colspan=2><label for="pppoverall"><b><%= t 'evaluation.form.part8i_desc' %></b></label></td>
-	</tr>
-	<tr>
-		<td><label for="pppoverall"><b><%= t 'evaluation.form.part8i' %></b></label></td>
-		<td><%= f.text_area :pppoverall, :size => '45x5' %></td>
-	</tr>
-
-	<tr>
-		<td><label for="pppadvancemet"><b><%= t 'evaluation.form.part8ii' %></b></label></td>
-		<td><%= f.text_area :pppadvancemet, :size => '45x5' %></td>
-	</tr>
-	
-	<tr>
-		<td colspan=2><%= t 'evaluation.form.ppp_statement' %></td>
-	<tr>
-
-	<tr>
-		<td><label for="ppp_id"><b><%= t 'evaluation.form.pppid' %></b></label></td>
-		<td><%= f.collection_select :ppp_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
-	</tr>
-	
-	<tr>
-		<td><label for="pppevaldt"><b><%= t 'datelabel' %></b></label></td>
-		<td><%= f.date_select :pppevaldt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
-	</tr>
-</table>
 <BR>
 		
 <!--Part IX -->
