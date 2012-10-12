@@ -1,4 +1,5 @@
 class StudentCounselingSessionsController < ApplicationController
+  filter_resource_access
   # GET /student_counseling_sessions
   # GET /student_counseling_sessions.xml
   def index

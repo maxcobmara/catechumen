@@ -5,6 +5,7 @@ class StaffAppraisal < ActiveRecord::Base
   
   belongs_to :appraised,      :class_name => 'Staff', :foreign_key => 'staff_id'
   belongs_to :eval1_officer,  :class_name => 'Staff', :foreign_key => 'evaluation1_by'
+  belongs_to :eval2_officer,  :class_name => 'Staff', :foreign_key => 'evaluation2_by'
   
   has_many :evactivities, :foreign_key => 'appraisal_id', :dependent => :destroy
   accepts_nested_attributes_for :evactivities, :reject_if => lambda { |a| a[:evactivity].blank? }
@@ -18,6 +19,10 @@ class StaffAppraisal < ActiveRecord::Base
     if submit_for_evaluation2 == false
       self.submit_for_evaluation2_on	= nil
     end
+    
+    if is_complete == false
+      self.is_complete_on	= nil
+    end
   end
   
   
@@ -27,7 +32,7 @@ class StaffAppraisal < ActiveRecord::Base
   def editable_page
     if submit_for_evaluation1 == false && staff_id == User.current_user.staff_id
       "edit"
-    elsif submit_for_evaluation1 == true && evaluation1_by == User.current_user.staff_id
+    elsif submit_for_evaluation1 == true && evaluation1_by == User.current_user.staff_id && submit_for_evaluation2 == false
       "edit"
     elsif submit_for_evaluation2 == true && evaluation2_by == User.current_user.staff_id
       "edit"

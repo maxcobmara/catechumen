@@ -74,7 +74,7 @@ class Staff < ActiveRecord::Base
   #Link to model Staff Appraisal                                                      
   has_many :appraisals,     :class_name => 'StaffAppraisal', :foreign_key => 'staff_id', :dependent => :destroy
   has_many :eval1_officers, :class_name => 'StaffAppraisal', :foreign_key => 'evaluation1_by'
-  has_many :ppk,        :class_name => 'Appraisal', :foreign_key => 'ppk_id' 
+  has_many :eval2_officers, :class_name => 'StaffAppraisal', :foreign_key => 'evaluation2_by'
   
   #Link to model AssetTrack
   has_many :staffinassettrack, :class_name => 'assettrack', :foreign_key => 'staff_id'

@@ -3,7 +3,7 @@
 	<p>
 		
 	<!-- Notification for Staff Leave Application -->
-	<% me_ppp = StaffAppraisal.count(:all, :conditions => ["evaluation1_by=? AND submit_for_evaluation1 =?", User.current_user.staff_id, true]) %>
+	<% me_ppp = StaffAppraisal.count(:all, :conditions => ["evaluation1_by=? AND submit_for_evaluation1 =? AND submit_for_evaluation2 =?", User.current_user.staff_id, true, false]) %>
 	<% me_ppk = StaffAppraisal.count(:all, :conditions => ["evaluation2_by=? AND submit_for_evaluation2 =?", User.current_user.staff_id, true]) %>
 	<% me_eval = me_ppp + me_ppk %>
 	<% if me_eval == 0 %>
@@ -80,6 +80,11 @@
 	<% alc = Leaveforstudent.count(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', User.current_user.student_id, true, DateTime.now]) %>
 	<% if alc > 0 %>
 		<p><%= link_to "Your leave request on #{al} has been Approved", { :controller => "leaveforstudents", :action => "index" } %></p>
+	<% end %>
+	
+	<% counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed IS ?', nil])%>
+	<% if counsel_appt > 0 %>
+		<%= counsel_appt %><%= link_to "Student counseling appoinment to be confirmed", { :controller => "student_counseling_sessions", :action => "index" } %></p>
 	<% end %>
 	
 	<!-- Notification for Students Dicsipline is approved -->

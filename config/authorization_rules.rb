@@ -87,8 +87,8 @@ authorization do
       if_attribute :reportedby_id => is {User.current_user.staff_id}
     end
     
-    has_permission_on :Student_discipline_cases, :to => :create
-    has_permission_on :Student_discipline_cases, :to => :approve do
+    has_permission_on :student_discipline_cases, :to => :create
+    has_permission_on :student_discipline_cases, :to => :approve do
       if_attribute :reported_by => is {User.current_user.staff_id}
     end
 
@@ -141,12 +141,16 @@ authorization do
       has_permission_on :tenants, :to => :read do
         if_attribute :student_id => is {User.current_user.student_id}
       end
-    
+      
+      has_permission_on :student_counseling_sessions, :to => :create
+      has_permission_on :student_counseling_sessions, :to => :show do
+        if_attribute :student_id => is {User.current_user.student_id}
+      end
     
       has_permission_on :programmes, :to => :menu
       has_permission_on :books, :to => :core
       has_permission_on :students, :to => [:read, :update, :menu] do
-        if_attribute :id => is {User.current_user.student_id}
+        if_attribute :student_id => is {User.current_user.student_id}
       end
       has_permission_on :leaveforstudents, :to => [:read, :update] do
         if_attribute :student_id => is {User.current_user.student_id}

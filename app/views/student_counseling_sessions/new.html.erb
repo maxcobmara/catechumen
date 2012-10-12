@@ -3,7 +3,12 @@
 
 	<div class="tform">
 		<H2>New Counseling Appointment</H2>
-				<%=render :partial => 'appointment', :locals => {:f => f} %> 
+		
+		<% if User.current_user.isstaff == false %>
+				<%=render :partial => 'appointment_student', :locals => {:f => f} %>
+		<% else %>
+				<%=render :partial => 'appointment', :locals => {:f => f} %>
+		<% end %> 
 
 
 	</div>

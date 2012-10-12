@@ -1,16 +1,28 @@
 class StudentCounselingSession < ActiveRecord::Base
-  # relationships, validations, controller searches, variables, lists, relationship checking
+  # befores, relationships, validations, before logic, validation logic, 
+  #controller searches, variables, lists, relationship checking
+  before_save :set_to_nil_where_false
+  
   belongs_to :student
   #belongs_to :created_by, :polymorphic => true,  :foreign_key => 'created_by'
   
   validates_presence_of :student_id
   
   
+  #before logic
+  def set_to_nil_where_false
+    if is_confirmed == false
+      self.confirmed_at	= nil
+    end
+  end
+  
+  
+  
   def self.find_appointment(search)
     if search
-      find(:all, :include => :student, :conditions => ['requested_at > ? AND students.name ILIKE ?', Time.now, "%#{search}%" ], :order => 'confirmed_at DESC')
+      find(:all, :include => :student, :conditions => ['requested_at > ? AND students.name ILIKE ?', Time.now, "%#{search}%" ], :order => 'requested_at DESC')
     else
-      find(:all, :include => :student, :conditions => ['requested_at > ?', Time.now ], :order => 'confirmed_at DESC')
+      find(:all, :include => :student, :conditions => ['requested_at > ?', Time.now - 2.hours ], :order => 'requested_at DESC')
     end
   end
   
