@@ -47,23 +47,25 @@ class Asset < ActiveRecord::Base
   end
   
   def non_active_assets
-    lost = Assetloss.find(:all, :select => :asset_id).map(&:asset_id)
+    lost = AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)
     disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
     lost + disposed
   end
   
   def assets_that_are_lost
-    Assetloss.find(:all, :select => :asset_id).map(&:asset_id)
+    AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)
   end
   
   def assets_that_are_disposed
     disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
   end
   
-  def am_i_disposed
+  def am_i_gone
     asset = Array(self.id)
     disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
-    am_i = asset & disposed
+    lost = AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)
+    gone = disposed + lost
+    am_i = asset & gone
     if am_i == []
       false
     else
@@ -72,14 +74,14 @@ class Asset < ActiveRecord::Base
   end
  
   named_scope :all 
-  named_scope :active,        :conditions =>  ["id not in (?) OR id not in (?)", Disposal.find(:all, :select => :asset_id).map(&:asset_id), Assetloss.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :active,        :conditions =>  ["id not in (?) OR id not in (?)", Disposal.find(:all, :select => :asset_id).map(&:asset_id), AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :fixed,         :conditions =>  ["assettype =? ", 1]
   named_scope :inventory,     :conditions =>  ["assettype =? ", 2]
   named_scope :disposal,      :conditions =>  ["mark_disposal =? AND id not in (?)", true, Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :disposed,      :conditions =>  ["id in (?)", Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :disposal,      :conditions =>  ["mark_disposal =? AND id not in (?)", true, Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
-  named_scope :markaslost,    :conditions =>  ["mark_as_lost =? AND id not in (?)", true, Assetloss.find(:all, :select => :asset_id).map(&:asset_id)]
-  named_scope :lost,          :conditions =>  ["id in (?)", Assetloss.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :markaslost,    :conditions =>  ["mark_as_lost =? AND id not in (?)", true, AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :lost,          :conditions =>  ["id in (?)", AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
 
 
   FILTERS = [

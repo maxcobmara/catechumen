@@ -1,5 +1,6 @@
 class AssetLoss < ActiveRecord::Base
-  # relationships, variables, lists, relationship checking
+  # befores, relationships, validations, before logic, validation logic, 
+  #controller searches, variables, lists, relationship checking
   
   belongs_to :location
   belongs_to :asset
@@ -9,7 +10,7 @@ class AssetLoss < ActiveRecord::Base
   belongs_to :sec_officer,      :class_name => 'Staff', :foreign_key => 'security_officer_id'
   belongs_to :hod,              :class_name => 'Staff', :foreign_key => 'endorsed_hod_by'
   
-  
+  validates_presence_of :report_code, :loss_type
   
   def item_name
     if loss_type == 'asset'

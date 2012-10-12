@@ -6,7 +6,7 @@ class StudentCounselingSession < ActiveRecord::Base
   belongs_to :student
   #belongs_to :created_by, :polymorphic => true,  :foreign_key => 'created_by'
   
-  validates_presence_of :student_id
+  validates_presence_of :student_id, 
   
   
   #before logic
