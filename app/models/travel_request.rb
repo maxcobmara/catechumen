@@ -39,6 +39,17 @@ class TravelRequest < ActiveRecord::Base
     is_submitted == true
   end
   
+  def requires_approval
+    if hod_accept == nil && hod_id == User.current_user.staff_id
+      (link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => travel_request).to_s
+    elsif is_submitted == true && hod_accept == nil && staff_id == User.current_user.staff_id
+      ""
+    elsif is_submitted == false || is_submitted == nil
+      (link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => travel_request).to_s
+    else
+    end
+  end
+  
   
   #controller searches
   def self.in_need_of_approval
