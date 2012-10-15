@@ -1,5 +1,6 @@
 class Course < ActiveRecord::Base
   has_many :subjects, :class_name => 'Course', :foreign_key => 'parent_id'
+  has_many :exams
   belongs_to :maincourse, :class_name => 'Course', :foreign_key => 'parent_id'
   
   belongs_to :admin, :class_name => 'Staff', :foreign_key => 'staff_id'

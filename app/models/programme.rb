@@ -3,7 +3,7 @@ class Programme < ActiveRecord::Base
   
   has_and_belongs_to_many :subjects                                                   #Link to HABTM programme_subject
   has_many :programclass,    :class_name => 'Klass', :foreign_key => 'programme_id'   #links to Model Klass
-  has_many :examquestions
+  has_many :examquestions,   :foreign_key => 'course_id'
   
   #has_many :courses,    :class_name => 'student', :foreign_key => 'course_id' #links to Model student
   
