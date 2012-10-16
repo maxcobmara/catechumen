@@ -80,4 +80,10 @@ class StaffAppraisalsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def appraisal_form
+    @staff_appraisal = StaffAppraisal.find(params[:id])
+    render :layout => 'report'
+  end
+  
 end

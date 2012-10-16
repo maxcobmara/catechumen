@@ -1,0 +1,654 @@
+<%= stylesheet_link_tag 'appr' %>
+<%= stylesheet_link_tag 'appr', :media => :print %>
+
+<div class="A4potrait_green">
+	<br /><br />
+	<div> <!-- top bit -->
+			<div class="bahagian">SULIT</div> 
+			<div class="bahagianright"><font size="2px">BORANG J.P.A. (Prestasi) 3/2002</font></div><br />
+			<div class="nokp"> No. K.P.<label for="textfield"></label>
+					<input name="textfield" type="text" id="textfield" size="25" value="<%=h @staff_appraisal.appraised.formatted_mykad %>"  >
+			</div><br /><br />
+
+			<div>
+				<center><img src="/images/jatanegara.png" width="128" height="99" /></center><br />
+				<center><b>KERAJAAN MALAYSIA<br /><br /><br />
+				LAPORAN PENILAIAN PRESTASI<br />
+				PEGAWAI KUMPULAN PENGURUSAN DAN PROFESIONAL<br /><br />
+				Tahun <%=h (@staff_appraisal.evaluation_year).year %></b></center><br />
+			</div>
+	</div>
+
+
+	<center>
+	<div class="whitetable">
+		<center><b>PERINGATAN</b></center><br />
+
+		<p align="justify">Pegawai Penilai (PP) iaitu Pegawai Penilai Pertama (PPP) dan Pegawai Penilai Kedua (PPK) serta Pegawai Yang Dinilai (PYD) hendaklah memberi perhatian kepada perkara-perkara berikut sebelum dan semasa membuat penilaian:</p>
+
+		<ol>
+			<li><p align="justify">PYD hendaklah melengkapkan maklumat di <b>Bahagian I</b> di bawah dan <b>Bahagian I</b> dalam borang <b>Sasaran Kerja Tahunan (SKT)</b> seperti di <b>Lampiran 'A'</b> pada awal tahun;</p></li>
+			<li><p align="justify">PYD hendaklah melengkapkan <b>Bahagian II</b> manakala PP hendaklah melengkapkan <b>Bahagian III</b> hingga <b>Bahagian IX</b> pada akhir tahun penilaian;</p></li>
+			<li><p align="justify">PYD dan PP hendaklah merujuk Panduan Pelaksanaan Sistem Penilaian Prestasi Anggota Perkhidmatan Awam Malaysia (Tahun 2002) sekiranya memerlukan keterangan lanjut semasa mengisi Borang Laporan Penilaian Prestasi Tahunan (LNPT) dan membuat penilaian;</p></li>
+			<li><p align="justify">PP hendaklah menggunakan Skala Penilaian Prestasi seperti di Lampiran 'B'; dan</p></li>
+			<li><p align="justify">PP hendaklah memaklumkan kepada PYD langkah-langkah meningkatkan prestasi/kemajuan kerjaya yang perlu dilakukan sebelum menandatangani di ruangan <b>Bahagian VIII</b>.</p></li>
+		</ol>
+	</div>
+	</center>
+
+		<br /><br />
+	<div class="bahagian">BAHAGIAN I - MAKLUMAT PEGAWAI<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>(Diisi oleh PYD)</i>
+	</div><br /><br /><br /><br />
+
+	<div class="whitetable">
+		<ol>
+			<li class="dotbox">Nama : ... <%=h @staff_appraisal.appraised.name %> ....................................................................................................................................</li>
+			<li class="dotbox">Jawatan dan Gred : ... <%=h @staff_appraisal.appraised.position.positionname %>........................................................................................................</li>
+			<li class="dotbox">Kementerian/Jabatan : ............................................................................................................ </li>
+			.................................................................................................................................................
+		</ol>
+	</div>
+</div>
+
+<P CLASS="breakhere">
+
+<div class="A4potrait_green">
+
+	<div class="bahagian">
+		<H4>BAHAGIAN II - KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI/LATIHAN</H4>
+		<H5><i>(Diisi oleh PYD)</i></H5>
+		<BR/><BR/>
+		<H4>1.&nbsp;&nbsp;KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI</H4>
+		<P>Senaraikan kegiatan dan sumbangan di luar tugas rasmi seperti sukan/pertubuhan/sumbangan kreatif di peringkat 
+			 Komuniti/Jabatan/Daerah/Negeri/Negara/Antarabangsa yang berfaedah kepada Organisasi/Komuniti/Negara pada tahun yang dinilai.</P><BR/>
+
+	  <table class="centre">
+	    <tr>
+	      <th>Senarai kegiatan/aktiviti/sumbangan</th>
+	      <th>Peringkat kegiatan/aktiviti/sumbangan<br />(nyatakan jawatan atau pencapaian)</th>
+	    </tr>
+			<% for evactivity in @staff_appraisal.evactivities %>
+	    <tr>
+	      <td width="303" height="114"><%= evactivity.evactivity %></td>
+	      <td width="309" ><p align="center"><%= (Evactivity::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp} %></p>
+	      <div align="justify"> </div></td>
+	    </tr>
+	    <% end -%>
+	  </table><br /><br />
+	
+	
+		<H4>2.&nbsp;&nbsp;LATIHAN</H4>
+		<ol><li>Senaraikan program latihan (seminar, kursus, bengkel dan lain-lain) yang dihadiri dalam tahun yang dinilai.</li></ol>
+		<table class="centre">
+	    <tr>
+	      <th height="48">Nama Latihan<br />(Nyatakan sijil jika ada)</th>
+	      <th>Tarikh/Tempoh</th>
+	      <th>Tempat</th>
+	    </tr>
+			<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', @staff_appraisal.staff_id]) %>
+	    <tr>
+	      <td width="259" height="50"><%= ptdo.ptschedule.ptcourse.name %></td>
+	      <td width="161"><%= l(ptdo.ptschedule.start) %></td>
+	      <td width="217"><%= ptdo.ptschedule.location %></td>
+	    </tr>
+			<% end -%>
+	  </table><br />
+	
+		<ol start="2">
+			<li>Senaraikan latihan yang diperlukan.</li>
+		</ol>	
+		<table class="centre">
+	    <tr>
+	      <th>Nama/Bidang Latihan</td>
+	      <th>Sebab Diperlukan</td>
+	    </tr>
+	    <tr>
+	      <td width="306" height="97">&nbsp;</td>
+	      <td width="343">&nbsp;</td>
+	    </tr>
+	  </table><BR/>
+	
+		<P>Saya mengesahkan bahawa semua kenyataan di atas adalah benar.</P>
+		
+		<table class="signature">
+			<tr>
+				<th><%=h @staff_appraisal.appraised.name %></th>
+				<td></td>
+				<th><%= l(@staff_appraisal.submit_for_appraisal1_on) %></th>
+			</tr>
+			<tr>
+				<td>Tandatangan PYD</td>
+				<td></td>
+				<td>Tarikh</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<P CLASS="breakhere">
+	
+<div class="A4potrait_green">
+	<div class="bahagian">
+		<BR/><BR/>
+		<H4>BAHAGIAN III - PENGHASILAN KERJA ( Wajaran 50% )</H4>
+		<P>Pegawai Penilai dikehendaki memberikan penilaian berdasarkan pencapaian kerja sebenar PYD berbanding dengan SKT yang ditetapkan. 
+		   Penilaian hendaklah berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10 :</P>
+
+		<table class="centre">
+	    <tr>
+	      <th>KRITERIA<br /> (Dinilai berasaskan SKT)</th>
+	      <th>PPP</th>
+	      <th>PPK</th>
+	    </tr>
+	    <tr>
+	      <td class="left"><strong>1.&nbsp;&nbsp;&nbsp;KUANTITI HASIL KERJA</strong>
+	      			<P>Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja 
+							yang ditetapkan.</P></td>
+	      <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_quantity %></td>
+	        			</tr>
+	      			</table></td>
+	      <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_quantity %></td>
+	        			</tr>
+	      			</table></td>
+	    </tr>
+	    <tr>
+	      <td class="left"><strong>2.&nbsp;&nbsp;&nbsp;KUALITI HASIL KERJA</strong>
+	      				 <P>2.1. Dinilai dari segi kesempurnaan, teratur dan kemas.</P>
+								 <P>2.2. Dinilai dari segi usaha dan inisiatif untuk mencapai kesempurnaan hasil kerja.</P></td>
+	      <td>
+	        		<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_quality %></td>
+	        			</tr>
+	      			</table>
+	      		
+	      			<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_quality %></td>
+	        			</tr>
+	      			</table></td>
+	      <td>
+	        		<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_quality %></td>
+	        			</tr>
+	      			</table>
+	      			
+	      			<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_quality %></td>
+	        			</tr>
+	      			</table></td>
+	    </tr>
+	
+	    <tr>
+	      <td class="left"><strong>3.&nbsp;&nbsp;&nbsp;KETEPATAN MASA</strong>
+	      		<p>Kebolehan menghasilkan kerja atau melaksanakan tugas dalam tempoh masa yang ditetapkan.</p></td>
+     		<td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_time %></td>
+	        			</tr>
+	      			</table></td>
+   			<td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_time %></td>
+	        			</tr>
+	      			</table></td>
+	    </tr>
+	
+	    <tr>
+	      <td class="left"><strong>4.&nbsp;&nbsp;&nbsp;KEBERKESANAN HASIL KERJA</strong>
+	      	<p>Dinilai dari segi memenuhi kehendak 'stake-holder' atau pelanggan.</p></td>
+        <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_effective %></td>
+	        			</tr>
+	      			</table></td>
+   			<td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_effective %></td>
+	        			</tr>
+	      			</table></td>
+	    </tr>
+	    <tr>
+	      <td class="left"><P><strong>Jumlah markah mengikut wajaran</strong></P></td>
+	      <td class="calc"><u><%=h @staff_appraisal.part3_eval1_calced %></u> x 50 = <%=h @staff_appraisal.part3_eval1_calced_percent %><br />50</td>
+	      <td class="calc"><u><%=h @staff_appraisal.part3_eval2_calced %></u> x 50 = <%=h @staff_appraisal.part3_eval2_calced_percent %><br />50</td>
+	      
+	    </tr>
+	  </table><BR/><BR/><BR/>
+		
+	
+	
+		<H4>BAHAGIAN IV - PENGETAHUAN DAN KEMAHIRAN ( Wajaran 25% )</H4>
+		<P>	Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan 
+				menggunakan skala 1 hingga 10:</P>
+
+		<table class="centre">
+	    <tr>
+	      <th>KRITERIA</th>
+	      <th>PPP</th>
+	      <th>PPK</th>
+	    </tr>
+	
+			<tr>
+	      <td class="left"><strong>1.&nbsp;&nbsp;&nbsp;ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG <BR/> &nbsp; &nbsp; &nbsp; KERJA</strong>
+	      			<P>	Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, 
+									menganalisis serta menyelesaikan masalah.</P></td>
+	      <td width=100px>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_knowledge %></td>
+	        			</tr>
+	      			</table></td>
+	      <td width=100px>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_knowledge %></td>
+	        			</tr>
+	      			</table></td>
+	    </tr>
+	
+			<tr>
+	      <td class="left"><strong>2.&nbsp;&nbsp;&nbsp;PELAKSANAAN DASAR, PERATURAN DAN ARAHAN <BR/> &nbsp; &nbsp; &nbsp;  PENTADBIRAN</strong>
+	      			<P>	Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.</P></td>
+	      <td width=100px>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_rule %></td>
+	        			</tr>
+	      			</table></td>
+	      <td width=100px>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_rule %></td>
+	        			</tr>
+	      			</table></td>
+	    </tr>
+	  </table>
+</div></div>
+<P CLASS="breakhere">
+	
+<div class="A4potrait_green">
+	<div class="bahagian">
+		<BR/><BR/>
+		<table class="centre">
+	    <tr>
+	      <th>KRITERIA<br /> (Dinilai berasaskan SKT)</th>
+	      <th>PPP</th>
+	      <th>PPK</th>
+	    </tr>
+	    <tr>
+	      <td class="left"><strong>1.&nbsp;&nbsp;&nbsp;KUANTITI HASIL KERJA</strong>
+	      			<P>Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja 
+							yang ditetapkan.</P></td>
+	      <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_communicate %></td>
+	        			</tr>
+	      			</table></td>
+	      <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_communicate %></td>
+	        			</tr>
+	      			</table></td>
+			</tr>
+			<tr>
+	      <td class="left"><P><strong>Jumlah markah mengikut wajaran</strong></P></td>
+	      <td class="calc"><u><%=h @staff_appraisal.part4_eval1_calced %></u> x 25 = <%=h pukka(@staff_appraisal.part4_eval1_calced_percent) %><br />30</td>
+	      <td class="calc"><u><%=h @staff_appraisal.part4_eval2_calced %></u> x 25 = <%=h pukka(@staff_appraisal.part4_eval2_calced_percent) %><br />30</td>
+	    </tr>
+		</table><BR/><BR/><BR/>
+		
+		<H4>BAHAGIAN V - KUALITI PERIBADI ( Wajaran 20% )</H4>
+		<P>	Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan 
+				menggunakan skala 1 hingga 10:</P>
+
+		<table class="centre">
+	    <tr>
+	      <th>KRITERIA<br /> (Dinilai berasaskan SKT)</th>
+	      <th>PPP</th>
+	      <th>PPK</th>
+	    </tr>
+	    <tr>
+	      <td class="left"><strong>1. &nbsp;&nbsp;CIRI-CIRI PEMIMPIN</strong>
+	      			<P>Mempunyai wawasan, komitmen, kebolehan membuat keputusan, menggerak dan memberi dorongan kepada pegawai ke 
+								 arah pencapaian objektif organisasi.</P></td>
+	      <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_leader %></td>
+	        			</tr>
+	      			</table></td>
+	      <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_leader %></td>
+	        			</tr>
+	      			</table></td>
+	    </tr>
+	
+	    <tr>
+	      <td class="left"><strong>2. &nbsp;&nbsp;KEBOLEHAN MENGELOLA</strong>
+	      			<P>	Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia,peralatan dan 
+									maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif organisasi.</P></td>
+	      <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_manage %></td>
+	        			</tr>
+	      			</table></td>
+	      <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_manage %></td>
+	        			</tr>
+	      			</table></td>
+	    </tr>
+
+	
+	    <tr>
+	      <td class="left"><strong>3. &nbsp;&nbsp;DISIPLIN</strong></strong>
+	      		<p>	Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, 
+								menunaikan janji dan bersifat sabar.</p></td>
+     		<td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_discipline %></td>
+	        			</tr>
+	      			</table></td>
+   			<td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_discipline %></td>
+	        			</tr>
+	      			</table></td>
+	    </tr>
+	
+	    <tr>
+	      <td class="left"><strong>4. &nbsp;&nbsp;&nbsp;PROAKTIF DAN INOVATIF</strong>
+	      	<p>	Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan 
+							kualiti dan produktiviti organisasi.</p></td>
+        <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_proactive %></td>
+	        			</tr>
+	      			</table></td>
+   			<td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_proactive %></td>
+	        			</tr>
+	      			</table></td>
+	    </tr>
+	
+			<tr>
+	      <td class="left"><strong>5. &nbsp;&nbsp;JALINAN HUBUNGAN DAN KERJASAMA</strong>
+	      	<p>Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.</p></td>
+        <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_relate %></td>
+	        			</tr>
+	      			</table></td>
+   			<td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_relate %></td>
+	        			</tr>
+	      			</table></td>
+	    </tr>
+	    <tr>
+	      <td class="left"><P><strong>Jumlah markah mengikut wajaran</strong></P></td>
+	      <td class="calc"><u><%=h @staff_appraisal.part5_eval1_calced %></u> x 20 = <%=h pukka(@staff_appraisal.part5_eval1_calced_percent) %><br />50</td>
+	      <td class="calc"><u><%=h @staff_appraisal.part5_eval2_calced %></u> x 20 = <%=h pukka(@staff_appraisal.part5_eval2_calced_percent) %><br />50</td>
+	      
+	    </tr>
+	  </table><BR/><BR/><BR/>
+	</div>
+</div>
+
+
+<P CLASS="breakhere">
+	
+<div class="A4potrait_green">
+	<div class="bahagian">
+		<BR/>
+		
+		<H4>BAHAGIAN VI - KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI ( Wajaran 5% )</H4>
+		<P style="padding: 0">(Sukan/Pertubuhan/Sumbangan Kreatif)</P>
+		<P>	Berasaskan maklumat di Bahagian II perenggan 1, Pegawai Penilai dikehendaki memberi penilaian dengan menggunakan skala 1 
+				hingga 10. TIada sebarang markah boleh diberikan (kosong) jika PYD tidak mencatat kegiatan atau sumbangannya.</P>
+		
+		
+		<table class="centre">
+	    <tr>
+	      <td rowspan=2>Peringkat Komuniti/Jabatan/Daerah/Negeri/Negara/Antarabangsa</td>
+	      <th>PPP</th>
+				<th>PPK</th>
+	    </tr>
+	    <tr>
+	      <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval1_part_ii %></td>
+	        			</tr>
+	      			</table></td>
+	      <td>
+							<table class="box">
+	        			<tr>
+	          			<td><%=h @staff_appraisal.eval2_part_ii %></td>
+	        			</tr>
+	      			</table></td>
+			</tr>
+			<tr>
+	      <td class="left"><P><strong>Jumlah markah mengikut wajaran</strong></P></td>
+	      <td class="calc"><u><%=h @staff_appraisal.eval1_part_ii %></u> x 5 = <%=h pukka(@staff_appraisal.part6_eval1_calced_percent) %><br />10</td>
+	      <td class="calc"><u><%=h @staff_appraisal.eval2_part_ii %></u> x 5 = <%=h pukka(@staff_appraisal.part6_eval2_calced_percent) %><br />10</td>
+	    </tr>
+		</table><BR/>
+		
+		<H4>BAHAGIAN VII - JUMLAH MARKAH KESELURUHAN</H4>
+		<P>	Pegawai Penilai dikehendaki mencatatkan jumlah markah keseluruhan yang diperolehi oleh PYD dalam bentuk peratus (%) 
+				berdasarkan jumlah markah bagi setiap Bahagian yang diberi markah.</P>
+				
+				
+		<table class="centre">
+	    <tr>
+	      <th>MARKAH KESELURUHAN</th>
+	      <th>PPP (%)
+								<table class="box">
+		        			<tr>
+		          			<td><%=h @staff_appraisal.total1 %></td>
+		        			</tr>
+		      			</table></th>
+				<th>PPK	(%)
+								<table class="box">
+		        			<tr>
+		          			<td><%=h @staff_appraisal.total2 %></td>
+		        			</tr>
+		      			</table></td></th>
+				<th>MARKAH PURATA (%)<br />(untuk diisi oleh Urus Setia <BR/>PPSM)
+								<table class="box">
+		        			<tr>
+		          			<td><%=h @staff_appraisal.t1t2_average %></td>
+		        			</tr>
+		      			</table></th>
+	    </tr>
+		</table><BR/>
+		
+		
+		<H4>BAHAGIAN VIII - ULASAN KESELURUHAN DAN PENGESAHAN OLEH PEGAWAI PENILAI PERTAMA </H4>
+		<table class="signature">
+			<tr>
+				<td style="text-align:left;">1.&nbsp;&nbsp;Tempoh PYD bertugas di bawah pengawasan:</td>
+				<td>Tahun</td>
+				<td>
+					<table class="box" style="margin-top: 12px; margin-bottom: 0px; margin-left: auto; margin-right: auto;">
+      			<tr>
+        			<td><%=h @staff_appraisal.eval1_work_years %></td>
+      			</tr>
+    			</table></td>
+				<td>Bulan</td>
+				<td>
+					<table class="box" style="margin-top: 12px; margin-bottom: 0px; margin-left: auto; margin-right: auto;">
+      			<tr>
+        			<td><%=h @staff_appraisal.eval1_work_months %></td>
+      			</tr>
+    			</table></td>
+			</tr>
+			<tr>
+				<td style="text-align:left;" colspan=4 >2.&nbsp;&nbsp;Penilai Pertama hendaklah memberi ulasan keseluruhan prestasi PYD.</td>
+			</tr>
+		</table>
+		
+		<table class="dottable">
+			<tr>
+				<td>(i) &nbsp;Prestasi keseluruhan</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="high">...<%=h (@staff_appraisal.eval1_performance) %>...........................................................................................................................................................................................................................................................................................................................................................................................................................................................</div></td>
+			</tr>
+			<tr>
+				<td>(ii) &nbsp;Kemajuan kerjaya</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="high">...<%=h (@staff_appraisal.eval1_progress) %>...........................................................................................................................................................................................................................................................................................................................................................................................................................................................</div></td>
+			</tr>
+		</table>
+  </div></div>
+
+	
+	
+<P CLASS="breakhere">
+<div class="A4potrait_green">
+	<div class="bahagian">
+		<BR/>
+		<table class="signature">
+			<tr>
+				<td style="text-align:left;" colspan=2>3. &nbsp;Adalah disahkan bahawa prestasi pegawai ini telah dimaklumkan kepada PYD.</td>
+			</tr>
+		</table>
+		<BR/>
+		<table class="whiteline">
+			<tr>
+				<td width=30%>Nama PPP :</td>
+				<td class="right"><%= @staff_appraisal.eval1_officer.name %></td>
+			</tr>
+			<tr>
+				<td>Jawatan :</td>
+				<td class="right"><%= @staff_appraisal.eval1_officer.position.positionname %></td>
+			</tr>
+			<tr>
+				<td>Kementerian/Jabatan :</td>
+				<td class="right"></td>
+			</tr>
+			<tr>
+				<td>No. K.P. :</td>
+				<td class="right"><%= @staff_appraisal.eval1_officer.formatted_mykad %></td>
+			</tr>
+		</table>
+		<BR/>
+		<table class="signature" style="margin-left">
+			<tr>
+				<th><%=h @staff_appraisal.eval1_officer.name %></th>
+				<td></td>
+				<th><%= l(@staff_appraisal.submit_for_evaluation2_on) %></th>
+			</tr>
+			<tr>
+				<td>Tandatangan PPP</td>
+				<td></td>
+				<td>Tarikh</td>
+			</tr>
+		</table><BR/><BR/>
+		
+		
+		<H4>BAHAGIAN IX - ULASAN KESELURUHAN OLEH PEGAWAI PENILAI KEDUA</H4>
+		<table class="signature">
+			<tr>
+				<td style="text-align:left;">1.&nbsp;&nbsp;Tempoh PYD bertugas di bawah pengawasan:</td>
+				<td>Tahun</td>
+				<td>
+					<table class="box" style="margin-top: 12px; margin-bottom: 0px; margin-left: auto; margin-right: auto;">
+      			<tr>
+        			<td><%=h @staff_appraisal.eval2_work_years %></td>
+      			</tr>
+    			</table></td>
+				<td>Bulan</td>
+				<td>
+					<table class="box" style="margin-top: 12px; margin-bottom: 0px; margin-left: auto; margin-right: auto;">
+      			<tr>
+        			<td><%=h @staff_appraisal.eval2_work_months %></td>
+      			</tr>
+    			</table></td>
+			</tr>
+			<tr>
+				<td style="text-align:left;" colspan=4 >2.&nbsp;&nbsp;Penilai Pertama hendaklah memberi ulasan keseluruhan prestasi PYD.</td>
+			</tr>
+		</table>
+		
+		<table class="dottable">
+			<tr>
+				<td>
+					<div class="high">...<%=h (@staff_appraisal.eval2_performance) %>...........................................................................................................................................................................................................................................................................................................................................................................................................................................................</div></td>
+			</tr>
+		</table>
+		
+		<table class="whiteline">
+			<tr>
+				<td width=30%>Nama PPk :</td>
+				<td class="right"><%= @staff_appraisal.eval2_officer.name %></td>
+			</tr>
+			<tr>
+				<td>Jawatan :</td>
+				<td class="right"><%= @staff_appraisal.eval2_officer.position.positionname %></td>
+			</tr>
+			<tr>
+				<td>Kementerian/Jabatan :</td>
+				<td class="right"></td>
+			</tr>
+			<tr>
+				<td>No. K.P. :</td>
+				<td class="right"><%= @staff_appraisal.eval2_officer.formatted_mykad %></td>
+			</tr>
+		</table>
+		<BR/>
+		<table class="signature" style="margin-left">
+			<tr>
+				<th><%=h @staff_appraisal.eval2_officer.name %></th>
+				<td></td>
+				<th><%= l(@staff_appraisal.is_complete_on) unless @staff_appraisal.is_complete_on.blank? %></th>
+			</tr>
+			<tr>
+				<td>Tandatangan PPP</td>
+				<td></td>
+				<td>Tarikh</td>
+			</tr>
+		</table><BR/><BR/>
+
+
+	</div>
+</div>
+
+
+<!--
+	below this line
+-->
+
+

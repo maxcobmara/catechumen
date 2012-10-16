@@ -4,6 +4,10 @@ module ApplicationHelper
     number_to_currency(money, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
   end
   
+  def pukka(points)
+    number_with_precision(points, :precision => 1)
+  end
+  
   def link_to_remove_fields(name, f)
     f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)")
   end
