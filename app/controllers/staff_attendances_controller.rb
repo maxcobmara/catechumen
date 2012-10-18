@@ -2,7 +2,7 @@ class StaffAttendancesController < ApplicationController
   # GET /staff_attendances
   # GET /staff_attendances.xml
   def index
-    @staff_attendances = StaffAttendance.find(:all, :conditions => ['log_type =?', "I"], :order => 'logged_at DESC', :limit => 1000).paginate(:per_page => 50, :page => params[:page])
+    @staff_attendances = StaffAttendance.is_controlled.paginate(:per_page => 50, :page => params[:page])
     @staff_attendance_days = @staff_attendances.group_by {|t| t.group_by_thingy }
     #@staff_attendance_staffs = @staff_attendances.group_by { |t| t.thumb_id }
 
@@ -83,4 +83,11 @@ class StaffAttendancesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def actionable
+    StaffAttendance.update_all(["trigger=?", true], :id => params[:triggers])
+    StaffAttendance.update_all(["trigger =?", false], :id => params[:ignores])
+    redirect_to :back
+  end
+  
 end
