@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121011042534) do
+ActiveRecord::Schema.define(:version => 20121017024632) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -980,6 +980,19 @@ ActiveRecord::Schema.define(:version => 20121011042534) do
     t.datetime "updated_at"
   end
 
+  create_table "staff_attendances", :force => true do |t|
+    t.integer  "thumb_id"
+    t.datetime "logged_at"
+    t.string   "log_type"
+    t.string   "reason"
+    t.boolean  "trigger"
+    t.integer  "approved_by"
+    t.boolean  "is_approved"
+    t.date     "approved_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "staff_grades", :force => true do |t|
     t.string   "name"
     t.string   "grade"
@@ -1077,6 +1090,8 @@ ActiveRecord::Schema.define(:version => 20121011042534) do
     t.string   "transportclass_id"
     t.integer  "country_id"
     t.string   "birthcertno"
+    t.integer  "thumb_id"
+    t.integer  "time_group_id"
   end
 
   create_table "stationeries", :force => true do |t|

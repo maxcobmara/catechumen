@@ -3,7 +3,7 @@
 	<p>
 		
 	<!-- Notification for Appraisal Request -->
-	<% me_ppp = StaffAppraisal.count(:all, :conditions => ["evaluation1_by=? AND submit_for_evaluation1 =? AND submit_for_evaluation2 =?", User.current_user.staff_id, true, false]) %>
+	<% me_ppp = StaffAppraisal.count(:all, :conditions => ["evaluation1_by=? AND submit_for_evaluation1 =? AND submit_for_evaluation2  IS ?", User.current_user.staff_id, true, nil]) %>
 	<% me_ppk = StaffAppraisal.count(:all, :conditions => ["evaluation2_by=? AND submit_for_evaluation2 =?", User.current_user.staff_id, true]) %>
 	<% me_eval = me_ppp + me_ppk %>
 	<% if me_eval == 0 %>

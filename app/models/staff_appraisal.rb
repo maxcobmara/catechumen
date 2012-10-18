@@ -32,7 +32,7 @@ class StaffAppraisal < ActiveRecord::Base
   def editable_page
     if submit_for_evaluation1 == false && staff_id == User.current_user.staff_id
       "edit"
-    elsif submit_for_evaluation1 == true && evaluation1_by == User.current_user.staff_id && submit_for_evaluation2 == false
+    elsif submit_for_evaluation1 == true && evaluation1_by == User.current_user.staff_id && submit_for_evaluation2 != true
       "edit"
     elsif submit_for_evaluation2 == true && evaluation2_by == User.current_user.staff_id
       "edit"

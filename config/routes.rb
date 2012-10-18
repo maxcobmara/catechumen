@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :staff_attendances
+
   map.resources :staff_appraisals, :collection => { :appraisal_form => :get}
 
   map.resources :travel_requests

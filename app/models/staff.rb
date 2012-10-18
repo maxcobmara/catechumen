@@ -126,8 +126,8 @@ class Staff < ActiveRecord::Base
   has_many :headofdepts,        :class_name => 'TravelRequest', :foreign_key => 'hod_id' #hod
   
   #links to Model Attendances
-  has_many :attendingstaffs,        :class_name => 'Attendance', :foreign_key => 'staff_id'#, :dependent => :destroy #attendance staff name
-  has_many :approvers, :class_name => 'Attendance', :foreign_key => 'approve_id' # approver name
+  has_many :attendingstaffs,    :class_name => 'StaffAttendance', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'#, :dependent => :destroy #attendance staff name
+  has_many :approvers,          :class_name => 'StaffAttendance', :foreign_key => 'approved_by' # approver name
   
   #links to Model Assetloss
    has_many :handlers,      :class_name => 'AssetLoss',   :foreign_key => 'last_handled_by' 
