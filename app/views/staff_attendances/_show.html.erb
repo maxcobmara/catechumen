@@ -1,0 +1,45 @@
+<fieldset>
+	<legend>Late Details</legend>
+		<table width=100% >
+			<tr>
+				<td class="leftcol"><%= t 'staff.name' %></td>
+				<td><%=h @staff_attendance.attendee_details %></td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><%= t 'attendance.attdate' %></td>
+				<td><%=h @staff_attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y') %>&nbsp; 
+					 	<%=h @staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+			</tr>
+		</table>
+</fieldset>
+
+
+<% if @staff_attendance.reason? %>
+<fieldset>
+	<legend>Reason for Lateness</legend>
+		<table width=100% >
+			<tr>
+				<td class="leftcol"><%= t 'staff.name' %></td>
+				<td><%=h @staff_attendance.reason %></td>
+			</tr>
+		</table>
+</fieldset>
+<% end -%>
+
+
+<% if @staff_attendance.is_approved? %>
+<fieldset>
+	<legend>Approval</legend>
+		<table width=100% >
+			<tr>
+				<td class="leftcol"><%= t 'staff.name' %></td>
+				<td><%=h @staff_attendance.is_approved? ? "Approved" : "Not Approved" %></td>
+			</tr>
+			<tr>
+				<td class="leftcol">Approved On</td>
+				<td><%=h l (@staff_attendance.approved_on) unless @staff_attendance.approved_on.blank? %></td>
+			</tr>
+		</table>
+</fieldset>
+<% end -%>

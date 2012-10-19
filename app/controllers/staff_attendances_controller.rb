@@ -4,7 +4,9 @@ class StaffAttendancesController < ApplicationController
   def index
     @staff_attendances = StaffAttendance.is_controlled.paginate(:per_page => 50, :page => params[:page])
     @staff_attendance_days = @staff_attendances.group_by {|t| t.group_by_thingy }
-    #@staff_attendance_staffs = @staff_attendances.group_by { |t| t.thumb_id }
+    
+    @mylate_attendances = StaffAttendance.find_mylate
+    @approvelate_attendances = StaffAttendance.find_approvelate
 
 
     respond_to do |format|
@@ -83,6 +85,23 @@ class StaffAttendancesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def manage
+    @mylate_attendances = StaffAttendance.find_mylate
+    @approvelate_attendances = StaffAttendance.find_approvelate
+
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @staff_attendances }
+    end  
+  end
+  
+  def approve
+    @staff_attendance = StaffAttendance.find(params[:id])
+  end
+  
+  
   
   def actionable
     StaffAttendance.update_all(["trigger=?", true], :id => params[:triggers])

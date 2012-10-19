@@ -29,11 +29,10 @@
 	<% end %>
 	
 	<!-- Notification for Staff Late Approval -->
-  <% dash_attendance = Attendance.count(:all, :conditions => ["approve_id=? AND approvestatus IS ?", User.current_user.staff_id, nil]) %>
+  <% dash_attendance = StaffAttendance.count(:all, :conditions => ["approved_by=? AND is_approved IS ?", User.current_user.staff_id, nil]) %>
   <% if dash_attendance == 0 %>
-    <p>
   <% else %>
-    <%= dash_attendance %> <%= link_to "late attendance for approval", { :controller => "attendances", :action => "index" } %><br>
+    <%= dash_attendance %> <%= link_to "late attendance for approval", { :controller => "staff_attendances", :action => "manage" } %><br>
   <% end %>
 	
 	<!-- Notification for travel request -->

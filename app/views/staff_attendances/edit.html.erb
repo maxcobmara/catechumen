@@ -1,44 +1,39 @@
-<h1>Editing staff_attendance</h1>
-
 <% form_for(@staff_attendance) do |f| %>
   <%= f.error_messages %>
 
-  <p>
-    <%= f.label :thumb_id %><br />
-    <%= f.text_field :thumb_id %>
-  </p>
-  <p>
-    <%= f.label :logged_at %><br />
-    <%= f.datetime_select :logged_at %>
-  </p>
-  <p>
-    <%= f.label :log_type %><br />
-    <%= f.text_field :log_type %>
-  </p>
-  <p>
-    <%= f.label :reason %><br />
-    <%= f.text_field :reason %>
-  </p>
-  <p>
-    <%= f.label :trigger %><br />
-    <%= f.check_box :trigger %>
-  </p>
-  <p>
-    <%= f.label :approved_by %><br />
-    <%= f.text_field :approved_by %>
-  </p>
-  <p>
-    <%= f.label :is_approved %><br />
-    <%= f.check_box :is_approved %>
-  </p>
-  <p>
-    <%= f.label :approved_on %><br />
-    <%= f.date_select :approved_on %>
-  </p>
+	<div class="tform">
+			<H2>Reasons for Late</H2>
+			
+			<table width=100% >
+				<tr>
+					<td class="leftcol"><%= t 'staff.name' %></td>
+					<td><%=h @staff_attendance.attendee_details %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcol"><%= t 'attendance.attdate' %></td>
+					<td><%=h @staff_attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y') %>&nbsp; 
+						 	<%=h @staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcol"><label for="reason"><%= t 'attendance.reason' %><font color="red"> * </font></td>
+					<td><%= f.text_area :reason, :size => "50x3" %></td>
+			  </tr>
+			</table>
+			
+		  <% if User.current_user.staff.position.is_root? == false %>
+			<%= f.hidden_field :approved_by, :value => User.current_user.staff.position.parent.staff_id %>
+			<% else %>
+			<% end -%>
+			
+	</div>
+	<BR/>
+
   <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>
 
 <%= link_to 'Show', @staff_attendance %> |
-<%= link_to 'Back', staff_attendances_path %>
+<%= link_to 'Back', '/attendance/manage/' %>
