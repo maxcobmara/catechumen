@@ -1,10 +1,27 @@
-<!-- Box -->
 <div class="box">
-	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Lists of Suppliers</h2>
+		<h2 class="left">Address Book</h2>
 	</div>
 </div>
+
+<div class="toolbar">
+	<table style="width:75%;">
+		<tr>
+			<td width=200px><p><%= link_to image_tag("add.png", :border => 0, :title => 'New Travel Request') + "New", new_travel_request_path %></p></td>
+			<td><%= link_to 'ALL', addbooks_path %></td>
+			<% alphatab = Array('A' .. 'Z') %>
+			<% alphatab.each do |alphatab| %>
+			  <% add_exist = Addbook.count(:all, :conditions => ['name ILIKE ?', "#{alphatab}%"]) %>
+			  <% if add_exist < 1 %>
+					<td><%= alphatab %></td>
+				<% else %>
+					<td><%= link_to "#{alphatab}", :action => "index", :search => "#{alphatab}" %></td>
+				<% end %>
+			<% end %>
+		</tr></table>
+		<p>
+</div>
+
 <div class="indextable">
 	<table>
 		<tr>

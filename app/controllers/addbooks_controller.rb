@@ -2,7 +2,7 @@ class AddbooksController < ApplicationController
   # GET /addbooks
   # GET /addbooks.xml
   def index
-    @addbooks = Addbook.all
+    @addbooks = Addbook.search(params[:search])
 
     respond_to do |format|
       format.html # index.html.erb
