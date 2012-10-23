@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   
+  map.connect '/attendance/status/', :controller => 'staff_attendances', :action => 'status' 
   map.connect '/attendance/approve/', :controller => 'staff_attendances', :action => 'approve' 
   map.connect '/attendance/manage/', :controller => 'staff_attendances', :action => 'manage' 
   map.resources :staff_attendances, :collection => { :actionable => :put }

@@ -109,4 +109,14 @@ class StaffAttendancesController < ApplicationController
     redirect_to :back
   end
   
+  def status
+    @thismonthreds = StaffAttendance.this_month_red
+    @lastmonthreds = StaffAttendance.last_month_red
+    @prevmonthreds = StaffAttendance.previous_month_red
+    
+    @thismonthgreens = StaffAttendance.this_month_green
+    @lastmonthgreens = StaffAttendance.last_month_green
+    @prevmonthgreens = StaffAttendance.previous_month_green
+  end
+  
 end

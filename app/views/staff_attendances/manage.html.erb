@@ -29,7 +29,7 @@ see http://stackoverflow.com/questions/2817506/import-excel-into-rails-app to se
 	    <td><%=h attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
 	    <td><%=h attendance.attended.name %></td>
 	    <td><%=h attendance.reason? ? attendance.reason : "Not Submitted Yet" %></td>
-	    
+	
 
 	    <td width=10px>
 				<% if attendance.reason? && attendance.is_approved == nil %>
@@ -61,7 +61,7 @@ see http://stackoverflow.com/questions/2817506/import-excel-into-rails-app to se
 <% for attendance in @mylate_attendances %>
   <tr>
 	  <td><%=h attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y') %></td>
-    <td><%=h attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+    <td><%=h attendance.logged_at.in_time_zone('UTC').strftime('%H:%M:%S') %></td>
     <td><%=h attendance.approved_by.blank? ? "Reason not submitted" : attendance.approver.staff_name_with_position %></td>
     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => attendance %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => attendance %></td>
