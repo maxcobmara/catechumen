@@ -48,7 +48,18 @@
 			</tr>
 		<% end -%>
 		</table>
-	<p><font size=-2><%= t 'evaluation.form.label_004' %></font></p>
+	<div>
+		<p><font size=-2><%= t 'evaluation.form.label_004' %></font></p>
+		<p><strong>
+							<div style="width: 380px; float: left;">|  Activity </div>|  Reason </strong>
+		</p>
+			<% f.fields_for :trainneeds do |builder| %>
+				<%= render 'trainneed_fields', :f => builder %>
+			<% end %>
+		<p>
+			<%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :trainneeds %> Add More 
+		</p>
+	</div>
 
 	<table  width=100%>
 		<tr>
