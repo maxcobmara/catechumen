@@ -2,7 +2,7 @@ class BanksController < ApplicationController
   # GET /banks
   # GET /banks.xml
   def index
-    @banks = Bank.all
+    @banks = Bank.find(:all, :order => :short_name)
 
     respond_to do |format|
       format.html # index.html.erb
