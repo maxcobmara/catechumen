@@ -182,7 +182,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/students/formforstudent', :controller => 'students', :action => 'formforstudent'
   map.resources :students
 
-  map.connect '/position/maklumat_perjawatan_LA', :controller => 'positions', :action => 'maklumat_perjawatan_LA'
+  map.connect '/positions/maklumat_perjawatan_LA', :controller => 'positions', :action => 'maklumat_perjawatan_LA'
   map.resources :positions
 
   map.resources :cofiles
