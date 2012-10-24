@@ -120,10 +120,15 @@
 </div>
 <BR>
 
+<% Asset.lost.each do |asset|%>
+	<%if asset.id == @asset.id %>
+		<% @asset_lost = 1 %>
+	<% end %>
+<% end %>
 
-
-
+<% if @asset_lost != 1%>
 <%= link_to 'Edit', edit_asset_path(@asset) %> |
+<% end %>
 	<% if @asset.assettype == 1 %>
 		<%= link_to 'Maintenance', :action => 'maintenance', :id => @asset %> |
 	<% end %>
