@@ -18,7 +18,7 @@ class Asset < ActiveRecord::Base
   has_one :asset_loss        #Link to Model AssetLoss  
   has_many :assettracks
   #has_many :assetinassettrack,    :class_name => 'Assettrack', :foreign_key => 'asset_id' #Link to Model AssetTrack
-  
+  has_many :assetnums
   has_many :maints, :dependent => :destroy
   accepts_nested_attributes_for :maints, :reject_if => lambda { |a| a[:asset_id].blank? }
   
