@@ -70,11 +70,14 @@
 	    </tr>
 			<% for evactivity in @staff_appraisal.evactivities %>
 	    <tr>
-	      <td width="303" height="114"><%= evactivity.evactivity %></td>
+	      <td width="303" height="40"><%= evactivity.evactivity %></td>
 	      <td width="309" ><p align="center"><%= (Evactivity::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp} %></p>
 	      <div align="justify"> </div></td>
 	    </tr>
 	    <% end -%>
+		<% if @staff_appraisal.evactivities.count == 0 %>
+		<tr><td width="303" height="57">-</td><td width="309">-</td></tr>
+		<% end %>
 	  </table><br /><br />
 	
 	
@@ -93,6 +96,13 @@
 	      <td width="217"><%= ptdo.ptschedule.location %></td>
 	    </tr>
 			<% end -%>
+		<% if Ptdo.find(:all, :conditions => ['staff_id = ?', @staff_appraisal.staff_id]).count == 0 %>	
+		<tr>
+			<td width="259" height="50">-</td>
+			<td width="161">-</td>
+			<td width="217">-</td>
+		</tr>
+		<% end %>
 	  </table><br />
 	
 		<ol start="2">
