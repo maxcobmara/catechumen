@@ -11,7 +11,11 @@
 	<div class="tlist">
 	  <table width=100%>
 			<tr>
-				<td  colspan=12><%= link_to image_tag("book_go.png", :border => 0, :title => 'New Library Transaction') + "New Loan", new_librarytransaction_path %></th></td>
+				<td  colspan=12>
+				<% permitted_to? :manage, :librarytransactions do %>
+					<%= link_to image_tag("book_go.png", :border => 0, :title => 'New Library Transaction') + "New Loan", new_librarytransaction_path %>
+				<% end %>
+				</th></td>
 			</tr>
 		  <tr>
 			  <th>Book ID</th>
