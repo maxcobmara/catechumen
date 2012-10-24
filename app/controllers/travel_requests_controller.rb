@@ -2,7 +2,7 @@ class TravelRequestsController < ApplicationController
   # GET /travel_requests
   # GET /travel_requests.xml
   def index
-    @travel_requests = TravelRequest.all #.with_permissions_to(:edit).find(:all)
+    @travel_requests = TravelRequest.my_travel_requests #.with_permissions_to(:edit).find(:all)
     @for_approvals = TravelRequest.in_need_of_approval
 
     respond_to do |format|

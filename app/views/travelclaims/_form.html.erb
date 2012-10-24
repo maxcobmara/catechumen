@@ -1,15 +1,14 @@
 <div class="tform">
-	<H2>Travel Details (<%= @travelclaim.staff.transportclass_id %>  )</H2> 
+	<H2>Travel Details</H2> 
 	<table>
 		<tr>
-			<td class="leftcol"><label for="claimsmonth"><b>Start Date:</b></label></td>
+			<td class="leftcol"><label for="claimsmonth"><b>Claims For</b></label></td>
 			<td><%= f.date_select :claimsmonth,  :order => [:month, :year] %> </td>
 		</tr>
 	
 		<tr>
 			<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
-			<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :name, :include_blank => true %>
-				  filter by current_user.id</td>
+			<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :name %></td>
 		</tr>
 	</table>
 
