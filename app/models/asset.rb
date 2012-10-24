@@ -19,8 +19,8 @@ class Asset < ActiveRecord::Base
   has_many :assettracks
   #has_many :assetinassettrack,    :class_name => 'Assettrack', :foreign_key => 'asset_id' #Link to Model AssetTrack
   has_many :assetnums
-  has_many :maints, :dependent => :destroy
-  accepts_nested_attributes_for :maints, :reject_if => lambda { |a| a[:asset_id].blank? }
+  has_many :maints#, :dependent => :destroy
+  accepts_nested_attributes_for :maints, :allow_destroy => true, :reject_if => lambda { |a| a[:asset_id].blank? }
   
  
   def save_my_vars
