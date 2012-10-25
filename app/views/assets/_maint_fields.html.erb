@@ -1,4 +1,4 @@
-<div class="fields">
+<div class="fields"><%= @index%>
 <table>	
 	<tr>
 	  <th colspan = 3>Maintenance</th>
@@ -6,7 +6,7 @@
 	<tr>
 		<td class="leftcol"><label for="staff_id">Performed By</label></td>
 		<td><%= f.collection_select :maintainer_id, Addbook.find(:all), :id, :name, :include_blank => true, :prompt => 'Maintained By' %></td>
-		<td rowspan=4><%= f.hidden_field :_destroy %>
+		<td rowspan=4><%= f.hidden_field :asset_id, :value => @asset.id %><%= f.hidden_field :_destroy %>
 									<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %></td>
 	</tr>
 	<tr>

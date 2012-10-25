@@ -70,11 +70,14 @@
 	    </tr>
 			<% for evactivity in @staff_appraisal.evactivities %>
 	    <tr>
-	      <td width="303" height="114"><%= evactivity.evactivity %></td>
+	      <td width="303" height="40"><%= evactivity.evactivity %></td>
 	      <td width="309" ><p align="center"><%= (Evactivity::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp} %></p>
 	      <div align="justify"> </div></td>
 	    </tr>
 	    <% end -%>
+		<% if @staff_appraisal.evactivities.count == 0 %>
+		<tr><td width="303" height="57">-</td><td width="309">-</td></tr>
+		<% end %>
 	  </table><br /><br />
 	
 	
@@ -93,6 +96,13 @@
 	      <td width="217"><%= ptdo.ptschedule.location %></td>
 	    </tr>
 			<% end -%>
+		<% if Ptdo.find(:all, :conditions => ['staff_id = ?', @staff_appraisal.staff_id]).count == 0 %>	
+		<tr>
+			<td width="259" height="50">-</td>
+			<td width="161">-</td>
+			<td width="217">-</td>
+		</tr>
+		<% end %>
 	  </table><br />
 	
 		<ol start="2">
@@ -103,10 +113,18 @@
 	      <th>Nama/Bidang Latihan</td>
 	      <th>Sebab Diperlukan</td>
 	    </tr>
+	   	<% for trainneed in @staff_appraisal.trainneeds %>
 	    <tr>
-	      <td width="306" height="97">&nbsp;</td>
-	      <td width="343">&nbsp;</td>
+	      <td width="306" height="40"><%= trainneed.name %></td>
+	      <td width="343"><%= trainneed.reason %></td>
 	    </tr>
+		<% end -%>
+		<% if @staff_appraisal.trainneeds.count == 0 %>
+		<tr>
+	      <td width="306" height="97">-</td>
+	      <td width="343">-</td>
+	    </tr>
+		<% end %>
 	  </table><BR/>
 	
 		<P>Saya mengesahkan bahawa semua kenyataan di atas adalah benar.</P>
@@ -473,19 +491,19 @@
 	      <th>PPP (%)
 								<table class="box">
 		        			<tr>
-		          			<td><%=h @staff_appraisal.total1 %></td>
+		          			<td><%=h number_with_precision(@staff_appraisal.total1,:precision => 2) %></td>
 		        			</tr>
 		      			</table></th>
 				<th>PPK	(%)
 								<table class="box">
 		        			<tr>
-		          			<td><%=h @staff_appraisal.total2 %></td>
+		          			<td><%=h number_with_precision(@staff_appraisal.total2,:precision => 2) %></td>
 		        			</tr>
 		      			</table></td></th>
 				<th>MARKAH PURATA (%)<br />(untuk diisi oleh Urus Setia <BR/>PPSM)
 								<table class="box">
 		        			<tr>
-		          			<td><%=h @staff_appraisal.t1t2_average %></td>
+		          			<td><%=h number_with_precision(@staff_appraisal.t1t2_average, :precision => 2) %></td>
 		        			</tr>
 		      			</table></th>
 	    </tr>

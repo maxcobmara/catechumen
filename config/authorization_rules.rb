@@ -198,7 +198,7 @@ authorization do
   #Group Library   -------------------------------------------------------------------------------
   
   role :librarian do
-    has_permission_on :books, :to => [:manage, :extend, :return]
+    has_permission_on :books, :to => [:manage]
     has_permission_on :librarytransactions , :to => [:manage, :extend, :return]
   end 
   

@@ -29,7 +29,7 @@ class Librarytransaction < ActiveRecord::Base
   FILTERS = [
     {:scope => "all",        :label => "All Transactions"},
     {:scope => "borrowed",   :label => "Out"},
-    {:scope => "returned",    :label => "Recent"},
+    {:scope => "returned",    :label => "Returned"},
     {:scope => "overdue",    :label => "Overdue"}
   ]
   
