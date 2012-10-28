@@ -1369,6 +1369,7 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.integer  "hod_id"
     t.boolean  "hod_accept"
     t.date     "hod_accept_on"
+    t.integer  "travelclaim_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

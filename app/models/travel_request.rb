@@ -6,6 +6,8 @@ class TravelRequest < ActiveRecord::Base
   belongs_to :replacement,  :class_name => 'Staff', :foreign_key => 'replaced_by'
   belongs_to :headofdept,   :class_name => 'Staff', :foreign_key => 'hod_id'
   
+  belongs_to :travelclaim
+  
   validates_presence_of :staff_id, :request_code, :destination, :purpose, :depart_at, :return_at
   validates_presence_of :own_car_notes, :if => :mycar?
   validate :validate_end_date_before_start_date
@@ -27,7 +29,7 @@ class TravelRequest < ActiveRecord::Base
   #validation logic
   def validate_end_date_before_start_date
     if return_at && depart_at
-      errors.add(:depart_at, "Your must leave before you return") if return_at < depart_at || depart_at < DateTime.now
+      errors.add(:depart_at, "Your must leave before you return") if return_at < depart_at
     end
   end
   

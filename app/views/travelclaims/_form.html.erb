@@ -1,24 +1,44 @@
-<div class="tform">
-	<H2>Travel Details</H2> 
-	<table>
-		<tr>
-			<td class="leftcol"><label for="claimsmonth"><b>Claims For</b></label></td>
-			<td><%= f.date_select :claimsmonth,  :order => [:month, :year] %> </td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
-			<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :name %></td>
-		</tr>
-	</table>
-
-<div>
-	<% f.fields_for :travelclaimrequests do |builder| %>
-	  <%= render 'travelclaimrequest_fields', :f => builder %>
+<H2>Include Travel Requests</H2>
+<table width=85%>
+	<tr>
+		<th width=10px>include</th>
+		<th>Request Code</th>
+		<th>Destination</th>
+		<th>Purpose</th>
+		<th>Travel Dates</th>
+	</tr>
+	<% for travel_request in TravelRequest.find(:all, :conditions => ['staff_id =?', User.current_user.staff_id]) %>
+	<tr>
+		<td width=10px><%= check_box_tag "travelclaim[travel_request_ids][]", travel_request.id, @travelclaim.travel_requests.include?(travel_request) %>
+	  <td><%= travel_request.request_code %></td>
+	  <td><%= travel_request.destination %></td>
+	  <td><%= travel_request.purpose %></td>
+	  <td><%= travel_request.depart_at.strftime("%d %b") %> - <%= travel_request.return_at.strftime("%d %b %Y") %></td>
+	</tr>
 	<% end %>
-	<p><%= link_to_add_fields "Add TravelRequest", f, :travelclaimrequests %></p>
-</div>
-	
+</table><BR/>
+
+<H2>Receipts</H2>	
+<table width=85%>
+	<tr>
+		<th width=20%>Type</td>
+		<th width=30%>Receipt No</td>
+		<th width=20% align="right">Value (RM)</td>
+		<th width=30%></th>
+	</tr>
+	</table>
+	<% f.fields_for :travelclaimreceipts do |builder| %>
+	  <%= render 'travelclaimreceipt_fields', :f => builder %>
+	<% end %>
+
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Receipt'), f, :travelclaimreceipts %> - <%= "Add Receipt" %></p>
+
+
+
+
+
+
+
 <table>
 	<tr>
 		<th>Type</td>
@@ -32,77 +52,19 @@
 </table>
 	<p><%= link_to_add_fields "Add Receipt", f, :travelclaimreceipts %></p>
 
-<table>
-  <tr>
-	  <td class="leftcol"><label for="ptclaimsvalue"><b>Transport Claim Value:</b></label></td>
-		<td>RM <%= f.text_field :ptclaimsvalue, :size => 12  %></td>
-	</tr>
-	
-	
-	<tr>
-	   <td class="leftcol"><label for="allclaimsvalue"><b>Allowance Claim Value:</b></label></td>
-		<td>RM <%= f.text_field :allclaimsvalue, :size => 12  %></td>
-	</tr>
-	
-	
-	<tr>
-	   <td class="leftcol"><label for="othclaimsvalue"><b>Other Claim Value:</b></label></td>
-		<td>RM <%= f.text_field :othclaimsvalue, :size => 12  %></td>
-	</tr>
-	
-	
-	<tr>
-		<th colspan=2>Foreign Exchange</th>
-	</tr>
-	
-	<tr>
-	   <td class="leftcol"><label for="exchvalue"><b>Exchange Value:</b></label></td>
-		<td><%= f.text_field :exchvalue %></td>
-	</tr>
-	
-	
-	<tr>
-	   <td class="leftcol"><label for="exchloss"><b>Exchange Loss:</b></label></td>
-		<td><%= f.text_field :exchloss %></td>
-	</tr>
-	
-	
-	<tr>
-	   <td class="leftcol"><label for="gtotal"><b>Total:</b></label></td>
-		<td><%= f.text_field :gtotal %></td>
-	</tr>
 	
 	
 	
-	<tr>
-	   <td class="leftcol"><label for="claimtype"><b>Claim Type:</b></label></td>
-		<td><%= f.radio_button :claimtype,'true' %>By KM<%= f.radio_button :claimtype,'false' %>Replaced</td>
-	</tr>
 	
-	<tr>
-		<th colspan=2>Submission</th>
-	</tr>
-	    <tr>
-			<td class="leftcol"><label for="submission"><b>Submission Date:</b></label></td>
-			<td><%= f.date_select :submission, :order => [:day, :month, :year], :include_blank => true %></td>
-		</tr>
 	
-
-	<tr>
-		<th colspan=2>HOD Confirmation</th>
-	</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="hod_id"><b>HOD Name:</b></label></td>
-			<td><%= f.collection_select :hod_id, Staff.find(:all, :order => "icno"), :id, :mykad_with_staff_name, :include_blank => true %></td>
-		</tr>
-
-		<tr>
-		 <td class="leftcol"><label for="hodconfirmdt"><b>Confirmed Date:</b></label></td>
-		<td><%= f.date_select :hodconfirmdt, :order => [:day, :month, :year], :include_blank => true %></td>
-		</tr>
+  
+  
+  <!--
+  <#%= check_box_tag :travel_request_ids,  
+                      travel_request.travelclaim_id,  
+                      @travelclaim.travel_requests.include?(travel_request),  
+                      :name => 'travelclaim[travel_request_ids][]' %>-->
+  
 
 
-</table>
-</div>
-<BR>
+

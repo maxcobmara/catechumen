@@ -94,6 +94,7 @@ class Staff < ActiveRecord::Base
  # has_many :sdiciplines, :class_name => 'Sdicipline', :foreign_key => 'reportedby_id' # reported_by
   
   #Link to Model Travelclaim
+  has_many :travelclaims, :dependent => :destroy
   has_many :travelcode,    :class_name => 'Travelclaim',      :foreign_key => 'travelrequest_id'
   has_many :hod,           :class_name => 'Travelclaim',      :foreign_key => 'hod_id'
   
@@ -162,7 +163,7 @@ class Staff < ActiveRecord::Base
   has_many :attendances
   has_many :leaveforstudents  #approval of student leave
 #---------------------------------------------------------------------
-     #has_many :travelclaims
+     
 
     # def hod_with_name
     #   "#{formatted_mykad} #{name}"

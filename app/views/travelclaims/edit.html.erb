@@ -1,9 +1,14 @@
-<h3>Editing Travel Claim</h3>
-
 <% form_for(@travelclaim) do |f| %>
   <%= f.error_messages %>
 
-<%=render :partial => 'form', :locals => {:f => f} %> 
+	<div class="tform">
+		<H2>Edit travel claims for <%=h @travelclaim.claimsmonth.strftime("%B %Y") %> 
+			<div class="right"><%=h @travelclaim.staff.name %></div></H2> 
+			<%=render :partial => 'form', :locals => {:f => f} %> 
+		
+	</div><BR/>
+
+
   <p>
     <%= f.submit 'Update' %>
   </p>

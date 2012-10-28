@@ -3,6 +3,7 @@ class TravelclaimsController < ApplicationController
   # GET /travelclaims.xml
   def index
     @travelclaims = Travelclaim.all
+    #@requests = TravelRequest.find(:all, :conditions => ['staff_id =?', User.current_user.staff_id])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -26,11 +27,11 @@ class TravelclaimsController < ApplicationController
   # GET /travelclaims/new.xml
   def new
     @travelclaim = Travelclaim.new
-    2.times do 
-      travelclaimrequest = @travelclaim.travelclaimrequests.build
-      3.times { travelclaimrequest.traveldetails.build }
-    end
-    5.times { @travelclaim.travelclaimreceipts.build }
+    #2.times do 
+      #travelclaimrequest = @travelclaim.travelclaimrequests.build
+      #3.times { travelclaimrequest.traveldetails.build }
+    #end
+    #5.times { @travelclaim.travelclaimreceipts.build }
 
     respond_to do |format|
       format.html # new.html.erb

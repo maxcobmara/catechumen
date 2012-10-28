@@ -2,12 +2,16 @@ class Travelclaim < ActiveRecord::Base
   
   before_save :varmyass
   #traveclaim = survey, travelrequest = questions
+  belongs_to :staff
   
-  has_many :travelclaimrequests, :dependent => :destroy
-  accepts_nested_attributes_for :travelclaimrequests, :reject_if => lambda { |a| a[:travelrequest_id].blank? }, :allow_destroy =>true
+  #has_many :travelclaimrequests, :dependent => :destroy
+  #accepts_nested_attributes_for :travelclaimrequests, :limit => 5, :reject_if => lambda { |a| a[:travelrequest_id].blank? }, :allow_destroy =>true
   
   has_many :travelclaimreceipts, :dependent => :destroy
   accepts_nested_attributes_for :travelclaimreceipts, :allow_destroy =>true
+  
+  has_many :travel_requests
+  accepts_nested_attributes_for :travel_requests
   
   
   #display on show.html.erb
@@ -15,9 +19,9 @@ class Travelclaim < ActiveRecord::Base
   #belongs_to :travelclaim, :foreign_key => 'staff_id'
   #belongs_to :hod,       :class_name => 'Staff', :foreign_key => 'hod_id'
   #belongs_to :travelcode,       :class_name => 'Travelrequest', :foreign_key => 'travelrequest_id'
-  belongs_to :staff
   
-  validates_presence_of :claimsmonth, :staff_id
+  
+  #validates_presence_of :claimsmonth, :staff_id
   
   def varmyass
     self.ptclaimsvalue = value_km
@@ -29,6 +33,10 @@ class Travelclaim < ActiveRecord::Base
   
   def self.find_main
       Staff.find(:all, :condition => ['staff_id IS NULL'])
+  end
+  
+  def unclaimed_travel_requests
+    TravelRequest.find(:all, :conditions => ['staff_id =?', User.current_user.staff_id])
   end
   
   def total_claims
