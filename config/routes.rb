@@ -135,8 +135,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :counsellings
 
-  map.resources :sdiciplines
-
   map.resources :bulletins
 
   map.resources :news

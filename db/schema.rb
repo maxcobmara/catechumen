@@ -893,33 +893,6 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
   end
 
-  create_table "sdiciplines", :force => true do |t|
-    t.integer  "reportedby_id"
-    t.integer  "student_id"
-    t.text     "details"
-    t.date     "reporteddt"
-    t.integer  "cofile_id"
-    t.date     "casedt"
-    t.string   "referredby"
-    t.text     "investigation"
-    t.string   "status"
-    t.text     "action"
-    t.date     "closedtcollege"
-    t.string   "location"
-    t.text     "otherinfo"
-    t.date     "bplsenddt"
-    t.date     "jtkpdt"
-    t.text     "jtkpdecision"
-    t.date     "jtkpdescisionrxdt"
-    t.date     "appealdt"
-    t.text     "appealdecision"
-    t.date     "appealdecisionrxdt"
-    t.integer  "supplier_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "infraction"
-  end
-
   create_table "spmresults", :force => true do |t|
     t.integer  "student_id"
     t.string   "spm_subject"

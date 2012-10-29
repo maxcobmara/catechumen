@@ -8,7 +8,7 @@ class Travelclaim < ActiveRecord::Base
   #accepts_nested_attributes_for :travelclaimrequests, :limit => 5, :reject_if => lambda { |a| a[:travelrequest_id].blank? }, :allow_destroy =>true
   
   has_many :travelclaimreceipts, :dependent => :destroy
-  accepts_nested_attributes_for :travelclaimreceipts, :allow_destroy =>true
+  accepts_nested_attributes_for :travelclaimreceipts, :reject_if => lambda { |a| a[:receiptnp].blank? }, :allow_destroy =>true
   
   has_many :travel_requests
   accepts_nested_attributes_for :travel_requests
