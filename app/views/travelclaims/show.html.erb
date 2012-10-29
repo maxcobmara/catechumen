@@ -1,7 +1,7 @@
 <div class="tform">
 	<fieldset>
 		<legend>Travel Claims For</legend>
-			<table width=100%>
+			<table width=90%>
 					<tr>
 						<td class="leftcol"><label for="claimsmonth">Month</label></td>
 						<td><%=h @travelclaim.claimsmonth.strftime("%B %Y") %></td>
@@ -16,7 +16,7 @@
 	
 	<fieldset>
 		<legend>Includes Travel Requests For</legend>
-			<table width=100%>
+			<table width=85%>
 				<tr>
 					<th>Request Code</th>
 					<th>Destination</th>
@@ -38,7 +38,7 @@
 	
 	<fieldset>
 		<legend>Receipts</legend>
-			<table width=100%>
+			<table width=85%>
 				<tr>
 					<th><%= t 'claim.type' %></th>
 					<th><%= t 'claim.receipt_no' %></th>
@@ -51,6 +51,11 @@
 				  <td align='right'><%= ringgols(travelclaimreceipt.rvalue) %></td>
 				</tr>
 				<% end %>
+				<tr>
+				  <td colspan=2 align='right'><b>Quick Total</b></td>
+				  <td align='right'><b><%= ringgols(@travelclaim.receipts) %></b></td>
+				</tr>
+				
 			</table>
 				<BR/>
 	</fieldset>

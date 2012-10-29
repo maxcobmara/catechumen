@@ -33,24 +33,24 @@
 			<th>Sampai</th>
 		</tr>
 		<!-- Travel Details -->
-		<% for travelclaimrequest in @travelclaim.travelclaimrequests %>
+		<% for travel_request in @travelclaim.travel_requests %>
 		<tr class="grey">
 			<td colspan="6">
-					<%=h travelclaimrequest.travelrequest.purpose %>
-					<%=h travelclaimrequest.travelrequest.destination %>
-					<%=h travelclaimrequest.travelrequest.trcode %>
+					<%=h travel_request.purpose %>
+					<%=h travel_request.destination %>
+					<%=h travel_request.request_code %>
 			</td>
 		</tr>
-		<% for traveldetail in travelclaimrequest.traveldetails %>
+		<!--<@% for traveldetail in travelclaimrequest.traveldetails %>-->
 		<tr>
-			<td><%= traveldetail.travelday.strftime("%d/%m/%Y")%><BR><%= traveldetail.travelday.strftime("(%A)")%>
-			<td align=right><%= traveldetail.departure.strftime("%l:%M%p") %>
-			<td align=right><%= traveldetail.arrival.strftime("%l:%M%p") %>
-			<td><%= traveldetail.description%>
-			<td><%= traveldetail.distance.blank? ? "" : (traveldetail.distance).to_s + "km" %>
+			<td><#%= traveldetail.travelday.strftime("%d/%m/%Y")%><BR><#%= traveldetail.travelday.strftime("(%A)")%>
+			<td align=right><#%= traveldetail.departure.strftime("%l:%M%p") %>
+			<td align=right><#%= traveldetail.arrival.strftime("%l:%M%p") %>
+			<td><#%= traveldetail.description%>
+			<td><#%= traveldetail.distance.blank? ? "" : (traveldetail.distance).to_s + "km" %>
 			<td>-</td>
 		</tr>
-		<% end %>
+		<!--<#% end %>-->
 		<% end %>
 		<tr>
 			<td colspan=4>Total KM</td>
