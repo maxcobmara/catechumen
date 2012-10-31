@@ -17,7 +17,7 @@
 		    <th><%= t 'asset_losses.asset_id' %></th>
 		    <th><%= t 'asset_losses.location_id' %></th>
 		    <th><%= t 'asset_losses.lost_at' %></th>
-		    <th colspan=3 class="ac">Control</th>
+		    <th colspan=4 class="ac">Control</th>
   	</tr>
 
 		<% @asset_losses.each do |asset_loss| %>
@@ -29,6 +29,8 @@
 	    <td><%=h asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil? %></td>
 	    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => asset_loss %></td>
 	    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => asset_loss %></td>
+	    <td width=10px><%= link_to '28', :action => 'kewpa28', :id => asset_loss %></td>
+	
 	    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset_loss, :confirm => 'Are you sure?', :method => :delete %></td>   
 	  </tr>
 		<% end %>

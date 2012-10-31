@@ -80,4 +80,9 @@ class AssetLossesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def kewpa28
+    @asset_loss = AssetLoss.find(params[:id])
+    render :layout => 'report'
+  end
 end

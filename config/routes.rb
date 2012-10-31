@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :student_counseling_sessions
 
-  map.resources :asset_losses
+  map.resources :asset_losses, :collection => { :kewpa28 => :get, :kewpa29 => :get, :kewpa30 => :get }
 
   
   map.connect '/exams/exampaper', :controller => 'exams', :action => 'exampaper'
