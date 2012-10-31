@@ -6,7 +6,7 @@ class TravelRequest < ActiveRecord::Base
   belongs_to :replacement,  :class_name => 'Staff', :foreign_key => 'replaced_by'
   belongs_to :headofdept,   :class_name => 'Staff', :foreign_key => 'hod_id'
   
-  belongs_to :travelclaim
+  belongs_to :travel_claim
   
   validates_presence_of :staff_id, :request_code, :destination, :purpose, :depart_at, :return_at
   validates_presence_of :own_car_notes, :if => :mycar?

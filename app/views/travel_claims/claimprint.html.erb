@@ -1,0 +1,419 @@
+<%= stylesheet_link_tag 'report' %>
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+
+<div class="A4potrait">
+
+<form action="#">
+
+	<fieldset>
+
+<div id="title">	 
+	<H3></H3>
+	<H3></H3>
+	<H3>SENARAI TUNTUTAN</H3>
+	<BR>
+	
+<div id="tprintreport">
+	<table width=100% border=2 cellspacing=0 align="center" >
+		<tr>
+			<th colspan="6" >KENYATAAN TUNTUTAN</th>
+		</tr>
+		<tr align="center">
+			<th rowspan="2">Tarikh</th>	
+			<th colspan="2">Waktu</th>
+			<th rowspan="2">Tujuan/Tempat</th>
+			<th rowspan="2">Jarak(km) RM</th>
+			<th rowspan="2">Tambang</th>
+		</tr>
+		<tr>
+			<th>Bertolak</th>
+			<th>Sampai</th>
+		</tr>
+		<!-- Travel Details -->
+		<% for travel_request in @travel_claim.travel_requests %>
+		<tr class="grey">
+			<td colspan="6">
+					<%=h travel_request.purpose %>
+					<%=h travel_request.destination %>
+					<%=h travel_request.request_code %>
+			</td>
+		</tr>
+		<% end %>
+		<% for travel_claim_log in @travel_claim.travel_claim_logs(:order => 'travel_on') %>
+		<tr>
+			<td><%= travel_claim_log.travel_on.strftime("%d/%m/%Y")%><BR><%= travel_claim_log.travel_on.strftime("(%A)")%></td>
+			<td align='center'><%= travel_claim_log.start_at.strftime("%l:%M%p") %></td>
+			<td align='center'><%= travel_claim_log.finish_at.strftime("%l:%M%p") %></td>
+			<td align='center'><%= travel_claim_log.purpose %><BR><%= travel_claim_log.destination %></td>
+			<td align='right'><%= travel_claim_log.mileage %></td>
+			<td>-</td>
+		</tr>
+		<!--<#% end %>-->
+		<% end %>
+		<tr>
+			<td colspan=4>Total KM</td>
+			<td align='right'><%= @travel_claim.total_mileage %></td>
+			<td>-</td>
+	</table>
+<BR>
+	<table width=100% border=1px cellspacing=0 align="center">
+		<tr class="grey">
+			<td colspan=7>TUNTUTAN ELAUN PERJALANAN KENDERAAN</td>
+		</tr>
+		<tr>
+			<td colspan=7>Bagi</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>500 km pertama</td>
+			<td align=right><%= @travel_claim.km500 %></td>
+			<td>km x </td>
+			<td align=right><%= @travel_claim.sen_per_km500 %></td>
+			<td>sen/km :</td>
+			<td class="money"><%= ringgols(@travel_claim.value_km500) %></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>501 km - 1,000 km</td>
+			<td align=right><%= @travel_claim.km1000 %></td>
+			<td>km x </td>
+			<td align=right><%= @travel_claim.sen_per_km1000 %></td>
+			<td>sen/km :</td>
+			<td class="money"><%= ringgols(@travel_claim.value_km1000) %></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>1,001 km - 1,700 km</td>
+			<td align=right><%= @travel_claim.km1700 %></td>
+			<td>km x </td>
+			<td align=right><%= @travel_claim.sen_per_km1700 %></td>
+			<td>sen/km :</td>
+			<td class="money"><%= ringgols(@travel_claim.value_km1700) %></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>1,701 km dan seterusnya</td>
+			<td align=right><%= @travel_claim.kmmo %></td>
+			<td>km x </td>
+			<td align=right><%= @travel_claim.sen_per_kmmo %></td>
+			<td>sen/km :</td>
+			<td class="money"><%= ringgols(@travel_claim.value_kmmo) %></td>
+		</tr>
+		<tr>
+			<td colspan=6 align=right><strong>Jumlah</strong></td>
+			<td class="money"><strong><%= ringgols(@travel_claim.value_km) %></strong></td>
+		</tr>
+
+		
+	</table>
+	<BR>
+	
+	<!--Tuntutan Elaun -- >
+	<table  width=100% border=1px cellspacing=0 align="center" >
+		<tr>
+			<th>TUNTUTAN ELAUN PERJALANAN KENDERAAN</th>
+		</tr>
+		<tr>
+			<td>
+		  <table>
+					<tr>
+					  <td rowspan="5">Bagi</td>
+					</tr>
+					<tr>
+					  <td>500 km pertama</td>
+					  <td></td>
+					  <td>km x</td>
+					  <td></td>
+					  <td>sen/km:</td>
+					  <td></td>
+					</tr>
+
+					<tr>
+					  <td>501 km - 1,000 km</td>
+					  <td></td>
+					  <td>km x</td>
+					  <td></td>
+					  <td>sen/km:</td>
+					  <td></td>
+					</tr>
+
+					<tr>
+					  <td>1,001 - 1,700 km</td>
+					  <td></td>
+					  <td>km x</td>
+					  <td></td>
+					  <td>sen/km:</td>
+					  <td></td>
+					</tr>
+
+					<tr>
+					  <td>1,701 km dan seterusnya</td>
+					  <td></td>
+					  <td>km x</td>
+					  <td></td>
+					  <td>sen/km:</td>
+					  <td></td>
+					</tr>
+
+				<tr>
+					<td colspan="5"></td>
+					<td><b>JUMLAH: </b></td>
+					<td></td>
+				</tr>
+			</table>
+		</td>
+		</tr>
+	</table>
+	<BR>
+		
+	<!-- Tuntutan Tambang Awam -->
+	<table width=100% border=1px cellspacing=0 align="center">
+		<tr>
+			<th>TUNTUTAN TAMBANG PENGANGKUTAN AWAM</th>
+		</tr>
+		<tr> <!--HACK :  Make these into DIVs, content can be in tables-->
+		<td>
+				<table>
+					<tr>
+						<td>Teksi</td>
+						<td>[Resit : <%= 	@travel_claim.taxi_receipts %>]:</td>
+						<td class="money"><%= ringgols(@travel_claim.taxi_receipts_total) %></td>
+					</tr>
+					<tr>
+						<td>Bus</td>
+						<td>[Resit : <%= 	@travel_claim.bus_receipts %>]:</td>
+						<td class="money"><%= ringgols(@travel_claim.bus_receipts_total) %></td>
+					</tr>
+					<tr>
+						<td>Kereta Api</td>
+						<td>[Resit : <%= 	@travel_claim.train_receipts %>]:</td>
+						<td class="money"><%= ringgols(@travel_claim.train_receipts_total) %></td>
+					</tr>
+					<tr>
+						<td>Feri</td>
+						<td>[Resit : <%= 	@travel_claim.ferry_receipts %>]:</td>
+						<td class="money"><%= ringgols(@travel_claim.ferry_receipts_total) %></td>
+					</tr>
+					<tr>
+						<td>Kapal Terbang</td>
+						<td>[Resit : <%= 	@travel_claim.plane_receipts %>]:</td>
+						<td class="money"><%= ringgols(@travel_claim.plane_receipts_total) %></td>
+					</tr>
+				   <tr>
+						 <td colspan="2" align="right"><b>JUMLAH:</b></td>
+						 <td class="money"><b><%= ringgols(@travel_claim.public_transport_totals) %></b></td>
+				   </tr>
+				</table>
+		</td>
+		</tr>
+	</table>
+	<BR>
+		
+	<!-- Tuntutan Elaun Makan -->
+	<table width=100% border=1px cellspacing=0 align="center">
+		<tr>
+			<th>TUNTUTAN ELAUN MAKAN/ELAUN HARIAN</th>
+		</tr>
+		<tr>
+		 <td>
+			  <table>
+					<% for travel_claim_allowance in @travel_claim.travel_claim_allowances.find(:all, :conditions => ['expenditure_type IN (?)', [21,22,23] ]) %>
+					<tr>
+						<td style="text-align:right;"><%= number_with_precision(travel_claim_allowance.quantity, :precision => 0) %> X </td>
+						<td><%= travel_claim_allowance.allow_expend_type %> sebanyak</td>
+						<td><%= ringgols(travel_claim_allowance.amount) %>/Hari</td>
+						<td class="money"><%= ringgols(travel_claim_allowance.total) %></td>
+					</tr>
+					<% end %>
+					<tr>
+						 <td colspan="3" align="right"><b>JUMLAH:</b></td>
+						 <td class="money"><b><%= ringgols(@travel_claim.allowance_totals) %></b></td>
+					</tr>
+			  </table>
+		 </td>
+		</tr>
+	</table>
+	<BR>
+		
+	<!-- Sewa Hotel -->
+	<table width=100% border=1px cellspacing=0 align="center">
+		<tr>
+			<th>TUNTUTAN BAYARAN SEWA HOTEL(BSH) / ELAUN LOJING</th>
+		</tr>
+		<tr>
+		<td>
+				<table>
+					<% for travel_claim_allowance in @travel_claim.travel_claim_allowances.find(:all, :conditions => ['expenditure_type IN (?)', [31,32,33] ], :order => 'expenditure_type') %>
+					<tr>
+						<td style="text-align:right;"><%= number_with_precision(travel_claim_allowance.quantity, :precision => 0) %> X </td>
+						<td><%= travel_claim_allowance.allow_expend_type %> Sebanyak</td>
+						<td><%= ringgols(travel_claim_allowance.amount) %>/Hari</td>
+						<td class="money"><%= ringgols(travel_claim_allowance.total) %></td>
+					</tr>
+					<% end %>
+					<tr>
+						 <td colspan="3" align="right"><b>JUMLAH:</b></td>
+						 <td class="money"><b><%= ringgols(@travel_claim.hotel_totals) %></b></td>
+					</tr>
+				</table>
+		</td>
+		</tr>
+	</table>
+	<BR>
+		
+	<!-- Tuntutan Pelbagai -->
+	<table width=100% border=1px cellspacing=0 align="center">	
+		<tr>
+			<th>TUNTUTAN PELBAGAI</th>
+		</tr>
+		<tr>
+			<td>
+					<table>
+						<tr>
+							<td>Tol</td>
+							<td>[Resit : <%= 	@travel_claim.toll_receipts %>]:</td>
+							<td class="money"><%= ringgols(@travel_claim.toll_receipts_total) %></td>
+						</tr>
+						<tr>
+							<td>Tempat Letak Kereta</td>
+							<td>[Resit : <%= 	@travel_claim.parking_receipts %>]:</td>
+							<td class="money"><%= ringgols(@travel_claim.parking_receipts_total) %></td>
+						</tr>
+						<tr>
+							<td>Dobi</td>
+							<td>[Resit : <%= 	@travel_claim.laundry_receipts %>]:</td>
+							<td class="money"><%= ringgols(@travel_claim.laundry_receipts_total) %></td>
+						</tr>
+						<tr>
+							<td>Pos</td>
+							<td>[Resit : <%= 	@travel_claim.pos_receipts %>]:</td>
+							<td class="money"><%= ringgols(@travel_claim.pos_receipts_total) %></td>
+						</tr>
+						<tr>
+							<td>Telefon, Teleks, Faks</td>
+							<td>[Resit : <%= 	@travel_claim.comms_receipts %>]:</td>
+							<td class="money"><%= ringgols(@travel_claim.comms_receipts_total) %></td>
+						</tr>
+						<tr>
+							<td colspan="2">Kerugian pertukaran matawang asing (@ 3%) <BR/>[Bagi Singapura, Selatan Thailand, Kalimantan dan Brunei Darussalam sahaja]</td>
+							<td class="money"><%= ringgols(@travel_claim.exchange_loss_totals) %></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="right"><b>JUMLAH</b></td>
+						 	<td class="money"><b><%= ringgols(@travel_claim.other_claims_total) %></b></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="right"><b>JUMLAH BESAR</b></td>
+						 	<td class="money"><b><%= ringgols(@travel_claim.total_claims) %></b></td>
+						</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+  <BR>
+	
+	<!-- Pengakuan -->
+	<table width=100% border=1px cellspacing=0 align="center" >
+		<tr>
+			<th>PENGAKUAN</th>
+		</tr>
+		<tr>
+			<td>
+					<table border=0>
+							<tr>
+								<td colspan="2">Saya mengaku bahawa:</td>
+							</tr>
+							<tr>
+								<td>(a)</td>
+								<td>Perjalanan pada tarikh-tarikh tersebut adalah benar dan telah dibuat atas urusan rasmi;</td>
+							</tr>
+							<tr>
+								<td>(b)</td>
+								<td>Tuntutan ini dubuat mengikut kadar dan syarat seperti yang dinyatakan dibawah peraturan-peraturan bagi pegawai bertugas rasmi dan/atau pengawai berkrusus yang berkuatkuasa semasa;</td>
+							</tr>
+							<tr>
+								<td>(c)</td>
+								<td>Perbelanjaan yang bertanda (*) berjumlah sebanyak RM telah sebenarnya dilakukan dan dibayar  oleh saya ;</td>
+							</tr>
+							<tr>
+								<td>(d)</td>
+								<td>Panggilan telefon sebanyak <%= ringgols(@travel_claim.comms_receipts_total) %> dibuat atas urusan rasmi; dan </td>
+							</tr>
+							<tr>
+								<td>(e)</td>
+								<td>Butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya</td>
+							</tr>
+							<tr>
+							<td colspan="2"><b>Tarikh: <%= @travel_claim.submitted_on.strftime("%d-%m-%Y") unless @travel_claim.submitted_on.blank? %></b></td>
+							</tr>
+							<tr>
+							<td colspan="2" align="right">  <%=h @travel_claim.staff.name %> <BR/>  <%=h @travel_claim.staff.position.positionname %></td>
+							</tr>
+					</table>
+			</td>
+		</tr>
+	</table>
+	<BR>
+		
+	<!-- Pengesahan -->
+	<table  width=100% border=1px cellspacing=0 align="center" >
+		<tr>
+			<th>PENGESAHAN</th>
+		</tr>
+		<tr>
+			<td>
+				<table>
+						<tr>
+							<td>Adalah disahkan bahawa perjalanan tersebut adalah atas urusan rasmi</td>
+						</tr>
+						<tr>
+							<td>Tarikh: <%=h l(@travel_claim.approved_on) %></td>
+						</tr>
+						<tr>
+							<td>Nama: <%=h @travel_claim.approver.name unless @travel_claim.approver.blank? %></td>
+						</tr>
+						<tr>
+							<td>Jawatan: <%=h @travel_claim.approver.position.positionname unless @travel_claim.approver.blank? %></td>
+						</tr>
+			  </table>
+	    </td>
+	  </tr>
+	</table>
+	<BR>
+
+	<!-- Pendahuluan Diri -->	
+	<table  width=100% border=1px cellspacing=0 align="center" >
+		<tr>
+			<th>PENDAHULUAN DIRI (jika ada)</th>
+		</tr>
+		<tr>
+		<td>
+				<table>
+					<tr>
+						<td>Pendahuluan Diri diberi</td>
+						<td class="money"><%=h @travel_claim.advance? ? ringgols(@travel_claim.advance) : "RM 0.00" %></td>
+					</tr>
+					<tr>
+						<td>Tolak: Tuntutan sekarang</td>
+						<td class="money"><%= ringgols(@travel_claim.total_claims) %></td>
+					</tr>
+					<tr>
+						<td>Baki dituntut/Baki dibayar balik</td>
+						<td class="money"><%= ringgols(@travel_claim.to_be_paid) %></td>
+					</tr>
+				</table>
+	    </td>
+	  </tr>
+	</table>
+	<BR><BR>
+	
+</div>
+</fieldset>
+</div>
+</form>
+</div>

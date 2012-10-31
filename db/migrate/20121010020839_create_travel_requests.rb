@@ -21,7 +21,7 @@ class CreateTravelRequests < ActiveRecord::Migration
       t.integer :hod_id
       t.boolean :hod_accept
       t.date    :hod_accept_on
-      t.integer :travelclaim_id
+      t.integer :travel_claim_id
 
       t.timestamps
     end

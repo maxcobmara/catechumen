@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   
+  map.resources :travel_claims, :collection => { :claimprint => :get }
+
   map.connect '/attendance/status/', :controller => 'staff_attendances', :action => 'status' 
   map.connect '/attendance/approve/', :controller => 'staff_attendances', :action => 'approve' 
   map.connect '/attendance/manage/', :controller => 'staff_attendances', :action => 'manage' 
@@ -119,15 +121,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :courses
 
-  map.resources :travelclaims, :collection => { :claimprint => :get }
-
   map.resources :appraisals
 
   map.resources :appraisals
 
   map.resources :disposals
-
-  map.resources :travelrequests
 
   map.resources :examquestions
 

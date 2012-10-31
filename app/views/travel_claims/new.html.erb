@@ -1,12 +1,11 @@
-<% form_for(@travelclaim) do |f| %>
+<% form_for(@travel_claim) do |f| %>
   <%= f.error_messages %>
-
 	<div class="tform">
 		<H2>New Travel Claims</H2> 
 		<table>
 			<tr>
 				<td class="leftcol"><label for="claimsmonth"><b>Claims For</b></label></td>
-				<td><%= f.date_select :claimsmonth,  :order => [:month, :year] %> </td>
+				<td><%= f.date_select :claim_month,  :order => [:month, :year] %> </td>
 			</tr>
 
 			<tr>
@@ -17,9 +16,15 @@
 		<%=render :partial => 'form', :locals => {:f => f} %> 
 		
 		</div><BR/>
+
+
+
+
   <p>
     <%= f.submit 'Create' %>
   </p>
+
+
 <% end %>
 
-<%= link_to 'Back', travelclaims_path %>
+<%= link_to 'Back', travel_claims_path %>

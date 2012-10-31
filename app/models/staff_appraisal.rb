@@ -10,6 +10,10 @@ class StaffAppraisal < ActiveRecord::Base
   has_many :evactivities, :foreign_key => 'appraisal_id', :dependent => :destroy
   accepts_nested_attributes_for :evactivities, :reject_if => lambda { |a| a[:evactivity].blank? }
   
+  has_many :trainneeds, :foreign_key => 'evaluation_id', :dependent => :destroy
+  accepts_nested_attributes_for :trainneeds, :reject_if => lambda { |a| a[:name].blank? }
+  
+  
   #before logic
   def set_to_nil_where_false
     if submit_for_evaluation1 == false

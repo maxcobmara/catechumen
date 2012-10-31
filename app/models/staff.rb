@@ -88,15 +88,10 @@ class Staff < ActiveRecord::Base
   #links to Model Cofile
   has_many :owners,    :class_name => 'Cofiles', :foreign_key => 'owner_id'
   has_many :borrowers, :class_name => 'Cofiles', :foreign_key => 'staffloan_id'
- 
   
-  #Link to model Sdicipline
- # has_many :sdiciplines, :class_name => 'Sdicipline', :foreign_key => 'reportedby_id' # reported_by
-  
-  #Link to Model Travelclaim
-  has_many :travelclaims, :dependent => :destroy
-  has_many :travelcode,    :class_name => 'Travelclaim',      :foreign_key => 'travelrequest_id'
-  has_many :hod,           :class_name => 'Travelclaim',      :foreign_key => 'hod_id'
+  #Link to Model travel_claim
+  has_many :travel_claims, :dependent => :destroy
+  has_many :approvers,           :class_name => 'TravelClaim',      :foreign_key => 'approved_by'
   
   #Link to Model Supplier
   has_many :issuesupply,      :class_name => 'usesupply',   :foreign_key => 'issuedby'

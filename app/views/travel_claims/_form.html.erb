@@ -1,0 +1,118 @@
+<H2>Include Travel Requests</H2>
+<table width=90%>
+	<tr>
+		<th width=10px>include</th>
+		<th>Request Code</th>
+		<th>Destination</th>
+		<th>Purpose</th>
+		<th>Travel Dates</th>
+	</tr>
+	<% for travel_request in TravelRequest.find(:all, :conditions => ['staff_id =?', User.current_user.staff_id]) %>
+	<tr>
+		<td width=10px><%= check_box_tag "travel_claim[travel_request_ids][]", travel_request.id, @travel_claim.travel_requests.include?(travel_request) %>
+	  <td><%= travel_request.request_code %></td>
+	  <td><%= travel_request.destination %></td>
+	  <td><%= travel_request.purpose %></td>
+	  <td><%= travel_request.depart_at.strftime("%d %b") %> - <%= travel_request.return_at.strftime("%d %b %Y") %></td>
+	</tr>
+	<% end %>
+</table><BR/>
+
+<H2>Travel Log</H2>	
+<table width=90%>
+	<tr>
+		<td width=20%>Date</td>
+		<td width=12%>Depart</td>
+		<td width=12%>Arrive</td>
+		<td width=21%>Purpose</td>
+		<td width=21%>Destination</td>
+		<td width=9%>Mileage</td>
+		<td width=5%></td>
+	</tr>
+</table>
+	<% f.fields_for :travel_claim_logs do |builder| %>
+	  <%= render 'travel_claim_log_fields', :f => builder %>
+	<% end %>
+
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Log'), f, :travel_claim_logs %> - <%= "Add Log" %></p>
+
+
+<H2>Meal Allowance / Daily Allowance / Lodging Allowance</H2>	
+<table width=90%>
+	<tr>
+		<th width=20%>Days</td>
+		<th width=20%>Type</td>
+		<th width=20%>Value (RM)</td>
+		<th width=30% align="right">Receipt No</td>
+		<th width=10%></th>
+	</tr>
+</table>
+	<% f.fields_for :travel_claim_allowances do |builder| %>
+	  <%= render 'travel_claim_allowance_fields', :f => builder %>
+	<% end %>
+
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Receipt'), f, :travel_claim_allowances %> - <%= "Add Receipt" %></p>
+
+
+<H2>Receipts</H2>	
+<table width=90%>
+	<tr>
+		<th width=20%>Type</td>
+		<th width=30%>Receipt No</td>
+		<th width=20% align="right">Value (RM)</td>
+		<th width=30%></th>
+	</tr>
+</table>
+	<% f.fields_for :travel_claim_receipts do |builder| %>
+	  <%= render 'travel_claim_receipt_fields', :f => builder %>
+	<% end %>
+
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Receipt'), f, :travel_claim_receipts %> - <%= "Add Receipt" %></p>
+	
+<H2>Advances</H2>
+<table>
+	<tr>
+		<td class="leftcol">Advances</td>
+		<td><label>RM</label> <%= f.text_field :advance, :size => '10', :default => 1 %></td>
+	</tr>
+</table>
+
+<H2>Submission</H2>
+<table width=100%>
+	<tr>
+	  <td class="leftcol"><label for="is_submitted">Submit</label></td>
+		<td><%= f.check_box :is_submitted, :id => 'submit1' %>
+				<SPAN class="span_submit1" style="display: none;"><%= f.date_select :submitted_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
+		<td class="pagenote">Clicking on submit notifies claims officer and disables your editing this record further</td>
+	</tr>
+	<tr class="span_submit1">
+	  <td class="leftcol"><label for="is_submitted">Submit To </label></td>
+		<td><%= f.collection_select :approved_by, Staff.find(:all, :order => :name), :id, :name %></td>
+		<td class="pagenote">Select Approving officer</td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			//show submit date
+			$j("input[id='submit1']").change(function() {  
+			 if($j('#submit1').is(':checked')) { 
+			    $j(".span_submit1").show("highlight"); 
+			 }else		{
+			    $j(".span_submit1").hide(""); 
+			 }	
+			});
+
+			$j("input[id='submit1']").each(function() {  
+			 if($j('#submit1').is(':checked')) { 
+			    $j(".span_submit1").show("highlight"); 
+			 }else		{
+			    $j(".span_submit1").hide(""); 
+			 }	
+			});
+	});
+</script>
+
+
+
+

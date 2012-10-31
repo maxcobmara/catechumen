@@ -19,5 +19,6 @@ class Travelclaimreceipt < ActiveRecord::Base
         [ "Dobi",8 ],
         [ "Pos",9 ],
         [ "Telefon/Teleks/Fax",10 ],
+        [ "Exchanged",99 ],
   ]
 end
