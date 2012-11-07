@@ -1,0 +1,82 @@
+<fieldset>
+	<legend class='togvis'><%= t 'evaluation.form.title_partIIa' %></legend>
+		<table width=100% >
+			<tr>
+				<td class="leftcol" colspan=2><%= t 'evaluation.form.label_001' %></td>
+			</tr>
+			<tr>
+		    <td colspan=2>
+							<table width=90%>
+								<tr>
+									<th>Date</th>
+									<th>Activity</th>
+									<th>Level</th>
+								</tr>
+								<% for evactivity in @staff_appraisal.evactivities %>
+								<tr>
+									<td><%= l(evactivity.actdt) %></td>
+									<td><%= evactivity.evactivity %></td>
+									<td><%= (Evactivity::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp} %></td>
+								</tr>
+								<% end -%>
+							</table></td>
+			</tr>
+		</table>
+</fieldset>
+
+<fieldset>
+	<legend class='togvis'><%= t 'evaluation.form.title_part2b' %></legend>
+		<table width=100% >
+			<tr>
+				<td class="leftcol" colspan=2><%= t 'evaluation.form.label_003' %></td>
+			</tr>
+			<tr>
+		    <td colspan=2>
+							<table width=90%>
+								<tr>
+									<th>Name</th>
+									<th>Type</th>
+									<th>Date</th>
+									<th>Duration</th>
+								</tr>
+								<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', @staff_appraisal.appraised]) %>
+								<tr>
+									<td><%= ptdo.ptschedule.ptcourse.name %></td>
+									<td><%= (Ptcourse::COURSE_TYPE.find_all{|disp, value| value == ptdo.ptschedule.ptcourse.course_type}).map {|disp, value| disp} %></td>
+									<td><%= l(ptdo.ptschedule.start) %></td>
+									<td><%= ptdo.ptschedule.ptcourse.duration %> Days</td></tr>
+								<% end -%>
+							</table></td>
+			</tr>
+			<tr>
+				<td class="leftcol" colspan=2><%= t 'evaluation.form.label_004' %></td>
+			</tr>
+			<tr>
+		    <td colspan=2>
+							<table width=90%>
+								<tr>
+									<th>Activity</th>
+									<th>Reason</th>
+								</tr>
+								<% for trainneed in @staff_appraisal.trainneeds %>
+								<tr>
+									<td><%= trainneed.name %></td>
+									<td><%= trainneed.reason %></td>
+								</tr>
+								<% end -%>
+							</table></td>
+			</tr>
+		</table>
+</fieldset>
+
+<fieldset>
+	<legend class='togvis'>Submission</legend>
+	<table  width=100%>
+		<tr>
+		  <td class="leftcol"><label for="submit_for_appraisal1_on">Submit for evaluation</label></td>
+			<td><%=h @staff_appraisal.is_submit_for_evaluation? ? "Yes, on " + l(@staff_appraisal.submit_for_evaluation_on)   : "No" %></td>
+		</tr>
+	</table>
+	
+	
+</fieldset>

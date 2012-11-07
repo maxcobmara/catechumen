@@ -25,7 +25,7 @@
 			<td width=10px ><%= link_to image_tag("printer.png", :border => 0), :action => 'claimprint', :id => travel_claim %></td>
 			<td width=10px><% if travel_claim.approved_by == User.current_user.staff_id && travel_claim.is_approved != true %>
 												<%= link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => travel_claim %>
-										 <% elsif travel_claim.staff_id == User.current_user.staff_id && travel_claim.is_submitted == true %> 
+										 <% elsif travel_claim.staff_id == User.current_user.staff_id && travel_claim.is_submitted != true %> 
 										    <%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => travel_claim %>
 										<% end %></td>
 		  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), travel_claim, :confirm => 'Are you sure?', :method => :delete %></td>

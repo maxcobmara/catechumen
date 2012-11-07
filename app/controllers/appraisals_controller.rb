@@ -1,4 +1,4 @@
-class AppraisalsController < ApplicationController
+class BoobsAppraisalsController < ApplicationController
   # GET /appraisals
   # GET /appraisals.xml
   def index

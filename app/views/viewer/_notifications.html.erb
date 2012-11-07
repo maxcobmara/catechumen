@@ -2,13 +2,23 @@
 	<h4>Notification Area</h4>
 	<p>
 		
+	<!-- Notification for SKT Submission to PPP -->
+	<% skt_ready = StaffAppraisal.count(:all, :conditions => ["eval1_by=? AND is_skt_submit =? AND is_skt_endorsed  IS ?", User.current_user.staff_id, true, nil]) %>
+	<% if skt_ready > 0 %>
+	  <%= skt_ready %> <%= link_to "Staff SKT ready for endorsement", { :controller => "staff_appraisals", :action => "index" } %><br>
+	<% end %>
+	
+	<% skt_pyd_complete = StaffAppraisal.count(:all, :conditions => ["eval1_by=? AND is_skt_pyd_report_done =? AND skt_ppp_report  IS ?", User.current_user.staff_id, true, nil]) %>
+	<% if skt_pyd_complete > 0 %>
+	  <%= skt_pyd_complete %> <%= link_to "Staff SKT ready for Annual Review", { :controller => "staff_appraisals", :action => "index" } %><br>
+	<% end %>
+		
 	<!-- Notification for Appraisal Request -->
-	<% me_ppp = StaffAppraisal.count(:all, :conditions => ["evaluation1_by=? AND submit_for_evaluation1 =? AND submit_for_evaluation2  IS ?", User.current_user.staff_id, true, nil]) %>
-  <% me_ppk = StaffAppraisal.count(:all, :conditions => ["evaluation2_by=? AND submit_for_evaluation2 =? AND is_complete IS NULL", User.current_user.staff_id, true]) %>
+	<% me_ppp = StaffAppraisal.count(:all, :conditions => ["eval1_by=? AND is_submit_for_evaluation =? AND is_submit_e2 IS ?", User.current_user.staff_id, true, nil]) %>
+  <% me_ppk = StaffAppraisal.count(:all, :conditions => ["eval2_by=? AND is_submit_e2 =? AND is_complete IS ?", User.current_user.staff_id, true, nil]) %>
 	<% me_eval = me_ppp + me_ppk %>
-	<% if me_eval == 0 %>
-  <% else %>
-    <%= me_eval %> <%= link_to "staff appraisal for processing", { :controller => "staff_appraisals", :action => "index" } %><br>
+	<% if me_eval > 0 %>
+    <%= me_eval %> <%= link_to "Staff appraisal for processing", { :controller => "staff_appraisals", :action => "index" } %><br>
   <% end %>
 	
 
@@ -29,7 +39,7 @@
 	<% end %>
 	
 	<!-- Notification for Staff Late Approval -->
-  <% dash_attendance = StaffAttendance.count(:all, :conditions => ["approved_by=? AND is_approved IS ?", User.current_user.staff_id, nil]) %>
+  <% dash_attendance = StaffAttendance.count(:all, :conditions => ['approved_by =? AND is_approved IS ?', User.current_user.staff_id, nil]) %>
   <% if dash_attendance == 0 %>
   <% else %>
     <%= dash_attendance %> <%= link_to "late attendance for approval", { :controller => "staff_attendances", :action => "manage" } %><br>

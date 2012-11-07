@@ -73,8 +73,8 @@ class Staff < ActiveRecord::Base
   
   #Link to model Staff Appraisal                                                      
   has_many :appraisals,     :class_name => 'StaffAppraisal', :foreign_key => 'staff_id', :dependent => :destroy
-  has_many :eval1_officers, :class_name => 'StaffAppraisal', :foreign_key => 'evaluation1_by'
-  has_many :eval2_officers, :class_name => 'StaffAppraisal', :foreign_key => 'evaluation2_by'
+  has_many :eval1_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval1_by'
+  has_many :eval2_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval2_by'
   
   #Link to model AssetTrack
   has_many :staffinassettrack, :class_name => 'assettrack', :foreign_key => 'staff_id'
@@ -239,12 +239,12 @@ class Staff < ActiveRecord::Base
   def render_reports_to
     if position.blank? 
       ""
-    elsif position.bosses.blank?
+    elsif position.parent.blank?
       "-"
-    elsif position.bosses.staff.blank?
-      "#{position.bosses.positionname}"
+    elsif position.parent.staff.blank?
+      "#{position.parent.positionname}"
     else 
-      "#{position.bosses.positionname} - #{position.bosses.staff.name}"
+      "#{position.parent.positionname} - #{position.parent.staff.name}"
     end
   end
   

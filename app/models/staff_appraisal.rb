@@ -1,11 +1,16 @@
 class StaffAppraisal < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
-  before_save :set_to_nil_where_false
+  before_validation :set_year_to_start
+  before_save :set_to_nil_where_false, :set_number_of_questions
+  
   
   belongs_to :appraised,      :class_name => 'Staff', :foreign_key => 'staff_id'
-  belongs_to :eval1_officer,  :class_name => 'Staff', :foreign_key => 'evaluation1_by'
-  belongs_to :eval2_officer,  :class_name => 'Staff', :foreign_key => 'evaluation2_by'
+  belongs_to :eval1_officer,  :class_name => 'Staff', :foreign_key => 'eval1_by'
+  belongs_to :eval2_officer,  :class_name => 'Staff', :foreign_key => 'eval2_by'
+  
+  has_many :staff_appraisal_skts, :dependent => :destroy
+  accepts_nested_attributes_for :staff_appraisal_skts, :reject_if => lambda { |a| a[:description].blank? }
   
   has_many :evactivities, :foreign_key => 'appraisal_id', :dependent => :destroy
   accepts_nested_attributes_for :evactivities, :reject_if => lambda { |a| a[:evactivity].blank? }
@@ -14,14 +19,33 @@ class StaffAppraisal < ActiveRecord::Base
   accepts_nested_attributes_for :trainneeds, :reject_if => lambda { |a| a[:name].blank? }
   
   
+  validates_uniqueness_of :evaluation_year, :scope => :staff_id, :message => "Your evaluation for this year already exists"
+  
+  
   #before logic
   def set_to_nil_where_false
-    if submit_for_evaluation1 == false
-      self.submit_for_appraisal1_on	= nil
+    if is_skt_submit != true
+      self.skt_submit_on	= nil
     end
     
-    if submit_for_evaluation2 == false
-      self.submit_for_evaluation2_on	= nil
+    if is_skt_endorsed != true
+      self.skt_endorsed_on	= nil
+    end
+    
+    if is_skt_pyd_report_done != true
+      self.skt_pyd_report_on	= nil
+    end
+    
+    if is_skt_ppp_report_done != true
+      self.skt_ppp_report_on	= nil
+    end
+    
+    if is_submit_for_evaluation == false
+      self.submit_for_evaluation_on	= nil
+    end
+    
+    if is_submit_e2 == false
+      self.submit_e2_on	= nil
     end
     
     if is_complete == false
@@ -29,17 +53,69 @@ class StaffAppraisal < ActiveRecord::Base
     end
   end
   
+  def set_year_to_start
+    self.evaluation_year = evaluation_year.at_beginning_of_year
+  end
+  
   
   
   
   #logic to set editable
-  def editable_page
-    if submit_for_evaluation1 == false && staff_id == User.current_user.staff_id
-      "edit"
-    elsif submit_for_evaluation1 == true && evaluation1_by == User.current_user.staff_id && submit_for_evaluation2 != true
-      "edit"
-    elsif submit_for_evaluation2 == true && evaluation2_by == User.current_user.staff_id
-      "edit"
+  def edit_icon
+    if evaluation_status == "SKT awaiting PPP endorsement" && staff_id == User.current_user.staff_id
+      "noedit"
+    elsif evaluation_status == "SKT awaiting PPP endorsement" && eval1_by == User.current_user.staff_id
+      "approval.png"
+    elsif evaluation_status == "SKT Review" && eval1_by == User.current_user.staff_id
+      "noedit"
+    elsif evaluation_status == "Ready for PPP SKT Report" && staff_id == User.current_user.staff_id
+      "noedit"
+    elsif evaluation_status == "PPP Report complete" && eval1_by == User.current_user.staff_id
+      "noedit"
+    elsif evaluation_status == "Submitted for Evaluation by PPP"&& staff_id == User.current_user.staff_id
+      "noedit"
+    else
+      "edit.png"
+    end
+  end
+  
+  def evaluation_status
+    if is_skt_submit != true
+      "SKT being formulated"
+    elsif is_skt_submit == true && is_skt_endorsed != true
+      "SKT awaiting PPP endorsement"
+    elsif is_skt_submit == true && is_skt_endorsed == true && is_skt_pyd_report_done != true
+      "SKT Review"
+    elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done != true
+      "Ready for PPP SKT Report"
+    elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done == true && is_submit_for_evaluation != true
+      "PPP Report complete"
+    elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true
+      "Submitted for Evaluation by PPP"
+    end
+  end
+  
+  def set_number_of_questions
+    self.g1_questions = 5
+    if appraised.staffgrade.name.last(2).to_i <= 16
+      self.g2_questions = 4
+      self.g3_questions = 3
+    elsif appraised.staffgrade.name.last(2).to_i >= 41
+      self.g2_questions = 3
+      self.g3_questions = 5
+    else
+      self.g2_questions = 3
+      self.g3_questions = 4
+    end
+  end
+  
+  def person_type
+    if appraised.staffgrade.name.last(2).to_i <= 16
+      "Pink"
+    elsif appraised.staffgrade.name.last(2).to_i >= 41
+      "Green"
+    else
+      "Yellow"
     end
   end
   

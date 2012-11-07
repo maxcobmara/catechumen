@@ -121,10 +121,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :courses
 
-  map.resources :appraisals
-
-  map.resources :appraisals
-
   map.resources :disposals
 
   map.resources :examquestions
@@ -144,8 +140,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :strainings
 
   map.resources :evactivities
-
-  map.resources :appraisals
 
   map.resources :curriculums
 

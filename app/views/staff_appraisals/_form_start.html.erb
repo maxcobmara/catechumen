@@ -1,24 +1,14 @@
-<H2><%= t 'evaluation.form.title_part1' %></H2>
-
- <table width=100%>
-	<tr>
-		<td class="leftcol"><label for="staff_id"><b><%= t 'evaluation.form.name' %></b><font color="red"> * </font></label></td>
-		<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ['id = ?', User.current_user.staff_id]), :id, :mykad_with_staff_name%></td>
-	</tr>
-	
-	<tr>
-	 	<td class="leftcol"><label for="evaldt"><b><%= t 'evaluation.form.evaluationdate' %></b></label></td>
-		<td><%= f.date_select :evaluation_year, :end_year => Time.now.year, :order => [:year] %></td>
-	</tr>
-</table>
-	
 <H2><%= t 'evaluation.form.title_partIIa' %></H2>
 	<div>
 		<p>	<%= t 'evaluation.form.label_001' %></p>
-		<p><strong>
-							<div style="width: 220px; float: left;">|  Date </div>
-							<div style="width: 310px; float: left;">|  Activity </div> | Level </strong></p>
-											
+		<table width=90%>
+			<tr>
+				<th width=30%>Date</th>
+				<th width=35%>Activity</th>
+				<th width=25%>Level</th>
+				<th width=10%></th>
+			</tr>
+		</table>
 		<% f.fields_for :evactivities do |builder| %>
 			<%= render 'evactivity_fields', :f => builder %>
 		<% end %>
@@ -31,7 +21,7 @@
 
 <H2><%= t 'evaluation.form.title_part2b' %></H2>
 	<p><font size=-2><%= t 'evaluation.form.label_003' %></font></p>
-		<table width=75%>
+		<table width=90%>
 			<tr>
 				<th>Name</th>
 				<th>Type</th>
@@ -51,15 +41,17 @@
 	
 	<div>
 		<p><font size=-2><%= t 'evaluation.form.label_004' %></font></p>
-		<p><strong>
-							<div style="width: 380px; float: left;">|  Activity </div>|  Reason </strong>
-		</p>
-			<% f.fields_for :trainneeds do |builder| %>
-				<%= render 'trainneed_fields', :f => builder %>
-			<% end %>
-		<p>
-			<%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :trainneeds %> Add More 
-		</p>
+		<table width=90%>
+			<tr>
+				<th width=45%>Activity</th>
+				<th width=45%>Reason</th>
+				<th width=10%></th>
+			</tr>
+		</table>
+		<% f.fields_for :trainneeds do |builder| %>
+			<%= render 'trainneed_fields', :f => builder %>
+		<% end %>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :trainneeds %> Add More </p>
 	</div>
 	
 	
@@ -68,16 +60,14 @@
 	<table  width=100%>
 		<tr>
 		  <td class="leftcol"><label for="submit_for_appraisal1_on">Submit for evaluation</label></td>
-			<td><%= f.check_box :submit_for_evaluation1, :id => 'submit_for_evaluation1' %>
-					<SPAN id="span_submit1" style="display: none;"><%= f.date_select :submit_for_appraisal1_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
+			<td><%= f.check_box :is_submit_for_evaluation, :id => 'submit_for_evaluation1' %>
+					<SPAN id="span_submit1" style="display: none;">
+					<%= f.date_select :submit_for_evaluation_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
 			<td class="pagenote">Clicking on submit notifies your Evaluating Officer (PPP) and disables your editing this record further</td>
 		</tr>
 	</table>
 	
-	<%= f.hidden_field :evaluation1_by, :value => User.current_user.staff.position.parent.staff_id %>
-	
-	
-	
+
 	<script type="text/javascript">
 		$j(document).ready(function(){
 				//show submit date

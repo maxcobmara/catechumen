@@ -2,7 +2,7 @@
   <%= f.error_messages %>
 
 	<div class="tform">
-		<% if @travel_claim.staff_id == User.current_user.staff_id && @travel_claim.is_submitted == true %>
+		<% if @travel_claim.staff_id == User.current_user.staff_id && @travel_claim.is_submitted != true %>
 		<H2>Edit travel claims for <%=h @travel_claim.claim_month.strftime("%B %Y") %> 
 			<div class="right"><%=h @travel_claim.staff.name %></div></H2> 
 			<%=render :partial => 'form', :locals => {:f => f} %> 
@@ -20,7 +20,11 @@
 		
 	</div><BR/>
   <p>
-    <%= f.submit 'Update' %>
+		<% if @travel_claim.approved_by == User.current_user.staff_id %>
+		 <%= f.submit 'Process' %>
+		<% else %>
+    	<%= f.submit 'Update' %>
+		<% end %>
   </p>
 <% end %>
 

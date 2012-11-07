@@ -7,6 +7,7 @@ class StaffAppraisalsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @staff_appraisals }
+      format.js
     end
   end
 
@@ -18,6 +19,7 @@ class StaffAppraisalsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @staff_appraisal }
+      format.js
     end
   end
 
@@ -25,6 +27,7 @@ class StaffAppraisalsController < ApplicationController
   # GET /staff_appraisals/new.xml
   def new
     @staff_appraisal = StaffAppraisal.new
+    @staff_appraisal.staff_appraisal_skts.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -35,6 +38,8 @@ class StaffAppraisalsController < ApplicationController
   # GET /staff_appraisals/1/edit
   def edit
     @staff_appraisal = StaffAppraisal.find(params[:id])
+    #2.times {@staff_appraisal.staff_appraisal_skts.build}
+    
   end
 
   # POST /staff_appraisals
@@ -57,7 +62,6 @@ class StaffAppraisalsController < ApplicationController
   # PUT /staff_appraisals/1.xml
   def update
     @staff_appraisal = StaffAppraisal.find(params[:id])
-
     respond_to do |format|
       if @staff_appraisal.update_attributes(params[:staff_appraisal])
         format.html { redirect_to(@staff_appraisal, :notice => 'StaffAppraisal was successfully updated.') }

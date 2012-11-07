@@ -2,19 +2,49 @@
   <%= f.error_messages %>
 
 	<div class="tform">
-		<% if @staff_appraisal.submit_for_evaluation1 == false %>
+		<%=render :partial => 'show_start' %> 
+		<% if @staff_appraisal.evaluation_status == "SKT being formulated" %>
+			<%=render :partial => 'form_skt', :locals => {:f => f} %> 
+		<% elsif @staff_appraisal.evaluation_status == "SKT awaiting PPP endorsement" && @staff_appraisal.eval1_by == User.current_user.staff_id %> 
+			<%=render :partial => 'show_skt' %> 
+			<%=render :partial => 'form_skt_endorse', :locals => {:f => f} %> 
+		<% elsif @staff_appraisal.evaluation_status == "SKT Review" && @staff_appraisal.staff_id == User.current_user.staff_id %>
+			<%=render :partial => 'form_skt_review', :locals => {:f => f} %>
+		<% elsif @staff_appraisal.evaluation_status == "Ready for PPP SKT Report" && @staff_appraisal.eval1_by == User.current_user.staff_id %>
+			<%=render :partial => 'show_skt' %> 
+			<%=render :partial => 'form_skt_review_ppp', :locals => {:f => f} %>
+		<% elsif @staff_appraisal.evaluation_status == "PPP Report complete" && @staff_appraisal.staff_id == User.current_user.staff_id %>
+			<%=render :partial => 'show_skt' %> 
+			<%=render :partial => 'form_start', :locals => {:f => f} %>
+		<% elsif @staff_appraisal.evaluation_status == "Submitted for Evaluation by PPP"  && @staff_appraisal.eval1_by == User.current_user.staff_id %>
+			<%=render :partial => 'show_skt' %> 
+			<%=render :partial => 'show_evals' %> 
+			<% if @staff_appraisal.person_type == "Pink" %>
+				<%=render :partial => 'form_eval1_1', :locals => {:f => f} %>
+			<% elsif @staff_appraisal.person_type == "Yellow" %>
+				<%=render :partial => 'form_eval1_17', :locals => {:f => f} %>
+			<% elsif @staff_appraisal.person_type == "Green" %>
+				<%=render :partial => 'form_eval1_41', :locals => {:f => f} %>
+			<% end %>
+
+			
+		<% end %>
+		
+<!--
+		<#% if @staff_appraisal.is_submit_for_evaluation != false %>
 			<H2>Edit Appraisal</H2>
-			<%=render :partial => 'form_start', :locals => {:f => f} %> 
-		<% elsif @staff_appraisal.evaluation1_by == User.current_user.staff_id && @staff_appraisal.submit_for_evaluation1 == true %>
-		  <H2>Evaluation of Staff by PPP (<%= @staff_appraisal.eval1_officer.name %>)</H2>
-			<%=render :partial => 'show_start', :locals => {:f => f} %> 
-			<%=render :partial => 'form_eval1', :locals => {:f => f} %>
-		<% elsif @staff_appraisal.evaluation2_by == User.current_user.staff_id && @staff_appraisal.submit_for_evaluation2 == true %>
-			<H2>Evaluation of Staff by PPK (<%= @staff_appraisal.eval2_officer.name %>)</H2>
-			<%=render :partial => 'show_start', :locals => {:f => f} %> 
-			<%=render :partial => 'form_eval2', :locals => {:f => f} %>
-		<% else %>
-		<% end -%>
+			<#%=render :partial => 'form_start', :locals => {:f => f} %> 
+		<#% elsif @staff_appraisal.eval1_by == User.current_user.staff_id && @staff_appraisal.is_submit_for_evaluation == true %>
+		  <H2>Evaluation of Staff by PPP (<#%= @staff_appraisal.eval1_officer.name %>)</H2>
+			<#%=render :partial => 'show_start', :locals => {:f => f} %> 
+			<#%=render :partial => 'form_eval1', :locals => {:f => f} %>
+		<#% elsif @staff_appraisal.eval2_by == User.current_user.staff_id && @staff_appraisal.is_submit_e2 == true %>
+			<H2>Evaluation of Staff by PPK (<#%= @staff_appraisal.eval2_officer.name %>)</H2>
+			<#%=render :partial => 'show_start', :locals => {:f => f} %> 
+			<#%=render :partial => 'form_eval2', :locals => {:f => f} %>
+		<#% else %>
+		<#% end -%>-->
+
 	</div>
 	<BR/>
 
@@ -25,3 +55,14 @@
 
 <%= link_to 'Show', @staff_appraisal %> |
 <%= link_to 'Back', staff_appraisals_path %>
+
+<script type="text/javascript">
+$j(document).ready(function(){
+		//show submit date
+		 $j('legend.togvis').click(function() { 
+		    $j(this).parent().contents().filter(
+		        function() {  return this.nodeType == 3; }).wrap('<span></span>');//wrap any stray text nodes
+		    $j(this).siblings().toggle(); 
+		});
+});
+</script>

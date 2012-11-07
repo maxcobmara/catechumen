@@ -7,7 +7,7 @@ class Ptdo < ActiveRecord::Base
   belongs_to  :replacement, :class_name => 'Staff', :foreign_key => 'replacement_id'
   
   
-  has_many    :appraisals, :through => :staff
+  has_many    :staff_appraisals, :through => :staff
   
   
   
