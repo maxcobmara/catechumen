@@ -49,7 +49,7 @@ class StaffAppraisal < ActiveRecord::Base
     end
     
     if is_complete == false
-      self.is_complete_on	= nil
+      self.is_completed_on	= nil
     end
   end
   
@@ -74,6 +74,12 @@ class StaffAppraisal < ActiveRecord::Base
       "noedit"
     elsif evaluation_status == "Submitted for Evaluation by PPP"&& staff_id == User.current_user.staff_id
       "noedit"
+    elsif evaluation_status == "Submitted for Evaluation by PPP to PPK" && staff_id == User.current_user.staff_id
+      "noedit"
+    elsif evaluation_status == "Submitted by PPP for Evaluation  to PPK" && eval1_by == User.current_user.staff_id
+      "noedit"
+    elsif is_complete == true
+      "noedit"
     else
       "edit.png"
     end
@@ -90,8 +96,10 @@ class StaffAppraisal < ActiveRecord::Base
       "Ready for PPP SKT Report"
     elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done == true && is_submit_for_evaluation != true
       "PPP Report complete"
-    elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true
+    elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true
       "Submitted for Evaluation by PPP"
+    elsif is_submit_for_evaluation == true && is_submit_e2 == true
+      "Submitted by PPP for Evaluation  to PPK"
     end
   end
   
@@ -111,11 +119,29 @@ class StaffAppraisal < ActiveRecord::Base
   
   def person_type
     if appraised.staffgrade.name.last(2).to_i <= 16
-      "Pink"
+      5
     elsif appraised.staffgrade.name.last(2).to_i >= 41
-      "Green"
+      3
     else
-      "Yellow"
+      4
+    end
+  end
+  
+  def person_type_description
+    if appraised.staffgrade.name.last(2).to_i <= 16
+      "SOKONGAN (II)"
+    elsif appraised.staffgrade.name.last(2).to_i >= 41
+      "PENGURUSAN DAN PROFESIONAL"
+    else
+      "SOKONGAN (I)"
+    end
+  end
+  
+  def show_ppk_in_show
+    if is_submit_e2 == true
+      "show"
+    else
+      "none"
     end
   end
   
@@ -176,7 +202,7 @@ class StaffAppraisal < ActiveRecord::Base
     part3_eval2_calced_percent + part4_eval2_calced_percent + part5_eval2_calced_percent + part6_eval2_calced_percent
   end
   def t1t2_average
-    (total1 + total2)/2
+    (e1_total + e2_total)/2
   end
   
   

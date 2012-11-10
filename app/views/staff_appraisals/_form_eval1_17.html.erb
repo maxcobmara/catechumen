@@ -52,7 +52,7 @@
 	
 	<tr valign=bottom>
 		<td class="leftcolwide" rowspan=2><label for="eval1_effective">Total</label></td>
-		<td colspan=2><%= f.text_field :e1g1_total, :size => 4, :readonly => true %><label> x 50 = <%= f.text_field :e1g1_percent, :size => 4, :readonly => true %>%</label></td>
+		<td colspan=2><%= f.text_field :e1g1_total, :class => "subtotals", :size => 4, :readonly => true %><label> x 50 = <%= f.text_field :e1g1_percent, :size => 4, :readonly => true %>%</label></td>
 	</tr>
 	<tr valign=bottom>
 		<td>&nbsp; <%= (@staff_appraisal.g1_questions)*10 %></td>
@@ -87,7 +87,7 @@
 	
 	<tr valign=bottom>
 		<td class="leftcolwide" rowspan=2><label for="eval1_effective">Total</label></td>
-		<td colspan=2><%= f.text_field :e1g2_total, :size => 4, :readonly => true %><label> x 25 = <%= f.text_field :e1g2_percent, :size => 7, :readonly => true %>%</label></td>
+		<td colspan=2><%= f.text_field :e1g2_total, :class => "subtotals", :size => 4, :readonly => true %><label> x 25 = <%= f.text_field :e1g2_percent, :size => 7, :readonly => true %>%</label></td>
 	</tr>
 	<tr valign=bottom>
 		<td>&nbsp; <%= (@staff_appraisal.g2_questions)*10 %></td>
@@ -128,7 +128,7 @@
 	
 	<tr valign=bottom>
 		<td class="leftcolwide" rowspan=2><label for="eval1_effective">Total</label></td>
-		<td colspan=2><%= f.text_field :e1g3_total, :size => 4, :readonly => true %><label> x 25 = <%= f.text_field :e1g3_percent, :size => 7, :readonly => true %>%</label></td>
+		<td colspan=2><%= f.text_field :e1g3_total, :class => "subtotals", :size => 4, :readonly => true %><label> x 25 = <%= f.text_field :e1g3_percent, :size => 7, :readonly => true %>%</label></td>
 	</tr>
 	<tr valign=bottom>
 		<td>&nbsp; <%= (@staff_appraisal.g3_questions)*10 %></td>
@@ -144,7 +144,7 @@
 	
 	<tr valign=bottom>
 		<td class="leftcolwide"><label for="eval1_part_ii"><%= t 'evaluation.form.parttwo' %></label></td>
-		<td><%= f.text_field :e1g4, :class => "e1g4", :size => 5, :placeholder => 0  %>  <label> x 5 = <%= f.text_field :e1g4_percent, :size => 7, :readonly => true %>%</label></td>
+		<td><%= f.text_field :e1g4, :class => "e1g4", :size => 5, :placeholder => 0  %>  <label> x 5 = <%= f.text_field :e1g4_percent, :class => "subtotals", :size => 7, :readonly => true %>%</label></td>
 		<td class="pagenote"><%= t 'evaluation.form.parttwo_desc' %><BR/><BR/><BR/><BR/></td>
 	</tr>
 
@@ -275,7 +275,7 @@
 				ansL.value = (e1g3q1*1) + (e1g3q2*1) + (e1g3q3*1) + (e1g3q4*1);
 				
 				var ansM = document.getElementById("staff_appraisal_e1g3_percent");
-				ansM.value = ((bitbs*1)/40)*20;
+				ansM.value = ((bitbs*1)/40)*20;			
 			});
 			
 			$j(".e1g4").keyup(function() {  
@@ -283,6 +283,16 @@
 				
 				var ansN = document.getElementById("staff_appraisal_e1g4_percent");
 				ansN.value = ((e1g4q1*1)/10)*5;
+			});
+			
+			$j(".g1,.e1g2,.e1g3,.e1g4").keyup(function() {  
+			  var sub1 = $j("#staff_appraisal_e1g1_percent").val();
+			  var sub2 = $j("#staff_appraisal_e1g2_percent").val();
+				var sub3 = $j("#staff_appraisal_e1g3_percent").val();
+				var sub4 = $j("#staff_appraisal_e1g4_percent").val();
+				
+				var ansQ = document.getElementById("staff_appraisal_e1_total");
+				ansQ.value = (sub1*1) + (sub2*1) + (sub3*1) + (sub4*1);
 			});
 			
 			

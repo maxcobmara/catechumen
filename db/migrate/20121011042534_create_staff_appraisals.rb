@@ -59,6 +59,7 @@ class CreateStaffAppraisals < ActiveRecord::Migration
       t.decimal	:e2g1q2
       t.decimal	:e2g1q3
       t.decimal	:e2g1q4
+      t.decimal	:e2g1q5
       t.decimal	:e2g1_total
       t.decimal	:e2g1_percent
       t.decimal	:e2g2q1
@@ -74,8 +75,8 @@ class CreateStaffAppraisals < ActiveRecord::Migration
       t.decimal	:e2g3q5
       t.decimal	:e2g3_total
       t.decimal	:e2g3_percent
-      t.decimal	:e1g4
-      t.decimal	:e1g4_percent
+      t.decimal	:e2g4
+      t.decimal	:e2g4_percent
       t.decimal	:e2_total
       t.integer	:e2_years
       t.integer	:e2_months

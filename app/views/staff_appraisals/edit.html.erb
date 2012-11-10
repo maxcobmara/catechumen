@@ -4,31 +4,45 @@
 	<div class="tform">
 		<%=render :partial => 'show_start' %> 
 		<% if @staff_appraisal.evaluation_status == "SKT being formulated" %>
-			<%=render :partial => 'form_skt', :locals => {:f => f} %> 
+			<%=render :partial => 'skt', :locals => {:f => f} %> 
 		<% elsif @staff_appraisal.evaluation_status == "SKT awaiting PPP endorsement" && @staff_appraisal.eval1_by == User.current_user.staff_id %> 
 			<%=render :partial => 'show_skt' %> 
-			<%=render :partial => 'form_skt_endorse', :locals => {:f => f} %> 
+			<%=render :partial => 'skt_endorse', :locals => {:f => f} %> 
 		<% elsif @staff_appraisal.evaluation_status == "SKT Review" && @staff_appraisal.staff_id == User.current_user.staff_id %>
-			<%=render :partial => 'form_skt_review', :locals => {:f => f} %>
+			<%=render :partial => 'skt_review_staff', :locals => {:f => f} %>
 		<% elsif @staff_appraisal.evaluation_status == "Ready for PPP SKT Report" && @staff_appraisal.eval1_by == User.current_user.staff_id %>
 			<%=render :partial => 'show_skt' %> 
-			<%=render :partial => 'form_skt_review_ppp', :locals => {:f => f} %>
+			<%=render :partial => 'skt_review_eval1', :locals => {:f => f} %>
 		<% elsif @staff_appraisal.evaluation_status == "PPP Report complete" && @staff_appraisal.staff_id == User.current_user.staff_id %>
 			<%=render :partial => 'show_skt' %> 
-			<%=render :partial => 'form_start', :locals => {:f => f} %>
+			<%=render :partial => 'activity', :locals => {:f => f} %>
 		<% elsif @staff_appraisal.evaluation_status == "Submitted for Evaluation by PPP"  && @staff_appraisal.eval1_by == User.current_user.staff_id %>
 			<%=render :partial => 'show_skt' %> 
-			<%=render :partial => 'show_evals' %> 
-			<% if @staff_appraisal.person_type == "Pink" %>
-				<%=render :partial => 'form_eval1_1', :locals => {:f => f} %>
-			<% elsif @staff_appraisal.person_type == "Yellow" %>
-				<%=render :partial => 'form_eval1_17', :locals => {:f => f} %>
-			<% elsif @staff_appraisal.person_type == "Green" %>
-				<%=render :partial => 'form_eval1_41', :locals => {:f => f} %>
-			<% end %>
+			<%=render :partial => 'show_activity' %> 
+					<% if @staff_appraisal.person_type == 5 %>
+						<%=render :partial => 'eval1_1', :locals => {:f => f} %>
+					<% elsif @staff_appraisal.person_type == 4 %>
+						<%=render :partial => 'eval1_17', :locals => {:f => f} %>
+					<% elsif @staff_appraisal.person_type == 3 %>
+						<%=render :partial => 'eval1_41', :locals => {:f => f} %>
+					<% end %>
+			<%=render :partial => 'eval1_review', :locals => {:f => f} %>
+		<% elsif @staff_appraisal.evaluation_status == "Submitted by PPP for Evaluation  to PPK"  && @staff_appraisal.eval2_by == User.current_user.staff_id %>
+			<%=render :partial => 'show_skt' %> 
+			<%=render :partial => 'show_activity' %> 
+					<% if @staff_appraisal.person_type == 5 %>
+						<%=render :partial => 'eval2_1', :locals => {:f => f} %>
+					<% elsif @staff_appraisal.person_type == 4 %>
+						<%=render :partial => 'eval2_17', :locals => {:f => f} %>
+					<% elsif @staff_appraisal.person_type == 3 %>
+						<%=render :partial => 'eval2_41', :locals => {:f => f} %>
+					<% end %>
+			<%=render :partial => 'eval2_review', :locals => {:f => f} %>
 
 			
 		<% end %>
+		
+	</div>
 		
 <!--
 		<#% if @staff_appraisal.is_submit_for_evaluation != false %>
