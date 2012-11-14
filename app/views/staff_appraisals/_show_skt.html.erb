@@ -7,15 +7,18 @@
 						<th><%= t 'evaluation.skt.performance' %></th>
 					</tr>
 					<% just_a_counter = 0 %>
-					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :order => :priority) %>
-					<% if staff_appraisal_skt.half != 2%>
+					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half IS ?', nil], :order => :priority) %>
 					<% just_a_counter += 1 %>
+					<% if staff_appraisal_skt.is_dropped == true %>
+						<% format = 'style="text-decoration: line-through;"' %>
+					<% else format = "" %>
+					<% end %>
 					<tr>
-						<td><%= just_a_counter %></td>
-						<td><%= staff_appraisal_skt.description %></td>
-						<td><%= staff_appraisal_skt.indicator %></td>
+						<td <%= format %>><%= just_a_counter %></td>
+						<td <%= format %>><%= staff_appraisal_skt.description %></td>
+						<td <%= format %>><%= staff_appraisal_skt.indicator %></td>
 					</tr>
-					<% end -%><% end -%>
+					<% end -%>
 		</table>
 </fieldset>
 
@@ -30,15 +33,14 @@
 						<th><%= t 'evaluation.skt.performance' %></th>
 					</tr>
 					<% just_a_counter = 0 %>
-					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :order => :priority) %>
-					<% if staff_appraisal_skt.half == 2%>
+					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half = ?', 2], :order => :priority) %>
 					<% just_a_counter += 1 %>
 					<tr>
 						<td><%= just_a_counter %></td>
 						<td><%= staff_appraisal_skt.description %></td>
 						<td><%= staff_appraisal_skt.indicator %></td>
 					</tr>
-					<% end -%><% end -%>
+					<% end -%>
 		</table>
 		
 		<p><i><%= t 'evaluation.skt_review.drop' %></i></p>
@@ -49,15 +51,14 @@
 						<th><%= t 'evaluation.skt.performance' %></th>
 					</tr>
 					<% just_a_counter = 0 %>
-					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :order => :priority) %>
-					<% if staff_appraisal_skt.is_dropped == true %>
+					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['is_dropped = ?', true], :order => :priority) %>
 					<% just_a_counter += 1 %>
 					<tr>
 						<td><%= just_a_counter %></td>
 						<td><%= staff_appraisal_skt.description %></td>
 						<td><%= staff_appraisal_skt.indicator %></td>
 					</tr>
-					<% end -%><% end -%>
+					<% end -%>
 		</table>
 </fieldset>
 
