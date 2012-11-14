@@ -128,7 +128,7 @@
 	
 	<tr valign=bottom>
 		<td class="leftcolwide" rowspan=2><label for="eval1_effective">Total</label></td>
-		<td colspan=2><%= f.text_field :e1g3_total, :class => "subtotals", :size => 4, :readonly => true %><label> x 25 = <%= f.text_field :e1g3_percent, :size => 7, :readonly => true %>%</label></td>
+		<td colspan=2><%= f.text_field :e1g3_total, :class => "subtotals", :size => 4, :readonly => true %><label> x 20 = <%= f.text_field :e1g3_percent, :size => 7, :readonly => true %>%</label></td>
 	</tr>
 	<tr valign=bottom>
 		<td>&nbsp; <%= (@staff_appraisal.g3_questions)*10 %></td>
@@ -232,7 +232,6 @@
 
 
 
-
 <script type="text/javascript">
 	$j(document).ready(function(){
 			//show submit date
@@ -241,27 +240,27 @@
 			  var e1g1q2 = $j("#staff_appraisal_e1g1q2").val();
 				var e1g1q3 = $j("#staff_appraisal_e1g1q3").val();
 				var e1g1q4 = $j("#staff_appraisal_e1g1q4").val();
-				var e1g1q5 = $j("#staff_appraisal_e1g1q4").val();
-				var boobs = $j("#staff_appraisal_e1g1_total").val();
+				var e1g1q5 = $j("#staff_appraisal_e1g1q5").val();
+				
+				var ansP = document.getElementById("staff_appraisal_e1g1_percent");
+				ansP.value = (((e1g1q1*1) + (e1g1q2*1) + (e1g1q3*1) + (e1g1q4*1) + (e1g1q5*1))/50)*50;
 				
 				var ansG = document.getElementById("staff_appraisal_e1g1_total");
 				ansG.value = (e1g1q1*1) + (e1g1q2*1) + (e1g1q3*1) + (e1g1q4*1) + (e1g1q5*1);
 				
-				var ansP = document.getElementById("staff_appraisal_e1g1_percent");
-				ansP.value = ((boobs*1)/50)*50;
+
 			});
 			
 			$j(".e1g2").keyup(function() {  
 			  var e1g2q1 = $j("#staff_appraisal_e1g2q1").val();
 			  var e1g2q2 = $j("#staff_appraisal_e1g2q2").val();
 				var e1g2q3 = $j("#staff_appraisal_e1g2q3").val();
-				var barbs = $j("#staff_appraisal_e1g2_total").val();
 				
 				var ansH = document.getElementById("staff_appraisal_e1g2_total");
 				ansH.value = (e1g2q1*1) + (e1g2q2*1) + (e1g2q3*1);
 				
 				var ansK = document.getElementById("staff_appraisal_e1g2_percent");
-				ansK.value = ((barbs*1)/30)*25;
+				ansK.value = (((e1g2q1*1) + (e1g2q2*1) + (e1g2q3*1))/30)*25;
 			});
 			
 			$j(".e1g3").keyup(function() {  
@@ -269,13 +268,12 @@
 			  var e1g3q2 = $j("#staff_appraisal_e1g3q2").val();
 				var e1g3q3 = $j("#staff_appraisal_e1g3q3").val();
 				var e1g3q4 = $j("#staff_appraisal_e1g3q4").val();
-				var bitbs = $j("#staff_appraisal_e1g3_total").val();
 				
 				var ansL = document.getElementById("staff_appraisal_e1g3_total");
 				ansL.value = (e1g3q1*1) + (e1g3q2*1) + (e1g3q3*1) + (e1g3q4*1);
 				
 				var ansM = document.getElementById("staff_appraisal_e1g3_percent");
-				ansM.value = ((bitbs*1)/40)*20;			
+				ansM.value = (((e1g3q1*1) + (e1g3q2*1) + (e1g3q3*1) + (e1g3q4*1))/40)*20;			
 			});
 			
 			$j(".e1g4").keyup(function() {  
@@ -294,27 +292,8 @@
 				var ansQ = document.getElementById("staff_appraisal_e1_total");
 				ansQ.value = (sub1*1) + (sub2*1) + (sub3*1) + (sub4*1);
 			});
-			
-			
-			
-			
-			//show submit date
-			$j("input[id='submit_for_evaluation2']").change(function() {  
-			 if($j('#submit_for_evaluation2').is(':checked')) { 
-			    $j("#span_submit2").show("highlight"); 
-			 }else		{
-			    $j("#span_submit2").hide(""); 
-			 }	
-			});
-
-			$j("input[id='submit_for_evaluation2']").each(function() {  
-			 if($j('#submit_for_evaluation2').is(':checked')) { 
-			    $j("#span_submit2").show("highlight"); 
-			 }else		{
-			    $j("#span_submit2").hide(""); 
-			 }	
-			});
 
 	});
 </script>
+
 

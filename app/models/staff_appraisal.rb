@@ -2,7 +2,7 @@ class StaffAppraisal < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
   before_validation :set_year_to_start
-  before_save :set_to_nil_where_false, :set_number_of_questions
+  before_save :set_to_nil_where_false, :set_number_of_questions, :when_ppp_is_ppk
   
   
   belongs_to :appraised,      :class_name => 'Staff', :foreign_key => 'staff_id'
@@ -145,8 +145,43 @@ class StaffAppraisal < ActiveRecord::Base
     end
   end
   
+  def when_ppp_is_ppk
+    if eval1_by == eval2_by && e1_total > 1
+      self.e2g1q1        =  e1g1q1
+      self.e2g1q2        =  e1g1q2
+      self.e2g1q3        =  e1g1q3
+      self.e2g1q4        =  e1g1q4
+      self.e2g1q5        =  e1g1q5
+      self.e2g1_total    =  e1g1_total
+      self.e2g1_percent  =  e1g1_percent
+      self.g2_questions  =  g3_questions
+      self.e2g2q1        =  e1g2q1
+      self.e2g2q2        =  e1g2q2
+      self.e2g2q3        =  e1g2q3
+      self.e2g2q4        =  e1g2q4
+      self.e2g2_total    =  e1g2_total
+      self.e2g2_percent  =  e1g2_percent
+      self.e2g3q1        =  e1g3q1
+      self.e2g3q2        =  e1g3q2
+      self.e2g3q3        =  e1g3q3
+      self.e2g3q4        =  e1g3q4
+      self.e2g3q5        =  e1g3q5
+      self.e2g3_total    =  e1g3_total
+      self.e2g3_percent  =  e1g3_percent
+      self.e2g4          =  e1g4
+      self.e2g4_percent  =  e1g4_percent
+      self.e2_total      =  e1_total
+      self.e2_years      =  e1_years
+      self.e2_months     =  e1_months
+      self.is_submit_e2  =  true
+      self.submit_e2_on  =  Date.today
+    end 
+  end
   
-  # calculations for printed form
+  
+  
+  
+  # calculations for printed form not used anymore
   #partiii
   def part3_eval1_calced
     eval1_quantity + eval1_quality + eval1_quality + eval1_time + eval1_effective

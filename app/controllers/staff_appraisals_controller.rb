@@ -1,8 +1,11 @@
 class StaffAppraisalsController < ApplicationController
   # GET /staff_appraisals
   # GET /staff_appraisals.xml
+  
+  filter_resource_access
+  
   def index
-    @staff_appraisals = StaffAppraisal.all
+    @staff_appraisals = StaffAppraisal.with_permissions_to(:index).find(:all)
 
     respond_to do |format|
       format.html # index.html.erb
