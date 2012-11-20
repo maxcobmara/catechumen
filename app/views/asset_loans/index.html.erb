@@ -1,0 +1,47 @@
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Loanable Assets</h2>
+		<div class="right">
+		</div>
+  </div>
+</div>
+<div class="indextable">
+
+<table>
+  <tr>
+    <th>Asset</th>
+    <th>Staff<BR/>Reasons</th>
+    <th>Requested For<BR/>To Be Returned On</th>
+		<th>Status</th>
+    <th>Owner</th>
+    <th>Approved On</th>
+		<th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @asset_loans.each do |asset_loan| %>
+  <tr>
+    <td><%=h asset_loan.asset.assetcode %><BR/><%= asset_loan.asset.typename %></td>
+    <td><%=h asset_loan.staff.name %><BR/><%=h asset_loan.reasons %></td>
+    <td><%=h l(asset_loan.loaned_on) %><BR/><%=h l(asset_loan.expected_on) %></td>
+		<td align=center><%=h image_tag("#{asset_loan.status}") %></td>
+
+    <td><%=h asset_loan.owner.name %></td>
+    <td><%=h asset_loan.approved_date %></td>
+
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => asset_loan %></td>
+		<td width=10px>
+			<% if asset_loan.is_approved == nil && asset_loan.loaned_by == User.current_user.staff_id %>
+				<%= link_to image_tag("approval.png", :border => 0, :title => 'Approve'), :action => 'approve', :id => asset_loan %>
+			<% elsif asset_loan.is_approved == true && asset_loan.loaned_by == User.current_user.staff_id %>
+				<%= link_to image_tag("cog_go.png", :border => 0, :title => 'Return'), :action => 'edit', :id => asset_loan %>
+			<% elsif asset_loan.is_approved == false %>
+			<% end %></td>
+    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset_loan, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+
+<% link_to 'New asset_loan', new_asset_loan_path %>

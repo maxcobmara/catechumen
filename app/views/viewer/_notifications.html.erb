@@ -5,7 +5,7 @@
 	<!-- Notification for SKT Submission to PPP -->
 	<% skt_ready = StaffAppraisal.count(:all, :conditions => ["eval1_by=? AND is_skt_submit =? AND is_skt_endorsed  IS ?", User.current_user.staff_id, true, nil]) %>
 	<% if skt_ready > 0 %>
-	  <%= skt_ready %> <%= link_to "Staff SKT ready for endorsement", { :controller => "staff_appraisals", :action => "index" } %><br>
+	  <%= link_to "#{skt_ready} Staff SKT ready for endorsement", { :controller => "staff_appraisals", :action => "index" } %><br>
 	<% end %>
 	
 	<% skt_pyd_complete = StaffAppraisal.count(:all, :conditions => ["eval1_by=? AND is_skt_pyd_report_done =? AND skt_ppp_report  IS ?", User.current_user.staff_id, true, nil]) %>
@@ -29,31 +29,37 @@
   <% dash_leave = a+b %>
   <% if dash_leave == 0 %>
   <% else %>
-    <%= dash_leave %> <%= link_to "leave application for approval", { :controller => "leaveforstaffs", :action => "index" } %><br>
+    <%= link_to "#{dash_leave} leave application for approval", { :controller => "leaveforstaffs", :action => "index" } %><br/>
   <% end %>
 
 	<!-- Notification for Staff Leave is approved -->
 	<% asl = Leaveforstaff.find(:all, :select => "leavestartdate", :conditions => ['staff_id=? AND approval1 =? AND approver2 =? AND leavestartdate >?', User.current_user.staff_id, true, true, DateTime.now]).map(&:leavestartdate) %>
 	<% if asl.size > 0 %>
-		<p><%= link_to "Your leave request for #{asl} has been Approved", { :controller => "leaveforstaffs", :action => "index" } %></p>
+		<%= link_to "Your leave request for #{asl} has been Approved", { :controller => "leaveforstaffs", :action => "index" } %><br/>
 	<% end %>
 	
 	<!-- Notification for Staff Late Approval -->
   <% dash_attendance = StaffAttendance.count(:all, :conditions => ['approved_by =? AND is_approved IS ?', User.current_user.staff_id, nil]) %>
   <% if dash_attendance == 0 %>
   <% else %>
-    <%= dash_attendance %> <%= link_to "late attendance for approval", { :controller => "staff_attendances", :action => "manage" } %><br>
+    <%= link_to "#{dash_attendance} late attendance for approval", { :controller => "staff_attendances", :action => "manage" } %><br>
   <% end %>
 	
 	<!-- Notification for travel request -->
 	<% trvlreqst = TravelRequest.count(:all, :conditions => ['hod_id = ? AND hod_accept IS ?', User.current_user.staff_id, nil]) %>
 	<% if trvlreqst > 0 %>
-		<p><%= link_to "#{trvlreqst} Travel request that requires your approval", { :controller => "travel_requests", :action => "index" } %></p>
+		<%= link_to "#{trvlreqst} Travel request that requires your approval", { :controller => "travel_requests", :action => "index" } %><br/>
 	<% end %>
 	
 	<% trvlreqst_approved = TravelRequest.count(:all, :conditions => ['staff_id = ? AND hod_accept = ? AND hod_accept_on < ?', User.current_user.staff_id, true, Date.today + 3.days]) %>
 	<% if trvlreqst_approved > 0 %>
-		<p><%= link_to "#{trvlreqst_approved} Travel request has been approved", { :controller => "travel_requests", :action => "index" } %></p>
+		<%= link_to "#{trvlreqst_approved} Travel request has been approved", { :controller => "travel_requests", :action => "index" } %><br/>
+	<% end %>
+	
+	<!--Notification for Asset Loan-->
+	<% assetloanrequest = AssetLoan.count(:all, :conditions => ['loaned_by = ? AND is_approved IS ?', User.current_user.staff_id, nil]) %>
+	<% if assetloanrequest > 0 %>
+		<%= link_to "#{assetloanrequest} Asset Loan requests for approval", { :controller => "asset_loans", :action => "index" } %><br/>
 	<% end %>
 
 	<!-- Notification for Messages -->
@@ -75,7 +81,7 @@
   <% dash_lfs = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved IS ?", true, nil]) %>
   
   <% if (d & c == d) && dash_lfs > 0 %>
-  <p><%= dash_lfs %> <%= link_to "Student leave request for approval", { :controller => "leaveforstudents", :action => "index" } %></p>
+  	<%= dash_lfs %> <%= link_to "Student leave request for approval", { :controller => "leaveforstudents", :action => "index" } %><br/>
   <% else %>
 	<% end %>
 	
@@ -85,7 +91,7 @@
 	<% mycc2docs = Document.count(:all, :conditions => ["cc2staff_id=? AND cc2closed IS ?", User.current_user.staff_id, nil]) %>
 	<% mydocs = mycc1docs + mycc2docs %>
   <% if mydocs > 0 %>
-  	<%= mydocs %> <%= link_to "New documents for your attention", { :controller => "documents", :action => "index" } %><br>
+  	<%= link_to "#{mydocs} New documents for your attention", { :controller => "documents", :action => "index" } %><br>
   <% else %>
 	<% end %>
 	
@@ -94,12 +100,12 @@
 	<% al = Leaveforstudent.find(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', User.current_user.student_id, true, DateTime.now]).map(&:leave_startdate) %>
 	<% alc = Leaveforstudent.count(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', User.current_user.student_id, true, DateTime.now]) %>
 	<% if alc > 0 %>
-		<p><%= link_to "Your leave request on #{al} has been Approved", { :controller => "leaveforstudents", :action => "index" } %></p>
+		<%= link_to "Your leave request on #{al} has been Approved", { :controller => "leaveforstudents", :action => "index" } %><br/>
 	<% end %>
 	
 	<% counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed IS ?', nil])%>
 	<% if counsel_appt > 0 %>
-		<%= counsel_appt %><%= link_to "Student counseling appoinment to be confirmed", { :controller => "student_counseling_sessions", :action => "index" } %></p>
+		<%= link_to "#{counsel_appt} Student counseling appoinment to be confirmed", { :controller => "student_counseling_sessions", :action => "index" } %><br/>
 	<% end %>
 	
 	<!-- Notification for Students Dicsipline is approved -->
@@ -131,7 +137,7 @@
 		<% users_wo_roles = User.count(:all, :select => "id", :conditions => ["student_id IS? AND staff_id IS ?", nil, nil]) %>
 		<% if users_wo_roles == 0 %>
 		<% else %>
-			<%= users_wo_roles %> <%= link_to "New users require authentication", users_path %><br>
+			<%= users_wo_roles %> <%= link_to "New users require authentication", users_path %><br/>
 		<% end %>
 	<% end %>
 	
@@ -141,7 +147,7 @@
 	<!-- Overdue Library Books for Staff -->
 	<% latestaff = Librarytransaction.count(:all, :conditions => ["staff_id=? AND returnduedate < ? AND returneddate IS ?", User.current_user.staff_id, Time.now, nil]) %>
 	<% if latestaff > 0 %>
-	   <%= latestaff %> <%= link_to "Late Books at the library", { :controller => "librarytransactions", :action => "index" } %><br>
+	   <%= link_to "#{latestaff} Late Books at the library", { :controller => "librarytransactions", :action => "index" } %><br>
 	<% else %>
 	<% end %>
   

@@ -210,12 +210,6 @@ authorization do
     has_permission_on :librarytransactions , :to => [:manage, :extend, :return]
   end 
   
-  
-  
-
-  
-
-  
   role :guest do
     has_permission_on :users, :to => :create
     has_permission_on :books, :to => :core

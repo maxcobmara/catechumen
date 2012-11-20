@@ -1,5 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
   
+  map.connect '/attendance/approve/', :controller => 'asset_loans', :action => 'approve'
+  map.resources :asset_loans
+
+  
   map.resources :travel_claims, :collection => { :claimprint => :get }
 
   map.connect '/attendance/status/', :controller => 'staff_attendances', :action => 'status' 
@@ -163,7 +167,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/asset_autocomplete', :controller => 'assets', :action => 'asset_autocomplete'
   map.connect '/assets/registerinventory', :controller => 'assets', :action => 'registerinventory'
   map.connect '/assets/maintenance', :controller => 'assets', :action => 'maintenance'
-  map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get, :kewpa4 => :get, :kewpa8 => :get }
+  map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get, :kewpa4 => :get, :kewpa8 => :get, :loanables => :get}
 
   map.resources :books
 

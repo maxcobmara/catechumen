@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121106184402) do
+ActiveRecord::Schema.define(:version => 20121119052733) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -92,6 +92,25 @@ ActiveRecord::Schema.define(:version => 20121106184402) do
     t.text     "ppkoverall"
     t.integer  "ppk_id"
     t.date     "ppkevaldt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "asset_loans", :force => true do |t|
+    t.integer  "asset_id"
+    t.integer  "staff_id"
+    t.text     "reasons"
+    t.integer  "loaned_by"
+    t.boolean  "is_approved"
+    t.date     "approved_date"
+    t.date     "loaned_on"
+    t.date     "expected_on"
+    t.boolean  "is_returned"
+    t.date     "returned_on"
+    t.text     "remarks"
+    t.integer  "loan_officer"
+    t.integer  "hod"
+    t.date     "hod_date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

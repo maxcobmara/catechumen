@@ -157,4 +157,8 @@ class AssetsController < ApplicationController
       format.js   { render :js => @asset_autocomplete }
     end
   end
+  
+  def loanables
+    @loanables = Asset.on_loan
+  end
 end

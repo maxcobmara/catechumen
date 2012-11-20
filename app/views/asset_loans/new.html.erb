@@ -1,0 +1,16 @@
+<% form_for(@asset_loan) do |f| %>
+  <%= f.error_messages %>
+
+
+	<%= f.hidden_field :asset_id %>
+	<%= f.hidden_field :staff_id, :value => User.current_user.staff_id %>
+	<div class="tform">
+		<H2>New Loan</H2>
+		<%= render :partial => 'form', :locals => {:f => f} %>
+  </div>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', asset_loans_path %>

@@ -77,6 +77,8 @@ class Staff < ActiveRecord::Base
   has_many :eval2_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval2_by'
   
   #Link to model AssetTrack
+  has_many :asset_loans
+  #has_many :owners, :class_name => 'AssetLoan', :foreign_key => 'loaned_by'
   has_many :staffinassettrack, :class_name => 'assettrack', :foreign_key => 'staff_id'
   has_many :isby,              :class_name => 'assettrack', :foreign_key => 'issuedby'
   has_many :assettrackreturn,  :class_name => 'assettrack', :foreign_key => 'returnedto'  

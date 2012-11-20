@@ -1,0 +1,19 @@
+<% form_for(@asset_loan) do |f| %>
+  <%= f.error_messages %>
+	<div class="tform">
+		<H2>Assets on Loan</H2>
+		<% if @asset_loan.is_approved == nil %>
+			<%= render :partial => 'form', :locals => {:f => f} %>
+		<% elsif @asset_loan.is_approved == true && @asset_loan.loaned_by == User.current_user.staff_id%>
+			<%= render :partial => 'show_request' %>
+			<%= render :partial => 'show_approval' %>
+			<%= render :partial => 'return_loan', :locals => {:f => f} %>
+		<% end %>
+	</div>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @asset_loan %> |
+<%= link_to 'Back', asset_loans_path %>

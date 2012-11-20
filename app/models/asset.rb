@@ -16,7 +16,7 @@ class Asset < ActiveRecord::Base
   
   has_one :disposals        #Link to Model Disposals
   has_one :asset_loss        #Link to Model AssetLoss  
-  has_many :assettracks
+  has_many :asset_loans
   #has_many :assetinassettrack,    :class_name => 'Assettrack', :foreign_key => 'asset_id' #Link to Model AssetTrack
   
   has_many :maints, :dependent => :destroy
@@ -71,6 +71,15 @@ class Asset < ActiveRecord::Base
     else
       true
     end
+  end
+  
+  def self.on_loan
+    loaned = AssetLoan.find(:all, :conditions => ['is_returned !=?', true], :select => :asset_id).map(&:asset_id)
+    if loaned == []
+      loaned = [0]
+    end
+    find(:all, :conditions => ['bookable = ? AND id NOT IN (?)', true, loaned])
+    
   end
  
   named_scope :all 
