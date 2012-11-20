@@ -85,4 +85,9 @@ class AssetLoansController < ApplicationController
   def approve
     @asset_loan = AssetLoan.find(params[:id])
   end
+  
+  def lampiran
+    @asset_loan = AssetLoan.find(params[:id]) #search(params[:search])
+    render :layout => 'report'
+  end
 end

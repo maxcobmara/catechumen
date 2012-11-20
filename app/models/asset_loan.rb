@@ -6,6 +6,7 @@ class AssetLoan < ActiveRecord::Base
   belongs_to :asset
   belongs_to :staff
   belongs_to :owner, :class_name => 'Staff', :foreign_key => 'loaned_by'
+  belongs_to :hod, :class_name => 'Staff', :foreign_key => 'hod'
   
   
   def self.borrowings

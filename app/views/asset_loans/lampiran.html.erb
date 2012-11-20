@@ -1,0 +1,133 @@
+<%= stylesheet_link_tag 'report' %>
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>	
+<div class="A4potrait">
+
+
+<!-- Box Head -->
+<div id="kewpa">
+<p class="marginright" align="right"><b>LAMPIRAN A</b></p>
+<H4 align="center"><b>BORANG KEBENARAN MEMINJAM/MEMBAWA KELUAR<BR/> HARTA MODAL/INVENTORI</b></H4>
+
+<table class="lampiran_kewpa">
+		
+	<tr>
+		<td class="leftcol">Jenis :</td>
+		<td class="filler">
+				<%= @asset_loan.asset.assetcode %> -  
+				<%= @asset_loan.asset.typename %> -   
+				<%= @asset_loan.asset.serialno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol">Jenama dan Model :</td>
+		<td class="filler"><%= @asset_loan.asset.name %>  -  <%= @asset_loan.asset.modelname %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol">Nama Peminjam :</td>
+		<td class="filler"><%= @asset_loan.loaner %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol">Tujuan Pinjaman : </td>
+		<td class="filler"><%=h @asset_loan.reasons %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol">Tarikh dikeluarkan :</td>
+		<td class="filler"><%=h l(@asset_loan.loaned_on) %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol">Tarikh jangka dipulangkan :</td>
+		<td class="filler"><%=h l(@asset_loan.expected_on) %></td>
+	</tr>
+</table>
+
+<table  class="lampiran_kewpa">	
+	<tr>
+		<td class="leftcol">Perakuan Pegawai yang meminjam :</td>
+	</tr>
+	
+	<tr>
+		<td class="maintext">Adalah dengan ini saya mengaku akan bertanggungjawab sepenuhnya ke atas keselamatan aset yang dinyatakan di atas kepada saya. Saya juga mengambil maklum bahawa saya akan dikenakan bayaran balik sekiranya berlaku kehilangan aset tersebut yang berpunca akibat dari kecuaian saya.
+		<BR/><BR/>Sekian, terima kasih.</td>
+	</tr>
+</table>
+<BR/>
+<table  class="lampiran_kewpa">		
+	<tr>
+		<td class="leftcol">Tandatangan Pegawai Peminjam</td>
+		<td class="filler">via icms</td>
+	</tr>
+	<tr>
+		<td class="leftcol">Nama</td>
+		<td class="filler"><%=h @asset_loan.owner.name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol">Tarikh</td>
+		<td class="filler"><%= l(@asset_loan.approved_date)%></td>
+	</tr>
+	<tr>
+		<td class="leftcol" colspan=2>Pengeluaran <%= @asset_loan.is_approved? ? "Diluluskan / <del> Tidak Diluluskan </del>  " : "<del> Diluluskan </del> /  Tidak Diluluskan" %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><BR/></td>
+		<td class="filler"></td>
+	</tr>
+	<tr>
+		<td class="leftcol">Tandatangan Ketua Jabatan</td>
+		<td class="filler"><%= @asset_loan.hod_date.blank? ? "Not Viewed" : "via icms"  %></td>
+	</tr>
+	<tr>
+		<td class="leftcol">Nama</td>
+		<td class="filler"><%=h @asset_loan.hod_date.blank? ? "Not Viewed" : @asset_loan.hod.name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol">Tarikh</td>
+		<td class="filler"><%= l(@asset_loan.hod_date) unless @asset_loan.hod_date.blank? %></td>
+	</tr>
+</table>
+<BR/>
+<HR>
+<BR/>
+<table class="lampiran_kewpa">
+	<tr>
+		<td colspan=2 class="maintext">
+			Berdasarkan para <strong>16 Bab C Pekeliling Perbendaharaan Bil. 5 tahun 2007</strong>, pegawai yang bertanggungjawab ke atas aset 
+			hendaklah mematuhi tatacara penyimpanan aset adalah seperti berikut:-
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td class="maintext">
+			para 16.1 – Aset Kerajaan hendaklah disimpan di tempat yang selamat dan sentiasa di bawahkawalanpegawaiyangbertanggungjawab. 
+			Arahan Keselamatan Kerajaan hendaklah sentiasa dipatuhi bagi mengelak berlakunya kerosakan atau kehilangan aset;
+		</td>	
+	</tr>
+	<tr>
+		<td width=8%></td>
+		<td class="maintext">
+			para 16.2 – Setiap pegawai adalah bertanggungjawab terhadap apa-apa kekurangan, kerosakan atau kehilangan aset di bawah tanggungjawabnya; dan
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td class="maintext">
+			para 16.3 – Aset yang sangat menarik atau bernilai tinggi akan terdedah kepada risiko kehilangan, maka hendaklah sentiasa di bawah kawalan yang maksima.
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td class="maintext">Para 17 – Pegawai yang gagal mematuhi peaturan di atas, boleh dikenakan tindakan termasuk surcaj dibawah Seksyen 18(c) Akta Prosedur Kewangan 1957.</td>
+	</tr>
+</table>
+</div></fieldset></div>
