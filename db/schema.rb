@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121119052733) do
+ActiveRecord::Schema.define(:version => 20121122100831) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -92,6 +92,23 @@ ActiveRecord::Schema.define(:version => 20121119052733) do
     t.text     "ppkoverall"
     t.integer  "ppk_id"
     t.date     "ppkevaldt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "asset_defects", :force => true do |t|
+    t.integer  "asset_id"
+    t.integer  "reported_by"
+    t.text     "notes"
+    t.text     "description"
+    t.string   "process_type"
+    t.text     "recommendation"
+    t.boolean  "is_processed"
+    t.integer  "processed_by"
+    t.date     "processed_on"
+    t.boolean  "decision"
+    t.integer  "decision_by"
+    t.date     "decision_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1210,6 +1227,7 @@ ActiveRecord::Schema.define(:version => 20121119052733) do
 
   create_table "student_counseling_sessions", :force => true do |t|
     t.integer  "student_id"
+    t.integer  "case_id"
     t.datetime "requested_at"
     t.text     "alt_dates"
     t.string   "c_type"
@@ -1236,14 +1254,20 @@ ActiveRecord::Schema.define(:version => 20121119052733) do
     t.integer  "infraction_id"
     t.text     "description"
     t.date     "reported_on"
+    t.integer  "assigned_to"
+    t.date     "assigned_on"
     t.string   "status"
     t.integer  "file_id"
-    t.date     "case_created_on"
     t.text     "investigation_notes"
-    t.text     "action"
-    t.date     "closed_at_college_on"
-    t.integer  "location_id"
+    t.string   "action_type"
     t.text     "other_info"
+    t.date     "case_created_on"
+    t.text     "action"
+    t.integer  "location_id"
+    t.integer  "assigned2_to"
+    t.date     "assigned2_on"
+    t.boolean  "is_innocent"
+    t.date     "closed_at_college_on"
     t.date     "sent_to_board_on"
     t.date     "board_meeting_on"
     t.date     "board_decision_on"

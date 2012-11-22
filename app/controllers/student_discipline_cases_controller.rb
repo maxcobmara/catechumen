@@ -26,6 +26,7 @@ class StudentDisciplineCasesController < ApplicationController
   # GET /student_discipline_cases/new.xml
   def new
     @student_discipline_case = StudentDisciplineCase.new
+    @student_discipline_case.student_counseling_sessions.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -42,7 +43,6 @@ class StudentDisciplineCasesController < ApplicationController
   # POST /student_discipline_cases.xml
   def create
     @student_discipline_case = StudentDisciplineCase.new(params[:student_discipline_case])
-
     respond_to do |format|
       if @student_discipline_case.save
         format.html { redirect_to(@student_discipline_case, :notice => 'Your new case was successfully registered') }
@@ -58,6 +58,8 @@ class StudentDisciplineCasesController < ApplicationController
   # PUT /student_discipline_cases/1.xml
   def update
     @student_discipline_case = StudentDisciplineCase.find(params[:id])
+    #@student_counseling_session = StudentDisciplineCase.student_counseling_session.new(params[:student_counseling_session])
+    
 
     respond_to do |format|
       if @student_discipline_case.update_attributes(params[:student_discipline_case])

@@ -58,6 +58,7 @@
 <BR/>
 </div>
 
-
-<%= link_to 'Edit', edit_student_discipline_case_path(@student_discipline_case) %> |
+<% if permitted_to? :manage, :student_discipline_cases %>
+	<%= link_to 'Edit', edit_student_discipline_case_path(@student_discipline_case) %> |
+<% end %>
 <%= link_to 'Back', student_discipline_cases_path %>

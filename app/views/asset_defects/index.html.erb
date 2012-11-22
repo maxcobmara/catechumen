@@ -1,0 +1,62 @@
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Defect Reports</h2>
+		<div class="right">
+		</div>
+  </div>
+</div>
+<div class="indextable">
+	
+<div class="toolbar">
+	<table><tr>
+		<td width=10%><p><label><%= link_to image_tag("add.png", :border => 0, :title => 'Register Defect') + "New", new_asset_defect_path %></label></p></td>
+		<td></td>
+		<td width=10%>
+			<% permitted_to? :manage, :assets do %>
+			<p><label><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA(13)') + " Report", :action => 'kewpa13' %></label></p>
+			<% end %></td>
+
+	</tr></table>
+</div>
+
+<table>
+  <tr>
+    <th>Asset Registration</th>
+    <th>Typename - Brand - Model</th>
+    <th>Serial No</th>
+    <th>Location</th>
+    <th>Notes</th>
+    <th class="ac" colspan=5>Action</th>
+  </tr>
+
+<% @asset_defects.each do |asset_defect| %>
+  <tr>
+    <td><%=h asset_defect.asset.assetcode %></td>
+    <td><%=h asset_defect.asset.typename %> -   
+				<%=h asset_defect.asset.name %>  -  
+				<%=h asset_defect.asset.modelname %></td>
+    <td><%=h asset_defect.asset.serialno %></td>
+    <td><%=h asset_defect.asset.location.locationname unless asset_defect.asset.location.blank? %></td>
+    <td><%=h asset_defect.notes %></td>
+		<td width=10px><% permitted_to? :manage, :assets do %><% if asset_defect.process_type == "dispose" && asset_defect.decision == true %>
+				<%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_disposal_path(:asset_id => asset_defect.asset) %><% end %><% end %></td>
+		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => asset_defect %></td>
+	  <td width=10px>
+				<% if asset_defect.decision != nil %><% permitted_to? :manage, :assets do %>
+				<%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-9'), :action => 'kewpa9', :id => asset_defect %><% end %><% end %></td>
+		<td width=10px>
+			<% if asset_defect.is_processed == true && asset_defect.decision_by == User.current_user.staff_id %>
+					<%= link_to image_tag("approval.png", :border => 0, :title => 'Approve'), :action => 'approve', :id => asset_defect %>
+			<% elsif asset_defect.is_processed == true && asset_defect.processed_by == User.current_user.staff_id %>
+			<% else %>
+				<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => asset_defect %>
+			<% end %></td>
+  	<td width=10px><% permitted_to? :manage, :assets do %><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset_defect, :confirm => 'Are you sure?', :method => :delete %><% end %></td>
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+
+<%= link_to 'New asset_defect', new_asset_defect_path %>

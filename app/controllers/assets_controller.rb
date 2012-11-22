@@ -14,7 +14,7 @@ class AssetsController < ApplicationController
         @asset_gbtype = @assets.group_by { |t| t.gbtype }
       end
       
-    @assetforloss = Asset.find(:all, :conditions => ['name ILIKE ?', "%#{params[:search]}%"])
+    @assetforloss = Asset.find(:all, :conditions => ['name ILIKE ?', "%#{params[:search]}%"], :order => :assetcode)
 
     respond_to do |format|
       format.html # index.html.erb

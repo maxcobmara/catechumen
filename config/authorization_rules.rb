@@ -84,6 +84,14 @@ authorization do
         if_attribute :staff_id => is {User.current_user.staff_id}
     end
     
+    has_permission_on :asset_defects, :to => :create
+    has_permission_on :asset_defects, :to => [:read, :update]  do
+        if_attribute :reported_by => is {User.current_user.staff_id}
+    end
+    has_permission_on :asset_defects, :to => [:manage]  do
+        if_attribute :decision_by => is {User.current_user.staff_id}
+    end
+    
     has_permission_on :documents, :to => :approve, :join_by => :or do 
         if_attribute :stafffiled_id => is {User.current_user.staff_id}
         if_attribute :cc1staff_id => is {User.current_user.staff_id}
@@ -97,6 +105,9 @@ authorization do
     
     has_permission_on :student_discipline_cases, :to => :create
     has_permission_on :student_discipline_cases, :to => :approve do
+      if_attribute :assigned_to => is {User.current_user.staff_id}
+    end
+    has_permission_on :student_discipline_cases, :to => :read do
       if_attribute :reported_by => is {User.current_user.staff_id}
     end
 
@@ -121,7 +132,9 @@ authorization do
   #Group Assets  -------------------------------------------------------------------------------
   role :asset_administrator do
     has_permission_on :assets, :to => :manage
+    has_permission_on :asset_defects, :to => :manage
   end
+
   
   #Group Locations  -------------------------------------------------------------------------------
   role :facilities_administrator do

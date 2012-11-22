@@ -77,6 +77,9 @@
 				<li><%= link_to 'Fixed Assets', 			{:controller => 'assets', 			:action => 'index'} %></li>
 				<li><%= link_to 'Current Assets', 		{:controller => 'assets', 			:action => 'index'} %></li>
 				<li><%= link_to 'Office Supplies', 		{:controller => 'stationeries', :action => 'index'} %></li>
+				<% end %>
+				<li><%= link_to 'Defects', 						{:controller => 'asset_defects', :action => 'index'} %></li>
+				<% permitted_to? :manage, :assets do %>
 				<li><%= link_to 'Loss & Write Offs', 	{:controller => 'asset_losses', 	:action => 'index'} %></li>
 				<li><%= link_to 'Disposal', 					{:controller => 'disposals', 		:action => 'index'} %></li>
 				<% end %>
@@ -141,10 +144,12 @@
 	
 	
 	<!-- Student Menu -->
-	<% permitted_to? :menu, :students do %>
+	<% permitted_to? :create, :student_discipline_cases do %>
 	<li><a href="#">Students</a>
 		<ul class="sub_menu">
+				<% permitted_to? :index, :students do %>
 				<li><%= link_to 'Student Info', 			{:controller => 'students', 		:action => 'index'} %></li>
+				<% end %>
 				
 				<% permitted_to? :read, :leaveforstudents do %>
 				<li><%= link_to 'Student Leave', 			{:controller => 'leaveforstudents', 	:action => 'index'} %></li>
@@ -155,9 +160,9 @@
 				<% end %>
 				<!--  Deprecated to Student_discipline_cases
 
-								<% permitted_to? :create, :sdiciplines do %>
-								<li><%= link_to 'Discipline', 				{:controller => 'sdiciplines', 	:action => 'index'} %></li>
-								<% end %>-->
+								<#% permitted_to? :create, :sdiciplines do %>
+								<li><#%= link_to 'Discipline', 				{:controller => 'sdiciplines', 	:action => 'index'} %></li>
+								<#% end %>-->
 				
 				
 				<% permitted_to? :create, :student_discipline_cases do %>

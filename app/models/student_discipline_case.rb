@@ -1,11 +1,18 @@
 class StudentDisciplineCase < ActiveRecord::Base
+  # befores, relationships, validations, before logic, validation logic, 
+  #controller searches, variables, lists, relationship checking
+  
+  before_save :close_if_no_case
   
   belongs_to :staff, :foreign_key => 'reported_by'
   belongs_to :student
   belongs_to :cofile, :foreign_key => 'file_id'
   
+  has_many :student_counseling_sessions, :foreign_key => 'case_id', :validate => false#, :dependent => :destroy
+  accepts_nested_attributes_for :student_counseling_sessions#, :reject_if => lambda { |a| a[:requested_at].blank? }
   
-  validates_presence_of :reported_by, :student_id, :status, :infraction_id
+  
+  validates_presence_of :reported_by, :student_id, :status, :infraction_id, :assigned_to
   
   #validate :confimed_date
   
@@ -14,7 +21,14 @@ class StudentDisciplineCase < ActiveRecord::Base
       #errors.add(:leavenddate, "Your leave must begin before it ends") if leavenddate < leavestartdate || leavestartdate < DateTime.now
     #end
   #end
-   
+  
+  def close_if_no_case
+    if action_type == "no_case"
+      self.status = "Closed"
+    end
+  end
+  
+  
 
     
   # Data Stuff-----------------------------------------------
@@ -52,7 +66,7 @@ class StudentDisciplineCase < ActiveRecord::Base
     ]
     
     def reporter_details 
-          suid = reported_by.to_a
+          suid = Array(reported_by)
           exists = Staff.find(:all, :select => "id").map(&:id)
           checker = suid & exists     
 
@@ -66,7 +80,7 @@ class StudentDisciplineCase < ActiveRecord::Base
     end
     
     def student_name
-      suid = student_id.to_a
+      suid = Array(student_id)
       suexists = Student.find(:all, :select => "id").map(&:id)
       studentchecker = suid & suexists
 
@@ -93,7 +107,7 @@ class StudentDisciplineCase < ActiveRecord::Base
     end
     
     def room_no
-      suid = student_id.to_a
+      suid = Array(student_id)
       suexists = Tenant.find(:all, :select => "student_id").map(&:student_id)
       roomchecker = suid & suexists
       curroom = Tenant.find(:all, :select => "location_id", :conditions => {:student_id => roomchecker}, :limit => 1).map(&:location_id)

@@ -13,7 +13,7 @@ class Asset < ActiveRecord::Base
   belongs_to :category,     :class_name => 'Assetcategory', :foreign_key => 'category_id'
   #belongs_to :subcategory,  :class_name => 'Assetcategory', :foreign_key => 'subcategory_id'
   
-  
+  has_many :asset_defects
   has_one :disposals        #Link to Model Disposals
   has_one :asset_loss        #Link to Model AssetLoss  
   has_many :asset_loans

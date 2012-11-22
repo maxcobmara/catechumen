@@ -1,0 +1,91 @@
+<% form_for(@asset_defect) do |f| %>
+  <%= f.error_messages %>
+	
+	<div class="tform">
+		<H2>Report Defect</H2>
+		<%= f.hidden_field :reported_by, :value => User.current_user.staff_id %>
+		<table width=85% >
+
+			<tr>
+				<td class="leftcol"><label for="asset_id">Asset</label></td>
+				<td><%= text_field_with_auto_complete :asset_defect, :asset_name, {:size => 60}, 
+								{ :url => '/asset_autocomplete', 
+									:method => :get, 
+									:with => "'search=' + element.value + '&asset_name='"} %></td> 
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="asset_code">Defect Description</label></td>
+				<td><%= f.text_area :description, :size => '60x5' %></td>
+			</tr>
+		</table>
+	</div>
+
+<!--
+
+		<tr>
+			<td class="leftcolwide"><label for="asset_code"><b>Staff Name</b></label></td>
+			<td><#%= @asset_loan.loaner %></td>
+		</tr>
+
+
+
+		<tr>
+			<td class="leftcolwide"><%= f.label :loaned_on %></td>
+			<td><#%= f.date_select :loaned_on, :order => [:day, :month, :year] %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcolwide"><label>Expected Return Date	</td>
+			<td><#%= f.date_select :expected_on, :order => [:day, :month, :year], :default => Date.today + 2.days %></td>
+		</tr>
+	</table>
+		
+		
+		
+		
+		
+		<#%= render :partial => 'form', :locals => {:f => f} %>
+  </div>
+
+
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.label :process_type %><br />
+    <%= f.text_field :process_type %>
+  </p>
+  <p>
+    <%= f.label :recommendation %><br />
+    <%= f.text_area :recommendation %>
+  </p>
+  <p>
+    <%= f.label :is_processed %><br />
+    <%= f.check_box :is_processed %>
+  </p>
+  <p>
+    <%= f.label :processed_by %><br />
+    <%= f.text_field :processed_by %>
+  </p>
+  <p>
+    <%= f.label :processed_on %><br />
+    <%= f.date_select :processed_on %>
+  </p>
+  <p>
+    <%= f.label :decision %><br />
+    <%= f.check_box :decision %>
+  </p>
+  <p>
+    <%= f.label :decision_by %><br />
+    <%= f.text_field :decision_by %>
+  </p>
+  <p>
+    <%= f.label :decision_on %><br />
+    <%= f.date_select :decision_on %>
+  </p>-->
+
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>

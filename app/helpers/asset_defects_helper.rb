@@ -1,0 +1,2 @@
+module AssetDefectsHelper
+end

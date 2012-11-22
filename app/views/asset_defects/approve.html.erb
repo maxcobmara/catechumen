@@ -1,0 +1,79 @@
+<div class="tform">
+
+		<fieldset>
+			<legend class='togvis'>Defect Report</legend>
+				<table width=85% >
+						<tr>
+							<td class="leftcol"><label>Asset Registration No</label></td>
+							<td><%=h @asset_defect.asset.assetcode %></td>				
+						</tr>
+				
+						<tr>
+							<td class="leftcol"><label>Asset Details</label></td>
+							<td>	<%=h @asset_defect.asset.typename %> -   
+										<%=h @asset_defect.asset.name %>  -  
+										<%=h @asset_defect.asset.modelname %></td>
+						</tr>
+				
+						<tr>
+							<td class="leftcol"><label>Serial No</label></td>
+							<td><%=h @asset_defect.asset.serialno %></td>
+						</tr>
+				
+						<tr>
+							<td class="leftcol"><label>Defect</label></td>
+							<td><%=h @asset_defect.description %></td>
+						</tr>
+				
+						<tr>
+							<td class="leftcol"><label>Reported By</label></td>
+							<td><%=h @asset_defect.reporter.staff_name_with_position %></td>
+						</tr>			
+				</table>
+		</fieldset>
+
+		<fieldset>
+			<legend class='togvis'>Process</legend>
+					<table width=85%>
+						<tr>
+							<td class="leftcol"><label for="process_type"><b>Action Type</b></label></td>
+							<td><%=h @asset_defect.process_type.titleize %></label></td>
+						</tr>
+		
+						<tr>
+							<td class="leftcol"><label for="recommendation">Recommendation</label></td>
+							<td><%=h @asset_defect.recommendation %></td>
+						</tr>
+		
+						<tr>
+						  <td class="leftcol"><label for="is_processed">Recommendation Submitted</label></td>
+							<td><%=h @asset_defect.is_processed? ? "Yes, by  " + @asset_defect.processor.name.to_s + " on  " + (l(@asset_defect.processed_on)).to_s : "No" %></td>
+						</tr>
+		
+					</table>
+		</fieldset>
+
+<% form_for(@asset_defect) do |f| %>
+  <%= f.error_messages %>
+	<H2>Approve Action</H2>
+			<table width=85%>
+				<tr>
+					<td class="leftcol"><label>Approval</label></td>
+					<td><%= f.radio_button :decision, 'false' %> Not Approved &nbsp;
+							<%= f.radio_button :decision, 'true' %>Approve</td>
+				</tr>
+				<tr>
+					<td class="leftcol"><label>Approval</label></td>
+					<td><%= f.date_select :decision_on %></td>
+				</tr>
+			</table>
+
+</div>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @asset_defect %> |
+<%= link_to 'Back', asset_defects_path %>
+

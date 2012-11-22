@@ -36,7 +36,20 @@
 			<td class="leftcol"><label for="cofile_id"><b>File No:</b></label></td>
 			<td><%= f.collection_select :file_id, Cofile.find(:all), :id, :file_no_and_name, :include_blank => true %></td>
 		</tr>
+		
+		<% myhod = Position.find(:all, :conditions => ['staff_id IS NOT ? AND ancestry_depth =?', nil, 1 ], :select => :staff_id).map(&:staff_id) %>
+		<tr>
+			<td class="leftcol"><label for="programme_head">Assign to Programme Head</label></td>
+	    <td><%= f.collection_select :assigned_to, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name, :include_blank => true %></td>
+		</tr>		
 	</table>
+	<%= f.hidden_field :assigned_on, :value => Date.today %>
+	<% f.fields_for :student_counseling_sessions do |builder| %>
+		<%= builder.hidden_field :c_scope, :value => "case" %>
+	<% end -%>
+	
+	
+	
  	<%=render :partial => 'status', :locals => {:f => f} %> 
 	</div>
   <p>
@@ -67,6 +80,22 @@
 			  }else{
 			    $j("#tr_description").hide("");
 				}
+			});
+			
+			$j("input[id='student_discipline_case_is_assigned']").change(function() {  
+			 if($j('#student_discipline_case_is_assigned').is(':checked')) { 
+			    $j(".assign_it").show("highlight"); 
+			 }else		{
+			    $j(".assign_it").hide(""); 
+			 }	
+			});
+
+			$j("input[id='student_discipline_case_is_assigned']").each(function() {  
+			 if($j('#student_discipline_case_is_assigned').is(':checked')) { 
+			    $j(".assign_it").show("highlight"); 
+			 }else		{
+			    $j(".assign_it").hide(""); 
+			 }	
 			});
 	});
 </script>

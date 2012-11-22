@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+  map.connect '/asset_defects/kewpa13', :controller => 'asset_defects', :action => 'kewpa13'
+  map.connect '/asset_defects/approve/', :controller => 'asset_defects', :action => 'approve'
+  map.resources :asset_defects, :collection => { :kewpa9 => :get }
   
   map.connect '/attendance/approve/', :controller => 'asset_loans', :action => 'approve'
   map.resources :asset_loans, :collection => { :lampiran => :get}
