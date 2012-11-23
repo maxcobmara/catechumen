@@ -56,6 +56,18 @@
 		<%= link_to "#{trvlreqst_approved} Travel request has been approved", { :controller => "travel_requests", :action => "index" } %><br/>
 	<% end %>
 	
+	<!-- Notification on Asset Defect -->
+	
+	<% asset_with_defects = AssetDefect.count(:all, :conditions => ['is_processed IS ? AND processed_by IS ? AND decision_by !=?', nil, nil, User.current_user.staff_id ]) %>
+	<% if asset_with_defects > 0 %>
+		<%= link_to "#{asset_with_defects} Defect reports require processing", { :controller => "asset_defects", :action => "index" } %><br/>
+	<% end %>
+	
+	<% defect_action_for_approval = AssetDefect.count(:all, :conditions => ['is_processed = ? AND decision_by =? AND decision IS ?', true, User.current_user.staff_id, nil]) %>
+	<% if defect_action_for_approval > 0 %>
+		<%= link_to "#{defect_action_for_approval} Defect reports for decision", { :controller => "asset_defects", :action => "index" } %><br/>
+	<% end %>
+	
 	<!--Notification for Asset Loan-->
 	<% assetloanrequest = AssetLoan.count(:all, :conditions => ['loaned_by = ? AND is_approved IS ?', User.current_user.staff_id, nil]) %>
 	<% if assetloanrequest > 0 %>
