@@ -1,0 +1,18 @@
+<div class="tform">
+<%= render :partial => 'show_process' %>
+<% if @asset_disposal.revalue?%>
+<%= render :partial => 'show_revalue' %>
+<% end %>
+<% if @asset_disposal.is_verified? %>
+<%= render :partial => 'show_disposal' %>
+<% end %>
+</div>
+
+
+<% if @asset_disposal.is_verified == true && @asset_disposal.is_disposed == false %>
+	<%= link_to 'Dispose', :action => 'dispose', :id => @asset_disposal %>
+<% else %>
+	<%= link_to 'Edit', edit_asset_disposal_path(@asset_disposal) %> |
+<% end %>
+
+<%= link_to 'Back', asset_disposals_path %>

@@ -40,7 +40,7 @@
     <td><%=h asset_defect.asset.location.locationname unless asset_defect.asset.location.blank? %></td>
     <td><%=h asset_defect.notes %></td>
 		<td width=10px><% permitted_to? :manage, :assets do %><% if asset_defect.process_type == "dispose" && asset_defect.decision == true %>
-				<%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_disposal_path(:asset_id => asset_defect.asset) %><% end %><% end %></td>
+				<%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_asset_disposal_path(:asset_id => asset_defect.asset) %><% end %><% end %></td>
 		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => asset_defect %></td>
 	  <td width=10px>
 				<% if asset_defect.decision != nil %><% permitted_to? :manage, :assets do %>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121122100831) do
+ActiveRecord::Schema.define(:version => 20121125094758) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -109,6 +109,51 @@ ActiveRecord::Schema.define(:version => 20121122100831) do
     t.boolean  "decision"
     t.integer  "decision_by"
     t.date     "decision_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "asset_disposals", :force => true do |t|
+    t.integer  "asset_id"
+    t.integer  "quantity"
+    t.integer  "asset_defect_id"
+    t.text     "description"
+    t.integer  "running_hours"
+    t.integer  "mileage"
+    t.string   "current_condition"
+    t.decimal  "current_value"
+    t.decimal  "est_repair_cost"
+    t.decimal  "est_value_post_repair"
+    t.decimal  "est_time_next_fail"
+    t.string   "repair1_needed"
+    t.string   "repair2_needed"
+    t.string   "repair3_needed"
+    t.string   "justify1_disposal"
+    t.string   "justify2_disposal"
+    t.string   "justify3_disposal"
+    t.boolean  "is_checked"
+    t.integer  "checked_by"
+    t.date     "checked_on"
+    t.boolean  "is_verified"
+    t.integer  "verified_by"
+    t.date     "verified_on"
+    t.decimal  "revalue"
+    t.integer  "revalued_by"
+    t.date     "revalued_on"
+    t.integer  "document_id"
+    t.string   "disposal_type"
+    t.string   "type_others_desc"
+    t.string   "discard_options"
+    t.string   "receiver_name"
+    t.string   "documentation_no"
+    t.boolean  "is_disposed"
+    t.integer  "disposed_by"
+    t.date     "disposed_on"
+    t.boolean  "is_discarded"
+    t.date     "discarded_on"
+    t.string   "discard_location"
+    t.integer  "discard_witness_1"
+    t.integer  "discard_witness_2"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

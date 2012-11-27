@@ -80,6 +80,11 @@ class Staff < ActiveRecord::Base
   #Link to model Asset Defect
   has_many :reporters, :class_name => 'AssetDefect', :foreign_key => 'reported_by'
   
+  #Link to model Asset Disposal
+  has_many :processors, :class_name => 'AssetDisposal', :foreign_key => 'checked_by'
+  has_many :verifiers,  :class_name => 'AssetDisposal', :foreign_key => 'verified_by'
+  has_many :revaluers,  :class_name => 'AssetDisposal', :foreign_key => 'revalued_by'
+    
   #Link to model AssetTrack
   has_many :asset_loans
   has_many :owners, :class_name => 'AssetLoan', :foreign_key => 'loaned_by'

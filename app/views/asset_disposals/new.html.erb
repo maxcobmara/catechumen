@@ -1,0 +1,109 @@
+<% form_for(@asset_disposal) do |f| %>
+  <%= f.error_messages %>
+
+	<div class="tform">
+		<H2><%= t 'asset.disposal.new' %></H2>
+		<%= f.hidden_field :asset_id %>
+		
+		<%=render :partial => 'process', :locals => {:f => f} %> 
+
+	</div>
+
+
+<%= f.text_area :description, :size => '60x5' %>
+<!--
+
+  <p>
+    <%= f.label :quantity %><br />
+    <#%= f.text_field :quantity %>
+  </p>
+  <p>
+    <%= f.label :asset_defect_id %><br />
+    <#%= f.text_field :asset_defect_id %>
+  </p>
+-->
+
+ 
+  <p>
+    <%= f.label :is_verified %><br />
+    <%= f.check_box :is_verified %>
+  </p>
+ 
+  <p>
+    <%= f.label :verified_on %><br />
+    <%= f.text_field :verified_on %>
+  </p>
+  <p>
+    <%= f.label :revalue %><br />
+    <%= f.text_field :revalue %>
+  </p>
+  <p>
+    <%= f.label :revalued_by %><br />
+    <%= f.text_field :revalued_by %>
+  </p>
+  <p>
+    <%= f.label :revalued_on %><br />
+    <%= f.date_select :revalued_on %>
+  </p>
+  <p>
+    <%= f.label :document_id %><br />
+    <%= f.text_field :document_id %>
+  </p>
+  <p>
+    <%= f.label :disposal_type %><br />
+    <%= f.text_field :disposal_type %>
+  </p>
+  <p>
+    <%= f.label :type_others_desc %><br />
+    <%= f.text_field :type_others_desc %>
+  </p>
+  <p>
+    <%= f.label :discard_options %><br />
+    <%= f.text_field :discard_options %>
+  </p>
+  <p>
+    <%= f.label :receiver_name %><br />
+    <%= f.text_field :receiver_name %>
+  </p>
+  <p>
+    <%= f.label :documentation_no %><br />
+    <%= f.text_field :documentation_no %>
+  </p>
+  <p>
+    <%= f.label :is_disposed %><br />
+    <%= f.check_box :is_disposed %>
+  </p>
+  <p>
+    <%= f.label :disposed_by %><br />
+    <%= f.text_field :disposed_by %>
+  </p>
+  <p>
+    <%= f.label :disposed_on %><br />
+    <%= f.date_select :disposed_on %>
+  </p>
+  <p>
+    <%= f.label :is_discarded %><br />
+    <%= f.check_box :is_discarded %>
+  </p>
+  <p>
+    <%= f.label :discarded_on %><br />
+    <%= f.date_select :discarded_on %>
+  </p>
+  <p>
+    <%= f.label :discard_location %><br />
+    <%= f.text_field :discard_location %>
+  </p>
+  <p>
+    <%= f.label :discard_witness_1 %><br />
+    <%= f.text_field :discard_witness_1 %>
+  </p>
+  <p>
+    <%= f.label :discard_witness_2 %><br />
+    <%= f.text_field :discard_witness_2 %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', asset_disposals_path %>

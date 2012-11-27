@@ -14,7 +14,7 @@ class Asset < ActiveRecord::Base
   #belongs_to :subcategory,  :class_name => 'Assetcategory', :foreign_key => 'subcategory_id'
   
   has_many :asset_defects
-  has_one :disposals        #Link to Model Disposals
+  has_one :asset_disposal       #Link to Model asset_disposals
   has_one :asset_loss        #Link to Model AssetLoss  
   has_many :asset_loans
   #has_many :assetinassettrack,    :class_name => 'Assettrack', :foreign_key => 'asset_id' #Link to Model AssetTrack
@@ -48,7 +48,7 @@ class Asset < ActiveRecord::Base
   
   def non_active_assets
     lost = AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)
-    disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
+    disposed = AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)
     lost + disposed
   end
   
@@ -57,12 +57,12 @@ class Asset < ActiveRecord::Base
   end
   
   def assets_that_are_disposed
-    disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
+    disposed = AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)
   end
   
   def am_i_gone
     asset = Array(self.id)
-    disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
+    disposed = AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)
     lost = AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)
     gone = disposed + lost
     am_i = asset & gone
@@ -83,12 +83,12 @@ class Asset < ActiveRecord::Base
   end
  
   named_scope :all 
-  named_scope :active,        :conditions =>  ["id not in (?) OR id not in (?)", Disposal.find(:all, :select => :asset_id).map(&:asset_id), AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :active,        :conditions =>  ["id not in (?) OR id not in (?)", AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id), AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :fixed,         :conditions =>  ["assettype =? ", 1]
   named_scope :inventory,     :conditions =>  ["assettype =? ", 2]
-  named_scope :disposal,      :conditions =>  ["mark_disposal =? AND id not in (?)", true, Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
-  named_scope :disposed,      :conditions =>  ["id in (?)", Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
-  named_scope :disposal,      :conditions =>  ["mark_disposal =? AND id not in (?)", true, Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :disposal,      :conditions =>  ["mark_disposal =? AND id not in (?)", true, AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :disposed,      :conditions =>  ["id in (?)", AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :disposal,      :conditions =>  ["mark_disposal =? AND id not in (?)", true, AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :markaslost,    :conditions =>  ["mark_as_lost =? AND id not in (?)", true, AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :lost,          :conditions =>  ["id in (?)", AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
 
