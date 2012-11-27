@@ -22,6 +22,12 @@ class AssetDisposal < ActiveRecord::Base
       "Processing"
     elsif is_checked == true && is_verified == false
       "Processed"
+    elsif is_verified == true && is_disposed == false
+      "Verified"
+    elsif is_disposed == true && is_discarded == false
+      "Disposed"
+    elsif is_discarded == true
+      "Discarded"
     else
       "Unknown"
     end

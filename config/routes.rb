@@ -45,7 +45,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/timetables/calendar/', :controller => 'timetables', :action => 'calendar'
   map.resources :timetables#, :collection => { :calendar => :get }
 
-  map.resources :stationeries
+  map.resources :stationeries, :collection => { :kewpa11 => :get }
 
   map.resources :messages
 
@@ -216,6 +216,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.with_options :controller => 'viewer' do |viewer|
     viewer.librarystats 'librarystats', :action => 'librarystats'
+    viewer.librarystats 'asset_reports', :action => 'assetreports'
   end
   
   map.view_page ':name', :controller => 'viewer', :action => 'show'
