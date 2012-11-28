@@ -88,7 +88,7 @@ class Staff < ActiveRecord::Base
   #Link to model AssetTrack
   has_many :asset_loans
   has_many :owners, :class_name => 'AssetLoan', :foreign_key => 'loaned_by'
-  has_many :hod,    :class_name => 'AssetLoan', :foreign_key => 'hod'
+  has_many :hods,   :class_name => 'AssetLoan', :foreign_key => 'hod'
   #has_many :staffinassettrack, :class_name => 'assettrack', :foreign_key => 'staff_id'
   #has_many :isby,              :class_name => 'assettrack', :foreign_key => 'issuedby'
   #has_many :assettrackreturn,  :class_name => 'assettrack', :foreign_key => 'returnedto'  

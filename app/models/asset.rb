@@ -2,6 +2,7 @@ class Asset < ActiveRecord::Base
   
   before_save :save_my_vars
   
+  validates_presence_of :assignedto_id, :if => :must_assign_if_loanable?
   #validates_presence_of  :category_id, :typename
   #validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
   
@@ -21,6 +22,11 @@ class Asset < ActiveRecord::Base
   
   has_many :maints, :dependent => :destroy
   accepts_nested_attributes_for :maints, :reject_if => lambda { |a| a[:asset_id].blank? }
+  
+  
+  def must_assign_if_loanable?
+    bookable?
+  end
   
  
   def save_my_vars

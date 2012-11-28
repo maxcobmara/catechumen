@@ -6,7 +6,7 @@ class AssetLoan < ActiveRecord::Base
   belongs_to :asset
   belongs_to :staff
   belongs_to :owner, :class_name => 'Staff', :foreign_key => 'loaned_by'
-  belongs_to :hod, :class_name => 'Staff', :foreign_key => 'hod'
+  belongs_to :hod,   :class_name => 'Staff', :foreign_key => 'loan_officer'
   
   
   def self.borrowings
@@ -21,7 +21,9 @@ class AssetLoan < ActiveRecord::Base
   end
   
   def set_loaned_by
-    self.loaned_by = asset.assignedto_id
+    if loaned_by.blank?
+      self.loaned_by = asset.assignedto_id
+    end
   end
   
   def loaner

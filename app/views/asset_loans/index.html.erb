@@ -26,7 +26,7 @@
     <td><%=h l(asset_loan.loaned_on) %><BR/><%=h l(asset_loan.expected_on) %></td>
 		<td align=center><%=h image_tag("#{asset_loan.status}") %></td>
 
-    <td><%=h asset_loan.owner.name %></td>
+    <td><%=h asset_loan.asset.assignedto.name unless asset_loan.asset.assignedto.blank? %></td>
     <td><%=h asset_loan.approved_date %></td>
 
     <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => asset_loan %></td>
