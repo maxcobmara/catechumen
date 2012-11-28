@@ -26,11 +26,11 @@ class StudentDisciplineCase < ActiveRecord::Base
     #end
   #end
   
-  named_scope :new,       :conditions => [ "status =?", "New"   ]
-  named_scope :opencase,  :conditions => [ "status =?", "Open"  ]
+  named_scope :new,       :conditions => [ "status =?", "New"           ]
+  named_scope :opencase,  :conditions => [ "status =?", "Open"          ]
   named_scope :tphep,     :conditions => [ "status =?", "Refer to TPHEP"]
-  named_scope :bpl,       :conditions => [ "status =?", "Refer to BPL"]
-  named_scope :closed,    :conditions => [ "status =?", "Closed"]
+  named_scope :bpl,       :conditions => [ "status =?", "Refer to BPL"  ]
+  named_scope :closed,    :conditions => [ "status =?", "Closed"        ]
   
   FILTERS = [
     {:scope => "new",   :label => "New"},
