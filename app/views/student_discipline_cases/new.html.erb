@@ -26,16 +26,18 @@
 			<td class="leftcol"><label for="details"><b>If Others, Please Specify</b></label></td>
 			<td><%= f.text_area :description, :size => "40x5" %></td>
 		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="location"><b>Location of Infraction:</b></label></td>
+			<td><%= f.collection_select :location_id, Location.find(:all, :order => :code), :id, :location_list %></td>
+		</tr>
 	
 		<tr>
 			<td class="leftcol"><label for="reporteddt"><b>Date:</b></label></td>
 			<td><%= f.date_select :reported_on, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 	
-		<tr>
-			<td class="leftcol"><label for="cofile_id"><b>File No:</b></label></td>
-			<td><%= f.collection_select :file_id, Cofile.find(:all), :id, :file_no_and_name, :include_blank => true %></td>
-		</tr>
+	
 		
 		<% myhod = Position.find(:all, :conditions => ['staff_id IS NOT ? AND ancestry_depth =?', nil, 1 ], :select => :staff_id).map(&:staff_id) %>
 		<tr>

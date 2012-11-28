@@ -1,52 +1,50 @@
-<H2>Report Details</H2>
-  <table width=100% >
-	<tr>
-		<td class="leftcol"><label for="reportedby_id"><b>Reported By:</b></label></td>
-		<td><%=h @student_discipline_case.reporter_details %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="reporteddt"><b>Date:</b></label></td>
-		<td> <%=h l(@student_discipline_case.reported_on) %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
-		<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.formatted_mykad_and_student_name %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="student_id"><b>Matrix No:</b></label></td>
-		<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.matrixno %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="student_id"><b>Address:</b></label></td>
-		<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.address %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="student_id"><b>Room No:</b></label></td>
-		<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.room_no %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="student_id"><b>Programme:</b></label></td>
-		<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.course.name %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="student_id"><b>Intake</b></label></td>
-		<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.intake.strftime("%B %Y") %></td>
-	</tr>
+<fieldset>
+	<legend class='togvis'>Report Details</legend>
+		  <table width=100% >
+					<tr>
+						<td class="leftcol"><label for="reportedby_id"><b>Reported By:</b></label></td>
+						<td><%=h @student_discipline_case.reporter_details %></td>
+					</tr>
+					<tr>
+						<td class="leftcol"><label for="reporteddt"><b>Date:</b></label></td>
+						<td> <%=h l(@student_discipline_case.reported_on) %></td>
+					</tr>
+					<tr>
+						<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
+						<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.formatted_mykad_and_student_name %></td>
+					</tr>
+					<tr>
+						<td class="leftcol"><label for="student_id"><b>Matrix No:</b></label></td>
+						<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.matrixno %></td>
+					</tr>
+					<tr>
+						<td class="leftcol"><label for="student_id"><b>Address:</b></label></td>
+						<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.address %></td>
+					</tr>
+					<tr>
+						<td class="leftcol"><label for="student_id"><b>Room No:</b></label></td>
+						<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.room_no %></td>
+					</tr>
+					<tr>
+						<td class="leftcol"><label for="student_id"><b>Programme:</b></label></td>
+						<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.course.name %></td>
+					</tr>
+					<tr>
+						<td class="leftcol"><label for="student_id"><b>Intake</b></label></td>
+						<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.intake.strftime("%B %Y") %></td>
+					</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="details"><b>Infraction:</b></label></td>
-		<td><%=h (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == @student_discipline_case.infraction_id}).map {|disp, value| disp} %></td>
-	</tr>		
+					<tr>
+						<td class="leftcol"><label for="details"><b>Infraction:</b></label></td>
+						<td><%=h (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == @student_discipline_case.infraction_id}).map {|disp, value| disp} %></td>
+					</tr>		
   
-  <% if @student_discipline_case.infraction_id == 4 %>
-	<tr>
-		<td class="leftcol"><label for="details"><b>Details:</b></label></td>
-		<td><%=h @student_discipline_case.description %></td>
-	</tr>
-	<% end %>
+				  <% if @student_discipline_case.infraction_id == 4 %>
+					<tr>
+						<td class="leftcol"><label for="details"><b>Details:</b></label></td>
+						<td><%=h @student_discipline_case.description %></td>
+					</tr>
+					<% end %>
 
-	<tr>
-		<td class="leftcol"><label for="cofile_id"><b>File No:</b></label></td>
-		<td><%=h @student_discipline_case.file_id.blank? ? "No File" : @student_discipline_case.cofile.file_no_and_name %></td>
-	</tr>
-</table>
+		  </table>
+</fieldset>

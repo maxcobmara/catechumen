@@ -3,7 +3,14 @@ class StudentDisciplineCasesController < ApplicationController
   # GET /student_discipline_cases
   # GET /student_discipline_cases.xml
   def index
-    @student_discipline_cases = StudentDisciplineCase.with_permissions_to(:index).find(:all, :order => "reported_on DESC")
+    #@student_discipline_cases = StudentDisciplineCase.with_permissions_to(:index).find(:all, :order => "reported_on DESC")
+    @filters = StudentDisciplineCase::FILTERS
+    if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+      @student_discipline_cases = StudentDisciplineCase.with_permissions_to.send(params[:show])
+    else
+      @student_discipline_cases = StudentDisciplineCase.with_permissions_to(:index).find(:all, :order => "reported_on DESC")
+    end
+    
 
     respond_to do |format|
       format.html # index.html.erb
