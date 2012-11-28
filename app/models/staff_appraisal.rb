@@ -10,13 +10,13 @@ class StaffAppraisal < ActiveRecord::Base
   belongs_to :eval2_officer,  :class_name => 'Staff', :foreign_key => 'eval2_by'
   
   has_many :staff_appraisal_skts, :dependent => :destroy
-  accepts_nested_attributes_for :staff_appraisal_skts, :reject_if => lambda { |a| a[:description].blank? }
+  accepts_nested_attributes_for :staff_appraisal_skts, :allow_destroy => true, :reject_if => lambda { |a| a[:description].blank? }
   
   has_many :evactivities, :foreign_key => 'appraisal_id', :dependent => :destroy
-  accepts_nested_attributes_for :evactivities, :reject_if => lambda { |a| a[:evactivity].blank? }
+  accepts_nested_attributes_for :evactivities, :allow_destroy => true, :reject_if => lambda { |a| a[:evactivity].blank? }
   
   has_many :trainneeds, :foreign_key => 'evaluation_id', :dependent => :destroy
-  accepts_nested_attributes_for :trainneeds, :reject_if => lambda { |a| a[:name].blank? }
+  accepts_nested_attributes_for :trainneeds, :allow_destroy => true, :reject_if => lambda { |a| a[:name].blank? }
   
   
   validates_uniqueness_of :evaluation_year, :scope => :staff_id, :message => "Your evaluation for this year already exists"
