@@ -3,12 +3,12 @@
 		<table width=85% >
 				<tr>
 					<td class="leftcol"><label>Approval</label></td>
-					<td><%=h @asset_disposal.document.refno %>: <%=h @asset_disposal.document.title %> dated <%=h l(@asset_disposal.document.letterdt) %></td>				
+					<td><%=h check_kin {@asset_disposal.document.refno}   %>: <%=h check_kin {@asset_disposal.document.title} %> dated <%=h check_kin {@asset_disposal.document.letterdt} %></td>				
 				</tr>
 				
 				<tr>
 					<td class="leftcol"><label>Disposed</label></td>
-					<td><%=h @asset_disposal.disposal_type.titleize %></td>				
+					<td><%=h @asset_disposal.disposal_type.try(:titleize) %></td>				
 				</tr>
 				
 							<% if @asset_disposal.disposal_type == "transfer" %>
@@ -45,7 +45,7 @@
 				
 				<tr>
 					<td class="leftcol"><label>Confirmed By</label></td>
-					<td><%=h @asset_disposal.disposer.staff_name_with_position %> On <%=h l(@asset_disposal.disposed_on) %></td>			
+					<td><%=h check_kin {@asset_disposal.disposer.staff_name_with_position} %> On <%=h tarikh(@asset_disposal.disposed_on) %></td>			
 				</tr>
 				
 				

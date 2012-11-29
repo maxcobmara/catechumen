@@ -8,6 +8,14 @@ module ApplicationHelper
     l(haribulan) unless haribulan.blank?
   end
   
+  def check_kin
+       begin
+           return yield
+       rescue
+           return "(none entered)"
+       end
+   end
+ 
   def pukka(points)
     number_with_precision(points, :precision => 1)
   end

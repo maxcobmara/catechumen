@@ -9,6 +9,8 @@ belongs_to :stafffilled,    :class_name => 'Staff', :foreign_key => 'stafffiled_
 belongs_to :cc1staff, :class_name => 'Staff', :foreign_key => 'cc1staff_id' 
 belongs_to :cofile, :foreign_key => 'file_id'
 
+has_many :asset_disposals
+
 before_save :set_actionstaff2_to_blank_if_close_is_selected
 
 

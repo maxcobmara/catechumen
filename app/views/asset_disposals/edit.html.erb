@@ -6,7 +6,7 @@
 			<%=render :partial => 'process', :locals => {:f => f} %>
 		<% end %>
 		
-		<% if @asset_disposal.is_checked = true && @asset_disposal.verified_by != User.current_user.staff_id%>
+		<% if @asset_disposal.is_checked = true && @asset_disposal.verified_by != User.current_user.staff_id && @asset_disposal.is_verified != true %>
 			Awaiting verification from <%=h @asset_disposal.verifier.name %>
 		<% end %> 
 		
@@ -15,7 +15,7 @@
 			<%=render :partial => 'verify', :locals => {:f => f} %>
 		<% end %>
 		
-		<% if @asset_disposal.is_disposed = true && @asset_disposal.verified_by == User.current_user.staff_id %>
+		<% if @asset_disposal.is_disposed = true && @asset_disposal.verified_by == User.current_user.staff_id && @asset_disposal.is_verified == true %>
 			<%= render :partial => 'show_process' %>
 			<%= render :partial => 'show_disposal' %>
 			

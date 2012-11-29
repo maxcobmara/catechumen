@@ -68,6 +68,15 @@
 		<%= link_to "#{defect_action_for_approval} Defect reports for decision", { :controller => "asset_defects", :action => "index" } %><br/>
 	<% end %>
 	
+	<!-- Notification on Asset Disposal -->
+	<% disposal_require_verify = AssetDisposal.count(:all, :conditions => ['is_checked = ? AND is_verified = ? AND verified_by =?', true, true, User.current_user.staff_id ]) %>
+	<% if disposal_require_verify > 0 %>
+		<%= link_to "#{disposal_require_verify} Asset Disposal require verifying", { :controller => "asset_disposals", :action => "index" } %><br/>
+	<% end %>
+	
+	
+	
+	
 	<!--Notification for Asset Loan-->
 	<% assetloanrequest = AssetLoan.count(:all, :conditions => ['loaned_by = ? AND is_approved IS ?', User.current_user.staff_id, nil]) %>
 	<% if assetloanrequest > 0 %>

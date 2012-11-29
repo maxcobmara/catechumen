@@ -20,11 +20,11 @@ class AssetDisposal < ActiveRecord::Base
   def disposal_status
     if is_checked == false
       "Processing"
-    elsif is_checked == true && is_verified == false
+    elsif is_checked == true && is_verified != true
       "Processed"
-    elsif is_verified == true && is_disposed == false
+    elsif is_verified == true && is_disposed != true
       "Verified"
-    elsif is_disposed == true && is_discarded == false
+    elsif is_disposed == true && is_discarded != true
       "Disposed"
     elsif is_discarded == true
       "Discarded"
