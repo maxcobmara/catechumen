@@ -22,6 +22,7 @@ class AssetsController < ApplicationController
       format.js   { render :js => @assetforloss }
     end
   end
+  
 
   # GET /assets/1
   # GET /assets/1.xml
@@ -38,7 +39,7 @@ class AssetsController < ApplicationController
   # GET /assets/new.xml
   def new
     @asset = Asset.new
-    @asset.assetnums.build
+    #@asset.assetnums.build
     @asset.maints.build
     
 

@@ -1,22 +1,82 @@
-
-
 <% form_for(@asset) do |f| %>
   <%= f.error_messages %>
-<div class="tform">
+	<div class="tform">
 	
 	<H2><%= t 'asset.new' %></H2>
-
-	  <table width=100% >
+	<table width=100% >
+		
 
 		<tr>
 			<td class="leftcol"><label for="assettype"><b><%= t 'asset.assetcode' %></b></label><font color="red"> * </font></td>
 			<td><strong>KKM/BPL/010619/
 					<%= f.select :assettype, 
-			                  Asset::ASSETTYPE %>/
+			                  Asset::ASSETTYPE, :prompt => "Select" %>/
 					<%= f.date_select :receiveddate,  :end_year => (Time.now.year), :order => [:year] %>/  
-					<%= f.text_field :cardno, :size => 6, :value => (Asset.last.id + 1).to_s %>
+					<SPAN class="bong", style="display: none;">
+						<%= f.text_field :cardno, :size => 6, :value => (Asset.find_last_by_assettype(1)[:assetcode].split("/")[5].to_i + 1) %>
+					</SPAN>
+					<SPAN class="koik", style="display: none;">
+						<%= f.text_field :cardno, :size => 6, :value => (Asset.find_last_by_assettype(2)[:assetcode].split(/[\/\-]/)[6].to_i + 1) %> - 
+						<%= f.text_field :quantity, :size => 6 %>
+					</SPAN>
 			</strong></td>
 		</tr>
+		
+		<tr>
+			<td class="leftcol"><label>Previous</label></td>
+			<td><SPAN class="bong", style="display: none;"> <%= Asset.find_last_by_assettype(1)[:assetcode] %></SPAN>
+					<SPAN class="koik", style="display: none;"> last I <%= Asset.find_last_by_assettype(2)[:assetcode] %></SPAN></td>
+		</tr>
+	
+<script type="text/javascript">
+		$j(document).ready(function(){
+		  $j('#asset_assettype').change(function() {
+		    if($j(this).val() == 1) {
+		      $j('.bong').show();
+					$j('.koik').hide();
+		    }else if ($j(this).val() == 2) {
+		     	 $j('.bong').hide();
+					 $j('.koik').show();
+		    }
+			});
+	});
+</script>
+		
+		
+		
+		
+<!--
+		<script type="text/javascript">
+			$j(document).ready(function(){
+					//show submit date
+
+					$j("input[id='asset_loan_is_returned']").change(function() {  
+					 if($j('#asset_loan_is_returned').is(':checked')) { 
+					    $j(".return_it").show("highlight"); 
+					 }else		{
+					    $j(".return_it").hide(""); 
+					 }	
+					});
+
+					$j("input[id='asset_loan_is_returned']").each(function() {  
+					 if($j('#asset_loan_is_returned').is(':checked')) { 
+					    $j(".return_it").show("highlight"); 
+					 }else		{
+					    $j(".return_it").hide(""); 
+					 }	
+					});
+
+			});
+		</script>
+		-->
+
+		
+		
+		
+		
+		
+		
+			
 		
 		<tr>
 			<td class="leftcol"><label for="category_id"><%= t 'asset.category_id' %></label></td>

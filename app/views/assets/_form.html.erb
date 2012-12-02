@@ -140,25 +140,46 @@
 		</tr>
 	
 		<tr>
-		<td class="leftcol"><label for="supplier_id">Supplier:</label></td>
-	      <td><%= f.collection_select :supplier_id, Addbook.find(:all), :id, :name, :include_blank => true %></td>
+			<td class="leftcol"><label for="supplier_id">Supplier:</label></td>
+	    <td><span id="addy"><%= f.collection_select :supplier_id, Addbook.find(:all, :order => :name), :id, :name, :include_blank => true %></span>
+					<label><%= link_to image_tag("vcard_add.png", :border => 0, :title => 'Add Address'), {:controller => "addbooks", :action => "quickfill", :id => params[:id]}, :remote => true, :popup => ['Address', 'height=330,width=600'] %></label>
+					<a id="refresh" href="#"><img border="0" src="/images/reload.png" alt="Update"></a></td>
 		</tr>
 		<td class="leftcol"><label for="warranty_length">Warranty Length:</label></td>
-	      <td><%= f.text_field :warranty_length, :size => 4 %>Months</td>
+	      <td><%= f.text_field :warranty_length, :size => 4 %><label>Months</label></td>
 		</tr>
 </table><BR/>	
-		
 
-<!--
-
-		Group End
-		<tr>
-			<td class="leftcol"><label for="status">Status:</label></td>
-	    <td><#%= f.text_field :status %> </td>
-		</tr>-->
 
 <!-- Code Block for Maintainance Information Repeating Field -->
 <% if @asset.assettype == 1 %>
 <% end %>
 <BR>
 </div>				
+
+
+<script>
+    $j(document).ready(function(){
+      $j("#refresh").click(function(evt) {
+         $j("#addy").load("edit #addy")
+         evt.preventDefault();
+      })
+    })
+</script>
+
+
+
+<!--
+	HACK, this needs to be fixed, figure out a way. update button?
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+
+			var auto_refresh = setInterval(
+			function()
+			{
+			$j('#addy').load('edit #addy');
+			}, 2000);		
+
+	});
+</script>-->

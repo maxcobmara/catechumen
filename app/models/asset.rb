@@ -52,6 +52,7 @@ class Asset < ActiveRecord::Base
     end
   end
   
+  
   def non_active_assets
     lost = AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)
     disposed = AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)
@@ -109,6 +110,7 @@ class Asset < ActiveRecord::Base
     {:scope => "markaslost",:label => "Mark As Lost"},
     {:scope => "lost",      :label => "Lost"}
     ]
+    
   
 
     #def self.find_main

@@ -71,10 +71,12 @@
 	<!-- Asset Menu -->
 	<% permitted_to? :menu, :assets do %>
 	<li><a href="#">Assets</a>
-		
+		<!--link_to "Future events", events_path(:scope => "future")-->
 			<ul class="sub_menu">
 				<% permitted_to? :manage, :assets do %>
-				<li><%= link_to 'Fixed Assets', 			{:controller => 'assets', 			:action => 'index'} %></li>
+				<li><%= link_to 'Fixed Assets', 	assets_path(:show => "fixed") %></li>
+				<li><%= link_to 'Inventory', 			assets_path(:show => "inventory") %></li>
+				
 				<li><%= link_to 'Current Assets', 		{:controller => 'assets', 			:action => 'index'} %></li>
 				<li><%= link_to 'Office Supplies', 		{:controller => 'stationeries', :action => 'index'} %></li>
 				<% end %>
