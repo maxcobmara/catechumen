@@ -22,7 +22,7 @@ class Asset < ActiveRecord::Base
   has_many :asset_loans
 
   has_many :maints, :dependent => :destroy
-  accepts_nested_attributes_for :maints, :allow_destroy => true , :reject_if => lambda { |a| a[:asset_id].blank? }
+  accepts_nested_attributes_for :maints, :allow_destroy => true , :reject_if => lambda { |a| a[:details].blank? }
   
   has_many :asset_placements, :dependent => :destroy
   accepts_nested_attributes_for :asset_placements, :allow_destroy => true , :reject_if => lambda { |a| a[:location_id].blank? }
@@ -46,8 +46,11 @@ class Asset < ActiveRecord::Base
   
   
   def set_location
+    if asset_placements.blank?
+    else
      self.location_id = asset_placements.last[:location_id]
      self.assignedto_id = asset_placements.last[:staff_id]
+    end
   end
   
 

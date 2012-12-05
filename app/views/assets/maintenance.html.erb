@@ -28,7 +28,7 @@
   </tr>
 	<tr>
 		<td class="leftcol"><label for="staff_id">Located at:</label></td>
-		<td><%=h @asset.location.blank? ? "" : @asset.location.location_list %></td>	
+		<td><%=h check_kin { @asset.asset_placements.last.location.location_list } %></td>	
 	</tr>
 	<tr> <!-- 25/10/2011 - Shaliza fixed for staff no longer exists -->
 		<td class="leftcol"><label for="staff_id">Assigned to:</label></td>
@@ -46,6 +46,8 @@
 <BR>
 
 	<H2>Maintenance Information</H2>
+	<label><%= link_to image_tag("vcard_add.png", :border => 0, :title => 'Add Address'), {:controller => "addbooks", :action => "quickfill", :id => params[:id]}, :remote => true, :popup => ['Address', 'height=330,width=600'] %></label>
+	<a id="refresh" href="#"><img border="0" src="/images/reload.png" alt="Update"></a>
 	<div>
 
 	
@@ -72,3 +74,14 @@
 
 <%= link_to 'Show', @asset %> |
 <%= link_to 'Back', assets_path %>
+
+
+<script>
+    $j(document).ready(function(){
+			var pathname = window.location.pathname; 
+      $j("#refresh").click(function(evt) {
+         $j(".addy").load(this+" .addy")
+         evt.preventDefault();
+      })
+    })
+</script>
