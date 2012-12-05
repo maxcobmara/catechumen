@@ -56,8 +56,8 @@ class AssetsController < ApplicationController
   
   def registerinventory
     #@asset = Asset.find(params[:id])  
-    @assets = Asset.search(params[:all])
-    @assets = Asset.find(:all, :conditions => {:assettype => '2'})
+    @assets = Asset.search(params[:search])
+    #@assets = Asset.find(:all, :conditions => {:assettype => '2'})
     render :layout => 'report'
     #respond_to do |format|
         #format.html # index.html.erb  { render :action => "report.css" }
@@ -65,9 +65,6 @@ class AssetsController < ApplicationController
     #end
   end
   
-  def maintenance
-    @asset = Asset.find(params[:id])  
-  end
 
   # POST /assets
   # POST /assets.xml
@@ -115,6 +112,15 @@ class AssetsController < ApplicationController
     end
   end
   
+  
+  def maintenance
+    @asset = Asset.find(params[:id])  
+  end
+  
+  def asset_placement
+    @asset = Asset.find(params[:id])  
+  end
+  
   def kewpa3
     @asset = Asset.find(params[:id])
     render :layout => 'report'
@@ -134,14 +140,12 @@ class AssetsController < ApplicationController
   end
   
   def kewpa4
-    #@asset = Asset.find(params[:id])  
-    @assets = Asset.search(params[:all])
-    @assets = Asset.find(:all, :conditions => {:assettype => '1'})
+    if params[:search]
+        @assets = Asset.find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 1])
+    else
+        @assets = Asset.find(:all, :conditions => ['assettype =?',  1])
+    end
     render :layout => 'report'
-    #respond_to do |format|
-        #format.html # index.html.erb  { render :action => "report.css" }
-        #format.xml  { render :xml => @staffs }
-    #end
   end
   
   def kewpa8

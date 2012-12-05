@@ -1,30 +1,43 @@
 class Location < ActiveRecord::Base
   
   has_ancestry
+  belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
+  
   has_many :tenants, :dependent => :destroy
-  has_many :assets
   has_many :timetables
   has_many :asset_losses
-  belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
+  
+  has_many :asset_placements
+  has_many :assets, :through => :asset_placements
+  
+  
   
   def self.search(search)
       if search
        find(:all, :conditions => ['code ILIKE ? or name ILIKE ?', "%#{search}%","%#{search}%"], :order => :code)
      else
-      find(:all, :order => :ancestry)
+      find(:all, :order => :code)
      end
    end
    
+  def i_got_me_assets
+    if assets.size > 0
+      "yeah_baby"
+    end
+    
+  end
    #-----
    named_scope :staff,      :conditions => { :typename => 1  }
    named_scope :student,    :conditions => { :typename => 2  }
    named_scope :facility,   :conditions => { :typename => 3 }
+   named_scope :hasasset,   :conditions => ["id IN (?)", Asset.find(:all, :select => :location_id).map(&:location_id)]
    
    FILTERS = [
      {:scope => "all",        :label => "All"},
      {:scope => "staff",      :label => "Staff Residences"},
      {:scope => "student",    :label => "Student Residences"},
-     {:scope => "facility",   :label => "Facilities"}
+     {:scope => "facility",   :label => "Facilities"},
+     {:scope => "hasasset",   :label => "Has Assets"}
    ]
    
    

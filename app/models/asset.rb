@@ -1,6 +1,8 @@
 class Asset < ActiveRecord::Base
+  # befores, relationships, validations, before logic, validation logic, 
+  #controller searches, variables, lists, relationship checking
   
-  before_save :save_my_vars
+  before_save :save_my_vars, :set_location
   
   validates_presence_of :assignedto_id, :if => :must_assign_if_loanable?
   #validates_presence_of  :category_id, :typename
@@ -8,20 +10,23 @@ class Asset < ActiveRecord::Base
   
   belongs_to :manufacturedby, :class_name => 'Addbook', :foreign_key => 'manufacturer_id'
   belongs_to :suppliedby,     :class_name => 'Addbook', :foreign_key => 'supplier_id'
-  belongs_to :location
   belongs_to :assignedto,   :class_name => 'Staff', :foreign_key => 'assignedto_id'
   belongs_to :receivedby,   :class_name => 'Staff', :foreign_key => 'receiver_id'
   belongs_to :category,     :class_name => 'Assetcategory', :foreign_key => 'category_id'
   #belongs_to :subcategory,  :class_name => 'Assetcategory', :foreign_key => 'subcategory_id'
   
+  
   has_many :asset_defects
   has_one :asset_disposal       #Link to Model asset_disposals
   has_one :asset_loss        #Link to Model AssetLoss  
   has_many :asset_loans
-  #has_many :assetinassettrack,    :class_name => 'Assettrack', :foreign_key => 'asset_id' #Link to Model AssetTrack
-  
+
   has_many :maints, :dependent => :destroy
-  accepts_nested_attributes_for :maints, :reject_if => lambda { |a| a[:asset_id].blank? }
+  accepts_nested_attributes_for :maints, :allow_destroy => true , :reject_if => lambda { |a| a[:asset_id].blank? }
+  
+  has_many :asset_placements, :dependent => :destroy
+  accepts_nested_attributes_for :asset_placements, :allow_destroy => true , :reject_if => lambda { |a| a[:location_id].blank? }
+  has_many  :locations, :through => :asset_placements
   
   
   def must_assign_if_loanable?
@@ -39,6 +44,12 @@ class Asset < ActiveRecord::Base
     "#{assetcode} - #{name}"
   end
   
+  
+  def set_location
+     self.location_id = asset_placements.last[:location_id]
+     self.assignedto_id = asset_placements.last[:staff_id]
+  end
+  
 
   
   
@@ -51,6 +62,19 @@ class Asset < ActiveRecord::Base
       find(:all)
     end
   end
+  
+  def monotone
+    [:assetcode].split("/")[4]
+  end
+  
+  def self.search(search)
+    if search
+      find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', "#{search}", 2])
+    else
+      find(:all, :conditions => ['assettype =?',  2])
+    end
+  end
+  
   
   
   def non_active_assets

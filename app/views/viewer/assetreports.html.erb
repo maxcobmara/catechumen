@@ -34,13 +34,25 @@
 		<tr>
 			<td>KEW.PA-4</td>
 			<td>Senarai Daftar Harta Modal</td>
-			<td><%= link_to 'Link', 		{:controller => 'assets', 	:action => 'kewpa4'} %></td>
+			<td>
+						<%= link_to 'ALL', {:controller => 'assets', 	:action => 'kewpa4'}  %>, 
+						<% yeartab = Asset.find(:all, :select => :assetcode).map(&:assetcode).map{|d| d.split("/")[4]}.uniq %>
+						<% yeartab.each do |yeartab| %>
+						    <%= link_to "20#{yeartab}", :controller => 'assets', :action => "kewpa4", :search => "#{yeartab}" %>, 
+						<% end %>
+						</td>
 		</tr>
 		
 		<tr>
 			<td>KEW.PA-5</td>
 			<td>Senarai Daftar Inventori</td>
-			<td><%= link_to 'Link', 		{:controller => 'assets', 	:action => 'registerinventory'} %></td>
+			<td>
+						<%= link_to 'ALL', {:controller => 'assets', 	:action => 'registerinventory'}  %>, 
+						<% yeartab = Asset.find(:all, :select => :assetcode).map(&:assetcode).map{|d| d.split("/")[4]}.uniq %>
+						<% yeartab.each do |yeartab| %>
+						    <%= link_to "20#{yeartab}", :controller => 'assets', :action => "registerinventory", :search => "#{yeartab}" %>, 
+						<% end %>
+						</td>
 		</tr>
 		
 		<tr>

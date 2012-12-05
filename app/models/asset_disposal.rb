@@ -34,13 +34,13 @@ class AssetDisposal < ActiveRecord::Base
   end
   
   def discard_malay
-    if discard_options = "bury"
+    if discard_options == "bury"
       "Tanam"
-    elsif discard_options = "burn"
+    elsif discard_options == "burn"
       "Bakar"
-    elsif discard_options = "throw"
+    elsif discard_options == "throw"
       "Buang"
-    elsif discard_options = "sink"
+    elsif discard_options == "sink"
       "Tenggelam"
     else
       ""
@@ -48,13 +48,13 @@ class AssetDisposal < ActiveRecord::Base
   end
   
   def secara_malay
-    if discard_options = "bury"
+    if discard_options == "bury"
       " Tanam <del>/ Bakar / Buang / Tenggelam </del> "
-    elsif discard_options = "burn"
+    elsif discard_options == "burn"
       " <del>Tanam / </del> Bakar <del>/ Buang / Tenggelam </del> "
-    elsif discard_options = "throw"
+    elsif discard_options == "throw"
       " <del>Tanam /  Bakar /</del> Buang / <del> Tenggelam </del> "
-    elsif discard_options = "sink"
+    elsif discard_options == "sink"
       " <del>Tanam /  Bakar / Buang / </del> Tenggelam "
     else
       " Tanam /  Bakar / Buang / Tenggelam "
