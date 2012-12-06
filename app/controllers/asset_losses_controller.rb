@@ -2,7 +2,7 @@ class AssetLossesController < ApplicationController
   # GET /asset_losses
   # GET /asset_losses.xml
   def index
-    @asset_losses = AssetLoss.all
+    @asset_losses = AssetLoss.find(:all, :order => 'lost_at DESC')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -82,6 +82,11 @@ class AssetLossesController < ApplicationController
   end
   
   def kewpa28
+    @asset_loss = AssetLoss.find(params[:id])
+    render :layout => 'report'
+  end
+  
+  def kewpa30
     @asset_loss = AssetLoss.find(params[:id])
     render :layout => 'report'
   end
