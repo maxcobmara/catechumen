@@ -33,7 +33,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :student_discipline_cases
 
-  map.resources :trainingnotes
+  map.resources :trainingnotes, :collection => { :D09 => :get }
 
   map.resources :trainingreports
 

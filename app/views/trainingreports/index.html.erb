@@ -7,10 +7,9 @@
 	</div>
 </div>
 
-	<div class="tlist">
-		
 
-    <table width=90% border="0" cellpadding="0" cellspacing="0">
+<div class="indextable">
+	<table>
 	  <tr>
     <th>Staff</th>
     <th>Subject</th>
@@ -19,23 +18,29 @@
 		<th>Location</th>
     <th>Time</th>
     <th>Submitted</th>
-    <th colspan=3 class="ac">Control</th>
+    <th colspan=4 class="ac">Control</th>
   </tr>
 
 <% @trainingreports.each do |trainingreport| %>
+  <% if trainingreport.is_submitted != true && trainingreport.tpa_id == User.current_user.staff_id %>
+	<% else %>
   <tr>
-		<td><%=h trainingreport.creator.name %></td>
+		<td><%=h check_kin {trainingreport.creator.name} %></td>
 		<td><%=h trainingreport.timetable.klass.subject.subject_code_with_subject_name %></td>
 		<td><%=h trainingreport.timetable.topic.name %></td>	
 		<td><%=h (Trainingreport::CTYPE.find_all{|disp, value| value == trainingreport.classtype}).map {|disp, value| disp} %></td>
 		<td><%=h trainingreport.timetable.location.name %></td>
 		<td><%=h trainingreport.timetable.start_at? ? trainingreport.timetable.start_at.strftime("%I:%M%p") + ' to ' + trainingreport.timetable.end_at.strftime("%I:%M%p  %d-%b-%Y") : "" %></td>
-    <td><%=h trainingreport.submit? ? "Yes" : "No" %></td>
+    <td><%=h trainingreport.is_submitted? ? "Yes" : "No" %></td>
     <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => trainingreport %></td>
-    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => trainingreport %></td>
-    <td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), trainingreport, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td width=10px><%= link_to image_tag("#{trainingreport.edit_icon}", :border => 0), :action => 'edit', :id => trainingreport %></td>
+		<td class="action">
+				<% if trainingreport.tpa_comment.blank? == false %>
+					<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'PK(T) 08.1D/09'), :action => 'D09', :id => trainingreport %><div class="noti_bubble">1D</div></div>
+				<% end %></td>
+    <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), trainingreport, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
-<% end %>
+<% end %><% end %>
 </table>
 </div>
 <br />

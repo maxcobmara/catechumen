@@ -207,8 +207,9 @@ authorization do
     has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar] do
       if_attribute :staff_id => is {User.current_user.staff_id}
     end
-    has_permission_on :trainingreports, :to => :manage do
+    has_permission_on :trainingreports, :to => :manage, :join_by => :or do
       if_attribute :staff_id => is {User.current_user.staff_id}
+      if_attribute :tpa_id => is {User.current_user.staff_id}
     end
     has_permission_on :timetables, :to => [:create]
   end

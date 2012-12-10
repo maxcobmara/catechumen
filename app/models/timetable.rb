@@ -19,7 +19,7 @@ class Timetable < ActiveRecord::Base
 
   def validate_end_date_before_start_date
     if end_at && start_at
-      errors.add(:end_at, "Your class must begin before it ends") if end_at < start_at || start_at < DateTime.now
+      errors.add(:end_at, "Your class must begin before it ends") if end_at < start_at #|| start_at < DateTime.now
     end
   end
   

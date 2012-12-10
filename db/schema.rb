@@ -326,8 +326,9 @@ ActiveRecord::Schema.define(:version => 20121202184425) do
     t.string   "engine_no"
     t.string   "registration"
     t.string   "nationcode"
-    t.boolean  "mark_disposal"
     t.boolean  "mark_as_lost"
+    t.boolean  "mark_disposal"
+    t.boolean  "mark_as_maintainable"
   end
 
   create_table "assettracks", :force => true do |t|
@@ -1477,12 +1478,15 @@ ActiveRecord::Schema.define(:version => 20121202184425) do
     t.integer  "classtype"
     t.integer  "timetable_id"
     t.boolean  "location_state"
-    t.text     "ls_comment"
-    t.text     "staff_comment"
+    t.text     "location_comment"
+    t.text     "abm_comment"
+    t.text     "summary"
     t.integer  "staff_id"
-    t.boolean  "submit"
-    t.text     "tpa_comment"
+    t.boolean  "is_submitted"
+    t.date     "is_submitted_on"
     t.integer  "tpa_id"
+    t.text     "tpa_comment"
+    t.date     "tpa_comment_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

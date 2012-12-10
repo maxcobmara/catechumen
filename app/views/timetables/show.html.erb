@@ -53,5 +53,7 @@
 <BR>
 <%= link_to 'Edit', edit_timetable_path(@timetable) %> |
 <%= link_to 'Back', timetables_path %>  | 
-<%= link_to 'Calendar', {:controller => 'timetables', :action => 'calendar'} %>  |
-<%= link_to 'Submit Report', new_trainingreport_path(:timetable_id => @timetable.id) %>
+<%= link_to 'Calendar', {:controller => 'timetables', :action => 'calendar'} %>  
+<% if @timetable.staff_id == User.current_user.staff_id  %>
+|<%= link_to 'Submit Report', new_trainingreport_path(:timetable_id => @timetable.id, :staff_id => @timetable.staff_id ) %>
+<% end %>
