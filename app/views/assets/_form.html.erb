@@ -5,6 +5,13 @@
 		<td class="leftcol"><label for="assetcode"><%= t 'asset.assetcode' %></label></td>
 		<td><strong><%=h @asset.assetcode %></strong></td>
 	</tr>
+	
+	<% if @asset.assettype == 1 %>
+	<tr>
+		<td class="leftcol"><label for="bookable">Maintainable:</label></td>
+		<td><%= f.check_box :is_maintainable %> This item requires maintenance</td>
+	</tr>
+	<% end %>
 
 	<tr>
 		<td class="leftcol"><label for="bookable">Bookable:</label></td>
@@ -17,8 +24,8 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="mark_disposal">Mark For Disposal</label></td>
-		<td><%= f.check_box :mark_disposal %></td>
+		<td class="leftcol"><label for="is_disposed">Mark For Disposal</label></td>
+		<td><%= f.check_box :is_disposed %></td>
 	</tr>
 </table>
 	

@@ -15,7 +15,8 @@ Rails::Initializer.run do |config|
   #     require "ruport/acts_as_reportable"
   #end
   
-  config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"
+  config.gem 'will_paginate', :version => '~> 2.3.16'
+  #config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 

@@ -153,6 +153,16 @@ class AssetsController < ApplicationController
     render :layout => 'report'
   end
   
+  def kewpa13
+    @assets = Asset.find(:all, :conditions => ['is_maintainable = ?', true], :order => 'assetcode ASC')
+    render :layout => 'report'
+  end
+  
+  def kewpa14
+    @asset = Asset.find(params[:id])
+    render :layout => 'report'
+  end
+  
   def asset_autocomplete
     @asset_autocompletes = Asset.find(:all, :conditions => ['assetcode ILIKE ? OR name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
     #@boo = Asset.find(:all, :conditions => ['assetcode ILIKE ? OR name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])

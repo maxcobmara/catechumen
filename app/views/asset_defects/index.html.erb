@@ -40,7 +40,7 @@
 				<%=h asset_defect.asset.name %>  -  
 				<%=h asset_defect.asset.modelname %></td>
     <td><%=h asset_defect.asset.serialno %></td>
-    <td><%=h asset_defect.asset.location.locationname unless asset_defect.asset.location.blank? %></td>
+    <td><%=h check_kin {asset_defect.asset.asset_placements.last.location.location_list} %></td>
     <td><%=h asset_defect.notes %></td>
 		<td width=10px><% permitted_to? :manage, :assets do %><% if asset_defect.process_type == "dispose" && asset_defect.decision == true %>
 				<%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_asset_disposal_path(:asset_id => asset_defect.asset) %><% end %><% end %></td>

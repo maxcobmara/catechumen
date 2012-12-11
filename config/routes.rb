@@ -176,7 +176,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/assets/registerinventory', :controller => 'assets', :action => 'registerinventory'
   map.connect '/assets/placement', :controller => 'assets', :action => 'asset_placement'
   map.connect '/assets/maintenance', :controller => 'assets', :action => 'maintenance'
-  map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get, :kewpa4 => :get, :kewpa8 => :get, :loanables => :get}
+  map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get, :kewpa4 => :get, :kewpa8 => :get, :kewpa13 => :get, :kewpa14 => :get,:loanables => :get}
 
   map.resources :books
 

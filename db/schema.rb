@@ -327,8 +327,8 @@ ActiveRecord::Schema.define(:version => 20121202184425) do
     t.string   "registration"
     t.string   "nationcode"
     t.boolean  "mark_as_lost"
-    t.boolean  "mark_disposal"
-    t.boolean  "mark_as_maintainable"
+    t.boolean  "is_disposed"
+    t.boolean  "is_maintainable"
   end
 
   create_table "assettracks", :force => true do |t|
