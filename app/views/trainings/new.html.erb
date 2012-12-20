@@ -1,0 +1,14 @@
+<% form_for(@training) do |f| %>
+  <%= f.error_messages %>
+	<div class="tform">
+		<H2>New Training Object</H2>
+		<%= f.hidden_field :parent_id %>
+		<%=render :partial => 'form', :locals => {:f => f} %>
+	</div>
+  
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', trainings_path %>

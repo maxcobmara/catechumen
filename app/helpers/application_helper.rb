@@ -15,6 +15,14 @@ module ApplicationHelper
            return "(none entered)"
        end
    end
+   
+   def check_kin_blank
+        begin
+            return yield
+        rescue
+            return ""
+        end
+    end
  
   def pukka(points)
     number_with_precision(points, :precision => 1)

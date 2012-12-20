@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :trainings
+
   
   map.connect '/asset_defects/dispose/', :controller => 'asset_disposals', :action => 'dispose'
   map.connect '/asset_defects/revalue/', :controller => 'asset_disposals', :action => 'revalue'
