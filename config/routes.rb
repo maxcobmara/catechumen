@@ -126,14 +126,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :staffgrades
 
-  map.resources :topics
-
-  map.resources :subjects
-
   map.connect '/leaveforstudents/approve', :controller => 'leaveforstaffs', :action => 'approve'
   map.resources :leaveforstudents
-
-  map.resources :courses
 
   map.resources :disposals
 
@@ -150,8 +144,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :parts
 
   map.resources :trainneeds
-
-  map.resources :strainings
 
   map.resources :evactivities
 

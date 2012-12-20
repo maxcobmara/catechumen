@@ -465,19 +465,6 @@ ActiveRecord::Schema.define(:version => 20121219053326) do
     t.datetime "updated_at"
   end
 
-  create_table "courses", :force => true do |t|
-    t.string   "coursecode"
-    t.string   "name"
-    t.integer  "parent_id"
-    t.string   "objective"
-    t.string   "coursescope"
-    t.string   "coursedefinition"
-    t.string   "abbreviation"
-    t.integer  "staff_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "disposals", :force => true do |t|
     t.integer  "asset_id"
     t.boolean  "used"
@@ -1270,16 +1257,6 @@ ActiveRecord::Schema.define(:version => 20121219053326) do
     t.datetime "updated_at"
   end
 
-  create_table "strainings", :force => true do |t|
-    t.integer  "appraisal_id"
-    t.integer  "staff_id"
-    t.string   "name"
-    t.string   "place"
-    t.date     "sdate"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "student_counseling_sessions", :force => true do |t|
     t.integer  "student_id"
     t.integer  "case_id"
@@ -1378,16 +1355,6 @@ ActiveRecord::Schema.define(:version => 20121219053326) do
     t.string   "specialisation"
   end
 
-  create_table "subjects", :force => true do |t|
-    t.string   "subjectcode"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "credit"
-    t.integer  "status"
-    t.integer  "semester"
-  end
-
   create_table "suppliers", :force => true do |t|
     t.string   "supplycode"
     t.string   "category"
@@ -1433,29 +1400,6 @@ ActiveRecord::Schema.define(:version => 20121219053326) do
     t.boolean  "berhormat"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "topics", :force => true do |t|
-    t.integer  "subject_id"
-    t.string   "topic_code"
-    t.integer  "sequenceno"
-    t.string   "name"
-    t.string   "version"
-    t.string   "objective"
-    t.text     "content"
-    t.text     "activity"
-    t.integer  "creator_id"
-    t.boolean  "approved"
-    t.integer  "approvedby_id"
-    t.date     "approved_date"
-    t.string   "remarks"
-    t.string   "checkcode"
-    t.date     "checkdate"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "durahours"
-    t.integer  "duramins"
-    t.integer  "duration"
   end
 
   create_table "trainingnotes", :force => true do |t|
