@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :timetables
+
+  map.resources :programmes
+
   map.resources :trainings
 
   
@@ -83,18 +87,12 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :trainingrequests
 
-  map.resources :timetable_week_days
-
   map.resources :staffcourses, :collection => { :indexapply => :get }
 
   map.resources :grades
 
   #map.connect '/time_table_entries/timetable_view', :controller => 'time_table_entries', :action => 'timetable_view'
   #map.resources :time_table_entries
-
-  map.resources :period_timings
-
-  map.resources :intakes
 
   map.resources :klasses
 
@@ -113,8 +111,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :roles
 
   map.resources :courseevaluations
-
-  map.resources :programmes
 
   map.connect '/librarytransactions/return', :controller => 'librarytransactions', :action => 'return'
   map.connect '/librarytransactions/extend', :controller => 'librarytransactions', :action => 'extend'

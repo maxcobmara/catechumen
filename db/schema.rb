@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121219053326) do
+ActiveRecord::Schema.define(:version => 20121223165916) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -659,15 +659,6 @@ ActiveRecord::Schema.define(:version => 20121219053326) do
     t.decimal  "examweight"
   end
 
-  create_table "intakes", :force => true do |t|
-    t.string   "name"
-    t.integer  "intake_no"
-    t.date     "year"
-    t.boolean  "active"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "kins", :force => true do |t|
     t.integer  "kintype_id"
     t.integer  "staff_id"
@@ -829,16 +820,6 @@ ActiveRecord::Schema.define(:version => 20121219053326) do
     t.datetime "updated_at"
   end
 
-  create_table "period_timings", :force => true do |t|
-    t.string   "name"
-    t.time     "start_time"
-    t.time     "end_time"
-    t.boolean  "break"
-    t.integer  "intake_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "positions", :force => true do |t|
     t.string   "positioncode"
     t.string   "positionname"
@@ -857,8 +838,16 @@ ActiveRecord::Schema.define(:version => 20121219053326) do
 
   create_table "programmes", :force => true do |t|
     t.string   "code"
+    t.string   "combo_code"
     t.string   "name"
-    t.string   "specialisation"
+    t.string   "course_type"
+    t.string   "ancestry"
+    t.integer  "ancestry_depth"
+    t.text     "objective"
+    t.integer  "duration"
+    t.integer  "duration_type"
+    t.integer  "credits"
+    t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1377,19 +1366,22 @@ ActiveRecord::Schema.define(:version => 20121219053326) do
     t.datetime "updated_at"
   end
 
-  create_table "timetable_week_days", :force => true do |t|
-    t.string   "name"
+  create_table "timetable_periods", :force => true do |t|
+    t.integer  "timetable_id"
+    t.integer  "sequence"
+    t.integer  "day_name"
+    t.time     "start_at"
+    t.time     "end_at"
+    t.boolean  "is_break"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "timetables", :force => true do |t|
-    t.integer  "klass_id"
-    t.integer  "topic_id"
-    t.integer  "location_id"
-    t.integer  "staff_id"
-    t.datetime "start_at"
-    t.datetime "end_at"
+    t.string   "code"
+    t.string   "name"
+    t.string   "description"
+    t.integer  "created_by"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

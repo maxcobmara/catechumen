@@ -1,97 +1,43 @@
-<div class="tform">
-	<H2>Timetable Entry</H2>
-  <table width=100% >
-			<!-- 23-25 Apr 2012-->
-			<tr>
-				<td class="leftcol"><label for="programme_id"><b>Programme Name:</b></label></td>
-				<td>
-					<!-- testing section  25 Apr 2012-->
-					<!--
-					Semak programme id : <%#= @timetable.klass.programme_id %> - Time table id :<%#=@timetable.id%><br>
-					cuba baca value method (programme id): <%#= @timetable.selected_programme(@timetable.id) %><%#= self.id %>-<%#= @timetable.id%><br>
-					
-					<%#= f.collection_select :programme_id, Programme.find(:all), :id, :name, {:prompt => 'Select a Programme'},
-										:onchange => remote_function(:update => form_tag_id(f.object_name, :klass), 
-										:url => {:action => 'view_klass' }, 
-										:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ")	%>
-					-->
-					<!-- end of testing section 25 Apr 2012 -->
-					
-					<%= f.collection_select :programme_id, Programme.find(:all, :order => :name), :id, :programme_with_specialisation, {:prompt => "Select a programme",  :selected => @timetable.selected_programme(@timetable.id)},
-										:onchange => remote_function(:update => form_tag_id(f.object_name, :klass), 
-										:url => {:action => 'view_klass' }, 
-										:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ")	%>
+<table width=100%>
+	<tr>
+		<td class="leftcol"><%= f.label :code %></td>
+		<td> <%= f.text_field :code, :size => '15' %></td>
+	</tr>
 	
-				</td>
-			</tr>
-			<!-- 23-25 Apr 2012 -->
-			<tr>
-				<td class="leftcol"><label for="intake_id"><b>Class Name:</b></label></td>
-				<td>
-					<%= tag("div", :id => form_tag_id(f.object_name, :klass)) %>
-					<!-- revised on 4 May 2012 -->
-						<%= f.collection_select :klass_id, Klass.find(:all, :conditions => ["programme_id=?", @timetable.selected_programme(@timetable.id)]), :id, :name %>
-					<!-- revised on 4 May 2012 -->
-					</div>
-				</td>
-			</tr>
+	<tr>
+		<td class="leftcol"><%= f.label :name %></td>
+		<td> <%= f.text_field :name, :size => '25' %></td>
+	</tr>
 	
-			<tr>
-				<td class="leftcol"><label for="topic_id"><b>Topic:</b></label></td>
-				<td><%= f.collection_select :topic_id, Topic.find(:all), :id, :name, :include_blank => true %></td>
-			</tr>
-			
-			<tr>
-				<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
-				<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_position, :include_blank => true%></td>
-			</tr>
-			
-			<tr>
-				<td class="leftcol"><label for="residence_id"><b>Location:</b></label></td>
-				<td><%= f.collection_select :location_id, Location.find(:all, :conditions => ['typename =?', 3], :order => :name), :id, :name, :include_blank => true %></td>
-			</tr>
+	<tr>
+		<td class="leftcol"><%= f.label :description %></td>
+		<td> <%= f.text_field :description, :size => '70' %></td>
+	</tr>
 	
-			<tr>
-				<td class="leftcol"><label for="timing_id"><b>Start:</b></label></td>
-				<td><%= f.datetime_select :start_at, :minute_step => 15, :include_blank => true %></td>
-			</tr>
-			
-			<tr>
-				<td class="leftcol"><label for="timing_id"><b>End:</b></label></td>
-				<td><%= f.datetime_select :end_at, :minute_step => 15, :include_blank => true %></td>
-			</tr>
-	
-	
-	</table>
-	
-	<table width=100%>
-		<tr>
-			<td class="leftcol">Training Notes</td>
-			<td>
-				<div>
-				<% f.fields_for :trainingnotes do |builder| %>
-					<%= render 'trainingnote_fields', :f => builder %>
-				<% end %>
-				<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :trainingnotes %> - Add More </p>
-				</div></td>
-		</tr>
-	</table>
-	<!--
-		<#% for student in @timetable.students %>
-		<p> <#%= student.name %> <#%= f.check_box :attend, :default => true %>
-		<#%= check_box_tag "timetable[student_ids][]", student.id, @timetable.student.include?(student) %> </p>
-	  <#% end %>-->
+	<tr>
+		<td class="leftcol"><%= f.label :created_by %></td>
+		<td><#%= f.collection_select :created_by, Staff.find(:all, :conditions => ['id =?', User.current_user.staff_id]), :id, :name %></td>
+	</tr>
+</table>
 
-<BR>
+<H2>Timetable Details</H2>
+<table style="width:60%; margin-left:20%">	
+	<tr>
+		<th width=65px>Period</th>
+		<th width=100px>Day</th>
+		<th width=140px>Starts At</th>
+		<th width=140px>Ends At</th>
+		<th width=100px>Break</th>
+		<th>Delete</th>
+	</tr>
+</table>
+<% f.fields_for :timetable_periods do |builder| %>
+	<%= render 'timetable_period_fields', :f => builder %>
+<% end %>
+
+<p style="margin-left:70%;"><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :timetable_periods %> - Add More</p>
 
 
 
 
 
- 
-  
-  
- 
- 
-  
- 

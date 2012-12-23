@@ -144,12 +144,12 @@
 			<%= cases %> <%= link_to "New student discipline cases", student_discipline_cases_path %><br>
 		<% end %>
 	
-	<!-- Notification for Topic Approval -->
-	<% topic_need_approve = Topic.count(:all, :conditions => ['approvedby_id=? AND approved =?', User.current_user.staff_id, false]) %>
-		<% if topic_need_approve == 0 %>
-		<% else %>
-			<%= topic_need_approve %> <%= link_to "Lesson plan topics need your approval", topics_path %><br>
-		<% end %>
+	<!-- Notification for Topic Approval 
+	<#% topic_need_approve = Topic.count(:all, :conditions => ['approvedby_id=? AND approved =?', User.current_user.staff_id, false]) %>
+		<#% if topic_need_approve == 0 %>
+		<#% else %>
+			<#%= topic_need_approve %> <#%= link_to "Lesson plan topics need your approval", topics_path %><br>
+		<#% end %>-->
 		
 	<!-- Notification for Training Plan Report-->
 	<% report_need_comment = Trainingreport.count(:all, :conditions => ['tpa_id=? AND tpa_comment IS ?', User.current_user.staff_id, nil]) %>

@@ -27,9 +27,11 @@
 			<!-- 21/10/2011 - Shaliza changed group_ by.filter fetch from intake -->
    	  <% @student_intakes.each do |month, students| %>
 				<tr><td colspan=8><BR><b>Intake <%= month.strftime('%B/%Y') unless month.blank? %></b></td></tr>
-					<% @student_programmes.each do |programme, students| %>
-						<tr><td colspan=8><BR><b><%= Programme.find(:all, :select => "name", :conditions => {:id => programme}).map(&:name) %>
-																		 <%= Programme.find(:all, :select => "specialisation", :conditions => {:id => programme}).map(&:specialisation) %></b></td></tr>
+				<!--
+					<#% @student_programmes.each do |programme, students| %>
+										<tr><td colspan=8><BR><b><#%= Programme.find(:all, :select => "name", :conditions => {:id => programme}).map(&:name) %>
+																						 <#%= Programme.find(:all, :select => "specialisation", :conditions => {:id => programme}).map(&:specialisation) %></b></td></tr>-->
+				
 						<% for student in students %>
 							<!--	<#% @students.each do |student| %>-->
 								<tr>
@@ -47,7 +49,7 @@
 									</td>
 								</tr>
 					<% end %>
-			<% end %>
+			<!--<#% end %>-->
 		<% end %>
 	</table>
 <!--17/11/2011 - Shaliza added pagination for student -->	

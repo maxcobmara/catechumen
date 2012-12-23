@@ -1,14 +1,13 @@
-<h3>Editing Timetable</h3>
-
-<% form_for(@timetable, :html => { :multipart => true}) do |f| %>
+<% form_for(@timetable) do |f| %>
   <%= f.error_messages %>
-
-  <%= render :partial => 'form', :locals => {:f => f} %>
-
+	<div class="tform">
+		<H2>Edit Timetable</H2>
+		<%=render :partial => 'form', :locals => {:f => f} %>
+	</div>
   <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>
-</div>
+
 <%= link_to 'Show', @timetable %> |
 <%= link_to 'Back', timetables_path %>
