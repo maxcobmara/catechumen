@@ -25,20 +25,38 @@
 		</table>
 		
 		<H2>Timetable</H2>
-		<table width=100%>
-		<% for timetable in @timetable.timetable_periods %>
-			<table style="width:60%; margin-left:20%">
-					<tr>
-						<td width=100px><%= timetable.day_name %></td>
-						<td width=65px><%= timetable.sequence  %></td>
-						<td width=140px><%= l(timetable.start_at )%></td>
-						<td width=140px><%= l(timetable.end_at) %></td>
-						<td width=100px><%= timetable.is_break? ? "Break" : "" %></td>
-					</tr>
-				</table>
+		<table width=100% style="border:none">
+		<!--<#% for timetable in @timetable.timetable_periods %>-->
+		<% @hello = (@timetable.timetable_periods.maximum("sequence")).to_i %>	
+		<% @timetable.timetable_periods.in_groups_of(7, false) do |row_things| %>
+		<tr>
+			<td align=center style=" text-align:center; padding:4px; vertical-align:middle;">
+				<%= (TimetablePeriod::DAY_CHOICE.find_all{|disp, value| value == (row_things.map(&:day_name)[0]) }).map {|disp, value| disp} %></td>
+			<% for periods in row_things %>
+			
+				<% if periods.day_name == 1 %>
+					<td align=center style="border:1px solid black; text-align:center; padding:4px;">
+						<strong><%= periods.sequence %></strong><BR>
+						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
+						<%= periods.is_break? ? "Break" : "" %></td>
+				<% else %><% end %>
+			<% end %>
+			<% for periods in row_things %>
+				<% if periods.day_name == 2 %>
+					<td align=center style="border:1px solid black; text-align:center; padding:4px;">
+						<strong><%= periods.sequence %></strong><BR>
+						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
+						<%= periods.is_break? ? "Break" : "" %></td>
+				<% else %><% end %>
+			<% end %>
+
+				
+		</tr>
+
 		<% end %>
 		</table>
 </fieldset>
+
 
 </div>
 
