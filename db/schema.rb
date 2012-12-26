@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121223165916) do
+ActiveRecord::Schema.define(:version => 20121226132654) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -1493,6 +1493,18 @@ ActiveRecord::Schema.define(:version => 20121223165916) do
     t.datetime "updated_at"
   end
 
+  create_table "travel_claim_mileage_rates", :force => true do |t|
+    t.integer  "km_low"
+    t.integer  "km_high"
+    t.decimal  "a_group",    :precision => 4, :scale => 2
+    t.decimal  "b_group",    :precision => 4, :scale => 2
+    t.decimal  "c_group",    :precision => 4, :scale => 2
+    t.decimal  "d_group",    :precision => 4, :scale => 2
+    t.decimal  "e_group",    :precision => 4, :scale => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "travel_claim_receipts", :force => true do |t|
     t.integer  "travel_claim_id"
     t.integer  "expenditure_type"
@@ -1516,6 +1528,16 @@ ActiveRecord::Schema.define(:version => 20121223165916) do
     t.boolean  "is_approved"
     t.date     "approved_on"
     t.integer  "approved_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "travel_claims_transport_groups", :force => true do |t|
+    t.string   "group_name",  :limit => 2,                               :null => false
+    t.decimal  "salary_low",               :precision => 8, :scale => 2
+    t.decimal  "salary_high",              :precision => 8, :scale => 2
+    t.integer  "cc_low"
+    t.integer  "cc_high"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

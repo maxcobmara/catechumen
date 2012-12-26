@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :travel_claim_mileage_rates
+
+  map.resources :travel_claims_transport_groups
+
   map.resources :timetables
 
   map.resources :programmes
