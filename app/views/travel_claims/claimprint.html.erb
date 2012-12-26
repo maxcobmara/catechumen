@@ -1,16 +1,135 @@
-<%= stylesheet_link_tag 'report' %>
-<script>
-document.write("<input type='button' " +
-"onClick='window.print()' " +
-"class='printbutton' " +
-"value='Print This Page'/>");
-</script>
-
-<div class="A4potrait">
-
+<%= stylesheet_link_tag 'report', :media => "print"  %>
 <form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
 
-	<fieldset>
+<div class="A4potrait_paged">
+	<BR/>
+	<p class="marginright" align="right"><b>Lampiran A</b></p>
+	<H4 align="center"><b>KENYATAAN TUNTUTAN PERJALANAN DALAM NEGERI</b><BR/>
+	BAGI BULAN : <SPAN CLASS="filler"><%=h check_kin_blank {@travel_claim.claim_month.strftime("%b").upcase} %></SPAN>
+	TAHUN : <SPAN CLASS="filler"><%=h check_kin_blank {@travel_claim.claim_month.strftime("%Y")} %></SPAN></H4>
+	
+	<div id="tprintreport">
+		<table width=100% border=2 cellspacing=0 align="center" >
+			<tr>
+				<th colspan=3>MAKLUMAT PEGAWAI</th>
+			</tr>
+			
+			<tr>
+				<td>NAMA</td>
+				<td colspan=2 class="filler"><%=h @travel_claim.staff.name %></td>
+			</tr>
+			
+			<tr>
+				<td>NO KAD PENGENALAN</td>
+				<td colspan=2 class="filler"><%=h @travel_claim.staff.formatted_mykad %></td>
+			</tr>
+			
+			<tr>
+				<td>GRED/KATEGORI/KUMPULAN</td>
+				<td colspan=2 class="filler"><%=h check_kin {@travel_claim.staff.staffgrade.name} %></td>
+			</tr>
+
+			<tr>
+				<td>JAWATAN</td>
+				<td colspan=2 class="filler"><%=h check_kin {@travel_claim.staff.position.positionname} %></td>
+			</tr>
+			
+			<tr>
+				<td rowspan=3>PENDAPATAN (RM)</td>
+				<td>GAJI</td>
+				<td class="filler"><%=h ringgols(@travel_claim.staff.starting_salary) %></td>
+			</tr>
+			
+			<tr>
+				<!-- td is rowspanned-->
+				<td>ELAUN-ELAUN</td>
+				<td class="filler"></td>
+			</tr>
+			
+			<tr>
+				<!-- td is rowspanned-->
+				<td>JUMLAH</td>
+				<td class="filler"></td>
+			</tr>
+			
+			<tr>
+				<td rowspan=4>KENDERAAN</td>
+				<td>JENIS MODEL</td>
+				<td class="filler"></td>
+			</tr>
+			
+			<tr>
+				<!-- td is rowspanned-->
+				<td>NO PENDAFTARAN</td>
+				<td class="filler"></td>
+			</tr>
+			
+			<tr>
+				<!-- td is rowspanned-->
+				<td>KUASA (C.C)</td>
+				<td class="filler"></td>
+			</tr>
+			
+			<tr>
+				<!-- td is rowspanned-->
+				<td>KELAS TUNTUTAN</td>
+				<td class="filler">A / B / C / D / E</td>
+			</tr>
+			
+			<tr>
+				<td>ALAMAT PEJABAT</td>
+				<td colspan=2 class="filler">Kolej Sains Kesihatan Bersekutu<BR/>Lot 8173, Jalan Pesiaran Kempas Baru<BR/>81200 Johor Bahru, Johor</td>
+			</tr>
+			
+			<tr>
+				<td>ALAMAT RUMAH</td>
+				<td colspan=2 class="filler"><%=h @travel_claim.staff.addr %></td>
+			</tr>
+			
+			<tr>
+				<td>ALAMAT PENGINAPAN</td>
+				<td colspan=2 class="filler"></td>
+			</tr>
+			
+			<tr>
+				<td>NO GAJI</td>
+				<td colspan=2 class="filler">[ Update with Staff Information ]</td> <!--TODO : DO THIS-->
+			</tr>
+			
+			<tr>
+				<td>NO AKAUN</td>
+				<td colspan=2 class="filler"><%=h check_kin {@travel_claim.staff.bankaccounts.first.account_no} %></td>
+			</tr>
+			
+			<tr>
+				<td>NAMA BANK</td>
+				<td colspan=2 class="filler"><%=h check_kin {@travel_claim.staff.bankaccounts.first.bank.long_name} %></td>
+			</tr>
+			
+			<tr>
+				<td>EMAIL</td>
+				<td colspan=2 class="filler"><%=h @travel_claim.staff.coemail %></td>
+			</tr>
+			
+			<tr>
+				<td>NO TELEFON BIMBIT</td>
+				<td colspan=2 class="filler"><%=h @travel_claim.staff.phonecell %></td>
+			</tr>
+		
+		
+	</table>
+	
+	</div>
+
+</div>	
+<P CLASS="breakhere">
+<div class="A4potrait_paged">
 
 <div id="title">	 
 	<H3></H3>
