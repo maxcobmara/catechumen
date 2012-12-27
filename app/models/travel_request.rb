@@ -1,5 +1,6 @@
 class TravelRequest < ActiveRecord::Base
-  # befores, relationships, validations, before logic, validation logic, controller searches, variables, lists, relationship checking
+  # befores, relationships, validations, before logic, validation logic, 
+  #controller searches, variables, lists, relationship checking
   before_save :set_to_nil_where_false
   
   belongs_to :applicant,    :class_name => 'Staff', :foreign_key => 'staff_id'
@@ -13,6 +14,11 @@ class TravelRequest < ActiveRecord::Base
   validate :validate_end_date_before_start_date
   validates_presence_of :replaced_by, :if => :check_submit?
   validates_presence_of :hod_id,      :if => :check_submit?
+  
+  
+  has_many :travel_claim_logs, :foreign_key => 'travel_claim_id', :dependent => :destroy
+  accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
+  
   
   #before logic
   def set_to_nil_where_false

@@ -12,8 +12,7 @@ class TravelClaim < ActiveRecord::Base
   has_many :travel_claim_receipts, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_receipts, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
   
-  has_many :travel_claim_logs, :dependent => :destroy
-  accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:mileage].blank? }, :allow_destroy =>true
+  has_many :travel_claim_logs, :through => :travel_requests
   
   has_many :travel_claim_allowances, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_allowances, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
@@ -296,6 +295,11 @@ class TravelClaim < ActiveRecord::Base
   def total_mileage
     #other_claims_total + public_transport_totals
     travel_claim_logs.sum(:mileage)
+  end
+  
+  def total_km_money
+    #other_claims_total + public_transport_totals
+    travel_claim_logs.sum(:km_money)
   end
   
   

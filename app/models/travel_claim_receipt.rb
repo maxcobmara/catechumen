@@ -13,18 +13,21 @@ class TravelClaimReceipt < ActiveRecord::Base
   
   RECEIPTTYPE = [
         #  Displayed       stored in db
-        [ "Teksi",      11 ],
-        [ "Bas",        12 ],
-        [ "Keretapi",   13 ],
-        [ "Feri",       14 ],
-        [ "Kapal Terbang",15 ],
+        [ "Transport",   00 ],
+        [ "- Teksi",      11 ],
+        [ "- Bas",        12 ],
+        [ "- Keretapi",   13 ],
+        [ "- Feri",       14 ],
+        [ "- Kapal Terbang",15 ],
+        [ "---------------",19 ],
         
-        [ "Tol",        41 ],
-        [ "Tempat Letak Kereta",42 ],
-        [ "Dobi",       43 ],
-        [ "Pos",        44 ],
-        [ "Telefon/Teleks/Fax",45 ],
-        [ "Exchanged",   99 ],
+        [ "Miscellaneous",   40 ],
+        [ "-  Tol",        41 ],
+        [ "-  Tempat Letak Kereta",42 ],
+        [ "-  Dobi",       43 ],
+        [ "-  Pos",        44 ],
+        [ "-  Telefon/Teleks/Fax",45 ],
+        [ "-  Exchanged",   99 ]
   ]
   
   ALLOWANCETYPE = [

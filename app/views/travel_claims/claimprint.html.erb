@@ -129,6 +129,7 @@
 
 </div>	
 <P CLASS="breakhere">
+<% for travel_request in @travel_claim.travel_requests %>
 <div class="A4potrait_paged">
 
 <div id="title">	 
@@ -138,6 +139,7 @@
 	<BR>
 	
 <div id="tprintreport">
+	
 	<table width=100% border=2 cellspacing=0 align="center" >
 		<tr>
 			<th colspan="6" >KENYATAAN TUNTUTAN</th>
@@ -154,31 +156,56 @@
 			<th>Sampai</th>
 		</tr>
 		<!-- Travel Details -->
-		<% for travel_request in @travel_claim.travel_requests %>
+		
 		<tr class="grey">
 			<td colspan="6">
 					<%=h travel_request.purpose %>
 					<%=h travel_request.destination %>
 					<%=h travel_request.request_code %>
 			</td>
+			<% mo_mil = 0.0 %>
+			<% mo_money = 0.0 %>
 		</tr>
-		<% end %>
-		<% for travel_claim_log in @travel_claim.travel_claim_logs(:order => 'travel_on') %>
+				<% for travel_claim_log in @travel_claim.travel_claim_logs(:order => 'travel_on') %>
+				  
+					<% if travel_claim_log.travel_claim_id == travel_request.id %>
+					<% mo_mil += travel_claim_log.mileage unless travel_claim_log.mileage.nil?  %>
+					<% mo_money += travel_claim_log.km_money unless travel_claim_log.km_money.nil?  %>
+					<tr>
+						<td><%= travel_claim_log.travel_on.strftime("%d/%m/%Y")%><BR><%= travel_claim_log.travel_on.strftime("(%A)")%></td>
+						<td align='center'><%= travel_claim_log.start_at.strftime("%l:%M%p") %></td>
+						<td align='center'><%= travel_claim_log.finish_at.strftime("%l:%M%p") %></td>
+						<td align='center'><%= travel_claim_log.purpose %><BR><%= travel_claim_log.destination %></td>
+						<td align='right'><%= travel_claim_log.mileage %></td>
+						<td align='right'><%= ringgols(travel_claim_log.km_money) %></td>
+					</tr>
+					<% end %>
+
+				<% end %>
 		<tr>
-			<td><%= travel_claim_log.travel_on.strftime("%d/%m/%Y")%><BR><%= travel_claim_log.travel_on.strftime("(%A)")%></td>
-			<td align='center'><%= travel_claim_log.start_at.strftime("%l:%M%p") %></td>
-			<td align='center'><%= travel_claim_log.finish_at.strftime("%l:%M%p") %></td>
-			<td align='center'><%= travel_claim_log.purpose %><BR><%= travel_claim_log.destination %></td>
-			<td align='right'><%= travel_claim_log.mileage %></td>
-			<td>-</td>
+			<td colspan=4>Totals</td>
+			<td align='right'><%= mo_mil %></td>
+			<td align='right'><%= ringgols(mo_money) %></td>
 		</tr>
-		<!--<#% end %>-->
-		<% end %>
+		
+		
 		<tr>
 			<td colspan=4>Total KM</td>
 			<td align='right'><%= @travel_claim.total_mileage %></td>
-			<td>-</td>
+			<td align='right'><%= ringgols(@travel_claim.total_km_money) %></td>
+		</tr>
 	</table>
+	
+	<p>Nota : </p>
+	<p>Ruangan 'JARAK' : Nyatakan jarak km bagi membawa kenderan sendiri sahaja <BR/>
+		 Ruangan 'JUMLAH': Nyatakan jumlah tambang taksi sahaja
+	
+	</div>	</div></div></P></form>
+	<P CLASS="breakhere">
+		
+	<% end %>
+	<div class="A4potrait_paged">
+		<div id="tprintreport">
 <BR>
 	<table width=100% border=1px cellspacing=0 align="center">
 		<tr class="grey">
@@ -457,7 +484,7 @@
 							</tr>
 							<tr>
 								<td>(c)</td>
-								<td>Perbelanjaan yang bertanda (*) berjumlah sebanyak RM telah sebenarnya dilakukan dan dibayar  oleh saya ;</td>
+								<td>Perbelanjaan yang bertanda (*) berjumlah sebanyak <SPAN class="filler"><%= ringgols(@travel_claim.total_claims) %></SPAN> telah sebenarnya dilakukan dan dibayar  oleh saya ;</td>
 							</tr>
 							<tr>
 								<td>(d)</td>

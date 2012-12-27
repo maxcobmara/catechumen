@@ -66,7 +66,7 @@
    		<td><%=h travel_request.applicant.staff_name_with_position unless travel_request.applicant.blank? %></td>
       <td><%=h travel_request.destination %></td>
       <td><%=h l(travel_request.depart_at) %></td>
-      <td><%=h travel_request.purpose %></td>
+      <td><%=h truncate((travel_request.purpose), :length => 40, :separator => ' ') %></td>
 			<td><%=h travel_request.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 			<td><%=h travel_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png") %></td>
       <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => travel_request %></td>

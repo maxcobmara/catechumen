@@ -7,7 +7,10 @@
 		<th>Purpose</th>
 		<th>Travel Dates</th>
 	</tr>
-	<% for travel_request in TravelRequest.find(:all, :conditions => ['staff_id =?', User.current_user.staff_id]) %>
+	
+	
+	
+	<% for travel_request in @my_approved_unclaimed_requests %>
 	<tr>
 		<td width=10px><%= check_box_tag "travel_claim[travel_request_ids][]", travel_request.id, @travel_claim.travel_requests.include?(travel_request) %>
 	  <td><%= travel_request.request_code %></td>
@@ -17,24 +20,6 @@
 	</tr>
 	<% end %>
 </table><BR/>
-
-<H2>Travel Log</H2>	
-<table width=90%>
-	<tr>
-		<td width=20%>Date</td>
-		<td width=12%>Depart</td>
-		<td width=12%>Arrive</td>
-		<td width=21%>Purpose</td>
-		<td width=21%>Destination</td>
-		<td width=9%>Mileage</td>
-		<td width=5%></td>
-	</tr>
-</table>
-	<% f.fields_for :travel_claim_logs do |builder| %>
-	  <%= render 'travel_claim_log_fields', :f => builder %>
-	<% end %>
-
-	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Log'), f, :travel_claim_logs %> - <%= "Add Log" %></p>
 
 
 <H2>Meal Allowance / Daily Allowance / Lodging Allowance</H2>	
@@ -112,7 +97,5 @@
 			});
 	});
 </script>
-
-
 
 

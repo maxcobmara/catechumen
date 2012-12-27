@@ -81,4 +81,17 @@ class TravelRequestsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def travel_log_index
+    @my_approved_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=?', User.current_user.staff_id, true])
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @approved }
+    end
+  end
+  
+  def travel_log
+     @travel_request = TravelRequest.find(params[:id])
+  end
 end

@@ -31,6 +31,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :staff_appraisals, :collection => { :appraisal_form => :get }
 
+  map.connect '/travel_requests/travel_log', :controller => 'travel_requests', :action => 'travel_log'
+  map.connect '/travel_requests/logs', :controller => 'travel_requests', :action => 'travel_log_index'
   map.resources :travel_requests
 
   map.resources :student_counseling_sessions
