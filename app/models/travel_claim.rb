@@ -12,7 +12,7 @@ class TravelClaim < ActiveRecord::Base
   has_many :travel_claim_receipts, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_receipts, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
   
-  has_many :travel_claim_logs, :through => :travel_requests
+  #has_many :travel_claim_logs, :through => :travel_requests
   
   has_many :travel_claim_allowances, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_allowances, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
@@ -210,7 +210,7 @@ class TravelClaim < ActiveRecord::Base
     travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 11]).map(&:receipt_code).join(", ")
   end
   def taxi_receipts_total
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 11])
+    (travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 11])) + total_km_money
   end
   
   def bus_receipts
@@ -242,7 +242,7 @@ class TravelClaim < ActiveRecord::Base
   end
   
   def public_transport_totals
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type IN (?)", [11,12,13,14,15] ])
+    (travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type IN (?)", [11,12,13,14,15] ])) + total_km_money
   end
   
   def exchange_loss_totals
@@ -293,18 +293,13 @@ class TravelClaim < ActiveRecord::Base
   end
   
   def total_mileage
-    #other_claims_total + public_transport_totals
-    travel_claim_logs.sum(:mileage)
+    travel_requests.sum(:log_mileage)
   end
   
   def total_km_money
-    #other_claims_total + public_transport_totals
-    travel_claim_logs.sum(:km_money)
+    travel_requests.sum(:log_fare)
   end
   
-  
-  
-
 
     #[ "Telefon/Teleks/Fax",45 ],
   

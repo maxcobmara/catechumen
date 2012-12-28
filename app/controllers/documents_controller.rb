@@ -3,11 +3,12 @@ class DocumentsController < ApplicationController
   # GET /documents
   # GET /documents.xml
   def index
-    @documents = Document.search(params[:search])
+    @documents = Document.find(:all, :conditions => ['refno ILIKE ?', "%#{params[:search]}%"])#.search(params[:search])
     @document_files = @documents.group_by { |t| t.filedocer }
 
     respond_to do |format|
       format.html # index.html.erb
+      format.js   #{ render :js => @documents }
       format.xml  { render :xml => @documents }
     end
   end

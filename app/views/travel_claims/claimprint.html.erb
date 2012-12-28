@@ -159,18 +159,13 @@
 		
 		<tr class="grey">
 			<td colspan="6">
-					<%=h travel_request.purpose %>
+					<%=h travel_request.document.title %>
 					<%=h travel_request.destination %>
-					<%=h travel_request.request_code %>
+					<%=h travel_request.document.refno %>
 			</td>
-			<% mo_mil = 0.0 %>
-			<% mo_money = 0.0 %>
 		</tr>
-				<% for travel_claim_log in @travel_claim.travel_claim_logs(:order => 'travel_on') %>
-				  
-					<% if travel_claim_log.travel_claim_id == travel_request.id %>
-					<% mo_mil += travel_claim_log.mileage unless travel_claim_log.mileage.nil?  %>
-					<% mo_money += travel_claim_log.km_money unless travel_claim_log.km_money.nil?  %>
+				<% for travel_claim_log in TravelClaimLog.find(:all, :conditions => ['travel_claim_id =?', travel_request.id ]) %>
+
 					<tr>
 						<td><%= travel_claim_log.travel_on.strftime("%d/%m/%Y")%><BR><%= travel_claim_log.travel_on.strftime("(%A)")%></td>
 						<td align='center'><%= travel_claim_log.start_at.strftime("%l:%M%p") %></td>
@@ -179,13 +174,12 @@
 						<td align='right'><%= travel_claim_log.mileage %></td>
 						<td align='right'><%= ringgols(travel_claim_log.km_money) %></td>
 					</tr>
-					<% end %>
 
 				<% end %>
 		<tr>
 			<td colspan=4>Totals</td>
-			<td align='right'><%= mo_mil %></td>
-			<td align='right'><%= ringgols(mo_money) %></td>
+			<td align='right'><%= travel_request.log_mileage %></td>
+			<td align='right'><%= ringgols(travel_request.log_fare) %></td>
 		</tr>
 		
 		
@@ -518,13 +512,13 @@
 							<td>Adalah disahkan bahawa perjalanan tersebut adalah atas urusan rasmi</td>
 						</tr>
 						<tr>
-							<td>Tarikh: <%=h l(@travel_claim.approved_on) unless @travel_claim.approved_on.blank? %></td>
+							<td>Tarikh: <%=h tarikh(@travel_claim.approved_on) %></td>
 						</tr>
 						<tr>
-							<td>Nama: <%=h @travel_claim.approver.name unless @travel_claim.approver.blank? %></td>
+							<td>Nama: <%=h check_kin {@travel_claim.approver.name} %></td>
 						</tr>
 						<tr>
-							<td>Jawatan: <%=h @travel_claim.approver.position.positionname unless @travel_claim.approver.blank? %></td>
+							<td>Jawatan: <%=h check_kin {@travel_claim.approver.position.positionname} %></td>
 						</tr>
 			  </table>
 	    </td>

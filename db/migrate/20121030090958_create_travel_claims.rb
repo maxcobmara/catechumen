@@ -2,13 +2,13 @@ class CreateTravelClaims < ActiveRecord::Migration
   def self.up
     create_table :travel_claims do |t|
       t.integer :staff_id
-      t.date :claim_month
+      t.date    :claim_month
       t.decimal :advance
       t.decimal :total
       t.boolean :is_submitted
-      t.date :submitted_on
+      t.date    :submitted_on
       t.boolean :is_approved
-      t.date :approved_on
+      t.date    :approved_on
       t.integer :approved_by
 
       t.timestamps

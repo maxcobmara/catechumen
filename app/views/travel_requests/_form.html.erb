@@ -8,53 +8,43 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="purpose"><%= t 'travel.purpose' %></label><font color="red"> * </font></td>
-		<td><%= f.text_field :purpose, :class => 'compulsory' %></td>
-		<td></td>
-	</tr>
-	
-	<tr>
 	 	<td class="leftcol"><label for="depart_at"><%= t 'travel.depart_at' %></label><font color="red"> * </font></td>
-		<td><%= f.datetime_select :depart_at, :default => (Time.now + 3.days) %></td>
+		<td><%= f.datetime_select :depart_at, :default => (Time.now + 3.days), :use_short_month => true %></td>
 		<td></td>
 	</tr>
 	
 	<tr>
 	 	<td class="leftcol"><label for="return_at"><%= t 'travel.return_at' %></label><font color="red"> * </font></td>
-		<td><%= f.datetime_select :return_at, :default => (Time.now + 5.days) %></td>
+		<td><%= f.datetime_select :return_at, :default => (Time.now + 5.days), :use_short_month => true %></td>
 		<td></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="transport_type">Transport Choice</label></td>
-		<td><%= f.radio_button :transport_type, "own", 		:id => 'mycar',  :class => 'tt'%>Own Car &nbsp; 
-				<%= f.radio_button :transport_type, "office", :id => 'offcar', :class => 'tt'%>Office Car &nbsp; 
-				<%= f.radio_button :transport_type, "others", :id => 'othcar', :class => 'tt'%>Other's Car &nbsp;
-				<%= f.radio_button :transport_type, "publik", :id => 'publik', :class => 'tt'%>Public Transport &nbsp;</td>   
+		<td><%= f.check_box :own_car, 		:id => 'mycar',  :class => 'tt'%><label> Own Car </label>
+				<span id="tr_my_car"><%= f.text_field :own_car_notes, :size => '40', :placeholder => 'Reasons' %></span> &nbsp; 
+				<%= f.check_box :dept_car, 		:id => 'offcar', :class => 'tt'%><label> Office Car &nbsp; </label>
+				<%= f.check_box :others_car, 	:id => 'othcar', :class => 'tt'%><label> Other's Car &nbsp;</label></td>   
 		<td></td>                                                            
 	</tr>
 	
 	
-	<tr id="tr_public_trans" style="display: none;"> <!-- Show when public selected -->
-		<td class="leftcol">Other Transport Types</td>
-    <td><%= f.label :train %> <%= f.check_box :train %> &nbsp; &nbsp;
-				<%= f.label :plane %> <%= f.check_box :plane %> &nbsp; &nbsp;
-				<label>Other Public Transport</label> <%= f.check_box :other, :id => 'other_transport' %></td>
+	<tr> <!-- Show when public selected -->
+		<td class="leftcol">Public Transport</td>
+    <td><%= f.check_box :taxi %> <%= f.label :taxi %> &nbsp; &nbsp;
+	      <%= f.check_box :bus %> <%= f.label :bus %> &nbsp; &nbsp;
+				<%= f.check_box :train %> <%= f.label :train %> &nbsp; &nbsp;
+				<%= f.check_box :plane %> <%= f.label :plane %> &nbsp; &nbsp;
+				<label>Other Public Transport</label> <%= f.check_box :other, :id => 'other_transport' %> &nbsp; 
+				<span id="tr_public_others"><%= f.text_field :other_desc, :size => '40', :placeholder => 'Describe Others' %></span> &nbsp; </td>
 		<td></td>
 	</tr>
+
 	
-	<tr id="tr_public_others" style="display: none;"> <!-- Show when other selected -->
-		<td class="leftcol">List (if Others)</td>
-    <td><%= f.text_field :other_desc %></td>
-    <td></td>
-	</tr>
+</table>	
+<H2>Submission</H2>
 	
-	<tr id="tr_my_car" style="display: none;"> <!-- Show when mycar selected -->
-		<td class="leftcol">Reasons for taking own car</td>
-    <td> <%= f.text_area :own_car_notes, :size => '50x2' %></td>
-		<td></td>
-	</tr>
-	
+<table width=100% >
 	<tr>
 		<td class="leftcol">Mileage</td>
     <td>Mileage Allowance : <%= f.check_box :mileage %> &nbsp; &nbsp;  Mileage Replacement : <%= f.check_box :mileage_replace %></td>
@@ -95,7 +85,7 @@
 			    $j("#tr_my_car").hide(""); 
 			 }else if ($j('#mycar').is(':checked')){
 			    $j("#tr_public_trans").hide(""); 
-			    $j("#tr_my_car").show("highlight");
+			    $j("#tr_my_car").show("appear");
 			    $j("#tr_public_others").hide(""); 
 			 }else		{
 			    $j("#tr_public_trans").hide(""); 
@@ -123,7 +113,7 @@
 			//Shows substuff
 			$j("input[id='other_transport']").change(function() {  
 			 if($j('#other_transport').is(':checked')) { 
-			    $j("#tr_public_others").show("highlight"); 
+			    $j("#tr_public_others").show("appear"); 
 			 }else		{
 			    $j("#tr_public_others").hide(""); 
 			 }	

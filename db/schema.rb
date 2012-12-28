@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121226132654) do
+ActiveRecord::Schema.define(:version => 20121228152915) do
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -1544,26 +1544,33 @@ ActiveRecord::Schema.define(:version => 20121226132654) do
 
   create_table "travel_requests", :force => true do |t|
     t.integer  "staff_id"
-    t.string   "request_code"
+    t.integer  "document_id"
+    t.integer  "staff_course_conducted_id"
     t.string   "destination"
-    t.string   "purpose"
     t.datetime "depart_at"
     t.datetime "return_at"
-    t.string   "transport_type"
+    t.boolean  "own_car"
+    t.string   "own_car_notes"
+    t.boolean  "dept_car"
+    t.boolean  "others_car"
+    t.boolean  "taxi"
+    t.boolean  "bus"
     t.boolean  "train"
     t.boolean  "plane"
     t.boolean  "other"
     t.string   "other_desc"
-    t.text     "own_car_notes"
-    t.boolean  "mileage"
-    t.boolean  "mileage_replace"
     t.boolean  "is_submitted"
     t.date     "submitted_on"
     t.integer  "replaced_by"
+    t.boolean  "mileage"
+    t.boolean  "mileage_replace"
     t.integer  "hod_id"
     t.boolean  "hod_accept"
     t.date     "hod_accept_on"
     t.integer  "travel_claim_id"
+    t.boolean  "is_travel_log_complete"
+    t.decimal  "log_mileage"
+    t.decimal  "log_fare"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1583,25 +1590,6 @@ ActiveRecord::Schema.define(:version => 20121226132654) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "mileage"
-  end
-
-  create_table "travelclaims", :force => true do |t|
-    t.decimal  "ptclaimsvalue"
-    t.decimal  "allclaimsvalue"
-    t.decimal  "othclaimsvalue"
-    t.decimal  "exchvalue"
-    t.decimal  "exchloss"
-    t.decimal  "gtotal"
-    t.boolean  "claimtype"
-    t.date     "submission"
-    t.integer  "hod_id"
-    t.date     "hodconfirmdt"
-    t.decimal  "advance"
-    t.decimal  "payable"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "staff_id"
-    t.date     "claimsmonth"
   end
 
   create_table "traveldetailreceipts", :force => true do |t|
@@ -1627,30 +1615,6 @@ ActiveRecord::Schema.define(:version => 20121226132654) do
     t.boolean  "dinner"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "travelrequests", :force => true do |t|
-    t.integer  "staff_id"
-    t.string   "trcode"
-    t.string   "destination"
-    t.string   "purpose"
-    t.date     "tstartdt"
-    t.date     "treturndt"
-    t.boolean  "owncar"
-    t.boolean  "officecar"
-    t.boolean  "otherscar"
-    t.boolean  "train"
-    t.boolean  "plane"
-    t.boolean  "publict"
-    t.string   "ifownwhy"
-    t.boolean  "claimtype"
-    t.date     "submission"
-    t.integer  "replacement_id"
-    t.integer  "hod_id"
-    t.date     "hodconfirmdt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "travelclaims_id"
   end
 
   create_table "txsupplies", :force => true do |t|

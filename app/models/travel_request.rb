@@ -1,15 +1,16 @@
 class TravelRequest < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
-  before_save :set_to_nil_where_false
+  before_save :set_to_nil_where_false, :set_total
   
   belongs_to :applicant,    :class_name => 'Staff', :foreign_key => 'staff_id'
   belongs_to :replacement,  :class_name => 'Staff', :foreign_key => 'replaced_by'
   belongs_to :headofdept,   :class_name => 'Staff', :foreign_key => 'hod_id'
   
   belongs_to :travel_claim
+  belongs_to :document
   
-  validates_presence_of :staff_id, :request_code, :destination, :purpose, :depart_at, :return_at
+  validates_presence_of :staff_id, :destination, :depart_at, :return_at
   validates_presence_of :own_car_notes, :if => :mycar?
   validate :validate_end_date_before_start_date
   validates_presence_of :replaced_by, :if => :check_submit?
@@ -31,6 +32,11 @@ class TravelRequest < ActiveRecord::Base
     end
   end
   
+  def set_total
+    self.log_mileage = total_mileage_request
+    self.log_fare = total_km_money_request
+  end
+  
   
   #validation logic
   def validate_end_date_before_start_date
@@ -40,7 +46,7 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def mycar?
-    transport_type == 'own'
+    own_car == true
   end
   
   def check_submit?
@@ -71,6 +77,18 @@ class TravelRequest < ActiveRecord::Base
   
   
   #lists
+  def document_refno
+    document.refno if document
+  end
+  
+  def document_refno=(refno)
+    self.document = Document.find_by_refno(refno) unless refno.blank?
+  end
+  
+  
+  
+  
+  
   def repl_staff
       siblings = User.current_user.staff.position.sibling_ids
       children = User.current_user.staff.position.child_ids
@@ -88,5 +106,15 @@ class TravelRequest < ActiveRecord::Base
         approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       end
       approver
+  end
+  
+  def total_mileage_request
+    #other_claims_total + public_transport_totals
+    travel_claim_logs.sum(:mileage)
+  end
+  
+  def total_km_money_request
+    #other_claims_total + public_transport_totals
+    travel_claim_logs.sum(:km_money)
   end
 end
