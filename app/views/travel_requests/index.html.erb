@@ -50,7 +50,7 @@
 <div class="indextable">
 	<table>
 		<tr>
-			<th>Code</th>
+			<th><%= t 'document.refno' %></th>
 			<th><%= t 'travel.sname' %></th>
 			<th><%= t 'travel.destination' %></th>
 			<th>Depart at</th>
@@ -62,11 +62,11 @@
 		
 		<% @travel_requests.each do |travel_request| %>
 		<tr>
-			<td><%=h travel_request.request_code %></td>
+			<td><%=h check_kin {travel_request.document.refno} %></td>
    		<td><%=h travel_request.applicant.staff_name_with_position unless travel_request.applicant.blank? %></td>
       <td><%=h travel_request.destination %></td>
       <td><%=h l(travel_request.depart_at) %></td>
-      <td><%=h truncate((travel_request.purpose), :length => 40, :separator => ' ') %></td>
+      <td><%=h truncate((travel_request.document.title), :length => 40, :separator => ' ') %></td>
 			<td><%=h travel_request.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 			<td><%=h travel_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png") %></td>
       <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => travel_request %></td>
