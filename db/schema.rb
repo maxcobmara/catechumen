@@ -821,11 +821,11 @@ ActiveRecord::Schema.define(:version => 20121228152915) do
   end
 
   create_table "positions", :force => true do |t|
-    t.string   "positioncode"
-    t.string   "positionname"
+    t.string   "code"
+    t.string   "name"
     t.string   "unit"
-    t.text     "taskmain"
-    t.text     "taskother"
+    t.text     "tasks_main"
+    t.text     "tasks_other"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "staffgrade_id"

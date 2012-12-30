@@ -220,7 +220,7 @@ class Staff < ActiveRecord::Base
   end
 
   def position_with_name   #this currenlt works with staff leave
-      "#{name}  (#{position.positionname})"
+      "#{name}  (#{position.name})"
   end
   
   def staff_name_with_position
@@ -231,7 +231,7 @@ class Staff < ActiveRecord::Base
     if position.blank?
       "-"
     else
-      position.positionname
+      position.name
     end
   end
   
@@ -254,26 +254,26 @@ class Staff < ActiveRecord::Base
     elsif position.parent.blank?
       "-"
     elsif position.parent.staff.blank?
-      "#{position.parent.positionname}"
+      "#{position.parent.name}"
     else 
-      "#{position.parent.positionname} - #{position.parent.staff.name}"
+      "#{position.parent.name} - #{position.parent.staff.name}"
     end
   end
   
   
   def staff_positiontemp
     sid = staff.id
-    spo = Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
+    spo = Position.find(:all, :select => "name", :conditions => {:staff_id => sid}).map(&:name)
     if spo == nil
       "NA"
     else 
-      @staff.position.positionname
+      @staff.position.name
     end 
   end
   
   def staff_position
     sid = staff.id
-    Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
+    Position.find(:all, :select => "name", :conditions => {:staff_id => sid}).map(&:name)
   end
  
 

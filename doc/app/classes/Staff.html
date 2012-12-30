@@ -392,7 +392,7 @@
 208:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">position</span>.<span class="ruby-identifier">blank?</span>
 209:       <span class="ruby-value str">&quot;-&quot;</span>
 210:     <span class="ruby-keyword kw">else</span>
-211:       <span class="ruby-identifier">position</span>.<span class="ruby-identifier">positionname</span>
+211:       <span class="ruby-identifier">position</span>.<span class="ruby-identifier">name</span>
 212:     <span class="ruby-keyword kw">end</span>
 213:   <span class="ruby-keyword kw">end</span>
 </pre>
@@ -416,7 +416,7 @@
 <pre>
      <span class="ruby-comment cmt"># File app/models/staff.rb, line 199</span>
 199:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">position_with_name</span>   <span class="ruby-comment cmt">#this currenlt works with staff leave</span>
-200:       <span class="ruby-node">&quot;#{name}  (#{position.positionname})&quot;</span>
+200:       <span class="ruby-node">&quot;#{name}  (#{position.name})&quot;</span>
 201:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
@@ -444,9 +444,9 @@
 231:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">position</span>.<span class="ruby-identifier">bosses</span>.<span class="ruby-identifier">blank?</span>
 232:       <span class="ruby-value str">&quot;-&quot;</span>
 233:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">position</span>.<span class="ruby-identifier">bosses</span>.<span class="ruby-identifier">staff</span>.<span class="ruby-identifier">blank?</span>
-234:       <span class="ruby-node">&quot;#{position.bosses.positionname}&quot;</span>
+234:       <span class="ruby-node">&quot;#{position.bosses.name}&quot;</span>
 235:     <span class="ruby-keyword kw">else</span> 
-236:       <span class="ruby-node">&quot;#{position.bosses.positionname} - #{position.bosses.staff.name}&quot;</span>
+236:       <span class="ruby-node">&quot;#{position.bosses.name} - #{position.bosses.staff.name}&quot;</span>
 237:     <span class="ruby-keyword kw">end</span>
 238:   <span class="ruby-keyword kw">end</span>
 </pre>
@@ -494,7 +494,7 @@
      <span class="ruby-comment cmt"># File app/models/staff.rb, line 251</span>
 251:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">staff_position</span>
 252:     <span class="ruby-identifier">sid</span> = <span class="ruby-identifier">staff</span>.<span class="ruby-identifier">id</span>
-253:     <span class="ruby-constant">Position</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;positionname&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">:staff_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">sid</span>}).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:positionname</span>)
+253:     <span class="ruby-constant">Position</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;name&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">:staff_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">sid</span>}).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:name</span>)
 254:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
@@ -518,11 +518,11 @@
      <span class="ruby-comment cmt"># File app/models/staff.rb, line 241</span>
 241:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">staff_positiontemp</span>
 242:     <span class="ruby-identifier">sid</span> = <span class="ruby-identifier">staff</span>.<span class="ruby-identifier">id</span>
-243:     <span class="ruby-identifier">spo</span> = <span class="ruby-constant">Position</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;positionname&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">:staff_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">sid</span>}).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:positionname</span>)
+243:     <span class="ruby-identifier">spo</span> = <span class="ruby-constant">Position</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;name&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">:staff_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">sid</span>}).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:name</span>)
 244:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">spo</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span>
 245:       <span class="ruby-value str">&quot;NA&quot;</span>
 246:     <span class="ruby-keyword kw">else</span> 
-247:       <span class="ruby-ivar">@staff</span>.<span class="ruby-identifier">position</span>.<span class="ruby-identifier">positionname</span>
+247:       <span class="ruby-ivar">@staff</span>.<span class="ruby-identifier">position</span>.<span class="ruby-identifier">name</span>
 248:     <span class="ruby-keyword kw">end</span> 
 249:   <span class="ruby-keyword kw">end</span>
 </pre>

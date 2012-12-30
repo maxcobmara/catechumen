@@ -1,18 +1,20 @@
 class Position < ActiveRecord::Base
-  has_ancestry :cache_depth => true
   
-  #has_many :subordinates, :class_name => 'Position', :foreign_key => 'parent_id'
-  #belongs_to :bosses, :class_name => 'Position', :foreign_key => 'parent_id'
+  # befores, relationships, validations, before logic, validation logic, 
+  #controller searches, variables, lists, relationship checking
+  before_save :set_combo_code, :titleize_name
+  has_ancestry :cache_depth => true
+
   belongs_to :staffgrade, :class_name => 'Employgrade', :foreign_key => 'staffgrade_id'
   belongs_to :staff
 
-  validates_uniqueness_of :positioncode
-  validates_presence_of :positionname
+  validates_uniqueness_of :combo_code
+  validates_presence_of   :name
   
-  before_save  :titleize_name
+
 
   def titleize_name
-    self.positionname = positionname.titleize
+    self.name = name.titleize
   end
   
   def self.find_main
@@ -21,8 +23,17 @@ class Position < ActiveRecord::Base
    # @leaveforstaff = Leaveforstaff.find(@leaveforstaff.approval1_id);
   end
   
+  def set_combo_code
+    if ancestry_depth == 0
+      self.combo_code = code
+    else
+      self.combo_code = parent.combo_code + "-" + code
+    end
+  end
+  
+  
   def position_with_code
-    "#{positioncode}  #{positionname}"
+    "#{code}  #{name}"
   end
   
   def people_assigned
@@ -57,9 +68,9 @@ class Position < ActiveRecord::Base
   
   def self.search(search)
      if search
-        @positions = Position.find(:all, :conditions => ['positionname ILIKE ?', "%#{search}%"])
+        @positions = Position.find(:all, :conditions => ['name ILIKE ?', "%#{search}%"], :order => 'combo_code')
        else
-        @positions = Position.find(:all,  :order => :positioncode)
+        @positions = Position.find(:all,  :order => 'combo_code')
      end
   end
 end

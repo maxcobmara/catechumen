@@ -6,7 +6,7 @@ class CreatePositions < ActiveRecord::Migration
       t.string    :name
       t.string    :unit
       t.text      :tasks_main
-      t.text      :tasks_other
+      t.text      :tasks_main
       t.integer   :staffgrade_id
       t.integer   :staff_id
       t.boolean   :is_acting
