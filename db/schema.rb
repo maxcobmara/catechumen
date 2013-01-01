@@ -400,13 +400,6 @@ ActiveRecord::Schema.define(:version => 20121228152915) do
     t.datetime "updated_at"
   end
 
-  create_table "counsellings", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "cofile_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "courseevaluations", :force => true do |t|
     t.integer  "student_id"
     t.integer  "programme_id"

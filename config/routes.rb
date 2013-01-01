@@ -137,8 +137,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :assetlosses
 
-  map.resources :counsellings
-
   map.resources :bulletins
 
   map.resources :news
