@@ -46,56 +46,6 @@ ActiveRecord::Schema.define(:version => 20121228152915) do
     t.datetime "updated_at"
   end
 
-  create_table "appraisals", :force => true do |t|
-    t.integer  "staff_id"
-    t.date     "evaldt"
-    t.date     "parttwodt"
-    t.decimal  "pppquantity"
-    t.decimal  "ppkquantity"
-    t.decimal  "pppquality"
-    t.decimal  "ppkquality"
-    t.decimal  "pppontime"
-    t.decimal  "ppkontime"
-    t.decimal  "pppeffective"
-    t.decimal  "ppkeffective"
-    t.decimal  "pppknowledge"
-    t.decimal  "ppkknowledge"
-    t.decimal  "ppprules"
-    t.decimal  "ppkrules"
-    t.decimal  "pppcommunication"
-    t.decimal  "ppkcommunication"
-    t.decimal  "pppleader"
-    t.decimal  "ppkleader"
-    t.decimal  "pppmanage"
-    t.decimal  "ppkmanage"
-    t.decimal  "pppdiscipline"
-    t.decimal  "ppkdisipline"
-    t.decimal  "pppproactive"
-    t.decimal  "ppkproactive"
-    t.decimal  "ppprelate"
-    t.decimal  "ppkrelate"
-    t.decimal  "pppparttwo"
-    t.decimal  "ppkparttwo"
-    t.decimal  "ppptotals"
-    t.decimal  "ppktotals"
-    t.decimal  "ppppercent"
-    t.decimal  "ppkpercent"
-    t.decimal  "pointsaverage"
-    t.integer  "pppyears"
-    t.integer  "pppmonths"
-    t.text     "pppoverall"
-    t.text     "pppadvancemet"
-    t.integer  "ppp_id"
-    t.date     "pppevaldt"
-    t.integer  "ppkyears"
-    t.integer  "ppkmonths"
-    t.text     "ppkoverall"
-    t.integer  "ppk_id"
-    t.date     "ppkevaldt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "asset_defects", :force => true do |t|
     t.integer  "asset_id"
     t.integer  "reported_by"
@@ -822,19 +772,19 @@ ActiveRecord::Schema.define(:version => 20121228152915) do
 
   create_table "positions", :force => true do |t|
     t.string   "code"
+    t.string   "combo_code"
     t.string   "name"
     t.string   "unit"
     t.text     "tasks_main"
     t.text     "tasks_other"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "staffgrade_id"
     t.integer  "staff_id"
+    t.boolean  "is_acting"
     t.string   "ancestry"
-    t.integer  "ancestry_depth", :default => 0
+    t.integer  "ancestry_depth"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-
-  add_index "positions", ["ancestry"], :name => "index_positions_on_ancestry"
 
   create_table "programmes", :force => true do |t|
     t.string   "code"
@@ -850,11 +800,6 @@ ActiveRecord::Schema.define(:version => 20121228152915) do
     t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "programmes_subjects", :id => false, :force => true do |t|
-    t.integer "programme_id"
-    t.integer "subject_id"
   end
 
   create_table "ptbudgets", :force => true do |t|
@@ -973,19 +918,6 @@ ActiveRecord::Schema.define(:version => 20121228152915) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "grade_id"
-  end
-
-  create_table "scsessions", :force => true do |t|
-    t.integer  "counselling_id"
-    t.datetime "scsessiondt"
-    t.time     "scsessiondtduration"
-    t.integer  "scsappointnum"
-    t.string   "scsessiontype"
-    t.string   "issue"
-    t.text     "suggestion"
-    t.text     "remarks"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "sdiciplines", :force => true do |t|
@@ -1573,23 +1505,6 @@ ActiveRecord::Schema.define(:version => 20121228152915) do
     t.decimal  "log_fare"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "travelclaimreceipts", :force => true do |t|
-    t.integer  "travelclaim_id"
-    t.integer  "type_id"
-    t.string   "receiptnp"
-    t.decimal  "rvalue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "travelclaimrequests", :force => true do |t|
-    t.integer  "travelclaim_id"
-    t.integer  "travelrequest_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.decimal  "mileage"
   end
 
   create_table "traveldetailreceipts", :force => true do |t|
