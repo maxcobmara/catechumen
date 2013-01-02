@@ -98,11 +98,6 @@ authorization do
         if_attribute :cc2staff_id => is {User.current_user.staff_id}
     end  
     
-    has_permission_on :sdiciplines, :to => :create
-    has_permission_on :sdiciplines, :to => :approve do
-      if_attribute :reportedby_id => is {User.current_user.staff_id}
-    end
-    
     has_permission_on :student_discipline_cases, :to => :create
     has_permission_on :student_discipline_cases, :to => :approve do
       if_attribute :assigned_to => is {User.current_user.staff_id}
@@ -118,6 +113,10 @@ authorization do
   
   role :staff_administrator do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
+  end
+  
+  role :finance_unit do
+    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve]
   end
   
   role :training_manager do

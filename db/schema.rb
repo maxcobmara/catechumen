@@ -1406,14 +1406,15 @@ ActiveRecord::Schema.define(:version => 20121228152915) do
   end
 
   create_table "travel_claim_logs", :force => true do |t|
-    t.integer  "travel_claim_id"
+    t.integer  "travel_request_id"
     t.date     "travel_on"
     t.time     "start_at"
     t.time     "finish_at"
-    t.string   "purpose"
     t.string   "destination"
     t.decimal  "mileage"
     t.decimal  "km_money"
+    t.boolean  "checker"
+    t.string   "checker_notes"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1450,6 +1451,11 @@ ActiveRecord::Schema.define(:version => 20121228152915) do
     t.decimal  "total"
     t.boolean  "is_submitted"
     t.date     "submitted_on"
+    t.boolean  "is_checked"
+    t.boolean  "is_returned"
+    t.date     "checked_on"
+    t.integer  "checked_by"
+    t.string   "notes"
     t.boolean  "is_approved"
     t.date     "approved_on"
     t.integer  "approved_by"

@@ -81,6 +81,10 @@ class TravelClaimsController < ApplicationController
     end
   end
   
+  def check
+    @travel_claim = TravelClaim.find(params[:id])
+  end
+  
   def claimprint
     @travel_claim = TravelClaim.find(params[:id])
     @travel_claim_receipt = @travel_claim.travel_claim_receipts.all

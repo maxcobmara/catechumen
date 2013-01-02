@@ -21,7 +21,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/attendance/approve/', :controller => 'asset_loans', :action => 'approve'
   map.resources :asset_loans, :collection => { :lampiran => :get}
 
-  
+  map.connect '/travel_claims/check/', :controller => 'travel_claims', :action => 'check'
   map.resources :travel_claims, :collection => { :claimprint => :get }
 
   map.connect '/attendance/status/', :controller => 'staff_attendances', :action => 'status' 

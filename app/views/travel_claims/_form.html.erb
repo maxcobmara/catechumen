@@ -1,4 +1,5 @@
 <% if @my_approved_unclaimed_requests != nil %>
+
 <H2>Include Travel Requests</H2>
 <table width=90%>
 	<tr>
@@ -40,7 +41,7 @@
 <% end %>
 </table><BR/>
 
-
+<% @checkist = 0 %>
 <H2>Meal Allowance / Daily Allowance / Lodging Allowance</H2>	
 <table width=90%>
 	<tr>
@@ -63,7 +64,7 @@
 	<tr>
 		<th width=20%>Type</td>
 		<th width=30%>Receipt No</td>
-		<th width=20% align="right">Value (RM)</td>
+		<th align="right">Value (RM)</td>
 		<th width=30%></th>
 	</tr>
 </table>
@@ -86,28 +87,16 @@
 	<tr>
 	  <td class="leftcol"><label for="is_submitted">Submit</label></td>
 		<td><%= f.check_box :is_submitted, :id => 'submit1' %>
-				<SPAN class="span_submit1" style="display: none;"><%= f.date_select :submitted_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
+				<SPAN class="span_submit1" style="display: none;"> &nbsp; <%= tarikh (Date.today) %></SPAN></td>
 		<td class="pagenote">Clicking on submit notifies claims officer and disables your editing this record further</td>
 	</tr>
-	<tr class="span_submit1">
-	  <td class="leftcol"><label for="is_submitted">Submit To </label></td>
-		<td><%= f.collection_select :approved_by, Staff.find(:all, :order => :name), :id, :name %></td>
-		<td class="pagenote">Select Approving officer</td>
-	</tr>
+
 </table>
 
 <script type="text/javascript">
 	$j(document).ready(function(){
 			//show submit date
 			$j("input[id='submit1']").change(function() {  
-			 if($j('#submit1').is(':checked')) { 
-			    $j(".span_submit1").show("highlight"); 
-			 }else		{
-			    $j(".span_submit1").hide(""); 
-			 }	
-			});
-
-			$j("input[id='submit1']").each(function() {  
 			 if($j('#submit1').is(':checked')) { 
 			    $j(".span_submit1").show("highlight"); 
 			 }else		{

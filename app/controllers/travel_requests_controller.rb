@@ -61,8 +61,9 @@ class TravelRequestsController < ApplicationController
 
     respond_to do |format|
       if @travel_request.update_attributes(params[:travel_request])
-        format.html { redirect_to(@travel_request, :notice => 'TravelRequest was successfully updated.') }
+        format.html { redirect_to(params[:redirect_location], :notice => 'TravelRequest was successfully updated.') }
         format.xml  { head :ok }
+      
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
@@ -92,6 +93,7 @@ class TravelRequestsController < ApplicationController
   end
   
   def travel_log
-     @travel_request = TravelRequest.find(params[:id])
+     @travel_log = TravelRequest.find(params[:id])
+     @travel_request =  @travel_log
   end
 end

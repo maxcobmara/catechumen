@@ -1,7 +1,10 @@
-<% form_for(@travel_request) do |f| %>
-  <%= f.error_messages %>
+
 	<div class="tform">
+	
 	<%=render :partial => 'show_main' %>
+	<% form_for(@travel_log) do |f| %>
+	  <%= f.error_messages %>
+	<%= hidden_field_tag :redirect_location, '/travel_requests/logs' %>
 	<H2>Edit Travel Log</H2>
 	<table width=90%>
 		<tr>
@@ -24,8 +27,8 @@
 		<table width=90%>
 			<tr>
 				<td colspan=3 width=77% align=right><strong>Total</strong></td>
-				<td width=9% class="tright"><strong><%= @travel_request.total_mileage_request %>km</strong></td>
-				<td width=9% class="tright"><strong><%= ringgols(@travel_request.total_km_money_request) %></strong></td>
+				<td width=9% class="tright"><strong><%= @travel_log.total_mileage_request %>km</strong></td>
+				<td width=9% class="tright"><strong><%= ringgols(@travel_log.total_km_money_request) %></strong></td>
 				<td width=5%></td>
 			</tr>
 		</table>

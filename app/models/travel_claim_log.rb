@@ -1,5 +1,5 @@
 class TravelClaimLog < ActiveRecord::Base
-  belongs_to :travel_request, :foreign_key => 'travel_claim_id'
+  belongs_to :travel_request
   
   validates_numericality_of :mileage,  :unless => proc{|obj| obj.mileage.blank?}
   validates_numericality_of :km_money, :unless => proc{|obj| obj.km_money.blank?}

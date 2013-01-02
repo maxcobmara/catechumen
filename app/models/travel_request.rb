@@ -17,14 +17,14 @@ class TravelRequest < ActiveRecord::Base
   validates_presence_of :hod_id,      :if => :check_submit?
   
   
-  has_many :travel_claim_logs, :foreign_key => 'travel_claim_id', :dependent => :destroy
+  has_many :travel_claim_logs, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
   
   
   #before logic
   def set_to_nil_where_false
-    if is_submitted == false
-      self.submitted_on	= nil
+    if is_submitted == true
+      self.submitted_on	= Date.today
     end
     
     if hod_accept == false

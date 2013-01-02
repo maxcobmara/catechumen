@@ -148,8 +148,8 @@
 			<th rowspan="2">Tarikh</th>	
 			<th colspan="2">Waktu</th>
 			<th rowspan="2">Tujuan/Tempat</th>
-			<th rowspan="2">Jarak(km) RM</th>
-			<th rowspan="2">Tambang</th>
+			<th rowspan="2">Jarak (Km) </th>
+			<th rowspan="2">Tambang (RM)</th>
 		</tr>
 		<tr>
 			<th>Bertolak</th>
@@ -164,13 +164,13 @@
 					<%=h travel_request.document.refno %>
 			</td>
 		</tr>
-				<% for travel_claim_log in TravelClaimLog.find(:all, :conditions => ['travel_claim_id =?', travel_request.id ]) %>
+				<% for travel_claim_log in TravelClaimLog.find(:all, :conditions => ['travel_request_id =?', travel_request.id ]) %>
 
 					<tr>
 						<td><%= travel_claim_log.travel_on.strftime("%d/%m/%Y")%><BR><%= travel_claim_log.travel_on.strftime("(%A)")%></td>
 						<td align='center'><%= travel_claim_log.start_at.strftime("%l:%M%p") %></td>
 						<td align='center'><%= travel_claim_log.finish_at.strftime("%l:%M%p") %></td>
-						<td align='center'><%= travel_claim_log.purpose %><BR><%= travel_claim_log.destination %></td>
+						<td align='center'><%= travel_claim_log.destination %></td>
 						<td align='right'><%= travel_claim_log.mileage %></td>
 						<td align='right'><%= ringgols(travel_claim_log.km_money) %></td>
 					</tr>

@@ -20,7 +20,9 @@ class TravelClaim < ActiveRecord::Base
   validates_uniqueness_of :claim_month, :scope => :staff_id, :message => "You already have claims for this month"
   
   def set_to_nil_where_false
-    if is_submitted == false
+    if is_submitted == true
+      self.submitted_on	= Date.today
+    else
       self.submitted_on	= nil
     end
   end

@@ -1,3 +1,4 @@
+<% if @checkist == 0 %>
 <div class="fields">
 	<table>
 		<tr>
@@ -10,3 +11,16 @@
 		</tr>
 	</table>
 </div>
+<% else %>
+<div class="fields">
+	<table width=90%>
+		<tr>
+			<td width=20%> <%=h (TravelClaimReceipt::RECEIPTTYPE.find_all{|disp, value| value == f.object.expenditure_type}).map {|disp, value| disp} %></td>
+			<td width=30%> <%= f.object.receipt_code %></td>
+			<td align="right"><%= ringgols(f.object.amount) %></td>
+			<td width=27% style="padding-left:15px;"%>
+				<label><%= f.radio_button :checker, 'true' %> OK <%= f.radio_button :checker, 'false' %> Query : <%= f.text_field :checker_notes, :size => '15' %></td>
+		</tr>
+	</table>
+</div>
+<% end %>

@@ -20,11 +20,11 @@
 		
 		<% @for_approvals.each do |for_approval| %>
 		<tr>
-			<td><%=h for_approval.request_code %></td>
+			<td><%=h check_kin {for_approval.document.refno} %></td>
    		<td><%=h for_approval.applicant.staff_name_with_position unless for_approval.applicant.blank? %></td>
       <td><%=h for_approval.destination %></td>
       <td><%=h l(for_approval.depart_at) %></td>
-      <td><%=h for_approval.purpose %></td>
+      <td><%=h for_approval.document.title %></td>
 			<td><%=h for_approval.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 			<td><%=h for_approval.hod_accept? ? image_tag("tick.png") : image_tag("user_go.png") %></td>
       <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => for_approval %></td>
