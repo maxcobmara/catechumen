@@ -12,7 +12,7 @@ module ApplicationHelper
        begin
            return yield
        rescue
-           return "(none entered)"
+           return " -N/A- "
        end
    end
    

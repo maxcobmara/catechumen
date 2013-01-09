@@ -241,7 +241,7 @@ def assigned_details
  end
  
  def position_details #21/11/2011 - Shaliza added code for position if no longer exist.(avoid in kewpa2 error)
-    suid = assignedto_id.to_a
+    suid = Array(assignedto_id)
     exists = Staff.find(:all, :select => "id").map(&:id)
     checker = suid & exists     
 

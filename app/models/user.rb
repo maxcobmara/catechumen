@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
   
   def user_nama
     stid = Array(staff_id)
-    suid = student_id.to_a
+    suid = Array(student_id)
     stexists = Staff.find(:all, :select => "id").map(&:id)
     suexists = Student.find(:all, :select => "id").map(&:id)
     staffchecker = stid & stexists

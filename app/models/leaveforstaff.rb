@@ -27,7 +27,7 @@ class Leaveforstaff < ActiveRecord::Base
 
 
   FILTERS = [
-    {:scope => "relevant",        :label => "All"},
+    {:scope => "relevant",   :label => "All"},
     {:scope => "mine",       :label => "My Leave"},
     {:scope => "forsupport", :label => "For My Support"},
     {:scope => "forapprove", :label => "For My Approval"}
@@ -109,17 +109,7 @@ class Leaveforstaff < ActiveRecord::Base
   end
   
   def applicant_details 
-       suid = staff_id.to_a
-       exists = Staff.find(:all, :select => "id").map(&:id)
-       checker = suid & exists     
-   
-       if staff_id == nil
-          "" 
-        elsif checker == []
-          "Staff No Longer Exists" 
-       else
-         applicant.mykad_with_staff_name
-       end
+    check_kin {applicant.mykad_with_staff_name}
   end
   
   def endorser

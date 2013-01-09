@@ -31,6 +31,24 @@ class TravelClaim < ActiveRecord::Base
     self.total = total_claims
   end
   
+  def my_claim_status
+    if staff_id == User.current_user.staff_id && is_submitted != true
+      "editing"
+    elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == nil
+      "submitted"
+    elsif staff_id != User.current_user.staff_id && is_submitted == true && is_checked == nil
+      "for checking"
+    elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == false
+      "returned"
+    elsif is_submitted == true && is_checked == true && is_approved != true
+      "processed"
+    elsif is_submitted == true && is_checked == true && is_approved == true
+      "approved"
+    else
+      "status not known"
+    end    
+  end
+  
   
   
   

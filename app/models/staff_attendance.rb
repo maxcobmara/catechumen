@@ -8,7 +8,7 @@ class StaffAttendance < ActiveRecord::Base
   validates_presence_of :reason
   
   def self.is_controlled
-    find(:all, :conditions => ['log_type =?', "I"], :order => 'logged_at DESC', :limit => 10000)
+    find(:all, :order => 'logged_at DESC', :limit => 10000)
   end
   
   def self.find_mylate

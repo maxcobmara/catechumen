@@ -82,49 +82,17 @@ CATEGORY = [
          [ "Makluman", "3" ]
   ]
   
-   def stafffiled_details 
-         suid = stafffiled_id.to_a
-         exists = Staff.find(:all, :select => "id").map(&:id)
-         checker = suid & exists     
-
-         if stafffiled_id == nil
-            "" 
-          elsif checker == []
-            "Staff No Longer Exists" 
-         else
-           stafffilled.mykad_with_staff_name
-         end
-    end
+  def stafffiled_details 
+    check_kin {stafffilled.mykad_with_staff_name}
+  end
     
-    # 7/10/2011-Shaliza fixed error for cc1staff
-     def cc1staff_details 
-           suid = cc1staff_id.to_a
-           exists = Staff.find(:all, :select => "id").map(&:id)
-           checker = suid & exists     
-
-           if cc1staff_id == nil
-              "-" 
-            elsif checker == []
-              "Staff No Longer Exists" 
-           else
-             cc1staff.mykad_with_staff_name
-           end
-      end
+  def cc1staff_details 
+    check_kin {cc1staff.mykad_with_staff_name}
+  end
     
-    # 7/10/2011-Shaliza fixed error for cc1staff 
-    def file_details 
-           suid = file_id.to_a
-           exists = Cofile.find(:all, :select => "id").map(&:id)
-           checker = suid & exists     
-
-           if file_id == nil
-              "" 
-            elsif checker == []
-              "File No Longer Exists" 
-           else
-             cofile.file_no_and_name
-           end
-      end
+  def file_details 
+    check_kin {cofile.file_no_and_name}
+  end
     
     
 

@@ -84,8 +84,8 @@ class Librarytransaction < ActiveRecord::Base
   
   
   def borrower_name
-   stid = staff_id.to_a
-   suid = student_id.to_a
+   stid = Array(staff_id)
+   suid = Array(student_id)
    stexists = Staff.find(:all, :select => "id").map(&:id)
    stuexists = Student.find(:all, :select => "id").map(&:id)
    staffchecker = stid & stexists
@@ -104,30 +104,12 @@ class Librarytransaction < ActiveRecord::Base
       end 
   end
   
-  
-  
-   def book_details 
-          suid = book_id.to_a
-          exists = Book.find(:all, :select => "id").map(&:id)
-          checker = suid & exists     
-
-          if book_id == nil
-             "" 
-           elsif checker == []
-             "Book No Longer Exists" 
-          else
-            book.isbn
-          end
-    end
-    
-    
+  def book_details 
+    check_kin {book.isbn}
+  end
+     
   def top_ten
     dash_student = Librarytransaction.find(:all, :select => 'student_id', :conditions => ["student_id IS NOT ?", nil ]).map(&:student_id)
-    b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h }
-    
+    b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h } 
   end
-
-  
-
-  
 end
