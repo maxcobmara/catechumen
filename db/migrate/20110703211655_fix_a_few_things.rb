@@ -9,8 +9,6 @@ class FixAFewThings < ActiveRecord::Migration
     add_column :assets,   :subcategory_id,        :integer
     
 
-    add_column :travelclaimrequests,   :mileage,  :decimal
-
     rename_column :assets, :type,       :typename
     rename_column :assets, :model,      :modelname
   end
@@ -23,7 +21,7 @@ class FixAFewThings < ActiveRecord::Migration
     remove_column :assets,   :category_id
     remove_column :assets,   :subcategory_id
 
-    remove_column :travelclaimrequests,   :mileage
+
 
     rename_column :assets,  :typename,    :type
     rename_column :assets,  :modelname,   :model
