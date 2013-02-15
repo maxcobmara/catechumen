@@ -3,8 +3,8 @@ class Examquestion < ActiveRecord::Base
   belongs_to :creator,  :class_name => 'Staff', :foreign_key => 'creator_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approver_id'
   belongs_to :editor,   :class_name => 'Staff', :foreign_key => 'editor_id'
-  belongs_to :subject
-  belongs_to :programme
+  belongs_to :subject,  :class_name => 'Programme', :foreign_key => 'subject_id'
+  #belongs_to :programme
   belongs_to :topic
   has_and_belongs_to_many :exams
   
@@ -127,7 +127,7 @@ class Examquestion < ActiveRecord::Base
      if subject.blank? 
        "None Assigned"
      else 
-       subject.subject_code_with_subject_name
+       subject.subject_list
      end
   end
      

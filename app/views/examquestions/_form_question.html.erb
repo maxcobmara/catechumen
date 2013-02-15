@@ -20,7 +20,7 @@ bkLib.onDomLoaded(function() {
 		<tr>
 			<td class="leftcol"><label for="curriculum_id"><b>Programme/Subject Code:</b></label><font color="red"> * </font></td>
 			<!--<td><#%= f.collection_select :curriculum_id, Subject.find(:all, :order => :subjectcode), :id, :subject_code_with_subject_name, :include_blank => true %></td>-->
-			<td><%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_with_specialisation ,
+			<td><%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_list ,
 															{:prompt => "Select a programme", :selected => @examquestion.programme_id},
 															:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 																					:url => {:action => 'view_subject' }, 
@@ -36,7 +36,7 @@ bkLib.onDomLoaded(function() {
 		<tr>
 			<td class="leftcol"><label for="intake_id">Subject Name:</label></td>
 			<td><%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
-					<%= f.collection_select :subject_id, Subject.find(:all, :joins => :programmes, :conditions => ['programme_id =?', @examquestion.programme_id]), :id, :name %>
+					<%= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :name %>
 						</div></td>
 					
 		</tr>
