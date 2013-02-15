@@ -31,9 +31,4 @@ class Bulletin < ActiveRecord::Base
    #  @bulletin = Bulletin.find_by_date([ Date.today, Date.today + 1])
   # end
      
-     
-     
-  def posted_details 
-    check_kin {staff.mykad_with_staff_name}
-  end
 end

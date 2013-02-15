@@ -45,8 +45,8 @@
 				<td><%=h l(document.letterdt) %></td>
 				<td><%=h tarikh(document.letterxdt) %></td>
 				<td><%=h document.from %></td>
-				<td><%=h check_kin {stafffilled.mykad_with_staff_name} %></td>
-				<td><%=h document.closed %></td>
+				<td><%=h check_kin {document.stafffilled.name} %></td>
+				<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
 				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
 				<td width=10px>
 						<% if document.owner_ids.include? current_user.staff_id %>
