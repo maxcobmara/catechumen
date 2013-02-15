@@ -85,7 +85,7 @@ class Student < ActiveRecord::Base
     if course.blank?
       "N/A"
     else
-      course.name
+      "[#{course.course_type} - #{course.name}]"
     end
   end
   

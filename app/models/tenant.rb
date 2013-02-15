@@ -4,16 +4,19 @@ class Tenant < ActiveRecord::Base
   belongs_to :student
   
   
-  def student_tenant
-    a = Array.new
-    pid = self.student_id
-    a << pid
-    available_student = Tenant.find(:all, :select => "student_id", :conditions => ["student_id IS NOT ?", nil]).map(&:student_id)
-    if student_id == nil
-      available_student
+  def student_tenants
+    tenants = Tenant.find(:all, :select => "student_id", :conditions => ["student_id IS NOT ?", nil]).map(&:student_id)
+    if tenants == []
+      [9999999]
     else
-      available_student - a
+      tenants
     end
+  end
+  
+  def available_students
+    all_students = Student.find(:all, :select => :id)
+    current_tenants = Tenant.find(:all, :select => :student_id)
+    available_students = all_students - current_tenants
   end
   
   

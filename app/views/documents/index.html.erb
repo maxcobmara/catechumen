@@ -43,9 +43,9 @@
 				<td><%=h (Document::CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} %></td>
 				<td><%=h document.title %></td>
 				<td><%=h l(document.letterdt) %></td>
-				<td><%=h l(document.letterxdt) %></td>
+				<td><%=h tarikh(document.letterxdt) %></td>
 				<td><%=h document.from %></td>
-				<td><%=h document.stafffiled_details %></td>
+				<td><%=h check_kin {stafffilled.mykad_with_staff_name} %></td>
 				<td><%=h document.closed %></td>
 				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
 				<td width=10px>

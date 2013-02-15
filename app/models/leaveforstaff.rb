@@ -109,7 +109,7 @@ class Leaveforstaff < ActiveRecord::Base
   end
   
   def applicant_details 
-    check_kin {applicant.mykad_with_staff_name}
+    applicant.mykad_with_staff_name
   end
   
   def endorser

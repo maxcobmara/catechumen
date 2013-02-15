@@ -32,7 +32,7 @@ class Ptdo < ActiveRecord::Base
   end
   
   def applicant_details 
-    check_kin {staff.mykad_with_staff_name}
+    staff.mykad_with_staff_name
   end
   
 end

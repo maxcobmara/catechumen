@@ -4,7 +4,7 @@
 	<div class="box-head">
 	    <h2 class="left">Tenancy</h2>
 		  		<div class="right">
-				<!--	<% form_tag subjects_path, :method => 'get' do %>-->
+				  <% form_tag tenants_path, :method => 'get' do %>
 					<%= text_field_tag :search, params[:search] %>
 					<%= submit_tag I18n.t('search') %>
 					<% end %>
@@ -36,10 +36,12 @@
     <td><%=h l(tenant.keyexpectedreturn) unless tenant.keyexpectedreturn.blank? %></td>
     <td><%=h l(tenant.keyreturned) unless tenant.keyreturned.blank? %></td>
     <td><%=h tenant.force_vacate? ? "Yes" : "No" %></td><!--16/11/2011 - Shaliza added code to display Yes or No not true or false-->
-	  <td width=10px>	<% if tenant.location_typename == 2 %> <%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant %>
-		<% end %></td>
+	  <td width=10px>	
+			<% if tenant.location.typename == 2 %> 
+				<%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant %>
+		  <% end %></td>
 
-    <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => tenant %></td>
+  <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => tenant %></td>
 	<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => tenant %></td>
 	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), tenant, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
