@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :intakes
+
   map.resources :staff_shifts
 
   map.resources :travel_claim_mileage_rates
