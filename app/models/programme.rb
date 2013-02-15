@@ -23,6 +23,9 @@ class Programme < ActiveRecord::Base
       gls
     end
 
+    def subject_list
+        "#{code}" + " " + "#{name}"   
+    end
 
     def programme_list
       if is_root?

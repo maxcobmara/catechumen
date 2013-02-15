@@ -7,7 +7,8 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="subject_id">Subject Name:</label></td>
-			<td><%= f.collection_select :subject_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
+			<td><%= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, :include_blank => true %></td>
+		  <!--TODO: Preselect course in above condition-->
 		</tr>
 	</table>
 	

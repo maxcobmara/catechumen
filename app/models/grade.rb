@@ -4,7 +4,7 @@ class Grade < ActiveRecord::Base
   validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
   
   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
-  belongs_to :subjectgrade, :class_name => 'Subject', :foreign_key => 'subject_id'  #Link to Model subject
+  belongs_to :subjectgrade, :class_name => 'Programme', :foreign_key => 'subject_id'  #Link to Model subject
 
   has_many :scores, :dependent => :destroy
   accepts_nested_attributes_for :scores, :reject_if => lambda { |a| a[:description].blank? }
