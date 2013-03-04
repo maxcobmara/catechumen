@@ -86,6 +86,11 @@ class AssetDisposalsController < ApplicationController
     render :layout => 'report'
   end
   
+  def kewpa17
+    @asset_disposals = AssetDisposal.find(:all, :order => 'created_at DESC')
+    render :layout => 'report'
+  end
+  
   def kewpa18
     @asset_disposal = AssetDisposal.find(params[:id])
     render :layout => 'report'
@@ -93,6 +98,11 @@ class AssetDisposalsController < ApplicationController
   
   def kewpa19
     @asset_disposal = AssetDisposal.find(params[:id])
+    render :layout => 'report'
+  end
+  
+  def kewpa20
+    @asset_disposals = AssetDisposal.find(:all, :order => 'created_at DESC')
     render :layout => 'report'
   end
   

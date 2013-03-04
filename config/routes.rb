@@ -13,9 +13,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :trainings
 
-  
-  map.connect '/asset_defects/dispose/', :controller => 'asset_disposals', :action => 'dispose'
-  map.connect '/asset_defects/revalue/', :controller => 'asset_disposals', :action => 'revalue'
+  map.connect '/asset_disposals/kewpa17/', :controller => 'asset_disposals', :action => 'kewpa17'
+  map.connect '/asset_disposals/kewpa20/', :controller => 'asset_disposals', :action => 'kewpa20'
+  map.connect '/asset_disposals/dispose/', :controller => 'asset_disposals', :action => 'dispose'
+  map.connect '/asset_disposals/revalue/', :controller => 'asset_disposals', :action => 'revalue'
   map.resources :asset_disposals, :collection => { :kewpa16 => :get, :kewpa18 => :get, :kewpa19 => :get  }
 
   map.connect '/asset_defects/kewpa13', :controller => 'asset_defects', :action => 'kewpa13'
