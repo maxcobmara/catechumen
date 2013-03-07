@@ -1,6 +1,6 @@
 <div id='notifications_nuovo'>
-	<h4>Notification Area</h4>
-	<p>
+	<h4>Notifications</h4>
+	<p><HR>
 		
 	<!-- Notification for SKT Submission to PPP -->
 	<% skt_ready = StaffAppraisal.count(:all, :conditions => ["eval1_by=? AND is_skt_submit =? AND is_skt_endorsed  IS ?", User.current_user.staff_id, true, nil]) %>
@@ -99,18 +99,13 @@
     <%= dash_messages %> <%= link_to "new messages", { :controller => "messages", :action => "index" } %><br>
   <% end %>
 
-
-
-
-
-
   <!-- Notification for Student Leave Approval -->
   <% c = User.find(:all, :select => "id", :conditions => ['roles.id =?', 7], :include => :roles).map(&:id) %>
   <% d = Array(User.current_user.id) %>
   <% dash_lfs = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved IS ?", true, nil]) %>
   
   <% if (d & c == d) && dash_lfs > 0 %>
-  	<%= dash_lfs %> <%= link_to "Student leave request for approval", { :controller => "leaveforstudents", :action => "index" } %><br/>
+  	<%= link_to "#{dash_lfs} Student leave request for approval", { :controller => "leaveforstudents", :action => "index" } %><br/>
   <% else %>
 	<% end %>
 	
@@ -120,7 +115,7 @@
 	<% mycc2docs = Document.count(:all, :conditions => ["cc2staff_id=? AND cc2closed IS ?", User.current_user.staff_id, nil]) %>
 	<% mydocs = mycc1docs + mycc2docs %>
   <% if mydocs > 0 %>
-  	<%= link_to "#{mydocs} New documents for your attention", { :controller => "documents", :action => "index" } %><br>
+  	<%= link_to "#{mydocs} new documents for your attention", { :controller => "documents", :action => "index" } %><br>
   <% else %>
 	<% end %>
 	
@@ -141,7 +136,7 @@
 	<% cases = StudentDisciplineCase.count(:all, :conditions => ['status =?', "New"]) %>
 		<% if cases == 0 %>
 		<% else %>
-			<%= cases %> <%= link_to "New student discipline cases", student_discipline_cases_path %><br>
+			<%= link_to "#{cases} new student discipline cases", student_discipline_cases_path %><br>
 		<% end %>
 	
 	<!-- Notification for Topic Approval 
@@ -155,7 +150,7 @@
 	<% report_need_comment = Trainingreport.count(:all, :conditions => ['tpa_id=? AND tpa_comment IS ?', User.current_user.staff_id, nil]) %>
 		<% if report_need_comment == 0 %>
 		<% else %>
-			<%= report_need_comment %> <%= link_to "Lesson Plan Reports for your comment", trainingreports_path %><br>
+			<%= link_to "#{report_need_comment} Lesson Plan Reports for your comment", trainingreports_path %><br>
 		<% end %>
 	
 	
@@ -166,7 +161,7 @@
 		<% users_wo_roles = User.count(:all, :select => "id", :conditions => ["student_id IS? AND staff_id IS ?", nil, nil]) %>
 		<% if users_wo_roles == 0 %>
 		<% else %>
-			<%= users_wo_roles %> <%= link_to "New users require authentication", users_path %><br/>
+			<%= link_to "#{users_wo_roles} new users require authentication", users_path %><br/>
 		<% end %>
 	<% end %>
 	
