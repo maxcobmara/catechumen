@@ -1,13 +1,60 @@
+<!--13Apr2013-DEPT UNIT for current user-->
+<% @anc_depth = current_user.staff.position.ancestry_depth %>
+
+<% if @anc_depth==2 %>
+	<% @dept_unit = current_user.staff.position.unit %>
+<% elsif @anc_depth < 2 %>
+	<% @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<% if @position_count > 1 %>
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
+	<% end %>
+<% elsif @anc_depth > 2 %>
+	<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+<% end %>
+
+<% current_user_roles=[]%>
+<% User.current_user.roles.each do |role|%>
+	<% current_user_roles<<role.id%>
+<% end %>
+<%#= current_user_roles.include?(2)%>
+<!--13Apr2013-DEPT UNIT for current user-->
+<% if current_user_roles.include?(2) %>
+	<% @exam_list = Exam.all %>
+	<% @student_list = Student.all %>
+	<% @subject_list = Programme.at_depth(2) %>
+<%else%>
+<!---->
+	<% @exam_list = [] %>
+	<% Exam.all.each do |x| %>
+		<% if x.subject.root.name == @dept_unit %>
+			<% @exam_list << x %>
+		<% end %>
+	<!--<br><%#= x.subject.root.name %> -->
+	<% end %>
+	<% @student_list = [] %>
+	<% Student.all.each do |y| %>
+		<% if y.course_id && y.course.name == @dept_unit %>
+			<% @student_list << y %>
+		<% end %>
+		<!--<br><%#= y.course_id? ? y.course.name : "programme not entered" %>-->
+	<% end %>
+	<% @subject_list = Programme.find_by_name(@dept_unit).descendants.at_depth(2)%>
+<!---->	
+<% end %>
+<!--11-12Apr2013-->
+
+
 <div class="tform">
-	<H2>New Grade Details</H2>
+	<H2>Grade Details</H2>
 	<table width=100%>
 		<tr>
 			<td class="leftcol"><label for="student_id">Student Name:</label></td>
-			<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %></td>
+			<td><%= f.collection_select :student_id, @student_list, :id, :matrix_name, :include_blank => 'Select student' %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="subject_id">Subject Name:</label></td>
-			<td><%= f.collection_select :subject_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
+			<td><%= f.collection_select :subject_id,  @subject_list, :id, :subject_list, :include_blank => 'Select a subject' %></td>
+		  <!--TODO: Preselect course in above condition-->
 		</tr>
 	</table>
 	

@@ -15,38 +15,70 @@
 
 		<tr>
 			<td class="leftcol">Creator Name</td>
-			<td><%= f.collection_select :created_by, Staff.find(:all, :order => :name), :id, :staff_name_with_position, :include_blank => true %></td>
+			<td><%= f.collection_select :created_by, Staff.find(:all, :order => :name), :id, :staff_name_with_position, :include_blank => 'Select a creator', :selected => current_user.staff_id %></td>
 		</tr>
+	
+		<tr>
+			<td class="leftcol">Programme</td>
+			<td>
+				<%#= f.collection_select :course_id, Programme.roots, :id, :name, :include_blank =>'Select a programme' %>
+				<%# if @exam.id.nil? || @exam.id.blank? %>
+					<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
+											{:include_blank => "Select a programme"},
+											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+											:url => {:action => 'view_subject' }, 
+											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+				<%# else %>
+					<%#= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
+											{:include_blank => "Select a programme", :selected =>@examquestion.subject.root.id},
+											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+											:url => {:action => 'view_subject' }, 
+											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+				<%# end %>
+				
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol">Subject<font color="red"> * </font></td>
+			<td>
+				<%#= f.collection_select :course_id, Programme.at_depth(2), :id, :subject_list, :include_blank =>'Select a subject' %>
+				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+				<%# if @exam.id.nil? || @exam.id.blank? %>
+				<%# else %>
+						<%#= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, :include_blank=>'Select a subject'%>
+				<%# end %>	
+				</div>
+				
+			</td>
+		</tr>	<!---->
+		<!--9Apr2013-->
 
-		<tr>
-			<td class="leftcol">Course Name</td>
-			<td><%= f.collection_select :course_id, Programme.find(:all, :order => :name), :id, :programme_with_specialisation, :include_blank => true %> </td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol">Subject</td>
-			<td><%= f.collection_select :subject_id, Subject.find(:all, :order => :subjectcode), :id, :subject_code_with_subject_name, :include_blank => true %> </td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol">Class</td>
-			<td><%= f.collection_select :klass_id, Klass.find(:all), :id, :name, :include_blank => true %></td>
-		</tr>
 
 		<tr>
 			<td class="leftcol">Date</td>
 			<td><%= f.date_select :exam_on, :order => [:day, :month, :year] %></td>
 		</tr>
-
+		
+		<!--10Apr2013-this field no longer required
 		<tr>
 			<td class="leftcol">Time</td>
 			<td><%= f.text_field :duration, :size => 15, :placeholder => "minutes" %></td>
+		</tr>-->
+		
+		<tr>
+			<td class="leftcol">Start Time</td>
+			<td><%= f.time_select :starttime %> (Hours : Minutes)</td>
+		</tr>
+		<tr>
+			<td class="leftcol">End Time</td>
+			<td><%= f.time_select :endtime %> (Hours : Minutes)</td>
 		</tr>
 		<!--  Will calculate this
 
 				<tr>
 					<td class="leftcol">Full Marks</td>
-					<td><%= f.text_field :full_marks, :size => 12 %></td>
+					<td><%#= f.text_field :full_marks, :size => 12 %></td>
 				</tr>-->
 
 </table>

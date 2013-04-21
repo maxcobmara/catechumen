@@ -1,0 +1,114 @@
+<%= stylesheet_link_tag 'report' %>
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>	
+<div class="A4potrait">
+
+<!-- Box Head -->
+<div id="kewpa" >
+<p class="marginright" align="right"><b>KEW. PA-18</b></p>
+<H4 style="margin-left:12mm;">KEMENTERIAN/JABATAN : KKM/KSKBJB</H4>
+<H4 align="center"><b>SIJIL PENYAKSIAN PEMUSNAHAN ASET ALIH KERAJAAN MALAYSIA</b></H4>
+<BR>
+<p style="margin-left:12mm;">Disahkan aset seperti maklumat berikut telah dimusnahkan</p>
+<BR>
+		<table class="lampiran_kewpa" style="margin: 0 4cm;">
+			<tr>
+				<td class="leftcol">Jenis Aset</td>
+				<td class="dotts">:</td>
+				<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+						<SPAN class="fff"><%=h @asset_disposal.asset.typename %> -   
+									<%=h @asset_disposal.asset.name %>  -  
+									<%=h @asset_disposal.asset.modelname %></SPAN></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol">Kuantiti</td>
+				<td class="dotts">:</td>
+				<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+						<SPAN class="fff"><%= @asset_disposal.quantity %></SPAN></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol">Secara</td>
+				<td class="dotts">:</td>
+				<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+						<SPAN class="fff"><%= @asset_disposal.secara_malay %></SPAN></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol">Tarikh</td>
+				<td class="dotts">:</td>
+				<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+						<SPAN class="fff"><%=h l(@asset_disposal.discarded_on) %></SPAN></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol">Tempat</td>
+				<td class="dotts">:</td>
+				<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+						<SPAN class="fff"><%=h @asset_disposal.discard_location %></SPAN></td>
+			</tr>
+	</table><BR><BR><BR>
+		
+	<table class="lampiran_kewpa">
+		<tr>
+			<td colspan=3 class="filler" style="border-bottom-style: dotted; text-align:center;"><BR/><BR/>
+				<%= @asset_disposal.is_checked? ? @asset_disposal.discardw1tness.name.to_s + " via ICMS" : "" %></td>
+			<td></td>
+			<td colspan=3 class="filler" style="border-bottom-style: dotted; text-align:center;"><BR/><BR/>
+				<%= @asset_disposal.is_verified? ? @asset_disposal.discardw2tness.name.to_s + " via ICMS" : "" %></td>
+		</tr>
+		<tr>
+			<td colspan=3 class="filler" style="text-align:center;">Tandatangan<BR/><BR/></td>
+			<td></td>
+			<td colspan=3 class="filler" style="text-align:center;">Tandatangan<BR/><BR/></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Nama</td>
+			<td class="dotts">:</td>
+			<td class="filler" style="border-bottom-style: dotted; text-align:center;" ><%= @asset_disposal.discardw1tness.name %></td>
+			<td width=20%></td>
+			<td class="leftcol">Nama</td>
+			<td class="dotts">:</td>
+			<td class="filler" style="border-bottom-style: dotted; text-align:center;"><%= @asset_disposal.discardw2tness.name %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol">Jawatan</td>
+			<td class="dotts">:</td>
+			<td class="filler" style="border-bottom-style: dotted; text-align:center;"><%= @asset_disposal.discardw1tness.position.name %></td>
+			<td width=20%></td>
+			<td class="leftcol">Jawatan</td>
+			<td class="dotts">:</td>
+			<td class="filler" style="border-bottom-style: dotted; text-align:center;"><%= @asset_disposal.discardw1tness.position.name %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol">Tarikh</td>
+			<td class="dotts">:</td>
+			<td class="filler" style="border-bottom-style: dotted; text-align:center;"><%=h l(@asset_disposal.discarded_on) %></td>
+			<td width=20%></td>
+			<td class="leftcol">Tarikh</td>
+			<td class="dotts">:</td>
+			<td class="filler" style="border-bottom-style: dotted; text-align:center;"><%=h l(@asset_disposal.discarded_on) %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol">Cop</td>
+			<td class="dotts">:</td>
+			<td class="filler"></td>
+			<td width=20%></td>
+			<td class="leftcol">Cop</td>
+			<td class="dotts">:</td>
+			<td class="filler"></td>
+		</tr>
+	</table>
+			
+			

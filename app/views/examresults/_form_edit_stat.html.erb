@@ -1,0 +1,96 @@
+<div class="tform">
+	<H2><%= t 'examresult.examinationresult' %></H2>
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><%= t 'examresult.examdate1' %><font color="red"> * </font></td>
+			<td><%= f.date_select :examdts, :start_year => 2009, :end_year => 2030, :order => [:day, :month, :year], :include_blank=>true %>	</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= t 'examresult.examdate2' %></td>
+			<td><%= f.date_select :examdte, :start_year => 2009, :end_year => 2030, :order => [:day, :month, :year], :include_blank=>true %>	</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= t 'examresult.semester' %><font color="red"> * </font></td>
+			<td>
+				<%= select_tag "examresult[semester]", "<option></option>" + options_for_select(Examresult::SEMESTER,@examresult.semester),
+				 		:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+						:url => {:action => 'view_subject2' }, 
+						:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value 
+						+'&semester='+$('"+form_tag_id(f.object_name, :semester)+"').value
+						+'&exammonth='+$('"+"examresult_examdts_2i"+"').value
+						+'&examyear='+$('"+"examresult_examdts_1i"+"').value
+						+'&examresult_eq='+'#{@examresult.id}'
+						+'&f='+'#{f}' ")				%>
+				<%#= select_tag "examresult[semester]", "<option></option>" + options_for_select(Examresult::SEMESTER,@examresult.semester) %>
+			</td>	
+		</tr>
+		<tr>
+			<td class="leftcol"><%= t 'examresult.programme_id' %><font color="red"> * </font></td>
+			<td>
+				<%#------------------------------------------------------------------ start for program selection -------------------------------------------------------------------------%>
+				<% unless @examresult.nil? || @examresult.blank? || @examresult_all.nil? || @examresult_all.blank? %>
+					<% unless @examresult.nil? || @examresult.blank? %>						
+						<% @id=@examresult.programme_id%>
+						<% @val=@examresult.programmestudent.programme_code_with_programme_name%>
+						<% @list= Programme.find(:all,:conditions=>['id!=?',@id])%>
+					<% end %>
+					<% unless @examresult_all.nil? || @examresult_all.blank? %>
+						<% @id=@examresult_all[:programme_id]%>
+						<%# @val=@examresult_all.programmestudent.programme_code_with_programme_name%>
+						<% @val=Programme.find(@id).programme_code_with_programme_name%>
+						<% @list= Programme.find(:all,:conditions=>['id!=?',@id])%>
+					<% end %>
+					<%= select_tag "examresult[programme_id]","<option value="+@id.to_s+">"+@val+"</option>"+options_from_collection_for_select(@list, :id, :programme_code_with_programme_name),
+									:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+									:url => {:action => 'view_subject2' }, 
+									:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value 
+									+'&semester='+$('"+form_tag_id(f.object_name, :semester)+"').value
+									+'&exammonth='+$('"+"examresult_examdts_2i"+"').value
+									+'&examyear='+$('"+"examresult_examdts_1i"+"').value
+									+'&examresult_eq='+'#{@examresult.id}'  ") %>
+				<% else %>
+					<!--start for first time data entry-->
+					<%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_code_with_programme_name,{:include_blank => true},
+											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+											:url => {:action => 'view_subject2' }, 
+											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value 
+											+'&semester='+$('"+form_tag_id(f.object_name, :semester)+"').value
+											+'&exammonth='+$('"+"examresult_examdts_2i"+"').value
+											+'&examyear='+$('"+"examresult_examdts_1i"+"').value
+											+'&examresult_eq='+'#{@examresult.id}' 
+											") %>
+					<!--end for first time data entry-->
+				<% end %>
+				<%#------------------------------------------------------------------ end for program selection -------------------------------------------------------------------------%>
+			</td>
+		</tr>	
+	</table>
+	
+	<!--start - this part is for subject_list div-display only -->
+	<table width=90%>
+		<tr>
+			<td>
+				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+					<!-- for edit part -->
+					<% @examresult_id = @examresult.id %>
+					<% @examresult_programme_id = @examresult.programme_id %>
+					<% @examresult_semester = @examresult.semester %>
+					<% @examresult_examdts = @examresult.examdts %>
+			
+					<% if @examresult_all %>
+						<% if @examresult_programme_id.nil? || @examresult_programme_id.blank? %>
+							<% @examresult_programme_id = @examresult_all[:programme_id] %>
+							<% @examresult_semester = @examresult_all[:semester] %>
+							<% @examresult_examdts = @examresult_all[:examdts] %>
+							
+						<% end  %>
+					<% end %>
+					<%= render :partial => 'included_subject2', :locals => {:f => f, :examresult_eq=> @examresult_id, :programmeid => @examresult_programme_id, :semester=> @examresult_semester,:examdates => @examresult_examdts} %>									
+					<!-- for edit part -->
+				</div>
+			</td>
+		</tr> 
+	</table>
+	<!--end - this part is for subject_list div-display only -->
+	
+</div>

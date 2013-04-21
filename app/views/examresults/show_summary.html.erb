@@ -1,0 +1,60 @@
+<div class="tform">
+<h2>Examination Result Summary Details for 
+	<% if @examresult.examdts.month<7 %>
+		June <%=h @examresult.examdts.year%>
+	<% elsif @examresult.examdts.month>6 %>
+		December <%=h @examresult.examdts.year%>
+	<% end %>
+</h2>
+
+<table width=100%>
+	<tr>
+		<td class="leftcol"><label for="programme_id">Programme</label></td>
+		<td><%=@examresult.programmestudent.programme_code_with_programme_name %></td>
+	</tr>
+	<tr>
+		<td colspan=2>
+			<!--start-exam result-passed & failed statistic-viewing by programme, SOURCE:examresult table-->
+			<!--student may failed 1 subject but passed other subjects which requires student to repeat failed subject-->
+				
+			<% @examresult_A = Examresult.get_result_all(@examresult.id) %>	
+			<% @examresult_A.each do |examresultA| %>
+				<% @examresultA = Examresult.find(examresultA.id)%>
+				<table width=100%>
+					<tr>
+						<th rowspan=2>Group</th>
+						<th rowspan=2>Year/Semester</th>
+						<th rowspan=2>Quantity of Candidates</th>
+						<th colspan=2>Passed</th>
+						<th colspan=2>Failed</th>
+					</tr>
+					<tr>
+						<th>Quantity</th>
+						<th>Percentage</th>
+						<th>Quantity</th>
+						<th>Percentage</th>
+					</tr>
+					<tr>
+						<td><%= @group = Examresult.set_intake_group(@examresultA.examdts.year,@examresultA.examdts.month,@examresultA.semester) %></td>
+						<td><%= @examresultA.render_semester %></td>
+						<td><%= @candidate_qty = @examresultA.resultlines.count %></td>
+						<td><%= @total_passed = Examresult.total_passed_failed(examresultA,1) %></td>
+						<td><%= @passed_percentage = Examresult.passed_failed_percentage(@total_passed,@candidate_qty) %>%</td>
+						<td><%= @total_failed = Examresult.total_passed_failed(examresultA,2) %></td>
+						<td><%= @failed_percentage = Examresult.passed_failed_percentage(@total_failed,@candidate_qty) %>%</td>
+					</tr>
+				</table>
+				<br><br>
+			<% end %>
+			
+			<!--end-exam result-passed & failed statistic-viewing by programme, SOURCE:examresult table-->
+		</td><!--end for <td colspan=2>-->
+	</tr>
+</table>
+
+
+</div>
+
+<br>
+<%#= link_to 'Edit Examresult', edit_examresult_path(@examresult) %><!--|--> 
+<%= link_to 'Back', {:controller => 'examresults', :action => 'index_summary'} %>

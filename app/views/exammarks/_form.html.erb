@@ -1,0 +1,81 @@
+
+  <div class="tform">
+  <H2>Examination Mark Details</H2>
+
+<!--11Apr2013-->
+<% @anc_depth = current_user.staff.position.ancestry_depth %>
+
+<% if @anc_depth==2 %>
+	<% @dept_unit = current_user.staff.position.unit %>
+<% elsif @anc_depth < 2 %>
+	<% @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<% if @position_count > 1 %>
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
+	<% end %>
+<% elsif @anc_depth > 2 %>
+	<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+<% end %>
+
+<% if (!current_user.roles.name.include? 'Administration') %>
+	<% @exam_list = Exam.all %>
+	<% @student_list = Student.all %>
+	<% @subject_list = Programme.at_depth(2) %>
+<%else%>
+<!---->
+	<% @exam_list = [] %>
+	<% Exam.all.each do |x| %>
+		<% if x.subject.root.name == @dept_unit %>
+			<% @exam_list << x %>
+		<% end %>
+	<!--<br><%#= x.subject.root.name %> -->
+	<% end %>
+	<% @student_list = [] %>
+	<% Student.all.each do |y| %>
+		<% if y.course_id && y.course.name == @dept_unit %>
+			<% @student_list << y %>
+		<% end %>
+		<!--<br><%#= y.course_id? ? y.course.name : "programme not entered" %>-->
+	<% end %>
+	<% @subject_list = Programme.find_by_name(@dept_unit).descendants.at_depth(2)%>
+<!---->	
+<% end %>
+<!--11Apr2013-->
+
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><label>Examination Paper</label></td>
+			<td><%= f.collection_select :exam_id, @exam_list, :id, :exam_name_subject_date, 
+										{:include_blank=>'Select Examination Paper'},
+			 							:onchange => remote_function(:update => "exammark_marks_form", :url => {:action=>'view_marks_form'}, 
+										:with => "'examid='+$('"+"exammark_exam_id"+"').value ")%>
+			</td>
+				<%#= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, 
+										{:include_blank=>'Select a subject', :selected => @exam.subject_id },
+										:onchange => remote_function(:update => "exam_questions_list", :url => {:action=>'view_questions'}, 
+										:with => "'subject='+$('"+"exam_subject_id"+"').value + '&exam_id='+'#{@exam.id}' ") %>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :student_id %></td>
+			<td><%= f.collection_select :student_id, @student_list, :id, :matrix_name, :include_blank=>'Select student', :selected=>@exammark.student_id %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Examquestions</td>
+			<td>
+				<span id="exammark_marks_form">
+					<% if @exammark.id.nil? || @exammark.id.blank? %>
+						<!--new-->
+					<% else %>
+						<% @examid=@exammark.exam_id %>
+						<%=render :partial => 'view_marks_form', :locals => {:f => f,:examid=>@examid} %> 
+					<% end %>
+				</span>
+			</td>
+		</tr>
+	</table>
+	
+	
+	
+	
+	
+	
+ </div>

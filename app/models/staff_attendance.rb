@@ -8,12 +8,20 @@ class StaffAttendance < ActiveRecord::Base
   validates_presence_of :reason
   
   def self.is_controlled
-    find(:all, :conditions => ['log_type =?', "I"], :order => 'logged_at DESC', :limit => 10000)
+    find(:all, :order => 'logged_at DESC', :limit => 10000)
   end
   
   def self.find_mylate
     find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", User.current_user.staff.thumb_id, "08:30" ], :order => 'logged_at')
   end
+  
+  def i_have_a_thumb
+    if User.current_user.staff.thumb_id == nil
+      772
+    else
+      User.current_user.staff.thumb_id
+    end
+  end 
   
   def self.find_approvelate
     find(:all, :conditions => ["trigger=? AND thumb_id IN (?)", true, peeps], :order => 'logged_at DESC')

@@ -1,0 +1,2 @@
+module ResultlinesHelper
+end

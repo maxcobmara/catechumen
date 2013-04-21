@@ -1,0 +1,14 @@
+<% unless @programme_id.blank? && @exam_id.blank? %>
+		<%#= collection_select (:exam, :subject_id, @subjects, :id, :subject_list, :include_blank => "Select a subject") %>
+		<%#= select_tag "exam[subject_id]", "<option>Select a SUBJECT</option>"+options_from_collection_for_select(@subjects,:id, :subject_list), {:onchange => remote_function(:update => "exam_questions_list", :url => {:action=>'view_questions'}, :with => "'subject='+$('"+"exam_subject_id"+"').value + '&exam_id='+'#{@exam_id}' ")} %>
+		<%#=@exam_id%><%= select_tag "exam[subject_filter]", "<option>Select a SUBJECT</option>"+options_from_collection_for_select(@subjects,:id, :subject_list), {:onchange => remote_function(:update => "exam_topic_list", :url => {:action=>'view_topic'}, :with => "'subject='+$('"+"exam_subject_filter"+"').value + '&examid='+'#{@exam_id}' ")} %>
+<% else %>
+		&nbsp;&nbsp; Select a programme first.
+<% end%>
+
+
+
+	<%#= f.collection_select :subject_filter, Programme.find(@exam.subject.root.id).descendants.at_depth(2), :id, :subject_list, 
+							{:include_blank=>'Select a subject', :selected => @exam.subject_id },
+							:onchange => remote_function(:update => "exam_topic_list", :url => {:action=>'view_topic'}, 
+							:with => "'subject='+$('"+"exam_subject_filter"+"').value + '&exam_id='+'#{@exam.id}' ") %>

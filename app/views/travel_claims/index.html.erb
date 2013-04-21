@@ -1,0 +1,45 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Travel Claims</h2>
+	</div>
+</div>
+	
+<div class="indextable">
+	<table width=90% border="0" cellpadding="0" cellspacing="0">
+	  <tr>
+		  <th>Month</th>
+			<th>Name</th>
+			<th >Total</th>
+			<th>Status</th>
+			<th colspan=5 class="ac">Control</th>
+  	</tr>
+		<% @travel_claims.each do |travel_claim| %>
+  	<tr>
+		  <td><%=h travel_claim.claim_month.strftime("%B %Y") unless travel_claim.claim_month.blank? %></td>
+	    <td><%=h travel_claim.staff.name unless travel_claim.staff.blank? %></td>
+	    <td ><%=h ringgols(travel_claim.total_claims) %></td>
+			<td><%=h travel_claim.my_claim_status.titleize %></td>
+	    <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => travel_claim %></td>
+			<!--HACK : Refactor status code into model, use status to determine show or actions-->
+			<td width=10px>
+					<% if travel_claim.my_claim_status == ("editing" || "returned") %>
+							<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => travel_claim %>
+					<% end %></td>
+			<td width=10px>
+					<% if travel_claim.my_claim_status == "for checking" %>
+							<%= link_to image_tag("joystick_error.png", :border => 0), :action => 'check', :id => travel_claim %>
+					<% end %></td>
+			<td width=10px >
+					<% if travel_claim.my_claim_status ==  ("processed" || "approved") %>
+						<%= link_to image_tag("printer.png", :border => 0), :action => 'claimprint', :id => travel_claim %></td>
+					<% end %>
+		  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), travel_claim, :confirm => 'Are you sure?', :method => :delete %></td>
+	  </tr>
+	<% end %>
+	</table>
+</div>
+
+<br />
+<%= link_to 'New travel_claim', new_travel_claim_path %>

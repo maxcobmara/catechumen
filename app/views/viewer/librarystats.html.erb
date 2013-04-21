@@ -43,7 +43,7 @@ Quicklinks  : <a href="#oot">Borrowed Books</a> <a href="#LatestBooks">Latest Bo
 <a name="mastu"></a>
 <% dash_student = Librarytransaction.find(:all, :select => 'student_id', :conditions => ["student_id IS NOT ?", nil ]).map(&:student_id) %>
 <% b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h } %>
-<% top_ten = b.to_a.each {|who, visits|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
+<% top_ten = Array(b).each {|who, visits|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
 	
 	<table id="easytable" align="center" >
 		<caption>Most Active Students</caption>
@@ -64,7 +64,7 @@ Quicklinks  : <a href="#oot">Borrowed Books</a> <a href="#LatestBooks">Latest Bo
 <a name="masta"></a>
 <% dash_staff = Librarytransaction.find(:all, :select => 'staff_id', :conditions => ["staff_id IS NOT ?", nil ]).map(&:staff_id) %>
 <% b = dash_staff.inject(Hash.new(0)) {|h,i| h[i] += 1; h } %>
-<% top_ten = b.to_a.each {|who, visits|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
+<% top_ten = Array(b).each {|who, visits|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
 
 	<table id="easytable" align="center" >
 		<caption>Most Active Staff</caption>
@@ -107,7 +107,7 @@ Quicklinks  : <a href="#oot">Borrowed Books</a> <a href="#LatestBooks">Latest Bo
 <a name="repeated"></a>
 <% repeated_books = Book.find(:all, :select => 'isbn').map(&:isbn) %>
 <% b = repeated_books.inject(Hash.new(0)) {|h,i| h[i] += 1; h } %>
-<% repeat = b.to_a.each {|book, repeats|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
+<% repeat = Array(b).each {|book, repeats|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
 	
 	<table id="easytable" align="center" >
 		<caption>Possibly Repeated Books</caption>

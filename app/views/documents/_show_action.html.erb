@@ -1,0 +1,38 @@
+<!--<div class="tform">-->
+	<fieldset><legend class="togvis">Action Details</legend>
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><label for="closed"><b>Action :</b></label></td>
+			<td><%=h @document.cc1action %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="closed"><b>Remarks :</b></label></td>
+			<td><%=h @document.cc1remarks %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="Action By">Action By :</label></td>
+			<td><%= check_kin {@document.cc1staff.mykad_with_staff_name} %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="data"><b><%= t 'document.uploaded' %> (Action) :</b></label></td>
+			<td><% if @document.dataaction.exists? then %>
+			    <%= @document.dataaction_file_name %>
+			    <%= link_to (t 'document.download'), @document.dataaction.url %> ||
+		        <%= link_to "ALT", @document.dataaction.url %>
+			    <% else %>
+			    No File Available
+			    <% end %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="letterxdt"><b>Action Date :</b></label></td>
+			<td><%=h check_kin{l(@document.cc1actiondate)} %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="closed"><b><%= t 'document.closed' %> (Action) :</b></label></td>
+			<td><%=h @document.cc1closed? ? "Yes" : "No"  %></td>
+		</tr>
+</table>
+</fieldset>
+<!--</div>-->

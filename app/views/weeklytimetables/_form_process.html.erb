@@ -1,0 +1,59 @@
+<!--start-Repeated fields for weeklytimetable details (DAILY TIMETABLE)-->
+<H2>Daily Timetable Details</H2>
+
+<% f.fields_for :weeklytimetable_details do |builder| %>
+
+	<%= render 'weeklytimetable_detail_fields',  :f => builder %><!--:locals=> { :f => builder, :index=>@satu} -->
+<% end -%>
+<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :weeklytimetable_details  %> - Add More </p>
+
+<!--end-Repeated fields for weeklytimetable details (DAILY TIMETABLE)-->
+
+<H2>Submission</H2>
+	
+<table width=100% >
+	<tr>
+		<td class="leftcol">Submit</td>
+    	<td>
+			<%= f.check_box :is_submitted, :id => 'check_submitted' %>
+			<SPAN  id="span_submitted" style="display: none;"><%= tarikh(Date.today) %><%=%></SPAN>
+		</td>
+		<td><!--<strong>Note :</strong> :<em><%#= t "travel.note" %></em>--></td>
+	</tr>
+	<tr>
+		<td class="leftcol">Head of Dept</td>
+    	<td><%= f.collection_select :endorsed_by, Staff.find(:all, :conditions => ["id IN (?)", @weeklytimetable.hods]), :id, :name, :include_blank => true %></td>
+		<td>&nbsp;</td>
+	</tr>
+	<% if @weeklytimetable.hod_rejected == true %>
+	<tr>
+		<td class="leftcol"><font color="red">Reason for Rejection : </font></td>
+		<td colspan="2"><%=h simple_format(@weeklytimetable.reason) %></td>
+	</tr>
+	<% end %>
+</table>
+  
+<script type="text/javascript">
+	$j(document).ready(function(){
+		
+				//show submit date
+				$j("input[id='check_submitted']").change(function() {  
+				 if($j('#check_submitted').is(':checked')) { 
+				    $j("#span_submitted").show("highlight"); 
+				 }else		{
+				    $j("#span_submitted").hide(""); 
+				 }	
+				});
+
+				$j("input[id='check_submitted']").each(function() {  
+				 if($j('#check_submitted').is(':checked')) { 
+				    $j("#span_submitted").show("highlight"); 
+				 }else		{
+				    $j("#span_submitted").hide(""); 
+				 }	
+				});
+
+	});
+</script>
+
+

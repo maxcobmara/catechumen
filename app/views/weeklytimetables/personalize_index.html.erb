@@ -1,0 +1,57 @@
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Personalize Weekly Timetables</h2>
+	</div>
+</div>
+
+<div class="toolbar">
+	<p><%#= link_to image_tag("add.png", :border => 0, :title => 'New Weekly Timetable') + "New", new_weeklytimetable_path %></p>
+</div>
+
+<div class="indextable">
+	<table>
+	  <tr>
+	    <th>Programme</th>
+    	<th>Group</th>
+    	<th>Startdate</th>
+    	<th>Enddate</th>
+    	<th>Semester</th>
+		<th colspan=3 class="ac">Control</th>
+  	  </tr>
+
+<% all_combine = []%>
+<% @weeklytimetables_details.each do |x|%>
+	<% all_combine << Weeklytimetable.find(x.weeklytimetable.id)%>
+<% end %>
+
+</b>
+<!--group yg ada-->
+<% @personalize = all_combine.group_by{|t|t.startdate}%>
+	<% @personalize.each do |sdate, items2|%>
+	<!--<%#=sdate%>~<%#=items2%>-->
+		<% items2.each_with_index do |item, index|%>
+			<% if index==0%>
+
+  <tr>
+    <td><%= item.schedule_programme.programme_list%>&nbsp;<!--(ID weekly timetable bila index=0, <%=item.id %>)--></td>
+    <td><%= item.schedule_intake.group_with_intake_name %></td>
+    <td><%=sdate%></td>
+    <td><%= item.enddate %></td>
+    <td><%= item.academic_semester.semester %></td>
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'personalize_show', :id => sdate %></td>
+   
+    <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Personalize Timetable'), :action => 'personalize_timetable', :id => sdate %></td>
+ 	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), item, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+
+		<% end %>
+	<% end %>
+<% end %>
+
+
+</table>
+
+<br />
+</div>
+
+<%#= link_to 'New Weekly Timetable', new_weeklytimetable_path %>

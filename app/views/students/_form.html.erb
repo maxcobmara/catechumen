@@ -82,28 +82,35 @@
 	<table width=100%>
 			<tr>
 					<td class="leftcol"><label for="course_id">Programme:</label></td>
-					<td><%= f.collection_select :course_id, Programme.find(:all), :id, :programme_with_specialisation, :include_blank => true %></td>
+					<td><%= f.collection_select :course_id, Programme.roots, :id, :programme_list, :include_blank => true %></td>
 			</tr>
-		<!--15/11/2011 - Shaliza hide specialisation because I add :programme_with_specialisation in programme field.
+			<!--15/11/2011 - Shaliza hide specialisation because I add :programme_with_specialisation in programme field.
 			<tr>
 					<td class="leftcol"><label for="specilisation">Specialisation:</label></td>
 					<td><#%= f.text_field :specilisation %></td>
 			</tr>-->
+			
 			<tr>
 					<td class="leftcol"><label for="group_id">Group:</label></td>
 					<td><%= f.text_field :group_id %></td>
 			</tr>
 			
-		<tr><!-- 21/10/2011 - Shaliza add red star (*) or validates_presence_of for Intake session to avoid it's got error in index page if its empty -->
+			<tr><!-- 21/10/2011 - Shaliza add red star (*) or validates_presence_of for Intake session to avoid it's got error in index page if its empty -->
 					<td class="leftcol"><label for="intake">Intake Session:</label><font color="red"> * </font></td>
-					<td><%= f.date_select :intake, :order => [:month, :year], :include_blank => true %></td>
+					<td><%= f.date_select :intake, :order => [:month, :year], :class => 'compulsory' %></td>
+			</tr>
+			
+			<tr>
+					<td class="leftcol"><label for="intake">Intake Session:</label><font color="red"> * </font></td>
+					<td><%= f.collection_select :intake_id, Intake.find(:all, :conditions => ['is_active = ?', true ], :order => 'register_on DESC'), :id, :name, :include_blank => true %></td>
 			</tr>
 			
 			<tr>
 					<td class="leftcol"><label for="sbirthdt">Date End Of Studies:</label></td>
 					<td><%= f.date_select :end_training, :order => [:day, :month, :year] %></td>
 			</tr>
-	</table><BR><BR>
+	</table>
+	<BR><BR>
 	
 	<H2>Health Status</H2>
 	<table width=100%>

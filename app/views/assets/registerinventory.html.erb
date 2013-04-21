@@ -1,5 +1,4 @@
-<%= stylesheet_link_tag 'report' %>
-<div id="A4potrait">
+<%= stylesheet_link_tag 'report', :media => "print" %>
 
 	<form action="#">
 			<script>
@@ -10,42 +9,42 @@
 			</script>
 	</form>
 	
-<fieldset width=10px >
-		
-<div id="title">
-<p class="marginright" align="right"><b>KEW. PA-5</b></p><BR>
-
-<H4 align="center"><b>SENARAI DAFTAR INVENTORI</b></H4>
-</div>
-<div id="tprintreport">	
-<table width=100% border=1px cellspacing=0 align="center" >
-<tr>
-	<th width="1%" align="center">BIL</th>
-	<th width="10%">NOMBOR SIRI PENDAFTARAN</th>
-    <th width="20%">NAMA ASET</th>
-	<th width="5%">TARIKH PEROLEHAN</th>
-	<th width="5%">HARGA <BR>PEROLEHAN ASAL (RM)</th>
-</tr>
+<div class="A4potrait" style="border: none;">
+<BR/>
+<table class="tlong">
+	<thead>
+				<tr>
+					<th class="tright" colspan=5><b>KEW. PA-5</b></th>
+				</tr>
+				<tr>
+					<th  colspan=5><b>SENARAI DAFTAR INVENTORI</b></th>
+				</tr>
+				<tr>
+					<th class="tcol"><b>BIL</b></th>
+					<th class="tcol"><b>NOMBOR SIRI PENDAFTARAN</b></th>
+					<th class="tcol"><b>NAMA ASET</b></th>
+					<th class="tcol"><b>TARIKH PEROLEHAN</b></th>
+					<th class="tcol"><b>HARGA <BR>PEROLEHAN ASAL (RM)</b></th>
+				</tr>
+	</thead>
 	
-	<% bil = 0 %>
-	<% @assets.each do |asset| %>
-	<% bil += 1 %>
-<tr>
-					<td align="center"><%=h bil %> </td>	
-					<td>&nbsp;&nbsp;<%=h asset.assetcode %></td>	
-					<td>&nbsp;&nbsp;<%=h asset.name %></td>
-					<td align="center"><%=h l(asset.receiveddate) unless asset.receiveddate.blank? %> </td>
-					<td align="right"><%=h ringgols(asset.purchaseprice) %>&nbsp;&nbsp;&nbsp;&nbsp; </td>	
+	<tbody>
+			<% bil = 0 %>
+			<% @assets.sort { |a,b| a.assetcode <=> b.assetcode }.each do |asset| %>
+			<% bil += 1 %>
+				<tr>
+					<td class="tdata" style="text-align:center;" ><%=h bil %></th>
+					<td class="tdata" style="white-space: nowrap; padding-right:3mm;" ><%=h asset.assetcode %></th>
+					<td class="tdata"><%=h asset.name %></th>
+					<td class="tdata"><%=h tarikh(asset.receiveddate) %> </th>
+					<td class="tdata" style="text-align:right; padding-right:3mm;"><%=h ringgols(asset.purchaseprice) %></th>
 				</tr>
 			<% end %>
+	</tbody>
 </table>
-</div>
-</fieldset>
-<BR>
+<div>	
+	
+
 <div id="hideLink">
 <%= link_to 'Back', assets_path %>
 </div>
-
-
-
-

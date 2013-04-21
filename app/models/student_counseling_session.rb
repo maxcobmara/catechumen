@@ -4,9 +4,10 @@ class StudentCounselingSession < ActiveRecord::Base
   before_save :set_to_nil_where_false
   
   belongs_to :student
+  belongs_to :student_discipline_case, :foreign_key => 'case_id'
   #belongs_to :created_by, :polymorphic => true,  :foreign_key => 'created_by'
   
-  validates_presence_of :student_id 
+  validates_presence_of :student_id
   
   
   #before logic

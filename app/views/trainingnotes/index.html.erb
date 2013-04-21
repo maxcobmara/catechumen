@@ -10,7 +10,6 @@
 <div class="tlist">
 	<table width=100%>
 	  <tr>
-			<th>Topic</th>
 	    <th>Title</th>
 	    <th>Reference</th>
 	    <th>Version</th>
@@ -18,11 +17,23 @@
 	    <th>Download</th>
 			<th colspan=3>Control</th>
 	  </tr>
+	
+	
+	<% @trainingnotes.group_by(&:topic_id).each do |topic_id, trainingnotes | %>
+			<tr><td colspan=8><strong>
+			<%= check_kin {Topic.find(topic_id).subject.programmes.last.name} %>
+			</strong></td></tr>
+			<tr><td colspan=8><strong> &nbsp; &nbsp; &nbsp;
+			<%#= Topic.find(topic_id).subject.name %>
+			</strong></td></tr>
+			<tr><td colspan=8><strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+			<%#= Topic.find(topic_id).name %>
+			</strong></td></tr>
+			
 
-	<% @trainingnotes.each do |trainingnote| %>
+	    <% trainingnotes.each do |trainingnote| %>
 	  <tr>
-		  <td><%=h trainingnote.topic.name unless trainingnote.topic.blank? %></td>
-	    <td><%=h trainingnote.title %></td>
+	    <td> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<%=h trainingnote.title %></td>
 	    <td><%=h trainingnote.reference %></td>
 	    <td><%=h trainingnote.version %></td>
 	    <td><%=h trainingnote.release %></td>
@@ -32,7 +43,7 @@
 			<td width=10px ><% link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), trainingnote, :confirm => 'Are you sure?', :method => :delete %></td>
 
 	  </tr>
-	<% end %>
+	<% end %><% end %>
 	</table>
 </div>
 <br />

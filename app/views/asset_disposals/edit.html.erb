@@ -1,0 +1,32 @@
+<% form_for(@asset_disposal) do |f| %>
+  <%= f.error_messages %>
+	<div class="tform">
+		<H2><%= t 'asset.disposal.disposal_details' %></H2>
+		<% if @asset_disposal.is_checked != true %>
+			<%=render :partial => 'process', :locals => {:f => f} %>
+		<% end %>
+		
+		<% if @asset_disposal.is_checked = true && @asset_disposal.verified_by != User.current_user.staff_id && @asset_disposal.is_verified != true %>
+			Awaiting verification from <%=h @asset_disposal.verifier.name %>
+		<% end %> 
+		
+		<% if @asset_disposal.is_checked = true && @asset_disposal.verified_by == User.current_user.staff_id && @asset_disposal.is_verified != true %>
+			<%= render :partial => 'show_process' %>
+			<%=render :partial => 'verify', :locals => {:f => f} %>
+		<% end %>
+		
+		<% if @asset_disposal.is_disposed = true && @asset_disposal.verified_by == User.current_user.staff_id && @asset_disposal.is_verified == true %>
+			<%= render :partial => 'show_process' %>
+			<%= render :partial => 'show_disposal' %>
+			
+			<%=render :partial => 'close', :locals => {:f => f} %>
+		<% end %>
+	</div>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @asset_disposal %> |
+<%= link_to 'Back', asset_disposals_path %>

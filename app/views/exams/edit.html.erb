@@ -1,113 +1,183 @@
 <% form_for(@exam) do |f| %>
   <%= f.error_messages %>
 
-<div class="showform">
-	<%=render :partial => 'show_exam' %>
-</div>
-	
+<!--<div class="showform">-->
 <div class="tform">
-<H2>Filters</H2>
+	<%=render :partial => 'show_exam' %>
+<!--</div>
+<div class="tform">-->
+	
+	<H2>Filters</H2>
 		
 	<table>
 		<tr>
-			<td class="leftcol">Course Name</td>
-			<td><%= f.collection_select :course_id, Programme.find(:all, :order => :name), :id, :programme_with_specialisation, :include_blank => true %> </td>
+			<td class="leftcol">Programme</td>
+			<td>
+				<!--18March2013-new database structure-->
+				<% if @exam.subject_id.nil? || @exam.subject_id.blank? %>
+					<%= f.collection_select :programme_filter, Programme.roots, :id, :programme_list ,
+											{:include_blank => "Select a programme"},
+											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+											:url => {:action => 'view_subject' }, 
+											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_filter)+"').value
+											+ '&examid='+'#{@exam.id}' ") %>
+				<% else %>
+					<%= f.collection_select :programme_filter, Programme.roots, :id, :programme_list ,
+											{:include_blank => "Select a programme", :selected =>@exam.subject.root.id},
+											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+											:url => {:action => 'view_subject' }, 
+											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_filter)+"').value 
+											+ '&examid='+'#{@exam.id}'  ") %>
+											<!--@exam.subject.root.id-->
+				<% end %>
+				<!--18March2013-new database structure-->
+			</td>
 		</tr>
 
 		<tr>
-			<td class="leftcol">Subject</td>
-			<td><%= f.collection_select :subject_id, Subject.find(:all, :order => :subjectcode), :id, :subject_code_with_subject_name, :include_blank => true %> </td>
-		</tr>
+			<td class="leftcol" >Subject<font color="red"> * </font></td>
+			<td>
 
-		<tr>
-			<td class="leftcol">Class</td>
-			<td><%= f.collection_select :klass_id, Klass.find(:all), :id, :name, :include_blank => true %></td>
+				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+					<% if @exam.subject_id.nil? || @exam.subject_id.blank? %>
+					<% else %>
+						<%= f.collection_select :subject_filter, Programme.find(@exam.subject.root.id).descendants.at_depth(2), :id, :subject_list, 
+												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
+												:onchange => remote_function(:update => "exam_topic_list", :url => {:action=>'view_topic'}, 
+												:with => "'subject='+$('"+"exam_subject_filter"+"').value + '&exam_id='+'#{@exam.id}' ") %>
+						<%#= f.collection_select :subject_filter, Programme.find(@exam.subject.root.id).descendants.at_depth(2), :id, :subject_list, 
+												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
+												:onchange => remote_function(:update => "exam_topic_list", :url => {:action=>'view_topic'}, 
+												:with => "'subject='+$('"+"exam_subject_filter"+"').value + '&exam_id='+'#{@exam.id}' ") %>						
+						<%#= f.collection_select :subject_filter, Programme.find(@exam.subject.root.id).descendants.at_depth(2), :id, :subject_list, 
+												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
+												:onchange => remote_function(:update => "exam_questions_list", :url => {:action=>'view_questions'}, 
+												:with => "'subject='+$('"+"exam_subject_id"+"').value + '&exam_id='+'#{@exam.id}' ") %>
+						<%#= f.collection_select :subject_filter, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, 	
+												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
+												:onchange => remote_function(:update => "exam_questions_list", :url => {:action=>'view_questions'}, 
+												:with => "'subject='+$('"+"exam_subject_id"+"').value + '&exam_id='+'#{@exam.id}' ") %>
+					<% end %>	
+				</div>
+
+			</td>
 		</tr>
+		
+		
+		<tr>
+			<td class="leftcol" >Topic<font color="red"> * </font></td>
+			<td>
+
+				<%= tag("div", :id => form_tag_id(f.object_name, :topic_list)) %>
+					<% if @exam.subject_id.nil? || @exam.subject_id.blank? %>
+					<% else %>
+						<%= f.collection_select :topic_filter, Programme.find(@exam.subject.id).descendants.at_depth(3), :id, :subject_list, 
+												{:include_blank=>'Select a topic', :selected => @exam.subject_id },
+												:onchange => remote_function(:update => "exam_questions_list", :url => {:action=>'view_questions'}, 
+												:with => "'topicid='+$('"+"exam_topic_filter"+"').value + '&exam_id='+'#{@exam.id}' ") %>
+						<%#= f.collection_select :subject_filter, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, 
+												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
+												:onchange => remote_function(:update => "exam_questions_list", :url => {:action=>'view_questions'}, 
+												:with => "'subject='+$('"+"exam_subject_id"+"').value + '&exam_id='+'#{@exam.id}' ") %>
+					<% end %>	
+				</div>
+
+			</td>
+		</tr>
+		
 	</table>
 
 	
-<H2>Questions</H2>
+	<H2>Questions</H2>
 
-<table width=100% border=1 cellspacing=0>
-	<tr>
-		<th>Subject Name</th>
-		<th>Question & Answer</th>
-		<th>Marks</th>
-		<th>Select</th>
-	</tr>
+	<%= tag("div", :id => form_tag_id(f.object_name, :questions_list)) %>
+		<%# if @exam.subject_id%>
+			<%# @exam_subject_id = @exam.subject_id %>
+			<%# @exam_id = @exam.id %>
+			<%#= render :partial => 'view_questions', :locals => {:exam_subject => @exam_subject_id, :exam_id => @exam_id} %>
+		<%# end %>
+	</div><!--end for DIV:exam_questions_list) %>-->
 	
-	<tr>
-		<td colspan=4><strong>Objektif - MCQ</strong><BR></td>
-	</tr>
-	<% for examquestion in Examquestion.find(:all, :conditions => ['questiontype =?', 'MCQ'] ) %>
-	<tr>
-		<td><%= examquestion.subject.name %></td>
-		<td><%= examquestion.question %> <BR><%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %> </td>
-		<td align="center"><%= examquestion.marks %></td>
-		<td><%= check_box_tag "exam[examquestion_ids][]", examquestion.id, @exam.examquestions.include?(examquestion) %></td>
-	</tr>
-	<% end %>
+	<%= tag("div", :id => form_tag_id(f.object_name, :questions_list)) %>
+	
+<% if @exam.examquestions.count>0  %>	
+		<h3>Existing Questions</h3>
+	
+		<table width=100% border=1 cellspacing=0>
+			<tr>
+				<th width=8px>Sequence</th>
+				<th width=10px>Question Type</th>
+				<th>Subject Code | Topic Code & Name</th>
+				<th>Question & Answer</th>
+				<th>Marks</th>
+				<th>Select</th>
+			</tr>
+			<% if @exam.sequ!= nil %>
+				<% sequ = @exam.sequ.split(",")%>
+			<% end %>
+			<% count=0 %>
+			<% for examquestion in @exam.examquestions.sort_by{|y|y.id} do %>
+			<tr>
+				<td>
+				<% if @exam.sequ!= nil %>
+					<%= select_tag "exam[seq][]", "<option>Select</option>"+options_for_select([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],sequ[count].to_i)%><%#=examquestion.id%>
+				<% else %>
+					<%= select_tag "exam[seq][]", "<option>Select</option>"+options_for_select([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25])%>
+				<% end %>
+				</td>
+				<td><%#=h examquestion.id%><%=h examquestion.questiontype%><%#=examquestion.id%></td>
+				<td><%=h examquestion.topic.parent.code %> | <%#=h examquestion.topic.code %><%#=h examquestion.topic.name %><%=examquestion.topic.subject_list%></td>
+				<td><b>Q:</b><%=h examquestion.question %><br><b>A:</b><%=h examquestion.answer %>
+					
+					<!--HIDE ALL THESE LINES-IF INCASE ...PREFER SIMPLE ONE-->
+					<!--try simplified one-->
+					<% if examquestion.questiontype=="MCQ"%>
+						<% if examquestion.answerchoices.count != 0 && examquestion.answerchoices[0].description!=""%>
+							<% for answerchoice in examquestion.answerchoices.sort_by{|x|x.item}%>
+								<br><%= answerchoice.item %>. <%= answerchoice.description %>
+							<% end %>
+						<% end %>
+						<% for examanswer in examquestion.examanswers.sort_by{|y|y.item}%>
+							<br><%= examanswer.item %>. <%= examanswer.answer_desc %>
+						<% end %>		
+					<% end %>
+					<!--try simplified one-->
+					<!--try simplified one-SEQ-->
+					<% if examquestion.questiontype=="SEQ"%>
+						<% for shortessay in examquestion.shortessays.sort_by{|x|x.item}%>
+							<br><%=shortessay.item %>. <%=h shortessay.subquestion %> (<%=h shortessay.submark%> markah)
+							<br><%=h simple_format(shortessay.subanswer) %><br>Keyword :<%=h shortessay.keyword %><br>	
+						<% end %>
+					<% end %>
+					<!--try simplified one-SEQ-->
+					<!--try simplified one-TRUEFALSE-->
+					<% if examquestion.questiontype=="TRUEFALSE"%>
+						<% for booleanchoice in examquestion.booleanchoices.sort_by{|x|x.item}%>
+							<br><%= booleanchoice.item %>. <%= booleanchoice.description %>
+						<% end %>
+						<% for booleananswer in examquestion.booleananswers.sort_by{|y|y.item}%>
+							<br><%= booleananswer.item %>. <%= booleananswer.answer %>
+						<% end %>
+					<% end %>
+					<!--try simplified one-TRUEFALSE-->
+					<!--HIDE ALL THESE LINES-IF INCASE ...PREFER SIMPLE ONE-->
+					
+				</td>
+				<td><%=h examquestion.marks %></td>
+				<td><%= check_box_tag "exam[examquestion_ids][]", examquestion.id, @exam.examquestions.include?(examquestion) %>
+					
+					<%#= check_box_tag "exam[examquestion_ids][]", question.id, @exam.examquestions.include?(question) %></td>
+				<% count+=1%>
+			</tr>
+			<% end %>
+	<%# end %>
+		</table>
+<% end %>
 
-	<tr>
-		<td colspan=4><strong>Subjektif - MEQ</strong><BR></td>
-	</tr>
-	<% for examquestion in Examquestion.find(:all, :conditions => ['questiontype =?', 'MEQ'] ) %>
-	<tr>
-		<td><%= examquestion.subject.name %></td>
-		<td><%= examquestion.question %> <BR>	<%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %></td>
-		<td align="center"><%= examquestion.marks.to_s %></td>
-		<td><%= check_box_tag "exam[examquestion_ids][]", examquestion.id, @exam.examquestions.include?(examquestion) %></td>
-	</tr>
-	<% end %>
 	
-	<tr>
-		<td colspan=4><strong>Subjektif - SEQ</strong><BR></td>
-	</tr>
-	<% for examquestion in Examquestion.find(:all, :conditions => ['questiontype =?', 'SEQ'] ) %>	
-	<tr>
-		<td><%= examquestion.subject.name %></td>
-		<td><%= examquestion.question %><BR><%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %></td>
-		<td align="center"><%= examquestion.marks.to_s %></td>
-		<td><%= check_box_tag "exam[examquestion_ids][]", examquestion.id, @exam.examquestions.include?(examquestion) %></td>
-	</tr>
-	<% end %>
+	</div>
 	
-	<tr>
-		<td colspan=4><strong>ACQ</strong><BR></td>
-	</tr>
-	<% for examquestion in Examquestion.find(:all, :conditions => ['questiontype =?', 'ACQ'] ) %>	
-	<tr>
-		<td><%= examquestion.subject.name %></td>
-		<td><%= examquestion.question %><BR><%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %></td>
-		<td align="center"><%= examquestion.marks.to_s %></td>
-		<td><%= check_box_tag "exam[examquestion_ids][]", examquestion.id, @exam.examquestions.include?(examquestion) %></td>
-	</tr>
-	<% end %>
-	
-	<tr>
-		<td colspan=4><strong>OSCI</strong><BR></td>
-	</tr>
-	<% for examquestion in Examquestion.find(:all, :conditions => ['questiontype =?', 'OSCI'] ) %>	
-	<tr>
-		<td><%= examquestion.subject.name %></td>
-		<td><%= examquestion.question %><BR><%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %></td>
-		<td align="center"><%= examquestion.marks.to_s %></td>
-		<td><%= check_box_tag "exam[examquestion_ids][]", examquestion.id, @exam.examquestions.include?(examquestion) %></td>
-	</tr>
-	<% end %>
-	
-	<tr>
-		<td colspan=4><strong>OSCII</strong><BR></td>
-	</tr>
-	<% for examquestion in Examquestion.find(:all, :conditions => ['questiontype =?', 'OSCII'] ) %>	
-	<tr>
-		<td><%= examquestion.subject.name %></td>
-		<td><%= examquestion.question %><BR><%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %></td>
-		<td align="center"><%= examquestion.marks.to_s %></td>
-		<td><%= check_box_tag "exam[examquestion_ids][]", examquestion.id, @exam.examquestions.include?(examquestion) %></td>
-	</tr>
-	<% end %>
-</table>
+
 </div>
 
   <p>
@@ -117,3 +187,4 @@
 
 <%= link_to 'Show', @exam %> |
 <%= link_to 'Back', exams_path %>
+

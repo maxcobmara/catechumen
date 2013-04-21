@@ -1,0 +1,129 @@
+<%= stylesheet_link_tag 'report' %>
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>	
+<div class="A4potrait">
+
+<!-- Box Head -->
+<div id="kewpa">
+<p class="marginright" align="right"><b>KEW. PA-28</b></p>
+<H4 align="center"><b>LAPORAN AWAL KEHILANGAN ASET ALIH KERAJAAN</b></H4>
+
+<table class="textform">
+	<tr>
+		<td>Nyatakan :-</td>
+		<td></td>
+	</tr>
+	
+	<tr>
+		<td>1.</td>
+		<td>Keterangan Aset Yang Hilang</td>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td>(a) &nbsp; &nbsp; &nbsp; Jenis Aset : <SPAN class="filler"><%= @asset_loss.asset.typename %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td>(b) &nbsp; &nbsp; &nbsp; Jenama dan Model : <SPAN class="filler"><%= @asset_loss.asset.name %> <%= @asset_loss.asset.modelname %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td>(c) &nbsp; &nbsp; &nbsp; Kuantiti : <SPAN class="filler">1</SPAN></td>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td>(d) &nbsp; &nbsp; &nbsp; Tarikh Perolehan : <SPAN class="filler"><%= l(@asset_loss.asset.purchasedate) %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td>(e) &nbsp; &nbsp; &nbsp; Harga Perolehan Asal : <SPAN class="filler"><%= ringgols(@asset_loss.asset.purchaseprice) %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td>2.</td>
+		<td>Tempat sebenar di mana kehilangan berlaku<BR/><SPAN class="filler"><%= @asset_loss.location_details %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td>3.</td>
+		<td>Tarikh kehilangan berlaku atau diketahui<BR/><SPAN class="filler"><%= l(@asset_loss.lost_at) %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td>4.</td>
+		<td>Cara bagaimana kehilangan berlaku<BR/><SPAN class="filler"><%= @asset_loss.how_desc %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td>5.</td>
+		<td>Nama dan jawatan pegawai yang akhir sekali menyimpan/mengguna aset yang hilang<BR/>
+				<SPAN class="filler"><%= @asset_loss.handled_by.staff_name_with_position %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td>6.</td>
+		<td>Sama ada seseorang pegawai yang difikirkan <i>prima facie</i> bertanggungjawab ke atas kehilangan itu.  Jika ya, nama dan jawatannya<BR/>
+				<SPAN class="filler"><%= @asset_loss.is_prima_facie? ? "Nama" : "Tiada" %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td>7.</td>
+		<td>Sama ada seseorang pegawai telah ditahan kerja<BR/>
+				<SPAN class="filler"><%= @asset_loss.is_staff_action? ? "Ada" : "Tiada" %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td>8.</td>
+		<td>No. Rujukan dan Tarikh Laporan Polis<BR/>
+				<SPAN class="filler"><%= @asset_loss.is_police_report_made? ? @asset_loss.police_report_code : "Tiada" %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td>9.</td>
+		<td>Langkah-langkah sedia ada untuk menggelakkan kehilangan itu berlaku<BR/>
+				<SPAN class="filler"><%= @asset_loss.preventive_measures %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td>10.</td>
+		<td>Langkah-langkah segera yang diambil bagi mencegah berulangnya kejadian itu<BR/>
+				<SPAN class="filler"><%= @asset_loss.new_measures %></SPAN></td>
+	</tr>
+	
+	<tr>
+		<td>11.</td>
+		<td>Catatan<BR/>
+				<SPAN class="filler"><%= @asset_loss.notes %></SPAN></td>
+	</tr>	
+</table>
+
+<div class="free_signature_block">
+	<!--
+	...............................<BR/>
+		Tandatangan Ketua Jabatan<BR/>-->
+	Nama : <SPAN class="filler"><%= check_kin_blank {@asset_loss.hod.name} %></SPAN><BR/>
+	Jawatan : <SPAN class="filler"><%= check_kin_blank {@asset_loss.hod.position.name} %><BR/>
+	Tarikh : <SPAN class="filler"><%= l(@asset_loss.endorsed_on)%><BR/>
+	Cop Jabatan : <SPAN class="filler">via ICMS</SPAN><BR/>
+	
+
+</div>
+
+
+
+
+
+
+</div></div>

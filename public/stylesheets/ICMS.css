@@ -18,6 +18,9 @@ input {font-family: courier, serif; font-size: 12px;}
 					width: 15em; padding: 3px ;
 					-webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px;}
 select {font-family: courier,serif; font-size: 12px;}
+input.compulsory, textarea.compulsory {font-family: courier, serif; font-size: 12px; background-color:#FFF0F5;}
+select.compulsory {font-family: courier,serif; font-size: 12px; font-color:#FFF0F5;}
+input.numero {text-align:right}
 
 
 /*Main Layout*/
@@ -47,10 +50,10 @@ select {font-family: courier,serif; font-size: 12px;}
 		#header img { margin: 0px;}
 	
 		#notifications { position:relative; float: right; top: 40px; right: -110px;} 
-				#notifications p, #notifications a {
-						padding: 0px 0px; margin: 0;
-				    font-size: 8px; font-weight: none; font-family: Helvetica, Verdana, sans-serif;
-				    color: #FCE8B4; text-decoration: none; text-align: right;}
+		#notifications p, #notifications a {
+						padding: 0px 0px; margin: 0; line-height:120%;
+				    	font-size: 8px; font-weight: none; font-family: Helvetica, Verdana, sans-serif;
+				    	color: #FCE8B4; text-decoration: none; text-align: right;}
 				
 				
 #navbar {position:relative; width: 100%;  height: 2.1em; background: #3B5998; padding: 2px 0 0 0; margin: 0;}
@@ -97,24 +100,27 @@ select {font-family: courier,serif; font-size: 12px;}
 
 #notifications_nuovo { 
 	position:relative; 
-	width: 25%; padding: 10px 20px; margin : 10px 50px;
+	width: 20%; padding: 10px 20px; margin : 10px 0px;
 	background: #F0D9D9;
 	font: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #4f6b72;
 	-webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px;
 	 }
 			#notifications_nuovo H4 {padding:0;font-size: 1.1em; padding: 0px 0px; margin: 1px; color: #000; font: 13px;}
-			#notifications_nuovo a, #notifications_nuovo p {padding:0; margin :3px; color:#4f6b72; text-decoration: none; font: 10px ;}
+			#notifications_nuovo a, #notifications_nuovo p {
+				padding:0; margin :3px; line-height:150%;
+				font-size: 11px; font-weight: none; font-family: Helvetica, Verdana, sans-serif;
+				color:#555; text-decoration: none;}
+				
+		    #notifications_nuovo a:hover, #notifications_nuovo p:hover {
+				background: #FEE; color:#000;}
 			
-			#notifications {
-				width: 80%;
-				align: center;
-				}
+			
 			
 
 
 #content {position:static; 
-	    width:90%; padding: 20px 10px 10px 15px; min-height:440px; 
+	    width:95%; padding: 20px 10px 10px 15px; min-height:440px; 
 }
 					
 #bulletin { position:static; width: 100%;border: 1px solid white; z-index:0;}
@@ -236,9 +242,9 @@ select {font-family: courier,serif; font-size: 12px;}
 	border-collapse:collapse;
 	border: 3px white;
 	text-align:left;
-	padding:5px;
-	margin-left: 40px;
-	background-color: #F3F4F5;
+	padding:15px 40px;
+	margin-left: 20px; margin-bottom: 20px;
+	background-color: #F6F7F8;
 }
 
 .tform table {padding: 2px 5px;}
@@ -249,12 +255,14 @@ select {font-family: courier,serif; font-size: 12px;}
 }
 
 .tform H2{ 
-	background:#CDF; 
-	color: #000;
+	background:#6193D2; 
+	color: #FFF;
 	font-family: tahoma, sans-serif;
 	font-size: 12px; 
-	font-weight: bold;
-	padding: 12px 5px;
+	letter-spacing: 0.2em; 
+	font-weight: normal;
+	padding: 12px 10px;
+	margin: 10px -20px 1.5em -20px;
 }
 
 
@@ -266,23 +274,29 @@ select {font-family: courier,serif; font-size: 12px;}
 .tform th {
 	/*border-collapse:collapse;*/
 	font-family: tahoma, sans-serif;
-	color: #444;   
-	font-size: 12px;    
-	font-style: bold;
+	color: #FFF;   
+	font-size: 11px;
+	letter-spacing: 1px;    
+	font-style: normal;
     text-align: left;
-    background-color: #ABC;
+    background-color: #9AB;
     border-bottom:solid 1px #d2d1cb;
-	padding: 3px 5px;
+	padding: 4px 5px;
 	margin: 15px;
 	height: auto;
+	letter-spacing: 0.15em;
 }
 
-.tform td {
-   vertical-align: top;
-   border-bottom:solid 1px #F0F4FF;
-   padding: 3px 35px 3px 5px;
-}
+.tform th.level_2 { font-family: tahoma, sans-serif; color: #111; font-size: 11px; letter-spacing: 0.15em; font-weight: normal; text-align: left;
+    				background-color: #F1F6FF; border-bottom:solid 1px #d2d1cb; padding: 1em 5px 4px 5px; margin: 15px; height: auto;}
 
+.tform td {vertical-align: top; border-bottom:solid 1px #F0F4FF; padding: 3px 35px 7px 5px;}
+.tform td.tlight {padding: 3px 5px 3px 5px;}
+.tform td.tright {text-align:right; padding: 3px 5px 3px 5px;}
+/* 15Apr2013*/
+.tform td.mcq {text-align:right;vertical-align:middle;width:20px;padding-right:3px;border-spacing:0px;height:5px;}
+.tform td.mcq2 {text-align:left;vertical-align:middle;width:300px;padding:0px;border-spacing:0px;height:5px;}
+/* 15Apr2013*/
 .tform .show-image {height: 22em;}
 
 .tform  .diagram {
@@ -304,12 +318,36 @@ select {font-family: courier,serif; font-size: 12px;}
 	vertical-align: top;
     /*background-color: #CCCCCC;*/
 }
-
+/*1Apr2013*/
+.tform .leftcol2 {
+    font-weight: bold;
+    font-family: tahoma, sans-serif;
+    text-align: left;
+    font-style: bold;
+    width: 200px;
+	/*text-indent:5px;*/
+	vertical-align: middle;
+    /*background-color: #CCCCCC;*/
+}
+.tform .leftcol3 {
+	font-weight: bold;
+    font-family: tahoma, sans-serif;
+    text-align: left;
+    font-style: bold;
+    width: 200px;
+	height:10px;
+}
+/*1Apr2013*/
 .tform .leftcolwide {
     font-weight: bold; font-family: tahoma, sans-serif; text-align: left; font-style: bold; 
 	width: 250px; vertical-align: top;
 }
+.tform .isbn_bg1{padding-top:1px;padding-left:1px;padding-right:1px;padding-bottom:1px;background-color:#F7B8E3;font-weight:bold;}
+.tform .isbn_bg2{padding-top:1px;padding-left:1px;padding-right:1px;padding-bottom:1px;background-color:#C9FCD7;font-weight:bold;}
+.tform .isbn_bg3{padding-top:1px;padding-left:1px;padding-right:1px;padding-bottom:1px;background-color:#FBDFC3;font-weight:bold;}
 
+
+/*1Apr2013*/
 .tform .pagenote {
 	font-family: tahoma, sans-serif; text-align: left; 
 	color: #444;   font-size: 10px; vertical-align: middle;;
@@ -345,11 +383,36 @@ select {font-family: courier,serif; font-size: 12px;}
 .indextable th {padding:3px 3px; background:#fffdfa; color:#818181; text-align: left; 	border-bottom:solid 1px #d2d1cb;}
 .indextable th .current{padding-right: 20px; background-repeat: no-repeat; background-position: right center;}
 .indextable td{padding:4px 3px 7px 5px; background:#fbfcfc;  border-bottom:solid 1px #e0e0e0; font-size: 1em; }
+.indextable td.action { width: 20px; padding:auto; margin:auto; text-align:center;}
 /*.indextable a {color:#BBB; font-size: 12px; text-decoration:none;}*/
 .indextable tr:hover td{background:#fff9e1; }
 .indextable th .asc {background-image: url(/images/bullet_arrow_up.png);}
 .indextable th .desc {background-image: url(/images/bullet_arrow_down.png);}
 .indextable .list-image {width: 60px; height: 70px;}
+
+.noti_Container {
+    position:relative;     /* This is crucial for the absolutely positioned element */
+    /* border:1px solid blue; This is just to show you where the container ends */
+    width:12px;
+    height:12px;
+}
+.noti_bubble {
+    position:absolute;    /* This breaks the div from the normal HTML document. */
+    top: -5px;
+    right:-5px;
+    padding:1px 2px 1px 2px;
+    background-color:#EEE; /* you could use a background image if you'd like as well */
+    color:black;
+    font-weight:bold;
+    font-size:0.6em;
+
+    /* The following is CSS3, but isn't crucial for this technique to work. */
+    /* Keep in mind that if a browser doesn't support CSS3, it's fine! They just won't have rounded borders and won't have a box shadow effect. */
+    /* You can always use a background image to produce the same effect if you want to, and you can use both together so browsers without CSS3 still have the rounded/shadow look. */
+    /*border-radius:30px;*/
+    box-shadow:1px 1px 1px gray;
+}
+
 
 	
 .tlist {}
@@ -381,6 +444,9 @@ select {font-family: courier,serif; font-size: 12px;}
   height:       70px;
 }
 
+div.fields {padding:0; margin:0;}
+div.fields table{width:90%; padding:0; margin:0;"}
+div.fields td	{padding:0 5px; margin:0; border-left: 1px solid #DDD; border-bottom: 1px solid #DDD;}
 
 
 
@@ -388,8 +454,8 @@ select {font-family: courier,serif; font-size: 12px;}
 /* show form */
 fieldset { margin: 0 0 22px 0; border: 1px solid #CAE8EA; padding: 12px 17px; background-color: #F5FAFA; }
 legend { 
-	font-size: 1.1em; background-color: #095D92; color: #FFFFFF;  padding: 4px 8px; 
-	font-weight: bold; font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;; text-align: left; }
+	font-size: 1.1em; background-color: #6193D2; color: #FFFFFF;  padding: 4px 20px 4px 10px; 
+	font-weight: bold; font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;; text-align: left; letter-spacing: 0.2em;  }
 .showform  {
 	border-collapse:collapse; border: 3px white; padding:5px;
 	text-align:left; margin-left: 40px; background-color: #F6F7F8;

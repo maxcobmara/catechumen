@@ -1,11 +1,22 @@
 class StudentDisciplineCase < ActiveRecord::Base
+  # befores, relationships, validations, before logic, validation logic, 
+  #controller searches, variables, lists, relationship checking
+  
+  before_save :close_if_no_case
   
   belongs_to :staff, :foreign_key => 'reported_by'
+  belongs_to :ketua, :class_name => 'Staff', :foreign_key => 'assigned_to'
+  belongs_to :tphep, :class_name => 'Staff', :foreign_key => 'assigned2_to'
+  
+  belongs_to :location
   belongs_to :student
   belongs_to :cofile, :foreign_key => 'file_id'
   
+  has_many :student_counseling_sessions, :foreign_key => 'case_id', :validate => false#, :dependent => :destroy
+  accepts_nested_attributes_for :student_counseling_sessions#, :reject_if => lambda { |a| a[:requested_at].blank? }
   
-  validates_presence_of :reported_by, :student_id, :status, :infraction_id
+  
+  validates_presence_of :reported_by, :student_id, :status, :infraction_id, :assigned_to
   
   #validate :confimed_date
   
@@ -14,7 +25,32 @@ class StudentDisciplineCase < ActiveRecord::Base
       #errors.add(:leavenddate, "Your leave must begin before it ends") if leavenddate < leavestartdate || leavestartdate < DateTime.now
     #end
   #end
-   
+  
+  named_scope :new,       :conditions => [ "status =?", "New"           ]
+  named_scope :opencase,  :conditions => [ "status =?", "Open"          ]
+  named_scope :tphep,     :conditions => [ "status =?", "Refer to TPHEP"]
+  named_scope :bpl,       :conditions => [ "status =?", "Refer to BPL"  ]
+  named_scope :closed,    :conditions => [ "status =?", "Closed"        ]
+  
+  FILTERS = [
+    {:scope => "new",   :label => "New"},
+    {:scope => "opencase",  :label => "Open"},
+    {:scope => "tphep", :label => "Refer to TPHEP"},
+    {:scope => "bpl",   :label => "Refer to BPL"},
+    {:scope => "closed",:label => "Closed"}
+  ]
+  
+  def close_if_no_case
+    if action_type == "no_case" || action_type == "advise" || action_type == "counseling"
+      self.status = "Closed"
+    elsif action_type == "Ref TPHEP"
+      self.status = "Refer to TPHEP"
+    end
+    if action_type != "Refer to BPL"
+      self.sent_to_board_on = nil
+    end
+  end
+  
 
     
   # Data Stuff-----------------------------------------------
@@ -28,15 +64,17 @@ class StudentDisciplineCase < ActiveRecord::Base
     
     def status_workflow
     flow = Array.new
-    if status == nil
-      flow << "New"
-    elsif status == "New"
-      flow << "Open" 
-    elsif status == "Open"
-      flow << "Open" << "No Case" << "Refer to BPL" << "Closed" 
-    elsif status == "Refer to BPL"
-      flow << "Refer to BPL" << "Closed"
-    else
+      if status == nil
+        flow << "New"
+      elsif status == "New"
+        flow << "Open" 
+      elsif status == "Open"
+        flow << "Open" << "Refer to TPHEP" << "Closed" 
+      elsif status == "Refer to TPHEP"
+        flow << "Refer to TPHEP" << "Refer to BPL" << "Closed"
+      elsif status == "Refer to BPL"
+        flow << "Refer to BPL" << "Closed"
+      else
     end
     flow
     end
@@ -52,7 +90,7 @@ class StudentDisciplineCase < ActiveRecord::Base
     ]
     
     def reporter_details 
-          suid = reported_by.to_a
+          suid = Array(reported_by)
           exists = Staff.find(:all, :select => "id").map(&:id)
           checker = suid & exists     
 
@@ -66,47 +104,14 @@ class StudentDisciplineCase < ActiveRecord::Base
     end
     
     def student_name
-      suid = student_id.to_a
-      suexists = Student.find(:all, :select => "id").map(&:id)
-      studentchecker = suid & suexists
-
-        if student_id == nil
-          ""
-        elsif studentchecker == []
-          "Student No Longer Exists"
-        else
-          " #{student.formatted_mykad_and_student_name}"   
-        end 
+      student.blank? ? "Student No Longer Exists" : " #{student.formatted_mykad_and_student_name}" 
     end
     
     def file_name
-      fileid = Array(file_id)
-      doesfileexists = Cofile.find(:all, :select => "id").map(&:id)
-      filechecker = fileid & doesfileexists
-        if file_id == nil
-          ""
-        elsif filechecker == []
-          "File Does Not Exist"
-        else
-          " #{cofile.name}"   
-        end 
+      cofile.blank? ? "Not Assigned" : " #{cofile.name}"  
     end
     
     def room_no
-      suid = student_id.to_a
-      suexists = Tenant.find(:all, :select => "student_id").map(&:student_id)
-      roomchecker = suid & suexists
-      curroom = Tenant.find(:all, :select => "location_id", :conditions => {:student_id => roomchecker}, :limit => 1).map(&:location_id)
-      romname = Location.find(:all, :conditions => {:id => curroom}).map(&:name)
-      romcode = Location.find(:all, :conditions => {:id => curroom}).map(&:code)
-      
-
-        if student_id == nil
-          ""
-        elsif roomchecker == []
-          "Not Assigned"
-        else
-          romcode.to_s + " - " + romname.to_s
-        end 
+      location.blank? ? "Not Assigned" : " #{location.location_list}"  
     end
 end

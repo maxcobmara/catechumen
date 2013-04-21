@@ -1,28 +1,25 @@
 <fieldset>
-	<legend>Travel Request </legend>
+	<legend class='togvis'>Travel Request </legend>
 		<table width=100%>
 			<tr>
 				<td class="leftcol"><label for="staff_id"><b><%= t 'staffleave.staff_id' %></b></label></td>
 				<td><%=h @travel_request.applicant.staff_name_with_position unless @travel_request.applicant.blank? %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><label for="request_code"><%= t 'travel.trcode' %></label></td>
-				<td><%=h @travel_request.request_code %></td>
+				<td class="leftcol"><label for="request_code"><%= t 'document.refno' %></label></td>
+				<td><%=h @travel_request.document.refno %> &nbsp; : &nbsp;   
+					  <%=h @travel_request.document.title %> &nbsp; : &nbsp;   
+					  <label>dated</label> <%=h tarikh(@travel_request.document.letterdt) %></td>
 			</tr>
 		</table>
 </fieldset>
 
 <fieldset>
-	<legend>Travel Request </legend>
+	<legend class='togvis'>Travel Request Details</legend>
 		<table width=100% >
 			<tr>
 				<td class="leftcol"><label for="destination"><%= t 'travel.destination' %></label></td>
 				<td> <%=h @travel_request.destination %></td>
-			</tr>
-
-			<tr>
-				<td class="leftcol"><label for="purpose"><%= t 'travel.purpose' %></label></td>
-				<td><%=h @travel_request.purpose %></td>
 			</tr>
 
 			<tr>
@@ -37,32 +34,21 @@
 
 			<tr>
 				<td class="leftcol"><label for="transport_type">Transport Choice</label></td>
-				<td><%=h @travel_request.transport_type %></td>                                                        
+				<td><label>
+						<%=h @travel_request.own_car? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.own_car_notes %>Own Car &nbsp; &nbsp; 
+						<%=h @travel_request.dept_car? ? image_tag("tick.png") : image_tag("cross.png") %> Dept Car &nbsp; &nbsp; 
+						<%=h @travel_request.dept_car? ? image_tag("tick.png") : image_tag("cross.png") %> Other's Car &nbsp; &nbsp; </label></td>                                                        
 			</tr>
 
-      <% if @travel_request.transport_type == 'publik' %>
 			<tr>
-				<td class="leftcol">Other Transport Types</td>
-		    <td><%= f.label :train %> <%=h @travel_request.train %> &nbsp; &nbsp;
-						<%= f.label :plane %> <%=h @travel_request.plane %> &nbsp; &nbsp;
-						<label>Other Public Transport</label> <%=h @travel_request.other %>
-						<%= f.check_box :other, :id => 'other_transport' %></td>
+				<td class="leftcol">Public Transport</td>
+		    <td><label>
+						<%=h @travel_request.taxi? ? 	image_tag("tick.png") : image_tag("cross.png") %>Taxi &nbsp; &nbsp; 
+						<%=h @travel_request.bus? ? 	image_tag("tick.png") : image_tag("cross.png") %> Bus &nbsp; &nbsp; 
+						<%=h @travel_request.train? ? image_tag("tick.png") : image_tag("cross.png") %> Other's Car &nbsp; &nbsp; 
+						<%=h @travel_request.plane? ? image_tag("tick.png") : image_tag("cross.png") %> Other's Car &nbsp; &nbsp; 
+						<%=h @travel_request.other? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.other_desc %>Own Car &nbsp; &nbsp; </label></td>                                                        
 			</tr>
-			<% end -%>
-
-			<% if @travel_request.other == true %>
-			<tr>
-				<td class="leftcol">List (if Others)</td>
-		    <td><%=h @travel_request.other_desc %></td>
-			</tr>
-			<% end -%>
-			
-			<% if @travel_request.transport_type == 'own' %>
-			<tr>
-				<td class="leftcol">Reasons for taking own car</td>
-		    <td><%=h @travel_request.own_car_notes %></td>
-			</tr>
-			<% end -%>
 
 			<tr>
 				<td class="leftcol">Mileage</td>

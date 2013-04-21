@@ -2,7 +2,7 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left"><%= t 'asset.list' %></h2>
+		<h2 class="left">Assets</h2>
 		<div class="right">
 			<% form_tag assets_path, :method => 'get' do %>
 			<%= text_field_tag :search, params[:search], :placeholder => "Reg No, Name"  %>
@@ -11,21 +11,30 @@
 		</div>
   </div>
 </div>
-<div class="pagination">
- <%= will_paginate @assets %>  
+
+<div class="toolbar">
+	<table width=100%><tr>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Register a new asset') + "New Asset", new_asset_path %></p></td>
+		<td></td><td></td><td></td><td></td>
+		<td width=10%></td>
+		<td><div class="pagination"><%= will_paginate @assets %></div>
+		<td class="action"><div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA4'), :action => 'kewpa4' %><div class="noti_bubble">4</div></div></td>
+		<td class="action"><div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA5'), :action => 'registerinventory' %><div class="noti_bubble">5</div></div></td>
+		<td class="action"><div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA13'), :action => 'kewpa13' %><div class="noti_bubble">13</div></div></td>
+
+		<td width=15% style="text-align:right;"><%= select_tag_for_filter("assets", @filters, params) %></td>
+	</tr></table>
 </div>
+<BR/>
+
 <div class="indextable">
 	<table>
-		<tr>
-			<th colspan=3><%= link_to image_tag("add.png", :border => 0, :title => 'Register a new asset') + "New Asset", new_asset_path %></th>
-			<th colspan=7><div class="right"><%= select_tag_for_filter("assets", @filters, params) %></div></th>
-		</tr>
 		<tr>
     	<th><%= t 'asset.assetcode' %></th>
       <th><%= t 'asset.name' %></th>
       <th><%= t 'asset.purchasedate' %></th>
 	    <th align="right"><%= t 'asset.purchaseprice' %></th>
-	    <th colspan=6 class="ac">Control</th>
+	    <th colspan=7 class="ac">Control</th>
     </tr>
 		<% @asset_gbtype.sort.each do |gbtype, assets| %>
   	<tr>
@@ -44,31 +53,46 @@
 	    <td><%=h asset.subcategory %> - <%=h asset.typename %> - <%=h asset.name %> - <%=h asset.modelname %></td>
 	    <td><%=h asset.purchasedate %></td>
 	    <td align="right" width=90px><%=h ringgols(asset.purchaseprice) %></td>
+	
+			
+<!--  Disposal Moved to repair
 	    <td width=10px>
-					<% if asset.mark_disposal == true && asset.am_i_gone == false %>
-						<%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_disposal_path(:asset_id => asset) %>
-					<% end %>
-				</td>
-			<td width=10px>
-				<% if asset.assettype == 1 && asset.am_i_gone == false %>
-					<%= link_to image_tag("bullet_wrench.png", :border => 0), :action => 'maintenance', :id => asset %>
-				<% end %></td>
+					<#% if asset.is_disposed == true && asset.am_i_gone == false %>
+						<#%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_disposal_path(:asset_id => asset) %>
+					<#% end %></td>-->
 				
-
 			<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => asset %></td>
-			<td width=10px >
-	    		<% if asset.assettype == 2 %>
-	 						<%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA3'), :action => 'kewpa3', :id => asset %>
-					<% else %>
-							<%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA2'), :action => 'kewpa2', :id => asset %>
-					<% end %></td>
 			
 		  <td width=10px>
 			<% if asset.am_i_gone == false %>
 							<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => asset %>
 			<% end %></td>
+			
+			<td width=10px><%= link_to image_tag("building_go.png", :border => 0, :title => 'Location'), :action => 'asset_placement', :id => asset %></td>
+			
+			<td width=10px>
+				<% if asset.is_maintainable == true && asset.am_i_gone == false %>
+					<%= link_to image_tag("bullet_wrench.png", :border => 0, :title => 'Maintenance'), :action => 'maintenance', :id => asset %>
+				<% end %></td>
+						
+			<td class="action">
+	    		<% if asset.assettype == 2 %>
+	 					<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA3'), :action => 'kewpa3', :id => asset %><div class="noti_bubble">3</div></div>
+					<% else %>
+						<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA2'), :action => 'kewpa2', :id => asset %><div class="noti_bubble">2</div></div>
+					<% end %></td>
+					
+			<td class="action">
+					<% if asset.is_maintainable == true && asset.am_i_gone == false %>
+						<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA14'), :action => 'kewpa14', :id => asset %><div class="noti_bubble">14</div></div></td>
+					<% end %></td>
 		  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset, :confirm => 'Are you sure?', :method => :delete %></td>
   	</tr>
+
+
+
+
+
 		<% end %>
 		<% end %>
 </table>

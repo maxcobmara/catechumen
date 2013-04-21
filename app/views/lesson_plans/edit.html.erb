@@ -1,0 +1,24 @@
+<% form_for(@lesson_plan, :html => { :multipart => true }) do |f| %>
+  <%= f.error_messages %>
+
+	<% if (@lesson_plan.prepared_by == User.current_user.staff_id && @lesson_plan.is_submitted != true) || (@lesson_plan.prepared_by == User.current_user.staff_id && @lesson_plan.is_submitted == false) || (@lesson_plan.prepared_by == User.current_user.staff_id && @lesson_plan.hod_rejected? == true ) || @lesson_plan.is_submitted == false || @lesson_plan.is_submitted == nil %>
+		<h3>Editing Lesson Plan</h3>
+		<div class="tform">
+			<%=render :partial => 'form', :locals => {:f => f} %>
+			<%=render :partial => 'form_process', :locals => {:f => f} %>
+		</div>
+	<% end -%>
+	<% if @lesson_plan.is_submitted == true && @lesson_plan.endorsed_by == User.current_user.staff_id %>
+		<h3>Lesson Plan Approval</h3>
+		<div class="tform">
+			<%=render :partial => 'show_main' %>
+			<%=render :partial => 'approval', :locals => {:f => f} %>
+		</div>
+	<% end -%>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @lesson_plan %> |
+<%= link_to 'Back', lesson_plans_path %>

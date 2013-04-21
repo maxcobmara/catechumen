@@ -1,0 +1,2 @@
+module BooleanchoicesHelper
+end

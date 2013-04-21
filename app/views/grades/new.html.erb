@@ -1,12 +1,54 @@
-<h3>New Grade</h3>
+<% if @new_type && @new_type == "1" %>
+	<%= @aa=params[:programme_id]%>--<%= @bb=params[:subject_id]%>
+	<h3>Multiple New Grades</h3>	
+	<% form_tag :action => 'create' do |f|%>	
+		<% @grades.each_with_index do |grade, index| %>
+			<% fields_for "grades[#{index}]", grade do |f| %>		
+				<%= render :partial => 'form_multiple', :locals => {:f => f,:index=>index,:aaa=>@aa,:bbb=>@bb} %>
+			<% end %>			<!-- end of - fields_for "grades[#{index}]"-->
+		<% end %>				<!-- end of - @grades.each_with_index -->				
+		<p><%= submit_tag 'Create Template',:name => :new_submit %>
+		<%#= submit_tag 'Create All Records',:name => :new_submit %></p>
+	<% end %>
+	
+<% elsif @new_type && @new_type == "0" %>
 
-<% form_for(@grade) do |f| %>
-  <%= f.error_messages %>
+	<h3>New Grade</h3>
+	<% form_for(@grade) do |f| %>
+  		<%= f.error_messages %>
+		<%=render :partial => 'form', :locals => {:f => f} %> 
+		<p><%= f.submit 'Create' %></p>
+	<% end %>
 
-  <%=render :partial => 'form', :locals => {:f => f} %> 
+<% elsif @new_type && @new_type == "2" %>
 
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
+	<h3>New Multiple grades</h3>
+	<% form_tag :action => 'new' do |f|%>
+		<div class="tform">
+		<%= hidden_field_tag( "new_type","1" )%>
+		<h2>Filter by Programme & Subject</h2>
+		<table>
+			<tr>
+				<td class="leftcol">Programme</td>
+				<td>
+		
+				<%= select_tag ('programme_id', "<option value='0'>Select a programme</option>" + options_from_collection_for_select(Programme.roots, :id, :programme_list) ,
+								:onchange => remote_function(:update => 'satusatu', 
+								:url => {:action => 'view_subject' }, 
+								:with => "'programmeid='+$('programme_id').value ")) %>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">Subject</td>
+				<td>
+					<div id="satusatu">
+						<%= select_tag('subject_id', "<option value='0'>All subjects</option>" + options_from_collection_for_select(Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list)) %>
+					</div>
+				</td>
+			</tr>
+		</table>
+		</div>
+		<p><%= submit_tag 'Proceed', :subject_id => nil %></p>
+	<% end %>
 <% end %>
 <%= link_to 'Back', grades_path %>

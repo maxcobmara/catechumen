@@ -1,0 +1,170 @@
+<%= stylesheet_link_tag 'report' %> 
+<div id="A4landscape">
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+</form>
+<fieldset width=10px >
+
+<div id="title">
+<p class="marginright" align="right"><b>KEW. PA-17</b></p><BR>
+
+<BR>
+<H3>LAPORAN LEMBAGA PEMERIKSA ASET ALIH KERAJAAN <BR><BR> </H3>
+	
+
+<BR>
+<div id="tprintreport">	
+	<table><tr><td width=200><b>KEMENTERIAN/JABATAN: </td><td>KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU	</b></td></tr></table>
+	<table width=80% border=1px cellspacing=0 align="center">
+		
+	
+		<tr>
+			<td rowspan=3 align="center" BGCOLOR="#FEFE56"><b>BIL<b></td>
+			<td rowspan=3 align="center" BGCOLOR="#FEFE56"><b>JABATAN/<BR>BAHAGIAN</b></td>
+			<td rowspan=3 align="center" BGCOLOR="#FEFE56"><b>KETERANGAN ASET</b></td>
+			<td rowspan=3 align="center" BGCOLOR="#FEFE56"><b>UNIT</b></td>
+			<td rowspan=3 align="center" BGCOLOR="#FEFE56"><b>KUANTITI</b></td>
+			<td rowspan=3 align="center" BGCOLOR="#FEFE56"><b>TARIKH<BR>PEMBELIAN</b></td>
+		 	<td rowspan=3 align="center" BGCOLOR="#FEFE56"><b>TEMPOH<BR>DIGUNAKAN/<BR>SIMPANAN</b></td>
+			<td colspan=2 align="center" BGCOLOR="#FEFE56"><b>HARGA PEROLEHAN<BR>ASAL</b></td>
+			<td colspan=2 align="center" BGCOLOR="#FEFE56"><b>NILAI SEMASA</b></td>
+			<td rowspan=3 align="center" BGCOLOR="#FEFE56"><b>NYATAKAN KEADAAN<BR>ASET DENGAN JELAS</b></td>
+			<td rowspan=3 align="center" BGCOLOR="#FEFE56"><b>SYOR KAEDAH PELUPUSAN DAN JUSTIFIKASI</b></td>
+	</tr>
+	
+		<tr>
+			<td align="center"><b>SEUNIT</b></td>
+			<td align="center"><b>JUMLAH</b></td>
+			<td align="center"><b>SEUNIT</b></td>
+			<td align="center"><b>JUMLAH</b></td>
+		</tr>	
+		
+		<tr>
+			<td align="center"><b>RM</b></td>
+			<td align="center"><b>RM</b></td>
+			<td align="center"><b>RM</b></td>
+			<td align="center"><b>RM</b></td>
+		</tr>
+			<% bil = 0 %><% asal = 0.00 %><% current = 0.00 %>
+			<% @asset_disposals.each do |asset_disposal| %>
+			<% bil += 1 %>
+		<tr>
+			<td BGCOLOR="#FEFE56"><%=bil%></td>
+			<td align="right" BGCOLOR="#FEFE56"><b></b></td>
+			<td BGCOLOR="#FEFE56">
+				<%=h asset_disposal.asset.assetcode %>&nbsp;<BR>
+				<%=h asset_disposal.asset.typename %> <%=h asset_disposal.asset.name %> <%=h asset_disposal.asset.modelname %>
+			</td>
+			<td BGCOLOR="#FEFE56"><%=h asset_disposal.asset.quantity_type %>	&nbsp;</td>
+			<td align = "center" BGCOLOR="#FEFE56"><%=h asset_disposal.asset.quantity? ? asset_disposal.asset.quantity : 1 %>&nbsp;</td>
+			<td align = "center" BGCOLOR="#FEFE56"><%=h asset_disposal.asset.purchasedate %>&nbsp;</td>
+			<td align = "center" BGCOLOR="#FEFE56"><%= Date.today-asset_disposal.asset.purchasedate%> days&nbsp;</td>
+			<td align = "right" BGCOLOR="#FEFE56"><%=h asset_disposal.asset.quantity? ? number_with_precision(asset_disposal.asset.purchaseprice.to_f/asset_disposal.asset.quantity.to_i, :precision =>2) : number_with_precision(asset_disposal.asset.purchaseprice, :precision => 2) %>&nbsp;</td>
+			<td align = "right" BGCOLOR="#FEFE56"><%=h number_with_precision(asset_disposal.asset.purchaseprice, :precision => 2) %>&nbsp;</td>
+			<td align = "right" BGCOLOR="#FEFE56"><%#= number_with_precision(asal, :precision => 2) %><%=h asset_disposal.asset.quantity? ? number_with_precision(asset_disposal.current_value.to_f/asset_disposal.asset.quantity.to_i, :precision => 2) : asset_disposal.current_value %>
+			&nbsp;</td>
+			<td align = "right" BGCOLOR="#FEFE56"><%#= number_with_precision(asal, :precision => 2) %><%=number_with_precision(asset_disposal.current_value,:precision =>2) %>&nbsp;</td>
+			<td BGCOLOR="#FEFE56"><%#=asset_disposal.current_condition %>&nbsp;&nbsp;</td>
+			<td BGCOLOR="#FEFE56">
+				<%#=asset_disposal.disposal_type %><!-- - --><%#=asset_disposal.discard_options %>
+				<br><%#=asset_disposal.justify1_disposal %> <%#=asset_disposal.justify2_disposal %> <%#=asset_disposal.justify3_disposal %>
+				&nbsp;</td>
+		</tr>
+				<% asal+=asset_disposal.asset.purchaseprice.to_f %>
+				<% current+=asset_disposal.current_value.to_f %>
+			<% end %>
+	<!--	<tr style="border-bottom:hidden 0px #ffffff;">--><tr style="border-bottom-color:#000000;">
+			<td colspan=5 BGCOLOR="#FEFE56" >&nbsp;</td><!--
+			<td align="right" BGCOLOR="#FEFE56"></td>
+			<td BGCOLOR="#FEFE56">&nbsp;</td>
+			<td BGCOLOR="#FEFE56">&nbsp;</td>
+			<td BGCOLOR="#FEFE56">&nbsp;</td>-->
+			<td colspan=3 align="right" BGCOLOR="#FEFE56"><b>JUMLAH KESELURUHAN</b></td>
+			<!--<td BGCOLOR="#FEFE56">&nbsp;</td>
+			<td BGCOLOR="#FEFE56">&nbsp;</td>-->
+			<td align = "right" BGCOLOR="#FEFE56"><%= number_with_precision(asal, :precision => 2) %>&nbsp;</td>
+			<td BGCOLOR="#FEFE56">&nbsp;</td>
+			<td align = "right" BGCOLOR="#FEFE56"><%= number_with_precision(current, :precision => 2) %>&nbsp;</td>
+			<td colspan=2 BGCOLOR="#FEFE56" >&nbsp;</td><!--
+			<td BGCOLOR="#FEFE56">&nbsp;</td>-->
+		</tr>
+			
+	</table>
+	<div></div>
+	<table border=0 width=80% cellspacing=0 align="center">
+			<tr>
+				<td width=45% BGCOLOR="#FEFE56">&nbsp;</td>
+				<td width=5% BGCOLOR="#FEFE56">&nbsp;</td>
+				<td BGCOLOR="#FEFE56">&nbsp;</td>
+				<td BGCOLOR="#FEFE56">&nbsp;</td>
+			</tr>
+			<tr>
+				<td BGCOLOR="#FEFE56">Tarikh pelantikan Lembaga Pemeriksa.............................................................................................<BR><BR></td>
+				<td BGCOLOR="#FEFE56">&nbsp;</td>
+				<td BGCOLOR="#FEFE56">Tandatangan</td>
+				<td BGCOLOR="#FEFE56">..................................................................(Pengerusi)</td>
+			</tr>
+			<tr>
+				<td BGCOLOR="#FEFE56">&nbsp;</td>
+				<td BGCOLOR="#FEFE56">&nbsp;</td>
+				<td BGCOLOR="#FEFE56">Nama&nbsp;</td>
+				<td BGCOLOR="#FEFE56">......................................................................................</td>
+			</tr>
+			<tr>
+				<td BGCOLOR="#FEFE56">Tarikh pemeriksaan...............................................................................................................................</td>
+				<td BGCOLOR="#FEFE56"></td>
+				<td BGCOLOR="#FEFE56">Jawatan&nbsp;</td>
+				<td BGCOLOR="#FEFE56">......................................................................................</td>
+			</tr>
+			<tr>
+				<td BGCOLOR="#FEFE56">Tempat pemeriksaan.............................................................................................................................<BR><BR></td>
+				<td BGCOLOR="#FEFE56"></td>
+				<td BGCOLOR="#FEFE56">Tandatangan</td>
+				<td BGCOLOR="#FEFE56">..........................................................................(Ahli)</td>
+			</tr>
+			<tr>
+				<td BGCOLOR="#FEFE56">&nbsp;</td>
+				<td BGCOLOR="#FEFE56">&nbsp;</td>
+				<td BGCOLOR="#FEFE56">Nama&nbsp;</td>
+				<td BGCOLOR="#FEFE56">......................................................................................</td>
+			</tr>
+			<tr>
+				<td BGCOLOR="#FEFE56">&nbsp;</td>
+				<td BGCOLOR="#FEFE56"></td>
+				<td BGCOLOR="#FEFE56">Jawatan&nbsp;</td>
+				<td BGCOLOR="#FEFE56">......................................................................................</td>
+			</tr>
+	</table>
+	<BR><!--
+	 <tr>
+		  <td colspan=2>
+			    <BR><BR> 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			.........................................
+			    <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				    Tandatangan Pegawai Pengawal <BR>
+			    <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tarikh pelantikan Lembaga Pemeriksa &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+				<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tarikh pemeriksaan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%#= l(Date.today()) %>
+				<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tempat pemeriksaan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</td><BR><Br>
+				<p class="marginright" align="right"><b></b>*(Ruangan boleh ditambah jika ahli Lembaga Pemeriksa lebih daripada 2 orang)</p>
+				<BR>
+		</tr>-->
+	<BR>
+	<p class="marginright" align="right"><b></b>*(Ruangan boleh ditambah jika ahli Lembaga Pemeriksa lebih daripada 2 orang)</p>
+
+</div>
+</fieldset>
+
+
+<BR>
+<div id="hideLink">
+<%= link_to 'Back', assettracks_path %>
+</div>
+

@@ -1,0 +1,43 @@
+<div class="tform">
+
+<fieldset>
+	<legend class='togvis'>Weekly Timetable</legend>
+		<table width=85% >
+			<tr>
+				<td class="leftcol"><label>Topic</label></td>
+				<td><%=h @topicdetail.subject_topic.semester_subject_topic %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Duration:</label></td>
+				<td><%=h @topicdetail.duration.strftime("%H:%M") %> (Hours : Minutes)</td>				
+			</tr>		  
+			<tr>
+				<td class="leftcol">Version no:<label></label></td>
+				<td><%=h @topicdetail.version_no %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Objectives:</label></td>
+				<td><%=h simple_format(@topicdetail.objctives) %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Contents:</label></td>
+				<td><%=h simple_format(@topicdetail.contents) %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Theory:</label></td>
+				<td><%=h @topicdetail.theory.strftime("%H:%M") %> (Hours : Minutes)</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Tutorial:</label></td>
+				<td><%=h @topicdetail.tutorial.strftime("%H:%M") %> (Hours : Minutes)</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Practical:</label></td>
+				<td><%=h @topicdetail.practical.strftime("%H:%M") %> (Hours : Minutes)</td>				
+			</tr>
+		</table>
+</fieldset>
+</div>			
+
+<%= link_to 'Edit', edit_topicdetail_path(@topicdetail) %> |
+<%= link_to 'Back', topicdetails_path %>

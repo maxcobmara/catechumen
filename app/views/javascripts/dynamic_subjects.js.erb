@@ -1,3 +1,26 @@
-var subjects = new Array();
-<% for subject in @subjects -%>
-	subjects.push(new Array(<%= subject.id, '<%=h subject.subjectcode %>', '<%=h subject.name %>' ))
+	var subjects = new Array();
+	<% for subject in @subjects -%>
+	  subjects.push(new Array( <%= Programme.find(subject.id).parent.parent_id %>,'<%=h subject.name %>', <%= subject.id %>)); <%#= subject.programme_id %>
+	<% end -%>
+
+	function programmeSelected() {
+	  programme_id = $('weeklytimetable_programme_id').getValue();
+	  options = $('weeklytimetable_subject_id').options;
+	  options.length = 1;
+	  subjects.each(function(subject) {
+	    if (subject[0] == programme_id) {
+	      options[options.length] = new Option(subject[1], subject[2]);
+	    }
+	  });
+	  if (options.length == 1) {
+	    $('subject_field').hide();
+	  } else {
+	    $('subject_field').show();
+	  }
+	
+	}
+
+	document.observe('dom:loaded', function() {
+	  $('subject_field').hide();
+	  $('weeklytimetable_programme_id').observe('change', programmeSelected);
+	});

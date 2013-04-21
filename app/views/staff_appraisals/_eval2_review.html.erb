@@ -1,0 +1,56 @@
+<!--Part VIII-->
+<H2><%= t 'evaluation.form.title_part9' %></H2>
+<table width=90%>
+
+	<tr  valign=bottom>
+		<td class="leftcolwide"><label for="PPKyears"><%= t 'evaluation.form.part8_desc' %></label></td>
+		<td></label><%= f.select :e2_years, 0..21  %> &nbsp; <label><%= t 'years_label' %></label>  &nbsp;&nbsp; &nbsp; &nbsp;
+								<%= f.select :e2_months, 0..11 %> &nbsp; <label><%= t 'months_label' %><BR/><BR/></td>
+		<td></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcolwide"><label for="PPKoverall"><%= t 'evaluation.form.part9_desc' %></label></td>
+		<td colspan=2><%= f.text_area :e2_performance, :size => '50x5' %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcolwide"><label for="PPK_id"><%= t 'evaluation.form.ppkid' %></label></td>
+		<td><%= @staff_appraisal.eval2_officer.name %></td>
+		<td></td>
+	</tr>
+</table>
+
+<table width=100%>
+	<tr>
+	  <td class="leftcolwide"><label for="is_complete">Evaluation is complete</label></td>
+		<td><%= f.check_box :is_complete, :id => 'is_complete' %>
+				<SPAN id="span_is_complete" style="display: none;"><%= f.date_select :is_completed_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
+		<td class="pagenote">Clicking on complete will lock this record <BR/> and disables your editing this record further</td>
+	</tr>
+</table>
+
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			//show submit date
+
+			$j("input[id='is_complete']").change(function() {  
+			 if($j('#is_complete').is(':checked')) { 
+			    $j("#span_is_complete").show("highlight"); 
+			 }else		{
+			    $j("#span_is_complete").hide(""); 
+			 }	
+			});
+
+			$j("input[id='is_complete']").each(function() {  
+			 if($j('#is_complete').is(':checked')) { 
+			    $j("#span_is_complete").show("highlight"); 
+			 }else		{
+			    $j("#span_is_complete").hide(""); 
+			 }	
+			});
+
+	});
+</script>
+

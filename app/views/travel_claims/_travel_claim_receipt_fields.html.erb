@@ -1,0 +1,26 @@
+<% if @checkist == 0 %>
+<div class="fields">
+	<table>
+		<tr>
+			<td width=20%> <%= f.select :expenditure_type,
+			                  TravelClaimReceipt::RECEIPTTYPE,
+			                  :prompt => "Select" %></td>
+			<td width=30%> <%= f.text_field :receipt_code %></td>
+			<td align="right" width=20%> <%= f.text_field :amount, :size => '10' %></td><%= f.hidden_field :_destroy %>
+			<td align="right" width=30%><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>   </td>
+		</tr>
+	</table>
+</div>
+<% else %>
+<div class="fields">
+	<table width=90%>
+		<tr>
+			<td width=20%> <%=h (TravelClaimReceipt::RECEIPTTYPE.find_all{|disp, value| value == f.object.expenditure_type}).map {|disp, value| disp} %></td>
+			<td width=30%> <%= f.object.receipt_code %></td>
+			<td align="right"><%= ringgols(f.object.amount) %></td>
+			<td width=27% style="padding-left:15px;"%>
+				<label><%= f.radio_button :checker, 'true' %> OK <%= f.radio_button :checker, 'false' %> Query : <%= f.text_field :checker_notes, :size => '15' %></td>
+		</tr>
+	</table>
+</div>
+<% end %>

@@ -1,6 +1,6 @@
 <%= stylesheet_link_tag 'report' %>
 <!--A4Potrait-->
-<div id="A4potrait">
+
 <form action="#">	
 <script>
 document.write("<input type='button' " +
@@ -8,19 +8,25 @@ document.write("<input type='button' " +
 "class='printbutton' " +
 "value='Print This Page'/>");
 </script>
-</form>	
-<fieldset width=10px >	
+</form>
+<div id="hideLink">
+<%= link_to 'Edit', edit_asset_path(@asset) %> |
+<%= link_to 'Back', assets_path %>
+</div>
+<div class="A4potrait_paged">
+
 
 <!-- Box Head -->
 <div id="kewpa">
+<BR/>
 <p class="marginright" align="right"><b>KEW. PA-2</b><BR>( No. Siri Pendaftaran : &nbsp;&nbsp;&nbsp;&nbsp; <%=h @asset.assetcode %> )</p>
 <H4 align="center"><b>DAFTAR HARTA MODAL</b></H4>
-<p class="marginleft">Kementerian/Jabatan &nbsp;&nbsp;&nbsp;&nbsp;:<i> Kolej Kesihatan Kesihatan Bersekutu Johor Bahru</i><BR>
+<p class="marginleft" style="padding:0 0 0 20mm;">Kementerian/Jabatan &nbsp;&nbsp;&nbsp;&nbsp;:<i> Kolej Kesihatan Kesihatan Bersekutu Johor Bahru</i><BR>
 				Bahagian &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <i> </i>
 </p> 
 
 <P align="center"><b>BAHAGIAN A</b></P>
-<table width=100% border=1px padding=0px cellspacing=0px>
+<table border=1px padding=0px cellspacing=0px style="width:197mm; margin:auto;">
 	<tr>
 		<td width=23%>Kod Nasional</td>
 		<td colspan=3>&nbsp;</td>
@@ -35,8 +41,10 @@ document.write("<input type='button' " +
 	</tr>
 	<tr>
 		<td>Jenis/Jenama/Model</td>
-		<td colspan=3> <%=h @asset.typename %> &nbsp;/
-					   <%=h @asset.name %> &nbsp;/ <%=h @asset.modelname %> &nbsp;</td>
+		<td colspan=3> <%=h @asset.typename %> &nbsp;
+					   <%=h @asset.name %> &nbsp; <%=h @asset.modelname %> &nbsp;
+					<!--<%#=h @asset.typename %> &nbsp;/
+								   <%#=h @asset.name %> &nbsp;/ <%#=h @asset.modelname %> &nbsp;--></td>
 		
 	</tr>
 	<tr>
@@ -62,7 +70,7 @@ document.write("<input type='button' " +
 		<td rowspan=2 valign="top">No Pendaftaran<BR>(Bagi Kenderaan)</td>
 		<td rowspan=2><%=h @asset.registration %> &nbsp;</td>
 		<td>Tempoh Jaminan</td>
-		<td align="center"><%=h @asset.warranty_length %> &nbsp; Bulan</td>
+		<td align="center">&nbsp; <%=h @asset.warranty_length? ? @asset.warranty_length/12 : "-" %> Tahun <%=h @asset.warranty_length? ? @asset.warranty_length % 12 : "-" %> Bulan </td>
 	</tr>
 	<tr>
 		<td rowspan=2 colspan=2>Nama Pembekal Dan Alamat:
@@ -83,9 +91,9 @@ document.write("<input type='button' " +
 			.........................................
 			    <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				    Tandatangan Ketua Jabatan <BR>
-			    <BR>Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=h @asset.assigned_details %>
-				<BR>Jawatan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=h @asset.position_details  %><!--21/11/2011 - Shaliza added code for position if no longer exist.-->
-				<BR>Tarikh &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%= l(Date.today()) %>
+			    <BR>Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=h Position.find_by_code("1").staff.name %>
+				<BR>Jawatan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=h Position.find_by_code("1")[:positionname]  %><!--21/11/2011 - Shaliza added code for position if no longer exist.-->
+				<BR>Tarikh &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%#= l(Date.today()) %>
 				<BR>Cop &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
 			</td>
 		</tr>
@@ -94,55 +102,87 @@ document.write("<input type='button' " +
 <BR>
 <!--table1-->
 <div id="table1">
-<table width=100% border=1px padding=5px cellspacing=0px>
+<!--	
+<div style="border:1px solid black; background-color:#FEFE56; font:Times New Roman; font-size:13; font-weight:bold; text-align:center; padding:2px 0px; margin:auto; width:197mm;">
+	PENEMPATAN
+</div>-->
+<table border=1px padding=5px cellspacing=0px style="width:197mm; margin:auto;">
+	<tr>
+		<th align="center" BGCOLOR="#FEFE56">PENEMPATAN</th>
+	</tr>
+</TABLE>
+<!--<div style="border:none; background-color:#FFF; font:Times New Roman; font-size:13; font-weight:bold; text-align:center; padding:0px 0px; margin:0 0 0 5.5mm; width:37mm; float:left;">-->
+<div style="none; background-color:#FFF; font:Times New Roman; font-size:13; font-weight:bold; text-align:center; padding:0px 0px;  margin:-2px 0 0 6mm; width:39mm; float:left;"><!--5.5mm-39mm-->
+<!--	<div style="none; background-color:#FFF; font:Times New Roman; font-size:13; font-weight:bold; text-align:center; padding:0px 0px;  margin:-2px 0 0 0; width:38mm; float:left;">-->
+	<table width=100% border=1px padding=5px cellspacing=0px>
+		<tr>
+			<td style="font-size:13; height:6mm;">Lokasi</td>
+		</tr>
+		<tr>
+			<td style="font-size:13; height:6mm;">Tarikh</td>
+		</tr>
+		<tr>
+			<td style="font-size:13; height:6mm;">Nama Pegawai</td>
+		</tr>
+		<tr>
+			<td style="font-size:13; height:6mm;">Tandatangan</td>
+		</tr>
+	</table>
+	</div>
 
-	<tr>
-		<th colspan=8 align="center" BGCOLOR="#FEFE56">PENEMPATAN</th>
-	</tr>
-	<tr>
-		<td width=160px>Lokasi</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>Tarikh</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>Nama Pegawai</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>Tandatangan</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
+ <% filled_div = @asset.asset_placements.size * 23 %>
+ <% empty_div = (6 - @asset.asset_placements.size) * 23 %>
 
-</table>
-<BR>
-<table width=100% border=1px padding=5px cellspacing=0px>
+		<% for asset_placement in @asset.asset_placements.all(:order => 'reg_on ASC') %>
+		<div style="none; background-color:#FFF; font:Times New Roman; font-size:13; font-weight:bold; text-align:center; padding:0px 0px;  margin:-2px 0 0 -2px; width:27mm; float:left;">
+			<table width=100% border=1px cellspacing=0px style="padding:0; margin:0;" >
+			<tr>
+			<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:4; margin:0;"><%= check_kin {asset_placement.location.code} %></td>
+			</tr>
+			<tr>
+			<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center;padding:4; margin:0;"><%= tarikh(asset_placement.reg_on) %></td>
+			</tr>
+			<tr>
+			<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:4; margin:0;"><%= (check_kin {asset_placement.staff.name}).split(" ")[0..3].join(" ")  %></td>
+			</tr>
+			<tr>
+			<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:4; margin:0;">&nbsp;</td>
+			</tr>
+
+			</table>
+		</div>
+		<% end %>
+	
+		<% for ss in 1..(6 - @asset.asset_placements.size) %>		
+		<div style="none; background-color:#FFF; font:Times New Roman; font-size:13; font-weight:bold; text-align:center; padding:0px 0px;  margin:-2px 0 0 -3px; width:27mm; float:left;">
+			<table width=100% border=1px padding=5px cellspacing=0px  >
+				<% for bb in 1..4 %>
+				<tr>
+					<td style="font-family:tahoma; font-size:9;height:6mm;text-align:center; padding:4; margin:0;">&nbsp;</td>
+				</tr>
+				<% end %>
+			</table>
+			<BR>
+		</div>	
+	
+		<% end %>
+<!--		
+<div style="border:none; background-color:#FFF; font:Times New Roman; font-size:13; font-weight:bold; text-align:center; padding:0px 0px; margin:0 5mm 0 -4px; width:<%#="#{empty_div}"%>mm; float:left;">
+		<table width=100% border=1px padding=5px cellspacing=0px  >
+			<%# for bb in 1..4 %>
+			<tr>
+ 				<%# for ss in 1..(6 - @asset.asset_placements.size) %>
+ 					<td style="height:6mm;">&nbsp;</td>
+				<%# end %>
+			</tr>
+			<%# end %>
+		</table>
+		<BR/>
+</div>-->
+
+<!--<div>-->
+	
+<table border=1px padding=5px cellspacing=0px style="width:197mm; margin:auto;">
 	<tr>
 		<th colspan=8 align="center" BGCOLOR="#FEFE56">PEMERIKSAAN</th>
 	</tr>
@@ -189,7 +229,54 @@ document.write("<input type='button' " +
 
 </table>
 <BR>
-<table width=100% border=1px padding=5px cellspacing=0px>
+<!--add-in pelupusan/hapuskira utk kewpa2 harta modal 18dec2012-->
+
+<table border=1px padding=5px cellspacing=0px style="width:197mm; margin:auto;">
+	<tr>
+		<th BGCOLOR="#DDD" colspan=8 align="center">PELUPUSAN/HAPUSKIRA</th>
+	</tr>
+	<tr>
+		<td align="center">Rujukan Kelulusan</td>
+		<td align="center">Tarikh</td>
+		<td align="center">Kaedah Pelupusan</td>
+		<td align="center">Tandatangan</td>
+	</tr>
+	<!--temp solution for asset losses & write off-to use for loop-later-->
+	<% if @asset.asset_loss.blank? == false || @asset.asset_loss.nil? == false %>
+	<tr>
+		<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:4; margin:0;"><%= check_kin {@asset.asset_loss.document_id} %></td>
+		<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:4; margin:0;"><%= @asset.asset_loss.endorsed_on %>&nbsp;</td>
+		<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:4; margin:0;">Hapus kira</td>
+		<td><PRE></td>
+	</tr>
+	<% elsif @asset.asset_disposal.blank? == false || @asset.asset_disposal.nil? == false %>
+	<tr>
+		<td><%= @asset.asset_disposal.document_id %>&nbsp;</td>
+		<td><%= @asset.asset_disposal.discarded_on %>&nbsp;</td>
+		<td><%= @asset.asset_disposal.disposal_type %> - <% if @asset.asset_disposal.disposal_type == 'discard'%><%= @asset.asset_disposal.discard_options %><% end %>&nbsp;</td>
+		<td><PRE></td>
+	</tr>
+	<% else %>
+	<tr>
+		<td><!-- Date-->&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<% end %>
+	<!--temp solution for asset losses & write off-->
+	<tr>
+		<td><!-- Date-->&nbsp;</td>
+		<td><PRE></td>
+		<td><PRE></td>
+		<td><PRE></td>
+	</tr>
+
+</table>	
+<!--add-in pelupusan/hapuskira utk kewpa2 harta modal 18dec2012-->
+
+<!--yg asal
+<table border=1px padding=5px cellspacing=0px style="width:197mm; margin:auto;">
 	<tr>
 		<th colspan=4 align="center" BGCOLOR="#FEFE56">PELUPUSAN/HAPUSKIRA</th>
 	</tr>
@@ -205,14 +292,65 @@ document.write("<input type='button' " +
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr> 
-</table>
+</table>-->
+<!--</div>-->
 </div>	
 </div>
-</fieldset>
-
-<BR>	
-<div id="hideLink">
-<%= link_to 'Edit', edit_asset_path(@asset) %> |
-<%= link_to 'Back', assets_path %>
+<BR>	<BR>	<BR>	<BR>	<BR>	<BR>	<BR>	
 </div>
-</div><BR>
+
+<P CLASS="breakhere">
+<div class="A4potrait_paged">
+
+	<div id="kewpa">
+	<BR/>
+	<p class="marginright" align="right"><b>KEW. PA-2</b></p>
+	<H4 align="center"><b>DAFTAR HARTA MODAL</b></H4>
+	<H4 align="center"><b>BUTIR BUTIR PENAMBAHAN, PENGGANTIAN DAN NAIKTARAF</b></H4>
+
+	<P align="center">BAHAGIAN B</P>
+
+
+	<table border=1px padding=5px cellspacing=0px style="width:197mm; margin:auto;">
+
+		<tr>
+			<th align="center">Bil</td>
+			<th align="center">Tarikh</td>
+			<th align="center">Butiran</td>
+			<th align="center">Tempoh Jaminan</td>
+			<th align="center">Kos (RM)</td>
+			<th align="center">Nama & Tandatangan</td>
+		</tr>
+		<% filled_tds = @asset.maints.size %>
+	 	<% empty_tds = (20 - @asset.maints.size) %>
+		<% just_a_counter = 0 %>
+		<% for maint in @asset.maints.all(:order => 'created_at DESC') %>
+		
+		<% just_a_counter += 1 %>
+		<tr>
+			<td style="font-family:tahoma; font-size:9;height:7mm; text-align:center; padding:0; margin:0;">
+				<%=h just_a_counter %></td>
+			<td style="font-family:tahoma; font-size:9;height:7mm; text-align:left; padding:0 1mm; margin:0;">
+				<%=h maint.created_at.strftime("%d %b %Y") %></td>
+			<td	 style="font-family:tahoma; font-size:9;height:7mm; text-align:left; padding:0 1mm; margin:0;">
+					<%=h maint.details %></td>
+			<td	 style="font-family:tahoma; font-size:9;height:7mm; text-align:left; padding:0 1mm; margin:0;">
+					Ref WO <%=h maint.workorderno %></td>
+			<td	 style="font-family:tahoma; font-size:9;height:7mm; text-align:left; padding:0 1mm; margin:0;">
+					<%=h ringgols(maint.maintcost) %></td>
+			<td	 style="font-family:tahoma; font-size:9;height:7mm; text-align:left; padding:0 1mm; margin:0;">
+					<%=h check_kin {maint.asset.assignedto.name} %></td>
+		</tr> 
+		<% end %>
+		<% for empty_rows in 1..empty_tds %>
+		<tr>
+			<td style="height:7mm;">&nbsp;</td>
+			<td style="height:7mm;">&nbsp;</td>
+			<td style="height:7mm;">&nbsp;</td>
+			<td style="height:7mm;">&nbsp;</td>
+			<td style="height:7mm;">&nbsp;</td>
+			<td style="height:7mm;">&nbsp;</td>
+		</tr>
+		<% end %>
+	</table>	
+</div>

@@ -1,18 +1,12 @@
-<h3>New Time Table Entry</h3>
-
-<% form_for(@timetable, :html => { :multipart => true}) do |f| %>
+<% form_for(@timetable) do |f| %>
   <%= f.error_messages %>
-
-  <%= render :partial => 'form', :locals => {:f => f} %>
-
-
-  <% f.fields_for :studentattendances do |builder| %>
-		<p><% builder.text_field :student_id %></p>
-
-  <% end%>
+	<div class="tform">
+		<H2>New Timetable</H2>
+		<%=render :partial => 'form', :locals => {:f => f} %>
+	</div>
   <p>
     <%= f.submit 'Create' %>
   </p>
 <% end %>
-</div>
+
 <%= link_to 'Back', timetables_path %>

@@ -33,7 +33,7 @@ authorization do
     #Training Menu Items
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => :manage
-    
+    has_permission_on :weeklytimetables, :to => :manage
     #Library Menu Items
     has_permission_on [:librarytransactions, :books], :to => :manage
     
@@ -62,6 +62,14 @@ authorization do
     has_permission_on :attendances, :to => [:index, :show, :approve, :update] do
         if_attribute :approve_id => is {User.current_user.staff_id}
     end
+    
+    has_permission_on :staff_appraisals, :to => :create
+    has_permission_on :staff_appraisals, :to => :manage, :join_by => :or do 
+        if_attribute :staff_id => is {User.current_user.staff_id}
+        if_attribute :eval1_by => is {User.current_user.staff_id}
+        if_attribute :eval2_by => is {User.current_user.staff_id}
+    end
+    
     has_permission_on :leaveforstaffs, :to => :create
     has_permission_on :leaveforstaffs, :to => [:index, :show, :edit, :update] do
       if_attribute :staff_id => is {User.current_user.staff_id}
@@ -76,19 +84,25 @@ authorization do
         if_attribute :staff_id => is {User.current_user.staff_id}
     end
     
+    has_permission_on :asset_defects, :to => :create
+    has_permission_on :asset_defects, :to => [:read, :update]  do
+        if_attribute :reported_by => is {User.current_user.staff_id}
+    end
+    has_permission_on :asset_defects, :to => [:manage]  do
+        if_attribute :decision_by => is {User.current_user.staff_id}
+    end
+    
     has_permission_on :documents, :to => :approve, :join_by => :or do 
         if_attribute :stafffiled_id => is {User.current_user.staff_id}
         if_attribute :cc1staff_id => is {User.current_user.staff_id}
         if_attribute :cc2staff_id => is {User.current_user.staff_id}
     end  
     
-    has_permission_on :sdiciplines, :to => :create
-    has_permission_on :sdiciplines, :to => :approve do
-      if_attribute :reportedby_id => is {User.current_user.staff_id}
-    end
-    
     has_permission_on :student_discipline_cases, :to => :create
     has_permission_on :student_discipline_cases, :to => :approve do
+      if_attribute :assigned_to => is {User.current_user.staff_id}
+    end
+    has_permission_on :student_discipline_cases, :to => :read do
       if_attribute :reported_by => is {User.current_user.staff_id}
     end
 
@@ -99,6 +113,10 @@ authorization do
   
   role :staff_administrator do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
+  end
+  
+  role :finance_unit do
+    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve]
   end
   
   role :training_manager do
@@ -113,7 +131,9 @@ authorization do
   #Group Assets  -------------------------------------------------------------------------------
   role :asset_administrator do
     has_permission_on :assets, :to => :manage
+    has_permission_on :asset_defects, :to => :manage
   end
+
   
   #Group Locations  -------------------------------------------------------------------------------
   role :facilities_administrator do
@@ -130,7 +150,7 @@ authorization do
   #Group E-Filing ------------------------------------------------------------------------------- 
   role :e_filing do
     has_permission_on :cofiles, :to => :manage
-    has_permission_on :documents, :to => :manage
+    has_permission_on :documents, :to => [:manage, :generate_report]
   end
   
   #Group Student --------------------------------------------------------------------------------
@@ -177,8 +197,17 @@ authorization do
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar]
     has_permission_on :topics, :to => :manage
+    has_permission_on :weeklytimetables, :to => :manage #21March2013 added
   end
-  
+#--21march2013-new role added  
+  role :coordinator do
+    has_permission_on :programmes, :to => :manage
+    has_permission_on :timetables, :to => :manage
+    has_permission_on :weeklytimetables, :to => :manage do
+      if_attribute :prepared_by => is {User.current_user.staff_id}
+    end
+ end
+#--21march2013-new role added    
   role :lecturer do
     has_permission_on :examquestions, :to => :manage
     has_permission_on :programmes, :to => :core
@@ -186,8 +215,9 @@ authorization do
     has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar] do
       if_attribute :staff_id => is {User.current_user.staff_id}
     end
-    has_permission_on :trainingreports, :to => :manage do
+    has_permission_on :trainingreports, :to => :manage, :join_by => :or do
       if_attribute :staff_id => is {User.current_user.staff_id}
+      if_attribute :tpa_id => is {User.current_user.staff_id}
     end
     has_permission_on :timetables, :to => [:create]
   end
@@ -198,15 +228,10 @@ authorization do
   #Group Library   -------------------------------------------------------------------------------
   
   role :librarian do
-    has_permission_on :books, :to => [:manage]
-    has_permission_on :librarytransactions , :to => [:manage, :extend, :return]
+    has_permission_on :books, :to => [:manage, :extend, :return]
+    has_permission_on :librarytransactions , :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try]  
+
   end 
-  
-  
-  
-
-  
-
   
   role :guest do
     has_permission_on :users, :to => :create

@@ -1,0 +1,52 @@
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Listing Topic Details</h2>
+		<div class="right">
+	  </div>
+	</div>
+</div>
+
+<div class="toolbar">
+	<table width=100%><tr>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Topic Details') + "New Topic Detail", new_topicdetail_path %></p></td>
+	</tr></table>
+</div>
+
+
+<div class="indextable">
+
+<table>
+  <tr><!--
+    <th>Topic name</th>-->
+    <th>Topic</th>
+	<th>Version no</th>
+    <th>Duration (Total Hours)</th>
+    <th>Theory</th>
+    <th>Tutorial</th>
+    <th>Practical</th>
+	<th>Prepared by</th>
+	<th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @topicdetails.each do |topicdetail| %>
+  <tr><!--
+    <td><%=h topicdetail.topic_name %></td>-->
+    <td><%=h topicdetail.subject_topic.name %></td>
+	<td><%=h topicdetail.version_no %></td>
+    <td><%=h topicdetail.duration.strftime("%HH %MMin") %></td>
+    <td><%=h topicdetail.theory.strftime("%HH %MMin") %></td>
+    <td><%=h topicdetail.tutorial.strftime("%HH%MMin") %></td>
+    <td><%=h topicdetail.practical.strftime("%HH %MMin") %></td>
+<td><%=h topicdetail.topic_creator.name %></td>
+	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => topicdetail %></td>
+	<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => topicdetail %></td>
+	<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), topicdetail, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+</div>
+
+<%= link_to 'New Topic Detail', new_topicdetail_path %>

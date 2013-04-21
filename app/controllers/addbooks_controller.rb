@@ -82,4 +82,13 @@ class AddbooksController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def quickfill
+    @addbook = Addbook.new
+    render :layout => 'popup'
+    #@addbook = Addbook.new(params[:addbook])
+    #render :layout => 'popup'
+    #@addbook.save
+  end
+
 end

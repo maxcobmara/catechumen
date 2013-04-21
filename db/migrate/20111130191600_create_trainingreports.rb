@@ -4,12 +4,15 @@ class CreateTrainingreports < ActiveRecord::Migration
       t.integer :classtype
       t.integer :timetable_id
       t.boolean :location_state
-      t.text :ls_comment
-      t.text :staff_comment
+      t.text    :location_comment #if location_state == false
+      t.text    :abm_comment
+      t.text    :summary
       t.integer :staff_id
-      t.boolean :submit
-      t.text :tpa_comment
+      t.boolean :is_submitted
+      t.date    :is_submitted_on
       t.integer :tpa_id
+      t.text    :tpa_comment
+      t.date    :tpa_comment_on
 
       t.timestamps
     end

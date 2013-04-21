@@ -1,0 +1,63 @@
+<%= stylesheet_link_tag 'report', :media => "print" %>
+
+	<form action="#">
+			<script>
+			document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+			</script>
+	</form>
+	
+<div class="A4landscape" >
+<BR/>
+<table class="plong">
+	<thead>
+				<tr>
+					<th class="tright" colspan=6><b>KEW. PA-14</b></th>
+				</tr>
+				<tr>
+					<th colspan=6 style="padding-bottom:10mm;"><b>DAFTAR PENYELENGGARAAN HARTA MODAL</b><BR>(diisi oleh Pegawai Aset)</th>
+				</tr>
+				<tr>
+					<th class="htitle">Sub Kategori</th>
+					<th colspan=2 class="hdata">: &nbsp; <%=h @asset.subcategory  %></th>
+					<th class="htitle">No Siri Pendaftaran</th>
+					<th colspan=2 class="hdata">: &nbsp; <%=h @asset.assetcode %></th>	
+				</tr>
+				<tr>
+					<th class="htitle">Jenis</th>
+					<th colspan=2 class="hdata">: &nbsp; <%=h @asset.typename %></th>
+					<th class="htitle">Lokasi</th>
+					<th colspan=2 class="hdata">: &nbsp; <%=h check_kin {asset.asset_placements.last.location.location_list} %> </th>	
+				</tr>
+				<tr>
+					<th class="tcol"><b>(a)</b><BR>Tarikh</th>
+					<th class="tcol"><b>(b)</b><BR>Butir-Butir Kerja</th>
+					<th class="tcol"><b>(c)</b><BR>No Kontrak /Pesanan <BR> Kerajaan dan Tarikh</th>
+					<th class="tcol"><b>(d)</b><BR>Nama Syarikat /Jabatan <BR>Yang Menyelenggara</th>
+					<th class="tcol"><b>(e)</b><BR>Kos (RM)</th>
+					<th class="tcol"><b>(f)</b><BR>Nama & <BR>Tandatangan</th>
+				</tr>
+				
+	</thead>
+	
+	<tbody>
+			<% for maint in @asset.maints.all(:order => 'created_at DESC') %>
+				<tr>
+					<td class="tdata" style="text-align:center;" ><%=h maint.created_at.strftime("%d %b %Y") %></td>
+					<td class="tdata" style="white-space: nowrap; padding-right:3mm;" ><%=h maint.details %></td>
+					<td class="tdata"><%=h maint.workorderno %></td>
+					<td class="tdata"><%=h maint.maintainedby.name %></td>
+					<td class="tdata" style="text-align:right; padding-right:3mm;"><%=h ringgols(maint.maintcost) %></td>
+					<td class="tdata"><%=h check_kin {maint.asset.assignedto.name} %></td>
+				</tr>
+			<% end %>
+	</tbody>
+</table>
+<div>	
+	
+
+<div id="hideLink">
+<%= link_to 'Back', assets_path %>
+</div>

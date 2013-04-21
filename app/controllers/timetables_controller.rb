@@ -1,10 +1,8 @@
 class TimetablesController < ApplicationController
-  filter_access_to :all
   # GET /timetables
   # GET /timetables.xml
   def index
-    @timetables = Timetable.with_permissions_to(:index).find(:all)
-    @date = params[:month] ? Date.parse(params[:month]) : Date.today
+    @timetables = Timetable.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -27,7 +25,9 @@ class TimetablesController < ApplicationController
   # GET /timetables/new.xml
   def new
     @timetable = Timetable.new
-    @timetable.trainingnotes.build
+    @timetable.timetable_periods.build
+    
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @timetable }
@@ -46,8 +46,7 @@ class TimetablesController < ApplicationController
 
     respond_to do |format|
       if @timetable.save
-        flash[:notice] = 'Timetable was successfully created.'
-        format.html { redirect_to(@timetable) }
+        format.html { redirect_to(@timetable, :notice => 'Timetable was successfully created.') }
         format.xml  { render :xml => @timetable, :status => :created, :location => @timetable }
       else
         format.html { render :action => "new" }
@@ -63,8 +62,7 @@ class TimetablesController < ApplicationController
 
     respond_to do |format|
       if @timetable.update_attributes(params[:timetable])
-        flash[:notice] = 'Timetable was successfully updated.'
-        format.html { redirect_to(@timetable) }
+        format.html { redirect_to(@timetable, :notice => 'Timetable was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -84,23 +82,4 @@ class TimetablesController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
-  def calendar
-    @timetables = Timetable.with_permissions_to(:index).find(:all)
-    @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @timetables }
-    end
-  end
-  
-  def view_klass
-	  @programme_id = params[:programmeid]
-	  unless @programme_id.blank? 
-	    @klasses = Klass.find(:all, :conditions => ["programme_id=?", @programme_id])
-    end
-	  render :partial => 'form_klass', :layout => false
-  end
-
 end

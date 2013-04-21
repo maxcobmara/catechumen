@@ -1,3 +1,4 @@
+<!--Staff Show-->
 <div class="tform">
 	<div class="photo">
 		
@@ -17,7 +18,7 @@
 	
 		<tr>
 			<td class="leftcol"><label for="name"><%= t 'staff.name' %> :</label></td>
-			 <td><%=h @staff.title.name %> <%=h @staff.name %></td>
+			 <td><%=h @staff.title.name unless @staff.title.blank? %> <%=h @staff.name %></td>
 		</tr>
 	
 		<tr>
@@ -32,7 +33,7 @@
 	
 		<tr>
 			<td class="leftcol"><label for="position_id"><%= t 'staff.position' %> :</label></td>
-			 <td><%=h @staff.position.blank? ? "-" : @staff.position.positionname %></td>
+			 <td><%=h @staff.position.blank? ? "-" : @staff.position.name %></td>
 		</tr>
 	
 		<tr>
@@ -135,7 +136,7 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="position_id"><%= t 'staff.position_id' %> :</label></td>
-			<td><%=h @staff.position.blank? ? "-" : @staff.position.positionname %></td>
+			<td><%=h @staff.position.blank? ? "-" : @staff.position.name %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="Reports To"><%= t 'staff.reports_to' %> :</label></td>

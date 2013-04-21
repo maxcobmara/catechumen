@@ -155,4 +155,12 @@ def ruport
   def sort_direction
       %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
   end
+  
+  def for_staffgradeid
+    @staffs = Staff.find( :all, :conditions => [" staffgrade_id = ?", params[:id]]  ).sort_by{ |k| k['name'] }    
+    respond_to do |format|
+      format.json  { render :json => @staffs }      
+    end
+  end
+  
 end

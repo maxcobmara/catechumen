@@ -42,7 +42,7 @@ class Staff < ActiveRecord::Base
   has_many :sdiciplines,  :foreign_key => 'reportedby_id'
   has_many :strainings,   :foreign_key => 'staff_id'
   has_many :librarytransactions
-  has_one  :position
+  has_one  :position #has_many :positions #  #20Apr2013
   has_many :events,       :foreign_key => 'createdby'                                      #link to created by in events
   has_many :users
   has_many :timetables
@@ -73,29 +73,41 @@ class Staff < ActiveRecord::Base
   
   #Link to model Staff Appraisal                                                      
   has_many :appraisals,     :class_name => 'StaffAppraisal', :foreign_key => 'staff_id', :dependent => :destroy
-  has_many :eval1_officers, :class_name => 'StaffAppraisal', :foreign_key => 'evaluation1_by'
-  has_many :eval2_officers, :class_name => 'StaffAppraisal', :foreign_key => 'evaluation2_by'
+  has_many :eval1_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval1_by'
+  has_many :eval2_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval2_by'
   
+  
+  #Link to model Asset Defect
+  has_many :reporters, :class_name => 'AssetDefect', :foreign_key => 'reported_by'
+  
+  #Link to model Asset Disposal
+  has_many :processors, :class_name => 'AssetDisposal', :foreign_key => 'checked_by'
+  has_many :verifiers,  :class_name => 'AssetDisposal', :foreign_key => 'verified_by'
+  has_many :revaluers,  :class_name => 'AssetDisposal', :foreign_key => 'revalued_by'
+    
   #Link to model AssetTrack
-  has_many :staffinassettrack, :class_name => 'assettrack', :foreign_key => 'staff_id'
-  has_many :isby,              :class_name => 'assettrack', :foreign_key => 'issuedby'
-  has_many :assettrackreturn,  :class_name => 'assettrack', :foreign_key => 'returnedto'  
+  has_many :asset_loans
+  has_many :owners, :class_name => 'AssetLoan', :foreign_key => 'loaned_by'
+  has_many :hods,   :class_name => 'AssetLoan', :foreign_key => 'hod'
+  #has_many :staffinassettrack, :class_name => 'assettrack', :foreign_key => 'staff_id'
+  #has_many :isby,              :class_name => 'assettrack', :foreign_key => 'issuedby'
+  #has_many :assettrackreturn,  :class_name => 'assettrack', :foreign_key => 'returnedto'  
   
   #
   has_and_belongs_to_many :messages
   has_many :from, :class_name => 'Staff', :foreign_key => 'from_id'
   
+  #5APR2013
+  has_and_belongs_to_many :documents
+  #has_many :from, :class_name => 'Staff', :foreign_key => 'from_id'
+  
   #links to Model Cofile
   has_many :owners,    :class_name => 'Cofiles', :foreign_key => 'owner_id'
   has_many :borrowers, :class_name => 'Cofiles', :foreign_key => 'staffloan_id'
- 
   
-  #Link to model Sdicipline
- # has_many :sdiciplines, :class_name => 'Sdicipline', :foreign_key => 'reportedby_id' # reported_by
-  
-  #Link to Model Travelclaim
-  has_many :travelcode,    :class_name => 'Travelclaim',      :foreign_key => 'travelrequest_id'
-  has_many :hod,           :class_name => 'Travelclaim',      :foreign_key => 'hod_id'
+  #Link to Model travel_claim
+  has_many :travel_claims, :dependent => :destroy
+  has_many :approvers,           :class_name => 'TravelClaim',      :foreign_key => 'approved_by'
   
   #Link to Model Supplier
   has_many :issuesupply,      :class_name => 'usesupply',   :foreign_key => 'issuedby'
@@ -155,14 +167,23 @@ class Staff < ActiveRecord::Base
    has_many :staff_that_need_training, :class_name => 'Trainneed', :foreign_key => 'staff_id'
    has_many :training_managers, :class_name => 'Trainneed', :foreign_key => 'confirmedby_id'
    
-   
+  #links to Model Weeklytimetables-20March2013
+   has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by', :dependent => :nullify
+   has_many :endorsed_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'endorsed_by', :dependent => :nullify
+  #links to Model Weeklytimetables-21March2013
+   has_many :weekly_schedule_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'lecturer_id', :dependent => :nullify
+  #links to Model Topicdetail
+   has_many :topic_details, :class_name => 'Topicdetail', :foreign_key => 'prepared_by', :dependent => :nullify
+  #links to Model LessonPlan-26March2013
+   has_many :lessonplan_lecturers, :class_name => 'LessonPlan', :foreign_key => 'lecturer' 
+   has_many :lessonplan_creators, :class_name => 'LessonPlan', :foreign_key => 'prepared_by'
 #-------------Empty Field for Foreign Key Link------------------------
   has_many :courses
   has_many :sdiciplines
   has_many :attendances
   has_many :leaveforstudents  #approval of student leave
 #---------------------------------------------------------------------
-     #has_many :travelclaims
+     
 
     # def hod_with_name
     #   "#{formatted_mykad} #{name}"
@@ -212,7 +233,7 @@ class Staff < ActiveRecord::Base
   end
 
   def position_with_name   #this currenlt works with staff leave
-      "#{name}  (#{position.positionname})"
+      "#{name}  (#{position.name})"
   end
   
   def staff_name_with_position
@@ -223,7 +244,7 @@ class Staff < ActiveRecord::Base
     if position.blank?
       "-"
     else
-      position.positionname
+      position.name
     end
   end
   
@@ -243,29 +264,29 @@ class Staff < ActiveRecord::Base
   def render_reports_to
     if position.blank? 
       ""
-    elsif position.bosses.blank?
+    elsif position.parent.blank?
       "-"
-    elsif position.bosses.staff.blank?
-      "#{position.bosses.positionname}"
+    elsif position.parent.staff.blank?
+      "#{position.parent.name}"
     else 
-      "#{position.bosses.positionname} - #{position.bosses.staff.name}"
+      "#{position.parent.name} - #{position.parent.staff.name}"
     end
   end
   
   
   def staff_positiontemp
     sid = staff.id
-    spo = Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
+    spo = Position.find(:all, :select => "name", :conditions => {:staff_id => sid}).map(&:name)
     if spo == nil
       "NA"
     else 
-      @staff.position.positionname
+      @staff.position.name
     end 
   end
   
   def staff_position
     sid = staff.id
-    Position.find(:all, :select => "positionname", :conditions => {:staff_id => sid}).map(&:positionname)
+    Position.find(:all, :select => "name", :conditions => {:staff_id => sid}).map(&:name)
   end
  
 

@@ -1,0 +1,149 @@
+<!--
+is staff? : <%#= @rustaff %><br>
+staff :<%#= @staffsearch %> /
+student :<%#= @studentsearch %>-->
+<!--Staff Name : <%#= Staff.find(@staffsearch.to_i).name %><br>
+Total books on loan : <%#= @loaned_books%>-->
+<!--if staff, allowed = 5-->
+<!--
+<%# if @loaned_books < 5 %>
+	boleh pinjam lagi <%#= 5- @loaned_books%>
+<%# elsif  @loaned_books == 5 %>
+    Exceed quota for making book loan (5 for staff, 2 for student)
+<%# end %>
+<br>-->
+
+<!--part for staff details & student details (start)-->
+<% if @rustaff == '0' && @studentsearch != 0 %>
+	<% student= Student.find(@studentsearch) %>
+	<% quota = 2 %>
+	<fieldset>
+		<legend class='togvis'><b>Student Details</b></legend>
+			<table>
+				<tr>
+					<td class="leftcol">Matrix :</td>
+					<td><%=h student.matrixno %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Name : </td>
+					<td><%=h student.name %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Programme : </td>
+					<td><%=h check_kin{student.course.programme_list} %></td>
+				</tr>
+			</table>
+	</fieldset>
+<% elsif @rustaff != '0' && @staffsearch != 0 %>
+	<% staff = Staff.find(@staffsearch) %>
+	<% quota = 5 %>
+	<fieldset>
+		<legend class='togvis'><b>Staff Details</b></legend>
+			<table>
+				<tr>
+					<td class="leftcol">MyKad No :</td>
+					<td><%=h staff.icno %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Name : </td>
+					<td><%=h staff.name %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Position : </td>
+					<td><%=h staff.position.name %></td>
+				</tr>
+		</table>
+		</fieldset>
+<% elsif @rustaff == '0' && @studentsearch == 0 %>
+	&nbsp;&nbsp;&nbsp;<span class="isbn_bg3">Please select a student name</span>
+<% elsif @rustaff != '0' && @staffsearch == 0 %>
+	&nbsp;&nbsp;&nbsp;<span class="isbn_bg1">Please select a staff name</span>
+<% end %>
+<!--part for staff details & student details (end)-->
+
+<!--part for loaned book details (start)-->
+<% if (@rustaff == '0' && @studentsearch != 0) || (@rustaff != '0' && @staffsearch != 0) %>
+	
+	<H2><%= t 'librarytransaction.details' %></H2>
+	
+	<table>
+		<tr>
+			<td colspan="6" class="leftcol">Total books on loan : <%= @loaned_books %> </td>
+		</tr>
+		<% bil=1 %>
+		<% for book_on_loan in @books_on_loan %>
+		
+		<%# if book_on_loan.returned != true%><!--4Apr2013-->
+		<tr>
+			<td style="text-align:center;"><%=bil%></td>
+			<td ><%= check_kin {book_on_loan.accession.acc_book} %></td><!--4Apr2013-->
+			<td><b>Due : </b><%= l(book_on_loan.returnduedate) %></td>
+			<td>
+				<% if book_on_loan.extended != true && book_on_loan.returned != true %>
+					<%#= link_to image_tag("clock_add.png", :border => 0, :title => 'Extend'), :action => 'extend', :id => book_on_loan %> 
+					<%= link_to_remote image_tag("clock_add.png", :border => 0, :title => 'Extend'), :url => {:action => 'extend2', :id => book_on_loan}, :update => 'extend_return' %> Extend
+    			<% end %>
+			</td>
+			<td>
+				<% if book_on_loan.returned != true %>
+					<%#= link_to image_tag("book_previous.png", :border => 0, :title => 'Return'), :action => 'return', :id => book_on_loan %> 
+					<%= link_to_remote image_tag("book_previous.png", :border => 0, :title => 'Return'), :url => {:action => 'return2', :id => book_on_loan}, :update => 'extend_return' %> Return
+				<% end %>
+			</td>
+			<td></td>
+		</tr>
+		<%# end %><!--4Apr2013-->
+		
+		<% bil+=1%>
+		<% end %>
+	</table>
+	
+	<br>
+	
+	<%# @librarytransactions = Array.new(1) {Librarytransaction.new} %>
+	
+	<table width="60%">
+		<tr>
+			<td colspan="4" class="leftcol">Available book loan quota balance : <%= @quota_bal=quota-@loaned_books %> out of <%=quota%> books </td>
+		</tr>
+		
+		<%# 0.upto(@quota_bal-1) do |count| %><% count=0 %>
+		<%# fields_for "librarytransactions[#{count}]" do |f|%><!--TRIAL-LALALAL-->
+
+		<!--
+		<tr>-->
+			<!--compulsory to have this line here-->
+			<% @librarytransaction = Librarytransaction.new %>
+			
+			<!--just for checking (start)--><!--do not remove
+			<%#= @librarytransaction.books_that_are_out %>
+			<%#= Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out])%><br>-->
+			<!--just for checking (end)-->
+			<!--
+			<td><%#= count %></td>
+			<td>
+				<%#= f.collection_select :accession_id, Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :accession_no, :include_blank => :true %>
+				<%#= select_tag("librarytransactions[1][accession_id]", "<option>Select Book</option>" + options_from_collection_for_select(Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :acc_book)) %> 
+				<%#= hidden_field_tag("librarytransactions[1][student_id]", @studentsearch) %>
+			</td>
+			<td></td>
+			<td></td>
+		</tr>-->
+		
+		<%# end %>
+		<%# end%>
+		
+		
+	</table>
+	<% if @quota_bal > 0 %>
+	<div id="barunyediv">
+		<p><%= link_to_remote image_tag("add.png", :border => 0, :title => 'Add More'), :url => {:action => 'form_try', :index => count,:student=>@studentsearch, :rustaff=>@rustaff, :quota_bal=>@quota_bal }, :update => 'barunyediv' %> - Add More </p>
+		
+	</div>
+	<% end%>
+	
+
+
+<% end %>
+
+<!--part for loaned book details (end)-->		

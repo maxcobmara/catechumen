@@ -4,6 +4,26 @@ module ApplicationHelper
     number_to_currency(money, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
   end
   
+  def tarikh(haribulan)
+    l(haribulan) unless haribulan.blank?
+  end
+  
+  def check_kin
+       begin
+           return yield
+       rescue
+           return " -N/A- "
+       end
+  end
+   
+  def check_kin_blank
+        begin
+            return yield
+        rescue
+            return ""
+        end
+  end
+ 
   def pukka(points)
     number_with_precision(points, :precision => 1)
   end
@@ -58,5 +78,13 @@ module ApplicationHelper
   end
   
   #---------------23 Apr 2012 --------------------#
+  
+  #24March2013 - not working yet
+  def javascript(*files)
+    content_for(:head) { javascript_include_tag(*files) }
+  end
+  #24March2013
+  
+
   
 end

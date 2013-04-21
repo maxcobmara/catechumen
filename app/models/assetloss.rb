@@ -65,67 +65,22 @@ class Assetloss < ActiveRecord::Base
   
   #association error checking
     def asset_details         
-      if asset.blank?
-        "None Assigned"
-      elsif asset_id?
-        asset.code_asset
-      else 
-        "None Assigned"
-      end
+      check_kin {asset.code_asset}
     end
   
     def location_details 
-      if location.blank?
-        "Not Registered"
-      elsif losslocation_id?
-        location.location_list
-      else 
-        "Location has been removed"
-      end
+      check_kin {location.location_list}
     end
   
     def last_staff_to_handle
-       if laststaff.blank?
-          "Not Registered"
-        elsif lossstafflast_id?
-          laststaff.staff_name_with_position
-        else 
-          "Location has been removed"
-        end
+      check_kin {laststaff.staff_name_with_position}
     end
   
     def hod_details 
-      if hod.blank?
-         "Not Registered"
-       elsif hod_id?
-         hod.staff_name_with_position
-       else 
-       end
-    
-        suid = hod_id.to_a
-        exists = Staff.find(:all, :select => "id").map(&:id)
-        checker = suid & exists     
-
-        if hod_id == nil
-           "" 
-         elsif checker == []
-           "Staff No Longer Exists" 
-        else
-          hod.staff_name_with_position
-        end
-   end
+      check_kin {hod.staff_name_with_position}
+    end
    
-   def officer_details 
-         suid = sio_id.to_a
-         exists = Staff.find(:all, :select => "id").map(&:id)
-         checker = suid & exists     
-
-         if sio_id == nil
-            "" 
-          elsif checker == []
-            "Staff No Longer Exists" 
-         else
-           officer.staff_name_with_position
-         end
+    def officer_details 
+      check_kin {officer.staff_name_with_position}
     end
 end

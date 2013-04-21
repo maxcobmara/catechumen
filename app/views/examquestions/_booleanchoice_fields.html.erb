@@ -1,0 +1,145 @@
+<!--TRUE FALSE Question-start-->
+<table cellpadding=0 cellspacing=0 border=0>
+<tr>
+	<td class="leftcol3">&nbsp;</td>
+	<td style="text-align:right;vertical-align:middle;width:20px;padding-right:3px;border-spacing:0px;height:5px;">A</td>
+	<td class="mcq2">
+
+		<%= hidden_field "examquestion[booleanchoices_attributes][0]",:item, :value => "A" %>
+		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>	
+			<% if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
+			<%= hidden_field "examquestion[booleanchoices_attributes][0]",:id, :value => @examquestion.booleanchoices[0].id%>
+			<%= text_field "examquestion[booleanchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.booleanchoices[0].description %> 
+			<!--test to remove existing record-->
+			
+			<%#= hidden_field "examquestion[booleanchoices_attributes][0]",:_destroy %>
+			<%#= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>
+			<!--test to remove existing record-->
+			<!--temp:copy prev format-->	
+			<% else %>
+				<% if @examquestion.questiontype=="TRUEFALSE"%>
+					<%= text_field "examquestion[booleanchoices_attributes][0]",:description, :size=>60 %> 	
+				<% end %>
+			<% end %>
+			<!--temp:copy prev format-remove once completed-->
+		<% else %>
+			<% if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleanchoices[0]%>
+				<%= text_field "examquestion[booleanchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.booleanchoices[0].description  %> 	
+			<% else %>
+				<%= text_field "examquestion[booleanchoices_attributes][0]",:description, :size=>60 %> 	
+			<% end %>		
+		<% end %>
+			
+	</td>
+</tr>
+<tr>
+	<td class="leftcol3">&nbsp;</td>
+	<td style="text-align:right;vertical-align:middle;width:20px;padding-right:3px;border-spacing:0px;height:5px;">B</td>
+	<td class="mcq2"><%#= f.text_field :description, :size => "60x1" %>
+
+		<%= hidden_field "examquestion[booleanchoices_attributes][1]",:item, :value => "B" %>
+		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>
+			<% if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
+				<%= hidden_field "examquestion[booleanchoices_attributes][1]",:id, :value => @examquestion.booleanchoices[1].id%>
+				<%= text_field "examquestion[booleanchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.booleanchoices[1].description %> 
+			<!--temp:copy prev format-->	
+			<% else %>
+				<% if @examquestion.questiontype=="TRUEFALSE"%>
+					<%= text_field "examquestion[booleanchoices_attributes][1]",:description, :size=>60 %> 	
+				<% end %>
+			<% end %>
+			<!--temp:copy prev format-remove once completed-->
+		<% else %>
+			<% if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleanchoices[1]%>
+				<%= text_field "examquestion[booleanchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.booleanchoices[1].description  %> 	
+			<% else %>
+				<%= text_field "examquestion[booleanchoices_attributes][1]",:description, :size=>60 %> 	
+			<% end %>
+		<% end %>
+			
+	</td>
+</tr>
+<tr>
+	<td class="leftcol3">&nbsp;</td>
+	<td style="text-align:right;vertical-align:middle;width:20px;padding-right:3px;border-spacing:0px;height:5px;">C</td>
+	<td class="mcq2"><%#= f.text_field :description, :size => "60x1" %>
+
+		<%= hidden_field "examquestion[booleanchoices_attributes][2]",:item, :value => "C" %>
+		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>
+			<% if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
+				<%= hidden_field "examquestion[booleanchoices_attributes][2]",:id, :value => @examquestion.booleanchoices[2].id%>
+				<%= text_field "examquestion[booleanchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.booleanchoices[2].description %> 
+			<!--temp:copy prev format-->	
+			<% else %>
+				<% if @examquestion.questiontype=="TRUEFALSE"%>
+					<%= text_field "examquestion[booleanchoices_attributes][2]",:description, :size=>60 %> 	
+				<% end %>
+			<% end %>
+			<!--temp:copy prev format-remove once completed-->			
+		<% else %>
+			<%#= text_field "examquestion[booleanchoices_attributes][2]",:description, :size=>60 %> 	
+			<% if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleanchoices[2]%>
+				<%= text_field "examquestion[booleanchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.booleanchoices[2].description  %> 	
+			<% else %>
+				<%= text_field "examquestion[booleanchoices_attributes][2]",:description, :size=>60 %> 	
+			<% end %>
+		<% end %>
+		
+	</td>
+</tr>
+<tr>
+	<td class="leftcol3">&nbsp;</td>
+	<td style="text-align:right;vertical-align:middle;width:20px;padding-right:3px;border-spacing:0px;height:5px;">D</td>
+	<td class="mcq2"><%#= f.text_field :description, :size => "60x1" %>
+
+		<%= hidden_field "examquestion[booleanchoices_attributes][3]",:item, :value => "D" %>
+		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>
+			<% if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
+				<%= hidden_field "examquestion[booleanchoices_attributes][3]",:id, :value => @examquestion.booleanchoices[3].id %>
+				<%= text_field "examquestion[booleanchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.booleanchoices[3].description%> 
+			<!--temp:copy prev format-->	
+			<% else %>
+				<% if @examquestion.questiontype=="TRUEFALSE"%>
+					<%= text_field "examquestion[booleanchoices_attributes][3]",:description, :size=>60 %> 	
+				<% end %>
+			<% end %>
+			<!--temp:copy prev format-remove once completed-->
+		<% else %>
+				<% if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleanchoices[3]%>
+					<%= text_field "examquestion[booleanchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.booleanchoices[3].description  %> 	
+				<% else %>
+					<%= text_field "examquestion[booleanchoices_attributes][3]",:description, :size=>60 %> 	
+				<% end %>
+		<% end %>
+			
+	</td></tr>
+<tr>
+	<td class="leftcol3">&nbsp;</td>
+	<td style="text-align:right;vertical-align:middle;width:20px;padding-right:3px;border-spacing:0px;height:5px;">E</td>
+	<td class="mcq2"><%#= f.text_field :description, :size => "60x1" %>
+
+		<%= hidden_field "examquestion[booleanchoices_attributes][4]",:item, :value => "E" %>
+		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>
+			<% if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
+				<%= hidden_field "examquestion[booleanchoices_attributes][4]",:id, :value => @examquestion.booleanchoices[4].id %>
+				<%= text_field "examquestion[booleanchoices_attributes][4]",:description, :size=>60, :value=>@examquestion.booleanchoices[4].description%> 
+				<!--temp:copy prev format-->	
+			<% else %>
+				<% if @examquestion.questiontype=="TRUEFALSE"%>
+					<%= text_field "examquestion[booleanchoices_attributes][4]",:description, :size=>60 %> 	
+				<% end %>
+			<% end %>
+			<!--temp:copy prev format-remove once completed-->
+		<% else %>
+			<% if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleanchoices[4]%>
+				<%= text_field "examquestion[booleanchoices_attributes][4]",:description, :size=>60, :value=>@examquestion.booleanchoices[4].description  %> 	
+			<% else %>
+				<%= text_field "examquestion[booleanchoices_attributes][4]",:description, :size=>60 %> 	
+			<% end %>
+		<% end %>
+
+	</td>
+</tr>
+</table>
+
+<!--TRUE FALSE Question-end-->

@@ -4,6 +4,6 @@ class JavascriptsController < ApplicationController
   end
   
   def dynamic_subjects
-    @subjects = @Subject.find(:all)
+    @subjects = Programme.at_depth(2)#Subject.find(:all) #@Subject.find(:all) - 24March2013
   end
 end

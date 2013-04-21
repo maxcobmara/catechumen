@@ -1,0 +1,94 @@
+<div>
+	<% f.fields_for :travelclaimrequests do |builder| %>
+	  <%= render 'travelclaimrequest_fields', :f => builder %>
+	<% end %>
+	<p align="right"><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Travel Request') + "Add Travel Request",f, :travelclaimrequests %></p>
+</div>
+
+<div>
+<table>
+	<tr>
+		<th>Type</td>
+		<th>Receipt No</td>
+		<th>Value (RM)</td>
+		<th></th>
+	</tr>
+	<% f.fields_for :travelclaimreceipts do |builder| %>
+	  <%= render 'travelclaimreceipt_fields', :f => builder %>
+	<% end %>
+</table>
+	<p><%= link_to_add_fields "Add Receipt", f, :travelclaimreceipts %></p>
+
+<table>
+  <tr>
+	  <td class="leftcol"><label for="ptclaimsvalue"><b>Transport Claim Value:</b></label></td>
+		<td>RM <%= f.text_field :ptclaimsvalue, :size => 12  %></td>
+	</tr>
+	
+	
+	<tr>
+	   <td class="leftcol"><label for="allclaimsvalue"><b>Allowance Claim Value:</b></label></td>
+		<td>RM <%= f.text_field :allclaimsvalue, :size => 12  %></td>
+	</tr>
+	
+	
+	<tr>
+	   <td class="leftcol"><label for="othclaimsvalue"><b>Other Claim Value:</b></label></td>
+		<td>RM <%= f.text_field :othclaimsvalue, :size => 12  %></td>
+	</tr>
+	
+	
+	<tr>
+		<th colspan=2>Foreign Exchange</th>
+	</tr>
+	
+	<tr>
+	   <td class="leftcol"><label for="exchvalue"><b>Exchange Value:</b></label></td>
+		<td><%= f.text_field :exchvalue %></td>
+	</tr>
+	
+	
+	<tr>
+	   <td class="leftcol"><label for="exchloss"><b>Exchange Loss:</b></label></td>
+		<td><%= f.text_field :exchloss %></td>
+	</tr>
+	
+	
+	<tr>
+	   <td class="leftcol"><label for="gtotal"><b>Total:</b></label></td>
+		<td><%= f.text_field :gtotal %></td>
+	</tr>
+	
+	
+	
+	<tr>
+	   <td class="leftcol"><label for="claimtype"><b>Claim Type:</b></label></td>
+		<td><%= f.radio_button :claimtype,'true' %>By KM<%= f.radio_button :claimtype,'false' %>Replaced</td>
+	</tr>
+	
+	<tr>
+		<th colspan=2>Submission</th>
+	</tr>
+	    <tr>
+			<td class="leftcol"><label for="submission"><b>Submission Date:</b></label></td>
+			<td><%= f.date_select :submission, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+	
+
+	<tr>
+		<th colspan=2>HOD Confirmation</th>
+	</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="hod_id"><b>HOD Name:</b></label></td>
+			<td><%= f.collection_select :hod_id, Staff.find(:all, :order => "icno"), :id, :mykad_with_staff_name, :include_blank => true %></td>
+		</tr>
+
+		<tr>
+		 <td class="leftcol"><label for="hodconfirmdt"><b>Confirmed Date:</b></label></td>
+		<td><%= f.date_select :hodconfirmdt, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+
+
+</table>
+</div>

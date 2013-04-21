@@ -1,0 +1,59 @@
+<div class="tform">
+	<h2>New Multiple Grades Details</h2><%=@aa%>----<%=@bb%>
+	<table>
+		<tr>
+			<td class="leftcol">Programme :</td>
+			<td><%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
+									{:include_blank => "Select a programme"},
+									:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+									:url => {:action => 'view_subject' }, 
+									:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Subject :</td>
+			<td>
+				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+					<%= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, :include_blank=>'Select a subject'%>
+				</div>
+			</td>
+		</tr>
+		<tr><td class="leftcol"></td><td></td></tr>
+	</table>
+	
+	<h2>Formative Score Setting</h2>
+	<table>	
+		<tr>
+			<td colspan=2>
+				<table width=100% border=0>
+					  <tr>
+				      <td width=130px ><label for="type_id"><b>Type:</b></label></td>
+				      <td width=240px ><label for="description"><b>Description:</b></label></td>
+				      <td width=120px><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
+						  <td width=80px><label for="weightage"><b>Weightage:</b></label></td>
+				      <td width=70px></td>
+			      </tr>
+				 </table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan=2>
+			<!-- Code Block for Score Repeating Field -->
+			  <div id="scores">
+					<% f.fields_for :scores do |builder| %>
+						<%= render 'score_fields', :f => builder %>
+					<% end %>
+					<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :scores %> - Add More </p>
+			</div>
+			</td>
+		</tr>		
+	</table>
+	<!--
+	<h2>Summative Score Setting</h2>
+	<table>
+		<tr>
+			<td class="leftcol">Exam Paper</td>
+			<td><%#= f.collection_select :final_exam_paper, Exam.all, :id, :exam_name_date %></td>
+		</tr>
+	</table>
+	-->
+</div>

@@ -1,0 +1,109 @@
+<%= stylesheet_link_tag 'report' %>
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>	
+<div class="A4potrait">
+
+<!-- Box Head -->
+<div id="kewpa" >
+<p class="marginright" align="right"><b>KEW. PA-19</b></p>
+<H4 style="margin-left:12mm;">KEMENTERIAN/JABATAN : KKM/KSKBJB</H4>
+<H4 align="center"><b>SIJIL PELUPUSAN ASET KERAJAAN MALAYSIA</b></H4>
+
+		<table class="lampiran_kewpa">
+			<tr>
+				<TD COLSPAN=2>
+											Merujuk surat kelulusan No Rujukan <SPAN class="fff"><%=h @asset_disposal.document.refno %></SPAN> 
+											bertarikh <SPAN class="fff"><%=h l(@asset_disposal.document.letterdt) %></SPAN>, 
+											saya mengesahkan tindakan pelupusan telah dilaksanakan seperti berikut :-<BR/></TD>
+			</tr>
+			<tr>
+				<td style="vertical-align:top;">1.</td>
+				<td>Aset berikut telah dilupuskan secara pindahan/hadiah.<BR>
+						Bilangan item <SPAN class="fff"><%=h @asset_disposal.quantity %></SPAN> dipindahkan / hadiah kepada 
+						<SPAN class="fff"><%=h @asset_disposal.receiver_name %></SPAN><BR/>
+						(Surat Akuan Terima disertakan)<BR/><BR/>
+				</td>
+			</tr>
+			
+			<tr>
+				<td style="vertical-align:top;">2.</td>
+				<td>Aset berikut telah dilupuskan secara jual.<BR>
+						Bilangan item <SPAN class="fff"><%=h @asset_disposal.quantity %></SPAN>   No. Resit
+						<SPAN class="fff"><%=h @asset_disposal.documentation_no %></SPAN><BR/>
+						(Salinan resit disertakan)<BR/><BR/>
+				</td>
+			</tr>
+			
+			<tr>
+				<td style="vertical-align:top;">3.</td>
+				<td>Aset berikut telah dilupuskan secara musnah.<BR>
+						Bilangan item :<SPAN class="fff"><%=h @asset_disposal.quantity %></SPAN><BR/>
+						Cara dimusnahkan :<SPAN class="fff"><%=h @asset_disposal.discard_malay %></SPAN><BR/>
+						(Sijil Menyaksikan Pemusnahan disertakan)<BR/><BR/>
+				</td>
+				
+				<tr>
+					<td style="vertical-align:top;">4.</td>
+					<td>Aset berikut telah dilupuskan melalui kaedah-kaedah lain.<BR>
+							Bilangan item :<SPAN class="fff"><%=h @asset_disposal.quantity %></SPAN><BR/>
+							Kaedah pelupusan :<SPAN class="fff"><%=h @asset_disposal.type_others_desc %></SPAN><BR/>
+							(Dokumen berkaitan disertakan)<BR/><BR/>
+					</td>
+				</tr>
+				
+				<tr>
+					<td style="vertical-align:top;">5.</td>
+					<td>Aset berikut telah dimasukkan ke dalam stok.<BR>
+							Bilangan item :<SPAN class="fff"><%=h @asset_disposal.quantity %></SPAN><BR/>
+							(Salinan Kad Kawalan Stok Disertakan)<BR/><BR/>
+					</td>
+				</tr>
+		</table>
+		<BR/>
+		<table class="lampiran_kewpa">
+					<tr>
+						<td class="leftcol">Tandatangan Ketua Jabatan</td>
+						<td class="dotts">:</td>
+						<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+								<SPAN class="fff"><%= @asset_disposal.disposer.name.to_s + " via ICMS" unless @asset_disposal.is_disposed == false %></SPAN></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="leftcol">Nama</td>
+						<td class="dotts">:</td>
+						<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+								<SPAN class="fff"><%= @asset_disposal.disposer.name unless @asset_disposal.is_disposed == false %></SPAN></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="leftcol">Jawatan</td>
+						<td class="dotts">:</td>
+						<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+								<SPAN class="fff"><%= @asset_disposal.disposer.position.name unless @asset_disposal.is_disposed == false %></SPAN></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="leftcol">Tarikh</td>
+						<td class="dotts">:</td>
+						<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+								<SPAN class="fff"><%= l(@asset_disposal.disposed_on) unless @asset_disposal.is_disposed == false %></SPAN></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="leftcol">Cop Jabatan / Bahagian</td>
+						<td class="dotts">:</td>
+						<td class="filler" </td>
+						<td></td>
+					</tr>
+				</table>
+		
+		
+		</div></div>
+				

@@ -30,6 +30,8 @@ class Student < ActiveRecord::Base
   has_many :studentattendances
   has_many :timetables, :through => :studentattendances
   
+  has_many :exammarks                                                                       #11Apr2013-Link to Model Exammark
+  
   #has_many :sdiciplines, :foreign_key => 'student_id'
   #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
   
@@ -85,7 +87,7 @@ class Student < ActiveRecord::Base
     if course.blank?
       "N/A"
     else
-      course.name
+      "[#{course.course_type} - #{course.name}]"
     end
   end
   

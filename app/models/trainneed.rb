@@ -1,7 +1,7 @@
 class Trainneed < ActiveRecord::Base
   
 
-    belongs_to :appraisal
+    belongs_to :staff_appraisal
    # validates_presence_of :name
 
    belongs_to :staff_for_training, :class_name => 'Staff', :foreign_key => 'staff_id'

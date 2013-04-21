@@ -1,0 +1,117 @@
+<% if @type && @type=="1"%>
+
+<!--MCQ Question-start-->
+<table cellpadding=0 cellspacing=0 border=0>
+<tr>
+	<td class="leftcol3">&nbsp;</td>
+	<td class="mcq">I</td><td class="mcq2"><%#= f.text_field :description, :size => "60x1" %>
+
+		<%= hidden_field "examquestion[answerchoices_attributes][0]",:item, :value => "I" %>
+		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>	
+			<% if (Answerchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
+			<%= hidden_field "examquestion[answerchoices_attributes][0]",:id, :value => @examquestion.answerchoices[0].id%>
+			<%= text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.answerchoices[0].description %> 
+			<!--test to remove existing record-->
+			
+			<%#= hidden_field "examquestion[answerchoices_attributes][0]",:_destroy %>
+			<%#= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>
+			<!--test to remove existing record-->
+			<!--temp:copy prev format-->	
+			<% else %>
+				<% if @examquestion.questiontype=="MCQ"%>
+					<%= text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60 %> 	
+				<% end %>
+			<% end %>
+			<!--temp:copy prev format-remove once completed-->
+		<% else %>
+			<% if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[0]%>
+				<%= text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.answerchoices[0].description  %> 	
+			<% else %>
+				<%= text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60 %> 	
+			<% end %>		
+		<% end %>
+			
+	</td>
+</tr>
+<tr>
+	<td class="leftcol3">&nbsp;</td>
+	<td class="mcq">II</td><td class="mcq2"><%#= f.text_field :description, :size => "60x1" %>
+
+		<%= hidden_field "examquestion[answerchoices_attributes][1]",:item, :value => "II" %>
+		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>
+			<% if (Answerchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
+				<%= hidden_field "examquestion[answerchoices_attributes][1]",:id, :value => @examquestion.answerchoices[1].id%>
+				<%= text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.answerchoices[1].description %> 
+			<!--temp:copy prev format-->	
+			<% else %>
+				<% if @examquestion.questiontype=="MCQ"%>
+					<%= text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60 %> 	
+				<% end %>
+			<% end %>
+			<!--temp:copy prev format-remove once completed-->
+		<% else %>
+			<% if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[1]%>
+				<%= text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.answerchoices[1].description  %> 	
+			<% else %>
+				<%= text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60 %> 	
+			<% end %>
+		<% end %>
+			
+	</td>
+</tr>
+<tr>
+	<td class="leftcol3">&nbsp;</td>
+	<td class="mcq">III</td><td class="mcq2"><%#= f.text_field :description, :size => "60x1" %>
+
+		<%= hidden_field "examquestion[answerchoices_attributes][2]",:item, :value => "III" %>
+		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>
+			<% if (Answerchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
+				<%= hidden_field "examquestion[answerchoices_attributes][2]",:id, :value => @examquestion.answerchoices[2].id%>
+				<%= text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.answerchoices[2].description %> 
+			<!--temp:copy prev format-->	
+			<% else %>
+				<% if @examquestion.questiontype=="MCQ"%>
+					<%= text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60 %> 	
+				<% end %>
+			<% end %>
+			<!--temp:copy prev format-remove once completed-->			
+		<% else %>
+			<%#= text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60 %> 	
+			<% if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[2]%>
+				<%= text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.answerchoices[2].description  %> 	
+			<% else %>
+				<%= text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60 %> 	
+			<% end %>
+		<% end %>
+		
+	</td>
+</tr>
+<tr>
+	<td class="leftcol3">&nbsp;</td>
+	<td class="mcq">IV</td><td class="mcq2"><%#= f.text_field :description, :size => "60x1" %>
+
+		<%= hidden_field "examquestion[answerchoices_attributes][3]",:item, :value => "IV" %>
+		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>
+			<% if (Answerchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
+				<%= hidden_field "examquestion[answerchoices_attributes][3]",:id, :value => @examquestion.answerchoices[3].id %>
+				<%= text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.answerchoices[3].description%> 
+			<!--temp:copy prev format-->	
+			<% else %>
+				<% if @examquestion.questiontype=="MCQ"%>
+					<%= text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60 %> 	
+				<% end %>
+			<% end %>
+			<!--temp:copy prev format-remove once completed-->
+		<% else %>
+				<% if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[3]%>
+					<%= text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.answerchoices[3].description  %> 	
+				<% else %>
+					<%= text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60 %> 	
+				<% end %>
+		<% end %>
+			
+	</td></tr>
+</table>
+
+<!--MCQ Question-end-->
+<% end %>

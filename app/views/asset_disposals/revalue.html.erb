@@ -1,0 +1,31 @@
+<% form_for(@asset_disposal) do |f| %>
+  <%= f.error_messages %>
+	<div class="tform">
+		<%= render :partial => 'show_process' %>
+		<H2>Revalue Asset</H2>
+		<table width=85% >
+				<tr>
+					<td class="leftcol"><label for="asset_id">New Value</label></td>
+					<td><%= f.text_field :revalue, :placeholder => 'RM' %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcol"><label for="processed_by">Revalued By</label></td>
+					<td><%= f.collection_select :revalued_by, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %></td>
+				</tr>
+				
+				<tr>
+					<td class="leftcol"><label for="processed_by">Date</label></td>
+					<td><%= f.date_select :revalued_on %></td>
+				</tr>
+		</table>
+	</div>
+	
+	<p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+
+<%= link_to 'Show', @asset_disposal %> |
+<%= link_to 'Back', asset_disposals_path %>

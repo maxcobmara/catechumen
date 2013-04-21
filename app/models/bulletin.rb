@@ -31,19 +31,4 @@ class Bulletin < ActiveRecord::Base
    #  @bulletin = Bulletin.find_by_date([ Date.today, Date.today + 1])
   # end
      
-     
-     
-  def posted_details 
-      suid = postedby_id.to_a
-      exists = Staff.find(:all, :select => "id").map(&:id)
-      checker = suid & exists     
-
-      if postedby_id == nil
-         "" 
-      elsif checker == []
-          "Staff No Longer Exists" 
-      else
-        staff.mykad_with_staff_name
-      end
-  end
 end

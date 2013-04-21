@@ -7,7 +7,7 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="subject_id">Subject Name:</label></td>
-			<td><%=h @grade.subject_id.blank? ? "" : @grade.subjectgrade.subject_code_with_subject_name %></td>
+			<td><%=h @grade.subject_id.blank? ? "" : @grade.subjectgrade.subject_list %></td>
 		</tr>
 		<tr>
 			<td class="leftcol">Formative</td>
@@ -35,7 +35,7 @@
 				      <td></td>
 				      <td></td>
 							<td><%= @grade.total_per %>%</td>
-							<td><b><%= @grade.total_formative %>%</b></td>
+							<td><b><%= @grade.total_formative %>%</b></td> 
 						</tr>
 					</table></td>
 		</tr>
@@ -75,7 +75,7 @@
 								<td><%=h @grade.exam1desc %></td>
 								<td><%=h @grade.exam1marks %>%</td>
 								<td><%=h @grade.examweight %>%</td>
-								<td><%=h @grade.total_summative %>%</td>
+								<td><%=h check_kin {@grade.total_summative} %>%</td><!--TODO : Fix This-->
 							</tr>
 						</table></td>
 		</tr>

@@ -1,0 +1,51 @@
+
+	<div class="tform">
+	
+	<%=render :partial => 'show_main' %>
+	<% form_for(@travel_log) do |f| %>
+	  <%= f.error_messages %>
+	<%= hidden_field_tag :redirect_location, '/travel_requests/logs' %>
+	<H2>Edit Travel Log</H2>
+	<table width=90%>
+		<tr>
+			<td width=20%>Date</td>
+			<td width=12%>Depart</td>
+			<td width=12%>Arrive</td>
+			<td width=33%>Destination</td>
+			<td width=9%>Mileage</td>
+			<td width=9%>Value</td>
+			<td width=5%></td>
+		</tr>
+	</table>
+		<% f.fields_for :travel_claim_logs do |builder| %>
+		  <%= render 'travel_claim_log_fields', :f => builder %>
+		<% end %>
+
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Log'), f, :travel_claim_logs %> - <%= "Add Log" %></p>
+		
+		
+		<table width=90%>
+			<tr>
+				<td colspan=3 width=77% align=right><strong>Total</strong></td>
+				<td width=9% class="tright"><strong><%= @travel_log.total_mileage_request %>km</strong></td>
+				<td width=9% class="tright"><strong><%= ringgols(@travel_log.total_km_money_request) %></strong></td>
+				<td width=5%></td>
+			</tr>
+		</table>
+		
+		
+		
+
+	
+	
+	
+		
+	</div>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @travel_request %> |
+<%= link_to 'Back', '/travel_requests/logs' %>

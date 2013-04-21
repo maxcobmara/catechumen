@@ -1,0 +1,65 @@
+<% form_for(@asset) do |f| %>
+  <%= f.error_messages %>
+
+
+
+<div class="tform">
+	
+	<H2>Asset Details</H2>
+	<table width=100% >
+			<tr>
+				<td class="leftcol"><label for="staff_id">Asset Code:</label></td>
+				<td><%=h @asset.assetcode %></td>	
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="staff_id">Category:</label></td>
+				<td><%=h @asset.category.description unless @asset.category.blank? %></td>	
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="staff_id">Item :</label></td>
+				<td><%=h @asset.subcategory %> - <%=h @asset.typename %> - <%=h @asset.name %> - <%=h @asset.modelname %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="staff_id">Serial No:</label></td>
+				<td><%=h @asset.serialno %></td>	
+			</tr>
+			<tr>
+			 <th colspan = 2>Asset Support Details</th>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="staff_id">Located at:</label></td>
+				<td><%=h check_kin { @asset.asset_placements.last.location.location_list } %></td>	
+			</tr>
+			<tr> <!-- 25/10/2011 - Shaliza fixed for staff no longer exists -->
+				<td class="leftcol"><label for="staff_id">Assigned to:</label></td>
+				<td><%=h @asset.assigned_details %></td>	
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="purchasedate">Purchase Date:</label></td>
+				<td><%=h @asset.purchasedate.strftime("%d %B %Y") unless @asset.purchasedate.blank? %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="staff_id">Supplied By:</label></td>
+				<td><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %></td>	
+			</tr>
+	</table>
+<BR>
+
+<H2>Placement Information</H2>
+
+		<% f.fields_for :asset_placements do |builder| %>
+			<%= render 'asset_placement_fields', :f => builder %>
+		<% end %>
+
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :asset_placements %> - Add More</p>
+
+	
+</div>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @asset %> |
+<%= link_to 'Back', assets_path %>

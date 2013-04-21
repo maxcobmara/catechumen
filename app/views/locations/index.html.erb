@@ -9,10 +9,14 @@
 			<%= submit_tag "Search", :name => nil %>
 			<% end %>
 		</div>
-		<div class="right">
-			<%= select_tag_for_filter("locations", @filters, params) %>
-		</div>
   </div>
+</div>
+
+<div class="toolbar">
+	<table width=100%><tr>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'New Root') + "New Root Location", new_location_path %></p></td>
+		<td width=15% style="text-align:right;"><%= select_tag_for_filter("locations", @filters, params) %></td>
+	</tr></table>
 </div>
 
 <div class="tlist">
@@ -40,8 +44,8 @@
 				<% if location.typename == 2 && location.occstatus == "vacant" || location.typename == 1 && location.occstatus == "vacant" %>
 				<%= link_to image_tag("key_go.png", :border => 0, :title => 'Assign'), new_tenant_path(:location_id => location) %>
 				<% end %></td>
-		<td width=10px><% if location.assets != [] %>
-					<%= link_to image_tag("duplicate.png", :border => 0, :title => 'KEW-PA7'), :action => 'kewpa7', :id => location %>
+		<td  class="action"><% if location.assets != [] %>
+					<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA7'), :action => 'kewpa7', :id => location %><div class="noti_bubble">7</div></div>
 				<% end %></td>
     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => location %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => location %></td>

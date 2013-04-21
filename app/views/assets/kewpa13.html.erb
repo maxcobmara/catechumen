@@ -1,0 +1,50 @@
+<%= stylesheet_link_tag 'report', :media => "print" %>
+
+	<form action="#">
+			<script>
+			document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+			</script>
+	</form>
+	
+<div class="A4potrait" style="border: none;">
+<BR/>
+<table class="tlong">
+	<thead>
+				<tr>
+					<th class="tright" colspan=5><b>KEW. PA-13</b></th>
+				</tr>
+				<tr>
+					<th  colspan=5><b>SENARAI ASET ALIH KERAJAAN<BR>YANG MEMERLUKAN PENYELENGGARAAN</b></th>
+				</tr>
+				<tr>
+					<th class="tcol"><b>BIL</b></th>
+					<th class="tcol"><b>NOMBOR SIRI PENDAFTARAN</b></th>
+					<th class="tcol"><b>JENIS / JENAMA / MODEL</b></th>
+					<th class="tcol"><b>LOKASI ASET</b></th>
+					<th class="tcol"><b>CATATAN</b></th>
+				</tr>
+	</thead>
+	
+	<tbody>
+			<% bil = 0 %>
+			<% @assets.each do |asset| %>
+			<% bil += 1 %>
+				<tr>
+					<td class="tdata" style="text-align:center;" ><%=h bil %></th>
+					<td class="tdata" style="white-space: nowrap; padding-right:3mm;" ><%=h asset.assetcode %></th>
+					<td class="tdata"><%=h asset.typename %><%=h asset.name %><%=h asset.modelname %></th>
+					<td class="tdata"><%=h check_kin {asset.asset_placements.last.location.location_list} %> </th>
+					<td class="tdata" style="text-align:right; padding-right:3mm;"><%=h ringgols(asset.purchaseprice) %></th>
+				</tr>
+			<% end %>
+	</tbody>
+</table>
+<div>	
+	
+
+<div id="hideLink">
+<%= link_to 'Back', assets_path %>
+</div>

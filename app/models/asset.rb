@@ -1,26 +1,37 @@
 class Asset < ActiveRecord::Base
+  # befores, relationships, validations, before logic, validation logic, 
+  #controller searches, variables, lists, relationship checking
   
-  before_save :save_my_vars
+  before_save :save_my_vars, :set_location
   
-  validates_presence_of  :category_id, :typename
+  validates_presence_of :assignedto_id, :if => :must_assign_if_loanable?
+  #validates_presence_of  :category_id, :typename
   #validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
   
   belongs_to :manufacturedby, :class_name => 'Addbook', :foreign_key => 'manufacturer_id'
   belongs_to :suppliedby,     :class_name => 'Addbook', :foreign_key => 'supplier_id'
-  belongs_to :location
   belongs_to :assignedto,   :class_name => 'Staff', :foreign_key => 'assignedto_id'
   belongs_to :receivedby,   :class_name => 'Staff', :foreign_key => 'receiver_id'
   belongs_to :category,     :class_name => 'Assetcategory', :foreign_key => 'category_id'
   #belongs_to :subcategory,  :class_name => 'Assetcategory', :foreign_key => 'subcategory_id'
   
   
-  has_one :disposal#s        #Link to Model Disposals
+  has_many :asset_defects
+  has_one :asset_disposal       #Link to Model asset_disposals
   has_one :asset_loss        #Link to Model AssetLoss  
-  has_many :assettracks
-  #has_many :assetinassettrack,    :class_name => 'Assettrack', :foreign_key => 'asset_id' #Link to Model AssetTrack
-  has_many :assetnums
-  has_many :maints#, :dependent => :destroy
-  accepts_nested_attributes_for :maints, :allow_destroy => true, :reject_if => lambda { |a| a[:asset_id].blank? }
+  has_many :asset_loans
+
+  has_many :maints, :dependent => :destroy
+  accepts_nested_attributes_for :maints, :allow_destroy => true , :reject_if => lambda { |a| a[:details].blank? }
+  
+  has_many :asset_placements, :dependent => :destroy
+  accepts_nested_attributes_for :asset_placements, :allow_destroy => true , :reject_if => lambda { |a| a[:location_id].blank? }
+  has_many  :locations, :through => :asset_placements
+  
+  
+  def must_assign_if_loanable?
+    bookable?
+  end
   
  
   def save_my_vars
@@ -31,6 +42,15 @@ class Asset < ActiveRecord::Base
   
   def code_asset
     "#{assetcode} - #{name}"
+  end
+  
+  
+  def set_location
+    if asset_placements.blank?
+    else
+     self.location_id = asset_placements.last[:location_id]
+     self.assignedto_id = asset_placements.last[:staff_id]
+    end
   end
   
 
@@ -46,9 +66,23 @@ class Asset < ActiveRecord::Base
     end
   end
   
+  def monotone
+    [:assetcode].split("/")[4]
+  end
+  
+  def self.search(search)
+    if search
+      find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', "#{search}", 2])
+    else
+      find(:all, :conditions => ['assettype =?',  2])
+    end
+  end
+  
+  
+  
   def non_active_assets
     lost = AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)
-    disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
+    disposed = AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)
     lost + disposed
   end
   
@@ -57,12 +91,12 @@ class Asset < ActiveRecord::Base
   end
   
   def assets_that_are_disposed
-    disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
+    disposed = AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)
   end
   
   def am_i_gone
     asset = Array(self.id)
-    disposed = Disposal.find(:all, :select => :asset_id).map(&:asset_id)
+    disposed = AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)
     lost = AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)
     gone = disposed + lost
     am_i = asset & gone
@@ -72,14 +106,24 @@ class Asset < ActiveRecord::Base
       true
     end
   end
+  
+  def self.on_loan
+    loaned = AssetLoan.find(:all, :conditions => ['is_returned !=?', true], :select => :asset_id).map(&:asset_id)
+    if loaned == []
+      loaned = [0]
+    end
+    find(:all, :conditions => ['bookable = ? AND id NOT IN (?)', true, loaned])
+    
+  end
  
   named_scope :all 
-  named_scope :active,        :conditions =>  ["id not in (?) OR id not in (?)", Disposal.find(:all, :select => :asset_id).map(&:asset_id), AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :active,        :conditions =>  ["id not in (?) OR id not in (?)", AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id), AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :fixed,         :conditions =>  ["assettype =? ", 1]
+  named_scope :maintainable,   :conditions =>  ["is_maintainable =? ", true]
   named_scope :inventory,     :conditions =>  ["assettype =? ", 2]
-  named_scope :disposal,      :conditions =>  ["mark_disposal =?",true]# AND id not in (?)", true, Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
-  named_scope :disposed,      :conditions =>  ["id in (?)", Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
-  #named_scope :disposal,      :conditions =>  ["mark_disposal =? AND id not in (?)", true, Disposal.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :disposal,      :conditions =>  ["is_disposed =? AND id not in (?)", true, AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :disposed,      :conditions =>  ["id in (?)", AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)]
+  named_scope :disposal,      :conditions =>  ["is_disposed =? AND id not in (?)", true, AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :markaslost,    :conditions =>  ["mark_as_lost =? AND id not in (?)", true, AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :lost,          :conditions =>  ["id in (?)", AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
 
@@ -88,12 +132,14 @@ class Asset < ActiveRecord::Base
     {:scope => "all",       :label => "All"},
     {:scope => "active",    :label => "Active"},
     {:scope => "fixed",     :label => "Fixed Assets"},
+    {:scope => "maintainable", :label => "Maintainable"},
     {:scope => "inventory", :label => "Inventory"},
     {:scope => "disposal",  :label => "For Disposal"},
     {:scope => "disposed",  :label => "Disposed"},
     {:scope => "markaslost",:label => "Mark As Lost"},
     {:scope => "lost",      :label => "Lost"}
     ]
+    
   
 
     #def self.find_main
@@ -195,7 +241,7 @@ def assigned_details
  end
  
  def position_details #21/11/2011 - Shaliza added code for position if no longer exist.(avoid in kewpa2 error)
-    suid = assignedto_id.to_a
+    suid = Array(assignedto_id)
     exists = Staff.find(:all, :select => "id").map(&:id)
     checker = suid & exists     
 

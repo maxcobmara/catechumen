@@ -9,7 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121017024632) do
+ActiveRecord::Schema.define(:version => 20130418100231) do
+
+  create_table "academic_sessions", :force => true do |t|
+    t.string   "semester"
+    t.integer  "total_week"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "accessions", :force => true do |t|
     t.integer  "book_id"
@@ -35,6 +42,14 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "shortname"
   end
 
+  create_table "address_book_items", :force => true do |t|
+    t.integer  "type_id"
+    t.integer  "address_book_id"
+    t.string   "item"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "addsuppliers", :force => true do |t|
     t.integer  "supplier_id"
     t.string   "lpono"
@@ -42,6 +57,14 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.decimal  "quantity"
     t.decimal  "unitcost"
     t.date     "received"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "answerchoices", :force => true do |t|
+    t.string   "item"
+    t.string   "description"
+    t.integer  "examquestion_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -96,6 +119,88 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
   end
 
+  create_table "asset_defects", :force => true do |t|
+    t.integer  "asset_id"
+    t.integer  "reported_by"
+    t.text     "notes"
+    t.text     "description"
+    t.string   "process_type"
+    t.text     "recommendation"
+    t.boolean  "is_processed"
+    t.integer  "processed_by"
+    t.date     "processed_on"
+    t.boolean  "decision"
+    t.integer  "decision_by"
+    t.date     "decision_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "asset_disposals", :force => true do |t|
+    t.integer  "asset_id"
+    t.integer  "quantity"
+    t.integer  "asset_defect_id"
+    t.text     "description"
+    t.integer  "running_hours"
+    t.integer  "mileage"
+    t.string   "current_condition"
+    t.decimal  "current_value"
+    t.decimal  "est_repair_cost"
+    t.decimal  "est_value_post_repair"
+    t.decimal  "est_time_next_fail"
+    t.string   "repair1_needed"
+    t.string   "repair2_needed"
+    t.string   "repair3_needed"
+    t.string   "justify1_disposal"
+    t.string   "justify2_disposal"
+    t.string   "justify3_disposal"
+    t.boolean  "is_checked"
+    t.integer  "checked_by"
+    t.date     "checked_on"
+    t.boolean  "is_verified"
+    t.integer  "verified_by"
+    t.date     "verified_on"
+    t.decimal  "revalue"
+    t.integer  "revalued_by"
+    t.date     "revalued_on"
+    t.integer  "document_id"
+    t.string   "disposal_type"
+    t.string   "type_others_desc"
+    t.string   "discard_options"
+    t.string   "receiver_name"
+    t.string   "documentation_no"
+    t.boolean  "is_disposed"
+    t.integer  "inform_hod"
+    t.integer  "disposed_by"
+    t.date     "disposed_on"
+    t.boolean  "is_discarded"
+    t.date     "discarded_on"
+    t.string   "discard_location"
+    t.integer  "discard_witness_1"
+    t.integer  "discard_witness_2"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "asset_loans", :force => true do |t|
+    t.integer  "asset_id"
+    t.integer  "staff_id"
+    t.text     "reasons"
+    t.integer  "loaned_by"
+    t.boolean  "is_approved"
+    t.date     "approved_date"
+    t.date     "loaned_on"
+    t.date     "expected_on"
+    t.boolean  "is_returned"
+    t.date     "returned_on"
+    t.text     "remarks"
+    t.integer  "loan_officer"
+    t.integer  "hod"
+    t.date     "hod_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "asset_losses", :force => true do |t|
     t.boolean  "form_type"
     t.string   "loss_type"
@@ -135,6 +240,15 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.boolean  "is_submit_to_hod"
     t.integer  "endorsed_hod_by"
     t.date     "endorsed_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "asset_placements", :force => true do |t|
+    t.integer  "asset_id"
+    t.integer  "location_id"
+    t.integer  "staff_id"
+    t.date     "reg_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -219,12 +333,12 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.date     "receiveddate"
     t.integer  "receiver_id"
     t.integer  "supplier_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "assignedto_id"
+    t.integer  "location_id"
     t.boolean  "locassigned"
     t.integer  "status"
-    t.integer  "location_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "country_id"
     t.integer  "warranty_length"
     t.integer  "warranty_length_type"
@@ -236,8 +350,10 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "engine_no"
     t.string   "registration"
     t.string   "nationcode"
-    t.boolean  "mark_disposal"
+    t.boolean  "is_disposed"
+    t.boolean  "is_maintainable"
     t.boolean  "mark_as_lost"
+    t.boolean  "mark_disposal"
   end
 
   create_table "assettracks", :force => true do |t|
@@ -290,6 +406,7 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "tagno"
     t.string   "controlno"
     t.string   "isbn"
+    t.string   "issn"
     t.string   "bookcode"
     t.string   "accessionno"
     t.string   "catsource"
@@ -298,6 +415,7 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "title"
     t.string   "author"
     t.string   "publisher"
+    t.string   "edition"
     t.string   "description"
     t.integer  "loantype"
     t.integer  "mediatype"
@@ -306,19 +424,17 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "location"
     t.string   "topic"
     t.string   "orderno"
-    t.decimal  "purchaseprice"
+    t.decimal  "purchaseprice",      :precision => 8, :scale => 2, :default => 0.0
     t.date     "purchasedate"
     t.date     "receiveddate"
     t.integer  "receiver_id"
     t.integer  "supplier_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "issn"
-    t.string   "edition"
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "publish_date"
     t.string   "publish_location"
     t.string   "language"
@@ -331,6 +447,23 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "bibliography"
     t.string   "indice"
     t.string   "notes"
+    t.string   "backuproman"
+  end
+
+  create_table "booleananswers", :force => true do |t|
+    t.string   "item"
+    t.boolean  "answer"
+    t.integer  "examquestion_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "booleanchoices", :force => true do |t|
+    t.string   "item"
+    t.string   "description"
+    t.integer  "examquestion_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "bulletins", :force => true do |t|
@@ -338,12 +471,12 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.text     "content"
     t.integer  "postedby_id"
     t.date     "publishdt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "data_file_name"
     t.string   "data_content_type"
     t.integer  "data_file_size"
     t.datetime "data_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "cofiles", :force => true do |t|
@@ -374,19 +507,6 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
   end
 
-  create_table "courses", :force => true do |t|
-    t.string   "coursecode"
-    t.string   "name"
-    t.integer  "parent_id"
-    t.string   "objective"
-    t.string   "coursescope"
-    t.string   "coursedefinition"
-    t.string   "abbreviation"
-    t.integer  "staff_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "disposals", :force => true do |t|
     t.integer  "asset_id"
     t.boolean  "used"
@@ -411,12 +531,12 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.integer  "stafffiled_id"
     t.integer  "file_id"
     t.boolean  "closed"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "data_file_name"
     t.string   "data_content_type"
     t.integer  "data_file_size"
     t.datetime "data_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "otherinfo"
     t.integer  "cctype_id"
     t.integer  "cc1staff_id"
@@ -429,6 +549,17 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "cc2action"
     t.text     "cc2remarks"
     t.boolean  "cc2closed"
+    t.date     "cc1actiondate"
+    t.string   "dataaction_file_name"
+    t.string   "dataaction_content_type"
+    t.integer  "dataaction_file_size"
+    t.datetime "dataaction_updated_at"
+    t.integer  "prepared_by"
+  end
+
+  create_table "documents_staffs", :id => false, :force => true do |t|
+    t.integer "document_id"
+    t.integer "staff_id"
   end
 
   create_table "employgrades", :force => true do |t|
@@ -449,16 +580,24 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
   end
 
   create_table "events", :force => true do |t|
-    t.string   "eventname"
-    t.string   "location"
-    t.text     "participants"
-    t.string   "officiated"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "eventname"
+    t.integer  "location"
+    t.string   "participants"
+    t.decimal  "officiated"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.integer  "createdby"
+    t.integer  "created_by"
     t.boolean  "event_is_publik"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "examanswers", :force => true do |t|
+    t.string   "item"
+    t.string   "answer_desc"
+    t.integer  "examquestion_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "exammakers", :force => true do |t|
@@ -467,6 +606,21 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.integer  "creator_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "exammakers_examquestions", :id => false, :force => true do |t|
+    t.integer  "exammaker_id"
+    t.integer  "examquestion_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "exammarks", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "exam_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "total_mcq"
   end
 
   create_table "exammcqanswers", :force => true do |t|
@@ -480,7 +634,7 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
   create_table "examquestions", :force => true do |t|
     t.integer  "subject_id"
     t.string   "questiontype"
-    t.string   "question"
+    t.text     "question"
     t.text     "answer"
     t.decimal  "marks"
     t.string   "category"
@@ -522,6 +676,21 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.integer  "examquestion_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sequence"
+  end
+
+  create_table "examresults", :force => true do |t|
+    t.integer  "programme_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "semester"
+    t.date     "examdts"
+    t.date     "examdte"
+  end
+
+  create_table "examresults_students", :id => false, :force => true do |t|
+    t.integer "examresult_id"
+    t.integer "student_id"
   end
 
   create_table "exams", :force => true do |t|
@@ -536,6 +705,10 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.integer  "full_marks"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.time     "starttime"
+    t.time     "endtime"
+    t.integer  "topic_id"
+    t.string   "sequ"
   end
 
   create_table "examsubquestions", :force => true do |t|
@@ -563,8 +736,6 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.boolean  "resit"
     t.decimal  "finalscore"
     t.integer  "grading_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "exam1name"
     t.string   "exam1desc"
     t.decimal  "exam1marks"
@@ -572,13 +743,16 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "exam2desc"
     t.decimal  "exam2marks"
     t.decimal  "examweight"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "intakes", :force => true do |t|
     t.string   "name"
-    t.integer  "intake_no"
-    t.date     "year"
-    t.boolean  "active"
+    t.string   "description"
+    t.date     "register_on"
+    t.integer  "programme_id"
+    t.boolean  "is_active"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -595,6 +769,12 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
     t.string   "profession"
     t.string   "mykadno"
+  end
+
+  create_table "klass_students", :id => false, :force => true do |t|
+    t.integer "klass_id"
+    t.integer "student_id"
+    t.integer "programme_id"
   end
 
   create_table "klasses", :force => true do |t|
@@ -640,13 +820,68 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "telno"
     t.date     "leave_startdate"
     t.date     "leave_enddate"
+    t.text     "notes"
     t.boolean  "studentsubmit"
     t.boolean  "approved"
     t.integer  "staff_id"
     t.date     "approvedate"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "notes"
+  end
+
+  create_table "lesson_plans", :force => true do |t|
+    t.integer  "lecturer"
+    t.integer  "intake_id"
+    t.integer  "student_qty"
+    t.integer  "semester"
+    t.integer  "topic"
+    t.string   "lecture_title"
+    t.date     "lecture_date"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.text     "reference"
+    t.boolean  "is_submitted"
+    t.date     "submitted_on"
+    t.boolean  "hod_approved"
+    t.date     "hod_approved_on"
+    t.boolean  "hod_rejected"
+    t.date     "hod_rejected_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "data_file_name"
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.datetime "data_updated_at"
+    t.string   "prerequisites"
+    t.integer  "year"
+    t.text     "reason"
+    t.integer  "prepared_by"
+    t.integer  "endorsed_by"
+    t.boolean  "condition_isgood"
+    t.boolean  "condition_isnotgood"
+    t.string   "condition_desc"
+    t.text     "training_aids"
+    t.text     "summary"
+    t.integer  "total_absent"
+    t.boolean  "report_submit"
+    t.date     "report_submit_on"
+    t.boolean  "report_endorsed"
+    t.date     "report_endorsed_on"
+    t.text     "report_summary"
+    t.integer  "schedule"
+  end
+
+  create_table "lessonplan_methodologies", :force => true do |t|
+    t.text     "content"
+    t.text     "lecturer_activity"
+    t.text     "student_activity"
+    t.text     "training_aids"
+    t.text     "evaluation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lesson_plan_id"
+    t.time     "start_meth"
+    t.time     "end_meth"
   end
 
   create_table "librarytransactions", :force => true do |t|
@@ -705,6 +940,13 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
   end
 
+  create_table "marks", :force => true do |t|
+    t.integer  "exammark_id"
+    t.decimal  "student_mark"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "messages", :force => true do |t|
     t.integer  "from_id"
     t.integer  "to_id"
@@ -722,8 +964,6 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "name"
     t.string   "title"
     t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.boolean  "admin"
     t.integer  "parent_id"
     t.string   "navlabel"
@@ -731,6 +971,8 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.boolean  "redirect"
     t.string   "action_name"
     t.string   "controller_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "parts", :force => true do |t|
@@ -740,40 +982,39 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.decimal  "quantity"
     t.decimal  "maxquantity"
     t.decimal  "minquantity"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "period_timings", :force => true do |t|
-    t.string   "name"
-    t.time     "start_time"
-    t.time     "end_time"
-    t.boolean  "break"
-    t.integer  "intake_id"
+    t.integer  "asset_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "positions", :force => true do |t|
-    t.string   "positioncode"
-    t.string   "positionname"
+    t.string   "code"
+    t.string   "combo_code"
+    t.string   "name"
     t.string   "unit"
-    t.text     "taskmain"
-    t.text     "taskother"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.text     "tasks_main"
     t.integer  "staffgrade_id"
     t.integer  "staff_id"
+    t.boolean  "is_acting"
     t.string   "ancestry"
-    t.integer  "ancestry_depth", :default => 0
+    t.integer  "ancestry_depth"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "tasks_other"
   end
-
-  add_index "positions", ["ancestry"], :name => "index_positions_on_ancestry"
 
   create_table "programmes", :force => true do |t|
     t.string   "code"
+    t.string   "combo_code"
     t.string   "name"
-    t.string   "specialisation"
+    t.string   "course_type"
+    t.string   "ancestry"
+    t.integer  "ancestry_depth"
+    t.text     "objective"
+    t.integer  "duration"
+    t.integer  "duration_type"
+    t.integer  "credits"
+    t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -793,7 +1034,7 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
   create_table "ptcourses", :force => true do |t|
     t.string   "name"
     t.integer  "course_type"
-    t.integer  "provider_id"
+    t.integer  "provider"
     t.decimal  "duration"
     t.integer  "duration_type"
     t.string   "proponent"
@@ -843,11 +1084,43 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
   end
 
-  create_table "roles", :force => true do |t|
-    t.string   "name"
+  create_table "residences", :force => true do |t|
+    t.string   "rescode"
+    t.string   "resname"
+    t.integer  "parent_id"
+    t.integer  "resclass"
+    t.integer  "restype"
+    t.boolean  "allocatable"
+    t.integer  "staff_id"
+    t.integer  "student_id"
+    t.date     "keytxdt"
+    t.date     "keyreturndt"
+    t.date     "keyexpectdate"
+    t.boolean  "keyrx"
+    t.integer  "staffadmin_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ancestry"
+  end
+
+  add_index "residences", ["ancestry"], :name => "index_residences_on_ancestry"
+
+  create_table "resultlines", :force => true do |t|
+    t.decimal  "total"
+    t.decimal  "pngs17"
+    t.string   "status"
+    t.string   "remark"
+    t.integer  "examresult_id"
+    t.integer  "student_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "roles", :force => true do |t|
+    t.string   "name"
     t.string   "authname"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "roles_users", :id => false, :force => true do |t|
@@ -893,31 +1166,15 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
   end
 
-  create_table "sdiciplines", :force => true do |t|
-    t.integer  "reportedby_id"
-    t.integer  "student_id"
-    t.text     "details"
-    t.date     "reporteddt"
-    t.integer  "cofile_id"
-    t.date     "casedt"
-    t.string   "referredby"
-    t.text     "investigation"
-    t.string   "status"
-    t.text     "action"
-    t.date     "closedtcollege"
-    t.string   "location"
-    t.text     "otherinfo"
-    t.date     "bplsenddt"
-    t.date     "jtkpdt"
-    t.text     "jtkpdecision"
-    t.date     "jtkpdescisionrxdt"
-    t.date     "appealdt"
-    t.text     "appealdecision"
-    t.date     "appealdecisionrxdt"
-    t.integer  "supplier_id"
+  create_table "shortessays", :force => true do |t|
+    t.string   "item"
+    t.string   "subquestion"
+    t.decimal  "submark"
+    t.text     "subanswer"
+    t.integer  "examquestion_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "infraction"
+    t.string   "keyword"
   end
 
   create_table "spmresults", :force => true do |t|
@@ -929,53 +1186,100 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
   end
 
+  create_table "staff_appraisal_skts", :force => true do |t|
+    t.integer  "staff_appraisal_id"
+    t.integer  "priority"
+    t.string   "description"
+    t.integer  "half"
+    t.string   "indicator"
+    t.string   "acheivment"
+    t.decimal  "progress"
+    t.text     "notes"
+    t.boolean  "is_dropped"
+    t.date     "dropped_on"
+    t.string   "drop_reasons"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "staff_appraisals", :force => true do |t|
     t.integer  "staff_id"
     t.date     "evaluation_year"
-    t.boolean  "submit_for_evaluation1"
-    t.date     "submit_for_appraisal1_on"
-    t.decimal  "eval1_part_ii"
-    t.decimal  "eval1_quantity"
-    t.decimal  "eval1_quality"
-    t.decimal  "eval1_time"
-    t.decimal  "eval1_effective"
-    t.decimal  "eval1_knowledge"
-    t.decimal  "eval1_rule"
-    t.decimal  "eval1_communicate"
-    t.decimal  "eval1_leader"
-    t.decimal  "eval1_manage"
-    t.decimal  "eval1_discipline"
-    t.decimal  "eval1_proactive"
-    t.decimal  "eval1_relate"
-    t.decimal  "eval1_percent"
-    t.integer  "eval1_work_months"
-    t.integer  "eval1_work_years"
-    t.text     "eval1_performance"
-    t.text     "eval1_progress"
-    t.integer  "evaluation1_by"
-    t.boolean  "submit_for_evaluation2"
-    t.date     "submit_for_evaluation2_on"
-    t.decimal  "eval2_part_ii"
-    t.decimal  "eval2_quantity"
-    t.decimal  "eval2_quality"
-    t.decimal  "eval2_time"
-    t.decimal  "eval2_effective"
-    t.decimal  "eval2_knowledge"
-    t.decimal  "eval2_rule"
-    t.decimal  "eval2_communicate"
-    t.decimal  "eval2_leader"
-    t.decimal  "eval2_manage"
-    t.decimal  "eval2_discipline"
-    t.decimal  "eval2_proactive"
-    t.decimal  "eval2_relate"
-    t.decimal  "eval2_percent"
-    t.integer  "eval2_work_months"
-    t.integer  "eval2_work_years"
-    t.text     "eval2_performance"
+    t.integer  "eval1_by"
+    t.integer  "eval2_by"
+    t.boolean  "is_skt_submit"
+    t.date     "skt_submit_on"
+    t.boolean  "is_skt_endorsed"
+    t.date     "skt_endorsed_on"
+    t.text     "skt_pyd_report"
+    t.boolean  "is_skt_pyd_report_done"
+    t.date     "skt_pyd_report_on"
+    t.text     "skt_ppp_report"
+    t.boolean  "is_skt_ppp_report_done"
+    t.date     "skt_ppp_report_on"
+    t.boolean  "is_submit_for_evaluation"
+    t.date     "submit_for_evaluation_on"
+    t.integer  "g1_questions"
+    t.integer  "g2_questions"
+    t.integer  "g3_questions"
+    t.decimal  "e1g1q1"
+    t.decimal  "e1g1q2"
+    t.decimal  "e1g1q3"
+    t.decimal  "e1g1q4"
+    t.decimal  "e1g1q5"
+    t.decimal  "e1g1_total"
+    t.decimal  "e1g1_percent"
+    t.decimal  "e1g2q1"
+    t.decimal  "e1g2q2"
+    t.decimal  "e1g2q3"
+    t.decimal  "e1g2q4"
+    t.decimal  "e1g2_total"
+    t.decimal  "e1g2_percent"
+    t.decimal  "e1g3q1"
+    t.decimal  "e1g3q2"
+    t.decimal  "e1g3q3"
+    t.decimal  "e1g3q4"
+    t.decimal  "e1g3q5"
+    t.decimal  "e1g3_total"
+    t.decimal  "e1g3_percent"
+    t.decimal  "e1g4"
+    t.decimal  "e1g4_percent"
+    t.decimal  "e1_total"
+    t.integer  "e1_years"
+    t.integer  "e1_months"
+    t.text     "e1_performance"
+    t.text     "e1_progress"
+    t.boolean  "is_submit_e2"
+    t.date     "submit_e2_on"
+    t.decimal  "e2g1q1"
+    t.decimal  "e2g1q2"
+    t.decimal  "e2g1q3"
+    t.decimal  "e2g1q4"
+    t.decimal  "e2g1q5"
+    t.decimal  "e2g1_total"
+    t.decimal  "e2g1_percent"
+    t.decimal  "e2g2q1"
+    t.decimal  "e2g2q2"
+    t.decimal  "e2g2q3"
+    t.decimal  "e2g2q4"
+    t.decimal  "e2g2_total"
+    t.decimal  "e2g2_percent"
+    t.decimal  "e2g3q1"
+    t.decimal  "e2g3q2"
+    t.decimal  "e2g3q3"
+    t.decimal  "e2g3q4"
+    t.decimal  "e2g3q5"
+    t.decimal  "e2g3_total"
+    t.decimal  "e2g3_percent"
+    t.decimal  "e2g4"
+    t.decimal  "e2g4_percent"
+    t.decimal  "e2_total"
+    t.integer  "e2_years"
+    t.integer  "e2_months"
+    t.text     "e2_performance"
     t.decimal  "evaluation_total"
-    t.integer  "evaluation2_by"
     t.boolean  "is_complete"
-    t.date     "is_complete_on"
+    t.date     "is_completed_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1002,6 +1306,14 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "classification_id"
     t.string   "group_id"
     t.string   "schemename"
+  end
+
+  create_table "staff_shifts", :force => true do |t|
+    t.string   "name"
+    t.time     "start_at"
+    t.time     "end_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "staffcourses", :force => true do |t|
@@ -1040,9 +1352,9 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.integer  "titlecd_id"
     t.string   "code"
     t.string   "fileno"
-    t.integer  "position_old"
     t.string   "coemail"
     t.date     "cobirthdt"
+    t.string   "birthcertno"
     t.string   "bloodtype"
     t.string   "cooftelno"
     t.string   "cooftelext"
@@ -1051,7 +1363,18 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.integer  "mrtlstatuscd"
     t.integer  "statecd"
     t.integer  "country_cd"
+    t.integer  "race"
+    t.integer  "religion"
+    t.integer  "gender"
+    t.string   "phonecell"
+    t.boolean  "phonehome"
+    t.integer  "country_id"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
     t.string   "employscheme"
+    t.string   "grade"
     t.integer  "employstatus"
     t.string   "appointstatus"
     t.date     "appointdt"
@@ -1064,23 +1387,7 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.string   "pensionstat"
     t.date     "pensiondt"
     t.string   "uniformstat"
-    t.string   "kwspcode"
-    t.string   "taxcode"
-    t.string   "bank"
-    t.string   "bankaccno"
-    t.string   "bankacctype"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "race"
-    t.integer  "religion"
-    t.string   "phonecell"
-    t.boolean  "phonehome"
-    t.string   "photo_file_name"
-    t.string   "photo_content_type"
-    t.integer  "photo_file_size"
-    t.datetime "photo_updated_at"
     t.integer  "staffgrade_id"
-    t.integer  "gender"
     t.date     "pension_confirm_date"
     t.date     "wealth_decleration_date"
     t.date     "promotion_date"
@@ -1088,10 +1395,16 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.date     "to_current_grade_date"
     t.decimal  "starting_salary"
     t.string   "transportclass_id"
-    t.integer  "country_id"
-    t.string   "birthcertno"
+    t.string   "kwspcode"
+    t.string   "taxcode"
+    t.string   "bank"
+    t.string   "bankaccno"
+    t.string   "bankacctype"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "thumb_id"
     t.integer  "time_group_id"
+    t.integer  "position_old"
   end
 
   create_table "stationeries", :force => true do |t|
@@ -1104,18 +1417,9 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
   end
 
-  create_table "strainings", :force => true do |t|
-    t.integer  "appraisal_id"
-    t.integer  "staff_id"
-    t.string   "name"
-    t.string   "place"
-    t.date     "sdate"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "student_counseling_sessions", :force => true do |t|
     t.integer  "student_id"
+    t.integer  "case_id"
     t.datetime "requested_at"
     t.text     "alt_dates"
     t.string   "c_type"
@@ -1142,14 +1446,20 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.integer  "infraction_id"
     t.text     "description"
     t.date     "reported_on"
+    t.integer  "assigned_to"
+    t.date     "assigned_on"
     t.string   "status"
     t.integer  "file_id"
-    t.date     "case_created_on"
     t.text     "investigation_notes"
-    t.text     "action"
-    t.date     "closed_at_college_on"
-    t.integer  "location_id"
+    t.string   "action_type"
     t.text     "other_info"
+    t.date     "case_created_on"
+    t.text     "action"
+    t.integer  "location_id"
+    t.integer  "assigned2_to"
+    t.date     "assigned2_on"
+    t.boolean  "is_innocent"
+    t.date     "closed_at_college_on"
     t.date     "sent_to_board_on"
     t.date     "board_meeting_on"
     t.date     "board_decision_on"
@@ -1203,26 +1513,7 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.date     "end_training"
     t.date     "intake"
     t.string   "specialisation"
-  end
-
-  create_table "subexamquestions", :force => true do |t|
-    t.integer  "examquestion_id"
-    t.integer  "parent_id"
-    t.string   "question"
-    t.string   "classification"
-    t.integer  "marks"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "subjects", :force => true do |t|
-    t.string   "subjectcode"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "credit"
-    t.integer  "status"
-    t.integer  "semester"
+    t.integer  "intake_id"
   end
 
   create_table "suppliers", :force => true do |t|
@@ -1247,19 +1538,22 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
   end
 
-  create_table "timetable_week_days", :force => true do |t|
-    t.string   "name"
+  create_table "timetable_periods", :force => true do |t|
+    t.integer  "timetable_id"
+    t.integer  "sequence"
+    t.integer  "day_name"
+    t.time     "start_at"
+    t.time     "end_at"
+    t.boolean  "is_break"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "timetables", :force => true do |t|
-    t.integer  "klass_id"
-    t.integer  "topic_id"
-    t.integer  "location_id"
-    t.integer  "staff_id"
-    t.datetime "start_at"
-    t.datetime "end_at"
+    t.string   "code"
+    t.string   "name"
+    t.string   "description"
+    t.integer  "created_by"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1272,27 +1566,19 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
   end
 
-  create_table "topics", :force => true do |t|
-    t.integer  "subject_id"
-    t.string   "topic_code"
-    t.integer  "sequenceno"
-    t.string   "name"
-    t.string   "version"
-    t.string   "objective"
-    t.text     "content"
-    t.text     "activity"
-    t.integer  "creator_id"
-    t.boolean  "approved"
-    t.integer  "approvedby_id"
-    t.date     "approved_date"
-    t.string   "remarks"
-    t.string   "checkcode"
-    t.date     "checkdate"
+  create_table "topicdetails", :force => true do |t|
+    t.string   "topic_name"
+    t.integer  "topic_code"
+    t.time     "duration"
+    t.float    "version_no"
+    t.text     "objctives"
+    t.text     "contents"
+    t.time     "theory"
+    t.time     "tutorial"
+    t.time     "practical"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "durahours"
-    t.integer  "duramins"
-    t.integer  "duration"
+    t.integer  "prepared_by"
   end
 
   create_table "trainingnotes", :force => true do |t|
@@ -1315,12 +1601,15 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.integer  "classtype"
     t.integer  "timetable_id"
     t.boolean  "location_state"
-    t.text     "ls_comment"
-    t.text     "staff_comment"
+    t.text     "location_comment"
+    t.text     "abm_comment"
+    t.text     "summary"
     t.integer  "staff_id"
-    t.boolean  "submit"
-    t.text     "tpa_comment"
+    t.boolean  "is_submitted"
+    t.date     "is_submitted_on"
     t.integer  "tpa_id"
+    t.text     "tpa_comment"
+    t.date     "tpa_comment_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1339,74 +1628,144 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.datetime "updated_at"
   end
 
-  create_table "trainneeds", :force => true do |t|
+  create_table "trainings", :force => true do |t|
+    t.string   "code"
+    t.string   "combo_code"
     t.string   "name"
-    t.string   "reason"
+    t.string   "course_type"
+    t.string   "ancestry"
+    t.integer  "ancestry_depth"
+    t.text     "objective"
+    t.integer  "duration"
+    t.integer  "duration_type"
+    t.integer  "credits"
+    t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "confirmedby_id"
+  end
+
+  create_table "trainneeds", :force => true do |t|
     t.integer  "evaluation_id"
+    t.string   "name"
+    t.string   "reason"
+    t.integer  "confirmedby_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "travel_claim_allowances", :force => true do |t|
+    t.integer  "travel_claim_id"
+    t.integer  "expenditure_type"
+    t.string   "receipt_code"
+    t.date     "spent_on"
+    t.decimal  "amount"
+    t.decimal  "quantity"
+    t.boolean  "checker"
+    t.string   "checker_notes"
+    t.decimal  "total"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "travel_claim_logs", :force => true do |t|
+    t.integer  "travel_request_id"
+    t.date     "travel_on"
+    t.time     "start_at"
+    t.time     "finish_at"
+    t.string   "destination"
+    t.decimal  "mileage"
+    t.decimal  "km_money"
+    t.boolean  "checker"
+    t.string   "checker_notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "travel_claim_mileage_rates", :force => true do |t|
+    t.integer  "km_low"
+    t.integer  "km_high"
+    t.decimal  "a_group",    :precision => 4, :scale => 2
+    t.decimal  "b_group",    :precision => 4, :scale => 2
+    t.decimal  "c_group",    :precision => 4, :scale => 2
+    t.decimal  "d_group",    :precision => 4, :scale => 2
+    t.decimal  "e_group",    :precision => 4, :scale => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "travel_claim_receipts", :force => true do |t|
+    t.integer  "travel_claim_id"
+    t.integer  "expenditure_type"
+    t.string   "receipt_code"
+    t.date     "spent_on"
+    t.decimal  "amount"
+    t.decimal  "quantity"
+    t.boolean  "checker"
+    t.string   "checker_notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "travel_claims", :force => true do |t|
+    t.integer  "staff_id"
+    t.date     "claim_month"
+    t.decimal  "advance"
+    t.decimal  "total"
+    t.boolean  "is_submitted"
+    t.date     "submitted_on"
+    t.boolean  "is_checked"
+    t.boolean  "is_returned"
+    t.date     "checked_on"
+    t.integer  "checked_by"
+    t.string   "notes"
+    t.boolean  "is_approved"
+    t.date     "approved_on"
+    t.integer  "approved_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "travel_claims_transport_groups", :force => true do |t|
+    t.string   "group_name",  :limit => 2,                               :null => false
+    t.decimal  "salary_low",               :precision => 8, :scale => 2
+    t.decimal  "salary_high",              :precision => 8, :scale => 2
+    t.integer  "cc_low"
+    t.integer  "cc_high"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "travel_requests", :force => true do |t|
     t.integer  "staff_id"
-    t.string   "request_code"
+    t.integer  "document_id"
+    t.integer  "staff_course_conducted_id"
     t.string   "destination"
-    t.string   "purpose"
     t.datetime "depart_at"
     t.datetime "return_at"
-    t.string   "transport_type"
+    t.boolean  "own_car"
+    t.string   "own_car_notes"
+    t.boolean  "dept_car"
+    t.boolean  "others_car"
+    t.boolean  "taxi"
+    t.boolean  "bus"
     t.boolean  "train"
     t.boolean  "plane"
     t.boolean  "other"
     t.string   "other_desc"
-    t.text     "own_car_notes"
-    t.boolean  "mileage"
-    t.boolean  "mileage_replace"
     t.boolean  "is_submitted"
     t.date     "submitted_on"
     t.integer  "replaced_by"
+    t.boolean  "mileage"
+    t.boolean  "mileage_replace"
     t.integer  "hod_id"
     t.boolean  "hod_accept"
     t.date     "hod_accept_on"
+    t.integer  "travel_claim_id"
+    t.boolean  "is_travel_log_complete"
+    t.decimal  "log_mileage"
+    t.decimal  "log_fare"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "travelclaimreceipts", :force => true do |t|
-    t.integer  "travelclaim_id"
-    t.integer  "type_id"
-    t.string   "receiptnp"
-    t.decimal  "rvalue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "travelclaimrequests", :force => true do |t|
-    t.integer  "travelclaim_id"
-    t.integer  "travelrequest_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.decimal  "mileage"
-  end
-
-  create_table "travelclaims", :force => true do |t|
-    t.decimal  "ptclaimsvalue"
-    t.decimal  "allclaimsvalue"
-    t.decimal  "othclaimsvalue"
-    t.decimal  "exchvalue"
-    t.decimal  "exchloss"
-    t.decimal  "gtotal"
-    t.boolean  "claimtype"
-    t.date     "submission"
-    t.integer  "hod_id"
-    t.date     "hodconfirmdt"
-    t.decimal  "advance"
-    t.decimal  "payable"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "staff_id"
-    t.date     "claimsmonth"
   end
 
   create_table "traveldetailreceipts", :force => true do |t|
@@ -1432,30 +1791,6 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
     t.boolean  "dinner"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "travelrequests", :force => true do |t|
-    t.integer  "staff_id"
-    t.string   "trcode"
-    t.string   "destination"
-    t.string   "purpose"
-    t.date     "tstartdt"
-    t.date     "treturndt"
-    t.boolean  "owncar"
-    t.boolean  "officecar"
-    t.boolean  "otherscar"
-    t.boolean  "train"
-    t.boolean  "plane"
-    t.boolean  "publict"
-    t.string   "ifownwhy"
-    t.boolean  "claimtype"
-    t.date     "submission"
-    t.integer  "replacement_id"
-    t.integer  "hod_id"
-    t.date     "hodconfirmdt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "travelclaims_id"
   end
 
   create_table "txsupplies", :force => true do |t|
@@ -1487,13 +1822,51 @@ ActiveRecord::Schema.define(:version => 20121017024632) do
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
 
   create_table "usesupplies", :force => true do |t|
-    t.integer  "supplier_id"
+    t.integer  "supplies_id"
     t.integer  "issuedby"
     t.integer  "receivedby"
     t.decimal  "quantity"
     t.date     "issuedate"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "weeklytimetable_details", :force => true do |t|
+    t.integer  "subject"
+    t.integer  "topic"
+    t.integer  "time_slot"
+    t.integer  "lecturer_id"
+    t.integer  "weeklytimetable_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "day2"
+    t.integer  "time_slot2"
+    t.boolean  "is_friday"
+    t.integer  "location"
+    t.integer  "lecture_method"
+  end
+
+  create_table "weeklytimetables", :force => true do |t|
+    t.integer  "programme_id"
+    t.integer  "intake_id"
+    t.integer  "group_id"
+    t.date     "startdate"
+    t.date     "enddate"
+    t.integer  "semester"
+    t.integer  "prepared_by"
+    t.integer  "endorsed_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "format1"
+    t.integer  "format2"
+    t.integer  "week"
+    t.boolean  "is_submitted"
+    t.date     "submitted_on"
+    t.boolean  "hod_approved"
+    t.date     "hod_approved_on"
+    t.boolean  "hod_rejected"
+    t.date     "hod_rejected_on"
+    t.string   "reason"
   end
 
 end

@@ -19,31 +19,11 @@ class Cofile < ActiveRecord::Base
   
   
   def owner_details
-    suid = owner_id.to_a
-    exists = Staff.find(:all, :select => "id").map(&:id)
-    checker = suid & exists
-    
-    if owner_id == nil
-      ""
-    elsif checker == []
-      "Staff No Longer Exists"
-    else
-      owner.mykad_with_staff_name
-    end
+    check_kin {owner.mykad_with_staff_name}
   end
   
   def borrower_details
-    suid = staffloan_id.to_a
-    exists = Staff.find(:all, :select => "id").map(&:id)
-    checker = suid & exists
-    
-    if staffloan_id == nil
-      ""
-    elsif checker == []
-      "Staff No Longer Exists"
-    else
-      borrower.mykad_with_staff_name
-    end
+    check_kin {borrower.mykad_with_staff_name}
   end
    
   def self.find_main

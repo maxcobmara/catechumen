@@ -2,6 +2,7 @@ class CreateStudentCounselingSessions < ActiveRecord::Migration
   def self.up
     create_table :student_counseling_sessions do |t|
       t.integer   :student_id
+      t.integer   :case_id
       t.datetime  :requested_at
       t.text      :alt_dates
       t.string    :c_type

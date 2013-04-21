@@ -1,0 +1,36 @@
+<fieldset>
+	<legend class='togvis'>Lesson Plan Report</legend>
+	<table width=85% >
+		<tr>
+			<td class="leftcol"><label>Location:</label></td>
+			<td><%=h @lesson_plan.schedule_item.weeklytimetable_location.name %></td>				
+		</tr>
+		<tr>
+			<td class="leftcol"><label>Total of Student Absent:</label></td>
+			<td><%=h @lesson_plan.total_absent%></td>				
+		</tr>
+		<tr>
+			<td class="leftcol"><label>Class Condition</label></td>
+			<td>
+				<SPAN  id="span_hod_endorse" style="display: none;"></SPAN>
+				<%=h @lesson_plan.condition_isgood? ? "Satisfactory" : "Not Satisfactory" %>
+			</td>				
+		</tr>
+		<tr>
+			<td class="leftcol">Reason(s) for non-satisfactory class condition</td>
+			<td><%=h @lesson_plan.condition_isnotgood? ? simple_format(@lesson_plan.condition_desc) : "-" %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label>Training Aids</label></td>
+			<td><%= @lesson_plan.training_aids %></td>				
+		</tr>
+		<tr>
+			<td class="leftcol"><label>Lecturer Review</label></td>
+			<td><%= @lesson_plan.summary %></td>				
+		</tr>
+		<tr>
+			<td class="leftcol"><label>TPA/Head of Programme Review</label></td>
+			<td><%= @lesson_plan.report_summary? ? @lesson_plan.report_summary : "Awaiting review by TPA/Head of Programme" %></td>				
+		</tr>
+	</table>
+</fieldset>

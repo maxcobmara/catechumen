@@ -1,19 +1,20 @@
 <div class="fields">
-<table>
-<tr>
-		<td  class="leftcol"><%= f.label :travelrequest_id, "Travel Request" %></td>
-		<td> <%= f.collection_select :travelrequest_id, Travelrequest.find(:all), :id, :travel_request_key, :include_blank => true %></td>
-		<td><%= link_to_remove_fields "remove", f %></td>
-</tr>
-</table>
-<p><p>
-  <div style="position: relative; left: 100px;">
-		<b>Details</b> 
+	
+	<fieldset>
+		<legend>Select Travel Request : <%= f.collection_select :travelrequest_id, TravelRequest.find(:all, :conditions => ['id IN (?)', @travelclaim.unclaimed_travel_requests], :order => :id), :id, :request_code, :include_blank => true %>
+		<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %></legend>
+		
+   <div style=" border:solid red;">
+	
+	
+		<b>Details</b>position: relative; left: 100px; 
 		<HR width=50% align=left>
 
 	 <% f.fields_for :traveldetails do |builder| %>
 		<%= render 'traveldetail_fields', :f => builder %>
 	 <% end %>
 	 <p><%= link_to_add_fields "Add Details", f, :traveldetails %></p>
-	  </div>
+
+	</div>
+	</fieldset>
 </div>

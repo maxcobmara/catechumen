@@ -1,0 +1,36 @@
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Loanable Assets</h2>
+		<div class="right">
+		</div>
+  </div>
+</div>
+<div class="indextable">
+
+<table>
+  <tr>
+    <th>Asset Code</th>
+    <th>Type</th>
+    <th>Name</th>
+    <th>Model No</th>
+    <th>Serial No</th>
+	  <th class="ac">Control</th>
+  </tr>
+
+<% @loanables.each do |loanable| %>
+  <tr>
+    <td><%=h loanable.assetcode %></td>
+    <td><%=h loanable.typename %></td>
+    <td><%=h loanable.name %></td>
+    <td><%=h loanable.modelname %></td>
+    <td><%=h loanable.serialno %></td>
+		<td width=10px ><%= link_to image_tag("user_go.png", :border => 0, :title => 'Apply to Loan'), new_asset_loan_path(:asset_id => loanable) %></td>
+  </tr>
+<% end %>
+</table>
+
+</div>
+
+<br />
+

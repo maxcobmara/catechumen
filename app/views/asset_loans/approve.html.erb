@@ -1,0 +1,59 @@
+<div class="tform">
+<%= render :partial => 'show_request' %>
+<% form_for(@asset_loan) do |f| %>
+  <%= f.error_messages %>
+		<H2>Approval</H2>
+		<table width=100% >
+			<tr>
+				<td class="leftcolwide"><label for="is_approved">Approval</label></td>
+		    <td><%= f.radio_button :is_approved, true, 	:id => 'is_approved_true'  , :class => 'approval' %>Approve &nbsp; 
+						<%= f.radio_button :is_approved, false, 	:id => 'is_approved_false' , :class => 'approval' %>Reject</td>
+			</tr>
+			<tr>
+				<td class="leftcolwide"><label for="approved_date">Approval Date</label></td>
+		    <td><%= f.date_select :approved_date, :order => [:day, :month, :year], :default => Date.today %></td>	
+			</tr>
+			<tr>
+				<td class="leftcolwide"><label>Approval By</td>
+				<td><%=h @asset_loan.owner.name %></td>
+			</tr>
+			<% myhod = Position.find(:all, :conditions => ['staff_id IS NOT ? AND ancestry_depth =?', nil, 1 ], :select => :staff_id).map(&:staff_id) %>
+			<tr id="notify_hod" style="display: none;">
+				<td class="leftcolwide"><label for="approved_date">Notify HOD</label></td>
+		    <td><%= f.collection_select :loan_officer, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %></td>
+		
+			</tr>
+		</table>
+</div>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @asset_loan %> |
+<%= link_to 'Back', asset_loans_path %>
+
+
+<script type="text/javascript">
+	$j(document).ready(function(){ 
+
+			
+			//Notify HOD Action
+			$j("input[class='approval']").each(function() {  
+			 if($j('#is_approved_true').is(':checked')) { 
+		      $j("#notify_hod").show("highlight");
+			  }else if ($j('#is_approved_false').is(':checked')){
+		      $j("#notify_hod").hide("highlight");
+			  }	
+			});
+			
+			$j("input[class='approval']").change(function() {  
+			 if($j('#is_approved_true').is(':checked')) { 
+		      $j("#notify_hod").show("highlight");
+			  }else if ($j('#is_approved_false').is(':checked')){
+		      $j("#notify_hod").hide("highlight");
+			  }	
+			});
+	  });
+</script>

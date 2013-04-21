@@ -1,0 +1,35 @@
+<H2>Approve</H2>
+<table width=100%>
+	<tr>
+	  <td class="leftcol"><label for="is_approved">Approve</label></td>
+		<td><%= f.check_box :is_approved, :id => 'approve1' %>
+				<SPAN class="span_submit1" style="display: none;"><%= f.date_select :approved_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
+		<td class="pagenote">Clicking on Approves shall approve this claim</td>
+	</tr>
+	<tr class="span_submit1">
+	  <td class="leftcol"><label for="is_submitted">Approval By</label></td>
+		<td><%= f.collection_select :approved_by, Staff.find(:all, :conditions => ['id = ?', User.current_user.staff_id]), :id, :name %></td>
+		<td class="pagenote">Confirmation</td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			//show submit date
+			$j("input[id='approve1']").change(function() {  
+			 if($j('#approve1').is(':checked')) { 
+			    $j(".span_submit1").show("highlight"); 
+			 }else		{
+			    $j(".span_submit1").hide(""); 
+			 }	
+			});
+
+			$j("input[id='approve1']").each(function() {  
+			 if($j('#approve1').is(':checked')) { 
+			    $j(".span_submit1").show("highlight"); 
+			 }else		{
+			    $j(".span_submit1").hide(""); 
+			 }	
+			});
+	});
+</script>

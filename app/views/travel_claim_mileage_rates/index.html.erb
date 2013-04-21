@@ -1,0 +1,44 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Mileage Rates for Transport Groups</h2>
+	</div>
+</div>
+
+<div class="toolbar">
+	<table style="width:60%;"><tr>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Item') + "New Item", new_travel_claim_mileage_rate_path %></p></td>
+	</tr></table>
+</div>
+	
+<div class="indextable">
+	<table style="width:60%;">
+  <tr>
+    <th>Kms</th>
+    <th style="text-align:right;">A</th>
+    <th style="text-align:right;">B</th>
+    <th style="text-align:right;">C</th>
+    <th style="text-align:right;">D</th>
+    <th style="text-align:right;">E</th>
+		<th colspan=3 class="ac">Control</th>
+  </tr>
+
+	<% @travel_claim_mileage_rates.each do |travel_claim_mileage_rate| %>
+  <tr>
+    <td><label><%=h travel_claim_mileage_rate.km_low %> kms to <%=h travel_claim_mileage_rate.km_high %> kms</td>
+    <td style="text-align:right;"><%=h ringgols (travel_claim_mileage_rate.a_group) %></td>
+    <td style="text-align:right;"><%=h ringgols (travel_claim_mileage_rate.b_group) %></td>
+    <td style="text-align:right;"><%=h ringgols (travel_claim_mileage_rate.c_group) %></td>
+    <td style="text-align:right;"><%=h ringgols (travel_claim_mileage_rate.d_group) %></td>
+    <td style="text-align:right;"><%=h ringgols (travel_claim_mileage_rate.e_group) %></td>
+    <!--<td width=10px><%= link_to image_tag("document.png",:border => 0), :action => 'show', :id => travel_claim_mileage_rate %></td>-->
+		<td width=10px><%= link_to image_tag("edit.png", 		:border => 0), :action => 'edit', :id => travel_claim_mileage_rate %></td>
+	  <td width=10px><%= link_to image_tag("delete.png", 	:border => 0, :title => 'Delete'), travel_claim_mileage_rate, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+</div>
+<%= link_to 'New travel_claim_mileage_rate', new_travel_claim_mileage_rate_path %>

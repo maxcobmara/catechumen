@@ -1,0 +1,42 @@
+<div class="tform">
+	
+	<H2>Programme Details</H2>
+  <table width=100% >
+		<tr>
+			<td class="leftcol"><label for="code"><b>Programme Code:</b></label></td>
+			<td> <%=h @programme.code %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="name"><b>Programme Name:</b></label></td>
+			<td> <%=h @programme.name %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="specialisation"><b>Specialisation:</b></label></td>
+			<td> <%=h @programme.specialisation %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="name"><b>Subject Name:</b></label></td>
+			<td>
+				
+							<table width=100% border=0 padding=0>
+								<% @programme.subjects.find(:all, :order => :subjectcode).in_groups_of(2, false) do |row_subjects| %>
+
+								<tr>
+									<% for subject in row_subjects %>
+										<td><%= subject.subjectcode %> - <%= subject.name %></td>
+								  <% end %>
+								</tr>
+								<% end %>
+
+							</table></td>
+		</tr>
+	</table>
+<BR>
+</div>
+
+
+</table>
+<%= link_to 'Edit', edit_programme_path(@programme) %> |
+<%= link_to 'Back', programmes_path %>

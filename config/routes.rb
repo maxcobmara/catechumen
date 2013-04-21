@@ -1,5 +1,73 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :booleananswers
+
+  map.resources :booleanchoices
+
+  map.resources :shortessays
+
+  map.resources :examanswers
+
+  map.resources :answerchoices
+
+  map.resources :resultlines
+
+  map.resources :examresults
+
+  map.resources :marks
+
+   map.resources :exammarks, :collection => { :edit_multiple => :post, :update_multiple => :put }   #-- 17 May 2012--
+  map.resources :exammarks
+
+  map.resources :lessonplan_methodologies
+
+  map.connect '/lesson_plans/lessonplan_report', :controller => 'lesson_plans', :action => 'lessonplan_reporting'
+  map.connect '/lesson_plans/lesson_plan_report', :controller => 'lesson_plans', :action => 'lesson_plan_report'
+  map.resources :lesson_plans, :collection => { :lesson_plan => :get, :index_report => :get}
+  map.resources :lesson_plans
+
+  map.resources :topicdetails
+
+  map.resources :weeklytimetable_details
+
+  map.resources :academic_sessions
+
+  map.connect '/weeklytimetables/personalize_show', :controller => 'weeklytimetables', :action => 'personalize_show'
+  map.connect '/weeklytimetables/personalize_index', :controller => 'weeklytimetables', :action => 'personalize_index'
+  map.resources :weeklytimetables, :collection => { :general_timetable => :get, :personalize_timetable => :get}
+  map.resources :weeklytimetables
+  #map.connect ':controller/:action.:format' #24March2013 - this will cause "No Action responded to 3.Actions:create, destroy,edit..."
   
+  map.resources :intakes
+
+  map.resources :staff_shifts
+
+  map.resources :travel_claim_mileage_rates
+
+  map.resources :travel_claims_transport_groups
+
+  ##20March2013-standby 1st-map.connect '/timetables/calendar/', :controller => 'timetables', :action=>'calendar'
+  map.resources :timetables
+
+  map.resources :programmes
+
+  map.resources :trainings
+
+  map.connect '/asset_disposals/kewpa17/', :controller => 'asset_disposals', :action => 'kewpa17'
+  map.connect '/asset_disposals/kewpa20/', :controller => 'asset_disposals', :action => 'kewpa20'
+  map.connect '/asset_disposals/dispose/', :controller => 'asset_disposals', :action => 'dispose'
+  map.connect '/asset_disposals/revalue/', :controller => 'asset_disposals', :action => 'revalue'
+  map.resources :asset_disposals, :collection => { :kewpa16 => :get, :kewpa18 => :get, :kewpa19 => :get  }
+
+  map.connect '/asset_defects/kewpa13', :controller => 'asset_defects', :action => 'kewpa13'
+  map.connect '/asset_defects/approve/', :controller => 'asset_defects', :action => 'approve'
+  map.resources :asset_defects, :collection => { :kewpa9 => :get }
+  
+  map.connect '/attendance/approve/', :controller => 'asset_loans', :action => 'approve'
+  map.resources :asset_loans, :collection => { :lampiran => :get}
+
+  map.connect '/travel_claims/check/', :controller => 'travel_claims', :action => 'check'
+  map.resources :travel_claims, :collection => { :claimprint => :get }
+
   map.connect '/attendance/status/', :controller => 'staff_attendances', :action => 'status' 
   map.connect '/attendance/approve/', :controller => 'staff_attendances', :action => 'approve' 
   map.connect '/attendance/manage/', :controller => 'staff_attendances', :action => 'manage' 
@@ -7,11 +75,13 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :staff_appraisals, :collection => { :appraisal_form => :get }
 
+  map.connect '/travel_requests/travel_log', :controller => 'travel_requests', :action => 'travel_log'
+  map.connect '/travel_requests/logs', :controller => 'travel_requests', :action => 'travel_log_index'
   map.resources :travel_requests
 
   map.resources :student_counseling_sessions
 
-  map.resources :asset_losses
+  map.resources :asset_losses, :collection => { :kewpa28 => :get, :kewpa29 => :get, :kewpa30 => :get }
 
   
   map.connect '/exams/exampaper', :controller => 'exams', :action => 'exampaper'
@@ -19,7 +89,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :student_discipline_cases
 
-  map.resources :trainingnotes
+  map.resources :trainingnotes, :collection => { :D09 => :get }
 
   map.resources :trainingreports
 
@@ -31,7 +101,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/timetables/calendar/', :controller => 'timetables', :action => 'calendar'
   map.resources :timetables#, :collection => { :calendar => :get }
 
-  map.resources :stationeries
+  map.resources :stationeries, :collection => { :kewpa11 => :get }
 
   map.resources :messages
 
@@ -67,18 +137,12 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :trainingrequests
 
-  map.resources :timetable_week_days
-
   map.resources :staffcourses, :collection => { :indexapply => :get }
 
   map.resources :grades
 
   #map.connect '/time_table_entries/timetable_view', :controller => 'time_table_entries', :action => 'timetable_view'
   #map.resources :time_table_entries
-
-  map.resources :period_timings
-
-  map.resources :intakes
 
   map.resources :klasses
 
@@ -98,10 +162,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :courseevaluations
 
-  map.resources :programmes
-
   map.connect '/librarytransactions/return', :controller => 'librarytransactions', :action => 'return'
+  map.connect '/librarytransactions/return2', :controller => 'librarytransactions', :action => 'return2'  #4Apr2013
   map.connect '/librarytransactions/extend', :controller => 'librarytransactions', :action => 'extend'
+  map.connect '/librarytransactions/extend2', :controller => 'librarytransactions', :action => 'extend2'  #4Apr2013
   map.resources :librarytransactions
 
   map.connect '/leaveforstaffs/approve1', :controller => 'leaveforstaffs', :action => 'approve1'
@@ -110,32 +174,14 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :staffgrades
 
-  map.resources :topics
-
-  map.resources :subjects
-
   map.connect '/leaveforstudents/approve', :controller => 'leaveforstaffs', :action => 'approve'
   map.resources :leaveforstudents
 
-  map.resources :courses
-
-  map.resources :travelclaims, :collection => { :claimprint => :get }
-
-  map.resources :appraisals
-
-  map.resources :appraisals
-
   map.resources :disposals
-
-  map.resources :travelrequests
 
   map.resources :examquestions
 
   map.resources :assetlosses
-
-  map.resources :counsellings
-
-  map.resources :sdiciplines
 
   map.resources :bulletins
 
@@ -145,17 +191,13 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :trainneeds
 
-  map.resources :strainings
-
   map.resources :evactivities
-
-  map.resources :appraisals
 
   map.resources :curriculums
 
   map.resources :docs
 
-  map.resources :documents
+  #map.resources :documents
 
   map.resources :curriculums
   
@@ -172,9 +214,12 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect '/asset_autocomplete', :controller => 'assets', :action => 'asset_autocomplete'
   map.connect '/assets/registerinventory', :controller => 'assets', :action => 'registerinventory'
+  map.connect '/assets/placement', :controller => 'assets', :action => 'asset_placement'
   map.connect '/assets/maintenance', :controller => 'assets', :action => 'maintenance'
-  map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get, :kewpa4 => :get, :kewpa8 => :get }
+  map.resources :assets, :collection => { :kewpa3 => :get, :kewpa2 => :get, :kewpa4 => :get, :kewpa8 => :get, :kewpa13 => :get, :kewpa14 => :get,:loanables => :get}
 
+  map.connect '/books/book_detail', :controller => 'books', :action => 'book_detail'
+  map.resources :books, :collection => {:stock_verification => :get, :stock_listing => :get}
   map.resources :books
 
   map.connect '/residences/addasset', :controller => 'residences', :action => 'addasset'
@@ -182,19 +227,19 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/students/formforstudent', :controller => 'students', :action => 'formforstudent'
   map.resources :students
 
-  map.connect '/positions/maklumat_perjawatan_LA', :controller => 'positions', :action => 'maklumat_perjawatan_LA'
+  map.connect '/position/maklumat_perjawatan_LA', :controller => 'positions', :action => 'maklumat_perjawatan_LA'
   map.resources :positions
 
   map.resources :cofiles
 
+  #map.connect '/documents/generate_report', :controller => 'books', :action => 'generate_report'
+  map.resources :documents, :collection => {:generate_report => :get}
   map.resources :documents
 
   #map.calendar '/calendar/:year/:month', :controller => 'calendar', :action => 'event', :requirements => {:year => /\d{4}/, :month => /\d{1,2}/}, :year => nil, :month => nil
   map.resources :events
 
   map.resources :titles
-
-  map.resources :stafftitles
   
   map.connect '/staffs.js', :controller => 'staffs', :action => 'index' , :collection => {:method => :get}
   map.connect '/staffs/reportforstaff', :controller => 'staffs', :action => 'reportforstaff'
@@ -216,6 +261,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.with_options :controller => 'viewer' do |viewer|
     viewer.librarystats 'librarystats', :action => 'librarystats'
+    viewer.librarystats 'asset_reports', :action => 'assetreports'
   end
   
   map.view_page ':name', :controller => 'viewer', :action => 'show'

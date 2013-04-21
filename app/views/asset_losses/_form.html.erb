@@ -5,33 +5,9 @@
 		<td></td>
 	</tr>
 	
+
+	
 	<tr>
-		<td class="leftcol"><label for="loss_type"><b><%= t 'asset_losses.loss_type' %></b></label><font color="red"> * </font></td>
-		<td><%= f.radio_button :loss_type, "cash", 		:id => 'lc', :class => 'lt'%>Cash &nbsp; 
-				<%= f.radio_button :loss_type, "asset", 	:id => 'rb', :class => 'lt'%>Asset &nbsp; 
-				<%= f.radio_button :loss_type, "supplies",:id => 'ab', :class => 'lt'%>Supplies &nbsp;</td>
-		<td></td>                                                                
-	</tr>
-	
-	<!--  Old Code for above
-			<#%= f.radio_button :loss_type, "Cash", 		:id => 'lc' %>Cash &nbsp; 
-			<#%= f.radio_button :loss_type, "Asset", 	:id => 'rb' %>Asset &nbsp; 
-			<#%= f.radio_button :loss_type, "Supplies",:id => 'ab' %>Supplies &nbsp; 
-			
-					<#%= radio_button("asset_loss", "loss_type", "cash"    )%>Cash &nbsp; 
-					<%#= radio_button("asset_loss", "loss_type", "asset"   )%>Asset &nbsp; 
-					<#%= radio_button("asset_loss", "loss_type", "supplies")%>Supplies &nbsp;
-			
-			Output reference
-			radio_button("post", "category", "rails")
-			radio_button("post", "category", "java")
-			# => <input type="radio" id="post_category_rails" name="post[category]" value="rails" checked="checked" />
-			#    <input type="radio" id="post_category_java" name="post[category]" value="java" />
-			
-			
-	-->
-	
-	<tr id="asset_list" style="display: none;">
 		<td class="leftcol"><label for="asset_id"><b><%= t 'asset_losses.asset_id' %></b></label></td>
     <td>	<% if Asset.count(:all, :conditions => ['mark_as_lost is true']) == 0 %>
 						No assets marked for loss
@@ -49,26 +25,6 @@
 			<td></td>
 	</tr>
 
-	<tr>
-		<td class="leftcol"><label for="estvalue"><b><%= t 'asset_losses.estvalue' %></b></label></td>
-		<td><%= f.text_field :est_value, :size => 12, :placeholder => 'Ringgit.Sen'%></td>
-		<td class="pagenote"><%= t 'asset_losses.est_value_long' %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcolwide"><label for="new"><b><%= t 'asset_losses.is_used' %></b></label></td>
-    <td><%= f.radio_button :is_used, false %> New <%= f.radio_button :is_used, true %> Used </td>
-		<td class="pagenote"><%= t 'asset_losses.is_used_long' %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="ownership"><b><%= t 'asset_losses.ownership' %></b></label></td>
-		<td><%= t 'asset_losses.ownership_state' %> &nbsp; 
-				<%= f.radio_button :ownership, "State", 		:id => 'ownership_state', :class => 'radio_ownership' %>	<SPAN id="span_value_state" style="display: none;"><%= f.text_field :value_state, :size => 12, :placeholder => 'Ringgit.Sen' %></SPAN>| <%= t 'asset_losses.ownership_fed' %> &nbsp; 
-				<%= f.radio_button :ownership, "Federal", 	:id => 'ownership_fed'  , :class => 'radio_ownership' %>		<SPAN id="span_value_federal" style="display: none;"><%= f.text_field :value_federal, :size => 12, :placeholder => 'Ringgit.Sen'%></SPAN>| <%= t 'asset_losses.ownership_both' %> &nbsp; 
-				<%= f.radio_button :ownership, "Both", 			:id => 'ownership_both' , :class => 'radio_ownership' %></td>
-		<td class="pagenote"><%= t 'asset_losses.ownership_long' %></td>
-	</tr>
 	
 	<tr>
 		<td class="leftcolwide"><label for="location_id"><%= t 'asset_losses.location_id' %></label></td>
@@ -116,10 +72,10 @@
 </table>
 
 <!--  Police Report Items -->
-<H2>Police Report</H2>
+<H2>Actions</H2>
 <table  width=100%>
 	<tr>
-		<td class="leftcolwide"><label for="is_police_report_made"><b><%= t 'asset_losses.is_police_report_made' %>
+		<td class="leftcol"><label for="is_police_report_made"><b><%= t 'asset_losses.is_police_report_made' %>
 			<SPAN  class="popo_report" style="display: none;">and Report No</b></label></td>
     <td><%= f.radio_button :is_police_report_made,'true' , :id => 'popo_report_true' , :class => 'radio_report' %>Yes &nbsp;
 				<%= f.radio_button :is_police_report_made,'false', :id => 'popo_report_false', :class => 'radio_report' %>No &nbsp; &nbsp; 
@@ -129,147 +85,42 @@
 	</tr>
 	
 	<tr id="tr_why_no_report" style="display: none;">
-		<td class="leftcolwide"><label for="why_no_report"><b><%= t 'asset_losses.why_no_report' %></b></label></td>
+		<td class="leftcol"><label for="why_no_report"><b><%= t 'asset_losses.why_no_report' %></b></label></td>
 		<td><%= f.text_area :why_no_report, :size => "50x4" %></td>
 		<td class="pagenote"><%= t 'asset_losses.why_no_report_long' %><BR/></td>
 	</tr>
 	
-	<tr class="popo_report" style="display: none;">
-		<td class="leftcolwide"><label for="police_action_status"><b><%= t 'asset_losses.police_action_status' %></b></label></td>
+	<tr class="popo_report_" style="display: none;">
+		<td class="leftcol"><label for="police_action_status"><b><%= t 'asset_losses.police_action_status' %></b></label></td>
 		<td><%= f.text_area :police_action_status, :size => "50x4" %></td>
 		<td class="pagenote"><%= t 'asset_losses.police_action_status_long' %><BR/></td>
 	</tr>
-</table>
-
-<H2>Process Conformation</H2>
-<table width=100%>
+		
 	<tr>
-		<td class="leftcolwide"><label for="rulesbroken"><b><%= t 'asset_losses.is_rule_broken' %></b></label></td>
-    <td><%= f.radio_button :is_rule_broken,'true',	:id => 'rules_broke_true' , :class => 'radio_rulesbroken' %> Yes &nbsp; &nbsp; 
-				<%= f.radio_button :is_rule_broken,'false',	:id => 'rules_broke_false', :class => 'radio_rulesbroken' %>No  &nbsp; &nbsp; &nbsp; &nbsp;</td>
-		<td class="pagenote"><%= t 'asset_losses.is_rule_broken_long' %><BR/><BR/></td>
-	</tr>
-	
-	<tr class="tr_rules_broken_desc" style="display: none;">
-		<td class="leftcolwide"><label for="rules_broken_desc"><b><%= t 'asset_losses.rules_broken_desc' %></b></label></td>
-		<td><%= f.text_area :rules_broken_desc, :size => "50x4" %></td>
-		<td class="pagenote"><%= t 'asset_losses.rules_broken_desc_long' %><BR/><BR/></td>
-	</tr>
-	
-	<tr class="tr_preventive_action_dept" style="display: none;">
-		<td class="leftcolwide"><label for="preventive_action_dept"><b><%= t 'asset_losses.preventive_action_dept' %></b></label></td>
-		<td><%= f.text_area :preventive_action_dept, :size => "50x4" %></td>
-		<td class="pagenote"><%= t 'asset_losses.preventive_action_dept_long' %><BR/><BR/></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcolwide"><label for="prev_action_enforced_by"><b><%= t 'asset_losses.prev_action_enforced_by' %></b></label></td>
-    <td><%= f.collection_select :prev_action_enforced_by, Staff.find(:all, :order => :name), :id, :name, :include_blank => true %></td>
-		<td class="pagenote"><%= t 'asset_losses.prev_action_enforced_by_long' %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcolwide"><label for="preventive_measures"><b><%= t 'asset_losses.preventive_measures' %></b></label></td>
+		<td class="leftcol"><label for="preventive_measures"><b><%= t 'asset_losses.preventive_measures' %></b></label></td>
     <td><%= f.text_area :preventive_measures, :size => "50x4" %></td>
 		<td class="pagenote"><%= t 'asset_losses.preventive_measures_long' %><BR/><BR/></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcolwide"><label for="new_measures"><b><%= t 'asset_losses.new_measures' %></b></label></td>
+		<td class="leftcol"><label for="new_measures"><b><%= t 'asset_losses.new_measures' %></b></label></td>
     <td><%= f.text_area :new_measures, :size => "50x4" %></td>
 		<td class="pagenote"><%= t 'asset_losses.new_measures_long' %><BR/><BR/></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcolwide"><label for="recommendations"><b><%= t 'asset_losses.recommendations' %></b></label></td>
-    <td><%= f.text_area :recommendations, :size => "50x4" %></td>
-		<td class="pagenote"><%= t 'asset_losses.recommendations_long' %><BR/><BR/></td>
-	</tr>
-</table>
-
-<H2>Processing</H2>
-<table width=100%>	
-	<tr>
-		<td class="leftcolwide"><label for="surcharge_notes"><b><%= t 'asset_losses.surcharge_notes' %></b></label></td>
-    <td><%= f.text_area :surcharge_notes, :size => "50x4" %></td>
-		<td class="pagenote"><%= t 'asset_losses.surcharge_notes_long' %><BR/><BR/></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcolwide"><label for="surcharge_notes"><b><%= t 'asset_losses.notes' %></b></label></td>
+		<td class="leftcol"><label for="surcharge_notes"><b><%= t 'asset_losses.notes' %></b></label></td>
     <td><%= f.text_area :notes, :size => "50x4" %></td>
 		<td class="pagenote"><%= t 'asset_losses.notes_long' %><BR/><BR/></td>
 	</tr>
-	
 	<tr>
-		<td class="leftcolwide"><label for="investigated_by"><b><%= t 'asset_losses.investigated_by' %></b></label></td>
-    <td><%= f.collection_select :investigated_by, Staff.find(:all, :order => :name), :id, :name, :include_blank => true %></td>
-		<td class="pagenote"><%= t 'asset_losses.investigated_by_long' %></td>
+	  <td class="leftcol"><label for="submit_for_appraisal1_on">Submit to HOD</label></td>
+		<td><%= f.check_box :is_submit_to_hod %></td>
 	</tr>
 	
-	<tr>
-		<td class="leftcol"><label for="investigation_code"><b><%= t 'asset_losses.investigation_code' %></b></label></font></td>
-		<td><%= f.text_field :investigation_code %></td>
-		<td></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="investigation_completed_on"><b><%= t 'asset_losses.investigation_completed_on' %></b></label></font></td>
-		<td><%= f.date_select :investigation_completed_on, :order => [:day, :month, :year], :include_blank => true %><BR/><BR/></td>
-		<td></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcolwide"><label for="security_officer_id"><b><%= t 'asset_losses.security_officer_id' %></b></label></td>
-    <td><%= f.collection_select :security_officer_id, Staff.find(:all, :order => :name), :id, :name, :include_blank => true %></td>
-		<td class="pagenote"></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcolwide"><label for="security_officer_notes"><b><%= t 'asset_losses.security_officer_notes' %></b></label></td>
-    <td><%= f.text_area :security_officer_notes, :size => "50x4" %></td>
-		<td class="pagenote"><%= t 'asset_losses.security_officer_notes_long' %><BR/><BR/></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="security_code"><b><%= t 'asset_losses.security_code' %></b></label></font></td>
-		<td><%= f.text_field :security_code %><BR/><BR/></td>
-		<td></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="is_submit_to_hod"><b><%= t 'asset_losses.is_submit_to_hod' %></b></label></font></td>
-		<td><%= f.check_box :is_submit_to_hod %> Submit</td>
-		<td></td>
-	</tr>
 </table>
 
 
-<% if @asset_loss.is_submit_to_hod == false %>
-<H2>HOD Endorsement</H2>
-<table width=100%>
-	
-	
-	<!-- TODO : Set permissions on HOD, Set Notifications and only enable HOD to view when done -->
-
-	<!-- Show the show (but what about the tabbed format?)-->
-	<tr>
-		<td class="leftcolwide"><label for="endorsed_hod_by"><b><%= t 'asset_losses.endorsed_hod_by' %></b></label></td>
-    <td><%= f.collection_select :endorsed_hod_by, Staff.find(:all, :order => :name), :id, :name, :include_blank => true %></td>
-		<td class="pagenote"></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="endorsed_on"><b><%= t 'asset_losses.endorsed_on' %></b></label></font></td>
-		<td><%= f.date_select :endorsed_on, :order => [:day, :month, :year], :include_blank => true %><BR/><BR/></td>
-		<td></td>
-	</tr>
-	
-	<% end -%>
-	
-
-		
-</table>
 	
 <script type="text/javascript">
 	$j(document).ready(function(){ 
@@ -373,5 +224,5 @@
 			 			$j(".tr_preventive_action_dept").show("highlight");
 				  }
 			});
-	  });
+	});
 </script>

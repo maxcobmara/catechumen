@@ -1,0 +1,68 @@
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Listing Lesson Plan Reporting</h2>
+		<div class="right">
+	  </div>
+	</div>
+</div>
+
+<div class="indextable">
+
+<table>
+  <tr>
+    <th>Lecturer</th>
+    <th>Intake</th>
+    <th>Total of Student</th>
+    <th>Year</th>
+    <th>Semester</th>
+    <th>Topic</th>
+    <th>Lecture title</th>
+    <th>Lecture date</th>
+    <th>Start time</th>
+    <th>End time</th>
+	<th>Report Submitted?</th>
+	<th>Report Reviewed?</th>
+    <th colspan="4">Control</th>
+  </tr>
+<!--hack-21March2013-->
+<% current_roles=[]%><% User.current_user.roles.each do |x| %><% current_roles << x.name %><% end %><%#=current_roles.include? 'Administration'%>
+<!--hack-21March2013-->
+<% @lesson_plans.each do |lesson_plan| %>
+<!--hack-21March2013-->
+  <% if  (lesson_plan.lecturer == User.current_user.staff_id) || (lesson_plan.endorsed_by == User.current_user.staff_id) ||(current_roles.include? 'Administration')|| (lesson_plan.lecturer == User.current_user.staff_id) %>
+<!--hack-21March2013-->
+
+  <tr>
+    <td><%=h lesson_plan.lessonplan_owner.name %></td>
+    <td><%=h lesson_plan.lessonplan_intake.name %></td>
+    <td><%=h lesson_plan.student_qty %></td>
+    <td><%=h lesson_plan.year %></td>
+    <td><%=h lesson_plan.semester %></td>
+    <td><%=h lesson_plan.schedule_item.weeklytimetable_topic.subject_with_topic %><%#=h lesson_plan.lessonplan_topic.subject_with_topic %></td>
+    <td><%=h lesson_plan.lecture_title %></td>
+    <td><%=h lesson_plan.lecture_date %></td>
+    <td><%=h lesson_plan.schedule_item.get_start_time %><%#=h lesson_plan.start_time.strftime("%H:%M") %></td>
+    <td><%=h lesson_plan.schedule_item.get_end_time %><%#=h lesson_plan.end_time.strftime("%H:%M") %></td>
+	
+	<td><%=h lesson_plan.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+	<td><%=h lesson_plan.report_endorsed? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => lesson_plan %></td>
+	<td width=10px>
+	<% if (lesson_plan.report_submit != true && lesson_plan.prepared_by == User.current_user.staff_id) || (lesson_plan.prepared_by == User.current_user.staff_id && lesson_plan.hod_rejected? == true && lesson_plan.report_submit==nil) || (lesson_plan.report_submit == false&&User.current_user.staff_id) || (lesson_plan.report_submit == nil && User.current_user.staff_id) %>
+		<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'lessonplan_reporting', :id => lesson_plan %>
+	<% elsif (lesson_plan.report_submit == true && lesson_plan.endorsed_by == User.current_user.staff_id && (lesson_plan.report_endorsed != true||lesson_plan.report_endorsed==false))  %>
+		<%= link_to image_tag("approval.png", :border => 0), :action => 'lessonplan_reporting', :id => lesson_plan %>
+	<% end %>
+	</td>
+	    <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Lesson Plan'), :action => 'lesson_plan_report', :id => lesson_plan %></td>
+	<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), lesson_plan, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+
+<br />
+</div>
+
+<%#= link_to 'New Lesson Plan', new_lesson_plan_path %>

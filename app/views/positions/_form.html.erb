@@ -1,18 +1,12 @@
-<div class="tform">
-	
 <table width=100%>
 	<tr>
-		<th colspan=2><%= t 'positions.position' %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="positioncode"><b><%= t 'positions.positioncode' %></b></label><font color="red"> * </font></td>
-		<td><%= f.text_field :positioncode %></td>
+		<td class="leftcol"><label for="code"><b><%= t 'positions.code' %></b></label><font color="red"> * </font></td>
+		<td><label><%=h @position.is_root? ? "" : @position.parent.combo_code + "-" %></label><%= f.text_field :code, :class => 'compulsory' %></td></td>
 	</tr>
 	
-	
 	<tr>
-		<td class="leftcol"><label for="positionname"><b><%= t 'positions.positionname' %></b><font color="red"> * </font></label></td>
-		<td><%= f.text_field :positionname %></td>
+		<td class="leftcol"><label for="name"><b><%= t 'positions.name' %></b><font color="red"> * </font></label></td>
+		<td><%= f.text_field :name, :class => 'compulsory', :size => '50' %></td>
 	</tr>
 		
 	<!--<tr>
@@ -31,18 +25,43 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="taskmain"><b><%= t 'positions.taskmain' %></b></label></td>
-		<td><%= f.text_area :taskmain, :size => "60x7" %></td>
+		<td class="leftcol"><label for="tasks_main"><b><%= t 'positions.tasks_main' %></b></label></td>
+		<td><%= f.text_area :tasks_main, :size => "60x7" %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="staff_id">Person Name:</label></td>
-		<td><%= f.collection_select :staff_id, Staff.find(:all, :order => :name, :conditions => ["id not in (?)", @position.people_assigned]), :id, :mykad_with_staff_name, :include_blank => true %>
+		<td><SPAN id="person"><%= render :partial => 'staff_matched', :locals => {:f => f} %></SPAN></td>
 	</tr>
+	
 	<tr>
-		<td class="leftcol"><label for="taskother"><b><%= t 'positions.taskother' %></b></label></td>
-		<td><%= f.text_area :taskother, :size => "60x7" %></td>
+		<td class="leftcol"><label for="staff_id">Is Acting</label></td>
+		<td><%= f.check_box :is_acting %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="tasks_other"><b><%= t 'positions.tasks_other' %></b></label></td>
+		<td><%= f.text_area :tasks_other, :size => "60x7" %></td>
 	</tr>
 	
 </table>
 <BR>
+	
+<script>
+    $j(document).ready(function(){
+      $j("#get_matched").click(function(evt) {
+			   $j("#person").replaceWith('<%= escape_javascript(render :partial => 'staff_matched', :locals => {:f => f}) %>');
+				 $j("#person").load("edit #person");
+			});
+    });
+
+    $j(document).ready(function(){
+			$j("#get_all").click(function(evt) {
+			   $j("#person").replaceWith('<%= escape_javascript(render :partial => 'staff_all', :locals => {:f => f}) %>');
+				 $j("#person").load("edit #person");
+			});
+    });
+</script>
+
+
+
