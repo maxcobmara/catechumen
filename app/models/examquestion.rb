@@ -13,7 +13,7 @@ class Examquestion < ActiveRecord::Base
   has_many :examanswers, :dependent => :destroy
   accepts_nested_attributes_for :examanswers, :allow_destroy => true , :reject_if => lambda { |a| a[:answer_desc].blank? }
   has_many :shortessays, :dependent => :destroy
-  accepts_nested_attributes_for :shortessays, :allow_destroy => true , :reject_if => lambda { |a| a[:subquestion].blank? }
+  accepts_nested_attributes_for :shortessays#, :allow_destroy => true , :reject_if => lambda { |a| a[:subquestion].blank? }
   has_many :booleanchoices, :dependent => :destroy
   accepts_nested_attributes_for :booleanchoices, :allow_destroy => true , :reject_if => lambda { |a| a[:description].blank? }
   has_many :booleananswers, :dependent => :destroy
@@ -34,7 +34,7 @@ class Examquestion < ActiveRecord::Base
                     
                     #may require validation
                     
-  validates_presence_of :subject_id, :questiontype, :question, :marks, :qstatus#17Apr2013,:answer #9Apr2013-compulsory for subject_id
+  validates_presence_of :subject_id, :topic_id, :questiontype, :question, :marks, :qstatus #17Apr2013,:answer #9Apr2013-compulsory for subject_id
   
   
   #has_many :examsubquestions, :dependent => :destroy
@@ -44,29 +44,43 @@ class Examquestion < ActiveRecord::Base
   #accepts_nested_attributes_for :exammcqanswers, :reject_if => lambda { |a| a[:answer].blank? }
   
   attr_accessor :programme_id #9Apr2013 - rely on subject (root of subject[programme])
-  attr_accessor :question1,:question2,:question3,:question4,:questiona,:questionb,:questionc,:questiond
+  #attr_accessor :question1,:question2,:question3,:question4,:questiona,:questionb,:questionc,:questiond
   
-  before_save :set_nil_if_not_activate
+  before_save :set_nil_if_not_activate, :set_subquestions_if_seq, :set_answer_for_mcq
   
   def set_nil_if_not_activate
-      if self.id != nil   #function well for new entry & removing activation (for existing record-activated)
-          if questiontype=="MCQ" && activate != "1" #true #(kalau sebelum ni mmg tiada data, bila nak tambah, data ditambah tp description tiada mcm bawah nih)
+      if self.id != nil   
+          if questiontype=="MCQ" && activate != "1" 
               self.answerchoices[0].description = "" if self.answerchoices[0]#.id !=nil
               self.answerchoices[1].description = "" if self.answerchoices[1]#.id !=nil
               self.answerchoices[2].description = "" if self.answerchoices[2]#.id !=nil
               self.answerchoices[3].description = "" if self.answerchoices[3]#.id !=nil
-          #elsif questiontype =="MCQ" && activate == "1" #true
-             #self.answerchoices[0].description = examquestion.answerchoices[0].description if self.answerchoices[0].id !=nil#anserchoices[0].description if self.answerchoices[0].id !=nil
-             #self.answerchoices[1].description = "masuk2" if self.answerchoices[1].id !=nil#anserchoices[1].description if self.answerchoices[1].id !=nil
-             #self.answerchoices[2].description = "masuk2" if self.answerchoices[2].id !=nil#anserchoices[2].description if self.answerchoices[2].id !=nil
-             #self.answerchoices[2].description = "masuk2" if self.answerchoices[3].id !=nil#anserchoices[3].description if self.answerchoices[3].id !=nil
           end
       end
-      #failed when 1st time key-in with activation but no data (later edit & UNACTIVATED/later edit & ACTIVATE without data - error arise)
-      #tumpang
+  end
+  
+  def set_answer_for_mcq
       if answermcq !=nil
         self.answer=answermcq.to_s
       end
+  end
+  
+  def set_subquestions_if_seq
+    #3.times {self.shortessays.build }
+    if questiontype=="SEQ" 
+        if !self.shortessays[0]
+            self.shortessays.build
+        end
+        if !self.shortessays[1]
+            self.shortessays.build
+        end
+        if !self.shortessays[2]
+            self.shortessays.build
+        end
+        self.shortessays[0].item = "a"    #new & edit
+        self.shortessays[1].item = "b" 
+        self.shortessays[2].item = "c" 
+    end
   end
   
   def status_workflow
@@ -87,10 +101,18 @@ class Examquestion < ActiveRecord::Base
   end
   
   def question_editor
-    sibpos = creator.position.parent.sibling_ids
+    sibpos = creator.position.sibling_ids
     sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
     applicant = Array(creator_id)
     sibs - applicant
+  end
+  
+  def question_approver #question_editor
+    sibpos = creator.position.parent.sibling_ids
+    sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
+    #applicant = Array(creator_id)
+    #sibs - applicant
+    sibs
   end
   
   
