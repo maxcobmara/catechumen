@@ -190,6 +190,7 @@
 	<% permitted_to? :menu, :programmes do %>
 	<li><a href="#">Training</a>
 			<ul class="sub_menu">
+<<<<<<< HEAD
 				
 				<% permitted_to? :manage, :timetables do %>
 				<li><a href="#">Set Up ></a>
@@ -199,21 +200,36 @@
 					</ul>
 				</li>
 				<li><%= link_to 'Time Table Entries',    {:controller => 'programmes', 	:action => 'index'} %></li>
+=======
+				<!--21March2013-have to give programme manager access to these menu without giving :manage -->
+				<% permitted_to? :index, :timetables do %>
+				<%# permitted_to? :manage, :timetables do %>
+				<li><a href="#">Set Up ></a>
+					<ul class="sub_menu">
+							<li><%= link_to 'Create Timetable', {:controller => 'timetables', :action => 'index'} %></li>
+							<li><%= link_to 'Create Intakes', 					{:controller => 'intakes', 		:action => 'index'} %></li>	
+							<li><%= link_to 'Create Academic Session', 					{:controller => 'academic_sessions', 		:action => 'index'} %></li>
+					</ul>
+				</li>
+				<li><%= link_to 'Time Table Entries',    {:controller => 'weeklytimetables', 	:action => 'index'} %></li>
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 				<% end %>
 				
 				<li><%= link_to 'Curriculum Management',    {:controller => 'programmes', 	:action => 'index'} %></li>
 				<% permitted_to? :manage, :topics do %>
 				<li><a href="#">Lesson Plan ></a>
 					<ul class="sub_menu">
-							<li><%= link_to 'Subjects', 			{:controller => 'subjects', 		:action => 'index'} %></li>
-							<li><%= link_to 'Topics', 				{:controller => 'topics', 			:action => 'index'} %></li>
-							<li><%= link_to 'Lesson Plan', 	{:controller => 'topics', 			:action => 'index'} %></li>
-							<li><%= link_to 'Lesson Plan Reporting', 	{:controller => 'trainingreports',	:action => 'index'} %></li>	
+							<!--26March2013-<li><%#= link_to 'Subjects', 			{:controller => 'subjects', 		:action => 'index'} %></li>-->
+							<li><%= link_to 'Create Topics Details', 				{:controller => 'topicdetails', 			:action => 'index'} %></li>
+							<li><%= link_to 'Lesson Plan', 	{:controller => 'lesson_plans', 			:action => 'index'} %></li>
+							<li><%= link_to 'Lesson Plan Reporting', 	{:controller => 'lesson_plans',	:action => 'index_report'} %></li>	
 					</ul>
 				</li>
 				<% end %>
 				<li><%= link_to 'Training Notes',  {:controller => 'trainingnotes',	:action => 'index'} %></li>
-				<li><%= link_to 'Personalised Time Table',  {:controller => 'timetables', :action => 'calendar'} %></li>
+				<li><%#= link_to 'Personalised Time Table',  {:controller => 'timetables', :action => 'calendar'} %>
+					<%= link_to 'Personalised Time Table',  {:controller => 'weeklytimetables', :action => 'personalize_index'} %>
+				</li>
 			</ul>
 	</li>
 	<% end %>
@@ -224,7 +240,12 @@
 			<ul class="sub_menu">
 				<li><%= link_to 'Examination Development', {:controller => 'examquestions', :action => 'index'} %></li>
 				<li><%= link_to 'Examination Maker', {:controller => 'exams', :action => 'index'} %></li>
-				<li><%= link_to 'Examination Management', {:controller => 'grades', :action => 'index'} %></li>
+				<li><a href="#">Examination Management</a>
+					<ul class="sub_menu">
+						<li><%= link_to 'Student Grades', {:controller => 'grades', :action => 'index'} %></li>
+						<li><%= link_to 'Examination Marks', {:controller => 'exammarks', :action => 'index'} %></li>
+					</ul>
+				</li>
 				<li><%= link_to '#Feedback', root_url %></li>
 				<li><%= link_to '#Analysis', root_url %></li>
 			</ul>

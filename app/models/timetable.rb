@@ -5,4 +5,13 @@ class Timetable < ActiveRecord::Base
   
   has_many :timetable_periods, :dependent => :destroy
   accepts_nested_attributes_for :timetable_periods, :allow_destroy => true#, :reject_if => lambda { |a| a[:start_at].blank? }
+<<<<<<< HEAD
+=======
+
+  #20March2013- weeklytimetables - newly added models..
+  has_many :timetable_for_monthurs,   :class_name => 'WeeklyTimetable', :foreign_key => 'format1', :dependent => :nullify
+  has_many :timetable_for_friday,     :class_name => 'WeeklyTimetable', :foreign_key => 'format2', :dependent => :nullify
+
+
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 end

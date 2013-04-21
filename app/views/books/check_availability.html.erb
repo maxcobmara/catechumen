@@ -1,0 +1,57 @@
+<table width=100%>
+	<tr>
+		<td class="leftcol">ISBN / ISSN No:</td>
+		<td>
+			
+			<!---->
+			<% if @result %>
+				
+				<% if @isbnsearch==''%>
+					<!--2Apr2013, this part for record of OLD books, whereby no ISBN ever entered-->
+					<span class="isbn_bg2"><!--green-->
+						No ISBN no was entered. Creation of book record with no ISBN is allowed for old publication. Proceed to create a new book without ISBN no.
+						<!--
+						(HAHA OLD BOOK!)Record already exist. (TITLE : <%#=@result.title%>). Please edit <%#= link_to 'existing',:action => 'edit', :id => @result.id %> record accordingly. -->
+					</span>
+					<!--2Apr2013, this part for record of OLD books, whereby no ISBN ever entered-->
+				<% else %>
+					<!--2Apr2013, this part truly existing record-->
+					<%= hidden_field_tag("book[isbn]", @result.isbn) %><!--in case: user send using this data-->
+					<span class="isbn_bg1"><!--pink-->
+						Record already exist. (TITLE : <%=@result.title%>). Please edit <%= link_to 'existing',:action => 'edit', :id => @result.id %> record accordingly. 			
+					</span>
+					
+					<!--2Apr2013, this part truly existing record-->
+				<% end %>
+					
+			<% else %>
+				<% if @isbnsearch== '' %>	
+					<!--this part not function as expected, as there are existing record without ISBN, especially for those old books/magazine-->
+					<!--
+					<span class="isbn_bg1">
+						Please insert an ISBN for checking first.
+					</span>-->
+					<!--this part not function as expected, as there are existing record without ISBN, especially for those old books/magazine-->
+				<% else %>
+					<% if @result2 %>
+						<%= hidden_field_tag("book[isbn]", @result2.isbn) %>
+						<span class="isbn_bg3"><!--orange-->
+							Record already exist (ISBN:<%=@result2.isbn%>, TITLE :<%=@result2.title %>). Please edit <%= link_to 'existing',:action => 'edit', :id => @result2.id %> record accordingly. 
+						</span>
+					<% else %>
+						<%= hidden_field_tag("book[isbn]", @isbnsearch)  %>
+						<span class="isbn_bg2"><!--green-->
+							ISBN not yet exist. You may proceed with new book creation.	
+						</span>	
+					
+					<% end %>
+					
+				<% end %>
+			<% end %>
+			<!---->
+			
+		</td>
+	</tr>
+</table>
+
+

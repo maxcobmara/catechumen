@@ -11,7 +11,10 @@ class Position < ActiveRecord::Base
   validates_uniqueness_of :combo_code
   validates_presence_of   :name
   
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 
   def titleize_name
     self.name = name.titleize

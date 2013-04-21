@@ -1,4 +1,15 @@
-<%= render 'show' %>
+<div class="tform">
+	<%= render 'show' %>
+	<!--5Apr2013 remove this part after UAT 5Apr2013-->
+	<%# if @document.cc1actiondate != nil %>
+		<%#= render 'show_action' %>
+	<%# end %>
+	<!--5Apr2013 remove this part after UAT 5Apr2013-->
+	
+		<br>
+</div>
 
-<%= link_to (t 'icms.update'), edit_document_path(@document) %> |
-<%= link_to (t 'icms.back'), documents_path %>
+<% if (@document.owner_ids.include? current_user.staff_id) && @document.closed != true %>
+	<%= link_to (t 'icms.update'), edit_document_path(@document) %> |
+<%end %> 
+<%= link_to (t 'icms.back'), documents_path %>	

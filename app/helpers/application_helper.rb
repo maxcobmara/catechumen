@@ -79,4 +79,12 @@ module ApplicationHelper
   
   #---------------23 Apr 2012 --------------------#
   
+  #24March2013 - not working yet
+  def javascript(*files)
+    content_for(:head) { javascript_include_tag(*files) }
+  end
+  #24March2013
+  
+
+  
 end

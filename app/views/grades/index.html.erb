@@ -1,3 +1,24 @@
+<!--13Apr2013-DEPT UNIT for current user-->
+<% @anc_depth = current_user.staff.position.ancestry_depth %>
+
+<% if @anc_depth==2 %>
+	<% @dept_unit = current_user.staff.position.unit %>
+<% elsif @anc_depth < 2 %>
+	<% @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<% if @position_count > 1 %>
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
+	<% end %>
+<% elsif @anc_depth > 2 %>
+	<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+<% end %>
+
+<% current_user_roles=[]%>
+<% User.current_user.roles.each do |role|%>
+	<% current_user_roles<<role.id%>
+<% end %>
+<%#= current_user_roles.include?(2)%>
+<!--13Apr2013-DEPT UNIT for current user-->
+
 <!-- Box -->
 <div class="box">
 	<!-- Box Head -->
@@ -25,9 +46,14 @@
 </tr>
 
 <% @grades.each do |grade| %>
+ <% if (@dept_unit==grade.subjectgrade.root.name) ||(current_user_roles.include?(2)) %><!--STAND BY:HIDE THIS LINE & LINE 67 to view ALL GRADES-->
   <tr>
     <td><%=h grade.student_id.blank? ? "" : grade.studentgrade.formatted_mykad_and_student_name %></td>
+<<<<<<< HEAD
     <td><%=h grade.subject_id.blank? ? "" : grade.subjectgrade.name %></td>
+=======
+    <td><%=h grade.subject_id.blank? ? "" : grade.subjectgrade.subject_list %></td>
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
     <!-- <td><%=h grade.sent_to_BPL %></td>-->
     <td><%=h grade.sent_date %></td>
     <td><%=h grade.formative %></td>
@@ -42,9 +68,13 @@
     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => grade %></td>
     <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), grade, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
+	<% end %> <!--HIDE THIS LINE & LINE 49 to view ALL GRADES-->
 <% end %>
 </table>
 </div>
 <br />
 
-<%= link_to 'New Grade', new_grade_path %>
+<%#= link_to 'New Grade', new_grade_path %> <!--10Apr2013-->
+<%= link_to 'New Grade', new_grade_path(:new_type => "0")%>
+<!--
+ | <%#= link_to 'Multiple New Grades', new_grade_path(:new_type => "2") %>-->

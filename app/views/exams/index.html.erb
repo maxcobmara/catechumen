@@ -1,3 +1,24 @@
+<!--13Apr2013-DEPT UNIT for current user-->
+<% @anc_depth = current_user.staff.position.ancestry_depth %>
+
+<% if @anc_depth==2 %>
+	<% @dept_unit = current_user.staff.position.unit %>
+<% elsif @anc_depth < 2 %>
+	<% @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<% if @position_count > 1 %>
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
+	<% end %>
+<% elsif @anc_depth > 2 %>
+	<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+<% end %>
+
+<% current_user_roles=[]%>
+<% User.current_user.roles.each do |role|%>
+	<% current_user_roles<<role.id%>
+<% end %>
+<%#= current_user_roles.include?(2)%>
+<!--13Apr2013-DEPT UNIT for current user-->
+
 <div class="box">
 	<div class="box-head">
 		<h2 class="left">Exam Maker</h2>
@@ -12,20 +33,38 @@
 	<table>
 	  <tr>
 	    <th>Name</th>
-	    <th>Description</th>
+		<th width=40px>Year/ Semester</th>
+	    <th>Programme</th>
+		<th>Subject</th>
+		<th width=80px>Exam Date</th>
+		<th>Time</th>
 	    <th>Creator</th>
-			<th>Duration</th>
-			<th>Marks</th>
-			<th colspan=3 class="ac">Control</th>
+		<th>Duration</th>
+		<th>Marks</th>
+		<th colspan=4 class="ac">Control</th>
 	  </tr>
 
 		<% @exams.each do |exam| %>
+		  <% if (exam.created_by == User.current_user.staff_id)||(@dept_unit==exam.subject.root.name) ||(current_user_roles.include?(2)) %><!--STAND BY:HIDE THIS LINE & LINE 75 to view ALL EXAM paper-->
+		
 		  <tr>
 		    <td><%=h exam.name %></td>
-		    <td><%=h exam.description %></td>
+				<% if exam.subject_id!=nil && (exam.subject.parent.code == '1' || exam.subject.parent.code == '2') %>
+					<% @year = "1 / " %>
+				<% elsif exam.subject_id!=nil && (exam.subject.parent.code == '3' || exam.subject.parent.code == '4') %>
+					<% @year = "2 / " %>
+				<% elsif exam.subject_id!=nil && (exam.subject.parent.code == '5' || exam.subject.parent.code == '6') %>
+					<% @year = "3 / " %>
+				<% end %>
+			<td><%=h exam.subject_id? ? @year + exam.subject.parent.code.to_s : "" %></td>
+		    <td><%=h exam.subject_id? ? exam.subject.root.course_type+" "+exam.subject.root.name : "" %></td>
+			<td><%=h exam.subject_id? ? exam.subject.subject_list : "" %></td>
+			<td><%=h (exam.exam_on.blank? ? "-" : exam.exam_on.strftime("%d-%b-%Y")) %></td>
+			<td><%=h exam.starttime.strftime('%H:%M %p') %> -<br> <%=h exam.endtime.strftime('%H:%M %p') %></td>
 		    <td><%=h exam.creator_details %></td>
-				<td><%=h exam.duration %></td>
-				<td><%=h exam.full_marks %></td>
+			<td><%=h (((exam.endtime - exam.starttime)/60) / 60).to_i %>&nbsp;hours
+				<%=h (((exam.endtime - exam.starttime)/60) % 60).to_i %>&nbsp;mins</td>
+			<td><%#=h exam.full_marks %><%=h exam.total_marks %></td>
 		
 		    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => exam %></td>
 		    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => exam %></td>
@@ -33,6 +72,8 @@
 
 		    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), exam, :confirm => 'Are you sure?', :method => :delete %></td>
 		  </tr>
+		  <% end %><!--STAND BY:HIDE THIS LINE & LINE 37 to view ALL EXAM paper-->
+		
 		<% end %>
 		</table>
 

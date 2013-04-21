@@ -4,7 +4,18 @@ class Programme < ActiveRecord::Base
     before_save :set_combo_code
     has_ancestry :cache_depth => true
 
+<<<<<<< HEAD
 
+=======
+    has_many :schedule_programmes, :class_name => 'Weeklytimetable', :foreign_key => 'programme_id'
+    has_many :schedule_semesters, :class_name => 'Weeklytimetable', :foreign_key => 'semester'
+    
+    has_many :schedule_details_subjects, :class_name => 'WeeklytimetableDetail', :foreign_key => 'subject'
+    has_many :schedule_details_topics,  :class_name => 'WeeklytimetableDetail', :foreign_key => 'topic'
+
+    has_many :topic_details, :class_name => 'Topicdetail', :foreign_key => 'topic_code'   #26March2013
+    has_many :lessonplan_topics, :class_name => 'LessonPlan', :foreign_key =>'topic'      #26March2013
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 
     def set_combo_code
       if ancestry_depth == 0
@@ -33,6 +44,21 @@ class Programme < ActiveRecord::Base
       else
       end
     end
+<<<<<<< HEAD
+=======
+    
+    def semester_subject_topic
+      "Sem #{parent.parent.code}"+"-"+"#{parent.code}"+" | "+"#{name}"
+    end
+    
+    def subject_with_topic  #use in lesson plan
+      "#{parent.code}"+" - "+"#{name}"
+    end
+    
+    def full_parent
+      "#{parent.code}"+" - "+"#{parent.name}"
+    end
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 
     COURSE_STATUS = [
          #  Displayed       stored in db

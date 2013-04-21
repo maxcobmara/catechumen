@@ -1,10 +1,17 @@
 <h3>Editing Book</h3>
 
 <% form_for(@book, :html => { :multipart => true}) do |f| %>
-  <%= f.error_messages %>
-
-<%=render :partial => 'form', :locals => {:f => f} %> 
-
+  	<%= f.error_messages %>
+	<div class="tform">
+		<H2>Book Details</H2>
+		<table width="100%">
+			<tr>
+				<td class="leftcol"><label for="issn">ISBN:</label></td>
+		  		<td><%= f.text_field :isbn %><font color="red"> * </font></td>
+			</tr>
+		</table>
+		<%=render :partial => 'form', :locals => {:f => f} %> 
+	</div>
   <p>
     <%= f.submit 'Update' %>
   </p>

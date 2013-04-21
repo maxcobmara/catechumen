@@ -1,7 +1,11 @@
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
+<<<<<<< HEAD
 RAILS_GEM_VERSION = '2.3.10' unless defined? RAILS_GEM_VERSION
+=======
+#RAILS_GEM_VERSION = '2.3.10' unless defined? RAILS_GEM_VERSION
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -15,7 +19,12 @@ Rails::Initializer.run do |config|
   #     require "ruport/acts_as_reportable"
   #end
   
+<<<<<<< HEAD
   config.gem 'will_paginate', :version => '~> 2.3.16'
+=======
+  config.gem 'will_paginate', :version => '~> 2.3.14'
+  #config.gem 'will_paginate', :version => '~> 2.3.16'
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
   #config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )

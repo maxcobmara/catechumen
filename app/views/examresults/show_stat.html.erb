@@ -1,0 +1,74 @@
+<div class="tform">
+<h2>Examination Result Analysis Details By Programme/Intake - Subjects</h2>
+
+<table width=100%>
+	<tr>
+		<td class="leftcol"><label for="examdts">Examination Start Date:</label></td>
+		<td><%=h @examresult.examdts.strftime("%d %B %Y") %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="examdte">Examination End Date:</label></td>
+		<td><%=h @examresult.examdte.nil? ? "" : @examresult.examdte.strftime("%d %B %Y") %>
+			<%#=h @examresult.examdte.strftime("%d %B %Y") %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="semester">Semester:</label></td>
+		<td><%=h @examresult.render_semester %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="programme_id">Programme:</label></td>
+		<td><%=h @examresult.programmestudent.programme_code_with_programme_name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol" colspan=2><label for="resultlines">Results</label></td>
+	</tr>
+	<tr>
+		<td colspan=2>
+			<% @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester) %>
+			<% @subject_count = @subjects.count %>
+			<% @examresult.resultlines.each_with_index do |examresultline, countNG| %>
+				<% @hashNG = Examresult.studentNG_in_hash(examresultline.student_id,@subjects,countNG) %>
+			<% end %>
+
+			<table width=100%>
+				<tr>
+					<th>No</th>
+					<th>Year/Semester</th>
+					<th>Code</th>
+					<th>Subject</th>
+					<th>% Passed</th>
+					<th>% Failed</th>
+				</tr>
+				<!--start-exam result-passed & failed statistic-viewing by subject, SOURCE:grade table-->
+				<% @subjects.each_with_index do |subject,index|%>
+				<tr>
+					<td><%=index+1%></td>
+					<% if index == 0%>
+						<td rowspan ='<%=@subjects.count%>'><%=h @examresult.render_semester %></td>
+					<% end %>
+					<td><%= subject.subjectcode %></td>
+					<td><%= subject.name %></td>
+					<% @total_NG_A = Examresult.hashNG_to_a(@hashNG,index) %>
+					<% @candidate_qty = @total_NG_A.count.to_f %>
+					<% @total_passed = Exammakeranalysis.set_pass_rate(@total_NG_A,6) %>
+					<% @total_failed = @candidate_qty-@total_passed%>
+					<% @percentage_passed = Examresult.passed_failed_percentage(@total_passed,@candidate_qty) %>
+					<% @percentage_failed = Examresult.passed_failed_percentage(@total_failed,@candidate_qty) %>
+					<td><%= sprintf("%.2f",@percentage_passed) %> %</td>
+					<td><%= sprintf("%.2f",@percentage_failed) %> %</td>
+				</tr>
+				<% end %>
+				<!--end-exam result-passed & failed statistic-viewing by subject, SOURCE:grade table-->
+			</table>
+		</td>
+	</tr>
+</table>
+
+
+
+</div>
+
+<br>
+<%= link_to 'Edit Examresult', edit_examresult_path(@examresult) %> |
+<%= link_to 'Back', {:controller => 'examresults', :action => 'index_stat'} %>
+<%#= link_to 'Back', examresults_path %>

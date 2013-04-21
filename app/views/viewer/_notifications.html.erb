@@ -69,12 +69,20 @@
 	<% end %>
 	
 	<!-- Notification on Losses -->
+<<<<<<< HEAD
 	<% if User.current_user.staff.position.code == "1" %>
+=======
+	<%# if User.current_user.staff.position.code == "1" %>
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 	<% loss_require_endorse = AssetLoss.count(:all, :conditions => ['is_submit_to_hod = ? AND endorsed_on IS ?', true, nil ]) %>
 	<% if loss_require_endorse > 0 %>
 		<%= link_to "#{loss_require_endorse} Asset Losses require verifying", { :controller => "asset_losses", :action => "index" } %><br/>
 	<% end %>
+<<<<<<< HEAD
 	<% end -%>
+=======
+	<%# end -%>
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 	
 	<!-- Notification on Asset Disposal -->
 	<% disposal_require_verify = AssetDisposal.count(:all, :conditions => ['is_checked = ? AND is_verified = ? AND verified_by =?', true, true, User.current_user.staff_id ]) %>
@@ -126,19 +134,24 @@
 	<% if alc > 0 %>
 		<%= link_to "Your leave request on #{al} has been Approved", { :controller => "leaveforstudents", :action => "index" } %><br/>
 	<% end %>
-	
+<% permitted_to? :manage, :student_counseling_sessions do %><!--1Apr2013-->
 	<% counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed IS ?', nil])%>
 	<% if counsel_appt > 0 %>
 		<%= link_to "#{counsel_appt} Student counseling appoinment to be confirmed", { :controller => "student_counseling_sessions", :action => "index" } %><br/>
 	<% end %>
-	
+<% end %><!--1Apr2013-->	
 	<!-- Notification for Students Dicsipline is approved -->
+<% permitted_to? :manage, :student_discipline_cases do %><!--1Apr2013-->
 	<% cases = StudentDisciplineCase.count(:all, :conditions => ['status =?', "New"]) %>
 		<% if cases == 0 %>
 		<% else %>
 			<%= link_to "#{cases} new student discipline cases", student_discipline_cases_path %><br>
 		<% end %>
+<<<<<<< HEAD
 	
+=======
+<% end %>	<!--1Apr2013-->
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 	<!-- Notification for Topic Approval 
 	<#% topic_need_approve = Topic.count(:all, :conditions => ['approvedby_id=? AND approved =?', User.current_user.staff_id, false]) %>
 		<#% if topic_need_approve == 0 %>
@@ -175,9 +188,32 @@
 	<% else %>
 	<% end %>
   
+	<!--Notification for Document Registry-->
 	
+	<% tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =?', User.current_user.staff_id], :order => "created_at DESC").count %>
+	<% if tome > 0 %>
+		<%= link_to "#{tome} Documents require your attention", {:controller => "documents", :action => "index"} %>
+	<% else %>
+	<% end %>
+	<br>
 	
+	<% @documents=Document.all%>
+	<% @a_creator=[]%>
+	<% @a_filled=[]%>
+	<% @documents.each do |x|%>
+		<% @a_creator << x.prepared_by %>
+		<% @a_filled << x.stafffiled_id %>
+	<% end %>
 	
+	<% permitted_to? :manage, :documents do %>
+		<% if (@a_creator.include? User.current_user.staff_id) || (@a_filled.include? User.current_user.staff_id) %>
+			<% documents = Document.count(:all, :conditions => ["closed !=?",true]) %>
+			<% if documents == 0 %>
+			<% else %>
+				<%= link_to "#{documents} Documents require processing", documents_path %><br/>
+			<% end %>
+		<% end %>
+	<% end %>
 	
 
 	

@@ -45,6 +45,7 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.xml
   def create
+    #raise params.inspect
     #@message = Message.new(params[:message])
     @to_names = params[:message][:to_name].gsub(/,\s+/,',')		#sample - "Saadah,Sulijah"
    	@to_name_A = @to_names.split(",") 											#will become - ["Saadah","Sulijah"]

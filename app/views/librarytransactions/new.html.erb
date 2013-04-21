@@ -1,61 +1,139 @@
-<h3><%= t 'librarytransaction.newrec' %></h3>
+<!--<h3><%= t 'librarytransaction.newrec' %></h3>-->
+<h3>Library Transaction Details</h3>
 
-<% form_for(@librarytransaction) do |f| %>
-  <%= f.error_messages %>
+<div class="tform">
 
-	<div class="tform">
+	<div id="new_form"><%=@librarytransactions[0]%><%=@librarytransaction.staff_id%><%=@librarytransaction.student_id%><%=@librarytransaction.ru_staff%>
+		<%#if @book.isbn.nil? == true %>
+			<H2>Library Transaction Maintenance Page</H2>
+				<table width=100%>
+					<tr>
+						<td class="leftcol"><%= t 'librarytransaction.loanedtotype' %></td>
+						<td><!--<%#= @book.id%>|<%#= @book.nil? %>*<%#=@book.blank? %>~<%#= !@book %>^<%#= @book %>-->
+						
+						<%# if @book.id == nil%>
+							<% form_remote_tag(:url => {:action => :check_availability}, :update => 'new_form2' ) do %>
+								<%= check_box :ru_staff,{}, :id => 'staff', :onchange => "switchvisibility('staff')", :selected=>"selected" %>
+								<span id="bstaff" style="display: none;">
+									<%= select_tag(:staff_search,"<option>Select Staff</option>"+options_from_collection_for_select(Staff.all,:id, :staff_name_then_mykad)) %> 
+									<%= submit_tag "Check Loan Details" %>
+								</span>
+								<span id="bstudent" style="display: table-row;">
+									<%= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
+									<%= submit_tag "Check Loan Details" %>
+								</span>
+								<%#= submit_tag "Check Loan Details" %>
+							<% end %>
+						<%# end%>
+						
+						</td>
+					</tr>	
+				</table>
+		<%# end %>
+	</div>
 
-		<H2><%= t 'librarytransaction.details' %></H2>
-	  <table width=100%>
+<table width="100%"><tr><td width="80%">
+<% form_tag :action => 'create' do |f|%>	
+	<% @librarytransactions.each_with_index do |librarytransaction, index| %>
+
+<%# form_for(@librarytransaction) do |f| %>
+  <%#= f.error_messages %>	
+		
+	  <!--<table width=100%>-->
+
+		<div id="new_form2"></div>
+			<!--
 			<tr>
 				<td class="leftcol"><label for="book_id"><b><%= t 'book.accessionno' %></b></label></td>
-				<td><%= f.collection_select :accession_id, Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :accession_no, :include_blank => :true %></td>
-			</tr>
-
-		<script type="text/javascript">
-			  function switchvisibility(el) {
-			    if (document.getElementById(el).checked) {
-			      document.getElementById('bstaff').style.display = "table-row";
-			      document.getElementById('bstudent').style.display = "none";
-			    } else {
-			      document.getElementById('bstaff').style.display = "none";
-			      document.getElementById('bstudent').style.display = "table-row";
-			    }
-			  }
-			</script>
+				<td><%#= f.collection_select :accession_id, Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :accession_no, :include_blank => :true %></td>
+			</tr>-->
 
 
-
+			<!--
 			<tr>
-				<td class="leftcol"><label for="staff_id"><b><%= t 'librarytransaction.loanedtotype' %></b></label></td>
-				<td><%= f.check_box :ru_staff, :id => 'staff', :onchange => "switchvisibility('staff')" %></td>
+				<td class="leftcol"><label for="staff_id"><b><%#= t 'librarytransaction.loanedtotype' %></b></label></td>
+				<td><%#= f.check_box :ru_staff, :id => 'staff', :onchange => "switchvisibility('staff')" %></td>
 			</tr>
-
+			
 			<tr id="bstaff" style="display: none;">
 				<td class="leftcol" ><label for="staff_id"><b>Staff</b></label></td>
-			  <td><%= f.collection_select :staff_id, Staff.find(:all, :order => :name), :id, :staff_name_then_mykad, :include_blank => true %></td>
+			  <td><%#= f.collection_select :staff_id, Staff.find(:all, :order => :name), :id, :staff_name_then_mykad, :include_blank => true %></td>
 			</tr>
 
 			<tr id="bstudent" style="display: table-row;">
-				<td class="leftcol" ><label for="student_id"><b><%= t 'librarytransaction.studentname' %></b></label></td>
-			  <td><%= f.collection_select :student_id, Student.find(:all, :order => :matrixno), :id, :matrix_name, :include_blank => true %></td>
-			</tr>
-
+				<td class="leftcol" ><label for="student_id"><b><%#= t 'librarytransaction.studentname' %></b></label></td>
+			  <td><%#= f.collection_select :student_id, Student.find(:all, :order => :matrixno), :id, :matrix_name, :include_blank => true %></td>
+			</tr>-->
+			<!--
+			<tr>
+				<td>
+					<SPAN class="bong", style="display: none;">
+						bong bong bong 
+						<%#= Librarytransaction.find(:all, :conditions=>['staff_id=?', 32]).count %>		
+					</SPAN>
+					<SPAN class="koik", style="display: none;">koik koik koik</SPAN>
+				</td>
+				<td></td>
+			</tr>-->
+			<!--
 			<tr>
 				<td class="leftcol" ><label for="checkoutdate"><b><%= t 'librarytransaction.checkoutdate' %></b></label></td>
-			  <td><%= f.date_select :checkoutdate, :order => [:day, :month, :year] %></td>
+			  <td><%#= f.date_select :checkoutdate, :order => [:day, :month, :year] %></td>
 			</tr>
 
 			<tr>
 				<td class="leftcol" ><label for="returnduedate"><b><%= t 'librarytransaction.duedate' %></b></label></td>
-			  <td><%= f.date_select :returnduedate, :order => [:day, :month, :year], :default => 2.weeks.from_now %></td>
+			  <td><%#= f.date_select :returnduedate, :order => [:day, :month, :year], :default => 2.weeks.from_now %></td>
 			</tr>
-		</table>
-	</div>
+		</table>-->
 
+<!--
   <p>
-    <%= f.submit (t 'new') %>
-  </p>
-<% end %>
+    <%#= f.submit (t 'new') %>
+  </p>-->
 
+<% end %><!--baru tambah-->
+
+</td><td id="extend_return" style="border:0px solid blue; width:20%;"></td></tr>
+
+
+</table>
+	<p><%= submit_tag 'Create All Records',:name => :new_submit %><!--baru tambah--></p>
+
+
+</div>
 <%= link_to (t 'back'), librarytransactions_path %>
+
+<% end %><!--baru tambah-->
+
+<script type="text/javascript">
+	  function switchvisibility(el) {
+	    if (document.getElementById(el).checked) {
+	      document.getElementById('bstaff').style.display = "table-row";
+	      document.getElementById('bstudent').style.display = "none";
+	    } else {
+	      document.getElementById('bstaff').style.display = "none";
+	      document.getElementById('bstudent').style.display = "table-row";
+	    }
+	  }
+	</script>
+
+<script type="text/javascript">
+		$j(document).ready(function(){
+		  $j('#librarytransaction_staff_id').change(function() {
+		    /*if($j(this).val() == 1) {*/
+		      $j('.bong').show();
+					$j('.koik').hide();
+		    /*}else if ($j(this).val() == 2) {
+		     	 $j('.bong').hide();
+					 $j('.koik').show();
+		    }*/
+			});
+		  	
+			$j('#librarytransaction_student_id').change(function() {
+			   
+			    $j('.bong').hide();
+				$j('.koik').show();
+			});
+	});
+</script>

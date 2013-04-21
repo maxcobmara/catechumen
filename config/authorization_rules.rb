@@ -33,7 +33,7 @@ authorization do
     #Training Menu Items
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => :manage
-    
+    has_permission_on :weeklytimetables, :to => :manage
     #Library Menu Items
     has_permission_on [:librarytransactions, :books], :to => :manage
     
@@ -150,7 +150,7 @@ authorization do
   #Group E-Filing ------------------------------------------------------------------------------- 
   role :e_filing do
     has_permission_on :cofiles, :to => :manage
-    has_permission_on :documents, :to => :manage
+    has_permission_on :documents, :to => [:manage, :generate_report]
   end
   
   #Group Student --------------------------------------------------------------------------------
@@ -197,8 +197,17 @@ authorization do
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar]
     has_permission_on :topics, :to => :manage
+    has_permission_on :weeklytimetables, :to => :manage #21March2013 added
   end
-  
+#--21march2013-new role added  
+  role :coordinator do
+    has_permission_on :programmes, :to => :manage
+    has_permission_on :timetables, :to => :manage
+    has_permission_on :weeklytimetables, :to => :manage do
+      if_attribute :prepared_by => is {User.current_user.staff_id}
+    end
+ end
+#--21march2013-new role added    
   role :lecturer do
     has_permission_on :examquestions, :to => :manage
     has_permission_on :programmes, :to => :core
@@ -220,7 +229,12 @@ authorization do
   
   role :librarian do
     has_permission_on :books, :to => [:manage, :extend, :return]
+<<<<<<< HEAD
     has_permission_on :librarytransactions , :to => [:manage, :extend, :return]
+=======
+    has_permission_on :librarytransactions , :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try]  
+
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
   end 
   
   role :guest do

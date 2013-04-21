@@ -1,0 +1,12 @@
+<% if @new_type && @new_type == "1" %>
+
+	<h3>Multiple New Grades</h3>	
+	<% form_tag :action => 'new' do %>
+		<%= hidden_field_tag( "new_type","1" )%>
+		<%#= select_tag('subjectid', "<option value='0'>All subjects</option>" + options_from_collection_for_select(Subject.find(:all), :id, :subject_code_with_subject_name)) %>
+		<%= render :partial => 'form_multiple', :locals => {:f => f,:index=>index} %>
+		
+		<%= submit_tag I18n.t('multiple_grade_by_subject'), :subject_id => nil %>
+	<% end %>
+
+<% end %>

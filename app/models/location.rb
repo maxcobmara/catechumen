@@ -10,7 +10,11 @@ class Location < ActiveRecord::Base
   has_many :asset_placements
   has_many :assets, :through => :asset_placements
   
+<<<<<<< HEAD
   
+=======
+  has_many :weeklytimetabledetails, :class_name => 'WeeklytimetableDetail', :foreign_key => 'location'  
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
   
   def self.search(search)
       if search

@@ -1,0 +1,134 @@
+<!--13Apr2013-DEPT UNIT for current user-->
+<% @anc_depth = current_user.staff.position.ancestry_depth %>
+
+<% if @anc_depth==2 %>
+	<% @dept_unit = current_user.staff.position.unit %>
+<% elsif @anc_depth < 2 %>
+	<% @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<% if @position_count > 1 %>
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
+	<% end %>
+<% elsif @anc_depth > 2 %>
+	<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+<% end %>
+
+<% current_user_roles=[]%>
+<% User.current_user.roles.each do |role|%>
+	<% current_user_roles<<role.id%>
+<% end %>
+<%#= current_user_roles.include?(2)%>
+<!--13Apr2013-DEPT UNIT for current user-->
+<% if current_user_roles.include?(2) %>
+	<% @exam_list = Exam.all %>
+	<% @student_list = Student.all %>
+	<% @subject_list = Programme.at_depth(2) %>
+<%else%>
+<!---->
+	<% @exam_list = [] %>
+	<% Exam.all.each do |x| %>
+		<% if x.subject.root.name == @dept_unit %>
+			<% @exam_list << x %>
+		<% end %>
+	<!--<br><%#= x.subject.root.name %> -->
+	<% end %>
+	<% @student_list = [] %>
+	<% Student.all.each do |y| %>
+		<% if y.course_id && y.course.name == @dept_unit %>
+			<% @student_list << y %>
+		<% end %>
+		<!--<br><%#= y.course_id? ? y.course.name : "programme not entered" %>-->
+	<% end %>
+	<% @subject_list = Programme.find_by_name(@dept_unit).descendants.at_depth(2)%>
+<!---->	
+<% end %>
+<!--11-12Apr2013-->
+
+
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Examination Marks</h2>
+	</div>
+</div>
+
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Exam Question') + "New", new_exammark_path(:new_type => "1") %></p>
+</div>
+<div class="right">
+	<% form_tag :action => 'new' do %>
+		<%= hidden_field_tag( "new_type","3" )%>
+		<%= select_tag('examid', options_from_collection_for_select(@exam_list, :id, :exam_code_date)) %>
+		<%#= select_tag('subjectid', "<option value='0'>Select Exam Paper</option>" + options_from_collection_for_select(Exam.all, :id, :exam_code_date)) %>
+		<%= submit_tag 'New Multiple by Exam', :subject_id => nil %>
+	<% end %>
+</div>
+<br>
+<div class="tlist">
+	
+	<!-- 15 May 2012 -->
+	<% form_tag edit_multiple_exammarks_path, :id => "form1" do %>
+	<!-- 15 May 2012 -->
+	
+	 <table width=100% border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<th>&nbsp;</th>
+    		<th>Student</th>
+    		<th>MyKad No</th>
+			<th>Total Marks</th>
+			<th colspan=3>Control</th>
+  		</tr>
+
+<% @exammarks_group.each do |exammarks_group, exammarks| %>
+	<% exammarks.each_with_index do |exammark,index|%>
+		<% if (@dept_unit==exammark.exampaper.subject.root.name) ||(current_user_roles.include?(2)) %><!--STAND BY:HIDE THIS LINE & LINE 66 to view ALL EXAM marks--> 
+			<% if index == 0%>
+			<tr>
+				<td colspan=7 style="background-color:#EFF1F1;">
+					<b>Examination Paper : <%=h Exam.find(exammarks_group).full_exam_name %></b>
+				</td>
+	  		</tr>
+			<% end %>
+  			<tr>
+				<td><%= check_box_tag "exammark_ids[]", exammark.id, :class => "check" %></td><!-- 15 May 2012-->
+    			<td><%=h exammark.studentmark.matrix_name %></td>
+    			<td><%=h exammark.studentmark.icno %></td>
+ 				<td><%=h exammark.total_marks %></td>
+  				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => exammark %></td>
+    			<td width=10px>
+				<%#if problem arise- unremark line 26 & 28 & refer partial : view_marks_form.html.erb line 15-16, for multiple data entry that has only ONE questiontype=MCQ, data is not save at 'marks' table at all & total_mcq only saved in 'exammarks' table.... %>
+				<%# if exammark.total_mcq.nil? || exammark.total_mcq.blank? %>
+					<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => exammark %>
+				<%# end %>
+				</td>
+    			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), exammark, :confirm => 'Are you sure?', :method => :delete %></td>
+  			</tr>
+		<% end %><!--STAND BY:HIDE THIS LINE & LINE 54 to view ALL EXAM marks--> 
+	<% end %>	
+<% end %>
+		
+	</table>
+	
+	<!--for multiple edit-14Apr2013-->
+	<br>
+	<!-- ref: http://railsforum.com/viewtopic.php?id=2151 rleblic2007-10-25 08:43:07 -->
+	<!--http://www.ryboe.com/2008/07/10/select-all-checkboxes-with-prototype-js.html -->
+	<input id="check_all" name="check_all" type="checkbox" checked="checked" onclick="
+	Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_all').checked})" />
+	<b>Check/Uncheck 				all</b>&nbsp;&nbsp;
+
+	<!-- 15 -22 May 2012 -->
+	<%= submit_tag "Edit Checked", :name => :exammark_submit_button %>
+	<%#= submit_tag "Edit by Exam", :name => :exammark_submit_button %>
+	<% end %>
+	<!-- 15 - 22May 2012 -->
+	
+	
+	
+	<!--for multiple edit-14Apr2013-->
+	
+</div>
+<br />
+
+<%= link_to 'New Exam Marks', new_exammark_path(:new_type => "1") %>
+<!-- | <%#= link_to 'Multiple New Exam Marks', new_exammark_path(:new_type => "2") %> | <%#= link_to 'Multiple New Exam Marks by Intake', new_exammark_path(:new_type => "3") %>-->

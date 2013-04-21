@@ -42,7 +42,7 @@ class Staff < ActiveRecord::Base
   has_many :sdiciplines,  :foreign_key => 'reportedby_id'
   has_many :strainings,   :foreign_key => 'staff_id'
   has_many :librarytransactions
-  has_one  :position
+  has_one  :position #has_many :positions #  #20Apr2013
   has_many :events,       :foreign_key => 'createdby'                                      #link to created by in events
   has_many :users
   has_many :timetables
@@ -96,6 +96,10 @@ class Staff < ActiveRecord::Base
   #
   has_and_belongs_to_many :messages
   has_many :from, :class_name => 'Staff', :foreign_key => 'from_id'
+  
+  #5APR2013
+  has_and_belongs_to_many :documents
+  #has_many :from, :class_name => 'Staff', :foreign_key => 'from_id'
   
   #links to Model Cofile
   has_many :owners,    :class_name => 'Cofiles', :foreign_key => 'owner_id'
@@ -163,7 +167,16 @@ class Staff < ActiveRecord::Base
    has_many :staff_that_need_training, :class_name => 'Trainneed', :foreign_key => 'staff_id'
    has_many :training_managers, :class_name => 'Trainneed', :foreign_key => 'confirmedby_id'
    
-   
+  #links to Model Weeklytimetables-20March2013
+   has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by', :dependent => :nullify
+   has_many :endorsed_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'endorsed_by', :dependent => :nullify
+  #links to Model Weeklytimetables-21March2013
+   has_many :weekly_schedule_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'lecturer_id', :dependent => :nullify
+  #links to Model Topicdetail
+   has_many :topic_details, :class_name => 'Topicdetail', :foreign_key => 'prepared_by', :dependent => :nullify
+  #links to Model LessonPlan-26March2013
+   has_many :lessonplan_lecturers, :class_name => 'LessonPlan', :foreign_key => 'lecturer' 
+   has_many :lessonplan_creators, :class_name => 'LessonPlan', :foreign_key => 'prepared_by'
 #-------------Empty Field for Foreign Key Link------------------------
   has_many :courses
   has_many :sdiciplines

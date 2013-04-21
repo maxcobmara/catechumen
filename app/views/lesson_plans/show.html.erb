@@ -1,0 +1,21 @@
+<div class="tform">
+	<%=render :partial => 'show_main' %>
+
+	<% if @lesson_plan.report_submit == true %><!--will only appear when lesson plan report already submited-30March2013-->
+		<%=render :partial => 'show_lessonplan_report'%>
+	<% end %>
+</div>
+
+<% if (@lesson_plan.is_submitted == false && @lesson_plan.prepared_by == User.current_user.staff_id) || (@lesson_plan.prepared_by == User.current_user.staff_id && @lesson_plan.hod_rejected? == true && @lesson_plan.is_submitted != true) || (@lesson_plan.is_submitted == false) %>
+	<%= link_to 'Edit', edit_lesson_plan_path(@lesson_plan) %> |
+<% end %>
+
+<% if @lesson_plan.hod_approved == true && @lesson_plan.report_submit != true && @lesson_plan.lecturer == User.current_user.staff_id%><!--report_submit refers to submission of report-->
+	<%= link_to 'Lesson Plan Reporting', :action => 'lessonplan_reporting', :id => @lesson_plan %> |
+<% end %>
+
+<%= link_to 'Back to Lesson Plan', lesson_plans_path %>
+
+<% if @lesson_plan.report_submit == true %>
+ 	| <%= link_to 'Back to Lesson Plan Report', 	{:controller => 'lesson_plans',	:action => 'index_report'} %>
+<% end %>

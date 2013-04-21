@@ -1,0 +1,147 @@
+<div class="tform">
+<% form_for(@lesson_plan, :html => { :multipart => true }) do |f| %>
+  <%= f.error_messages %>
+
+	<H2>Lesson Plan Reporting</H2>
+	<%=render :partial => 'show_main_report' %>
+
+	<% if @lesson_plan.lecturer == User.current_user.staff_id && @lesson_plan.report_submit != true %>
+		<BR>
+		<H2>Report Details</H2>
+	
+		<table width=85% >
+			<tr>
+				<td class="leftcol"><label>Total student absent:</label></td>
+				<td><%= f.text_field :total_absent, :size =>5 %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Class Condition</label></td>
+				<td><%= f.check_box :condition_isgood, :id => 'check_hod_accept' %> Satisfactory
+					<SPAN  id="span_hod_endorse" style="display: none;"></SPAN>
+				</td>				
+			</tr>
+			<tr>
+				<td></td>
+				<td><%= f.check_box :condition_isnotgood, :id => 'check_hod_reject' %> Not Satisfactory
+					<SPAN  id="span_hod_endorse2" style="display: none;"><br>
+						<%= f.text_area :condition_desc, :col=>30, :rows=> 3, :placeholder => "State reasons."%>
+					</SPAN>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Training Aids</label></td>
+				<td><%= f.text_area :training_aids, :size =>'60x3' %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Lecturer Review</label></td>
+				<td><%= f.text_area :summary, :size =>'60x3' %></td>				
+			</tr>
+		</table>
+		
+		<H2>Submission</H2>
+
+		<table width=100% >
+			<tr>
+				<td class="leftcol">Submit</td>
+		    	<td>
+					<%= f.check_box :report_submit , :id => 'check_submitted' %>
+					<SPAN  id="span_submitted" style="display: none;"><%= tarikh(Date.today) %><%=%></SPAN>
+				</td>
+				<td><!--<strong>Note :</strong> :<em><%#= t "travel.note" %></em>--></td>
+			</tr>
+			<tr>
+				<td class="leftcol">Head of Dept</td>
+		    	<td><%= f.collection_select :endorsed_by, Staff.find(:all, :conditions => ["id IN (?)", @lesson_plan.hods]), :id, :name, :selected => @lesson_plan.endorsed_by %>
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+		</table>
+	
+	<% elsif @lesson_plan.endorsed_by == User.current_user.staff_id && @lesson_plan.report_submit == true %>
+	
+		<H2>Review by TPA/Head of Programme</H2>
+		<table width=100% >
+			<tr>
+				<td class="leftcol">TPA/Head of Programme Review</td>
+		    	<td>
+					<%= f.text_area :report_summary , :size => '60x5'%>
+					<SPAN  id="span_submitted" style="display: none;"><%= tarikh(Date.today) %><%=%></SPAN>
+				</td>
+				<td><!--<strong>Note :</strong> :<em><%#= t "travel.note" %></em>--></td>
+			</tr>
+		</table>
+		
+	<% end %>
+	
+	  <p>
+	    <%= f.submit 'Update' %>
+	  </p>
+<% end %>
+</div>
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+	
+					
+			//HOD endorse
+			$j("input[id='check_hod_accept']").change(function() {  
+			 if($j('#check_hod_accept').is(':checked')) { 
+			    $j("#span_hod_endorse").show("highlight"); 
+			 }else		{
+			    $j("#span_hod_endorse").hide(""); 
+			 }	
+			});
+			
+			$j("input[id='check_hod_accept']").each(function() {  
+			 if($j('#check_hod_accept').is(':checked')) { 
+			    $j("#span_hod_endorse").show("highlight"); 
+			 }else		{
+			    $j("#span_hod_endorse").hide(""); 
+			 }	
+			});
+			
+			//HOD reject
+			$j("input[id='check_hod_reject']").change(function() {  
+			 if($j('#check_hod_reject').is(':checked')) { 
+			   $j("#span_hod_endorse2").show("highlight"); 
+			 }else		{
+			    $j("#span_hod_endorse2").hide(""); 
+			 }	
+			});
+			
+			$j("input[id='check_hod_reject']").each(function() {  
+			 if($j('#check_hod_reject').is(':checked')) { 
+			    $j("#span_hod_endorse2").show("highlight"); 
+			 }else		{
+			    $j("#span_hod_endorse2").hide(""); 
+			 }	
+			});
+			
+			//show submit date
+			$j("input[id='check_submitted']").change(function() {  
+			 if($j('#check_submitted').is(':checked')) { 
+			    $j("#span_submitted").show("highlight"); 
+			 }else		{
+			    $j("#span_submitted").hide(""); 
+			 }	
+			});
+
+			$j("input[id='check_submitted']").each(function() {  
+			 if($j('#check_submitted').is(':checked')) { 
+			    $j("#span_submitted").show("highlight"); 
+			 }else		{
+			    $j("#span_submitted").hide(""); 
+			 }	
+			});
+
+	});
+</script>
+
+<!--
+<script type="text/javascript">
+	$j(document).ready(function(){
+
+				
+
+	});
+</script>-->

@@ -1,0 +1,24 @@
+<h1>Listing booleanchoices</h1>
+
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Description</th>
+    <th>Examquestion</th>
+  </tr>
+
+<% @booleanchoices.each do |booleanchoice| %>
+  <tr>
+    <td><%=h booleanchoice.item %></td>
+    <td><%=h booleanchoice.description %></td>
+    <td><%=h booleanchoice.examquestion_id %></td>
+    <td><%= link_to 'Show', booleanchoice %></td>
+    <td><%= link_to 'Edit', edit_booleanchoice_path(booleanchoice) %></td>
+    <td><%= link_to 'Destroy', booleanchoice, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New booleanchoice', new_booleanchoice_path %>

@@ -1,22 +1,144 @@
 <div class="showform">
+<br>
   <%=render :partial => 'show_exam' %>
 	
 <fieldset>
 	<legend>Questions</legend>
 	<table border=0 >
-	<% bil = 0 %>
-	<% for examquestion in @exam.examquestions %>
-	<% bil += 1 %>
-		<tr>
-			<td colspan=2><b><%=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion.questiontype}).map {|disp, value| disp} %></b></td>
-		</tr>
-		<tr>
-			<td><center><%=h bil %></center></td>
-			<td><%=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %> <BR> <%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %> </td>
-		</tr>
-	<% end %>
+	<% if @exam.examquestions.count>0 %>
+		<% if @exam.sequ!= nil%>
+			<% sequ = @exam.sequ.split(",")%>
+		<% end %>
+		<% @qids = [] %>
+		<% @exam.examquestions.sort_by{|x|x.id}.each do |l| %>
+			<% @qids << l.id %>
+		<% end %>
+		<%#= sequ%><%#= @qids %>
+	<% end %>	
+		<% @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype} %>
+		<% @examquestions_by_type.each do |examquestion_type, examquestions|%>
+			<% examquestions.each_with_index do |examquestion, index| %>
+				<% if index == 0 %>
+				<tr>
+					<td colspan=2><b>
+					<%=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion_type}).map {|disp, value| disp} %>
+					<%#=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion.questiontype}).map {|disp, value| disp} %>
+					</b></td>
+				</tr>
+				<% end %>
+				
+				<tr>
+					<td>
+						<center>
+							<%#=h index+1 %> 
+							<%#=examquestion.id%>
+						<% if @exam.sequ!= nil %>	
+							<% @qids.each_with_index do |m,no|%>
+								<% if m == examquestion.id %>
+									Sequence : 	<%= sequ[no]%>
+								<% end %>
+							<% end %>
+						<% else%>
+							<%=index+1%>
+						<% end %>
+						</center>
+					</td>
+					<td>
+						<%= examquestion.question %>
+						<%#=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %> <BR> 
+						<%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %> 
+					</td>
+				</tr>
+				
+			<% end %>
+		<% end %>
 	</table>
-
+	<!--
+	<%#= sequ[0] %> ~ <%#= @qids[0] %><br>
+	<%#= sequ[1] %> ~ <%#= @qids[1] %><br>
+	<%#= sequ[2] %> ~ <%#= @qids[2] %><br>
+	<%#= sequ[3] %> ~ <%#= @qids[3] %><br>
+	<%#= sequ[4] %> ~ <%#= @qids[4] %><br>
+	<%#= sequ[5] %> ~ <%#= @qids[5] %><br>
+	<%#= sequ[6] %> ~ <%#= @qids[6] %><br>-->
+	
+	<%# if sequ[3].to_i == 1 %>
+		<%#= @qids[3] %>
+	<%# end %>
+	<%# if sequ[1].to_i == 2 %>
+		<%#= @qids[1] %>
+	<%# end %>	
+	<%# if sequ[2].to_i == 3 %>
+		<%#= @qids[2] %>
+	<%# end %>
+	<%# if sequ[5].to_i == 4 %>
+		<%#= @qids[5] %>
+	<%# end %>
+	<%# if sequ[0].to_i == 5 %>
+		<%#= @qids[0] %>
+	<%# end %>
+	<%# if sequ[4].to_i == 6 %>
+		<%#= @qids[4] %>
+	<%# end %><%# @exam.examquestions.sort_by{|x|x.id}.each do |l| %>
+	
+<% if @exam.examquestions.count>0 && @exam.sequ!= nil %>
+<hr>
+<table>	
+	<% @q_items = []%>
+	<% 1.upto(sequ.count) do |cou| %>		<%# 1.upto(6) do |cou| %>
+		<% 0.upto(sequ.count-1) do |aa|%>		<%# 0.upto(5) do |aa|%>
+			<% if sequ[aa].to_i == cou %>
+				<tr>
+					<%#=@qids[aa]%><%#=@exam.examquestions.sort_by{|x|x.id}[aa].id%>
+					<%@q_items << @qids[aa]%>
+					<td><%=@exam.examquestions.sort_by{|x|x.id}[aa].questiontype%></td>
+					<td>Sequence : <%=cou%></td>
+					<td>
+						<%=@exam.examquestions.sort_by{|x|x.id}[aa].question%>
+						
+						<!--HIDE ALL THESE LINES-IF INCASE ...PREFER SIMPLE ONE-->
+						<!--try simplified one-->
+						<% if @exam.examquestions.sort_by{|x|x.id}[aa].questiontype=="MCQ"%>
+							<% if @exam.examquestions.sort_by{|x|x.id}[aa].answerchoices.count != 0 && @exam.examquestions.sort_by{|x|x.id}[aa].answerchoices[0].description!=""%>
+								<% for answerchoice in @exam.examquestions.sort_by{|x|x.id}[aa].answerchoices.sort_by{|x|x.item}%>
+									<br><%= answerchoice.item %>. <%= answerchoice.description %>
+								<% end %>
+							<% end %>
+							<% for examanswer in @exam.examquestions.sort_by{|x|x.id}[aa].examanswers.sort_by{|y|y.item}%>
+								<br><%= examanswer.item %>. <%= examanswer.answer_desc %>
+							<% end %>		
+						<% end %>
+						<!--try simplified one-->
+						<!--try simplified one-SEQ-->
+						<% if @exam.examquestions.sort_by{|x|x.id}[aa].questiontype=="SEQ"%>
+							<% for shortessay in @exam.examquestions.sort_by{|x|x.id}[aa].shortessays.sort_by{|x|x.item}%>
+								<br><%=shortessay.item %>. <%=h shortessay.subquestion %> (<%=h shortessay.submark%> markah)
+								<br><%=h simple_format(shortessay.subanswer) %><br>Keyword :<%=h shortessay.keyword %><br>	
+							<% end %>
+						<% end %>
+						<!--try simplified one-SEQ-->
+						<!--try simplified one-TRUEFALSE-->
+						<% if @exam.examquestions.sort_by{|x|x.id}[aa].questiontype=="TRUEFALSE"%>
+							<% for booleanchoice in @exam.examquestions.sort_by{|x|x.id}[aa].booleanchoices.sort_by{|x|x.item}%>
+								<br><%= booleanchoice.item %>. <%= booleanchoice.description %>
+							<% end %>
+							<% for booleananswer in @exam.examquestions.sort_by{|x|x.id}[aa].booleananswers.sort_by{|y|y.item}%>
+								<br><%= booleananswer.item %>. <%= booleananswer.answer %>
+							<% end %>
+						<% end %>
+						<!--try simplified one-TRUEFALSE-->
+						<!--HIDE ALL THESE LINES-IF INCASE ...PREFER SIMPLE ONE-->
+	
+					</td>
+					<td><%=@exam.examquestions.sort_by{|x|x.id}[aa].answer%></td>
+				</tr>
+			<% end %>
+		<% end %>
+	<% end %>
+</table>	
+	<%#=h @q_items%>
+<% end %>
+	
 </div>
 <BR>
 

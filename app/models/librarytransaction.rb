@@ -27,12 +27,19 @@ class Librarytransaction < ActiveRecord::Base
   #named_scope :overdue, lambda { |time| { :conditions => ["returnduedate < ? AND returneddate !=?", Time.now, nil] } }
   
   FILTERS = [
+<<<<<<< HEAD
     {:scope => "all",        :label => "All Transactions"},
     {:scope => "borrowed",   :label => "Out"},
     {:scope => "returned",   :label => "Returned"},
     {:scope => "overdue",    :label => "Overdue"}
+=======
+    {:scope => "all",        :label => "Semua transaksi"},
+    {:scope => "borrowed",   :label => "Sedang dipinjam"},
+    {:scope => "returned",   :label => "Telah dipulangkan"},
+    {:scope => "overdue",    :label => "Tamat Tempoh"}
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
   ]
-  
+  #All Transactions, Out, Returned, Overdue
   
   def books_that_are_out
     Librarytransaction.find(:all, :select => 'accession_id', :conditions => ["returned = ? OR returned IS ?", false, nil ]).map(&:accession_id)
@@ -66,7 +73,7 @@ class Librarytransaction < ActiveRecord::Base
   end
   
   def recommended_fine_value
-    (returnduedate - Date.today).to_i * -1
+    (returnduedate - Date.today).to_i * -0.2
   end
   
   def loaner

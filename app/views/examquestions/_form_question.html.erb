@@ -1,23 +1,88 @@
 <script type="text/javascript">
 //<![CDATA[
-bkLib.onDomLoaded(function() {
-    nicEditors.editors.push(
-        new nicEditor().panelInstance(
-            document.getElementById('myNicEditor')
-        )
-    );
-});
-//]]>
-</script>
+     bkLib.onDomLoaded(function() {
+	
+		nicEditors.editors.push(
+	       new nicEditor().panelInstance(
+	           document.getElementById('myNicEditor')
+	        )
+	   	);
+		nicEditors.editors.push(
+	       new nicEditor().panelInstance(
+	           document.getElementById('examquestion_shortessays_attributes_0_subanswer')
+	        )
+	   );
+		nicEditors.editors.push(
+	       new nicEditor().panelInstance(
+	           document.getElementById('examquestion_shortessays_attributes_1_subanswer')
+	        )
+	   );
+		nicEditors.editors.push(
+	       new nicEditor().panelInstance(
+	           document.getElementById('examquestion_shortessays_attributes_2_subanswer')
+	        )
+	   );
+//-----------------	
+          //var myNicEditor = new nicEditor();
+          //myNicEditor.setPanel('myNicPanel_0');
+          ///myNicEditor.addInstance('examquestion_shortessays_attributes_0_subanswer');
+          ///myNicEditor.addInstance('myInstance2');
+		  //myNicEditor.addInstance('ll');
+          ///myNicEditor.addInstance('myInstance3');
+     });
 
+  //]]>
+  </script> 
+	<!--
+	<div id="myNicPanel_0" style="width: 525px;"></div>
+	<div id="myInstance2"><%#= f.text_area :qkeyword, :size => "90x2", :id=>"ll" %></div>-->
+
+	<!--13/20Apr2013-DEPT UNIT for current user-->
+	<% @anc_depth = current_user.staff.position.ancestry_depth %>
+	
+	<% if @anc_depth==2 %><!--if KP or Ketua unit-unit (Uit Penilaian & Kualiti)-->
+		<% @dept_unit = current_user.staff.position.unit %>
+	<% elsif @anc_depth < 2 %>
+		<% @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+		<% if @position_count > 1 %>
+			<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
+		<% end %>
+	<% elsif @anc_depth > 2 %>
+		<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+	<% end %>
+
+	<% current_user_roles=[]%>
+	<% User.current_user.roles.each do |role|%>
+		<% current_user_roles<<role.id%>
+	<% end %>
+	<%#= current_user_roles.include?(2)%>
+	<!--13/20Apr2013-DEPT UNIT for current user-->
+	<% if current_user_roles.include?(2) %><!--if administrator-->
+		<% if @dept_unit != nil %><!--must also have dept unit(from ancestor-at_depth:2), or NO programme will be pre-selected-->
+			<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+			<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+		<% end %>
+	<% else %>
+		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+		<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+	<% end %>
+	
 <H2>Exam Question Details</H2>
 	<table width=100% >	
 		<tr>
-			<td class="leftcol"><label for="creator_id"><b>Creator:</b></label></td>
-			<td><%= f.collection_select :creator_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :name %></td>
+			<td class="leftcol"><label for="creator_id"><b>Creator:<%#=@dept_unit%></b></label></td>
+			<!--13Apr2013-assign creator value-->
+			<% if @examquestion.id.nil? || @examquestion.id.blank? %>
+				<% @creator = User.current_user.staff_id %>
+			<% else %>
+				<% @creator = @examquestion.creator_id  %>
+			<% end %>
+			<!--13Apr2013-assign creator value-->
+			<td><%= f.collection_select :creator_id, Staff.find(:all), :id, :name,:selected=> @creator %></td>
 		</tr>
 	
 		<tr>
+<<<<<<< HEAD
 			<td class="leftcol"><label for="curriculum_id"><b>Programme/Subject Code:</b></label><font color="red"> * </font></td>
 			<!--<td><#%= f.collection_select :curriculum_id, Subject.find(:all, :order => :subjectcode), :id, :subject_code_with_subject_name, :include_blank => true %></td>-->
 			<td><%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_list ,
@@ -31,15 +96,114 @@ bkLib.onDomLoaded(function() {
 															
 															
 															</td>
+=======
+			<td class="leftcol"><label for="curriculum_id"><b>Programme:</b></label></td>
+			<td>
+				<% if @examquestion.id.nil? || @examquestion.id.blank? %>
+					
+					<% if @examquestion.subject_id %>
+					<!--10Apr2013-for re-submission(of NEWLY entered data)-->
+						<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
+																	{:include_blank => "Select a programme", :selected =>@examquestion.subject.root.id},
+																	:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+																	:url => {:action => 'view_subject' }, 
+																	:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+					<!--10Apr2013-for re-submission(of NEWLY entered data)-->
+					<% else %>
+					<!--20Apr2013-NEW data entry-with pre-selected programme-based on logged-in account-->
+						<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
+																{:include_blank => "Select a programme", :selected => @preselect_prog},
+																:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+																:url => {:action => 'view_subject' }, 
+																:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+					<!--20Apr2013-NEW data entry-with pre-selected programme-based on logged-in account-->
+					<% end %>
+				<% else %>
+					<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
+																{:include_blank => "Select a programme", :selected =>@examquestion.subject.root.id},
+																:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+																:url => {:action => 'view_subject' }, 
+																:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+				<% end %>
+			</td>
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="intake_id">Subject Name:</label></td>
+			<td class="leftcol"><label for="subject_id">Subject:</label><font color="red"> * </font></td>
 			<td><%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+<<<<<<< HEAD
 					<%= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :name %>
 						</div></td>
+=======
+				<% if @examquestion.id.nil? || @examquestion.id.blank? %>
+					<!--10Apr2013-for re-submission(of NEWLY entered data)-->
+					<% if @examquestion.subject_id%>
+						<%= f.collection_select :subject_id, Programme.find(@examquestion.topic.root.id).descendants.at_depth(2), :id, :subject_list, 
+												{:include_blank=>'Select a subject', :selected =>@examquestion.topic.parent.id},
+												:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
+												:url => {:action => 'view_topic' }, 
+												:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
+						<%#= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, 
+												{:include_blank=>'Select a subject', :selected =>@examquestion.topic.parent.id},
+												:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
+												:url => {:action => 'view_topic' }, 	
+												:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
+												<!--previous format-@examquestion.subject_id-->
+>>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 					
+					<!--10Apr2013-for re-submission(of NEWLY entered data)-->
+					<% else %>
+					<!--20Apr2013-NEW data entry-with pre-selected list of subject-based on pre-selected programme-->
+						<!--hv to add additional condition: @preselect_prog & @subjectlist_preselec_prog must EXIST-->
+						<!--this part won't appear if NO programme populated at all-->
+						<% if @preselect_prog && @subjectlist_preselec_prog %>
+							<%= f.collection_select :subject_id, @subjectlist_preselec_prog , :id, :subject_list, 
+												{:include_blank=>'Select a subject'},
+												:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
+												:url => {:action => 'view_topic' }, 	
+												:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
+						<% end %>
+						<!--hv to add additional condition: @preselect_prog & @subjectlist_preselec_prog must EXIST-->
+					<!--20Apr2013-NEW data entry-with pre-selected list of subject-based on pre-selected programme-->								
+					<% end %>
+				<% else %>
+					<!--@subjects = Programme.find(@programme_id).descendants.at_depth(2)-->
+					<%= f.collection_select :subject_id, Programme.find(@examquestion.topic.root.id).descendants.at_depth(2), :id, :subject_list, 
+											{:include_blank=>'Select a subject'},
+											:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
+											:url => {:action => 'view_topic' }, 
+											:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
+					<%#= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, 
+											{:include_blank=>'Select a subject'},
+											:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
+											:url => {:action => 'view_topic' }, 
+											:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
+											<!--previous format-@examquestion.subject_id-->
+				<% end %>
+				</div>
+			</td>
 		</tr>
+		
+		<!--18Apr2013-topic added-->
+		<tr>
+			<td class="leftcol"><label for="topic_id">Topic:</label><font color="red"> * </font></td>
+			<td><%= tag("div", :id => form_tag_id(f.object_name, :topic_list)) %>
+				<% if @examquestion.id.nil? || @examquestion.id.blank? %>
+					<!--18Apr2013-for re-submission(of NEWLY entered data)-->
+					<% if @examquestion.topic_id %>
+						<%= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
+						<%#= f.collection_select :topic_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 3 ]), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
+						
+					<% end %>
+				<% else %>
+					<%= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic'%>
+					<%#= f.collection_select :topic_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 3 ]), :id, :subject_list, :include_blank=>'Select a topic'%>
+				<% end %>
+				</div>
+			</td>
+		</tr>
+		<!--18Apr2013-topic added-->
 		
 		<tr>
 			<td class="leftcol"><label for="createdt"><b>Create Date:</b></label></td>
@@ -50,60 +214,223 @@ bkLib.onDomLoaded(function() {
 		 <td class="leftcol"><label for="createdt"><b>Topic</b></label></td>
 		 <td>Select Topic Here</td>
 		</tr>-->
+
 	</table>
 	
 	
 	<!--  Question Details -->
+	<script type="text/javascript">
+			$j(document).ready(function(){
+			  	$j('#examquestion_questiontype').change(function() {
+			    	if($j(this).val() == "MCQ") {
+			      		$j('.mcq').show();
+						$j('.seq').hide();
+						$j('.truefalse').hide();
+						$j('.others').hide();
+			    	}else if ($j(this).val() == "SEQ") {
+			     		$j('.mcq').hide();
+						$j('.seq').show();
+						$j('.truefalse').hide();
+						$j('.others').hide();
+			    	}else if ($j(this).val() == "TRUEFALSE") {
+				     	$j('.mcq').hide();
+						$j('.seq').hide();
+						$j('.truefalse').show();
+						$j('.others').hide();
+					}else if ($j(this).val() == "MEQ" || $j(this).val() == "ACQ"|| $j(this).val() == "OSCI"|| $j(this).val() == "OSCII" || $j(this).val() == "OSCE" || $j(this).val() == "OSPE"|| $j(this).val() == "VIVA") {
+				     	$j('.mcq').hide();
+						$j('.seq').hide();
+						$j('.truefalse').hide();
+						$j('.others').show();
+					}
+				});
+			});
+	</script>
+
+	<script type="text/javascript">
+		$j(document).ready(function(){
+
+
+				//HOD endorse
+				$j("input[id='check_activate']").change(function() {  
+				 if($j('#check_activate').is(':checked')) { 
+				    $j("#span_activate").show("highlight"); 
+				 }else		{
+				    $j("#span_activate").hide(""); 
+				 }	
+				});
+
+				$j("input[id='check_activate']").each(function() {  
+				 if($j('#check_activate').is(':checked')) { 
+				    $j("#span_activate").show("highlight"); 
+				 }else		{
+				    $j("#span_activate").hide(""); 
+				 }	
+				});
+
+		});
+	</script>
 <HR>
-	<table  width=100%>
-		<tr>
-			<td class="leftcol"><label for="questiontype"><b>Question Type:</b><font color="red"> * </font></label></td>
-			<td><%= f.select :questiontype, 
-			                 Examquestion::QTYPE,
-			                 :prompt => "Select" %></td>
-		</tr>
 
-		<tr>
-			<td class="leftcol"><label for="category"><b>Classification:</b></label></td>
-			<td><%= f.select :category, 
-			                  Examquestion::QCATEGORY,
-			                  :prompt => "Select"  %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="status"><b>Construction</b></label></td>
-			<td><%= f.text_field :construct, :size => 50 %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="status"><b>Difficulty:</b></label></td>
-			<td><%= f.select :difficulty, 
-			                 Examquestion::QLEVEL,
-			                 :prompt => "Select"  %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol">Add Graphic/Picture</td>
-			<td><%= f.file_field :diagram %></td>
-		</tr>
+<table>
+	<tr>
+		<td class="leftcol"><label for="questiontype"><b>Question Type:</b><font color="red"> * </font></label></td>
+		<td><%= f.select :questiontype, 
+			             Examquestion::QTYPE,
+			             :include_blank=> "Select" %>
+		</td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="category"><b>Classification:</b></label></td>
+		<td><%= f.select :category, 
+		                  Examquestion::QCATEGORY,
+		                  :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="status"><b>Construction</b></label></td>
+		<td><%= f.text_field :construct, :size => 50 %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="status"><b>Difficulty:</b></label></td>
+		<td><%= f.select :difficulty, 
+		                 Examquestion::QLEVEL,
+		                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol">Add Graphic/Picture</td>
+		<td><%= f.file_field :diagram %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="question"><b>Question:</b></label><font color="red"> * </font></td>
+		<td><%= f.text_area :question, :size => '90x10', :id => 'myNicEditor' %></td>
+	</tr>
 
-		<tr>
-			<td class="leftcol"><label for="question"><b>Question:</b></label><font color="red"> * </font></td>
-			<td><%= f.text_area :question, :size => '90x10', :id => 'myNicEditor' %></td>
-		</tr>
-			
+</table>
+<% if @examquestion.id.nil? || @examquestion.blank? %>
+	<%# @disp = "display:none;"%><!--AAA-->
+	<% if @examquestion.questiontype=="MCQ"%>
+		<% @disp = "display:block;" %>
+		<% @disp_a = "display:none;" %>
+		<% @disp_b = "display:none;" %>
+		<% @disp_c = "display:none;"%>
+	<% elsif @examquestion.questiontype=="SEQ" %>
+		<% @disp = "display:none;"%>
+		<% @disp_a = "display:block;" %>
+		<% @disp_b = "display:none;" %>
+		<% @disp_c = "display:none;"%>
+	<% elsif @examquestion.questiontype=="TRUEFALSE" %>
+		<% @disp = "display:none;"%>
+		<% @disp_a = "display:none;" %>
+		<% @disp_b = "display:block;" %>
+		<% @disp_c = "display:none;"%>
+	<% else %>
+		<% @disp = "display:none;"%>
+		<% @disp_a = "display:block;" %><!---->
+		<% @disp_b = "display:none;" %>
+		<% @disp_c = "display:block;"%>
+	<% end %>
+<% else %>	
+	<% if @examquestion.questiontype=="MCQ"%>
+		<% @disp = "display:block;" %>
+		<% @disp_a = "display:none;" %>
+		<% @disp_b = "display:none;" %>
+		<% @disp_c = "display:none;"%>
+	<% elsif @examquestion.questiontype=="SEQ" %>
+		<% @disp = "display:none;"%>
+		<% @disp_a = "display:block;" %>
+		<% @disp_b = "display:none;" %>
+		<% @disp_c = "display:none;"%>
+	<% elsif @examquestion.questiontype=="TRUEFALSE" %>
+		<% @disp = "display:none;"%>
+		<% @disp_a = "display:none;" %>
+		<% @disp_b = "display:block;" %>
+		<% @disp_c = "display:none;"%>
+	<% else %>
+		<% @disp = "display:none;"%>
+		<% @disp_a = "display:block;" %><!---->
+		<% @disp_b = "display:none;" %>
+		<% @disp_c = "display:block;"%>
+	<% end %>
+<% end %>
+
+<!--MCQ Question-->
+<SPAN class="mcq", style="<%=@disp%>">
+	<% @type="1"%>
+	<span id="span_activate", style ="display:block">
+   		<%= render :partial => 'answerchoice_fields', :locals => {:f => f,:type=>@type} %>
+	</span>
+	<div style="width:770px;text-align:right;"><%= f.check_box :activate, :id => 'check_activate', :checked=> true %> Activate </div>
+	<%= render :partial => 'examanswer_fields', :locals => {:f => f,:type=>@type} %>
+	<!--answer field, table : examquestions-->
+	<% ans = [["A", "A"],["B","B"],["C","C"],["D","D"]]%>
+	<table>
+	<tr>
+		<td class="leftcol3"><label for="answer"><b>Answer:</b></label><font color="red"> * </font></td>
+		<td colspan="2"><%= f.select :answermcq, ans, :include_blank=> 'Select' %></td>
+	</tr>
+	</table>
+	<!--answer field, table : examquestion-->
+</span>	
+<!--MCQ Question-->
+
+<!--SEQ Question-->
+<SPAN class="seq", style="<%=@disp_a%>">
+<!--<SPAN class="seq", style="display:block;">-->
+
+	<table><tr><td class="leftcol">Subquestion(s)</td><td>		
+		<% f.fields_for :shortessays do |builder| %>
+			<%= render 'shortessay_fields', :f => builder %>
+		<% end %>
+		<!--<p><%#= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :shortessays %> - Add More </p>-->
+	</td></tr></table>
+	
+</span>
+<!--SEQ Question-->
+
+<!--TRUE FALSE Question-->
+<SPAN class="truefalse", style="<%=@disp_b%>">
+	<%= render :partial => 'booleanchoice_fields', :locals => {:f => f} %>
+	<%= render :partial => 'booleananswer_fields', :locals => {:f => f} %>
+	<!--answer field, table : examquestion-->
+	<%# ans = [["A", "A"],["B","B"],["C","C"],["D","D"]]%>
+	<!--<table>
 		<tr>
 			<td class="leftcol"><label for="answer"><b>Answer:</b></label><font color="red"> * </font></td>
-			<td><%= f.text_area :answer, :size => "60x7" %></td>
+			<td><%#= f.text_field :answer, :size => "12" %><%#= f.select :answer, ans, :include_blank=> 'Select' %></td>
 		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
-			<td><%= f.text_field :marks, :size => 12 %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="qkeyword"><b>Keywords:</b></label></td>
-			<td><%= f.text_area :qkeyword, :size => "90x2" %></td>
-		</tr>
+	</table>-->
+</span>
+<!--TRUE FALSE Question-->
 
+<SPAN class="others", style="<%=@disp_c%>">
+	<%#=render :partial => 'form_question_main', :locals => {:f => f} %> 
+	<table>
+	<tr>
+		<td class="leftcol"><label for="answer"><b>Answer:</b></label><font color="red"> * </font></td>
+		<td><%= f.text_field :answer, :size => "12" %></td>
+	</tr>
 	</table>
+</span>
+
+
+
+<table>
+<!--	
+<tr>
+	<td class="leftcol"><label for="answer"><b>YYAnswer:</b></label><font color="red"> * </font></td>
+	<td><%#= f.text_field :answer, :size => "12" %></td>
+</tr>-->
+<tr>
+	<td class="leftcol"><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
+	<td><%= f.text_field :marks, :size => 12 %></td>
+</tr>
+<tr>
+	<td class="leftcol"><label for="qkeyword"><b>Keywords:</b></label></td>
+	<td><%= f.text_area :qkeyword, :size => "90x2" %></td>
+</tr>
+
+</table>
+

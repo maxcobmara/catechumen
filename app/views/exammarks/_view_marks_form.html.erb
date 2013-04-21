@@ -1,0 +1,158 @@
+<% if @examid %>
+	<% @examquestions = Exam.find(@examid).examquestions %>
+<% end %>
+<!--start-marks listing-->
+<table>
+	<tr>
+		<th>Type</th>
+		<th>No</th>
+		<th>Question</th>
+		<th>Mark</th>
+	</tr>
+	<!--retrieve existing marks first-->
+	<% if @exammark %><!--@exammark refers to @exammark.id-->
+		<% @marks_for_questions = Mark.find(:all, :order=>"created_at ASC", :conditions=>['exammark_id=?', @exammark.id]) %>	
+		<!--<%#= @marks_for_questions[0].id%> is not working for multiple data entry that has only question of questiontype=MCQ, refer exammarks/index.html for reference - EDIT icon-->
+		<%#=@marks_for_questions.count%><!--id utk mark table--><%#= @marks_for_questions[0].id%>
+	<% end %>
+	<!---->
+	
+	<% 0.upto(5) do |count| %>
+		<% if count == 0 %>
+			<% @examquestions2 = @examquestions.mcqq %>
+			<% @index2 = 0%>
+			<% @span_type_column = @examquestions.mcqq.count %>
+			<% @title_span = 'MCQ'%>
+		<% elsif count == 1 %>
+			<% @examquestions2 = @examquestions.meqq %>
+			<% @index2 = @examquestions.mcqq.count %>
+			<% @span_type_column = @examquestions.meqq.count %>
+			<% @title_span = 'MEQ'%>
+		<% elsif count == 2 %>
+			<% @examquestions2 = @examquestions.seqq %>
+			<% @index2 = @examquestions.mcqq.count+@examquestions.meqq.count %>
+			<% @span_type_column = @examquestions.seqq.count %>
+			<% @title_span = 'SEQ'%>
+		<% elsif count == 3 %>
+			<% @examquestions2 = @examquestions.acqq %>
+			<% @index2 = @examquestions.mcqq.count+@examquestions.meqq.count+@examquestions.seqq.count %>
+			<% @span_type_column = @examquestions.acqq.count %>
+			<% @title_span = 'ACQ'%>
+		<% elsif count == 4 %>
+			<% @examquestions2 = @examquestions.osci2q %>
+			<% @index2 = @examquestions.mcqq.count+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count %>
+			<% @span_type_column = @examquestions.osci2q.count %>
+			<% @title_span = 'OSCI'%>
+		<% elsif count == 5 %>
+			<% @examquestions2 = @examquestions.osci3q %>
+			<% @index2 = @examquestions.mcqq.count+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osci2q.count %>
+			<% @span_type_column = @examquestions.osci3q.count %>
+			<% @title_span = 'OSCII'%>					
+		<% end %>
+		
+		
+	
+		<% @examquestions2.each_with_index do |examquestion,index| %>
+		<tr>
+			<% if index==0%>
+				<td rowspan='<%=@span_type_column%>' ><%= @title_span %></td>
+			<% end %>
+			<td><%=index+1%></td>
+			<td><%=examquestion.question %></td>
+			<td>
+				<%#= text_field "exammark[marks_attributes][#{@index2}]",:student_mark , :size=>4  %><!-- / <%#=examquestion.marks %>-->
+				<%#########################%>
+				
+				<!--START - for edit-existing record-->
+				<% if @exammark && @marks_for_questions %>
+					
+					<!--this hidden_field - ID is required/compulsory to make sure existing record of mark was modified instead of adding new record--><%#=@marks_for_questions.count%>
+					<% if @marks_for_questions.count != 0 %>
+			<!--if ada MCQ TAPI tak simpan data markah MCQ dlm table mark, tak yah buat line 78-83-->
+						<% @value_id = @marks_for_questions[@index2].id %><%#= @value_id = @marks_for_questions[0].id %>
+						<% unless @value_id.blank? || @value_id.nil? %>
+					
+								<%= hidden_field "exammark[marks_attributes][#{@index2}]", :id, :value => @value_id %>
+							
+						<% end %>
+						<!--this part for EDIT, which HAVE mark data in marks table-->
+						<% @current_mark = @marks_for_questions[@index2].student_mark %>
+					<% else %>
+						<!--this part for EDIT, which HAVE NO mark data in marks table-->
+						<% @current_mark = 0%>
+					<% end %>
+					<!--other example of the above condition hidden_field-ID for nested attribute - line 90-104, ...view/examresult/_included_subjects.html.erb... -->
+					
+					<%= text_field "exammark[marks_attributes][#{@index2}]",:student_mark , :size=>4, :value=>@current_mark %> / <%=examquestion.marks %>
+				<% else %>
+					<%= text_field "exammark[marks_attributes][#{@index2}]",:student_mark , :size=>4 %> / <%=examquestion.marks %>
+					<!--pending:for resubmission of NEW form (rejected after validation)-->
+				<% end %>
+				<!--END - for edit-existing record-->
+				<%#########################%>
+			</td>
+		</tr>
+		<% @index2=@index2+1%>
+		<% end %>	<!--end for @examquestions2.each_with_index do |examquestion,index|-->
+	<% end %>	<!--end for 0.upto(1) do |count|-->
+	<tr><td colspan=4 align="right">
+		<!--lagi2-hold first-->
+		<%# if @exammark %>	<!--kalau error arise, remark these lines : 100-106-->
+			<%# if @exammark.total_mcq.nil? || @exammark.total_mcq.blank? %>
+			<%# else %>
+				<!--Total MCQ (via batch insert) :--> <%#=@exammark.total_mcq%>
+			<%# end %>
+		<%# end %>
+		<!--lagi2-->
+	</td></tr>
+</table>
+<!--end-marks listing-->
+
+
+<!--2nd part for multiple one-start-->
+<!--
+<table width=30%>
+	<tr>
+		<td width=5px rowspan=2 style="vertical-align:middle;width:15px;">MCQ</td>
+		<%# if @examquestions.seqq.count>0 %>
+			<td style="text-align:center;" colspan="<%#=@examquestions.seqq.count%>">SEQ</td>
+		<%# end %>
+	</tr>
+	
+	<%# if @examquestions.seqq.count>0 %>
+		<tr>
+			<%# @examquestions.seqq.each_with_index do |y,index| %>
+				<td width=2px>Q<%#=index+1%></td>
+			<%# end %>
+		</tr>
+		<tr>
+			<%# 0.upto(@examquestions.seqq.count) do |count|%>
+				<td width=2px><%#= text_field "exammark[marks_attributes][#{count}]",:mark , :size=>3 %> </td>
+			<%# end %>
+		</tr>
+	<%# end %>	
+</table>-->
+<%##= text_field "exammark[marks_attributes][#{@index2}]",:mark , :size=>4, :value=>@current_mark %> 
+<!--2nd part for multiple one-end-->
+
+				
+
+
+<!--<table width=50% border=1 cellspacing=0 cellpading=0 >
+	<tr>
+		<td rowspan=2 style="vertical-align:middle;">MCQ</td>
+		<td colspan=3 style="text-align:center;">SEQ</td>
+	</tr>
+	<tr>
+		<td width=5px>ff</td>
+		<td>gg</td>
+		<td>hh</td>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>2</td>
+		<td>3</td>
+		<td>4</td>
+	</tr>
+
+</table>-->

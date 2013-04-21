@@ -1,0 +1,92 @@
+
+	<H2>Lesson Plan Details</H2>
+	<table>
+		<tr>
+			<td class="leftcol"><%= f.label :lecturer %></td>
+			<td><%#= f.collection_select :lecturer, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar']), :id, :name, :include_blank=>"Select Lecturer", :selected => User.current_user.staff_id %>
+				&nbsp;&nbsp;<%=h User.current_user.staff.name %><%= f.hidden_field :lecturer, :value=>User.current_user.staff_id %>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :schedule %></td>
+			<td><%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?',User.current_user.staff_id]), :id, :day_time_slot, :include_blank=>"Select Schedule" %></td>
+		</tr>
+		
+		<!--30March2013-Part A:Pre-selected data upon selection of schedule (start)-->
+		<!--<tr>
+			<td class="leftcol"><%#= f.label :intake_id %></td>
+			<td><%#= f.collection_select :intake_id, Intake.all, :id, :programme_group_intake, :include_blank=> "Select Intake" %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%#= f.label :lecture_date %></td>
+			<td><%#= f.date_select :lecture_date %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%#= f.label :start_time %></td>
+			<td><%#= f.time_select :start_time, :minute_step => 15 %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%#= f.label :end_time %></td>
+			<td><%#= f.time_select :end_time, :minute_step => 15 %></td>
+		</tr>-->
+		<!--1st choice-refer ...views/weeklytimetables/weeklytimetable_fields.html.erb-->
+		<!--
+		<%# aa=Programme.find(:all,:conditions=>['ancestry_depth=?',3], :order=>:combo_code) %>
+		<%# @semester_subject_topic_list=[] %>
+		<%# aa.each do |bb| %>
+			<%## if bb.root_id == @lesson_plan.programme_id %>
+				<%# @semester_subject_topic_list<< bb %> <
+			<%## end %>
+		<%# end %>
+		<tr>
+			<td class="leftcol"><%#= f.label :topic %></td>
+			<td><%#= f.collection_select :topic, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> "Select Semester-Subject | Topic" %>
+			</td>
+		</tr>-->
+		<!--30March2013-Part A:Pre-selected data upon selection of schedule (start)-->
+	
+		<!--30March2013-Part B:Newly key-in data (start)-->
+		<tr>
+			<td class="leftcol"><%= f.label :prerequisites %></td>
+			<td><%= f.text_field :prerequisites, :size =>51 %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label>Total Number of Student</label></td>
+			<td><%= f.text_field :student_qty, :size=>11 %></td>
+		</tr>    
+		<tr>
+			<td class="leftcol"><%= f.label :year %></td>
+			<td><%= f.select :year, 1..3, :include_blank => 'Select Year'  %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :semester %></td>
+			<td><%= f.select :semester, 1..6, :include_blank => 'Select Semester' %></td>
+		</tr>
+		<!--
+		<tr>
+			<td class="leftcol"><%#= f.label :lecture_title %></td>
+			<td><%#= f.text_field :lecture_title, :size =>51 %></td>
+		</tr>-->
+		<!--30March2013-Part B:Newly key-in data (end)-->
+
+		<tr>
+			<td class="leftcol"><%= f.label :reference %></td>
+			<td><%= f.text_area :reference, :size=> '50x5' %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="data">Current Attachment:</label></td>
+			<td><% if @lesson_plan.data.exists? then %>
+		    		<%= @lesson_plan.data_file_name %> &nbsp;&nbsp;&nbsp;
+		    	<%= link_to (t 'document.download'), @lesson_plan.data.url %> ||
+	        	<%= link_to "ALT", @lesson_plan.data.url %>
+		    <% else %>
+		    	No Attachment yet
+	    	<% end %>
+		</td>
+		<tr>
+			<td class="leftcol"><label for="data">Upload/Change File:</label></td>
+			<td><%= f.file_field :data %></td>
+		</tr>
+	</table>
+
+<BR>

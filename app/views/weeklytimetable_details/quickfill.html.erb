@@ -1,0 +1,15 @@
+<% form_for(@weeklytimetable_detail) do |f| %>
+  <%= f.error_messages %>
+	<div class="tform">
+		<H2>New Timetable Details</H2>
+ 		<%=render :partial => 'form', :locals => {:f => f} %> 
+		<%= f.hidden_field :weeklytimetable_id, :value=> params[:id] %>
+		<%= f.hidden_field :day2, :value=> params[:dd] %>
+		<%= f.hidden_field :time_slot2, :value => params[:tt] %>
+		<%= f.hidden_field :is_friday ,:value => params[:df] %>
+		<%= f.hidden_field :time_slot, :value => params[:t2] %>
+		<%= submit_tag "Create", :onclick => "window.close()", :id => "clickety" %>
+	</div>
+<% end %>
+
+	

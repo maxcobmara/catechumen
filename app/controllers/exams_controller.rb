@@ -58,6 +58,8 @@ class ExamsController < ApplicationController
   # PUT /exams/1
   # PUT /exams/1.xml
   def update
+    #raise params.inspect
+    params[:exam][:examquestion_ids] ||= []
     @exam = Exam.find(params[:id])
 
     respond_to do |format|
@@ -91,4 +93,41 @@ class ExamsController < ApplicationController
            #format.xml  { render :xml => @staffs }
        #end
   end
+  
+  def view_subject
+    @programme_id = params[:programmeid]
+    @exam_id = params[:examid]
+    unless @programme_id.blank? 
+      #@subjects = Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?', @programme_id])
+      @subjects = Programme.find(@programme_id).descendants.at_depth(2)
+    end
+    render :partial => 'view_subject', :layout => false
+  end
+  
+  def view_topic
+    @subject = params[:subject]
+    @exam_id = params[:examid]
+    @exam_id2 = params[:exam_id]  ##check first
+    unless @subject.blank? 
+      @topics = Programme.find(@subject).descendants.at_depth(3)
+    end
+    render :partial => 'view_topic', :layout => false
+  end
+  
+  def view_questions
+    #@subject_id = params[:subject]
+    @exam_id = params[:exam_id]
+    @exam_id2 = params[:exam_id2]
+    @topic_id = params[:topicid]
+    unless @topic_id.blank?
+      #@questions = Examquestion.find(:all, :conditions => ['subject_id=?',@subject_id])
+      @questions = Examquestion.find(:all, :conditions => ['topic_id=? and bplreserve is not true and bplsent is not true', @topic_id])
+      @questions_group = @questions.group_by{|x|x.questiontype}
+      #@questions2 = Examquestion.find(:all, :conditions => ['subject_id!=?',@subject_id])
+      @questions2 = Examquestion.find(:all, :conditions => ['topic_id!=? and bplreserve is not true and bplsent is not true',@topic_id])
+      @questions_group2 = @questions2.group_by{|x|x.questiontype}
+    end
+    render :partial => 'view_questions', :layout => false
+  end
+
 end

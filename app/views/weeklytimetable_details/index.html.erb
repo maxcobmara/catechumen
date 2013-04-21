@@ -1,0 +1,30 @@
+<h1>Listing weeklytimetable_details</h1>
+
+<table>
+  <tr>
+    <th>Day</th>
+    <th>Subject</th>
+    <th>Topic</th>
+    <th>Time slot</th>
+    <th>Lecturer</th>
+    <th>Weeklytimetable</th>
+  </tr>
+
+<% @weeklytimetable_details.each do |weeklytimetable_detail| %>
+  <tr>
+    <td><%#=h weeklytimetable_detail.day %></td>
+    <td><%=h weeklytimetable_detail.subject %></td>
+    <td><%=h weeklytimetable_detail.topic %></td>
+    <td><%=h weeklytimetable_detail.time_slot %></td>
+    <td><%=h weeklytimetable_detail.lecturer_id %></td>
+    <td><%=h weeklytimetable_detail.weeklytimetable_id %></td>
+    <td><%= link_to 'Show', weeklytimetable_detail %></td>
+    <td><%= link_to 'Edit', edit_weeklytimetable_detail_path(weeklytimetable_detail) %></td>
+    <td><%= link_to 'Destroy', weeklytimetable_detail, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New weeklytimetable_detail', new_weeklytimetable_detail_path %>
