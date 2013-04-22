@@ -101,7 +101,7 @@
 			<td>
 				<% if @examquestion.id.nil? || @examquestion.id.blank? %>
 					
-					<% if @examquestion.subject_id %>
+					<% if @examquestion.subject_id && @examquestion.subject_id != 0%>
 					<!--10Apr2013-for re-submission(of NEWLY entered data)-->
 						<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
 																	{:include_blank => "Select a programme", :selected =>@examquestion.subject.root.id},
@@ -109,7 +109,7 @@
 																	:url => {:action => 'view_subject' }, 
 																	:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
 					<!--10Apr2013-for re-submission(of NEWLY entered data)-->
-					<% else %>
+					<% elsif @examquestion.programme_id == nil %><!--new entry-->
 					<!--20Apr2013-NEW data entry-with pre-selected programme-based on logged-in account-->
 						<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
 																{:include_blank => "Select a programme", :selected => @preselect_prog},
@@ -117,6 +117,14 @@
 																:url => {:action => 'view_subject' }, 
 																:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
 					<!--20Apr2013-NEW data entry-with pre-selected programme-based on logged-in account-->
+					<% else %>
+						<!--22Apr2013-if no subject selected but programme selected-->
+						<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
+																{:include_blank => "Select a programme", :selected => @examquestion.programme_id.to_i},
+																:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+																:url => {:action => 'view_subject' }, 
+																:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+						<!--22Apr2013-if no subject selected but programme selected-->						
 					<% end %>
 				<% else %>
 					<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
@@ -139,16 +147,20 @@
 				<% if @examquestion.id.nil? || @examquestion.id.blank? %>
 					<!--10Apr2013-for re-submission(of NEWLY entered data)-->
 					<% if @examquestion.subject_id%>
+					
+					 <% unless @examquestion.topic_id.nil?%>
 						<%= f.collection_select :subject_id, Programme.find(@examquestion.topic.root.id).descendants.at_depth(2), :id, :subject_list, 
 												{:include_blank=>'Select a subject', :selected =>@examquestion.topic.parent.id},
 												:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
 												:url => {:action => 'view_topic' }, 
 												:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
-						<%#= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, 
-												{:include_blank=>'Select a subject', :selected =>@examquestion.topic.parent.id},
+					  <% else %>
+						<%= f.collection_select :subject_id, Programme.find(@examquestion.programme_id).descendants.at_depth(2), :id, :subject_list, 
+												{:include_blank=>'Select a subject', :selected =>@examquestion.subject_id},
 												:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
 												:url => {:action => 'view_topic' }, 	
 												:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
+					  <% end %>					<!--previous format-(:all, :conditions => ['ancestry_depth =?', 2 ])-->
 												<!--previous format-@examquestion.subject_id-->
 >>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
 					
@@ -191,10 +203,17 @@
 			<td><%= tag("div", :id => form_tag_id(f.object_name, :topic_list)) %>
 				<% if @examquestion.id.nil? || @examquestion.id.blank? %>
 					<!--18Apr2013-for re-submission(of NEWLY entered data)-->
-					<% if @examquestion.topic_id %>
-						<%= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
-						<%#= f.collection_select :topic_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 3 ]), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
-						
+					<% if @examquestion.topic_id!=nil %>
+						<% if @examquestion.programme_id.nil? && @examquestion.subject_id.nil? %>
+							Please select programme & subject first
+							<%#= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
+						<% else %>
+							<%= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
+						<% end %>
+					<% else %>
+					<!--topic NIL, but programme & subject EXIST, use SUBJECT to view TOPIC list-->
+						<%= f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic' %>
+					<!--topic NIL, but programme & subject EXIST, use SUBJECT to view TOPIC list-->
 					<% end %>
 				<% else %>
 					<%= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic'%>
@@ -380,9 +399,11 @@
 <SPAN class="seq", style="<%=@disp_a%>">
 <!--<SPAN class="seq", style="display:block;">-->
 
-	<table><tr><td class="leftcol">Subquestion(s)</td><td>		
+	<table><tr><td class="leftcol">Subquestion(s) & Answer(s)</td><td>
+		<% @count=0%>
 		<% f.fields_for :shortessays do |builder| %>
-			<%= render 'shortessay_fields', :f => builder %>
+			<%= render 'shortessay_fields', :f => builder,:locals=> { :index => @count} %>
+			<% @count+=1%>
 		<% end %>
 		<!--<p><%#= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :shortessays %> - Add More </p>-->
 	</td></tr></table>
@@ -394,14 +415,6 @@
 <SPAN class="truefalse", style="<%=@disp_b%>">
 	<%= render :partial => 'booleanchoice_fields', :locals => {:f => f} %>
 	<%= render :partial => 'booleananswer_fields', :locals => {:f => f} %>
-	<!--answer field, table : examquestion-->
-	<%# ans = [["A", "A"],["B","B"],["C","C"],["D","D"]]%>
-	<!--<table>
-		<tr>
-			<td class="leftcol"><label for="answer"><b>Answer:</b></label><font color="red"> * </font></td>
-			<td><%#= f.text_field :answer, :size => "12" %><%#= f.select :answer, ans, :include_blank=> 'Select' %></td>
-		</tr>
-	</table>-->
 </span>
 <!--TRUE FALSE Question-->
 

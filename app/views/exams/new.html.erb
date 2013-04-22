@@ -1,3 +1,34 @@
+<!--22Apr2013-DEPT UNIT for current user-->
+<% @anc_depth = current_user.staff.position.ancestry_depth %>
+
+<% if @anc_depth==2 %><!--if KP or Ketua unit-unit (Unit Penilaian & Kualiti)-->
+	<% @dept_unit = current_user.staff.position.unit %>
+<% elsif @anc_depth < 2 %>
+	<% @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<% if @position_count > 1 %>
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
+	<% end %>
+<% elsif @anc_depth > 2 %>
+	<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+<% end %>
+
+<% current_user_roles=[]%>
+<% User.current_user.roles.each do |role|%>
+	<% current_user_roles<<role.id%>
+<% end %>
+<%#= current_user_roles.include?(2)%>
+<!--22Apr2013-DEPT UNIT for current user-->
+<% if current_user_roles.include?(2) %><!--if administrator-->
+	<% if @dept_unit != nil %><!--must also have dept unit(from ancestor-at_depth:2), or NO programme will be pre-selected-->
+		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+		<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+	<% end %>
+<% else %>
+	<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+	<% @subjectlist_preselect_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+<% end %>
+
+
 <% form_for(@exam) do |f| %>
   <%= f.error_messages %>
 
@@ -8,50 +39,63 @@
 			<td class="leftcol"><%= f.label :name %></td>
 			<td><%= f.text_field :name %></td>
 		</tr>
+		<!--22Apr2013-this field no longer required
 		<tr>
-			<td class="leftcol"><%= f.label :description %></td>
-			<td><%= f.text_area :description, :size => '60x3' %></td>
-		</tr>
+			<td class="leftcol"><%#= f.label :description %></td>
+			<td><%#= f.text_area :description, :size => '60x3' %></td>
+		</tr>-->
 
 		<tr>
-			<td class="leftcol">Creator Name</td>
+			<td class="leftcol">Creator Name/td>
 			<td><%= f.collection_select :created_by, Staff.find(:all, :order => :name), :id, :staff_name_with_position, :include_blank => 'Select a creator', :selected => current_user.staff_id %></td>
 		</tr>
 	
 		<tr>
 			<td class="leftcol">Programme</td>
 			<td>
-				<%#= f.collection_select :course_id, Programme.roots, :id, :name, :include_blank =>'Select a programme' %>
-				<%# if @exam.id.nil? || @exam.id.blank? %>
+				<% if @exam.programme_id %>
+				<!--resubmission(NEW entry)-->
 					<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
-											{:include_blank => "Select a programme"},
+											{:include_blank => "Select a programme", :selected => @exam.programme_id.to_i},
 											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
-											:url => {:action => 'view_subject' }, 
+											:url => {:action => 'view_subject_main' }, 
 											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
-				<%# else %>
-					<%#= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
-											{:include_blank => "Select a programme", :selected =>@examquestion.subject.root.id},
+				<!--resubmission(NEW entry)-->
+				<% else %>
+				<!--default upon new entry-preselected programme-base on logged-in user-->
+					<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
+											{:include_blank => "Select a programme", :selected => @preselect_prog},
 											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
-											:url => {:action => 'view_subject' }, 
+											:url => {:action => 'view_subject_main' }, 
 											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
-				<%# end %>
-				
+				<!--default upon new entry-preselected programme-base on logged-in user-->
+				<% end %>
 			</td>
 		</tr>
 		
 		<tr>
 			<td class="leftcol">Subject<font color="red"> * </font></td>
 			<td>
-				<%#= f.collection_select :course_id, Programme.at_depth(2), :id, :subject_list, :include_blank =>'Select a subject' %>
 				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
-				<%# if @exam.id.nil? || @exam.id.blank? %>
-				<%# else %>
-						<%#= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, :include_blank=>'Select a subject'%>
-				<%# end %>	
+					<% if @exam.programme_id %>
+						<% if @exam.programme_id == 0 || @exam.programme_id.blank? || @exam.programme_id.nil? %>
+							<!--resubmission(NEW entry)-create but change to 'Please Select'-->
+							Please select a PROGRAMME first
+							<!--resubmission(NEW entry)-create but change to 'Please Select'-->
+						<% else %>
+							<!--resubmission(NEW entry)-regardless value of programme_id (except for-'Please select')-->
+							<%= f.collection_select :subject_id, Programme.find(@exam.programme_id).descendants.at_depth(2), :id, :subject_list, :include_blank=>'Select a subject'%>
+							<!--resubmission(NEW entry)-regardless value of programme_id (except for-'Please select')-->
+						<% end %>
+					<% else %>
+					<!--default upon new entry-populated subject list based on - preselected programme-base on logged-in user-->
+					fff	<%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank=>'Select a subject'%>
+					<!--default upon new entry-populated subject list based on - preselected programme-base on logged-in user-->	
+					<% end %>	
 				</div>
 				
 			</td>
-		</tr>	<!---->
+		</tr>	
 		<!--9Apr2013-->
 
 
@@ -63,7 +107,7 @@
 		<!--10Apr2013-this field no longer required
 		<tr>
 			<td class="leftcol">Time</td>
-			<td><%= f.text_field :duration, :size => 15, :placeholder => "minutes" %></td>
+			<td><%#= f.text_field :duration, :size => 15, :placeholder => "minutes" %></td>
 		</tr>-->
 		
 		<tr>
