@@ -182,12 +182,17 @@
 			<td><%= tag("div", :id => form_tag_id(f.object_name, :topic_list)) %>
 				<% if @examquestion.id.nil? || @examquestion.id.blank? %>
 					<!--18Apr2013-for re-submission(of NEWLY entered data)-->
-					<% if @examquestion.topic_id %>
+					<% if @examquestion.topic_id!=nil %>
 						<% if @examquestion.programme_id.nil? && @examquestion.subject_id.nil? %>
-							<%= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
-						<% else %>
 							Please select programme & subject first
+							<%#= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
+						<% else %>
+							<%= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
 						<% end %>
+					<% else %>
+					<!--topic NIL, but programme & subject EXIST, use SUBJECT to view TOPIC list-->
+						<%= f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic' %>
+					<!--topic NIL, but programme & subject EXIST, use SUBJECT to view TOPIC list-->
 					<% end %>
 				<% else %>
 					<%= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic'%>

@@ -65,21 +65,11 @@ class Examquestion < ActiveRecord::Base
       end
   end
   
-  def set_subquestions_if_seq
-    #3.times {self.shortessays.build }
-    if questiontype=="SEQ" 
-        if !self.shortessays[0]
-            self.shortessays.build
-        end
-        if !self.shortessays[1]
-            self.shortessays.build
-        end
-        if !self.shortessays[2]
-            self.shortessays.build
-        end
-        self.shortessays[0].item = "a"    #new & edit
+  def set_subquestions_if_seq   
+    if self.id == nil && questiontype=="SEQ" 
+        self.shortessays[0].item = "a"    #new 
         self.shortessays[1].item = "b" 
-        self.shortessays[2].item = "c" 
+        self.shortessays[2].item = "c"
     end
   end
   
