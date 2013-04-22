@@ -94,6 +94,14 @@ class ExamsController < ApplicationController
        #end
   end
   
+  def view_subject_main
+    @programme_id = params[:programmeid]
+    unless @programme_id.blank? 
+      @subjects = Programme.find(@programme_id).descendants.at_depth(2)
+    end
+    render :partial => 'view_subject_main', :layout => false
+  end
+  
   def view_subject
     @programme_id = params[:programmeid]
     @exam_id = params[:examid]
