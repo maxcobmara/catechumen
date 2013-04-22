@@ -4,6 +4,9 @@
 <!--<div class="showform">-->
 <div class="tform">
 	<%=render :partial => 'show_exam' %>
+	<!--22Apr2013-refer model:attr_accessor:programme_id-->
+		<%=hidden_field "exam[programme_id]", {},:value=>@exam.subject.root.id %>
+	<!--22Apr2013-refer model:attr_accessor:programme_id-->
 <!--</div>
 <div class="tform">-->
 	
@@ -44,7 +47,7 @@
 						<%= f.collection_select :subject_filter, Programme.find(@exam.subject.root.id).descendants.at_depth(2), :id, :subject_list, 
 												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
 												:onchange => remote_function(:update => "exam_topic_list", :url => {:action=>'view_topic'}, 
-												:with => "'subject='+$('"+"exam_subject_filter"+"').value + '&exam_id='+'#{@exam.id}' ") %>
+												:with => "'subject='+$('"+"exam_subject_filter"+"').value + '&examid='+'#{@exam.id}' ") %>
 						<%#= f.collection_select :subject_filter, Programme.find(@exam.subject.root.id).descendants.at_depth(2), :id, :subject_list, 
 												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
 												:onchange => remote_function(:update => "exam_topic_list", :url => {:action=>'view_topic'}, 
@@ -73,8 +76,8 @@
 					<% else %>
 						<%= f.collection_select :topic_filter, Programme.find(@exam.subject.id).descendants.at_depth(3), :id, :subject_list, 
 												{:include_blank=>'Select a topic', :selected => @exam.subject_id },
-												:onchange => remote_function(:update => "exam_questions_list", :url => {:action=>'view_questions'}, 
-												:with => "'topicid='+$('"+"exam_topic_filter"+"').value + '&exam_id='+'#{@exam.id}' ") %>
+												:onchange => remote_function(:update => "exam_questions_list_available", :url => {:action=>'view_questions'}, 
+												:with => "'topicid='+$('"+"exam_topic_filter"+"').value + '&examid='+'#{@exam.id}' ") %>
 						<%#= f.collection_select :subject_filter, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, 
 												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
 												:onchange => remote_function(:update => "exam_questions_list", :url => {:action=>'view_questions'}, 
@@ -90,7 +93,7 @@
 	
 	<H2>Questions</H2>
 
-	<%= tag("div", :id => form_tag_id(f.object_name, :questions_list)) %>
+	<%= tag("div", :id => form_tag_id(f.object_name, :questions_list_available)) %>
 		<%# if @exam.subject_id%>
 			<%# @exam_subject_id = @exam.subject_id %>
 			<%# @exam_id = @exam.id %>
