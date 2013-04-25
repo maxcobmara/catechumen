@@ -1,0 +1,115 @@
+<%= stylesheet_link_tag 'report', :media => "print" %>
+
+	<form action="#">
+			<script>
+			document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+			</script>
+	</form>
+	
+<div class="A4landscape" style="border: none;">
+<BR/>
+<table class="plong">
+
+	<thead>
+		
+				<tr>
+					<th class="tright" colspan=11><b>KEW. PA-6</b></th>
+				</tr>
+				<tr>
+					<th colspan=11 style="padding-bottom:10mm;">
+						<b>DAFTAR PENYELENGGARAAN HARTA MODAL DAN INVENTORI</b>
+					</th>
+				</tr>
+
+				<tr>
+					<th class="tcol2a" colspan=2>Jenis</th>
+					<th class="tcol2colon ">:</th>
+					<th class="tcol2a" colspan=3>
+						<%=@loanable.blank? ? @asset.typename : @loanable[0].asset.typename%></th>
+					<th class="tcol2" colspan=4 rowspan=4>Pegawai Pengeluar</th>
+					<!--<th class="tcol2" colspan=4 rowspan=2>Pegawai Pengeluar</th>-->
+					<th class="tcol2" rowspan=6>Catatan</th>		
+					<!--<th class="tcol2" rowspan=2>Catatan1</th>-->
+				</tr>
+
+				<tr>
+					<th class="tcol2a" colspan=2>Jenama dan Model</th>
+					<th class="tcol2colon">:</th>
+					<th class="tcol2a" colspan=3>
+						<%=@loanable.blank? ? @asset.name : @loanable[0].asset.name %>
+						<%=@loanable.blank? ? @asset.modelname : @loanable[0].asset.modelname%>
+					</th>
+				</tr>
+
+				<tr>
+					<th class="tcol2a" colspan=2>No. Siri Pembuat</th>
+					<th class="tcol2colon ">:</th>
+					<th class="tcol2a" colspan=3>
+						<%=h @loanable.blank? ? @asset.serialno : @loanable[0].asset.serialno %></th>
+					<!--<th class="tcol2" colspan=4 rowspan=2>Pegawai Pengeluar22</th>-->
+					<!--<th class="tcol2" rowspan=2>Catatan22</th>-->
+				</tr>
+<!--</thead>--><!--25Apr2013-works up to here only-->
+
+				<tr>
+					<th class="tcol2a" colspan=2>No. Siri Pendaftaran</th>
+					<th class="tcol2colon">:</th>
+					<th class="tcol2a" colspan=3>
+						<%=h @loanable.blank? ? @asset.assetcode : @loanable[0].asset.assetcode %>
+					</th>
+				</tr>
+					
+				<tr>
+					<th class="tcol2b" rowspan=2>Bil</th>
+					<th class="tcol2" rowspan=2 >Nama Peminjam</th>
+					<th class="tcol2" colspan=3>Tarikh</th>
+					<th class="tcol2" rowspan=2>Tandatangan <br>Peminjam</th>
+					<th class="tcol2" colspan=2>Ketika Dikeluarkan</th>
+					<th class="tcol2" colspan=2>Ketika Dipulangkan</th>
+					<!--<th class="tcol2b" rowspan=2>Catatan2</th>-->
+				</tr>
+	
+				<tr>
+					<th class="tcol2" colspan=2>Dikeluarkan</th> 
+					<th class="tcol2" style="width:80px;">Jangka<br>Dipulangkan</th> 
+					<th class="tcol2">Tandatangan</th> 
+					<th class="tcol2">Tarikh</th> 
+					<th class="tcol2">Tandatangan</th> 
+					<th class="tcol2">Tarikh</th> 			
+				</tr>
+				
+</thead>
+
+
+	
+	<tbody>
+			<%count=0%>
+			<% for loanable in @loanable do %>
+			<tr>
+				<td class="tdata"><%=count+=1%></td>
+				<td class="tdata" style="width:200px;"><%=h loanable.loaner%></td>
+				<td class="tdata" colspan=2><%=h loanable.loaned_on.strftime("%d %b %Y")%></td>
+				<td class="tdata"><%=h loanable.expected_on.strftime("%d %b %Y")%></td>
+				<td class="tdata">&nbsp;</td>
+				<td class="tdata"><%=h loanable.loanofficer.blank? ? "": loanable.loanofficer.name %></td>
+				<td class="tdata" style="width:70px;">
+					<%=h loanable.approved_date.blank? ? "" : loanable.approved_date.strftime("%d %b %Y")%></td>
+				<td class="tdata"><%=h loanable.receivedpfficer.blank? ? "": loanable.receivedpfficer.name %></td>
+				<td class="tdata" style="width:70px;">
+					<%=h loanable.returned_on.blank? ? "" : loanable.returned_on.strftime("%d %b %Y")%></td>
+				<td class="tdata" style="width:80px;">&nbsp;</td>
+					
+			</tr>
+			<% end %>
+			
+	</tbody>
+</table>
+<div>	
+	
+
+<div id="hideLink">
+<%= link_to 'Back', assets_path %>
+</div>

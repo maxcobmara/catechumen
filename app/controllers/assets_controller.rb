@@ -162,6 +162,14 @@ class AssetsController < ApplicationController
     @asset = Asset.find(params[:id])
     render :layout => 'report'
   end
+
+  def kewpa6
+    #display historic & potential loaner
+    @asset = Asset.find(params[:id])
+    @loanable = AssetLoan.find(:all, :conditions => ['asset_id=? AND is_approved!=?',params[:id], false], :order=>'returned_on ASC')
+    render :layout => 'report'
+  end
+  
   
   def asset_autocomplete
     @asset_autocompletes = Asset.find(:all, :conditions => ['assetcode ILIKE ? OR name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
@@ -174,6 +182,39 @@ class AssetsController < ApplicationController
   end
   
   def loanables
-    @loanables = Asset.on_loan
+    #@loanables = Asset.on_loan
+    #@loanables = Asset.on_loan.paginate(:per_page => 30, :page => params[:page])
+    #@loanables = Asset.on_loan.search(params[:search]).paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])
+    
+    search2=params[:search]
+    #--from Asset.on_loan
+    loaned = AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id) #23Apr2013
+    if loaned == []
+        loaned = [0]
+    end
+    #--from Asset.on_loan
+
+    dept = Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)
+    #dept = Position.find(:first, :conditions=>['unit=?',"#{search2}%"]).subtree.map(&:staff_id)
+    
+    #yg ok-in case-----
+    @loanables = Asset.find(:all,:conditions => ['id NOT IN (?) and assetcode ILIKE ? or name ILIKE ? ', loaned, "#{search2}%", "#{search2}%"]).paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])    
+    #yg ok-in case-----
+    #@loanables = Asset.find(:all,:conditions => ['id NOT IN (?) and assetcode ILIKE ? or name ILIKE ? ', loaned, "#{search2}%", "#{search2}%"]).paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])    
+    @loanables_with_assignedto = Asset.find(:all,:conditions => ['id NOT IN (?) and assignedto_id is not null or assetcode ILIKE ? or name ILIKE ? ', loaned, "#{search2}%", "#{search2}%"])
+    @loanables_with_assignedto_dept = Asset.find(:all,:conditions => ['id NOT IN (?) and assignedto_id in (?) or assetcode ILIKE ? or name ILIKE ? ', loaned, [25,67,59], "#{search2}%", "#{search2}%"])
+    @loanables_with_assignedto_dept2= Asset.find(:all,:conditions => ['id NOT IN (?) and assignedto_id in (?) or assetcode ILIKE ? or name ILIKE ? ', loaned, dept, "#{search2}%", "#{search2}%"])
+  
+    #++++++++++++++++++++++++++++++++++++++++++++++filter loanables based on dept/unit
+    @filters = Asset::FILTERS_LOAN
+    if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+        @loanables = Asset.send(params[:show]).paginate(:order => :assetcode, :per_page => 30, :page => params[:page])
+    else
+        @loanables = Asset.find(:all,:conditions => ['id NOT IN (?) and assetcode ILIKE ? or name ILIKE ? ', loaned, "#{search2}%", "#{search2}%"]).paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])    
+        #@loanables = Asset.search(params[:search]).paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])
+        #@asset_gbtype = @assets.group_by { |t| t.gbtype }
+    end
+    #++++++++++++++++++++++++++++++++++++++++++++++filter loanables based on dept/unit
   end
+  
 end

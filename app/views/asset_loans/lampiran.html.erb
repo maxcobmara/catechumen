@@ -70,7 +70,7 @@ document.write("<input type='button' " +
 	</tr>
 	<tr>
 		<td class="leftcol">Nama</td>
-		<td class="filler"><%=h @asset_loan.owner.name %></td>
+		<td class="filler"><%#=h @asset_loan.owner.name %><%=h @asset_loan.loanofficer.name %></td>
 	</tr>
 	<tr>
 		<td class="leftcol">Tarikh</td>
@@ -85,15 +85,15 @@ document.write("<input type='button' " +
 	</tr>
 	<tr>
 		<td class="leftcol">Tandatangan Ketua Jabatan</td>
-		<td class="filler"><%= @asset_loan.hod_date.blank? ? "Not Viewed" : "via icms"  %></td>
+		<td class="filler"><%= @asset_loan.approved_date.blank? ? "Not Viewed" : "via icms" %><%#= @asset_loan.hod_date.blank? ? "Not Viewed" : "via icms"  %></td>
 	</tr>
 	<tr>
 		<td class="leftcol">Nama</td>
-		<td class="filler"><%=h @asset_loan.hod_date.blank? ? "Not Viewed" : @asset_loan.hod.name %></td>
+		<td class="filler"><%=h @asset_loan.approved_date.blank? ? "Not Viewed" : @asset_loan.hodept.name %><%#=h @asset_loan.hod_date.blank? ? "Not Viewed" : @asset_loan.hod.name %></td>
 	</tr>
 	<tr>
 		<td class="leftcol">Tarikh</td>
-		<td class="filler"><%= l(@asset_loan.hod_date) unless @asset_loan.hod_date.blank? %></td>
+		<td class="filler"><%= l(@asset_loan.approved_date) unless @asset_loan.hod_date.blank? %><%#= l(@asset_loan.hod_date) unless @asset_loan.hod_date.blank? %></td>
 	</tr>
 </table>
 <BR/>

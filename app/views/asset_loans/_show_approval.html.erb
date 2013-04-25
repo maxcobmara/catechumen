@@ -3,8 +3,12 @@
 		<table width=85% >
 				<% if @asset_loan.is_approved == true %>
 				<tr>
-					<td class="leftcolwide"><label>Approved On</td>
-					<td><%=h @asset_loan.is_approved? ? "Approved on  " + (@asset_loan.approved_date.strftime("%d %B %Y")).to_s + " by " + "#{@asset_loan.owner.name}" : "" %></td>
+					<td class="leftcolwide"><label>Approved?</td>
+					<td><%=h @asset_loan.is_approved? ? "Released on  " + (@asset_loan.approved_date.strftime("%d %B %Y")).to_s + " by " + "#{@asset_loan.loanofficer.name}" : "" %></td>
+				</tr>
+				<tr>
+					<td class="leftcolwide"><label>Notify HOD</label></td>
+					<td><%= Staff.find(@asset_loan.hod).name %></td>
 				</tr>
 				<% else %>
 				<tr>
