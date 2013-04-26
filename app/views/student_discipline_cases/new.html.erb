@@ -36,10 +36,10 @@
 			<td class="leftcol"><label for="reporteddt"><b>Date:</b></label></td>
 			<td><%= f.date_select :reported_on, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
+			<% myhod = Position.find(:all, :conditions => ['id=? OR id=? OR id=? OR id=? OR id=? OR id=?', '7', '8', '9', '10','11','12'], :select => :staff_id).map(&:staff_id) %>
 	
-	
-		
-		<% myhod = Position.find(:all, :conditions => ['staff_id IS NOT ? AND ancestry_depth =?', nil, 1 ], :select => :staff_id).map(&:staff_id) %>
+			<%# myhod = Position.find(:all, :conditions => ['positioncode=? OR positioncode=? OR positioncode=? OR positioncode=? OR positioncode=? OR positioncode=?', '1.1.01', '1.1.02', '1.1.03', '1.1.04','1.1.05','1.1.06'], :select => :staff_id).map(&:staff_id)  %>
+		<%# myhod = Position.find(:all, :conditions => ['staff_id IS NOT ? AND ancestry_depth =?', nil, 1 ], :select => :staff_id).map(&:staff_id) %>
 		<tr>
 			<td class="leftcol"><label for="programme_head">Assign to Programme Head</label></td>
 	    <td><%= f.collection_select :assigned_to, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name, :include_blank => true %></td>
@@ -48,6 +48,7 @@
 	<%= f.hidden_field :assigned_on, :value => Date.today %>
 	<% f.fields_for :student_counseling_sessions do |builder| %>
 		<%= builder.hidden_field :c_scope, :value => "case" %>
+		<%= builder.hidden_field :c_type, :value => "involuntary" %>
 	<% end -%>
 	
 	

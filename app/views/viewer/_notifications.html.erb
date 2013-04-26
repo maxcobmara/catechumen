@@ -182,19 +182,25 @@
 		<%= link_to "Your leave request on #{al} has been Approved", { :controller => "leaveforstudents", :action => "index" } %><br/>
 	<% end %>
 <% permitted_to? :manage, :student_counseling_sessions do %><!--1Apr2013-->
-	<% counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed IS ?', nil])%>
+	<% counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed !=? OR is_confirmed ISNULL', true])%>
+	<%# counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed !=?', true])%>
+	<%# counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed IS ?', nil])%>
 	<% if counsel_appt > 0 %>
 		<%= link_to "#{counsel_appt} Student counseling appoinment to be confirmed", { :controller => "student_counseling_sessions", :action => "index" } %><br/>
 	<% end %>
 <% end %><!--1Apr2013-->	
-	<!-- Notification for Students Dicsipline is approved -->
-<% permitted_to? :manage, :student_discipline_cases do %><!--1Apr2013-->
-	<% cases = StudentDisciplineCase.count(:all, :conditions => ['status =?', "New"]) %>
-		<% if cases == 0 %>
-		<% else %>
-			<%= link_to "#{cases} new student discipline cases", student_discipline_cases_path %><br>
-		<% end %>
-<% end %>	<!--1Apr2013-->
+
+<!-- Notification for Students Dicsipline "NEW" for KP, "Refer to TPHEP"(referred case) for TPHEP -->
+
+	<% cases = StudentDisciplineCase.count(:all, :conditions => ['status =? AND assigned_to=?', "New",User.current_user.staff_id]) %>
+	<% referredcases = StudentDisciplineCase.count(:all, :conditions => ['status =? AND assigned2_to=?', "Refer to TPHEP",User.current_user.staff_id ])%><!--TPHEP=staff at position id=3-->
+	<% if cases > 0 %>
+		<%= link_to "#{cases} New student discipline cases", student_discipline_cases_path %><br>
+	<% end %>
+	<% if referredcases > 0 %>
+ 		<%= link_to "#{referredcases} Referred student discipline cases", student_discipline_cases_path %><br>	
+	<% end %>
+	
 	<!-- Notification for Topic Approval 
 	<#% topic_need_approve = Topic.count(:all, :conditions => ['approvedby_id=? AND approved =?', User.current_user.staff_id, false]) %>
 		<#% if topic_need_approve == 0 %>

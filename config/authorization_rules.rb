@@ -102,8 +102,13 @@ authorization do
     has_permission_on :student_discipline_cases, :to => :approve do
       if_attribute :assigned_to => is {User.current_user.staff_id}
     end
-    has_permission_on :student_discipline_cases, :to => :read do
+    has_permission_on :student_discipline_cases, :to => :manage do
+      if_attribute :assigned2_to => is {User.current_user.staff_id}
+    end
+    has_permission_on :student_discipline_cases, :to => :read, :join_by => :or do
       if_attribute :reported_by => is {User.current_user.staff_id}
+      if_attribute :assigned_to => is {User.current_user.staff_id}
+      if_attribute :assigned2_to => is {User.current_user.staff_id}
     end
 
     has_permission_on :librarytransactions, :to => :read do

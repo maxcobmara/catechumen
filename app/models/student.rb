@@ -90,6 +90,13 @@ class Student < ActiveRecord::Base
       "[#{course.course_type} - #{course.name}]"
     end
   end
+  def programme_for_student2
+    if course.blank?
+      "N/A"
+    else
+      "#{course.course_type} - #{course.name}"
+    end
+  end
   
   def list_programme
     suid = course_id 
