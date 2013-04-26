@@ -26,14 +26,14 @@ class StudentDisciplineCase < ActiveRecord::Base
     #end
   #end
   
-  named_scope :new,       :conditions => [ "status =?", "New"           ]
+  named_scope :new2,       :conditions => [ "status =?", "New"           ]      #named_scope :new
   named_scope :opencase,  :conditions => [ "status =?", "Open"          ]
   named_scope :tphep,     :conditions => [ "status =?", "Refer to TPHEP"]
   named_scope :bpl,       :conditions => [ "status =?", "Refer to BPL"  ]
   named_scope :closed,    :conditions => [ "status =?", "Closed"        ]
   
   FILTERS = [
-    {:scope => "new",   :label => "New"},
+    {:scope => "new2",   :label => "New"},                                      #:scope => "new"
     {:scope => "opencase",  :label => "Open"},
     {:scope => "tphep", :label => "Refer to TPHEP"},
     {:scope => "bpl",   :label => "Refer to BPL"},
@@ -41,14 +41,26 @@ class StudentDisciplineCase < ActiveRecord::Base
   ]
   
   def close_if_no_case
-    if action_type == "no_case" || action_type == "advise" || action_type == "counseling"
+    if action_type == "no_case" || action_type == "advise" #|| action_type == "counseling"
       self.status = "Closed"
+    # self.assigned2_to = nil
+    #elsif action_type == "counseling"
+      #self.assigned2_to = nil
     elsif action_type == "Ref TPHEP"
       self.status = "Refer to TPHEP"
     end
-    if action_type != "Refer to BPL"
+    #if action_type != "Refer to BPL"	#asal
+    if action_type != "Ref to BPL"
       self.sent_to_board_on = nil
+    else
+      self.status = "Refer to BPL"		#baru
     end
+    #tumpang - for testing
+    if Student.find(student_id).course_id == 4
+    	self.assigned_to = Position.find_by_positioncode('1.1.04').staff_id  #self.assigned_to = 69
+    else
+    	
+  	end
   end
   
 
@@ -66,12 +78,24 @@ class StudentDisciplineCase < ActiveRecord::Base
     flow = Array.new
       if status == nil
         flow << "New"
-      elsif status == "New"
-        flow << "Open" 
-      elsif status == "Open"
-        flow << "Open" << "Refer to TPHEP" << "Closed" 
+      #------------
+      elsif status =="New" 
+        if reported_by == nil || student_id == nil || status == nil || infraction_id == nil || assigned_to == nil
+        	flow << "New"	#special case for 1st time data entry (upon validation-if any of the above field is nil --> stay with 'New' status)
+        else
+        	flow << "Open" << "Refer to TPHEP" << "Closed" 
+        end
+      #------------
+      #elsif status == "New"	#asal
+        #flow << "Open" 		#asal
+      #elsif status == "Open"	#asal
+      ####elsif status == "New"		#baru  -- jab
+        #####flow << "Open" << "Refer to TPHEP" << "Closed" ---jab
+      
       elsif status == "Refer to TPHEP"
-        flow << "Refer to TPHEP" << "Refer to BPL" << "Closed"
+        #flow << "Refer to TPHEP" << "Refer to BPL" << "Closed"		#asal
+        #flow << "Refer to TPHEP" << "Refer to BPL" << "Closed" << "Open"		#baru-24Dec2012
+        flow << "Refer to BPL" << "Closed"		#baru
       elsif status == "Refer to BPL"
         flow << "Refer to BPL" << "Closed"
       else

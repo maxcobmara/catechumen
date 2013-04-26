@@ -10,6 +10,8 @@ class Exam < ActiveRecord::Base
   attr_accessor :own_car, :dept_car,:programme_id #18Apr2013-programme_id used in views/exams/new.html.erb #9Apr2013-use course_id (temp) to capture semester (year as well)
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
+  validates_presence_of :programme_id,:subject_id
+  
   def set_sequence
     if seq!= nil
         sequence=""

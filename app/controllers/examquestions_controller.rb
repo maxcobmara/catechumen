@@ -96,8 +96,15 @@ class ExamquestionsController < ApplicationController
   # DELETE /examquestions/1.xml
   def destroy
     @examquestion = Examquestion.find(params[:id])
-    @examquestion.destroy
-
+    #22Apr2013--avoid deletion of examquestion that exist in exams-temp
+    @exist_in_exam = Exam.find(:all, :joins=>:examquestions, :conditions=> ['examquestion_id=?',params[:id]]).count
+    if @exist_in_exam == 0
+        @examquestion.destroy
+    else
+        flash[:error] = 'This examquestion EXIST in examination and is not allowed for deletion.'
+    end
+    #22Apr2013--avoid deletion of examquestion that exist in exams
+    
     respond_to do |format|
       format.html { redirect_to(examquestions_url) }
       format.xml  { head :ok }

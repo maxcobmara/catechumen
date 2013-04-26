@@ -2,9 +2,16 @@ class AssetLoansController < ApplicationController
   # GET /asset_loans
   # GET /asset_loans.xml
   def index
-    @asset_loans = AssetLoan.find(:all)
+    @asset_loans = AssetLoan.find(:all).sort_by{|item|item.asset_id}
     #@asset_loans = AssetLoan.borrowings
-
+    #-----------
+     @filters = AssetLoan::FILTERS
+      if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+          @asset_loans = AssetLoan.send(params[:show])#.paginate(:order => :assetcode, :per_page => 30, :page => params[:page])
+      else
+          @asset_loans = AssetLoan.find(:all).sort_by{|item|item.asset_id}#(:all,:conditions => ['id NOT IN (?) and assetcode ILIKE ? or name ILIKE ? ', loaned, "#{search2}%", "#{search2}%"])#.paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])    
+      end
+    #-----------
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @asset_loans }

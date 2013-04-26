@@ -22,7 +22,7 @@
 				<td class="leftcol"><label for="losstype"><b>Action Type</b></label></td>
 				<td><%= f.radio_button :action_type, "no_case", 	:id => 'nc', :class => 'radio_action_type' %><label>No Case &nbsp; 
 						<%= f.radio_button :action_type, "advise", 		:id => 'ja', :class => 'radio_action_type' %>Advise &nbsp; 
-						<%= f.radio_button :action_type, "counseling",:id => 'co', :class => 'radio_action_type' %>Counseling &nbsp; 
+						<%#= f.radio_button :action_type, "counseling",:id => 'co', :class => 'radio_action_type' %><!--Counseling &nbsp; -->
 						<%= f.radio_button :action_type, "Ref TPHEP", 	:id => 'au', :class => 'radio_action_type' %>Refer to TPHEP &nbsp; </label>
 						</td>
 			</tr>
@@ -37,12 +37,16 @@
 				<td class="leftcol"><label for="otherinfo"><b>Advice Given:</b></label></td>
 				<td><%= f.text_area :other_info, :size => "40x5" %></td>
 			</tr>
-			
-			
-			<% myhod = Position.find(:all, :conditions => ['staff_id IS NOT ? AND ancestry_depth =?', nil, 1 ], :select => :staff_id).map(&:staff_id) %>
+			<% myhod = Position.find(:all, :conditions => ['id=?', '3'], :select => :staff_id).map(&:staff_id)  %>
+			<%# myhod = Position.find(:all, :conditions => ['positioncode=?', '1.2'], :select => :staff_id).map(&:staff_id)  %>
+			<%# myhod = Position.find(:all, :conditions => ['staff_id IS NOT ? AND ancestry_depth =?', nil, 1 ], :select => :staff_id).map(&:staff_id) %>
 			<tr class="au_item" style="display: none;">
 				<td class="leftcol"><label for="approved_date">Notify HOD</label></td>
-		    <td><%= f.collection_select :assigned2_to, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %></td>
+		    <td>
+				<%= f.collection_select :assigned2_to, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %>
+				<!-- replace this with - model/student_discipline_case.rb - line 46- self.assigned2_to = nil-->
+				<%#= select_tag "student_discipline_case[assigned2_to]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name) %>					
+			</td>
 			</tr>
 			
 			<tr  class="au_item" style="display: none;">
@@ -53,9 +57,11 @@
 		</table>
 	<% end %>
 
+	<!--add-in  && @student_discipline_case.assigned2_to == User.current_user.staff_id below condition - only TPHEP can view action details-19dec2012-->
+	<% if (["Refer to TPHEP"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == User.current_user.staff_id) %>
 	
-	
-	<% if ["Refer to TPHEP"].include? (@student_discipline_case.status) %>
+	<%# if (["Refer to TPHEP"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == User.current_user.staff_id) ||
+	(["Open"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == User.current_user.staff_id) 	%>
 	<%= render :partial => 'show_case_info' %>	
 	<H2>Action Details</H2>
 		<table width=100%>	
@@ -91,6 +97,9 @@
 				<td><%= f.date_select :sent_to_board_on, :order => [:day, :month, :year] %></td>
 			</tr>
 		</table>
+		<!--add in status assignment here? 19 dec 2012-->
+		<%#=render :partial => 'status', :locals => {:f => f} %><!--compulsory to hv this - for refer to BPL partial to works-->
+		<!--add in status assignment here? 19 dec 2012-->
 	<% end %>
 	
 	
@@ -148,6 +157,9 @@
 <BR>
 </div>	
 
+
+
+
 <script type="text/javascript">
 $j(document).ready(function(){ 
    $j("input[class='radio_action_type']").change(function() {  
@@ -156,25 +168,39 @@ $j(document).ready(function(){
 				 $j("#ja_item").hide();
 				 $j(".co_item").hide();
 				 $j(".au_item").hide();
+				//ADDED-21DEC
+				 var ansM = document.getElementById("student_discipline_case_status");
+				 ansM.value = "Closed";
+				//ADDED-21DEC
 	     }else if ($j('#ja').is(':checked')){
 				 $j("#nc_item").hide();
 				 $j("#ja_item").show();
 				 $j(".co_item").hide();
 				 $j(".au_item").hide();
+				//ADDED-21DEC
+				 var ansM = document.getElementById("student_discipline_case_status");
+				 ansM.value = "Closed";
+				//ADDED-21DEC
 	     }else if ($j('#au').is(':checked')){
 				 $j("#nc_item").hide();
 				 $j("#ja_item").hide();
 				 $j(".co_item").hide();
 				 $j(".au_item").show();
 				 $j(".bpl_item").hide();
+				//ADDED-21DEC
+				 var ansM = document.getElementById("student_discipline_case_status");
+				 ansM.value = "Refer to TPHEP";
+				//ADDED-21DEC
       }else if($j('#co').is(':checked')){
 	       $j("#nc_item").hide();
 	       $j("#ja_item").hide();
 	       $j(".co_item").show();
 	       $j(".au_item").hide();
 	       $j(".bpl_item").hide();
-				 var ansM = document.getElementById("student_discipline_case_status");
-				 ansM.value = "Closed";
+			 	var ansM = document.getElementById("student_discipline_case_status");	//co --> counseling
+			 	ansM.value = "Closed";
+				//var ansM = document.getElementById("student_discipline_case_status");	//co --> counseling
+				//ansM.value = "Open";
 		  }else if ($j('#bpl').is(':checked')){
 				 $j("#nc_item").hide();
 				 $j("#ja_item").hide();

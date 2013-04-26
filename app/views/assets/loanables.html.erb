@@ -2,10 +2,29 @@
 	<!-- Box Head -->
 	<div class="box-head">
 		<h2 class="left">Loanable Assets</h2>
-		<div class="right">
+		<div class="right"> 
+			<% form_tag loanables_assets_path, :method => 'get' do %>
+			<%# form_tag assets_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search], :placeholder => "Reg No, Name"  %>
+			<%= submit_tag "Search", :name => nil %>
+			<% end %>
 		</div>
+		
   </div>
 </div>
+
+<div class="toolbar">
+	<table width=100%><tr>
+		<td width=80%><div class="pagination"><%= will_paginate @loanables %></div></td>
+		<td width=20% style="text-align:right;"><%= select_tag_for_filter("loanables_assets", @filters, params) %></td>
+	</tr></table>
+</div>
+
+<!--
+<%#=@loanables_with_assignedto.count%><br>Aset (boleh pinjam) dibwh kelolaan IT dept:<%#= @loanables_with_assignedto_dept.count%>
+<br>sama gak : <%#=@loanables_with_assignedto_dept2.count%>-->
+
+<br>
 <div class="indextable">
 
 <table>
@@ -15,6 +34,7 @@
     <th>Name</th>
     <th>Model No</th>
     <th>Serial No</th>
+	<th>Owner/Reponsible Unit</th>
 	  <th class="ac">Control</th>
   </tr>
 
@@ -25,12 +45,30 @@
     <td><%=h loanable.name %></td>
     <td><%=h loanable.modelname %></td>
     <td><%=h loanable.serialno %></td>
-		<td width=10px ><%= link_to image_tag("user_go.png", :border => 0, :title => 'Apply to Loan'), new_asset_loan_path(:asset_id => loanable) %></td>
+    <td><%#=h loanable.assignedto %>
+		<%=h loanable.assignedto.name unless loanable.assignedto.blank? %><br>
+		<b>
+			<% if loanable.assignedto.blank?%>
+			<% else %><%=h loanable.assignedto.position.unit unless loanable.assignedto.position.blank? %><% end %>
+		</b>
+	</td>
+	<td width=10px >
+		<% if loanable.assignedto.blank? %><!--assignedto_id in ASSET table must exist-->
+		<% else %>
+			<% unless loanable.assignedto.position.blank? %><!--position for assignedto in POSITION table must exist-->
+				<% unless loanable.assignedto.position.unit.blank? %><!--unit for position(assignedto) in POSITION must exist must exist-->
+					<%= link_to image_tag("user_go.png", :border => 0, :title => 'Apply to Loan'), new_asset_loan_path(:asset_id => loanable) %>
+				<% end %>
+			<% end %>
+		<% end %>
+	</td>
   </tr>
 <% end %>
 </table>
 
 </div>
+<br>
+<div class="pagination"><%= will_paginate @loanables %></div>
 
 <br />
 

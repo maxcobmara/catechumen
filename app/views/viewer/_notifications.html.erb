@@ -91,13 +91,68 @@
 	<% end %>
 	
 	
-	
-	
 	<!--Notification for Asset Loan-->
-	<% assetloanrequest = AssetLoan.count(:all, :conditions => ['loaned_by = ? AND is_approved IS ?', User.current_user.staff_id, nil]) %>
+	
+	<!--25Apr2013-check if ANY OF logged-in unit members of DEPT/UNIT same as loaned_by(asset owner); HAVE request of asset loan that still pending-->
+	<% hods = [6,7,8,9,10,11,12,13,14,15,16,17,18,19,25,26,27,28,29,30,31] %>
+	<% logged_user_positionid=User.current_user.staff.position.id %>
+	<% assetloanrequest2=[]%>
+	<% unless hods.include?(logged_user_positionid)%><!--NOT HOD-->
+		<% unit_members=[]%>
+		<% superior = Position.find(:first,:conditions=>['staff_id=?',current_user.staff_id]).parent.staff_id if !current_user.staff.position.root%>	
+	  	<% subordinates = Position.find(:first,:conditions=>['staff_id=?',current_user.staff_id]).siblings %>   
+	  	<% unit_members << superior if superior != nil %>
+		<% subordinates.each do |x| %>
+			<% unit_members << x.staff_id if x.staff_id !=nil %>
+		<% end %><!--
+		<%#=current_user.staff_id%>~
+		<%#=unit_members %>-->
+		
+		<% 0.upto(unit_members.count-1) do |index|%>
+			<% assetloanrequest3 = AssetLoan.count(:all, :conditions => ['loaned_by = ? AND is_approved IS NULL', unit_members[index]])%>
+			<% if assetloanrequest3 > 0 %>
+				<% assetloanrequest2 << assetloanrequest3 %>
+			<% end %>
+		<% end %>
+		<% assetloanrequest2[0]=0 if assetloanrequest2[0].blank? %>
+	<% else %>
+		<% assetloanrequest2[0]=0%>
+	<% end %>
+	<!--25Apr2013-check if ANY OF logged-in unit members of DEPT/UNIT same as loaned_by(asset owner); HAVE request of asset loan that still pending-->
+
+	<!--25Apr2013-to notify user for not yet return on-loan asset on due date (expected_on)-->
+	<% assetloan_due = AssetLoan.count(:all, :conditions =>['is_approved IS true AND is_returned IS NULL AND staff_id=? AND expected_on>=?',User.current_user.staff_id,Date.today])
+	%>
+	<% if assetloan_due > 0 %>
+		<%= link_to "#{assetloan_due} Asset on loan due/overdue", { :controller => "asset_loans", :action => "index" } %><br/>
+	<% end %>
+	<!--25Apr2013-to notify user for not yet return on-loan asset on due date (expected_on)-->
+
+	<!--25Apr2013-asset loan request for processing-->
+	<% assetloanrequest = AssetLoan.count(:all, :conditions => ['loaned_by = ? AND is_approved IS NULL', User.current_user.staff_id]) %>
 	<% if assetloanrequest > 0 %>
 		<%= link_to "#{assetloanrequest} Asset Loan requests for approval", { :controller => "asset_loans", :action => "index" } %><br/>
 	<% end %>
+	<% if assetloanrequest2[0] > 0 && assetloanrequest==0 %>
+	<!--assetloanrequest giving 0, when logged-in as OTHER unit member of loaned_by's unit/dept-->
+		<%= link_to "#{assetloanrequest2} Asset Loan requests for approval", { :controller => "asset_loans", :action => "index" } %><br/>
+	<% end %>
+	<!--25Apr2013-asset loan request for processing-->
+	
+	<!--25Apr2013-notify HOD on approval of asset loan regardless of loantype (internal or external) -->
+	<% assetnotify_hod = AssetLoan.count(:all, :conditions=>['is_approved IS true AND is_returned IS NOT true AND hod=?',User.current_user.staff_id]) %>
+	<% if assetnotify_hod > 0 %>
+		<% if User.current_user.staff.position.root %>
+			<%= link_to "#{assetnotify_hod} Asset Loan requests require your final approval", { :controller => "asset_loans", :action => "index" } %><br/>
+		<% else %>
+			<%= link_to "#{assetnotify_hod} Asset Loan requests approved for your information", { :controller => "asset_loans", :action => "index" } %><br/>
+		<% end %>
+	<% end %>
+	<!--25Apr2013-notify HOD on approval of asset loan regardless of loantype (internal or external) -->
+
+	<%#=AssetLoan.count(:all, :conditions=>['is_approved IS true AND is_returned IS NOT true AND hod=?',User.current_user.staff_id])%><%#=current_user.staff_id%>
+
+	<!--END-Notification for Asset Loan-->
 
 	<!-- Notification for Messages -->
   <% dash_messages = Message.count(:all, :include => :staffs, :conditions => ['staff_id =? AND messages.created_at > ?' , User.current_user.staff_id, DateTime.now - 1.day]) %>
@@ -135,11 +190,14 @@
 		<%= link_to "Your leave request on #{al} has been Approved", { :controller => "leaveforstudents", :action => "index" } %><br/>
 	<% end %>
 <% permitted_to? :manage, :student_counseling_sessions do %><!--1Apr2013-->
-	<% counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed IS ?', nil])%>
+	<% counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed !=? OR is_confirmed ISNULL', true])%>
+	<%# counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed !=?', true])%>
+	<%# counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed IS ?', nil])%>
 	<% if counsel_appt > 0 %>
 		<%= link_to "#{counsel_appt} Student counseling appoinment to be confirmed", { :controller => "student_counseling_sessions", :action => "index" } %><br/>
 	<% end %>
 <% end %><!--1Apr2013-->	
+<<<<<<< HEAD
 	<!-- Notification for Students Dicsipline is approved -->
 <% permitted_to? :manage, :student_discipline_cases do %><!--1Apr2013-->
 	<% cases = StudentDisciplineCase.count(:all, :conditions => ['status =?', "New"]) %>
@@ -152,6 +210,20 @@
 =======
 <% end %>	<!--1Apr2013-->
 >>>>>>> 0da980ec7c2c95feb7bdc68cdebc6187e0fe20f4
+=======
+
+<!-- Notification for Students Dicsipline "NEW" for KP, "Refer to TPHEP"(referred case) for TPHEP -->
+
+	<% cases = StudentDisciplineCase.count(:all, :conditions => ['status =? AND assigned_to=?', "New",User.current_user.staff_id]) %>
+	<% referredcases = StudentDisciplineCase.count(:all, :conditions => ['status =? AND assigned2_to=?', "Refer to TPHEP",User.current_user.staff_id ])%><!--TPHEP=staff at position id=3-->
+	<% if cases > 0 %>
+		<%= link_to "#{cases} New student discipline cases", student_discipline_cases_path %><br>
+	<% end %>
+	<% if referredcases > 0 %>
+ 		<%= link_to "#{referredcases} Referred student discipline cases", student_discipline_cases_path %><br>	
+	<% end %>
+	
+>>>>>>> 6b0dad14a8091a1d3b2cb22d73bd718caaa02f2f
 	<!-- Notification for Topic Approval 
 	<#% topic_need_approve = Topic.count(:all, :conditions => ['approvedby_id=? AND approved =?', User.current_user.staff_id, false]) %>
 		<#% if topic_need_approve == 0 %>

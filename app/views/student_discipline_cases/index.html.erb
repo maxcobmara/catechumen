@@ -10,11 +10,14 @@
 <div class="toolbar">
 	<p><%= link_to image_tag("add.png", :border => 0, :title => 'Register Case') + "New", new_student_discipline_case_path %></p>
 </div>
-
+<%=current_user.staff_id %>
 <div class="indextable">
 	<table width=90% border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<th>Status</th>
+			<!--<th>Programme</th>to do hold first-->
+			<!--<th>Year/Sem</th>-to do hold first-->
+			<th>Matrix No</th>
 			<th>Student Name</th>
 			<th>Details</th>
 			<th>Reported Date</th>
@@ -29,7 +32,10 @@
 <% @student_discipline_cases.each do |student_discipline_case| %>
   <tr>
     <td><%=h student_discipline_case.status %></td>
-    <td><%=h student_discipline_case.student_name %></td>
+	<!--<td><%=h student_discipline_case.student.programme_for_student2 %></td>-->
+	<!--year/sem-to do-->
+	<td><%=h student_discipline_case.student.matrixno %></td>
+    <td><%=h student_discipline_case.student.name %></td>
     <td><%=h student_discipline_case.description %></td>
     <td><%=h tarikh(student_discipline_case.reported_on) %></td>
     <td><%=h student_discipline_case.file_name %></td>
@@ -39,11 +45,15 @@
 		
     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => student_discipline_case %></td>
     <td width=10px>
-			<% if permitted_to? :manage, :student_discipline_cases %>
-			<% if student_discipline_case.status != "Closed" && student_discipline_case.status != "No Case" %>
+	
+
+
+<% if (student_discipline_case.status=="New" && student_discipline_case.assigned_to == current_user.staff_id) || (student_discipline_case.status == "Refer to TPHEP" && student_discipline_case.assigned2_to == current_user.staff_id)%>
+		
 				<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => student_discipline_case %>
 			<% end %>
 		</td>
+<% if permitted_to? :manage, :student_discipline_cases %>
     <td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), student_discipline_case, :confirm => 'Are you sure?', :method => :delete %></td>
   	<% end %>
 </tr>

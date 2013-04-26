@@ -86,19 +86,22 @@ class ExamsController < ApplicationController
   end
   
   def exampaper
-       @exam = Exam.find(params[:id])  
-       render :layout => 'report'
-       #respond_to do |format|
-           #format.html # index.html.erb  { render :action => "report.css" }
-           #format.xml  { render :xml => @staffs }
-       #end
+    @exam = Exam.find(params[:id])  
+    render :layout => 'report'
+  end
+  
+  def view_subject_main
+    @programme_id = params[:programmeid]
+    unless @programme_id.blank? 
+      @subjects = Programme.find(@programme_id).descendants.at_depth(2)
+    end
+    render :partial => 'view_subject_main', :layout => false
   end
   
   def view_subject
     @programme_id = params[:programmeid]
     @exam_id = params[:examid]
     unless @programme_id.blank? 
-      #@subjects = Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?', @programme_id])
       @subjects = Programme.find(@programme_id).descendants.at_depth(2)
     end
     render :partial => 'view_subject', :layout => false
@@ -107,19 +110,16 @@ class ExamsController < ApplicationController
   def view_topic
     @subject = params[:subject]
     @exam_id = params[:examid]
-    @exam_id2 = params[:exam_id]  ##check first
-    unless @subject.blank? 
+    if @subject!='0' #|| @subject!=0
       @topics = Programme.find(@subject).descendants.at_depth(3)
     end
     render :partial => 'view_topic', :layout => false
   end
   
   def view_questions
-    #@subject_id = params[:subject]
-    @exam_id = params[:exam_id]
-    @exam_id2 = params[:exam_id2]
+    @exam_id = params[:examid]
     @topic_id = params[:topicid]
-    unless @topic_id.blank?
+    unless (@topic_id.blank? && @exam_id.blank?) || @topic_id ==""
       #@questions = Examquestion.find(:all, :conditions => ['subject_id=?',@subject_id])
       @questions = Examquestion.find(:all, :conditions => ['topic_id=? and bplreserve is not true and bplsent is not true', @topic_id])
       @questions_group = @questions.group_by{|x|x.questiontype}

@@ -72,7 +72,8 @@ class Asset < ActiveRecord::Base
   
   def self.search(search)
     if search
-      find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', "#{search}", 2])
+      #find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', "#{search}", 2])
+      find(:all,:conditions => ['assetcode ILIKE ? or name ILIKE ?', "#{search}%", "#{search}%"])      
     else
       find(:all, :conditions => ['assettype =?',  2])
     end
@@ -107,13 +108,15 @@ class Asset < ActiveRecord::Base
     end
   end
   
-  def self.on_loan
-    loaned = AssetLoan.find(:all, :conditions => ['is_returned !=?', true], :select => :asset_id).map(&:asset_id)
+  def self.on_loan      #loanables
+    #loaned = AssetLoan.find(:all, :conditions => ['is_returned !=?', true], :select => :asset_id).map(&:asset_id)
+    loaned = AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id) #23Apr2013
     if loaned == []
       loaned = [0]
     end
-    find(:all, :conditions => ['bookable = ? AND id NOT IN (?)', true, loaned])
-    
+    #find(:all, :conditions => ['bookable = ? AND id NOT IN (?)', true, loaned])
+    #23Apr2013-all asset are bookable
+    find(:all, :conditions => ['id NOT IN (?)', loaned])
   end
  
   named_scope :all 
@@ -126,7 +129,43 @@ class Asset < ActiveRecord::Base
   named_scope :disposal,      :conditions =>  ["is_disposed =? AND id not in (?)", true, AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :markaslost,    :conditions =>  ["mark_as_lost =? AND id not in (?)", true, AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :lost,          :conditions =>  ["id in (?)", AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
-
+  #pending asset requested for loan should not available for reservation
+  named_scope :onloan,        :conditions =>  ["id in (?)", AssetLoan.find(:all, :conditions=>['is_approved is true AND is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
+  named_scope :pendingloan,   :conditions =>  ["id in (?)", AssetLoan.find(:all, :conditions=>['is_approved is not true AND is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
+  named_scope :available,     :conditions =>  ["id not in (?)", AssetLoan.find(:all, :conditions=>['is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
+  named_scope :itdept,        :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)]
+  named_scope :hotelunit,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Perhotelan"]).subtree.map(&:staff_id)]
+  named_scope :libraryunit,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Perpustakaan"]).subtree.map(&:staff_id)]
+  named_scope :counterunit,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Kaunter"]).subtree.map(&:staff_id)]
+  named_scope :developunit,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Pembangunan"]).subtree.map(&:staff_id)]
+  named_scope :financestoreunit,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Kewangan & Stor"]).subtree.map(&:staff_id)]
+  named_scope :serviceunit,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Perkhidmatan"]).subtree.map(&:staff_id)]
+  named_scope :generaladminunit,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Pentadbiran Am"]).subtree.map(&:staff_id)]
+  named_scope :radiografi,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Radiografi"]).subtree.map(&:staff_id)]
+  named_scope :nursing,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Kejururawatan"]).subtree.map(&:staff_id)]
+  named_scope :fisioterapi,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Jurupulih Perubatan Anggota (Fisioterapi)"]).subtree.map(&:staff_id)]
+  named_scope :carakerja,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Jurupulih Perubatan Cara Kerja"]).subtree.map(&:staff_id)]
+  named_scope :pemperubatan,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Penolong Pegawai Perubatan"]).subtree.map(&:staff_id)]
+  named_scope :posbasik,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Pos Basik"]).subtree.map(&:staff_id)]
+  named_scope :perubatanasas,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Sains Perubatan Asas"]).subtree.map(&:staff_id)]
+  named_scope :anatomi,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Anatomi & Fisiologi"]).subtree.map(&:staff_id)]
+  named_scope :tingkahlaku,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Sains Tingkahlaku"]).subtree.map(&:staff_id)]
+  named_scope :komunikasi,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Komunikasi & Sains Pengurusan"]).subtree.map(&:staff_id)]
+  named_scope :ppelatih,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Pembangunan Pelatih"]).subtree.map(&:staff_id)]
+  named_scope :spelatih,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Khidmat Sokongan Pelatih"]).subtree.map(&:staff_id)]
+  named_scope :kokurikulum,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Kokurikulum"]).subtree.map(&:staff_id)]
+  named_scope :kupk,     :conditions =>  ['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Ketua Unit Penilaian & Kualiti"]).subtree.map(&:staff_id)]
+  
+  named_scope :allloanable,   :conditions =>  ['id in (?)', Asset.on_loan]
+  #----------although all asset available for reservation, HIDE user from link to reserve for asset without owner(& dept)----
+  #---------so, in order to retrieve only those available asset with owner & dept.....use below named_scope.....
+  #special-Asset.find(:all, :conditions=>['assignedto_id is not null and id not in (?)',AssetLoan.find(:all,:conditions=>['is_returned is not true'])])
+  named_scope :availableforloan_owndept, :conditions => ['assignedto_id is not null and id not in (?)',AssetLoan.find(:all,:conditions=>['is_returned is not true'])]
+  #named_scope :availableforloan_owndept, :conditions => ['assignedto_id is not null and id not in (?) and assignedto_id in (?) ',AssetLoan.find(:all,:conditions=>['is_returned is not true']), Position.find(:all, :conditions=>['unit is not null']) ]
+  
+  #named_scope :internal,     :conditions =>  ["id in (?)", AssetLoan.find(:all, :conditions=>["loantype =?",1])]
+  #named_scope :external,       :conditions =>  ["loantype =?",2]
+  #-------------------------------------------------------------------------------------------------------------------
 
   FILTERS = [
     {:scope => "all",       :label => "All"},
@@ -137,10 +176,47 @@ class Asset < ActiveRecord::Base
     {:scope => "disposal",  :label => "For Disposal"},
     {:scope => "disposed",  :label => "Disposed"},
     {:scope => "markaslost",:label => "Mark As Lost"},
-    {:scope => "lost",      :label => "Lost"}
+    {:scope => "lost",      :label => "Lost"},
+    {:scope => "onloan",    :label => "On Loan"},
+    {:scope => "pendingloan", :label => "Pending Loan"},
+    {:scope => "available", :label => "Available"}
     ]
     
-  
+    FILTERS_LOAN =[
+    {:scope => "allloanable", :label => "All"},
+    {:scope => "availableforloan_owndept", :label => "Reservable"},
+    {:scope => "itdept",    :label => "Teknologi Maklumat"},
+    {:scope => "hotelunit",    :label => "Perhotelan"},
+    {:scope => "libraryunit", :label => "Perpustakaan"},
+    {:scope => "counterunit", :label => "Kaunter"},
+    {:scope => "developunit", :label => "Pembangunan"},
+    {:scope => "financestoreunit", :label => "Kewangan & Stor"},
+    {:scope => "serviceunit", :label => "Perkhidmatan"},
+    {:scope => "generaladminunit", :label => "Pentadbiran Am"},
+    {:scope => "nursing", :label => "Kejururawatan"},
+    {:scope => "radiografi", :label => "Radiografi"},
+    {:scope => "fisioterapi", :label => "Fisioterapi" },
+    {:scope => "carakerja", :label => "Jurupulih Carakerja"},
+    {:scope => "pemperubatan", :label => "Pembantu Perubatan"},
+    {:scope => "posbasik", :label => "Pos Basik"},
+    {:scope => "perubatanasas", :label => "Perubatan Asas"},
+    {:scope => "anatomi", :label => "Anatomi & Fisiologi"},
+    {:scope => "tingkahlaku", :label => "Sains Tingkahlaku"},
+    {:scope => "komunikasi", :label => "Komunikasi & Pengurusan"},
+    {:scope => "ppelatih", :label => "Pembangunan Pelatih"},
+    {:scope => "spelatih", :label => "Sokongan Pelatih"},
+    {:scope => "kokurikulum", :label => "Unit Kokurikulum"},
+    {:scope => "kupk", :label => "Penilaian & Kualiti"}
+    ]
+   
+    #loaned = AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id)
+    #dept = Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)
+    #@loanables_with_assignedto_dept2= Asset.find(:all,:conditions => ['id NOT IN (?) and assignedto_id in (?) or assetcode ILIKE ? or name ILIKE ? ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id), "#{search2}%", "#{search2}%"]) 
+    
+    #['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)]
+    
+  #  ,
+  #  {:scope => "onloan",    :label => "On Loan"}
 
     #def self.find_main
       #3Staff.find(:all, :condition => ['staff_id IS NULL'])
