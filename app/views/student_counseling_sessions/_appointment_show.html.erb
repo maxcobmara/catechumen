@@ -1,5 +1,5 @@
 <fieldset>
-	<legend>Appointment  </legend>
+	<legend class="togvis">Appointment  </legend>
 	<table width=100%>
 
 		<tr>
@@ -9,7 +9,12 @@
 
 		<tr>
 			<td class="leftcol">Requested at</td>
-			<td><%= @student_counseling_session.requested_at%></td>
+			<td><%= @student_counseling_session.requested_at.strftime("%d %b %Y, %l:%M%p")%></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol">Confirmed at</td>
+			<td><b><%= @student_counseling_session.confirmed_at.strftime("%d %b %Y, %l:%M%p") if @student_counseling_session.confirmed_at %></b></td>
 		</tr>
 
 		<tr>

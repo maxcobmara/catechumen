@@ -12,7 +12,8 @@
 	
 		<tr>
 			<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
-		<td><%= f.collection_select :student_id, Student.find(:all, :order => :icno), :id, :formatted_mykad_and_student_name, :prompt => 'Select Student' %></td>
+		<td><!--available student - not yet completed studies-->
+			<%= f.collection_select :student_id, Student.find(:all, :conditions=>['end_training>?',Date.today], :order => :icno), :id, :formatted_mykad_and_student_name, :prompt => 'Select Student' %></td>
 		</tr>
 	
 		<tr>

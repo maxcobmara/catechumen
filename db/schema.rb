@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130423125323) do
+ActiveRecord::Schema.define(:version => 20130427090736) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -1440,6 +1440,7 @@ ActiveRecord::Schema.define(:version => 20130423125323) do
     t.string   "confirmed_by_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "remark"
   end
 
   create_table "student_discipline_cases", :force => true do |t|
@@ -1471,6 +1472,7 @@ ActiveRecord::Schema.define(:version => 20130423125323) do
     t.date     "appeal_decision_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "counselor_feedback"
   end
 
   create_table "studentattendances", :force => true do |t|

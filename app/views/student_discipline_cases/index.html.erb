@@ -10,39 +10,52 @@
 <div class="toolbar">
 	<p><%= link_to image_tag("add.png", :border => 0, :title => 'Register Case') + "New", new_student_discipline_case_path %></p>
 </div>
-<%=current_user.staff_id %>
+<%#=current_user.staff_id %><!--for testing-->
 <div class="indextable">
 	<table width=90% border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<th>Status</th>
-			<!--<th>Programme</th>to do hold first-->
-			<!--<th>Year/Sem</th>-to do hold first-->
+			<th>Programme</th>
+			<th>Year/Sem</th>
 			<th>Matrix No</th>
 			<th>Student Name</th>
 			<th>Details</th>
 			<th>Reported Date</th>
 			<th>File No</th>
 			<th>Location</th>
-			<th>Other Information</th>
-
+			<!--<th>Other Information</th>-->
+			<th>Feedback from Counselor</th>
 			<th colspan=3 class="ac"><%= t 'control' %></th>
-
 		</tr>
 
 <% @student_discipline_cases.each do |student_discipline_case| %>
   <tr>
     <td><%=h student_discipline_case.status %></td>
-	<!--<td><%=h student_discipline_case.student.programme_for_student2 %></td>-->
-	<!--year/sem-to do-->
+	<td><!--NEW DB-programme_id (1-14), OLD DB-programme_id-refer prev one-->
+		<%=h student_discipline_case.student.programme_for_student2 if student_discipline_case.student.course_id <15%>
+	</td>
+	<td><!--NEW DB-student table('intake_id') & intake table, OLD DB-student table with 'intake' column-->
+		<% @intake=student_discipline_case.student.intake%>
+		<%= Student.year_and_sem(@intake) %>
+		<!--TO DO : tamat belajar<%#= student_discipline_case.student.end_training %><br>-to make sure user won't be able to retrieve this data if current date > 'end_training'-also double check for Posbasik(pengkhususan) - duration:6/3 months, Diploma lanjutan (1 year)-->
+		
+	</td>
 	<td><%=h student_discipline_case.student.matrixno %></td>
     <td><%=h student_discipline_case.student.name %></td>
     <td><%=h student_discipline_case.description %></td>
     <td><%=h tarikh(student_discipline_case.reported_on) %></td>
     <td><%=h student_discipline_case.file_name %></td>
     <td><%=h student_discipline_case.room_no %></td>
-    <td><%=h student_discipline_case.other_info %></td>
-		
-		
+    <!--
+	<td><%#=h student_discipline_case.action_type if student_discipline_case.action_type == 'counseling' %>
+		<%#=h student_discipline_case.other_info %></td>-->	
+	<td>
+		<% if student_discipline_case.action_type == 'counseling' %>
+			<%=h student_discipline_case.counselor_feedback? ? image_tag("tick.png") : image_tag("cross.png") %>
+		<% else %>
+			Not related
+		<% end %>
+	</td>	
     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => student_discipline_case %></td>
     <td width=10px>
 	
