@@ -1,0 +1,128 @@
+<%= stylesheet_link_tag 'report' %>
+<!--A4Potrait-->
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>
+<div id="hideLink">
+<%#= link_to 'Edit', edit_asset_path(@asset) %> <!--|-->
+<%= link_to 'Back', student_counseling_sessions_path %>
+</div>
+<div class="A4potrait_paged">
+
+
+<!-- Box Head -->
+<div id="kewpa">
+<BR/><p>&nbsp;</p>
+<!--<p class="marginright" align="right"><b>KEW. PA-2</b><BR>( No. Siri Pendaftaran : &nbsp;&nbsp;&nbsp;&nbsp; <%#=h @asset.assetcode %> )</p>-->
+<H4 align="center"><b>MAKLUM BALAS KAUNSELING BAGI KES RUJUKAN</b></H4>
+
+<H5 style="padding-left:25px;">BUTIRAN KES</H5>
+
+
+<!--TESTING-->
+<table width=100% border=1px padding=5px cellspacing=0px style="width:197mm; margin:auto;">
+	<tr>
+		<td style="background-color:silver;font-weight:bold;width:170px;">Nama Pelajar</td>
+		<td><%=h @case_details.student.name%></td>
+			<td style="background-color:silver;font-weight:bold;">Pelapor Kes</td>
+			<td><%=h @case_details.staff.name%></td>
+	
+	</tr>
+	<% @intake=@case_details.student.intake%>
+	<tr>
+		<td style="background-color:silver;font-weight:bold;width:170px;">No Matrik</td>
+		<td><%=h @case_details.student.matrixno%></td>
+		</td>
+			<td style="background-color:silver;font-weight:bold;">Ambilan</td>
+			<td><%=h @case_details.student_id.blank? ? "" : @case_details.student.intake.strftime("%B %Y") %></td>
+	</tr>
+	<tr>
+		<td style="background-color:silver;font-weight:bold;width:170px;">Program</td>
+		<td><%=h @case_details.student.course.programme_list%>  
+
+	
+		<td style="background-color:silver;font-weight:bold;">Tahun / Semester </td>
+		<td><%= strip_tags(Student.year_and_sem(@intake))%></td>
+
+	</tr>
+	<tr>
+		<td style="background-color:silver;font-weight:bold;width:170px;">Kesalahan</td>
+		<td><%=h (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == @case_details.infraction_id}).map {|disp, value| disp} %></td>
+		<td style="background-color:silver;font-weight:bold;">Lokasi Kes</td>
+		<td><%=h @case_details.location.location_list %></td>
+
+	</tr>
+	<tr>
+		<td style="background-color:silver;font-weight:bold;width:170px;">Tarikh & Masa</td>
+		<td><%=h @case_details.reported_on.strftime("%d %b %y, %l:%M %p") if @case_details.reported_on %></td>
+		<td style="background-color:silver;font-weight:bold;">Jenis Tindakan</td>
+		<td><%=h "Kaunseling" if @case_details.action_type='counseling'%></td>
+
+	</tr>	
+</table>
+<br>
+<table width=100% border=1px padding=5px cellspacing=0px style="width:197mm; margin:auto;">
+	<tr>
+		
+		<td style="background-color:silver;font-weight:bold;width:250px">Tindakan oleh TPHEP</td>
+		<td colspan=3 ><%=h @case_details.action %></td>
+
+	</tr>
+	
+</table>
+<BR>
+<H5 style="padding-left:25px;">BUTIRAN SESI KAUNSELING</H5>
+<% for session in @sessions_by_case %>
+<table width=100% border=1px padding=5px cellspacing=0px style="width:197mm; margin:auto;">	
+	<tr>
+		<td style="background-color:silver;font-weight:bold;width:170px;">Tarikh & Masa</td>
+		<td><%=h session.confirmed_at.strftime("%d %b %y, %l:%M %p") if !session.confirmed_at.blank? %></td>
+		<td style="background-color:silver;font-weight:bold;">Skop Sesi </td>
+		<td><%=h session.c_scope if !session.c_scope.blank? %></td>
+	</tr>
+	<tr>	
+		<td style="background-color:silver;font-weight:bold;width:170px;">Tempoh Sesi</td>
+		<td><%=h session.duration if !session.duration.blank? %></td>
+		<td style="background-color:silver;font-weight:bold;">Jenis Sesi</td>
+		<td><%=h session.c_type if !session.c_type.blank? %></td>
+	</tr>
+	<tr>
+		<td style="background-color:silver;font-weight:bold;width:170px;">Deskripsi Isu</td>
+		<td colspan=3><%=h session.issue_desc? ? session.issue_desc : "" %></td>
+	</tr>
+	<tr>
+		<td style="background-color:silver;font-weight:bold;width:170px;">Nota Sesi</td>
+		<td colspan=3><%=h session.notes? ? session.notes : "" %></td>
+	</tr>
+	<tr>
+		<td style="background-color:silver;font-weight:bold;width:170px;">Maklumbalas Kaunselor<br>(bagi sesi ini)</td>
+		<td colspan=3><%=h session.remark? ? session.remark : "" %></td>
+	</tr>
+
+
+</table>
+<br>
+<% end %>
+<br>
+<table width=100% border=1px padding=5px cellspacing=0px style="width:197mm; margin:auto;">	
+<tr>
+	<td style="background-color:silver;font-weight:bold;width:250px;">Maklumbalas Akhir oleh Kaunselor<br>(bagi kesemua sesi di atas)</td>
+	<td colspan=3><%=h @case_details.counselor_feedback? ? @case_details.counselor_feedback : "" %></td>
+</tr>
+<table>
+
+<!--TESTING-->
+
+
+<BR>
+
+
+</div>	
+</div>
+<br>

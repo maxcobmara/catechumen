@@ -188,11 +188,12 @@ authorization do
   end
   
   role :disciplinary_officer do
-    has_permission_on :Student_discipline_cases, :to => :manage
+    has_permission_on :student_discipline_cases, :to => :manage
+    has_permission_on :student_counseling_sessions, :to => :feedback_referrer
   end
   
   role :student_counsellor do
-    has_permission_on :student_counseling_sessions, :to => :manage
+    has_permission_on :student_counseling_sessions, :to => [:manage, :feedback_referrer]
     has_permission_on :students, :to => :core
   end
   
