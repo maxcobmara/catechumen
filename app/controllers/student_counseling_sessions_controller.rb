@@ -1,5 +1,7 @@
 class StudentCounselingSessionsController < ApplicationController
-  filter_resource_access
+  ##filter_resource_access #hide first-29Apr2013-no idea
+  filter_access_to :all   #feedback_referrer - may have multiple sessions -> refer config/routes.rb
+  
   # GET /student_counseling_sessions
   # GET /student_counseling_sessions.xml
   def index
@@ -92,4 +94,12 @@ class StudentCounselingSessionsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def feedback_referrer 
+    #@asset = Asset.find(params[:id]) #params[:id]  --> case_id
+    @sessions_by_case = StudentCounselingSession.find(:all, :conditions => ['case_id=?',params[:id]], :order=>'confirmed_at ASC')
+    @case_details = StudentDisciplineCase.find(params[:id])
+    render :layout => 'report'
+  end
+    
 end

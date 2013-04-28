@@ -85,6 +85,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/travel_requests/logs', :controller => 'travel_requests', :action => 'travel_log_index'
   map.resources :travel_requests
 
+  #map.resources :student_counseling_sessions, :collection => { :feedback_referrer => :get}
+  #use below instead -> may have multiple sessions
+  map.connect '/student_counseling_sessions/feedback_referrer', :controller => 'student_counseling_sessions', :action => 'feedback_referrer'
   map.resources :student_counseling_sessions
 
   map.resources :asset_losses, :collection => { :kewpa28 => :get, :kewpa29 => :get, :kewpa30 => :get }
