@@ -11,12 +11,16 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20130215051323) do
 =======
 ActiveRecord::Schema.define(:version => 20130418100231) do
 =======
 ActiveRecord::Schema.define(:version => 20130423125323) do
 >>>>>>> 6b0dad14a8091a1d3b2cb22d73bd718caaa02f2f
+=======
+ActiveRecord::Schema.define(:version => 20130427090736) do
+>>>>>>> 0f4b90a7f73203a4322d330790b4404681b3d2b3
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -1517,6 +1521,7 @@ ActiveRecord::Schema.define(:version => 20130423125323) do
     t.string   "confirmed_by_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "remark"
   end
 
   create_table "student_discipline_cases", :force => true do |t|
@@ -1548,6 +1553,7 @@ ActiveRecord::Schema.define(:version => 20130423125323) do
     t.date     "appeal_decision_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "counselor_feedback"
   end
 
   create_table "studentattendances", :force => true do |t|

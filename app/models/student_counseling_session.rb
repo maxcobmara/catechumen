@@ -9,6 +9,7 @@ class StudentCounselingSession < ActiveRecord::Base
   
   validates_presence_of :student_id
   
+  attr_accessor :feedback,:feedback_this, :feedback_final
   
   #before logic
   def set_to_nil_where_false

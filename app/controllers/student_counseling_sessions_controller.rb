@@ -5,7 +5,9 @@ class StudentCounselingSessionsController < ApplicationController
   def index
     @student_counseling_sessions = StudentCounselingSession.find(:all, :order => 'confirmed_at DESC')
     @appointments = StudentCounselingSession.find_appointment(params[:search])
+    @appointments_by_case = @appointments.group_by{|item|item.case_id}
     @session_dones = StudentCounselingSession.find_session_done(params[:search])
+    @session_dones_by_case = @session_dones.group_by{|item|item.case_id}
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @student_counseling_sessions }
@@ -27,7 +29,7 @@ class StudentCounselingSessionsController < ApplicationController
   # GET /student_counseling_sessions/new.xml
   def new
     @student_counseling_session = StudentCounselingSession.new
-
+    @case_id = params[:caseid]
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @student_counseling_session }
@@ -59,7 +61,15 @@ class StudentCounselingSessionsController < ApplicationController
   # PUT /student_counseling_sessions/1.xml
   def update
     @student_counseling_session = StudentCounselingSession.find(params[:id])
-
+    @abc = StudentDisciplineCase.find(@student_counseling_session.case_id)
+    @feedback = params[:student_counseling_session][:feedback]
+    if @feedback==1|| @feedback=='1'
+        @abc.counselor_feedback = params[:student_counseling_session][:feedback_final]
+		else
+		    @abc.counselor_feedback =''
+    end
+    @abc.save
+    
     respond_to do |format|
       if @student_counseling_session.update_attributes(params[:student_counseling_session])
         format.html { redirect_to(@student_counseling_session, :notice => 'StudentCounselingSession was successfully updated.') }

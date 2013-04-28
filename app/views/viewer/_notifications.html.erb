@@ -89,10 +89,10 @@
 	<% if disposal_require_verify > 0 %>
 		<%= link_to "#{disposal_require_verify} Asset Disposal require verifying", { :controller => "asset_disposals", :action => "index" } %><br/>
 	<% end %>
-	
-	
-	<!--Notification for Asset Loan-->
-	
+		
+	<!--Notification for Asset Loan-->	
+<% unless User.current_user.staff.blank?%>	
+
 	<!--25Apr2013-check if ANY OF logged-in unit members of DEPT/UNIT same as loaned_by(asset owner); HAVE request of asset loan that still pending-->
 	<% hods = [6,7,8,9,10,11,12,13,14,15,16,17,18,19,25,26,27,28,29,30,31] %>
 	<% logged_user_positionid=User.current_user.staff.position.id %>
@@ -152,6 +152,8 @@
 
 	<%#=AssetLoan.count(:all, :conditions=>['is_approved IS true AND is_returned IS NOT true AND hod=?',User.current_user.staff_id])%><%#=current_user.staff_id%>
 
+
+<% end %><!--end for unless User.current_user.staff.blank?-->
 	<!--END-Notification for Asset Loan-->
 
 	<!-- Notification for Messages -->
@@ -216,11 +218,15 @@
 
 	<% cases = StudentDisciplineCase.count(:all, :conditions => ['status =? AND assigned_to=?', "New",User.current_user.staff_id]) %>
 	<% referredcases = StudentDisciplineCase.count(:all, :conditions => ['status =? AND assigned2_to=?', "Refer to TPHEP",User.current_user.staff_id ])%><!--TPHEP=staff at position id=3-->
+	<% feedbacks = StudentDisciplineCase.count(:all, :conditions => ['counselor_feedback IS NOT NULL AND counselor_feedback!=? AND assigned2_to=?' ,'',User.current_user.staff_id]) %>
 	<% if cases > 0 %>
 		<%= link_to "#{cases} New student discipline cases", student_discipline_cases_path %><br>
 	<% end %>
 	<% if referredcases > 0 %>
  		<%= link_to "#{referredcases} Referred student discipline cases", student_discipline_cases_path %><br>	
+	<% end %>
+	<% if feedbacks > 0 %>
+ 		<%= link_to "#{feedbacks} Feedbacks received from counselor for referred cases", student_discipline_cases_path %><br>	
 	<% end %>
 	
 >>>>>>> 6b0dad14a8091a1d3b2cb22d73bd718caaa02f2f

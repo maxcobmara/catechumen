@@ -167,10 +167,10 @@ authorization do
         if_attribute :student_id => is {User.current_user.student_id}
       end
       
-      has_permission_on :student_counseling_sessions, :to => :create
-      has_permission_on :student_counseling_sessions, :to => :show do
-        if_attribute :student_id => is {User.current_user.student_id}
-      end
+      #has_permission_on :student_counseling_sessions, :to => :create
+      #has_permission_on :student_counseling_sessions, :to => :show do
+        #if_attribute :student_id => is {User.current_user.student_id}
+      #end
     
       has_permission_on :programmes, :to => :menu
       has_permission_on :books, :to => :core
