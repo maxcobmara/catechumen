@@ -118,6 +118,8 @@ authorization do
   
   role :staff_administrator do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
+     has_permission_on :attendances, :to => :manage
+     has_permission_on :staff_attendances, :to => :manage   #29Apr2013-refer routes.rb
   end
   
   role :finance_unit do

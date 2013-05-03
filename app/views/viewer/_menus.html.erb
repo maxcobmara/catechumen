@@ -16,7 +16,8 @@
 				<li><a href="#">Attendance ></a>
 						<ul class="sub_menu">
 								<li><%= link_to 'Manage.', 						{:controller => 'staff_attendances', 	:action => 'manage'} %></li>
-								<% if permitted_to? :destroy, @attendance %>
+								<%# if permitted_to? :destroy, @attendance %>
+								<% permitted_to? :manage, :staffs do %>
 								<li><%= link_to 'Staff Attendance', 	{:controller => 'staff_attendances', 	:action => 'index'} %></li>
 								<li><%= link_to 'Status', 						{:controller => 'staff_attendances', 	:action => 'status'} %></li>
 								<% end -%>
@@ -67,7 +68,7 @@
 				</li>
 			</ul>
 		</li>
-	<% end %>
+	<% end %><!--end for staff menu-->
 	
 	<!-- Asset Menu -->
 	<% permitted_to? :menu, :assets do %>

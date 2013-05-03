@@ -3,7 +3,54 @@ class StaffAttendancesController < ApplicationController
   # GET /staff_attendances.xml
   def index
     @staff_attendances = StaffAttendance.is_controlled.paginate(:per_page => 50, :page => params[:page])
-    @staff_attendance_days = @staff_attendances.group_by {|t| t.group_by_thingy }
+    @staff_attendance_days = @staff_attendances.group_by {|t| t.group_by_thingy }  
+
+    @ooo = StaffAttendance.is_controlled.group_by {|t| t.group_by_thingy }
+
+    @dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Pembangunan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]
+    @position_staff_ids = []  
+    @staff_in_department = []
+    @test_department = []
+    @testalldepartmenttgroup = []
+    0.upto(21) do |countt|
+        @position_staff_ids << Position.find(:first, :conditions=>['unit=?',@dept_names[countt]]).subtree.map(&:staff_id)   
+    end
+    0.upto(21) do |countt2|
+        @staff_in_department << Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',@position_staff_ids[countt2]]).map(&:thumb_id)
+    end
+    0.upto(21) do |countt3|
+        @test_department << StaffAttendance.find(:all,:order => 'logged_at DESC', :limit => 10000, :conditions=>['thumb_id in (?)', @staff_in_department[countt3] ])#.paginate(:per_page => 50, :page => params[:page])
+    end 
+    0.upto(21) do |countt4|
+        @testalldepartmenttgroup<< @test_department[countt4].group_by {|t| t.group_by_thingy }
+    end
+    
+    @selected_date = params[:id]
+    if @selected_date.blank?
+      @selected_date = "2012-10-16" #default to first page
+    end
+    @selected_rec_by_date=[]
+    for testalldeptgroup in @testalldepartmenttgroup
+		    testalldeptgroup.each do |d,k|
+				  if d == @selected_date # "2012-10-15" #date
+				       @selected_rec_by_date << k
+				  end
+			  end
+		end
+   
+    #BEST BACKUP-> #@test_itdept = StaffAttendance.find(:all,:order => 'logged_at DESC', :limit => 10000, :conditions=>['thumb_id in (?)',Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)]).map(&:thumb_id) ]).paginate(:per_page => 50, :page => params[:page])
+  
+    #dept = Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)
+    #dept2 = Position.find(:first, :conditions=>['unit=?',"Perhotelan"]).subtree.map(&:staff_id)
+
+    #staffs_in_dept = Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',dept]).map(&:thumb_id)
+    #staffs_in_dept2 = Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',dept2]).map(&:thumb_id)
+    
+    #@test_itdept = StaffAttendance.find(:all,:order => 'logged_at DESC', :limit => 10000, :conditions=>['thumb_id in (?)',staffs_in_dept ]).paginate(:per_page => 50, :page => params[:page])
+    #@test_hoteldept = StaffAttendance.find(:all,:order => 'logged_at DESC', :limit => 10000, :conditions=>['thumb_id in (?)',staffs_in_dept2 ]).paginate(:per_page => 50, :page => params[:page])
+     
+    #@test_itdept_group = @test_itdept.group_by {|t| t.group_by_thingy }
+    #@test_hoteldept_group = @test_hoteldept.group_by {|t| t.group_by_thingy }
     
     @mylate_attendances = StaffAttendance.find_mylate
     @approvelate_attendances = StaffAttendance.find_approvelate

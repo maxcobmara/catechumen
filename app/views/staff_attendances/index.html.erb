@@ -8,61 +8,405 @@
   
 <div class="indextable">
 	<div class="pagination">
-		<%= will_paginate @staff_attendances %>  
+		<%##= will_paginate @staff_attendance_days %>
+		<%##= will_paginate @ooo %>  
+		<%#= will_paginate @ooo_key2 %> 
+
+		<% @ooo.keys.sort.reverse.each_with_index do |date,index| %>
+			<% if date > @selected_date %>
+				<% @previous_date = date %>	<!--loop until...retrieve last item yg besar drpd selected date-->
+			<% end %>
+			<% if @selected_date == date %>
+				<% @current_index=index%>
+			<% end %>
+		<% end %><!--END for - @ooo.keys.sort.reverse.each_with_index do |date,index| -->
+		
+		<% counter=0%>	<% counterabc=1%><!--check selected date dulu <%#=@selected_date %>==--><%#=@current_index%><!--<br>-->
+		<% @ooo.keys.sort.reverse.each_with_index do |date,index| %>
+			<% if index == 0 %>
+				<% if @current_index == index %>
+					<span style="color:grey;">
+						Previous<<
+					</span>
+				<% else %>
+						<%= link_to "Previous<<", :action => 'index', :id => @previous_date %>
+				<% end %>
+				<% if index != @current_index && @current_index > 1 %>
+					<!--first--><%= link_to "#{index+1}", :action => 'index', :id => date %>&nbsp;...&nbsp;
+				<% end %>
+			<% end %>
+
+			<% if @selected_date == date %>
+				<span class="current">
+					<%=index+1%>
+				</span>
+			<% else %><!--display all links-->
+				
+				<% if date > @selected_date %>
+					<% if index >= @current_index-1 %>
+					<%# if index >= 10 %><!--if 11-20--> <%# if index >= 0 %><!--if 1-10-->
+						<!--abc--><%= link_to "#{index+1}", :action => 'index', :id => date %>
+					<% end%>
+				<% elsif date < @selected_date %>
+					<% if index >= @current_index-1 && index < (@current_index-1)+10 %>
+					<%# if index >= 10 && index < 20 %><!--if 11-20--> <%# if index >= 0 && index < 10 %><!--if 1-10-->	
+						<!--xyz--><%= link_to "#{index+1}", :action => 'index', :id => date %>
+					<% end 	%>
+				<% end %>
+				
+				<!--backup-->
+				<%#= link_to "#{index+1}", :action => 'index', :id => date %>
+				<!--backup-->
+			<% end %>
+			<% if date < @selected_date && counter==0 %>
+				<% @next_date = date %>	
+				<% counter+=1%>
+			<% end %>
+
+			<% if index == @ooo.count-1 %>
+				<% if index != @current_index && @current_index < 66%>
+					<!--last-->&nbsp;...&nbsp;<%= link_to "#{index+1}", :action => 'index', :id => date %>
+				<% end %>
+				<%#= link_to "Next>>", :action => 'index', :id => @next_date %>		
+				<% if @current_index == index %>
+					<span style="color:grey;">
+						Next>>
+					</span>
+				<% else %>
+					<%= link_to "Next>>", :action => 'index', :id => @next_date %>		
+				<% end %>
+			<% end %>
+		
+		<% end %>
+		
 	</div>
 
 <table>
   <tr>
-		<th>Flag</th>
-    <th>Staff Name</th>
+	<th>Flag</th>
+    <th>Staff Name</th><!--
     <th>Logged at</th>
-    <th>Log type</th>
+    <th>Log type</th>-->
+	<th>Logged-In</th>
+	<th>Logged-Out</th>
+	<th>Waktu Anjal</th>
+	<th>Late & Early</th>
     <th>Action</th>
-		<th>Ignore</th>
-		<th>Test</th>
+	<th>Ignore</th>
+	<th>Test</th>
     <th colspan=3>Control</th>
-  </tr>
+<!--for testing-->
+
+
+
 <% form_tag actionable_staff_attendances_path, :method => :put do %>
-
-	<% @staff_attendance_days.keys.sort.reverse.each do |date| %>
-		<tr><td colspan=3><BR><b>Date  : <%= date unless date.blank? %></b></td>
-			<td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+		<%# date = "2012-10-16" %><%# date = "2012-10-15"%>
+	<%# @staff_attendance_days.keys.sort.reverse.each do |date|%>
+	<%# @ooo.keys.sort.reverse.each do |date|%>
+<!--		<tr><td colspan=3><BR><b>Date  : <%#= date unless date.blank? %></b></td>
+			<td></td><td></td><td></td><td></td><td colspan=3></td></tr>-->
+		<!--start-PART 1-IT DEPT--><!--
+		<%# if @test_itdept_group[date] %>
+			<tr><td colspan=3><BR><b>Department/Unit  : Teknologi Maklumat</b></td>
+				<td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+			<%# for staff_attendance in @test_itdept_group[date].sort_by{|e| e[:thumb_id]} %>--><!--ordered hash--><!--
+				<tr>
+					<%# if staff_attendance.attended.blank? %> 
+					<%# else %>
+							<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+					    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+					    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+					    <td style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+												<%#= check_box_tag "triggers[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == true %>   
+												<%#= image_tag("user_go.png") %> 
+											<%# end %></td>
+							<td	style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+												<%#= check_box_tag "ignores[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == false %>   
+												<%#= image_tag("tick.png") %>  
+											<%# end %></td>
+							<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
+					    
+					    <td width=10px>--><!--<%#= link_to 'Show', staff_attendance %>--><!--</td>
+					    <td width=10px>--><!--<%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %>--><!--</td>
+					    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>	
+					<%# end %>
+				<tr>
+			<%# end %>
+		<%# end %>-->
+		<!--END-PART 1-IT DEPT-->
+		<!--START-PART 2-PERHOTELAN--><!--
+		<%# if @test_hoteldept_group[date] %>
+			<tr><td colspan=3><BR><b>Department/Unit  : Perhotelan</b></td>
+				<td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+			<%# for staff_attendance in @test_hoteldept_group[date].sort_by{|e| e[:thumb_id]} %>
+				<tr>
+					<%# if staff_attendance.attended.blank? %> 
+					<%# else %>
+						<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+					    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+					    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+					    <td style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+												<%#= check_box_tag "triggers[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == true %>   
+												<%#= image_tag("user_go.png") %> 
+											<%# end %></td>
+						<td	style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+												<%#= check_box_tag "ignores[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == false %>   
+												<%#= image_tag("tick.png") %>  
+											<%# end %></td>
+						<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
+					    <td width=10px>--><!--<%#= link_to 'Show', staff_attendance %>--><!--</td>
+					    <td width=10px>--><!--<%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %>--><!--</td>
+					    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>	
+					<%# end %>
+				<tr>
+			<%# end %>
+		<%# end %>-->
+		<!--END-PART 2-PERHOTELAN-->
 		
-
-			<% for staff_attendance in @staff_attendance_days[date].sort_by{|e| e[:thumb_id]} %>
+		<!--TESTING--><%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%>
+		<tr><td colspan=12 style="background-color:red;"></td></tr>
+		
+		<tr><td colspan=3><BR><b>Date  : <%= @selected_date %></b></td>
+			<td></td><td></td><td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+		
+		<% @selected_rec_by_date.each_with_index do |record,counting| %>
+				<tr><td colspan=3><BR><b>Department/Unit  : <%=@dept_names[counting]%>
+					</b>
+					</td>
+				<td></td><td></td><td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+			<% record.each do |staff_attendance|%>
+			<%#-----------------------------------------------%>
+				<tr>
 					<% if staff_attendance.attended.blank? %> 
 					<% else %>
-					  <tr>
-							<td><%=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
-					    <td><%=h staff_attendance.attendee_details %>(<%=h staff_attendance.thumb_id %>)</td>
-					    <td><%=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
-					    <td><%=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+						<td><b><%=staff_attendance.log_type%></b><%=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+					    <td><%=h staff_attendance.attendee_details %>(<%=h staff_attendance.thumb_id %>)==<%=staff_attendance.id%></td>
+					    <!--<td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type == "I" ? "IN" : "OUT" %></td>-->
+						<td><%=h staff_attendance.log_type == "I" ? staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') : "" %></td>
+						<td>
+							<% if staff_attendance.log_type == "O" || staff_attendance.log_type == "o"%>
+								<%=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M')%>
+							<% end %>
+						</td>
+						<td>Waktu Anjal</td>
+						<td>Late & Early</td>
 					    <td style="text-align:center;">
 											<% if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
 												<%= check_box_tag "triggers[]", staff_attendance.id %>
 											<% elsif staff_attendance.trigger == true %>   
 												<%= image_tag("user_go.png") %> 
 											<% end %></td>
-							<td	style="text-align:center;">
+						<td	style="text-align:center;">
 											<% if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
 												<%= check_box_tag "ignores[]", staff_attendance.id %>
 											<% elsif staff_attendance.trigger == false %>   
 												<%= image_tag("tick.png") %>  
 											<% end %></td>
-							<td><%=h staff_attendance.timmy2 %><%= staff_attendance.trigger %> </td>
-					    
+						<td><%=h staff_attendance.timmy2 %><%= staff_attendance.trigger %> </td>
 					    <td width=10px><!--<%= link_to 'Show', staff_attendance %>--></td>
 					    <td width=10px><!--<%= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %>--></td>
-					    <td width=10px><%= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>
-					    
-					  </tr>
-						<% end %>
+					    <td width=10px><%= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>	
+					<% end %>
+				<tr>
+			<%#-----------------------------------------------%>
 			<% end %>
-	<!--	<#% end %>-->
-	<% end %>
+		<% end %>
+		
+		<tr><td colspan=10 style="background-color:red;"></td></tr>
+		<!--TESTING--><%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%>
+		
+		<!--START-ALL DEPT-->	
+				<%# date = "2012-10-15"%>
+				<%# count1=0%>
+				<%# for testalldeptgroup in @testalldeptgroup %>
+				<%# for testalldeptgroup in @testalldepartmenttgroup %>
+				<!---->
+					<%# testalldeptgroup.each do |d,k| %>
+						<%# if d == date %>
+							<!----><!--
+							<tr><td colspan=3><BR><b>Department/Unit  : <%#=@dept_names[count1]%>
+								</b>
+								</td>
+							<td></td><td></td><td></td><td></td><td colspan=3><%#=@staff_attendances.count%></td></tr>-->
+							<!---->
+
+							<%# k.each do |staff_attendance|%>
+
+								<%#-----------------------------------------------%><!--
+									<tr>
+										<%# if staff_attendance.attended.blank? %> 
+										<%# else %>
+											<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+										    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+										    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+										    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+										    <td style="text-align:center;">
+																<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+																	<%#= check_box_tag "triggers[]", staff_attendance.id %>
+																<%# elsif staff_attendance.trigger == true %>   
+																	<%#= image_tag("user_go.png") %> 
+																<%# end %></td>
+											<td	style="text-align:center;">
+																<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+																	<%#= check_box_tag "ignores[]", staff_attendance.id %>
+																<%# elsif staff_attendance.trigger == false %>   
+																	<%#= image_tag("tick.png") %>  
+																<%# end %></td>
+											<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
+										    <td width=10px>--><!--<%#= link_to 'Show', staff_attendance %>--><!--</td>
+										    <td width=10px>--><!--<%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %>--><!--</td>
+										    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>-->	
+										<%# end %>
+									<!--<tr>-->
+								<%#-----------------------------------------------%>
+							<%# end %><!--END FOR k.each-->
+						<%# end %><!--end for( if d == date )-->
+			
+					<%# end %><%# count1+=1%><!--testalldeptgroup.each -->
+				<%# end %><!--end for : for testalldeptgroup in @testalldepartmenttgroup/for testalldeptgroup in @testalldeptgroup-->
+				<!---->
+			<!--END-ALL DEPT-->
+		
+		<!---->
+	<%# end %><!--end for : @staff_attendance_days.keys.sort.reverse.each do |date|-->
+
+<!--
+<tr><td colspan=8 style="background-color:yellow;">-->
+	<%#no=0%>
+	<%# for test_department in @test_department%>
+		<%#=no+=1%><!--qty for each dept <%#= test_department.count%>BB<%#= @testalldepartmenttgroup.count%><br>
+	<%# end %>--><!--
+</tr>	
+<tr><td colspan=8 style="background-color:green;">&nbsp;</tr>	-->
+	<!--
+	<%# @test_itdept_group.keys.sort.reverse.each do |date| %>
+	<%# @test_hoteldept_group.keys.sort.reverse.each do |date| %>
+		<tr><td colspan=3><BR><b>Date  : <%#= date unless date.blank? %></b></td>
+			<td></td><td></td><td></td><td></td><td colspan=3></td></tr>	
+			<%# for staff_attendance in @test_itdept_group[date].sort_by{|e| e[:thumb_id]} %>
+			<%# for staff_attendance in @test_hoteldept_group[date].sort_by{|e| e[:thumb_id]} %>
+			
+				<tr>
+					<%# if staff_attendance.attended.blank? %> 
+					<%# else %>
+						<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+					    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+					    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+					    <td style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+												<%#= check_box_tag "triggers[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == true %>   
+												<%#= image_tag("user_go.png") %> 
+											<%# end %></td>
+						<td	style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+												<%#= check_box_tag "ignores[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == false %>   
+												<%#= image_tag("tick.png") %>  
+											<%# end %></td>
+						<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
+					    <td width=10px>--><!--<%#= link_to 'Show', staff_attendance %>--><!--</td>
+					    <td width=10px>--><!--<%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %>--><!--</td>
+					    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>
+					<%# end %>
+				</tr>
+			<%# end %>
+		<%# end %>--><!--
+		<%# @test_hoteldept_group.keys.sort.reverse.each do |date| %>
+			<tr><td colspan=3><BR><b>Date  : <%#= date unless date.blank? %></b></td>
+				<td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+			<%# for staff_attendance in @test_hoteldept_group[date].sort_by{|e| e[:thumb_id]} %>
+			
+				<tr>
+					<%# if staff_attendance.attended.blank? %> 
+					<%# else %>
+							<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+					    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+					    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+					    <td style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+												<%#= check_box_tag "triggers[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == true %>   
+												<%#= image_tag("user_go.png") %> 
+											<%# end %></td>
+							<td	style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+												<%#= check_box_tag "ignores[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == false %>   
+												<%#= image_tag("tick.png") %>  
+											<%# end %></td>
+							<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
+					    
+					    <td width=10px>--><!--<%#= link_to 'Show', staff_attendance %></td>
+					    <td width=10px>--><%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %><!--</td>
+					    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>
+					<%# end %>
+				</tr>
+			<%# end %>
+	<%# end %>-->
 	<tr><td colspan=4></td>
 		<td  colspan=2><%= submit_tag "save action"%></td><td></td><td colspan=3 ></td></tr>
-<% end %>
+<% end %><!--end of form tag-->
+<!--for testing-->
+<!--separator-->
+<!--<tr><td colspan=8>LALALA</td></tr>-->
+<!--separator-->
+
+  <!--</tr>-->
+<%# form_tag actionable_staff_attendances_path, :method => :put do %>
+
+	<%# @staff_attendance_days.keys.sort.reverse.each do |date| %><!--
+		<tr><td colspan=3><BR><b>Date  : <%#= date unless date.blank? %></b></td>
+			<td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+		
+
+			<%# for staff_attendance in @staff_attendance_days[date].sort_by{|e| e[:thumb_id]} %>
+					<%# if staff_attendance.attended.blank? %> 
+					<%# else %>
+					  <tr>
+							<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+					    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+					    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+					    <td style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+												<%#= check_box_tag "triggers[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == true %>   
+												<%#= image_tag("user_go.png") %> 
+											<%# end %></td>
+							<td	style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+												<%#= check_box_tag "ignores[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == false %>   
+												<%#= image_tag("tick.png") %>  
+											<%# end %></td>
+							<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
+					    
+					    <td width=10px><%#= link_to 'Show', staff_attendance %>--><!--</td>
+					    <td width=10px>--><!--<%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %></td>
+					    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>
+					    
+					  </tr>-->
+						<%# end %>
+			<%# end %>
+	<!--	<#% end %>-->
+	<%# end %><!--
+	<tr><td colspan=4></td>
+		<td  colspan=2><%#= submit_tag "save action"%></td><td></td><td colspan=3 ></td></tr>
+<%# end %>-->
 </table>
 </div>
 <br />

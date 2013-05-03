@@ -66,7 +66,7 @@
 				Sedang dipinjam 
 				<% if asset_loan.expected_on == Date.today %>
 					<br><span style="font-weight:bold; color:red;">Tarikh akhir<!--(Due)--></span>
-				<% elsif asset_loan.expected_on > Date.today %>
+				<% elsif asset_loan.expected_on < Date.today %><!--amended after retest-3Mei2013-->
 					<br><span style="font-weight:bold; color:red;">Tamat tempoh<!--(Overdue)--></span>	
 				<% end %>
 			<% elsif asset_loan.is_approved == true && asset_loan.is_returned == true %>
