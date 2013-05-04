@@ -1,8 +1,0 @@
-<%= select_tag "analysispaperexams[#{@index}][exam_id]", "<option></option>" + options_from_collection_for_select(@analysispaperexam_items, :id, :subject_of_exammaker),
-			{:onchange => remote_function(:update => "analysispaperexams_#{@index}_student_list", 
-			:url => {:action => 'view_students_programme' }, 
-			:with => "'examid='+$('"+"analysispaperexams_#{@index}_exam_id"+"').value " )}
-%><br><br>
-
-			
-<%= tag("div", :id => "analysispaperexams_#{@index}_student_list") %> </div>
