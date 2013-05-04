@@ -1,0 +1,237 @@
+<div class="tform">
+	<H2>Exam Question Details</H2>
+  <table width=100% >
+
+	<tr>
+		<td class="leftcol"><label for="questiontype">Question Type<font color="red"> * </font></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.select :questiontype, 
+		                 Examquestion::QTYPE,
+		                 :prompt => "Select"  %></td>
+	</tr>
+		
+	<tr>
+		<td class="leftcol"><label for="curriculum_id">Subject Name</label><font color="red"> * </font></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :curriculum_id, Subject.find(:all), :id, :subject_code_with_subject_name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+	 	<td class="leftcol"><label for="topic_id">Topic Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :topic_id, Topic.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="creator_id">Creator Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :creator_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_title, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+	 	<td class="leftcol"><label for="createdt">Creator Date</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :createdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+
+</table>
+<HR>
+<table>	
+	
+	<tr>
+		<td class="leftcol"><label for="status">Add Attachment :</label></td>
+		<td><b>:</b></td>
+		<td><%= f.file_field :diagram %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="question">Question:</label><font color="red"> * </font></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :question, :size => '60 x 5' %></td>
+	</tr>
+</table>
+
+
+	
+	<table width 100%>
+		<tr>
+			<td class="leftcol">MCQ Answers</td>
+			<td width=3%><b>:</b></td>
+			<td>
+				<div>
+				<strong>
+						<div style="width: 65px; float: left;"> Seq </div>
+						<div style="width: 100px; float: left;"> Answer </div>
+					</strong><BR>
+					<% f.fields_for :exammcqanswers do |builder| %>
+						<%= render 'exammcqanswer_fields', :f => builder %>
+						<% end %>
+						<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :exammcqanswers %> - Add More </p>
+				</div>
+	</td></tr>
+   </table>
+
+<table width=100% border=0>	
+	<tr>
+		<td class="leftcol"><label for="answer">Answer</label><font color="red"> * </font></td>
+		<td width = 3%><b>:</b></td>
+		<td width=7%><%= f.text_area :answer, :size => "30x7" %></td>
+		<td width=10%><font color="grey", size="-2">Example: <BR> A Testing A <BR>  B Testing B <BR> C Testing C <BR> D Testing D</font></td>
+		<td><font color="grey", size="-2"><BR> A i dan ii <BR>  B ii dan iii <BR> C ii,iii, dan iv <BR> D All Above</font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="marks">Marks</label><font color="red"> * </font></td>
+		<td><b>:</b></td>
+		<td><%= f.text_field :marks, :size => 12, :precision => 1 %></td>
+	</tr>
+	
+</table>
+<HR>
+<table>
+		<tr>
+			<td class="leftcol">Short Essay Question</td>
+			<td width=3%><b>:</b></td>
+			<td>
+				<div>
+					<% f.fields_for :examsubquestions do |builder| %>
+						<%= render 'examsubquestion_fields', :f => builder %>
+						<% end %>
+						<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :examsubquestions %> - Add More </p>
+				</div>
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="qkeyword">Keywords</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_area :qkeyword, :size => "40x5" %></td>
+		</tr>
+</table>
+<HR>
+<!--	<table width=100%>
+		<tr>
+			<td class="leftcol">Conformity</td>
+			<td>
+				<table border=1 width=30% cellspacing=0>
+					<tr>
+						<td align=center style="font-size:80%">Curriculum</td>
+						<td align=center style="font-size:80%">Specification</td>
+						<td align=center style="font-size:80%">Opportunity</td>
+					</tr>
+					<tr>
+						<td align=center><#%= f.check_box :conform_curriculum %> </td>
+						<td align=center><#%= f.check_box :conform_specification %> </td>
+						<td align=center><#%= f.check_box :conform_opportunity %> </td>
+					</tr>
+				</table></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Accuracy</td>
+			<td>
+				<table border=1 width=30% cellspacing=0>
+					<tr>
+						<td align=center style="font-size:80%">Construct</td>
+						<td align=center style="font-size:80%">Topic</td>
+						<td align=center style="font-size:80%">Component</td>
+					</tr>
+					<tr>
+						<td align=center><#%= f.check_box :accuracy_construct %> </td>
+						<td align=center><#%= f.check_box :accuracy_topic %> </td>
+						<td align=center><#%= f.check_box :accuracy_component %> </td>
+					</tr>
+				</table></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Fit</td>
+			<td>
+				<table border=1 width=30% cellspacing=0 >
+					<tr>
+						<td align=center style="font-size:80%">Difficulty</td>
+						<td align=center style="font-size:80%">Importance</td>
+						<td align=center style="font-size:80%">Fairness</td>
+					</tr>
+					<tr>
+						<td align=center><#%= f.check_box :fit_difficulty %> </td>
+						<td align=center><#%= f.check_box :fit_important %> </td>
+						<td align=center><#%= f.check_box :fit_fairness %> </td>
+					</tr>
+				</table></td>
+			</tr>
+		</table>
+<HR>
+<table>-->
+<table>	
+	<tr>
+		<td class="leftcol"><label for="status">Difficulty:</label></td>
+		<td><b>:</b></td>
+		<td><%= f.select :difficulty, 
+		                 Examquestion::QLEVEL,
+		                 :prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="bplsent">Sent to Quality Control</label></td>
+		<td><b>:</b></td>
+	    <td><%= f.check_box :bplsent %> </td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="bplsentdt">Date Sent</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :bplsentdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+</table>
+ <% if permitted_to? :manage, @examquestion%>
+<H2>Quality Control Details</H2>
+<table width=100%>	
+	<tr>
+		<td class="leftcol"><label for="editor_id">Editor Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :editor_id, Position.find(:all, :conditions => ["unit=?", "Kompetensi/Kawalan Mutu"]), :id, :unit_staff_name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+	 	<td class="leftcol"><label for="editdt">Editor Date</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :editdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="statusremark">Remarks</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :statusremark, :size => "30x7" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="approver_id">Approver Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :approver_id, Position.find(:all, :conditions => ["unit=?", "Kompetensi/Kawalan Mutu"]), :id, :unit_staff_name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+	 	<td class="leftcol"><label for="approvedt">Approver Date</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :approvedt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+	
+<!--	<tr>
+		<td class="leftcol"><label for="bplreserve">Reserve for Kawalan Mutu</label></td>
+		<td><b>:</b></td>
+	    <td><#%= f.check_box :bplreserve %> </td>
+	</tr>-->
+		
+</table>
+<% end %>
+<table width=100%>
+	<tr>
+		<td class="leftcol"><label for="qstatus">Status</label><font color="red"> * </font></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.select :qstatus, 
+		                 Examquestion::QSTATUS,
+		                 :prompt => "Select"  %></td>
+	</tr>
+</table>
+</div>

@@ -2,7 +2,8 @@ class GradesController < ApplicationController
   # GET /grades
   # GET /grades.xml
   def index
-    @grades = Grade.all
+    @grades = Grade.find(:all, :order=> 'id')
+    @grade_subjects = @grades.group_by { |t| t.subject_details }
 
     respond_to do |format|
       format.html # index.html.erb
@@ -82,5 +83,10 @@ class GradesController < ApplicationController
       format.html { redirect_to(grades_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def report_grade
+    @grades = Grade.find(:all)
+    render :layout => 'report'
   end
 end

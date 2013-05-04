@@ -3,16 +3,17 @@
 <% form_for(@librarytransaction) do |f| %>
   <%= f.error_messages %>
  
-	<%=render :partial => 'show' %>
-	<div class="tform">
-		<table>
-  	<tr>
-			<td class="leftcol" ><label for="extended"><b><%= t 'librarytransaction.extend' %></b></label></td>
-		  <td><%= f.check_box :extended %><font color=#AAA size=-2> - will extend borrowing for another 14 days</font></td>
-		</tr>
-		</table>
-	</div>
-	<p>
+<%=render :partial => 'show' %>
+<div class="tform">
+<table>
+   <tr>
+		<td class="leftcol" ><label for="extended"><%= t 'librarytransaction.extend' %></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.check_box :extended %><font color=#AAA size=-2> - will extend borrowing for another 14 days</font></td>
+</tr>
+</table>
+</div>
+<p>
     <%= f.submit (t 'update') %>
   </p>
 <% end %>

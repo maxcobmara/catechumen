@@ -1,0 +1,21 @@
+<h3>Editing Stock</h3>
+
+<% form_for(@stock) do |f| %>
+  <%= f.error_messages %>
+
+ <%=render :partial => 'form', :locals => {:f => f} %> 
+	
+<!--	<#% if current_user.staff_id == @stock.approver_id %>
+   <#%= render  :partial => 'approver', :locals => {:f => f} %>
+	<#% end %>-->
+	
+<!--<#% if current_user.staff_id == @stock.storeman_id %>
+   <#%= render  :partial => 'store', :locals => {:f => f} %>
+	<#% end %>-->
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @stock %> |
+<%= link_to 'Back', stocks_path %>

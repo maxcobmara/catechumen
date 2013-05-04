@@ -5,7 +5,7 @@
 <h2 class="left">Lists of Files</h2>
 <div class="right">
 <% form_tag cofiles_path, :method => 'get' do %>
-	  		<%= text_field_tag :search, params[:search], :placeholder => "FileName" %>
+	  		<%= text_field_tag :search, params[:search], :placeholder => "FileNo,FileName,Location" %>
 	  		<%= submit_tag I18n.t('search'), :name => nil %>
 			<% end %>
 </div>
@@ -18,26 +18,32 @@
     <th><%= t 'cofile.name' %></th>
     <th><%= t 'cofile.location' %></th>
     <th><%= t 'cofile.owner' %></th>
+	<th>On Loan</th>
     <th><%= t 'cofile.onloan_to' %></th>
     <th><%= t 'cofile.onloandt' %></th>
    <th colspan=3 class="ac"><%= t 'control' %></th>
 </tr>
 
 <% @cofiles.each do |cofile| %>
-  <tr>
+  <tr class="<%= (cofile.set_row_color) %>">
     <td><%=h cofile.cofileno %></td>
     <td><%=h cofile.name %></td>
     <td><%=h cofile.location %></td>
-    <td><%=h check_kin {cofile.owner.mykad_with_staff_name} %></td>
-    <td><%=h cofile.staffloan_id? ? cofile.borrower_details : "" %></td>
-	<td><%=h cofile.onloan? ? cofile.onloandt : "" %></td>
+    <td><%=h cofile.owner_details %></td>
+    <td><%=h cofile.onloan? ? "Yes" : "Available"  %></td>
+    <td><%=h cofile.staffloan_id.blank? ? "" : cofile.borrower_details %></td>
+	<td><%=h cofile.onloan? ? cofile.onloandt.strftime('%e %b %Y') : "" %></td>
     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => cofile %></td>
+    <% if permitted_to? :manage, :cofiles %>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => cofile %></td>
     <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), cofile, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>
-<br />
 </div>
+<br />
 
-<%= link_to (t 'cofile.create'), new_cofile_path %>
+<% permitted_to? :create, @cofile do %>
+<%= link_to (t 'cofile.new'), new_cofile_path %>
+<% end %>

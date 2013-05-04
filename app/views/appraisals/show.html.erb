@@ -1,0 +1,323 @@
+<div class="tform">
+	<H2><%= t 'evaluation.form.title_part1' %></H2>
+	
+	<table>
+		<tr>
+			<td class="leftcol"><label for="staff_id"><%= t 'evaluation.form.icno' %></label></td>
+			<td>:</td>
+			<td colspan=2><%=h @appraisal.appraisedstaff.formatted_mykad %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="staff_id"><%= t 'evaluation.form.name' %></label></td>
+			<td>:</td>
+			<td colspan=2><%=h @appraisal.appraisedstaff.title.name %> <%=h @appraisal.appraisedstaff.name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="staff_id"><%= t 'evaluation.form.position' %></label></td>
+			<td>:</td>
+			<td colspan=2><%=h @appraisal.appraisedstaff.position_for_staff %></td>
+		</tr>
+	
+		<tr>
+		 	<td class="leftcol"><label for="evaldt"><%= t 'evaluation.form.evaluationdate' %></label></td>
+			<td>:</td>
+			<td><%=h l(@appraisal.evaldt) %></td>
+		</tr>
+	</table>
+	
+	
+<H2><%= t 'evaluation.form.title_partIIa' %></H2>
+<p><b>1. &nbsp;&nbsp;<%= t 'evaluation.form.label_001' %></b><BR>
+<font size=-1><%= t 'evaluation.form.label_002' %></font></p>
+	<table width=100% border="1" cellspacing="0" BORDERCOLOR="#C0C0C0">
+		<tr bgcolor="#FDEEF4">
+			<td align="center" width=10%><b>Tarikh</b></td>
+			<td align="center" width=25%><b>Kegiatan / Sumbangan</b></td>
+			<td align="center" width=15%><b>Perigkat</b></td>
+		</tr>
+		<% for evactivity in @appraisal.evactivities %>
+
+		<tr bgcolor="#E0F8F7">
+			<td><%=h evactivity.actdt.strftime("%d %b %Y") %></td>
+			<td><%= evactivity.evactivity %></td>
+			<td><%=h (Evactivity::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp} %></td>
+		</tr>
+		<% end %>
+	</table>
+
+<p><b>2. &nbsp;&nbsp;<%= t 'evaluation.form.title_part2b' %></b><BR>
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<font size=-1><%= t 'evaluation.form.label_003' %></font></p>
+
+<table width=100% border=1 cellspacing=0 BORDERCOLOR="#C0C0C0">
+	<tr bgcolor="#FDEEF4">
+		<td align="center" width=10%><label for="name "><b>Tarikh / Tempoh </b></label></td>
+		<td align="center" width=25%><label for="name "><b>Nama Latihan </b><BR>(Nyatakan sijil jika ada)</label></td>
+		<td align="center" width=15%><label for="name "><b>Tempat </b></label></td>
+	</tr>
+		<% for straining in @appraisal.strainings %>
+	<tr bgcolor="#E0F8F7">
+		<td> <%= straining.sdate.strftime("%d %b %Y") %></td>
+		 <td> <%= straining.name %></td>
+		 <td> <%= straining.place %></td>
+	</tr>
+	<% end %>
+</table>
+
+
+<p><font size=-1>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<%= t 'evaluation.form.label_004' %></font></p>
+
+<table width=100% border=1 cellspacing=0 BORDERCOLOR="#C0C0C0">
+	<tr bgcolor="#FDEEF4">
+		<td align="center" width="50%"><label for="name "><b>Nama/Bidang Latihan</label></td>
+		<td align="center" width="50%"><label for="name "><b>Sebab Diperlukan </b></label></td>
+	</tr>
+		<% for trainneed in @appraisal.trainneeds %>
+	<tr bgcolor="#E0F8F7">
+			<td width=50%><%= trainneed.name %></td>
+	       <td width=50%><%= trainneed.reason %>
+	</tr>
+	<% end %>
+</table>
+<H2><%= t 'evaluation.form.title_part3' %></H2>
+<p>
+<font size=-1>Pegawai Penilai dikehendaki memberikan penilaian berdasarkan pencapaian kerja sebenar PYD berbanding dengan SKT yang ditetapkan. Penilaian hendaklah berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10</font></p>
+<table width=100% cellpadding=7 border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+	<tr>
+		<th align="center">KRITERIA <BR> (Dinilai berasaskan SKT)</th>
+		<th  align="center" width=10%>PPP</th>
+		<th  align="center" width=10%>PPK</th>
+	</tr>	
+	<tr valign=bottom>
+		<td><label for="quantity"><b><%= t 'evaluation.form.quantity' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.quantity_desc' %></font></label></td>
+		<td align="center"><%=h @appraisal.pppquantity %></td>
+		<td align="center"><%=h @appraisal.ppkquantity %></td>
+	</tr>
+	
+	<tr valign=bottom>
+		<td><label for="quality"><b><%= t 'evaluation.form.quality' %></b>
+			<font size=-1><ol><%= t 'evaluation.form.quanlity_desc1' %><BR>
+				              <%= t 'evaluation.form.quanlity_desc2' %></ol></font></label></td>
+		<td align="center"><%=h @appraisal.pppquality %></td>
+		<td align="center"><%=h @appraisal.ppkquality %></td>
+	</tr>
+	<tr>
+		<td><label for="ontime">
+			<b><%= t 'evaluation.form.ontime' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.ontime_desc' %></font>
+			</label></td>
+		<td align="center"><%=h @appraisal.pppontime %></td>
+		<td align="center"><%=h @appraisal.ppkontime %></td>
+	</tr>
+
+	<tr>
+		<td><label for="effective">
+		<b><%= t 'evaluation.form.effective' %></b><BR>
+		<font size=-1><%= t 'evaluation.form.effective_desc' %></font>
+		</label></td>
+		<td align="center"><%=h @appraisal.pppeffective %></td>
+		<td align="center"><%=h @appraisal.ppkeffective %></td>
+	</tr>
+</table>
+<BR>
+	<H2><%= t 'evaluation.form.title_part4' %></H2>
+	<p>
+	<font size=-1>Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10</font></p>
+
+	<table width=100% cellpadding=7 border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+		<tr>
+			<th align="center">KRITERIA</th>
+			<th align="center" width=10%>PPP</th>
+			<th align="center" width=10%>PPK</th>
+		</tr>
+
+		<tr>
+			<td><label for="knowledge">
+				<b><%= t 'evaluation.form.knowledge' %></b><BR>
+				<font size=-1><%= t 'evaluation.form.knowledge_desc' %></font></label></td>
+			<td align="center"><%=h @appraisal.pppknowledge %></td>
+			<td align="center"><%=h @appraisal.ppkknowledge %></td>
+		</tr>
+
+		<tr>
+			<td><label for="rules">
+				<b><%= t 'evaluation.form.rules' %></b><BR>
+				<font size=-1><%= t 'evaluation.form.rules_desc' %></font></label></td>
+			<td align="center"><%=h @appraisal.ppprules %></td>
+			<td align="center"><%=h @appraisal.ppkrules %></td>
+		</tr>
+
+		<tr>
+			<td><label for="communication">
+				<b><%= t 'evaluation.form.communication' %></b><BR>
+				<font size=-1><%= t 'evaluation.form.communication_desc' %></font></label></td>
+			<td align="center"><%=h @appraisal.pppcommunication %></td>
+			<td align="center"><%=h @appraisal.ppkcommunication %></td>
+		</tr>
+	</table>
+	<BR>
+		<H2><%= t 'evaluation.form.title_part5' %></H2>
+		<p>
+		<font size=-1>Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10</font></p>
+
+		<table width=100% cellpadding=7 border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+			<tr>
+				<th align="center">KRITERIA</th>
+				<th align="center" width=10%>PPP</th>
+				<th align="center" width=10%>PPK</th>
+			</tr>
+
+			<tr>
+				<td><label for="leadership">
+					<b><%= t 'evaluation.form.leadership' %></b><BR>
+					<font size=-1><%= t 'evaluation.form.leadership_desc' %></font></label></td>
+				<td align="center"><%=h @appraisal.pppleader %></td>
+				<td align="center"><%=h @appraisal.ppkleader %></td>
+			</tr>
+
+			<tr>
+				<td><label for="management">
+					<b><%= t 'evaluation.form.management' %></b><BR>
+					<font size=-1><%= t 'evaluation.form.management_desc' %></font></label></td>
+				<td align="center"><%=h @appraisal.pppmanage %></td>
+				<td align="center"><%=h @appraisal.ppkmanage %></td>
+			</tr>
+
+			<tr>
+				<td><label for="discipline">
+					<b><%= t 'evaluation.form.discipline' %></b><BR>
+					<font size=-1><%= t 'evaluation.form.discipline_desc' %></font></label></td>
+				<td align="center"><%=h @appraisal.pppdiscipline %></td>
+				<td align="center"><%=h @appraisal.ppkdisipline %></td>
+			</tr>
+
+			<tr>
+				<td><label for="proactive">
+					<b><%= t 'evaluation.form.proactive' %></b><BR>
+					<font size=-1><%= t 'evaluation.form.proactive_desc' %></font></label></td>
+				<td align="center"><%=h @appraisal.pppproactive %></td>
+				<td align="center"><%=h @appraisal.ppkproactive %></td>
+			</tr>
+
+			<tr>
+				<td><label for="relate">
+					<b><%= t 'evaluation.form.relate' %></b><BR>
+					<font size=-1><%= t 'evaluation.form.relate_desc' %></font></label></td>
+				<td align="center"><%=h @appraisal.ppprelate %></td>
+				<td align="center"><%=h @appraisal.ppkrelate %></td>
+			</tr>
+		</table>
+		<BR>
+			<H2><%= t 'evaluation.form.title_part6' %></H2>
+			<p><font size=-1><%= t 'evaluation.form.parttwo_desc' %></font></p>
+
+			<table width=100% cellpadding=7 border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+				<tr>
+					<th align="center" rowspan=2>Peringkat Komuniti / Jabatan / Daerah / <BR> Negeri / Negara / Antarabangsa</th>
+					<th align="center" width=10%>PPP</th>
+					<th align="center" width=10%>PPK</th>
+				</tr>
+
+				<tr>
+					<td align="center"><%=h @appraisal.pppparttwo %></td>
+					<td align="center"><%=h @appraisal.ppkparttwo %></td>
+				</tr>
+			</table>
+			<BR>
+				<H2><%= t 'evaluation.form.title_part7' %></H2>
+				<p><font size=-1><%= t 'evaluation.form.part7_desc' %></font></p>
+			<table width=100% border=1 cellspacing=0 cellpadiing=7>
+				<tr>
+					<th rowspan=2 width="20%" align="center">MARKAH <BR> KESELURUHAN</th>
+					<th width="15%" align="center"><label for="ppptotals"><b>PPP</b></label></th>
+					<th width="15%" align="center"><label for="ppptotals"><b>PPP (%)</b></label></th>
+					<th width="15%" align="center"><label for="ppptotals"><b>PPK</b></label></th>
+					<th width="15%" align="center"><label for="ppptotals"><b>PPK (%)</b></label></th>
+					<th width="20%" align="center"><label for="ppptotals"><b>MARKAH PURATA (%) <BR> <font color="grey", size="-3"> (untuk diisi oleh Urus Setia PPSM) </font></b></label></th>
+				</tr>
+
+				<tr>
+					
+					<td align="center"><%=h @appraisal.ppptotals %></td>
+					<td align="center"><%=h @appraisal.ppppercent %></td>
+					<td align="center"><%=h @appraisal.ppktotals %></td>
+					<td align="center"><%=h @appraisal.ppkpercent %></td>
+					<td align="center"><%=h @appraisal.pointsaverage %></td>
+				</tr>
+				
+
+			</table>
+
+			<!--Part VIII-->
+			<H2><%= t 'evaluation.form.title_part8' %></H2>
+			<table width=100% cellpadding=7 border=0 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+
+				<tr>
+					<td width=25%><label for="pppyears">1.&nbsp;&nbsp; <%= t 'evaluation.form.part8_desc' %></label></td>
+					<td width=2%>:</td>
+					<td><%=h @appraisal.pppyears  %> <%= t 'years_label' %> <%=h @appraisal.pppmonths %> <%= t 'months_label' %></td>
+				</tr>
+
+				<tr>
+					<td colspan=3><label for="pppoverall">2. &nbsp;&nbsp;<%= t 'evaluation.form.part8i_desc' %></label></td>
+				</tr>
+				<tr>
+					<td><label for="pppoverall">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(i)&nbsp;&nbsp;&nbsp; <%= t 'evaluation.form.part8i' %></label></td>
+					<td>:</td>
+					<td><%=h @appraisal.pppoverall %></td>
+				</tr>
+
+				<tr>
+					<td><label for="pppadvancemet">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ii)&nbsp;&nbsp;&nbsp; <%= t 'evaluation.form.part8ii' %></label></td>
+					<td>:</td>
+					<td><%=h @appraisal.pppadvancemet %></td>
+				</tr>
+
+				<tr>
+					<td colspan=3>3.&nbsp;&nbsp; <%= t 'evaluation.form.ppp_statement' %></td>
+				<tr>
+
+				<tr>
+					<td><label for="ppp_id"><%= t 'evaluation.form.pppid' %></label></td>
+					<td>:</td>
+					<td><%=h @appraisal.ppp.staff_name_with_title %></td>
+				</tr>
+
+				<tr>
+					<td><label for="pppevaldt"><%= t 'datelabel' %></label></td>
+					<td>:</td>
+					<td><%=h @appraisal.pppevaldt.strftime("%d %b %Y") %></td>
+				</tr>
+			</table>
+<!--Part VII-->
+<H2><%= t 'evaluation.form.title_part9' %></H2>
+<table width=100% cellpadding=7 border=0 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+
+	<tr>
+		<td width=25%><label for="pppyears">1.&nbsp;&nbsp;<%= t 'evaluation.form.part8_desc' %></label></td>
+		<td width=2%>:</td>
+		<td><%=h @appraisal.ppkyears  %> <%= t 'years_label' %> <%=h @appraisal.ppkmonths %> <%= t 'months_label' %></td>
+	</tr>
+
+	<tr>
+		<td><label for="pppoverall">2.&nbsp;&nbsp;<%= t 'evaluation.form.part9_desc' %></label></td>
+		<td width=2%>:</td>
+		<td><%=h @appraisal.ppkoverall %></td>
+	</tr>
+
+	<tr>
+		<td><label for="ppp_id"><%= t 'evaluation.form.ppkid' %></label></td>
+		<td width=2%>:</td>
+		<td><%=h @appraisal.ppk.staff_name_with_title %></td>
+	</tr>
+	
+	<tr>
+		<td><label for="pppevaldt"><%= t 'datelabel' %></label></td>
+		<td width=2%>:</td>
+		<td><%=h @appraisal.ppkevaldt.strftime("%d %b %Y") %></td>
+	</tr>
+</table>
+</div>
+<BR>
+<%= link_to (t 'icms.update'), edit_appraisal_path(@appraisal) %> |
+<%= link_to (t 'icms.back'), appraisals_path %>

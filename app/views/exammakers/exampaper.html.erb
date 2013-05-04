@@ -1,0 +1,172 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+	<form action="#">
+		<script>
+		document.write("<input type='button' " +
+		"onClick='window.print()' " +
+		"class='printbutton' " +
+		"value='Print This Page'/>");
+		</script>
+		</form>
+<fieldset width=10px >
+	
+<div id="title">
+<table width=100% border="0" cellspacing="0" cellpadding="5" align="center">
+		<tr>
+			<td align="center" colspan=3><BR><BR><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></td>
+	    </tr>
+	
+	    <tr>
+			<td align="center" colspan=3><font size=4; style="font-family:arial"><b>AGENSI PENGUATKUASAAN MARITIM MALAYSIA<BR>PUSAT LATIHAN APMM</b></font></td>
+	    </tr>
+	
+    	<tr>
+    		<td width=25%><font size=3px; style="font-family:arial">PEPERIKSAAN</font></td>
+    		<td width=3% align="center">:</td>
+    		<td ><font size=3><font face="arial"><%=h (@exammaker.name).upcase %></font></td>	
+        </tr>
+        <tr>
+    		<td ><font size=3px; style="font-family:arial">KURSUS</font></td>
+    		<td align="center">:</td>
+    		<td><font size=3><font face="arial"><%=h (@exammaker.course_id.blank? ? "-" : @exammaker.course_exam.specialisation).upcase %> <%= (@exammaker.intake.blank? ? "-" : @exammaker.intake_exam.name).upcase %></font></td>		
+        </tr>
+        <tr>
+    		<td><font size=3px; style="font-family:arial">TARIKH</font></td>
+    		<td align="center">:</td>
+    		<td><font size=3><font face="arial"><%=h (@exammaker.exam_date.blank? ? "-" : @exammaker.exam_date.strftime("%d-%b-%Y")).upcase %></font></td>		
+        </tr>
+        <tr>
+    		<td><font size=3px; style="font-family:arial">MASA</font></td>
+    		<td  align="center">:</td>
+    		<td><font size=3><font face="arial"><%=h @exammaker.duration_exam %></font></td>		
+        </tr>
+        <tr>
+    		<td><font size=3px; style="font-family:arial">MARKAH PENUH</font></td>
+    		<td align="center">:</td>
+    		<td><font size=3><font face="arial"><%=h @exammaker.full_mark.blank? ? "" : @exammaker.full_mark %></td>		
+        </tr>
+        <tr>
+    		<td><font size=3px; style="font-family:arial">MARKAH LULUS</font></td>
+    		<td align="center">:</td>
+    		<td><font size=3><font face="arial"><%=h @exammaker.pass_mark.blank? ? "-" : @exammaker.pass_mark %></font></td>		
+        </tr>     
+</table>
+<BR>
+<table width=100% border="0" cellspacing="0" cellpadding="8" align="center">
+	 <tr>
+		<td colspan=3><BR><font size=3px; style="font-family:arial"><b><u>ARAHAN:</u></b></font></td>	
+    </tr>
+	 <tr>
+    		<td width=5% align="center"><font size=3px; style="font-family:arial">1.</font></td>
+    		<td colspan=2 ><font size=3px; style="font-family:arial"><b>JAWAB SEMUA SOALAN.</b></font></td>			
+    </tr>
+    
+    <tr>
+    		<td valign="top" align="center"><font size=3px; style="font-family:arial">2.</font></td>
+    		<td colspan=2><font size=3px; style="font-family:arial">PASTIKAN PERKARA BERIKUT <b><u>DITULIS PADA KERTAS JAWAPAN:</u></b><BR><BR>
+    		2.1	&nbsp;&nbsp;&nbsp;NAMA <BR>
+			2.2	&nbsp;&nbsp;&nbsp;NO. KAD PENGENALAN <BR>
+			2.3	&nbsp;&nbsp;&nbsp;KELAS <BR>
+			2.4	&nbsp;&nbsp;&nbsp;TARIKH <BR>
+			2.5	&nbsp;&nbsp;&nbsp;PEPERIKSAAN.
+			</font></td>			
+    </tr>
+     <tr>
+    		<td valign="top" align="center"><font size=3px; style="font-family:arial">3.</font></td>
+    		<td colspan=2><font size=3px; style="font-family:arial"><b><u>DILARANG</u></b> MEMBUKA KERTAS SOALAN SEBELUM DIARAHKAN OLEH PENGAWAS PEPERIKSAAN.</font></td>			
+    </tr>
+    
+     <tr>
+    		<td valign="top" align="center"><font size=3px; style="font-family:arial">4.</font></td>
+    		<td colspan=2 align="justify"><font size=3px; style="font-family:arial"><b>”ADALAH INI KAMU DENGAN SECARA RASMINYA DIBERI AMARAN BAHAWA MENIRU SEMASA PEPERIKSAAN ADALAH SATU PERBUATAN YANG DILARANG. JIKA KAMU DISABIT DENGAN KESALAHAN INI, TINDAKAN TATATERTIB DAN TINDAKAN YANG PERLU BOLEH DIAMBIL KE ATAS KAMU SESUAI DENGAN ARAHAN YANG DIBERIKAN. SEBELUM PEPERIKSAAN DIMULAKAN, KAMU DIBERIKAN PELUANG TERAKHIR UNTUK MEMBUAT SEBARANG PENGAKUAN DAN BOLEH SETERUSNYA MEMBERSIHKAN DIRI DARI BAHAN YANG BOLEH MENYABITKAN KEPADA KES MENIRU SEMASA PEPERIKSAAN.”</b></font></td>
+</table><BR>
+</div>
+</form>
+</fieldset>
+
+<fieldset width=10px >
+<BR>
+<div id="title" width=21cm>
+<table width=90% border="0" cellspacing="0" cellpadding="0" align="center">
+	
+		<tr>
+			<td width="7%"  style="vertical-align:middle"></td>
+			<td with="50%" style="vertical-align:middle"></td>
+			<td width="15%"></td>
+	    </tr>
+	
+    	<% bil = 0 %>
+	  	<% for examquestion in @exammaker.examquestions %>
+		<% bil += 1 %>
+		
+		<% if examquestion.questiontype == 'OBJ'  %> 
+	 		<tr>
+				<td colspan=2><font face="arial"><b>BAHAGIAN I - OBJEKTIF ( 2 MARKAH )</b></font></td>
+			</tr>
+			<tr>
+				<td colspan=2>&nbsp;</td>
+			</tr>
+			<tr>
+			<td valign="top"><font size=3><%=h bil %></font></td>
+			<td><font size=3><%=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %>  <BR><BR> 
+			   <%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br) ) %> </font><BR><BR></td>
+		    </tr>
+		<% end %>
+		
+			<% if examquestion.questiontype == 'TF'%>
+			 	<tr>
+					<td colspan=2><font face="arial"><b>BAHAGIAN II - BETUL ATAU SALAH ( 2 MARKAH )</b></font></td>
+				</tr>
+				<tr>
+					<td colspan=2>&nbsp;</td>
+				</tr>
+				<tr>
+					<td valign="top"><font size=3><%=h bil %></font></td>
+					<td><font size=3><%=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %>  <BR><BR>
+					<%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br) ) %> </font><BR><BR></td>
+				</tr>
+			<% end %>
+		
+		<% if examquestion.questiontype == 'MCQ'  %> 
+			<tr>
+				<td colspan=2><font face="arial"><b>BAHAGIAN III - PELBAGAI PILIHAN ( 2 MARKAH )</b></font></td>
+			</tr>
+			<tr>
+				<td colspan=2>&nbsp;</td>
+			</tr>
+			<tr>
+				<td valign="top"><font size=3><%=h bil %></font></td>
+				<td><font size=3><%=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %>  <BR> 
+						<% for exammcqanswer in examquestion.exammcqanswers %>
+						&nbsp; <%=h exammcqanswer.sequence %> &nbsp; &nbsp; - &nbsp;  <%=h exammcqanswer.answer %><BR>
+						<% end %><BR>
+						<%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br) ) %> </font><BR><BR ></td>
+			</tr>
+		<% end %>
+
+		<% if examquestion.questiontype == 'ESSAY'  %> 
+			<tr>
+				<td colspan=2><font face="arial"><b>BAHAGIAN IV - ESEI</b></font></td>
+			</tr>
+			<tr>
+				<td colspan=2>&nbsp;</td>
+			</tr>
+			<tr>
+				<td valign="top"><font size=3><%=h bil %></font></td>
+				<td><font size=3><%=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %><BR> 
+					<% for examsubquestion in examquestion.examsubquestions %>
+					<%=h examsubquestion.sequence %>  <%=h examsubquestion.question %>
+					<%=raw sanitize(simple_format(examsubquestion.answer), :tags => %w(br p) ) %><% end %></font></td>
+			</tr>
+		<% end %>	
+		<% end %>
+</table>
+</div>
+</form>
+</fieldset>
+<BR>
+<div id="hideLink">
+<%= link_to (t 'icms.back'), exammakers_path %>
+</div>
+</div>

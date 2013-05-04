@@ -1,0 +1,55 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Reservation Facilities</h2>
+	</div>
+	</div>
+	<div class="tlist">
+	    <table width=100% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    		<th width=20%>Staff Reserved</th>
+		    <th width=15%>Facilities Booked</th>
+		    <th width=10%>Request Date</th>
+		    <th width=25%>Reservation Date</th>
+		    <th width=5%>Approved?</th>
+		    <th width=20%>Approver Name</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+
+<% @bookingfacilities.each do |bookingfacility| %>
+  <tr>
+	<td><%=h bookingfacility.staff_id.blank? ? "-" : bookingfacility.staffbooked.staff_name_with_title %></td>
+	<td><%=h bookingfacility.location_id.blank? ? "-" :  bookingfacility.reservefac.location_list %></td>
+	<td><%=h bookingfacility.requestdate.blank? ? "-" : bookingfacility.requestdate.strftime("%d-%b-%Y") %></td>
+	<td><%=h bookingfacility.start_date.blank? ? "-" : bookingfacility.start_date.strftime("%d-%b-%Y %I:%M %p") %> to <%=h bookingfacility.end_date.blank? ? "-" : bookingfacility.end_date.strftime("%d-%b-%Y %I:%M %p") %></td>
+	<td><% if bookingfacility.approval == nil %>Waititng for Approval <% else %> <%=h bookingfacility.approval.blank? ? "Not Approved" : "Approved" %><% end %></td>
+	<td><%=h bookingfacility.approver_id.blank? ? "-" : bookingfacility.approvebooked.staff_name_with_title %></td>
+	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => bookingfacility %></td>
+	
+	<% if permitted_to? :update, bookingfacility %>
+	<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => bookingfacility %></td><% end %>
+	
+	<% if permitted_to? :approve, bookingfacility %>
+	<% if bookingfacility.approval == nil %><td width=10px>
+	<%= link_to image_tag("approval.png", :border => 0, :title => 'approval'), :action => 'approve', :id => bookingfacility %></td><% end %><% end %>
+	
+	<% if permitted_to? :facility, bookingfacility %>
+	<% if bookingfacility.approval == true && bookingfacility.approver2 == nil %><td width=10px>
+	<%= link_to image_tag("approval.png", :border => 0, :title => 'approval'), :action => 'facility', :id => bookingfacility %></td><% end %><% end %>
+	
+	<% if permitted_to? :destroy, bookingfacility %>
+	<% if bookingfacility.approval == nil %>
+	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), bookingfacility, :confirm => 'Are you sure?', :method => :delete %></td><% end %><% end %>
+	<% if permitted_to? :bookingfacility, bookingfacility %>
+	<% if bookingfacility.approval == true %>
+	<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Tempah Kemudahan'), :action => 'bookingfacility', :id => bookingfacility %></td><% end %><% end %>
+    	
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+<% if permitted_to? :create, @bookingfacility %>
+<%= link_to 'New Reservation', new_bookingfacility_path %><% end %>

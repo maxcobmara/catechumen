@@ -1,0 +1,55 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Reservation Vehicle</h2>
+	</div>
+	</div>
+	<div class="tlist">
+	<table width=100% border="0" cellpadding="0" cellspacing="0">
+	<tr>
+    	<th>Staff Reserved</th>
+		<th>Request Date</th>
+		<th>Reservation Date</th>
+		<th>Endorsed</th>
+		<th>Approved?</th>
+		<th>Vehicle</th>
+		<th colspan=3 class="ac">Control</th>
+	</tr>
+
+<% @bookingvehicles.each do |bookingvehicle| %>
+  <tr>
+	<td><%=h bookingvehicle.applicant.blank? ? "-" : bookingvehicle.staffname.staff_name_with_title %></td>
+	<td><%=h bookingvehicle.apply_date.blank? ? "-" : bookingvehicle.apply_date.strftime("%d-%b-%Y") %></td>
+	<td><%=h bookingvehicle.used_date.blank? ? "-" : bookingvehicle.used_date.strftime("%d-%b-%Y") %> to <%=h bookingvehicle.returned_date.blank? ? "-" : bookingvehicle.returned_date.strftime("%d-%b-%Y") %></td>
+	<td><%=h (Bookingvehicle::ENDORSED.find_all{|disp, value| value == bookingvehicle.endorsed.to_s}).map {|disp, value| disp} %></td>
+	<td><%=h (Bookingvehicle::APPROVED.find_all{|disp, value| value == bookingvehicle.approved.to_s}).map {|disp, value| disp} %></td>
+	<td><%=h bookingvehicle.vehicle_id.blank? ? "-" : bookingvehicle.vehicle.car %></td>
+	
+	<td><% permitted_to? :vehicle_form, bookingvehicle do %>
+		<%= link_to image_tag("printer.png", :border => 0, :title => 'BORANG PERMOHONAN KENDERAAN'), :action => 'vehicle_form', :id => bookingvehicle %>
+	<% end %></td>
+	<% permitted_to? :endorse, bookingvehicle do %>	
+	<td width=10px>
+	<%= link_to image_tag("approval.png", :border => 0, :title => 'Endorsed'), :action => 'endorse', :id => bookingvehicle %></td><% end %>
+	<% permitted_to? :approve, bookingvehicle do %>
+	<td width=10px>
+	<%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => bookingvehicle %></td><% end %>
+	
+	
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => bookingvehicle %></td>
+   
+	<td width=10px><% permitted_to? :update, bookingvehicle do %>
+	<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => bookingvehicle %><% end %></td>
+	
+	<td width=10px><% permitted_to? :destroy, bookingvehicle do %>
+	<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), bookingvehicle, :confirm => 'Are you sure?', :method => :delete %><% end %></td>
+	
+	
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+
+<%= link_to 'New Reservation Vehicle', new_bookingvehicle_path %>

@@ -1,0 +1,35 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">List of Period Timing</h2>
+	</div>
+</div>
+
+<div class="tlist">
+	<table width=90% border="0" cellpadding="0" cellspacing="0">
+		<tr>
+		<th>Name</th>
+		<th>Start time</th>
+		<th>End time</th>
+		<th>Break</th>
+		<th colspan=3 class="ac">Control</th>
+	</tr>
+
+	<% @period_timings.each do |period_timing| %>
+	<tr>
+		<td><%=h period_timing.name %></td>
+		<td><%=h period_timing.start_time.strftime("%I:%M %p") unless period_timing.start_time.nil? %></td>
+		<td><%=h period_timing.end_time.strftime("%I:%M %p") unless period_timing.end_time.nil? %></td>
+		<td><%=h period_timing.break? ? "Break" : " " %></td>
+		<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => period_timing %></td>
+		<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => period_timing %></td>
+		<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), period_timing, :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+	<% end %>
+	</table>
+
+<br />
+</div>
+
+<%= link_to 'New Period_Timing', new_period_timing_path %>

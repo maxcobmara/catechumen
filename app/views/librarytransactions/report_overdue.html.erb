@@ -1,0 +1,67 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+ <script>
+	document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+
+</script>
+</form>	
+
+
+<div id="title">
+<table width=100% border="0">
+	<tr>
+		<th width="2%"><img border="0" style="vertical-align:top" src="/images/KM.jpg" alt="km" width="90" height="90"/></th>
+		<th><font size=4><BR>PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA <BR>(PLAMM) </font><BR><BR>LAPORAN LEWAT PEMULANGAN BUKU   </H4> </th>
+			<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="90" height="90"/></th>
+	</tr>
+</table>
+<BR>
+<table width=100% border=1px cellspacing=0 cellpadding =5 align="center" >
+
+		<tr >
+			<th width=2%  style="vertical-align:middle" font face="Arial">BIL</th>
+			<th width=25% style="vertical-align:middle">NAMA PEMINJAM</th>
+			<th width=20% style="vertical-align:middle">TAJUK BUKU</th>
+			<th width=15% style="vertical-align:middle">TARIKH PINJAM</th>
+			<th width=15% style="vertical-align:middle">TARIKH PULANG</th>
+			<th width=13% style="vertical-align:middle">LEWAT (HARI)</th>
+			<th width=10% style="vertical-align:middle">JUMLAH DENDA (RM)</th>
+	  </tr>
+	
+	<% bil = 0 %>
+	<%  @libtran_borrowers.each do |ru_staff, librarytransactions| %>
+	 <% bil += 1 %>
+	
+	    <tr>
+	      <td colspan=12><% if ru_staff == true %><b>STAF PLAMM</b><% else %><b> PELATIH </b><% end %></td>
+	   	</tr>
+
+				<% for librarytransaction in librarytransactions %>
+    <tr>
+		<td align="center"><%=h bil %></td>	
+		<td ><%=h librarytransaction.ru_staff? ?  librarytransaction.staff_details : librarytransaction.student_details %></td>	
+		<td align="center"><%=h librarytransaction.title_details %></td>
+		<td align="center" ><%=h librarytransaction.checkoutdate.blank? ? "-" : librarytransaction.checkoutdate.strftime("%d-%b-%Y") %></td>
+		<td align="center"><%=h librarytransaction.returnduedate.blank? ? "-" : librarytransaction.returnduedate.strftime("%d-%b-%Y") %> </td>
+		<td align="center"><%=h librarytransaction.overdue_book %></td>
+		<td align="center"><%=h librarytransaction.overdue_fine %></td>
+	</tr>
+<% end %><% end %>
+
+</table>
+
+</div>
+
+<BR>
+
+
+
+<div id="hideLink">
+<%= link_to 'BACK', librarytransactions_path %>
+</div>
+

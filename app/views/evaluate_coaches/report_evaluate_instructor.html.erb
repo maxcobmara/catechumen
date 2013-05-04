@@ -1,0 +1,69 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+ <script>
+	document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+
+</script>
+</form>	
+
+
+<div id="title">
+<table width=100% border="0">
+	<tr>
+		<th width="2%"><img border="0" style="vertical-align:top" src="/images/KM.jpg" alt="km" width="90" height="90"/></th>
+		<th><font size=4><BR>PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA <BR>(PLAMM) </font><BR><BR>LAPORAN PENILAIAN JURULATIH   </H4> </th>
+			<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="90" height="90"/></th>
+	</tr>
+</table>
+<BR>
+<table width=100% border=1px cellspacing=0 cellpadding =5 align="center" >
+
+		<tr >
+			<th width=2%  style="vertical-align:middle" font face="Arial">BIL</th>
+			<th width=30% style="vertical-align:middle">NAMA PELATIH</th>
+			<th width=25% style="vertical-align:middle">NAMA MODUL</th>
+			<th width=15% style="vertical-align:middle">TARIKH PENILAIAN</th>
+			<th width=10% style="vertical-align:middle">MARKAH</th>
+			<th width=10% style="vertical-align:middle">STATUS</th>
+	  </tr>
+	
+	
+
+	<%  @evaluate_programmes.each do |programme_details, evaluate_coaches| %>
+
+	<tr>
+	      <td colspan=12><b><%= programme_details %></b></td>
+	</tr>
+	
+	 <% bil = 0 %>
+	 <% for evaluate_coach in evaluate_coaches %>
+	 <% bil += 1 %>
+				
+    <tr>
+		<td align="center"><%=h bil %></td>	
+		<td ><%= evaluate_coach.staff_id.blank? ? "No Staff" : evaluate_coach.staffcoachev.staff_name_with_title %></td>	
+		<td align="center"><%= evaluate_coach.subject_id.blank? ? "No Subject" : evaluate_coach.subject.name %></td>
+		<td align="center" ><%= evaluate_coach.evaluate_date.strftime("%d-%b-%Y") %></td>
+		<td align="center"> <%= evaluate_coach.result %></td>
+		<td align="center"><%=h evaluate_coach.status_eva %></td>
+	
+	</tr>
+
+<% end %><% end %>
+</table>
+
+</div>
+
+<BR>
+
+
+
+<div id="hideLink">
+<%= link_to 'BACK', evaluate_coaches_path %>
+</div>
+

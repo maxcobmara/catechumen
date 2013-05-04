@@ -1,0 +1,460 @@
+<% if @exammaker_subject_id %>
+	<% unless @exammaker_subject_id.blank? || @exammaker_subject_id.nil? %>
+		<% @subject_id = @exammaker_subject_id %>
+	<% end %>
+
+	<% @exammaker_eq = @exammaker_id %>
+	<% @exammaker_q = Exammaker.find(@exammaker_eq.to_i).examquestions if @exammaker_id %>
+	<% @objq2 = Exammaker.get_obj_questions(@subject_id) if @subject_id %>
+  	<% @mcqq2 = Exammaker.get_mcq_questions(@subject_id) if @subject_id %>
+	<% @tfq2 = Exammaker.get_tf_questions(@subject_id) if @subject_id %>
+	<% @seqq2 = Exammaker.get_seq_questions(@subject_id) if @subject_id %>
+	
+<% end %>
+	
+<% unless @subject_id.blank? || @subject_id.nil? %>	
+	<% if @mcqq2.count == 0 && @objq2.count == 0 && @seqq2.count == 0 %>
+		No Question Available for This Subject<br><br>
+	<% end %>
+	
+	<% if @mcqq2.count != 0 %>
+		<table width=100% border=0>
+			<tr>
+				<th width=15%>Subject Name</th>
+				<th width=40%>Question & Answer</th>
+				<th width=5%>Marks</th>
+				<th></th>
+				<th width=15%>History Date</th>
+			</tr>
+			<tr>
+				<td colspan=6><strong>MULTIPLE CHOICE</strong><HR></td>
+			</tr>
+			
+			<% for mcqq2 in @mcqq2 do %>
+			<tr>
+				<td width=15%><%= mcqq2.subject.name %></td>
+				<td width=40%><%= mcqq2.question %> <BR><% for exammcqanswer in mcqq2.exammcqanswers %>
+					<%=h exammcqanswer.sequence %> &nbsp &nbsp - &nbsp &nbsp <%=h exammcqanswer.answer %><BR>
+					<% end %><%=raw sanitize(simple_format(mcqq2.answer), :tags => %w(br p) ) %></td>
+				<td width=5%><%= mcqq2.marks %></td>
+				<td width=5%><%#------------------------ start of EDIT-first time-----------------------------------------------------------------%>
+					<% if @exammaker && @exammaker_eq %>
+					<%= check_box_tag "exammaker[examquestion_ids][]", mcqq2.id, Exammaker.find(@exammaker_eq).examquestions.include?(mcqq2) %>
+					<!--FIRST EDIT--></td>
+					<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+			        <% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+					<% if @exammaker_history.count > 0 %>
+							<% @count = 0 %>
+							<% for exam_history in @exammaker_history %>
+							<% for question_h in exam_history.examquestions %>
+							<% if question_h.examquestion_id.to_i == mcqq2.id && question_h.exammaker_id.to_i != @exammaker_eq %>
+							<!--(<#%= @count+=1 %>) &nbsp;<#%= exam_history.exam_date.blank? ? "-" : exam_history.exam_date.strftime("%d-%b-%Y") %>-->
+							<% end %>
+							<% end %>
+							<% end %>
+							<% end %>
+						<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% end %>
+				</td>
+				<td>
+					<%#------------------------ end of EDIT-first time----------------------------------------------------------------------------------%>
+					<%#-------------start of for ------- (1)EDIT (change of programme) ------- (2)NEW entry --------------------------------------------%>
+					<%# REMARK : in EDIT, @exammaker_eq is a valid value whereas in ADD(new entry), @exammaker_eq is just a temporary value %>
+					<% if @exammaker_eq && !@exammaker%>
+						<% @exammaker_rec=[] %>
+						<% Exammaker.all.each do |exammaker_rec| %>
+						<% @exammaker_rec << exammaker_rec.id %>
+					<% end %>
+					<% if @exammaker_rec.include?(@exammaker_eq.to_i) ==  true %><!--have to check value of @exammaker_eq-valid & part of table exammaker-->
+						<%= check_box_tag "exammaker[examquestion_ids][]", mcqq2.id, Exammaker.find(@exammaker_eq).examquestions.include?(mcqq2) %>
+						<!--EDIT-CHANGE PROGRAMME-->
+						<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+						<% if @exammaker_history.count > 0 %>
+									<% @count = 0 %>
+									<% for exam_history in @exammaker_history %>
+									<% for question_h in exam_history.examquestions %>
+									<% if question_h.examquestion_id.to_i == mcqq2.id && question_h.exammaker_id.to_i != @exammaker_eq %>
+									<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.blank? ? "-" : exam_history.exam_date.strftime("%d-%b-%Y") %>
+											<% end %>
+										<% end %>
+									<% end %>
+								<% end %>
+							<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% else %>
+							<%= check_box_tag "exammaker[examquestion_ids][]", mcqq2.id %>
+							<!--NEW RECORD-->
+							<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% end %>
+					<% end %>
+					<%#----------------------------------------------------------------------------------------------------------------------------------%>
+					<%#--------------------------------start of NEW entry-resubmission-------------------------------------------------------------------%>
+					<% if !@exammaker_eq && @exammaker %>
+						<%= check_box_tag "exammaker[examquestion_ids][]", mcqq2.id %><!--RESUBMISSION OF NEW RECORD-->
+						<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+							<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+							<% if @exammaker_history.count > 0 %>
+								<% @count = 0 %>
+								<% for exam_history in @exammaker_history %>
+								<% for question_h in exam_history.examquestions %>
+								<% if question_h.examquestion_id.to_i == mcqq2.id %>
+								<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.blank? ? "-" : exam_history.exam_date.strftime("%d-%b-%Y") %>
+										<% end %>
+									<% end %>
+								<% end %>
+							<% end %>
+							
+						<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% end %>
+					<%#----------------------------------end of NEW entry-resubmission-------------------------------------------------------------------%>
+				<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+					<% if @exammaker_history.count > 0 %>
+						<% @count = 0 %>
+						<% for exam_history in @exammaker_history %>
+							<% for question_h in exam_history.examquestions %>
+								<% if question_h.examquestion_id.to_i == mcqq2.id %>
+								<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.strftime("%d-%b-%Y") %>
+								<% end %>
+							<% end %>
+						<% end %>
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
+		</table>
+	<% end %>
+	<!--OBJECTIVE-->
+	<% if @objq2.count != 0 %>
+		<table width=100% border=0>
+				<tr>
+					<th width=15%>Subject Name</th>
+					<th width=40%>Question & Answer</th>
+					<th width=5%>Marks</th>
+					<th></th>
+					<th width=15%>History Date</th>
+				</tr>
+			<tr>
+				<td colspan=6><strong>OBJECTIVE</strong><HR></td>
+			</tr>
+			<% for objq2 in @objq2 do %>
+			<tr>
+				<td width=15%><%= objq2.subject.name %></td>
+				<td width=40%><%= objq2.question %> <BR><% for exammcqanswer in objq2.exammcqanswers %>
+					<%=h exammcqanswer.sequence %> &nbsp &nbsp - &nbsp &nbsp <%=h exammcqanswer.answer %><BR>
+					<% end %><%=raw sanitize(simple_format(objq2.answer), :tags => %w(br p) ) %></td>
+				<td width=5%><%= objq2.marks %></td>
+				<td width=5%><%#------------------------ start of EDIT-first time-----------------------------------------------------------------%>
+					<% if @exammaker && @exammaker_eq %>
+					<%= check_box_tag "exammaker[examquestion_ids][]", objq2.id, Exammaker.find(@exammaker_eq).examquestions.include?(objq2) %>
+					<!--FIRST EDIT--></td>
+					<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+			        <% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+					<% if @exammaker_history.count > 0 %>
+							<% @count = 0 %>
+							<% for exam_history in @exammaker_history %>
+							<% for question_h in exam_history.examquestions %>
+							<% if question_h.examquestion_id.to_i == objq2.id && question_h.exammaker_id.to_i != @exammaker_eq %>
+							<!--<br>(<#%= @count+=1 %>) &nbsp;<#%= exam_history.exam_date.blank? ? "-" : @exammaker.exam_date.strftime("%d-%b-%Y") %>-->
+							<% end %>
+							<% end %>
+							<% end %>
+							<% end %>
+						<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% end %>
+				</td>
+				<td>
+					<%#------------------------ end of EDIT-first time----------------------------------------------------------------------------------%>
+					<%#-------------start of for ------- (1)EDIT (change of programme) ------- (2)NEW entry --------------------------------------------%>
+					<%# REMARK : in EDIT, @exammaker_eq is a valid value whereas in ADD(new entry), @exammaker_eq is just a temporary value %>
+					<% if @exammaker_eq && !@exammaker%>
+						<% @exammaker_rec=[] %>
+						<% Exammaker.all.each do |exammaker_rec| %>
+						<% @exammaker_rec << exammaker_rec.id %>
+					<% end %>
+					<% if @exammaker_rec.include?(@exammaker_eq.to_i) ==  true %><!--have to check value of @exammaker_eq-valid & part of table exammaker-->
+						<%= check_box_tag "exammaker[examquestion_ids][]", objq2.id, Exammaker.find(@exammaker_eq).examquestions.include?(objq2) %>
+						<!--EDIT-CHANGE PROGRAMME-->
+						<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+						<% if @exammaker_history.count > 0 %>
+									<% @count = 0 %>
+									<% for exam_history in @exammaker_history %>
+									<% for question_h in exam_history.examquestions %>
+									<% if question_h.examquestion_id.to_i == objq2.id && question_h.exammaker_id.to_i != @exammaker_eq %>
+									<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.blank? ? "-" : @exammaker.exam_date.strftime("%d-%b-%Y") %>
+											<% end %>
+										<% end %>
+									<% end %>
+								<% end %>
+							<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% else %>
+							<%= check_box_tag "exammaker[examquestion_ids][]", objq2.id %>
+							<!--NEW RECORD-->
+							<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% end %>
+					<% end %>
+					<%#----------------------------------------------------------------------------------------------------------------------------------%>
+					<%#--------------------------------start of NEW entry-resubmission-------------------------------------------------------------------%>
+					<% if !@exammaker_eq && @exammaker %>
+						<%= check_box_tag "exammaker[examquestion_ids][]", objq2.id %><!--RESUBMISSION OF NEW RECORD-->
+						<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+							<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+							<% if @exammaker_history.count > 0 %>
+								<% @count = 0 %>
+								<% for exam_history in @exammaker_history %>
+								<% for question_h in exam_history.examquestions %>
+								<% if question_h.examquestion_id.to_i == objq2.id %>
+								<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.blank? ? "-" : @exammaker.exam_date.strftime("%d-%b-%Y") %>
+										<% end %>
+									<% end %>
+								<% end %>
+							<% end %>
+							
+						<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% end %>
+					<%#----------------------------------end of NEW entry-resubmission-------------------------------------------------------------------%>
+				<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+					<% if @exammaker_history.count > 0 %>
+						<% @count = 0 %>
+						<% for exam_history in @exammaker_history %>
+							<% for question_h in exam_history.examquestions %>
+								<% if question_h.examquestion_id.to_i == objq2.id %>
+								<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.strftime("%d-%b-%Y") %>
+								<% end %>
+							<% end %>
+						<% end %>
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
+		</table>
+	<% end %>
+	
+	<!--TRUE/FALSE-->
+	<% if @tfq2.count != 0 %>
+		<table width=100% border=0>
+				<tr>
+					<th width=15%>Subject Name</th>
+					<th width=40%>Question & Answer</th>
+					<th width=5%>Marks</th>
+					<th></th>
+					<th width=15% colspan=3>History Date</th>
+				</tr>
+			
+			<tr>
+				<td colspan=6><strong>TRUE/FALSE</strong><HR></td>
+			</tr>
+			<% for tfq2 in @tfq2 do %>
+			<tr>
+				<td width=15%><%= tfq2.subject.name %></td>
+				
+				<td width=40%><%= tfq2.question %> <BR><% for exammcqanswer in tfq2.exammcqanswers %>
+					<%=h exammcqanswer.sequence %> &nbsp &nbsp - &nbsp &nbsp <%=h exammcqanswer.answer %><BR>
+					<% end %><%=raw sanitize(simple_format(tfq2.answer), :tags => %w(br p) ) %></td>
+				<td width=5%><%= tfq2.marks %></td>
+				<td width=5%><%#------------------------ start of EDIT-first time-----------------------------------------------------------------%>
+					<% if @exammaker && @exammaker_eq %>
+					<%= check_box_tag "exammaker[examquestion_ids][]", tfq2.id, Exammaker.find(@exammaker_eq).examquestions.include?(tfq2) %>
+					<!--FIRST EDIT--></td>
+					<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+			        <% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+					<% if @exammaker_history.count > 0 %>
+							<% @count = 0 %>
+							<% for exam_history in @exammaker_history %>
+							<% for question_h in exam_history.examquestions %>
+							<% if question_h.examquestion_id.to_i == tfq2.id && question_h.exammaker_id.to_i != @exammaker_eq %>
+							<!--<br>(<#%= @count+=1 %>) &nbsp;<#%= exam_history.exam_date.blank? ? "-" : @exammaker.exam_date.strftime("%d-%b-%Y") %>-->
+							<% end %>
+							<% end %>
+							<% end %>
+							<% end %>
+						<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% end %>
+				</td>
+				<td>
+					<%#------------------------ end of EDIT-first time----------------------------------------------------------------------------------%>
+					<%#-------------start of for ------- (1)EDIT (change of programme) ------- (2)NEW entry --------------------------------------------%>
+					<%# REMARK : in EDIT, @exammaker_eq is a valid value whereas in ADD(new entry), @exammaker_eq is just a temporary value %>
+					<% if @exammaker_eq && !@exammaker%>
+						<% @exammaker_rec=[] %>
+						<% Exammaker.all.each do |exammaker_rec| %>
+						<% @exammaker_rec << exammaker_rec.id %>
+					<% end %>
+					<% if @exammaker_rec.include?(@exammaker_eq.to_i) ==  true %><!--have to check value of @exammaker_eq-valid & part of table exammaker-->
+						<%= check_box_tag "exammaker[examquestion_ids][]", tfq2.id, Exammaker.find(@exammaker_eq).examquestions.include?(tfq2) %>
+						<!--EDIT-CHANGE PROGRAMME-->
+						<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+						<% if @exammaker_history.count > 0 %>
+									<% @count = 0 %>
+									<% for exam_history in @exammaker_history %>
+									<% for question_h in exam_history.examquestions %>
+									<% if question_h.examquestion_id.to_i == tfq2.id && question_h.exammaker_id.to_i != @exammaker_eq %>
+									<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.blank? ? "-" : @exammaker.exam_date.strftime("%d-%b-%Y") %>
+											<% end %>
+										<% end %>
+									<% end %>
+								<% end %>
+							<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% else %>
+							<%= check_box_tag "exammaker[examquestion_ids][]", tfq2.id %>
+							<!--NEW RECORD-->
+							<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% end %>
+					<% end %>
+					<%#----------------------------------------------------------------------------------------------------------------------------------%>
+					<%#--------------------------------start of NEW entry-resubmission-------------------------------------------------------------------%>
+					<% if !@exammaker_eq && @exammaker %>
+						<%= check_box_tag "exammaker[examquestion_ids][]", tfq2.id %><!--RESUBMISSION OF NEW RECORD-->
+						<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+							<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+							<% if @exammaker_history.count > 0 %>
+								<% @count = 0 %>
+								<% for exam_history in @exammaker_history %>
+								<% for question_h in exam_history.examquestions %>
+								<% if question_h.examquestion_id.to_i == tfq2.id %>
+								<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.blank? ? "-" : @exammaker.exam_date.strftime("%d-%b-%Y") %>
+										<% end %>
+									<% end %>
+								<% end %>
+							<% end %>
+							
+						<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% end %>
+					<%#----------------------------------end of NEW entry-resubmission-------------------------------------------------------------------%>
+				<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+					<% if @exammaker_history.count > 0 %>
+						<% @count = 0 %>
+						<% for exam_history in @exammaker_history %>
+							<% for question_h in exam_history.examquestions %>
+								<% if question_h.examquestion_id.to_i == tfq2.id %>
+								<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.strftime("%d-%b-%Y") %>
+								<% end %>
+							<% end %>
+						<% end %>
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
+		</table>
+	<% end %>
+	
+	<!--SHORT ESSAY-->
+	<% if @seqq2.count != 0 %>
+		<table width=100% border=0>
+				<tr>
+					<th width=15%>Subject Name</th>
+					<th width=40%>Question & Answer</th>
+					<th width=5%>Marks</th>
+					<th></th>
+					<th width=15% colspan=3>History Date</th>
+				</tr>
+			
+			<tr>
+				<td colspan=6><strong>SHORT ESSAY</strong><HR></td>
+			</tr>
+			<% for seqq2 in @seqq2 do %>
+			<tr>
+				<td width=15%><%= seqq2.subject.name %></td>
+				<td><%= seqq2.question %> <BR> 
+				<% for examsubquestion in seqq2.examsubquestions %>
+				<%=h examsubquestion.sequence %> &nbsp - &nbsp <%=h examsubquestion.question %><BR>
+					<%=raw sanitize(simple_format(examsubquestion.answer), :tags => %w(br p) ) %>
+				<% end %></td>
+				<td width=5%><%= seqq2.marks %></td>
+				
+				<td width=5%><%#------------------------ start of EDIT-first time-----------------------------------------------------------------%>
+					<% if @exammaker && @exammaker_eq %>
+					<%= check_box_tag "exammaker[examquestion_ids][]", seqq2.id, Exammaker.find(@exammaker_eq).examquestions.include?(seqq2) %>
+					<!--FIRST EDIT--></td>
+					<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+			        <% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+					<% if @exammaker_history.count > 0 %>
+							<% @count = 0 %>
+							<% for exam_history in @exammaker_history %>
+							<% for question_h in exam_history.examquestions %>
+							<% if question_h.examquestion_id.to_i == seqq2.id && question_h.exammaker_id.to_i != @exammaker_eq %>
+							<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.blank? ? "-" : exam_history.exam_date.strftime("%d-%b-%Y") %>
+							<% end %>
+							<% end %>
+							<% end %>
+							<% end %>
+						<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% end %>
+				</td>
+				<td>
+					<%#------------------------ end of EDIT-first time----------------------------------------------------------------------------------%>
+					<%#-------------start of for ------- (1)EDIT (change of programme) ------- (2)NEW entry --------------------------------------------%>
+					<%# REMARK : in EDIT, @exammaker_eq is a valid value whereas in ADD(new entry), @exammaker_eq is just a temporary value %>
+					<% if @exammaker_eq && !@exammaker%>
+						<% @exammaker_rec=[] %>
+						<% Exammaker.all.each do |exammaker_rec| %>
+						<% @exammaker_rec << exammaker_rec.id %>
+					<% end %>
+					<% if @exammaker_rec.include?(@exammaker_eq.to_i) ==  true %><!--have to check value of @exammaker_eq-valid & part of table exammaker-->
+						<%= check_box_tag "exammaker[examquestion_ids][]", seqq2.id, Exammaker.find(@exammaker_eq).examquestions.include?(seqq2) %>
+						<!--EDIT-CHANGE PROGRAMME-->
+						<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+						<% if @exammaker_history.count > 0 %>
+									<% @count = 0 %>
+									<% for exam_history in @exammaker_history %>
+									<% for question_h in exam_history.examquestions %>
+									<% if question_h.examquestion_id.to_i == seqq2.id && question_h.exammaker_id.to_i != @exammaker_eq %>
+									<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.blank? ? "-" : exam_history.exam_date.strftime("%d-%b-%Y") %>
+											<% end %>
+										<% end %>
+									<% end %>
+								<% end %>
+							<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% else %>
+							<%= check_box_tag "exammaker[examquestion_ids][]", seqq2.id %>
+							<!--NEW RECORD-->
+							<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+						<% end %>
+					<% end %>
+					<%#----------------------------------------------------------------------------------------------------------------------------------%>
+					<%#--------------------------------start of NEW entry-resubmission-------------------------------------------------------------------%>
+					<% if !@exammaker_eq && @exammaker %>
+						<%= check_box_tag "exammaker[examquestion_ids][]", seqq2.id %><!--RESUBMISSION OF NEW RECORD-->
+						<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+							<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+							<% if @exammaker_history.count > 0 %>
+								<% @count = 0 %>
+								<% for exam_history in @exammaker_history %>
+								<% for question_h in exam_history.examquestions %>
+								<% if question_h.examquestion_id.to_i == seqq2.id %>
+								<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.blank? ? "-" : exam_history.exam_date.strftime("%d-%b-%Y") %>
+										<% end %>
+									<% end %>
+								<% end %>
+							<% end %>
+							
+						<!--end-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% end %>
+					<%#----------------------------------end of NEW entry-resubmission-------------------------------------------------------------------%>
+				<!--start-trial for exammaker-display of examquestion-show history if available question ever used before-4Liza-6Sept2012-->
+					<% @exammaker_history = Exammaker.find(:all, :conditions=>['subject_id=?',@subject_id] )%>
+					<% if @exammaker_history.count > 0 %>
+						<% @count = 0 %>
+						<% for exam_history in @exammaker_history %>
+							<% for question_h in exam_history.examquestions %>
+								<% if question_h.examquestion_id.to_i == seqq2.id %>
+								<BR><%= @count+=1 %>. &nbsp;<%= exam_history.exam_date.strftime("%d-%b-%Y") %>
+								<% end %>
+							<% end %>
+						<% end %>
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
+		</table>
+	<% end %>
+	
+	
+<% else %>
+	Please Select a Subject<br><br>
+<% end %>

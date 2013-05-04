@@ -1,0 +1,201 @@
+<div class="tform">
+<H2>Results Details</H2>
+  <table width=100% >
+
+	<tr>
+		<td width=18% ><label for="name"><font size-2>&nbsp;Course Name</font></label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :course_id, Programme.find(:all), :id, :programme_with_specialisation %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="phone">Class Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :class_id, Klass.find(:all), :id, :name %></td>
+	</tr>
+	
+	<!--<tr>
+		<td class="leftcol"><label for="name">Student Name</label></td>
+		<td><b>:</b></td>
+		<td><#%= f.collection_select :student_id, Klass.find(:all), :id, :name %></td>
+	</tr>-->
+	
+	<tr>
+		<td class="leftcol"><label for="fax">Examination Name</label><font color="red"> * </font></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :exam_paper_name, Exammaker.find(:all), :id, :exam_result, :include_blank => true %></td>
+	</tr>
+   <!--<tr>
+		<td class="leftcol"><label for="address">Examination Date</label><font color="red"> * </font></td>
+		<td><b>:</b></td>
+		<td><#%= f.date_select :exam_date, :include_blank => true %></td>
+	</tr>-->
+	<tr>
+		<td class="leftcol"><label for="name">Examiner Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all, :include => [:title], :order => 'titles.id ASC'), :id, :staff_name_with_title %></td>
+	</tr>
+	
+</table>
+<H2>Full Mark Details</H2>
+<div>
+<table width=100% border=1 cellspacing=0>
+	<tr bgcolor="#FDEEF4">
+		<td align="center" width=6%><b>1</b></td>
+		<td align="center" width=6%><b>2</b></td>
+		<td align="center" width=6%><b>3</b></td>
+		<td align="center" width=6%><b>4</b></td>
+		<td align="center" width=6%><b>5</b></td>
+		<td align="center" width=6%><b>6</b></td>
+		<td align="center" width=6%><b>7</b></td>
+		<td align="center" width=6%><b>8</b></td>
+		<td align="center" width=6%><b>9</b></td>
+		<td align="center" width=6%><b>10</b></td>
+		<td align="center" width=6%><b>11</b></td>
+		<td align="center" width=6%><b>12</b></td>
+		<td align="center" width=6%><b>13</b></td>
+		<td align="center" width=6%><b>14</b></td>
+		<td align="center" width=6%><b>15</b></td>
+	</tr>
+	<tr>
+		<td align="center" width=6%><%= f.text_field :fm_1, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_2, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_3, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_4, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_5, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_6, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_7, :size => 2 %></td>
+		<td align="center" width=6%> <%= f.text_field :fm_8, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_9, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_10, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_11, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_12, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_13, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_14, :size => 2 %></td>
+		<td align="center" width=6%><%= f.text_field :fm_15, :size => 2 %></td>
+	</tr>
+	
+	<tr bgcolor="#FDEEF4">
+			<td align="center" ><b>16</b></td>
+			<td align="center" ><b>17</b></td>
+			<td align="center" ><b>18</b></td>
+			<td align="center" ><b>19</b></td>
+			<td align="center" ><b>20</b></td>
+			<td align="center"><b>21</b></td>
+			<td align="center"><b>22</b></td>
+			<td align="center"><b>23</b></td>
+			<td align="center"><b>24</b></td>
+			<td align="center"><b>25</b></td>
+			<td align="center"><b>26</b></td>
+			<td align="center"><b>27</b></td>
+			<td align="center"><b>28</b></td>
+			<td align="center"><b>29</b></td>
+			<td align="center"><b>30</b></td>
+	</tr>
+	<tr>
+			<td align="center" width=6%><%= f.text_field :fm_16, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_17, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_18, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_19, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_20, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_21, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_22, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_23, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_24, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_25, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_26, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_27, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_28, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_29, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_30, :size => 2 %></td>		
+	</tr>
+		
+	<tr bgcolor="#FDEEF4">
+			<td align="center"><b>31</b></td>
+			<td align="center"><b>32</b></td>
+			<td align="center"><b>33</b></td>
+			<td align="center"><b>34</b></td>
+			<td align="center"><b>35</b></td>
+			<td align="center"><b>36</b></td>
+			<td align="center"><b>37</b></td>
+			<td align="center"><b>38</b></td>
+			<td align="center"><b>39</b></td>
+			<td align="center"><b>40</b></td>
+			<td align="center"><b>41</b></td>
+			<td align="center"><b>42</b></td>
+			<td align="center"><b>43</b></td>
+			<td align="center"><b>44</b></td>
+			<td align="center"><b>45</b></td>
+		</tr>
+		<tr>
+			<td align="center" width=6%><%= f.text_field :fm_31, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_32, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_33, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_34, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_35, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_36, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_37, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_38, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_39, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_40, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_41, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_42, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_43, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_44, :size => 2 %></td>
+			<td align="center" width=6%><%= f.text_field :fm_45, :size => 2, :value => 0 %></td>
+							
+		</tr>
+		<tr bgcolor="#FDEEF4">
+			<td align="center"><b>46</b></td>
+			<td align="center"><b>47</b></td>
+			<td align="center"><b>48</b></td>
+			<td align="center"><b>49</b></td>
+			<td align="center"><b>50</b></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+		</tr>
+		<tr>
+			<td align="center"><%= f.text_field :fm_46, :size => 2, :value => 0 %></td>
+			<td align="center"><%= f.text_field :fm_47, :size => 2, :value => 0 %></td>
+			<td align="center"><%= f.text_field :fm_48, :size => 2, :value => 0 %></td>
+			<td align="center"><%= f.text_field :fm_49, :size => 2, :value => 0 %></td>
+			<td align="center"><%= f.text_field :fm_50, :size => 2, :value => 0 %></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+			<td align="center"></td>
+		</tr>
+		
+	
+</table>
+<H2>Grade Details</H2>
+<table width=100% border=0>
+		
+		<tr>
+			<td width=15%><font size=2>Student Name</font></td>
+			<td width=2%><b>:</b></td>
+			<td>
+				<% f.fields_for :student_marks do |builder| %>
+				<%= render 'student_mark_fields', :f => builder %>
+				<% end %><BR>
+				<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More No.'), f, :student_marks %> - Add More </p>
+			</td>
+		</tr>
+	
+</table>
+</div>
+</div>

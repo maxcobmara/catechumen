@@ -2,371 +2,321 @@
 <div id="A4potrait">
 
 <form action="#">
-	<script>
+ <script>
 	document.write("<input type='button' " +
-	"onClick='window.print()' " +
-	"class='printbutton' " +
-	"value='Print This Page'/>");
-	</script>
-	<form>
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
 
-<div id="title" width=21cm>	
-<H3 text-indent: 70px>KOLEJ KEJURURAWATAN JOHOR BAHRU</H3>
-<H3>KUMPULAN: <%=h @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y") %></H3> <!-- 21/10/2011 - Shaliza changed for intake -->
-<H3>BORANG MAKLUMAT PELATIH</H3>
+</script>
+</form>	
+<fieldset width=10px >
 
-<BR>
-	
-<div id="borangmaklumat">
-<table>
+<div id="title">
+<table width=100% border="0">
 	<tr>
-		<th colspan = 4><b>Personal Details</b></th>
+		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/></th>
+		<th><H4>PPL APMM<BR><BR>NO.DOKUMEN: BK-LAT-KS-02-03<BR>BORANG MAKLUMAT PERIBADI</H4> </th>
+		<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
 	</tr>
-	<tr></tr>
-	<tr>
-		<td width="1%">1</th>
-		<td width="20%"><label for="icno">No Kad Pengenalan</label></th>
-		<td width="1%">:</th>
-		<td><%=h @student.formatted_mykad %></td>
-	</tr>
-	
-	<tr>
-			<td>2</td>
-			<td><label for="name">Nama</label></td>
-			<td>:</td>
-			<td><%=h @student.name %></td>
-	</tr>
+</table>
 
-	<tr>
-			<td>3</td>
-			<td><label for="matrixno">No Matrik</label></td>
-			<td>:</td>
-			<td><%=h @student.matrixno %></td>
-	</tr>
-
-
+<div id="title">
+	<table width=100% cellspacing="0" border="1">
 		<tr>
-			<td>4</td>
-			<td><label for="sstatus">Status</label></td>
-			<td>:</td>
-			<td><%=h @student.sstatus %></td>
+			<th colspan=4 align="left"> DISEDIAKAN OLEH: STAF BPL</th>
+			<th colspan=2 align="left">TARIKH KEMASKINI: 5 DIS 2011</th>
 		</tr>
 
-		<tr>
-			<td>5</td>
-			<td><label for="stelno">No.Telefon</label></td>
-			<td>:</td>
-			<td><%=h @student.stelno %></td>
-		</tr>
-		
-		<tr><!-- 17/11/2011 - Shaliza added Address -->
-			<td>6</td>
-			<td><label for="address">Alamat</label></td>
-			<td>:</td>
-			<td><%=h @student.address %></td>
-		</tr>
-		
-		<tr>
-			<td>7</td><!-- 17/11/2011 - Shaliza added Address Duty -->
-			<td><label for="stelno">Alamat Bertugas</label></td>
-			<td>:</td>
-			<td><%=h @student.address_posbasik %></td>
-		</tr>
-		
-		<tr>
-			<td>8</td>
-			<td><label for="ssponsor">Penganjur</label></td>
-			<td>:</td>
-			<td><%=h @student.ssponsor %></td>
-		</tr>
-
-		<tr>
-			<td>9</th>
-			<td><label for="gender">Jantina</label></th>
-			<td>:</td>
-			<td><%=h (Student::GENDER.find_all{|disp, value| value == @student.gender.to_s}).map {|disp, value| disp} %></td>
-		</tr>
-
-		<tr>
-			<td>10</th>
-			<td><label for="sbirthdt">Tarikh Lahir</label></th>
-			<td>:</td>
-			<td><%=h @student.sbirthdt %></td>
-		</tr>
-
-		<tr>
-			<td>11</th>
-			<td><label for="maritalstatus">Taraf Perkahwinan</label></th>
-			<td>:</td>
-			<td><%=h (Student::MARITAL_STATUS.find_all{|disp, value| value == @student.mrtlstatuscd.to_s}).map {|disp, value| disp} %></td>
-		</tr>
-
-		<tr>
-			<td>12</th>
-			<td><label for="semail">Email</label></th>
-			<td>:</th>
-			<td><%=h @student.semail %></td>
-		</tr>
-
-		<tr>
-			<td>13</th>
-			<td><label for="regdate">Tarikh Pendaftaran</label></th>
-			<td>:</th>
-			<td><%=h @student.regdate %></td>
-		</tr>
-		<tr></tr>
 	</table>
-	<table>
-		<tr>
-			<th colspan = 4><b>Maklumat Kursus</b></th>
-		</tr>
-		<tr></tr>
+
+<table width=100% cellspacing="0" cellpadding="7" border="0">
+	<tr>
+		<th colspan=4 align="center"><font color="black", size="3"> PUSAT PENDIDIKAN DAN LATIHAN APMM <BR>
+			                        AGENSI PENGUATKUASAAN MARITIM MALAYSIA<BR>
+									JABATAN PERDANA MENTERI</font><BR><BR>
+									<font color="black", size="4"><u>BORANG MAKLUMAT PERIBADI</u></font><BR>
+									<font color="black", size="2"><i>(Diisi dalam 2 Salinan)</i></font></th>
+		<th width="2%"><% if @student.photo.exists? then %>
+						<%= image_tag (@student.photo.url, :size => '150x200')%>
+						<% else %>
+						No Photo<BR>Available
+						<% end %></th>
 		
-		<tr>
-			<td width="1%">14</th>
-			<td width="20%"><label for="course_id">Nama Kursus</label></th>
-			<td width="1%">:</th>
-			<td ><%=h @student.course_id.blank? ? " " : @student.course.programme_with_specialisation %></td>
-		</tr>
-		
-		<!--15/11/2011 - Shaliza hide specialisation because I add :programme_with_specialisation in programme field.
-		<tr>
-			<td>13</th>
-			<td><label for="specialisation">Bidang/Pengkhususan</label></th>
-			<td>:</th>
-			<td><#%=h @student.specilisation %></td>
-		</tr>-->
-		
-		<tr>
-			<td>15</th>
-			<td><label for="session">Sesi Pengambilan</label></th>
-			<td>:</th>
-			<td><%=h @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y") %></td><!-- 21/10/2011 - Shaliza changed for intake -->
-		</tr>
-		
-		
-		<tr></tr>
-		</table>
-		<table>
-		<tr>
-			<th colspan = 4><b>Status Kesihatan</b></th>
-		</tr>
-		<tr></tr>
-		
-		<tr>
-			<td width="1%">16</th>
-			<td width="20%"><label for="physical">Fizikal</label></th>
-			<td width="1%">:</th>
-			<td><%=h @student.physical %></td>
-		</tr>
-		
-		<tr>
-			<td>17</th>
-			<td><label for="allergy">Alergik</label></th>
-			<td>:</th>
-			<td><%=h @student.allergy %></td>
-		</tr>
-		
-		<tr>
-			<td>18</th>
-			<td><label for="disease">Penyakit</label></th>
-			<td>:</th>
-			<td><%=h @student.disease %></td>
-		</tr>
-		
-		<tr>
-			<td>19</th>
-			<td><label for="bloodtype">Jenis Darah</label></th>
-			<td>:</th>
-			<td><%=h (Student::BLOOD_TYPE.find_all{|disp, value| value == @student.bloodtype}).map {|disp, value| disp} %></td>
-		</tr>
-		
-		<tr>
-			<td>20</th>
-			<td><label for="medication">Ubat</label></th>
-			<td>:</th>
-			<td><%=h @student.medication %></td>
-		</tr>
-		
-		<tr>
-			<td>21</th>
-			<td><label for="remarks">Remarks</label></th>
-			<td>:</th>
-			<td><%=h @student.remarks %></td>
-		</tr>
-		
-		<tr></tr>
-		</table>
-		<table>
-		<tr>
-			<th colspan = 4><b>Kelayakan Akademik</b></th>
-		</tr>
-		<tr></tr>
-	
-				<% for qualification in @student.qualifications %>
-				<tr>
-					
-					<td class="leftcol" width="24%"><label for="level_id ">
-							<%=h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp} %></label>
-					</td>
-					<td>:</td>
-					<td><%=h qualification.qname %> &nbsp &nbsp from &nbsp &nbsp <%=h qualification.institute %></td>
-				</tr>
-	  	<% end %>
-				<tr> <!-- 06/10/2011 - Shaliza Update to display grade such as 1A,2A,3B and so on as user requested -->
-					<td class="leftcol"> SPM Results</td>
-					<td>:</td>
-					<td>
-						<table>
-							<% for spmresult in @student.spmresults %>
-								<tr>
-									<td><%=h spmresult.spm_subject %></td>
-									<td>-</td>
-									<td><%=h spmresult.grade %></td>
-								</tr>
-							
-							<% end %>
-							</table>
-					</td>
-				</tr>
-	
-        </table>
-        <table>
-	
-		<tr>
-			<th colspan = 4><b>Penjamin</b></th>
-		</tr>
-		<tr></tr>
-			<tr>
-				<td width="1%">22</td>
-				<td width="20%">Maklumat Penjamin </td>
-				<td width="1%">:</td>
-				<td></td>
-			</tr>
-		
-		<% puid = @student.id %>
-		<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  98 ]) %>
-		<% garantor.each do |e| %>
-		
-			
-	
-		<tr>
-			<td></td>
-			<td class="leftcol">a. <%= t 'student.kintype_id' %> :</td>
-			<td>:</td>
-			<td>Penjamin I</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="leftcol"><label for="kintype ">b. <%= t 'student.name' %> :</label></td>
-			<td>:</td>
-			<td><%=h e.name.blank? ? "" : e.name %></td>
-		</tr>
-	    <tr>
-		    <td></td>
-			<td class="leftcol"><label for="icno ">c. <%= t 'student.icno' %> :</label></td>
-			<td>:</td>
-			<td><%=h e.mykadno %></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="leftcol"><label for="kinaddr ">d. <%= t 'student.kinaddr' %> :</label></td>
-			<td>:</td>
-			<td><%=h e.kinaddr %></td>
-		</tr>
-		<% end %>
-		
-	  <tr><td colspan=4><HR></td></tr>
-			
-		<% puid = @student.id %>
-		<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  99 ]) %>
-		<% garantor.each do |e| %>
-		
-		<tr>
-			<td></td>
-			<td class="leftcol">e. <%= t 'student.kintype_id' %> :</td>
-			<td>:</td>
-			<td>Penjamin II</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="leftcol"><label for="kintype ">f. <%= t 'student.name' %> :</label></td>
-			<td>:</td>
-			<td><%=h e.name.blank? ? "" : e.name %></td>
-		</tr>
-	    <tr>
-		    <td></td>
-			<td class="leftcol"><label for="icno ">g. <%= t 'student.icno' %> :</label></td>
-			<td>:</td>
-			<td><%=h e.mykadno %></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="leftcol"><label for="kinaddr ">h. <%= t 'student.kinaddr' %> :</label></td>
-			<td>:</td>
-			<td><%=h e.kinaddr %></td>
-		</tr>
-		<% end %>
-	</table>
-	<table>
-	
-		<tr>
-			<th colspan = 4><b>Waris Terdekat</b></th>
-		</tr>
-		
-			<tr>
-					<td width="1%">23</td>
-					<td width="20%">Maklumat Keluarga : </td>
-					<td width="1%">:</td>
-					<td></td>
-			</tr> 
-		<% puid = @student.id %>
-		<% thekins = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id != ? AND kintype_id != ? ", puid,  98, 99 ]) %>
-	   <% thekins.each do |e| %>
-		<tr>
-			<td></th>
-			<td><label for="relationship">a. Hubungan</label></th>
-			<td>:</th>
-			<td><%=h (Kin::KTYPE.find_all{|disp, value| value == e.kintype_id}).map {|disp, value| disp} %></td>
-		</tr>
-		
-		<tr>
-			<td></th>
-			<td><label for="name">b. Nama</label></th>
-			<td>:</th>
-			<td><%=h e.name.blank? ? "" : e.name %></td>
-		</tr>
-		
-		<tr>
-			<td></th>
-			<td><label for="kinbirthdt">c. Tarikh Lahir</label></th>
-			<td>:</th>
-			<td><%=h e.kinbirthdt %></td>
-		</tr>
-		
-		<tr>
-			<td></th>
-			<td><label for="phone">d. No Telefon</label></th>
-			<td>:</th>
-			<td><%=h e.phone %></td>
-		</tr>
-		
-		<tr>
-			<td></th>
-			<td><label for="kinaddr">e. Alamat</label></th>
-			<td>:</th>
-			<td><%=h e.kinaddr %></td>
-		</tr>
-		<tr><td colspan=4><HR></td></tr>
-		<% end %>
+	</tr>
 
 </table>
+
+	<table width=100% cellspacing="0" cellpadding="5" border="1">
+		<tr>
+			<th align="left" colspan=2 bgcolor = "#FEFE56">A.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MAKLUMAT PERIBADI PELATIH</th>
+		</tr>
+
+		<tr>
+			<td colspan=2>Nama Pelatih : <%=h @student.name %></td>
+		</tr>
+			
+		<tr>
+			<td>No. K/P (Baru) : <%=h @student.formatted_mykad %></td>
+			<td>Umur : <%=h @student.age %></td>
+		</tr>
+					
+		<tr>
+			<td>Tarikh Lahir : <%=h @student.sbirthdt.strftime("%d %b %Y") %></td>
+			<td>Tempat Lahir : </td>
+		</tr>
+					
+		<tr>
+			<td>Jantina : <%=h (Student::GENDER.find_all{|disp, value| value == @student.gender.to_s}).map {|disp, value| disp} %></td>
+			<td>Status Perkahwinan : <%=h (Student::MARITAL_STATUS.find_all{|disp, value| value == @student.mrtlstatuscd.to_s}).map {|disp, value| disp} %></td>
+		</tr>
+						
+		<tr>
+		<td colspan=2>Jenis Darah : <%=h (Student::BLOOD_TYPE.find_all{|disp, value| value == @student.bloodtype}).map {|disp, value| disp} %></td>
+		</tr>
+		
+		<tr>
+			<td>Bangsa/Keturunan : <%= @student.race %></td>
+			<td>Agama : <%= @student.religion %></td>
+		</tr>
+
+		<tr>
+			<td>Kelulusan Akademik :</td>
+			<td>No.Tel Bimbit : <%= @student.stelno %></td>
+		</tr>
+			
+		<tr>
+			<td>Pangkat : <%=h @student.pangkat %></td>
+			<td>Unit/Bahagian/Cawangan : <%= @student.unit %></td>
+		</tr>
+					
+		<tr >
+			<td colspan=2>Alamat Pejabat : <%= @student.office_address %></td>
+			
+		</tr><BR>
+					
+		<tr>
+			<td>Poskod :</td>
+			<td>No.Tel Pejabat : <%= @student.phoneoffice %></td>
+		</tr>
+						
+		<tr>
+			<td colspan=2>email<i>(sekiranya ada)</i> : <%=h @student.semail %></td>
+		</tr>
+		<tr>
+			<td>Nama Bapa :</td>
+			<td>No Tel :</td>
+		</tr>
+		
+		<tr>
+			<td>Nama Ibu :</td>
+			<td>No Tel :</td>
+		</tr>
+		
+		<tr>
+			<td>Nama Isteri/Waris <i>(sekiranya perlu)</i>  :</td>
+			<td>No Tel :</td>
+		</tr>
+		
+		<tr >
+			<td colspan=2>Alamat Rumah : <%= @student.address %></td>
+		</tr>
+		
+		<tr >
+			<td colspan=2>No. Tel Rumah <i>(sekiranya ada)</i>: <%= @student.phonehome %></td>
+		</tr>
+
+		<tr >
+			<td>Jenis Kenderaan : <%=h (Student::VEHICLE.find_all{|disp, value| value == @student.vehicletype.to_s}).map {|disp, value| disp} %></td>
+			<td>No Kenderaan : <%= @student.vehicleregno %></td>
+		</tr>
+</table>
+<p><font color="black", size="3"> Nota :</font>
+	<ol>
+	<li>Kenderaan hanya dibenarkan hanya untuk peserta kursus lanjutan/undang-undang sahaja.</li>
+	
+	</ol></td></p>
+
+<table width=100% cellspacing="0" cellpadding="5" border="0">
+	<tr>
+		<td colspan=4 align="left"> BK-LAT-KS-02-03</td>
+		<td colspan=2 align="right">1 daripada 3</td>
+	</tr>
+</table>
+
+</div>
+</div>
+</fieldset>
 <BR>
+<fieldset width=10px >
+
+<div id="title">
+<table width=100% border="0">
+	<tr>
+		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/></th>
+		<th><H4>PPL APMM<BR><BR>NO.DOKUMEN: BK-LAT-KS-02-03<BR>BORANG MAKLUMAT PERIBADI</H4> </th>
+		<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
+	</tr>
+</table>
+
+<div id="title">
+	<table width=100% cellspacing="0" border="1">
+		<tr>
+			<th colspan=4 align="left"> DISEDIAKAN OLEH: STAF BPL</th>
+			<th colspan=2 align="left">TARIKH KEMASKINI: 5 DIS 2011</th>
+		</tr>
+
+	</table>
+
+<BR>
+	<table width=100% cellspacing="0" cellpadding="5" border="1">
+		<tr>
+			<th align="left" colspan=2 bgcolor = "#FEFE56">A.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MAKLUMAT PERIBADI PELATIH <i>(sambungan...)</i></th>
+		</tr>
+
+		<tr>
+			<td colspan=2>Pengalaman Kerja <i> (sekiranya ada, selain dari APMM) </i>: <BR><BR>
+			<strong>
+						<div style="width: 290px; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nama Organisasi </div>
+						<div style="width: 250px; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Jawatan </div>
+						<div style="width: 190px; float: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tempat </div>
+						</strong><BR>
+						<div style="width: 290px; float: left;"><ol>
+							<li>&nbsp;</li>
+							<li>&nbsp;</li>
+							<li>&nbsp;</li>
+							<li>&nbsp;</li>
+							</ol></td> </div>	</td>
+		</tr>
+</table>
+<BR>
+<table width=100% cellspacing="0" cellpadding="5" border="1">
+		<tr>
+			<th align="left"  colspan=2 bgcolor = "#FEFE56">B.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MAKLUMAT KURSUS/PENGINAPAN/SAJIAN</th>
+		</tr>
+
+		<tr>
+			<td colspan=2>Nama Kursus : <%=h @student.course_id.blank? ? " " : @student.course.name %></td>	
+		</tr>
+		
+		<tr>
+			<td colspan=2>Tarikh Mula : <%=h @student.start_training.blank? ? "-" : l(@student.start_training) %></td>
+			
+		</tr>
+		
+		<tr>
+			<td colspan=2>Tarikh Tamat : <%= @student.end_training %> </td>
+			
+		</tr>
+		
+		<tr>
+			<td>Keperluan Penginapan : <%=h @student.accomodation? ? "Ya" : "Tidak" %><BR><BR>
+				Keperluan Sajian : <%=h @student.dish? ? "Ya" : "Tidak" %><BR><BR>
+				<i>Maklumat lanjut Rujuk BK-LAT-KS-02-02 (Borang Kediaman Asrama)</i></td>
+			
+		</tr>
+		
+		
+</table>
+<BR>
+<table width=100% cellspacing="0" cellpadding="5" border="1">
+		<tr>
+			<th align="left" colspan=2 bgcolor = "#FEFE56">C.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SALINAN REKOD/DOKUMEN/BARANGAN YANG DISERAHKAN 
+				<i>(mana-mana yang perlu)</th>
+		</tr>
+
+		<tr>
+			<td colspan=2>Senarai Rekod/dokumen Yang Diserahkan : <BR>
+				<ol>
+					<li>Salinan Kad Pengenalan</li>
+					<li>Salinan Surat Beranak</li>
+					<li>Salinan Sijil Kelulusan Akademik</li>
+					<li>&nbsp;</li>
+					<li>&nbsp;</li>
+					<li>&nbsp;</li>
+					</ol><BR>
+					Mempunyai Barangan Yang Diserahkan Untuk Simpanan <BR><BR>
+					<i>Maklumat lanjut Rujuk BK-LAT-KS-02-01 (Borang Simpanan Barangan Peribadi Pelatih)</i></td>	
+		</tr>
+		
+</table>
+<BR><BR><BR>
+<table width=100% cellspacing="0" cellpadding="5" border="0">
+	<tr>
+		<td colspan=4 align="left"> BK-LAT-KS-02-03</td>
+		<td colspan=2 align="right">2 daripada 3</td>
+	</tr>
+</table>
 </div>
-</form>
+</div>
+</fieldset>
+<fieldset width=10px >
+
+<div id="title">
+<table width=100% border="0">
+	<tr>
+		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/></th>
+		<th><H4>PPL APMM<BR><BR>NO.DOKUMEN: BK-LAT-KS-02-03<BR>BORANG MAKLUMAT PERIBADI</H4> </th>
+		<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
+	</tr>
+</table>
+
+<div id="title">
+	<table width=100% cellspacing="0" border="1">
+		<tr>
+			<th colspan=4 align="left"> DISEDIAKAN OLEH: STAF BPL</th>
+			<th colspan=2 align="left">TARIKH KEMASKINI: 5 DIS 2011</th>
+		</tr>
+
+	</table>
+
+<BR>
+
+<table width=100% cellspacing="0" cellpadding="7" border="1">
+		<tr>
+			<th align="left"  colspan=2 bgcolor = "#FEFE56">D.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PENGESAHAN DAN TANDATANGAN</th>
+		</tr>
+
+		<tr>
+			<td colspan=2>Saya mengesahkan bahawa maklumat yang dinyatakan di atas adalah benar.<BR><BR>
+			<strong>
+					<div style="width: 350px; float: left;">Oleh : Pelatih </div>
+					<div style="float: left;">Diterima/Disahkan Oleh : KULA/BLA/JL </div>	
+			</strong><BR><BR>
+				<div style="width: 350px; float: left;">Nama Pelatih : <%=h @student.name %></div>
+				<div style="float: left;">Nama : <%=h @student.approver_details %></div><BR><BR>
+				<div style="width: 350px; float: left;">Tandatangan :</div>
+				<div style="float: left;">Tandatangan :</div><BR><BR>
+				<div style="width: 350px; float: left;">Tarikh : <%= Date.today.strftime('%d-%m-%Y') %></div>
+				<div style="float: left;">Tarikh :</div></td>	
+		</tr>	
+</table>
+<BR>
+<table width=100% cellspacing="0" cellpadding="5" border="1">
+
+		<tr>
+			<td colspan=1><b>Nota :</b><BR>
+				<ol>
+					<li>Borang perlu diisi dalam 2 salinan untuk :</li>
+					</ol><BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Simpanan Fail Peribadi: 1 salinan <BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Simpanan  Pelatih : 1 salinan </td>	
+		</tr>
+		
+</table>
+<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+<table width=100% cellspacing="0" cellpadding="5" border="0">
+	<tr>
+		<td colspan=4 align="left"> BK-LAT-KS-02-03</td>
+		<td colspan=2 align="right">3 daripada 3</td>
+	</tr>
+</table>
 </div>
 </div>
+</fieldset>
 
-
-
-
+	<div id="hideLink">
+	<%= link_to 'BACK', students_path %>
+	</div>
+	</div>
+	<BR>

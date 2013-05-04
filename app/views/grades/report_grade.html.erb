@@ -1,0 +1,79 @@
+<%= stylesheet_link_tag 'report' %> 
+<div id="A4landscape">
+	
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+	<fieldset width=10px >
+<div id="title" width=21cm>	
+<table width=100% border="0" align="center">
+	<th width="4%"><img border="0" style="vertical-align:top" src="/images/KM.jpg" alt="km" width="100" height="100"/></th>
+	<th><H3 align ="center"><font size=3>PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)</font></H3>
+		<H3 align ="center"><font size=3>LAPORAN PEMARKAHAN PEPERIKSAAN </font></H3>
+		<H3 align ="center"><font size=3>SEHINGGA <%= Date.today.strftime('%d-%m-%Y') %></font></H3></th>
+   <th width="4%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
+</table>
+<BR>
+	
+<div id="tprintreport">
+<table width=100% border=1px cellspacing=0 >
+		
+	<tr>
+		<th width="1%"  valign="middle" height="50">BIL</th>
+		<th   valign="middle">NAMA PELATIH</th>
+		<th   valign="middle">KURSUS</th>
+		<th width="5%" valign="middle"><div class="r90">PENTADBIRAN AWAM</div></th>
+		<th><div class="r90">KOMUNIKASI</div></th>
+		<th><div class="r90">PERSENJATAAN</div></th>
+		<th><div class="r90">ILMU KELAUTAN</div></th>
+		<th><div class="r90">SENGGARAAN KAPAL</div></th>
+		<th><div class="r90">MENGGELEDAH</div></th>
+		<th><div class="r90">MKMA</div></th>
+		<th><div class="r90">NAVIGASI</div></th>
+		<th><div class="r90">CHART WORK</div></th>
+		<th width="5%"><div class="r90">TEKNIKAL NAVIGASI</div></th>
+		<th width="5%"><div class="r90">AKTA APMM & PERINTAH TETAP KP</div></th>
+		<th width="5%"><div class="r90">PERINTAH AM & ARAHAN PERBENDAHARAAN</div></th>
+		<th><div class="r90">AKTA KETERANGAN</div></th>
+		<th><div class="r90">KANUN KESEKSAAN</div></th>
+		<th><div class="r90">KANUN PROSEDUR JENAYAH</div></th>
+		<th width="5%"><div class="r90">UNDANG-UNDANG AM</div></th>
+	</tr>
+
+	 <% just_a_counter = 0 %>
+	 <% @grades.each do |grade| %>
+	    <% just_a_counter += 1 %>
+    
+	<tr align="center">
+		<td><%=h just_a_counter %> </td>	
+		<td align="left" width="20%"><%=h grade.studentgrade.name %></td>	
+		<td><%=h grade.studentgrade.programme_for_student %></td>
+		<td align="left"><% if grade.subject_id == 130 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td align="left"><% if grade.subject_id == 114 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td><% if grade.subject_id == 115 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td><% if grade.subject_id == 117 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td><% if grade.subject_id == 119 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td><% if grade.subject_id == 116 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td><% if grade.subject_id == 118 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td><% if grade.subject_id == 120 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td><% if grade.subject_id == 132 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td><% if grade.subject_id == 133 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td><% if grade.subject_id == 134 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td><% if grade.subject_id == 135 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td><% if grade.subject_id == 136 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+		<td><% if grade.subject_id == 124 %><%=h grade.finale %>% <% else %> &nbsp; <% end %></td>
+	</tr>
+	
+	<% end %>
+	
+	
+</table>
+</div>
+</fieldset>
+</form>

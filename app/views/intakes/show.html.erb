@@ -1,28 +1,28 @@
-<p>
-  <b>Name:</b>
-  <%=h @intake.name %>
-</p>
+<div class="tform">
+<H2>Student Intake Details</H2>
+<table width=100% >
 
-<p>
-  <b>Description:</b>
-  <%=h @intake.description %>
-</p>
-
-<p>
-  <b>Register on:</b>
-  <%=h @intake.register_on %>
-</p>
-
-<p>
-  <b>Programme:</b>
-  <%=h @intake.programme_id %>
-</p>
-
-<p>
-  <b>Is active:</b>
-  <%=h @intake.is_active %>
-</p>
-
-
+<table width=100%>
+	<tr>
+		<td class="leftcol"><label for="name">Name</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @intake.name %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="year">Year</label></td>
+		<td><b>:</b></td>
+		<td><%=h @intake.year.strftime('%Y') %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="active ">Active</label></td>
+		<td><b>:</b></td>
+		<td><%=h @intake.active? ? "Active" : "Inactive" %></td>
+	</tr>
+</table>
+<BR>
+</div>
 <%= link_to 'Edit', edit_intake_path(@intake) %> |
 <%= link_to 'Back', intakes_path %>

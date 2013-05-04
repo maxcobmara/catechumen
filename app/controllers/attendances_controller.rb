@@ -1,11 +1,12 @@
 class AttendancesController < ApplicationController
-  filter_resource_access
+#  filter_resource_access
+ filter_access_to :all
   
   # GET /attendances
   # GET /attendances.xml
   def index
    # @attendances = Attendance.all
-   @attendances = Attendance.with_permissions_to(:index).find(:all, :order => 'attdate DESC, id', :limit => 50)
+   @attendances = Attendance.with_permissions_to(:index).search(params[:search])
    @mylate_attendances = Attendance.find_mylate
    @approvelate_attendances = Attendance.find_approvelate
    
@@ -80,6 +81,13 @@ class AttendancesController < ApplicationController
   
   def approve
     @attendance = Attendance.find(params[:id])
+  end
+  
+  def kedatangan_harian
+   # @attendances = Attendance.search(params[:id])
+    #@attendance = Attendance.all
+    @attendances = Attendance.find(:all, :conditions => {:attdate => Date.today})
+    render :layout => 'report'
   end
   
   

@@ -2,71 +2,44 @@ class Librarytransaction < ActiveRecord::Base
   
   before_save :varmyass
   
-  belongs_to :accession
+  belongs_to :accession, :foreign_key => 'book_id'
+  belongs_to :book
   belongs_to :staff
   belongs_to :student
   
+  validates_presence_of     :checkoutdate, :book_id
   
-  validates_presence_of :accession_id
+  def bil
+     v=1
+  end
   
-  
-  validate :staff_or_student_borrower
-
-  def staff_or_student_borrower
-    if %w(staff_id student_id).all?{|attr| self[attr].blank?}
-      errors.add_to_base("A borrower is required")
+  def borrower_filter
+     if ru_staff == TRUE
+       "STAF PLAMM"
+    else
+      "PELATIH"
     end
   end
-
   
-  
-  named_scope :all,       :conditions => [ "id IS NOT ?", nil ]
-  named_scope :borrowed,  :conditions => [ "returned = ? OR returned IS ?", false, nil ]
-  named_scope :returned,  :conditions => ["returned = ? AND returneddate > ?", true, 8.days.ago]
-  named_scope :overdue,   :conditions => ["returnduedate < ? AND returned = ?", 1.day.ago, false]
-  #named_scope :overdue, lambda { |time| { :conditions => ["returnduedate < ? AND returneddate !=?", Time.now, nil] } }
-  
-  FILTERS = [
-    {:scope => "all",        :label => "All Transactions"},
-    {:scope => "borrowed",   :label => "Out"},
-    {:scope => "returned",   :label => "Returned"},
-    {:scope => "overdue",    :label => "Overdue"}
-  ]
-  
-  
-  def books_that_are_out
-    Librarytransaction.find(:all, :select => 'accession_id', :conditions => ["returned = ? OR returned IS ?", false, nil ]).map(&:accession_id)
-  end
-  
-  
-  
+  def recommended_fine_value
+      (returnduedate - Date.today).to_i * -1
+    end
   
   def varmyass
-    if extended == true && (returnduedate - checkoutdate).to_i < 15
+    if extended == true
       self.returnduedate = returnduedate + 14.days
-    end
-    
-    if returned == false
-      self.returneddate = nil
-    end
-    
-    if finepay == false
-      self.finepaydate = nil
+      self.extended = false
     end
   end
   
   def extoond
-    if extended == true
+    if extended == false
       '(Extended)'
-    #elsif extended == nil
-      #'never'
-    #else
+    elsif extended == nil
+      'never'
+    else
     end
       
-  end
-  
-  def recommended_fine_value
-    (returnduedate - Date.today).to_i * -1
   end
   
   def loaner
@@ -81,35 +54,91 @@ class Librarytransaction < ActiveRecord::Base
     end 
   end
   
+  def overdue_book
+    Date.today - returnduedate
+  end
   
   
-  def borrower_name
-   stid = Array(staff_id)
-   suid = Array(student_id)
-   stexists = Staff.find(:all, :select => "id").map(&:id)
-   stuexists = Student.find(:all, :select => "id").map(&:id)
-   staffchecker = stid & stexists
-   studentchecker = suid & stuexists
+  def overdue_fine
+    if returneddate == nil && finepay == FALSE
+      (Date.today - returnduedate) * 0.20
+    else
+      "Fine Paid"
+  end
+end
+    
+def staff_details
+   suid = staff_id.to_a
+   exists = Staff.find(:all, :select => "id").map(&:id)
+   checker = suid & exists
    
-      if student_id == nil && staff_id == nil
-           "" 
-      elsif staff_id == nil && stexists == []
-           "Student No Longer Exists" 
-      elsif student_id == nil && stuexists == []
-           "Staff No Longer Exists" 
-      elsif staff_id == nil
-           " #{student.name}"   
-      else
-        staff.name
-      end 
-  end
+   if staff_id == nil
+     ""
+   elsif checker == []
+     "Staff No Longer Exists"
+   else
+     staff.staff_name_with_title
+   end
+ end   
+ 
+ def student_details
+    suid = student_id.to_a
+    exists = Student.find(:all, :select => "id").map(&:id)
+    checker = suid & exists
+
+    if student_id == nil
+      ""
+    elsif checker == []
+      "Student No Longer Exists"
+    else
+      student.name
+    end
+  end 
   
-  def book_details 
-    check_kin {book.isbn}
-  end
-     
-  def top_ten
-    dash_student = Librarytransaction.find(:all, :select => 'student_id', :conditions => ["student_id IS NOT ?", nil ]).map(&:student_id)
-    b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h } 
-  end
+  def isbn_details
+     suid = book_id.to_a
+     exists = Accession.find(:all, :select => "id").map(&:id)
+     checker = suid & exists
+
+     if book_id == nil
+       ""
+     elsif checker == []
+       "-"
+     else
+       accession.book.isbn
+     end
+   end
+   
+   def title_details
+       suid = book_id.to_a
+       exists = Accession.find(:all, :select => "id").map(&:id)
+       checker = suid & exists
+
+       if book_id == nil
+         ""
+       elsif checker == []
+         "-"
+       else
+         accession.accession_book
+       end
+     end
+    
+    
+      
+    
+    
+
+  
+  named_scope :all,         :conditions => [ "id IS NOT ?", nil ]
+  named_scope :borrowed,    :conditions => { :returned => false }
+  named_scope :returned,    :conditions => { :returned => true }
+  named_scope :overdue, lambda { |time| { :conditions => ["returnduedate < ?", Time.now] } }
+  
+  FILTERS = [
+    {:scope => "all",        :label => "All Transactions"},
+    {:scope => "borrowed",   :label => "Borrowed"},
+    {:scope => "returned",    :label => "Returned"},
+    {:scope => "overdue",    :label => "Overdue"}
+  ]
+  
 end

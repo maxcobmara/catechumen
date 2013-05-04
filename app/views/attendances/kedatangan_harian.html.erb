@@ -1,0 +1,61 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+ <script>
+	document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+
+</script>
+</form>	
+<fieldset width=10px >
+
+<div id="title">
+<table width=100% border="0">
+	<tr>
+		<th width="2%"><img border="0" style="vertical-align:top" src="/images/KM.jpg" alt="km" width="90" height="90"/></th>
+		<th><font size=3>PUSAT LATIHAN DAN AKADEMIK<BR>MARITIM MALAYSIA (PLAMM)<BR><BR>LAPORAN KEDATANGAN STAF PUSAT LATIHAN APMM <BR> PADA <%= Date.today.strftime('%d-%m-%Y') %> </font> </H4> </th>
+			<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="90" height="90"/></th>
+	</tr>
+</table>
+<BR>
+<table width=100% border=1px cellspacing=0 align="center" >
+
+		<tr>
+			<th width=2%  style="vertical-align:middle">BIL</th>
+			<th width=25% style="vertical-align:middle">NAMA STAF</th>
+			<th width=25% style="vertical-align:middle">JAWATAN</th>
+			<th width=18% style="vertical-align:middle">TARIKH</th>
+			<th width=15% style="vertical-align:middle">WAKTU <BR>MASUK</th>
+			<th  width=15% style="vertical-align:middle">WAKTU KELUAR</th>
+	  </tr>
+	
+		 <% bil = 0 %>
+	     <% @attendances.each do |attendance| %>
+		 <% bil += 1 %>
+		
+    <tr>
+				<td align="center"><%=h bil %></td>	
+				<td ><%=h attendance.staffname_details %></td>	
+				<td align="center"><%=h attendance.staffposition_details %></td>
+				<td align="center"><%=h attendance.attdate.strftime('%d-%m-%Y') %></td>
+				<td align="center" ><%=h attendance.time_in.strftime("%I:%M %p") %> </td>
+				<td align="center"><%=h attendance.time_out.strftime("%I:%M %p") %>  </td>
+		</tr>
+
+	<% end %>
+
+</table>
+
+</div>
+</fieldset>
+<BR>
+
+
+
+<div id="hideLink">
+<%= link_to 'BACK', attendances_path %>
+</div>
+

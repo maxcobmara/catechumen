@@ -1,0 +1,20 @@
+<div class="usesupply">
+	<% new_or_existing = usesupply.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "supplier[#{new_or_existing}_usesupply_attributes][]" %>
+	
+	<% fields_for prefix, usesupply do | usesupply_form | -%>
+
+    <table width=100%>
+	   <tr>
+		
+	       <td width=220px><%= usesupply_form.collection_select :issuedby, Staff.find(:all), :id, :name%></td>
+         <td width=220px><%= usesupply_form.collection_select :receivedby, Staff.find(:all), :id, :name%></td>
+         <td width=120px><%= usesupply_form.text_field :quantity, :size => 10 %></td>
+         <td><%= usesupply_form.text_field :issuedate, :size => 12 %><font color=#AAA size=-2>yyyymmdd</font> </td>
+         <td width=10px><%= link_to_function (t 'icms.remove'), "$(this).up('.usesupply').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>

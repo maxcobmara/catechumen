@@ -1,0 +1,58 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left"><%= t 'travel.list' %></h2>
+			<div class="right">
+				<% form_tag travelrequests_path, :method => 'get' do %>
+				<%= text_field_tag :search, params[:search], :placeholder => "Destination" %>
+				<%= submit_tag I18n.t('search'), :destination => nil %>
+				<% end %>
+			</div>
+	</div>
+</div>
+
+<div class="indextable">
+	<table>
+		<tr>
+			<th><%= t 'travel.sname' %></th>
+			<th><%= t 'travel.destination' %></th>
+			<th><%= t 'travel.purpose' %></th>
+			<th>Transport</th>
+         	<th>Approved?</th>
+			<th><%= t 'travel.approved' %></th>
+			<th colspan=3 class="ac">Control</th>
+		</tr>
+
+    <% @travelrequests.each do |travelrequest| %>
+    <tr>
+   		<td><%=h travelrequest.stafftravel.staff_name_with_title%></td>
+      <td><%=h travelrequest.destination %></td>
+      <td><%=h travelrequest.purpose %></td>
+      <td><%=h (Travelrequest::TRANSPORT.find_all{|disp, value| value == travelrequest.transport_travel.to_s}).map {|disp, value| disp} %></td>
+      <td><%=h travelrequest.hod_approved? ? "Yes" : "No" %></td>
+      <td><%=h travelrequest.hod_id.blank? ? "Not Staff" : travelrequest.hod.position_with_boss %></td>
+      <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => travelrequest %></td>
+	
+      
+      <td width=10px><% permitted_to? :update, travelrequest do %>
+	   <%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => travelrequest %><% end %></td>
+
+	 
+	  <td width=10px ><% permitted_to? :travelrequest_form, travelrequest do %>
+		<%= link_to image_tag("printer.png", :border => 0), :action => 'travelrequest_form', :id => travelrequest %><% end %></td>
+	  
+	
+	  <% permitted_to? :approve, @travelrequest do %>
+	  <td width=10px><%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => travelrequest %></td><% end %>
+	  
+  	  <td width=10px> <% permitted_to? :destroy, travelrequest do %>
+	  <%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), travelrequest, :confirm => 'Are you sure?', :method => :delete %><% end %></td>
+	
+    </tr>
+    <% end %>
+  </table>
+</div>
+<br />
+
+<%= link_to (t 'travel.create'), new_travelrequest_path %>

@@ -1,0 +1,49 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+  <div class="box-head">
+    <h2 class="left">Lists of Instructor Appraisal</h2>
+		<div class="right">
+		</div>
+	</div>
+</div>
+
+<div class="indextable">
+<table>
+  <tr class="toprow">
+    <th>Instructor Name</th>
+    <th>Course Name</th>
+    <th>Module Name</th>
+    <th>Evaluate Date</th>
+    <th colspan=4 class="ac"><%= t 'action' %></th>
+    
+  </tr>
+  
+<% @evaluate_coaches.each do |evaluate_coach| %>
+  <tr>
+     <td><%= evaluate_coach.staff_id.blank? ? "No Staff" : evaluate_coach.staffcoachev.staff_name_with_title %></td>
+     <td><%= evaluate_coach.course_id.blank? ? "No Programme" : evaluate_coach.course_coach.programme_with_specialisation %></td>
+     <td><%= evaluate_coach.subject_id.blank? ? "No Subject" : evaluate_coach.subject.subject_code_with_subject_name %></td>
+     <td><%= evaluate_coach.evaluate_date.strftime("%d-%b-%Y") %></td>
+     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => evaluate_coach %></td>
+
+	 <% if permitted_to? :update, evaluate_coach %>
+     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => evaluate_coach %></td>
+     <% end %>
+  
+     <% if permitted_to? :destroy, evaluate_coach %>
+     <td width=10px>
+     <%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), evaluate_coach, :confirm => 'Are you sure?', :method => :delete %></td>
+     <% end %>
+	
+	 <td width=10px>
+		<%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Penilaian Jurulatih'), :action => 'penilaijurulatih', :id => evaluate_coach %>
+	</td>
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+<% if permitted_to? :create, @evaluate_coach %>
+<%= link_to 'New Instructor Appraisal', new_evaluate_coach_path %>
+<% end %>

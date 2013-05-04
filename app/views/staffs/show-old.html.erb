@@ -1,0 +1,353 @@
+
+<div class="tform">
+	<div class="photo">
+		
+	</div>
+  <table width=100% >
+
+	<tr>
+		<th colspan = 3><%= t 'staff.personal_details' %></th>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="icno"><%= t 'staff.icno' %></label></td>
+		<td><%=h @staff.icno %></td>
+		<td rowspan=10 align=right><% if @staff.photo.exists? then %>
+		  <%= image_tag @staff.photo.url%>
+		<% else %>
+		  No Photo<BR>Available
+		<% end %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name"><%= t 'staff.name' %></label></td>
+		 <td><%=h @staff.title.name %> <%=h @staff.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="code"><%= t 'staff.code' %></label></td>
+		 <td><%=h @staff.code %>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="fileno"><%= t 'staff.fileno' %></label></td>
+	    <td><%=h @staff.fileno %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="position_id"><%= t 'staff.position' %></label></td>
+		 <td><%=h @staff.position.blank? ? "-" : @staff.position.positionname %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="coemail">Email</label></td>
+		 <td><%=h @staff.coemail %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="cobirthdt"><%= t 'staff.cobirthdt' %></label></td>
+		<td><%=h @staff.cobirthdt.strftime('%d %b %Y') unless @staff.cobirthdt.nil? %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="Age"><%= t 'staff.age' %></label></td>
+		<td><%=h @staff.birthcertno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="Age"><%= t 'staff.age' %></label></td>
+		<td><%=h @staff.age %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="bloodtype"><%= t 'staff.bloodtype' %></label></td>
+		<!--><td><%=h @staff.bloodtype %><td>-->
+	<td><%=h (Staff::BLOOD_TYPE.find_all{|disp, value| value == @staff.bloodtype}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="gender"><%= t 'staff.gender' %></label></td>
+	<td><%=h (Staff::GENDER.find_all{|disp, value| value == @staff.gender.to_s}).map {|disp, value| disp} %></td>
+    </tr>
+	
+	<tr>
+		<td class="leftcol"><label for="cooftelno">Telephone No</label></td>
+		<td><%=h @staff.cooftelno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="cooftelext">Extension</label></td>
+	    <td><%=h @staff.cooftelext %></td>
+	
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="addr">Address</label></td>
+		<td><%=h @staff.addr %></td>
+		
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="regdate">PostCode</label></td>
+		<td><%=h @staff.poskod_id %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="mrtlstatuscd">Marital Status</label></td>
+		<td><%=h (Staff::MARITAL_STATUS.find_all{|disp, value| value == @staff.mrtlstatuscd }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="statecd">State of Birth</label></td>
+		<td><%=h (Staff::STATECD.find_all{|disp, value| value == @staff.statecd}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="race">Race</label></td>
+		<td><%=h (Staff::RACE.find_all{|disp, value| value == @staff.race}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="religion">Religion</label></td>
+		<td><%=h (Staff::RELIGION.find_all{|disp, value| value == @staff.religion}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="country_cd ">Nationality</label></td>
+		<td><%=h (Staff::NATIONALITY.find_all{|disp, value| value == @staff.country_cd}).map {|disp, value| disp} %></td>
+	</tr>
+	</table>
+	<table width=100% >
+	<tr>
+		<th colspan = 2>Employment Details</th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staffgrade_id">Staff Grade:</label></td>
+		<td><%=h @staff.staffgrade_id.blank? ? "" : @staff.staffgrade.name_and_group %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="position_id">Position:</label></td>
+		<td><%=h @staff.position.blank? ? "-" : @staff.position.positionname %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="Reports To">Reports to:</label></td>
+		<td><%=h @staff.render_reports_to %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="employstatus">Employment Status:</label></td>
+	<td><%=h (Staff::STATUS.find_all{|disp, value| value == @staff.employstatus}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="appointstatus">Appointment Status:</label></td>
+	<td><%=h (Staff::APPOINTMENT.find_all{|disp, value| value == @staff.appointstatus.to_s}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="appointdt ">Appointment Date:</label></td>
+		<td><%=h @staff.appointdt  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="schemedt">Appointment To Scheme:</label></td>
+		<td><%=h @staff.schemedt  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="confirmdt">Confirmation Date:</label></td>
+		<td><%=h @staff.confirmdt  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'staff.posconfirmdate' %></td>
+		<td><%=h @staff.posconfirmdate  %></td>
+	</tr>
+	<!-- 14 April 2010 MYMN -->
+	<tr>
+		<td class="leftcol"><%= t 'staff.wealth_decleration_date' %></td>
+		<td><%=h @staff.wealth_decleration_date  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'staff.promotion_date' %></td>
+		<td><%=h @staff.promotion_date  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'staff.reconfirmation_date' %></td>
+		<td><%=h @staff.reconfirmation_date  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'staff.current_grade_date' %></td>
+		<td><%=h @staff.to_current_grade_date  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'staff.starting_salary' %></td>
+		<td><%=h @staff.starting_salary  %></td>
+	</tr>
+	
+	<!-- EOF 14 April 2010 MYMN -->
+	<tr>
+		<td class="leftcol"><label for="appointby">Appointed By:</label></td>
+		<td><%=h (Staff::APPOINTED.find_all{|disp, value| value == @staff.appointby }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="svchead">Head of Service:</label></td>
+		<td><%=h (Staff::HOS.find_all{|disp, value| value == @staff.svchead }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="svctype ">Type of Service:</label></td>
+		<td><%=h (Staff::TOS.find_all{|disp, value| value == @staff.svctype }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="pensionstat ">Pension Status:</label></td>
+		<td><%=h (Staff::PENSION.find_all{|disp, value| value == @staff.pensionstat}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="pensiondt">Pension Date:</label></td>
+		<td><%=h @staff.pensiondt  %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'staff.pension_confirm_date' %></td>
+		<td><%=h @staff.pension_confirm_date  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="uniformstat ">Uniform Status:</label></td>
+		<td><%=h (Staff::UNIFORM.find_all{|disp, value| value == @staff.uniformstat }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<th colspan = 2>Qualification Details</th>
+	</tr>
+	
+	<td><% for qualification in @staff.qualifications %></td>
+	<tr>
+		<td class="leftcol"><label for="level_id ">Level:</label></td>
+	<!-->	<td><#%=h qualification.level_id %></td>-->
+		<td><%=h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp} %></td>
+    <tr>
+	
+    <tr>
+		<td class="leftcol"><label for="qname ">Qualification:</label></td>
+	   <td><%=h qualification.qname %></td>
+	
+    </tr>
+
+     <tr>
+		<td class="leftcol"><label for="institute ">Institute:</label></td>
+		<td><%=h qualification.institute %></td>
+	</tr>
+	
+	<td bgcolor="#C0C0C0"></td><td bgcolor="#C0C0C0"></td>
+	
+	<% end %>
+	
+	<tr>
+	  <th colspan=2>Loans</th>
+    </tr>
+
+	<% for loan in @staff.loans %>
+	
+	<tr>
+		<td class="leftcol"><label for="ltype ">Loan For:</label></td>
+	    	<td><%=h (Loan::LTYPE.find_all{|disp, value| value == loan.ltype}).map {|disp, value| disp} %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="accno ">Loan Account No:</label></td>
+	    <td><%=h loan.accno %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="startdt ">Loan Date:</label></td>
+        <td><%=h loan.startdt %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="durationmn ">Duration:</label></td>
+	<td><%=h loan.durationmn %> Months</td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="deductions ">Deductions:</label></td>
+		<td>RM <%=h loan.deductions %></td>
+	</tr>
+	
+	<td bgcolor="#C0C0C0"></td><td bgcolor="#C0C0C0"></td>
+	
+	<% end %>
+
+	<tr>
+	  <th colspan=2>Finance Details</th>
+	</tr>
+	
+	<tr>
+	  <td class="leftcol"><label for="kwspcode">EPF No</label></td>
+	  <td><%=h @staff.kwspcode %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="taxcode">Tax No</label></td>
+		<td><%=h @staff.taxcode %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="bank">Bank</label></td>
+		<!--><td><#%=h @staff.bank %></td>-->
+		<td><%=h (Staff::BANK.find_all{|disp, value| value == @staff.bank }).map {|disp, value| disp} %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="bankaccno">Account No</label></td>
+		<td><%=h @staff.bankaccno %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="bankacctype">Account Type</label></td>
+		<td><%=h (Staff::BANKTYPE.find_all{|disp, value| value == @staff.bankacctype }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+	    <th colspan=2>Emergency Contact Information</th>
+    </tr>
+		<% for kin in @staff.kins %>
+	<tr>
+		<td class="leftcol"><label for="kintype_id ">Relationship:</label></td>
+	    <td><%=h (Kin::KTYPE.find_all{|disp, value| value == kin.kintype_id}).map {|disp, value| disp} %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="name ">Name:</label></td>
+	<td><%=h kin.name.blank? ? "" : kin.name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="kinbirthdt ">DOB:</label></td>
+	    <td><%=h kin.kinbirthdt %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="phone ">Telephone:</label></td>
+	    <td><%=h kin.phone %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="kinaddr ">Address:</label></td>
+	    <td><%=h kin.kinaddr %></td>
+	</tr>
+	
+	<td bgcolor="#C0C0C0"></td><td bgcolor="#C0C0C0"></td>
+	
+	<% end %>
+
+</table>
+
+<BR>
+</div>	
+	
+<%= link_to 'Edit', edit_staff_path(@staff) %> |
+<%= link_to 'Back', staffs_path %>

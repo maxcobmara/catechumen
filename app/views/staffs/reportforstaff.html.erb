@@ -32,8 +32,8 @@
 		<th width=5cm valign="top">NAMA</th>
 		<th width=4cm valign="top">NO K/P</th>
 		<th width=4cm valign="top">TARIKH LAHIR</th>
-		<th width=4cm valign="top">TARIKH LANTIKAN PERTAMA</th>
-		<th width=4cm valign="top">TARIKH KENAIKAN PANGKAT KE GRED SEKARANG</th>
+	<!--	<th width=4cm valign="top">TARIKH LANTIKAN PERTAMA</th>
+		<th width=4cm valign="top">TARIKH KENAIKAN PANGKAT KE GRED SEKARANG</th>-->
 		<th  valign="top">CATATAN *</th>
 	</tr>
 	
@@ -42,14 +42,14 @@
 	    <% bil += 1 %>
     <tr align="center">
 	<td><%=h just_a_counter %> </td>	
-	<td align="left"><%=h staff.position.name %></td>	
+	<td align="left"><%=h staff.position.positionname %></td>	
 	<td><%=h staff.staffgrade_id.blank? ? "" : staff.staffgrade.sgshortname %> </td>
 	<td align="left"><%=h staff.name %> </td>	
 	<td><%=h staff.formatted_mykad %> </td>
-	<td><%=h staff.cobirthdt.strftime('%d-%m-%Y') %> </td>
-	<td><%=h staff.appointdt.strftime('%d-%m-%Y') %> </td>
-	<td><%=h staff.posconfirmdate.strftime('%d-%m-%Y') %> </td>
-	<td> </td>
+	<td><%=h l(staff.cobirthdt) %> </td>
+<!--	<td><#%=h staff.appointdt.strftime('%d-%m-%Y') %> </td>
+	<td><#%=h staff.posconfirmdate.strftime('%d-%m-%Y') %> </td>-->
+	<td>&nbsp; </td>
 	</tr>
 	
 	<% end %>

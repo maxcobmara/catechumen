@@ -1,93 +1,231 @@
-<div class="tform">	
-  <%= render :partial => 'show_report_details' %>
+<div class="tform">
+	<% if @sdicipline.status == nil %>
+	<H2>Report Details</H2>
+  <table width=100% border=0>
+		<tr>
+			<td width=23% colspan=2><label for="reportedby_id">Reported By</label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :reportedby_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_title%></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol" colspan=2><label for="student_id">Student Name</label></td>
+			<td><b>:</b></td>
+		<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name%></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol" colspan=2><label for="infraction">Infraction</label></td>
+			<td><b>:</b></td>
+			<td><%= f.select :infraction,
+			                 Sdicipline::INFRACTION,
+			                 :prompt => "Select" %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" colspan=2><label for="details">If Others, Please Specify</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_area :details, :size => "40x5" %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" colspan=2><label for="casedt">Date of Infraction</label></td>
+			<td><b>:</b></td>
+			<td><%= f.datetime_select :casedt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" colspan=2><label for="location">Location of Infraction</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :location %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol" colspan=2><label for="reporteddt">Reported Date:</label></td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :reportteddt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
+		
+	
+		<tr>
+			<td class="leftcol" colspan=2><label for="cofile_id">File Name:</label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :cofile_id, Cofile.find(:all), :id, :file_no_and_name, :include_blank => true %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" colspan=2><label for="cofile_id">Principal Name:</label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :warden_id, Staff.find(:all, :include => [:position], :order => 'positions.id ASC', :conditions => {:id => [37,43,41,42]}), :id, :staff_name_with_title, :include_blank => true %></td>
+		</tr>
+	</table>
+<% end %>
+	
+	<% if @sdicipline.status == "New" && @sdicipline.warden_id != " "  %>
+    <%= render :partial => '_show_report_details' %>
+	<H2>Action By Principal (<%=h @sdicipline.warden.staff_name_with_title %>)</H2>
 
-  <% if ["New", "Open"].include? (@sdicipline.status) %>
-		<H2>Case Details : (<%=h @sdicipline.status %>)</H2>
-		<table width=100%>		
-			<!--
-					<tr>
-						<td class="leftcol"><label for="referredby"><b>Referred By:</b></label></td>
-						<td><%= f.text_field :referredby %></td>
-					</tr>-->
-			<tr>
-				<td class="leftcol"><label for="investigation"><b>Investigation Summary:</b></label></td>
-				<td><%= f.text_area :investigation, :size => "60x5" %></td>
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="casedt"><b>Date:</b></label></td>
-				<td><%= f.date_select :casedt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
-			</tr>
-		</table>
+	<table width=100% border=0>		
+		<tr>
+			<td width=23%  colspan=2><label for="principal_investigation"><font size=2>Investigation Summary</font></label></td>
+			<td width=3%><b>:</b></td>
+			<td><%= f.text_area :principal_investigation, :size => "40x5" %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" colspan=2><label for="principal_takeaction">Action Taken</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_area:principal_takeaction, :size => "40x2" %></td>
+		</tr>
+		<script type="text/javascript">
+			  function switchvisibility(el) {
+			    if (document.getElementById(el).checked) {
+			      document.getElementById('mentor').style.display = "table-row";
+			      document.getElementById('counsellor').style.display = "none";
+			    } else {
+			      document.getElementById('mentor').style.display = "none";
+			      document.getElementById('counsellor').style.display = "table-row";
+			    }
+			  }
+			</script>
+				<tr>
+					<td class="leftcol" colspan=2><label for="staff_id">Mentor?</label></td>
+					<td><b>:</b></td>
+					<td colspan=3><%= f.check_box :ru_staff, :id => 'staff', :onchange => "switchvisibility('staff')" %><font color="grey", size="-2"> Please Tick if Action to Mentor </font></td>
+				</tr>
+		
+		
+		<tr id="mentor" style="display: none;">
+			<td class="leftcol" colspan=2><label for="principal_takeaction">Mentor Name</label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :mentor_id, Mentee.find(:all, :order => :mentor_id), :id, :mentor_mentee, :include_blank => true %></td>
+		</tr>
+		
+		<tr id="counsellor" style="display: table-row;">
+			<td class="leftcol" colspan=2><label for="principal_takeaction">Counsellor Name</label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :caunsellor_id, Position.find(:all , :conditions => {:unit => "Kaunseling"}), :id, :name_for_staff, :include_blank => true %></td>
+		</tr>
+		
+	</table>
 	<% end %>
 
 	
 	
-	<% if ["Open"].include? (@sdicipline.status) %>	
-	<H2>Action Details</H2>
-		<table width=100%>	
+	
+
+<% if @sdicipline.status == "Refer to Mentor" && @sdicipline.mentor_id != "" || @sdicipline.status == "Refer to Counsellor" && @sdicipline.caunsellor_id != "" || @sdicipline.status == "Refer to Komandan" %> 	
+	<%= render :partial => '_show_report_details' %>
+	<H2>Action By <%=h User.current_user.staff.staff_name_with_title %> </H2>
+	<table width=100% border=0>
+		<tr>
+			<td width=23% colspan=2><label for="action">Forward By</label></td>
+			<td><b>:</b></td>
+			<td><%=h @sdicipline.warden_id.blank? ? "-" : @sdicipline.warden_name %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" colspan=2><label for="action">Principal Investigation Summary</label></td>
+			<td><b>:</b></td>
+			<td><%=h @sdicipline.principal_investigation %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" colspan=2><label for="action">Principal Action Taken</label></td>
+			<td><b>:</b></td>
+			<td><%=h @sdicipline.principal_takeaction %></td>
+		</tr>
+		
 			<tr>
-				<td class="leftcol"><label for="action"><b>Action Taken:</b></label></td>
-				<td><%= f.text_area :action, :size => "40x5" %></td>
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="location"><b>Location:</b></label></td>
-				<td><%= f.text_field :location %></td>
-			</tr>		
-			<tr>
-				<td class="leftcol"><label for="otherinfo"><b>Other Information:</b></label></td>
+				<td class="leftcol" colspan=2><label for="otherinfo">Investigation Summary</label></td>
+				<td><b>:</b></td>
 				<td><%= f.text_area :otherinfo, :size => "40x5" %></td>
-			</tr>		
-			<tr>
-				<td class="leftcol"><label for="closedtcollege"><b>Date Closed (College):</b></label></td>
-				<td><%= f.date_select :closedtcollege, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 			</tr>
-		</table>
+			
+		<tr>
+			<td class="leftcol" colspan=2><label for="action">Action Taken</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_area :action, :size => "40x5" %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" colspan=4><label for="action">If the infraction is serious, the report will be sent to the Commandant</label></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" colspan=2><label for="action">Commandant Name</label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :commandant_id, Position.find(:all, :order => 'positioncode'), :id, :position_with_boss, :include_blank => true %></td>
+		</tr>
+		
+	
+	</table>
 	<% end %>
 	
+	<% if @sdicipline.status == "Refer to Komandan" %>	
 	
-	<% if @sdicipline.status == "Refer to BPL" %>		
-	<%= render :partial => 'show_case_info' %>
-	<%= render :partial => 'show_action_taken' %>
-	<H2>Refer To BPL</H2>
+	
+	<H2>Refer To Komandan</H2>
 	<table width=100%>
-		<tr>
-			<td class="leftcol"><label for="bplsenddt"><b>Date Sent To BPL:</b></label></td>
-			<td><%= f.date_select :bplsenddt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
+	<!--	<tr>
+			<td class="leftcol"><label for="bplsenddt">Date Sent To BPL</label></td>
+			<td><b>:</b></td>
+			<td><#%= f.date_select :commandantdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="jtkpdt"><b>Date JTKP:</b></label></td>
-			<td><%= f.date_select :jtkpdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
-		</tr>
+			<td class="leftcol"><label for="jtkpdt">Date JTKP</label></td>
+			<td><b>:</b></td>
+			<td><#%= f.date_select :jtkpdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
+		</tr>-->
 
 		<tr>
-			<td class="leftcol"><label for="jtkpdecision"><b>JTKP Decision:</b></label></td>
+			<td width=23% colspan=2><label for="jtkpdecision">Commandant Decision</label></td>
+			<td><b>:</b></td>
 			<td><%= f.text_area :jtkpdecision, :size => "40x5" %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="jtkpdescisionrxdt"><b>Date JTKP Decision:</b></label></td>
+			<td class="leftcol" colspan=2><label for="jtkpdescisionrxdt">Date Commandant Decision</label></td>
+			<td><b>:</b></td>
 			<td><%= f.date_select :jtkpdescisionrxdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="appealdt"><b>Appeal Date:</b></label></td>
+			<td class="leftcol" colspan=2><label for="appealdt">Appeal Date</label></td>
+			<td><b>:</b></td>
 			<td><%= f.date_select :appealdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="appealdecision"><b>Appeal Decision:</b></label></td>
+			<td class="leftcol" colspan=2><label for="appealdecision">Appeal Decision</label></td>
+			<td><b>:</b></td>
 			<td><%= f.text_area :appealdecision, :size => "40x5" %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="appealdecisionrxdt"><b>Appeal Decision Date:</b></label></td>
+			<td class="leftcol" colspan=2><label for="appealdecisionrxdt">Appeal Decision Date</label></td>
+			<td><b>:</b></td>
 			<td><%= f.date_select :appealdecisionrxdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 		</tr>
 	</table>
 	<% end %>
-	<%=render :partial => 'status', :locals => {:f => f} %>
-
+	
+	<table width=100% border=0>	
+		<tr>
+			<td width=23% colspan=2><label for="status"><font size=2>&nbsp;Status Report</font></label><font color="red"> * </font></td>
+			<td width=3%><b>:</b></td>
+			<td><%= f.select :status, 
+			                  Sdicipline::STATUS,
+			                 :prompt => "Select"  %></td>
+		</tr>
+		
+		<tr>
+			<td  colspan=2><label for="closedtcollege"><font size=2>&nbsp;Case Closed</font></label></td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :closedtcollege, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
+		</tr>
+	</table>
 <BR>
 </div>		
 		

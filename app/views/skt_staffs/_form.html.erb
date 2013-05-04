@@ -1,0 +1,49 @@
+<div class="tform">
+<H2>Pegawai Yang Dinilai (PYD)</H2>
+ <table border=0>
+
+		<tr>
+			<td class="leftcol"><label for="staff_id"><%= t 'evaluation.form.name' %><font color="red"> * </font></label></td>
+			<td>:</td>
+			<td><%= f.collection_select :pyd_id, Staff.find(:all), :id, :staff_name_with_title%></td>
+		</tr>
+		<tr>
+		 <td class="leftcol"><label for="date_performance">Tahun Prestasi</label></td>
+		<td>:</td>
+		<td><%= f.date_select :date_performance, :start_year => 2010, :end_year => 2020, :order => [:year] %></td>
+		</tr>
+</table>
+
+<div>
+	<H2>BAHAGIAN I & II - Penetapan Sasaran Kerja Tahunan / SKT Ditambah / SKT Digugurkan</H2>
+	<p><font size=-2 color="grey"><i>(PYD dan PPP hendaklah berbincang bersama sebelum menetapkan SKT dan petunjuk prestasinya)</i></font></p>
+	<% f.fields_for :skt_targets do |builder| %>
+	  <%= render 'skt_target_fields', :f => builder %>
+	<% end %>
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'),f, :skt_targets %> - <%= "Add Activity" %></p>
+</div>
+		
+</table>
+<H2>BAHAGIAN III - Laporan dan Ulasan Keseluruhan Pencapaian Sasaran Kerja Tahunan Pada Akhir Tahun Oleh PYD dan PPP</H2>
+<p><b>1. &nbsp;&nbsp;Laporan / Ulasan Oleh PYD </b><BR></p>
+<table border=0>
+	<tr>
+		<td colspan=4>&nbsp;&nbsp;&nbsp;&nbsp;<%= f.text_area :report_pyd, :size => "70x5"%></td>
+	</tr>
+	<tr>
+		<td class="leftcol" colspan=2>&nbsp;&nbsp;Report Date by PYD</td>
+		<td>:</td>
+		<td><%= f.date_select :datereport_pyd, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+</table>
+<p><b>2. &nbsp;&nbsp;Laporan / Ulasan Oleh PPP </b><BR></p>
+	<table border=0>
+		<tr>
+			<td colspan=4>&nbsp;&nbsp;&nbsp;&nbsp;<%= f.text_area :report_ppp, :size => "70x5"%></td>
+		</tr>
+		<tr>
+			<td class="leftcol" colspan=2>&nbsp;&nbsp;Report Date by PPP</td>
+			<td>:</td>
+			<td><%= f.date_select :datereport_ppp, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+	</table>

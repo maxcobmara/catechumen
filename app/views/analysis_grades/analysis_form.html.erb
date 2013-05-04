@@ -1,0 +1,297 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A3potrait">
+
+<form action="#">
+ <script>
+	document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+
+</script>
+</form>	
+<fieldset width=10px >
+
+<div id="title">
+<table width=100% border="0">
+	<tr>
+		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/></th>
+		<th><H4>PPL APMM<br>NO.DOKUMEN: BK-KKM-06-01<br><br>BORANG ANALISA KEPUTUSAN PEPERIKSAAN</H4> </th>
+		<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
+	</tr>
+</table>
+
+<br>
+
+<center><table width=70% cellspacing="0" cellpadding="3" font size="5px" border="0">
+	<tr>
+		<td>KURSUS : </td>
+		<td><%=h (@analysis_grade.course_name.programme_with_specialisation).upcase %></td>
+		<td>PEPERIKSAAN  :</td>
+		<td><%=h (@analysis_grade.examname.name ).upcase %></td>
+	</tr>
+	<tr>
+		<td>KELAS :</td>
+		<td><%=h (@analysis_grade.classroom.name).upcase %></td>
+		<td>TARIKH PEPERIKSAAN :</td>
+	    <td><%=h (@analysis_grade.examname.exam_date.strftime("%d-%b-%Y")).upcase %></td>
+	</tr>
+</table></center>
+
+<br>
+
+
+<table class="middle" width=100% cellspacing="0" cellpadding="3" font size="2px" border="1">
+	<tr>
+		<td colspan=3 width=20%><font face="arial"><font size="1px"><b><center>NO. SOALAN</td>
+		<td><font face="arial"><font size="1px"><b><center>1</td>
+		<td><font face="arial"><font size="1px"><b><center>2</td>
+		<td><font face="arial"><font size="1px"><b><center>3</td>
+		<td><font face="arial"><font size="1px"><b><center>4</td>
+		<td><font face="arial"><font size="1px"><b><center>5</td>
+		<td><font face="arial"><font size="1px"><b><center>6</td>
+		<td><font face="arial"><font size="1px"><b><center>7</td>
+		<td><font face="arial"><font size="1px"><b><center>8</td>
+		<td><font face="arial"><font size="1px"><b><center>9</td>
+		<td><font face="arial"><font size="1px"><b><center>10</td>
+		<td><font face="arial"><font size="1px"><b><center>11</td>
+		<td><font face="arial"><font size="1px"><b><center>12</td>
+		<td><font face="arial"><font size="1px"><b><center>13</td>
+		<td><font face="arial"><font size="1px"><b><center>14</td>
+		<td><font face="arial"><font size="1px"><b><center>15</td>
+		<td><font face="arial"><font size="1px"><b><center>16</td>
+		<td><font face="arial"><font size="1px"><b><center>17</td>
+		<td><font face="arial"><font size="1px"><b><center>18</td>
+		<td><font face="arial"><font size="1px"><b><center>19</td>
+		<td><font face="arial"><font size="1px"><b><center>20</td>
+		<td><font face="arial"><font size="1px"><b><center>21</td>
+		<td><font face="arial"><font size="1px"><b><center>22</td>
+		<td><font face="arial"><font size="1px"><b><center>23</td>
+		<td><font face="arial"><font size="1px"><b><center>24</td>
+		<td><font face="arial"><font size="1px"><b><center>25</td>
+		<td><font face="arial"><font size="1px"><b><center>26</td>
+		<td><font face="arial"><font size="1px"><b><center>27</td>
+		<td><font face="arial"><font size="1px"><b><center>28</td>
+		<td><font face="arial"><font size="1px"><b><center>29</td>
+		<td><font face="arial"><font size="1px"><b><center>30</td>
+		<td><font face="arial"><font size="1px"><b><center>31</td>
+		<td><font face="arial"><font size="1px"><b><center>32</td>
+		<td><font face="arial"><font size="1px"><b><center>33</td>
+		<td><font face="arial"><font size="1px"><b><center>34</td>
+		<td><font face="arial"><font size="1px"><b><center>35</td>
+		<td><font face="arial"><font size="1px"><b><center>36</td>
+		<td><font face="arial"><font size="1px"><b><center>37</td>
+		<td><font face="arial"><font size="1px"><b><center>38</td>
+		<td><font face="arial"><font size="1px"><b><center>39</td>
+		<td><font face="arial"><font size="1px"><b><center>40</td>
+		<td><font face="arial"><font size="1px"><b><center>41</td>
+		<td><font face="arial"><font size="1px"><b><center>42</td>
+		<td><font face="arial"><font size="1px"><b><center>43</td>
+		<td><font face="arial"><font size="1px"><b><center>44</td>
+		<td><font face="arial"><font size="1px"><b><center>45</td>
+		<td><font face="arial"><font size="1px"><b><center>46</td>
+		<td><font face="arial"><font size="1px"><b><center>47</td>
+		<td><font face="arial"><font size="1px"><b><center>48</td>
+		<td><font face="arial"><font size="1px"><b><center>49</td>
+		<td><font face="arial"><font size="1px"><b><center>50</td>	
+		<td><font face="arial"><font size="1px"><b><center>JUMLAH<br>MARKAH</td>
+    </tr>
+	<tr>
+	    <td colspan=3><font face="arial"><font size="1px"><b><center>MARKAH PENUH</td>
+	    	<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_1 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_2%>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_3%>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_4 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_5%>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_6%>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_7%>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_8 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_9 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_10%>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_11 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_12 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_13%>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_14 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_15%>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_16%>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_17%>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_18 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_19 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_20 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_21 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_22 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_23 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_24 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_25 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_26 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_27 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_28 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_29 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_30 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_31 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_32 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_33 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_34 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_35 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_36 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_37 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_38 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_39 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_40 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_41 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_42 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_43 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_44 %>&nbsp;</td>
+			<td align="center" width=6% font face="arial"><font size="2px"><%=h @analysis_grade.fm_45 %>&nbsp;</td>
+			<td align="center" font face="arial"><font size="2px"><%=h @analysis_grade.fm_46 %>&nbsp;</td>
+			<td align="center" font face="arial"><font size="2px"><%=h @analysis_grade.fm_47 %>&nbsp;</td>
+			<td align="center" font face="arial"><font size="2px"><%=h @analysis_grade.fm_48 %>&nbsp;</td>
+			<td align="center" font face="arial"><font size="2px"><%=h @analysis_grade.fm_49 %>&nbsp;</td>
+			<td align="center" font face="arial"><font size="2px"><%=h @analysis_grade.fm_50 %>&nbsp;</td>
+			<td align="center" font face="arial"><font size="2px">	<%=h @analysis_grade.student_id %>&nbsp;</td>
+	</tr>
+	<tr>
+		<td width=3%><font face="arial"><font size="1px"><b><center>SIRI</td>
+		<td><font face="arial"><font size="1px"><b><center>NO. KP</td>
+		<td><font face="arial"><font size="1px"><b><center>NAMA</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+		<td bgcolor=gray>&nbsp;</td>
+	    <td bgcolor=gray>&nbsp;</td>
+	    <td bgcolor=gray>&nbsp;</td>
+	    <td bgcolor=gray>&nbsp;</td>
+	    <td bgcolor=gray>&nbsp;</td>
+	    <td bgcolor=gray>&nbsp;</td>
+	    <td bgcolor=gray>&nbsp;</td>
+	    <td bgcolor=gray>&nbsp;</td>
+	    <td bgcolor=gray>&nbsp;</td>
+	    <td bgcolor=gray>&nbsp;</td>
+	    <td bgcolor=gray>&nbsp;</td>
+	    <td bgcolor=gray>&nbsp;</td>
+	</tr>
+	<% bil = 0 %>
+		<% for studemt_mark in @analysis_grade.student_marks %>
+	 <% bil += 1 %>
+	<tr>
+		<td align="center"><font face="arial"><font size="1px"><%=h bil %></font></td>	
+		<td><font face="arial"><font size="1px"><%=h studemt_mark.student_id.blank? ? "-" : studemt_mark.student_name.formatted_mykad %></td>
+		<td><font face="arial"><font size="1px"><%=h studemt_mark.student_name.name %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_1 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_2 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_3 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_4 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_5 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_6 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_7 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_8 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_9 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_10 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_11 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_12 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_13 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_14 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_15 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_16 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_17 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_18 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_19 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_20 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_21 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_22 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_23 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_24 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_25 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_26 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_27 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_28 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_29 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_30 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_31 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_32 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_33 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_34 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_35 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_36 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_37 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_38 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_22 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_23 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_24 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_25 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_26 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_27 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_28 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_29 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_30 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_31 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_32 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><%=h studemt_mark.m_33 %></font></td>
+		<td align="center"><font face="arial"><font size="1px"><b><%=h studemt_mark.total_mark %></b></font></td>
+	</tr>
+	<% end %>
+	<tr>
+		<td colspan=53><font face="arial"><font size="1px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>NAMA PEMERIKSA : </b> <%=h @analysis_grade.examiner.staff_name_with_title %></td>
+	</tr>	
+</table>
+
+		
+<br><br><br>
+
+<table width=100% cellspacing="0" border="1">
+	<tr>
+		<th width=50% align="left"> DISEDIAKAN : BKMM</th>
+		<th width=50% align="right">TARIKH KEMASKINI: 5 DISEMBER 2011</th>
+	</tr>
+
+</table><br><br>
+
+<center>1 daripada 1</center>
+<br><br>
+
+</div>
+
+</fieldset>
+<BR>
+<div id="hideLink">
+	<%= link_to 'Edit', edit_analysis_grade_path(@analysis_grade) %> |
+	<%= link_to 'Back', analysis_grades_path %>
+</div>
+
+</div>

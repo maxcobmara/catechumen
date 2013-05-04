@@ -7,33 +7,38 @@
 	<H2>System User Details</H2>
   <table width=100% >
 	<tr>
-		<td class="leftcol"><label for="login">Login: </label></td>
+		<td class="leftcol"><label for="login">Login </label></td>
+		<td><b>:</b></td>
 		<td><%= f.text_field :login, :size => 25 %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="login">Attach User : </label></td>
+		<td class="leftcol"><label for="login">Attach User </label></td>
+		<td><b>:</b></td>
 		<td>
 		<% if @user.isstaff? == true %>
-				<%= (f.collection_select :staff_id, Staff.find(:all, :order => :name, :conditions => ["icno in (?)", @user.icno]), :id, :mykad_with_staff_name, :include_blank => true, :default => 0, :prompt => 'Select Staff') %>	
-		<% else %>  <!-- , :conditions => ["id not in (?)", @user.assigned_staff]-->
+				<%= (f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_title, :include_blank => true, :default => 0, :prompt => 'Select Staff') %>	
+		<% else %>
 				<%= 	(f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true, :default => 0, :prompt => 'Select Student') %>
 		<% end %>
 		</td>
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="email">Email: </label></td>
+		<td class="leftcol"><label for="email">Email </label></td>
+		<td><b>:</b></td>
 		<td><%= f.text_field :email %></td>
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="password">Password: </label></td>
+		<td class="leftcol"><label for="password">Password </label></td>
+		<td><b>:</b></td>
 		<td><%= f.text_field :password, :size => 12 %></td>
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="password_confirmation">Confirm Password: </label></td>
+		<td class="leftcol"><label for="password_confirmation">Confirm Password </label></td>
+		<td><b>:</b></td>
 		<td><%= f.text_field :password_confirmation, :size => 12 %></td>
 	</tr>
 </table>

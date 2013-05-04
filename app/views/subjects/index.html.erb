@@ -1,0 +1,43 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+  <div class="box-head">
+    <h2 class="left">Subject</h2>
+	  		<div class="right">
+				<% form_tag subjects_path, :method => 'get' do %>
+				<%= text_field_tag :search, params[:search], :placeholder => "SubjectCode,SubjectName" %>
+				<%= submit_tag I18n.t('search'), :subjectcode => nil %>
+				<% end %>
+			</div>
+	</div>
+</div>
+
+<div class="indextable">
+	<table width=100%>
+	  <tr>
+	    <th>Subject Code</th>
+	    <th>Name</th>
+	    <th>Credit</th>
+	    <th>Status</th>
+	    <th colspan=3 class="ac">Control</th>
+	  </tr>
+
+		<% @subjects.each do |subject| %>
+	  <tr>
+	    <td><%=h subject.subjectcode %></td>
+	    <td><%=h subject.name %></td>
+	    <td><%=h subject.credit %></td>
+	    <td><%=h (Subject::STATUS.find_all{|disp, value| value == subject.status.to_s}).map {|disp, value| disp} %></td>
+	    <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => subject %></td>
+		<% if permitted_to? :manage, :subjects %>
+	    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => subject %></td>
+	    <td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), subject, :confirm => 'Are you sure?', :method => :delete %></td>
+	    <% end %>
+	  </tr>
+		<% end %>
+	</table>
+</div>
+<br />
+
+<% if permitted_to? :manage, :subjects %>
+<%= link_to 'New Subject', new_subject_path %> <% end %>

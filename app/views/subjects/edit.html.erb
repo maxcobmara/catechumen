@@ -1,0 +1,41 @@
+<h3>Editing Subject</h3>
+
+<% form_for(@subject) do |f| %>
+  <%= f.error_messages %>
+
+ 
+<%= render :partial => 'form', :locals => {:f => f} %>
+
+<!--Topic Details-->	
+    <div class="tform">
+    <H2> Topic Details</H2>
+	  <table width=50% border=1 cellspacing=0>
+		<tr>
+			<th width=15%><font color='black'>Sequence No</font</th>
+			<th width=15%><font color='black'>Topic Code</font</th>
+			<th width=30%><font color='black'>Topic Name</font</th>
+			<th width=10%><font color='black'>Duration</font</th>
+		</tr>	
+		<% for topic in @subject.topics.all(:order => "sequenceno") %>		
+	  <tr>
+		  <td width=50px align="center"><%=h topic.sequenceno %></td>
+      	  <td><%=h topic.topic_code %></td>
+      	  <td><%=h topic.name %></td>
+      	  <td><%=h topic.durahours %>:<%=h topic.duramins %> Hours</td>
+
+	</tr>
+    <% end -%>
+  </table>
+  </div>
+
+
+<p>
+   <%= f.submit 'Update' %>
+ </p>
+
+<% end %>
+
+
+
+<%= link_to 'Show', @subject %> |
+<%= link_to 'Back', subjects_path %>

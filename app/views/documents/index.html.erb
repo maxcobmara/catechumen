@@ -12,21 +12,16 @@
   </div>
 </div>
 
-<div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Document') + "New", new_document_path %></p>
-</div>
-
-<div class="indextable">
+<div class="tlist">
 	<table width=100% border="0" cellpadding="0" cellspacing="0">
 		<tr>
-		  <th>Serial No</th>
-		  <th>Ref No</th>
 		  <th>Category</th>
 		  <th>Title</th>
-		  <th>Letter Date</th>
 		  <th>Received Date</th>
 		  <th>From</th>
 		  <th>Filed By</th>
+		  <th>Circulation I </th>
+		  <th>Circulation II</th>
 		  <th>Closed</th>
 		  <th colspan=3 class="ac">Control</th>
 		</tr>
@@ -38,30 +33,48 @@
         
 			<% for document in documents %>
 			<tr>
-				<td><%=h document.serialno %></td>
-				<td><%=h document.refno %></td>
 				<td><%=h (Document::CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} %></td>
 				<td><%=h document.title %></td>
-				<td><%=h l(document.letterdt) %></td>
-				<td><%=h tarikh(document.letterxdt) %></td>
+				<td><%=h document.letterxdt.blank? ? "-" : document.letterxdt.strftime("%d-%b-%Y") %></td>
 				<td><%=h document.from %></td>
-				<td><%=h check_kin {document.stafffilled.name} %></td>
-				<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
+				<td><%=h document.stafffiled_details %></td>
+				<td><%=h document.circulation1_details %></td>
+				<td><% for circulate in document.circulates %>
+							<% if circulate.id == User.current_user.staff_id%>
+					<% else %>
+					<%=h circulate.circulate_name.staff_name_with_title %><br/>
+					<% end %>
+					<% end %>
+				</td>
+				<td><%=h document.cc2closed? ? "Yes" : "No" %></td>
 				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
-				<td width=10px>
-						<% if document.owner_ids.include? current_user.staff_id %>
-							<%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %>
-						<% end %></td>
-				<td width=10px>
-					  <% if document.stafffiled_id == current_user.staff_id %>
-				    	<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %>
-						<% end %></td>
+				
+				
+				<% if permitted_to? :action1, @document %>
+				<% if (User.current_user.staff_id == document.cc1staff_id && document.cc1action == nil) %>
+				<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title => 'Circulation I'), :action => 'action1', :id => document %></td>
+				<% end %><% end %>
+				
+				<% if permitted_to? :action2, @document %>
+				<% if (document.cc2action == nil && document.cc2closed == FALSE) %>
+				<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title => 'Circulation II'), :action => 'action2', :id => document %></td>
+			    <% end %><% end%>
+			
+				<% if permitted_to? :feedback, @document %>
+				<% if (User.current_user.staff_id == document.cc1staff_id && document.received == FALSE) %>
+				<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title => 'Feedback'), :action => 'feedback', :id => document %></td>
+				<% end %><% end %>
+				
+				<% if permitted_to? :update, document %>
+				<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %></td><% end %>
+				<% if permitted_to? :destroy, document %>
+				<td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %></td><% end %>
 			</tr>
 			<% end %>
 		<% end %>
   </table> 
+
 </div>
-
 <br />
-
-<%= link_to 'New Document', new_document_path %>
+<% if permitted_to? :create, @document %>
+<%= link_to 'New Document', new_document_path %><% end %>

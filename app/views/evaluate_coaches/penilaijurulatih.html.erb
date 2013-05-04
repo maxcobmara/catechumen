@@ -1,0 +1,444 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+ <script>
+	document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+
+</script>
+</form>	
+<fieldset width=10px height=100% align="top">
+
+<div id="title">
+<table width=100% border="0">
+	<tr>
+		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/></th>
+		<th><H4>PPL APMM<BR><BR>NO.DOKUMEN: BK-KKM-KS-04-02<BR>BORANG PENILAIAN JURULATIH</H4> </th>
+		<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
+	</tr>
+</table>
+
+<div id="title">
+	<table width=100% cellspacing="0" border="1">
+		<tr>
+			<th colspan=4 align="left"> DISEDIAKAN OLEH: STAF BPL</th>
+			<th colspan=2 align="left">TARIKH KEMASKINI: 5 DIS 2011</th>
+		</tr>
+
+	</table>
+
+<table width=100% cellspacing="0" cellpadding="2" border="0">
+	<tr>
+		<td width=150>KURSUS</td>
+		<td width=5>:</td>
+		<td><%= @evaluate_coach.course_id.blank? ? "No Programme" : @evaluate_coach.course_coach.specialisation %></td>
+	</tr>
+	
+	<tr>
+		<td>NAMA JURULATIH</td>
+		<td>:</td>
+		<td><%= @evaluate_coach.staff_id.blank? ? "No Staff" : @evaluate_coach.staffcoachev.staff_name_with_title %></td>
+	</tr>
+	
+	<tr>
+		<td>MODUL</td>
+		<td>:</td>
+		<td><%= @evaluate_coach.subject_id.blank? ? "No Subject" : @evaluate_coach.subject.subject_code_with_subject_name %></td>
+	</tr>
+	
+	<tr>
+		<td>KELAS</td>
+		<td>:</td>
+		<td><%= @evaluate_coach.class_id.blank? ? "No Class" : @evaluate_coach.klass.name %></td>
+	</tr>
+	
+	<tr>
+		<td>TARIKH</td>
+		<td>:</td>
+	    <td ><%= @evaluate_coach.evaluate_date.blank? ? "-" : @evaluate_coach.evaluate_date.strftime("%d-%b-%Y") %></td>
+	</tr>
+	
+	<tr>
+		<td colspan=3><HR></td>
+		
+	</tr>
+	
+	<tr>
+		<td colspan=2 width=200>MASA MULA : <%= @evaluate_coach.start_time.strftime("%I:%M %p") %></td>
+		<td align="right">MASA TAMAT : <%= @evaluate_coach.end_time.strftime("%I:%M %p") %></td>
+	</tr>
+
+</table>
+<table border="0" width=100% cellspacing="0">
+	  <tr>
+	   <td width=250>
+	    <table border="0" width="250" cellspacing="0">
+	     	    <tr>
+					<th align="left" colspan=3>PERSEDIAAN (Pengenalan)</th>
+				</tr>
+				<tr>
+					<td>1. Persediaan Rancangan Mengajar</td>
+				<tr>
+				<tr>
+					<td>2. Persediaan ABM dan Nota</td>
+				<tr>
+				<tr>
+					<td>3. Menarik perhatian pelatih</td>
+				<tr>
+				<tr>
+					<td>4. Mengenal Diri/Tajuk Pelajaran</td>
+				<tr>
+				<tr>
+					<td>5. Nyatakan Objektif Pelajaran</td>
+				<tr>
+				<tr>
+					<td>6. Rujukan Pelajaran</td>
+				<tr>
+				<tr>
+					<td>7. Jelaskan Kepentingan</td>
+				<tr>
+	    </table>
+	   </td>
+	   <td width="250">
+	     	 <table border="1" width="250" cellspacing="0">
+			     	    <tr>
+							<th width=50>4</th>
+							<th width=50>3</th>
+							<th width=50>2</th>
+							<th width=50>1</th>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.intro_plan == 4 %><%= @evaluate_coach.intro_plan %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_plan == 3 %><%= @evaluate_coach.intro_plan %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_plan == 2 %><%= @evaluate_coach.intro_plan %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_plan == 1 %><%= @evaluate_coach.intro_plan %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.intro_abm == 4 %><%= @evaluate_coach.intro_abm %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_abm == 3 %><%= @evaluate_coach.intro_abm %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_abm == 2 %><%= @evaluate_coach.intro_abm %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_abm == 1 %><%= @evaluate_coach.intro_abm %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.intro_att == 4 %><%= @evaluate_coach.intro_att %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_att == 3 %><%= @evaluate_coach.intro_att %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_att == 2 %><%= @evaluate_coach.intro_att %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_att == 1 %><%= @evaluate_coach.intro_att %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.intro_title == 4 %><%= @evaluate_coach.intro_title %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_title == 3 %><%= @evaluate_coach.intro_title %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_title == 2 %><%= @evaluate_coach.intro_title %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_title == 1 %><%= @evaluate_coach.intro_title %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.intro_obj == 4 %><%= @evaluate_coach.intro_obj %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_obj == 3 %><%= @evaluate_coach.intro_obj %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_obj == 2 %><%= @evaluate_coach.intro_obj %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_obj == 1 %><%= @evaluate_coach.intro_obj %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.intro_ref == 4 %><%= @evaluate_coach.intro_ref %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_ref == 3 %><%= @evaluate_coach.intro_ref %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_ref == 2 %><%= @evaluate_coach.intro_ref %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_ref == 1 %><%= @evaluate_coach.intro_ref %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.intro_exp == 4 %><%= @evaluate_coach.intro_exp %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_exp == 3 %><%= @evaluate_coach.intro_exp %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_exp == 2 %><%= @evaluate_coach.intro_exp %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.intro_exp == 1 %><%= @evaluate_coach.intro_exp %><% else%>&nbsp;<%end%></td>
+						</tr>
+			    </table>
+			</td>
+	  </tr>
+	</table>
+	
+	<table border="0" width=100% cellspacing="0">
+		  <tr>
+		   <td width=250>
+		    <table border="0" width=80% cellspacing="0">
+		     	    <tr>
+						<th align="left" colspan=3>PENYAMPAIAN (Persembahan)</th>
+					</tr>
+					<tr>
+						<td>1. Perkembangan pelajaran mengikut peringkat</td>
+					<tr>
+					<tr>
+						<td>2. Minat Penyampaian</td>
+					<tr>
+					<tr>
+						<td>3. Kelancaran pengawalan suara</td>
+					<tr>
+					<tr>
+						<td>4. Tabiat mengganggu pelatih</td>
+					<tr>
+					<tr>
+						<td>5. Penekanan perkara penting</td>
+					<tr>
+					<tr>
+						<td>6. Pengawasan Kelas</td>
+					<tr>
+					<tr>
+						<td>7. Penglibatan pelatih</td>
+					<tr>
+					<tr>
+						<td>8. Penggunaan ABM</td>
+					<tr>
+					<tr>
+						<td>9. Tahap pengetahuan matapelajaran</td>
+					<tr>
+		    </table>
+		   </td>
+		   <td width="250">
+		     	 <table border="1" width="250" cellspacing="0">
+				     	    
+						<tr>
+							<td align="center" width=50><% if @evaluate_coach.d_dev == 4 %><%= @evaluate_coach.d_dev %><% else%>&nbsp;<%end%></td>
+							<td align="center" width=50><% if @evaluate_coach.d_dev == 3 %><%= @evaluate_coach.d_dev %><% else%>&nbsp;<%end%></td>
+							<td align="center" width=50><% if @evaluate_coach.d_dev == 2 %><%= @evaluate_coach.d_dev %><% else%>&nbsp;<%end%></td>
+							<td align="center" width=50><% if @evaluate_coach.d_dev == 1 %><%= @evaluate_coach.d_dev %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.d_interest == 4 %><%= @evaluate_coach.d_interest %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_interest == 3 %><%= @evaluate_coach.d_interest %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_interest == 2 %><%= @evaluate_coach.d_interest %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_interest == 1 %><%= @evaluate_coach.d_interest %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.d_control == 4 %><%= @evaluate_coach.d_control %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_control == 3 %><%= @evaluate_coach.d_control %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_control == 2 %><%= @evaluate_coach.d_control %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_control == 1 %><%= @evaluate_coach.d_control %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.d_habit == 4 %><%= @evaluate_coach.d_habit %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_habit == 3 %><%= @evaluate_coach.d_habit %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_habit == 2 %><%= @evaluate_coach.d_habit %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_habit == 1 %><%= @evaluate_coach.d_habit %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.d_emp == 4 %><%= @evaluate_coach.d_emp %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_emp == 3 %><%= @evaluate_coach.d_emp %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_emp == 2 %><%= @evaluate_coach.d_emp %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_emp == 1 %><%= @evaluate_coach.d_emp %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.d_class == 4 %><%= @evaluate_coach.d_class %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_class == 3 %><%= @evaluate_coach.d_class %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_class == 2 %><%= @evaluate_coach.d_class %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_class == 1 %><%= @evaluate_coach.d_class %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.d_inv == 4 %><%= @evaluate_coach.d_inv %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_inv == 3 %><%= @evaluate_coach.d_inv %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_inv == 2 %><%= @evaluate_coach.d_inv %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_inv == 1 %><%= @evaluate_coach.d_inv %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.d_abm == 4 %><%= @evaluate_coach.d_abm %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_abm == 3 %><%= @evaluate_coach.d_abm %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_abm == 2 %><%= @evaluate_coach.d_abm %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_abm == 1 %><%= @evaluate_coach.d_abm %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.d_knowledge == 4 %><%= @evaluate_coach.d_knowledge %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_knowledge == 3 %><%= @evaluate_coach.d_knowledge %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_knowledge == 2 %><%= @evaluate_coach.d_knowledge %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.d_knowledge == 1 %><%= @evaluate_coach.d_knowledge %><% else%>&nbsp;<%end%></td>
+						</tr>
+				    </table>
+				</td>
+		  </tr>
+		</table>
+
+	<table border="0" width=100% cellspacing="0">
+		  <tr>
+		   <td width=250>
+		    <table border="0" width=80% cellspacing="0">
+		     	    <tr>
+						<th align="left" colspan=3>RUMUSAN</th>
+					</tr>
+					<tr>
+						<td>1. Merumuskan Pelajaran (ulangkaji)</td>
+					<tr>
+					<tr>
+						<td>2. Memberi Peluang Pelatih Menyoal</td>
+					<tr>
+					
+		    </table>		
+		   </td>
+		   <td width="250">
+		     	 <table border="1" width="250" cellspacing="0">
+				     	    
+						<tr>
+							<td align="center" width=50><% if @evaluate_coach.sum_rev == 4 %><%= @evaluate_coach.sum_rev %><% else%>&nbsp;<%end%></td>
+							<td align="center" width=50><% if @evaluate_coach.sum_rev == 3 %><%= @evaluate_coach.sum_rev %><% else%>&nbsp;<%end%></td>
+							<td align="center" width=50><% if @evaluate_coach.sum_rev == 2 %><%= @evaluate_coach.sum_rev %><% else%>&nbsp;<%end%></td>
+							<td align="center" width=50><% if @evaluate_coach.sum_rev == 1 %><%= @evaluate_coach.sum_rev %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.sum_chance == 4 %><%= @evaluate_coach.sum_chance %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.sum_chance == 3 %><%= @evaluate_coach.sum_chance %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.sum_chance == 2 %><%= @evaluate_coach.sum_chance %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.sum_chance == 1 %><%= @evaluate_coach.sum_chance %><% else%>&nbsp;<%end%></td>
+						</tr>
+							
+				    </table>
+				</td>
+		  </tr>
+		</table>
+
+	<table border="0" width=100% cellspacing="0">
+		  <tr>
+		   <td width=250>
+		    <table border="0" width=80% cellspacing="0">
+		     	    <tr>
+						<th align="left" colspan=3>SOALAN</th>
+					</tr>
+					<tr>
+						<td>1. Perangkaan Soalan</td>
+					</tr>
+					<tr>
+						<td>2. Merangkumi Pelatih</td>
+					</tr>
+					<tr>
+						<td>3. Ditujukan Semula</td>
+					</tr>
+					<tr>
+						<td>4. Pengendalian Soalan Pelatih</td>
+					</tr>
+					<tr>
+						<td>5. Membina Pelajaran</td>
+					</tr>
+					<tr>
+						<td>6. Menyatakan Pelajaran Akan Datang</td>
+					</tr>
+					<tr>
+						<td>7. Pengurusan Masa</td>
+					</tr>
+					
+		    </table>
+		   </td>
+		   <td width="250">
+		     	 <table border="1" width="250" cellspacing="0">
+				     	    
+						<tr>
+						<td align="center" width=50><% if @evaluate_coach.q_rangka == 4 %><%= @evaluate_coach.q_rangka %><% else%>&nbsp;<%end%></td>
+						<td align="center" width=50><% if @evaluate_coach.q_rangka == 3 %><%= @evaluate_coach.q_rangka %><% else%>&nbsp;<%end%></td>
+						<td align="center" width=50><% if @evaluate_coach.q_rangka == 2 %><%= @evaluate_coach.q_rangka %><% else%>&nbsp;<%end%></td>
+						<td align="center" width=50><% if @evaluate_coach.q_rangka == 1 %><%= @evaluate_coach.q_rangka %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+						<td align="center"><% if @evaluate_coach.q_merangkumi == 4 %><%= @evaluate_coach.q_merangkumi %><% else%>&nbsp;<%end%></td>
+						<td align="center"><% if @evaluate_coach.q_merangkumi == 3 %><%= @evaluate_coach.q_merangkumi %><% else%>&nbsp;<%end%></td>
+						<td align="center"><% if @evaluate_coach.q_merangkumi == 2 %><%= @evaluate_coach.q_merangkumi %><% else%>&nbsp;<%end%></td>
+						<td align="center"><% if @evaluate_coach.q_merangkumi == 1 %><%= @evaluate_coach.q_merangkumi %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.q_tujukan == 4 %><%= @evaluate_coach.q_tujukan %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_tujukan == 3 %><%= @evaluate_coach.q_tujukan %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_tujukan == 2 %><%= @evaluate_coach.q_tujukan %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_tujukan == 1 %><%= @evaluate_coach.q_tujukan %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.q_soalan == 4 %><%= @evaluate_coach.q_soalan %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_soalan == 3 %><%= @evaluate_coach.q_soalan %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_soalan == 2 %><%= @evaluate_coach.q_soalan %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_soalan == 1 %><%= @evaluate_coach.q_soalan %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.q_bina == 4 %><%= @evaluate_coach.q_bina %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_bina == 3 %><%= @evaluate_coach.q_bina %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_bina == 2 %><%= @evaluate_coach.q_bina %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_bina == 1 %><%= @evaluate_coach.q_bina %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.q_future == 4 %><%= @evaluate_coach.q_future %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_future == 3 %><%= @evaluate_coach.q_future %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_future == 2 %><%= @evaluate_coach.q_future %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_future == 1 %><%= @evaluate_coach.q_future %><% else%>&nbsp;<%end%></td>
+						</tr>
+						<tr>
+							<td align="center"><% if @evaluate_coach.q_time == 4 %><%= @evaluate_coach.q_time %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_time == 3 %><%= @evaluate_coach.q_time %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_time == 2 %><%= @evaluate_coach.q_time %><% else%>&nbsp;<%end%></td>
+							<td align="center"><% if @evaluate_coach.q_time == 1 %><%= @evaluate_coach.q_time %><% else%>&nbsp;<%end%></td>
+						</tr>
+							
+				    </table>
+				</td>
+		  </tr>
+		</table>
+
+
+		<table border="0" width=100% cellspacing="0">
+			  <tr>
+			   <td width=300>
+			    <table border="0" width=100% cellspacing="0" cellpadding="1">
+			     	    <tr>
+							<td align="right" colspan=5><b>JUMLAH :</b></td>
+						</tr>
+						
+			    </table>
+			   </td>
+			   <td width="10">
+			     	 <table border="1" width="250" cellspacing="0">
+					     	    
+								<tr>
+									<td width=50>&nbsp;</td>
+									<td width=50>&nbsp;</td>
+									<td width=50>&nbsp;</td>
+									<td width=50>&nbsp;</td>
+								</tr>
+							
+
+					    </table> 
+					</td>
+					 <td width="10">
+			     	 <table border="1" width="50" cellspacing="0">
+					     	    
+								<tr>
+									<td width=50 align="center"><b><%= @evaluate_coach.result %></b></td>
+								</tr>
+					    </table>
+					</td>
+			  </tr>
+			</table>
+
+<br>
+<table width=100% border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan=2><b>PENCAPAIAN OBJEKTIF</b></td>
+		<td><% if @evaluate_coach.result > 60 %>
+		<b><u>YA</u></b> / TIDAK <% else %> YA / <u><b>TIDAK</b></u><% end %>
+		</td>
+	</tr>
+	<tr>
+		<td width=100>T/T PENGUJI: </td>
+		<td width=330><b> T.T </b></td>
+		<td width=300><% if @evaluate_coach.result > 60 %>
+		<b><u>LULUS</u></b> / GAGAL <% else %> LULUS / <b><u>GAGAL</u></b><% end %>
+		</td>
+		
+	</tr>
+	<tr>
+		<td>Catatan Penguji : </td>
+		<td colspan=2><%=@evaluate_coach.remark %><BR> </td>
+	</tr>
+</table>
+
+
+</div>
+</div>
+
+</fieldset>
+<p align="center"><i>Dokumen ini adalah cetakan komputer dan tidak memerlukan tandatangan.</i></p>
+<BR>
+	<div id="hideLink">
+	<%= link_to (t 'icms.back'), evaluate_coaches_path %>
+	</div>
+	</div>

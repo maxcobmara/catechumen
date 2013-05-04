@@ -1,8 +1,10 @@
 class PtdosController < ApplicationController
   # GET /ptdos
   # GET /ptdos.xml
+  filter_access_to :all
+  
   def index
-    @ptdos = Ptdo.with_permissions_to(:index)
+    @ptdos = Ptdo.with_permissions_to(:index).find(:all)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,7 +46,7 @@ class PtdosController < ApplicationController
 
     respond_to do |format|
       if @ptdo.save
-        flash[:notice] = 'Ptdo was successfully created.'
+        flash[:notice] = 'Staff Training was successfully created.'
         format.html { redirect_to(@ptdo) }
         format.xml  { render :xml => @ptdo, :status => :created, :location => @ptdo }
       else
@@ -61,7 +63,7 @@ class PtdosController < ApplicationController
 
     respond_to do |format|
       if @ptdo.update_attributes(params[:ptdo])
-        flash[:notice] = 'Ptdo was successfully updated.'
+        flash[:notice] = 'Staff Training was successfully updated.'
         format.html { redirect_to(@ptdo) }
         format.xml  { head :ok }
       else
@@ -83,13 +85,11 @@ class PtdosController < ApplicationController
     end
   end
   
-  def show_total_days
-    @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and staff_id=? and trainee_report is not null',true,params[:id]]) 
-    #to retrieve --> http://localhost:3000/ptdos/show_total_days/1.....http://localhost:3000/ptdos/show_total_days/3.....1,3 --> staff_id!
-   
-   respond_to do |format|
-      format.html # show_total_days.html.erb
-      format.xml  { render :xml => @ptdos }
-    end
+  def approve1
+    @ptdo = Ptdo.find(params[:id])
   end
+  
+  def approve2
+     @ptdo = Ptdo.find(params[:id])
+   end
 end

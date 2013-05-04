@@ -1,18 +1,28 @@
-<p>
-  <b>Parent:</b>
-  <%=h @assetcategory.parent_id %>
-</p>
+<div class="tform">
+<H2>Asset Category Details</H2>
+  <table width=100% >
 
-<p>
-  <b>Description:</b>
-  <%=h @assetcategory.description %>
-</p>
+  <tr>
+	<td class="leftcol"><label for="parent_id">Category</label></td>
+	<td><%=h @assetcategory.parent_details %>
+</td>
+ </tr>
 
-<p>
-  <b>Cattype:</b>
-  <%=h @assetcategory.cattype_id %>
-</p>
+<tr>
+	<td class="leftcol"><label for="description ">Description</label></td>
+	<td><%=h @assetcategory.description %></td>
+</tr>
+
+<tr>
+	<td class="leftcol"><label for="cattype_id">Category Type</label></td>
+<td><%=h (Assetcategory::ASSETTYPE .find_all{|disp, value| value == @assetcategory.cattype_id}).map {|disp, value| disp} %></td>
+</tr>
 
 
+
+
+</table>
+</div>
+<BR>
 <%= link_to 'Edit', edit_assetcategory_path(@assetcategory) %> |
 <%= link_to 'Back', assetcategories_path %>

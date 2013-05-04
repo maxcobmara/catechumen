@@ -1,0 +1,49 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Students</h2>
+		<div class="right">
+			<% form_tag students_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search] %>
+			<%= submit_tag "Search", :icno => nil %>
+			<% end %>
+		</div>
+	</div>
+</div>
+  
+<div class="tlist">
+<table width=100% border="0" cellpadding="0" cellspacing="0">
+ 	<tr>
+    <th>Programme</th>
+     	<th>MyKad No</th>
+     <th>Name</th>
+     <th>Matrixno</th>
+     <th colspan=4 class="ac">Control</th>
+    </tr>
+    <% @student_intakes.each do |isorter, students| %>
+    <tr><td colspan=7><BR><b>Intake <%= isorter %></b></td></tr>
+    <% for student in students %>
+    <tr>
+      <td><%=h student.course_id.blank? ? " " : student.course.name %></td>
+       <td><%=h student.formatted_mykad %></td>
+       <td><%=h student.name %></td>
+       <td><%=h student.matrixno %></td>
+       <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => student %></td>
+       <td width=10px><%= link_to image_tag("printer.png",   :border => 0, :title => 'Borang Maklumat Pelajar'), :action => 'formforstudent', :id => student %></td>
+       <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => student %></td>
+       
+       <td width=10px >
+        <% if permitted_to? :destroy, @student %>
+                 <%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), student, :confirm => 'Are you sure?', :method => :delete %></td>
+         <% end %>
+      </td>
+    </tr>
+    <% end %> <% end %>
+ </table>
+</div>
+
+
+<% if permitted_to? :create, @student %>
+<%= link_to 'New Student', new_student_path %>
+<% end %>

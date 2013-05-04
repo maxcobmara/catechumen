@@ -1,72 +1,70 @@
-<script type="text/javascript">
+ <script type="text/javascript">
 //<![CDATA[
-bkLib.onDomLoaded(function() {
-    nicEditors.editors.push(
-        new nicEditor().panelInstance(
-            document.getElementById('myNicEditor')
-        )
-    );
-});
-//]]>
-</script>
-
+        bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+  //]]>
+  </script>
 <div class="tform">
-<H2>Page Details</H2>
-<table width=100%>
- 
+	<H2>Page Details</H2>
+<table id="form" width=80%>
+	
+<!--	<tr>
+		<td class="leftcol"><label for="message">Name</label></td>
+		<td><b>:</b></td>
+		<td><#%= f.text_field :name %></td>
+	</tr>-->
+
+
 	<tr>
-		<td class="leftcol"><label for="name">Name :</label></td>
-	    <td><%= f.text_field :name %></td>
+		<td class="leftcol"><label for="message">Title</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_field :title %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="title">Title :</label></td>
-	    <td><%= f.text_field :title %></td>
+		<td class="leftcol"><label for="message">Body</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :body, :size => '80 x 7' %></td>
+	</tr>
+	
+<!--	<tr>
+		<td class="leftcol"><label for="message">Admin:</label></td>
+		<td>	<#%= f.check_box :admin %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="body">Body :</label></td>
-	    <td><%= f.text_area :body, :size => '100x40', :id => 'myNicEditor' %></td>
+		<td class="leftcol"><label for="message">Parent:</label></td>
+		<td><#%= f.collection_select :parent_id, Page.find(:all), :id, :page_description, :include_blank => true %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="admin">Admin :</label></td>
-	    <td><%= f.check_box :admin %></td>
+		<td class="leftcol"><label for="message">Position:</label></td>
+		<td> <#%= f.text_field :position, :size => '3' %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="parent">Parent :</label></td>
-	    <td><%= f.collection_select :parent_id, Page.find(:all), :id, :page_description, :include_blank => true %></td>
+		<td class="leftcol"><label for="message">Nav Label:</label></td>
+		<td> <#%= f.text_field :navlabel %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="position">Position :</label></td>
-	    <td><%= f.text_field :position, :size => '3' %></td>
+		<td class="leftcol"><label for="message">Redirect:</label></td>
+		<td><#%= f.check_box :redirect %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="navlabel">Nav Label :</label></td>
-	    <td><%= f.text_field :navlabel %></td>
+		<td class="leftcol"><label for="message">Action:</label></td>
+		<td><#%= f.text_field :action_name %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="redirect">Redirect :</label></td>
-	    <td><%= f.check_box :redirect %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="action">Action :</label></td>
-	    <td><%= f.text_field :action_name %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="controller">Controller :</label></td>
-	    <td><%= f.text_field :controller_name %></td>
-	</tr>
+		<td class="leftcol"><label for="message">Controller:</label></td>
+		<td><#%= f.text_field :controller_name %></td>
+	</tr>-->
 	
 </table>
-</div>	
-	
+</div>
+
+
 
 
 

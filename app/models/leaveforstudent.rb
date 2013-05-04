@@ -1,8 +1,8 @@
 class Leaveforstudent < ActiveRecord::Base
   belongs_to :student
-  belongs_to :staff
+  belongs_to :approver, :class_name => 'Position', :foreign_key => 'staff_id'
 
-  validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate
+  validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate, :studentsubmit
   validates_numericality_of :telno
   
   
@@ -12,14 +12,6 @@ class Leaveforstudent < ActiveRecord::Base
   
   def self.find_main
     Staff.find(:all, :condition => ['staff_id IS NULL'])
-  end
-  
-  validate :validate_end_date_before_start_date
-
-  def validate_end_date_before_start_date
-    if leave_enddate && leave_startdate
-      errors.add(:end_date, "Your leave must begin before it ends") if leave_enddate < leave_startdate || leave_startdate < DateTime.now
-    end
   end
   
  
@@ -32,22 +24,57 @@ class Leaveforstudent < ActiveRecord::Base
         [ "Mid Term Break","Mid Term Break" ],
         [ "End of Semester","End of Semester" ]
   ]
-  
-  
-  def self.search(search)
-    if search
-      @leaveforstudent = Leaveforstudent.find(:all, :conditions => ['leavetype LIKE ?' , "%#{search}%"])
+ def leave_for
+    if leave_enddate == 'null' || leave_startdate == 'null' || (leave_enddate - leave_startdate) == 0
+      1
     else
-      @leaveforstudent = Leaveforstudent.find(:all)
+      ((leave_enddate - leave_startdate).to_i) + 1
     end
   end
-
-  def approver_details 
-    check_kin {staff.name}
+  
+  def show_to_day
+    if (leave_enddate - leave_startdate) == 0
+      ""
+    else
+      "  " + (leave_enddate.strftime("%d %b %Y")).to_s
+    end
   end
+    
+  
+def self.search(search)
+     if search
+       @leaveforstudent = Leaveforstudent.find(:all, :conditions => ['leavetype LIKE ?' , "%#{search}%"])
+     else
+      @leaveforstudent = Leaveforstudent.find(:all)
+     end
+end
 
-  def student_details 
-    check_kin {student.formatted_mykad_and_student_name}
+def approver_details 
+      suid = staff_id.to_a
+      exists = Position.find(:all, :select => "id").map(&:id)
+      checker = suid & exists     
+  
+      if staff_id == nil
+         "" 
+       elsif checker == []
+         "-" 
+      else
+        approver.position_with_boss
+      end
+end
+
+def apply_leave_status
+  if approved == nil
+    "Awaiting for Approver"
+  elsif approved == false 
+    "Not Approved"
+  else
+    "Approved"
   end
+end
+
+def bil
+   v=1
+end
 
 end

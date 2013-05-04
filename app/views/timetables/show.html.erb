@@ -1,65 +1,52 @@
 <div class="tform">
-
-<fieldset>
-	<legend class='togvis'>Timetable</legend>
-		<table width=85% >
-			<tr>
-				<td class="leftcol"><label>Code:</label></td>
-				<td><%=h @timetable.code %></td>				
-			</tr>
-			
-			<tr>
-				<td class="leftcol"><label>Name:</label></td>
-				<td><%=h @timetable.name %></td>				
-			</tr>
-			
-			<tr>
-				<td class="leftcol"><label>Description:</label></td>
-				<td><%=h @timetable.description %></td>				
-			</tr>
-			
-			<tr>
-				<td class="leftcol"><label>Name:</label></td>
-				<td><%=h @timetable.created_by.name %></td>				
-			</tr>
-		</table>
-		<BR/><BR/>
-		<legend class='togvis'>Period Timings</legend>
-		<BR>
-		<table width=100% style="border:none">
-		<!--<#% for timetable in @timetable.timetable_periods %>-->
-		<% @hello = (@timetable.timetable_periods.maximum("sequence")).to_i %>	
-		<% @timetable.timetable_periods.in_groups_of(7, false) do |row_things| %>
+<H2>Time Table Details</H2>
+  <table width=100% >
 		<tr>
-			<td align=center style=" text-align:center; padding:4px; vertical-align:middle;">
-				<%= (TimetablePeriod::DAY_CHOICE.find_all{|disp, value| value == (row_things.map(&:day_name)[0]) }).map {|disp, value| disp} %></td>
-			<% for periods in row_things %>
-			
-				<% if periods.day_name == 1 %>
-					<td align=center style="border:1px solid black; text-align:center; padding:4px;">
-						<strong><%= periods.sequence %></strong><BR>
-						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
-						<%= periods.is_break? ? "Break" : "" %></td>
-				<% else %><% end %>
-			<% end %>
-			<% for periods in row_things %>
-				<% if periods.day_name == 2 %>
-					<td align=center style="border:1px solid black; text-align:center; padding:4px;">
-						<strong><%= periods.sequence %></strong><BR>
-						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
-						<%= periods.is_break? ? "Break" : "" %></td>
-				<% else %><% end %>
-			<% end %>
-
-				
+			<td class="leftcol"><label for="intake_id">Class Name</label></td>
+			<td width=3%><b>:</b></td>
+			<td><%=h @timetable.classroom_id.blank? ? "" : @timetable.classroom_details %></td>
 		</tr>
 
-		<% end %>
-		</table>
-</fieldset>
+		<tr>
+			<td class="leftcol"><label for="topic_id">Subject Name</label></td>
+			<td><b>:</b></td>
+			<td><%=h @timetable.classroom_id.blank? ? "" : @timetable.subject_details %></td>
+		</tr>
 
+		<tr>
+			<td class="leftcol"><label for="topic_id">Topic</label></td>
+			<td><b>:</b></td>
+			<td><%=h @timetable.topic_id.blank? ? "" : @timetable.topic_details %></td>
+		</tr>
 
+		<tr><!--18/10/2011 - Shaliza fixed error if staff does not have position -->
+			<td class="leftcol"><label for="staff_id">Staff Name</label></td>
+			<td><b>:</b></td>
+			<td><%=h @timetable.staff_details %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="residence_id">Location</label></td>
+			<td><b>:</b></td>
+			<td><%=h @timetable.location_id.blank? ? "" : @timetable.location.name %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="subject_id">Time</label></td>
+			<td><b>:</b></td>
+			<td><%=h @timetable.start_at? ? @timetable.start_at.strftime("%I:%M%p") + ' to ' + @timetable.end_at.strftime("%I:%M%p %d-%b-%Y") : "" %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="subject_id">Student Count</label></td>
+			<td><b>:</b></td>
+			<td><%=h @timetable.student_count %><BR>
+			<% for student in @timetable.my_students%>
+			<%= (student.name).upcase %><BR>
+			<% end %></td>
+		</tr>
+</table>
 </div>
-
+<BR>
 <%= link_to 'Edit', edit_timetable_path(@timetable) %> |
 <%= link_to 'Back', timetables_path %>

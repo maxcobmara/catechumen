@@ -1,18 +1,72 @@
-<p>
-  <b>Name:</b>
-  <%=h @exammaker.name %>
-</p>
+<div class="tform">
+  <H2>Examination Paper Details</H2>
+	<table width=100% >
+		<tr>
+			<td class="leftcol">Name</td>
+			<td width=3%><b>:</b></td>
+			<td><%=h @exammaker.name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Description</td>
+			<td><b>:</b></td>
+			<td><%=h @exammaker.description %></td>
+		</tr>
+		
+			<tr>
+			<td class="leftcol">Creator Name</td>
+			<td><b>:</b></td>
+			<td><%=h @exammaker.creatorpaper_details %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol">Course Name</td>
+			<td><b>:</b></td>
+			<td><%=h @exammaker.course_id.blank? ? "-" : @exammaker.course_exam.specialisation %> <%= @exammaker.intake.blank? ? "-" : @exammaker.intake_exam.name %></td>
+		</tr>
 
-<p>
-  <b>Description:</b>
-  <%=h @exammaker.description %>
-</p>
+		<tr>
+			<td class="leftcol">Date</td>
+			<td><b>:</b></td>
+			<td><%=h @exammaker.exam_date.blank? ? "-" : @exammaker.exam_date.strftime("%d-%b-%Y") %></td>
+		</tr>
 
-<p>
-  <b>Creator:</b>
-  <%=h @exammaker.creator_id %>
-</p>
+		<tr>
+			<td class="leftcol">Time</td>
+			<td><b>:</b></td>
+			<td><%=h @exammaker.duration_exam %></td>
+		</tr>
 
+		<tr>
+			<td class="leftcol">Full Mark</td>
+			<td><b>:</b></td>
+			<td><%=h @exammaker.full_mark %></td>
+		</tr>
 
+		<tr>
+			<td class="leftcol">Passing Mark</td>
+			<td><b>:</b></td>
+			<td><%=h @exammaker.pass_mark %></td>
+		</tr>
+
+</table>
+<H2>Questions</H2>
+<table border=0 >
+	<% bil = 0 %>
+  <% for examquestion in @exammaker.examquestions %>
+	 <% bil += 1 %>
+   <tr>
+		<td colspan=2><b><%=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion.questiontype}).map {|disp, value| disp} %></b></td>
+    </tr>
+	<tr>
+		<td><center><%=h bil %></center></td>
+		<td><%=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %> <BR> <%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %> </td>
+	</tr>
+		<% end %>
+</table>
+
+</div>
+<BR>
 <%= link_to 'Edit', edit_exammaker_path(@exammaker) %> |
+<!--<#%= link_to 'Back', exammakers_path %>
+<#%= link_to 'Edit', edit_exammaker_path(@exammaker) %> |-->
 <%= link_to 'Back', exammakers_path %>

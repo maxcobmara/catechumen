@@ -1,0 +1,130 @@
+<div class="tform">
+	<%= render :partial => '_show_report_details' %>
+<% if @sdicipline.warden_id == User.current_user.staff_id %>
+<H2>Action By Principal </H2>
+	<table width=100% border=0>
+		<tr>
+			<td width=23% colspan=2><label for="action"><font size=2>&nbsp;Action Taken:</font></label></td>
+			<td width=3%><b>:</b></td>
+			<td> <%=h @sdicipline.principal_takeaction %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol" colspan=2><label for="closedtcollege">Investigation Summary:</label></td>
+			<td><b>:</b></td>
+			<td> <%=h @sdicipline.principal_investigation %></td>
+		</tr>
+ 	<% if @sdicipline.mentor_id != "" %>
+		<tr>
+			<td class="leftcol" colspan=2><label for="otherinfo">Forward to Mentor:</label></td>
+			<td><b>:</b></td>
+			<td><%=h @sdicipline.mentor_id.blank? ? "-" : @sdicipline.mentorname.mentor_mentee %></td>
+		</tr>
+    <% end %>	
+	<% if @sdicipline.mentor_id == "" %>
+		<tr>
+			<td class="leftcol" colspan=2><label for="otherinfo">Forward to Counsellor:</label></td>
+			<td><b>:</b></td>
+			<td><%=h @sdicipline.caunsellor_id? ? "-" : @sdicipline.counsellor_details %></td>
+		</tr>
+			<% end %>	
+	</table>
+<% end %>
+	<% if @sdicipline.status == "Mentor" && @sdicipline.mentor_id != "" || @sdicipline.status == "Refer to Counsellor" && @sdicipline.caunsellor_id != "" || @sdicipline.status =="Closed" %> 	
+	
+	<H2>Action By Mentor / Counsellor </H2>
+	<table width=100% border=0>
+		<tr>
+			<% if @sdicipline.mentor_id != "" %>
+			<td class="leftcol" colspan=2><label for="otherinfo">Forward to Mentor:</label></td>
+			<td><b>:</b></td>
+			<td><%=h @sdicipline.mentor_id.blank? ? "-" : @sdicipline.mentorname.mentor_mentee %></td>
+			<% else %>
+			<td class="leftcol" colspan=2><label for="otherinfo">Forward to Counsellor:</label></td>
+			<td><b>:</b></td>
+			<td><%=h @sdicipline.caunsellor_id? ? "-" : @sdicipline.counsellor_details %></td>
+			<% end %>
+		</tr>
+		
+		
+		<tr>
+			<td width=23% colspan=2><label for="otherinfo"><font size=2>&nbsp;Investigation Summary</font></label></td>
+			<td width=3%><b>:</b></td>
+			<td><%=h @sdicipline.otherinfo %></td>
+		</tr>
+			
+		<tr>
+			<td class="leftcol"colspan=2><label for="action">Action Taken</label></td>
+			<td><b>:</b></td>
+			<td><%=h @sdicipline.action %></td>
+		</tr>	
+	
+	</table>
+	<% end %>
+
+  <% if @sdicipline.jtkpdecision != nil %>
+	<H2>Refer to Komandan</H2>
+	<table width=100%>
+			<!--<tr>
+				<td class="leftcol"><label for="bplsenddt">Date Sent To Commandant</label></td>
+				<td><b>:</b></td>
+				<td><#%=h @sdicipline.commandantdt.blank? ? "-" : @sdicipline.commandantdt.strftime("%d-%b-%Y") %></td>
+			</tr>-->
+
+		<!--	<tr>
+				<td class="leftcol"><label for="jtkpdt">Date JTKP</label></td>
+				<td><b>:</b></td>
+				<td> <#%=h @sdicipline.jtkpdt %></td>
+			</tr>-->
+
+			<tr>
+				<td width=23% colspan=2><label for="jtkpdecision">&nbsp;Commandant Decision</label></td>
+				<td width=3%><b>:</b></td>
+				<td><%=h @sdicipline.jtkpdecision %></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol" colspan=2><label for="jtkpdescisionrxdt">Date Commandant Decision</label></td>
+				<td><b>:</b></td>
+				<td><%=h @sdicipline.jtkpdescisionrxdt.blank? ? "-" : @sdicipline.jtkpdescisionrxdt.strftime("%d-%b-%Y") %></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol" colspan=2><label for="appealdt">Appeal Date</label></td>
+				<td><b>:</b></td>
+				<td><%=h @sdicipline.appealdt %></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol" colspan=2><label for="appealdecision">Appeal Decision</label></td>
+				<td><b>:</b></td>
+				<td> <%=h @sdicipline.appealdecision %></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol" colspan=2><label for="appealdecisionrxdt">Appeal Decision Date</label></td>
+				<td><b>:</b></td>
+				<td><%=h @sdicipline.appealdecisionrxdt %></td>
+			</tr>
+			
+
+</table>
+<%end%>
+<table width=100% border=0>	
+	<tr>
+		<td width=23% colspan=2><label for="status"><font size=2>&nbsp;Status Report</font></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h (Sdicipline::STATUS.find_all{|disp, value| value == @sdicipline.status}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="closedtcollege">Case Closed</label></td>
+		<td><b>:</b></td>
+		<td><%=h @sdicipline.closedtcollege.blank? ? "-" : @sdicipline.closedtcollege.strftime("%d-%b-%Y")  %></td>
+	</tr>
+</table>
+</div>
+
+<BR>
+<%= link_to 'Edit', edit_sdicipline_path(@sdicipline) %> |
+<%= link_to 'Back', sdiciplines_path %>

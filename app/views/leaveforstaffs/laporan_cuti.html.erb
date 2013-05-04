@@ -1,0 +1,61 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+ <script>
+	document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+
+</script>
+</form>	
+<fieldset width=10px >
+
+<div id="title">
+<table width=100% border="0">
+	<tr>
+		<th width="2%"><img border="0" style="vertical-align:top" src="/images/KM.jpg" alt="km" width="90" height="90"/></th>
+		<th><font size=3>PUSAT LATIHAN DAN AKADEMI<BR>MARITIM MALAYSIA (PLAMM)<BR><BR>LAPORAN HARIAN CUTI STAF <BR> PADA <%= Date.today.strftime('%d-%m-%Y') %> </font> </H4> </th>
+			<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="90" height="90"/></th>
+	</tr>
+</table>
+<BR>
+<table width=100% border=1px cellspacing=0 align="center" >
+
+		<tr>
+			<th width=2%  style="vertical-align:middle">BIL</th>
+			<th width=25% style="vertical-align:middle">NAMA STAF</th>
+			<th width=20% style="vertical-align:middle">JENIS CUTI</th>
+			<th width=18% style="vertical-align:middle">MULA CUTI</th>
+			<th width=15% style="vertical-align:middle">AKHIR CUTI</th>
+			<th  width=15% style="vertical-align:middle">JUMLAH CUTI</th>
+	  </tr>
+	
+		 <% bil = 0 %>
+	     <% @leaveforstaffs.each do |leaveforstaff| %>
+		 <% bil += 1 %>
+		
+    <tr>
+		<td align="center"><%=h bil %></td>	
+		<td ><%=h leaveforstaff.applicant_details %></td>	
+		<td align="center"><%=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} %></td>
+		<td align="center" ><%=h leaveforstaff.leavestartdate.strftime("%d %b %Y") %> </td>
+		<td align="center"><%=h leaveforstaff.show_to_day %>&nbsp; </td>
+		<td align="center"><%=h leaveforstaff.leave_for %> Hari </td>
+	</tr>
+
+	<% end %>
+
+</table>
+
+</div>
+</fieldset>
+<BR>
+
+
+
+<div id="hideLink">
+<%= link_to 'BACK', attendances_path %>
+</div>
+

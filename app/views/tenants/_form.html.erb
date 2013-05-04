@@ -1,40 +1,65 @@
 <div class="tform">
-<H2>Tenancy</H2>
-<table width=100%>
-	<tr>
-		<td class="leftcol">Location</font></td>
-		<td><%=h check_kin {@tenant.location.location_list} %> [<%= @tenant.location.typename %>]
-			<!--<#%= f.collection_select :location_id, Location.find(:all, :conditions => {:typename => 1} || {:typename => 2} ), :id, :location_list %></td>
--->
-	</tr>
-	<tr>
-		<% if @tenant.location.typename == 2 %> 
-			<td class="leftcol">Student</td>
-			<td><%= f.collection_select :student_id, Student.find(:all, :conditions => ["id not in (?)", @tenant.student_tenants	], :order => :name), :id, :student_name_with_programme %></td>
-		<% end %>
-		<% if @tenant.location.typename == 1 %>
-			<td class="leftcol">Staff</td>
-			<td><#%= f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name %></td>
-		<% end %>
-	</tr>
-	<tr>
-		<td class="leftcol">Date Key Provided</td>
-		<td><%= f.date_select :keyaccept %></td>
-	</tr>
-	<tr>
-		<td class="leftcol">Date Key Expected For Return</td>
-		<td><%= f.date_select :keyexpectedreturn, :include_blank => true  %></td>
-	</tr>
-	<tr>
-		<td class="leftcol">Date Key Returned</td>
-		<td><%= f.date_select :keyreturned, :include_blank => true %></td>
-	</tr>
-	<tr>
-		<td class="leftcol">Force Vacate</td>
-		<td><%= f.check_box :force_vacate %></td>
-	</tr>
+	<H2>Tenancy</H2>
+	<table width=100%>
+		<tr>
+			<td class="leftcol" colspan=2>Room No</font></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :location_id, Location.find(:all, :conditions => {:typename => 1} && {:typename => 2} ), :id, :location_list %></td>
+		</tr>
+		
+		<tr>
+			<% if @tenant.location_typename == 2 %> 
+			<td class="leftcol" colspan=2>Student</td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :student_id, Student.find(:all), :id, :student_name_with_programme %></td>
+			<% end %>
+			<% if @tenant.location_typename == 1 %> 
+			<td class="leftcol" colspan=2>Staff</td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name %></td>
+			<% end %>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" colspan=2>Date Room Key Provided</td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :keyaccept %></td>
+		</tr>
+		<tr>
+			<td class="leftcol" colspan=2>Date Room Key Expected For Return</td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :keyexpectedreturn, :include_blank => true %></td>
+		</tr>
+		<tr>
+			<td class="leftcol" colspan=2>Date Room Key Returned</td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :keyreturned, :include_blank => true %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" colspan=2>Date Locker Key Provided</td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :keyaccept %></td>
+		</tr>
+		<tr>
+			<td class="leftcol" colspan=2>Date Locker Key Expected For Return</td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :keyexpectedreturn, :include_blank => true %></td>
+		</tr>
+		<tr>
+			<td class="leftcol" colspan=2>Date Locker Key Returned</td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :keyreturned, :include_blank => true %></td>
+		</tr>
+		<tr>
+			<td class="leftcol" colspan=2>Force Vacate</td>
+			<td><b>:</b></td>
+			<td><%= f.check_box :force_vacate %></td>
+		</tr>
 </table>
 </div>
+
+
 
 				
 				

@@ -1,0 +1,76 @@
+<h2>Booking Vehicle Details</h2>
+  <table width=100% >
+	
+	<tr>
+		<td class="leftcol"><label for="applicant">Applicant Name</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingvehicle.staffname.staff_name_with_title %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="apply_date">Request Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingvehicle.apply_date.blank? ? "-": @bookingvehicle.apply_date.strftime("%d-%b-%Y") %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="used_date">Used Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingvehicle.used_date.blank? ? "-": @bookingvehicle.used_date.strftime("%d-%b-%Y") %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="returned_date">Returned Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingvehicle.returned_date.blank? ? "-": @bookingvehicle.returned_date.strftime("%d-%b-%Y") %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="active">Purpose / Location</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingvehicle.location %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="applicant">Driver Name</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingvehicle.driver_name.blank? ? "-" : @bookingvehicle.driver.staff_name_with_title %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="applicant">Endorser Name</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingvehicle.endorse_name.blank? ? "-" : @bookingvehicle.endorser.staff_name_with_title %></td>
+	</tr>
+	
+</table>
+<% if (@bookingvehicle.endorsed != nil && User.current_user.staff_id != @bookingvehicle.endorse_name) %>
+<h2>Supervisor Vehicle Details</h2>
+  <table width=100% >
+  
+	<tr>
+		<td class="leftcol"><label for="endorsed">Endorsed?</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h (Bookingvehicle::ENDORSED.find_all{|disp, value| value == @bookingvehicle.endorsed.to_s}).map {|disp, value| disp} %></td></tr>
+	
+	<tr>
+		<td class="leftcol"><label for="used_date">Endorsed Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingvehicle.endorse_date.blank? ? "": @bookingvehicle.endorse_date.strftime("%d-%b-%Y") %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="returned_date">Remark</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingvehicle.remark %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="applicant">Approver Name</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingvehicle.approver.staff_name_with_title %></td>
+	</tr>
+		
+</table>
+<% end %>

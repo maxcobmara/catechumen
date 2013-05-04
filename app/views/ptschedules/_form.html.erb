@@ -1,45 +1,86 @@
-<div class="tform">
-<H2><%= t 'ptschedule.schedule_details' %></H2>
+<div class="tform"><!--09/12/2011 - Shaliza changed title bar and place holder RM for final price-->
+	<H2><%= t 'ptschedule.schedule_details' %></H2>
  <table width=100% >
+
 	<tr>
-		<td class="leftcol"><label for="ptcourse_id"><%= t 'ptschedule.ptcourse_id' %> : </label></td>
-		<td><%= f.collection_select :ptcourse_id, Ptcourse.find(:all, :conditions => ["approved = ?", true]), :id, :name, :prompt => "Select" %></td>
+		<td class="leftcol"><label for="ptcourse_id">Branch <font color="red"> * </font></label></td>
+		<td width=2%><b>:</b></td>
+		<td><%= f.text_area :branch, :size => "40x2" %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="ptcourse_id"><%= t 'ptschedule.ptcourse_id' %></label></td>
+		<td width=2%><b>:</b></td>
+		<td><%= f.text_area :coursename,:size => "40x2" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="description"><%= t 'ptcourse.description' %></label></td>
+		<td width=2%><b>:</b></td>
+		<td><%= f.text_area :description, :size => '40x8' %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="ptcourse_id"><%= t 'ptcourse.duration' %></label></td>
+		<td width=2%><b>:</b></td>
+		<td><%= f.text_field :duration, :size=>5 %>
+		<%= f.select :duration_type, 
+			Ptcourse::DUR_TYPE, 
+			:prompt => "Select" %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="start"><%= t 'ptschedule.start' %> : </label></td>
-		<td><%= f.date_select :start, :order => [:day, :month, :year] %></td>
+		<td width=2%><b>:</b></td>
+		<td><%= f.date_select :start, :start_year => 2012, :end_year => 2030, :include_blank => true %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="location"><%= t 'ptschedule.location' %> : </label></td>
+		<td width=2%><b>:</b></td>
 		<td><%= f.text_field :location %></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol"><label for="min_participants"><%= t 'ptschedule.minparticipant' %> : </label></td>
-		<td><%= f.text_field :min_participants, :size => 3 %></td>
+		<td width=2%><b>:</b></td>
+		<td><%= f.text_field :min_participants, :size => 5 %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="max_participants"><%= t 'ptschedule.maxparticipant' %> : </label></td>
-		<td><%= f.text_field :max_participants, :size => 3  %></td>
+		<td class="leftcol"><label for="provider">Allowance Speaker</label></td>
+		<td width=2%><b>:</b></td>
+		<td><%= f.text_field :allowance_speaker, :size=>12, :placeholder => "RM" %> - <%= f.text_field :rate_speaker, :size=>5, :placeholder => "Hour" %> </td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="final_price"><%= t 'ptschedule.final_price' %>: </label></td>
-		<td><%= f.text_field :final_price, :placeholder => 'RM', :size => 12 %></td>
+		<td class="leftcol"><label for="provider">Meals & Hospitality</label></td>
+		<td width=2%><b>:</b></td>
+		<td><%= f.text_field :meals, :size=> 12, :placeholder => "RM" %></td>
 	</tr>
+	
+	
+	
+	<!--<tr>
+		<td class="leftcol"><label for="max_participants"><#%= t 'ptschedule.maxparticipant' %> : </label></td>
+		<td><#%= f.text_field :max_participants, :size => 3  %></td>
+	</tr>-->
+	
+	<!--<tr>
+		<td class="leftcol"><label for="final_price"><#%= t 'ptschedule.final_price' %>: </label></td>
+		<td width=2%><b>:</b></td>
+		<td><#%= f.text_field :final_price, :size => 12, :placeholder => 'RM' %></td>
+	</tr>-->
 
-    <% permitted_to? :approve, :ptcourses do %>
+   <!-- <#% permitted_to? :approve, :ptcourses do %>-->
 
-    <tr>
-		<td class="leftcol"><label for="budget_ok"><%= t 'ptschedule.budget_ok' %> : </label></td>
-		<td> <%= f.check_box :budget_ok %><font color="grey", size="-2"> Tick To Approved </font></td>
-	</tr>
+   <!-- <tr>
+		<td class="leftcol"><label for="budget_ok"><#%= t 'ptschedule.budget_ok' %> : </label></td>
+		<td width=2%><b>:</b></td>
+		<td> <#%= f.check_box :budget_ok %><font color="grey", size="-2"> Tick To Approved </font></td>
+	</tr>-->
 
 	
-<% end %>
+<!--<#% end %>-->
 	
 </table>		
 </div>

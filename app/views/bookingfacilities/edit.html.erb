@@ -1,0 +1,110 @@
+<h3>Editing Reservation Facility</h3>
+
+<% form_for(@bookingfacility) do |f| %>
+  <%= f.error_messages %>
+<div class="tform">
+
+	<h2>Reservation Details</h2>
+  <table width=100% >
+	
+	<tr>
+		<td width=23% colspan=2><label for="staff_id"><font size=2>&nbsp;Staff Name</font></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @bookingfacility.staff_id.blank? ? "-" : @bookingfacility.staffbooked.staff_name_with_title %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="location_id">Location Reserved</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingfacility.location_id.blank? ? "-" :  @bookingfacility.reservefac.location_list %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="request_date">Request Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingfacility.requestdate.blank? ? "-" : @bookingfacility.requestdate.strftime("%d-%b-%Y") %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="start_date">Reservation Start Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingfacility.start_date.blank? ? "-" : @bookingfacility.start_date.strftime("%d-%b-%Y %I:%M %p") %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="start_date">Reservation End Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @bookingfacility.end_date.blank? ? "-" : @bookingfacility.end_date.strftime("%d-%b-%Y %I:%M %p") %></td>
+	</tr>
+</table>
+
+<H2>Approver</H2>
+<table width=100% border=0>	
+	<tr>
+		<td width=23% colspan=2><label for="approver_id"><font size=2>&nbsp;Approver Name</font></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @bookingfacility.approver_id.blank? ? "-" : @bookingfacility.approvebooked.staff_name_with_title %></td>
+	</tr>
+	<tr>
+		<td class="leftcol" colspan=2><label for="approval">Approved?</label></td>
+		<td><b>:</b></td>
+		<td><%= f.radio_button :approval,'false' %>Not Approved &nbsp<%= f.radio_button :approval,'true' %>Approved</td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="approval">If Not Approved, State Reason</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :remark, :size => "30x4" %></td>
+	</tr>
+		
+	<tr>
+		<td class="leftcol" colspan=2><label for="approver_date">Date</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :approve_date, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="approver_id">Submit To Facility Officer</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :facility_officer, Staff.find(:all), :id, :staff_name_with_title, :include_blank => true %></td>
+	</tr>
+	
+</table>
+<% if @bookingfacility.facility_officer == User.current_user.staff_id %>
+<H2>Facility Officer</H2>
+<table width=100% border=0>	
+	<tr>
+		<td width=23% colspan=2><label for="approver_id"><font size=2>&nbsp;Facility Officer</font></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @bookingfacility.facility_officer.blank? ? "-" : @bookingfacility.officer.staff_name_with_title %></td>
+	</tr>
+	<tr>
+		<td class="leftcol" colspan=2><label for="approval">Approved?</label></td>
+		<td><b>:</b></td>
+		<td><%= f.radio_button :approver2,'false' %>Not Approved &nbsp<%= f.radio_button :approver2,'true' %>Approved</td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="approval">If Not Approved, State Reason</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :remark_officer, :size => "30x4" %></td>
+	</tr>
+		
+	<tr>
+		<td class="leftcol" colspan=2><label for="approver_date">Approver Date</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :date_approver2, :include_blank => true %></td>
+	</tr>
+
+	
+</table>
+<% end %>
+</div>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @bookingfacility %> |
+<%= link_to 'Back', bookingfacilities_path %>

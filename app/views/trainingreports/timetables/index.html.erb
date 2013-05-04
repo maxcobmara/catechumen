@@ -1,0 +1,45 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+<div class="box-head">
+<h2 class="left">Scheduling</h2>
+<div class="right"><%= link_to image_tag("calendar_view_month.png", :border => 0), {:controller => 'timetables', :action => 'calendar'} %></div>
+</div>
+</div>
+
+<div class="tlist">
+
+
+    <table width=90% border="0" cellpadding="0" cellspacing="0">
+<tr>
+    <th>Class</th>
+    <th>Subject</th>
+<th>Topic</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>Staff Name</th>
+    <th>Location</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @timetables.each do |timetable| %>
+  <tr>
+    <td><%=h timetable.classroom_id.blank? ? "" : timetable.classroom_details %></td>
+	<td><%=h timetable.classroom_id.blank? ? "" : timetable.subject_details %></td>
+    <td><%=h timetable.topic_id.blank? ? "" : timetable.topic_details %></td>
+	<td><%=h timetable.start_at.strftime("%d %b %I:%M %p") %></td>
+	<td><%=h timetable.end_at.strftime("%d %b %I:%M %p") %></td>
+     <!--18/10/2011 - Shaliza fixed error for timing -->
+    <!--<td><#%=h time_table_entry.timing_start_details.strftime("%I:%M %p") unless time_table_entry.timing_start_details.nil? %> - <#%=h time_table_entry.timing_end_details.strftime("%I:%M %p") unless time_table_entry.timing_end_details.nil? %></td>-->
+    <td><%=h timetable.staff_details %></td><!--18/10/2011 - Shaliza fixed error if staff does not have position -->
+    <td><%=h timetable.location_id.blank? ? "" : timetable.location.name %></td>
+    <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => timetable %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => timetable %></td>
+    <td width=10px ><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), timetable, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+
+<%= link_to 'New Timetable Entry', new_timetable_path %>

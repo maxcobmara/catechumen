@@ -1,0 +1,65 @@
+<div class="tform">
+<H2>Training Note Details</H2>
+<table width=100%>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">Topic Name</label></td>
+		<td width=3%><b>:</b></td>
+		<td> <%=h @training_note.topic.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">Created By</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @training_note.topic.created_details %></td>
+	</tr>
+		
+	<tr>
+		<td class="leftcol"><label for="subject_id">Timetable Name</label></td>
+		<td><b>:</b></td>
+		<td><%=h @training_note.timetable_id %></td>
+	</tr>
+	
+	   <tr>
+		<td class="leftcol"><label for="data"><%= t 'document.uploaded' %></label></td>
+		<td><b>:</b></td>
+		<td><% if @training_note.document.exists? then %>
+			<%= @training_note.document_file_name %>
+			<%= link_to (t 'document.download'), @training_note.document.url %> ||
+			<%= link_to "ALT", @training_note.document.url %>
+			<% else %>
+			No File Available
+			<% end %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">Training Notes Title</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @training_note.title %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">References</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @training_note.reference %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">Version</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @training_note.version %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">Release</label></td>
+		<td><b>:</b></td>
+		<td> <%=h l(@training_note.release) %></td>
+	</tr>
+	
+
+	
+</table>
+</div>
+<BR>
+<%= link_to 'Edit', edit_training_note_path(@training_note) %> |
+<%= link_to 'Back', training_notes_path %>

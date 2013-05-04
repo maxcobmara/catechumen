@@ -1,40 +1,46 @@
 class Trainingreport < ActiveRecord::Base
   
-  # befores, relationships, validations, before logic, validation logic, 
-  #controller searches, variables, lists, relationship checking
-  
-  belongs_to :timetable
-  belongs_to :creator,  :class_name => 'Staff',  :foreign_key => 'staff_id'
-  belongs_to :tpa,      :class_name => 'Staff',   :foreign_key => 'tpa_id'
-  
+   belongs_to :timetable
+   belongs_to :staff
+   belongs_to :tpa, :class_name => 'Staff', :foreign_key => 'tpa_id'
 
-  validates_presence_of :classtype#, :location_state
-  validates_presence_of :location_comment, :if => :locstate_con?
- 
-  def locstate_con?
-    location_state != true
-  end
-  
-  def edit_icon
-    if staff_id == User.current_user.staff_id
-      "edit.png"
-    elsif tpa_id == User.current_user.staff_id
-      "approval.png"
-    else
-      ""
+    belongs_to :topic
+
+   CTYPE = [
+         # Displayed stored in db
+         [ "Kuliah",1 ],
+         [ "Tutorial",2 ],
+         [ "Amali",3 ]
+   ]
+   
+   
+   def tpa_staff_details
+     suid = tpa_id.to_a
+     exists = Staff.find(:all, :select => "id").map(&:id)
+     checker = suid & exists
+
+     if tpa_id == nil
+       ""
+     elsif checker == []
+       "-"
+     else
+       tpa.staff_name_with_title
+     end
+   end
+   
+    def timetable_staff_details
+      suid = timetable_id.to_a
+      exists = Timetable.find(:all, :select => "id").map(&:id)
+      checker = suid & exists
+
+      if timetable_id == nil
+        ""
+      elsif checker == []
+        "-"
+      else
+        timetable.staff_details
+      end
     end
-  end
-  
-  
-  
-  
-  
-  
-  
-  CTYPE = [
-        #  Displayed       stored in db
-        [ "Kuliah",1 ],
-        [ "Tutorial",2 ],
-        [ "Amali",3 ]
-  ]
+   
+   
 end

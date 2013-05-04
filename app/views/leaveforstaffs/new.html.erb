@@ -5,43 +5,73 @@
 
 <div class="tform">
 	<H2><%= t 'staffleave.leavereq' %></H2>
-  <table width=100% >
-		<tr><!--19/10/2011- Fix :position_with_name to :staff_name_with_position -->
-			<td class="leftcol"><label for="staff_id"><b><%= t 'staffleave.staff_id' %></b></label><font color="red"> * </font></td>
+    <table width=100% >
+		<tr>
+			<td class="leftcol"><label for="staff_id"><%= t 'staffleave.staff_id' %></label><font color="red"> * </font></td>
+			<td><b>:</b></td>
 			<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %></td>
 		</tr>
-
+		<!--27Feb2013-annual leave balance added-->
 		<tr>
-		<td class="leftcol"><label for="leavetype"><b><%= t 'staffleave.leavetype' %></b></label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="staff_id"><%= t 'staffleave.balance' %></label></td>
+			<td><b>:</b></td>
+			<td><%= Staff.find(User.current_user.staff_id).staffgrade.nil? ?  "No record" : Leaveforstaff.annual_leave_balance.to_s+" / "+Staff.find(current_user.staff_id).staffgrade.total_leave.to_s+" days" %></td>
+		</tr>
+		<!--27Feb2013-annual leave balance added-->
+		<tr>
+			<td class="leftcol"><label for="leavetype"><%= t 'staffleave.leavetype' %></label><font color="red"> * </font></td>
+			<td><b>:</b></td>
 			<td><%= f.select :leavetype, 
 			                 Leaveforstaff::STAFFLEAVETYPE,
 			                 :prompt => "Select"  %></td>
 		</tr>
 
 		<tr>
-	    <td class="leftcol"><label for="leavestartdate"><b><%= t 'staffleave.leavestartdate' %></b></label></td>
+	    	<td class="leftcol"><label for="leavestartdate"><%= t 'staffleave.leavestartdate' %></label></td>
+			<td><b>:</b></td>
 			<td><%= f.date_select :leavestartdate, :order => [:day, :month, :year], :default => 2.days.from_now %></td>
 		</tr>
 
 		<tr>
-	    <td class="leftcol"><label for="leavenddate"><b><%= t 'staffleave.leavenddate' %></b></label></td>
+	    	<td class="leftcol"><label for="leavenddate"><%= t 'staffleave.leavenddate' %></label></td>
+			<td><b>:</b></td>
 			<td><%= f.date_select :leavenddate, :order => [:day, :month, :year], :default => 3.days.from_now %></td>
+		</tr>
+		
+		<tr>
+		    <td class="leftcol"><label for="reason">Address On Leave</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_area :address_on_leave, :size => "30x4" %></td>
+		</tr>
+		
+		<tr>
+		    <td class="leftcol"><label for="phone_on_leave">Phone No</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :phone_on_leave %></td>
 		</tr>
 
 		<tr>
-	    <td class="leftcol"><label for="reason"><b><%= t 'staffleave.reason' %></b></label></td>
+	    	<td class="leftcol"><label for="reason"><%= t 'staffleave.reason' %></label></td>
+			<td><b>:</b></td>
 			<td><%= f.text_field :reason %></td>
 		</tr>
 		<tr>
-	    <td class="leftcol"><label for="notes"><b><%= t 'staffleave.notes' %></b></label></td>
+	    	<td class="leftcol"><label for="notes"><%= t 'staffleave.notes' %></label></td>
+			<td><b>:</b></td>
 			<td><%= f.text_area :notes, :size => "30x5" %></td>
 		</tr>
+		
+		<tr>
+	    	<td class="leftcol"><label for="notes">Submit</label><font color="red"> * </font></td>
+			<td><b>:</b></td>
+			<td><%= f.check_box :submit %></td>
+		</tr>
+
   </table>
  
   <p>
     <%= f.submit (t 'icms.submit') %>
   </p>
 <% end %>
-
-<%= link_to (t 'icms.back'), leaveforstaffs_path %>
 </div>
+<%= link_to (t 'icms.back'), leaveforstaffs_path %>

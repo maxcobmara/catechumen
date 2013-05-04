@@ -3,17 +3,16 @@
 <% form_for(@document, :html => { :multipart => true }) do |f| %>
   <%= f.error_messages %>
 
-	<% if current_user.staff_id == @document.stafffiled_id %>
-		<%=render :partial => 'form', :locals => {:f => f} %> 
-	<% end %>
-	<% if current_user.staff_id == @document.cc1staff_id || current_user.staff_id == @document.cc2staff_id %>
+	
+	<% if current_user.staff_id == @document.cc1staff_id || User.current_user.staff_id %>
    <%= render 'show' %>
 	<% end %>
 	<% if current_user.staff_id == @document.cc1staff_id %>
-   <%= render  :partial => 'action1', :locals => {:f => f} %>
+    <%= render  :partial => 'action1', :locals => {:f => f} %>
 	<% end %>
-	<% if current_user.staff_id == @document.cc2staff_id %>
-   <%= render  :partial => 'action2', :locals => {:f => f} %>
+	
+	<% if @document.cc2closed == false %>
+    <%= render  :partial => 'action2', :locals => {:f => f} %>
 	<% end %>
 	
 

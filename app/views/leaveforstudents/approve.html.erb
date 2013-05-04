@@ -1,24 +1,32 @@
-<h3>Approve Staff Leave</h3>
+<h3>Approve Student Leave</h3>
 
 <% form_for(@leaveforstudent) do |f| %>
   <%= f.error_messages %>
 
 <div class="tform">
-		<%= render :partial => 'applyshow' %>
-	<H2>Approve Student Leave Request</H2>
-	<table width=100% >
-		<tr>
-			<td class="leftcol"><label for="approved"><b>Approve Student Leave:</b></label></td>
-			<td><%= f.radio_button :approved,'false' %>Not Approved &nbsp<%= f.radio_button :approved,'true' %>Approve</td>
-		</tr>
-		<tr><!-- 07/10/2011 - Shaliza fixed Current User logged in -->
-			<td class="leftcol"><label for="staff_id"><b>Approved By:</b></label></td>
-			<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ['id =?', current_user.staff_id]), :id, :mykad_with_staff_name %></td>
-		</tr>
-		<tr>
-		   <td class="leftcol"><label for="approvedate"><b>Approved On:</b></label></td>
-			<td><%= f.date_select :approvedate, :order => [:day, :month, :year] %></td>
-		</tr>
+	<H2>Student Leave Request Details</H2>
+  <table width=100% >
+  	<%= render :partial => 'applyshow' %>
+</table>
+<H2>Approve Student Leave Request</H2>
+<table>
+
+<tr>
+	<td class="leftcol"><label for="approved">Approved?</label></td>
+	<td><b>:</b></td>
+	<td><%= f.radio_button :approved,'false' %>Not Approved &nbsp<%= f.radio_button :approved,'true' %>Approve</td>
+</tr>
+<tr>
+	<td class="leftcol"><label for="staff_id">Approved By</label></td>
+	<td><b>:</b></td>
+	<td><%= f.collection_select :staff_id, Position.find(:all, :conditions => {:id => [2, 55]}), :id, :position_with_boss %></td>
+</tr>
+<tr>
+   <td class="leftcol"><label for="approvedate">End Date</label></td>
+	<td><b>:</b></td>
+	<td><%= f.date_select :approvedate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+</tr>
+
   </table>
 </div>
   <p>

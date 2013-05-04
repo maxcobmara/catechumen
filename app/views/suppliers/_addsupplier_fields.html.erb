@@ -1,10 +1,61 @@
 <div class="fields">
-<%= f.text_field :lpono, :size => 10, :placeholder => "LPO No" %>
-<%= f.text_field :document, :size => 15, :placeholder => "Document" %>
-<%= f.text_field :quantity, :size => 9, :placeholder => "Quantity" %>
-<%= f.text_field :unitcost, :size => 10, :placeholder => "RM" %>
-<%= f.date_select :received, :size => 12, :order => [:day, :month, :year], :include_blank => true %>
-<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>
+	<table>
+		<tr>
+			<td class="leftcol"><label for="received"><%= t 'supplier.received' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :received, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %> </td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="staff_id"><%= t 'supplier.lpono' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :lpono, :size => 15 %> <font color="grey", size="-2">example : DO 1112</font></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="staff_id"><%= t 'supplier.unitcost' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :unitcost, :size => 10, :placeholder => "RM" %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="addressbook_id">Received By</label></td>
+			<td><b>:</b></td>
+			<td> <%= f.collection_select :addressbook_id, Addbook.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="staff_id">Quantity Received</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :quantity, :size => 10 %> </td>
+		</tr>
+		
+	<!--	<tr>
+			<td class="leftcol"><label for="staff_id"><b></b></label></td>
+			<td><#%= f.text_field :small_quantity, :size => 10 %> <font color="grey", size="-2">(unit terkecil)</font></td>
+		</tr>-->
+		
+	<!--	<tr>
+			<td class="leftcol"><label for="staff_id"><b>Quantity Ratio</b></label></td>
+			<td>1 unit terbesar : <#%= f.text_field :nisbah_quantity, :size => 10 %> unit terkecil</td>
+		</tr>-->
+		
+		<tr>
+			<td class="leftcol"><label for="staff_id">Recipient Staff</label></td>
+			<td><b>:</b></td>
+			<td> <%= f.collection_select :received_by, Staff.find(:all), :id, :staff_name_with_title, :include_blank => true %></td>
+			<td><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %></td>
+		</tr>
+		
+</table>
+<HR width=100% align=left>
+
+
+
+
+
 </div>
+
+
 
 

@@ -11,7 +11,7 @@ ms_MY:
   new: Cipta
   update: Kemaskini
   control: Tindakan
-  addmore: "Tambah Rekod"
+  thank: "Kakitangan telah berjaya dicipta"
   
   activerecord:
         models:
@@ -24,6 +24,7 @@ ms_MY:
             disposal: "Pembuangan"
             assetloss: "Asset Loss"
             librarytransaction: "Transaksi Buku"
+            user: Pengguna
         attributes:
             staff:
               icno: "No MyKad"
@@ -42,7 +43,7 @@ ms_MY:
             attendance:
               staff_id: "Nama Kakitangan"
             position:
-              code: "Kod Jawatan"
+              positioncode: "Kod Jawatan"
             leaveforstaff:
               staff_id: "Nama Kakitangan"
             travelrequest:
@@ -68,8 +69,8 @@ ms_MY:
           template:
             body: "Berikut adalah beberapa masalah:"
             header:
-              one: "{{model}} ini mempunyai 1 kesalahan dari disimpan"
-              other: "{{model}} ini mempunyai {{count}} kesalahan dari yang disimpan"
+              one: "%{model} ini mempunyai 1 kesalahan dari disimpan"
+              other: "%{model} ini mempunyai %{count} kesalahan dari yang disimpan"
           messages:
             blank: "tidak boleh dikosongkan"
             not_a_number: "ialah bukan nombor"
@@ -86,6 +87,70 @@ ms_MY:
     remove: Padam
     update: Kemaskini
     show: Papar
+    
+  menu:
+    home: Utama
+    staff: Staf
+    asset: Aset
+    location: Lokasi
+    student: Pelajar
+    exam: Peperiksaan
+    training: Latihan
+    library: Perpustakaan
+    admin: Pentadbiran
+    staffinfo: Maklumat Staf
+    staffattendance: Kehadiran Staf
+    appraisal: Penilaian Prestasi Staf
+    instructor: Penilaian Jurulatih
+    lecturer: Penilaian Pensyarah
+    task: Tugas dan Tanggungjawab staf
+    leave: Cuti Staf
+    apply: Mohon Cuti
+    approve: Pengesahan Cuti
+    claim: Tuntutan Staf
+    travel: Permintaan Perjalanan
+    professional: Pembangunan Profesional
+    budget: Bajet Latihan
+    course: Kursus Latihan
+    schedule: Jadual Latihan
+    applytraining: Mohon Untuk Latihan
+    status: Status Permohonan Latihan
+    movement: Status dan Pergerakan
+    report: Laporan
+    fixed: Pendaftaran Aset
+    aset: Pengurusan Aset
+    office: Keperluan Pejabat
+    loss: Kehilangan dan Dihapus Kira
+    disposal: Pelupusan
+    reservation: Tempahan Aset
+    stock: Permohonan Stok
+    residence: Pengurusan Lokasi
+    tenant: Penyewa
+    stuleave: Cuti Pelatih
+    facility: Tempahan Kemudahan
+    info: Info Kampus
+    event: Peristiwa Kampus
+    bulletin: Papan Buletin
+    document: Pendaftaran Dokumen
+    filling: Fail
+    file: Pendaftaran Fail
+    stuinfo: Maklumat Pelatih
+    stuattendance: Kehadiran Pelatih
+    dicipline: Disiplin
+    counselling: Kaunseling
+    examdev: Pembangunan Peperiksaan
+    course: Kursus
+    scheduling: Penjadualan
+    period: Tetapkan Tempoh Masa
+    curriculum: Pengurusan Kurikulum
+    lesson: Rancangan Pengajaran
+    subject: Subjek
+    topic: Topik
+    timetable: Pengurusan Jadual
+    personalised: Jadual Waktu Peribadi
+    rules: Undang-Undang dan Peraturan
+    transaction: Transaksi Perpustakaan
+    resources: Katalog Perpustakaan
     
   staff: 
     new: Kakitangan Baru
@@ -105,18 +170,21 @@ ms_MY:
     age: Umur
     bloodtype: Jenis Darah
     gender: Jantina
+    male: Lelaki
+    female: Perempuan
     coemail: Emel
     cooftelno: Telefon (Pejabat)
     phonecell: Telefon (HP)
     phonehome: Telefon (H)
+    addr: Alamat
     poskod_id: Poskod
-    address: Alamat
     mrtlstatuscd: Status Kahwin
     statecd: Tempat Lahir
     race: Bangsa
     religion: Agama
     country_cd: Kewarganegaraan
     transportclass_id: Kelas Kenderaan
+    vehicle: No Pendaftaran Kenderaan        
     upload: Muat Naik Gambar
     employment_details: Butir Perkerjaan
     employscheme: Skim Perjawatan
@@ -148,26 +216,27 @@ ms_MY:
     qname: Kelayakan
     institute: Institusi
 
-    loan:
-      loans: Pinjaman
-      ltype: Jenis Pinjaman
-      accno: No Akaun Pinjaman
-      startdt: Tarikh Diluluskan
-      durationmn: Tempoh
-      deductions: Deduksi
-      amount: Jumlah
+    loans: Pinjaman
+    ltype: Jenis Pinjaman
+    accno: No Akaun Pinjaman
+    startdt: Tarikh Pinjaman
+    durationmn: Tempoh
+    deductions: Deduksi
+    
+    course_name: Nama Kursus
+    start_course: Mula Kursus
+    end_course: Tamat Kursus
+    loc_course: Tempat Kursus
+    individu_course: Kursus Individu
 
     finance: Butir Kewangan
-    kwspcode: No KWSP 
+    kwspcode: No EPF 
     taxcode: No Cukai 
-    
-    bank:
-      banks: Akaun-Akaun Bank
-      bankname: Bank
-      bankaccno: No Akaun 
-      bankacctype: Jenis Akaun
+    bank: Bank
+    bankaccno: No Akaun 
+    bankacctype: Jenis Akaun
 
-    emergency: Maklumat 
+    emencengy: Maklumat 
     kintype_id: Hubungan
     kinbirthdt: Tarikh Lahir
     phone: Telefon
@@ -176,6 +245,7 @@ ms_MY:
 
   attendance:
     new: Kehadiran Baru
+    edit: Kemaskini Kehadiran
     list: Senarai Kehadiran
     staff_details: Butiran Kakitangan
     staff_id: Nama Kakitangan
@@ -184,26 +254,27 @@ ms_MY:
     time_in: Masa Masuk
     time_out: Masa Keluar
     reason: Tujuan Lambat
+    approve: Diluluskan Oleh
     approve_id: Pengesahan Pejabat
     approvestatus: Status Pengesahan 
     create: Cipta Kehadiran Baru
-    
-  people:
-    male: Lelaki
-    female: Perempuan
+    marked: Medan yang bertanda
+    required: wajib diisi
+    notapproved: Belum Disahkan
+    approved: Disahkan
 
   positions:
     list: Senarai Jawatan
     new: Jawatan Baru
     position: Jawatan
-    code: Kod Jawatan
-    name: Nama Jawatan
+    positioncode: Kod Jawatan
+    positionname: Nama Jawatan
     personname: Nama
     parent_id: Bawahan Dari
     grade_id: Minimum Kelas Diperlukan
     unit: Unit
-    tasks_main: Tugas Utama
-    tasks_other: Tugas Lain
+    taskmain: Tugas Utama
+    taskother: Tugas Lain
     create: Cipta Jawatan Baru
     
   staffleave:
@@ -225,12 +296,16 @@ ms_MY:
     applicant_details: Butiran Pemohon
     replacement_id: Kakitangan Ganti
     approve_leave: Pengesahan Permohonan Cuti Kakitangan
-    approval1: Pengesah 1
-    approval1_id: Nama Pengesah
-    approval1date: Tarikh Disahkan
-    approver2: Pengesah 2
-    approval2_id: Nama Pengesah
-    approval2date: Tarikh Disahkan
+    approval1: Disokong?
+    approval1_id: Disokong Oleh
+    approval1date: Tarikh Disokong
+    approver2: Diluluskan
+    approval2_id: Diluluskan Oleh
+    approval2date: Tarikh Diluluskan
+    endorse: Disokong
+    notendorse: Tidak Disokong
+    app: Diluluskan
+    notapp: Tidak Diluluskan
 
   travel:
     new: Permintaan Perjalanan Baru
@@ -242,8 +317,8 @@ ms_MY:
     travel_details: Butiran Perjalanan
     destination: Destinasi
     purpose: Tujuan
-    depart_at: "Tarikh & Masa Mula Perjalanan"
-    return_at: Tarikh dijangka pulang
+    tstartdt: Tarikh Mula
+    treturndt: Tarikh Pulang
     bplreserve: Kenderaan
     ifownwhy: Kenapa Menggunakan Kenderaan Sendiri
     claimtype: Jenis Tuntutan
@@ -255,7 +330,14 @@ ms_MY:
     hodconfirmdt: Tarikh Disahkan
     approved: Dipersetujui Oleh
     create: Cipta Perjalanan Baru
-    note: Sila pastikan maklumat telah lengkap dan betul sebelum dihantar kepada Ketua Jabatan.
+    owncar: Kereta Sendiri
+    ofiscar: Kereta Pejabat
+    others: Lain-Lain
+    train: Keretapi
+    flight: Kapal Terbang
+    public: Kenderaan Awam
+    km: Dengan KM
+    replaced: Digantikan
   
 
   claim:
@@ -282,7 +364,7 @@ ms_MY:
     add_travelrequest: Tambah Permintaan Perjalanan
     type: Jenis
     receipt_no: No Resit
-    value: Nilai(RM)
+    value: Nilai
     add_receipt: Tambah Resit
     ptclaimsvalue: Nilai Tuntutan Pengangkutan
     allclaimsvalue: Nilai Tuntutan Elaun
@@ -343,7 +425,7 @@ ms_MY:
     start: Tarikh Mula
     ptcourse_id: Nama Kursus
     location: Lokasi
-    minparticipant: Minimum Peserta
+    minparticipant: Bilangan Peserta
     maxparticipant: Maximum Peserta
     schedule_details: Butiran Jadual Kursus
     final_price: Harga Akhir
@@ -355,7 +437,6 @@ ms_MY:
     course_available: Kursus Sedia Ada Untuk Kakitangan
     course: Tambah Kursus Baru
     more: Lagi
-    
     
   supplier:
     list: Senarai Keperluan Pejabat
@@ -385,13 +466,14 @@ ms_MY:
     issuedate: Tarikh Isu
     
   stationery:
-    code: Kod Barang
+    code: Item Code
 
   disposal:
-    list: Senarai Pembuangan
-    new: Pembuangan Baru
-    create: Cipta Pembuangan Baru
-    disposal_details: Butir Pembuangan 
+    list: Senarai Pelupusan
+    edit: Kemaskini Pelupusan
+    new: Pelupusan Baru
+    create: Cipta Pelupusan Baru
+    disposal_details: Butir Pelupusan 
     asset_id: No Siri Pendaftaran
     used: Kegunaan
     usedduration: Tempoh
@@ -405,138 +487,116 @@ ms_MY:
     quantity: Kuantiti
     purchaseprice: Harga Beli
     depreciation: Susut Nilai
+    pending: Belum Dilupuskan
+    disposed: Dilupuskan
+    use: Sudah Digunakan
+    newas: Baru
     
-  asset_losses:
+  assetloses:
     list: Senarai Kehilangan Aset
+    edit: Kemaskini Kehilangan Aset
     new: Daftar Baru Kehilangan Aset 
     create: Cipta Baru Kehilangan Aset
     assetloses_details: Lampiran J
-    report_code: Laporan Kod Internal Kehilangan 
-    loss_type: Jenis Kehilangan
+    reportcode: Laporan Kod Internal Kehilangan 
+    losstype: Jenis Kehilangan
     asset_id: Nama Aset
-    estvalue: Nilai Anggaran
-    est_value_long: Anggaran nilai semasa barang-barang yang hilang
-    is_used:  Baru atau terpakai 
-    is_used_long: Samada telah digunakan atau tidak
-    ownership: Kepunyaan
-    ownership_long: "Nyatakan samada wang, barang-barang atau hartabenda Persekutan atau Negeri."
-    ownership_state:  Negeri
-    ownership_fed:  Persekutuan
-    ownership_both: "Kedua-dua"
-    location_id: Tempat Kehilangan 
-    location_id_long: Tempat sebenar di mana Kehilangan berlaku
-    lost_at: Tarikh Kehilangan 
-    lost_at_long: Tarikh dan masa Kehilangan berlaku
-    how_desc: Bagaimana Kehilangan Berlaku?
-    how_desc_long: Cara Bagaimana Kehilangan Berlaku.
-    last_handled_by: Kakitangan Terakhir
-    last_handled_by_long: "Nama dan jawatan pegawai yang akhir sekali menyimpan barang-barang yang hilang itu"
-    is_prima_facie: Kes perlu di buka?
-    is_prima_facie_long: "Sama ada seseorang pegawai difikirkan prima facie bertanggung-jawab ke atas kehilangan itu."
-    is_staff_action: Tindakan ke atas staff diperlukan
-    is_police_report_made: Lapuran Police
-    is_police_report_made_long:  "Sama ada Laporan kepada polis telah dibuat selaras dengan AP 315 sila nyatakan rujukan repot polis"
-    why_no_report: Sebab
-    why_no_report_long: "Jika laporan tidak di buat kepada polis nyatakan sebab-sebabnya"
-    police_action_status: Status
-    police_action_status_long: "Jika laporan telah dibuat kepada polis, nyatakan hasil penyiasatan polis yang dikeahui pada masa menulis laporan ini"
-    is_rule_broken: Berlaku langgar peraturan?
-    is_rule_broken_long: ""
-    rules_broken_desc: Nota
-    rules_broken_desc_long: | 
-                            "Nyatakan samada hal tidak mematuhi langkah berjaga-jaga dan aturan keselamatan sebagaimana yang dikehendaki oleh 
-                            pekeliling, Rasmi, Perintah Am, Peratuan kewangan dan arahan Jabatan telah juga menyebabkan kehilangan itu - <BR>
-                            Jika ya, nyatakan apakah pekeliling dsd., yang telah dilanggar dan oleh siapa"
-    preventive_action_dept: Aturan Pencegahan
-    preventive_action_dept_long: "Jika tidak, apakah aturan jabatan yang telah dibuat untuk mencegah kehilangan itu dan siapakah yang bertanggungjawab untuk mempas- tikan aturan itu diikuti"
-    prev_action_enforced_by: Penguatkuasa 
-    prev_action_enforced_by_long: ""
-    preventive_measures: Langkah yang di ambil
-    preventive_measures_long: Langkah berjaga-jaga yang telah diambl untuk mengelakkan kehilangan itu berlaku
-    new_measures: "Langkah-langkah baru"
-    new_measures_long: "Apakah langkah-langkah yang telah dan akan di ambil untuk mencegah berulangnya kejadian ini"
-    recommendations: Syor pindaan
-    recommendations_long: "Syor-syor, jika ada untuk meminda pekeliling dsd, bagi mengawal daripada berulangnya kejadian ini"
-    surcharge_notes: Surcaj
-    surcharge_notes_long: "Syor mengenai surcaj, dengan memberi sebab-sebab mengapa surcaj difikirkan patut atau tidak"
-    notes: Lain-lain catitan
-    notes_long: "Catatan - Catatan lain sekiranya ada"
-    investigated_by: Pegawai menyiasat
-    investigated_by_long: ""
-    investigation_code: No Rujukan penyiasatan
-    investigation_completed_on: Penyiasatan diselesaikan pada
-    security_officer_id: Pegawai Keselamatan
-    security_officer_notes: Ulasan
-    security_officer_notes_long: Ulasan dan syor pegawai pengawal
-    security_code: No Rujukan Keselamatan
-    is_submit_to_hod: Hantar ke ketua jabatan
-    endorsed_hod_by: Ketua Jabatan
-    endorsed_on: Tarikh 
-    
-    
+    estvalue: Jumlah Dianggarkan 
+    losslocation_id: Tempat Kehilangan 
+    lossdt: Tarikh Kehilangan 
+    losshow: Bagaimana Kehilangan Berlaku?
+    lossstafflast_id: Kakitangan Terakhir Yang Menggunakan Item
+    laststaffcase: Adakah kakitangan prima facie bertanggungjawab atas kehilangan?
+    preventpast: Tindakan apa yang telah diambil dahulu untuk mengelakkan kehilangan ini
+    laststaffstop: Adakah kakitangan telah digantung?
+    poreport: Sudah membuat laporan polis selaras dengan AP315. Jika Ya memasukkan Laporan Polis No Ref bawah
+    porepno: No Rujukan Laporan Polis
+    preventfuture: Tindakan apa yang akan diambil untuk mencegah terulangnya di masa depan?
+    remarks: Lain komen (jika ada)
+    hod_id: Nama Ketua Bahagian
+    hodendorsedt: Tarikh Pengesahan Ketua Jabatan
+
+    lampirank: Lampiran K
+    moneytype: Jika berkenaan dengan wang awam sila nyatakan
+    newitem: Digunakan atau item baru?
+    sostop: Adakah Pentadbir Aset digantung? Jika Ya nyatakan tarikh di bawah ini
+    sostopdt: Tarikh Pentadbir Aset Digantung
+    soaction: Hukuman dan kesalahan untuk Pentadbir Aset negeri
+    supstop: Adakah penyelia pentadbir aset telah digantung Jika ya nyatakan tarikh di bawah
+    supstopdt: Tarikh Penyelia Pentadbir Aset telah digantung
+    supaction: Bagi kesalahan dan hukuman Penyelia Pentadbiar Aset Negeri
+    poaction: Jika laporan polis telah dibuat nyatakan tindakan yang telah diambil oleh polis
+    ponoreportwhy: Jika tiada laporan pihak polis telah dibuat sila nyatakan mengapa
+    rulesbroken: Ada mana-mana kaedah yang telah rosak? Jika ya nyatakan di bawah
+    owneraction: Peraturan Kerosakan dan Oleh Siapa
+
+    newrule: Langkah-langkah dan peraturan baru diwujudkan bagi mengelakkan kerugian seperti ini
+    newrule_id: Nama kakitangan untuk menguatkuasakan kaedah-kaedah baru
+    nrrecommend: Apakah kaedah-kaedah atau pindaan baru yang disyorkan untuk dimasukkan kepada peraturan sedia ada 
+    surcharge: Cadangan Surcaj
+    sio_id: Pegawai Penyiasat
     
   evaluation:
-    common:
-    skt: 
-      title: "BAHAGIAN I - Penetapan Sasaran Kerja Tahunan"
     form:
       list: Senarai Penilai
       create: Cipta Penilai Baru
       new: Penilai Baru
-      title_part1: 'Bahagian 1: Butiran Kakitangan (diisi oleh PYD)'
-      name: Nama Kakitangan
+      title_part1: 'BAHAGIAN I - MAKLUMAT PEGAWAI (diisi oleh PYD)'
+      name: Nama 
       icno: MyKad No
-      position: Jawatan Kakitangan
-      evaluationdate: Tarikh Evaluasi
-      title_partIIa: 'Bahagian IIa - Kegiatan'
-      label_001: '1. Kegiatan dan Sumbangan Di Luar Tugas Rasmi'
+      position: Jawatan
+      evaluationdate: Tarikh Penilaian
+      title_partIIa: 'BAHAGIAN II - KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI/LATIHAN (Diisi Oleh PYD)'
+      label_001: ' KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI'
       label_002: 'Senaraikan kegiatan dan sumbangan di luar tugas rasmi seperti sukan /pertubuhan /sumbangan kreatif di peringkat Komuniti /Jabatan/Daerah/Negeri/Negara /Antarabangsa yang berfaedah kepada Organisasi/Komuniti/Negara pada tahun yang dinilai.'
-      title_part2b: 'Bahagian IIb:  Latihan'
+      title_part2b: 'LATIHAN'
       label_003: '(i) Senaraikan program latihan (seminar,kursus,bengkel dan lain-lain) yang dihadiri dalam tahun yang dinilai'
       label_004: '(ii). Senaraikan latihan yang diperlukan.'
       parttwodate: Tarikh
       label_005: Kriteria Evaluasi
-      title_part3: 'Bahagian III: Penghasilan Kerja(50%)'
+      title_part3: 'BAHAGIAN III: PENGHASILAN KERJA (50%)'
       quantity: '1. KUANTITI HASIL KERJA'
       quantity_desc: 'Kuantiti hasil kerja seperti jumlah,bilangan,kadar,kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja yang ditetapkan.'
       quality: 2. KUALITI HASIL KERJA
-      quanlity_desc1: '1. Dinilai dari segi kesempurnaan,teratur dan kemas.'
-      quanlity_desc2: '2. Dinilai dari segi usaha dan inisiatif untuk mencapai kesempurnaan hasil kerja.'
+      quanlity_desc1: '2.1. Dinilai dari segi kesempurnaan,teratur dan kemas.'
+      quanlity_desc2: '2.2. Dinilai dari segi usaha dan inisiatif untuk mencapai kesempurnaan hasil kerja.'
       ontime: 3. KETEPATAN MASA
       ontime_desc: 'Kebolehan menghasilkan kerja atau melaksanakan tugas dalam tempoh masa yang ditetapkan.'
       effective: 4. KEBERKESANAN HASIL KERJA
       effective_desc: 'Dinilai dari segi memenuhi kehendak stake-holder atau pelanggan.'
-      title_part4: 'Bahagian IV: Kemahiran (20%)'
-      knowledge: 5. ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA
+      title_part4: 'BAHAGIAN IV: PENGETAHUAN DAN KEMAHIRAN (25%)'
+      knowledge: 1. ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA
       knowledge_desc: 'Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.'
-      rules: 6. PELAKSANAAN DASAR PERATURAN DAN ARAHAN PENTADBIRAN
+      rules: 2. PELAKSANAAN DASAR PERATURAN DAN ARAHAN PENTADBIRAN
       rules_desc: 'Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.'
-      communication: 7. KEBERKESANAN KOMUNIKASI
+      communication: 3. KEBERKESANAN KOMUNIKASI
       communication_desc: 'Kebolehan menyampaikan maksud,pendapat,kefahaman atau arahan secara lisan dan tulisan berkaitan denganbidang tugas merangkumi penguasaan menggunakan tatabahasa dan persembahan yang baik.'
-      title_part5: 'Bahagian V: Peribadi (20%)'
-      leadership: 8. CIRI-CIRI PEMIMPIN
+      title_part5: 'BAHAGIAN V: KUALITI PERIBADI (20%)'
+      leadership: 1. CIRI-CIRI PEMIMPIN
       leadership_desc: 'Mempunyai wawasan, komitment, kebolehan, membuat, keputusan, menggerak dan memberi dorongan kepada pegawai ke arah pencapaian objecktif orgnisasi.'
-      management: 9. KEBOLEHAN MENGELOLA
+      management: 2. KEBOLEHAN MENGELOLA
       management_desc: 'Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia, peralatan dan maklumat bagi merancang,mengatur,membahagi dan mengendalikan sesuatu tugas untuk mencapai objective organisasi.'
-      discipline: 10. DISIPLIN
+      discipline: 3. DISIPLIN
       discipline_desc: 'Mempunyai daya kawal diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa,menunaikan janji dan bersifat sabar.'
-      proactive: 11. PROAKTIF DAN INOVATIF
+      proactive: 4. PROAKTIF DAN INOVATIF
       proactive_desc: 'Kebolehan menjangka kemungkinan,mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.'
-      relate: 12. JALINAN HUBUNGAN DAN KERJASAMA 
+      relate: 5. JALINAN HUBUNGAN DAN KERJASAMA 
       relate_desc: 'Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.'
-      title_part6: 'Bahagian VI: Sumbangan (5%)'
+      title_part6: 'BAHAGIAN VI: KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI (5%)'
       parttwo: 13. KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI 
       parttwo_desc: 'Berasaskan maklumat di Bahagian II perenggan 1,Pegawai Penilai dikehendaki memberi penilaian dengan menggunakan skala 1 hingga 10. Tiada sebarang markah boleh diberikan (kosong) jika PYD tidak mencatat kegiatan atau sumbangannya.'
-      title_part8: 'Bahagian VIII: Ulasan Keseluruhan Dan Pengesahan Oleh Pegawai Penilai Pertama'
+      title_part7: 'BAHAGIAN VII: JUMLAH MARKAH KESELURUHAN'
+      part7_desc: 'Pegawai Penilai dikehendaki mencatatkan jumlah markah keseluruhan yang diperolehi oleh PYD dalam bentuk peratus (%) berdasarkan jumlah markah bagi setiap Bahagian yang diberi markah.'
+      title_part8: 'BAHAGIAN VIII: ULASAN KESELURUHAN DAN PENGESAHAN OLEH PEGAWAI PENILAI PERTAMA'
       part8_desc: 'Tempoh PYD bertugas di bawah pengawasan '
       part8i_desc: 'Penilai Pertama hendaklah memberi ulasan keseluruhan prestasi PYD'
-      part8i: '(i) Prestasi Keseluruhan'
-      part8ii: '(ii) Kemajuan Kerjaya'
+      part8i: 'Prestasi Keseluruhan'
+      part8ii: 'Kemajuan Kerjaya'
       ppp_statement: 'Adalah disahkan bahawa prestasi pegawai ini telah dimaklumkan kepada PYD'
       pppid: 'Nama PPP'
-      title_part9: Bahagian IX - Ulasan Keseluruhan Oleh Pegawai Penilai Kedua
+      title_part9: BAHAGIAN IX - ULASAN KESELURUHAN OLEH PEGAWAI PENILAI KEDUA
       part9_desc: 'PPK hendaklah memberi ulasan keseluruhan pencapaian PYD berasaskan ulasan keseluruhan oleh PPP'
-      ppkid: 'Name Pegawai Penilai Kedua (PPK)'
+      ppkid: 'Nama PPK'
     
       
   bulletin:
@@ -573,6 +633,7 @@ ms_MY:
   
       
   cofile: 
+    create: Cipta
     new: Fail Baru
     edit: Kemaskini Fail
     list: Senarai Fail
@@ -587,35 +648,39 @@ ms_MY:
     file_details: Butiran Fail
       
   student: 
-    new: Pelajar Baru
-    list: Senarai Pelajar
+    new: Pelatih Baru
+    list: Senarai Pelatih
     icno: No MyKad
     name: Nama
-    matrixno: No Matrik
-    sstatus: Status Pelajar
+    sstatus: Status Pelatih
     ssponsor: Penaja
-    stelno: No Telefon
-    address: Alamat
-    address_posbasik: Alamat Bertugas
+    stelno: No Telefon Bimbit
+    phoneoffice: No Telefon Pejabat
+    phonehome: No Telefon Rumah
+    address: Alamat Rumah
+    address_posbasik: Alamat Pejabat
     gender: Jantina
     dob: Tarikh Lahir
+    statecd: Tempat Lahir
     mrtlstatuscd: Status Kahwin
     race: Bangsa
+    religion: Agama
     semail: Email
-    regdate: Tarikh Pendaftaran
+    startdate: Tarikh Mula Kursus
+    enddate: Tarikh Tamat Kursus
     offer_letter_serial: 'No. Surat Tawaran'
     intake: Pengambilan
     stu_details: Butiran Pelajar
     course_details: Butiran Kursus
     health_status: Status Kesihatan
-    course_id: Program
+    course_id: Nama Kursus
     specilisation: Pengkhususan
-    group_id: Kumpulan
+    approve_id: Disahkan Oleh
     intake_id: Sesi Pengambilan
-    physical: Fizikal
-    allergy: Alergik
+    pangkat: Pangkat
+    unit: Unit
     disease: Keadaan/Penyakit
-    bloodtype: Kumpulan Darah
+    bloodtype: Jenis Darah
     medication: Ubat
     qualification: Kelayakan
     level_id: Tahap
@@ -625,6 +690,8 @@ ms_MY:
     kintype_id: Hubungan
     kinaddr: Alamat
     profession: Jawatan
+    vehicletype: Jenis Kenderaan
+    vehicleregno: No Pendaftaran Kenderaan
     
   book:
     new: Buku Baru
@@ -639,7 +706,7 @@ ms_MY:
     subject: Subjek
     publisher: Penerbit
     loan_type: Jenis Pinjaman
-    mediatype: Jenis Media
+    mediatype: Kategori
     publish_date: Tahun Terbitan
     publish_location: Tempat Terbitan
     links: Pautan Ruangan Elektonik
@@ -696,19 +763,86 @@ ms_MY:
     assettype: Jenis Aset
     assetcode: No Siri Pendaftaran 
     cardno: No Kad
-    name: Jenama
+    name: Nama Aset
     category_id: Kategori
     subcategory_name: Subkategori
+    typename: Jenis
+    modelname: Model
+    country_id: Negara Pembuat
+    engine_type_id: Jenis Enjin
+    engine_no: No Enjin
+    nocasis: No Casis
+    nosiri: No Siri
+    location_id: Lokasi Ditempatkan
+    quantity: Kuantiti
+    quantity_type: Unit Pengukuran
+    mark_disposal: Tanda Untuk Dilupuskan
+    assignedto_id: Kakitangan Yang Bertanggungjawab
+    receiver_id: Diterima Oleh
+    supplier_id: Nama Pembekal
+    warranty_length: Tempoh Jaminan
     buyinfo: Maklumat Pembelian
     orderno: No Pesanan Tempatan (No LO)
     purchasedate: Tarikh Pesanan (Tarikh LO)
-    purchaseprice: Harga Beli
+    purchaseprice: Harga Perolehan
     receiveddate: Tarikh Terima
     country_id: Negara Pembuat
-    engine: "Jenis & No Enjin"
-    engineno: "No. Enjin"
     registration: "No. Pendaftaran"
     otherinfo: "Komponen & Aksesori"
+    
+  assettrack:
+    new: Pergerakan Aset Baru
+    edit: Kemaskini Pergerakan Aset
+    list: Senarai Pergerakan Aset
+    create: Cipta Pergerakan Aset Baru
+    assetname: Nama Aset
+    borrower: Simpanan/Dipinjam Oleh
+    reservationdate: Tarikh Tempahan
+    use_startdate: Mula Digunakan
+    periodtime: Tarikh Penggunaan
+    use_enddate: Hingga
+    remarks: Pendapat
+    reservation_details: Butiran Penempahan Aset
+    issuedby: Isu Oleh
+    issuedate: Tarikh Dikeluarkan
+    expectedreturndate: Tarikh Dijangka Pulang
+    returnedto: Dipulangkan Kepada
+    actualreturndate: Tarikh Harus Dipulangkan
+    duration: Tempoh
+    returned: Butiran Pemulangan
+    
+  location:
+    new: Lokasi Baru
+    edit: Kemaskini Lokasi
+    create: Cipta Lokasi Baru
+    list: Senarai Lokasi
+    code: Kod Lokasi
+    resname: Nama Lokasi
+    lclass: Kelas Lokasi
+    type: Jenis Lokasi
+    location_details: Butiran Lokasi
+    staffadmin_id: Ditadbir Oleh
+    asset_details: Butiran Aset
+    assetcode: Kod Aset
+    assetname: Nama Aset
+    assetmodel: Model Aset
+    
+  event:
+    new: Peristiwa Baru
+    edit: Kemaskini Peristiwa
+    create: Cipta Peristiwa Baru
+    list: Senarai Peristiwa
+    eventstdt: Tarikh Mula
+    eventendt: Tarikh Akhir
+    eventname: Nama Peristiwa
+    location: Lokasi
+    officiated: Dirasmikan Oleh
+    createdby: Dianjurkan Oleh
+    event_details: Butiran Peristiwa Kampus
+    event_is_publik: Terbuka/Tertutup
+    participants: Peserta
+    public: Terbuka
+    private: Tertutup
 
   date:
       formats:
@@ -728,11 +862,11 @@ ms_MY:
       # Used in date_select and datime_select.
       order: [ :day, :month, :year ]
     
-  number:
-    currency:
-      format:
-        format: "%u%n"
-        unit: "RM"
-        precision: 2
-        separator: '.'
-        delimiter: ','
+ # number:
+ #   currency:
+ #     format:
+  #      format: "%u%n"
+ #       unit: "RM"
+ #       precision: 2
+ #       separator: '.'
+ #       delimiter: ','

@@ -11,8 +11,8 @@
 		</div>
 	</div>
 </div>
-<div class="indextable">
-	 <table>
+<div class="tlist">
+	 <table width=100% border="0" cellpadding="0" cellspacing="0">
 		<tr>
     <th>Headline</th>
     <th>Content</th>
@@ -24,17 +24,20 @@
 <% @bulletins.each do |bulletin| %>
   <tr>
     <td><%=h bulletin.headline %></td>
-    <td><%=h truncate(bulletin.content, :length => 60) %></td>
-    <td><%=h check_kin {bulletin.staff.mykad_with_staff_name} %></td>
-    <td><%=h bulletin.publishdt %></td>
+    <td><%=h bulletin.content %></td>
+    <td><%=h bulletin.staff.staff_name_with_title %></td>
+    <td><%=h bulletin.publishdt.strftime("%d-%b-%Y") %></td>
     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => bulletin %></td>
+<% permitted_to? :menu, :bulletins do %>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => bulletin %></td>
-	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), bulletin, :confirm => 'Are you sure?', :method => :delete %></td>
+	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), bulletin, :confirm => 'Are you sure?', :method => :delete %></td>
+	<% end %>
   </tr>
 <% end %>
 </table>
 </div>
 
 <br />
-
+<% permitted_to? :manage, :bulletins do %>
 <%= link_to 'New Bulletin', new_bulletin_path %>
+<% end %>

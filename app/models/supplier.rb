@@ -8,21 +8,17 @@ class Supplier < ActiveRecord::Base
   has_many :usesupplies, :dependent => :destroy
   accepts_nested_attributes_for :usesupplies, :allow_destroy => true
   
+  has_many :stockname,  :class_name => 'Stockdetail', :foreign_key => 'supplier_id'
+  has_many :stock_card,  :class_name => 'Stockcard', :foreign_key => 'supplier_id'
+  
+  belongs_to :stock
+ # belongs_to :stock, :foreign_key => 'stationery_id'
+  
   
   def current_quantity
     a = Addsupplier.sum(:quantity, :conditions => ["supplier_id = ?", id])
     b = Usesupply.sum(:quantity, :conditions => ["supplier_id = ?", id])
     a - b
-  end
-  
-  def total_value
-    sid = id
-    cost = addsuppliers.find(:all, :conditions => {:supplier_id => sid}, :select => "line_item_value")
-    if b == nil
-      "No Account Registered"
-    else 
-      Bank.find(:all, :select => "long_name", :conditions => {:id => b}).map(&:long_name).to_s
-    end
   end
   
   def set_row_color
@@ -43,6 +39,14 @@ class Supplier < ActiveRecord::Base
      else
       @Supplier = Supplier.find(:all,  :order => :category)
      end
+  end
+  
+  def item_details
+     "#{sub_category} / #{item_type}  "
+  end
+  
+  def item_no
+     "#{supplycode} / #{sub_category} / #{item_type}  "
   end
   
  

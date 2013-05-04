@@ -11,25 +11,29 @@
 	<th>Course Name</th>
     <th>Staff</th>
     <th>Status</th>
+    
     <th colspan=3 class="ac">Control</th>
   </tr>
 
 <% @ptdos.each do |ptdo| %>
   <tr>
-	  <td>Groupby<%=h ptdo.ptschedule_id %></td>
-    <td><%=h ptdo.ptschedule.ptcourse.name %></td>
-    <td><%=h check_kin {ptdo.staff.mykad_with_staff_name} %></td>
+	<td>Groupby<%=h ptdo.ptschedule_id %></td>
+    <td><%=h ptdo.ptschedule.coursename %></td>
+    <td><%=h ptdo.staff_details %></td>
     <td><%=h ptdo.apply_dept_status %></td>
-	  <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptdo %></td>
-	<% if ptdo.dept_approve? && ptdo.final_approve? && ptdo.staff_id == current_user.staff_id %>
-	  <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptdo %></td>
-	<% end %>
-	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), ptdo, :confirm => 'Are you sure?', :method => :delete %></td>
+	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptdo %></td>
+	<% if permitted_to? :approve1, @ptdo %><td width=10px><% if ptdo.unit_approve == nil && ptdo.approver_1 == User.current_user.staff_id %>
+	<%= link_to image_tag("approval.png", :border => 0, :title => 'approval1'), :action => 'approve1', :id => ptdo %><% end %></td><% end %>
+	<% if permitted_to? :approve2, @ptdo %><td width=10px><% if ptdo.dept_approve == nil && ptdo.unit_approve == true %>
+	<%= link_to image_tag("approval.png", :border => 0, :title => 'approval2'), :action => 'approve2', :id => ptdo %><% end %></td><% end %>
+	<% if permitted_to? :update, @ptdo %><% if ptdo.dept_approve == true && ptdo.trainee_report == nil %>
+	<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptdo %></td><% end %><% end %>
+	<td width=10px><% if permitted_to? :destroy, :ptdo %>
+	<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), ptdo, :confirm => 'Are you sure?', :method => :delete %><% end %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
-<%= link_to "View Summary of Training Attended", :action => 'show_total_days', :id => User.current_user.staff_id %>
-<!--<#%= link_to 'New ptdo', new_ptdo_path %>-->
 </div>
+<br />
+
+<!--<#%= link_to 'New ptdo', new_ptdo_path %>-->

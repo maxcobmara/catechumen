@@ -1,0 +1,55 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+</form>
+
+
+<div id="title">		
+	<table width=100% border="0" cellspacing="0">
+			<tr>
+				<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/></th>
+			    <th>PUSAT LATIHAN <BR>DAN AKADEMIK MARITIM MALAYSIA (PLAMM)<BR>GEBENG,KUANTAN <BR><H4>SENARAI HARTA MODAL / INVENTORI</H4> </th>
+				<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
+			</tr>
+	</table>
+<BR>
+
+<table width=100% border=1px cellspacing=0 align="center" >
+
+		<tr>
+			<th width=1%  style="vertical-align:middle"><font size="2">BIL</font></th>
+			<th width=20%  style="vertical-align:middle"><font size="2">NOMBOR SIRI PENDAFTARAN</font></th>
+			<th width=25% style="vertical-align:middle"><font size="2">NAMA ASET</font></th>
+			<th width=5% style="vertical-align:middle"><font size="2">TARIKH PEROLEHAN</font></th>
+			<th width=5% style="vertical-align:middle"><font size="2">HARGA PEROLEHAN ASAL</font></th>
+			<th width=3% style="vertical-align:middle"><font size="2">JUMLAH/<BR>KUANTITI</font></th>
+	  </tr>
+		 <% bil = 0 %>
+		 <% @assets.each do |asset| %>
+		 <% bil += 1 %>
+		
+  <tr>
+				<td align="center"><%=h bil %></td>	
+				<td>&nbsp;&nbsp;<%=h asset.assetcode %></td>	
+				<td>&nbsp;&nbsp;<%=h asset.typename %>  <%=h asset.subcategory %>  <%=h asset.modelname %></td>
+				<td align="center"><%=h l(asset.receiveddate) unless asset.receiveddate.blank? %>&nbsp;&nbsp; </td>
+				<td align="center"> <%=h ringgols(asset.purchaseprice) %>&nbsp;&nbsp; </td>
+				<td align="center"> <%=h asset.quantity %>&nbsp;&nbsp; </td>
+		</tr>
+
+		<% end %>
+</table>
+</div>
+
+<BR>
+<div id="hideLink">
+	<%= link_to 'BACK', assets_path %>
+	</div>
+</div>

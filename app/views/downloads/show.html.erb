@@ -1,0 +1,46 @@
+<div class="tform">
+<H2>Document Details</H2>
+  <table width=100% >
+
+	<tr>
+		<td class="leftcol"><label for="doc_group">Unit</label></td>
+		<td><b>:</b></td>
+		<td><%=h @download.doc_group %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="doc_name">Document Name</label></td>
+		<td><b>:</b></td>
+		<td><%=h (@download.doc_name).upcase %> </td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Uploaded By</label></td>
+		<td><b>:</b></td>
+		<td><%=h @download.staff_id.blank? ? "-" : @download.staff.staff_name_with_title %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="publishdt">Upload Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @download.upload_date %></td>
+	</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="data"><%= t 'document.uploaded' %></label></td>
+			<td><b>:</b></td>
+			<td><% if @download.document.exists? then %>
+			    <%= @download.document_file_name %>
+			    <%= link_to (t 'document.download'), @download.document.url %> 
+			    <% else %>
+			    No File Available
+			    <% end %></td>
+		</tr>
+	
+
+
+</table>
+</div>
+<BR>
+<%= link_to 'Edit', edit_download_path(@download) %> 
+<!--<#%= link_to 'Back', downloads_path %>-->

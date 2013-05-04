@@ -1,0 +1,44 @@
+<div class="tform">
+	<H2>Office Vehicle Details</H2>
+  <table width=100%>
+	<tr>
+		<td class="leftcol"><label for="car-regno">Car Reg No </label></td>
+		<td width=3%><b>:</td>
+		<td><%=h @officecar.car_regno %></td>
+	</tr>
+	
+	<!--<tr>
+		<td class="leftcol"><label for="car_name">Car Name </label></td>
+		<td><b>:</td>
+		<td><#%=h @officecar.car_name %></td>
+	</tr>-->
+	
+	<tr>
+		<td class="leftcol"><label for="car_type">Car Type</label></td>
+		<td><b>:</td>
+		<td><%=h (Officecar::CAR_TYPE.find_all{|disp, value| value == @officecar.car_type }).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="power_car">CC</label></td>
+		<td><b>:</td>
+		<td><%=h @officecar.power_car %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="model">Model</label></td>
+		<td><b>:</td>
+		<td><%=h @officecar.modelcar %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="class_car">Class Vehicle</label></td>
+		<td><b>:</td>
+		<td><%=h (Officecar::CAR_CLASS.find_all{|disp, value| value == @officecar.class_car }).map {|disp, value| disp} %></td>
+	</tr>
+	
+</table>
+<BR>
+</div>
+<%= link_to 'Edit', edit_officecar_path(@officecar) %> |
+<%= link_to 'Back', officecars_path %>

@@ -2,7 +2,9 @@ class AssettracksController < ApplicationController
   # GET /assettracks
   # GET /assettracks.xml
   def index
-    @assettracks = Assettrack.all
+  #  @assettracks = Assettrack.all
+    @assettracks = Assettrack.search(params[:search])
+    @assettrack_assets = @assettracks.group_by { |t| t.assetrack_details }
 
     respond_to do |format|
       format.html # index.html.erb
@@ -25,6 +27,7 @@ class AssettracksController < ApplicationController
   # GET /assettracks/new.xml
   def new
     @assettrack = Assettrack.new
+    
 
     respond_to do |format|
       format.html # new.html.erb
@@ -38,13 +41,14 @@ class AssettracksController < ApplicationController
   end
   
   def register
-    @assettrack = Assettrack.find(params[:id])  
-    #@assettracks = Assettrack.search(params[:search])
+    @assettrack = Assettrack.find(params[:id])
+    # @assettrack_assets = @assettracks.group_by { |t| t.assetrack_details }
     render :layout => 'report'
-    #respond_to do |format|
-        #format.html # index.html.erb  { render :action => "report.css" }
-        #format.xml  { render :xml => @staffs }
-    #end
+  end
+  
+  def vehicle_booking
+    @assettrack = Assettrack.find(params[:id])
+    render :layout => 'report'
   end
   
 

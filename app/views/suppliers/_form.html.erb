@@ -1,37 +1,61 @@
 <div class="tform">
-	
 	<H2><%= t 'supplier.supplier_details' %></H2>
   <table>
+	
+	<!--	<tr>
+			<td class="leftcol"><label for="supplycode"><b>Stor</b></label></td>
+			<td><#%= f.text_field :store_name %> 
+		</tr>-->
+		
 		<tr>
-			<td class="leftcol"><label for="supplycode"><b><%= t 'supplier.supplycode' %></b></label></td>
-			<td><%= f.text_field :supplycode %> 
+			<td class="leftcol"><label for="supplycode"><%= t 'supplier.supplycode' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :supplycode %> <font color="grey", size="-2">example: K001</font></td>
+		</tr>
+		
+	<!--	<tr>
+			<td class="leftcol"><label for="supplycode"><b>Item Details :</b></label></td>
+			<td><#%= f.text_field :item_details %> 
+		</tr>-->
+		<tr>
+			<td class="leftcol"><label for="Category"><%= t 'supplier.category' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :category %> <font color="grey", size="-2">example: Kertas</font></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="Category">Sub-Category</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :sub_category %> <font color="grey", size="-2">example: Kertas Warna</font></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="Category">Item Type</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :item_type %> <font color="grey", size="-2"> example : Kertas Warna 100 GM </font></td>
+		</tr>
+			
+		<tr>
+			<td class="leftcol"><label for="unittype"><%= t 'supplier.unittype' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :unittype, :size => '12' %> <font color="grey", size="-2">example : kotak/batang/unit/rim</font></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="Category"><b><%= t 'supplier.category' %></b></label></td>
-			<td><%= f.text_field :category %></td>
+			<td class="leftcol"><label for="maxquantity"><%= t 'supplier.maxquantity' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :maxquantity, :size => '5' %> <font color="grey", size="-2">nombor sahaja</font></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="unittype"><b><%= t 'supplier.unittype' %></b></label></td>
-			<td><%= f.text_field :unittype, :size => '12' %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="maxquantity"><b><%= t 'supplier.maxquantity' %></b></label></td>
-			<td><%= f.text_field :maxquantity, :size => '5' %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="minquantity"><b><%= t 'supplier.minquantity' %></b></label></td>
-			<td><%= f.text_field :minquantity, :size => '5' %></td>
+			<td class="leftcol"><label for="minquantity"><%= t 'supplier.minquantity' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :minquantity, :size => '5' %> <font color="grey", size="-2">nombor sahaja</font></td>
 		</tr>
 	</table>
 	
 <!--Addsupplies Details-->	
 	<div>
 	  <H2><%= t 'supplier.add' %></H2>
-		<p><strong>|  <%= t 'supplier.lpono' %> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|  
-									<%= t 'supplier.document' %> &nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|
-									<%= t 'supplier.quantity' %>  &nbsp; &nbsp; &nbsp; &nbsp; | 
-									<%= t 'supplier.unitcost' %>  &nbsp; &nbsp; &nbsp; &nbsp;   &nbsp;   | 
-									<%= t 'supplier.received' %></strong></p>
+	
 		<% f.fields_for :addsuppliers do |builder| %>
 			<%= render 'addsupplier_fields', :f => builder %>
 		<% end %>
@@ -41,10 +65,7 @@
 <!--usesupply Details-->		
 	<div>
 		<H2>Use/Issue Supplies</H2>
-			<p><strong>   <div style="width: 270px; float: left;">|  <%= t 'supplier.issuedby' %></div>
-										<div style="width: 270px; float: left;">|  <%= t 'supplier.receivedby' %></div>
-										<div style="width: 90px; float: left;">|  <%= t 'supplier.quantity' %></div>|
-										<div style="width: 90px; float: left;">|<%= t 'supplier.issuedate' %></div></strong></p>
+		
 			<% f.fields_for :usesupplies do |builder| %>
 				<%= render 'usesupply_fields', :f => builder %>
 			<% end %>

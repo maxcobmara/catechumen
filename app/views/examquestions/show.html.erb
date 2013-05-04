@@ -1,65 +1,229 @@
-<div class="showform">
-  <%=render :partial => 'show_question' %>
-	
-	<% if ["Submit", "Editing", "Ready For Approval", "Re-Edit", "For Approval", "Reserve for BPL" ].include? (@examquestion.qstatus) %>
-  	<%=render :partial => 'show_checklist' %>
-  <% end %>
+<div class="tform">
+<H2>Exam Question Details</H2>
+  <table width=100% >
+	<tr>
+		<td class="leftcol"><label for="questiontype">Question Type</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h (Examquestion::QTYPE.find_all{|disp, value| value == @examquestion.questiontype}).map {|disp, value| disp} %></td>
+	</tr>
 
+	<tr>
+		<td class="leftcol"><label for="creator_id">Creator</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.creator_id? ? @examquestion.creator_details : "" %></td>
+	</tr>
 
-	<% if ["Ready For Approval", "Re-Edit", "For Approval", "Approved", "Reserve for BPL"].include? (@examquestion.qstatus) %>
-		<%=render :partial => 'show_approval' %>
-	<% end %>
+	<tr>
+		<td class="leftcol"><label for="curriculum_id">Subject Code</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.curriculum_id? ? @examquestion.subject_details : "" %></td>
+	</tr>
 	
+	<tr>
+		<td class="leftcol"><label for="topic_id">Topic</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.topic_id? ? @examquestion.topic.name : "" %></td>
+	</tr>
 	
-	<% if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus) %>
-  <fieldset>
-		<legend>BPL Details : <%=h @examquestion.qstatus %> </legend>
-		<table>
-			<tr>
-				<td class="leftcol"><label for="bplreserve"><b>Reserve for BPL</b></label></td>
-		    <td><%=h @examquestion.bplreserve? ? image_tag("tick.png") : image_tag("cross.png") %></td>
-			</tr>
+	<tr>
+		<td class="leftcol"><label for="createdt">Creator Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.createdt.blank? ? "-" : @examquestion.createdt.strftime("%d-%b-%Y") %></td>
+	</tr>
 
-			<tr>
-				<td class="leftcol"><label for="bplsent"><b>Sent to BPL</b></label></td>
-		    <td><%=h @examquestion.bplsent? ? image_tag("tick.png") : image_tag("cross.png") %></td>
-			</tr>
-
-			<tr>
-			 	<td class="leftcol"><label for="bplsentdt"><b>Date Sent:</b></label></td>
-				<td><%=h @examquestion.bplsent? ? @examquestion.bplsentdt : "" %></td>
-			</tr>
-		</table>
-	</fieldset>
-	<% end %>
-	<!--
-
-		<tr>
-			<td></td>
-			<td>
-			<#% for exammcqanswer in @examquestion.exammcqanswers %>
-					<#%=h exammcqanswer.sequence %>  &nbsp &nbsp  -  &nbsp &nbsp <#%=h exammcqanswer.answer %><BR>
-			<#% end %></td>		
-		</tr>
-		-->
-	
-
-	
-	
-	
-
-	
-
-	
-
-
-	
-
-	
 
 </table>
+<HR>
+<table width=100%>	
+<!--	<tr>
+		<td class="leftcol">Details</td>
+		<td><b>:</b></td>
+		<td>
+			<table width=100% border=1 cellspacing=0 BORDERCOLOR="#E8E8E8 ">
+				<tr>
+					<th width=20% align="center"><b>Type</th>
+					<th width=20% align="center"><b>Classification</th>
+					<th width=20% align="center"><b>Construct</th>
+					<th width=20% align="center"><b>Topic</th>
+					<th width=20% align="center"><b>Difficulty</b></th>
+				</tr>
+				<tr>
+					<td><#%=h (Examquestion::QTYPE.find_all{|disp, value| value == @examquestion.questiontype}).map {|disp, value| disp} %></td>
+					<td><#%=h @examquestion.category %></td>
+					<td><#%=h @examquestion.construct %></td>
+					<td>Topic</td>
+					<td><#%=h (Examquestion::QLEVEL.find_all{|disp, value| value == @examquestion.difficulty}).map {|disp, value| disp} %></td>
+				</tr>
+			</table>
+		</td></tr>-->
+
+	<tr>
+		<td class="leftcol">Attachment Uploaded</td>
+		<td><b>:</b></td>
+		<td><% if @examquestion.diagram_file_name == nil %>
+			<% else %>
+			<%= image_tag @examquestion.diagram.url, :class => 'diagram' %>
+			<% end %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="question">Question</label></td>
+		<td width=3%><b>:</b></td>
+	    <td><%=raw sanitize(simple_format(@examquestion.question), :tags => %w(br p) ) %></td>
+	</tr>
+
+
+	<% if @examquestion.questiontype == 'MCQ' %>
+	<tr>
+		<td>MCQ Answer</td>
+		<td><b>:</b></td>
+		<td>
+		<% for exammcqanswer in @examquestion.exammcqanswers %>
+		<%=h exammcqanswer.sequence %> &nbsp &nbsp - &nbsp &nbsp <%=h exammcqanswer.answer %><BR>
+		<% end %></td>
+	</tr>
+	<% end %>
+</table>
+
+<table>
+	<tr>
+		<td class="leftcol"><label for="answer">Answer</label></td>
+		<td><b>:</b></td>
+		<td><%=raw sanitize(simple_format(@examquestion.answer), :tags => %w(br p) ) %></td>
+	
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="marks">Marks</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.marks.to_f %></td>
+	</tr>
+		<% if @examquestion.questiontype == 'ESSAY' %>
+	<tr>
+		<td>Short Essay Questions</td>
+		<td><b>:</b></td>
+		<td>
+		<% for examsubquestion in @examquestion.examsubquestions %>
+		<%=h examsubquestion.sequence %> &nbsp - &nbsp <%=h examsubquestion.question %><BR>
+			<%=raw sanitize(simple_format(examsubquestion.answer), :tags => %w(br p) ) %>
+		<% end %></td>
+	</tr>
+  
+	<tr>
+		<td class="leftcol"><label for="qkeyword">Keywords</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.qkeyword %></td>
+	</tr>
+	  <% end %>
+
+</table>
+<HR>
+<table width=100%>
+	<tr>
+		<td class="leftcol"><label for="difficulty">Difficulty</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h (Examquestion::QLEVEL.find_all{|disp, value| value == @examquestion.difficulty}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="bplsent">Sent to Quality Control</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.bplsent? ? "Yes" : "No" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="approvedt">Date Sent</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.bplsentdt.blank? ? "-" : @examquestion.bplsentdt.strftime("%d-%b-%Y")%></td>
+	</tr>
+</table>
+<!--<HR>
+<table>
+	<tr>
+		<td class="leftcol">Checklist :</td>
+		<td>
+			<table  border=1 cellspacing=0 >
+				<tr>
+					<td colspan=3 align=center><b>Conformity</td>
+					<td colspan=3 align=center><b>Accuracy</td>
+					<td colspan=3 align=center><b>Fit</td>
+				</tr>
+				<tr>
+					<td align=center style="font-size:80%">Curriculum</td>
+					<td align=center style="font-size:80%">Specification</td>
+					<td align=center style="font-size:80%">Opportunity</td>
+					<td align=center style="font-size:80%">Construct</td>
+					<td align=center style="font-size:80%">Topic</td>
+					<td align=center style="font-size:80%">Component</td>
+					<td align=center style="font-size:80%">Difficulty</td>
+					<td align=center style="font-size:80%">Importance</td>
+					<td align=center style="font-size:80%">Fairness</td>
+				</tr>
+				<tr>
+				    <td align=center><#%=h @examquestion.conform_curriculum? ? "Yes" : "No" %>&nbsp; </td>
+					<td align=center><#%=h @examquestion.conform_specification? ? "Yes" : "No" %>&nbsp; </td>
+					<td align=center><#%=h @examquestion.conform_opportunity? ? "Yes" : "No" %>&nbsp; </td>
+					<td align=center><#%=h @examquestion.accuracy_construct? ? "Yes" : "No" %>&nbsp; </td>
+					<td align=center><#%=h @examquestion.accuracy_topic? ? "Yes" : "No" %>&nbsp; </td>
+					<td align=center><#%=h @examquestion.accuracy_component? ? "Yes" : "No" %>&nbsp; </td>
+					<td align=center><#%=h @examquestion.fit_difficulty? ? "Yes" : "No" %>&nbsp; </td>
+					<td align=center><#%=h @examquestion.fit_important? ? "Yes" : "No" %>&nbsp; </td>
+					<td align=center><#%=h @examquestion.fit_fairness? ? "Yes" : "No" %>&nbsp; </td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>-->
+ <% if permitted_to? :manage, @examquestion%>
+<H2>Quality Control Details</H2>
+<table>
+	<tr>
+		<td class="leftcol"><label for="editor_id">Editor</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.editor_id.blank? ? "-" : @examquestion.editor.unit_staff_name %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="editdt">Editor Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.editdt %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="statusremark">Remarks</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.statusremark %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="approver_id">Approver Name</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.approver_id? ? @examquestion.approver_details : "" %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="approvedt">Approver Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @examquestion.approvedt %></td>
+	</tr>
+
+<!--	<tr>
+		<td class="leftcol"><label for="bplreserve">Reserve for Kawalan Mutu</label></td>
+		<td><b>:</b></td>
+		<td><#%=h @examquestion.bplreserve? ? "Yes" : "No" %></td>
+	</tr>-->
+
+</table>
+<% end %>
+<table width=100%>
+	<tr>
+		<td class="leftcol"><label for="qstatus">Status</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @examquestion.qstatus %></td>
+	</tr>
+</table>
 <BR>
-</div>	
+</div>
 
 <%= link_to 'Edit', edit_examquestion_path(@examquestion) %> |
 <%= link_to 'Back', examquestions_path %>

@@ -57,19 +57,37 @@ function showStaffLate(choice)
 
 
 jQuery(document).ready(function() {
-  
+ 
 //Dropdown Start
-	$j(function(){
-	    $("ul.dropdown li").hover(function(){ 
-	        $(this).addClass("hover");
-	        $('ul:first',this).css('visibility', 'visible');  
-	    }, function(){ 
-	        $(this).removeClass("hover");
-	        $('ul:first',this).css('visibility', 'hidden'); 
-	    });
-	    $("ul.dropdown li ul li:has(ul)").find("a:first").append(" &raquo; ");
-	});//(jQuery);	
+$j(function(){
+
+    $("ul.dropdown li").hover(function(){
+    
+        $(this).addClass("hover");
+        $('ul:first',this).css('visibility', 'visible');
+    
+    }, function(){
+    
+        $(this).removeClass("hover");
+        $('ul:first',this).css('visibility', 'hidden');
+    
+    });
+    
+    $("ul.dropdown li ul li:has(ul)").find("a:first").append(" &raquo; ");
+
+})//(jQuery);
+//function for datepicker
+$(function (){  
+   $('.calendar').datepicker({
+   showOn: 'both',
+   buttonImage: '/images/calendar.gif',
+   buttonImageOnly: true,
+   changeMonth: true,
+   changeYear: true,
+   dateFormat:'dd-mm-yy',
+   yearRange:'-72:+13',
+   showAnim: 'slideDown',
+   duration: 'fast'});  
 });
-
-
+})
 

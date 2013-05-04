@@ -1,63 +1,69 @@
 <div class="tform">
 	<H2><%= t 'document.doc_details' %></H2>
   <table width=100% >
-		<tr>
-			<td class="leftcol"><label for="serialno"><b><%= t 'document.serialno' %> :</b></label></td>
-			<td><%=h @document.serialno %></td>
-		</tr>
+	<!--	<tr>
+			<td class="leftcol"><label for="serialno"><%= t 'document.serialno' %></label></td>
+			<td width=2%><b>:</b></td>
+			<td><#%=h @document.serialno %></td>
+		</tr>-->
 	
 		<tr>
-			<td class="leftcol"><label for="refno"><b><%= t 'document.refno' %> :</b></label></td>
+			<td class="leftcol"><label for="refno"><%= t 'document.refno' %></label></td>
+			<td width=2%><b>:</b></td>
 			<td><%=h @document.refno %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="title"><b><%= t 'document.title' %> :</b></label></td>
+			<td class="leftcol"><label for="title"><%= t 'document.title' %></label></td>
+			<td><b>:</b></td>
 			<td><%=h @document.title %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="category"><b><%= t 'document.category' %> :</b></label></td>
+			<td class="leftcol"><label for="category"><%= t 'document.category' %></label></td>
+			<td><b>:</b></td>
 			<td> <%=h (Document::CATEGORY.find_all{|disp, value| value == @document.category.to_s}).map {|disp, value| disp} %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="letterdt"><b><%= t 'document.letterdt' %> :</b></label></td>
-			<td> <%=h l(@document.letterdt) %></td>
+			<td class="leftcol"><label for="letterdt"><%= t 'document.letterdt' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.letterdt.blank? ? "-": @document.letterdt.strftime("%d-%b-%Y") %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="letterxdt"><b><%= t 'document.letterxdt' %> :</b></label></td>
-			<td><%=h l(@document.letterxdt) %></td>
+			<td class="leftcol"><label for="letterxdt"><%= t 'document.letterxdt' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.letterxdt.blank? ? "-": @document.letterxdt.strftime("%d-%b-%Y") %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="from"><b><%= t 'document.from' %> :</b></label></td>
+			<td class="leftcol"><label for="from"><%= t 'document.from' %></label></td>
+			<td><b>:</b></td>
 			<td> <%=h @document.from %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="stafffiled_id"><b><%= t 'document.stafffiled_id' %> :</b></label></td>
-			<td><%=h check_kin {@document.stafffiled_details} %></td>
+			<td class="leftcol"><label for="stafffiled_id"><%= t 'document.stafffiled_id' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.stafffiled_details %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="closed">Other Information</label></td>
-			<td><%=h @document.otherinfo %></td>
-		</tr>
-	
-		<tr><!-- 7/10/2011- Shaliza fixed error for File No -->
-			<td class="leftcol"><label for="file_id"><b>File No:</b></label></td>
-			<td><%=h check_kin {@document.file_details} %></td>
+			<td class="leftcol"><label for="classification">Classification</label></td>
+			<td><b>:</b></td>
+			<td><%=h (Document::CLASSIFICATION.find_all{|disp, value| value == @document.classification.to_s}).map {|disp, value| disp} %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="closed"><b><%= t 'document.closed' %> :</b></label></td>
-			<td><%=h @document.closed? ? "Yes" : "No"  %></td>
+			<td class="leftcol"><label for="file_id">File No</label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.cofile.name %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="data"><b><%= t 'document.uploaded' %> :</b></label></td>
+			<td class="leftcol"><label for="data"><%= t 'document.uploaded' %></label></td>
+			<td><b>:</b></td>
 			<td><% if @document.data.exists? then %>
 			    <%= @document.data_file_name %>
 			    <%= link_to (t 'document.download'), @document.data.url %> ||
@@ -66,6 +72,131 @@
 			    No File Available
 			    <% end %></td>
 		</tr>
+		<tr>
+			<td class="leftcol"><label for="closed">Submit To</label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.circulation1_details %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="category">Action</label></td>
+			<td><b>:</b></td>
+			<td><%=h (Document::ACTION.find_all{|disp, value| value == @document.cctype_id.to_s}).map {|disp, value| disp} %></td>
+		</tr>
 	</table>
-<BR>
+	
+    <% if @document.cc1action != nil %>
+	<H2>Circulation 1 (<%=h @document.circulation1_details %>)</H2>
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><label for="closed">Action</label></td>
+			<td width=2%><b>:</b></td>
+			<td><%=h @document.cc1action %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="closed">Feedback</label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.cc1remarks%></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="closed">Close or Forward?</label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.cc1closed? ? "Closed" : "Forward"%></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="closed">Forward To</label></td>
+			<td><b>:</b></td>
+			<td><table width=100% border=1 cellspacing=0>
+				<tr>
+					<th>Staff Name</th>
+					<th>Tindakan</th>
+				</tr>	<% for circulate in @document.circulates %>	
+				<tr>
+					<td><%=h circulate.circulate_name.staff_name_with_title %></td>
+					<td> <%=h (Circulate::ACTION.find_all{|disp, value| value == circulate.action_cc}).map {|disp, value| disp} %></td><% end %>
+					</tr>
+				</table></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="cc1date">Date</label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.cc1date.blank? ? "-" : @document.cc1date.strftime("%d-%b-%Y") %></td>
+		</tr>
+		
+	</table>
+	<% end %>
+
+	<% if @document.cc2action != nil %>
+		<H2>Circulation 2 (<% for circulate in @document.circulates %>	
+			 <%=h circulate.circulate_name.staff_name_with_title %>,
+			<% end %>)</H2>
+	<table  width=100%>
+		<tr>
+			<td class="leftcol"><label for="data"><%= t 'document.uploaded' %></label></td>
+			<td><b>:</b></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="closed">Action</label></td>
+			<td width=2%><b>:</b></td>
+			<td><%=h @document.cc2action %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="closed">Feedback</label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.cc2remarks %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="action_by">Action Taken By</label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.action_by.blank? ? "-" : @document.actiontaken.staff_name_with_title %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="cc2date">Date</label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.cc2date.blank? ? "-" : @document.cc2date.strftime("%d-%b-%Y") %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="closed"> Feedback Sent?</label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.feedback_sent? ? "Yes" : "No" %>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="closed">Close?</label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.cc2closed? ? "Closed" : "" %>
+		</tr>
+		
+		
+	</table>
+<% end %>	
+
+	<% if @document.feedback_sent == TRUE %>
+	<H2>Checking Document By <%=h @document.circulation1_details %> </H2>
+	<table width=100% border=0>
+		<tr>
+			<td class="leftcol"><label for="closed">Received?</label></td>
+			<td width=3%><b>:</b></td>
+			<td><%=h @document.received? ? "Yes" : "No" %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="cc1date">Received Date:</label></td>
+			<td width=3%><b>:</b></td>
+			<td><%=h @document.received_date.blank? ? "-" : @document.received_date.strftime("%d-%b-%Y") %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="closed">Close?:</label></td>
+			<td><b>:</b></td>
+			<td><%=h @document.closed? ? "Closed" : "" %></td>
+		</tr>
+</table>
+<% end %>	
 </div>
+<BR>

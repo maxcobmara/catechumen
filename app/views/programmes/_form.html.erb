@@ -1,56 +1,44 @@
-<table width=100%>
+<div class="tform">
+	<H2>Course Details</H2>
+  <table width=100% >
+
+	
 	<tr>
-		<td><%= f.label :code %></td>
-		<td><label><%=h @programme.is_root? ? "" : @programme.parent.combo_code + "-" %></label><%= f.text_field :code %></td>
+		<td class="leftcol"><label for="code">Course Code:</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.text_field :code %></td>
 	</tr>
 	
 	<tr>
-		<td><%= f.label :course_type %></td>
-		<td><label>
-		<% if @programme.parent_id == nil %>
-				<%= f.radio_button :course_type, 'Diploma' %> Diploma <%= f.radio_button :course_type,'Pos Basik' %> Pos Basik 
-				<%= f.radio_button :course_type,'Diploma Lanjutan ' %> Diploma Lanjutan </label>
-		<% else %>
-			<%= f.radio_button :course_type, 'Semester' %> Semester <%= f.radio_button :course_type, 'Subject' %> Subject <%= f.radio_button :course_type,'Topic' %> Topic 
-		<% end %></label></td>
-	
+		<td class="leftcol"><label for="name">Course Name:</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :name, :size => "30x2" %></td>
 	</tr>
 	
 	<tr>
-		<td><%= f.label :name %></td>
-		<td><%= f.text_field :name, :size => '50' %></td>
+		<td class="leftcol"><label for="specialisation">Course Type:</label></td>
+		<td><b>:</b></td>
+		<td><%= f.radio_button :specialisation,'Asas' %>Asas<%= f.radio_button :specialisation,'Pertengahan' %>Pertengahan
+			<%= f.radio_button :specialisation,'Lanjutan' %>Lanjutan</td>
 	</tr>
-	
-	<tr>
-		<td><%= f.label :duration %></td>
-		<td><%= f.text_field :duration, :size => '5' %>
-				<%= f.select :duration_type, 
-				           Programme::DURATION_TYPES,
-				           :prompt => "Select"  %>
-			
-			
-			</td>
-	</tr>
-	
-	<tr>
-		<td><%= f.label :credits %></td>
-		<td><%= f.select :credits, 0..8  %></td>
-	</tr>
-	
-	<tr>
-		<td><%= f.label :status %></td>
-		<td><label><%= f.radio_button :status,'1' %> Major <%= f.radio_button :status,'2' %> Minor <%= f.radio_button :status,'3' %> Elective</label></td>
-	</tr>
-	
 	
 </table>
-<!--status
+<H2>Subject Details</H2>
+<P><strong>Select subject to add to this course</strong></P>
+	<table width=100% border=0>
+	<% Subject.all.in_groups_of(4, false) do |row_subjects| %>
+	<!--<#% for subject in Subject.find(:all) %>-->
+	<tr>
+		<% for subject in row_subjects %>
+		<td><%= check_box_tag "programme[subject_ids][]", subject.id, @programme.subjects.include?(subject) %>
+    <%= subject.name %>
+    </td>
+    <% end %>
+  </tr>
+  <% end %>
+	</table
+	
+</table>  
+<BR>
+</div>
 
-<p>
-  <%= f.label :objective %><br />
-  <%= f.text_area :objective %>
-</p>
-<p>
-  <%= f.label :duration %><br />
-  <%= f.text_field :duration %>
-</p>-->

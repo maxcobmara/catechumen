@@ -1,160 +1,135 @@
-<div class="tform">
+<div class="tform"><!-- 07/11/2011 - Shaliza changed Label Name to in BM for show page-->
 	
-<fieldset>
-	<legend class='togvis'>Asset Details</legend>
-		<table width=85% >
-			<tr>
-				<td class="leftcol"><label for="staff_id">Asset Code:</label></td>
-				<td><%=h @asset.assetcode %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Category:</label></td>
-				<td><%=h @asset.category.description unless @asset.category.blank? %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Subcategory:</label></td>
-				<td><%=h @asset.subcategory %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Type No:</label></td>
-				<td><%=h @asset.typename %></td>	
-			</tr>
-			<tr>
-			<td class="leftcol"><label for="bookable">Bookable:</label></td>
-			    <td><%=h @asset.bookable? ? "This item can be booked" : "No" %></td>
-			</tr>
-		</table>
-</fieldset>
-
-<fieldset>
-	<legend class='togvis'>Asset Description</legend>
-		<table width=85% >
-			<tr>
-					<td class="leftcol"><label for="staff_id">Name:</label></td>
-					<td><%=h @asset.name %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Manufacturer:</label></td>
-				<td><%=h @asset.manufacturer_id.blank? ? "Not Recorded" : @asset.manufacturedby.name %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Country:</label></td>
-				<td><%=h ((Asset::COUNTRYLIST.find_all{|disp, value| value == @asset.country_id}).map {|disp, value| disp}).to_s[3..-1] %></td>
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Model:</label></td>
-				<td><%=h @asset.modelname %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Serial No:</label></td>
-				<td><%=h @asset.serialno %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Located at:</label></td>
-				<td><%=h check_kin { @asset.asset_placements.last.location.location_list } %></td>	
-			</tr>
-			<tr> <!-- 25/10/2011 - Shaliza fixed for staff no longer exists -->
-				<td class="leftcol"><label for="staff_id">Assigned to:</label></td>
-				<td><%=h @asset.assigned_details %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Status:</label></td>
-				<td><%=h @asset.status %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Other Information:</label></td>
-				<td><%=h @asset.otherinfo %></td>	
-			</tr>
-		</table>
-</fieldset>
-
-<fieldset>
-	<legend class='togvis'>Purchasing Info</legend>
-		<table width=85% >
-			<tr>
-				<td class="leftcol"><label for="staff_id">Order No:</label></td>
-				<td><%=h @asset.orderno %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Price:</label></td>
-				<td><%=h ringgols(@asset.purchaseprice) %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="purchasedate">Purchase Date:</label></td>
-				<td><%=h @asset.purchasedate.strftime("%d %B %Y") unless @asset.purchasedate.blank? %></td>
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="purchasedate">Delivery Date:</label></td>
-				<td><%=h @asset.receiveddate.strftime("%d %B %Y") unless @asset.receiveddate.blank? %></td>
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Received By:</label></td>
-				<td><%=h @asset.receivedby.blank? ? "-" : @asset.receivedby.staff_name_with_position %></td>	
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="staff_id">Supplied By:</label></td>
-				<td><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %></td>	
-			</tr>
-		</table>
-</fieldset>
-
-<fieldset>
-	<legend class='togvis'>Placement Information</legend>
-		<table width=85% >
-			<tr>
-				<td><B>Location</B></td>
-				<td><B>Assigned To</B></td>
-				<td><B>Date</B></td>
-			</tr>
-			<tr>
-			  <td colspan = 5><HR/></td>
-		  </tr>
+	<H2>Butiran Aset</H2>
+  <table width=100% >
+	<tr>
+		<td class="leftcol"><label for="assetcode"><%= t 'asset.assetcode' %>:</label></td>
+		<td><%=h @asset.assetcode %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id"><%= t 'asset.category_id' %>:</label></td>
+		<td><%=h @asset.category.description %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="subcategory"><%= t 'asset.subcategory_name' %>:</label></td>
+		<td><%=h @asset.subcategory %></td>	
+	</tr>
+	<tr>
+	<td class="leftcol"><label for="bookable"><%= t 'asset.bookable' %>:</label></td>
+	    <td><%=h @asset.bookable? ? "This item can be booked" : "No" %></td>
+	</tr>
+</table>
+<H2>Huraian Aset</H2>
+<table>
+ 
+	<tr>
+		<td class="leftcol"><label for="name">Asset Name:</label></td>
+		<td><%=h @asset.name %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="typename"><%= t 'asset.typename' %>:</label></td>
+		<td><%=h @asset.typename %></td>	
+	</tr>
 	
-			<% for asset_placement in @asset.asset_placements.find(:all, :order => "reg_on DESC") %>
-			<tr>
-				<td><%= check_kin {asset_placement.location.location_list} %></td>
-				<td><%= check_kin {asset_placement.staff.name} %></td>
-				<td><%= tarikh(asset_placement.reg_on) %></td>
-			</tr>
+	<tr>
+		<td class="leftcol"><label for="modelname"><%= t 'asset.modelname' %>:</label></td>
+		<td><%=h @asset.modelname %></td>	
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="staff_id"><%= t 'asset.country_id' %> :</label></td>
+		<td><%=h @asset.manufacturer_id.blank? ? "Not Recorded" : @asset.manufacturedby.name %></td>	
+	</tr>
+	<% if @asset.category_id == 3%>
+	<tr>
+		<td class="leftcol"><label for="country_id"><b><%= t 'asset.engine_type_id' %></b></label></td>
+		<td><%=h (Asset::ETI.find_all{|disp, value| value == @asset.engine_type_id.to_s}).map {|disp, value| disp} %>&nbsp;&nbsp;
+					    <%= t 'asset.engine_no' %>&nbsp;<%=h @asset.engine_no %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="serialno">
+			<% if @asset.category_id == 3 %>
+				<%= t 'asset.nocasis' %>:
+			<% else %>
+				<%= t 'asset.nosiri' %>:
 			<% end %>
-		</table>
-</fieldset>
-
-<fieldset>
-	<legend class='togvis'>Maintenance Information</legend>
-		<table width=85% >
-			<tr>
-				<td><B>Done On</B></td>
-				<td><B>Maintained By</B></td>
-				<td><B>Order No</B></td>
-				<td><B>Details</B></td>
-				<td><B>Costs</B></td>
-			</tr>
-			<tr>
-			  <td colspan = 5><HR/></td>
-		  </tr>
+			</label></td>
+		<td><%=h @asset.serialno %></td>
+	</tr>
 	
-			<% for maint in @asset.maints %>
-			<tr>
-				<td><%= maint.created_at %></td>
-				<td><%= maint.maintainedby.name %></td>
-				<td><%= maint.workorderno %></td>
-				<td><%= maint.details %></td>
-				<td>RM <%= maint.maintcost %></td>
-			</tr>
-			<% end %>
-		</table>
-</fieldset>
+	<tr>
+		<td class="leftcol"><label for="registration"><%= t 'asset.registration' %></label></td>
+		<td><%=h @asset.registration %></td>
+	 </tr>
+	<% end %>
+	
+		
+	<tr>
+		<td class="leftcol"><label for="typename"><%= t 'asset.quantity' %> :</label></td>
+		<td><%=h @asset.quantity %> <%=h @asset.quantity_type %></td>	
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="location"><%= t 'asset.location_id' %>:</label></td>
+		<td><%=h @asset.location.blank? ? "" : @asset.location.name %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id"><%= t 'asset.assignedto_id' %>:</label></td>
+		<td><%=h @asset.assignedto_id.blank? ? "-" : @asset.assignedto.staff_name_with_position %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Status:</label></td>
+		<td><%=h @asset.status %></td>	
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Mark For Disposal:</label></td>
+		<td><%=h @asset.mark_disposal? ? "Yes" : "No" %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="otherinfo"><%= t 'asset.otherinfo' %> :</label></td>
+		<td><%=h @asset.otherinfo %></td>	
+	</tr>
+</table>
+<H2>Maklumat Pembayaran</H2>
+<table>
 
+	<tr>
+		<td class="leftcol"><label for="staff_id"><%= t 'asset.orderno' %> :</label></td>
+		<td><%=h @asset.orderno %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id"><%= t 'asset.purchaseprice' %>:</label></td>
+		<td><%=h ringgols(@asset.purchaseprice) %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="purchasedate"><%= t 'asset.purchasedate' %> :</label></td>
+		<td><%=h @asset.purchasedate.strftime("%d %B %Y") unless @asset.purchasedate.blank? %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="purchasedate"><%= t 'asset.receiveddate' %>:</label></td>
+		<td><%=h @asset.receiveddate.strftime("%d %B %Y") unless @asset.receiveddate.blank? %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id"><%= t 'asset.receiver_id' %> :</label></td>
+		<td><%=h @asset.receivedby.blank? ? "-" : @asset.receivedby.staff_name_with_position %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id"><%= t 'asset.supplier_id' %> :</label></td>
+		<td><%=h @asset.supplier_id.blank? ? "-" : @asset.suppliedby.name %></td>	
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="warranty_length"><%= t 'asset.warranty_length' %> :</label></td>
+	    <td><%=h @asset.warranty_length %> Months</td>
+	</tr>
 
-</div>
+</table>
 <BR>
 
 
 
 
 <%= link_to 'Edit', edit_asset_path(@asset) %> |
-	<% if @asset.assettype == 1 %>
-		<%= link_to 'Maintenance', :action => 'maintenance', :id => @asset %> |
-	<% end %>
 <%= link_to 'Back', assets_path %>

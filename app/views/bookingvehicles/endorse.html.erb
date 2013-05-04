@@ -1,0 +1,44 @@
+<h3>Endorsed Details</h3>
+
+<% form_for(@bookingvehicle) do |f| %>
+  <%= f.error_messages %>
+
+<div class="tform">
+<%= render :partial => 'show_applicant' %>
+<h2>Supervisor Vehicle Details</h2>
+  <table width=100% >
+  
+	<tr>
+		<td class="leftcol"><label for="endorsed">Endorsed?</label></td>
+		<td><b>:</b></td>
+		<td><%= f.radio_button :endorsed,'1' %>Endorsed<%= f.radio_button :endorsed,'2' %>Not Endorsed</td></tr>
+	
+	<tr>
+		<td class="leftcol"><label for="used_date">Endorsed Date</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :endorse_date, :start_year => 2012, :end_year => 2030, :order => [:day, :month, :year], :include_blank => true  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="returned_date">Remark</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :remark, :size => "30x4" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="applicant">Approver Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :approver_name, Staff.find(:all, :conditions => ["id = 40"]), :id, :staff_name_with_title %></td>
+	</tr>
+		
+</table>
+
+  <p>
+    <%= f.submit (t 'icms.update') %>
+  </p>
+
+<% end %>
+</div>
+
+<%= link_to (t 'icms.show'), @bookingvehicle %> |
+<%= link_to (t 'icms.back'), bookingvehicles_path %>

@@ -6,25 +6,61 @@
  <%= f.hidden_field :ptschedule_id %>
 
 <div class="tform">
-<H2>Training Application</H2>
-<table width=50% >
+<H2>Training Course Details</H2>
+<table width=100% >
 
 	<tr>
-		<td class="leftcol"><label for="name">Course Name :</label></td>
-		<td> <%=h @ptdo.ptschedule.ptcourse.name %></td>
+		<td class="leftcol"><label for="name">Branch</label></td>
+		<td width=3%><b>:</b></td>
+		<td> <%=h @ptdo.ptschedule.branch %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="name">Course Name</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.ptschedule.coursename %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="name">Staff Name : </label></td>
-		<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %></td>
+		<td class="leftcol"><label for="name">Description</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.ptschedule.description %></td>
 	</tr>
- 
-
+	
+	<tr>
+		<td class="leftcol"><label for="name">Location</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.ptschedule.location %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name">Duration</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.ptschedule.duration %> <%=h (Ptschedule::DUR_TYPE.find_all{|disp, value| value == @ptdo.ptschedule.duration_type}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name">Course Date</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.ptschedule.start.blank? ? "Will Be Notified" : @ptdo.ptschedule.start.strftime('%e %B %Y') %> </td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="name">Applicant Name </label></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="unit_approve">Approver Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :approver_1, Staff.find(:all, :include => [:title], :order => 'titles.id ASC'), :id, :staff_name_with_position, :include_blank => true %></td>
+	</tr>
 </table>
-</div>
+
   <p>
     <%= f.submit 'Apply' %>
   </p>
 <% end %>
-
+</div>
 <%= link_to 'Back', ptdos_path %>

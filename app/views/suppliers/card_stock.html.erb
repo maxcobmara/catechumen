@@ -1,0 +1,106 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+</form>
+
+
+<div id="title">		
+	<table width=100% border="0" cellspacing="0">
+			<tr>
+				<th width="3%" valign="top"><img  border="0" src="/images/km.jpg" alt="km" width="100" height="100"/></th>
+			    <td align="center"><BR>PUSAT LATIHAN <BR>AGENSI PENGUATKUASAAN MARITIM MALAYSIA (APMM)<BR>GEBENG,KUANTAN <BR><BR> TARIKH DICETAK: <%= Date.today.strftime('%d-%b-%Y') %></td>
+				<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
+				
+			</tr>
+	</table>
+
+<p align="center"><font size="3" ><b>LAPORAN KEPERLUAN PEJABAT</b></font> </p>
+
+<table width=100% border=0px cellspacing=0 cellpadding=3 align="center" >
+
+		<tr>
+			<td width=150>KOD ITEM</td>
+			<td>:</td>
+			<td><%=h @supplier.supplycode %></td>
+	  </tr>
+	
+		<tr>
+			<td>BUTIRAN ITEM</td>
+			<td>:</td>
+			<td><%=h @supplier.category %> / <%=h @supplier.sub_category %> / <%=h @supplier.item_type %></td>
+	  </tr>
+	
+	
+	  <tr>
+			<td>BAKI ITEM</td>
+			<td>:</td>
+			<td><%=h @supplier.current_quantity %> <%=h @supplier.unittype %></td>
+	  </tr>
+
+	
+</table>
+<BR>
+	 
+<table width=100% border=1px cellspacing=0 cellpadding="2" align="center" >
+
+		<tr>
+			<th width=20%  style="vertical-align:middle"><font size="2">Tarikh</font></th>
+			<th width=20%  style="vertical-align:middle"><font size="2">No. Rujukan</font></th>
+			<th width=40% style="vertical-align:middle"><font size="2">Diterima Daripada</font></th>
+			<th width=20% style="vertical-align:middle"><font size="2">Item Terima</font></th>
+			
+	  </tr>
+	<% for addsupplier in @supplier.addsuppliers %>
+		 <tr>
+			
+				<td><%=h addsupplier.received.blank? ? "-" : addsupplier.received.strftime("%d-%b-%Y") %> </td>
+				<td><%=h addsupplier.lpono %> </td>
+				<td><%=h addsupplier.addsupp.name %> </td>
+				<td align="center"><%=h addsupplier.quantity %> <%=h addsupplier.supplier.unittype %> </td>
+			
+			
+			
+		</tr>				
+	<% end %>
+
+</table>
+<BR>
+
+<table width=100% border=1px cellspacing=0 cellpadding="2" align="center" >
+
+			<tr>
+				<th width=20%  style="vertical-align:middle"><font size="2">Tarikh</font></th>
+				<th width=20%  style="vertical-align:middle"><font size="2">No. Rujukan</font></th>
+				<th width=40% style="vertical-align:middle"><font size="2">Dikeluarkan Kepada</font></th>
+				<th width=20% style="vertical-align:middle"><font size="2">Item Keluar</font></th>
+
+		  </tr>
+<% for usesupply in @supplier.usesupplies %>
+			 <tr>
+					
+					<td><%=h usesupply.issuedate.blank? ? "-" : usesupply.issuedate.strftime("%d-%b-%Y") %></td>
+					<td><%=h usesupply.ref_no %>&nbsp; </td>
+					<td><%=h usesupply.receivedby_details %></td>
+					<td align="center"><%=h usesupply.quantity %> <%=h usesupply.supplier.unittype %></td>
+					
+
+
+			</tr>				
+
+<% end %>
+	</table>
+
+</div>
+
+<BR>
+<div id="hideLink">
+	<%= link_to 'BACK', suppliers_path %>
+</div>
+</div>

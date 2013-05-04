@@ -1,0 +1,23 @@
+<div class="tform">
+<H2>Asset Category Details</H2>
+  <table width=100% >
+	 
+  <tr>
+	<td class="leftcol"><label for="parent_id">Category</label></td>
+	<td><%= f.collection_select :parent_id, Assetcategory.find(:all), :id, :description, :include_blank => true %>
+</td>
+ </tr>
+
+<tr>
+	<td class="leftcol"><label for="description ">Description</label></td>
+	<td><%= f.text_field :description %></td>
+</tr>
+
+<tr>
+	<td class="leftcol"><label for="cattype_id">Category Type</label></td>
+<td><%= f.select :cattype_id, 
+        Assetcategory::ASSETTYPE %></td>
+</tr>
+
+</table>
+</div>

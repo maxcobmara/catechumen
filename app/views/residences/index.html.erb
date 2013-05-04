@@ -1,0 +1,41 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Locations</h2>
+		<div class="right">
+			<% form_tag residences_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search] %>
+			<%= submit_tag "Search", :resname => nil %>
+			<% end %>
+		</div>
+  </div>
+</div>
+
+<div class="tlist">
+<table width=100% border="0" cellpadding="0" cellspacing="0">
+ 	<tr>
+   	<th>Location Code</th>
+      <th>Location Name</th>
+      <th>Location Type Description</th>
+      <th colspan=4 class="ac">Control</th>
+    </tr>
+
+    <% @residences.each do |residence| %>
+    <tr>
+     <td>	<%=h residence.rescode %>
+					<%= link_to "(+)", new_residence_path(:parent_id => residence) %></td>
+     <td><%=h residence.resname %></td>
+
+     <td><%=h (Residence::TYPE.find_all{|disp, value| value == residence.restype}).map {|disp, value| disp} %></td>
+     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => residence %></td>
+     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => residence %></td>
+     <td width=10px><%= link_to image_tag("duplicate.png", :border => 0, :title => 'Add Asset'), :action => 'addasset', :id => residence %></td>
+     <td width=5px><%= link_to 'Destroy', residence, :confirm => 'Are you sure?', :method => :delete %></td>
+   </tr>
+   <% end %>
+  </table>
+</div>
+<br />
+
+<%= link_to 'New Location', new_residence_path %>

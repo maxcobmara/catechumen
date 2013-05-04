@@ -1,0 +1,367 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+</form>
+<% if @travelrequest.transport_travel == 1 %>
+<fieldset>
+
+<div id="travelclaim">
+<p class="bhgnA" align="right"><u>LAMPIRAN A</u> </p><BR>
+<p class="bhgnA" align="center"><u>AGENSI PENGUATKUASAAN MARITIM MALAYSIA</u><BR><BR>
+	KELULUSAN KETUA JABATAN/PEGAWAI PEMERINTAH UNTUK MENGGUNAKAN KENDERAAN<BR>
+	SENDIRI BAGI PERJALANAN RASMI </p>
+
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+		<td width=20%>Nama</td>
+		<td width=3%>:</td>
+		<td><%=h @travelrequest.stafftravel.staff_name_with_title %></td>
+    </tr>
+	<tr>
+		<td>Jawatan</td>
+		<td>:</td>
+		<td><%=h @travelrequest.position_details %></td>
+    </tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+    </tr>
+	<tr>
+		<td colspan=3>Adalah disahkan bahawa saya telah membenarkan pegawai di atas menggunakan kenderaannya sendiri 
+			          bagi membuat perjalanan rasmi atas alasan-alasan yang dinyatakan:</td>
+	
+    </tr>
+	
+</table>
+<BR>
+<table width=100% border=1px cellspacing=0 align="center" >
+	<tr>
+		<th rowspan=2 width=13%>Tarikh</th>
+		<th rowspan=2 width=13%>Masa Pergi</th>
+		<th rowspan=2 width=13%>Masa Balik</th>
+		<th colspan=2 width=30%>Perjalanan</th>
+		<th rowspan=2 width=10%>Jarak (KM)</th>
+		<th rowspan=2 width=15%>No Alasan</th>
+    </tr>
+	<tr>
+		<th width=20%>Dari</th>
+		<th width=20%>Ke</th>
+    </tr>
+	<% for traveldetail in @travelrequest.traveldetails %>
+	<tr>
+		<td  width=13%><%= traveldetail.travelday.strftime("%d/%m/%Y")%></td>
+		<td  width=13%><%= traveldetail.departure.strftime("%I:%M %p") %></td>
+		<td  width=13%><%= traveldetail.arrival.blank? ? "-" : traveldetail.arrival.strftime("%I:%M %p") %></td>
+		<td width=15% align="center"><%= traveldetail.location_from %></td>
+		<td width=15% align="center"><%= traveldetail.location_to %></td>
+		<td  width=10%><%= traveldetail.distance.blank? ? "" : (traveldetail.distance).to_s %></td>
+		<td  width=15%><% if @travelrequest.reason_1 == true %>1,<% end %>
+			  <% if @travelrequest.reason_2 == true %>2,<% end %>
+			  <% if @travelrequest.reason_3 == true %>3,<% end %>
+			  <% if @travelrequest.reason_4 == true %>4,<% end %>
+			  <% if @travelrequest.reason_5 == true %>5,<% end %>
+			  <% if @travelrequest.reason_6 == true %>6,<% end %>
+			<% if @travelrequest.reason_7 == true %>7,<% end %>
+			<% if @travelrequest.reason_8 %>8<% end %>
+		</td>
+    </tr>
+	
+	<% end %>
+</table>
+<BR>
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+		<td colspan=3 align="center"><u>ALASAN-ALASAN BAGI MENGGUNAKAN KENDERAAN SENDIRI UNTUK MENJALANKAN TUGAS RASMI</td>
+	
+    </tr>
+	<tr>
+		<td>1</td>
+		<td></td>
+		<td>Beliau dikehendaki menjalankan tugas-tugas rasmi di beberapa tempat di sepanjang perjalanan</td>
+    </tr>
+	<tr>
+		<td>2</td>
+		<td></td>
+		<td>Adalah mustahak dan terpaksa baginya membawa kenderaan sendiri</td>
+    </tr>
+	<tr>
+		<td>3</td>
+		<td></td>
+		<td>Adalah mustahak dan terpaksa baginya membawa pegawai lain yang juga menjalankan tugas rasmi</td>
+    </tr>
+
+	<tr>
+		<td>4</td>
+		<td></td>
+		<td>Pengangkutan awam mengambil masa lama dan menggangu tugas rasminya</td>
+    </tr>
+
+	<tr>
+		<td>5</td>
+		<td></td>
+		<td>Tiada kenderaan pejabat yang disediakan untuk membawa pegawai dari tempat penginapan ke tempat bertugas</td>
+    </tr>
+
+	<tr>
+		<td>6</td>
+		<td></td>
+		<td>Penggunaan kenderaan jabatan tidak berfaedah kerana tugas yang dijalankan itu memakan masa yang lama menyebabkan kenderaan tidak akan digunakan selalu</td>
+    </tr>
+
+	<tr>
+		<td>7</td>
+		<td></td>
+		<td>Beliau menjalankan tugas kecemasan di mana kenderaan lain tidak diperolehi</td>
+    </tr>
+
+	<tr>
+		<td>8</td>
+		<td></td>
+		<td>Tiada kenderaan rasmi yang dapat disediakan</td>
+    </tr>
+	
+	
+</table>
+<BR>
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+			<td width=30%>Tandatangan</td>
+			<td width=3%>:</td>
+			<td>&nbsp;</td>
+	   </tr>
+		<tr>
+			<td>Nama Ketua Jabatan</td>
+			<td>:</td>
+			<td><%=h @travelrequest.hod_id.blank? ? "-" : @travelrequest.hod.position_with_boss %></td>
+	    </tr>
+		<tr>
+			<td>Jabatan</td>
+			<td>:</td>
+			<td><%=h @travelrequest.hod_id.blank? ? "-" : @travelrequest.hod.unit %></td>
+	    </tr>
+		<tr>
+			<td>Tarikh</td>
+			<td>:</td>
+			<td><%=h @travelrequest.hodconfirmdt.blank? ? "-" : @travelrequest.hodconfirmdt.strftime("%d %b %Y") %></td>
+	    </tr>
+</table>
+</div>
+</fieldset>
+
+<fieldset>
+
+<div id="travelclaim">
+<p class="bhgnA" align="right">LAMPIRAN 'A' KEPADA<BR>SURAT PEKELILING<BR>PERBENDAHARAAN<BR>BIL. 18 TAHUN 1982 </p><BR>
+<p class="bhgnA" align="center"><u>SURAT PENGESAHAN</u><BR><BR>TUNTUTAN ELAUN PERJALANAN KENDERAAN<BR> DI LUAR WAKTU PEJABAT BIASA</p>
+
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+		<td colspan=3>Saya mengesahkan bahawa tuntutan yang dibuat oleh:<BR><BR></td>
+    </tr>
+	<tr>
+		<td width=20%>Nama</td>
+		<td width=3%>:</td>
+		<td><%=h @travelrequest.stafftravel.staff_name_with_title %></td>
+    </tr>
+	<tr>
+		<td>Jawatan</td>
+		<td>:</td>
+		<td><%=h @travelrequest.position_details %></td>
+    </tr>
+	<tr>
+		<td>Alamat Rumah</td>
+		<td>:</td>
+		<td><%=h @travelrequest.stafftravel.addr %></td>
+    </tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+    </tr>
+	<tr>
+		<td colspan=3>Ke atas perjalanan yang dibuat di luar waktu pejabat biasa seperti di bawah ini:</td>
+    </tr>	
+</table>
+<BR>
+<table width=100% border="0" cellspacing="0" BORDERCOLOR="#C0C0C0">
+		<tr>
+			<td width=10%><b>Bil</b></td>
+			<td width=25% ><b>Haribulan/Hari</b></td>
+			<td width=25% align="center"><b>Masa</b></td>
+			<td width=20% align="center"><b>Jarak Perjalanan</b></td>
+		</tr>
+			 <% bil = 0 %>
+			 
+			
+<% for traveldetail in @travelrequest.traveldetails %>
+	 <% bil += 1 %>		
+	<tr>
+		<td><%= bil %></td>
+		<td><%= traveldetail.travelday.strftime("%d/%m/%Y")%> <%= traveldetail.travelday.strftime("(%A)")%></td>
+		<td align="center"><%= traveldetail.departure.strftime("%I:%M %p") %> - <%= traveldetail.arrival.strftime("%I:%M %p") %></td>
+		<td align="center"><%= traveldetail.distance.blank? ? "" : (traveldetail.distance).to_s + "km" %></td>
+	
+	</tr>
+<% end %>
+<tr>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td colspan=4>Adalah teratur dan mengikut garis panduan yang ditetapkan di dalam Surat Pekeliling Perbendaharaan Bil. 18 Tahun 1982</td>
+</tr>
+</table>
+<BR>
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+			<td width=30%>Tandatangan</td>
+			<td width=3%>:</td>
+			<td>&nbsp;</td>
+	   </tr>
+		<tr>
+			<td>Nama Ketua Jabatan</td>
+			<td>:</td>
+			<td><%=h @travelrequest.hod_id.blank? ? "-" : @travelrequest.hod.position_with_boss %></td>
+	    </tr>
+		<tr>
+			<td>Jabatan</td>
+			<td>:</td>
+			<td><%=h @travelrequest.hod_id.blank? ? "-" : @travelrequest.hod.unit %></td>
+	    </tr>
+		<tr>
+			<td>Tarikh</td>
+			<td>:</td>
+			<td><%=h @travelrequest.hodconfirmdt.blank? ? "-" : @travelrequest.hodconfirmdt.strftime("%d %b %Y") %></td>
+	    </tr>
+</table>
+</div>
+</fieldset>
+<% end %>
+<% if (@travelrequest.transport_travel == 1)  ||  (@travelrequest.transport_travel == 2) %>
+<fieldset>
+
+<div id="travelclaim">
+<BR><BR><p class="bhgnA" align="center"><b>PERMOHONAN UNTUK MENJALANKAN TUGAS<BR>RASMI DI LUAR PEJABAT</b></p>
+
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+		<td colspan=3><u><%=h @travelrequest.hod_id.blank? ? "-" : @travelrequest.hod.staff.staff_name_with_title %></u><BR>(Ketua Bahagian)<BR><BR></td>
+    </tr>
+	<tr>
+		<td colspan=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Saya memohon kelulusan tuan membenarkan saya pergi ke <%=h @travelrequest.destination %> selama <b><%=h @travelrequest.duration %></b> Hari untuk menghadiri <%=h @travelrequest.purpose %> mulai <%=h @travelrequest.tstartdt.blank? ? "-" : @travelrequest.tstartdt.strftime("%d-%b-%Y") %> sehingga <%=h @travelrequest.treturndt.blank? ? "-" : @travelrequest.treturndt.strftime("%d-%b-%Y") %> .</td>
+		
+    </tr>
+	<tr>
+		<td width=10%>2.</td>
+		<td colspan=2>Saya akan pergi dan balik dengan menggunakan <%=h (Travelrequest::TRANSPORT.find_all{|disp, value| value == @travelrequest.transport_travel.to_s}).map {|disp, value| disp} %></td>
+    </tr>
+	<tr>
+		<td>3.</td>
+		<td colspan=2>Peruntukan adalah mencukupi/tidak mencukupi bagi pembiayaan perjalanan seperti di atas.</td>
+    </tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+    </tr>
+</table>
+
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+			<td>Tarikh</td>
+			<td width=3%>:</td>
+			<td width=50%><%=h @travelrequest.submission.blank? ? "-" : @travelrequest.submission.strftime("%d %b %Y") %></td>
+			<td width=30% align="center"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T.T&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><BR>Tandatangan Pemohon</td>
+	 </tr>
+	<tr>
+			<td>&nbsp;</td>
+			<td width=3%></td>
+			<td width=50%>&nbsp;</td>
+			<td width=40% align="center"><u><%=h @travelrequest.stafftravel.staff_name_with_title %></u><BR>Nama Pemohon</td>
+	 </tr>
+	<tr>
+			<td>&nbsp;</td>
+			<td width=3%></td>
+			<td width=50%>&nbsp;</td>
+			<td width=40% align="center"><u><%=h @travelrequest.position_details %></u><BR>Jawatan</td>
+	 </tr>
+	<tr>
+			<td colspan=4><u><HR></u></td>
+</tr>
+</table>
+<BR>
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+		<td colspan=3><u><%=h @travelrequest.stafftravel.staff_name_with_title %></u><BR>(Kepada Pegawai Yang Memohon)<BR><BR></td>
+	</tr>
+	<tr>
+		<td colspan=3>Permohonan tuan/puan adalah <b><%=h @travelrequest.hod_approved? ? "diluluskan" : "tidak diluluskan" %></b></td>
+	</tr>
+</table>
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+		<td>Tarikh</td>
+		<td width=3%>:</td>
+		<td width=30%><%=h @travelrequest.hodconfirmdt.blank? ? "-" : @travelrequest.hodconfirmdt.strftime("%d-%b-%Y") %></td>
+		<td width=50% align="center"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T.T&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><BR>Tandatangan Pegawai Yang Meluluskan</td>
+	</tr>
+		
+	<tr>
+		<td>&nbsp;</td>
+		<td width=3%></td>
+		<td width=50%>&nbsp;</td>
+		<td width=40% align="center"><u><%=h @travelrequest.hod_id.blank? ? "-" : @travelrequest.hod.positionname %></u><BR>Jawatan</td>
+	 </tr>
+	<tr>
+		<td colspan=4><u></u></td>
+	</tr>
+</table>
+<BR>
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+		<td colspan=4><u><HR></u></td>
+	</tr>
+	<tr>
+		<td colspan=4 align="center">Sila uruskan tiket kapal terbang/keretapi untuk perjalanan di atas</td>
+	</tr>
+	<tr>
+		<td>Tarikh</td>
+		<td width=3%>:</td>
+		<td width=30%>&nbsp;</td>
+		<td width=50% align="center"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T.T&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><BR>Tandatangan Pegawai Yang Meluluskan</td>
+	</tr>
+	<tr>
+		<td colspan=3>Penolong Pegawai Tadbir</td>
+		<td width=50% align="center">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan=4>Sila uruskan tiket melalui Agen: <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td>
+	</tr>
+	<tr>
+		<td colspan=2>No Waran</td>
+		<td width=30% align="center">&nbsp;</td>
+		<td width=50% align="center">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Tarikh</td>
+		<td width=3%>:</td>
+		<td width=30%>&nbsp;</td>
+		<td width=50% align="center"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T.T&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u><BR>Tandatangan Pegawai Yang Meluluskan</td>
+	</tr>
+</table>
+</div>
+</fieldset>
+<% end %>
+<BR>
+<div id="hideLink">
+	<%= link_to 'BACK', assets_path %>
+	</div>

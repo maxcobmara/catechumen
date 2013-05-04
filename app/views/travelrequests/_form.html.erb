@@ -1,83 +1,204 @@
 <div class="tform">
-	<H2><%= t 'travel.staff_details' %></H2>
-	<table width=100%>
+<H2><%= t 'travel.staff_details' %></H2>
+<table width=100% border=0 cellspacing=0>
 		<tr>
-			<td class="leftcol"><label for="staff_id"><b><%= t 'travel.sname' %></b></label><font color="red"> * </font></td>
-			<td><%= f.collection_select :staff_id, Staff.find(:all, :order => "icno"), :id, :mykad_with_staff_name, :include_blank => true %></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="trcode"><b><%= t 'travel.trcode' %></b></label><font color="red"> * </font></td>
-			<td><%= f.text_field :trcode %></td>
+			<td  colspan=2 width=20%><label for="staff_id"><%= t 'travel.sname' %></label><font color="red"> * </font></td>
+			<td width=2%><b>:</b></td>
+			<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_title, :include_blank => true %></td>
 		</tr>
 
-	<tr>
-		<th colspan=2><%= t 'travel.travel_details' %></th>
-	</tr>
+</table>
+<H2><%= t 'travel.travel_details' %></H2>
+<table width=100% border=0 cellspacing=0>
 
 	<tr>
-	<td class="leftcol"><label for="destination"><b><%= t 'travel.destination' %></b></label><font color="red"> * </font></td>
+		<td class="leftcol" colspan=2><label for="destination"><%= t 'travel.destination' %></label><font color="red"> * </font></td>
+		<td><b>:</b></td>
 		<td><%= f.text_field :destination, :size => '60' %></td>
 	</tr>
 
 	<tr>
-	   <td class="leftcol"><label for="purpose"><b><%= t 'travel.purpose' %></b></label><font color="red"> * </font></td>
+	    <td class="leftcol" colspan=2><label for="purpose"><%= t 'travel.purpose' %></label><font color="red"> * </font></td>
+		<td><b>:</b></td>
 		<td><%= f.text_area :purpose, :size => '60x2' %></td>
 	</tr>
 	
+	<tr>
+		 <td class="leftcol" colspan=2><label for="tstartdt"><%= t 'travel.tstartdt' %></label></td>
+		 <td><b>:</b></td>
+		 <td><%= f.date_select :tstartdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+		
+	<tr>
+		<td class="leftcol" colspan=2><label for="treturndt"><%= t 'travel.treturndt' %></label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :treturndt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="bplreserve"><%= t 'travel.bplreserve' %></label></td>
+		<td><b>:</b></td>
+		<td><%= f.radio_button :transport_travel,'1' %><%= t 'travel.owncar' %><%= f.radio_button :transport_travel,'2' %><%= t 'travel.ofiscar' %>
+			<%= f.radio_button :transport_travel,'3' %><%= t 'travel.others' %><%= f.radio_button :transport_travel,'4' %><%= t 'travel.train' %>
+			<%= f.radio_button :transport_travel,'5' %><%= t 'travel.flight' %><%= f.radio_button :transport_travel,'6' %><%= t 'travel.public' %>
+		</td>
+	</tr>
+	</table>
+<H2>Used Own Car</H2>
+	 <div>
+	
+		 <% f.fields_for :traveldetails do |builder| %>
+			<%= render 'traveldetail_fields', :f => builder %>
+		 <% end %>
+		 <p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :traveldetails %> - <%= "Add Details" %> </p>
+		  </div>
+<table width=100% border=0 cellspacing =0>
+<tr>
+		<td width=20%><label for="ifownwhy"><font size=2><%= t 'travel.ifownwhy' %></font></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.check_box :reason_1 %></td>
+		<td>Beliau dikehendaki menjalankan tugas-tugas rasmi di beberapa tempat di sepanjang perjalanan</td>
+</tr>
+
+<tr>
+		<td width=20%><label for="ifownwhy"><font size=2></font></label></td>
+		<td><b></b></td>
+		<td><%= f.check_box :reason_2 %></td>
+		<td>Adalah mustahak dan terpaksa baginya membawa kenderaan sendiri</td>
+</tr>
+
+<tr>
+		<td width=20%><label for="ifownwhy"><font size=2></font></label></td>
+		<td><b></b></td>
+		<td><%= f.check_box :reason_3 %></td>
+		<td>Adalah mustahak dan terpaksa baginya membawa pegawai lain yang juga menjalankan tugas rasmi</td>
+</tr>
+
+<tr>
+		<td width=20%><label for="ifownwhy"><font size=2></font></label></td>
+		<td><b></b></td>
+		<td><%= f.check_box :reason_4 %></td>
+		<td>Pengangkutan awam mengambil masa lama dan menggangu tugas rasminya</td>
+</tr>
+
+<tr>
+		<td width=20%><label for="ifownwhy"><font size=2></font></label></td>
+		<td><b></b></td>
+		<td><%= f.check_box :reason_5 %></td>
+		<td>Tiada kenderaan pejabat yang disediakan untuk membawa pegawai dari tempat penginapan ke tempat bertugas</td>
+</tr>
+
+<tr>
+		<td width=20%><label for="ifownwhy"><font size=2></font></label></td>
+		<td><b></b></td>
+		<td><%= f.check_box :reason_6 %></td>
+		<td>Penggunaan kenderaan jabatan tidak berfaedah kerana tugas yang dijalankan itu memakan masa yang lama menyebabkan kenderaan tidak akan digunakan selalu</td>
+</tr>
+
+<tr>
+		<td width=20%><label for="ifownwhy"><font size=2></font></label></td>
+		<td><b></b></td>
+		<td><%= f.check_box :reason_7 %></td>
+		<td>Beliau menjalankan tugas kecemasan di mana kenderaan lain tidak diperolehi</td>
+</tr>
+
+<tr>
+		<td width=20%><label for="ifownwhy"><font size=2></font></label></td>
+		<td><b></b></td>
+		<td><%= f.check_box :reason_8 %></td>
+		<td>Tiada kenderaan rasmi yang dapat disediakan</td>
+</tr>
+</table>
+<H2>Used Office Car</H2>
+<table width=100%>		
+	<tr>
+		<td width=20% colspan=2 ><label for="ifownwhy"><font size=2>&nbsp;Used Office Car</font></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.collection_select :asset_id, Officecar.find(:all), :id, :car, :include_blank => true %></td>
+	</tr>
+		
+	<tr>
+		<td class="leftcol" colspan=2><label for="fuelstart">Mileage Before Used</label></td>
+		<td><b>:</b></td>
+		<td><%=f.text_field :fuelstart, :size =>14, :placeholder => 'RM' %></td>
+	</tr>
+	
+	<tr>
+		 <td class="leftcol" colspan=2><label for="fuelend">Mileage After Used</label></td>
+		<td><b>:</b></td>
+		<td><%=f.text_field :fuelend, :size =>14, :placeholder => 'RM' %></td>
+	</tr>
+	
+	<tr>
+		 <td class="leftcol" colspan=2><label for="tngserialno">Touch N Go Serial No</label></td>
+		<td><b>:</b></td>
+		<td><%=f.text_field :tngserialno, :size =>14 %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="tngbeforetakenout">Touch n Go Before Used</label></td>
+		<td><b>:</b></td>
+		<td><%=f.text_field :tngbeforetakenout, :size =>14, :placeholder => 'RM' %></td>
+	</tr>
+		
+	<tr>
+		<td class="leftcol" colspan=2><label for="tngaftertakenout">Touch n Go After Used</label></td>
+		<td><b>:</b></td>
+		<td><%=f.text_field :tngaftertakenout, :size =>14, :placeholder => 'RM' %></td>
+	</tr>
+	
+	<!--<tr>
+		<td class="leftcol" colspan=2><label for="claimtype"><#%= t 'travel.claimtype' %></label></td>
+		<td><b>:</b></td>
+		<td><#%= f.radio_button :claimtype,'false' %><%= t 'travel.km' %><%= f.radio_button :claimtype,'true' %><%= t 'travel.replaced' %></td>
+	</tr>-->
+</table>
+<H2><%= t 'travel.submission' %></H2>
+<table width=100% border=0 cellspacing=0>
+
+	    <tr>
+			<td colspan=2 width=20%><label for="submission"><font size=2><%= t 'travel.submissiondate' %></font></label></td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :submission, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+		
+			<tr>
+				<td colspan=2 width=20%><label for="hod_id">&nbsp;<%= t 'travel.hod_id' %></label></td>
+				<td><b>:</b></td>
+				<td><%= f.collection_select :hod_id, Position.find(:all, :conditions => {:positionname => "Komandan Pusat Latihan"} ), :id, :position_with_boss, :include_blank => true %></td>
+			</tr>
+
+		<!--<tr>
+		<td colspan=2><label for="replacement_id"><#%= t 'travel.replacement_id' %></label></td>
+		<td><b>:</b></td>
+		<td><#%= f.collection_select :replacement_id, Staff.find(:all, :order => "icno"), :id, :staff_name_with_title, :include_blank => true %></td>
+		</tr>-->
+</table>
+	<% if @travelrequest.hod_id.blank? == false %>	
+<H2><%= t 'travel.hod_confrm' %></H2>
+<table width=100% border=0 cellspacing=0>
+	
+		
 		<tr>
-		 <td class="leftcol"><label for="tstartdt"><b><%= t 'travel.tstartdt' %></b></label></td>
-			<td><%= f.date_select :tstartdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+			<td  colspan=2 width=20%><label for="approved">Confirmed</label></td>
+			<td width=3%><b>:</b></td>
+			<td><%= f.radio_button :hod_approved,'true' %>Yes<%= f.radio_button :hod_approved,'false' %>No</td>
+		</tr>
+
+
+		<tr>
+		 <td colspan=2><label for="hodconfirmdt"><%= t 'travel.hodconfirmdt' %></label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :hodconfirmdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 		
 		<tr>
-		 <td class="leftcol"><label for="treturndt"><b><%= t 'travel.treturndt' %></b></label></td>
-			<td><%= f.date_select :treturndt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="bplreserve"><b><%= t 'travel.bplreserve' %></b></label></td>
-			<td><%= f.check_box :owncar %>Own Car <%= f.check_box :officecar %>Office Car <%= f.check_box :otherscar %>Others Car <%= f.check_box :train %>Train Car <%= f.check_box :plane %>Flight Car <%= f.check_box :publict %>Public Car</td>
-		</tr>
-	
-		<tr>
-		   <td class="leftcol"><label for="ifownwhy"><b><%= t 'travel.ifownwhy' %></b></label></td>
-			<td><%= f.text_field :ifownwhy %></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="claimtype"><b><%= t 'travel.claimtype' %></b></label></td>
-			<td><%= f.radio_button :claimtype,'false' %>By KM<%= f.radio_button :claimtype,'true' %>Replaced</td>
-		</tr>
-	<tr>
-		<th colspan=2><%= t 'travel.submission' %></th>
-	</tr>
-	    <tr>
-			<td class="leftcol"><label for="submission"><b><%= t 'travel.submissiondate' %></b></label></td>
-			<td><%= f.date_select :submission, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
-		</tr>
-
-		<tr>
-		<td class="leftcol"><label for="replacement_id"><b><%= t 'travel.replacement_id' %></b></label></td>
-		<td><%= f.collection_select :replacement_id, Staff.find(:all, :order => "icno"), :id, :mykad_with_staff_name, :include_blank => true %></td>
-			<!--><td><#%= f.collection_select :replacement_id, Staff.find(:all, :conditions => ["id != ?", @travelrequest.staffid.id ]), :id, :mykad_with_staff_name, :include_blank => true %></td>-->
-		</tr>
-
-	<tr>
-		<th colspan=2><%= t 'travel.hod_confrm' %></th>
-	</tr>
-
-		<tr>
-			<td class="leftcol"><label for="hod_id"><b><%= t 'travel.hod_id' %></b></label></td>
-			<td><%= f.collection_select :hod_id, Staff.find(:all, :order => "icno"), :id, :mykad_with_staff_name, :include_blank => true %></td>
-		<!-->	<td><#%= f.collection_select :hod_id, Staff.find(:all, :conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]), :id, :mykad_with_staff_name, :include_blank => true %></td>-->
-		</tr>
-
-		<tr>
-		 <td class="leftcol"><label for="hodconfirmdt"><b><%= t 'travel.hodconfirmdt' %></b></label></td>
-		<td><%= f.date_select :hodconfirmdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+			<td colspan=2><label for="remark">Remark</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_area :remark_approver, :size => "40x2" %></td>
 		</tr>
 
 </table>
-<BR>
+<% end %>
 </div>
+<BR>

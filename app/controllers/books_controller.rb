@@ -2,7 +2,7 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.xml
   def index
-    @books = Book.search(params[:search]).paginate(:per_page => 10, :page => params[:page])
+    @books = Book.search(params[:search])#.paginate(:per_page => 20, :page => params[:page])
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @books }
@@ -24,7 +24,7 @@ class BooksController < ApplicationController
   # GET /books/new.xml
   def new
     @book = Book.new
-    5.times { @book.accessions.build }
+   @book.accessions.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -69,6 +69,16 @@ class BooksController < ApplicationController
         format.xml  { render :xml => @book.errors, :status => :unprocessable_entity }
       end
     end
+  end
+  
+  def help 
+     @books = Book.search(params[:all])
+     @books = Book.find(:all)
+  end
+  
+  def rules 
+     @books = Book.search(params[:all])
+     @books = Book.find(:all)
   end
 
   # DELETE /books/1

@@ -8,9 +8,9 @@
 			<%= text_field_tag :search, params[:search] %>
 			<%= submit_tag I18n.t('search'), :navlabel => nil %>
 			<% end %>
-		</div>
-    </div>
+		</div></div>
 </div>
+
     <div class="tlist">
   	<table width=100% border="0" cellpadding="0" cellspacing="0">
         <tr>
@@ -30,15 +30,14 @@
           <td><%=h page.name %></td>
           <td><%=  page.admin? ? "Yes" : "No" %></td>
           <td><%=  page.redirect? ? "Yes" : "No" %></td>
-		  <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => page %></td>
-	      <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => page %></td>
-	      <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), page, :confirm => 'Are you sure?', :method => :delete %></td>
+          <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => page %></td>
+		  <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => page %></td>
+		  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), page, :confirm => 'Are you sure?', :method => :delete %></td>
         </tr>
         <% end %>
 </table>
 
 <br />
 </div>
-<%= link_to 'New page', new_page_path %>
+<%= link_to 'New Page', new_page_path %>
 
-</div>

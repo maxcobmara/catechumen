@@ -1,0 +1,125 @@
+<h3>Approve Stock</h3>
+
+<% form_for(@stock) do |f| %>
+  <%= f.error_messages %>
+
+<div class="tform">
+		<H2>Stock Application Details</H2>
+	  <table width=100% border=0>
+
+		<tr>
+			<td class="leftcol"><label for="staff_id">Staff Name</label></td>
+			<td width=2%><b>:</b></td>
+			<td><%=h @stock.applicant.staff_name_with_title %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="staff_id">Jawatan</label></td>
+			<td><b>:</b></td>
+			<td><%=h @stock.applicant.position_for_staff %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="staff_id">Unit</label></td>
+			<td><b>:</b></td>
+			<td><%=h @stock.applicant.unit_for_staff %></td>
+		</tr>	
+	</table>
+
+
+	<table width=100% border=0 cellspacing=0>
+		<tr>
+			<td class="leftcol">Item Requested</td>
+			<td><b>:</b></td>
+			<td><table width=100% border=1 cellspacing=0 cellpadding=0 BORDERCOLOR="#C0C0C0">
+		<tr>
+			<th width=300 align="center"><b>Item Details</b></th>
+			<th width=100 align="center"><b>Quantity Ordered</b></th>
+			<th width=100 align="center"><b>Current Quantity</b></th>
+		</tr>
+		<% for stockdetail in @stock.stockdetails %>
+		<tr>
+			<td><%=h stockdetail.supplier.sub_category  %> / <%=h stockdetail.supplier.item_type  %> </td>
+			<td align="center"><%=h stockdetail.quantity_order %> <%=h stockdetail.supplier.unittype  %>  </td>
+			<td align="center"><%=h stockdetail.supplier.current_quantity %> <%=h stockdetail.supplier.unittype  %>   </td>
+		</tr>
+		<% end %>	
+
+	</table>
+	</td>
+	</tr>
+	</table>
+	<table>
+		<tr>
+			<td class="leftcol"><label for="app_no">Application No</label></td>
+			<td><b>:</b></td>
+			<td><%=h @stock.app_no %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="app_no">Date</label></td>
+			<td><b>:</b></td>
+			<td><%=h @stock.app_date.blank? ? "-" : @stock.app_date.strftime("%d %b %Y") %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="app_no">Status</label></td>
+			<td><b>:</b></td>
+			<td><%=h (Stock::STATUS.find_all{|disp, value| value == @stock.status}).map {|disp, value| disp} %></td>
+		</tr>
+	</table>
+</div>
+<div class="tform">
+	<H2>Approver Officer (<%=h @stock.approver.staff_name_with_title %>)</H2>
+	<div>
+		<table width=100% border=1 cellspacing=0 BORDERCOLOR="#C0C0C0">
+			<tr>
+				<th width=40% >Item Details</th>
+				<th width=15% >Quantity Ordered</th>
+				<th width=15% >Quantity Approved</th>
+				<th width=25% > Remark</th>
+				<th width=5%></th>
+
+			</tr>
+			</table>
+		<% f.fields_for :stockdetails do |builder| %>
+			<%= render 'stockdetail_fields', :f => builder %>
+
+		<% end %>
+	<!--	<p><#%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :stockdetails %> - Add More </p>-->
+
+	</div>
+	<BR>
+	<table width=100%>
+		
+		
+		<tr>
+			<td class="leftcol"><label for="app_date">Status</label></td>
+			<td><b>:</b></td>
+			<td><%= f.select :status,
+				                 Stock::STATUS,
+				                 :prompt => "Select" %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="app_date">Date</label></td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :approve_date, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+		
+			<tr>
+				<td class="leftcol"><label for="storeman_id">Storeman Name</label></td>
+				<td><b>:</b></td>
+				<td><%= f.collection_select :storeman_id, Staff.find(:all, :include => [:title], :order => 'titles.id ASC', :conditions => {:id => [56, 89]}), :id, :staff_name_with_title,:include_blank => true  %></td>
+			</tr>
+		
+	
+		
+	</table>
+</div>
+ <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @stock %> |
+<%= link_to 'Back', stocks_path %>

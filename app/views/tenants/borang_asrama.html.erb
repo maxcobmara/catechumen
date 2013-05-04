@@ -1,4 +1,4 @@
-<%= stylesheet_link_tag 'report' %> 
+<%= stylesheet_link_tag 'report' %>
 <div id="A4potrait">
 
 <form action="#">
@@ -9,15 +9,15 @@
 			"value='Print This Page'/>");
 
 </script>
-
+</form>	
 <fieldset width=10px >
 
 <div id="title">
 <table width=100% border="0">
 	<tr>
-		<th width="2%"><!--<img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/>--></th>
-		<th><H4>KSKB JB<BR><BR>NO.DOKUMEN: <BR>BORANG KEDIAMAN ASRAMA</H4> </th>
-		<th width="2%"><!--<img border="0" src="/images/maritim.png" alt="" width="100" height="100"/>--></th>
+		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/></th>
+		<th><H4>PPL APMM<BR><BR>NO.DOKUMEN: BK-LAT-KS-02-02<BR>BORANG KEDIAMAN ASRAMA</H4> </th>
+		<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
 	</tr>
 </table>
 
@@ -41,19 +41,23 @@
 		<td colspan=2 bgcolor = "#FEFE56"><b>A. MAKLUMAT PELATIH</b></td>
 	</tr>
 	<tr>
-		<td colspan=2>Nama Pelatih : <%=h @tenant.student_name %></td>
+		<td colspan=2>Nama Pelatih : <%=h @tenant.student.name %></td>
 	</tr>
 	<tr>
 		<td colspan=2>No. K/P : <%=h @tenant.student.formatted_mykad %></td>
 	</tr>
 	<tr>
-		<td colspan=2>Unit/Bahagian/Cawangan : <!--<#%=h @tenant.student.unit %>--></td>
+		<td>Pangkat : <%=h @tenant.student.pangkat %></td>
+		<td>Jawatan : </td>
+	</tr>
+	<tr>
+		<td colspan=2>Unit/Bahagian/Cawangan : <%=h @tenant.student.unit %></td>
 	</tr>
 	<tr>
 		<td colspan=2>Nama Kursus : <%=h @tenant.student.programme_for_student %></td>
 	</tr>	
 	<tr>
-		<td colspan=2>Tarikh Mula Kursus :<%=h @tenant.student.intake %></td>
+		<td colspan=2>Tarikh Mula Kursus :<%=h @tenant.student.start_training.blank? ? "-" : l(@student.regdate) %></td>
 	</tr>
 	<tr>
 		<td colspan=2>Tarikh Tamat Kursus : <%= @tenant.student.end_training %></td>
@@ -148,7 +152,7 @@
 
 <br><br><br> 
 <table width=100% cellspacing="0" cellpadding="3" font size="5px" border="0" bordercolor=black>
-<tr><td></td>
+<tr><td>BK-LAT-KS-02-02</td>
 <td><p class="marginright" align="right">1 daripada 2</p></td></tr>
 </table>
 <br><br>
@@ -161,9 +165,9 @@
 <div id="title">
 <table width=100% border="0">
 	<tr>
-		<th width="2%"><!--<img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/>--></th>
-		<th><H4>KSKBJB<BR><BR>NO.DOKUMEN: <BR>BORANG KEDIAMAN ASRAMA</H4> </th>
-		<th width="2%"><!--<img border="0" src="/images/maritim.png" alt="" width="100" height="100"/>--></th>
+		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/></th>
+		<th><H4>PPL APMM<BR><BR>NO.DOKUMEN: BK-LAT-KS-02-02<BR>BORANG KEDIAMAN ASRAMA</H4> </th>
+		<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
 	</tr>
 </table>
 
@@ -200,5 +204,4 @@
 </div>
 </div>
 </fieldset>
-</form>	
 

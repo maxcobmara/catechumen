@@ -1,0 +1,210 @@
+<link href="report.css" rel="stylesheet" type="text/css">
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+</form>
+<fieldset width=10px >
+<span class="bahagianright">LAMPIRAN 'A'</span><br /><br/>
+<center><b><font face="arial">SASARAN KERJA TAHUNAN</font></b></center><br />
+<center>
+<div class="whitetable">
+<table width=100%, cellspacing=0 border=0 cellpadding=5>
+	
+		<tr>
+			<td align="center" colspan=2><b>PERINGATAN</b></td>
+		</tr>
+		<tr>
+			<td align="justify" colspan=2>Pegawai Yang Dinilai (PYD) dan Pegawai Penilai Pertama (PPP) hendaklah memberi perhatian kepada perkara-perkara berikut sebelum dan semasa melengkapkan borang ini:</td>
+		</tr>
+		
+		<tr>
+			<td valign="top">(i)</td>
+			<td align="justify">PYD dan PPP hendaklah berbincang bersama dalam membuat penetapan Sasaran Kerja           Tahunan (SKT) dan menurunkan tandatangan di ruangan yang ditetapkan di <b>Bahagian I</b>;</td>
+		</tr>
+		
+		<tr>
+			<td valign="top">(ii)</td>
+			<td align="justify">SKT yang ditetapkan hendaklah mengandungi sekurang-kurangnya satu petunjuk prestasi iaitu sama ada kuantiti, kualiti, masa atau kos bergantung kepada kesesuaian sesuatu aktiviti/projek;</td>
+		</tr>
+		
+		<tr>
+			<td valign="top">(iii)</td>
+			<td align="justify">SKT yang telah ditetapkan pada awal tahun hendaklah dikaji semula di pertengahan tahun. SKT yang digugurkan atau ditambah hendaklah dicatatkan di ruangan <b>Bahagian II</b>;</td>
+		</tr>
+		
+		<tr>
+			<td valign="top">(iv)</td>
+			<td align="justify">PYD dan PPP hendaklah membuat laporan dan ulasan keseluruhan pencapaian SKT pada akhir tahun serta menurunkan tandatangan di ruangan yang ditetapkan di <b>Bahagian III</b>; dan</td>
+		</tr>
+		
+		<tr>
+			<td valign="top">(v)</td>
+			<td align="justify">sila rujuk Panduan Penyediaan Sasaran Kerja Tahunan (SKT) untuk mendapat keterangan lanjut.</td>
+		</tr>	
+</table>
+</div></center>
+<BR>
+<center>
+<table width=85% border=0 cellspacing=0>
+<tr>
+	<td><b>BAHAGIAN I - Penetapan Sasaran Kerja Tahunan</b></td>
+</tr>
+<tr>
+	<td class="word"><i>(PYD dan PPP hendaklah berbincang bersama sebelum menetapkan SKT dan petunjuk prestasinya)</i></div></td>
+</table></center>
+<BR>
+<center><table width=85% border=1 cellspacing=0>
+	<tr>
+		<td align="center"><b>Bil</b></th>
+		<td align="center"><b>Ringkasan Aktiviti/Projek</b><br>(Senaraikan aktiviti/projek)</td>
+		<td align="center"><b>Petunjuk Prestasi</b> <br>(Kuantiti/Kualiti/Masa/Kos)</td>
+	</tr>
+	 
+	<tr>
+		<td align="center" width=5%>1</td>
+		<% for skt_target in @skt_staff.skt_targets.find(:all, :conditions => ['status =?', 1]) %>
+		<td width=40%><%=h skt_target.activity %></td><% end %>
+		
+		<td align="center" width=40%><% for skt_achive in skt_target.skt_achives %><%=h (SktAchive::PERFORM.find_all{|disp, value| value == skt_achive.performance}).map {|disp, value| disp} %> - <%= skt_achive.target_work %> - <%= skt_achive.actual_achieve %> <BR><% end %></td>
+	</tr>
+</table></center><br />
+
+<center>
+<table width=85% border=0 cellspacing=0>
+	<div id="box">
+	<div id="left">T.T</div>
+	<div id="right">T.T</div>
+	<div id="tandatangan">&nbsp;<center>Tandatangan PYD</center></div>
+	<div id="tarikh">&nbsp;<center>Tandatangan PPP</center></div>
+	<div id="tandatangan">&nbsp;<center>Tarikh: ...................................................</center></div>
+	<div id="tarikh">&nbsp;<center>Tarikh: ...................................................</center></div>
+</table></center>
+<BR><BR>
+</fieldset>
+
+<fieldset>
+<BR>
+<center>
+<table width=85% border=0 cellspacing=0>
+	<tr>
+		<td><b>BAHAGIAN II - Kajian Semula Sasaran Kerja Tahunan Pertengahan Tahun</b></td>
+	</tr>
+</table></center>
+<BR>
+
+<center>
+	<table width=85% border=0 cellspacing=0>
+		<tr>
+			<td width=4%>1</td>
+			<td><b>Aktiviti/Projek Yang Ditambah</b></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><i>(PYD) hendaklah menyenaraikan aktiviti/projek yang ditambah berserta petunjuk prestasinya setelah berbincang dengan PPP)</i></td>
+		</tr>
+		
+		<tr>
+			<td></td>
+			<td><BR><table width=100% border=1 cellspacing=0>
+		<tr>
+			<td align="center" ><b>Bil</b></th>
+			<td align="center"><b>Ringkasan Aktiviti/Projek</b><br>(Senaraikan aktiviti/projek)</td>
+			<td align="center"><b>Petunjuk Prestasi</b> <br>(Kuantiti/Kualiti/Masa/Kos)</td>
+		</tr>
+
+		<tr>
+			<td align="center" valign="top" width=5%>1</td>
+			<% for skt_target in @skt_staff.skt_targets.find(:all, :conditions => ['status =?', 2]) %>
+			<td width=40% valign="top"><%=h skt_target.activity %></td><% end %>
+			<td width=40%><% for skt_achive in skt_target.skt_achives %><%=h (SktAchive::PERFORM.find_all{|disp, value| value == skt_achive.performance}).map {|disp, value| disp} %> - <%= skt_achive.target_work %> - <%= skt_achive.actual_achieve %> <BR><% end %></td>
+		</tr>
+</table></td></tr>
+</table>
+<BR><center>
+<table width=85% border=0 cellspacing=0>
+		<tr>
+			<td width=4%>2</td>
+			<td><b>Aktiviti/Projek Yang Digugurkan</b></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><i>(PYD) hendaklah menyenaraikan aktiviti/projek yang ditambah berserta petunjuk prestasinya setelah berbincang dengan PPP)</i></td>
+		</tr>
+<tr>
+	<td></td>
+	<td><BR><table width=100% border=1 cellspacing=0>
+		<tr>
+			<td align="center" ><b>Bil</b></th>
+			<td align="center"><b>Ringkasan Aktiviti/Projek</b><br>(Senaraikan aktiviti/projek)</td>
+		</tr>
+
+		<tr>
+			<td align="center" valign="top" width=5%>&nbsp;</td>
+			<% for skt_target in @skt_staff.skt_targets.find(:all, :conditions => ['status =?', 3]) %>
+			<td width=40% valign="top"><%=h skt_target.activity %>&nbsp;</td><% end %>
+		</tr>
+	</table>
+	</td></tr>
+</table></center>
+<BR>
+<center>
+<table width=85% border=0 cellspacing=0>
+	<tr>
+		<td><b>BAHAGIAN III - Laporan dan Ulasan Keseluruhan Pencapaian Sasaran Kerja Tahunan Pada &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Akhir Tahun oleh PYD dan PPP</b></td>
+	</tr>
+</table></center>
+<BR><center>
+<table width=85% border=0 cellspacing=0>
+		<tr>
+			<td width=4%>1</td>
+			<td><b>Laporan/Ulasan Oleh PYD</b></td>
+		</tr>
+
+<tr>
+	<td></td>
+	<td><table width=100% border=1 cellspacing=0 >
+		<tr>
+			<td align="center" colspan=2>&nbsp;<%=h @skt_staff.report_pyd %></th>
+		</tr>
+		</table>
+	</td></td>
+</tr>
+</table></center>
+
+<BR><center>
+<table width=85% border=0 cellspacing=0>
+		<tr>
+			<td width=4%>2</td>
+			<td><b>Laporan/Ulasan Oleh PPP</b></td>
+		</tr>
+
+<tr>
+	<td></td>
+	<td><table width=100% border=1 cellspacing=0 >
+		<tr>
+			<td align="center" colspan=2>&nbsp;<%=h @skt_staff.report_ppp %></th>
+		</tr>
+		</table>
+	</td></td>
+</tr>
+</table></center>
+<br />
+<center>
+<table width=85% border=0 cellspacing=0>
+	<div id="box">
+	<div id="left">T.T</div>
+	<div id="right">T.T</div>
+	<div id="tandatangan">&nbsp;&nbsp;<center>Tandatangan PYD</center></div>
+	<div id="tarikh">&nbsp;<center>Tandatangan PPP</center></div>
+	<div id="tandatangan">&nbsp;<center>Tarikh: ...................................................</center></div>
+	<div id="tarikh">&nbsp;<center>Tarikh: ...................................................</center></div>
+</table></center>
+</div>
+</fieldset>

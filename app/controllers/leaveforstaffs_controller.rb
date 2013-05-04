@@ -1,15 +1,17 @@
 class LeaveforstaffsController < ApplicationController
-  filter_access_to :all
+  filter_resource_access
   # GET /leaveforstaffs
   # GET /leaveforstaffs.xml
+  
+  filter_access_to :all
   def index
-    #@leaveforstaffs = Leaveforstaff.with_permissions_to(:index).find(:all)
-    @filters = Leaveforstaff::FILTERS
-      if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index).send(params[:show])
-      else
-        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index).relevant
-      end
+    @leaveforstaffs = Leaveforstaff.search(params[:search])
+   # @filters = Leaveforstaff::FILTERS
+   #   if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+   #     @leaveforstaffs = Leaveforstaff.send(params[:show])
+   #   else
+   #     @leaveforstaffs = Leaveforstaff.find(:all).search(params[:search])
+   #   end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -41,7 +43,7 @@ class LeaveforstaffsController < ApplicationController
 
   # GET /leaveforstaffs/1/edit
   def edit
-    @leaveforstaff = Leaveforstaff.find(params[:id])
+    #@leaveforstaff = Leaveforstaff.find(params[:id])
   end
 
   # POST /leaveforstaffs
@@ -85,6 +87,28 @@ class LeaveforstaffsController < ApplicationController
   def approve2
     @leaveforstaff = Leaveforstaff.find(params[:id])
   end
+  
+  def list
+     @leaveforstaff = Leaveforstaff.find(params[:id])
+  end
+  
+  def leavefourhours
+    @leaveforstaff = Leaveforstaff.find(params[:id])
+    render :layout => 'report'
+  end
+  
+  def cuti_rehat
+    @leaveforstaff = Leaveforstaff.find(params[:id])
+    render :layout => 'report'
+  end
+  
+ def laporan_cuti
+#  @leaveforstaffs = Leaveforstaff.search(params[:all])
+  @leaveforstaffs = Leaveforstaff.find(:all, :conditions => {:leavestartdate => Date.today})
+    render :layout => 'report'
+  end
+    
+    
 
   # DELETE /leaveforstaffs/1
   # DELETE /leaveforstaffs/1.xml

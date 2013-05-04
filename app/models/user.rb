@@ -14,13 +14,13 @@ class User < ActiveRecord::Base
   validates_length_of       :name,     :maximum => 100
 
   validates_presence_of     :email
-  validates_length_of       :email,    :within => 3..100 #r@a.wk
+  validates_length_of       :email,    :within => 6..100 #r@a.wk
   validates_uniqueness_of   :email
-  validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
-  
-  validates_presence_of     :icno,     :within => 3..100
-  validates_length_of       :icno,     :is => 12, :message => "MyKad no is 12 characters"
-  validates_uniqueness_of   :icno,     :message => "Your IC no already has a registered account"
+  #validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
+  validates_format_of       :email,
+                            :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,
+                            :message => "Email Not Valid"
+
   has_and_belongs_to_many :roles
   belongs_to :staff
   belongs_to :student
@@ -61,8 +61,8 @@ class User < ActiveRecord::Base
   end
   
   def user_nama
-    stid = Array(staff_id)
-    suid = Array(student_id)
+    stid = staff_id.to_a
+    suid = student_id.to_a
     stexists = Staff.find(:all, :select => "id").map(&:id)
     suexists = Student.find(:all, :select => "id").map(&:id)
     staffchecker = stid & stexists
@@ -77,27 +77,27 @@ class User < ActiveRecord::Base
       elsif isstaff == false
         " #{student.name} + (Student)"   
       else
-        staff.name
-      end 
-  end
-  
-  def assigned_staff
-    User.find(:all, :select => "staff_id", :conditions => ["staff_id IS NOT ?", nil]).map(&:staff_id)
-  end
-  
-  named_scope :all
-  named_scope :approval,  :conditions =>  ["student_id IS? AND staff_id IS ?", nil, nil]
-  named_scope :staff,     :conditions =>  ["student_id IS? AND staff_id IS NOT ?", nil, nil]
-  named_scope :student,   :conditions =>  ["student_id IS NOT ? AND staff_id IS ?", nil, nil]
+        staff.staff_name_with_title
+      end
+    end
+ end
 
+ def role_user
+   if isstaff == TRUE
+     "STAFF"
+   else
+     "STUDENT"
+   end
+ end
 
-  FILTERS = [
-    {:scope => "all",       :label => "All"},
-    {:scope => "approval", :label => "Verify"},
-    {:scope => "staff",     :label => "Staff"},
-    {:scope => "student",   :label => "Student"}
-    ]
+ #---------------Search--------------------------------------------------------------------------------
+
+   def self.search(search)
+     if search
+       find(:all, :conditions => ['login ILIKE ?', "%#{search}%"])
+     else
+       find(:all)
+     end
+   end
   
 
-  
-end

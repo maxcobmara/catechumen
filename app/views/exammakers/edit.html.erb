@@ -1,20 +1,10 @@
-<h1>Editing exammaker</h1>
-
-<% form_for(@exammaker) do |f| %>
+<h3>Editing Exam Maker</h3>
+<% form_for @exammaker, :html => {:name => 'form1',:onsubmit => "return verify_checkboxes(document.form1)"}  do |f| %>
+<!--<#% form_for(@exammaker) do |f| %>-->
   <%= f.error_messages %>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :description %><br />
-    <%= f.text_area :description %>
-  </p>
-  <p>
-    <%= f.label :creator_id %><br />
-    <%= f.text_field :creator_id %>
-  </p>
+ <%=render :partial => 'form', :locals => {:f => f} %> 
+
   <p>
     <%= f.submit 'Update' %>
   </p>

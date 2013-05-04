@@ -1,51 +1,152 @@
 <div class="tform">
 	<H2><%= t 'supplier.supplier_details' %></H2>
 	<table width=100%>
+		
+	<!--	<tr>
+			<td class="leftcol"><label for="supplycode"><b>Stor</b></label></td>
+			<td><#%=h @supplier.store_name %> 
+		</tr>-->
 		<tr>
-			<td class="leftcol"><label for="supplycode"><%= t 'supplier.supplycode' %> :</label></td>
+			<td class="leftcol"><label for="supplycode"><%= t 'supplier.supplycode' %></label></td>
+			<td width=5%><b>:</b></td>
 			<td><%=h @supplier.supplycode %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="category"><%= t 'supplier.category' %> :</label></td>
+			<td class="leftcol"><label for="category"><%= t 'supplier.category' %></label></td>
+			<td><b>:</b></td>
 			<td><%=h @supplier.category %></td>
 		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="maxquantity"><%= t 'supplier.current'%> :</label></td>
-			<td><%=h @supplier.current_quantity %><%=h @supplier.unittype %></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="maxquantity"><%= t 'supplier.maxquantity'%> :</label></td>
-			<td><%=h @supplier.maxquantity %><%=h @supplier.unittype %></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="minquantity"><%= t 'supplier.minquantity' %> :</label></td>
-			<td><%=h @supplier.minquantity %><%=h @supplier.unittype %></td>
-		</tr>	
-	</table>
-	<BR>
 		
-		<H2>Additions</H2>
-		<table width=100%>
-			<tr>
-				<td>LPO No</td>
-				<td>Quantity</td>
-				<td>Unit Cost</td>
-				<td>Total</td>
-			</tr>
-		<% for addsuppliers in @supplier.addsuppliers %>
-			<tr>
-				<td><%= addsuppliers.lpono %></td>
-				<td><%= addsuppliers.quantity %></td>
-				<td><%= ringgols(addsuppliers.unitcost) %></td>
-				<td><%= ringgols(addsuppliers.line_item_value) %></td>
-			</tr>
-		<% end %>
-		</table>
+		<tr>
+			<td class="leftcol"><label for="Category">Sub-Category</label></td>
+			<td><b>:</b></td>
+			<td><%=h @supplier.sub_category %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="Category">Item Type</label></td>
+			<td><b>:</b></td>
+			<td><%=h @supplier.item_type %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="maxquantity"><%= t 'supplier.current'%></label></td>
+			<td><b>:</b></td>
+			<td><%=h @supplier.current_quantity %> <%=h @supplier.unittype %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="maxquantity"><%= t 'supplier.maxquantity'%></label></td>
+			<td><b>:</b></td>
+			<td><%=h @supplier.maxquantity %> <%=h @supplier.unittype %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="minquantity"><%= t 'supplier.minquantity' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @supplier.minquantity %> <%=h @supplier.unittype %></td>
+		</tr>	
+</table>
+<H2><%= t 'supplier.add' %></H2><!--14/11/2011 - Shaliza added code for usesupply and issue supply in show page-->
+<table width=100%>
+	
+	<% for addsupplier in @supplier.addsuppliers %>
+	
+		<tr>
+			<td class="leftcol"><label for="received "><%= t 'supplier.received' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h addsupplier.received %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="lpono "><%= t 'supplier.lpono' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h addsupplier.lpono %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="unitcost "> <%= t 'supplier.unitcost' %></label></td>
+			<td><b>:</b></td>
+			<td>RM <%=h addsupplier.unitcost %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="receivedby "> Received From</label></td>
+			<td><b>:</b></td>
+			<td><%=h addsupplier.addsupp.name %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="staff_id">Quantity Received</label></td>
+			<td><b>:</b></td>
+			<td><%=h addsupplier.quantity %> <%=h addsupplier.supplier.unittype %></td>
+		</tr>
+		
+	<!--	<tr>
+			<td class="leftcol"><label for="staff_id"><b></b></label></td>
+			<td>Unit Terkecil : <#%=h addsupplier.small_quantity %> <#%=h addsupplier.supplier.unittype %></td>
+		</tr>-->
+		
+		<tr>
+		<td class="leftcol"><label for="unitcost "> Received By</label></td>
+		<td><b>:</b></td>
+		<td><%=h addsupplier.received_by_staff %></td>
+		</tr>
+		
+	
+
+<tr><td colspan=4><HR></td></tr>
+<% end %>
+</table>
+
+<H2>Use/Issue Supplies</H2>
+<table width=100%>
+	
+	<% for usesupply in @supplier.usesupplies %>
+		
+		<tr>
+			<td class="leftcol"><label for="ref_no">Ref No</label></td>
+			<td><b>:</b></td>
+			<td><%=h usesupply.refno_details %> </td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="issuedate "><%= t 'supplier.issuedate' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h usesupply.issuedate.blank? ? "-" : usesupply.issuedate.strftime("%d-%b-%Y") %></td>
+		</tr>
+		
+		<tr>
+		<td class="leftcol"><label for="issuedby "><%= t 'supplier.issuedby' %></label></td>
+		<td><b>:</b></td>
+		<td><%=h usesupply.issuestaff_details %></td>
+		</tr>
+
+		<tr>
+		<td class="leftcol"><label for="receivedby "> <%= t 'supplier.receivedby' %></label></td>
+		<td><b>:</b></td>
+		<td><%=h usesupply.receivedby_details %></td>
+		</tr>
+		
+		<tr>
+		<td class="leftcol"><label for="quantity "> <%= t 'supplier.quantity' %></label></td>
+		<td><b>:</b></td>
+		<td><%=h usesupply.quantity %> <%=h usesupply.supplier.unittype %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="received">Remarks</label></td>
+			<td><b>:</b></td>
+			<td><%=h usesupply.remark %> </td>
+		</tr>
+		
+<tr><td colspan=4><HR></td></tr>
+<% end %>
+<%= link_to 'Update Status Stock Application', stocks_path %>
+</table>
 </div>
+	<BR>
 
 <%= link_to (t 'icms.update'), edit_supplier_path(@supplier) %> |
 <%= link_to (t 'icms.back'), suppliers_path %>

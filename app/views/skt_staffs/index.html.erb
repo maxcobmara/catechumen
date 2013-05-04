@@ -1,0 +1,36 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Annual Target Work</h2>
+	</div>
+</div>
+<div class="tlist">
+	 <table width=100% border="0" cellpadding="0" cellspacing="0">
+		 <tr>
+			<th>PYD Name</th>
+			<th>PPP Name</th>
+    		<th>Performance Date</th>
+   			<th colspan=3 class="ac">Control</th>
+  		</tr>
+
+
+  <tr>
+  </tr>
+
+<% @skt_staffs.each do |skt_staff| %>
+  <tr>
+	<td><%=h skt_staff.pyd.staff_name_with_title %></td>
+	<td><%=h skt_staff.ppp_id.blank? ? "" : skt_staff.ppp.staff_name_with_title %></td>
+	<td><%=h skt_staff.date_performance.strftime("%Y") %></td>
+	<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Borang SKT'), :action => 'skt_form', :id => skt_staff %></td>
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => skt_staff %></td>
+	<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => skt_staff %></td>
+	<td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), skt_staff, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+
+<%= link_to 'New Annual Target Work', new_skt_staff_path %>

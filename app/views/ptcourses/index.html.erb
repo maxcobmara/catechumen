@@ -1,29 +1,29 @@
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Training Courses For Staff  &nbsp;
+		<h2 class="left"><%= t 'ptcourse.list' %>  &nbsp;
+		<h2><%= link_to image_tag("add.png", :border => 0, :title => 'New Course'), new_ptcourse_path %></h2>
 	</div>
 </div>
-<%= link_to image_tag("add.png", :border => 0, :title => 'New Course'), new_ptcourse_path %>
 
 <div class="indextable">
-<table>
+<table width=100% cellspacing=0>
   <tr>
-    <th>Name</th>
-    <th>Provider</th>
-    <th>Duration</th>
-		<th>Cost</th>
-    <th>Description</th>
-    <th>Approved</th>
-    <th colspan=3 class="ac">Control</th>
+    <th width=17%><%= t 'ptcourse.name' %></th>
+    <th width=17%><%= t 'ptcourse.provider' %></th>
+    <th width=10%><%= t 'ptcourse.duration' %></th>
+	<th width=10%><%= t 'ptcourse.cost' %></th>
+    <th width=30%><%= t 'ptcourse.description' %></th>
+    <th width=7%><%= t 'ptcourse.approved' %></th>
+    <th colspan=3 class="ac"><%= t 'control' %></th>
   </tr>
 
 	<% @ptcourses.each do |ptcourse| %>
   <tr>
     <td><%=h ptcourse.name %></td>
-    <td><%=h ptcourse.provider.name %></td>
+    <td><%=h ptcourse.provider.blank? ? "-" : ptcourse.trainer.name %></td>
     <td><%=h ptcourse.duration %> Days</td>
-		<td><%=h ringgols(ptcourse.cost) %></td>
-    <td><%=  truncate(ptcourse.description, :length => 65, :omission => (link_to '... [more]', ptcourse)) %></td>
+	<td><%=h ringgols(ptcourse.cost) %></td>
+    <td><%=h truncate(ptcourse.description, :length => 80, :omission => '... (show for more)') %></td>
     <td><%=h ptcourse.approved? ? "Approved" : "" %></td>
     <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptcourse %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptcourse %></td>
@@ -31,8 +31,7 @@
   </tr>
 <% end %>
 </table>
-
+</div>
 <br />
 
-<%= link_to image_tag("add.png", :border => 0, :title => 'New Course'), new_ptcourse_path %> - Add new course
-</div>
+<%= link_to image_tag("add.png", :border => 0, :title => 'New Course'), new_ptcourse_path %> - <%= t 'ptcourse.create' %>

@@ -3,56 +3,66 @@
 <% form_for(@librarytransaction) do |f| %>
   <%= f.error_messages %>
 
-	<div class="tform">
+<div class="tform">
+<H2><%= t 'librarytransaction.details' %></H2>
+<table width=100% border=0>
+		<tr>
+			<td width=20%><label for="book_id"><font size=2>&nbsp;<%= t 'book.title' %></font></label><font color="red"> * </font></td>
+				<td><b>:</b></td>
+			<!--<td><#%= f.collection_select :book_id, Accession.find(:all), :id, :accession_no %></td>-->
+			<td colspan=3><%= f.collection_select :book_id, Accession.find(:all), :id, :accession_book, :include_blank => true %></td>
+		</tr>
 
-		<H2><%= t 'librarytransaction.details' %></H2>
-	  <table width=100%>
-			<tr>
-				<td class="leftcol"><label for="book_id"><b><%= t 'book.accessionno' %></b></label></td>
-				<td><%= f.collection_select :accession_id, Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :accession_no, :include_blank => :true %></td>
-			</tr>
-
-		<script type="text/javascript">
-			  function switchvisibility(el) {
-			    if (document.getElementById(el).checked) {
-			      document.getElementById('bstaff').style.display = "table-row";
-			      document.getElementById('bstudent').style.display = "none";
-			    } else {
-			      document.getElementById('bstaff').style.display = "none";
-			      document.getElementById('bstudent').style.display = "table-row";
-			    }
-			  }
-			</script>
+	<script type="text/javascript">
+		  function switchvisibility(el) {
+		    if (document.getElementById(el).checked) {
+		      document.getElementById('bstaff').style.display = "table-row";
+		      document.getElementById('bstudent').style.display = "none";
+		    } else {
+		      document.getElementById('bstaff').style.display = "none";
+		      document.getElementById('bstudent').style.display = "table-row";
+		    }
+		  }
+		</script>
 
 
 
-			<tr>
-				<td class="leftcol"><label for="staff_id"><b><%= t 'librarytransaction.loanedtotype' %></b></label></td>
-				<td><%= f.check_box :ru_staff, :id => 'staff', :onchange => "switchvisibility('staff')" %></td>
-			</tr>
+		<tr>
+			<td class="leftcol"><label for="staff_id"><%= t 'librarytransaction.loanedtotype' %></label></td>
+			<td><b>:</b></td>
+			<td colspan=3><%= f.check_box :ru_staff, :id => 'staff', :onchange => "switchvisibility('staff')" %><font color="grey", size="-2"> Tick if the borrower is a staff </font></td>
+		</tr>
 
-			<tr id="bstaff" style="display: none;">
-				<td class="leftcol" ><label for="staff_id"><b>Staff</b></label></td>
-			  <td><%= f.collection_select :staff_id, Staff.find(:all, :order => :name), :id, :staff_name_then_mykad, :include_blank => true %></td>
-			</tr>
+		<tr id="bstaff" style="display: none;">
+			<td class="leftcol" ><label for="staff_id">Staff</label></td>
+				<td><b>:</b></td>
+		  <td colspan=3><%= f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_title, :include_blank => true %></td>
+		</tr>
 
-			<tr id="bstudent" style="display: table-row;">
-				<td class="leftcol" ><label for="student_id"><b><%= t 'librarytransaction.studentname' %></b></label></td>
-			  <td><%= f.collection_select :student_id, Student.find(:all, :order => :matrixno), :id, :matrix_name, :include_blank => true %></td>
-			</tr>
+		<tr id="bstudent" style="display: table-row;">
+			<td class="leftcol" ><label for="student_id"><%= t 'librarytransaction.studentname' %></label></td>
+				<td><b>:</b></td>
+		  <td colspan=3><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %></td>
+		</tr>
 
-			<tr>
-				<td class="leftcol" ><label for="checkoutdate"><b><%= t 'librarytransaction.checkoutdate' %></b></label></td>
-			  <td><%= f.date_select :checkoutdate, :order => [:day, :month, :year] %></td>
-			</tr>
+		<tr>
+			<td class="leftcol" ><label for="fine">Outside Borrower</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :outside_borrower, :size=> 50 %></td>
+		</tr>
 
-			<tr>
-				<td class="leftcol" ><label for="returnduedate"><b><%= t 'librarytransaction.duedate' %></b></label></td>
-			  <td><%= f.date_select :returnduedate, :order => [:day, :month, :year], :default => 2.weeks.from_now %></td>
-			</tr>
-		</table>
-	</div>
-
+		<tr>
+			<td class="leftcol" ><label for="checkoutdate"><%= t 'librarytransaction.checkoutdate' %></label><font color="red"> * </font></td>
+			<td><b>:</b></td>
+		    <td><%= f.date_select :checkoutdate, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+		<tr>
+			<td class="leftcol" ><label for="returnduedate"><%= t 'librarytransaction.duedate' %></label></td>
+			<td><b>:</b></td>
+		   <td><%= f.date_select :returnduedate, :order => [:day, :month, :year], :default => 2.weeks.from_now %></td>
+		</tr>
+</table>
+</div>
   <p>
     <%= f.submit (t 'new') %>
   </p>

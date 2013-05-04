@@ -1,5 +1,6 @@
 <%= stylesheet_link_tag 'report' %> 
-
+<div id="A4landscape">
+	
 <form action="#">
 	<script>
 	document.write("<input type='button' " +
@@ -7,41 +8,42 @@
 	"class='printbutton' " +
 	"value='Print This Page'/>");
 	</script>
+<BR>
 	<fieldset width=10px >
 
 <div id="title" width=21cm>	
 <H2>KEW PA-6</H2> 
 
 <BR>
-<H3>DAFTAR PERGERAKAN HARTA MODAL DAN INVENTORI</H3>
+<H3 align="center"><font size="3">DAFTAR PERGERAKAN HARTA MODAL DAN INVENTORI</font></H3>
 
 <BR>
 <div id="tprintreport">	
-	<table width=90% border=1px cellpadding=0px>
+	<table width=90% border=1px cellspacing =0 cellpadding=0px>
 		
 		<tr>
 		<td colspan=2 width=40px><b>Jenis :</b></td>
-		<td colspan=3 width=150px><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.name %></td>
-		<td width=400px rowspan=4 colspan=4 align ="center"><b>Pegawai Pengeluar</b></td>
-		<td rowspan=7 align="center" width=100px><b>Catatan</b></td>
+	   <td colspan=3 width=150px><%=h @assettrack.assetracktype_details %>&nbsp;</td>
+		<td width=400px rowspan=4 colspan=4 style="vertical-align:middle" align="center"><b>Pegawai Pengeluar</b></td>
+		<td rowspan=7 style="vertical-align:middle" align="center" width=100px><b>Catatan</b></td>
 		
 		
 		</tr>
 	
 		<tr>
 			<td colspan=2><b>Jenama dan Model :<b></td>
-			<td colspan=3 width=250px></td>
+			<td colspan=3 width=250px><%=h @assettrack.modelname_details %>&nbsp;</td>
 			
 		</tr>
 		<tr>
 			<td colspan=2><b>No. Siri Pembuat :</b></td>
-			<td colspan=3><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.serialno %></td>
+			<td colspan=3><%=h @assettrack.serialno_details %>&nbsp;</td>
 			
 			
 		</tr>
 		<tr>
 			<td colspan=2><b>No. Siri Pendaftaran :</b></td>
-			<td colspan=3><%=h @assettrack.asset_id.blank? ? " " : @assettrack.assetinassettrack.assetcode %></td>
+			<td colspan=3><%=h @assettrack.assetcode_details %>&nbsp;</td>
 			
 		</tr>
 		<tr>
@@ -63,22 +65,25 @@
 			<td align="center"><b>Tarikh<b></td>	
 		</tr>
 		
-			 <% bil = 0 %>
-             <% bil += 1 %>
+		 <% bil = 0 %>
+		
+		 <% bil += 1 %>
 		<tr>
 			<td align="center"><%=h bil %></td>
-			<td><%=h @assettrack.staff_id.blank? ? " " : @assettrack.staffinassettrack.name %></td>
-			<td align="center"><%=h @assettrack.issuedate %></td>
-			<td align="center"><%=h @assettrack.expectedreturndate %></td>
-			<td></td>
-			<td></td>
-			<td align="center"><%=h @assettrack.issuedate %></td>
-			<td></td>
-			<td align="center"><%=h @assettrack.expectedreturndate %>
-			<td></td>
+			<td><%=h @assettrack.borrower_details%>&nbsp;</td><!--13/12/2011- Shaliza added code for staff no longer exists -->
+			<td align="center"><%=h @assettrack.use_startdate.strftime("%d %b %Y") %>&nbsp;</td>
+			<td align="center"><%=h @assettrack.use_enddate.strftime("%d %b %Y") %>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td align="center"><%=h @assettrack.issuedate.strftime("%d %b %Y") unless @assettrack.issuedate.blank? %>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td align="center"><%=h @assettrack.actualreturndate.strftime("%d %b %Y") unless @assettrack.actualreturndate.nil? %>&nbsp;</td>
+			<td>&nbsp;</td>
 		</tr>
 	
 	</table>
+	</div>
 	<BR>
-	
+</fieldset>
+</div>	
 

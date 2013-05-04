@@ -1,0 +1,281 @@
+<div class="tform">
+<H2><%= t 'evaluation.form.title_part1' %></H2>
+  <table border=0>
+	
+		<tr>
+			<td class="leftcol"><label for="staff_id"><%= t 'evaluation.form.name' %><font color="red"> * </font></label></td>
+			<td>:</td>
+			<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_title%></td>
+		</tr>
+		<tr>
+		 <td class="leftcol"><label for="evaldt"><%= t 'evaluation.form.evaluationdate' %></label></td>
+		<td>:</td>
+		<td><%= f.date_select :evaldt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+		</tr>
+	</table>
+	
+	
+	<div>
+		<H2><%= t 'evaluation.form.title_partIIa' %></H2>
+		<p><b>1. &nbsp;&nbsp;<%= t 'evaluation.form.label_001' %></b><BR>
+	    <font size=-1><%= t 'evaluation.form.label_002' %></font></p>
+		<table width=100% border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 " BORDERSTYLE="solid">
+			<th width=30% align="center">Tarikh </font></th>
+			<th width=45% align="center">Kegiatan / Sumbangan</th>
+			<th width=20% align="center">Peringkat</th>
+			<th width=5% align="center"></th>
+		</table>
+	<% f.fields_for :evactivities do |builder| %>
+		<%= render 'evactivity_fields', :f => builder %>
+	<% end %>
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :evactivities %> - Add More </p>
+	</div>
+<BR>
+	<div>
+		<p><b>2. &nbsp;&nbsp;<%= t 'evaluation.form.title_part2b' %></b><BR>
+	     &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<font size=-1><%= t 'evaluation.form.label_003' %></font></p>
+	<table width=100% border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 " BORDERSTYLE="solid">
+		<th width=30% align="center">Nama Latihan <BR> <font color="grey", size="-2"> (Nyatakan sijil jika ada) </font></th>
+		<th width=30% align="center">Tarikh/Tempoh</th>
+		<th width=35% align="center">Tempat</th>
+		<th width=5% align="center"></th>
+	</table>
+	
+	<% f.fields_for :strainings do |builder| %>
+		<%= render 'straining_fields', :f => builder %>
+	<% end %>
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :strainings %> - Add More </p>
+	</div>
+		
+	<div>
+		<p><font size=-1>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<%= t 'evaluation.form.label_004' %></font></p>
+
+	
+		<table width=100% border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 " BORDERSTYLE="none">
+			<th width=48% align="center">Nama / Bidang Latihan </font></th>
+			<th width=48% align="center">Sebab Diperlukan</th>
+			<th width=4% align="center"></th>
+		</table>
+	<% f.fields_for :trainneeds do |builder| %>
+		<%= render 'trainneed_fields', :f => builder %>
+	<% end %>
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :trainneeds %> - Add More </p>
+	</div>
+		
+<BR>
+<H2><%= t 'evaluation.form.title_part3' %></H2>
+<p>
+<font size=-1>Pegawai Penilai dikehendaki memberikan penilaian berdasarkan pencapaian kerja sebenar PYD berbanding dengan SKT yang ditetapkan. Penilaian hendaklah berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10</font></p>
+
+<table width=100% cellpadding=7 border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+	<tr>
+		<th align="center">KRITERIA <BR> (Dinilai berasaskan SKT)</th>
+		<th  align="center" width=10%>PPP</th>
+		<th  align="center" width=10%>PPK</th>
+	</tr>	
+	<tr valign=bottom>
+		<td><label for="quantity"><b><%= t 'evaluation.form.quantity' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.quantity_desc' %></font></label></td>
+		<td align="center"><%= f.select :pppquantity, options_for_select(('1'..'10').to_a, @appraisal.pppquantity), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkquantity, options_for_select(('1'..'10').to_a, @appraisal.pppquantity), :value => 0 %></td>
+	</tr>
+	
+	<tr valign=bottom>
+		<td><label for="quality"><b><%= t 'evaluation.form.quality' %></b>
+			<font size=-1><ol><%= t 'evaluation.form.quanlity_desc1' %><BR>
+				              <%= t 'evaluation.form.quanlity_desc2' %></ol></font></label></td>
+		<td align="center"><%= f.select :pppquality, options_for_select(('1'..'10').to_a, @appraisal.pppquality), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkquality, options_for_select(('1'..'10').to_a, @appraisal.ppkquality), :value => 0 %></td>
+	</tr>
+	<tr>
+		<td><label for="ontime">
+			<b><%= t 'evaluation.form.ontime' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.ontime_desc' %></font>
+			</label></td>
+		<td align="center"><%= f.select :pppontime, options_for_select(('1'..'10').to_a, @appraisal.pppontime), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkontime, options_for_select(('1'..'10').to_a, @appraisal.ppkontime), :value => 0 %></td>
+	</tr>
+
+	<tr>
+		<td><label for="effective">
+		<b><%= t 'evaluation.form.effective' %></b><BR>
+		<font size=-1><%= t 'evaluation.form.effective_desc' %></font>
+		</label></td>
+		<td align="center"><%= f.select :pppeffective, options_for_select(('1'..'10').to_a, @appraisal.pppeffective), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkeffective, options_for_select(('1'..'10').to_a, @appraisal.ppkeffective), :value => 0 %></td>
+	</tr>
+</table>
+<BR>
+<H2><%= t 'evaluation.form.title_part4' %></H2>
+<p>
+<font size=-1>Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10</font></p>
+
+<table width=100% cellpadding=7 border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+	<tr>
+		<th align="center">KRITERIA</th>
+		<th align="center" width=10%>PPP</th>
+		<th align="center" width=10%>PPK</th>
+	</tr>
+
+	<tr>
+		<td><label for="knowledge">
+			<b><%= t 'evaluation.form.knowledge' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.knowledge_desc' %></font></label></td>
+		<td align="center"><%= f.select :pppknowledge, options_for_select(('1'..'10').to_a, @appraisal.pppknowledge), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkknowledge, options_for_select(('1'..'10').to_a, @appraisal.ppkknowledge), :value => 0 %></td>
+	</tr>
+
+	<tr>
+		<td><label for="rules">
+			<b><%= t 'evaluation.form.rules' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.rules_desc' %></font></label></td>
+		<td align="center"><%= f.select :ppprules, options_for_select(('1'..'10').to_a, @appraisal.ppprules), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkrules, options_for_select(('1'..'10').to_a, @appraisal.ppkrules), :value => 0 %></td>
+	</tr>
+
+	<tr>
+		<td><label for="communication">
+			<b><%= t 'evaluation.form.communication' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.communication_desc' %></font></label></td>
+		<td align="center"><%= f.select :pppcommunication, options_for_select(('1'..'10').to_a, @appraisal.pppcommunication), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkcommunication, options_for_select(('1'..'10').to_a, @appraisal.ppkcommunication), :value => 0 %></td>
+	</tr>
+</table>
+<BR>
+<H2><%= t 'evaluation.form.title_part5' %></H2>
+<p>
+<font size=-1>Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10</font></p>
+
+<table width=100% cellpadding=7 border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+	<tr>
+		<th align="center">KRITERIA</th>
+		<th align="center" width=10%>PPP</th>
+		<th align="center" width=10%>PPK</th>
+	</tr>
+
+	<tr>
+		<td><label for="leadership">
+			<b><%= t 'evaluation.form.leadership' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.leadership_desc' %></font></label></td>
+		<td align="center"><%= f.select :pppleader, options_for_select(('1'..'10').to_a, @appraisal.pppleader), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkleader, options_for_select(('1'..'10').to_a, @appraisal.ppkleader), :value => 0 %></td>
+	</tr>
+
+	<tr>
+		<td><label for="management">
+			<b><%= t 'evaluation.form.management' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.management_desc' %></font></label></td>
+		<td align="center"><%= f.select :pppmanage, options_for_select(('1'..'10').to_a, @appraisal.pppmanage), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkmanage, options_for_select(('1'..'10').to_a, @appraisal.ppkmanage), :value => 0 %></td>
+	</tr>
+
+	<tr>
+		<td><label for="discipline">
+			<b><%= t 'evaluation.form.discipline' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.discipline_desc' %></font></label></td>
+		<td align="center"><%= f.select :pppdiscipline, options_for_select(('1'..'10').to_a, @appraisal.pppdiscipline), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkdisipline, options_for_select(('1'..'10').to_a, @appraisal.ppkdisipline), :value => 0 %></td>
+	</tr>
+	
+	<tr>
+		<td><label for="proactive">
+			<b><%= t 'evaluation.form.proactive' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.proactive_desc' %></font></label></td>
+		<td align="center"><%= f.select :pppproactive, options_for_select(('1'..'10').to_a, @appraisal.pppproactive), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkproactive, options_for_select(('1'..'10').to_a, @appraisal.ppkproactive), :value => 0 %></td>
+	</tr>
+
+	<tr>
+		<td><label for="relate">
+			<b><%= t 'evaluation.form.relate' %></b><BR>
+			<font size=-1><%= t 'evaluation.form.relate_desc' %></font></label></td>
+		<td align="center"><%= f.select :ppprelate, options_for_select(('1'..'10').to_a, @appraisal.ppprelate), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkrelate, options_for_select(('1'..'10').to_a, @appraisal.ppkrelate), :value => 0 %></td>
+	</tr>
+</table>
+<BR>
+<H2><%= t 'evaluation.form.title_part6' %></H2>
+<p><font size=-1><%= t 'evaluation.form.parttwo_desc' %></font></p>
+
+<table width=100% cellpadding=7 border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+	<tr>
+		<th align="center" rowspan=2>Peringkat Komuniti / Jabatan / Daerah / <BR> Negeri / Negara / Antarabangsa</th>
+		<th align="center" width=10%>PPP</th>
+		<th align="center" width=10%>PPK</th>
+	</tr>
+	
+	<tr>
+		<td align="center"><%= f.select :pppparttwo, options_for_select(('1'..'10').to_a, @appraisal.pppparttwo), :value => 0 %></td>
+		<td align="center"><%= f.select :ppkparttwo, options_for_select(('1'..'10').to_a, @appraisal.ppkparttwo), :value => 0 %></td>
+	</tr>
+</table>
+<!--Part VIII-->
+<H2><%= t 'evaluation.form.title_part8' %></H2>
+<table width=100% cellpadding=7 border=0 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+
+	<tr>
+		<td width=25%><label for="pppyears">1.&nbsp;&nbsp; <%= t 'evaluation.form.part8_desc' %></label></td>
+		<td width=2%>:</td>
+		<td><%= f.select :pppyears, 0..21  %> <%= t 'years_label' %> <%= f.select :pppmonths, 0..11 %> <%= t 'months_label' %></td>
+	</tr>
+
+	<tr>
+		<td colspan=3><label for="pppoverall">2. &nbsp;&nbsp;<%= t 'evaluation.form.part8i_desc' %></label></td>
+	</tr>
+	<tr>
+		<td><label for="pppoverall">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(i)&nbsp;&nbsp;&nbsp; <%= t 'evaluation.form.part8i' %></label></td>
+		<td colspan=2><%= f.text_area :pppoverall, :size => '45x5' %></td>
+	</tr>
+
+	<tr>
+		<td><label for="pppadvancemet">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ii)&nbsp;&nbsp;&nbsp; <%= t 'evaluation.form.part8ii' %></label></td>
+		<td colspan=2><%= f.text_area :pppadvancemet, :size => '45x5' %></td>
+	</tr>
+	
+	<tr>
+		<td colspan=3>3.&nbsp;&nbsp; <%= t 'evaluation.form.ppp_statement' %></td>
+	<tr>
+
+	<tr>
+		<td><label for="ppp_id"><%= t 'evaluation.form.pppid' %></label></td>
+		<td>:</td>
+		<td><%= f.collection_select :ppp_id, Staff.find(:all), :id, :staff_name_with_title, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td><label for="pppevaldt"><%= t 'datelabel' %></label></td>
+		<td>:</td>
+		<td><%= f.date_select :pppevaldt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+</table>
+<!--Part IX -->
+<H2><%= t 'evaluation.form.title_part9' %></H2>
+<table width=100% cellpadding=7 border=0 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+
+	<tr>
+		<td width=25%><label for="pppyears">1.&nbsp;&nbsp;<%= t 'evaluation.form.part8_desc' %></label></td>
+		<td width=2%>:</td>
+		<td><%= f.select :ppkyears, 0..21  %> <%= t 'years_label' %> <%= f.select :ppkmonths, 0..11 %> <%= t 'months_label' %></td>
+	</tr>
+
+	<tr>
+		<td><label for="pppoverall">2.&nbsp;&nbsp;<%= t 'evaluation.form.part9_desc' %></label></td>
+		<td width=2%>:</td>
+		<td><%= f.text_area :ppkoverall, :size => '45x5' %></td>
+	</tr>
+
+	<tr>
+		<td><label for="ppp_id"><%= t 'evaluation.form.ppkid' %></label></td>
+		<td width=2%>:</td>
+		<td><%= f.collection_select :ppk_id, Staff.find(:all), :id, :staff_name_with_title, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td><label for="pppevaldt"><%= t 'datelabel' %></label></td>
+		<td width=2%>:</td>
+		<td><%= f.date_select :ppkevaldt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+</table>
+</div>
+<BR>
+

@@ -1,34 +1,31 @@
+<!-- Box -->
 <div class="box">
+	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Lists of Staff Grades</h2>
+		<h2 class="left">List of Employment Grade</h2>
 	</div>
 </div>
+<div class="tlist">
+	<table width=50% border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <th>Name</th>
+    <th>Group</th>
+	<th>Annual Leave</th><!--28Feb2013 field added-->
+    <th colspan=3 class="ac"><%= t 'control' %></th>
+  </tr>
 
-<div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Staff Grade') + "New", new_employgrade_path %></p>
+<% @employgrades.each do |employgrade| %>
+  <tr>
+    <td><%=h employgrade.name %></td>
+	<td><%=h employgrade.booboo %></td> 
+	<td><%=h employgrade.total_leave %></td><!--28Feb2013 field added-->
+	<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => employgrade %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => employgrade %></td>
+    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), employgrade, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
 </div>
-
-<div class="indextable">
-	<table>
-	  <tr>
-	    <th>Name</th>
-			<th>Type</th>
-			<th colspan=2 class="ac">Control</th>
-	  </tr>
-
-	<% @employgrades.each do |employgrade| %>
-	  <tr>
-	    <td><%=h employgrade.name %></td>
-			<td><%=h employgrade.booboo %></td> 
-
-  		<!--<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), employgrade %></td>-->
-  		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), edit_employgrade_path(employgrade) %></td>
-			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), employgrade, :confirm => 'Are you sure?', :method => :delete %></td>
-	  </tr>
-	<% end %>
-	</table>
-</div>
-
 <br />
 
-<%= link_to 'New employgrade', new_employgrade_path %>
+<%= link_to 'New Employ Grade', new_employgrade_path %>

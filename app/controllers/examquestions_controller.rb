@@ -2,10 +2,9 @@ class ExamquestionsController < ApplicationController
   # GET /examquestions
   # GET /examquestions.xml
   def index
-    @examquestions = Examquestion.search2(params[:programmid])
-    @subject_exams = @examquestions.group_by { |t| t.subject_details }
-    #@examquestions = Examquestion.search(params[:programmeid])
-    #@klasses = Klass.search2(params[:programmeid]) 
+   @examquestions = Examquestion.search(params[:subject]) 
+   @subject_exams = @examquestions.group_by { |t| t.subject_details }
+
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @examquestions }
@@ -27,9 +26,8 @@ class ExamquestionsController < ApplicationController
   # GET /examquestions/new.xml
   def new
     @examquestion = Examquestion.new
-    #@examquestion.exammcqanswers.build
-    #@examquestion.examsubquestions.build
-
+    @examquestion.exammcqanswers.build
+     @examquestion.examsubquestions.build
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @examquestion }
@@ -62,7 +60,6 @@ class ExamquestionsController < ApplicationController
   # PUT /examquestions/1.xml
   def update
     @examquestion = Examquestion.find(params[:id])
-    #@subject_exams = @examquestions.group_by { |t| t.subject_details }
 
     respond_to do |format|
       if @examquestion.update_attributes(params[:examquestion])
@@ -88,11 +85,5 @@ class ExamquestionsController < ApplicationController
     end
   end
   
-  def view_subject
-    @programme_id = params[:programmeid]
-    unless @programme_id.blank? 
-      @subjects = Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?', @programme_id])
-    end
-    render :partial => 'view_subject', :layout => false
-  end
+  
 end

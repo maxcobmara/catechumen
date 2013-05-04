@@ -1,0 +1,194 @@
+<div class="tform">
+  <table width=100%>
+
+	<tr>
+		<th colspan = 2>Personal Details</th>
+	</tr>
+	
+	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'student.icno' %></td>
+		<td><%=h @student.icno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'student.name' %></td>
+		 <td><%=h @student.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'student.matrixno' %></td>
+	    <td><%=h @student.matrixno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'student.sstatus' %></td>
+	    <td><%=h @student.sstatus %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><%= t 'student.stelno' %></td>
+		 <td><%=h @student.stelno %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="ssponsor">Sponsor:</label></td>
+		 <td><%=h @student.ssponsor %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="gender">Gender:</label></td>
+			<td><%=h (Student::GENDER.find_all{|disp, value| value == @student.gender.to_s}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="sbirthdt">Date of Birth:</label></td>
+		<td><%=h @student.sbirthdt.strftime("%d - %m - %Y") %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="sbirthdt">Age:</label></td>
+		<td><%=h @student.age %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="mrtlstatuscd">Marital Status:</label></td>
+		<td><%=h (Student::MARITAL_STATUS.find_all{|disp, value| value == @student.mrtlstatuscd.to_s}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'student.race' %></td>
+		<td><%=h @student.race %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="semail">Email:</label></td>
+		<td><%=h @student.semail %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'student.regdate' %></td>
+		<td><%=h @student.regdate %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><%= t 'student.offer_letter_serial' %></td>
+		<td><%=h @student.offer_letter_serial %></td>
+	</tr>
+	
+	<tr>
+		<th colspan = 2>Course Details</th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="course_id">Programme:</label></td>
+		<td><%=h @student.course_id.blank? ? " " : @student.course.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="specilisation">Specialisation:</label></td>
+		<td><%=h @student.specilisation %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="intake_id">Intake Session:</label></td>
+		<td><%=h @student.intake_id.blank? ? " " : @student.intakestudent.name %></td>
+	</tr>
+
+	
+	<tr>
+		<th colspan = 2>Health Status</th>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="physical">Physical:</label></td>
+		<td><%=h @student.physical %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="allergy">Allergy:</label></td>
+		<td><%=h @student.allergy %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="disease">Disease:</label></td>
+		 <td><%=h @student.disease %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="bloodtype">Blood Type:</label></td>
+			<td><%=h (Student::BLOOD_TYPE.find_all{|disp, value| value == @student.bloodtype}).map {|disp, value| disp} %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="medication ">Medication:</label></td>
+		<td><%=h @student.medication %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="remarks">Remarks:</label></td>
+		<td><%=h @student.remarks %></td>
+	</tr>
+	
+	
+	<tr>
+		<th colspan = 2>Qualification Details</th>
+	</tr>
+		<td><% for qualification in @student.qualifications %></td>
+	<tr>
+		<td class="leftcol"><label for="level_id ">Level:</label></td>
+	<td><%=h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp} %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="qname ">Qualification:</label></td>
+	    <td><%=h qualification.qname %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="institute ">Institute:</label></td>
+	    <td><%=h qualification.institute %></td>
+	</tr>
+	
+	<td colspan=2 bgcolor="#C0C0C0"></td>
+	
+	<% end %>
+
+	<tr>
+	    <th colspan=2>Emergency Contact Information</th>
+    </tr>
+	     <td><% for kin in @student.kins %></td>
+	<tr>
+		<td class="leftcol"><label for="kintype_id ">Relationship:</label></td>
+	    <td><%=h (Kin::KTYPE.find_all{|disp, value| value == kin.kintype_id}).map {|disp, value| disp} %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="name ">Name:</label></td>
+	    <!--><td><%=h kin.name %></td>-->
+	<td><%=h kin.name.blank? ? "" : kin.name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="kinbirthdt ">DOB:</label></td>
+	    <td><%=h kin.kinbirthdt %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="phone ">Telephone:</label></td>
+	    <td><%=h kin.phone %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="kinaddr ">Address:</label></td>
+	    <td><%=h kin.kinaddr %></td>
+	</tr>
+	
+	<td colspan=2 bgcolor="#C0C0C0"></td>
+	
+<% end %>
+
+</table>
+<BR>
+</div>
+
+<%= link_to 'Edit', edit_student_path(@student) %> |
+<%= link_to 'formforstudent', @student %> |
+<%= link_to 'Back', students_path %>

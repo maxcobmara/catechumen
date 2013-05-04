@@ -2,7 +2,7 @@ class ProgrammesController < ApplicationController
   # GET /programmes
   # GET /programmes.xml
   def index
-    @programmes = Programme.find(:all, :order => 'combo_code')
+    @programmes = Programme.find(:all, :order => 'code ASC')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,7 +14,7 @@ class ProgrammesController < ApplicationController
   # GET /programmes/1.xml
   def show
     @programme = Programme.find(params[:id])
-
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @programme }
@@ -24,7 +24,7 @@ class ProgrammesController < ApplicationController
   # GET /programmes/new
   # GET /programmes/new.xml
   def new
-    @programme = Programme.new(:parent_id => params[:parent_id])
+    @programme = Programme.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -44,7 +44,8 @@ class ProgrammesController < ApplicationController
 
     respond_to do |format|
       if @programme.save
-        format.html { redirect_to(@programme, :notice => 'Programme was successfully created.') }
+        flash[:notice] = 'Programme was successfully created.'
+        format.html { redirect_to(@programme) }
         format.xml  { render :xml => @programme, :status => :created, :location => @programme }
       else
         format.html { render :action => "new" }
@@ -56,11 +57,13 @@ class ProgrammesController < ApplicationController
   # PUT /programmes/1
   # PUT /programmes/1.xml
   def update
+    #params[:programme][:subject_ids] ||= []
     @programme = Programme.find(params[:id])
 
     respond_to do |format|
       if @programme.update_attributes(params[:programme])
-        format.html { redirect_to(@programme, :notice => 'Programme was successfully updated.') }
+        flash[:notice] = 'Programme was successfully updated.'
+        format.html { redirect_to(@programme) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

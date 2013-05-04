@@ -1,0 +1,60 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<% if params[:mentorname] %>
+		<% if params[:mentorname] != '0'%>
+	<!--	<h2 class="left">Exam Questions for <#%= Subject.find(params[:subject]).name  %></h2>-->
+			<% else %>
+				<h2 class="left">All Subjects</h2>
+			<% end %>
+		<% else %>
+			<h2 class="left">All Subjects</h2>
+		<% end %>
+		<div class="right">
+		<% form_tag mentors_path, :method => 'get' do %>
+		<%= select_tag('mentorname', "<option value='0'>Select a Mentor</option>" + options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_title)) %>
+		<%= submit_tag I18n.t('search'), :staff_id => nil %>
+		<% end %>
+		</div>
+</div>		
+</div>
+
+<div class="tlist">
+	 <table width=100% border="0" cellpadding="5" cellspacing="0">
+		<tr>
+		<th>Mentee Name</th>
+		<th>Course Name</th>
+		<th>Intake Session</th>
+		<th colspan=3>Control</th>
+		</tr>
+
+ <% @mentor_mentees.each do |mentorstaff, mentors| %>
+ <% for mentor in mentors %>
+ <tr>
+      <td colspan=3><b><%=h mentorstaff %><b></td>
+	  <td  width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => mentor %></td>
+	  <% if permitted_to? :manage, :mentors %>
+	  <td  width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => mentor %></td>
+	  <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), mentor, :confirm => 'Are you sure?', :method => :delete   %></td>
+	  <% end %>
+   	</tr>
+
+    <% for mentee in mentor.mentees %>
+    <tr>
+    	<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <%=h mentee.student.name %></td>
+        <td><%=h mentee.student.programme_for_student %></td>
+        <td colspan=4><%=h mentee.student.intake  %></td>
+<% end %>
+   </tr>
+
+    
+  </tr>
+<% end %>
+<% end %>
+</table>
+</div>
+<br />
+<% if permitted_to? :manage, :mentors %>
+<%= link_to 'New Mentor-Mentee', new_mentor_path %>
+<% end %>

@@ -2,7 +2,7 @@ class EmploygradesController < ApplicationController
   # GET /employgrades
   # GET /employgrades.xml
   def index
-    @employgrades = Employgrade.find(:all, :order => 'name')
+    @employgrades = Employgrade.find(:all, :order => 'id')
 
     respond_to do |format|
       format.html # index.html.erb

@@ -1,7 +1,46 @@
 <div class="fields">
-<%= f.collection_select :issuedby, Staff.find(:all), :id, :name, :include_blank => true %>
-<%= f.collection_select :receivedby, Staff.find(:all), :id, :name, :include_blank => true %>
-<%= f.text_field :quantity, :size => 10 %>
-<%= f.date_select :issuedate, :size => 12, :order => [:day, :month, :year], :include_blank => true %>
-<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>
+	<table>
+		
+		<tr>
+			<td class="leftcol"><label for="ref_no">Ref No</label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :stock_detail, Stockdetail.find(:all), :id, :ref_no, :include_blank => true %>
+		
+		<tr>
+			<td class="leftcol"><label for="received">Issue Date</label></td>
+			<td><b>:</b></td>
+			<td><%= f.date_select :issuedate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %> </td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="received"><%= t 'supplier.issuedby' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :issuedby, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_title, :include_blank => true %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="received"><%= t 'supplier.receivedby' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :receivedby, Staff.find(:all, :include => [:title], :order => 'titles.id ASC'), :id, :staff_name_with_title, :include_blank => true %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="received"><%= t 'supplier.quantity' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :quantity, :size => 10, :placeholder => "Quantity" %> </td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="received">Remarks</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_area :remark, :size => "30x5" %> </td>
+			<td><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %> </td>
+		</tr>
+</table>
+<HR width=100% align=left>		
+	
+
+
+
+
 </div>

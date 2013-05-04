@@ -1,0 +1,199 @@
+<div class="tform">
+	<H2><%= t 'travel.staff_details' %></H2>
+	<table width=100% border=0 cellspacing=0>
+		<!--<tr>
+			<td colspan=2 width=20%><label for="trcode"><#%= t 'travel.trcode' %></label></td>
+			<td width=2%><b>:</b></td>
+			<td><#%=h @travelrequest.trcode %></td>
+		</tr>-->
+		  <tr>
+			<td  width=20% colspan=2><label for="staff_id"><%= t 'staff.icno' %></label></td>
+			<td width=3%><b>:</b></td>
+			<td><%=h @travelrequest.stafftravel.formatted_mykad %></td>
+		</tr>
+		<tr>
+			<td  colspan=2><label for="staff_id"><%= t 'travel.sname' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @travelrequest.stafftravel.staff_name_with_title %></td>
+		</tr>		
+		<tr>
+			<td  colspan=2><label for="staff_id"><%= t 'staff.staffgrade_id' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @travelrequest.staffgrade_details %></td>
+		</tr>		
+		<tr>
+			<td  colspan=2><label for="staff_id"><%= t 'staff.position' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @travelrequest.position_details %></td>
+		</tr>
+		<tr>
+			<td  colspan=2><label for="trcode"><%= t 'staff.bank' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @travelrequest.stafftravel.my_bank %>:-  <%=h @travelrequest.stafftravel.bankaccno %></td>
+		</tr>
+	</table>
+	
+		
+	<H2><%= t 'travel.travel_details' %></H2>
+	<table width=100% border=0 cellspacing=0>
+		<tr>
+			<td colspan=2 width=20%><label for="destination"><%= t 'travel.destination' %></label></td>
+			<td width=2%><b>:</b></td>
+			<td><%=h @travelrequest.destination %></td>
+		</tr>
+		<tr>
+		   <td colspan=2><label for="purpose"><%= t 'travel.purpose' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @travelrequest.purpose %></td>
+		</tr>
+		<tr>
+			<td colspan=2><label for="tstartdt">Travel Date</label></td>
+			<td><b>:</b></td>
+			<td><%=h @travelrequest.tstartdt.blank? ? "-" : @travelrequest.tstartdt.strftime("%d-%b-%Y") %> <b>untill</b> <%=h @travelrequest.treturndt.blank? ? "-" : @travelrequest.treturndt.strftime("%d-%b-%Y") %>  <b>for</b> <%=h @travelrequest.duration %> days</td>
+		</tr>
+		
+		<tr>
+			 <td colspan=2><label for="bplreserve"><%= t 'travel.bplreserve' %></label></td>
+			<td><b>:</b></td>
+				<td><%=h (Travelrequest::TRANSPORT.find_all{|disp, value| value == @travelrequest.transport_travel.to_s}).map {|disp, value| disp} %></td>
+		</tr>
+</table>
+<% if @travelrequest.transport_travel == 1 %>
+<H2>Used Own Car</H2>
+<table width=100% border=0 cellspacing=0>
+<tr>
+	<td width=20%><font size=2>Travel Details</font></td>
+	<td width=2%><b>:</b></td>
+	<td colspan=2>
+		<table width=100% border="1" cellspacing="0" BORDERCOLOR="#C0C0C0">
+			<tr bgcolor="#ECF8E0">
+				<td width=15%><b>Date</b></td>
+				<td width=15%><b>Departure</b></td>
+				<td width=15%><b>Arrival</b></td>
+				<td width=25%><b>From</b></td>
+				<td width=25%><b>To</b></td>
+				<td width=20%><b>KM</b></td>
+			</tr>
+	<% for traveldetail in @travelrequest.traveldetails %>
+		
+		<tr>
+			<td><%= traveldetail.travelday.strftime("%d/%m/%Y")%><BR><%= traveldetail.travelday.strftime("(%A)")%></td>
+			<td><%= traveldetail.departure.blank? ? "-" : traveldetail.departure.strftime("%I:%M %p") %></td>
+			<td><%= traveldetail.arrival.blank? ? "-" : traveldetail.arrival.strftime("%I:%M %p") %></td>
+			<td><%= traveldetail.location_from %></td>
+			<td><%= traveldetail.location_to %></td>
+			<td><%= traveldetail.distance.blank? ? "" : (traveldetail.distance).to_s + "km" %></td>
+		</tr>
+	
+	<% end %>
+  </table></td>
+</tr>
+	<tr>
+	  <td ><label for="ifownwhy"><%= t 'travel.ifownwhy' %></label></td>
+	  <td width=3%><b>:</b></td>
+	  <td><% if @travelrequest.reason_1 == true %>1. Beliau dikehendaki menjalankan tugas-tugas rasmi di beberapa tempat di sepanjang perjalanan <BR><% end %>
+		  <% if @travelrequest.reason_2 == true %>2. Adalah mustahak dan terpaksa baginya membawa kenderaan sendiri <BR><% end %>
+		  <% if @travelrequest.reason_3 == true %>3. Adalah mustahak dan terpaksa baginya membawa pegawai lain yang juga menjalankan tugas rasmi <BR><% end %>
+		  <% if @travelrequest.reason_4 == true %>4. Pengangkutan awam mengambil masa lama dan menggangu tugas rasminya <BR><% end %>
+		  <% if @travelrequest.reason_5 == true %>5. Tiada kenderaan pejabat yang disediakan untuk membawa pegawai dari tempat penginapan ke tempat bertugas <BR><% end %>
+		  <% if @travelrequest.reason_6 == true %>6. Penggunaan kenderaan jabatan tidak berfaedah kerana tugas yang dijalankan itu memakan masa yang lama menyebabkan kenderaan tidak akan digunakan selalu <BR><% end %>
+		<% if @travelrequest.reason_7 == true %>7. Beliau menjalankan tugas kecemasan di mana kenderaan lain tidak diperolehi <BR><% end %>
+		<% if @travelrequest.reason_8 %>8. Tiada kenderaan rasmi yang dapat disediakan<% end %></td>
+	</tr>
+</table>
+<% end %>
+
+<% if @travelrequest.transport_travel == 2%>
+<H2>Used Office Car</H2>
+<table width=100% cellspacing=0>		
+	<tr>
+		<td width=20% colspan=2><label for="officecar">Dept Vehicle Approved</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @travelrequest.asset_id.blank? ? "-" : @travelrequest.vehicleoffice.car %></td>
+	</tr>
+		
+		<tr>
+		  <td colspan=2><label for="fuelstart">Mileage Before Used</label></td>
+		<td><b>:</b></td>
+			<td><%=h @travelrequest.fuelstart %></td>
+		</tr>
+		<tr>
+		  <td colspan=2><label for="fuelend">Mileage After Used</label></td>
+		<td><b>:</b></td>
+			<td><%=h @travelrequest.fuelend %></td>
+		</tr>
+		<tr>
+		  <td colspan=2><label for="tngserialno">Touch N Go Serial No</label></td>
+		<td><b>:</b></td>
+			<td><%=h @travelrequest.tngserialno %></td>
+		</tr>
+		<tr>
+		  <td colspan=2><label for="tngbeforetakenout">Touch n Go Before Used</label></td>
+		<td><b>:</b></td>
+			<td><%=h ringgols(@travelrequest.tngbeforetakenout) %></td>
+		</tr>
+		<tr>
+		  <td colspan=2><label for="tngaftertakenout">Touch n Go After Used</label></td>
+		<td><b>:</b></td>
+			<td><%=h ringgols(@travelrequest.tngaftertakenout) %></td>
+		</tr>
+	<!--	<tr>
+			<td colspan=2><label for="claimtype"><%= t 'travel.claimtype' %></label></td>
+			<td><b>:</b></td>
+			<td><#%=h @travelrequest.claimtype? ? "Replaced" : " By KM" %></td>
+		</tr>-->
+	</table>
+<% end %>	
+	
+	<% if @travelrequest.submission.blank? == false %>	
+	<H2><%= t 'travel.submission' %></H2>
+	<table width=100% border=0 cellspacing=0>
+		<tr>
+			<td colspan=2 width=20%><label for="submission"><%= t 'travel.submissiondate' %></label></td>
+			<td width=2%><b>:</b></td>
+			<td><%=h @travelrequest.submission.blank? ? "-" : @travelrequest.submission.strftime("%d %b %Y") %></td>
+		</tr>
+	<!--	<tr>
+			<td colspan=2><label for="replacement_id"><#%= t 'travel.replacement_id' %></label></td>
+			<td><b>:</b></td>
+			<td><#%=h @travelrequest.replacement_id.blank? ? "" : @travelrequest.treplace.staff_name_with_title %></td>
+		</tr>-->
+	</table>
+	<% end %>
+
+	
+	<% if @travelrequest.hod_id.blank? == false %>	
+	<H2><%= t 'travel.hod_confrm' %></H2>
+	<table width=100% border=0 cellspacing=0>
+		<tr>
+			<td colspan=2 width=20%><label for="hod_id"><%= t 'travel.hod_id' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @travelrequest.hod_id.blank? ? "-" : @travelrequest.hod.position_with_boss %></td>
+		</tr>
+		
+		
+		<tr>
+			<td  colspan=2><label for="claimtype">Confirmed</label></td>
+			<td><b>:</b></td>
+			<td><%=h @travelrequest.hod_approved? ? "Yes" : "No" %></td>
+		</tr>
+		
+		<tr>
+			<td colspan=2><label for="hodconfirmdt"><%= t 'travel.hodconfirmdt' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @travelrequest.hodconfirmdt.blank? ? "-" : @travelrequest.hodconfirmdt.strftime("%d %b %Y") %></td>
+		</tr>
+		
+		<tr>
+			<td  colspan=2><label for="remark_approver">Remark</label></td>
+			<td><b>:</b></td>
+			<td><%=h @travelrequest.remark_approver %></td>
+		</tr>
+	</table>
+	<% end %>
+</div>
+	<BR>
+			<% if (User.current_user.staff_id == @travelrequest.staff_id) %>
+		
+<%= link_to (t 'icms.update'), edit_travelrequest_path(@travelrequest) %> |<% end %>
+<%= link_to (t 'icms.back'), travelrequests_path %>

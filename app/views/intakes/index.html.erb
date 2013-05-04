@@ -1,28 +1,32 @@
-<h1>Listing intakes</h1>
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Student Intake</h2>
+  </div>
+</div>
+  <div class="tlist">
+	  <table width=100% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    		<th>Name</th>
+		    <th>Year</th>
+		    <th>Active?</th>
+		    <th colspan=3 class="ac">Control</th>
+		  </tr>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Register on</th>
-    <th>Programme</th>
-    <th>Is active</th>
-  </tr>
-
-<% @intakes.each do |intake| %>
+  <% @intakes.each do |intake| %>
   <tr>
     <td><%=h intake.name %></td>
-    <td><%=h intake.description %></td>
-    <td><%=h intake.register_on %></td>
-    <td><%=h intake.programme_id %></td>
-    <td><%=h intake.is_active %></td>
-    <td><%= link_to 'Show', intake %></td>
-    <td><%= link_to 'Edit', edit_intake_path(intake) %></td>
-    <td><%= link_to 'Destroy', intake, :confirm => 'Are you sure?', :method => :delete %></td>
+    <!--<td><#%=h intake.intake_no %></td>-->
+    <td><%=h intake.year.strftime('%Y') %></td>
+    <td><%=h intake.active? ? "Active" : "Inactive" %></td>
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => intake %></td>
+    <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => intake %></td>
+    <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), intake, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
-
-<%= link_to 'New intake', new_intake_path %>
+</div>
+<%= link_to 'New Intake', new_intake_path %>

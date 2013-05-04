@@ -1,0 +1,58 @@
+<div class="tform">
+<H2>Subject Details</H2>
+<table width=100%>
+	
+	<tr>
+		<td class="leftcol"><label for="subjectcode">Subject Code</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @subject.subjectcode %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="name">Subject Name</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @subject.name %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="credit">Credit</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @subject.credit %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="status">Status</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h (Subject::STATUS.find_all{|disp, value| value == @subject.status.to_s}).map {|disp, value| disp} %></td>
+	</tr>
+	</table>
+	<H2>Topic Details</H2>
+		
+	<table width=60% cellspacing=0 border=1>
+
+		<tr>
+			<th width=15%><font color='black'>Sequence No</font</th>
+			<th width=15%><font color='black'>Topic Code</font</th>
+			<th width=30%><font color='black'>Topic Name</font</th>
+			<th width=10%><font color='black'>Duration</font</th>
+		</tr>	
+		<% for topic in @subject.topics.all(:order => "sequenceno") %>		
+	  <tr>
+		  <td width=50px><%=h topic.sequenceno %></td>
+      	  <td><%=h topic.topic_code %></td>
+      	  <td><%=h topic.name %></td>
+      	  <td><%=h topic.durahours %>:<%=h topic.duramins %> Hours</td>
+
+	</tr>
+	
+	<% end %>
+	
+</table>
+<BR>
+
+</div>
+<BR>
+<%= link_to 'Edit', edit_subject_path(@subject) %> |
+<%= link_to 'Back', subjects_path %>

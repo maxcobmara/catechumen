@@ -1,0 +1,2 @@
+module StrainingsHelper
+end

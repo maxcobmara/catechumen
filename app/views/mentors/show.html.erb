@@ -1,0 +1,48 @@
+<div class="tform">
+	<H2>Mentor-Mentee Details</H2>
+ <table width=100% >
+
+	<tr>
+		<td class="leftcol"><label for="mentor_id">Mentor Name</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @mentor.staff.staff_name_with_title %> - <%=h @mentor.staff.position_for_staff %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="mentor_date">Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @mentor.mentor_date.strftime("%d-%b-%Y") %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="remark">Remark</label></td>
+		<td><b>:</b></td>
+		<td><%=h @mentor.remark %></td>
+	</tr>
+</table>
+
+<H2>Mentee Name</H2>
+<table width=80% border=1 cellspacing=0>
+		<tr>
+			<th align="center">No</th>
+			<th><label for="student_id ">Mentee Name</label></th>
+			<th><label for="student_id ">Course Name</label></th>
+			<th><label for="student_id ">Intake Session</label></th>
+		</tr>
+		 <% bil = 0 %>
+		<% for mentee in @mentor.mentees %>
+		 <% bil += 1 %>
+		<tr>
+			<td align="center"><%=h bil %>.</td>
+			<td>&nbsp;<%=h mentee.student.name %></td>	
+			<td>&nbsp;<%=h mentee.student.programme_for_student %></td>
+			<td>&nbsp;<%=h mentee.student.intake %></td>
+		</tr>
+
+
+<% end %>
+</table>
+</div>
+<BR>
+<% if permitted_to? :manage, :mentors %>
+<%= link_to 'Edit', edit_mentor_path(@mentor) %> | <% end %>
+<%= link_to 'Back', mentors_path %>

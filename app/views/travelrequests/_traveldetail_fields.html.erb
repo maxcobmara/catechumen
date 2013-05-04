@@ -1,0 +1,39 @@
+<table width=100% border=0 cellspacing=0>
+<tr>
+	<td width=20%>&nbsp;<font size=2><%= f.label :travelday, "Date" %></font></td>
+	<td width=3%><b>:</b></td>
+	<td width=45%><%= f.date_select :travelday %></td>
+	<td></td>
+</tr> 
+<tr>
+	<td> &nbsp;<font size=2><%= f.label :departure, "Departure " %></font></td>
+	<td><b>:</b></td>
+	<td><%= f.time_select :departure, :minute_step => 5, :include_blank => true %> &nbsp &nbsp &nbsp &nbsp &nbsp
+	<%= f.label :arrival, "Arrival :" %>
+	   <%= f.time_select :arrival, :minute_step => 5, :include_blank => true %></td>
+	<td></td>
+</tr>
+
+
+<tr>   
+	<td> &nbsp;<font size=2><%= f.label :location_from, "From" %></font></td>
+	<td><b>:</b></td>
+	<td><%= f.text_field :location_from, :rows => 2 %></td>
+	<td></td>
+</tr>  
+
+<tr>   
+	<td> &nbsp;<font size=2><%= f.label :location_to, "To" %></font></td>
+	<td><b>:</b></td>
+	<td><%= f.text_field :location_to, :rows => 2 %></td>
+	<td></td>
+</tr>
+<tr>   
+	<td> &nbsp;<font size=2><%= f.label :distance, "Distance" %></font></b></td>
+	<td><b>:</b></td>
+	<td><%= f.text_field :distance, :size => 7 %> KM</td><%= f.hidden_field :_destroy %>
+	<td> <%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %></td>
+</tr>                                     
+</table>
+
+<HR width=100% align=left>

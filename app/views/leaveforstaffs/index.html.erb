@@ -3,60 +3,76 @@
 <!-- Box Head -->
   <div class="box-head">
     <h2 class="left"><%= t 'staffleave.list' %></h2>
-	  <div class="right">
-		   <%= select_tag_for_filter("leaveforstaffs", @filters, params) %>
-	  </div>
+	<!--	<div class="right">
+			<#% form_tag leaveforstaffs_path, :method => 'get' do %>
+			<#%= date_field :search, params[:stdate], :format => ActiveSupport::CoreExtensions::Date::Conversions::DATE_FORMATS[:default_date] %>
+			<#%= submit_tag I18n.t('search'), :leavestartdate => nil %>
+			<#% end %>
+		</div>-->
 	</div>
 </div>
 
 <div class="indextable">
-<table>
+<table width=100%>
   <tr>
     <th><%= t 'staffleave.staff_id' %></th>
     <th><%= t 'staffleave.leavetype' %></th>
     <th><%= t 'staffleave.from_to' %></th>
     <th><%= t 'staffleave.reason' %></th>
-    <th><%= t 'staffleave.duration' %></th>
-    
-    <!--<th>Notes</th>-->
-    <th><%= t 'staffleave.replacement_id' %></th>
-    <!--<th>Submit</th>
-    <th>Approved By</th>
-    <th>Approver 1 Date</th>
-    <th>Approver 2 </th>-->
-    <th>For Approval?</th>
-   	<th colspan=3 class="ac"><%= t 'control' %></th>
+    <th>Leave Status</th>
+   <th colspan=5 class="ac"><%= t 'control' %></th>
   </tr>
 
 <% @leaveforstaffs.each do |leaveforstaff| %>
   <tr>
-    <td><%=h check_kin {leaveforstaff.applicant.mykad_with_staff_name} %></td>
+    <td><%=h leaveforstaff.applicant_details %></td>
     <td><%=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} %></td>
-    <td><%=h leaveforstaff.leavestartdate.strftime("%a, %d %b") %><%=h leaveforstaff.show_to_day %></td>
+    <td><% if leaveforstaff.leavetype != 8  %><%=h leaveforstaff.leavestartdate.strftime("%a, %d %b") %> - <%=h leaveforstaff.show_to_day %><% else %>
+	<%=h leaveforstaff.leavestartdate.strftime("%a, %d %b") %><% end %></td>
     <td><%=h leaveforstaff.reason %>
-	  <td><%=h leaveforstaff.leave_for %> Days</td>
-	  <td><%=h leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name  %></td>
-	  <td width=10px>
-				<% if (User.current_user.staff_id == leaveforstaff.approval1_id && leaveforstaff.approval1 == nil ) %>
-			  	<%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve1', :id => leaveforstaff %>
-				<% elsif (User.current_user.staff_id == leaveforstaff.approval2_id && leaveforstaff.approver2 == nil) %>
-					<%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve2', :id => leaveforstaff %>
-				<% else %>
-				<% end %></td>
-		
-    <td width=10px><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => leaveforstaff %></td>
-		<td width=10px>
-    			<% if leaveforstaff.staff_id == User.current_user.staff_id %>
-    				<%= link_to image_tag("edit.png",     :border => 0,  :title => 'Edit'), :action => 'edit', :id => leaveforstaff %>
-    			<% end %></td>
+    <td><%=h leaveforstaff.apply_leave_status%></td>
 
-		<% if permitted_to? :destroy, leaveforstaff %>
-    	<td width=10px><%= link_to image_tag("delete.png",   :border => 0,  :title => 'Delete'), leaveforstaff, :confirm => 'Are you sure?', :method => :delete %></td>
-    <% end %>
+
+    <td width=10px><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => leaveforstaff %></td>
+	
+	<% if permitted_to? :update, leaveforstaff %>
+    <td width=10px>
+	<%= link_to image_tag("edit.png",     :border => 0,  :title => 'Edit'), :action => 'edit', :id => leaveforstaff %></td><% end %>
+	
+	<% if permitted_to? :leavefourhours, leaveforstaff %>
+	<% if leaveforstaff.leavetype == 8  %>
+	<% if leaveforstaff.approval1 == true %>
+	<td width=10px>
+	<%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Pelepasan 4 Jam'), :action => 'leavefourhours', :id => leaveforstaff %>
+	</td><% end %><% end %><% end%>
+	
+	<% if permitted_to? :cuti_rehat, leaveforstaff %> 	
+	<% if leaveforstaff.leavetype != 8  %>
+	<% if leaveforstaff.approval1 == true && leaveforstaff.approver2 == true%>
+	<td width=10px>
+	<%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Cuti'), :action => 'cuti_rehat', :id => leaveforstaff %>&nbsp;
+	</td><% end %><% end %><% end %>
+
+ 	<% if permitted_to? :approve1, @leaveforstaff %> 
+	<% if leaveforstaff.approval1 == nil %>
+	<% if User.current_user.staff_id == leaveforstaff.approval1_id %>
+	<td width=10px>
+	<%= link_to image_tag("approval.png", :border => 0, :title => 'Endorsement'), :action => 'approve1', :id => leaveforstaff %></td><% end %><% end %><% end%>
+	
+	<% if permitted_to? :approve2, @leaveforstaff %>
+	<% if leaveforstaff.approval1 == true && leaveforstaff.approver2 == nil %>
+	<% if User.current_user.staff_id == leaveforstaff.approval2_id %>
+	<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve2', :id => leaveforstaff %>
+	</td><% end %><% end %><% end %>
+	
+    <td width=10px>
+	<% if permitted_to? :destroy, @leaveforstaff %>
+	<% if leaveforstaff.approval1 == nil %>
+	<%= link_to image_tag("delete.png",   :border => 0,  :title => 'Delete'), leaveforstaff, :confirm => 'Are you sure?', :method => :delete %><% end %><% end %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
-<%= link_to (t 'staffleave.create'), new_leaveforstaff_path %>
+<!--<#%= link_to (t 'staffleave.create'), new_leaveforstaff_path %>-->
 </div>

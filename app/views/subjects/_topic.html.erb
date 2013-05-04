@@ -1,0 +1,22 @@
+<div class="topic">
+	<% new_or_existing = topic.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "subject[#{new_or_existing}_topic_attributes][]" %>
+
+	<% fields_for prefix, topic do | topic_form | -%>
+	
+  <!-->	<#% topic_sequenceno.sort.each do |sequenceno,topics| %>-->
+
+    <table width=100%>
+	   <tr>
+       
+       <td width=100px><%= topic_form.collection_select(:name, Topic.all, :name, :name) %></td>
+         <td width=550px><%= topic_form.text_field :sequenceno, :size => 12 %></td>
+
+         
+        <!--> <td width=300px><#%= link_to_function "remove", "$(this).up('.topic').remove()" %></td>-->
+       </tr>
+    </table>
+    
+
+   <% end -%>
+</div>

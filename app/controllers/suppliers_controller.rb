@@ -24,7 +24,7 @@ class SuppliersController < ApplicationController
   # GET /suppliers/new.xml
   def new
     @supplier = Supplier.new
-    @supplier.addsuppliers.build
+  #  @supplier.addsuppliers.build
    # @supplier.usesupplies.build
 
     respond_to do |format|
@@ -84,8 +84,8 @@ class SuppliersController < ApplicationController
     end
   end
   
-  def kewpa11
-       @supplier = Supplier.search(params[:search])
-       render :layout => 'report'
+  def card_stock
+     @supplier = Supplier.find(params[:id])
+      render :layout => 'report'
   end
 end

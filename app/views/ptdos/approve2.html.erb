@@ -1,0 +1,113 @@
+<div class="tform">
+<H2>Training Details</H2>
+<table width=100% >
+
+	<tr>
+		<td class="leftcol"><label for="ptcourse_id">Course</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @ptdo.ptschedule.coursename %> </td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="ptcourse_id">Description</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.ptschedule.description %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="ptcourse_id">Location</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.ptschedule.location %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="ptschedule_id">Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @ptdo.ptschedule.start.blank? ? "-" : @ptdo.ptschedule.start.strftime('%e %B %Y') %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Staff Name</label></td>
+		<td><b>:</b></td>
+		<td><%=h @ptdo.staff_details %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="unit_approve">Approver Name</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.approver_1.blank? ? "-" : @ptdo.approver1_details %></td>
+	</tr>
+</table>
+
+
+<H2>First Approver Details (<%=h @ptdo.approver_1.blank? ? "-" : @ptdo.approver1_details %>)</H2>
+<table width=100%>
+	<tr>
+		<td class="leftcol"><label for="justification">Justification</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @ptdo.justification %></td>
+	</tr>
+		
+	<tr>
+		<td class="leftcol"><label for="unit_review">Review</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.unit_review %></td>
+	</tr>
+		
+	<tr>
+		<td class="leftcol"><label for="unit_approve">Approve?</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.apply_dept_status %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="unit_approve">Remark</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.remark_1 %></td>
+	</tr>
+</table>
+
+<!-- Second Approver -->
+<% form_for(@ptdo) do |f| %>
+<%= f.error_messages %>
+
+<% permitted_to? :approve2, :ptdos do %>
+<% if @ptdo.unit_approve == true && @ptdo.dept_approve == nil %>
+<H2>2nd Approver Details</H2>
+<table width=100%>
+
+		<tr>
+			<td class="leftcol"><label for="dept_review">Review</label></td>
+			<td width=3%><b>:</b></td>
+			<td><%= f.text_field :dept_review %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="dept_approve">Approve?</label></td>
+			<td><b>:</b></td>
+			<td><%= f.check_box :dept_approve %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="dept_approve">Remark</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_area :remark_2, :size => '45x2' %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="dept_approve">Remark</label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :replacement_id, Staff.find(:all, :include => [:title], :order => 'titles.id ASC'), :id, :staff_name_with_position, :include_blank => true %></td>
+		</tr>
+		
+</table>	
+<% end %>
+<% end %>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+</div>
+<BR>
+<%= link_to 'Show', @ptdo %> |
+<%= link_to 'Back', ptdos_path %>

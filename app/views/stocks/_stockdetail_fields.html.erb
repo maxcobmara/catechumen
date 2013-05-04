@@ -1,0 +1,10 @@
+<div class="fields">
+<table width=100% border=1 cellspacing=0 BORDERCOLOR="#C0C0C0">
+<td width="40%" ><%= f.collection_select :supplier_id, Supplier.find(:all), :id, :item_details %></td>
+<td width="15%"><%= f.text_field :quantity_order, :size => 10 %><font color="grey", size="-2">  (Number only ) </font></td>
+<% if (User.current_user.staff_id == @stock.approver_id) %>
+<td width="15%"><%= f.text_field :quantity_approve, :size => 10 %></td>
+<td width="25%"><%= f.text_area :remark, :size => "20x2" %></td><% end %><%= f.hidden_field :_destroy %>
+<td width="5%"><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %></td>
+</table>		
+</div>

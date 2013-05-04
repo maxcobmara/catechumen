@@ -1,27 +1,53 @@
-<H2>Applicant Details</H2>
-<table>
+<H2><%= t 'staffleave.applicant_details' %></H2>
+<table width=100%>
 	<tr>
-		<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
-		<td><%=h @leaveforstaff.applicant.mykad_with_staff_name %></td>
+		<td class="leftcol"><label for="staff_id"><%= t 'staffleave.staff_id' %></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @leaveforstaff.applicant.staff_name_with_title %></td>
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="leavetype"><b>Leave Type:</b></label></td>
+		<td class="leftcol"><label for="leavetype"><%= t 'staffleave.leavetype' %></label></td>
+		<td><b>:</b></td>
 		<td><%=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp} %></td>
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="leavestartdate"><b>From : </b></label></td>
+		<td class="leftcol"><label for="leavestartdate"><%= t 'staffleave.leavestartdate' %></label></td>
+		<td><b>:</b></td>
 		<td><%=h @leaveforstaff.leavestartdate.strftime("%d - %b - %Y") %>
-	  		<%=h @leaveforstaff.show_to_day %>&nbsp &nbsp <b>For</b>
-	  		<%=h @leaveforstaff.leave_for %> Days</td>
+	  		<%=h @leaveforstaff.show_to_day %>&nbsp &nbsp <% if @leaveforstaff.leavetype != 8  %><b>For</b>
+	  		<%=h @leaveforstaff.leave_for %> Days <% end %></td>
 	</tr>
+	
 	<tr>
-		<td class="leftcol"><label for="reason"><b>Reason:</b></label></td>
+	    <td class="leftcol"><label for="reason">Address On Leave</label></td>
+		<td><b>:</b></td>
+		<td><%=h @leaveforstaff.address_on_leave %></td>
+	</tr>
+	
+	<tr>
+	    <td class="leftcol"><label for="reason">Phone No On Leave</label></td>
+		<td><b>:</b></td>
+		<td><%=h @leaveforstaff.phone_on_leave %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="reason"><%= t 'staffleave.reason' %></label></td>
+		<td><b>:</b></td>
 		<td><%=h @leaveforstaff.reason %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="notes"><b>Notes:</b></label></td>
+		<td class="leftcol"><label for="notes"><%= t 'staffleave.notes' %></label></td>
+		<td><b>:</b></td>
 		<td><%=h @leaveforstaff.notes %></td>
 	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="notes"><%= t 'staffleave.replacement_id' %></label></td>
+		<td><b>:</b></td>
+		<td><%=h @leaveforstaff.replacement_details %></td>
+	</tr>
+	
+	
 </table>

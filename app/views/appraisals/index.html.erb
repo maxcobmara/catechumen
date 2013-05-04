@@ -1,0 +1,38 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+  <div class="box-head">
+    <h2 class="left"><%= t 'evaluation.form.list' %></h2>
+		<div class="right">
+		</div>
+	</div>
+</div>
+
+<div class="indextable">
+<table>
+  <tr class="toprow">
+    <th><%= t 'staff.icno' %></th>
+    <th><%= t 'staff.name' %></th>
+    <th><%= t 'staff.position' %></th>
+    <th><%= t 'evaluation.form.evaluationdate' %></th>
+    <th colspan=3 class="ac"><%= t 'action' %></th>
+    
+  </tr>
+<% @appraisals.each do |appraisal| %>
+  <tr>
+		<td><%=h appraisal.appraisedstaff_details %></td>
+		<td><%=h appraisal.staffname_details %></td>
+		<td><%=h appraisal.position_details %></td>
+		<td><%=h appraisal.evaldt.strftime('%d %b %Y') %></td>
+		<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Borang PPS'), :action => 'spe_form', :id => appraisal %></td>
+		<td width=10px><%= link_to image_tag("document.png",	:border => 0, :title => 'Show'), :action => 'show', :id => appraisal %></td>
+    <td width=10px><%= link_to image_tag("edit.png", 			:border => 0, :title => 'Edit'), :action => 'edit', :id => appraisal %></td>
+    <td width=10px><%= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), appraisal, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+
+<%= link_to (t 'evaluation.form.create'), new_appraisal_path %>
+

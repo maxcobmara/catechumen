@@ -1,0 +1,34 @@
+
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of MS:ISO Document</h2>
+	</div>
+</div>
+
+<div class="tlist">
+	<table width=80% border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<th width=3%>NO</th>
+			<th width=50%>DOCUMENT</th>
+			<th width=10%>DOWNLOAD</th>
+			<th colspan=3 class="ac" width=10%><%= (t 'control').upcase %></th>
+		</tr>
+		
+ <% bil = 0 %>
+<% @downloads.each do |download| %>
+ <% bil += 1 %>
+  <tr>
+	<td><%=h bil %>.</td>
+	<td><font color="#0040FF"><%=h (download.doc_name).upcase %></font></td>
+	<td align="center"><%= link_to image_tag('downloadicon.jpg'), download.document.url%></td>
+	<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => download %></td>
+	<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => download %></td>
+	 <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), download, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+
+<%= link_to 'New Upload', new_download_path %>

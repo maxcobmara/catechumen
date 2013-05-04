@@ -1,9 +1,8 @@
 class TrainingreportsController < ApplicationController
-  filter_resource_access
   # GET /trainingreports
   # GET /trainingreports.xml
   def index
-    @trainingreports = Trainingreport.with_permissions_to(:index).find(:all, :order => 'timetable_id DESC')
+    @trainingreports = Trainingreport.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -25,7 +24,7 @@ class TrainingreportsController < ApplicationController
   # GET /trainingreports/new
   # GET /trainingreports/new.xml
   def new
-    @trainingreport = Trainingreport.new(:timetable_id => params[:timetable_id], :staff_id => params[:staff_id] )
+    @trainingreport = Trainingreport.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -82,11 +81,5 @@ class TrainingreportsController < ApplicationController
       format.html { redirect_to(trainingreports_url) }
       format.xml  { head :ok }
     end
-  end
-  
-  
-  def D09
-    @trainingreport = Trainingreport.find(params[:id])
-    render :layout => 'report'
   end
 end

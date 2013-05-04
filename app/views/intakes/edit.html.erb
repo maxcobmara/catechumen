@@ -1,28 +1,10 @@
-<h1>Editing intake</h1>
+<h3>Editing Intake</h3>
 
 <% form_for(@intake) do |f| %>
   <%= f.error_messages %>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :description %><br />
-    <%= f.text_field :description %>
-  </p>
-  <p>
-    <%= f.label :register_on %><br />
-    <%= f.date_select :register_on %>
-  </p>
-  <p>
-    <%= f.label :programme_id %><br />
-    <%= f.text_field :programme_id %>
-  </p>
-  <p>
-    <%= f.label :is_active %><br />
-    <%= f.check_box :is_active %>
-  </p>
+ <%=render :partial => 'form', :locals => {:f => f} %> 
+  
   <p>
     <%= f.submit 'Update' %>
   </p>

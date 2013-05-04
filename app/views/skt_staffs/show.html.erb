@@ -1,0 +1,177 @@
+<div class="tform">
+	<H2>Pegawai Yang Dinilai (PYD)</H2>
+ <table width=100% border=0>
+
+	<tr>
+		<td class="leftcol"><label for="pyd_id">Nama</label></td>
+		<td width=2%>:</td>
+		<td><%=h @skt_staff.pyd.staff_name_with_title %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="mentor_id">Jawatan</label></td>
+		<td>:</td>
+		<td><%=h @skt_staff.pyd.position_for_staff %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="mentor_id">Unit</label></td>
+		<td>:</td>
+		<td><%=h @skt_staff.pyd.unit_for_staff %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="mentor_id">Tahun Prestasi</label></td>
+		<td>:</td>
+		<td><%=h @skt_staff.date_performance.strftime("%Y") %></td>
+	</tr>
+</table>
+<H2>BAHAGIAN I - Penetapan Sasaran Kerja Tahunan </H2>
+<table width=100% border=0>
+	<% for skt_target in @skt_staff.skt_targets.find(:all, :conditions => ['status =?', 1]) %>
+	<tr>
+		<td class="leftcol"><label for="activity"><b>Aktiviti </b></label></td>
+		<td width=2%>:</td>
+        <td><%=h skt_target.activity %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="activity"><b>Status </b></label></td>
+		<td>:</td>
+        <td><%=h (SktTarget::STATUS.find_all{|disp, value| value == skt_target.status}).map {|disp, value| disp} %></td>
+	</tr>
+	<tr>
+		<td colspan=3>
+			<table width=100% border="1" cellspacing="0" BORDERCOLOR="#E6F8E0">
+				<tr bgcolor="#FDEEF4">
+					<td align="center" width=15%><b>Petunjuk Prestasi</b></td>
+					<td align="center" width=15%><b>Sasaran Kerja</b></td>
+					<td align="center" width=25%><b>Pencapaian Sasaran</b></td>
+					<td align="center" width=25%><b>% Pencapaian</b></td>
+					<td align="center"><b>Ulasan</b></td>
+				</tr>
+		<% for skt_achive in skt_target.skt_achives %>
+			
+			<tr bgcolor="#E0F8F7">
+				<td><%=h (SktAchive::PERFORM.find_all{|disp, value| value == skt_achive.performance}).map {|disp, value| disp} %></td>
+				<td><%= skt_achive.target_work %></td>
+				<td><%= skt_achive.actual_achieve %></td>
+				<td><%= skt_achive.percent_achieve%></td>
+				<td><%= skt_achive.comment %></td>
+			</tr>
+		
+		<% end %>
+		</table>
+		</td>
+	</tr>
+	<% end %>
+</table>
+
+<BR>
+	
+	<H2>BAHAGIAN II - Kajian Semula Sasaran Kerja tahunan Pertengahan Tahun  </H2>
+	<p><b>1. &nbsp;&nbsp;Aktiviti/Projek Yang Ditambah</b><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <font size=-1>(PYD hendaklah menyenaraikan aktiviti/projek yang ditambah berserta petunjuk prestasinya setelah berbincang dengan PPP)</font></p>
+	<table width=100% border=0>
+		<% for skt_target in @skt_staff.skt_targets.find(:all, :conditions => ['status =?', 2])  %>
+		<tr>
+			<td class="leftcol"><label for="activity"><b>Aktiviti </b></label></td>
+			<td width=2%>:</td>
+	        <td><%=h skt_target.activity %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="activity"><b>Status </b></label></td>
+			<td>:</td>
+	        <td><%=h (SktTarget::STATUS.find_all{|disp, value| value == skt_target.status}).map {|disp, value| disp} %></td>
+		</tr>
+		<tr>
+			<td colspan=3>
+				<table width=100% border="1" cellspacing="0" BORDERCOLOR="#E6F8E0">
+					<tr bgcolor="#FDEEF4">
+						<td align="center" width=15%><b>Petunjuk Prestasi</b></td>
+						<td align="center" width=15%><b>Sasaran Kerja</b></td>
+						<td align="center" width=25%><b>Pencapaian Sasaran</b></td>
+						<td align="center" width=25%><b>% Pencapaian</b></td>
+						<td align="center"><b>Ulasan</b></td>
+					</tr>
+			<% for skt_achive in skt_target.skt_achives %>
+
+				<tr bgcolor="#E0F8F7">
+					<td><%=h (SktAchive::PERFORM.find_all{|disp, value| value == skt_achive.performance}).map {|disp, value| disp} %></td>
+					<td><%= skt_achive.target_work %></td>
+					<td><%= skt_achive.actual_achieve %></td>
+					<td><%= skt_achive.percent_achieve%></td>
+					<td><%= skt_achive.comment %></td>
+				</tr>
+
+			<% end %>
+			</table>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+	<p><b>2. &nbsp;&nbsp;Aktiviti/Projek Yang Digugurkan</b><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <font size=-1>(PYD hendaklah menyenaraikan aktiviti/projek yang digugurkan setelah berbincang dengan PPP)</font></p>
+	<table width=100% border=0>
+		<% for skt_target in @skt_staff.skt_targets.find(:all, :conditions => ['status =?', 3])  %>
+		<tr>
+			<td class="leftcol"><label for="activity"><b>Aktiviti </b></label></td>
+			<td width=2%>:</td>
+	        <td><%=h skt_target.activity %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="activity"><b>Status </b></label></td>
+			<td>:</td>
+	        <td><%=h (SktTarget::STATUS.find_all{|disp, value| value == skt_target.status}).map {|disp, value| disp} %></td>
+		</tr>
+		<tr>
+			<td colspan=3>
+				<table width=100% border="1" cellspacing="0" BORDERCOLOR="#E6F8E0">
+					<tr bgcolor="#FDEEF4">
+						<td align="center" width=15%><b>Petunjuk Prestasi</b></td>
+						<td align="center" width=15%><b>Sasaran Kerja</b></td>
+						<td align="center" width=25%><b>Pencapaian Sasaran</b></td>
+						<td align="center" width=25%><b>% Pencapaian</b></td>
+						<td align="center"><b>Ulasan</b></td>
+					</tr>
+			<% for skt_achive in skt_target.skt_achives %>
+
+				<tr bgcolor="#E0F8F7">
+					<td><%=h (SktAchive::PERFORM.find_all{|disp, value| value == skt_achive.performance}).map {|disp, value| disp} %></td>
+					<td><%= skt_achive.target_work %></td>
+					<td><%= skt_achive.actual_achieve %></td>
+					<td><%= skt_achive.percent_achieve%></td>
+					<td><%= skt_achive.comment %></td>
+				</tr>
+
+			<% end %>
+			</table>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+<H2>BAHAGIAN III - Laporan dan Ulasan Keseluruhan Pencapaian Sasaran Kerja Tahunan Pada Akhir Tahun Oleh PYD dan PPP</H2>
+<p><b>1. &nbsp;&nbsp;Laporan / Ulasan Oleh PYD </b><BR></p>
+<table width=70% border=0>
+		<tr>
+			<td colspan=4>&nbsp;&nbsp;&nbsp;&nbsp;<%=h @skt_staff.report_pyd %></td>
+		</tr>
+		<tr>
+			<td  class="leftcol" colspan=2>&nbsp;&nbsp;Report Date by PYD</td>
+			<td width="2%">:</td>
+			<td width="68%"><%=h @skt_staff.datereport_pyd %></td>
+		</tr>
+	</table>
+	<p><b>2. &nbsp;&nbsp;Laporan / Ulasan Oleh PPP </b><BR></p>
+		<table width=70% border=0>
+			<tr>
+				<td colspan=4>&nbsp;&nbsp;&nbsp;&nbsp;<%=h @skt_staff.report_ppp %></td>
+			</tr>
+			<tr>
+				<td class="leftcol" colspan=2>&nbsp;&nbsp;Report Date by PPP</td>
+				<td width="2%">:</td>
+				<td width="68%"><%=h @skt_staff.datereport_ppp %></td>
+			</tr>
+		</table>
+<BR>
+<%= link_to 'Edit', edit_skt_staff_path(@skt_staff) %> |
+<%= link_to 'Back', skt_staffs_path %>

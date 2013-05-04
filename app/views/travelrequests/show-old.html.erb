@@ -1,0 +1,106 @@
+<div class="tform">
+<table width=100%>
+	
+	<tr>
+		<th colspan=2>Staff Details</th>
+	</tr>
+	  <tr>
+		<td class="leftcol"><label for="trcode"><b>Travel Request Code:</b></label></td>
+			<td><%=h @travelrequest.trcode %></td>
+		</tr>
+    <tr>
+			<td class="leftcol"><label for="staff_id"><b>IC No:</b></label></td>
+			<td><%=h @travelrequest.stafftravel.formatted_mykad %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
+			<td><%=h @travelrequest.stafftravel.name %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="staff_id"><b>Staff Grade:</b></label></td>
+			<td><%=h @travelrequest.stafftravel.staffgrade.name %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="staff_id"><b>Position:</b></label></td>
+			<td><%=h @travelrequest.stafftravel.position.positionname %></td>
+		</tr>
+   	<tr>
+		<td class="leftcol"><label for="trcode"><b>Bank & Account No:</b></label></td>
+			<td><%=h @travelrequest.stafftravel.my_bank %>:-  <%=h @travelrequest.stafftravel.bankaccno %></td>
+		</tr>
+		
+
+		<tr>
+			<th colspan=2>Travel Details</th>
+		</tr>
+
+		<tr>
+		<td class="leftcol"><label for="destination"><b>Destination:</b></label></td>
+			<td><%=h @travelrequest.destination %></td>
+		</tr>
+
+		<tr>
+		   <td class="leftcol"><label for="purpose"><b>Purpose:</b></label></td>
+			<td><%=h @travelrequest.purpose %></td>
+		</tr>
+
+			<tr>
+			 <td class="leftcol"><label for="tstartdt"><b>Start Date:</b></label></td>
+				<td><%=h @travelrequest.tstartdt %></td>
+			</tr>
+
+			<tr>
+			 <td class="leftcol"><label for="treturndt"><b>Return Date:</b></label></td>
+				<td><%=h @travelrequest.treturndt %></td>
+			</tr>
+
+			<tr>
+				 <td class="leftcol"><label for="bplreserve"><b>Trasport:</b></label></td>
+			<!-->	<td><#%=h @travelrequest.bplreserve %></td>-->
+			</tr>
+
+		<tr>
+		   <td class="leftcol"><label for="ifownwhy"><b>Why Used Own Transport:</b></label></td>
+			<td><%=h @travelrequest.ifownwhy %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="claimtype"><b>Claim Type:</b></label></td>
+			<td><%=h @travelrequest.claimtype %></td>
+		</tr>
+		<tr>
+			<th colspan=2>Submission</th>
+		</tr>
+		    <tr>
+				<td class="leftcol"><label for="submission"><b>Submission Date:</b></label></td>
+				<td><%=h @travelrequest.submission %></td>
+			</tr>
+
+			<tr>
+			<td class="leftcol"><label for="replacement_id"><b>Replacement:</b></label></td>
+			<td><%=h @travelrequest.replacement_id.blank? ? "" : @travelrequest.treplace.mykad_with_staff_name %></td>
+			</tr>
+
+		<tr>
+			<th colspan=2>HOD Confirmation</th>
+		</tr>
+
+			<tr>
+				<td class="leftcol"><label for="hod_id"><b>HOD Name:</b></label></td>
+				<td><%=h @travelrequest.hod_id.blank? ? "Not Staff" : @travelrequest.hod.mykad_with_staff_name %></td>
+			</tr>
+
+			<tr>
+			 <td class="leftcol"><label for="hodconfirmdt"><b>Confirmed Date:</b></label></td>
+			<td><%=h @travelrequest.hodconfirmdt %></td>
+			</tr>
+
+	</table>
+	</div>
+	<BR>
+
+<%= link_to 'Edit', edit_travelrequest_path(@travelrequest) %> |
+<%= link_to 'Back', travelrequests_path %>

@@ -1,0 +1,56 @@
+<div class="tform">
+  <table width=100% >
+	<tr>
+		<th colspan=2>Course/Subject Registration
+    </tr>
+    <tr>
+	    <td class="leftcol"><label for="coursecode">Course/Subject Code</label></td>
+	    <td><%=h @course.coursecode %></td>
+	</tr>
+    <tr>
+	    <td class="leftcol"><label for="name">Course/Subject Name</label></td>
+	    <td><%=h @course.name %></td>
+	</tr>
+    <tr>
+	    <td class="leftcol"><label for="parent_id">Course Name</label></td>
+	    <td>
+		<% if  @course.parent_id.blank? %>
+		  <%= 'test' %>
+		<% else %>
+		  <%= h @course.maincourse.name %>
+		<% end %>
+		</td>
+	    
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="objective">Objective</label></td>
+	    <td><%=h @course.objective %></td>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="coursescope">Scope</label></td>
+	    <td><%=h @course.coursescope %></td>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="coursedefinition">Definition</label></td>
+	    <td><%=h @course.coursedefinition %></td>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="staff_id">Course Administrator</label></td>
+	    <td><%=h @course.staff_id.blank? ? "No Staff" : @course.admin.mykad_with_staff_name %></td>
+	</tr>
+  </table>
+</div>
+
+
+
+
+
+<!-->
+  <b>Abbreviation:</b>
+  <#%=h @course.abbreviation %>
+</p>
+-->
+
+
+<%= link_to 'Edit', edit_course_path(@course) %> |
+<%= link_to 'Back', courses_path %>

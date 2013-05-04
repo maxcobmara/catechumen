@@ -1,52 +1,72 @@
 <div class="tform">
+	<H2><%= t 'staffleave.leavereq' %></H2>
   <table width=100% >
 
 	<tr>
-		<th colspan = 2>Staff Leave Request Details</th>
-	</tr>
-
-	<tr>
-		<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label><font color="red"> * </font></td>
-		<td><%=h @leaveforstaff.applicant.mykad_with_staff_name %>
-				<%= @leaveforstaff.cuti_rehat_entitlement %></td>
+		<td class="leftcol"><label for="staff_id"><%= t 'staffleave.staff_id' %></label><font color="red"> * </font></td>
+		<td><b>:</b></td>
+		<td><%=h @leaveforstaff.applicant.staff_name_with_title %>
+			<%= @leaveforstaff.cuti_rehat_entitlement %></td>
 	</tr>
 	
 	<tr>
-	<td class="leftcol"><label for="leavetype"><b>Leave Type:</b></label></td>
+		<td class="leftcol"><label for="leavetype"><%= t 'staffleave.leavetype' %></label></td>
+		<td><b>:</b></td>
 		<td><%= f.select :leavetype, 
 		                 Leaveforstaff::STAFFLEAVETYPE,
 		                 :prompt => "Select"  %></td>
 	</tr>
 	
 	<tr>
-	    <td class="leftcol"><label for="leavestartdate"><b>Leave Start Date:</b></label></td>
+	    <td class="leftcol"><label for="leavestartdate"><%= t 'staffleave.leavestartdate' %></label></td>
+		<td><b>:</b></td>
 		<td><%= f.date_select :leavestartdate, :order => [:day, :month, :year], :default => 2.days.from_now %></td>
 	</tr>
 	
 	<tr>
-	    <td class="leftcol"><label for="leavenddate"><b>Leave End Date:</b></label></td>
+	    <td class="leftcol"><label for="leavenddate"><%= t 'staffleave.leavenddate' %></label></td>
+		<td><b>:</b></td>
 		<td><%= f.date_select :leavenddate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 	</tr>
 	
 	<tr>
-	    <td class="leftcol"><label for="leavedays"><b>Duration:</b></label></td>
+	    <td class="leftcol"><label for="leavedays"><%= t 'staffleave.duration' %></label></td>
+		<td><b>:</b></td>
 		<td><%=h @leaveforstaff.leave_for %> Days</td>
 	</tr>
 	
 	<tr>
-	    <td class="leftcol"><label for="reason"><b>Reason:</b></label></td>
+	    <td class="leftcol"><label for="reason">Address On Leave</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :address_on_leave, :size => "30x4" %></td>
+	</tr>
+	
+	<tr>
+	    <td class="leftcol"><label for="phone_on_leave">Phone No</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_field :phone_on_leave %></td>
+	</tr>
+	
+	<tr>
+	    <td class="leftcol"><label for="reason"><%= t 'staffleave.reason' %></label></td>
+		<td><b>:</b></td>
 		<td><%= f.text_field :reason %></td>
 	</tr>
 	<tr>
-	    <td class="leftcol"><label for="notes"><b>Notes:</b></label></td>
+	    <td class="leftcol"><label for="notes"><%= t 'staffleave.notes' %></label></td>
+		<td><b>:</b></td>
 		<td><%= f.text_area :notes, :size => "30x5" %></td>
 	</tr>
-  <% if @leaveforstaff.approval1? %>
+	
 	<tr>
-	    <td class="leftcol"><label for="replacement_id"><b>Replacement Staff:</b></label></td>
-	    <td><%= f.collection_select :replacement_id, Staff.find(:all, :conditions => ["staffgrade_id = ?", @leaveforstaff.applicant.staffgrade_id]), :id, :name, :include_blank => true %></td>
-	<% end %>
+	    <td class="leftcol"><label for="replacement_id"><%= t 'staffleave.replacement_id' %></label></td>
+		<td><b>:</b></td>
+	   <td><%= f.collection_select :replacement_id, Staff.find(:all, :conditions => ["staffgrade_id = ?", @leaveforstaff.applicant.staffgrade_id]), :id, :staff_name_with_title, :include_blank => true %>
+
+		</tr>
+
+
 	</tr>
   </table>
-
 </div>
+

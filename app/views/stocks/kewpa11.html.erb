@@ -1,0 +1,258 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+ <script>
+	document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+
+</script>
+</form>	
+<fieldset width=10px >
+
+<div id="title">
+	
+	<div id="kewpa">
+	<p class="marginright" align="right">KEW. PS-11<BR>
+		No. Permohonan : <i><%=h @stock.app_no %></i> </p>
+	
+<table width=100% border="0">
+	<tr>
+	
+		<td><center><font size=4><b>BORANG PERMOHONAN STOK</b></font><BR>
+			(Tatacara Pengurusan Stor 143)<br>
+			(Untuk Kegunaan di Stor Unit-diisi dalam 2 salinan)</center></td>
+		
+	</tr>
+</table>
+
+
+	<table width=100% cellspacing="0" cellpadding="6" border="1">
+		<tr>
+			<td rowspan=2 width=10><center><b>BIL</b></center></td>
+			<td colspan=2><center><b>Permohonan</b></center></td>
+			<td colspan=2><center><b>Pegawai Pelulus</b></center></td>
+			<td width=22% valign="top"><center><b>Catatan</b></center></td>
+		</tr>
+		<tr>
+			<td width=28% align="center"><b>Perihal Stok</b></center></td>
+			<td width=12%><center><b>Kuantiti <br>Dipesan</b></center></td>
+			<td><center><b>Kuantiti <br>Diluluskan</b></center></td>
+			<td><center><b>Baki Kuantiti <br>Dipesan</b></center></td>
+			<td><center><b>Catatan</b></center></td>
+		</tr>
+			
+		</tr>
+			 <% bil = 0 %>
+			
+			 
+		<% for stockdetail in @stock.stockdetails %>
+		<% bil += 1 %>
+		 <tr>
+			  
+			<td align="center"><%=h bil %></td>	
+				<td><%=h stockdetail.supplier.sub_category  %> / <%=h stockdetail.supplier.item_type  %> </td>
+				<td align="center"><%=h stockdetail.quantity_order %> <%=h stockdetail.supplier.unittype  %>  </td>
+				<td align="center"><%=h stockdetail.quantity_approve %> <%=h stockdetail.supplier.unittype  %>  </td>
+				
+				<td align="center"><% if @stock.status != 3 %><%=h stockdetail.balance_quantity %> <%=h stockdetail.supplier.unittype  %>  <% end %> &nbsp;</td>
+				<td align="center">&nbsp;<%=h stockdetail.remark %> </td>
+
+		</tr>
+		<% end %>
+		
+		<tr>
+			<td colspan=3>	
+				<table width=100% cellspacing="0" cellpadding="6" border="0">
+					<tr>
+						<td colspan=3>&nbsp;</td>
+					</tr>
+					<tr>
+						<td colspan=3>&nbsp;</td>
+					</tr>
+					<tr>
+						<td colspan=3>&nbsp;</td>
+					</tr>
+				
+					<tr>
+						<td colspan=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>T.T</b> <BR>................................................</td>
+					
+					</tr>
+					
+					<tr>
+						<td colspan=3>(Tandatangan Pemohon)</td>
+					
+					</tr>
+					<tr>
+						<td>Nama</td>
+						<td>:</td>
+						<td><%=h @stock.applicant.staff_name_with_title %></td>
+					</tr>
+					<tr>
+						<td>Jawatan</td>
+						<td>:</td>
+						<td><%=h @stock.applicant.position_for_staff %></td>
+					</tr>
+					<tr>
+						<td>Tarikh</td>
+						<td>:</td>
+						<td><%=h @stock.app_date.strftime("%d %b %Y") unless @stock.app_date.nil? %></td>
+					</tr>
+					<tr>
+						<td>Cawangan</td>
+						<td>:</td>
+						<td><i>Pusat Pendidikan dan Latihan APMM</i></td>
+					</tr>
+				</table>
+				</td>
+				<td colspan=3>
+					<table width=100% cellspacing="0" cellpadding="6" border="0">
+						<tr>
+							<td colspan=3><b>Kelulusan:</b></td>
+						</tr>
+						<tr>
+							<td colspan=3><% if @stock.approval == TRUE %><u>Permohonan diluluskan</u> / Tidak diluluskan<% else %>Permohonan diluluskan / <u>Tidak diluluskan</u><% end %></td>
+						</tr>
+						<tr>
+							<td colspan=3>&nbsp;</td>
+						</tr>
+
+						<tr>
+							<td colspan=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>T.T</b> <BR>................................................</td>
+
+						</tr>
+
+						<tr>
+							<td colspan=3>(Tandatangan Pegawai Pelulus)</td>
+
+						</tr>
+						<tr>
+							<td>Nama</td>
+							<td>:</td>
+							<td><%=h @stock.approver.staff_name_with_title %></td>
+						</tr>
+						<tr>
+							<td>Jawatan</td>
+							<td>:</td>
+							<td><%=h @stock.approver.position_for_staff %></td>
+						</tr>
+						<tr>
+							<td>Tarikh</td>
+							<td>:</td>
+							<td><%=h @stock.approve_date.strftime("%d %b %Y") unless @stock.approve_date.nil? %></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+					</table>			
+			</tr>
+	</table>
+	<p><font size=3>*Sila potong yang berkenaan</font></p>
+	
+	<table width=100% cellspacing="0" cellpadding="6" border="1">
+		<tr>
+			<td width=50%>
+				<table width=100% cellspacing="0" cellpadding="6" border="0">
+					<tr>
+						<td colspan=3><b>Kemaskini Rekod:</b></td>
+					</tr>
+					<tr>
+						<td colspan=3>Stok telah dikeluarkan dan direkodkan</td>
+					</tr>
+					<tr>
+						<td colspan=3>di kad Petak No :</td>
+					</tr>
+				
+					<tr>
+						<td colspan=3><% if @stock.approval == TRUE %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>T.T</b> <BR>................................................<% else %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <BR>................................................<% end %></td>
+					
+					</tr>
+					
+					<tr>
+						<td colspan=3>(Tandatangan Pegawai Stor)</td>
+					
+					</tr>
+					<tr>
+						<td>Nama</td>
+						<td>:</td>
+						<td><%=h @stock.storeman_id.blank? ? "-" : @stock.storeman.staff_name_with_title %></td>
+					</tr>
+					<tr>
+						<td>Jawatan</td>
+						<td>:</td>
+						<td><%=h @stock.storeman_id.blank? ? "-" : @stock.storeman.position_for_staff %></td>
+					</tr>
+					<tr>
+						<td>Tarikh</td>
+						<td>:</td>
+						<td>&nbsp;<%=h @stock.date_update.strftime("%d %b %Y") unless @stock.date_update.nil? %></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					</table>
+			</td>
+			<td width=50%>
+				<table width=100% cellspacing="0" cellpadding="6" border="0">
+					<tr>
+						<td colspan=3><b>Perakuan Penerima:</b></td>
+					</tr>
+					<tr>
+						<td colspan=3>Disahkan bahawa stok yang telah diluluskan telah</td>
+					</tr>
+					<tr>
+						<td colspan=3>diterima</td>
+					</tr>
+				
+					<tr>
+						<td colspan=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>T.T</b> <BR>................................................</td>
+					
+					</tr>
+					
+					<tr>
+						<td colspan=3>(Tandatangan Pemohon)</td>
+					
+					</tr>
+					<tr>
+						<td>Nama</td>
+						<td>:</td>
+						<td><%=h @stock.applicant.staff_name_with_title %></td>
+					</tr>
+					<tr>
+						<td>Jawatan</td>
+						<td>:</td>
+						<td><%=h @stock.applicant.position_for_staff %></td>
+					</tr>
+					<tr>
+						<td>Tarikh</td>
+						<td>:</td>
+						<td>&nbsp;<%=h @stock.received_date.strftime("%d %b %Y") unless @stock.received_date.nil? %></td>
+					</tr>
+					<tr>
+						<td>Cawangan</td>
+						<td>:</td>
+						<td><i>Pusat Pendidikan dan Latihan APMM</i></td>
+					</tr>
+					</table>
+				</td>
+		
+		</tr>
+		</table>
+<BR>
+
+</div>
+</fieldset><br>
+<p align="center"><i>Dokumen ini adalah cetakan komputer dan tidak memerlukan tandatangan.</i></p>
+<BR>
+	<div id="hideLink">
+	<%= link_to 'BACK', stocks_path %>
+	</div>
+
+	<BR>
+

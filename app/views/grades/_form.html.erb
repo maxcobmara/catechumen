@@ -1,102 +1,84 @@
 <div class="tform">
-	<H2>New Grade Details</H2>
-	<table width=100%>
-		<tr>
-			<td class="leftcol"><label for="student_id">Student Name:</label></td>
-			<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="subject_id">Subject Name:</label></td>
-			<td><%= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, :include_blank => true %></td>
-		  <!--TODO: Preselect course in above condition-->
-		</tr>
-	</table>
-	
-	<H2>Formative Scores</H2><!--Score Details-->	
-	<table width=100%>
-		<tr>
-			<td colspan=2>
-				 <table width=100% border=0>
-					  <tr>
-				      <td width=130px ><label for="type_id"><b>Type:</b></label></td>
-				      <td width=240px ><label for="description"><b>Description:</b></label></td>
-				      <td width=120px><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
-						  <td width=80px><label for="weightage"><b>Weightage:</b></label></td>
-				      <td width=70px></td>
-			      </tr>
-				 </table>
-	    </td>
-		</tr>
+<H2>Student & Subject Details</H2>
+<table width=100% >
 
 	<tr>
-	  <td colspan=2>
-		<!-- Code Block for Score Repeating Field -->
-		  <div id="scores">
-				<% f.fields_for :scores do |builder| %>
-					<%= render 'score_fields', :f => builder %>
+		<td class="leftcol"><label for="student_id">Student Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">Subject Name:</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :subject_id, Subject.find(:all, :order => 'name ASC'), :id, :name, :include_blank => true %></td>
+	</tr>
+</table>
+
+<H2>Formative</H2>
+<table width=100% border=0>
+		<tr>
+			<td colspan=2>
+				<table width=100% border=1 cellspacing=0 BORDERCOLOR="#E8E8E8 ">
+					<tr>
+						<th width="20%" ><label for="type_id">Type</label></th>
+						<th width="33%"><label for="description">Description</label></th>
+						<th width="15%"><label for="marks">Marks</label><font color="red"> * </font></th>
+						<th width="15%"><label for="weightage">Full Marks</label></th>
+						<th width="5%"><label for="weightage"></label></th>
+					</tr>
+				</table>
+			<% f.fields_for :scores do |builder| %>
+				<%= render 'score_fields', :f => builder %>
 				<% end %>
 				<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :scores %> - Add More </p>
-			</div>
-	  </td>
+		</td>
 	</tr>
-	<!-- End Code Block for Score Repeating Field -->
-	</table>
-	
-	<H2>Send to BPL</H2><!--Score Details-->	
-	<table width=100%>
-		<tr>
-			<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>
-			<td><%= f.check_box :sent_to_BPL %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="sent_date">Sent Date:</label></td>
-			<td><%= f.date_select :sent_date, :start_year => 2011, :end_year => 2020, :order => [:day, :month, :year] %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="eligible_for_exam">Eligible For Exam?:</label></td>
-			<td><%= f.check_box :eligible_for_exam %><font color=#AAA size=-2>(need other inputs for automatic)</font></td>
-		</tr>
-	</table>
-	
-	<H2>Summative</H2>
-	<table width=78% border=0>
-		<tr>
-			<th>Exam Name</th>
-			<th>Description</th>
-			<th>Marks</th>
-		</tr>
-	
-		<tr>
-			<td><%= f.text_field :exam1name, :size => 15 %></td>
-			<td><%= f.text_field :exam1desc %></td>
-			<td><%= f.text_field :exam1marks, :size => 5 %>%</td>
-		</tr>
-	</table>
-	
-	<H2>Details</H2>
-	<table width=78%>
-		<tr>
-			<td class="leftcol"><label for="examweight ">Summative Weightage:</label></td>
-			<td><%= f.text_field :examweight, :size => 5  %>%</td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="carry_paper">Carry Paper?:</label></td>
-			<td><%= f.check_box :carry_paper %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="resit">Resit?:</label></td>
-			<td><%= f.check_box :resit %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="total_marks ">Total Marks:</label></td>
-			<td><%= f.text_field :finalscore  %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="grading_id ">Grade:</label></td>
-			<td><%= f.select :grading_id,
-			                 Grade::GRADE,
-			                 :prompt => "Select" %></td>
-		</tr>
-	</table>
+</table>
+
 <BR>
+<H2>Final Exam</H2>	
+<table width=100% border=0>
+	<tr>
+		<td colspan=2>
+			<table width=100% border=1 cellspacing=0 BORDERCOLOR="#E8E8E8 ">
+			<tr>	
+				<th width=20% align="center">Exam Name</th>
+				<th width=50% align="center">Description</th>
+				<th width=15% align="center">Marks</th>
+				<th width=15% align="center">Full Marks</th>
+			</tr>
+			 
+			<tr>
+				<td><%= f.text_field :exam1name, :size => 20 %></td>
+				<td><%= f.text_area :exam1desc, :size => "50x2" %></td>
+				<td align="center"><%= f.text_field :exam1marks, :size => 5 %> %</td>
+				<td align="center"><%= f.text_field :examweight, :size => 5 %> %</td>
+			</tr>
+		</table></td>
+	</tr>
+  
+</table>
+<H2>Details</H2>	
+<table width=100%>
+	
+	
+	<tr>
+		<td class="leftcol"><label for="sent_date">Sent Date</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :sent_date, :start_year => 2011, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="carry_paper">Carry Paper?</label></td>
+		<td><b>:</b></td>
+		<td><%= f.check_box :carry_paper %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="sent_to_BPL">Sent To Quality Control?</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.check_box :sent_to_KM %></td>
+	</tr>	
+</table>
 </div>
+<BR>

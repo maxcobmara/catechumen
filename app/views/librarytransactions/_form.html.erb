@@ -1,12 +1,11 @@
 <div class="tform">
-	
-	<H2><%= t 'librarytransaction.details' %></H2>
-  <table width=100%>
+<H2><%= t 'librarytransaction.details' %></H2>
+<table width=100% border=0>
 		<tr>
-			<td class="leftcol"><label for="book_id"><b><%= t 'book.accessionno' %></b></label></td>
-			<td><#% f.collection_select :accession_id, Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :accession_no, :include_blank => :true %>
-			
-	<%= f.collection_select :accession_id, Accession.find(:all, :order => :accession_no), :id, :accession_no %></td>
+			<td width=20%><label for="book_id"><font size=2>&nbsp;<%= t 'book.title' %></font></label><font color="red"> * </font></td>
+				<td><b>:</b></td>
+			<!--<td><#%= f.collection_select :book_id, Accession.find(:all), :id, :accession_no %></td>-->
+			<td colspan=3><%= f.collection_select :book_id, Accession.find(:all), :id, :accession_book, :include_blank => true %></td>
 		</tr>
 	
 	<script type="text/javascript">
@@ -24,82 +23,112 @@
   
 	
 		<tr>
-			<td class="leftcol"><label for="staff_id"><b><%= t 'librarytransaction.loanedtotype' %></b></label></td>
-			<td><%= f.check_box :ru_staff, :id => 'staff', :onchange => "switchvisibility('staff')" %></td>
+			<td class="leftcol"><label for="staff_id"><%= t 'librarytransaction.loanedtotype' %></label></td>
+			<td><b>:</b></td>
+			<td colspan=3><%= f.check_box :ru_staff, :id => 'staff', :onchange => "switchvisibility('staff')" %><font color="grey", size="-2"> Tick if the borrower is a staff </font></td>
 		</tr>
 	
 		<tr id="bstaff" style="display: none;">
-			<td class="leftcol" ><label for="staff_id"><b>Staff</b></label></td>
-		  <td><%= f.collection_select :staff_id, Staff.find(:all, :order => :name), :id, :staff_name_then_mykad, :include_blank => true %></td>
+			<td class="leftcol" ><label for="staff_id">Staff</label></td>
+				<td><b>:</b></td>
+		  <td colspan=3><%= f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_title, :include_blank => true %></td>
 		</tr>
 	
 		<tr id="bstudent" style="display: table-row;">
-			<td class="leftcol" ><label for="student_id"><b><%= t 'librarytransaction.studentname' %></b></label></td>
-		  <td><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %></td>
+			<td class="leftcol" ><label for="student_id"><%= t 'librarytransaction.studentname' %></label></td>
+				<td><b>:</b></td>
+		  <td colspan=3><%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol" ><label for="fine">Outside Borrower</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :outside_borrower, :size=> 50 %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol" ><label for="checkoutdate"><b><%= t 'librarytransaction.checkoutdate' %></b></label></td>
-		  <td><%= f.date_select :checkoutdate, :order => [:day, :month, :year] %></td>
+			<td class="leftcol" ><label for="checkoutdate"><%= t 'librarytransaction.checkoutdate' %></label><font color="red"> * </font></td>
+			<td><b>:</b></td>
+		    <td><%= f.date_select :checkoutdate, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+		<tr>
+			<td class="leftcol" ><label for="returnduedate"><%= t 'librarytransaction.duedate' %></label></td>
+			<td><b>:</b></td>
+		   <td><%= f.date_select :returnduedate, :order => [:day, :month, :year], :default => 2.weeks.from_now %></td>
+		</tr>
+	
+	<!--	<tr>
+			<td class="leftcol" ><label for="extended"><#%= t 'librarytransaction.extend' %></label></td>
+			<td><b>:</b></td>
+			<td><#%= f.check_box :extended %></td>
+		</tr>-->
+
+		<tr>
+			<td class="leftcol" ><label for="extended"><%= t 'librarytransaction.extended' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.check_box :returned %></td>
+		</tr>
+	
+	<tr>
+			<td class="leftcol" ><label for="extended"><#%= t 'librarytransaction.extended' %></label></td>
+			<td><b>:</b></td>
+		  	<td><%= f.check_box :returned %><font color="grey", size="-2"> Tick if the book is returned </font></td>
+		</tr>
+		<tr>
+			<td class="leftcol" ><label for="returneddate"><%= t 'librarytransaction.returneddate' %></label></td>
+			<td><b>:</b></td>
+		  	<td><%= f.date_select :returneddate, :order => [:day, :month, :year], :include_blank => true  %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol" ><label for="returnduedate"><b><%= t 'librarytransaction.duedate' %></b></label></td>
-		  <td><%= f.date_select :returnduedate, :order => [:day, :month, :year], :default => 2.weeks.from_now %></td>
+			<td class="leftcol" ><label for="fine"><%= t 'librarytransaction.fine' %></label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :fine %><!-- to implement fine = returned date - duedate * RM1/day --></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol" ><label for="extended"><b><%= t 'librarytransaction.extend' %></b></label></td>
-		  <td><%= f.check_box :extended %></td>
+			<td class="leftcol" ><label for="finepay"><%= t 'librarytransaction.finepay' %></label></td>
+			<td><b>:</b></td>
+		    <td><%= f.check_box :finepay %><font color="grey", size="-2"> Tick if the fine is paid </font></td>
+		</tr>
+		<tr>
+			<td class="leftcol" ><label for="finepaydate"><%= t 'librarytransaction.finepaydate' %></label></td>
+			<td><b>:</b></td>
+		   <td><%= f.date_select :finepaydate, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 	
-		<tr>
-			<td class="leftcol" ><label for="extended"><b><%= t 'librarytransaction.extended' %></b></label></td>
-		  <td><%= f.check_box :returned %></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol" ><label for="returneddate"><b><%= t 'librarytransaction.returneddate' %></b></label></td>
-		  <td><%= f.date_select :returneddate, :order => [:day, :month, :year], :include_blank => true  %></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol" ><label for="fine"><b><%= t 'librarytransaction.fine' %></b></label></td>
-		  <td><%= f.text_field :fine %><!-- to implement fine = returned date - duedate * RM1/day --></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol" ><label for="finepay"><b><%= t 'librarytransaction.finepay' %></b></label></td>
-		  <td><%= f.check_box :finepay %></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol" ><label for="finepaydate"><b><%= t 'librarytransaction.finepaydate' %></b></label></td>
-		  <td><%= f.date_select :finepaydate, :order => [:day, :month, :year], :include_blank => true %></td>
-		</tr>
 	</table>
-	
-	<H2><%= t 'librarytransaction.report' %></H2>
-	<table width=100%>
+
+<H2><%= t 'librarytransaction.report' %></H2>
+<table width=100% border=0 cellspacing=0>
+
 		<tr>
-			<td class="leftcol" ><label for="reportlost"><b><%= t 'librarytransaction.lost' %></b></label></td>
-		  <td><%= f.check_box :reportlost %></td>
+			<td width=20%><label for="reportlost"><font size=2>&nbsp;<%= t 'librarytransaction.lost' %></font></label></td>
+			<td><b>:</b></td>
+		    <td><%= f.check_box :reportlost %></td>
 		</tr>
-	
+		
 		<tr id="breport" style="display: table-row;">
-		<td class="leftcol" ><label for="report"><b><%= t 'librarytransaction.reportdetails' %></b></label></td>
-		  <td><%= f.text_area :report, :size => '40x5' %></td>
+			<td class="leftcol" ><label for="report"><%= t 'librarytransaction.reportdetails' %></label></td>
+			<td><b>:</b></td>
+			  <td><%= f.text_area :report, :size => '30x5' %></td>
+		</tr>
+			
+		<tr id="breportlossdate" style="display: table-row;">
+			<td class="leftcol" ><label for="reportlostdate"><%= t 'librarytransaction.reportlostdate' %></label></td>
+			<td><b>:</b></td>
+		    <td><%= f.date_select :reportlostdate, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 	
-		<tr id="breportlossdate" style="display: table-row;">
-			<td class="leftcol" ><label for="reportlostdate"><b><%= t 'librarytransaction.reportlostdate' %></b></label></td>
-		  <td><%= f.date_select :reportlostdate, :order => [:day, :month, :year], :include_blank => true %></td>
-		</tr>
 	
 		<tr id="breplace" style="display: table-row;">
-			<td class="leftcol" ><label for="replaceddate"><b><%= t 'librarytransaction.replaceddate' %></b></label></td>
-		  <td><%= f.date_select :replaceddate, :order => [:day, :month, :year], :include_blank => true %></td>
+			<td class="leftcol" ><label for="replaceddate"><%= t 'librarytransaction.replaceddate' %></label></td>
+			<td><b>:</b></td>
+		  	<td><%= f.date_select :replaceddate, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
+		
+
 	
 	</table>
+
 </div>

@@ -1,0 +1,81 @@
+<div class="tform">
+<H2>Student Details </H2>
+	<table width=100%>
+		
+			<td class="leftcol"><label for="icno">IC No</label></td>
+			<td width=3%><b>:</b></td>
+			<!--<td><#%=h @counselling.student.icno %></td>-->
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="matrixno">Matrix No:</label></td>
+			<td><b>:</b></td>
+			<!--<td><#%=h @counselling.student.matrixno %></td>-->
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="name">Student Name:</label></td>
+			<td><b>:</b></td>
+			<td><%=h @counselling.student_details %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="fileno">File Name:</label></td>
+			<td><b>:</b></td>
+			<td><%=h @counselling.cofile_id.blank? ? "No File" : @counselling.file_details %>
+		</tr>
+</table>		
+<H2>Counselling Details</H2>
+<table width=100% border=0px>
+		
+		<% for scsession in @counselling.scsessions %>
+		
+	
+		
+		<tr>
+			
+			<td class="leftcol"><label for="date">Date</label></td>
+			<td width=3%><b>:</b></td>
+		   <td><%=h scsession.scsessiondt.blank? ? "-": scsession.scsessiondt.strftime(" %A,  %d %B %Y ") %></td>
+
+	    </tr>
+	
+		<tr>
+			<td class="leftcol"><label for="session">Session</label></td>
+			<td><b>:</b></td>
+		   <td><%=h scsession.scsessiondtduration.strftime("%I:%M %p") %></td>
+
+	    </tr>
+	
+	
+		<tr>
+			<td class="leftcol"><label for="scsappointnum">Appointment No</label></td>
+			<td><b>:</b></td>
+			<td><%=h scsession.scsappointnum %></td>
+        </tr>
+
+		<tr>
+			<td class="leftcol"><label for="issue">Issue</label></td>
+			<td><b>:</b></td>
+			<td><%=h scsession.issue %></td>
+        </tr>
+
+		<tr>
+			<td class="leftcol"><label for="suggestion">Suggestion</label></td>
+			<td><b>:</b></td>
+			<td><%=h scsession.suggestion %></td>
+	    </tr>
+	
+		<tr>
+			<td class="leftcol"><label for="remarks">Remarks</label></td>
+			<td><b>:</b></td>
+			<td><%=h scsession.remarks %></td>
+	    </tr>
+	
+<tr><td colspan=3><HR></td></tr>
+	
+	<% end %>
+	
+	</table>
+		
+	</div>
+<BR>
+<%= link_to 'Edit', edit_counselling_path(@counselling) %> |
+<%= link_to 'Back', counsellings_path %>

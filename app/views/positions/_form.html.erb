@@ -1,67 +1,55 @@
-<table width=100%>
+<div class="tform"><!--09/12/2011 - Shaliza changed for title bar -->
+	<H2><%= t 'positions.position' %></H2>
+<table width=100% border=0 cellspacing=0>
 	<tr>
-		<td class="leftcol"><label for="code"><b><%= t 'positions.code' %></b></label><font color="red"> * </font></td>
-		<td><label><%=h @position.is_root? ? "" : @position.parent.combo_code + "-" %></label><%= f.text_field :code, :class => 'compulsory' %></td></td>
+		<td class="leftcol" colspan=2><label for="positioncode"><%= t 'positions.positioncode' %></label><font color="red"> * </font></td>
+		<td><b>:</b></td>
+		<td><%= f.text_field :positioncode %></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="positionname"><%= t 'positions.positionname' %></label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_field :positionname %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="name"><b><%= t 'positions.name' %></b><font color="red"> * </font></label></td>
-		<td><%= f.text_field :name, :class => 'compulsory', :size => '50' %></td>
+		<td class="leftcol" colspan=2><label for="staff_id"><%= t 'positions.personname' %> </label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_title, :include_blank => true %></td>
+  </tr>
+
+	<tr>
+		<td class="leftcol" colspan=2><label for="parent_id"><%= t 'positions.parent_id' %></label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :parent_id, Position.find(:all, :order => 'positioncode'), :id, :position_with_code, :include_blank => true %></td>
 	</tr>
-		
-	<!--<tr>
-		<td class="leftcol"><label for="parent_id"><b><%= t 'positions.parent_id' %></b></label></td>
-		<td><#%= f.collection_select :parent_id, Position.find(:all), :id, :position_with_code, :include_blank => true %></td>
-	</tr>-->
 	
 	<tr>
-		<td class="leftcol"><label for="staffgrade_id"><b><%= t 'positions.grade_id' %></b></label></td>
+		<td class="leftcol" colspan=2><label for="staffgrade_id"><%= t 'positions.grade_id' %></label></td>
+		<td><b>:</b></td>
 		<td><%= f.collection_select :staffgrade_id, Employgrade.find(:all, :order => 'name'), :id, :name_and_group, :include_blank => true %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="unit"><b><%= t 'positions.unit' %></b></label></td>
+		<td class="leftcol" colspan=2><label for="unit"><%= t 'positions.unit' %></label></td>
+		<td><b>:</b></td>
 		<td><%= f.text_field :unit %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="tasks_main"><b><%= t 'positions.tasks_main' %></b></label></td>
-		<td><%= f.text_area :tasks_main, :size => "60x7" %></td>
+		<td class="leftcol" colspan=2><label for="taskmain"><%= t 'positions.taskmain' %></label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :taskmain, :size => "40x7" %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="staff_id">Person Name:</label></td>
-		<td><SPAN id="person"><%= render :partial => 'staff_matched', :locals => {:f => f} %></SPAN></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="staff_id">Is Acting</label></td>
-		<td><%= f.check_box :is_acting %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="tasks_other"><b><%= t 'positions.tasks_other' %></b></label></td>
-		<td><%= f.text_area :tasks_other, :size => "60x7" %></td>
+		<td class="leftcol" colspan=2><label for="taskother"><%= t 'positions.taskother' %></label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :taskother, :size => "40x7" %></td>
 	</tr>
 	
 </table>
+</div>
 <BR>
-	
-<script>
-    $j(document).ready(function(){
-      $j("#get_matched").click(function(evt) {
-			   $j("#person").replaceWith('<%= escape_javascript(render :partial => 'staff_matched', :locals => {:f => f}) %>');
-				 $j("#person").load("edit #person");
-			});
-    });
-
-    $j(document).ready(function(){
-			$j("#get_all").click(function(evt) {
-			   $j("#person").replaceWith('<%= escape_javascript(render :partial => 'staff_all', :locals => {:f => f}) %>');
-				 $j("#person").load("edit #person");
-			});
-    });
-</script>
-
-
-

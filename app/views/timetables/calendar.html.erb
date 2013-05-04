@@ -1,36 +1,36 @@
 <% if @timetables == [] %>
 <% else %>
 <div class="box">
-	<!-- Box Head -->
+<!-- Box Head -->
 	<div class="box-head">
 		<h2 class="left">Timetable Calendar</h2>
-		<div class="right"><%= link_to image_tag("application_form_add.png", :border => 0), {:controller => 'timetables', :action => 'new'} %></div>
+		<% permitted_to? :manage, :timetables do %>
+		<div class="right"><%= link_to image_tag("application_form_add.png", :border => 0), {:controller => 'timetables', :action => 'new'} %></div><% end %>
 	</div>
 
 
 <div id="calendar">
-  <h2 id="month">
+ <h2 id="month">
     <%= link_to "<", :month => (@date.beginning_of_month-1).strftime("%Y-%m") %>
     <%=h @date.strftime("%B %Y") %>
     <%= link_to ">", :month => (@date.end_of_month+1).strftime("%Y-%m") %>
   </h2>
+	
+  	<% calendar_for @timetables do |calendar| %>
+	<%= calendar.head('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') %>
+  	<% calendar.day(:day_method => :start_at) do |date, timetables| %>  
+  	<%= date.day %>
 
-  	<% calendar_for @timetables, :year => @date.year, :month => @date.month do |calendar| %>
-    <%= calendar.head('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') %>
-    <% calendar.day(:day_method => :start_at) do |date, timetables| %>
-    <%= date.day %>
-				
-			      <ul>
-			        <% for timetable in timetables %>
-			          <li><%= link_to h(timetable.tt_entry), timetable %></li>
-			        <% end %>
-			      </ul>
-				
-    <% end %>
+	<ul>
+	<% for timetable in timetables %>
+	<li><%= link_to h(timetable.start_at? ? timetable.start_at.strftime("%I:%M%p") + ' to ' + timetable.end_at.strftime("%I:%M%p") : ""), timetable %><BR>
+		<%= link_to h(timetable.classroom_id.blank? ? "" : timetable.subject_details), timetable %> <BR>
+		<%= link_to h(timetable.classroom_id.blank? ? "" : timetable.classroom_details), timetable %></li>
+	<% end %>
+	</ul>
+	
+	<% end %>
   <% end %>
 </div>
-<% end %>
 </div>
-
-
-
+<% end %>

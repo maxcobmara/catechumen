@@ -3,6 +3,7 @@ class TimetablesController < ApplicationController
   # GET /timetables.xml
   def index
     @timetables = Timetable.all
+    @date = params[:month] ? Date.parse(params[:month]) : Date.today
 
     respond_to do |format|
       format.html # index.html.erb
@@ -25,8 +26,6 @@ class TimetablesController < ApplicationController
   # GET /timetables/new.xml
   def new
     @timetable = Timetable.new
-    @timetable.timetable_periods.build
-    
 
     respond_to do |format|
       format.html # new.html.erb
@@ -46,7 +45,8 @@ class TimetablesController < ApplicationController
 
     respond_to do |format|
       if @timetable.save
-        format.html { redirect_to(@timetable, :notice => 'Timetable was successfully created.') }
+        flash[:notice] = 'Timetable was successfully created.'
+        format.html { redirect_to(@timetable) }
         format.xml  { render :xml => @timetable, :status => :created, :location => @timetable }
       else
         format.html { render :action => "new" }
@@ -62,7 +62,8 @@ class TimetablesController < ApplicationController
 
     respond_to do |format|
       if @timetable.update_attributes(params[:timetable])
-        format.html { redirect_to(@timetable, :notice => 'Timetable was successfully updated.') }
+        flash[:notice] = 'Timetable was successfully updated.'
+        format.html { redirect_to(@timetable) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -82,4 +83,14 @@ class TimetablesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def calendar
+     @timetables = Timetable.find(:all)
+     @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
+
+     respond_to do |format|
+       format.html # index.html.erb
+       format.xml { render :xml => @timetables }
+     end
+   end
 end

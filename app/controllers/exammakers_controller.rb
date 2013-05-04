@@ -3,6 +3,7 @@ class ExammakersController < ApplicationController
   # GET /exammakers.xml
   def index
     @exammakers = Exammaker.all
+    @exammaker_subjects = @exammakers.group_by { |t| t.exam_result }
 
     respond_to do |format|
       format.html # index.html.erb
@@ -82,4 +83,22 @@ class ExammakersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def exampaper
+       @exammaker = Exammaker.find(params[:id])  
+       render :layout => 'report'
+  end
+  
+  def view_examquestion
+     @subject_id = params[:subjectid]
+     @exammaker_eq = params[:exammaker_eq]
+     unless @subject_id.blank? || @subject_id.nil?
+       @objq2 = Exammaker.get_obj_questions(@subject_id)
+       @mcqq2 = Exammaker.get_mcq_questions(@subject_id)
+ 	     @tfq2 = Exammaker.get_tf_questions(@subject_id)
+ 	     @seqq2 = Exammaker.get_seq_questions(@subject_id) 
+     end
+     render :partial => 'available_examquestion', :layout => false   
+     #render partial of available question within selected programmes (within subjects of selected programme)
+   end
 end

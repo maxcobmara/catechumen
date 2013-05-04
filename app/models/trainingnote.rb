@@ -1,22 +1,13 @@
 class Trainingnote < ActiveRecord::Base
-  
-  # befores, relationships, validations, before logic, validation logic, 
-   #controller searches, variables, lists, relationship checking
-   
-  before_save :get_topic_id_from_timetable
-  
   belongs_to :topic
   belongs_to :timetable
   
-  has_attached_file :document,
-                    :url => "/assets/notes/:id/:style/:basename.:extension",
-                    :path => ":rails_root/public/assets/notes/:id/:style/:basename.:extension"
-                    
-  
-  def get_topic_id_from_timetable
-    if topic_id.blank? == true
-      self.topic_id = timetable.topic_id
-    end
-  end
-  
+ #---------------------AttachFile------------------------------------------------------------------------
+  has_attached_file :data
+  validates_attachment_content_type :data, :content_type => ['application/pdf',  'application/msword','application/msexcel','image/png','text/plain'],
+                        :storage => :file_system,
+                        :message => "Invalid File Format" 
+ validates_attachment_size :data, :less_than => 5.megabytes
+
+
 end

@@ -1,0 +1,17 @@
+<% if @new_type && @new_type == "2"%><!--start-trial new exammark by exampaper (filtered by programme)-12Sept2012-->
+<h3>New Analysis Examination Paper</h3>
+
+	<% form_tag :action => 'create' do |f|%>
+		<% @analysispaperexams.each_with_index do |analysispaperexam, index| %>
+			<% fields_for "analysispaperexams[#{index}]", analysispaperexam do |f| %>
+				<%=render :partial => 'form_by_paper_by_programme', :locals => {:f => f,:index=>index} %>
+			<% end %>	<!-- end of - @exammarks.each_with_index -->
+		    <% end %>	<!-- end of - fields_for "exammarks[#{index}]"-->
+			<!-- end of - form_tag :action => 'create' do |f| %>-->
+		<%= f.submit 'Create By Paper',:name => :new_submit %>
+	<% end %>
+		
+<% end %><!--end-trial new exammark by exampaper (filtered by programme)-12Sept2012-->
+
+<BR>
+<%= link_to 'Back', analysispaperexams_path %>

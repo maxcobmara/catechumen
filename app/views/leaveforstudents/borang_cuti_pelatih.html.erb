@@ -1,0 +1,167 @@
+<link href="report.css" rel="stylesheet" type="text/css">
+<%= stylesheet_link_tag 'report' %>
+
+<div id="A4potrait">
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+</form>
+	<fieldset width=10px >
+		
+<div id="kewpa">
+<p class= "rightside" align="right">Surat Pekeliling Am Bil. 3 Tahun 1991</p>
+
+<p class= "titlesmall" align="center"><b>PERMOHONAN CUTI REHAT</b></p>
+	
+
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+	    <td width="400" colspan=2>Kepada :<BR><BR>
+            Saya memohon kebenaran cuti rehat selama <%=h @leaveforstudent.leave_for %>  hari mulai <%=h @leaveforstudent.leave_startdate.strftime("%d %b %Y") %>
+dan <%=h @leaveforstudent.show_to_day %> <BR><BR></td>
+	</tr>
+	
+</table>
+
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+	    <td width="350" rowspan=5>(i) Semasa saya bercuti<BR>
+             <BR>
+		akan menjalankan tugas saya.
+		<BR><BR>(ii) Alamat dan No.Telefon saya semasa bercuti adalah seperti berikut:<BR><BR>
+             <%=h @leaveforstudent.address %><BR><BR>
+		Tel: <%=h @leaveforstudent.telno %><BR></td>
+	</tr>
+
+	<tr>
+	    <td width="150" valign="top">Tandatangan Pemohon<BR><BR></td>
+            <td width="2" valign="top">:</td>
+            <td valign="top">T.T </td>
+	</tr>
+	
+	<tr>
+	    <td>Nama Penuh </td>
+	    <td >:</td>
+        <td><%=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.name %></td>
+	</tr>
+
+	<tr>
+	    <td>Jawatan </td>
+	    <td >:</td>
+        <td>Pelatih</td>
+	</tr>
+	<tr>
+	    <td valign="top">Tarikh <BR><BR></td>
+	    <td valign="top">:</td>
+        <td valign="top"><%=h @leaveforstudent.requestdate.strftime("%d - %b - %Y") %></td>
+	</tr>
+
+	
+
+</table><tr><hr noshade="noshade"/></tr>
+<table width=100% border=0 cellspacing=0 align="center" >
+	
+
+	<tr>
+	    <td width="400">Kepada: <%=h @leaveforstudent.approver_details %></td>
+	    <td ></td>
+        <td></td>
+	</tr>
+	
+	<tr>
+	    <td align="center">(Pegawai Yang Meluluskan Cuti)  </td>
+	    <td ></td>
+        <td></td>
+	</tr>
+	
+	<tr>
+	    <td><BR>Permohonan cuti diatas <b><%=h @leaveforstudent.approved? ? "Diluluskan" : "Tidak Diluluskan" %></b> <BR> </td>
+	    <td ></td>
+        <td></td>
+	</tr>
+
+	<tr>
+	    <td>Tarikh : <%=h @leaveforstudent.approvedate.blank? ? "-" : @leaveforstudent.approvedate.strftime("%d %b %Y") %></td>
+	    <td ></td>
+        <td align="center">_____________________________________<BR>Tandatangan Ketua Bahagian/Unit</td>
+	</tr>
+	<tr>
+	    <td valign="top">Permohonan cuti diatas <b></b> <BR></td>
+	    <td valign="top"></td>
+            <td></td>
+	</tr>
+
+	<tr>
+	    <td >Tarikh : <BR><BR></td>
+	    <td ></td>
+        <td align="center">____________________________<BR>Tandatangan Pegawai Yang <BR> Meluluskan Cuti</td>
+	</tr>
+
+	
+
+</table><tr><hr noshade="noshade"/></tr>
+<p class= "titlesmall" align="center"><b>UNTUK KEGUNAAN PEJABAT</b></p>
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+	    <td colspan=3 align="justify">Baki cuti pemohon _______ hari(Diisi dan ditandatangan ringkas sebelum borang diserahkan kepada pemohon).Pemohon diberitahu dan cuti direkod. Tindakan ini hendaklah diambil setelah cuti diluluskan.</td>
+	    
+	</tr>
+<tr>
+	    <td width="350">Tarikh <BR><BR></td>
+	    <td ></td>
+        <td align="center" >____________________________<BR>b.p Pegawai Pentadbiran</td>
+	</tr>
+	
+</table><tr><hr noshade="noshade"/></tr>
+<table width=100% border=0x cellspacing=0 align="center" >
+	
+
+	<tr>
+	    <td width="400">Kepada: <%=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.name %> </td>
+	    <td ></td>
+            <td></td>
+	</tr>
+	
+	<tr>
+	    <td>(Nama Pemohon)  </td>
+	    <td ></td>
+            <td></td>
+	</tr>
+	
+	<tr>
+	    <td colspan=3>Permohonan cuti tuan/puan telah diluluskan selama <b><%=h @leaveforstudent.leave_for %>  hari</b> dari <b><%=h @leaveforstudent.leave_startdate.strftime("%d %b %Y") %></b>
+ hingga <b><%=h @leaveforstudent.show_to_day %></b></td>
+	
+	</tr>
+
+	<tr>
+	    <td>Baki cuti rehat __________ hari </td>
+	    <td ></td>
+            <td align="center">
+	
+	<tr>
+	    <td >Tarikh<BR></td>
+	    <td ></td>
+            <td align="center">____________________________<BR>b.p Pegawai Pentadbiran</td>
+	</tr>
+
+	
+
+</table>
+</div>
+</fieldset>
+<BR>
+	<div id="hideLink">
+	<%= link_to 'BACK', leaveforstudents_path %>
+	</div>
+
+
+
+
+
+

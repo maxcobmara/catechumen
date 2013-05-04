@@ -1,0 +1,62 @@
+<H2>Report Details</H2>
+  <table width=100% border=0>
+	<tr>
+		<td width=23% colspan=2><label for="reportedby_id"><font size=2>&nbsp;Reported By</font></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @sdicipline.reporter_details %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="reporteddt">Reported Date</label></td>
+		<td ><b>:</b></td>
+		<td><%=h @sdicipline.reportteddt.blank? ? "-" : @sdicipline.reportteddt.strftime("%d-%b-%Y") %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol" colspan=2><label for="student_id">Student Details</label></td>
+		<td width=3%><b>:</b></td>
+		<td> <b>Name : </b> <%=h @sdicipline.student_id.blank? ? "" : @sdicipline.studentwithcase.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2></td>
+		<td width=3%><b>:</b></td>
+		<td><b>Course Name : </b><%=h @sdicipline.student_id.blank? ? "" : @sdicipline.studentwithcase.programme_for_student %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2></td>
+		<td width=3%><b>:</b></td>
+		<td><b>Intake Session : </b><%=h @sdicipline.student_id.blank? ? "" : @sdicipline.studentwithcase.intake %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol" colspan=2><label for="details">Infraction</label></td>
+		<td width=3%><b>:</b></td>
+		<td><% if @sdicipline.infraction == "" %><%=h @sdicipline.details %><% else %><%=h (Sdicipline::INFRACTION.find_all{|disp, value| value == @sdicipline.infraction}).map {|disp, value| disp} %><% end %></td>
+	</tr>	
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="casedt">Date of Infraction</label></td>
+		<td><b>:</b></td>
+		<td><%=h @sdicipline.casedt.strftime("%d-%b-%Y - %I:%M %p") %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="location">Location of Infraction</label></td>
+		<td><b>:</b></td>
+		<td><%=h @sdicipline.location %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol" colspan=2><label for="cofile_id">File Name</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @sdicipline.file_name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol" colspan=2><label for="warden_id">Principle Name</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @sdicipline.warden_id.blank? ? "-" : @sdicipline.warden_name %></td>
+	</tr>
+</table>

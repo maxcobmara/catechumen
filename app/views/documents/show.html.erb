@@ -1,4 +1,4 @@
 <%= render 'show' %>
-
-<%= link_to (t 'icms.update'), edit_document_path(@document) %> |
+<% if permitted_to? :update, @document %>
+<%= link_to (t 'icms.update'), edit_document_path(@document) %> | <% end %>
 <%= link_to (t 'icms.back'), documents_path %>

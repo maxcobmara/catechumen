@@ -1,0 +1,49 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+  <div class="box-head">
+    <h2 class="left"><%= t 'staffleave.list' %></h2>
+	  <div class="right">
+		   <%= select_tag_for_filter("leaveforstaffs", @filters, params) %>
+	  </div>
+	</div>
+</div>
+
+<div class="indextable">
+<table width=100%>
+  <tr>
+    <th><%= t 'staffleave.staff_id' %></th>
+    <th><%= t 'staffleave.leavetype' %></th>
+    <th><%= t 'staffleave.from_to' %></th>
+    <th><%= t 'staffleave.reason' %></th>
+    <th><%= t 'staffleave.duration' %></th>
+    
+    <!--<th>Notes</th>-->
+   <!-- <th><#%= t 'staffleave.replacement_id' %></th>-->
+    <!--<th>Submit</th>
+    <th>Approved By</th>
+    <th>Approver 1 Date</th>
+    <th>Approver 2 </th>
+    <th>Approver 2 Date</th>-->
+   <th colspan=5 class="ac"><%= t 'control' %></th>
+  </tr>
+
+<% @leaveforstaffs.each do |leaveforstaff| %>
+  <tr>
+    <td><%=h leaveforstaff.applicant_details %></td>
+    <td><%=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} %></td>
+    <td><%=h leaveforstaff.leavestartdate.strftime("%a, %d %b") %> - <%=h leaveforstaff.show_to_day %></td>
+    <td><%=h leaveforstaff.reason %>
+	<td><% if leaveforstaff.leavetype != 8  %><%=h leaveforstaff.leave_for %> Days<% end %></td>
+   <td width=10px><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => leaveforstaff %></td>
+    <td width=10px><%= link_to image_tag("edit.png",     :border => 0,  :title => 'Edit'), :action => 'edit', :id => leaveforstaff %></td>
+    <% if permitted_to? :destroy, leaveforstaff %>
+    <td width=10px><%= link_to image_tag("delete.png",   :border => 0,  :title => 'Delete'), leaveforstaff, :confirm => 'Are you sure?', :method => :delete %></td>
+        <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+</div>

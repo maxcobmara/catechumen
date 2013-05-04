@@ -1,38 +1,100 @@
 class Ptdo < ActiveRecord::Base
   before_save  :whoami
   
-  belongs_to  :ptschedule
+  belongs_to  :ptschedule, :foreign_key => 'ptschedule_id'
+  belongs_to  :approver1, :class_name => 'Staff', :foreign_key => 'approver_1'
+  belongs_to  :approver2, :class_name => 'Position', :foreign_key => 'approver_2'
+  belongs_to  :replacementstaff, :class_name => 'Staff', :foreign_key => 'replacement_id'
   belongs_to  :staff
-  belongs_to  :applicant, :class_name => 'Staff',   :foreign_key => 'staff_id'
-  belongs_to  :replacement, :class_name => 'Staff', :foreign_key => 'replacement_id'
-  
-  has_many    :staff_appraisals, :through => :staff
+  has_many    :appraisals, :through => :staff
   
   def whoami
-    #self.staff_id = User.current_user.staff.id
-    self.ptcourse_id = ptschedule.ptcourse.id
+  #  self.staff_id = User.current_user.staff_id
+  self.ptschedule_id = ptschedule.id
   end
-  
+   
   def apply_dept_status
-    if (unit_approve == false || dept_approve == false || final_approve == false)
-      "Application Rejected"
-    elsif unit_approve.nil? == true
-      "Awaiting Unit Approval"
-    elsif unit_approve == true && dept_approve.nil? == true
-      "Approved by Unit head, awaiting Dept approval"
-    elsif dept_approve == true && dept_approve == true && final_approve.nil? == true
-      "Approved by Dept head, awaiting Pengarah approval"
-    elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == true
-      "All approvals complete"
-    elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == false
-      "Report Submitted"
+    if unit_approve == nil
+      "Awaiting 1st Approval"
+    elsif unit_approve == false || dept_review == false 
+      "Rejected"
+    elsif unit_approve == true && dept_review == nil
+      "Approved by 1st Approval, Awaiting 2nd Approval"
+    elsif unit_approve == true && dept_approve == true
+      " All Approvals Complete"
     else
-      "Status Not Available"
+      "No Status available"
     end
   end
   
-  def applicant_details 
-    staff.mykad_with_staff_name
+  def staff_details 
+          suid = staff_id.to_a
+          exists = Staff.find(:all, :select => "id").map(&:id)
+          checker = suid & exists     
+
+          if staff_id == nil
+             "" 
+           elsif checker == []
+             "Staff No Longer Exists" 
+          else
+            staff.staff_name_with_title
+          end
+  end
+	
+	def course_details 
+      suid = ptcourse_id.to_a
+      exists = Ptschedule.find(:all, :select => "id").map(&:id)
+      checker = suid & exists     
+
+      if ptcourse_id == nil
+        "" 
+      elsif checker == []
+        "Course No Longer Exists" 
+      else
+        ptschedule.id.coursename
+    end
+  end
+  
+  def approver1_details 
+      suid = approver_1.to_a
+      exists = Staff.find(:all, :select => "id").map(&:id)
+      checker = suid & exists     
+
+      if approver_1 == nil
+        "" 
+      elsif checker == []
+        "-" 
+      else
+        approver1.staff_name_with_title
+    end
+  end
+  
+  def approver2_details 
+      suid = approver_2.to_a
+      exists = Position.find(:all, :select => "id").map(&:id)
+      checker = suid & exists     
+
+      if approver_2 == nil
+        "" 
+      elsif checker == []
+        "-" 
+      else
+        approver2.position_with_boss
+    end
+  end
+  
+  def replacement_details 
+      suid = replacement_id.to_a
+      exists = Staff.find(:all, :select => "id").map(&:id)
+      checker = suid & exists     
+
+      if replacement_id == nil
+        "" 
+      elsif checker == []
+        "-" 
+      else
+        replacementstaff.staff_name_with_title
+    end
   end
   
 end

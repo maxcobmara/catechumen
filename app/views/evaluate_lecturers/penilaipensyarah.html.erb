@@ -1,0 +1,219 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+ <script>
+	document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+
+</script>
+</form>	
+<fieldset width=10px height=10px >
+ 
+<div id="title">
+<table width=100% border="0">
+	<tr>
+		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/></th>
+		<th><H4>PPL APMM<BR><BR>NO.DOKUMEN: BK-KKM-KS-04-04<BR>BORANG PENILAI PENSYARAH</H4> </th>
+		<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
+	</tr>
+</table>
+
+<div id="title">
+	<table width=100% cellspacing="0" border="1">
+		<tr>
+			<th colspan=4 align="left"> DISEDIAKAN OLEH: </th>
+			<th colspan=2 align="left">TARIKH KEMASKINI: </th>
+		</tr>
+	</table>
+<br>
+
+<table width=100% cellspacing="0" cellpadding="7" border="0">
+	<tr>
+		<td colspan=4 align="center"><font color="black", size="3">(Diisi oleh Pelatih)</td>	
+	</tr>
+
+</table>
+
+<table width=100% cellspacing="0" cellpadding="0" border="1">
+	<tr>
+		<td>
+			<table width=100% border="0" cellspacing="0" cellpadding="10">
+			<tr>
+			<td>Kursus: <%= @evaluate_lecturer.course_id.blank? ? "No Course" : @evaluate_lecturer.stucourse.specialisation %></td>
+		    <td></td>
+	        </tr>
+	        <tr>
+		    <td>Modul/Matapelajaran : <%= @evaluate_lecturer.subject_id.blank? ? "No Subject" : @evaluate_lecturer.subjectevaluate.name %> </td>
+		    <td>Tarikh: <%= @evaluate_lecturer.evaluate_date.blank? ? "-" : @evaluate_lecturer.evaluate_date.strftime("%d-%b-%Y")  %></td>
+            </tr>
+            <tr>
+            <td>Nama Pensyarah : <%= @evaluate_lecturer.staff_id.blank? ? "No Staff" : @evaluate_lecturer.staffevaluate.staff_name_with_title %> </td>
+            <td></td>
+            </tr>
+            </table>
+        </td>
+    </tr>
+</table><br>
+
+<center><img src="/images/skala.png"></center>
+<BR>
+<table width=100% cellspacing="0" cellpadding="6" font size="5px" border="1">
+	<tr>
+		<th align="center">BIL</th>
+		<th align="center">PERKARA</th>
+		<th align="center" colspan=9><center>SKOR</center></th>
+		</tr>
+	<tr>
+		<td align="center">1.</td>
+		<td>Pencapaian Objektif Pelajaran</td>	
+		<td><center><% if @evaluate_lecturer.ev_obj == 1  %><u><b><%= @evaluate_lecturer.ev_obj %></b></u><% else %>1<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_obj == 2  %><u><b><%= @evaluate_lecturer.ev_obj %></b></u><% else %>2<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_obj == 3  %><u><b><%= @evaluate_lecturer.ev_obj %></b></u><% else %>3<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_obj == 4  %><u><b><%= @evaluate_lecturer.ev_obj %></b></u><% else %>4<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_obj == 5  %><u><b><%= @evaluate_lecturer.ev_obj %></b></u><% else %>5<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_obj == 6  %><u><b><font size=3><%= @evaluate_lecturer.ev_obj %></font></b></u><% else %>6<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_obj == 7  %><u><b><%= @evaluate_lecturer.ev_obj %></b></u><% else %>7<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_obj == 8  %><u><b><%= @evaluate_lecturer.ev_obj %></b></u><% else %>8<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_obj == 9  %><u><b><%= @evaluate_lecturer.ev_obj %></b></u><% else %>9<% end %></center></td>
+		</tr>
+		
+		<tr>
+			<td align="center">2.</td>
+			<td>Pengetahuan Pensyarah Tentang Pelajaran yang Diajar</td>	
+	<td><center><% if @evaluate_lecturer.ev_knowledge == 1  %><u><b><%= @evaluate_lecturer.ev_knowledge %></b></u><% else %>1<% end %></center></td>
+	<td><center><% if @evaluate_lecturer.ev_knowledge == 2  %><u><b><%= @evaluate_lecturer.ev_knowledge %></b></u><% else %>2<% end %></center></td>
+	<td><center><% if @evaluate_lecturer.ev_knowledge == 3  %><u><b><%= @evaluate_lecturer.ev_knowledge %></b></u><% else %>3<% end %></center></td>
+	<td><center><% if @evaluate_lecturer.ev_knowledge == 4  %><u><b><%= @evaluate_lecturer.ev_knowledge %></b></u><% else %>4<% end %></center></td>
+	<td><center><% if @evaluate_lecturer.ev_knowledge == 5  %><u><b><%= @evaluate_lecturer.ev_knowledge %></b></u><% else %>5<% end %></center></td>
+	<td><center><% if @evaluate_lecturer.ev_knowledge == 6  %><u><b><%= @evaluate_lecturer.ev_knowledge %></b></u><% else %>6<% end %></center></td>
+	<td><center><% if @evaluate_lecturer.ev_knowledge == 7  %><u><b><%= @evaluate_lecturer.ev_knowledge %></b></u><% else %>7<% end %></center></td>
+	<td><center><% if @evaluate_lecturer.ev_knowledge == 8  %><u><b><%= @evaluate_lecturer.ev_knowledge %></b></u><% else %>8<% end %></center></td>
+	<td><center><% if @evaluate_lecturer.ev_knowledge == 9  %><u><b><%= @evaluate_lecturer.ev_knowledge %></b></u><% else %>9<% end %></center></td>
+		</tr>
+		<tr>
+			<td align="center">3.</td>
+			<td>Mutu Penyampaian Pensyarah</td>	
+		<td><center><% if @evaluate_lecturer.ev_deliver == 1  %><u><b><%= @evaluate_lecturer.ev_deliver %></b></u><% else %>1<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_deliver == 2  %><u><b><%= @evaluate_lecturer.ev_deliver %></b></u><% else %>2<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_deliver == 3  %><u><b><%= @evaluate_lecturer.ev_deliver %></b></u><% else %>3<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_deliver == 4  %><u><b><%= @evaluate_lecturer.ev_deliver %></b></u><% else %>4<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_deliver == 5  %><u><b><%= @evaluate_lecturer.ev_deliver %></b></u><% else %>5<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_deliver == 6  %><u><b><%= @evaluate_lecturer.ev_deliver %></b></u><% else %>6<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_deliver == 7  %><u><b><%= @evaluate_lecturer.ev_deliver %></b></u><% else %>7<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_deliver == 8  %><u><b><%= @evaluate_lecturer.ev_deliver %></b></u><% else %>8<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_deliver == 9  %><u><b><%= @evaluate_lecturer.ev_deliver %></b></u><% else %>9<% end %></center></td>
+		</tr>
+		
+		<tr>
+			<td align="center">4.</td>
+			<td>Isi Kandungan Pelajaran</td>	
+		<td><center><% if @evaluate_lecturer.ev_content == 1  %><u><b><%= @evaluate_lecturer.ev_content %></b></u><% else %>1<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_content == 2  %><u><b><%= @evaluate_lecturer.ev_content %></b></u><% else %>2<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_content == 3  %><u><b><%= @evaluate_lecturer.ev_content %></b></u><% else %>3<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_content == 4  %><u><b><%= @evaluate_lecturer.ev_content %></b></u><% else %>4<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_content == 5  %><u><b><%= @evaluate_lecturer.ev_content %></b></u><% else %>5<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_content == 6  %><u><b><%= @evaluate_lecturer.ev_content %></b></u><% else %>6<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_content == 7  %><u><b><%= @evaluate_lecturer.ev_content %></b></u><% else %>7<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_content == 8  %><u><b><%= @evaluate_lecturer.ev_content %></b></u><% else %>8<% end %></center></td>
+		<td><center><% if @evaluate_lecturer.ev_content == 9  %><u><b><%= @evaluate_lecturer.ev_content %></b></u><% else %>9<% end %></center></td>
+		</tr>
+		
+		<tr>
+			<td align="center">5.</td>
+			<td>Mutu Alat Pandang Dengar yang Digunakan</td>	
+			<td><center><% if @evaluate_lecturer.ev_tool == 1  %><u><b><%= @evaluate_lecturer.ev_tool %></b></u><% else %>1<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_tool == 2  %><u><b><%= @evaluate_lecturer.ev_tool %></b></u><% else %>2<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_tool == 3  %><u><b><%= @evaluate_lecturer.ev_tool %></b></u><% else %>3<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_tool == 4  %><u><b><%= @evaluate_lecturer.ev_tool %></b></u><% else %>4<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_tool == 5  %><u><b><%= @evaluate_lecturer.ev_tool %></b></u><% else %>5<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_tool == 6  %><u><b><%= @evaluate_lecturer.ev_tool %></b></u><% else %>6<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_tool == 7  %><u><b><%= @evaluate_lecturer.ev_tool %></b></u><% else %>7<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_tool == 8  %><u><b><%= @evaluate_lecturer.ev_tool %></b></u><% else %>8<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_tool == 9  %><u><b><%= @evaluate_lecturer.ev_tool %></b></u><% else %>9<% end %></center></td>
+		</tr>
+		
+		<tr>
+			<td align="center">6.</td>
+			<td>Kesesuaian Turutan Topik Dalam Jadual</td>	
+			<td><center><% if @evaluate_lecturer.ev_topic == 1  %><u><b><%= @evaluate_lecturer.ev_topic %></b></u><% else %>1<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_topic == 2  %><u><b><%= @evaluate_lecturer.ev_topic %></b></u><% else %>2<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_topic == 3  %><u><b><%= @evaluate_lecturer.ev_topic %></b></u><% else %>3<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_topic == 4  %><u><b><%= @evaluate_lecturer.ev_topic %></b></u><% else %>4<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_topic == 5  %><u><b><%= @evaluate_lecturer.ev_topic %></b></u><% else %>5<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_topic == 6  %><u><b><%= @evaluate_lecturer.ev_topic %></b></u><% else %>6<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_topic == 7  %><u><b><%= @evaluate_lecturer.ev_topic %></b></u><% else %>7<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_topic == 8  %><u><b><%= @evaluate_lecturer.ev_topic %></b></u><% else %>8<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_topic == 9  %><u><b><%= @evaluate_lecturer.ev_topic %></b></u><% else %>9<% end %></center></td>
+						
+		</tr>
+		
+		<tr>
+			<td align="center">7.</td>
+			<td>Kesesuaian Kerja Sindiket dengan Objektif Pelajaran</td>	
+			<td><center><% if @evaluate_lecturer.ev_work == 1  %><u><b><%= @evaluate_lecturer.ev_work %></b></u><% else %>1<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_work == 2  %><u><b><%= @evaluate_lecturer.ev_work %></b></u><% else %>2<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_work == 3  %><u><b><%= @evaluate_lecturer.ev_work %></b></u><% else %>3<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_work == 4  %><u><b><%= @evaluate_lecturer.ev_work %></b></u><% else %>4<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_work == 5  %><u><b><%= @evaluate_lecturer.ev_work %></b></u><% else %>5<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_work == 6  %><u><b><%= @evaluate_lecturer.ev_work %></b></u><% else %>6<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_work == 7  %><u><b><%= @evaluate_lecturer.ev_work %></b></u><% else %>7<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_work == 8  %><u><b><%= @evaluate_lecturer.ev_work %></b></u><% else %>8<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_work == 9  %><u><b><%= @evaluate_lecturer.ev_work %></b></u><% else %>9<% end %></center></td>
+		</tr>
+		
+		<tr>
+			<td align="center">8.</td>
+			<td>Faedah Bahan/Nota yang Diedarkan</td>	
+			<td><center><% if @evaluate_lecturer.ev_note == 1  %><u><b><%= @evaluate_lecturer.ev_note %></b></u><% else %>1<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_note == 2  %><u><b><%= @evaluate_lecturer.ev_note %></b></u><% else %>2<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_note == 3  %><u><b><%= @evaluate_lecturer.ev_note %></b></u><% else %>3<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_note == 4  %><u><b><%= @evaluate_lecturer.ev_note %></b></u><% else %>4<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_note == 5  %><u><b><%= @evaluate_lecturer.ev_note %></b></u><% else %>5<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_note == 6  %><u><b><%= @evaluate_lecturer.ev_note %></b></u><% else %>6<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_note == 7  %><u><b><%= @evaluate_lecturer.ev_note %></b></u><% else %>7<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_note == 8  %><u><b><%= @evaluate_lecturer.ev_note %></b></u><% else %>8<% end %></center></td>
+			<td><center><% if @evaluate_lecturer.ev_note == 9  %><u><b><%= @evaluate_lecturer.ev_note %></b></u><% else %>9<% end %></center></td>
+		</tr>		
+</table>
+<br>
+<table width=100% cellspacing="0" cellpadding="3" font size="5px" border="0">
+	<tr>
+		<td colspan=2><b>CATATAN/KOMEN</H3> : <%= @evaluate_lecturer.comment %><BR><BR></td>
+	</tr>
+	
+	<tr>
+		<td colspan=2><b>PENGESAHAN PELATIH :</b><BR><BR></td>
+	</tr>
+	
+	<tr>
+		<td colspan=2><b>Tandatangan : T.T</b></td>
+	</tr>
+	
+	<tr>
+		<td colspan=2><b>Nama Penuh : </b><%= @evaluate_lecturer.student_id.blank? ? "No Student" : @evaluate_lecturer.studentevaluate.name %></td>
+	</tr>
+	
+	<tr>
+		<td><b>No. K/Pengenalan : <%= @evaluate_lecturer.student_id.blank? ? "No Student" : @evaluate_lecturer.studentevaluate.icno %></b></td>
+		<td align="right"><b>Tarikh:</b> <%= @evaluate_lecturer.evaluate_date.blank? ? "-" : @evaluate_lecturer.evaluate_date.strftime("%d-%b-%Y")  %></td>
+	</tr>
+
+</table>
+
+	<table width=100% cellspacing="0" cellpadding="5" border="0">
+		<tr>
+			<td colspan=2 align="center">1 daripada 1</td>
+		</tr>
+	</table>
+</div>
+</div>
+</fieldset>
+<p align="center"><i>Dokumen ini adalah cetakan komputer dan tidak memerlukan tandatangan.</i></p>
+<BR>
+<div id="hideLink">
+<%= link_to (t 'icms.back'), evaluate_lecturers_path %>
+</div>
+</div>

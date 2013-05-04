@@ -1,0 +1,341 @@
+<div class="tform">
+<H2>Instructor Details</H2>
+<table width=100% >
+
+	<tr>
+		<td class="leftcol"><label for="student_id">Instructor Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_title %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">Date</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :appraisaldate, :start_year => 2012, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+</table>
+<BR>
+<H2>Instructor Appraisal Details</H2>
+<table width=60% align="center" cellpadding=7 border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+	<tr>
+		<th colspan=3 align="center">SKOR</th>
+	</tr>
+	<tr align="center">
+		<th width=20%>2</th>
+		<th width=20%>1</th>
+		<th width=20%>0</th>
+	</tr>
+	<tr align="center">
+		<td>Jika Dipraktikkan Setiap Masa</td>
+		<td>Jika Kerap Dipraktikkan</td>
+		<td>Jika Jarang Atau Tidak Dipraktikkan</td>
+	</tr>
+
+</table>
+<BR>
+<table width=100% cellpadding=7 border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 ">
+	<tr>
+		<th align="center" width=10%>SIRI</th>
+		<th  align="center" width=70%>SOALAN</th>
+		<th  align="center" width=20%>SKOR</th>
+	</tr>
+	
+	<tr>
+		<td align="center">1</td>
+		<td>Adakah saya menyusun tempat duduk di bilik darjah agar semua pelatih dapat mengikut pembelajaran dengan selesa?</td>
+		<td align="center"><%= f.select :q1, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">2</td>
+		<td>Adakah saya memastikan semua pelatih berada di dalam bilik darjah yang cukup terang pengcahayaan?</td>
+		<td align="center"><%= f.select :q2, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>	
+	
+	<tr>
+		<td align="center">3</td>
+		<td>Adakah saya mempunyai bahan bantuan mengajar yang mencukupi bila diperlukan?</td>
+		<td align="center"><%= f.select :q3, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">4</td>
+		<td>Adakah saya memperkenalkan diri terlebih dahulu sebelum memulakan pelajaran di awal pembelajaran?</td>
+		<td align="center"><%= f.select :q4, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">5</td>
+		<td>Bolehkah saya mengingatkan nama semua pelatih dalam bilik darjah?</td>
+		<td align="center"><%= f.select :q5, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">6</td>
+		<td>Adakah saya memperoleh maklumat secukupnya bagi setiap pelatih dari kad rekod mereka?</td>
+		<td align="center"><%= f.select :q6, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">7</td>
+		<td>Adakah saya berbincang dengan Pegawai Bahagian dan Ketua Bahagian pelatih sewajarnya?</td>
+		<td align="center"><%= f.select :q7, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">8</td>
+		<td>Adakah saya memulakan kelas pada masa yang telah ditetapkan?</td>
+		<td align="center"><%= f.select :q8, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">9</td>
+		<td>Adakah pakaian seragam saya bersih,kemas dan di gosok dengan rapi?</td>
+		<td align="center"><%= f.select :q9, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">10</td>
+		<td>Adakah rupacara saya segak?</td>
+		<td align="center"><%= f.select :q10, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">11</td>
+		<td>Adakah pengajaran saya merangkumi semua pelatih termasuk di barisan belakang?</td>
+		<td align="center"><%= f.select :q11, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">12</td>
+		<td>Adakah saya mengelak diri dari melakukan perkara yang  boleh mengganggu pelatih?</td>
+		<td align="center"><%= f.select :q12, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">13</td>
+		<td>Adakah saya menilai keberkesanan pengajaran saya berpandukan tindak balas dan reaksi pelatih?</td>
+		<td align="center"><%= f.select :q13, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">14</td>
+		<td>Adakah saya mengelak dari bercakap dengan papan kapor atau kanta lutsinar dan bertentangan mata dengan pelatih?</td>
+		<td align="center"><%= f.select :q14, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">15</td>
+		<td>Adakah saya menggunakan perkataan yang mudah difahami?</td>
+		<td align="center"><%= f.select :q15, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">16</td>
+		<td>Adakah saya bersopan dan mengelak dari menggunakan bahasa yang kesat?</td>
+		<td align="center"><%= f.select :q16, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">17</td>
+		<td>Adakah saya memberi penerangan ke atas perkataan ke atas perkataan yang sukar dan menulisnya di papan kapor?</td>
+		<td align="center"><%= f.select :q17, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">18</td>
+		<td>Adakah saya mengelak dari menyindir pelatih?</td>
+		<td align="center"><%= f.select :q18, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">19</td>
+		<td>Adakah saya menpunyai rancangan mengajar untuk setiap mata pelajaran?</td>
+		<td align="center"><%= f.select :q19, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">20</td>
+		<td>Adakah ini menjadi satu tebiat kepada saya untuk ke kelas dengan membawa kesemua bahan bantuan mengajar yang diperlukan?</td>
+		<td align="center"><%= f.select :q20, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">21</td>
+		<td>Adakah rancangan mengajar saya dapat membantu persembahan mata pelajaran mengikut urutan yang betul?</td>
+		<td align="center"><%= f.select :q21, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">22</td>
+		<td>Adakah ia menepati masa bagi setiap mata pelajaran yang diajar?</td>
+		<td align="center"><%= f.select :q22, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">23</td>
+		<td>Adakah ia dapat menimbulkan pertanyaan soalan?</td>
+		<td align="center"><%= f.select :q23, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">24</td>
+		<td>semasa mengendalikan latihan amali di bengkel adakah saya mengehadkan percakapan saya ke tahap minimum,agar pelatih dapat menumpu kepada kerja masing-masing?</td>
+		<td align="center"><%= f.select :q24, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">25</td>
+		<td>adakah saya sering kali mengulangi ungkapan yang kurang penting?</td>
+		<td align="center"><%= f.select :q25, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">26</td>
+		<td>Adakah saya mengelak dari mengganggu pelatih?</td>
+		<td align="center"><%= f.select :q26, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">27</td>
+		<td>Adakah saya mengelakkan pelatih membuat kerja sehingga selesai waktu?</td>
+		<td align="center"><%= f.select :q27, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">28</td>
+		<td>Adakah saya meyesuaikan diri saya dengan kelas?</td>
+		<td align="center"><%= f.select :q28, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">29</td>
+		<td>Adakah saya mengalakkan pelatih menanya soalan?</td>
+		<td align="center"><%= f.select :q29, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">30</td>
+		<td>Adakah pelatih menghormati saya sebagai seorang jurulatih?</td>
+		<td align="center"><%= f.select :q30, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">31</td>
+		<td>Adakah saya menggunakan bahan bantuan mengajar pada waktu yang bersesuaian?</td>
+		<td align="center"><%= f.select :q31,Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">32</td>
+		<td>Adakah saya mengubahsuai bahan bantuan mengajar jika perlu?</td>
+		<td align="center"><%= f.select :q32, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">33</td>
+		<td>Adakah saya membuat penelitian ke atas bahan bantuan mengajar sebelum digunakan?</td>
+		<td align="center"><%= f.select :q33, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">34</td>
+		<td>Adakah saya memperolehi tumpuan sepenuhnya dari semua pelatih?</td>
+		<td align="center"><%= f.select :q34, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">35</td>
+		<td>Adakah saya memberi motivasi kepada pelatih dengan membuat huraian berhubung kait dengan pembelajaran?</td>
+		<td align="center"><%= f.select :q35, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">36</td>
+		<td>Adakah saya memberitahu pelatih objektif pelajaran?</td>
+		<td align="center"><%= f.select :q36, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">37</td>
+		<td>Adakah sayan mengulangkaji kemahiran atau keperluan pengetahuan diri untuk mengajar?</td>
+		<td align="center"><%= f.select :q37, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">38</td>
+		<td>Adakah saya mempersembahkan contoh yang senang sebelum memberikan yang lebih susah?</td>
+		<td align="center"><%= f.select :q38, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">39</td>
+		<td>adakah saya mempersembahkan contoh yang senang sebelum memberikan yang lebih susah?</td>
+		<td align="center"><%= f.select :q39, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">40</td>
+		<td>Adakah saya membuat perbelajaran menjadi lebih mudah dengan cara memberi contoh-contoh yang baik untuk mempertingkatkan daya ingatan?</td>
+		<td align="center"><%= f.select :q40, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">41</td>
+		<td>Adakah saya menanya soalan kepada pelatih semasa pembelajaran?</td>
+		<td align="center"><%= f.select :q41, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">42</td>
+		<td>Adakah saya memastikan pelatih memperolehi pengetahuan dan keupayaan yang dinyatakan pada objektif?</td>
+		<td align="center"><%= f.select :q42, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">43</td>
+		<td>Adakah saya memberi masa yang cukup kepada pelatih untuk melatih kemahiran?</td>
+		<td align="center"><%= f.select :q43, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">44</td>
+		<td>Adakah maklum balas diberi kepada setiap pelatih selepas setiap soalan atau pelaksanaan?</td>
+		<td align="center"><%= f.select :q44, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">45</td>
+		<td>Adakah saya menguji tahap pengetahuan dan keupayaan untuk setiap objektif?</td>
+		<td align="center"><%= f.select :q45, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">46</td>
+		<td>Adakah saya membuat latihan susulan pada kemahiran yang penting supaya pelatih tidak cepat lupa?</td>
+		<td align="center"><%= f.select :q46, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">47</td>
+		<td>Adakah saya mengubahsuai cara mengajar setelah mengambil kira tahap kebolehan dan pengalamn pelatih yang berlainan?</td>
+		<td align="center"><%= f.select :q47, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+	
+	<tr>
+		<td align="center">48</td>
+		<td>Adakah saya memberi perhatian yang lebih kepada pelatih yang lemah?</td>
+		<td align="center"><%= f.select :q48, Instructor::SCORE,:prompt => "Select"  %></td>
+	</tr>
+</table>
+<BR>
+
+<table width=100% >
+		<tr>
+			<td width=23%><label for="subject_id">Sent To Quality Control</label></td>
+			<td><b>:</b></td>
+			<td><%= f.check_box :qcsent %><font color="grey", size="-2"> Please tick to send to Quality Control </font></td>
+		</tr>
+</table>
+
+</div>

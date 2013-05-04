@@ -1,55 +1,58 @@
 <div class="tform">
 	<H2><%= t 'positions.position' %></H2>
-	<table width=100%>
+	<table width=100% border=0>
 		<tr>
-			<td class="leftcol"><label for="code"><%= t 'positions.code' %> :</label></td>
-			<td><%=h @position.combo_code %></td>
+			<td class="leftcol" width=30%><label for="positioncode"><%= t 'positions.positioncode' %></label></td>
+			<td width=2%><b>:</b></td>
+			<td><%=h @position.positioncode %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="name"><%= t 'positions.name' %> :</label></td>
-			<td><%=h @position.name %></td>
+			<td class="leftcol"><label for="positionname"><%= t 'positions.positionname' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @position.positionname %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="personname"><%= t 'positions.personname' %> :</label></td>
-			<td><%=h @position.staff.blank? ? "-" : @position.staff.name %></td>
+			<td class="leftcol" ><label for="personname"><%= t 'positions.personname' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @position.title_details %> <%=h @position.staff.blank? ? "-" : @position.staff.name %></td>
 		</tr>
 
 	<% if @position.parent_id != nil %>
 		<tr>
-			<td class="leftcol"><label for="parent_id"><%= t 'positions.parent_id' %> :</label></td>
-			<td><%=h @position.parent.name %> - <%=h @position.parent.staff_id.blank? ? "No Staff" : @position.parent.staff.name %></td>
+			<td class="leftcol" ><label for="parent_id"><%= t 'positions.parent_id' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @position.bosses.position_with_boss %></td>
 		</tr>
 	<% end %>
 
-		<!--<tr>
-			<td class="leftcol"><label for="name">Position Name:</label></td>
-			<td><#%=h @position.name %></td>
-		</tr>-->
-
 		<tr>
-			<td class="leftcol"><label for="staffgrade_id"><%= t 'positions.grade_id' %>:</label></td>
+			<td class="leftcol" ><label for="staffgrade_id"><%= t 'positions.grade_id' %></label></td>
+			<td><b>:</b></td>
 			<td><%=h @position.staffgrade_id.blank? ? "" : @position.staffgrade.name_and_group %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="unit"><%= t 'positions.unit' %> :</label></td>
+			<td class="leftcol" ><label for="unit"><%= t 'positions.unit' %></label></td>
+			<td><b>:</b></td>
 			<td><%=h @position.unit %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="tasks_main"><%= t 'positions.tasks_main' %> :</label></td>
-			<td> <%=h @position.tasks_main %></td>
+			<td class="leftcol" ><label for="taskmain"><%= t 'positions.taskmain' %></label></td>
+			<td><b>:</b></td>
+			<td> <%=h @position.taskmain %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="tasks_other"><%= t 'positions.tasks_other' %> :</label></td>
-			<td> <%=h @position.tasks_other %></td>
+			<td class="leftcol" ><label for="taskother"><%= t 'positions.taskother' %></label></td>
+			<td><b>:</b></td>
+			<td> <%=h @position.taskother %></td>
 		</tr>
 	</table>
-<BR>
 </div>
+<BR>
 
 
 <%= link_to (t 'icms.update'), edit_position_path(@position) %> |

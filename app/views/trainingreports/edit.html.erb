@@ -1,19 +1,10 @@
+<h3>Lesson Plan Report</h3>
+
 <% form_for(@trainingreport) do |f| %>
   <%= f.error_messages %>
-	<div class="tform">
-		
-	<% if @trainingreport.is_submitted != true %>
-	<H2>Edit Lesson Plan Reporting</H2>
-  <%= render :partial => 'form', :locals => {:f => f} %>
-	<% end %>
-	
-	<% if @trainingreport.is_submitted == true && @trainingreport.tpa_id == User.current_user.staff_id%>
-	<%= render :partial => 'show' %>
-	<H2>Approve Lesson Plan Report</H2>
-  <%= render :partial => 'approve', :locals => {:f => f} %>
-	<% end %>
 
-	</div>
+ <%= render :partial => 'form', :locals => {:f => f} %>
+
   <p>
     <%= f.submit 'Update' %>
   </p>

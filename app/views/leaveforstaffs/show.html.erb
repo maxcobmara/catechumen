@@ -1,45 +1,71 @@
 <div class="tform">
-  
+ <%= render :partial => 'applyshow' %>
 
-  <%= render :partial => 'applyshow' %>
-	<table width=100% >
+<% if @leaveforstaff.leavetype == 8 %>
+<H2><%= t 'staffleave.approval1' %></H2>
+	<table>
+	
 		<tr>
-		  <td class="leftcol"><label for="replacement_id"><b><%= t 'staffleave.replacement_id' %> :</b></label></td>
-			<td><%h @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name %></td>
+		  <td class="leftcol"><label for="approval1"><%= t 'staffleave.approval1' %></label></td>
+		  <td><b>:</b></td>
+			  <td><%=h @leaveforstaff.approval1? ? (t 'staffleave.notendorse') : (t 'staffleave.endorse') %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="approval1_id"><%= t 'staffleave.approval1_id' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.staff_name_with_title %></td>
+		</tr>
+
+		<tr>
+		  <td class="leftcol"><label for="approval1date"><%= t 'staffleave.approval1date' %></label></td>
+		  <td><b>:</b></td>
+			<td><%=h @leaveforstaff.approval1date %></td>
 		</tr>
 	</table>
 
-<H2><%= t 'staffleave.approve_leave' %></H2>
+	<% else %>
+	<H2><%= t 'staffleave.approval1' %> & <%= t 'staffleave.approver2' %></H2>
 	<table>
+	
 		<tr>
-		  <td class="leftcol"><label for="approval1"><b><%= t 'staffleave.approval1' %> :</b></label></td>
-			<td><%=h @leaveforstaff.approval1? ? "Approved" : "Not Approved" %></td>
+		  <td class="leftcol"><label for="approval1"><%= t 'staffleave.approval1' %></label></td>
+		  <td><b>:</b></td>
+			<td><%=h @leaveforstaff.apply_leave_status%></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="approval1_id"><b><%= t 'staffleave.approval1_id' %> :</b></label></td>
-			<td><%=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.name %></td>
+			<td class="leftcol"><label for="approval1_id"><%= t 'staffleave.approval1_id' %></label></td>
+			<td><b>:</b></td>
+			<td><%=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.staff_name_with_title %></td>
 		</tr>
 
 		<tr>
-		  <td class="leftcol"><label for="approval1date"><b><%= t 'staffleave.approval1date' %> :</b></label></td>
-			<td><%=h @leaveforstaff.approval1date %></td>
+		  <td class="leftcol"><label for="approval1date"><%= t 'staffleave.approval1date' %></label></td>
+		  <td><b>:</b></td>
+			<td><%=h @leaveforstaff.approval1date.blank? ? "-" :  @leaveforstaff.approval1date.strftime("%d-%b-%Y")  %></td>
+		</tr>
+	</table>
+	<table>
+	
+		<tr>
+		  <td class="leftcol"><label for="approver2"><%= t 'staffleave.approver2' %></label></td>
+		  <td><b>:</b></td>
+			<td><%=h @leaveforstaff.apply_leave_status%></td>
 		</tr>
 	
 		<tr>
-		  <td class="leftcol"><label for="approver2"><b><%= t 'staffleave.approver2' %> :</b></label></td>
-			<td><%=h @leaveforstaff.approver2? ? "Approved" : "Not Approved" %></td>
+		  <td class="leftcol"><label for="approval2_id"><%= t 'staffleave.approval2_id' %></label></td>
+		  <td><b>:</b></td>
+			<td><%=h @leaveforstaff.approval2_id.blank? ? "" : @leaveforstaff.approver.staff_name_with_title %></td>
 		</tr>
 	
 		<tr>
-		  <td class="leftcol"><label for="approval2_id"><b><%= t 'staffleave.approval2_id' %> :</b></label></td>
-			<td><%=h @leaveforstaff.approval2_id.blank? ? "Not Required" : @leaveforstaff.endorser %></td>
+		  <td class="leftcol"><label for="approval2date"><%= t 'staffleave.approval2date' %></label></td>
+		  <td><b>:</b></td>
+			<td><%=h @leaveforstaff.approval2date.blank? ? "-" : @leaveforstaff.approval2date.strftime("%d-%b-%Y") %></td>
 		</tr>
-	
-		<tr>
-		  <td class="leftcol"><label for="approval2date"><b><%= t 'staffleave.approval2date' %> :</b></label></td>
-			<td><%=h @leaveforstaff.approval2date %></td>
-		</tr>
-  </table>
+		
+  </table><% end %>
+
 </div>
 <BR>
 <%= link_to (t 'icms.update'), edit_leaveforstaff_path(@leaveforstaff) %> |

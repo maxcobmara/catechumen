@@ -1,0 +1,119 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+</form>
+	<fieldset>
+		
+<div id="kewpa">
+<p class= "titlename" align="center"><b>KEBENARAN UNTUK MENINGGALKAN PEJABAT<BR>
+DALAM WAKTU BEKERJA DI BAWAH PERINTAH AM 5 BAB G</b></p>
+
+<p class= "titlesmall" align="center"><b>Borang Permohonan Kebenaran Meninggalkan<BR>
+Pejabat Dalam Waktu Bekerja</b><BR><BR></p>
+	
+
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+	    <td width="400" colspan=2>Kepada : <%=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.staff_name_with_title %><BR><BR>
+            Saya memohon kebenaran meninggalkan pejabat untuk tujuan: <%=h @leaveforstaff.reason %><BR><BR><BR><BR>
+Tempoh yang diperlukan: <%=h @leaveforstaff.leavestartdate.strftime("%d - %b - %Y") %> hingga <%=h @leaveforstaff.show_to_day %></td>
+	</tr>
+	
+</table><BR>
+
+<table width=100% border=0px cellspacing=0 align="center" >
+	<tr>
+	    <td width="150" >Tandatangan Pemohon<BR><BR></td>
+            <td width="2">:</td>
+            <td></td>
+	</tr>
+
+	<tr>
+	    <td width="150">Nama Penuh <BR><BR></td>
+	    <td width="2">:</td>
+        <td><%=h @leaveforstaff.applicant.staff_name_with_title %></td>
+	</tr>
+	
+	<tr>
+	    <td width="150">Jawatan <BR><BR></td>
+	    <td width="2" >:</td>
+        <td><%=h @leaveforstaff.applicant.position_for_staff %></td>
+	</tr>
+
+	<tr>
+	    <td width="150">Tarikh <BR><BR></td>
+	    <td width="2">:</td>
+            <td><%= Date.today.strftime('%d-%m-%Y')%></td>
+	</tr>
+</table>
+<BR>
+<table width=100% border=0px cellspacing=0 align="center" >
+	
+	<tr>
+	    <td colspan=3 >Permohonan pelepasan waktu bekerja <b><%=h @leaveforstaff.approval1? ? "Diluluskan" : "Tidak Diluluskan" %></b></td>
+            
+	</tr>
+
+	<tr>
+	    <td width="150" ><BR>Tandatangan Pegawai Penyelia</td>
+            <td width="2">:</td>
+            <td></td>
+	</tr>
+
+	<tr>
+	    <td width="150"><BR> Nama Penuh <BR><BR></td>
+	    <td width="2">:</td>
+            <td></td>
+	</tr>
+	
+	<tr>
+	    <td width="150">Jawatan <BR><BR></td>
+	    <td width="2" >:</td>
+            <td></td>
+	</tr>
+
+	<tr>
+	    <td width="150">Tarikh <BR><BR></td>
+	    <td width="2">:</td>
+            <td></td>
+	</tr>
+
+	<tr>
+	    <td colspan=3><b>Catitan :</b>
+			<ol>
+			<li>Sekiranya tempoh pegawai meninggalkan pejabat dalam waktu bekerja melebihi 4 jam
+			    atau separuh daripada waktu bekerja sehari yang ditetapkan pada hari tersebut, maka
+			    pegawai dikehendaki mengambil Cuti Rehat atau cuti lain yang berkelayakan.</li><BR>
+			<li>Pegawai hendaklah sentiasa bersedia untuk menggantikan semula tempoh waktu
+			    bekerja yang telah digunakan untuk tujuan menyelesaikan tugas hakikinya
+			    supaya penyampaian perkhidmatan tidak terjejas sekiranya diarahkan
+			    oleh Pegawai Penyelianya.</li>
+			
+			</ol></td>
+	    
+	</tr>
+
+	
+</table>
+</div>
+</fieldset>
+<p align="center"><i>Dokumen ini adalah cetakan komputer dan tidak memerlukan tandatangan.</i></p>
+
+
+<div id="hideLink">
+	<%= link_to 'BACK', leaveforstaffs_path %>
+	</div>
+
+
+
+
+
+
+

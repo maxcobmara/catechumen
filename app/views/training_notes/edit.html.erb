@@ -1,0 +1,69 @@
+<h3>Editing Training Note</h3>
+
+<% form_for(@training_note, :html => { :multipart => true}) do |f| %>
+  <%= f.error_messages %>
+<div class="tform">
+	<H2> Training Notes Details</H2>
+  <table width=100% >
+  	
+  	<tr>
+		<td class="leftcol"><label for="topic_id">Topic Name</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @training_note.topic.name %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="subject_id">Created By</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @training_note.topic.created_details %></td>
+	</tr>
+	
+  	<tr>
+		<td class="leftcol"><label for="topic_code">Timetable Name</label></td>
+		<td><b>:</b></td>
+		<td><%=h @training_note.timetable_id %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="topic_code">File Uploaded</label></td>
+		<td><b>:</b></td>
+		<td><%= f.file_field :document  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="topic_code">Title Notes</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_field :title %></td>
+	</tr>
+  
+	 <tr>
+		<td class="leftcol"><label for="topic_code">Reference</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_field :reference %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="topic_code">Version</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_field :version %></td>
+	</tr>
+  
+	<tr>
+		<td class="leftcol"><label for="topic_code">Release</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :release, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+
+</table>
+ 
+  
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+</div>
+<BR>
+<%= link_to 'Show', @training_note %> |
+<%= link_to 'Back', training_notes_path %>
+

@@ -1,29 +1,16 @@
 class StaffsController < ApplicationController
-  filter_resource_access
-  helper_method :sort_column, :sort_direction
+ # filter_resource_access
   
   # GET /staffs
   # GET /staffs.xml
-  def index
-    @staffs = Staff.find(:all, :conditions => ['name ILIKE ?', "%#{params[:search]}%"])
-    #@staffs = Staff.find(:all, :order => sort_column + " " + sort_direction, :conditions => ['name ILIKE ?', "%#{params[:search]}%"])
-    @staff_filtered = Staff.with_permissions_to(:edit).find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
-    #@staffs = Staff.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
-
-    respond_to do |format|
-        format.html # index.html.erb
-        format.xml  { render :xml => @staffs }
-        format.js
-    end
+def index
+    @staffs = Staff.with_permissions_to(:index).search(params[:search])
+  respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @staffs }
+      format.js
   end
-  
-  def indexmessage
-    @staffs = Staff.find(:all)
-    
-    respond_to do |format|
-        format.js
-    end
-  end
+end
 
   # GET /staffs/1
   # GET /staffs/1.xml
@@ -43,6 +30,9 @@ class StaffsController < ApplicationController
     @staff.qualifications.build
     @staff.kins.build
     @staff.loans.build
+    @staff.vehicleregnos.build
+    @staff.bankaccounts.build
+    @staff.individu_courses.build
     
 
     respond_to do |format|
@@ -58,45 +48,11 @@ class StaffsController < ApplicationController
   
   def borang_maklumat_staff
     @staff = Staff.find(params[:id])  
-    #@staffs = Staff.search(params[:search])
     render :layout => 'report'
-    #respond_to do |format|
-        #format.html # index.html.erb  { render :action => "report.css" }
-        #format.xml  { render :xml => @staffs }
-    #end
   end
   
   #-----Test Ruport---------#
-  
-def ruport
-      table = Staff.report_table(:all, :only => [:id, :name])
-        #:only       => %w[icno name id],
-        #:conditions => "staffs_id is not null",
-        #:group      => "icno, name, id")
 
-    #  grouping = Grouping(table, :by => "icno")
-
-    #  name = Table(%w[platform name count])  
-
-    #  grouping.each do |name,group|
-     #   Grouping(group, :by => "name").each do |vname,group|
-     #     name     << { "platform" => name, 
-     #                   "name" => vname,
-     #                   "count" => group.length }
-      
-
-
-    #  sorted_table = name.sort_rows_by("count", :order => :descending)
-    #  g = Grouping(sorted_table, :by => "platform")
-
-    #  send_data g.to_pdf,
-    #    :type         => "application/pdf",
-    #    :disposition  => "inline",
-    #    :filename     => "report.pdf" 
-    end
-  
-  
-  #---------Test Ruport----#
 
   # POST /staffs
   # POST /staffs.xml
@@ -106,8 +62,8 @@ def ruport
     respond_to do |format|
       if @staff.save
         flash[:notice] = t(:thank)
-        #flash[:notice] = 'Staff was successfully creat ed.'
-        format.html { redirect_to staffs_path }
+        #flash[:notice] = 'Staff was successfully created.'
+        format.html { redirect_to (@staff) }
         format.xml  { render :xml => @staff, :status => :created, :location => @staff }
       else
         format.html { render :action => "new" }
@@ -146,21 +102,4 @@ def ruport
       format.xml  { head :ok }
     end
   end
-  
-  private
-
-  def sort_column
-      Staff.column_names.include?(params[:sort]) ? params[:sort] : "icno" 
-  end
-  def sort_direction
-      %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
-  end
-  
-  def for_staffgradeid
-    @staffs = Staff.find( :all, :conditions => [" staffgrade_id = ?", params[:id]]  ).sort_by{ |k| k['name'] }    
-    respond_to do |format|
-      format.json  { render :json => @staffs }      
-    end
-  end
-  
 end

@@ -1,0 +1,72 @@
+<div class="tform">
+	<h2>Reservation Facility Details</h2>
+  <table width=100% >
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Staff Name</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_title %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="location_id">Location Reserved</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :location_id, Location.find(:all, :conditions => {:typename => 3}, :order => :code), :id, :location_list %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="request_date">Request Date</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :requestdate, :start_year => 2012, :end_year => 2030, :order => [:day, :month, :year]  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="start_date">Reservation Start Date</label><font color="red"> * </font></td>
+		<td><b>:</b></td>
+		<td><%= f.datetime_select :start_date, :start_year => 2012, :end_year => 2030, :order => [:day, :month, :year], :include_blank => true  %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="start_date">Reservation End Date</label><font color="red"> * </font></td>
+		<td><b>:</b></td>
+		<td><%= f.datetime_select :end_date, :start_year => 2012, :end_year => 2030, :order => [:day, :month, :year] , :include_blank => true %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="approver_id">Approver Name :</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :approver_id, Staff.find(:all), :id, :staff_name_with_title, :include_blank => true %></td>
+	</tr>
+</table>
+
+
+<H2>Approval</H2>
+<table width=100%>	
+	<tr>
+		<td class="leftcol"><label for="approval">Approved?</label></td>
+		<td><b>:</b></td>
+		<td><%= f.radio_button :approver2,'false' %>Not Approved &nbsp<%= f.radio_button :approver2,'true' %>Approved</td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="approval">If Not Approved, State Reason</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :remark, :size => "30x4" %></td>
+	</tr>
+		
+	<tr>
+		<td class="leftcol"><label for="approver_date">Approver Date :</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :approve_date, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="approver_id">Facility Officer :</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :facility_officer, Location.find(:all), :id, :staffadmin_id, :include_blank => true %></td>
+	</tr>
+	
+</table>
+
+<BR>
+</div>
+	

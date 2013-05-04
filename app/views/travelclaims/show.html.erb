@@ -1,0 +1,147 @@
+<div class="tform">
+	<H2>Travel Details (<%= @travelclaim.transport_details %>)</H2>
+	<table width=100% border="0" cellspacing=0>
+		<tr>
+			<td width=20%><label for="staff_id"><%= t 'claim.staff_id' %></label></td>
+			<td width=3%><b>:</b></td>
+	    <td><%=h @travelclaim.staff_details %></td>
+		</tr>
+		<tr>
+			<td ><label for="claimsmonth"><%= t 'claim.claimsmonth' %></label></td>
+			<td><b>:</b></td>
+	    <td><%=h @travelclaim.claimsmonth.strftime("%B %Y") %></td>
+		</tr>
+	
+		<% for travelclaimrequest in @travelclaim.travelclaimrequests %>
+		<tr>
+			<td ><label for="Travel Details"><%= t 'claim.travel_details' %></label></td>
+			<td><b>:</b></td>
+	        <td><%=h travelclaimrequest.travelrequest.travel_request_key %></td>
+		</tr>
+		
+	<tr>
+		<td></td>
+		<td><b>:</b></td>
+		<td>
+		</td></td>
+	</tr>
+	<% end %>
+</table>
+<H2>Claim Public Transport Fare & Other Claims</H2>	
+<table width=100% border=0 cellspacing=0>
+<tr>
+	<td width=20%><label for="Travel Claim Receipt"><%= t 'claim.receipt' %></label></td>
+	<td width=3%><b>:</b></td>
+	<td><table width=100% border="1" cellspacing="0" BORDERCOLOR="#C0C0C0">
+		<tr bgcolor="#F6E3CE">
+			<td width=30%><b><%= t 'claim.type' %></td>
+			<td width=30%><b><%= t 'claim.receipt_no' %></td>
+			<td width=30% align=right><b><%= t 'claim.value' %> </b></td>
+		</tr>
+				
+		<% for travelclaimreceipt in @travelclaim.travelclaimreceipts %>
+
+		<tr>
+		
+			<td><%=h (Travelclaimreceipt::RECEIPTTYPE.find_all{|disp, value| value ==   
+				travelclaimreceipt.type_id}).map {|disp, value| disp} %>
+			<td><%= travelclaimreceipt.receiptnp %>
+			<td align=right><%= ringgols(travelclaimreceipt.rvalue) %>
+		</tr>
+	
+	<% end %>
+  </table></td>
+</tr>	
+</table>
+
+<H2>Meal Allowance / Daily Allowance / Lodging Allowance</H2>
+<table width=100% border=0 cellspacing=0>
+<tr>
+	<td width=20%><label for="">Allowance Details</label></td>
+	<td width=3%><b>:</b></td>
+	<td><table width=100% border="1" cellspacing="0" BORDERCOLOR="#C0C0C0">
+		<tr bgcolor="#F6E3CE">
+			<td width=5%></td>
+			<td width=30% >ALLOWANCE TYPE</td>
+			<td width=20% >VALUE (RM)</td>
+			<td width=30% >RECEIPT NO</td>
+			
+		</tr>
+				
+		<% for travelallowance in @travelclaim.travelallowances %>
+
+		<tr>
+			<td  width=10%>  <%= travelallowance.no_of_day %></td>
+			<td  width=30%> x <%=h (Travelallowance::ALLOWANCETYPE.find_all{|disp, value| value ==   
+					travelallowance.allowance_type}).map {|disp, value| disp} %></td>
+			<td  width=20%> <%= travelallowance.allowance_per_day %></td>
+			<td  width=30%> <%= travelallowance.resit_no %></td>
+			
+		</tr>
+	
+	<% end %>
+  </table></td>
+</tr>	
+
+</table>
+<H2><%= t 'claim.foreign' %></H2>
+<table width=100% border="0" cellspacing=0>
+	
+	<tr>
+	   <td width=20%><label for="exchvalue"><%= t 'claim.exchvalue' %></label></td>
+		<td width=2%><b>:</b></td>
+		<td><%=h @travelclaim.exchvalue %></td>
+	</tr>
+	
+	
+	<tr>
+	   <td><label for="exchloss"><%= t 'claim.exchloss' %></label></td>
+		<td><b>:</b></td>
+		<td><%=h @travelclaim.exchloss %></td>
+	</tr>
+	
+	
+	<tr>
+	   <td><label for="gtotal"><%= t 'claim.gtotal' %></label></td>
+		<td><b>:</b></td>
+		<td><%=h @travelclaim.gtotal %></td>
+	</tr>
+	
+	
+	
+	<!--<tr>
+	   <td><label for="claimtype"><%= t 'claim.claimtype' %></label></td>
+		<td><b>:</b></td>
+		<td><#%=h @travelclaim.claimtype %></td>
+	</tr>-->
+</table>
+<H2><%= t 'claim.submission' %></H2>
+<table width=100% border="0" cellspacing=0>	
+
+	    <tr>
+			<td width=20%><label for="submission"><%= t 'claim.submissiondt' %></label></td>
+			<td width=2%><b>:</b></td>
+			<td><%=h @travelclaim.submission.blank? ? "-" : @travelclaim.submission.strftime("%d/%m/%Y") %></td>
+		</tr>
+</table>
+<H2><%= t 'claim.hod' %></H2>	
+<table width=100% border="0" cellspacing=0>
+	
+		<tr>
+			<td width=20%><label for="hod_id"><%= t 'claim.hod_id' %></label></td>
+			<td width=2%><b>:</b></td>
+			<td><%=h @travelclaim.hod_id.blank? ? "-" : @travelclaim.hod.staff_name_with_title %></td>
+		</tr>
+
+		<tr>
+		 <td ><label for="hodconfirmdt"><%= t 'claim.hodconfirmdt' %></label></td>
+		<td><b>:</b></td>
+		<td><%=h @travelclaim.hodconfirmdt %></td>
+		</tr>
+
+
+</table>
+</div>
+<BR>
+<%= link_to (t 'icms.update'), edit_travelclaim_path(@travelclaim) %> |
+<%= link_to (t 'icms.back'), travelclaims_path %>

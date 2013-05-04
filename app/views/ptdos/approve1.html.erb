@@ -1,0 +1,103 @@
+<h3>Staff Training</h3>
+<div class="tform">
+<H2>Staff Training Details</H2>
+<table width=100% >
+<% form_for(@ptdo) do |f| %>
+  <%= f.error_messages %>
+	
+	<tr>
+		<td class="leftcol"><label for="ptcourse_id">Course</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%=h @ptdo.ptschedule.coursename %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="ptcourse_id">Description</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.ptschedule.description %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="ptcourse_id">Location</label></td>
+		<td><b>:</b></td>
+		<td> <%=h @ptdo.ptschedule.location %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="ptschedule_id">Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @ptdo.ptschedule.start.blank? ? "-" : @ptdo.ptschedule.start.strftime('%e %B %Y') %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Staff Name</label></td>
+		<td><b>:</b></td>
+		<td><%=h @ptdo.staff_details %></td>
+	</tr>
+</table>
+
+<% permitted_to? :approve1, :ptdos do %>
+<% if @ptdo.unit_approve == nil && @ptdo.approver_1 != nil %>
+<H2>1st Approver Details (<%=h @ptdo.approver_1.blank? ? "-" : @ptdo.approver1_details %>)</H2>
+<table width=100%>
+		<tr>
+			<td class="leftcol"><label for="justification">Justification</label></td>
+			<td width=3%><b>:</b></td>
+			<td><%= f.text_area :justification, :size => '45x2' %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="unit_review">Review</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_area :unit_review, :size => '45x2' %></td>
+		</tr>
+	
+		
+		<tr>
+			<td class="leftcol"><label for="unit_approve">Approved?</label></td>
+			<td><b>:</b></td>
+			<td><%= f.check_box :unit_approve %></td>
+		</tr>
+		
+		
+		<tr>
+			<td class="leftcol"><label for="unit_approve">Remark</label></td>
+			<td><b>:</b></td>
+			<td><%= f.text_area :remark_1, :size => '45x2' %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="unit_approve"> 2nd Approver</label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :approver_2, Position.find(:all, :conditions => {:positioncode => "1"}, :order => :positioncode), :id, :position_with_boss, :include_blank => true %></td>
+		</tr>
+		
+</table>		
+		
+		<% end %>
+       <% end %>
+
+
+
+			
+  <% permitted_to? :approve, :ptdos do %>
+		<% if @ptdo.dept_approve? && @ptdo.final_approve.blank? %>
+<table width=100%>
+		
+		<tr>
+			<td class="leftcol"><label for="trainee_report">Trainee Report  (Filled by Applicant)</label></td>
+			<td width=3%><b>:</b></td>
+			<td><%= f.text_area:trainee_report, :size => "50x7" %></td>
+		</tr>
+	
+		<% end %>
+  <% end %>
+
+</table>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+</div>
+<BR>
+<%= link_to 'Show', @ptdo %> |
+<%= link_to 'Back', ptdos_path %>

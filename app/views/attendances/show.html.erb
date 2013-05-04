@@ -4,48 +4,61 @@
   <table width=100% >
 	<!--Staff Details-->	
 		<tr>
-			<td class="leftcol"><label for="staff_id"><%= t 'attendance.staff_id' %>:</label></td>
-			<td><%=h @attendance.staffthatattend.mykad_with_staff_name %></td>	
+			<td class="leftcol"><label for="staff_id"><%= t 'attendance.staff_id' %></label></td>
+			<td width=3%><b>:</b></td>
+			<td><%=h @attendance.staffthatattend.staff_name_with_title %></td>	
 		</tr>
-	
+		<tr>
+			<td class="leftcol"><%= t 'staff.position' %>:</td>
+			<td><b>:</b></td>
+			<td><%=h @attendance.staffthatattend.position_for_staff %></td>	
+		</tr>
+	</table>
+	<table width=100%>
+		<H2><%= t 'attendance.attendance_details' %></H2>
 
 	<!--Attendance Details-->	
+	
 	<tr>
-		<th colspan = 2><%= t 'attendance.attendance_details' %></th>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="attdate"><%= t 'attendance.attdate' %> :</label></td>
+		<td class="leftcol"><label for="attdate"><%= t 'attendance.attdate' %></label></td>
+		<td width=3%><b>:</b></td>
 		<td><%=h l(@attendance.attdate) %></td>
     </tr>
 
  	<tr>
-		<td class="leftcol"><label for="time_in"><%= t 'attendance.time_in' %> :</label></td>
+		<td class="leftcol"><label for="time_in"><%= t 'attendance.time_in' %></label></td>
+		<td><b>:</b></td>
 		<td><%=h @attendance.time_in.strftime("%I:%M %p") %></td>
     </tr>
 
 	<tr>
-		<td class="leftcol"><label for="time_out"><%= t 'attendance.time_out' %> :</label></td>
+		<td class="leftcol"><label for="time_out"><%= t 'attendance.time_out' %></label></td>
+		<td><b>:</b></td>
 		<td><%=h @attendance.time_out.strftime("%I:%M %p") %></td>
     </tr>
 
 	<tr>
-		<td class="leftcol"><label for="reason"><%= t 'attendance.reason' %> :</label></td>
+		<td class="leftcol"><label for="reason"><%= t 'attendance.reason' %></label></td>
+		<td><b>:</b></td>
 		<td> <%=h @attendance.reason %></td>
     </tr>
 	<tr>
-		<td class="leftcol"><label for="approve_id"><%= t 'attendance.approve_id' %> :</label></td>
-		<td><%=h @attendance.approve_id.blank? ? "No Staff" : @attendance.approvedby.position_with_name %></td>
+		<td class="leftcol"><label for="approve_id"><%= t 'attendance.approve_id' %></label></td>
+		<td><b>:</b></td>
+		<td><%=h @attendance.approve_id.blank? ? "No Staff" : @attendance.approvedby.staff_name_with_position %></td>
     </tr>
 
 	<tr>
-		<td class="leftcol"><label for="approvestatus"><%= t 'attendance.approvestatus' %> :</label></td>
-		<td> <%=h @attendance.approvestatus? ? "Approved" : "Not Approved"  %></td>
+		<td class="leftcol"><label for="approvestatus"><%= t 'attendance.approvestatus' %></label></td>
+		<td><b>:</b></td>
+		<td> <%=h @attendance.approvestatus? ? (t 'attendance.approved') : (t 'attendance.notapproved') %></td>
     </tr>
 
 
 </table>
-<BR>
 </div>
+<BR>
+
 
 
 

@@ -2,7 +2,7 @@ class TitlesController < ApplicationController
   # GET /titles
   # GET /titles.xml
   def index
-    @titles = Title.all
+    @titles = Title.find(:all, :order => 'id')
 
     respond_to do |format|
       format.html # index.html.erb

@@ -4,30 +4,6 @@ module ApplicationHelper
     number_to_currency(money, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
   end
   
-  def tarikh(haribulan)
-    l(haribulan) unless haribulan.blank?
-  end
-  
-  def check_kin
-       begin
-           return yield
-       rescue
-           return " -N/A- "
-       end
-  end
-   
-  def check_kin_blank
-        begin
-            return yield
-        rescue
-            return ""
-        end
-  end
- 
-  def pukka(points)
-    number_with_precision(points, :precision => 1)
-  end
-  
   def link_to_remove_fields(name, f)
     f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)")
   end
@@ -38,13 +14,6 @@ module ApplicationHelper
       render(association.to_s.singularize + "_fields", :f => builder)
     end
     link_to_function(name, h("add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")"))
-  end
-  
-  def sortable(column, title = nil)
-    title ||= column.titleize
-    css_class = column == sort_column ? "current #{sort_direction}" : nil
-    direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc" 
-    link_to title, {:sort => column, :direction => direction}, {:class => css_class}
   end
   
   def select_tag_for_filter(model, nvpairs, params)
@@ -64,7 +33,7 @@ module ApplicationHelper
     _html << %{</select>}
   end
   
-  #-------------- 23 Apr 2012 --------------------#
+  #-------------- 15 August 2012 - given by Shima--------------------#
   # app/helpers/application_helper.rb --> date:9th March 2012 --> source : http://groups.google.com/group/rubyonrails-talk/browse_thread/thread/fbaffb284d7e504c/d1e2047bd214ed1b
   # title : Using observe_field on an field inside a fields_for Options.
   def sanitized_object_name(object_name) 

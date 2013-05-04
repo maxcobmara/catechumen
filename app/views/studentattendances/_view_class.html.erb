@@ -1,0 +1,40 @@
+<% unless @timetable_id.blank? %>
+	<p><font color="grey", size="-2"> Please tick (&#10003;) student who attend.</font></p>
+	<table width=100% border=1 cellspacing=0>
+	<tr>
+		<th>No.</th>
+		<th>Student Name</th>
+		<th>Course</th>
+		<th>Intake</th>
+		<th>Attend?</th>
+	</tr>
+			
+		<% counter = 0 %>
+		<% for student in @students %>
+		<% counter += 1 %>
+			
+	<tr>
+		<% unless @studentattendance_id.nil? || @studentattendance_id.blank? %>	
+		<!--Edit Record-->
+		<td width=3% align="center"><%=h counter %>.</td>	
+	    <td><%= student.name %></td>
+		<td><%= student.programme_for_student %></td>
+		<td><%= student.intake_for_student %>
+	<td width=5%><%= check_box_tag "studentattendance[student_ids][]", student.id, Studentattendance.find(@studentattendance_id).students.include?(student) %></td>   
+	    <!--Edit Record-->
+		<% else %>
+		<!--New Record-->
+		<td width=3% align="center"><%=h counter %>.</td>	
+		<td><%= student.name %></td>
+		<td><%= student.programme_for_student %></td>
+		<td><%= student.intake_for_student %></td>
+		<td width=5% align="center"><%= check_box_tag "studentattendance[student_ids][]", student.id %></td>
+		<!-- New Record -->
+	    <% end %>
+	</tr>
+
+	<% end %>
+	</table>
+	<% else %>
+		&nbsp;&nbsp; Please Select Class First
+<% end%>

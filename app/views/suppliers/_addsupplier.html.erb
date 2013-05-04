@@ -1,0 +1,22 @@
+<div class="addsupplier">
+	<% new_or_existing = addsupplier.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "supplier[#{new_or_existing}_addsupplier_attributes][]" %>
+	
+	<% fields_for prefix, addsupplier do | addsupplier_form | -%>
+
+    <table width=100%>
+	   <tr>
+		
+	       <td width=120px><%= addsupplier_form.text_field :lpono, :size => 10 %></td>
+         <td width=150px><%= addsupplier_form.text_field :document, :size => 15 %></td>
+         <td width=100px><%= addsupplier_form.text_field :quantity, :size => 7 %></td>
+         <td width=140px text-align='right' ><%= addsupplier_form.text_field :unitcost, :size => 10 %></td>
+         <td><%= addsupplier_form.text_field :received, :size => 12 %><font color=#AAA size=-2>yyyymmdd</font> </td>
+         <td width=10px><%= link_to_function (t 'icms.remove'), "$(this).up('.addsupplier').remove()" %></td>
+       </tr>
+    </table>
+    
+   
+   <% end -%>
+</div>
+

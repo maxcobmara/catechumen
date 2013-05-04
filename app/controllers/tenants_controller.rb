@@ -1,9 +1,8 @@
 class TenantsController < ApplicationController
-  filter_access_to :all
   # GET /tenants
   # GET /tenants.xml
   def index
-    @tenants = Tenant.all#with_permissions_to(:index)
+    @tenants = Tenant.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -25,8 +24,9 @@ class TenantsController < ApplicationController
   # GET /tenants/new
   # GET /tenants/new.xml
   def new
-    @tenant = Tenant.new(:location_id => params[:location_id])
-
+    @tenant = Tenant.new(:location_id => params[:location_id]) #for  display location name in tenant(new.html.erb)
+  #  @tenantdetail = @tenant.tenantdetails.build
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @tenant }
@@ -42,6 +42,7 @@ class TenantsController < ApplicationController
   # POST /tenants.xml
   def create
     @tenant = Tenant.new(params[:tenant])
+
     respond_to do |format|
       if @tenant.save
         flash[:notice] = 'Tenant was successfully created.'
@@ -81,6 +82,13 @@ class TenantsController < ApplicationController
       format.html { redirect_to(tenants_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def borang_kuarter
+  # @examquestions = Examquestion.search(params[:all])
+    @tenants = Tenant.find(:all)
+    render :layout => 'report'
+   
   end
   
   def borang_asrama

@@ -1,0 +1,41 @@
+<div class="tform">
+<H2>Document Details</H2>
+  <table width=100% >
+
+	<tr>
+		<td class="leftcol"><label for="doc_group">Unit</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_field :doc_group %> 	<font color=#AAA size=-2>Example: KKM / KS / WP / TBL / Others</font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="doc_name">Document Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :doc_name, :size => "30x2" %> <BR>
+			<font color=#AAA size=-2>Example: BK-KKM-06-01 - Borang Analisa Keputusan Peperiksaan</font></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Uploaded By</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_title %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol"><label for="publishdt">Upload Date</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :upload_date, :start_year => Time.now.year, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="data">Upload Document</label></td>
+		<td><b>:</b></td>
+		<td><%= f.file_field :document %><BR>
+		<font color=#AAA size=-2>pdf/doc  Max : 5MB</font></td>
+	</tr>
+	
+
+
+</table>
+</div>
+<BR>

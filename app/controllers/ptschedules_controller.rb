@@ -2,7 +2,8 @@ class PtschedulesController < ApplicationController
   # GET /ptschedules
   # GET /ptschedules.xml
   def index
-    @ptschedules = Ptschedule.find(:all, :order => "start DESC")
+    @ptschedules = Ptschedule.find(:all, :order => "start ASC")
+	@branch_name = @ptschedules.group_by { |t| t.branch }
 
     respond_to do |format|
       format.html # index.html.erb
@@ -85,7 +86,7 @@ class PtschedulesController < ApplicationController
   
   def apply
     @ptschedules = Ptschedule.find(:all, :order => "start ASC")
-
+    @schedule_month =  @ptschedules.group_by {|t| t.start}
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @ptschedules }

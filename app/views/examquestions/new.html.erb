@@ -1,18 +1,14 @@
 <h3>New Exam Question</h3>
 
-<% form_for(@examquestion, :html => { :multipart => true}) do |f| %>
+<% form_for(@examquestion) do |f| %>
   <%= f.error_messages %>
 
-	<div class="tform">
-	<%=render :partial => 'form_question', :locals => {:f => f} %> 
-	<%=render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"%>
-	</div>
+<%=render :partial => 'form', :locals => {:f => f} %> 
 
   <p>
     <%= f.submit 'Create' %>
   </p>
 <% end %>
 
-</div>
-
+<BR>
 <%= link_to 'Back', examquestions_path %>

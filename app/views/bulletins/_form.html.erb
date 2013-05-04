@@ -1,36 +1,36 @@
 <div class="tform">
+<H2>New Bulletins</H2>
   <table width=100% >
 
 	<tr>
-		<th colspan = 2>New Bulletins</th>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="headline"><b>Headline:</b></label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="headline"><b>Headline</b></label><font color="red"> * </font></td>
+		<td><b>:</b></td>
 		<td><%= f.text_field :headline %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="content"><b>Content:</b></label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="content"><b>Content</b></label><font color="red"> * </font></td>
+		<td><b>:</b></td>
 		<td><%= f.text_area :content, :size => "30x7" %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="postedby_id"><b>Posted By:</b></label></td>
-		<td><%= f.collection_select :postedby_id, Staff.find(:all), :id, :name %></td>
+		<td class="leftcol"><label for="postedby_id"><b>Posted By</b></label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :postedby_id, Staff.find(:all), :id, :staff_name_with_title %></td>
 	</tr>
 	<!-- if id validated for presence... no need to put , :include_blank => true -->
 	<tr>
-		<td class="leftcol"><label for="publishdt"><b>Publish Date:</b></label></td>
-		<td><%= f.date_select :publishdt, :start_year => Time.now.year, :order => [:day, :month, :year], :default => 1.days.from_now  %></td>
+		<td class="leftcol"><label for="publishdt"><b>Publish Date</b></label></td>
+		<td><b>:</b></td>
+		<!--<td><#%= f.date_select :publishdt, :start_year => Time.now.year, :order => [:day, :month, :year], :default => 1.days.from_now  %></td>-->
+	<td>	<%= date_field :bulletin, :publishdt, :format => ActiveSupport::CoreExtensions::Date::Conversions::DATE_FORMATS[:default_date], :value => @bulletin.publishdt %></td> 
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="data">Upload File:</label></td>
-		<td><font color=#444 size=-2>Current file is : 
-				<% if @bulletin.data.exists? then %>
-		    	<%= @bulletin.data_file_name %><BR>
-				<% end %> Or </font>
-	      <%= f.file_field :data %><BR>
+		<td class="leftcol"><label for="data"><b>Upload File</b></label></td>
+		<td><b>:</b></td>
+		<td><%= f.file_field :data %><BR>
 			  <font color=#AAA size=-2>pdf/txt/doc/xls/jpg.  Max : 5MB</font></td>
 	</tr>
 	

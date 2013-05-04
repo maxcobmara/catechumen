@@ -1,0 +1,36 @@
+<div class="fields">
+<!--	<#% new_or_existing = scsession.new_record? ? 'new'  : 'existing' %>
+	<#% prefix = "counselling[#{new_or_existing}_scsession_attributes][]" %>
+	
+	<#% fields_for prefix, scsession do | scsession_form | -%>-->
+
+    <table>
+		<tr>
+		    <td><b>Date:</b><font color="red"> * </font></td>
+		    <td><b>Time:</b></td>
+		    <td><b>Appointment No:</b></td>
+		</tr>
+	   <tr>
+	    <td><%= f.date_select :scsessiondt, :start_year => 2011, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+	    <td><%=f.text_field :scsessiondtduration, :size => 7, :value => "10:30"%></td>
+	    <td><%= f.text_field :scsappointnum, :size => 5 %></td>
+	    <td rowspan=2><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %></td>
+	</tr>
+	<tr>
+	    <td><b>Issue:</b><font color="red"> * </font></td>
+	    <td><b>Suggestion:</b></td>
+	    <td><b>Remarks:</b></td>
+	</tr>
+	   <tr>
+		<td><%= f.text_area :issue, :size => "25x4" %></td>
+		<td><%= f.text_area :suggestion, :size => "25x4" %></td>
+		<td><%= f.text_area :remarks, :size => "25x4" %></td>
+		</tr>
+    </table>
+    
+   
+ <!--  <#% end -%>-->
+</div>
+
+
+ 

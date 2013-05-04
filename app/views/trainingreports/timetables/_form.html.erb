@@ -1,0 +1,53 @@
+<div class="tform">
+<H2>Timetable Entry</H2>
+  <table width=100% >
+		<tr>
+			<td class="leftcol"><label for="class_id"><b>Class Name:</b></label></td>
+			<td><%= f.collection_select :classroom_id, Klass.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="topic_id"><b>Topic:</b></label></td>
+			<td><%= f.collection_select :topic_id, Topic.find(:all), :id, :name, :include_blank => true%></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
+			<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_position, :include_blank => true%></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="residence_id"><b>Location:</b></label></td>
+			<td><%= f.collection_select :location_id, Location.find(:all,  :conditions => {:typename => 6}, :order => :code), :id, :location_list, :include_blank => true %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="timing_id"><b>Start:</b></label></td>
+			<td><%= f.datetime_select :start_at, :minute_step => 15, :include_blank => true %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="timing_id"><b>End:</b></label></td>
+			<td><%= f.datetime_select :end_at, :minute_step => 15, :include_blank => true %></td>
+		</tr>
+</table>
+
+<!--<table width=100%>
+		<tr>
+			<td class="leftcol">Training Notes</td>
+			<td>
+				<div>
+				<#% f.fields_for :trainingnotes do |builder| %>
+					<#%= render 'trainingnote_fields', :f => builder %>
+					<#% end %>
+					<p><#%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :trainingnotes %> - Add More </p>
+				</div></td>
+		</tr>
+</table>-->
+<!--
+<#% for student in @timetable.students %>
+<p> <#%= student.name %> <#%= f.check_box :attend, :default => true %>
+<#%= check_box_tag "timetable[student_ids][]", student.id, @timetable.student.include?(student) %> </p>
+<#% end %>-->
+
+<BR>

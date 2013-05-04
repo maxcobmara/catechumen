@@ -1,5 +1,4 @@
 class LibrarytransactionsController < ApplicationController
-  filter_access_to :all
   # GET /librarytransactions
   # GET /librarytransactions.xml
   #def index
@@ -14,9 +13,9 @@ class LibrarytransactionsController < ApplicationController
   def index
     @filters = Librarytransaction::FILTERS
     if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-      @librarytransactions = Librarytransaction.with_permissions_to.send(params[:show])
+      @librarytransactions = Librarytransaction.send(params[:show])
     else
-      @librarytransactions = Librarytransaction.with_permissions_to.all
+      @librarytransactions = Librarytransaction.all
     end
     @libtran_days =  @librarytransactions.group_by {|t| t.checkoutdate}
   end
@@ -93,12 +92,18 @@ class LibrarytransactionsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+   
+  def report_overdue
+     @librarytransactions = Librarytransaction.find(:all, :limit => 20)
+     @libtran_borrowers =  @librarytransactions.group_by {|t| t.ru_staff}
+      render :layout => 'report'
+   end
   
-  def extend
-    @librarytransaction = Librarytransaction.find(params[:id])
+   def extend
+       @librarytransaction = Librarytransaction.find(params[:id])
   end
   
   def return
-    @librarytransaction = Librarytransaction.find(params[:id])
+      @librarytransaction = Librarytransaction.find(params[:id])
   end
 end

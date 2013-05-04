@@ -1,20 +1,24 @@
 <div class="tform">
-	<fieldset>
-		<legend>Employee Grade Details</legend>
-			<table width=100%>
-					<tr>
-						<td class="leftcol"><label for="short_name">Name</label></td>
-						<td><%=h @employgrade.name %></td>
-					</tr>
+<H2>Employ Grade Details</H2>
+  <table width=100% >
+ <!--28Feb2013-added/amended-->
+ <tr>
+	<td class="leftcol"><label for="name ">Code Grade</label></td>
+	<td>&nbsp;<%=h @employgrade.name %></td>
+ </tr>
+ <tr>
+	<td class="leftcol">Group</td>
+	<td><%=h (Employgrade::GROUP.find_all{|disp, value| value == @employgrade.group_id}).map {|disp, value| disp} %></td>
+ </tr>
+ <tr>
+	<td class="leftcol">Annual Leave</td>
+	<td><%=h (Employgrade::ANNUAL_LEAVE.find_all{|disp, value| value == @employgrade.yearly_leave.to_i}).map {|disp, value| disp} %></td>
+ </tr>
 
-					<tr>
-						<td class="leftcol"><label for="long_name">Type</label></td>
-						<td><%=h @employgrade.booboo %></td>
-					</tr>
-			</table>
-	</fieldset>
+</table>
 </div>
-<BR/>
+<BR>
+
 <%= link_to 'New', new_employgrade_path %> |
 <%= link_to 'Edit', edit_employgrade_path(@employgrade) %> |
 <%= link_to 'Back', employgrades_path %> |

@@ -1,0 +1,2 @@
+module AverageLecturersHelper
+end

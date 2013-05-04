@@ -1,0 +1,41 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Travel Claims</h2>
+	</div>
+</div>
+	
+<div class="indextable">
+	<table width=90% border="0" cellpadding="0" cellspacing="0">
+	  <tr>
+		  <th>Month</th>
+			<th>Name</th>
+			<td align=right>Total</th>
+			<th></th>
+			<th colspan=3 class="ac">Control</th>
+  	</tr>
+		<% @travelclaims.each do |travelclaim| %>
+  	<tr>
+		  <td><%=h travelclaim.claimsmonth.strftime("%B %Y") unless travelclaim.claimsmonth.blank? %></td>
+	    <td><%=h travelclaim.staff_details %> </td>
+	    <td align=right><%=h ringgols(travelclaim.total_claims) %></td>
+		  <td width=150px></td>
+	      <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => travelclaim %></td>
+	
+		  <% if permitted_to? :claimprint, travelclaim%>
+		  <td width=10px ><%= link_to image_tag("printer.png", :border => 0), :action => 'claimprint', :id => travelclaim %></td><% end %>
+		  
+		  <% if permitted_to? :update, travelclaim%>
+		  <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => travelclaim %></td><% end %>
+		
+		  <% if permitted_to? :destroy, travelclaim%>
+		  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), travelclaim, :confirm => 'Are you sure?', :method => :delete %></td><% end %>
+	  </tr>
+	<% end %>
+	</table>
+
+</div>
+<br />
+
+<%= link_to 'New TravelClaim', new_travelclaim_path %>

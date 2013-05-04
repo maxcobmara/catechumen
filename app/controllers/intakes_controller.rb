@@ -2,7 +2,7 @@ class IntakesController < ApplicationController
   # GET /intakes
   # GET /intakes.xml
   def index
-    @intakes = Intake.all
+    @intakes = Intake.find(:all, :order => "year DESC")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -25,7 +25,7 @@ class IntakesController < ApplicationController
   # GET /intakes/new.xml
   def new
     @intake = Intake.new
-
+ 
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @intake }
@@ -44,7 +44,8 @@ class IntakesController < ApplicationController
 
     respond_to do |format|
       if @intake.save
-        format.html { redirect_to(@intake, :notice => 'Intake was successfully created.') }
+        flash[:notice] = 'Intake was successfully created.'
+        format.html { redirect_to(@intake) }
         format.xml  { render :xml => @intake, :status => :created, :location => @intake }
       else
         format.html { render :action => "new" }
@@ -60,7 +61,8 @@ class IntakesController < ApplicationController
 
     respond_to do |format|
       if @intake.update_attributes(params[:intake])
-        format.html { redirect_to(@intake, :notice => 'Intake was successfully updated.') }
+        flash[:notice] = 'Intake was successfully updated.'
+        format.html { redirect_to(@intake) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

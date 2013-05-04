@@ -1,89 +1,101 @@
 <div class="tform">
 	<H2><%= t 'document.doc_details' %></H2>
 	<table>
+	<!--	<tr>
+			<td class="leftcol"><label for="serialno">Serial No</label><font color="red"> * </font></td>
+			<td><b>:</b></td>
+			<td><#%= f.text_field :serialno %></td>
+		</tr>-->
+	
 		<tr>
-			<td class="leftcol"><label for="serialno">Serial No:</label><font color="red"> * </font></td>
-			<td><%= f.text_field :id, :value => (Document.last.id)+1, :readonly => true, :class => "compulsory" %></td>
+			<td class="leftcol"><label for="refno">Ref No</label><font color="red"> * </font></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :refno %><font color="grey", size="-2"> example: ABC (DEF) / 01.01 </font></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="refno">Ref No:</label><font color="red"> * </font></td>
-			<td><%= f.text_field :refno, :class => "compulsory" %></td>
+			<td class="leftcol"><label for="title">Title</label><font color="red"> * </font></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :title %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="title">Title:</label><font color="red"> * </font></td>
-			<td><%= f.text_field :title, :size => '60', :class => "compulsory" %></td>
-		</tr>
-	
-		<tr>
-			<td class="leftcol"><label for="category">Category:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="category">Category</label><font color="red"> * </font></td>
+			<td><b>:</b></td>
 			<td><%= f.select :category, 
-			                 Document::CATEGORY, :class => "compulsory" ,
-			                 :prompt => "Select" %></td>
+			                 Document::CATEGORY,
+			                 :prompt => "Select"  %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="letterdt">Letter Date:</label></td>
+			<td class="leftcol"><label for="letterdt">Letter Date</label></td>
+			<td><b>:</b></td>
 			<td><%= f.date_select :letterdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 	
 		<tr>
 			<td class="leftcol"><label for="letterxdt">Received Date:</label></td>
+			<td><b>:</b></td>
 			<td><%= f.date_select :letterxdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 	
 		<tr>
 			<td class="leftcol"><label for="from">From:</label><font color="red"> * </font></td>
-			<td><%= f.text_field :from, :size => '60', :class => "compulsory" %></td>
+			<td><b>:</b></td>
+			<td><%= f.text_field :from %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="stafffiled_id">Filed By:</label></td>
-		<td><%= f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, { :selected => @current_user.staff_id }   %></td>
+			<td class="leftcol"><label for="stafffiled_id">Filed By</label></td>
+			<td><b>:</b></td>
+		<td><%= f.collection_select :stafffiled_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_title   %></td>
+		</tr>
+		
+		<tr><!--13/12/2011 - Shaliza added field for classification -->
+			<td class="leftcol"><label for="classification">Classification</label></td>
+			<td><b>:</b></td>
+			<td><%= f.select :classification, 
+					          Document::CLASSIFICATION,
+					         :prompt => "Select"  %></td>
 		</tr>
 		
 		<tr>
 			<td class="leftcol"><label for="closed">Other Information</label></td>
+			<td><b>:</b></td>
 			<td><%= f.text_area :otherinfo, :size => '40x3' %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="file_id">File No:</label></td>
-			<td><%= f.collection_select :file_id, Cofile.find(:all, :order => :cofileno), :id, :file_no_and_name, :include_blank => true %></td>
+			<td class="leftcol"><label for="file_id">File No</label><font color="red"> * </font></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :file_id, Cofile.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+	
+		<tr>
+			<td class="leftcol"><label for="data">Upload File</label></td>
+			<td><b>:</b></td>
+			<td><%= f.file_field :data %> <font color="grey", size="-2">MsWord / MsExcel / png</font></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="data">Current Attachment:</label></td>
-			<td><% if @document.data.exists? then %>
-			    	<%= @document.data_file_name %> &nbsp;&nbsp;&nbsp;
-			    	<%= link_to (t 'document.download'), @document.data.url %> ||
-		        <%= link_to "ALT", @document.data.url %>
-			    <% else %>
-			    No Attachment yet
-			    <% end %></td>
-		<tr>
-			<td class="leftcol"><label for="data">Upload/Change File:</label></td>
-			<td><%= f.file_field :data %></td>
+			<td class="leftcol"><label for="closed">Submit to</label></td>
+			<td><b>:</b></td>
+			<td><%= f.collection_select :cc1staff_id, Staff.find(:all, :include => [:title], :order => 'titles.id ASC', :conditions => {:id => [40, 78]})), :id, :staff_name_with_title, :prompt => 'Select Recipient'  %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="closed">Circulation 1:</label></td>
-			<td><%= f.collection_select :cc1staff_id, Staff.find(:all, :order => :name), :id, :name, :prompt => 'Select Person For Action'  %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="category">Action:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="category">Action</label><font color="red"> * </font></td>
+			<td><b>:</b></td>
 			<td><%= f.select :cctype_id, 
 			                 Document::ACTION,
 			                 :prompt => "Select"  %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="closed">Closed:</label></td>
+			<td class="leftcol"><label for="closed">Closed</label></td>
+			<td><b>:</b></td>
 			<td><%= f.check_box :closed %></td>
 		</tr>
-		
 		
 	</table>
 </div>

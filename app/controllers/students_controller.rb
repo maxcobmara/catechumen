@@ -1,14 +1,14 @@
 class StudentsController < ApplicationController
-  #filter_resource_access
-  filter_access_to :all
+  filter_resource_access
   # GET /students
   # GET /students.xml
   def index
-    @students = Student.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page])#17/11/2011 - Shaliza added pagination for student
-    @student_intakes = @students.group_by { |t| t.intake } # 21/10/2011 - Shaliza changed with group by intake
-    #@student_programmes = @students.group_by { |t| t.course_id }
+    @students = Student.with_permissions_to(:index).search(params[:search])
+   #  @student_intakes = @students.group_by { |t| t.intake }
+ 
+#  @students = Student.search(params[:intake_id])   
+   @student_courses = @students.group_by { |t| t.isorter }
     respond_to do |format|
-     # flash[:notice] = "Sorry, your search didn't return any results."
       format.html # index.html.erb
       format.xml  { render :xml => @students }
     end
@@ -31,6 +31,7 @@ class StudentsController < ApplicationController
     @student = Student.new
     @student.qualifications.build
     @student.kins.build
+	  @student.exworks.build
     
     respond_to do |format|
       format.html # new.html.erb
@@ -43,7 +44,7 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
   end
   
-  def formforstudent
+def formforstudent
      @student = Student.find(params[:id])  
      #@students = Student.search(params[:search])
      render :layout => 'report'
@@ -51,14 +52,8 @@ class StudentsController < ApplicationController
          #format.html # index.html.erb  { render :action => "report.css" }
          #format.xml  { render :xml => @staffs }
      #end
-  end
-
-  def report  
-    @students = Student.search(params[:all])
-    @students = Student.find(:all)
-    render :layout => 'report'
-    
-  end
+end
+  
  
   # POST /students
   # POST /students.xml
@@ -104,11 +99,5 @@ class StudentsController < ApplicationController
       format.html { redirect_to(students_url) }
       format.xml  { head :ok }
     end
-  end
-  
-  
-  def maklumat_pelatih_intake
-    @students = Student.all
-    render :layout => 'report'
   end
 end

@@ -1,0 +1,27 @@
+<div class="fields">
+<table>
+<tr>
+		<td  class="leftcol"><%= f.label :activity, "Aktiviti" %></td>
+		<td>:</td>
+		<td> <%= f.text_area :activity, :size => "50x5" %></td>
+		<td><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>  </td>
+</tr>
+<tr>
+		<td  class="leftcol"><%= f.label :status, "Status" %></td>
+		<td>:</td>
+		<td><%= f.radio_button :status,'1' %>SKT yang ditetapkan<%= f.radio_button :status,'2' %>SKT yang ditambah<%= f.radio_button :status,'3' %>SKT yang digugurkan</td>
+</tr>
+</table>
+<BR>
+<div style="position: relative; left: 10px;">
+		<b>Petunjuk Prestasi</b> 
+		<HR width=100% align=left>
+		
+
+	 <% f.fields_for :skt_achives do |builder| %>
+		<%= render 'skt_achive_fields', :f => builder %>
+	 <% end %>
+	 <p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :skt_achives %> - <%= "Add Prestasi" %> </p>
+		<HR width=100% align=left>
+	  </div>
+</div>

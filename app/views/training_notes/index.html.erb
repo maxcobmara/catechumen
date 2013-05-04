@@ -1,0 +1,41 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Training Notes</h2>
+		<div class="right"></div>
+	</div>
+</div>
+
+<div class="tlist">
+	<table width=100%>
+	  <tr>
+			<th>Topic Name</th>
+	    	<th>Title Doc</th>
+	   		<!-- <th>Reference</th>
+	    	<th>Version</th>-->
+	    	<th>Release Date</th>
+	    	<th>Download</th>
+			<th colspan=3>Control</th>
+	  </tr>
+
+	<% @training_notes.each do |training_note| %>
+	  <tr>
+		  <td><%=h training_note.topic.name unless training_note.topic.blank? %></td>
+	    <td><%=h training_note.title %></td>
+	   <!-- <td><#%=h training_note.reference %></td>
+	    <td><#%=h training_note.version %></td>-->
+	    <td><%=h training_note.release.blank? ? "-" : (training_note.release)  %></td>
+		<td><%= link_to image_tag('attach.png'), training_note.document.url%> &nbsp; <%= link_to training_note.document_file_name, training_note.document.url %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => training_note %></td>
+			<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => training_note %></td>
+			<td width=10px ><% link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), training_note, :confirm => 'Are you sure?', :method => :delete %></td>
+
+	  </tr>
+	<% end %>
+	</table>
+</div>
+<br />
+
+<% link_to 'New trainingnote', new_training_note_path %>
+

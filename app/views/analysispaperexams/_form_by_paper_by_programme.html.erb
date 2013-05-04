@@ -1,0 +1,27 @@
+<div class="tform">
+	<% if index==0 %>
+	<H2>Exam Marks</H2>
+	
+	<table width=100% >
+		<tr>
+			<td class="leftcol">Programme </td>
+			<td><b>:</b></td>
+			<td>
+				<%= f.collection_select :programme_id, Programme.find(:all), :id, :programme_with_specialisation,{:include_blank => true},
+								:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+								:url => {:action => 'view_subject' }, 
+								:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value 
+								+'&index='+'#{index}'") %>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftcol">Subject </td>
+			<td><b>:</b></td>
+			<td>
+				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>	
+				</div>
+			</td>
+		</tr>			
+	</table>
+	<% end %>
+</div>

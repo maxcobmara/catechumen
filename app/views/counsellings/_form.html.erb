@@ -1,0 +1,47 @@
+<div class="tform">
+	<H2>Student Counselling Sessions</H2>
+  <table width=100% >
+
+	<tr>
+		<td class="leftcol"><label for="student_id">Student Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :student_id, Student.find(:all), :id, :name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="File No">File Name</label></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :cofile_id, Cofile.find(:all), :id, :file_no_and_name, :include_blank => true %></td>
+	</tr>
+</table>	
+	<div><!--12/12/2011 - Shaliza changed label name nested model-->
+	  <!--<H2><#%= t 'staff.tqualification' %></H2>-->
+	<!--	<table width=100% border=1 cellspacing=0 BORDERCOLOR="#C0C0C0 " BORDERSTYLE="solid">
+			<th width=30% align="center">Level Type </font></th>
+			<th width=30% align="center">Qualification Name</th>
+			<th width=35% align="center">Institute Name</th>
+			<th width=5% align="center"></th>
+		</table>-->
+		<% f.fields_for :scsessions do |builder| %>
+			<%= render 'scsession_fields', :f => builder %>
+		<% end %>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :scsessions %> - <%= t 'icms.add' %> </p>
+	</div>
+<!--	</tr>
+			<tr>
+			  <td class="leftcol"><label for="scsessiondt">Date Time</label><font color="red"> * </font></td>
+			  <td class="leftcol"><label for="scsessiondtduration">Duration</label><font color="red"> * </font></td>
+			  <td class="leftcol"><label for="scsappointnum">Appointment No</label></td>
+			  <td class="leftcol"><label for="scsessiontype">Type</label></td>
+			  <td class="leftcol"><label for="issue">Issue</label></td>
+			  <td class="leftcol"><label for="suggestion">Suggestion</label></td>
+			  <td class="leftcol"><label for="remarks">Remarks</label></td>
+			</tr>
+		</table>
+		      <div id="scsessions">
+			  <#%= render :partial => 'scsession', :collection => @counselling.scsessions %>
+		      </div>
+
+	      <#%= add_scsession_link image_tag "add.png" %> - Add More -->
+
+<!-- Code Block for Sessions Repeating Field -->
+</div>

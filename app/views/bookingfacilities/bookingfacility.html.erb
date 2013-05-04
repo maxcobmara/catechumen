@@ -1,0 +1,165 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+ <script>
+	document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+
+</script>
+</form>	
+<fieldset width=10px >
+
+<div id="title">
+<table width=100% border="0" cellspacing="0">
+	<tr>
+		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="100" height="100"/></th>
+		<th>PUSAT LATIHAN <BR>AGENSI PENGUATKUASAAN MARITIM MALAYSIA (APMM)<BR>GEBENG,KUANTAN <BR><H4>TEMPAHAN KEMUDAHAN DI PUSAT LATIHAN</H4> </th>
+			<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="100" height="100"/></th>
+	</tr>
+</table>
+<BR>
+	<table width=100% border=2px cellspacing=0 align="center" cellpadding=5>
+		<tr>
+			<th>BUTIRAN PEMOHON</th>
+		</tr>
+		<tr>
+			<td>
+					<table width=100% border=0 cellpadding=5 cellspacing=0>
+						
+							<tr>
+								<td width=150>Nama Pemohon</td>
+								<td width=10>:</td>
+								<td colspan=4><%=h @bookingfacility.staff_id.blank? ? "-" : @bookingfacility.staffbooked.staff_name_with_title %>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>No.K/P</td>
+								<td>:</td>
+								<td><%=h @bookingfacility.staff_id.blank? ? "-" : @bookingfacility.staffbooked.formatted_mykad %>&nbsp;</td>
+								<td width=70>No Telefon</td>
+								<td>:</td>
+								<td><%=h @bookingfacility.staff_id.blank? ? "-" : @bookingfacility.staffbooked.phonecell %>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>Jawatan</td>
+								<td>:</td>
+								<td colspan=4><%=h @bookingfacility.staff_id.blank? ? "-" : @bookingfacility.staffbooked.position_for_staff %>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>Unit</td>
+								<td>:</td>
+								<td colspan=4><%=h @bookingfacility.staff_id.blank? ? "-" : @bookingfacility.staffbooked.position.unit %>&nbsp;</td>
+							</tr>
+							
+						
+					</table>
+			</td>
+		</tr>
+	
+		<tr>
+			<th>BUTIRAN KEMUDAHAN TEMPAHAN</th>
+		</tr>
+		<tr>
+			<td>
+					<table width=100% border=0 cellpadding=5 cellspacing=0>
+						
+							<tr>
+								<td width=170>Kemudahan Ditempah</td>
+								<td width=10>:</td>
+								<td colspan=3><%=h @bookingfacility.location_id.blank? ? "-" :  @bookingfacility.reservefac.name %>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>Tarikh Penggunaan</td>
+								<td>:</td>
+								<td><%=h @bookingfacility.start_date.blank? ? "-" : @bookingfacility.start_date.strftime("%d-%b-%Y") %>&nbsp;</td>
+								<td width=60>Hingga : </td>
+								<td><%=h @bookingfacility.end_date.blank? ? "-" : @bookingfacility.end_date.strftime("%d-%b-%Y") %>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>Masa</td>
+								<td>:</td>
+								<td><%=h @bookingfacility.start_date.blank? ? "-" : @bookingfacility.start_date.strftime("%I:%M %p") %>&nbsp;</td>
+								<td>Hingga :</td>
+								<td><%=h @bookingfacility.end_date.blank? ? "-" : @bookingfacility.end_date.strftime("%I:%M %p") %>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>Bilangan Hadirin/Peserta</td>
+								<td>:</td>
+								<td colspan=3>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>Tujuan</td>
+								<td>:</td>
+								<td colspan=3>&nbsp;</td>
+							</tr>
+						
+					</table>
+			</td>
+		</tr>
+			<tr>
+				<th>PERAKUAN PEMOHON</th>
+			</tr>
+		<tr>
+			<td>
+					<table width=100% border=0 cellpadding=7 cellspacing=0>
+						
+							<tr>
+								<td colspan=3 align="justify">Dengan ini saya memperakukan bahawa saya akan bertanggungjawab dan berhak menggantikan
+									          segala kerosakan kemudahan semasa di bawah penggunaan saya.</td>
+							
+							</tr>
+							
+							<tr>
+								<td width=50%><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>T.T</b><BR>
+								_______________________<BR>
+								&nbsp;&nbsp;&nbsp;(Tandatangan Pemohon)</td>
+								<td align="right"><BR>Tarikh: <%=h @bookingfacility.requestdate.blank? ? "-" : @bookingfacility.requestdate.strftime("%d-%b-%Y") %> </td>
+							
+							</tr>
+							
+						
+					</table>
+			</td>
+		</tr>
+			<tr>
+				<th>KEGUNAAN PEJABAT</th>
+			</tr>
+		<tr>
+			<td>
+					<table width=100% border=0 cellpadding=7 cellspacing=0>
+						
+							<tr>
+								<td colspan=3>Permohonan anda <b><%=h @bookingfacility.approval.blank? ? "Tidak Diluluskan" : "Diluluskan" %></b></td>
+							
+							</tr>
+							
+							<tr>
+								<td width=50%><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>T.T</b><BR>
+								_______________________<BR>
+								&nbsp;&nbsp;&nbsp;(Tandatangan Pegawai)</td>
+								<td align="right"><BR>Tarikh: <%=h @bookingfacility.approve_date.blank? ? "-" : @bookingfacility.approve_date.strftime("%d-%b-%Y") %></td>
+							
+							</tr>
+							<tr>
+								<td colspan=2>Nama : <%=h @bookingfacility.approver_id.blank? ? "-" : @bookingfacility.approvebooked.staff_name_with_title %> </td>
+							
+							</tr>
+							<tr>
+								<td colspan=2>Jawatan : <%=h @bookingfacility.approver_id.blank? ? "-" : @bookingfacility.approvebooked.position_for_staff %></td>
+
+							</tr>
+							
+						
+					</table>
+			</td>
+		</tr>
+	</table>
+<p align="center"><i>Dokumen ini adalah cetakan komputer dan tidak memerlukan tandatangan.</i></p>
+</fieldset>
+<BR>
+<div id="hideLink">
+	<%= link_to 'BACK', bookingfacilities_path %>
+	</div>
+</div>

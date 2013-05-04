@@ -10,22 +10,30 @@
 
 <div class="tform">
 	<H2>Circulation 1</H2>
-	<table width=100%>
+	<table width=100% border=0>
 		<tr>
-			<td class="leftcol"><label for="closed">Action:</label></td>
-			<td><%= f.text_field :cc1action %></td>
+			<td class="leftcol"><label for="closed">Action</label></td>
+			<td width=3%><b>:</b></td>
+			<td><%= f.text_area :cc1action, :size => '40x2' %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="closed">Remarks:</label></td>
+			<td class="leftcol"><label for="closed">Remarks</label></td>
+			<td><b>:</b></td>
 			<td><%= f.text_area :cc1remarks, :size => '40x3' %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="closed">Close or Forward?:</label></td>
+			<td class="leftcol"><label for="closed">Close or Forward?</label></td>
+			<td><b>:</b></td>
 			<td><%= f.radio_button :cc1closed,'true' %>Close
 					<%= f.radio_button :cc1closed,'false', :id => "forward", :onchange => "switchvisibility('forward')" %>Forward &nbsp;
-					<SPAN id="fwdto" style="display: none;"><%= f.collection_select :cc2staff_id, Staff.find(:all, :order => :name), :id, :name, :prompt => 'Select Person For Action'  %></SPAN>
+					<SPAN id="fwdto" style="display: none;"><BR><%= text_field_with_auto_complete :document, :cc2_staff ,{ :size => 50 }, 
+															  {:tokens => ",",:url => formatted_staffs_path(:js), 
+															  :method => :get } %>
+					<i>	<BR>Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma (','), followed by an alphabet and make your selection. </i></SPAN>
 			</td>
 		</tr>
+		
+	
 	</table>
 	<%= f.hidden_field :cc1date, :value => Time.now %>
 </div>

@@ -1,0 +1,38 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Lists of Analysis Result</h2>
+	</div>
+	</div>
+	<div class="tlist">
+	    <table width=100% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    		<th>Examination Name</th>
+		    <th>Examination Date</th>
+			<th>Course</th>
+		    <th>Class</th>
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @analysis_grades.each do |analysis_grade| %>
+  <tr>
+	 <td><%=h analysis_grade.examname.name %></td>
+	 <td><%=h analysis_grade.examname.exam_date.strftime("%d-%b-%Y") %></td>
+	 <td><%=h analysis_grade.course_name.programme_with_specialisation %></td>
+	 <td><%=h analysis_grade.classroom.name %></td>
+		<% if permitted_to? :analysis_form, analysis_grade %>
+	 <td width=10px ><%= link_to image_tag("printer.png", :border => 0, :title => 'BK-KKM-06-01'), :action => 'analysis_form', :id => analysis_grade %></td><% end %>
+	 <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => analysis_grade %></td>
+		<% if permitted_to? :update, @analysis_grade %>
+     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => analysis_grade %></td><% end %>
+		<% if permitted_to? :destroy, analysis_grade %> 
+	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), analysis_grade, :confirm => 'Are you sure?', :method => :delete %></td><% end %>
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+<% if permitted_to? :create, @analysis_grade %> 
+<%= link_to 'New Analysis Result', new_analysis_grade_path %>
+<% end %>

@@ -1,0 +1,30 @@
+<div class="kin">
+	<% new_or_existing = kin.new_record? ? 'new'  : 'existing' %>
+	<% prefix = "student[#{new_or_existing}_kin_attributes][]" %>
+	
+	<% fields_for prefix, kin do | kin_form | -%>
+   <HR>
+    <table width=100%>
+	   <tr>
+	     <td><label for="kintype_id"><b>Relationship:</b></label><BR/>
+	         <%= kin_form.select     :kintype_id, Kin::KTYPE, :prompt => "Select" %></td>
+       <td><label for="name">      <b>Name:</b>        </label><BR/>
+           <%= kin_form.text_field :name, :size => 31  %></td>
+		   <td><label for="phone">     <b>Telephone:</b>   </label><BR/>
+		 			 <%= kin_form.text_field :phone, :size => 10  %></td>
+		   <td rowspan=2 style="vertical-align:middle"><%= link_to_function "remove", "$(this).up('.kin').remove()" %></td>
+		</tr>
+		<tr>
+			 <td><label for="kinbirthdt"><b>MYKad No: </b></label><BR/>
+           <%= kin_form.text_field :mykadno, :size => 18, :placeholder => 'MYKAD No' %></td>
+		   <td><label for="profession"><b>Profession</b>   </label><BR/>
+		 			 <%= kin_form.text_field :profession, :size => 31  %></td>
+		   <td><label for="kinaddr">   <b>Address:</b>     </label><BR/>
+					 <%= kin_form.text_field :kinaddr, :size => 40 %></td>
+     </tr>
+    </table>
+   <HR>
+    
+   
+   <% end -%>
+</div>

@@ -1,0 +1,42 @@
+<div class="tform">
+  <table width=100% >
+	<tr>
+		<th colspan=2>Course/Subject Registration
+    </tr>
+    <tr>
+	    <td class="leftcol"><label for="coursecode">Course/Subject Code<font color="red"> * </font></label></td>
+	    <td><%= f.text_field :coursecode, :size => 12 %></td>
+	</tr>
+    <tr>
+	    <td class="leftcol"><label for="name">Course/Subject Name<font color="red"> * </font></label></td>
+	    <td><%= f.text_field :name %></td>
+	</tr>
+    <tr>
+	    <td class="leftcol"><label for="parent_id">Course Name</label></td>
+	    <td><%= f.collection_select :parent_id, Course.find(:all), :id, :name, :include_blank => true, :value => 'null' %></td>
+	    
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="objective">Objective</label></td>
+	    <td><%= f.text_area :objective, :size => "35x3" %></td>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="coursescope">Scope</label></td>
+	    <td><%= f.text_area :coursescope, :size => "35x3" %></td>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="coursedefinition">Definition</label></td>
+	    <td><%= f.text_area :coursedefinition, :size => "35x3" %></td>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="staff_id">Course Administrator</label></td>
+	    <td><%= f.collection_select :staff_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+  </table>
+</div>
+
+<!-->
+<p>
+  <%= f.label :abbreviation %><br />
+  <%= f.text_field :abbreviation %>
+</p>-->

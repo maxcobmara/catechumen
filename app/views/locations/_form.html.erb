@@ -1,29 +1,27 @@
 <div class="tform">
 	<%= f.hidden_field :parent_id %>
+	<H2><%= t 'location.location_details' %></H2>
   <table width=100% >
 
 	<tr>
-		<th colspan = 2>Location Details</th>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="code ">Location Code:</label></td>
+		<td class="leftcol"><label for="code "><%= t 'location.code' %> :</label></td>
 		<td><%= f.text_field :code  %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="resname ">Location Name:</label></td>
+		<td class="leftcol"><label for="resname "><%= t 'location.resname' %> :</label></td>
 		<td><%= f.text_field :name  %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="staffadmin_id ">Administered by:</label></td>
+		<td class="leftcol"><label for="staffadmin_id "><%= t 'location.staffadmin_id' %> :</label></td>
 		<td><%= f.collection_select :staffadmin_id, Staff.find(:all), :id, :name, :include_blank => true, :select => "Select Administrator" %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="lclass">Location Class:</label></td>
+		<td class="leftcol"><label for="lclass"><%= t 'location.lclass' %> :</label></td>
 			<td><%= f.select ("lclass", Location::CLASS,
 			                 {:include_blank => ""}, {:onchange => "showMenuForAllocatableRooms(this.value)"})  %></td>
 	</tr>
 	<tr id="restypes" style="display: none;">
-		<td class="leftcol" ><label for="type">Location Type:</label></td>
+		<td class="leftcol" ><label for="type"><%= t 'location.type' %> :</label></td>
 		<td><%= f.select :typename, 
 		                 Location::TYPE,
 		                 :prompt => "Select" %>

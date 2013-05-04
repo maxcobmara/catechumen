@@ -1,18 +1,22 @@
-<h3>Editing Attendance</h3>
+<h3><%= t 'attendance.edit' %></h3>
 
 <% form_for(@attendance) do |f| %>
   <%= f.error_messages %>
 
+
 <%=render :partial => 'form', :locals => {:f => f} %> 
 
-<p>Fields marked with an asterisk <font color="red"> * </font> are required</td></p>
+
+
+<BR>
+<!--<p><#%= t 'attendance.marked' %><font color="red"> * </font> <#%= t 'attendance.required' %></td></p>-->
 
 <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit (t 'icms.update') %>
 </p>
 
 <% end %>
-</div>
 
-<%= link_to 'Show', @attendance %> |
-<%= link_to 'Back', attendances_path %>
+
+<%= link_to (t 'icms.show'), @attendance %> |
+<%= link_to (t 'icms.back'), attendances_path %>

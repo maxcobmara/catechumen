@@ -1,0 +1,218 @@
+<div class="tform">
+	<H2>Stock Application Details</H2>
+  <table width=100% border=0>
+
+	<tr>
+		<td class="leftcol"><label for="staff_id">Application No</label></td>
+		<td width=2%><b>:</b></td>
+		<td><%=h @stock.app_no %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="staff_id">Staff Name</label></td>
+		<td width=2%><b>:</b></td>
+		<td><%=h @stock.applicant.staff_name_with_title %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Jawatan</label></td>
+		<td><b>:</b></td>
+		<td><%=h @stock.applicant.position_for_staff %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="staff_id">Unit</label></td>
+		<td><b>:</b></td>
+		<td><%=h @stock.applicant.unit_for_staff %></td>
+	</tr>	
+</table>
+
+
+<table width=100% border=0 cellspacing=0>
+	<tr>
+		<td class="leftcol">Item Requested</td>
+		<td><b>:</b></td>
+		<td><table width=50% border=1 cellspacing=0 cellpadding=7 BORDERCOLOR="#C0C0C0">
+			<tr>
+				<th width=300 align="center"><b>Item Details</b></th>
+				<th width=100 align="center"><b>Quantity Ordered</b></th>
+			</tr>
+	<% for stockdetail in @stock.stockdetails %>
+	<tr>
+		<td><%=h stockdetail.supplier.sub_category  %> / <%=h stockdetail.supplier.item_type  %> </td>
+		<td align="center"><%=h stockdetail.quantity_order %> <%=h stockdetail.supplier.unittype  %>  </td>
+	</tr>
+	<% end %>	
+		
+</table>
+</td>
+</tr>
+</table>
+<table>
+
+	<tr>
+		<td class="leftcol"><label for="app_no">Ordered Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @stock.app_date.blank? ? "-" : @stock.app_date.strftime("%d %b %Y") %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="app_no">Status</label></td>
+		<td><b>:</b></td>
+		<td><%=h (Stock::STATUS.find_all{|disp, value| value == @stock.status}).map {|disp, value| disp} %></td>
+	</tr>
+	<% if @stock.approval == TRUE %>
+	<tr>
+		<td class="leftcol"><label for="received_date">Received Date</label></td>
+		<td><b>:</b></td>
+		<td><%=h @stock.received_date.blank? ? "-" : @stock.received_date.strftime("%d %b %Y") %></td>
+	</tr>
+	<% end %>
+	<tr>
+		<td class="leftcol"><label for="app_no">Approving Officer</label></td>
+		<td><b>:</b></td>
+		<td><%=h @stock.approver.staff_name_with_title %></td>
+	</tr>
+</table>
+	<% if @stock.status == 2 || @stock.status == 3 %>
+<H2>Stock Approved</H2>
+	<table width=100% border=0 cellspacing=0>
+		<tr>
+			<td class="leftcol">Item Requested</td>
+			<td><b>:</b></td>
+			<td><table width=100% border=1 cellspacing=0 cellpadding=0 BORDERCOLOR="#C0C0C0">
+		<tr>
+			<th width=300 align="center"><b>Item Details</b></th>
+			<th width=100 align="center"><b>Quantity Ordered</b></th>
+			<th width=100 align="center"><b>Quantity Approved</b></th>
+			<th width=150 align="center"><b>Remark</b></th>
+		</tr>
+		<% for stockdetail in @stock.stockdetails %>
+		<tr>
+			<td><%=h stockdetail.supplier.sub_category  %> / <%=h stockdetail.supplier.item_type  %> </td>
+			<td align="center"><%=h stockdetail.quantity_order %> <%=h stockdetail.supplier.unittype  %>  </td>
+			<td align="center"><%=h stockdetail.quantity_approve %> <%=h stockdetail.supplier.unittype  %>  </td>
+			<!--<td align="center"><#%=h stockdetail.balance_quantity %> <#%=h stockdetail.supplier.unittype  %>  </td>-->
+			<td align="center"><%=h stockdetail.remark %> </td>
+		</tr>
+		<% end %>	
+
+	</table>
+	</td>
+	</tr>
+	</table>
+	<table>
+			<tr>
+				<td class="leftcol"><label for="app_date">Status</label></td>
+				<td><b>:</b></td>
+				<td><%=h (Stock::STATUS.find_all{|disp, value| value == @stock.status}).map {|disp, value| disp} %></td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><label for="app_date">Date</label></td>
+				<td><b>:</b></td>
+				<td><%=h @stock.app_date.blank? ? "-" : @stock.app_date.strftime("%d %b %Y") %></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol"><label for="app_date">Store Officer</label></td>
+				<td><b>:</b></td>
+				<td><%=h @stock.storeman_id.blank? ? "-" : @stock.storeman.staff_name_with_title %></td>
+			</tr>
+</table>
+<% end %>
+	<% if @stock.status == 4 || @stock.status == 5 %>
+<H2>Stock Updated</H2>
+	<table width=100% border=0 cellspacing=0>
+		<tr>
+			<td class="leftcol">Item Updated</td>
+			<td><table width=100% border=1 cellspacing=0 cellpadding=0 >
+		<tr>
+			<th width=25% align="center"><b>Item Details</b></th>
+			<th width=25% align="center"><b>Quantity Ordered</b></th>
+			<th width=25% align="center"><b>Quantity Approved</b></th>
+			<th width=25% align="center"><b>Balance Quantity Ordered</b></th>
+		</tr>
+		<% for stockdetail in @stock.stockdetails %>
+		<tr>
+			<td><%=h stockdetail.supplier.sub_category  %> / <%=h stockdetail.supplier.item_type  %> </td>
+			<td align="center"><%=h stockdetail.quantity_order %> <%=h stockdetail.supplier.unittype  %>  </td>
+			<td align="center"><%=h stockdetail.quantity_approve %> <%=h stockdetail.supplier.unittype  %>  </td>
+			<td align="center"><%=h stockdetail.balance_quantity %> <%=h stockdetail.supplier.unittype  %>  </td>
+		</tr>
+		<% end %>	
+
+	</table>
+	</td>
+	</tr>
+	</table>
+	<table>
+
+			<tr>
+				<td class="leftcol"><label for="remark">Remark:</label></td>
+				<td><%=h @stock.remark %></td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><label for="app_date">Status</label></td>
+				<td><%=h (Stock::STATUS.find_all{|disp, value| value == @stock.status}).map {|disp, value| disp} %></td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><label for="app_date">Date Approved</label></td>
+				<td><%=h @stock.app_date.blank? ? "-" : @stock.app_date.strftime("%d %b %Y") %></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol"><label for="app_date">Store Officer</label></td>
+				<td><%=h @stock.storeman.staff_name_with_title %></td>
+			</tr>
+</table>
+<H2>Store Officer</H2>
+<table border=0 width=100%>
+	
+
+	<tr>
+		<td class="leftcol">Item Updated</td>
+		<td><table width=100% border=1 cellspacing=0 cellpadding=0>
+	<tr>
+		<th width=30% align="center"><b>Item Details</b></th>
+		<th width=25% align="center"><b>Quantity Updated</b></th>
+		<th width=25% align="center"><b>Quantity Approved</b></th>
+		<th width=20% align="center"><b>Balance Stock</b></th>
+	
+	</tr>
+	<% for stockdetail in @stock.stockdetails %>
+	<tr>
+		<td><%=h stockdetail.supplier.sub_category  %> / <%=h stockdetail.supplier.item_type  %> </td>
+		<td align="center"><%=h stockdetail.quantity_order %> <%=h stockdetail.supplier.unittype  %>  </td>
+		<td align="center"><%=h stockdetail.quantity_approve %> <%=h stockdetail.supplier.unittype  %>  </td>
+		<td align="center"><%=h stockdetail.supplier.current_quantity %> <%=h stockdetail.supplier.unittype  %>  </td>
+	
+	</tr>
+	<% end %>	
+
+</table>
+</td>
+</tr>
+<!--<tr>
+		<td class="leftcol"><label for="date_update">Date Update Record</label></td>
+		<td><#%=h @stock.date_update %></td>
+</tr>-->
+
+<tr>
+		<td class="leftcol"><label for="app_date">Status</label></td>
+		<td><%=h (Stock::STATUS.find_all{|disp, value| value == @stock.status}).map {|disp, value| disp} %></td>
+</tr>
+
+<tr>
+	<td class="leftcol"><label for="sent">Sent To Applicant?</label></td>
+	<td><%=h @stock.sent? ? "Ya" : "Tidak" %></td>
+</tr>
+</table>
+<% end %>
+
+</div>
+<BR>
+	<% if permitted_to? :update, @stock %>
+<%= link_to 'Edit', edit_stock_path(@stock) %> |<% end %>
+<%= link_to 'Back', stocks_path %>

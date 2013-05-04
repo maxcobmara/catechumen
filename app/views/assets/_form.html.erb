@@ -1,126 +1,128 @@
+
 <div class="tform">
-<H2>Asset Control</H2>
-<table width=100% >
-	<tr>
-		<td class="leftcol"><label for="assetcode"><%= t 'asset.assetcode' %></label></td>
-		<td><strong><%=h @asset.assetcode %></strong></td>
-	</tr>
-	
-	<% if @asset.assettype == 1 %>
-	<tr>
-		<td class="leftcol"><label for="bookable">Maintainable:</label></td>
-		<td><%= f.check_box :is_maintainable %> This item requires maintenance</td>
-	</tr>
-	<% end %>
 
-	<tr>
-		<td class="leftcol"><label for="bookable">Bookable:</label></td>
-		<td><%= f.check_box :bookable %> This item can be booked </td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="mark_disposal">Mark as Lost/Write Off</label></td>
-		<td><%= f.check_box :mark_as_lost %></td>
-	</tr>
-	
-	<tr>
-		<td class="leftcol"><label for="is_disposed">Mark For Disposal</label></td>
-		<td><%= f.check_box :is_disposed %></td>
-	</tr>
-</table>
-	
-<H2>Asset Details</H2>
-<table width=100%>
-	<tr>
-		<td class="leftcol"><label for="category_id"><%= t 'asset.category_id' %></label></td>
-		<td><%= f.collection_select :category_id, Assetcategory.find(:all, :conditions => ['parent_id IS ?', nil]), :id, :description, :include_blank => true %></td>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="subcategory_name"><%= t 'asset.subcategory_name' %></label></td>
-		<td><%= f.text_field	 :subcategory %>
-		<!-- <#% f.collection_select :subcategory_id, Assetcategory.find(:all, :conditions => ['parent_id IS NOT ?', nil]), :id, :description, :include_blank => true %></td> -->
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="type">Type</label></td>
-		<td><%= f.text_field :typename %></td>
-	</tr>
-		
-	<% if @asset.assettype == 1 %>
-		<tr>
-			<td class="leftcol"><label for="name"><%= t 'asset.name' %></label></td>
-			<td><%= f.text_field :name %></td>
-		</tr>		
-		<tr>
-			<td class="leftcol"><label for="model">Model</label></td>
-			<td><%= f.text_field :modelname %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="country_id"><b><%= t 'asset.country_id' %></b></label></td>
-			<td><%= f.select :country_id,
-		          		Asset::COUNTRYLIST,
-		          		:prompt => "Select" %></td>
-		</tr>
+  <table width=100% >
+			<tr>
+				<td><% f.text_field :assettype,  :value => 1 %></td>
+			</tr>
 
-		<% if @asset.category_id == 3%>
+			<tr>
+				<td class="leftcol"><label for="assetcode"><%= t 'asset.assetcode' %></label></td>
+				<td><strong><%=h @asset.assetcode %></strong></td>
+			</tr>
+	
+			<tr>
+			<td class="leftcol"><label for="bookable"><%= t 'asset.bookable' %> :</label></td>
+		      <td><%= f.check_box :bookable %> This item can be booked </td>
+			</tr>
+	</table>
+	
+	
+  <!--Asset Details-->
+	<H2>Butiran Aset</H2>
+	<table width=100%>
 		<tr>
-			<td class="leftcol"><label for="country_id"><b><%= t 'asset.engine' %></b></label></td>
-			<td><%= f.select :engine_type_id,
-		          		Asset::ETI,
-		          		:prompt => "Select" %>&nbsp;&nbsp;
-					<%= t 'asset.engineno' %>&nbsp;<%= f.text_field :engine_no %></td>
+			<td class="leftcol"><label for="category_id"><%= t 'asset.category_id' %></label></td>
+			<td><%= f.collection_select :category_id, Assetcategory.find(:all, :conditions => ['parent_id IS ?', nil]), :id, :description, :include_blank => true %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="subcategory_name"><%= t 'asset.subcategory_name' %></label></td>
+			<td><%= f.text_field	 :subcategory %>
+			<!-- <#% f.collection_select :subcategory_id, Assetcategory.find(:all, :conditions => ['parent_id IS NOT ?', nil]), :id, :description, :include_blank => true %></td> -->
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="type"><%= t 'asset.typename' %> :</label></td>
+			<td><%= f.text_field :typename %></td>
 		</tr>
 		
-		<% end %>
+			<tr>
+				<td class="leftcol"><label for="name"><%= t 'asset.name' %></label></td>
+				<td><%= f.text_field :name %></td>
+			</tr>
 		
-		<tr>
-			<td class="leftcol"><label for="serialno">
-					<% if @asset.category_id == 3 %>
-				  		Chassis No:
-					<% else %>
-							Serial No:
-					<% end %></label></td>
-	    <td><%= f.text_field :serialno %></td>
-		</tr>
+		<% if @asset.assettype == 1 %>
+					
+				<tr>
+					<td class="leftcol"><label for="model"><%= t 'asset.modelname' %></label></td>
+					<td><%= f.text_field :modelname %></td>
+			  </tr>
+				<tr>
+					<td class="leftcol"><label for="country_id"><b><%= t 'asset.country_id' %></b></label></td>
+					<td><%= f.select :country_id,
+					                 Asset::SCN,
+					                 :prompt => "Select" %></td>
+				</tr>
 		
-		<% if @asset.category_id == 3%>
-		<tr>
-			<td class="leftcol"><label for="registration"><%= t 'asset.registration' %></label></td>
-			<td><%= f.text_field :registration, :size => 10 %></td>
-	  </tr>
-		<% end %>
+				<% if @asset.category_id == 3%>
+				<tr>
+					<td class="leftcol"><label for="country_id"><b><%= t 'asset.engine_type_id' %></b></label></td>
+					<td><%= f.select :engine_type_id,
+					                 Asset::ETI,
+					                 :prompt => "Select" %>&nbsp;&nbsp;
+					    <%= t 'asset.engine_no' %>&nbsp;<%= f.text_field :engine_no %>
+					</td>
+				</tr>
 		
-		<tr>
-			<td class="leftcol"><label for="otherinfo"><%= t 'asset.otherinfo' %>:</label></td>
-			<td><%= f.text_area :otherinfo, :size => "40x7" %></td>
-		</tr>
+				<% end %>
+		
+				<tr>
+					<td class="leftcol"><label for="serialno">
+						<% if @asset.category_id == 3 %>
+						  <%= t 'asset.nocasis' %>:
+						<% else %>
+							<%= t 'asset.nosiri' %>:
+						<% end %>
+						</label></td>
+			    <td><%= f.text_field :serialno %></td>
+				</tr>
+		
+				<% if @asset.category_id == 3%>
+				<tr>
+					<td class="leftcol"><label for="registration"><%= t 'asset.registration' %></label></td>
+					<td><%= f.text_field :registration, :size => 10 %></td>
+			  </tr>
+		
+				<% end %>
+		
+				<tr>
+					<td class="leftcol"><label for="otherinfo"><%= t 'asset.otherinfo' %>:</label></td>
+					<td><%= f.text_area :otherinfo, :size => "40x7" %></td>
+				</tr>
 				
-		<tr>
-			<td class="leftcol"><label for="category_id">Location</label></td>
-			<td><%= f.collection_select :location_id, Location.find(:all, :order => :code), :id, :location_list, :include_blank => true %></td>
-		</tr>
+				<tr>
+					<td class="leftcol"><label for="location_id"><%= t 'asset.location_id' %> :</label></td>
+					<td><%= f.collection_select :location_id, Location.find(:all), :id, :location_list, :include_blank => true %></td>
+				</tr>
 		
-	<% end %>
-		
-		<% if @asset.assettype == 2 %>
-		<tr>
-			<td class="leftcol"><label for="type">Quantity</label></td>
-			<td><%= f.text_field :quantity, :size => 5 %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="type">Unit Type</label></td>
-			<td><%= f.text_field :quantity_type, :placeholder => 'e.g pcs, units' %></td>
-		</tr>
 		<% end %>
 		
-		<tr>
-			<td class="leftcol"><label for="assignedto_id">Assigned To:</label></td>
-			<td><%= f.collection_select :assignedto_id, Staff.find(:all, :order => :name), :id, :staff_name_with_position, :include_blank => true %></td>
-		</tr>
-</table>
+		
+			<tr>
+				<td class="leftcol"><label for="quantity"><%= t 'asset.quantity' %> :</label></td>
+				<td><%= f.text_field :quantity, :size => 5 %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="quantity_type"><%= t 'asset.quantity_type' %> :</label></td>
+				<td><%= f.text_field :quantity_type, :placeholder => 'e.g pcs, units' %></td>
+			</tr>
+		
+		
 	
 		
-<H2><%= t 'asset.buyinfo' %></H2>
-<table>
+		<tr>
+			<td class="leftcol"><label for="mark_disposal"><%= t 'asset.mark_disposal' %> :</label></td>
+			<td><%= f.check_box :mark_disposal %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="assignedto_id"><%= t 'asset.assignedto_id' %>:</label></td>
+			<td><%= f.collection_select :assignedto_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+		</tr>
+	</table>
+	
+		
+	<H2><%= t 'asset.buyinfo' %></H2>
+	<table>
 		<tr>
 			<td class="leftcol"><label for="orderno"><%= t 'asset.orderno' %></label></td>
 			<td><%= f.text_field :orderno %></td>
@@ -133,44 +135,88 @@
 	
 		<tr>
 			<td class="leftcol"><label for="purchasedate"><%= t 'asset.purchasedate' %></label></td>
-			<td><%= f.date_select :purchasedate, :start_year => 2000, :end_year => 2020, :order => [:day, :month, :year] %></td>
+			<td><%= f.date_select :purchasedate, :start_year => 2000, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="receiveddate"><%= t 'asset.receiveddate' %></label></td>
-			<td><%= f.date_select :receiveddate, :start_year => 2000, :end_year => 2020, :order => [:day, :month, :year] %></td>
+			<td class="leftcol"><label for="receiveddate"><%= t 'asset.receiveddate' %></label><font color="red"> * </font></td>
+			<td><%= f.date_select :receiveddate, :start_year => 2000, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 	
 		<tr>
-		<td class="leftcol"><label for="receiver_id">Received By:</label></td>
+		<td class="leftcol"><label for="receiver_id"><%= t 'asset.receiver_id' %> :</label></td>
 	      <td><%= f.collection_select :receiver_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="supplier_id">Supplier:</label></td>
-	    <td><span id="addy"><%= f.collection_select :supplier_id, Addbook.find(:all, :order => :name), :id, :name, :include_blank => true %></span>
-					<label><%= link_to image_tag("vcard_add.png", :border => 0, :title => 'Add Address'), {:controller => "addbooks", :action => "quickfill", :id => params[:id]}, :remote => true, :popup => ['Address', 'height=330,width=600'] %></label>
-					<a id="refresh" href="#"><img border="0" src="/images/reload.png" alt="Update"></a></td>
+		<td class="leftcol"><label for="supplier_id"><%= t 'asset.supplier_id' %> :</label></td>
+	      <td><%= f.collection_select :supplier_id, Addbook.find(:all), :id, :name, :include_blank => true %></td>
+	    </tr>
+		<tr>
+		<td class="leftcol"><label for="warranty_length"><%= t 'asset.warranty_length' %> :</label></td>
+	      <td><%= f.text_field :warranty_length, :size => 4 %> Months</td>
 		</tr>
-		<td class="leftcol"><label for="warranty_length">Warranty Length:</label></td>
-	      <td><%= f.text_field :warranty_length, :size => 4 %><label>Months</label></td>
+	</table>	
+		
+		
+		
+		
+		
+		
+		
+		
+
+	  
+				
+
+		<!--
+		<tr>
+			<td class="leftcol"><label for="location_id">Location:</label></td>
+			<td><#%= f.collection_select :location_id, Location.find(:all, :order => 'code'), :id, :location_list, :include_blank => true %> (FA, CF) (show with Assign Location)</td>
 		</tr>
-</table><BR/>	
+			
+
+		Group End
+		<tr>
+			<td class="leftcol"><label for="status">Status:</label></td>
+	    <td><#%= f.text_field :status %> </td>
+		</tr>
+		
+	-->
+	
+
+	
+
+	
 
 
-<!-- Code Block for Maintainance Information Repeating Field -->
+	
 <% if @asset.assettype == 1 %>
+<!-- Code Block for Maintainance Information Repeating Field -->
+	<H2>Maintenance Information</H2>
+	<table width=100%>
+		<tr>
+				  <td width=130px><label for="maintainer_id"><b>Serviced By:</b></label></td>
+				  <td width=130px><label for="workorderno"><b>Work Order No:</b></label></td>
+				  <td width=130px><label for="maintcost"><b>Cost:</b></label></td>
+				  <td width=130px><label for="details"><b>Details:</b></label></td>
+			    <td width=10px></td>
+	  </tr>
+	</table>
+
+	<table>
+		    
+		    <div id="maints">
+			  <%= render :partial => 'maint', :collection => @asset.maints %>
+			</div>
+		  </td>
+		</tr>
+		
+		<tr>
+		  <td colspan=2><%= add_maint_link "Add more" %></td>
+		</tr>
+		
+</table>
 <% end %>
 <BR>
-</div>				
-
-
-<script>
-    $j(document).ready(function(){
-      $j("#refresh").click(function(evt) {
-         $j("#addy").load("edit #addy")
-         evt.preventDefault();
-      })
-    })
-</script>
-
+			

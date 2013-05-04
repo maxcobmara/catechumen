@@ -1,0 +1,36 @@
+<div class="tform">
+	<H2>Mentor-Mentee Details</H2>
+ <table width=100% >
+
+	<tr>
+		<td class="leftcol"><label for="mentor_id">Mentor Name</label><font color="red"> * </font></td>
+		<td><b>:</b></td>
+		<td><%= f.collection_select :staff_id, Staff.find(:all), :id, :staff_name_with_title, :include_blank => true %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="mentor_date">Date</label></td>
+		<td><b>:</b></td>
+		<td><%= f.date_select :mentor_date, :start_year => 2011, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="remark">Remark</label></td>
+		<td><b>:</b></td>
+		<td><%= f.text_area :remark, :size => '30x7'%></td>
+	</tr>
+</table>	
+	<div>
+	  <H2>Mentee Name</H2>
+			<table width=100% border=0>
+			    <tr>
+				<td class="leftcol">Mentee Name </td>
+				<td>:</td>
+				</tr>
+			 </table> 
+		<% f.fields_for :mentees do |builder| %>
+			<%= render 'mentee_fields', :f => builder %>
+		<% end %>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :mentees %> - <%= t 'icms.add' %> </p>
+	</div>
+
+</div>

@@ -1,53 +1,54 @@
 class Programme < ActiveRecord::Base
-    # befores, relationships, validations, before logic, validation logic, 
-    #controller searches, variables, lists, relationship checking
-    before_save :set_combo_code
-    has_ancestry :cache_depth => true
-
-
-
-    def set_combo_code
-      if ancestry_depth == 0
-        self.combo_code = code
-      else
-        self.combo_code = parent.combo_code + "-" + code
-      end
-    end
-
-    def tree_nd
-      if is_root?
-        gls = ""
-      else
-        gls = "class=\"child-of-node-#{parent_id}\""
-      end
-      gls
-    end
-
-    def subject_list
-        "#{code}" + " " + "#{name}"   
-    end
-
-    def programme_list
-      if is_root?
-        "#{course_type}" + " " + "#{name}"   
-      else
-      end
-    end
-
-    COURSE_STATUS = [
-         #  Displayed       stored in db
-         [ "Major",     1 ],
-         [ "Minor",     2 ],
-         [ "Elective",  3 ]
-    ]
-
-    DURATION_TYPES = [
-         #  Displayed       stored in db
-         [ "Days",       1 ],
-         [ "Weeks",      7 ],
-         [ "Months",     30 ],
-         [ "Years",      365 ]
-    ]
-
   
+  #Link to HABTM programme_subject
+  has_and_belongs_to_many :subjects
+  
+  #Link to klassandstudent
+  # has_and_belongs_to_many :klasses
+  # has_and_belongs_to_many :students
+  
+  #links to Model student
+   has_many :course,    :class_name => 'student', :foreign_key => 'course_id'
+   
+  #links to Model courseevaluation
+  has_many :program,    :class_name => 'Courseevaluation', :foreign_key => 'programme_id'
+  
+  #links to Model courseevaluation
+  has_many :programme,    :class_name => 'time_table_entry', :foreign_key => 'programme_id'
+  
+  #links to Model Klass
+  has_many :programclass,    :class_name => 'klass', :foreign_key => 'programme_id'
+  
+  #links to Model evaluate_lecturer
+  has_many :stucourse,    :class_name => 'evaluatelecturer', :foreign_key => 'course_id'
+  
+  #links to Model evaluate_lecturer
+  has_many :course_coach,    :class_name => 'Evaluatecoach', :foreign_key => 'course_id'
+  
+  #links to Model analysis_result
+  has_many :course_name,    :class_name => 'AnalysisGrade', :foreign_key => 'course_id'
+  
+  #links to Model analysispaperexam
+  has_many :course,    :class_name => 'analysispaperexam', :foreign_key => 'course_id'
+  
+  #links to Model exammaker
+  has_many :course_exam,    :class_name => 'Exammaker', :foreign_key => 'course_id'
+  
+  #links to Model exammaker
+  has_many :studentattendances
+
+  COURSETYPE = [
+      #  Displayed       stored in db
+      [ "Asas",             "Asas" ],
+      [ "Pertengahan",      "Pertengahan" ],
+      [ "Lanjutan",         "Lanjutan" ]
+    ]
+   
+  #15/11/2011 - Shaliza added for combination name and specialisation
+    def programme_with_specialisation
+      "#{name} - #{specialisation}"
+    end
+   
+  attr_accessible :code, :name, :specialisation
+  attr_accessible :subject_ids
 end

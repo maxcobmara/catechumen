@@ -1,0 +1,42 @@
+<div class="tform">
+	<H2>Travel Claims for <%=h @travelclaim.claimsmonth.strftime("%B %Y") %></H2>
+<table width=100%>
+
+	<tr>
+		<td class="leftcol"><label for="staff_id"><b>Name:</b></label></td>
+        <td><%=h @travelclaim.staff.name %> - <%=h @travelclaim.mo_mileage %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="claimsmonth"><b>Claims Month</b></label></td>
+    <td><%=h @travelclaim.claimsmonth.strftime("%B %Y") %></td>
+	</tr>
+	
+	<% for travelclaimrequest in @travelclaim.travelclaimrequests %>
+		<tr>
+			<td class="leftcol"><label for="Travel Details"><b>Travel Details</b></label></td>
+	    <td><%=h travelclaimrequest.travelrequest.trcode %><BR>
+		      <%=h travelclaimrequest.travelrequest.destination %><BR>
+		      <%=h travelclaimrequest.travelrequest.purpose %> - <%=h travelclaimrequest.mileage %></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>	
+					<table>
+						<% for traveldetail in travelclaimrequest.traveldetails %>
+							<tr>
+								<td><%= traveldetail.travelday.strftime("%d/%m/%Y")%><BR><%= traveldetail.travelday.strftime("(%A)")%>
+								<td align=right><%= traveldetail.departure.strftime("%l:%M%p") %>
+								<td align=right><%= traveldetail.arrival.strftime("%l:%M%p") %>
+								<td><%= traveldetail.description%>
+								<td><%= traveldetail.distance.blank? ? "" : (traveldetail.distance).to_s + "km" %>
+							</tr>
+						 <% end %>
+				  </table></td>
+		<tr>
+	<% end %>
+</table>
+</div>
+<BR>
+<%= link_to 'Edit', edit_travelclaim_path(@travelclaim) %> |
+<%= link_to 'Back', travelclaims_path %>
