@@ -6,6 +6,8 @@ gem 'rails', '3.2.13'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'jquery-rails'
 gem 'pg', '~> 0.12.2'
+gem 'bootstrap-sass', '~> 2.1'
+gem 'devise'
 
 group :development, :test do
   gem 'sqlite3'

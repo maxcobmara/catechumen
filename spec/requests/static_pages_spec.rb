@@ -2,33 +2,24 @@ require 'spec_helper'
 
 describe "Static Pages" do
   
+  subject { page }
+  
   describe "Home Page" do 
-    it "should have the h1 'Catechumen'" do
-      visit '/static_pages/home'
-      page.should have_selector('h1', :text => 'Catechumen')
-    end
+    before { visit root_path } 
     
-    it "should have the title 'Home'" do
-      visit '/static_pages/home'
-      page.should have_selector('title',
-                        :text => "Catechumen")
-    end
-    
-    it "should not have a custom page title" do
-      visit '/static_pages/home'
-      page.should_not have_selector('title', :text => '| Home')
-    end
-    
+    it { should have_selector('h1', text: 'Catechumen') }
+    it { should have_selector 'title', text: "Catechumen" }
+    it { should_not have_selector 'title', text: '| Home' }    
   end
   
   describe "Help page" do
     it "should have the h1 'Help'" do
-      visit '/static_pages/help'
+      visit help_path
       page.should have_content('Help')
     end
     
     it "should have the title 'Home'" do
-      visit '/static_pages/help'
+      visit help_path
       page.should have_selector('title',
                         :text => "Catechumen | Help")
     end
@@ -36,12 +27,12 @@ describe "Static Pages" do
   
   describe "About page" do
     it "should have the h1 'About Catechumen'" do
-      visit '/static_pages/about'
+      visit about_path
       page.should have_content('About Catechumen')
     end
     
     it "should have the title 'About'" do
-      visit '/static_pages/about'
+      visit about_path
       page.should have_selector('title',
                         :text => "Catechumen | About")
     end
@@ -49,12 +40,12 @@ describe "Static Pages" do
   
   describe "Contact page" do
     it "should have the h1 'Contact Us'" do
-      visit '/static_pages/contact'
+      visit contact_path
       page.should have_content('Contact Us')
     end
     
     it "should have the title 'Contact'" do
-      visit '/static_pages/contact'
+      visit contact_path
       page.should have_selector('title',
                         :text => "Catechumen | Contact")
     end
