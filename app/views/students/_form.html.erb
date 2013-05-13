@@ -1,0 +1,89 @@
+<%= form_for(@student) do |f| %>
+  <% if @student.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@student.errors.count, "error") %> prohibited this student from being saved:</h2>
+
+      <ul>
+      <% @student.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :id_no1 %><br />
+    <%= f.text_field :id_no1 %>
+  </div>
+  <div class="field">
+    <%= f.label :id_no2 %><br />
+    <%= f.text_field :id_no2 %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :telephone %><br />
+    <%= f.text_field :telephone %>
+  </div>
+  <div class="field">
+    <%= f.label :gender %><br />
+    <%= f.number_field :gender %>
+  </div>
+  <div class="field">
+    <%= f.label :born_on %><br />
+    <%= f.date_select :born_on %>
+  </div>
+  <div class="field">
+    <%= f.label :registered_on %><br />
+    <%= f.date_select :registered_on %>
+  </div>
+  <div class="field">
+    <%= f.label :address %><br />
+    <%= f.text_area :address %>
+  </div>
+  <div class="field">
+    <%= f.label :status_type %><br />
+    <%= f.check_box :status_type %>
+  </div>
+  <div class="field">
+    <%= f.label :marital_status %><br />
+    <%= f.number_field :marital_status %>
+  </div>
+  <div class="field">
+    <%= f.label :sponsor_id %><br />
+    <%= f.number_field :sponsor_id %>
+  </div>
+  <div class="field">
+    <%= f.label :programme_id %><br />
+    <%= f.number_field :programme_id %>
+  </div>
+  <div class="field">
+    <%= f.label :photo_file_name %><br />
+    <%= f.text_field :photo_file_name %>
+  </div>
+  <div class="field">
+    <%= f.label :photo_content_type %><br />
+    <%= f.text_field :photo_content_type %>
+  </div>
+  <div class="field">
+    <%= f.label :photo_file_size %><br />
+    <%= f.number_field :photo_file_size %>
+  </div>
+  <div class="field">
+    <%= f.label :photo_updated_at %><br />
+    <%= f.datetime_select :photo_updated_at %>
+  </div>
+  <div class="field">
+    <%= f.label :account_id %><br />
+    <%= f.number_field :account_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

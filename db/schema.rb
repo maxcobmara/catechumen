@@ -11,7 +11,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130508152738) do
+ActiveRecord::Schema.define(:version => 20130513152420) do
+
+  create_table "students", :force => true do |t|
+    t.string   "id_no1"
+    t.string   "id_no2"
+    t.string   "name"
+    t.string   "email"
+    t.string   "telephone"
+    t.integer  "gender"
+    t.date     "born_on"
+    t.date     "registered_on"
+    t.text     "address"
+    t.boolean  "status_type"
+    t.integer  "marital_status"
+    t.integer  "sponsor_id"
+    t.integer  "programme_id",       :default => 0, :null => false
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+    t.integer  "account_id",         :default => 0, :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
+
+  add_index "students", ["id_no1"], :name => "index_students_on_id_no1", :unique => true
+  add_index "students", ["id_no2"], :name => "index_students_on_id_no2", :unique => true
+  add_index "students", ["name"], :name => "index_students_on_name", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

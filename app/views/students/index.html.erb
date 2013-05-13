@@ -1,0 +1,48 @@
+<% provide(:title, 'Students') %>
+<%- model_class = Student -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+</div>
+
+<div class="navbar">
+  <div class="navbar-inner">
+		<ul class="nav">
+			<li><%= link_to content_tag(:i, "", :class => "icon-tree") + " View Tree", new_student_path %></li>	
+			<li><%= link_to content_tag(:i, "", :class => "icon-tree-node") + " New Tree", new_student_path %></li>			
+    </ul>
+    <ul class="nav pull-right">
+      <li id="toga"><a href="#"><i class="icon-search"></i> Search</a></li>
+			<li><a href="#"><i class="icon-print"></i> Print</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="searchit" style="display:none;">
+<#%= render :partial => 'search' %>
+</div>
+
+<table class="table table-condensed table-hover ">
+  <thead>
+    <tr>
+      <th><#%= sort_link @q, :id_no1, 'MyKad No' %></th>
+      <th><#%= sort_link @q, :name, (model_class.human_attribute_name(:name)) %></th>
+      <th><#%= sort_link @q, :id_no2, 'Matrix No' %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+
+	<tbody>
+    <% @students.each do |student| %>
+      <tr>
+        <td><%= link_to student.id_no1, student_path(student) %></td>
+        <td><%= student.name %></td>
+        <td><%= student.id_no2 %></td>
+        <%= render :partial => 'action_menu', :locals => { :student => student } %>
+      </tr>
+    <% end %>
+			<tr>
+				<td colspan=5><%= pluralize(@students.count, 'student') %></td>
+  </tbody>
+</table>
+
+<%= link_to content_tag(:i, "", :class => "icon-plus-sign icon-white") + " New Student", new_student_path, :class => 'btn btn-primary' %>

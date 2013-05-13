@@ -5,6 +5,7 @@
   <%= stylesheet_link_tag    "application", media: "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <%= favicon_link_tag 'rabbit.png', :type => 'image/png' %>
 </head>
 <body>
   <%= render 'layouts/header' %>
@@ -12,7 +13,9 @@
   <div class="panel">
 	  <div class="container-fluid">
 	    <div class="span2">
-	      <!--<#%= render 'layouts/sidebar' %>-->
+	      <% if signed_in?%> 
+	      <%= render 'layouts/sidebar' %>
+	      <% end%>
       </div>
       <div class="span10">
         <!--Body content-->
