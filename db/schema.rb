@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20130513152420) do
     t.boolean  "status_type"
     t.integer  "marital_status"
     t.integer  "sponsor_id"
+    t.integer  "intake_id",          :default => 0, :null => false
     t.integer  "programme_id",       :default => 0, :null => false
     t.string   "photo_file_name"
     t.string   "photo_content_type"

@@ -46,17 +46,5 @@ describe "students/index" do
     assert_select "tr>td", :text => "Id No1".to_s, :count => 2
     assert_select "tr>td", :text => "Id No2".to_s, :count => 2
     assert_select "tr>td", :text => "Name".to_s, :count => 2
-    assert_select "tr>td", :text => "Email".to_s, :count => 2
-    assert_select "tr>td", :text => "Telephone".to_s, :count => 2
-    assert_select "tr>td", :text => 1.to_s, :count => 2
-    assert_select "tr>td", :text => "MyText".to_s, :count => 2
-    assert_select "tr>td", :text => false.to_s, :count => 2
-    assert_select "tr>td", :text => 2.to_s, :count => 2
-    assert_select "tr>td", :text => 3.to_s, :count => 2
-    assert_select "tr>td", :text => 4.to_s, :count => 2
-    assert_select "tr>td", :text => "Photo File Name".to_s, :count => 2
-    assert_select "tr>td", :text => "Photo Content Type".to_s, :count => 2
-    assert_select "tr>td", :text => 5.to_s, :count => 2
-    assert_select "tr>td", :text => 6.to_s, :count => 2
   end
 end

@@ -13,6 +13,7 @@ class CreateStudents < ActiveRecord::Migration
       t.boolean :status_type
       t.integer :marital_status
       t.integer :sponsor_id
+      t.integer :intake_id,          :null => false, :default => ""
       t.integer :programme_id,          :null => false, :default => ""
       t.string  :photo_file_name
       t.string  :photo_content_type

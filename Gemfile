@@ -8,6 +8,9 @@ gem 'jquery-rails'
 gem 'pg', '~> 0.12.2'
 gem 'bootstrap-sass', '~> 2.1'
 gem 'devise'
+gem "ransack"
+
+
 
 group :development, :test do
   gem 'sqlite3'
@@ -15,6 +18,9 @@ group :development, :test do
   gem 'guard-rspec', '~> 1.2.1'
 end
 
+group :development do
+  gem 'annotate', '2.5.0'
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
