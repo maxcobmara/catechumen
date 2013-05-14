@@ -84,15 +84,21 @@
 		
 	<!--Notification for Asset Loan-->	
 <% unless User.current_user.staff.blank?%>	
-
+	<%#****special case for PA Pengarah%****%>
+	<% if User.current_user.staff.id != 101 %>
+	<%#**************************************%>
+	
 	<!--25Apr2013-check if ANY OF logged-in unit members of DEPT/UNIT same as loaned_by(asset owner); HAVE request of asset loan that still pending-->
 	<% hods = [6,7,8,9,10,11,12,13,14,15,16,17,18,19,25,26,27,28,29,30,31] %>
 	<% logged_user_positionid=User.current_user.staff.position.id %>
 	<% assetloanrequest2=[]%>
 	<% unless hods.include?(logged_user_positionid)%><!--NOT HOD-->
 		<% unit_members=[]%>
-		<% superior = Position.find(:first,:conditions=>['staff_id=?',current_user.staff_id]).parent.staff_id if !current_user.staff.position.root%>	
-	  	<% subordinates = Position.find(:first,:conditions=>['staff_id=?',current_user.staff_id]).siblings %>   
+		<% if current_user.staff.position.is_root? %>
+		<% else %>
+			<% superior = Position.find(:first,:conditions=>['staff_id=?',current_user.staff_id]).parent.staff_id %>	
+	  	<% end %>
+		<% subordinates = Position.find(:first,:conditions=>['staff_id=?',current_user.staff_id]).siblings %>   
 	  	<% unit_members << superior if superior != nil %>
 		<% subordinates.each do |x| %>
 			<% unit_members << x.staff_id if x.staff_id !=nil %>
@@ -113,7 +119,7 @@
 	<!--25Apr2013-check if ANY OF logged-in unit members of DEPT/UNIT same as loaned_by(asset owner); HAVE request of asset loan that still pending-->
 
 	<!--25Apr2013-to notify user for not yet return on-loan asset on due date (expected_on)-->
-	<% assetloan_due = AssetLoan.count(:all, :conditions =>['is_approved IS true AND is_returned IS NULL AND staff_id=? AND expected_on>=?',User.current_user.staff_id,Date.today])
+	<% assetloan_due = AssetLoan.count(:all, :conditions =>['is_approved IS true AND is_returned IS NULL AND staff_id=? AND expected_on<=?',User.current_user.staff_id,Date.today])
 	%>
 	<% if assetloan_due > 0 %>
 		<%= link_to "#{assetloan_due} Asset on loan due/overdue", { :controller => "asset_loans", :action => "index" } %><br/>
@@ -146,6 +152,9 @@
 
 
 <% end %><!--end for unless User.current_user.staff.blank?-->
+	<%#****special case for PA Pengarah%****%>
+	<% end %>
+	<%#**************************************%>
 	<!--END-Notification for Asset Loan-->
 
 	<!-- Notification for Messages -->
@@ -252,22 +261,23 @@
 	<% end %>
 	<br>
 	
-	<% @documents=Document.all%>
-	<% @a_creator=[]%>
-	<% @a_filled=[]%>
-	<% @documents.each do |x|%>
-		<% @a_creator << x.prepared_by %>
-		<% @a_filled << x.stafffiled_id %>
-	<% end %>
+	<%# @documents=Document.all%>
+	<%# @a_creator=[]%>
+	<%# @a_filled=[]%>
+	<%# @documents.each do |x|%>
+		<%# @a_creator << x.prepared_by %>
+		<%# @a_filled << x.stafffiled_id %>
+	<%# end %>
 	
 	<% permitted_to? :manage, :documents do %>
-		<% if (@a_creator.include? User.current_user.staff_id) || (@a_filled.include? User.current_user.staff_id) %>
-			<% documents = Document.count(:all, :conditions => ["closed !=?",true]) %>
+		<%# if (@a_creator.include? User.current_user.staff_id) || (@a_filled.include? User.current_user.staff_id) %>
+			<%# documents = Document.count(:all, :conditions => ["closed !=?",true]) %>
+			<% documents = Document.count(:all, :conditions => ["closed!=? AND (stafffiled_id=? or prepared_by=?)",true,User.current_user.staff_id,User.current_user.staff_id]) %>
 			<% if documents == 0 %>
 			<% else %>
 				<%= link_to "#{documents} Documents require processing", documents_path %><br/>
 			<% end %>
-		<% end %>
+		<%# end %>
 	<% end %>
 	
 

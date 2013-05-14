@@ -182,7 +182,7 @@
 			<td><%= tag("div", :id => form_tag_id(f.object_name, :topic_list)) %>
 				<% if @examquestion.id.nil? || @examquestion.id.blank? %>
 					<!--18Apr2013-for re-submission(of NEWLY entered data)-->
-					<% if @examquestion.topic_id!=nil %>
+					<% if @examquestion.topic_id!=nil || @examquestion.topic_id.blank? == true %>
 						<% if @examquestion.programme_id.nil? && @examquestion.subject_id.nil? %>
 							Please select programme & subject first
 							<%#= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>

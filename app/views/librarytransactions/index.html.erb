@@ -9,26 +9,28 @@
 
 <% permitted_to? :manage, :librarytransactions do %>
 <div class="toolbar">	
-	<%= link_to image_tag("book_go.png", :border => 0, :title => 'New Library Transaction') + "Library Transaction Page", new_librarytransaction_path %> <!--|--> 
+	<%= link_to image_tag("book_go.png", :border => 0, :title => 'New Library Transaction') + "Library Transaction - Loan Page", new_librarytransaction_path %> <!--|--> 
 	<%#= link_to 'Library Transaction Page', :action => 'transaction_pag', :locals => {:class_type => '1'} %>
+	<%= link_to image_tag("book_go.png", :border => 0, :title => 'Edit Library Transaction') + "Library Transaction - Return Page", :action=> :multiple_edit %>
 </div>
 <% end %>
 
 
 <div class="tlist">
 	  <table width=100%>
-			  <tr>
-				  <th>Accession No</th>
-	         <th>Author</th>
-	   		  <th><%= t 'book.title' %></th>
-			    <th><%= t 'librarytransaction.borrower' %></th>
-			    <th>Class No</th>
-					<th> No</th>
-			    <th><%= t 'librarytransaction.duedate' %></th>
-			    <th><%= t 'librarytransaction.returneddate' %></th>
-					<% permitted_to? :manage, :librarytransactions do %>
-			    <th colspan=3><%= t 'action' %></th>
-					<% end %>
+			<tr>
+			<th>Accession No</th>
+	        <th>Author</th>
+	   		<th><%= t 'book.title' %></th>
+			<th>Staff</th>
+			<th><%= t 'librarytransaction.borrower' %></th>
+			<th>Class No</th>
+			<th> No</th>
+			<th><%= t 'librarytransaction.duedate' %></th>
+			<th><%= t 'librarytransaction.returneddate' %></th>
+			<% permitted_to? :manage, :librarytransactions do %>
+			 	<th colspan=3><%= t 'action' %></th>
+			<% end %>
 	     </tr>
 
 	    <% @libtran_days.sort.reverse.each do |checkoutdate, librarytransactions| %>
@@ -38,7 +40,8 @@
 		  	<td><%=h librarytransaction.accession.accession_no unless librarytransaction.accession_id.blank? %></td>
 		    <td><%=h librarytransaction.accession.book.author unless librarytransaction.accession_id.blank?  %></td>
 		    <td><%=h librarytransaction.accession.book.title unless librarytransaction.accession_id.blank? %></td>
-		    <td><%#=h librarytransaction.borrower_name %></td>
+		    <td><%=h librarytransaction.ru_staff? ? image_tag("tick.png", :border=>0, :title=>'is staff') : image_tag("cross.png", :border=>0, :title=>'is staff') %></td>
+			<td><%=h librarytransaction.borrower_name %></td>
 		    <td><%=h librarytransaction.accession.book.classddc unless librarytransaction.accession_id.blank? %></td>
 				<td><%=h librarytransaction.accession.book.orderno unless librarytransaction.accession_id.blank?%></td>
 				<td><%=h librarytransaction.returnduedate.strftime('%d %b %Y') %></td>

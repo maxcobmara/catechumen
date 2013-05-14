@@ -10,7 +10,18 @@
 	<% abc = abb+=1%>
 	<% abcd = abc+1%>
 	
-	<% @studentid = params[:student] %>
+	<%# @studentid = params[:student] %>
+	<%# @staffid = params[:staff] %>
+	
+	<% if isstaff == true %>
+		<% @staffid = params[:staff] %>
+		<% @studentid = 0 %>
+	<% else %>
+		<% @staffid = 0 %>
+		<% @studentid = params[:student] %>
+	<% end %>
+
+	
 	<table style="border-bottom:1px solid black;border-top:1px solid black;">
 		<tr><td style="vertical-align:middle;font-weight:bold;width:120px;height:10px;">Book</td><td>
 		<%= select_tag("librarytransactions[#{count}][accession_id]", "<option>Accession No - Title</option>" + options_from_collection_for_select(Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :acc_book)) %> 
@@ -27,13 +38,14 @@
 				<%= date_select("librarytransactions[#{count}]", "returnduedate", :order => [:day, :month, :year], :default => 2.weeks.from_now)%>
 			</td>
 		</tr>
-	</table>	
+	</table>
+	<%= hidden_field_tag("librarytransactions[#{count}][staff_id]", @staffid ) %>	
 	<%= hidden_field_tag("librarytransactions[#{count}][student_id]", @studentid ) %>
 	<%= hidden_field_tag("librarytransactions[#{count}][ru_staff]", isstaff ) %>	
 
 <% if quotabal > 1%>
   	<div id="barunyediv_<%= abc %>">
-		<%= link_to_remote image_tag("add.png", :border => 0, :title => 'Add More'), :url => {:action => 'form_try', :index => abc ,:student=>@studentid ,:rustaff=>rustaff, :quota_bal=>quotabal-1 }, :update => "barunyediv_#{abc}" %> - Add More 
+		<%= link_to_remote image_tag("add.png", :border => 0, :title => 'Add More'), :url => {:action => 'form_try', :index => abc ,:student=>@studentid , :staff=>@staffid, :rustaff=>rustaff, :quota_bal=>quotabal-1 }, :update => "barunyediv_#{abc}" %> - Add More 
 	</div>
 <% end %>
 

@@ -3,7 +3,14 @@
   	<table width=100% >
 		<tr>
 			<td class="leftcol"><%= t 'book.tagno' %></td>
-			<td><%= f.hidden_field :tagno, :value => (Book.find(:last).tagno.to_i+1).to_s %><%#= f.hidden_field :tagno, :default => :tag_suggest %><%#= Book.find(:last).id+1 %><%= (Book.find(:last).tagno.to_i+1).to_s %><!--1Apr2013--></td>								
+			<td>
+			<% if @book.id.blank? || @book.id.nil? %>
+				<%= (Book.find(:last).tagno.to_i+1).to_s   %>
+				<%= f.hidden_field :tagno, :value => (Book.find(:last).tagno.to_i+1).to_s %>
+				<%#= f.hidden_field :tagno, :default => :tag_suggest %><%#= Book.find(:last).id+1 %>
+			<% else %>
+				<%= @book.tagno %>
+			<% end %><!--1Apr2013--></td>								
 		</tr>
 		
 		<!--1April2013-->

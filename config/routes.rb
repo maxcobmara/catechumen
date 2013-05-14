@@ -169,6 +169,10 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/librarytransactions/return2', :controller => 'librarytransactions', :action => 'return2'  #4Apr2013
   map.connect '/librarytransactions/extend', :controller => 'librarytransactions', :action => 'extend'
   map.connect '/librarytransactions/extend2', :controller => 'librarytransactions', :action => 'extend2'  #4Apr2013
+  map.connect '/librarytransactions/multiple_edit', :controller => 'librarytransactions', :action => 'multiple_edit'  #4Apr2013
+  map.resources :librarytransactions, :collection => {:multiple_update => :put }
+  
+ # map.resources :librarytransactions, :collection => { :multiple_edit => :post, :multiple_update => :put }
   map.resources :librarytransactions
 
   map.connect '/leaveforstaffs/approve1', :controller => 'leaveforstaffs', :action => 'approve1'

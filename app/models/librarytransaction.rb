@@ -10,7 +10,7 @@ class Librarytransaction < ActiveRecord::Base
   validates_presence_of :accession_id
   
   
-  validate :staff_or_student_borrower
+  validate :staff_or_student_borrower#, :fine_must_paid_if_overdue
 
   def staff_or_student_borrower
     if %w(staff_id student_id).all?{|attr| self[attr].blank?}
@@ -18,7 +18,11 @@ class Librarytransaction < ActiveRecord::Base
     end
   end
 
-  
+ # def fine_must_paid_if_overdue
+    #if Date.today > returnduedate && finepay.nil?
+     #errors.add_to_base("Fine must be paid if overdue")
+    #end 
+  #end
   
   named_scope :all,       :conditions => [ "id IS NOT ?", nil ]
   named_scope :borrowed,  :conditions => [ "returned = ? OR returned IS ?", false, nil ]
@@ -48,10 +52,17 @@ class Librarytransaction < ActiveRecord::Base
     
     if returned == false
       self.returneddate = nil
+    elsif returned == true
+      self.returneddate = Date.today
     end
     
     if finepay == false
       self.finepaydate = nil
+    elsif finepay == true
+      self.finepaydate = Date.today
+      if fine == nil
+        self.fine = self.recommended_fine_value
+      end 
     end
   end
   
@@ -91,17 +102,17 @@ class Librarytransaction < ActiveRecord::Base
    staffchecker = stid & stexists
    studentchecker = suid & stuexists
    
-      if student_id == nil && staff_id == nil
+      if student_id == 0 && staff_id == 0 #student_id == nil && staff_id == nil 
            "" 
-      elsif staff_id == nil && stexists == []
+      elsif staff_id == 0 && stexists == [] #staff_id == nil && stexists == []
            "Student No Longer Exists" 
-      elsif student_id == nil && stuexists == []
-           "Staff No Longer Exists" 
-      elsif staff_id == nil
-           " #{student.name}"   
-      else
-        staff.name
-      end 
+      elsif student_id == 0 && stuexists == []  #student_id == nil && stuexists == []
+          "Staff No Longer Exists" 
+      elsif student_id == 0
+          staff.name
+      elsif staff_id == 0
+          student.name
+      end
   end
   
   def book_details 
