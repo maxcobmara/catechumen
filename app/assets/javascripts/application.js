@@ -17,3 +17,6 @@
 $(function () {
   $('.carousel').carousel()
 })
+$(function () {
+  $('#myTab a:last').tab('show');
+})

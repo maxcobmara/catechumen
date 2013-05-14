@@ -1,95 +1,105 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, @student.name) %>
+<%- model_class = Student -%>
+<div class="page-header">
+  <h1><%= gravatar_for @student %><%= @student.name %>
+  <!--<%=t '.title', :default => model_class.model_name.human %>--></h1>
+</div>
+<div class="tabbable tabs-right">
+  <ul class="nav nav-tabs">
+    <li><a href="#main"     data-toggle="tab">Main</a></li>
+		<li><a href="#others"   data-toggle="tab">Others</a></li>
+		<li><a href="#course"   data-toggle="tab">Course Details</a></li>
+		<li><a href="#health"   data-toggle="tab">Health</a></li>
+		<li><a href="#qualifications" data-toggle="tab">Qualifications</a></li>
+		<li><a href="#spm"      data-toggle="tab">SPM Results</a></li>
+		<li><a href="#contact"  data-toggle="tab">Contact Info</a></li>
+		<li><a href="#photo"  data-toggle="tab">Photo</a></li>
+  </ul>
+  <div class="tab-content">      
+    <dl class="dl-horizontal">
+		  <!--Insert Common Items Here-->
+		  <dt><strong>Matrix No:</strong></dt>
+		  <dd><%= @student.id_no2 %></dd>
+		</dl>
 
-<p>
-  <b>Id no1:</b>
-  <%= @student.id_no1 %>
-</p>
+	  <div class="tab-pane active" id="main">
+			<dl class="dl-horizontal">
+			  <dt><strong>MYKad No:</strong></dt>
+			  <dd><%= @student.id_no1 %></dd>
 
-<p>
-  <b>Id no2:</b>
-  <%= @student.id_no2 %>
-</p>
+				<dt><strong><%= model_class.human_attribute_name(:email) %>:</strong></dt>
+			  <dd><%= @student.email %></dd>
 
-<p>
-  <b>Name:</b>
-  <%= @student.name %>
-</p>
+				<dt><strong><%= model_class.human_attribute_name(:telephone) %>:</strong></dt>
+			  <dd><%= @student.telephone %></dd>
+			  
+			  <dt><strong><%= model_class.human_attribute_name(:gender) %>:</strong></dt>
+			  <dd><%= @student.gender %></dd>
+			  
+			  <dt><strong><%= model_class.human_attribute_name(:status_type) %>:</strong></dt>
+			  <dd><%= @student.status_type %></dd>
+			  
+			  <dt><strong><%= model_class.human_attribute_name(:marital_status) %>:</strong></dt>
+			  <dd><%= @student.marital_status %></dd>
+			  
+			  <dt><strong><%= model_class.human_attribute_name(:sponsor_id) %>:</strong></dt>
+			  <dd><%= @student.sponsor_id %></dd>
+			  
+			  <dt><strong><%= model_class.human_attribute_name(:intake_id) %>:</strong></dt>
+			  <dd><%= @student.intake_id %></dd>
+			</dl>
+		</div>
+		
+		<div class="tab-pane" id="others">
+			<dl class="dl-horizontal">
+			  <dt><strong><%= model_class.human_attribute_name(:born_on) %>:</strong></dt>
+			  <dd><%= @student.born_on %></dd>
 
-<p>
-  <b>Email:</b>
-  <%= @student.email %>
-</p>
+				<dt><strong><%= model_class.human_attribute_name(:address) %>:</strong></dt>
+			  <dd><%= @student.address %></dd>
 
-<p>
-  <b>Telephone:</b>
-  <%= @student.telephone %>
-</p>
+				<dt><strong><%= model_class.human_attribute_name(:account_id) %>:</strong></dt>
+			  <dd><%= @student.account_id %></dd>
+			</dl>
+		</div>
+		
+		<div class="tab-pane" id="course">
+			<dl class="dl-horizontal">
+			  <dt><strong><%= model_class.human_attribute_name(:registered_on) %>:</strong></dt>
+			  <dd><%= @student.registered_on %></dd>
 
-<p>
-  <b>Gender:</b>
-  <%= @student.gender %>
-</p>
+				<dt><strong><%= model_class.human_attribute_name(:programme_id) %>:</strong></dt>
+			  <dd><%= @student.programme_id %></dd>
 
-<p>
-  <b>Born on:</b>
-  <%= @student.born_on %>
-</p>
+			</dl>
+		</div>
+		
+		<div class="tab-pane" id="photo">
+			<dl class="dl-horizontal">
+			  <dt><strong><%= model_class.human_attribute_name(:photo_file_name) %>:</strong></dt>
+			  <dd><%= @student.photo_file_name %></dd>
 
-<p>
-  <b>Registered on:</b>
-  <%= @student.registered_on %>
-</p>
+				<dt><strong><%= model_class.human_attribute_name(:photo_content_type) %>:</strong></dt>
+			  <dd><%= @student.photo_content_type %></dd>
 
-<p>
-  <b>Address:</b>
-  <%= @student.address %>
-</p>
+				<dt><strong><%= model_class.human_attribute_name(:photo_file_size) %>:</strong></dt>
+			  <dd><%= @student.photo_file_size %></dd>
+			  
+			  <dt><strong><%= model_class.human_attribute_name(:photo_updated_at) %>:</strong></dt>
+			  <dd><%= @student.photo_updated_at %></dd>
+			</dl>
+		</div>
+  </div>
+</div>
 
-<p>
-  <b>Status type:</b>
-  <%= @student.status_type %>
-</p>
-
-<p>
-  <b>Marital status:</b>
-  <%= @student.marital_status %>
-</p>
-
-<p>
-  <b>Sponsor:</b>
-  <%= @student.sponsor_id %>
-</p>
-
-<p>
-  <b>Programme:</b>
-  <%= @student.programme_id %>
-</p>
-
-<p>
-  <b>Photo file name:</b>
-  <%= @student.photo_file_name %>
-</p>
-
-<p>
-  <b>Photo content type:</b>
-  <%= @student.photo_content_type %>
-</p>
-
-<p>
-  <b>Photo file size:</b>
-  <%= @student.photo_file_size %>
-</p>
-
-<p>
-  <b>Photo updated at:</b>
-  <%= @student.photo_updated_at %>
-</p>
-
-<p>
-  <b>Account:</b>
-  <%= @student.account_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_student_path(@student) %> |
-<%= link_to 'Back', students_path %>
+<div class="form-actions">
+  <%= link_to content_tag(:i, "", :class => " icon-arrow-left") + " " + t('.back', :default => t("helpers.links.back")),
+              students_path, :class => 'btn'  %>
+  <%= link_to content_tag(:i, "", :class => " icon-edit") + " " + t('.edit', :default => t("helpers.links.edit")),
+              edit_student_path(@student), :class => 'btn' %>
+  <%= link_to content_tag(:i, "", :class => " icon-trash icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")),
+              student_path(@student),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+</div>
