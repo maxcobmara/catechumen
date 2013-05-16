@@ -46,6 +46,7 @@ class Staff < ActiveRecord::Base
   has_many :events,       :foreign_key => 'createdby'                                      #link to created by in events
   has_many :users
   has_many :timetables
+  has_one  :staff_shift
   # has_many :topics, :foreign_key => 'creator_id' 
   #has_many :curriculums, :foreign_key => 'staff_id'
   #has_many :txsuppliess, :foreign_key => 'staff_id'
@@ -289,6 +290,14 @@ class Staff < ActiveRecord::Base
     Position.find(:all, :select => "name", :conditions => {:staff_id => sid}).map(&:name)
   end
  
+  def shift_for_staff
+    ssft = StaffShift.find(:first, :conditions=> ['id=?',staff_shift_id])
+    if ssft == nil
+      "-"
+    else
+      ssft.start_end
+    end
+  end
 
   def icno_with_staff_name
     "#{icno}  #{name}"

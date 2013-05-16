@@ -14,8 +14,12 @@
 			<td><%= f.text_field :code %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="code">Thumb ID</td>
+			<td class="leftcol"><label for="code"><%= t 'staff.thumb' %></td>
 			<td><%= f.text_field :thumb_id %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="shift"><%= t 'staff.shift' %></td>
+			<td><%= f.collection_select :staff_shift_id, StaffShift.find(:all), :id, :start_end, :include_blank=> 'Select staff shift' %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="fileno"><b><%= t 'staff.fileno' %></b></label><font color="red"> * </font></td>
