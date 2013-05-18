@@ -18,8 +18,7 @@ class StaffsController < ApplicationController
   end
   
   def indexmessage
-    @staffs = Staff.find(:all)
-    
+    @staffs = Staff.find(:all)    
     respond_to do |format|
         format.js
     end

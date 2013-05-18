@@ -5,12 +5,20 @@ class Librarytransaction < ActiveRecord::Base
   belongs_to :accession
   belongs_to :staff
   belongs_to :student
+  belongs_to :libcheckoutby, :class_name => 'Staff', :foreign_key => 'libcheckout_by'
+  belongs_to :libextendby, :class_name => 'Staff', :foreign_key => 'libextended_by'
+  belongs_to :libreturnby, :class_name => 'Staff', :foreign_key => 'libreturned_by'
   
+  attr_accessor :booktitle, :staf_who, :student_who
   
   validates_presence_of :accession_id
+  validate :staff_or_student_borrower
   
-  
-  validate :staff_or_student_borrower#, :fine_must_paid_if_overdue
+  #18May2013-compulsory to have this method in order for autocomplete field to work
+  def staff_who
+  end
+  def student_who
+  end
 
   def staff_or_student_borrower
     if %w(staff_id student_id).all?{|attr| self[attr].blank?}
@@ -24,17 +32,18 @@ class Librarytransaction < ActiveRecord::Base
     #end 
   #end
   
-  named_scope :all,       :conditions => [ "id IS NOT ?", nil ]
+  #named_scope :all,       :conditions => [ "id IS NOT ?", nil ]
   named_scope :borrowed,  :conditions => [ "returned = ? OR returned IS ?", false, nil ]
-  named_scope :returned,  :conditions => ["returned = ? AND returneddate > ?", true, 8.days.ago]
-  named_scope :overdue,   :conditions => ["returnduedate < ? AND returned = ?", 1.day.ago, false]
+  #named_scope :returned,  :conditions => ["returned = ? AND returneddate > ?", true, 8.days.ago]
+  named_scope :overdue,   :conditions => ["returnduedate < ? AND returneddate IS NULL", 1.day.ago ]
   #named_scope :overdue, lambda { |time| { :conditions => ["returnduedate < ? AND returneddate !=?", Time.now, nil] } }
   
+  #as per requested by user -> index : 'active transaction' : only active transaction.
   FILTERS = [
-    {:scope => "all",        :label => "Semua transaksi"},
-    {:scope => "borrowed",   :label => "Sedang dipinjam"},
-    {:scope => "returned",   :label => "Telah dipulangkan"},
-    {:scope => "overdue",    :label => "Tamat Tempoh"}
+    #{:scope => "all",        :label => "Semua transaksi"},   #All 
+    {:scope => "borrowed",   :label => "Sedang dipinjam"},    #Borrowed
+    #{:scope => "returned",   :label => "Telah dipulangkan"},  #Returned
+    {:scope => "overdue",    :label => "Tamat Tempoh"}        #Overdue
   ]
   #All Transactions, Out, Returned, Overdue
   
@@ -48,12 +57,14 @@ class Librarytransaction < ActiveRecord::Base
   def varmyass
     if extended == true && (returnduedate - checkoutdate).to_i < 15
       self.returnduedate = returnduedate + 14.days
+      self.libextended_by = User.current_user.staff_id
     end
     
     if returned == false
       self.returneddate = nil
     elsif returned == true
       self.returneddate = Date.today
+      self.libreturned_by = User.current_user.staff_id
     end
     
     if finepay == false
@@ -123,4 +134,9 @@ class Librarytransaction < ActiveRecord::Base
     dash_student = Librarytransaction.find(:all, :select => 'student_id', :conditions => ["student_id IS NOT ?", nil ]).map(&:student_id)
     b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h } 
   end
+  
+
+
+
+  
 end

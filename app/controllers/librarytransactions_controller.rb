@@ -232,10 +232,14 @@ end
   end
   
   def check_availability
+    #raise params.inspect
     if request.post?
       @rustaff = params[:ru_staff].to_s
-      @staffsearch = params[:staff_search].to_i
-      @studentsearch = params[:student_search].to_i
+      @staffsearch = Staff.find_by_name(params[:librarytransaction][:staff_who]) 
+      #@staffsearch = params[:staff_search].to_i
+      #@studentsearch = Student.find_by_name(params[:librarytransaction][:student_who]) 
+      @studentsearch = Student.find_by_icno(params[:librarytransaction][:student_who]) 
+      #@studentsearch = params[:student_search].to_i
       if @rustaff == '0'#|| @rustaff == 0
           @loaned_books = Librarytransaction.find(:all, :conditions=>['student_id=? AND returned IS NOT TRUE', @studentsearch]).count 
           @books_on_loan = Librarytransaction.find(:all, :conditions=>['student_id=? AND returned IS NOT TRUE', @studentsearch])
@@ -249,8 +253,11 @@ end
   def check_availability2
      if request.post?
        @rustaff = params[:ru_staff].to_s
-       @staffsearch = params[:staff_search].to_i
-       @studentsearch = params[:student_search].to_i
+       @staffsearch = Staff.find_by_name(params[:librarytransaction][:staff_who]) 
+       #@staffsearch = params[:staff_search].to_i
+       #@studentsearch = Student.find_by_name(params[:librarytransaction][:student_who]) 
+       @studentsearch = Student.find_by_icno(params[:librarytransaction][:student_who]) 
+       #@studentsearch = params[:student_search].to_i
        if @rustaff == '0'#|| @rustaff == 0
            @loaned_books = Librarytransaction.find(:all, :conditions=>['student_id=? AND returned IS NOT TRUE', @studentsearch]).count 
            @books_on_loan = Librarytransaction.find(:all, :conditions=>['student_id=? AND returned IS NOT TRUE', @studentsearch])
@@ -268,6 +275,12 @@ end
     render :layout => false
   end
   
+  #def accession_list
+    #@bookselect = params[:bookselect]
+    #@count = params[:count]
+    #@accessions = Book.find(@bookselect).accessions
+    #render :partial => 'accession_listing', :layout => false
+  #end
 
   
 end

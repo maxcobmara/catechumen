@@ -20,16 +20,17 @@
 	  <table width=100%>
 			<tr>
 			<th>Accession No</th>
-	        <th>Author</th>
+			<th>Call No (NLM/LC)</th>
+	        <th><%= t 'librarytransaction.author' %></th>
 	   		<th><%= t 'book.title' %></th>
-			<th>Staff</th>
+			<th><%= t 'librarytransaction.staffstudent' %></th>
 			<th><%= t 'librarytransaction.borrower' %></th>
-			<th>Class No</th>
-			<th> No</th>
-			<th><%= t 'librarytransaction.duedate' %></th>
-			<th><%= t 'librarytransaction.returneddate' %></th>
+			<!--<th>No</th>-->
+			<th width="80px" style="text-align:center;"><%= t 'librarytransaction.duedate' %></th>
+			<th><%=t 'librarytransaction.extend'%></th>
+			<th width="80px" style="text-align:center;"><%= t 'librarytransaction.returneddate' %></th>
 			<% permitted_to? :manage, :librarytransactions do %>
-			 	<th colspan=3><%= t 'action' %></th>
+			 	<th colspan=3 style="text-align:center;"><%= t 'action' %></th>
 			<% end %>
 	     </tr>
 
@@ -38,14 +39,21 @@
 	    <% for librarytransaction in librarytransactions%>
 	    <tr>
 		  	<td><%=h librarytransaction.accession.accession_no unless librarytransaction.accession_id.blank? %></td>
+		    <td><%=h librarytransaction.accession.book.classlcc? ?  librarytransaction.accession.book.classlcc : librarytransaction.accession.book.classddc %><%#=h librarytransaction.accession.book.classddc unless librarytransaction.accession_id.blank? %></td>
 		    <td><%=h librarytransaction.accession.book.author unless librarytransaction.accession_id.blank?  %></td>
 		    <td><%=h librarytransaction.accession.book.title unless librarytransaction.accession_id.blank? %></td>
-		    <td><%=h librarytransaction.ru_staff? ? image_tag("tick.png", :border=>0, :title=>'is staff') : image_tag("cross.png", :border=>0, :title=>'is staff') %></td>
+		    <td style="text-align:center"><%=h librarytransaction.ru_staff? ? t('librarytransaction.staff') : t( 'librarytransaction.student') %>
+				<%#=h librarytransaction.ru_staff? ? image_tag("cross.png", :border=>0, :title=>'is staff') : image_tag("tick.png", :border=>0, :title=>'is staff') %></td>
 			<td><%=h librarytransaction.borrower_name %></td>
-		    <td><%=h librarytransaction.accession.book.classddc unless librarytransaction.accession_id.blank? %></td>
-				<td><%=h librarytransaction.accession.book.orderno unless librarytransaction.accession_id.blank?%></td>
-				<td><%=h librarytransaction.returnduedate.strftime('%d %b %Y') %></td>
-		    <td><%=h librarytransaction.returneddate %></td>
+			<!--<td><%#=h librarytransaction.accession.book.orderno unless librarytransaction.accession_id.blank?%></td>-->
+			<td style="text-align:center;">
+				<% if librarytransaction.returnduedate < Date.today.yesterday && librarytransaction.returneddate.blank? %><span style="color:red;"><% else %><span style="color:black;">
+				<% end %>
+				<%=h librarytransaction.returnduedate.strftime('%d %b %Y') %>
+				</span>
+			</td>
+			<td style="text-align:center;"><%=h image_tag("tick.png", :border=>0, :title=>'is staff') if librarytransaction.extended? %></td>
+		    <td style="text-align:center;"><%=h librarytransaction.returneddate.strftime('%d %b %Y') unless librarytransaction.returneddate.blank? %></td>
 				<% permitted_to? :manage, :librarytransactions do %>
 				<td width=10px>				  
 						<% if librarytransaction.extended != true && librarytransaction.returned != true %>

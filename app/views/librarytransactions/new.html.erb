@@ -1,7 +1,7 @@
 <!--<h3><%#= t 'librarytransaction.newrec' %></h3>-->
 <h3>Library Transaction Details</h3> 
 
-<!--in case user click at 'Create All Records' button whereby book loan quota already exceed-->
+<!--in case user click at 'Create All Records' button whereby book loan quota already exceeded-->
 
 	<% if (params[:student_first] == '0') || (params[:staff_first] == 0) %>
 		<% @current_staff = params[:staff_first] %>
@@ -11,7 +11,7 @@
 		<% @current_student = params[:student_first] %>
 	<% end %>	
 	
-<!--in case user click at 'Create All Records' button whereby book loan quota already exceed-->
+<!--in case user click at 'Create All Records' button whereby book loan quota already exceeded-->
 
 <% if @librarytransaction %>
 
@@ -64,12 +64,24 @@
 									<%= check_box :ru_staff,{}, :id => 'staff', :onchange => "switchvisibility('staff')", :checked=>"checked" %>
 
 									<span id="bstaff" style="display:table-row">
-										<%= select_tag(:staff_search,"<option>Select Staff</option>"+
+										<%#= select_tag(:staff_search,"<option>Select Staff</option>"+
 										"<option value=#{ @current_staff } selected='selected'>#{Staff.find( @current_staff ).staff_name_then_mykad}</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['id!=?',@current_staff]),:id, :staff_name_then_mykad)) %> 
+										<!--testing search by name-->
+										<%= text_field_with_auto_complete :librarytransaction, :staff_who ,{ :size => 50,:value=>Staff.find(@current_staff).name }, 
+																		{ :url => formatted_staffs_path(:js), 
+													  					  :method => :get,
+																		  :param_name => 'search' } %>
+										<!--testing search by name-->
 										<%= submit_tag "Check Loan Details" %>
 									</span>
 									<span id="bstudent" style="display:none;">
-										<%= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
+										<!--testing search by name-->
+										<%= text_field_with_auto_complete :librarytransaction, :student_who ,{ :size => 50 }, 
+																		{ :url => formatted_students_path(:js), 
+													  					  :method => :get,
+																		  :param_name => 'search' } %>
+										<!--testing search by name-->
+										<%#= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
 										<%= submit_tag "Check Loan Details" %>
 									</span>	
 								<!--END-AFTER UPDATE-multiple edit screen:loan screen-->
@@ -80,16 +92,39 @@
 									<%= check_box :ru_staff,{}, :id => 'staff', :onchange => "switchvisibility('staff')", :checked=>"unchecked" %>
 
 									<span id="bstaff" style="display: none;">
-										<%= select_tag(:staff_search,"<option>Select Staff</option>"+options_from_collection_for_select(Staff.all,:id, :staff_name_then_mykad)) %> 
+										<%#= select_tag(:staff_search,"<option>Select Staff</option>"+options_from_collection_for_select(Staff.all,:id, :staff_name_then_mykad)) %> 
+										<!--testing search by name-->
+										
+										<%= text_field_with_auto_complete :librarytransaction, :staff_who ,{ :size => 50 }, 
+																		{ :url => formatted_staffs_path(:js), 
+													  					  :method => :get,
+																		  :param_name => 'search' } %>
+										<%#= text_field_with_auto_complete :librarytransaction, :staff_search ,{ :size => 100 }, 
+																		{ :tokens => ",",:url => formatted_staffs_path(:js), 
+																		  :method => :get,
+																		  :param_name => 'search' } %>
+										<!--testing search by name-->
 										<%= submit_tag "Check Loan Details" %>
 									</span>
-									<% if @current_student %>
+		
+									<% if @current_student %><%#=@current_student%>
 
 									<!--START-AFTER UPDATE:STUDENT-->
 										<span id="bstudent" style="display: table-row;">
 											<%#= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
-
-											<%= select_tag(:student_search,"<option>Select Student</option>"+
+											<!--testing search by name-->
+											<%#= text_field_with_auto_complete :librarytransaction, :student_who ,{ :size => 50,:value=>Student.find(@current_student).name }, 
+																			{ :url => formatted_students_path(:js), 
+														  					  :method => :get,
+																			  :param_name => 'search' } %>
+											<!--testing search by name-->
+											<!--testing search by icno-->
+											<%= text_field_with_auto_complete :librarytransaction, :student_who ,{ :size => 50,:value=>Student.find(@current_student).icno }, 
+																			{ :url => formatted_students_path(:js), 
+														  					  :method => :get,
+																			  :param_name => 'search' } %>
+											<!--testing search by icno-->
+											<%#= select_tag(:student_search,"<option>Select Student</option>"+
 											"<option value=#{ @current_student } selected='selected'>#{Student.find( @current_student).matrix_name}</option>"+options_from_collection_for_select(Student.find(:all, :conditions=>['id!=?',@current_student]),:id, :matrix_name)) %>
 											<%= submit_tag "Check Loan Details" %>
 										</span>
@@ -99,7 +134,13 @@
 									<% else %>
 
 										<span id="bstudent" style="display: table-row;">
-											<%= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
+											<!--testing search by name-->
+											<%= text_field_with_auto_complete :librarytransaction, :student_who ,{ :size => 50}, 
+																			{ :url => formatted_students_path(:js), 
+														  					  :method => :get,
+																			  :param_name => 'search' } %>
+											<!--testing search by name-->
+											<%#= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
 											<%= submit_tag "Check Loan Details" %>
 										</span>
 

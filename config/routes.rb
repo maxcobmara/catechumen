@@ -249,6 +249,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :titles
   
   map.connect '/staffs.js', :controller => 'staffs', :action => 'index' , :collection => {:method => :get}
+  map.connect '/indexmessage.js', :controller => 'staffs', :action => 'indexmessage' , :collection => {:method => :get}
   map.connect '/staffs/reportforstaff', :controller => 'staffs', :action => 'reportforstaff'
   map.resources :staffs
   
