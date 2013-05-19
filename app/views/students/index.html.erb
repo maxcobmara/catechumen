@@ -18,15 +18,15 @@
 </div>
 
 <div class="searchit" style="display:none;">
-<#%= render :partial => 'search' %>
+<%= render :partial => 'search' %>
 </div>
 
 <table class="table table-condensed table-hover ">
   <thead>
     <tr>
-      <th><#%= sort_link @q, :id_no1, 'MyKad No' %></th>
-      <th><#%= sort_link @q, :name, (model_class.human_attribute_name(:name)) %></th>
-      <th><#%= sort_link @q, :id_no2, 'Matrix No' %></th>
+      <th><%= sort_link @q, :id_no1, 'MyKad No' %></th>
+      <th><%= sort_link @q, :name, (model_class.human_attribute_name(:name)) %></th>
+      <th><%= sort_link @q, :id_no2, 'Matrix No' %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -37,7 +37,7 @@
         <td><%= link_to student.id_no1, student_path(student) %></td>
         <td><%= student.name %></td>
         <td><%= student.id_no2 %></td>
-        <!--<#%= render :partial => 'action_menu', :locals => { :student => student } %>-->
+        <%= render :partial => 'action_menu', :locals => { :student => student } %>
       </tr>
     <% end %>
 			<tr>
@@ -46,3 +46,13 @@
 </table>
 
 <%= link_to content_tag(:i, "", :class => "icon-plus-sign icon-white") + " New Student", new_student_path, :class => 'btn btn-primary' %>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+		//show submit date
+		 $('#toga').click(function() {
+		    $('.searchit').toggle(); 
+		});
+});
+</script>

@@ -2,7 +2,11 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.json
   def index
-    @students = Student.all
+    @q = Student.ransack(params[:q])
+    @q.build_condition   
+    @q.sorts = 'name asc' if @q.sorts.empty?
+    @students = @q.result
+    
 
     respond_to do |format|
       format.html # index.html.erb
@@ -24,7 +28,7 @@ class StudentsController < ApplicationController
   # GET /students/new
   # GET /students/new.json
   def new
-    @student = Student.new
+    @student = Student.new(:marital_status => "single", :gender => "male")
 
     respond_to do |format|
       format.html # new.html.erb

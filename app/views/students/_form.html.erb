@@ -1,4 +1,4 @@
-<%= form_for(@student) do |f| %>
+<%= form_for @student, :html => { :class => 'form-horizontal' } do |f| %>
   <% if @student.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@student.errors.count, "error") %> prohibited this student from being saved:</h2>
@@ -10,80 +10,66 @@
       </ul>
     </div>
   <% end %>
+  
+  <%- model_class = Student -%>
+  
+  <div class="tabbable tabs-right">
+    <ul class="nav nav-tabs">
+      <li><a href="#main"     data-toggle="tab">Main</a></li>
+  		<li><a href="#others"   data-toggle="tab">Others</a></li>
+  		<li><a href="#course"   data-toggle="tab">Course Details</a></li>
+  		<li><a href="#health"   data-toggle="tab">Health</a></li>
+  		<li><a href="#qualifications" data-toggle="tab">Qualifications</a></li>
+  		<li><a href="#spm"      data-toggle="tab">SPM Results</a></li>
+  		<li><a href="#contact"  data-toggle="tab">Contact Info</a></li>
+  		<li><a href="#photo"  data-toggle="tab">Photo</a></li>
+    </ul>
+    <div class="tab-content">     
+       
 
-  <div class="field">
-    <%= f.label :id_no1 %><br />
-    <%= f.text_field :id_no1 %>
+  	  <div class="tab-pane active" id="main">
+  	    <%= render :partial => 'main', :locals => { :f => f } %>
+  		</div>
+
+  		<div class="tab-pane" id="others">
+  		  <div class="control-group"><%= f.label :born_on, :class => 'control-label' %>
+			    <div id="datetimepicker4" class="input-append" data-date-format="dd-mm-yyyy">
+						<%= f.text_field :born_on, :class => 'datepicker' %>
+						<span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+					</div>
+			  </div>
+
+        <div class="control-group"><%= f.label :address, :class => 'control-label' %>
+          <div class="controls">
+          <%= f.text_area :address,  :rows => "6", :class => 'text-area' %></div></div>
+        <div class="control-group"><%= f.label :account_id, :class => 'control-label' %>
+          <div class="controls"><%= f.text_field :account_id, :class => 'input-large' %></div></div>
+  		</div>
+
+  		<div class="tab-pane" id="course">
+  		  <div class="control-group"><%= f.label :registered_on, :class => 'control-label' %>
+          <div class="controls"><%= f.text_field :registered_on, :class => 'input-large' %></div></div>
+        <div class="control-group"><%= f.label :programme_id, :class => 'control-label' %>
+          <div class="controls"><%= f.text_field :programme_id, :class => 'input-large' %></div></div>
+  		</div>
+
+  		<div class="tab-pane" id="photo">
+  		  Upload photo or use gravatar
+  		</div>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :id_no2 %><br />
-    <%= f.text_field :id_no2 %>
+  
+  
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                students_path, :class => 'btn' %>
   </div>
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label :telephone %><br />
-    <%= f.text_field :telephone %>
-  </div>
-  <div class="field">
-    <%= f.label :gender %><br />
-    <%= f.number_field :gender %>
-  </div>
-  <div class="field">
-    <%= f.label :born_on %><br />
-    <%= f.date_select :born_on %>
-  </div>
-  <div class="field">
-    <%= f.label :registered_on %><br />
-    <%= f.date_select :registered_on %>
-  </div>
-  <div class="field">
-    <%= f.label :address %><br />
-    <%= f.text_area :address %>
-  </div>
-  <div class="field">
-    <%= f.label :status_type %><br />
-    <%= f.check_box :status_type %>
-  </div>
-  <div class="field">
-    <%= f.label :marital_status %><br />
-    <%= f.number_field :marital_status %>
-  </div>
-  <div class="field">
-    <%= f.label :sponsor_id %><br />
-    <%= f.number_field :sponsor_id %>
-  </div>
-  <div class="field">
-    <%= f.label :programme_id %><br />
-    <%= f.number_field :programme_id %>
-  </div>
-  <div class="field">
-    <%= f.label :photo_file_name %><br />
-    <%= f.text_field :photo_file_name %>
-  </div>
-  <div class="field">
-    <%= f.label :photo_content_type %><br />
-    <%= f.text_field :photo_content_type %>
-  </div>
-  <div class="field">
-    <%= f.label :photo_file_size %><br />
-    <%= f.number_field :photo_file_size %>
-  </div>
-  <div class="field">
-    <%= f.label :photo_updated_at %><br />
-    <%= f.datetime_select :photo_updated_at %>
-  </div>
-  <div class="field">
-    <%= f.label :account_id %><br />
-    <%= f.number_field :account_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  
 <% end %>
+
+<script>
+	$(function() {
+			$('#datetimepicker4').datetimepicker({format: 'dd-MM-yyyy', pickTime: false });
+	  });
+</script>

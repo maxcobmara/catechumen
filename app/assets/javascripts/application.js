@@ -13,10 +13,15 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
+//= require bootstrap-datetimepicker
+//= require bootstrap-switch
 //= require_tree .
 $(function () {
   $('.carousel').carousel()
 })
 $(function () {
   $('#myTab a:last').tab('show');
+})
+$(function() {
+		$('#datetimepicker4').datetimepicker({format: 'dd-MM-yyyy', pickTime: false });
 })

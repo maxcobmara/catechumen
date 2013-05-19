@@ -19,22 +19,22 @@ ActiveRecord::Schema.define(:version => 20130513152420) do
     t.string   "name"
     t.string   "email"
     t.string   "telephone"
-    t.integer  "gender"
+    t.string   "gender",             :limit => 10
     t.date     "born_on"
     t.date     "registered_on"
     t.text     "address"
     t.boolean  "status_type"
-    t.integer  "marital_status"
+    t.string   "marital_status",     :limit => 10
     t.integer  "sponsor_id"
-    t.integer  "intake_id",          :default => 0, :null => false
-    t.integer  "programme_id",       :default => 0, :null => false
+    t.integer  "intake_id",                        :default => 0, :null => false
+    t.integer  "programme_id",                     :default => 0, :null => false
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
-    t.integer  "account_id",         :default => 0, :null => false
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.integer  "account_id",                       :default => 0, :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
   end
 
   add_index "students", ["id_no1"], :name => "index_students_on_id_no1", :unique => true

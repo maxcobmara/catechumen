@@ -4,11 +4,18 @@ gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-gem 'jquery-rails'
+#functional
+
 gem 'pg', '~> 0.12.2'
-gem 'bootstrap-sass', '~> 2.1'
 gem 'devise'
 gem "ransack"
+#ui/ux gems
+gem 'jquery-rails'
+gem 'bootstrap-sass', '~> 2.1'
+gem "bootstrap-switch-rails"
+gem "bootstrap-datetimepicker-rails", "~> 0.0.11"
+#assistors
+gem "haml", "~> 4.0.2"
 
 
 
