@@ -1,7 +1,7 @@
 <div class="tform">
 
 <fieldset>
-	<legend class='togvis'>Weekly Timetable</legend>
+	<legend class='togvis'>Topic Details</legend>
 		<table width=85% >
 			<tr>
 				<td class="leftcol"><label>Topic</label></td>
@@ -22,6 +22,14 @@
 			<tr>
 				<td class="leftcol"><label>Contents:</label></td>
 				<td><%=h simple_format(@topicdetail.contents) %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Training Notes:</label></td>
+				<% count=0%>
+				<td><% for trainingnote in @topicdetail.trainingnotes %>
+						<%=count+=1%>-<%= trainingnote.title %> : <%=trainingnote.document_file_name%><br>
+					<% end %>
+				</td>				
 			</tr>
 			<tr>
 				<td class="leftcol"><label>Theory:</label></td>

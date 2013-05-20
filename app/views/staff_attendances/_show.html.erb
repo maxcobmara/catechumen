@@ -1,5 +1,5 @@
 <fieldset>
-	<legend>Late Details</legend>
+	<legend><!--Late Details--><%=t 'attendance.details' %></legend>
 		<table width=100% >
 			<tr>
 				<td class="leftcol"><%= t 'staff.name' %></td>
@@ -17,10 +17,26 @@
 
 <% if @staff_attendance.reason? %>
 <fieldset>
-	<legend>Reason for Lateness</legend>
+	<legend><%=t 'attendance.fingerprint_statement' %></legend>
 		<table width=100% >
 			<tr>
-				<td class="leftcol"><%= t 'staff.name' %></td>
+				<td class="leftcol"><%= t 'attendance.status' %></td>
+				<td>
+					<% if @staff_attendance.status == 1 %>
+						<%= t 'attendance.outstation' %>
+					<% elsif @staff_attendance.status == 2 %>
+						<%= t 'attendance.official' %>
+					<% elsif @staff_attendance.status == 3 %>
+						<%= t 'attendance.forgot' %>
+					<% elsif @staff_attendance.status == 4 %>
+						<%= t 'attendance.early_late' %>
+					<% elsif @staff_attendance.status == 5 %>
+						<%= t 'attendance.others' %>
+					<% end %>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= t 'attendance.reason' %></td>
 				<td><%=h @staff_attendance.reason %></td>
 			</tr>
 		</table>

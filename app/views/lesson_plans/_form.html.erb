@@ -73,20 +73,47 @@
 			<td class="leftcol"><%= f.label :reference %></td>
 			<td><%= f.text_area :reference, :size=> '50x5' %></td>
 		</tr>
+		<!--THIS ONE WILL SAVE TRAINING NOTES IN lesson_plans table instead of trainingnotes table.
 		<tr>
 			<td class="leftcol"><label for="data">Current Attachment:</label></td>
-			<td><% if @lesson_plan.data.exists? then %>
-		    		<%= @lesson_plan.data_file_name %> &nbsp;&nbsp;&nbsp;
-		    	<%= link_to (t 'document.download'), @lesson_plan.data.url %> ||
-	        	<%= link_to "ALT", @lesson_plan.data.url %>
-		    <% else %>
+			<td><%# if @lesson_plan.data.exists? then %>
+		    		<%#= @lesson_plan.data_file_name %> &nbsp;&nbsp;&nbsp;
+		    	<%#= link_to (t 'document.download'), @lesson_plan.data.url %> ||
+	        	<%#= link_to "ALT", @lesson_plan.data.url %>
+		    <%# else %>
 		    	No Attachment yet
-	    	<% end %>
+	    	<%# end %>
 		</td>
+		
 		<tr>
 			<td class="leftcol"><label for="data">Upload/Change File:</label></td>
-			<td><%= f.file_field :data %></td>
-		</tr>
+			<td><%#= f.file_field :data %></td>
+		</tr>-->
+		<!--trial section : 20May2013-->
+			<table width=100%>
+				<tr>
+					<td class="leftcol">Add Existing Training Notes</td>
+					<td>
+						<div>
+						<% f.fields_for :lesson_plan_trainingnotes do |builder| %>
+							<%= render 'lesson_plan_trainingnote_fields', :f => builder %>
+						<% end %>
+						<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :lesson_plan_trainingnotes %> - Add More </p>
+						</div></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Add New Training Notes</td>
+					<td>
+						<div>
+						<% f.fields_for :trainingnotes do |builder| %>
+							<%= render 'trainingnote_fields', :f => builder %>
+						<% end %>
+						<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :trainingnotes %> - Add More </p>
+						</div></td>
+				</tr>
+			</table>
+		<!--trial section : 20May2013-->
+		
 	</table>
 
 <BR>

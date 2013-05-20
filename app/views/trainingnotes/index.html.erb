@@ -18,16 +18,17 @@
 			<th colspan=3>Control</th>
 	  </tr>
 	
+	TOPIC ID:<%#=@trainingnotes[1].topic_id %>
 	
-	<% @trainingnotes.group_by(&:topic_id).each do |topic_id, trainingnotes | %>
+	<% @trainingnotes.group_by(&:topicdetail_id).each do |topicdetail_id, trainingnotes | %>
 			<tr><td colspan=8><strong>
-			<%= check_kin {Topic.find(topic_id).subject.programmes.last.name} %>
+				<%= check_kin {Programme.find(Topicdetail.find(topicdetail_id).topic_code).root.name} %>
 			</strong></td></tr>
 			<tr><td colspan=8><strong> &nbsp; &nbsp; &nbsp;
-			<%#= Topic.find(topic_id).subject.name %>
+				<%= check_kin {Programme.find(Topicdetail.find(topicdetail_id).topic_code).parent.subject_list}  %>	
 			</strong></td></tr>
 			<tr><td colspan=8><strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-			<%#= Topic.find(topic_id).name %>
+				<%= check_kin {Programme.find(Topicdetail.find(topicdetail_id).topic_code).name}  %>	
 			</strong></td></tr>
 			
 

@@ -47,6 +47,10 @@ class Position < ActiveRecord::Base
     end
   end
   
+  def staff_name
+    Staff.find(staff_id).name if staff_id!=nil
+  end
+  
   def just_a_counter
     v=1
   end

@@ -25,7 +25,10 @@ class LessonPlansController < ApplicationController
   # GET /lesson_plans/new.xml
   def new
     @lesson_plan = LessonPlan.new
-
+    #trial section-20May2013
+    @lesson_plan.trainingnotes.build               #unremark to have default one
+    @lesson_plan.lesson_plan_trainingnotes.build   #unremark to have default one
+    #trial section-20May2013
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @lesson_plan }

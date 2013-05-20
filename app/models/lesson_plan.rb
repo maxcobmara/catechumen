@@ -15,6 +15,13 @@ class LessonPlan < ActiveRecord::Base
   validate :approved_or_rejected, :satisfy_or_notsatisfy
   validates_presence_of :schedule
   
+  #trial section------------
+  has_many :lesson_plan_trainingnotes
+  accepts_nested_attributes_for :lesson_plan_trainingnotes, :reject_if => lambda {|a| a[:trainingnote_id].blank?}
+  has_many :trainingnotes, :through => :lesson_plan_trainingnotes
+  accepts_nested_attributes_for :trainingnotes, :reject_if => lambda {|a| a[:topic_id].blank?}
+  #trial section------------
+  
   def set_to_nil_where_false
     if is_submitted == true
       self.submitted_on	= Date.today
@@ -40,6 +47,10 @@ class LessonPlan < ActiveRecord::Base
       self.report_endorsed = true
       self.report_endorsed_on = Date.today
    end  
+   
+   if schedule != nil
+      self.topic = WeeklytimetableDetail.find(schedule).topic
+   end   
     
   end
   

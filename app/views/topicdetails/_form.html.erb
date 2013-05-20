@@ -66,6 +66,19 @@ bkLib.onDomLoaded(function() {
 			<td class="leftcol"><%= f.label :contents %></td>
 			<td><%= f.text_area :contents, :size => '90x10', :id => 'myNicEditor'  %></td>
 		</tr>
+		<!--Add training Notes for these specific topic (details)-->
+		<tr>
+			<td class="leftcol">Add Training Notes</td>
+			<td>
+				<div>
+					<% f.fields_for :trainingnotes do |builder| %>
+						<%= render 'trainingnote_fields', {:f => builder,:aaa=> params[:topic_code] }%>
+					<% end %>
+						<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :trainingnotes %> - Add More </p>
+				</div>
+			</td>
+		</tr>	
+		<!--Add training Notes for these specific topic (details)-->		
 		<tr>
 			<td class="leftcol"><%= f.label :prepared_by %></td>
 			<td><%= f.collection_select :prepared_by, Staff.find(:all, :conditions => ['id =?', User.current_user.staff_id] ), :id, :name %></td>

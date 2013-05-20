@@ -11,14 +11,12 @@
 
 
 <div class="A4landscape" >
-
-		<%#=@personalize%>
 		<% detailing=[] %>
 		<% detailing_monthurs=[]%>
 		<% detailing_friday=[]%>
 		
 			<% @personalize.each do |sdate, items2| %>
-			  	<!--<%#= sdate%>~~~<%#=items2%>~~~<%#=@selected_date%>-->
+			  <!--	<%= sdate%>~~~<%=items2%>~~~<%#=@selected_date%>-->
 				<% items2.each_with_index do |item, index|%>
 
 					<% if sdate.to_s == @selected_date.to_s %>
@@ -60,7 +58,7 @@
 					<% startdt = item.startdate %>
 					<% enddt = item.enddate %>
 					
-					<% item.weeklytimetable_details.each do |h| %>
+					<% item.weeklytimetable_details.each do |h| %><!--<%#=h.lecturer_id%>!!<%#=User.current_user.staff_id%>-->
 						<% if h.lecturer_id == User.current_user.staff_id %>
 							<% detailing << h %>
 							<% if h.day2 != 0 %>
@@ -95,7 +93,7 @@
 	
 	<!--Header for Monday until Thursday-(start)-->
 	<%# @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(7, false) do |row_things| %>
-	<% detailing.each_with_index do |j,index|%><!--<%#=detailing.count%>~<%#=detailing_monthurs.count%>~<%#=detailing_friday.count%>-->
+	<% detailing.each_with_index do |j,index|%><!--<%=detailing.count%>~<%#=detailing_monthurs.count%>~<%#=detailing_friday.count%>-->
 	<% if index==0%>
 	<% j.weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(7, false) do |row_things| %>
 	<tr>
@@ -154,13 +152,13 @@
 				<td class="data1">
 					<% detailing_monthurs.each do |j|%><%#= j.weeklytimetable.hod_approved %>
 						<% if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>
-		
+		<%#= j.day2 %><%#=count2%>
 							<strong>
 								<%= j.weeklytimetable_topic.parent.code %><br>
 								<%= j.weeklytimetable_topic.name %>
-								<%= "(K)" if j.method == 1 %>
-								<%= "(T)" if j.method == 2 %>
-								<%= "(A)" if j.method == 3 %><br>
+								<%= "(K)" if j.lecture_method == 1 %>
+								<%= "(T)" if j.lecture_method == 2 %>
+								<%= "(A)" if j.lecture_method == 3 %><br>
 								<%= j.weeklytimetable_location.name %><br>
 								<%= j.weeklytimetable.schedule_programme.programme_list %><br>
 								<%= j.weeklytimetable.schedule_intake.description %>
@@ -172,16 +170,16 @@
 					<% end%>
 				</td>						
 			<% elsif count3!=2%><!--PRINT BORDER : RIGHT-->
-				<td class="data2">
+				<td class="data2"><%#= detailing_monthurs.count%>
 			
 					<% detailing_monthurs.each do |j|%><%#= j.weeklytimetable.hod_approved %>
 						<% if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>				
-							<strong>DUA
+							<strong><!--DUA--><%#=j.topic%>
 								<%= j.weeklytimetable_topic.parent.code %><br>
 								<%= j.weeklytimetable_topic.name %>
-								<%= "(K)" if j.method == 1 %>
-								<%= "(T)" if j.method == 2 %>
-								<%= "(A)" if j.method == 3 %><br>
+								<%= "(K)" if j.lecture_method == 1 %>
+								<%= "(T)" if j.lecture_method == 2 %>
+								<%= "(A)" if j.lecture_method == 3 %><br>
 								<%= j.weeklytimetable_location.name %><br>
 								<%= j.weeklytimetable.schedule_programme.programme_list %><br>
 								<%= j.weeklytimetable.schedule_intake.description %>
@@ -256,9 +254,9 @@
 							<strong>
 								<%= j.weeklytimetable_topic.parent.code %><br>
 								<%= j.weeklytimetable_topic.name %>
-								<%= "(K)" if j.method == 1 %>
-								<%= "(T)" if j.method == 2 %>
-								<%= "(A)" if j.method == 3 %><br>
+								<%= "(K)" if j.lecture_method == 1 %>
+								<%= "(T)" if j.lecture_method == 2 %>
+								<%= "(A)" if j.lecture_method == 3 %><br>
 								<%= j.weeklytimetable_location.name %><br>
 								<%= j.weeklytimetable.schedule_programme.programme_list %><br>
 								<%= j.weeklytimetable.schedule_intake.description %>
@@ -275,9 +273,9 @@
 								<strong>
 									<%= j.weeklytimetable_topic.parent.code %><br>
 									<%= j.weeklytimetable_topic.name %>
-									<%= "(K)" if j.method == 1 %>
-									<%= "(T)" if j.method == 2 %>
-									<%= "(A)" if j.method == 3 %><br>
+									<%= "(K)" if j.lecture_method == 1 %>
+									<%= "(T)" if j.lecture_method == 2 %>
+									<%= "(A)" if j.lecture_method == 3 %><br>
 									<%= j.weeklytimetable_location.name %><br>
 									<%= j.weeklytimetable.schedule_programme.programme_list %><br>
 									<%= j.weeklytimetable.schedule_intake.description %>

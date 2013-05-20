@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130517024545) do
+ActiveRecord::Schema.define(:version => 20130520160720) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -831,6 +831,13 @@ ActiveRecord::Schema.define(:version => 20130517024545) do
     t.datetime "updated_at"
   end
 
+  create_table "lesson_plan_trainingnotes", :force => true do |t|
+    t.integer  "lesson_plan_id"
+    t.integer  "trainingnote_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "lesson_plans", :force => true do |t|
     t.integer  "lecturer"
     t.integer  "intake_id"
@@ -1300,6 +1307,8 @@ ActiveRecord::Schema.define(:version => 20130517024545) do
     t.date     "approved_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "status"
+    t.string   "review"
   end
 
   create_table "staff_grades", :force => true do |t|
@@ -1596,13 +1605,13 @@ ActiveRecord::Schema.define(:version => 20130517024545) do
     t.string   "version"
     t.string   "staff_id"
     t.date     "release"
-    t.integer  "topic_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "document_file_name"
     t.string   "document_content_type"
     t.integer  "document_file_size"
     t.datetime "document_updated_at"
+    t.integer  "topicdetail_id"
   end
 
   create_table "trainingreports", :force => true do |t|

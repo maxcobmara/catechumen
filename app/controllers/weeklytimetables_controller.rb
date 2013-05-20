@@ -114,7 +114,7 @@ class WeeklytimetablesController < ApplicationController
     @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',User.current_user.staff_id])
     @all_combine = []
     @weeklytimetables_details.each do |x|
-        @all_combine << Weeklytimetable.find(x.weeklytimetable.id)
+        @all_combine << Weeklytimetable.find(x.weeklytimetable_id)  #Weeklytimetable.find(x.weeklytimetable.id)
     end 
     @personalize = @all_combine.group_by{|t|t.startdate}
     render :layout => 'report'

@@ -2,7 +2,7 @@
   <%= f.error_messages %>
 
 	<div class="tform">
-			<H2>Reasons for Late</H2>
+			<H2><%=t 'attendance.fingerprint_statement' %><!--Reasons for Late--></H2>
 			
 			<table width=100% >
 				<tr>
@@ -15,18 +15,36 @@
 					<td><%=h @staff_attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y') %>&nbsp; 
 						 	<%=h @staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
 				</tr>
-				
+				<tr>
+					<td class="leftcol"><%= t 'attendance.status' %></td>
+					<td>
+						<%= f.radio_button :status, 1,	:id => 'loanmode',  :class => 'radio_discard_options' %><label><%= t 'attendance.outstation' %></label>
+						<br><%= f.radio_button :status, 2,	:id => 'loanmode',  :class => 'radio_discard_options' %><label><%= t 'attendance.official' %></label>
+						<br><%= f.radio_button :status, 3,	:id => 'loanmode',  :class => 'radio_discard_options' %><label><%= t 'attendance.forgot' %></label>
+						<br><%= f.radio_button :status, 4,	:id => 'loanmode',  :class => 'radio_discard_options' %><label><%= t 'attendance.early_late' %></label>
+						<br><%= f.radio_button :status, 5,	:id => 'loanmode',  :class => 'radio_discard_options' %><label><%= t 'attendance.others' %></label>
+					</td>
+				</tr>
 				<tr>
 					<td class="leftcol"><label for="reason"><%= t 'attendance.reason' %><font color="red"> * </font></td>
 					<td><%= f.text_area :reason, :size => "50x3" %></td>
-			  </tr>
-			</table>
+			  	</tr>
+
+			<!--</table>-->
 			
 		  <% if User.current_user.staff.position.is_root? == false %>
-			<%= f.hidden_field :approved_by, :value => User.current_user.staff.position.parent.staff_id %>
-			<% else %>
-			<% end -%>
-			
+				<%# if User.current_user.staff.position.parent.staff_id!=nil %>
+					<%= f.hidden_field :approved_by, :value => User.current_user.staff.position.parent.staff_id %>
+				<%# else %>
+					<!--those who has no superior?--><!--require tester confirmation--><!--
+					<tr><td class="leftcol"><%#= t 'attendance.approve_id' %></td>
+					<td><%#= f.collection_select :approved_by, Staff.find(:all, :order=> :name), :id, :name, :include_blank => "Select Approving Officer" %>
+						<%#= f.collection_select :approved_by, Staff.find( User.current_user.staff_id).position.ancestors, :id, :staff_name, :include_blank => true %></td></tr>	    	
+				<%# end %>-->
+		  <% else %>
+		  <% end -%>
+		
+			</table>
 	</div>
 	<BR/>
 

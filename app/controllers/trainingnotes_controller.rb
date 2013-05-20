@@ -2,7 +2,7 @@ class TrainingnotesController < ApplicationController
   # GET /trainingnotes
   # GET /trainingnotes.xml
   def index
-    @trainingnotes = Trainingnote.find(:all, :order => 'topic_id')
+    @trainingnotes = Trainingnote.find(:all, :order => 'topicdetail_id')#:order => 'topic_id')
 
     respond_to do |format|
       format.html # index.html.erb

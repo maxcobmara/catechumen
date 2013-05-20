@@ -118,7 +118,7 @@ class StaffAttendancesController < ApplicationController
         
         if submit_val == "Search by date" && @dadidu!='' && @dadidu2!=''
           @days_count = ((@dadidu2.to_date )- (@dadidu.to_date)).to_i
-          0.upto(1) do |count| 
+          0.upto(@days_count) do |count| 
 		          testalldeptgroup.each do |d,k|
 		      
 				          if d == @loop_date # "2012-10-15" #date
@@ -240,8 +240,9 @@ class StaffAttendancesController < ApplicationController
   
   def manage
     @mylate_attendances = StaffAttendance.find_mylate
+    @myearly_attendances = StaffAttendance.find_myearly
     @approvelate_attendances = StaffAttendance.find_approvelate
-
+    @approveearly_attendances = StaffAttendance.find_approveearly
 
     respond_to do |format|
       format.html # index.html.erb
