@@ -27,10 +27,11 @@
 <!--Addsupplies Details-->	
 	<div>
 	  <H2><%= t 'supplier.add' %></H2>
-		<p><strong>|  <%= t 'supplier.lpono' %> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|  
-									<%= t 'supplier.document' %> &nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|
-									<%= t 'supplier.quantity' %>  &nbsp; &nbsp; &nbsp; &nbsp; | 
-									<%= t 'supplier.unitcost' %>  &nbsp; &nbsp; &nbsp; &nbsp;   &nbsp;   | 
+		<p><strong>|  <%= t 'supplier.lpono' %> &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; |  
+									<%#= t 'supplier.document' %><%= t 'supplier.name'%> &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  |
+									<%= t 'supplier.quantity' %>  &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;  | 
+									<%= t 'supplier.unitcost' %>  &nbsp;  &nbsp; &nbsp; &nbsp;  | 
+									<%= t 'supplier.total' %>  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  | 
 									<%= t 'supplier.received' %></strong></p>
 		<% f.fields_for :addsuppliers do |builder| %>
 			<%= render 'addsupplier_fields', :f => builder %>
@@ -41,10 +42,14 @@
 <!--usesupply Details-->		
 	<div>
 		<H2>Use/Issue Supplies</H2>
-			<p><strong>   <div style="width: 270px; float: left;">|  <%= t 'supplier.issuedby' %></div>
-										<div style="width: 270px; float: left;">|  <%= t 'supplier.receivedby' %></div>
-										<div style="width: 90px; float: left;">|  <%= t 'supplier.quantity' %></div>|
-										<div style="width: 90px; float: left;">|<%= t 'supplier.issuedate' %></div></strong></p>
+			<p><strong>   <!--<div style="width: 250px; float: left;">-->|  <%= t 'supplier.issuedby' %><!--</div>-->
+				&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
+										<!--<div style="width: 300px; float: left;">-->|  <%= t 'supplier.receivedby' %><!--</div>-->
+				&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+										<!--<div style="width: 85px; float: left;">-->|  <%= t 'supplier.quantity' %><!--</div>-->
+				&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
+										<!--<div style="width: 90px; float: left;">-->| <%= t 'supplier.issuedate' %><!--</div>-->
+			</strong></p>
 			<% f.fields_for :usesupplies do |builder| %>
 				<%= render 'usesupply_fields', :f => builder %>
 			<% end %>

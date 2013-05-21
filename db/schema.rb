@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130520160720) do
+ActiveRecord::Schema.define(:version => 20130521191742) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -1839,13 +1839,13 @@ ActiveRecord::Schema.define(:version => 20130520160720) do
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
 
   create_table "usesupplies", :force => true do |t|
-    t.integer  "supplies_id"
     t.integer  "issuedby"
     t.integer  "receivedby"
     t.decimal  "quantity"
     t.date     "issuedate"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "supplier_id"
   end
 
   create_table "weeklytimetable_details", :force => true do |t|

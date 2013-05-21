@@ -95,4 +95,9 @@ class StationeriesController < ApplicationController
   def sort_direction
       %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
   end
+  
+  def supplies
+    @stationery = Stationery.find(params[:id])
+    render :layout => 'report'
+  end
 end
