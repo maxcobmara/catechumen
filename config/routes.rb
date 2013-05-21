@@ -70,7 +70,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect '/attendance/status/', :controller => 'staff_attendances', :action => 'status' 
   map.connect '/attendance/approve/', :controller => 'staff_attendances', :action => 'approve' 
-  map.connect '/attendance/manage/', :controller => 'staff_attendances', :action => 'manage' 
+  map.connect '/attendance/manage/', :controller => 'staff_attendances', :action => 'manage'
+  map.connect '/attendance/report', :controller => 'staff_attendances', :action => 'report' 
   map.resources :staff_attendances, :collection => { :actionable => :put }
 
   map.resources :staff_appraisals, :collection => { :appraisal_form => :get }

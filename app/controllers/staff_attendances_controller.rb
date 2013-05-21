@@ -272,4 +272,62 @@ class StaffAttendancesController < ApplicationController
     @prevmonthgreens = StaffAttendance.previous_month_green
   end
   
+  def report
+    @dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Pembangunan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]
+    @dept_superiors = []
+    0.upto(21) do |count|
+      @dept_superiors << Position.find(:first, :conditions=>['unit=?',@dept_names[count]])
+    end
+  end
+  
+  def monthly_weekly_report
+    if request.post?
+          #raise params.inspect
+          @find_type = params[:list_submit_button]
+          @superior_position_id = params[:superior_position_id]
+          @dept_name = Position.find(:first, :conditions=>['id=?',@superior_position_id]).unit
+    		  if @find_type == "Monthly Report"
+    		      @aa=params[:month_year2][:"(1i)"]  #year
+              @bb=params[:month_year2][:"(2i)"]  #month
+              @cc='01'                      #params[:month_year][:"(3i)"] #day
+              if @aa!='' && @bb!='' && @cc!=''
+                  if @bb=='1'||@bb=='2'||@bb=='3'||@bb=='4'||@bb=='5'||@bb=='6'||@bb=='7'||@bb=='8'||@bb=='9'
+                      @bb='0'+@bb
+                  end
+                  @dadidu=@aa+'-'+@bb+'-'+@cc
+              else
+                  @dadidu=''
+              end
+    		      @next_date = @dadidu.to_date+1.month  #(next month)
+          elsif @find_type == "Report for 2 Week"
+              @aa=params[:month_year1][:"(1i)"]  #year
+              @bb=params[:month_year1][:"(2i)"]  #month
+     		      @cc=params[:month_year1][:"(3i)"]      #day
+              if @aa!='' && @bb!='' && @cc!=''
+                  if @cc=='1'||@cc=='2'||@cc=='3'||@cc=='4'||@cc=='5'||@cc=='6'||@cc=='7'||@cc=='8'||@cc=='9'
+                      @cc='0'+@cc
+                  end
+                  if @bb=='1'||@bb=='2'||@bb=='3'||@bb=='4'||@bb=='5'||@bb=='6'||@bb=='7'||@bb=='8'||@bb=='9'
+                      @bb='0'+@bb
+                  end
+                  @dadidu=@aa+'-'+@bb+'-'+@cc
+              else
+                  @dadidu=''
+              end
+              @next_date = @dadidu.to_date+2.week   #(next week)
+           end
+           #====refer model --> self.peep method==
+           @hisstaff = Position.find(@superior_position_id).child_ids
+           @hisstaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", @hisstaff]).map(&:staff_id)
+           @thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", @hisstaffids]).map(&:thumb_id)
+           #======================================
+           #*******************refer model --> self.find_approveearly --(is_approved==false)
+           @notapproved_lateearly=StaffAttendance.find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) ", true, true, @thumbs], :order => 'logged_at DESC').group_by {|t| t.thumb_id }
+           #@notapproved_lateearly=StaffAttendance.find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, @thumbs, @dadidu, @next_date], :order => 'logged_at DESC').group_by {|t| t.thumb_id }
+           #**************************************
+
+           render :layout => 'report'
+      end   #end for - if request.post?
+  end
+   
 end

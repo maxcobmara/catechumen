@@ -44,10 +44,10 @@ class StaffAttendance < ActiveRecord::Base
   end 
   
   def self.find_approvelate
-    find(:all, :conditions => ["trigger=? AND thumb_id IN (?)", true, peeps], :order => 'logged_at DESC')
+    find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id IN (?)", true, "I", peeps], :order => 'logged_at DESC')
   end
   def self.find_approveearly
-    find(:all, :conditions => ["trigger=? AND thumb_id IN (?)", true, peeps2], :order => 'logged_at DESC')
+    find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id IN (?)", true,"O", peeps2], :order => 'logged_at DESC')
   end  
   def self.this_month_red
     red_peeps_this_month = StaffAttendance.count(:all, :group => :thumb_id, :conditions => ["trigger = ? AND logged_at BETWEEN ? AND ?", true, Date.today.beginning_of_month, Date.today])
@@ -243,7 +243,7 @@ class StaffAttendance < ActiveRecord::Base
                 end
             end
             #######
-            
+            "<font color=red>"+late+"</font>"
             ######
         else
             "-"#  "punctual-masuk" 
@@ -294,7 +294,7 @@ class StaffAttendance < ActiveRecord::Base
           elsif minit_diff > 0 && jam_diff <= 0
               early ="#{minit_diff} minutes"
           end
-          early
+          "<font color=red>"+early+"</font>"
           #$$$$$$-----------------------------
       else
           #TEMPORARY SOLUTION ------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -309,7 +309,7 @@ class StaffAttendance < ActiveRecord::Base
               elsif minit_diff > 0 && jam_diff <= 0
                   early ="#{minit_diff} minutes"
               end
-              early
+              "<font color=red>"+early+"</font>"
             else 
               "-"#  "puntual-balik (without staff_shift)" 
             end

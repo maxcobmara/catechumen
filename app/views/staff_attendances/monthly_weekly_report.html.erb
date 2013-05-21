@@ -1,0 +1,87 @@
+<%= stylesheet_link_tag 'report' %>
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>	
+<div class="A4potrait">
+
+<!-- Box Head -->
+<div id="kewpa">
+<p class="marginright" align="right"></p>
+<br><br>
+<H4 align="center" style="font-size:16px;font-weight:bold;font-family:arial;">
+	<% if @find_type == "Monthly Report" %>
+		Laporan Bulanan
+	<% elsif @find_type == "Report for 2 Week" %>	
+		Laporan Mingguan (Setiap 2 Minggu)
+	<% end %>
+</H4>
+
+<table class="lampiran_kewpa" style="padding:0;border-spacing:0;">
+<!--first part-->
+	<tr>
+		<td colspan=3 style="height:20px;">&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol">&nbsp;</td>
+		<td colspan=3 style="text-align:left;font-size:14px;font-family:arial;">
+			Nama Ketua Unit/Program : <%= check_kin{Position.find(@superior_position_id).staff.name} %>
+		</td>
+	</tr>
+	<tr>
+		<td class="leftcol">&nbsp;</td>
+		<td colspan=3 style="text-align:left;font-size:14px;font-family:arial;">Program/Unit : <%= @dept_name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol">&nbsp;</td>
+		<td colspan=3 style="text-align:left;font-size:14px;font-family:arial;">
+			Tarikh : <%= @dadidu.to_date.strftime("%d %b %Y") %> hingga <%=(@next_date.to_date-1.day).strftime("%d %b %Y")%>
+		</td>
+	</tr>
+	<tr>
+		<td class="leftcol">&nbsp;</td>
+		<td>&nbsp;</td>
+		<td style="vertical-align:top;">&nbsp;</td>
+		<td class="filler" style="vertical-align:top;height:30px;">&nbsp;</td>
+	</tr>
+<!--second part-->
+	<tr>
+		<td class="leftcol">&nbsp;</td>
+		<td style="border-left:solid 1px;border-top:solid 1px;border-bottom:solid 1px;width:60px;text-align:center;vertical-align:top;padding-top:3px;padding-left:0;font-weight:bold;font-size:14px;font-family:arial;">Bil</td>
+		<td style="border:solid 1px;width:380px;text-align:left;padding-left:5px;font-weight:bold;font-size:14px;font-family:arial;">
+			Nama Pegawai / Kakitangan Yang Datang <br>Lambat / Pulang Awal</td>
+		<td style="border-right:solid 1px;border-top:solid 1px;border-bottom:solid 1px;width:160px;text-align:center;vertical-align:top;padding-top:3px;font-weight:bold;font-size:14px;font-family:arial;">Jumlah Catitan</td>
+	</tr>
+	<% count=0 %>
+	<% @notapproved_lateearly.each do |thumb_id, items| %>
+	<tr>
+		<td class="leftcol">&nbsp;</td>
+		<td style="border-left:solid 1px;text-align:center;font-size:14px;font-family:arial;"><%= count+=1 %></td>
+		<td style="border-left:solid 1px;border-right:solid 1px;text-align:left;font-size:14px;font-family:arial;"><%=Staff.find_by_thumb_id(thumb_id).name %></td>
+		<td style="border-right:solid 1px;text-align:center;font-size:14px;font-family:arial;"><%=items.count%></td>
+	</tr>
+	<% end %>
+	<tr>
+		<td class="leftcol">&nbsp;</td>
+		<td colspan=3 style="border-top:solid 1px;text-align:center;height:40px;"></td>
+	</tr>
+<!--third part-->
+	<tr>
+		<td class="leftcol">&nbsp;</td>
+		<td colspan=3 style="text-align:left;font-size:14px;font-family:arial;">Jumlah Pegawai/Kakitangan : <%=@notapproved_lateearly.count%></td>
+	</tr>
+	<tr>
+		<td class="leftcol">&nbsp;</td>
+		<td colspan=3 style="text-align:left;font-size:14px;font-family:arial;">Tandatangan Ketua Unit/Program:</td>
+	</tr>
+</table>
+</div></div>
+
+

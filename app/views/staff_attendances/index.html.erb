@@ -8,8 +8,8 @@
 <!--search by date-->
 <div class="right">
 	<% form_tag '', :method => 'get' do %>
-	From: <%= date_select :search_from, params[:search_from], :include_blank => :true %>
-	&nbsp; &nbsp;To: <%= date_select :search_to, params[:search_to], :include_blank => :true %>
+	From: <%= date_select :search_from, params[:search_from], :include_blank => :true, :start_year => Time.now.year - 1, :end_year => Time.now.year  %>
+	&nbsp; &nbsp;To: <%= date_select :search_to, params[:search_to], :include_blank => :true, :start_year => Time.now.year - 1, :end_year => Time.now.year  %>
 	<%= submit_tag "Search by date", :name => :submit_button1 %>
 	<% end %>
 </div><br><br>
