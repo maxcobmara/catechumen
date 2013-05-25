@@ -1,22 +1,101 @@
 <div class="box">
 	<div class="box-head">
 		<h2 class="left">Staff Attendance - Full List</h2>
-		<div class="right"><%=@dadidu%>$$$<%=@dadidu2%><!--***<%#=@abababa.count if @abababa%>~~<%#=@selected_date%>@@<%#=@selected_rec_by_date.count%>-<%#=params[:id]%>@@<%#=@ooo.count %>-->
-		</div>
+		<div class="right"><!--<font color=black>--><%=@dadidu%>$$$<%=@dadidu2%><!--***<%#=@abababa.count if @abababa%>~~<%#=@selected_date%>@@<%#=@selected_rec_by_date.count%>-<%#=params[:id]%>@@<%#=@ooo.count %>--><!--
+		<%#=@position_staff_ids[3]%>|<%#=@position_staff_ids[4]%>|<%#=@position_staff_ids[5]%><br>
+		<%#= @staff_in_department[3]%>|<%#= @staff_in_department[4]%>|<%#= @staff_in_department[5]%><br>
+		<%#= @test_department[3].count%>|<%#= @test_department[4].count%>|<%#= @test_department[5].count%>,<br>
+		<%#=@testalldepartmenttgroup[3].count%>|<%#=@testalldepartmenttgroup[4].count%>|<%#=@testalldepartmenttgroup[5].count%></font>--></div>
 	</div>
 </div>
 <!--search by date-->
 <div class="right">
 	<% form_tag '', :method => 'get' do %>
-	From: <%= date_select :search_from, params[:search_from], :include_blank => :true, :start_year => Time.now.year - 1, :end_year => Time.now.year  %>
+	Department: <%= select_tag(:dept_select,"<option value='All'>All Department</option>"+options_for_select(@dept_names)) %><%#=  :dept_select, params[:dept_select], :include_blank => :true %>	
+		From: <%= date_select :search_from, params[:search_from], :include_blank => :true, :start_year => Time.now.year - 1, :end_year => Time.now.year  %>
 	&nbsp; &nbsp;To: <%= date_select :search_to, params[:search_to], :include_blank => :true, :start_year => Time.now.year - 1, :end_year => Time.now.year  %>
-	<%= submit_tag "Search by date", :name => :submit_button1 %>
+			
+	<br>
+	<SPAN class="bong", style="display: none;"></SPAN>
+	<SPAN class="koik", style="display: none;">
+		Staff: <%= select_tag(:staffthumb, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[0]]), :thumb_id, :name)) %>
+	</SPAN>
+	
+	<SPAN class="hotel", style="display: none;">
+		Staff: <%= select_tag(:staffthumb, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[1]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="library", style="display: none;">
+		Staff: <%= select_tag(:staffthumb, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[2]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="kaunter", style="display: none;">
+		Staff: <%= select_tag(:staffthumb, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[3]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="bangun", style="display: none;">
+		Staff: <%= select_tag(:staffthumb, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[4]]), :thumb_id, :name)) %>
+	</SPAN>
+				
+	<%= submit_tag "Search", :name => :submit_button1 %>
 	<% end %>
-</div><br><br>
+</div><br><br><br><br>
+
+<script type="text/javascript">
+		$j(document).ready(function(){
+		  $j('#dept_select').change(function() {
+		    if($j(this).val() == "All") {
+		      		$j('.bong').show();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+		    }else if ($j(this).val() == "Teknologi Maklumat") {
+		     	 	$j('.bong').hide();
+					$j('.koik').show();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+		    }
+			else if ($j(this).val() == "Perhotelan") {
+				    $j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').show();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+			}
+			else if ($j(this).val() == "Perpustakaan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').show();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+			}
+			else if ($j(this).val() == "Kaunter") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').show();
+					$j('.bangun').hide();
+			}
+			else if ($j(this).val() == "Pembangunan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').show();
+			}
+			});
+	});
+</script>
+
 <!--search by date-->  
 <div class="indextable">
 	<!---->
-	<% if params[:submit_button1] && params[:submit_button1] == "Search by date" %>
+	<% if params[:submit_button1] && params[:submit_button1] == "Search" %>
 	<% else %>
 	<div class="pagination">
 		<%##= will_paginate @staff_attendance_days %>
@@ -115,90 +194,127 @@
 
 
 <% counter2 = 0 %>
+<% count_date = 0 %>
 <% form_tag actionable_staff_attendances_path, :method => :put do %>
 <!----><!----><!----><!----><!----><!----><!---->
-<% if params[:submit_button1] == "Search by date" && @dadidu!='' && @dadidu2!=''%>
-
+<% if params[:submit_button1] == "Search" && (@dadidu!='' || @dadidu2!='') %><!--&& @dadidu!='' && @dadidu2!=''-->
+	<% if @dept_select!='All' %><p style="font-size:14px;">&nbsp;&nbsp;<b>Unit : <%=@dept_select %></b></p><% end %>	 
 <% @ooo.keys.sort.each do |date|%><%# @ooo.keys.sort.reverse.each do |date|%>
+
+	<!--newly added condition: although only 1 date entered, 2nd date will be defaulted to '16 October 2012 resulting-view of DATEs of unsearch date?'-->
+	<% if (@dadidu!='' && @dadidu2!='') %>
 	<tr><td colspan=13 style="background-color:yellow;"><BR><b>Date  : <%= date unless date.blank? %></b></td></tr>
+	<% else %>
+		<% if count_date == 0 %>
+	<tr><td colspan=13 style="background-color:green;"><BR><b>Date  : <%= date unless date.blank? %></b></td></tr>	
+		<% count_date+=1%>
+		<% end %>
+	<% end %>
+
+	<% count_dept = 0 %>
 	<% @selected_rec_by_date.each_with_index do |record,counting| %><!----><%#  0.upto(1) do |count| %>
-	
-
-	<!----><!--1st date : ganjil, 2nd date : genab-->
-	
-	<!---->		<!---->		<!---->	<!--
-			<%# if counter2 == 1 %>	
-			<%# elsif counter2 == 0 %><%# elsif counter2 == 1 %>
-				<%# if counting == 0 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting]%></td></tr>
-				<%# end %>
-				<%# if counting == 1 %>
-						<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting]%></td></tr>
-				<%# end %>
-				<%# if counting == 3 %>
-						<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-1]%></td></tr>
-				<%# end %>
-				<%# if counting == 5 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-2]%></td></tr>
-				<%# end %>
-				<%# if counting == 7 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-3]%></td></tr>
-				<%# end %>
-				<%# if counting == 9 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-4]%></td></tr>
-				<%# end %>
-				<%# if counting == 11 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-5]%></td></tr>
-				<%# end %>
-				<%# if counting == 13 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-6]%></td></tr>
-				<%# end %>
-				<%# if counting == 15 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-7]%></td></tr>
-				<%# end %>
-				<%# if counting == 17 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-8]%></td></tr>
-				<%# end %>
-				<%# if counting == 19 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-9]%></td></tr>
-				<%# end %>
-				<%# if counting == 21 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-10]%></td></tr>
-				<%# end %>
-				<%# if counting == 23 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-11]%></td></tr>
-				<%# end %>
-				<%# if counting == 25 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-12]%></td></tr>
-				<%# end %>
-				<%# if counting == 27 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-9]%></td></tr>
-				<%# end %>
-				<%# if counting == 29 %>
-					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-9]%></td></tr>
-				<%# end %>		
-				<%# if counting == 31 %>
-							<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%#=@dept_names[counting-10]%></td></tr>
-						<%# end %>
-			<%# end %>-->
-
-	
-
+	<!--counting will DEFINITELY EXCEED 21-coz all record are added into this 1 & only 1 array-->
+	<!--problem : dept name (0-21), but group of dept/unit set of record (0-50)-->
+		
+		
+			<% count_each_dept = 0 %>
 			<% record.each do |staff_attendance|%><%#= staff_attendance.logged_at.strftime("%Y-%m-%d").to_s%>
-			<%#-----------------------------------------------%><%# if staff_attendance.logged_at.strftime("%Y-%m-%d").to_s == @selected_date %><% if staff_attendance.logged_at.strftime("%Y-%m-%d").to_s == date %>
+			
+
+			
+			<%#-----------------------------------------------%><%# if staff_attendance.logged_at.strftime("%Y-%m-%d").to_s == @selected_date %>
+			<% if staff_attendance.logged_at.strftime("%Y-%m-%d").to_s == date %>
 				
 				<%#**************************************************************************************%>
-				<tr>
+				
 					<% if staff_attendance.attended.blank? %> 
 					<%# else %>
 						<!--<td colspan=13><%#=h staff_attendance.attendee_details %>
 						</td>-->
 					<%# end %>
+					
 					<!----><!----><!----><!----><!--LATEST-LATEST-LATEST-LATEST-LATEST-->
-						<% else %>
-							<td><b><%#=staff_attendance.log_type%></b>
+					
+					<% else %>
+					   
+					  <% if count_dept < 21 %>
+					    <% if @staffthumb=="All" || (@staffthumb.to_i == staff_attendance.thumb_id) %><!--view by staff selected @ All-->
+					  <%# not <22-avoid avoid last after checking(increased item) wont be taken into action+++++++++++++++++++%>	
+						
+						<!--start-checked if department/unit selected (or all department) for searching-->
+						<%@dep_unit = Position.find(:first,:conditions=>['staff_id=? ',Staff.find_by_thumb_id(staff_attendance.thumb_id).id]).unit %>
+						<% if @dep_unit.nil? || @dep_unit.blank? %>
+							<%@dep_unit = Position.find(:first,:conditions=>['staff_id=? ',Staff.find_by_thumb_id(staff_attendance.thumb_id).id]).parent.unit %>
+						<% end %>
+						<!--for staff with 2 positions-pn azizah binti Kadir - staff_id: 69-->
+						<% if @dep_unit.nil? || @dep_unit.blank? %>
+							<%@dep_unit = Position.find(:last,:conditions=>['staff_id=? ',Staff.find_by_thumb_id(staff_attendance.thumb_id).id]).unit %>
+						<% end %>
+						<!--end-checked if department/unit selected (or all department) for searching-->
+						
+						<!--start-view staff attendances according to department selection-->
+						<% if @dept_select == 'All' || (@dept_select == @dep_unit && @dept_select != nil) %>
+						
+							<% if @dept_select == 'All' && @dept_names[count_dept] == @dep_unit && count_each_dept == 0 %>
+								<%# count_dept = 0 %><%# count_each_dept = 0 %>
+								<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%=@dept_names[count_dept]%><!--*--></td></tr> 
+								<% count_each_dept+=1 %>
+							<% elsif @dept_select == 'All' && @dept_names[count_dept] == @dep_unit && count_each_dept != 0 %>
+								<% count_each_dept+=1 %>
+							<% end %>
+		
+							<% if @dept_select == 'All' && @dept_names[count_dept] != @dep_unit && count_each_dept == 0 %>
+								<% count_dept += 1 %><%# count_each_dept = 0 %>
+								<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%=@dept_names[count_dept]%><!--@--></td></tr> 
+								<% count_each_dept+=1 %>
+								<% @a=0%>
+								<% if @dept_names[count_dept] == @dep_unit %><% @a=3%>
+								<% end %>
+							<% elsif @dept_select == 'All' && @dept_names[count_dept] != @dep_unit && count_each_dept != 0 %>
+								<% count_each_dept+=1 %>
+							<% end %>
+							
+								<!--==========-->
+								<% if (@dept_names[count_dept] != @dep_unit)&& (@dept_select != @dep_unit) %><%#asal--> if @dept_names[count_dept] != @dep_unit %>
+								
+									<% if @a!=1%><!--just added-->
+										<%@a=1%>
+										<tr><td colspan=12 style="color:red;">
+											No record available</td></tr>
+											<!--just added-->
+											
+									<% end %>
+										<% count_dept += 1 %><!--@a to avoid repetive no record-->
+									<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%=@dept_names[count_dept]%><!--LALA-<%#=@dept_names[count_dept]%>~<%#=@dep_unit%>~<%#=@a%>~~~SEMAK THUMB<%#= staff_attendance.thumb_id%>--></td></tr>
+									
+									
+									<% if @dept_names[count_dept] != @dep_unit || ((@dept_names[count_dept] == @dep_unit) && @a!=1)%>
+									<!--2nd condition just added-->
+										<tr><td colspan=12 style="color:red;">
+											NO record available </td></tr><%@a=1%><!--just added-->
+									<% end %>
+				
+								<%# end %>
+								<!--============-->
+								<!--============######################-->
+								
+								<!--============######################-->
+							<% else %>
+						
+								<% @a=1%>		
+						<tr>
+							<td>
 								<%=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %>
 								<%=h staff_attendance.r_u_early == "flag" ? image_tag("flag_red.png") : "" %>
+								<!--ALTERNATIVE-display dept/unit name one by one-->
+								<b><%#=staff_attendance.log_type%>
+									<!--staff_id = <%#= Staff.find_by_thumb_id(staff_attendance.thumb_id).id %>-->
+									<% if @dept_select == 'All' %>	
+										<%#= @dep_unit%><!--DO NOT REMOVE-for checking:view department name at each row-->
+									<% end %>
+									
+								</b>
+								<!--alternative-display dept/unit name one by one-->
 							</td>
 						    <td><%=h staff_attendance.attendee_details %>(<%=h staff_attendance.thumb_id %>)==<%=staff_attendance.id%></td>
 						    <!--<td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
@@ -272,15 +388,25 @@
 						    <td width=10px><%= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>	
 						<% end %>
 					<!----><!----><!----><!----><!--LATEST-LATEST-LATEST-LATEST-LATEST-->
-				</tr>
-				<%#**************************************************************************************%>
-				
-				<% end %>
+						</tr>
+						<% end %>	<%# end for-if @dept_names[count_dept] != @dep_unit %>
+						
+						
+						<% end %>
+						<!--end-view staff attendances according to department selection-->
+					 
+					    <% end %><!--end for @staffthumb=="All" || (@staffthumb == staff_attendance.thumb_id) : staff selection-->
+					
+					  <%# #end for if count_dept < 21 not <22-avoid last after checking(increased item) wont be taken into action++++++++++%>	
+					  <% end %>	
+					  	
+					<% end %>
+					<%#**************************************************************************************%>
 		
 			<% end %>
 			
 			<!---->
-	
+	<!--COUNTING VAL<%#= counting%>-->
 	<% end %>
 	<% counter2+=1%>
 <% end %>
@@ -366,11 +492,21 @@
 		
 		<tr><td colspan=3><BR><b>Date  : <%= @selected_date %></b></td>
 			<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan=3></td></tr>
-		
+		<% count_dept = 0 %>
 		<% @selected_rec_by_date.each_with_index do |record,counting| %><!----><%#  0.upto(1) do |count| %>
-				<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%=@dept_names[counting]%></td></tr>
+				<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%=@dept_names[count_dept]%></td></tr>
+					
+			<!--CHECKING FOR no staff in Position table for CURRENT department-->
+				<% if @test_department[counting].count == 0 %>	
+					<tr><td>&nbsp;</td><td colspan=11 style="color:red;">No record available</td></tr>
+					<% count_dept+=1%>
+					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%=@dept_names[count_dept]%></td></tr>
+				<% end %>
+																
 			<% record.each do |staff_attendance|%><%#= staff_attendance.logged_at.strftime("%Y-%m-%d").to_s%>
 			<%#-----------------------------------------------%><%# if staff_attendance.logged_at.strftime("%Y-%m-%d").to_s == @selected_date %>
+				
+				
 				<tr>
 					<% if staff_attendance.attended.blank? %> 
 					<% else %>
@@ -450,8 +586,12 @@
 					    <td width=10px><%= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>	
 					<% end %>
 				<tr><%# end %><!--end for  0.upto(1) do |count|-->
+					
 			<%#-----------------------------------------------%>
-			<% end %><!----><%# end %>
+			<% end %><!----><%# end for record.each%>
+			
+
+			<%count_dept+=1%>
 		<% end %>
 		
 		<tr><td colspan=10 style="background-color:red;"></td></tr>

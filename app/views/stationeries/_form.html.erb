@@ -16,11 +16,11 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="maxquantity"><b><%= t 'supplier.maxquantity' %></b></label></td>
-			<td><%= f.text_field :maxquantity, :size => '5' %></td>
+			<td><%= f.text_field :maxquantity, :class=>'g1',:size => '5' %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="minquantity"><b><%= t 'supplier.minquantity' %></b></label></td>
-			<td><%= f.text_field :minquantity, :size => '5' %></td>
+			<td><%= f.text_field :minquantity, :class=>'g1',:size => '5' %></td>
 		</tr>
 	</table>
 	
@@ -32,9 +32,9 @@
 									<%= t 'supplier.quantity' %>  &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;  | 
 									<%= t 'supplier.unitcost' %>  &nbsp;  &nbsp; &nbsp; &nbsp;  | 
 									<%= t 'supplier.total' %>  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  | 
-									<%= t 'supplier.received' %></strong></p>
+									<%= t 'supplier.received' %></strong></p><% count=0%>
 		<% f.fields_for :addsuppliers do |builder| %>
-			<%= render 'addsupplier_fields', :f => builder %>
+			<%= render 'addsupplier_fields', :f => builder %><% count+=1%>
 		<% end %>
 		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :addsuppliers %> - Add More </p>
 	</div>
@@ -56,3 +56,19 @@
 			<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :usesupplies %> - Add More </p>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			//show submit date
+			$j(".g1").keyup(function() {  
+			  var e1g1q1 = $j("#stationery_maxquantity").val();
+			  //var e1g1q2 = $j("#stationery_minquantity").val();
+			
+				
+				var ansP = document.getElementById("stationery_minquantity");
+				ansP.value = (e1g1q1*1)+10 //+e1g1q2 
+
+			});
+
+	});
+</script>

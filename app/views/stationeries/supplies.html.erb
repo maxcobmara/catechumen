@@ -79,14 +79,15 @@ document.write("<input type='button' " +
 		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Issue Date</td>
 	</tr>
 
-<% for addsupplier in @stationery.addsuppliers %>
-  	<tr>
-		<td><%= addsuppliers.lpono %></td>
-		<td><%= addsuppliers.quantity %></td>
-		<td><%= ringgols(addsuppliers.unitcost) %></td>
-		<td><%= ringgols(addsuppliers.line_item_value) %></td>
-	</tr>
-<% end %>
+	<% for usesupplies in @stationery.usesupplies %>
+		<tr>
+			<td><%= Staff.find(usesupplies.issuedby).name %></td>
+			<td><%= Staff.find(usesupplies.receivedby).name %></td>
+			<td><%= usesupplies.quantity %></td>
+			<td><%= usesupplies.issuedate? ? usesupplies.issuedate.strftime("%d %b %Y") : "-" %></td>
+		</tr>
+	<% end %>
+
 </table>
 <BR>
 </div>

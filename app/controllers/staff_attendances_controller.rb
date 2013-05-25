@@ -4,8 +4,9 @@ class StaffAttendancesController < ApplicationController
   def index
     #---
     submit_val = params[:submit_button1]
+    @staffthumb = params[:staffthumb]
     #---if search by date---------------------------------------------------------------------------------------------------------
-    if submit_val == "Search by date"
+    if submit_val == "Search"
         @aa=params[:search_from][:"(1i)"] 
         @bb=params[:search_from][:"(2i)"]
         @cc=params[:search_from][:"(3i)"]
@@ -35,13 +36,15 @@ class StaffAttendancesController < ApplicationController
         else
             @dadidu2=''
         end
+        @dept_select = params[:dept_select]
+    
     
         params[:search_from]=nil  #this line is required
         params[:search_to]=nil    #this line is required
          
         #insert here....
         if (@dadidu=='' && @dadidu2=='')||(@dadidu==nil && @dadidu2==nil)
-            #@documents = Document.find(:all)
+            #@documents = Document.find(:all)backup dulu
         elsif @dadidu!='' && @dadidu2 ==''
             #@documents = Document.find(:all, :conditions=> ['letterxdt=?',"#{@dadidu}"])
             #@abababa = StaffAttendance.find(:all,:conditions=> ['logged_at>=?',"2012-10-15"])
@@ -95,7 +98,7 @@ class StaffAttendancesController < ApplicationController
         @testalldepartmenttgroup<< @test_department[countt4].group_by {|t| t.group_by_thingy }
     end
     
-    if submit_val == "Search by date"
+    if submit_val == "Search"
         #set value at above 
         #@selected_date = "2012-10-01"#@dadidu.to_s
         #if @selected_date2!='' && @selected_date !='' #@dadidu!='' && @dadidu2!='' #@selected_date2
@@ -116,13 +119,19 @@ class StaffAttendancesController < ApplicationController
         @loop_date = @selected_date
         bil=0
         
-        if submit_val == "Search by date" && @dadidu!='' && @dadidu2!=''
+        if submit_val ==  "Search" && @dadidu!='' && @dadidu2!=''
           @days_count = ((@dadidu2.to_date )- (@dadidu.to_date)).to_i
+          #ADDD
+          #0.upto(@days_count) do |count| 
+              #@selected_rec_by_date[count] = []
+          #end
+          #ADDD
           0.upto(@days_count) do |count| 
 		          testalldeptgroup.each do |d,k|
 		      
 				          if d == @loop_date # "2012-10-15" #date
-				              @selected_rec_by_date << k
+				              @selected_rec_by_date << k        #will retrieve existing record only...
+				              #@selected_rec_by_date[count] << k 
 				          end
 				    
 			        end

@@ -1,11 +1,27 @@
 <div class="fields">
 <%= f.text_field :lpono, :size => 10, :placeholder => "LPO No" %>
 <%= f.text_field :document, :size => 15, :placeholder => "Supplier Name" %>
-<%= f.text_field :quantity, :size => 9, :placeholder => "Quantity" %>
-<%= f.text_field :unitcost, :size => 12, :placeholder => "RM" %>
-<%= f.text_field :total, :size => 12, :placeholder => "RM" %>
+<%= f.text_field :quantity,:class => "g1", :size => 9, :placeholder => "Quantity" %>
+<%= f.text_field :unitcost, :class => "g1", :size => 12, :placeholder => "RM" %>
+<%= f.text_field :total, :size => 12, :class => "g1", :placeholder => "RM" %>
 <%= f.date_select :received, :size => 12, :order => [:day, :month, :year], :include_blank => true %>
 <%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>
 </div>
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			//show submit date
+			$j(".g1").keyup(function() {  
+			  var e1g1q1 = $j("#stationery_addsuppliers_attribute_1369215014640_quantity").val();
+			  var e1g1q2 = $j("#stationery_addsuppliers_attribute_1369215014640_unitcost").val();
+			
+				
+				var ansP = document.getElementById("stationery_addsuppliers_attribute_1369215014640_total");
+				ansP.value = (e1g1q1*1)+(e1g1q2*1)
+
+			});
+
+	});
+</script>
 
 
