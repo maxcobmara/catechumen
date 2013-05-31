@@ -89,6 +89,8 @@ ActionController::Routing::Routes.draw do |map|
 
   
   map.connect '/exams/exampaper', :controller => 'exams', :action => 'exampaper'
+  map.connect '/exams/exampaper_separate', :controller => 'exams', :action => 'exampaper_separate'
+  map.connect '/exams/exampaper_combine', :controller => 'exams', :action => 'exampaper_combine'
   map.resources :exams
 
   map.resources :student_discipline_cases

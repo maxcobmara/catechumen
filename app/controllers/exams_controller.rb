@@ -44,10 +44,13 @@ class ExamsController < ApplicationController
 
     respond_to do |format|
       if @exam.save
-        #format.html { render :action => "edit" }
+        format.html {render :action => "edit"}
+        flash[:notice] = 'Exam was successfully created. <b>You may now proceed with examquestion selection.</b>'
+        format.xml  { head :ok }
+        flash.discard
+        #do not remove 2 lines at the bottom of this line
         #format.html { redirect_to(@exam, :notice => 'Exam was successfully created.') }
-        format.html { redirect_to(@exam, :action => "edit") }
-        format.xml  { render :xml => @exam, :status => :created, :location => @exam }
+        #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
@@ -61,16 +64,77 @@ class ExamsController < ApplicationController
     #raise params.inspect
     params[:exam][:examquestion_ids] ||= []
     @exam = Exam.find(params[:id])
-
+  
     respond_to do |format|
-      if @exam.update_attributes(params[:exam])
-        format.html { redirect_to(@exam, :notice => 'Exam was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
-      end
-    end
+        if @exam.update_attributes(params[:exam]) 
+            if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count ==  (params[:exam][:examquestion_ids]).count) 
+                format.html { redirect_to(@exam, :notice => 'Exam was successfully updated.') }
+                format.xml  { render :xml => @exam, :status => :created, :location => @exam }
+            else
+                #-------(1)for first time data entry--default to edit to set sequence------------------
+                #-------(2)for additional data entry--default to edit to set sequence------------------
+                #-------for both situation--sequence fields are not available during questions addition
+                #-------sequence can only be set once after question is saved into exam----------------
+        	      format.html {render :action => "edit"}
+        	      flash[:notice] = 'Exam was successfully updated. <b>Please set sequence for each question.</b>'
+        	      format.xml  { head :ok }
+        	      flash.discard        
+                #format.html { render :action => "edit" }
+                #format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
+                #-------END FOR ABOVE CONDITIONS--------------------------------------------------------          
+            end
+        else
+            format.html { render :action => "edit" }
+          	format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
+        end
+        #if params[:exam][:seq]!=nil
+        #------  
+            #if params[:exam][:seq].uniq.length == params[:exam][:seq].length  #check for UNIQUE value of sequence selected for each question, if Ok, proceed.
+                #if @exam.update_attributes(params[:exam])                     #check if value for all params' value passed validation, if Ok, proceed.
+                    #if params[:exam][:seq].include?("Select") ==  false       #(ALL SEQUENCE ARE SET) - NONE OF SEQUENCE value is "Select" - SAVE & redirect to show page...
+                        #format.html { redirect_to(@exam, :notice => 'Exam was successfully updated.') }
+                        #format.xml  { head :ok }
+                    #else                                                      #sequence column in exam table BLANK - no data at all OR include?("Select") == true
+                        #format.html {render :action => "edit"}
+                        #flash[:error] = 'Please set sequence for each question.'
+                        #format.xml  { head :ok }
+                        #flash.discard
+                    #end
+                #else
+                    #format.html { render :action => "edit" }
+                    #format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
+                #end
+            #else                                                              #this part is for those with REDUNDANT sequence selected for any 2 or more questions in 1 exam!
+                #if params[:exam][:seq].include?("Select") ==  true            #if any of REDUNDANT sequence is 'Select'.
+                    #format.html {render :action => "edit"}
+                    #flash[:error] = 'Please set sequence for each question'
+                    #format.xml  { head :ok }
+                    #flash.discard
+                #else                                                          #if none of REDUNDANT sequence value is 'Select'
+                    #format.html { render :action => "edit" }
+                    #flash[:error] = 'No duplicates sequence is allowed.'
+                    #format.xml  { head :ok }
+                    #flash.discard
+                #end
+            #end
+        #------
+        #else
+        #------
+            #if @exam.update_attributes(params[:exam]) 
+                ##format.html { redirect_to(@exam, :notice => 'Exam was successfully updated. Please ') }
+                ##format.xml  { head :ok }
+                #format.html {render :action => "edit"}
+                #flash[:notice] = 'Exam was successfully updated. <b>Please set sequence for each question.</b>'
+                #format.xml  { head :ok }
+                #flash.discard
+            #else
+                #format.html { render :action => "edit" }
+                #format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
+            #end
+        #------
+        #end  
+    end     #end for respond_to do |format|
+    
   end
 
   # DELETE /exams/1
@@ -86,6 +150,16 @@ class ExamsController < ApplicationController
   end
   
   def exampaper
+    @exam = Exam.find(params[:id])  
+    render :layout => 'report'
+  end
+  
+  def exampaper_separate
+    @exam = Exam.find(params[:id])  
+    render :layout => 'report'
+  end
+  
+  def exampaper_combine
     @exam = Exam.find(params[:id])  
     render :layout => 'report'
   end

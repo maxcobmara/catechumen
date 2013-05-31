@@ -9,13 +9,24 @@
 		<%= hidden_field "examquestion[answerchoices_attributes][0]",:item, :value => "I" %>
 		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>	
 			<% if (Answerchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
-			<%= hidden_field "examquestion[answerchoices_attributes][0]",:id, :value => @examquestion.answerchoices[0].id%>
-			<%= text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.answerchoices[0].description %> 
-			<!--test to remove existing record-->
-			
-			<%#= hidden_field "examquestion[answerchoices_attributes][0]",:_destroy %>
-			<%#= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>
-			<!--test to remove existing record-->
+				<%#= hidden_field "examquestion[answerchoices_attributes][0]",:id, :value => @examquestion.answerchoices[0].id%>
+				<%#= text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.answerchoices[0].description %> 
+				
+				<!--start-added 26 May 2013, differentiate existing data with non-exist data-to overcome non-complete data entry-->
+				<% if @examquestion.answerchoices[0] == nil %>
+					<%= text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60 %> 
+				<% else %>
+					<%= hidden_field "examquestion[answerchoices_attributes][0]",:id, :value => @examquestion.answerchoices[0].id %>
+					<%= text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.answerchoices[0].description%>
+				<% end %>
+				<!--end-added 26 May 2013, differentiate existing data with non-exist data-to overcome non-complete data entry-->
+				
+				
+				<!--test to remove existing record-->
+				<%#= hidden_field "examquestion[answerchoices_attributes][0]",:_destroy %>
+				<%#= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>
+				<!--test to remove existing record-->
+				
 			<!--temp:copy prev format-->	
 			<% else %>
 				<% if @examquestion.questiontype=="MCQ"%>
@@ -40,8 +51,18 @@
 		<%= hidden_field "examquestion[answerchoices_attributes][1]",:item, :value => "II" %>
 		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>
 			<% if (Answerchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
-				<%= hidden_field "examquestion[answerchoices_attributes][1]",:id, :value => @examquestion.answerchoices[1].id%>
-				<%= text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.answerchoices[1].description %> 
+				<%#= hidden_field "examquestion[answerchoices_attributes][1]",:id, :value => @examquestion.answerchoices[1].id%>
+				<%#= text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.answerchoices[1].description %> 
+				
+				<!--start-added 26 May 2013, differentiate existing data with non-exist data-to overcome non-complete data entry-->
+				<% if @examquestion.answerchoices[1] == nil %>
+					<%= text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60 %> 
+				<% else %>
+					<%= hidden_field "examquestion[answerchoices_attributes][1]",:id, :value => @examquestion.answerchoices[1].id %>
+					<%= text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.answerchoices[1].description%>
+					<% end %>
+				<!--end-added 26 May 2013, differentiate existing data with non-exist data-to overcome non-complete data entry-->
+									
 			<!--temp:copy prev format-->	
 			<% else %>
 				<% if @examquestion.questiontype=="MCQ"%>
@@ -66,8 +87,19 @@
 		<%= hidden_field "examquestion[answerchoices_attributes][2]",:item, :value => "III" %>
 		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>
 			<% if (Answerchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
-				<%= hidden_field "examquestion[answerchoices_attributes][2]",:id, :value => @examquestion.answerchoices[2].id%>
-				<%= text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.answerchoices[2].description %> 
+				<%#= hidden_field "examquestion[answerchoices_attributes][2]",:id, :value => @examquestion.answerchoices[2].id%>
+				<%#= text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.answerchoices[2].description %> 
+				
+				<!--start-added 26 May 2013, differentiate existing data with non-exist data-to overcome non-complete data entry-->
+				<% if @examquestion.answerchoices[2] == nil %>
+					<%= text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60 %> 
+				<% else %>
+					<%= hidden_field "examquestion[answerchoices_attributes][2]",:id, :value => @examquestion.answerchoices[2].id %>
+					<%= text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.answerchoices[2].description%>
+				<% end %>
+				<!--end-added 26 May 2013, differentiate existing data with non-exist data-to overcome non-complete data entry-->
+				
+				
 			<!--temp:copy prev format-->	
 			<% else %>
 				<% if @examquestion.questiontype=="MCQ"%>
@@ -93,8 +125,16 @@
 		<%= hidden_field "examquestion[answerchoices_attributes][3]",:item, :value => "IV" %>
 		<% unless @examquestion.id.nil? || @examquestion.id.blank? %>
 			<% if (Answerchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 %>
-				<%= hidden_field "examquestion[answerchoices_attributes][3]",:id, :value => @examquestion.answerchoices[3].id %>
-				<%= text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.answerchoices[3].description%> 
+				
+				<!--start-added 26 May 2013, differentiate existing data with non-exist data-to overcome non-complete data entry-->
+				<% if @examquestion.answerchoices[3] == nil %>
+					<%= text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60 %> 
+				<% else %>
+					<%= hidden_field "examquestion[answerchoices_attributes][3]",:id, :value => @examquestion.answerchoices[3].id %>
+					<%= text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.answerchoices[3].description%>
+				<% end %>
+				<!--end-added 26 May 2013, differentiate existing data with non-exist data-to overcome non-complete data entry-->
+				
 			<!--temp:copy prev format-->	
 			<% else %>
 				<% if @examquestion.questiontype=="MCQ"%>

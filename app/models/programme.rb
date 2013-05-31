@@ -62,6 +62,7 @@ class Programme < ActiveRecord::Base
 
     DURATION_TYPES = [
          #  Displayed       stored in db
+         [ "Hours",      0 ],
          [ "Days",       1 ],
          [ "Weeks",      7 ],
          [ "Months",     30 ],

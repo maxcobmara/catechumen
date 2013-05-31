@@ -1,15 +1,40 @@
 <!--13Apr2013-DEPT UNIT for current user-->
 <% @anc_depth = current_user.staff.position.ancestry_depth %>
 
+<!--27May2013-how to retrieve position for staff with multiple positions?-->
+<% @multi_position = Position.find(:all, :conditions => ['staff_id=?',current_user.staff_id])%>
+<% @ifmulti_position = @multi_position.count %>
+
 <% if @anc_depth==2 %>
 	<% @dept_unit = current_user.staff.position.unit %>
 <% elsif @anc_depth < 2 %>
-	<% @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
-	<% if @position_count > 1 %>
+	<%# @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<%# if @position_count > 1 %>
+	<% if @ifmulti_position > 1 %><!--DRY-27 May 2013-->
 		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
 	<% end %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+	<% if @anc_depth==1 %>
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=?', current_user.staff_id]).unit %>
+	<% end %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
 <% elsif @anc_depth > 2 %>
-	<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
+	<% if @ifmulti_position > 1 %>
+		<% @multi_position.each do |x|%>
+			<% if x.parent.id > 6 && x.parent.id < 17 %>
+				<!--hoho<%#= @dept_unit = x.parent.unit %>--><% @dept_unit = x.parent.unit %>
+			<% end %>	
+		<% end %>
+	<% else %>
+		<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+		<!--30Mei2013-->
+		<% if @dept_unit == "Pos Basik" && @anc_depth == 3 %><!--@anc_depth==3-->
+			<% @dept_unit = current_user.staff.position.unit %>
+		<% end %>
+		<!--30Mei2013-->
+	<% end %>
+	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
 <% end %>
 
 <% current_user_roles=[]%>
@@ -17,11 +42,11 @@
 	<% current_user_roles<<role.id%>
 <% end %>
 <%#= current_user_roles.include?(2)%>
-<!--13Apr2013-DEPT UNIT for current user-->
+<!--13/20Apr2013-DEPT UNIT for current user-->
 
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Exam Maker</h2>
+		<h2 class="left">Exam Maker<%#=@dept_unit%></h2>
 	</div>
 </div>
 
@@ -68,7 +93,17 @@
 		
 		    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => exam %></td>
 		    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => exam %></td>
-				<td width=10px><%= link_to image_tag("printer.png",   :border => 0, :title => 'Exam Paper'), :action => 'exampaper', :id => exam %></td>
+			<td width=10px><%#= link_to image_tag("printer.png",   :border => 0, :title => 'Exam Paper'), :action => 'exampaper', :id => exam %><%#=exam.subject.root.id%>
+				<% if exam.sequ!=nil %>
+					<% sequ = exam.sequ.split(",")%>
+				<% end %>
+				<% if sequ!=nil && sequ.uniq.length == sequ.length &&  (exam.subject.root.id == 3 || exam.subject.root.id == 5 || exam.subject.root.id == 6 || exam.subject.root.id == 7 || exam.subject.root.id == 8 || exam.subject.root.id == 9 || exam.subject.root.id == 10 || exam.subject.root.id == 11 || exam.subject.root.id == 12 || exam.subject.root.id == 13 || exam.subject.root.id == 14)%>
+					<div class="noti_Container"><%= link_to image_tag("printer.png",   :border => 0, :title => 'Separate Exam Paper'), :action => 'exampaper_separate', :id => exam %><div class="noti_bubble">S</div></div>
+				<% end %>
+				<% if sequ!=nil && sequ.uniq.length == sequ.length && (exam.subject.root.id == 1 || exam.subject.root.id == 2 || exam.subject.root.id == 4) %>
+					<div class="noti_Container"><%= link_to image_tag("printer.png",   :border => 0, :title => 'Combine Exam Paper'), :action => 'exampaper_combine', :id => exam %><div class="noti_bubble">C</div></div>
+				<% end %>
+			</td>
 
 		    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), exam, :confirm => 'Are you sure?', :method => :delete %></td>
 		  </tr>

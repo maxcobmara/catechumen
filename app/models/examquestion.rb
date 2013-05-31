@@ -91,14 +91,44 @@ class Examquestion < ActiveRecord::Base
   end
   
   def question_editor
-    sibpos = creator.position.sibling_ids
+    multi_position = Position.find(:all, :conditions => ['staff_id=?',User.current_user.staff_id])  #85 --> Mohd Firdaus Fikri
+    ifmulti_position = multi_position.count 
+    xx=0
+    if ifmulti_position > 1
+        multi_position.each do |x|
+  			    if x.parent.id > 6 && x.parent.id < 17 
+  			        xx=x.id
+  			    end 	
+  		  end 
+  		  sibpos = Position.find(:first, :conditions => ['id=?', xx]).sibling_ids
+    else
+        sibpos = creator.position.sibling_ids
+    end
     sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
     applicant = Array(creator_id)
-    sibs - applicant
+    if sibs.count == 1
+      sibs
+    else
+      sibs - applicant
+    end
+    #[83, 85, 84, 86, 87] #return sibpos
   end
   
   def question_approver #question_editor
-    sibpos = creator.position.parent.sibling_ids
+    multi_position = Position.find(:all, :conditions => ['staff_id=?',85])
+    ifmulti_position = multi_position.count 
+    xx=0
+    if ifmulti_position > 1
+        multi_position.each do |x|
+  			    if x.parent.id > 6 && x.parent.id < 17 
+  			        xx=x.id
+  			    end 	
+  		  end 
+  		  sibpos = Position.find(:first, :conditions => ['id=?', xx]).parent.sibling_ids
+    else
+        sibpos = creator.position.parent.sibling_ids  #sibpos = creator.position.sibling_ids
+    end
+    
     sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
     #applicant = Array(creator_id)
     #sibs - applicant

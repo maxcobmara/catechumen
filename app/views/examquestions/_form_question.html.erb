@@ -40,31 +40,79 @@
 	<!--13/20Apr2013-DEPT UNIT for current user-->
 	<% @anc_depth = current_user.staff.position.ancestry_depth %>
 	
-	<% if @anc_depth==2 %><!--if KP or Ketua unit-unit (Uit Penilaian & Kualiti)-->
+	<!--27May2013-how to retrieve position for staff with multiple positions?-->
+	<% @multi_position = Position.find(:all, :conditions => ['staff_id=?',current_user.staff_id])%>
+	<% @ifmulti_position = @multi_position.count %>
+	
+	<% if @anc_depth==2 %><!--if KP or Ketua unit-unit (Unit Penilaian & Kualiti)-->
 		<% @dept_unit = current_user.staff.position.unit %>
 	<% elsif @anc_depth < 2 %>
-		<% @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
-		<% if @position_count > 1 %>
+		<%# @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+		<%# if @position_count > 1 %>
+		<% if @ifmulti_position > 1 %><!--DRY-27 May 2013-->
 			<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
 		<% end %>
 	<% elsif @anc_depth > 2 %>
-		<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+		<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
+		<% if @ifmulti_position > 1 %>
+			<% @multi_position.each do |x|%>
+				<% if x.parent.id > 6 && x.parent.id < 17 %>
+					<!--hoho<%#= @dept_unit = x.parent.unit %>--><% @dept_unit = x.parent.unit %>
+				<% end %>	
+			<% end %>
+		<% else %>
+			<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+			<!--30Mei2013-->
+			<% if @dept_unit == "Pos Basik" && @anc_depth == 3 %><!--@anc_depth==3-->
+				<% @dept_unit = current_user.staff.position.unit %>
+			<% end %>
+			<!--30Mei2013-->
+		<% end %>
+		<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
 	<% end %>
 
 	<% current_user_roles=[]%>
 	<% User.current_user.roles.each do |role|%>
 		<% current_user_roles<<role.id%>
 	<% end %>
+	
+	<!--start-yg asal sebelum 26May2013-->
+	<%#= current_user_roles.include?(2)%>
+	<!--13/20Apr2013-DEPT UNIT for current user-->
+	<%# if current_user_roles.include?(2) %><!--if administrator-->
+		<%# if @dept_unit != nil %><!--must also have dept unit(from ancestor-at_depth:2), or NO programme will be pre-selected-->
+			<%# @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+			<%# @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+		<%# end %>
+	<%# else %>
+		<%# @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+		<%# @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+	<%# end %>
+	<!--start-yg asal sebelum 26May2013-->
+
 	<%#= current_user_roles.include?(2)%>
 	<!--13/20Apr2013-DEPT UNIT for current user-->
 	<% if current_user_roles.include?(2) %><!--if administrator-->
 		<% if @dept_unit != nil %><!--must also have dept unit(from ancestor-at_depth:2), or NO programme will be pre-selected-->
-			<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
-			<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+			<!--26 May 2013-HAVE TO MAKE SURE : position of current logged-in staff is between 7-16 OR line 29 & 30 will FAILED & ERROR-->
+			<% if current_user.staff.position.id > 6 && current_user.staff.position.id < 17 %>
+				<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+				<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+			<% end %>
+		<% else %>
+			<!--have to assign values for SUBJECT search form for ADMIN-->
+			<% @subjectlist_preselec_prog = Programme.at_depth(2) %>
 		<% end %>
 	<% else %>
-		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
-		<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+		<%#= @dept_unit %>
+		<% if @anc_depth==1 %>
+		<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+			<% @kupk = "yes" %>
+		<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+		<% else %>
+			<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+			<% @subjectlist_preselec_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
+		<% end %>
 	<% end %>
 	
 <H2>Exam Question Details</H2>
@@ -154,6 +202,11 @@
 												:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
 												:url => {:action => 'view_topic' }, 	
 												:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
+						<% else %>
+						<!--above part won't appear if NO programme populated BUT STILL display below part instead-->
+						<!--this part required for administrator:Maslinda & Ketua Unit Penilaian & Kualiti -->
+						<!--(as there's no programme populated for them)-->
+							&nbsp;&nbsp;Please select a programme first
 						<% end %>
 						<!--hv to add additional condition: @preselect_prog & @subjectlist_preselec_prog must EXIST-->
 					<!--20Apr2013-NEW data entry-with pre-selected list of subject-based on pre-selected programme-->								
@@ -180,18 +233,21 @@
 		<tr>
 			<td class="leftcol"><label for="topic_id">Topic:</label><font color="red"> * </font></td>
 			<td><%= tag("div", :id => form_tag_id(f.object_name, :topic_list)) %>
-				<% if @examquestion.id.nil? || @examquestion.id.blank? %>
+				<% if @examquestion.id.nil? == true || @examquestion.id.blank? == true %>
 					<!--18Apr2013-for re-submission(of NEWLY entered data)-->
-					<% if @examquestion.topic_id!=nil || @examquestion.topic_id.blank? == true %>
-						<% if @examquestion.programme_id.nil? && @examquestion.subject_id.nil? %>
-							Please select programme & subject first
-							<%#= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
+					<% if @examquestion.topic_id.nil? == true || @examquestion.topic_id.blank? == true %>
+						<!--Prog<%#=@examquestion.programme_id%>=Subject<%#=@examquestion.subject_id%>-->
+						<% if @examquestion.programme_id.nil? == true %><!--first time click NEW examquestion & NO SUBMISSION yet-->
+							&nbsp;&nbsp;Please select a subject first
+						<% elsif @examquestion.subject_id.nil? == true %><!--after SUBMISSION without subject selection-->	
+							&nbsp;&nbsp;Please select a SUBJECT first
 						<% else %>
-							<%= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
+							<%#= f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic' %>
+							<%#= f.collection_select :topic_id, Programme.find(@examquestion.topic.parent.id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic', :selected =>@examquestion.topic_id %>
 						<% end %>
 					<% else %>
 					<!--topic NIL, but programme & subject EXIST, use SUBJECT to view TOPIC list-->
-						<%= f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic' %>
+						<%#= f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3), :id, :subject_list, :include_blank=>'Select a topic' %>
 					<!--topic NIL, but programme & subject EXIST, use SUBJECT to view TOPIC list-->
 					<% end %>
 				<% else %>
@@ -324,9 +380,14 @@
 		<% @disp_a = "display:none;" %>
 		<% @disp_b = "display:block;" %>
 		<% @disp_c = "display:none;"%>
+	<% elsif @examquestion.questiontype.blank? %>
+		<% @disp = "display:none;"%>
+		<% @disp_a = "display:block;" %>
+		<% @disp_b = "display:none;" %>
+		<% @disp_c = "display:none;"%>
 	<% else %>
 		<% @disp = "display:none;"%>
-		<% @disp_a = "display:block;" %><!---->
+		<% @disp_a = "display:none;" %><!----><%# @disp_a = "display:block;" %>
 		<% @disp_b = "display:none;" %>
 		<% @disp_c = "display:block;"%>
 	<% end %>
@@ -346,9 +407,14 @@
 		<% @disp_a = "display:none;" %>
 		<% @disp_b = "display:block;" %>
 		<% @disp_c = "display:none;"%>
+	<% elsif @examquestion.questiontype.blank? %>
+		<% @disp = "display:none;"%>
+		<% @disp_a = "display:block;" %>
+		<% @disp_b = "display:none;" %>
+		<% @disp_c = "display:none;"%>
 	<% else %>
 		<% @disp = "display:none;"%>
-		<% @disp_a = "display:block;" %><!---->
+		<% @disp_a = "display:none;" %><!----><%# @disp_a = "display:block;" %>
 		<% @disp_b = "display:none;" %>
 		<% @disp_c = "display:block;"%>
 	<% end %>
