@@ -17,7 +17,7 @@
 	<% form_for(@grade) do |f| %>
   		<%= f.error_messages %>
 		<%=render :partial => 'form', :locals => {:f => f} %> 
-		<p><%= f.submit 'Create' %></p>
+		<p><%= f.submit 'Create', :name =>:new_submit %></p>
 	<% end %>
 
 <% elsif @new_type && @new_type == "2" %>
@@ -26,10 +26,10 @@
 	<% form_tag :action => 'new' do |f|%>
 		<div class="tform">
 		<%= hidden_field_tag( "new_type","1" )%>
-		<h2>Filter by Programme & Subject</h2>
+		<h2>Multiple Grades by Subject</h2>
 		<table>
 			<tr>
-				<td class="leftcol">Programme</td>
+				<td class="leftcol">&nbsp;Programme</td>
 				<td>
 		
 				<%= select_tag ('programme_id', "<option value='0'>Select a programme</option>" + options_from_collection_for_select(Programme.roots, :id, :programme_list) ,
@@ -39,16 +39,35 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="leftcol">Subject</td>
+				<td class="leftcol">&nbsp;Subject</td>
 				<td>
 					<div id="satusatu">
 						<%= select_tag('subject_id', "<option value='0'>All subjects</option>" + options_from_collection_for_select(Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list)) %>
 					</div>
 				</td>
 			</tr>
+			<tr>
+				<td colspan=2 id="duadua" style="padding:0;margin:0;border-spacing:0">
+				</td>
+			</tr>
+			
+			
 		</table>
 		</div>
 		<p><%= submit_tag 'Proceed', :subject_id => nil %></p>
 	<% end %>
+	
+<!--3June2013-->
+<% elsif @new_type == "3" %>
+
+	<!--start-trial new exammark by intake & paper-12Sept2012-->
+	<h3>Multiple New Grades (by Subject)</h3>
+	
+		<!---->
+		<%=render :partial => 'form_multiple_subject'%>
+		<!---->
+	
+<!--3June2013-->
+	
 <% end %>
 <%= link_to 'Back', grades_path %>

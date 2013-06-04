@@ -24,6 +24,32 @@ class ExamquestionsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @examquestions }
+      #--download excel--start
+        format.xls {send_data @examquestions.to_xls(:name=>"Exam Questions",:headers => Examquestion.header_excel, 
+    		:columns => Examquestion.column_excel ), :file_name => 'examquestions.xls' }
+    		#----start of-same result as line 10-11----------------------------------------------------------
+    		#format.xls {send_data @examquestions.to_xls(:name=>"Exam Questions",:headers => ["Subject Code","Subject Name","Question Type","Marks","Category","Difficulty","Question","Answer", "Status","Creator Name"], 
+    		#:columns => [{:subject => [:subjectcode, :name]}, :questiontype, :marks, :category,{:examQ=>[:difficultyname]},:question, :answer, :qstatus,{:creator=> [:staff_name_with_position] }] ), :file_name => 'examquestions.xls' }
+    		#----end of-same result as line 10-11------------------------------------------------------------
+
+        #--start--alternative solution no.1--------------------------------------------
+    		##without usage of any gem or plugin (don't forget to set mime_types as well)
+        ##file type generated will be in HTML (excel user friendly)
+        #format.xls   #will generate excel file from index.xls.erb 
+        #--end--alternative solution no.1----------------------------------------------
+
+        #--start--alternative solution no.2 (part 1)-----------------------------------
+        ##to be used with view/examquestion/export.html.erb 
+        ##to activate - unremark line 113/116, routes.rb 
+        ##to add link_to in index page - view/examquestion/export.html.erb  
+        #--end--alternative solution no.2 (part 1)------------------------------------- 
+
+        #----start of----PDF creation of examquestions-15 May 2012 --------------------
+        #--1) set -> mime-type : initializer/mimes_types.rb
+        #--2) include -> require 'pdf/writer', require 'pdf/simpletable' : lib/examquestion_drawer.rb
+        #--3) include -> link for pdf format : view/examquestions/index.html.erb
+        #--4) include format.pdf block as below...
+      #--download excel--end
     end
   end
 

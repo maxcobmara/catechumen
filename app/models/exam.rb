@@ -84,11 +84,16 @@ class Exam < ActiveRecord::Base
     return  "1" if (subject.parent.code == "1") || (subject.parent.code == "2")
     return  "2" if (subject.parent.code == "3") || (subject.parent.code == "4")
     return "3" if (subject.parent.code == "5") || (subject.parent.code == "6")
-    #syear
+  end
+  
+  def set_semester
+    return  "1" if (subject.parent.code == "1") || (subject.parent.code == "3")||(subject.parent.code == "5") 
+    return  "2" if  (subject.parent.code == "2") || (subject.parent.code == "4") || (subject.parent.code == "6")
   end
   
   def full_exam_name
-    "#{name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+"#{subject.parent.code}"+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"
+    "#{name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+set_semester.to_s+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"
+     #  "#{name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+"#{subject.parent.code}"+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"
   end
   
 

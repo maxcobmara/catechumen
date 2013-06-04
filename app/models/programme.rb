@@ -52,6 +52,23 @@ class Programme < ActiveRecord::Base
     def full_parent
       "#{parent.code}"+" - "+"#{parent.name}"
     end
+    
+    def programme_coursetype_name
+     "#{root.course_type}"+" "+"#{root.name}"
+    end
+    
+    #3June2013-from EXAM model
+    def set_year  #SETTING YEAR from Subject.find(1).set_year
+      return "1" if (parent.code == "1") || (parent.code == "2")
+      return "2" if (parent.code == "3") || (parent.code == "4")
+      return "3" if (parent.code == "5") || (parent.code == "6")
+    end
+
+    def set_semester
+      return  "1" if (parent.code == "1") || (parent.code == "3")||(parent.code == "5") 
+      return  "2" if  (parent.code == "2") || (parent.code == "4") || (parent.code == "6")
+    end
+    #3June2013
 
     COURSE_STATUS = [
          #  Displayed       stored in db

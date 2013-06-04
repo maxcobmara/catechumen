@@ -43,6 +43,29 @@
 <% end %>
 <%#= current_user_roles.include?(2)%>
 <!--13/20Apr2013-DEPT UNIT for current user-->
+<% if current_user_roles.include?(2) %><!--if administrator-->
+	<% if @dept_unit != nil %><!--must also have dept unit(from ancestor-at_depth:2), or NO programme will be pre-selected-->
+		<!--26 May 2013-HAVE TO MAKE SURE : position of current logged-in staff is between 7-16 OR line 29 & 30 will FAILED & ERROR-->
+		<% if current_user.staff.position.id > 6 && current_user.staff.position.id < 17 %>
+			<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+			<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+		<% end %>
+	<% else %>
+		<!--have to assign values for SUBJECT search form for ADMIN-->
+		<% @subjectlist_preselec_prog = Programme.at_depth(2) %>
+	<% end %>
+<% else %>
+	<% if @anc_depth==1 %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+		<% @kupk = "yes" %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+	<% else %><%#=@dept_unit%><%#=@anc_depth%>
+		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+		<% @subjectlist_preselec_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
+	<% end %>
+<% end %>
+
+<!---->	
 
 <div class="box">
 	<div class="box-head">
@@ -62,7 +85,7 @@
 	    <th>Programme</th>
 		<th>Subject</th>
 		<th width=80px>Exam Date</th>
-		<th>Time</th>
+		<th width=70px>Time</th>
 	    <th>Creator</th>
 		<th>Duration</th>
 		<th>Marks</th>
@@ -70,7 +93,7 @@
 	  </tr>
 
 		<% @exams.each do |exam| %>
-		  <% if (exam.created_by == User.current_user.staff_id)||(@dept_unit==exam.subject.root.name) ||(current_user_roles.include?(2)) %><!--STAND BY:HIDE THIS LINE & LINE 75 to view ALL EXAM paper-->
+		  <% if (exam.created_by == User.current_user.staff_id)||(@dept_unit==exam.subject.root.name) ||(current_user_roles.include?(2))||@kupk == "yes" %><!--STAND BY:HIDE THIS LINE & LINE 75 to view ALL EXAM paper-->
 		
 		  <tr>
 		    <td><%=h exam.name %></td>

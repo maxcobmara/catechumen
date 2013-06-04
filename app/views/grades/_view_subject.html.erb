@@ -1,5 +1,9 @@
 <% unless @programme_id.blank? %>
-		<%= collection_select (:examquestion, :subject_id, @subjects, :id, :subject_list, :include_blank => "Select a subject") %>
+		<%#= collection_select (:examquestion, :subject_id, @subjects, :id, :subject_list, :include_blank => "Select a subject") %>
+		<%= select_tag ('examquestion[subject_id]', "<option value='0'>Select a subject</option>"+options_from_collection_for_select(@subjects, :id, :subject_list) ,
+						:onchange => remote_function(:update => 'duadua', 
+						:url => {:action => 'view_intake' }, 
+						:with => "'subjectid='+$('examquestion_subject_id').value ")) %>
 <% else %>
 		&nbsp;&nbsp; Select a programme first.
 <% end%>

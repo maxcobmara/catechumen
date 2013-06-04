@@ -9,7 +9,7 @@ class Grade < ActiveRecord::Base
   has_many :scores, :dependent => :destroy
   accepts_nested_attributes_for :scores, :reject_if => lambda { |a| a[:description].blank? }
   
-  attr_accessor :programme_id, :final_exam_paper
+  attr_accessor :programme_id, :final_exam_paper, :intake_id, :summative_weightage, :formative_scores_var,:summative_weightage2,:summative_weightage3,:summative_weightage4,:summative_weightage5,:summative_weightage6
     
     # 22 May 2012
     ## CA + MSE (excel file) = (total_formative * (100 - examweight)/100)
@@ -107,8 +107,20 @@ class Grade < ActiveRecord::Base
        4.00
      end
    end 
-    
-    
+
+   #3June2013
+   def self.search2(search)
+       if search
+           if search == '0'
+               @grades = Grade.all
+           else
+               @grades = Grade.find(:all, :conditions=>['subject_id=?',search])
+           end
+       else
+           @grades = Grade.all
+       end
+   end
+     
 #GRADE = [
   #  Displayed       stored in db
    # [ "75% - A","1" ],
@@ -125,7 +137,7 @@ GRADE = [
     [ "70-74% - B+",  "3" ],
     [ "65-69% - B",   "4" ],
     [ "60-64% - B-",  "5" ],
-    [ "65% - D",      "6" ],
+    [ "60-63% - D",   "6" ],
     [ "55-59% - C+",  "7" ],
     [ "50-54% - C",   "8" ],
     [ "45-49% - C-",  "9" ],
@@ -143,6 +155,31 @@ E_TYPES = [
       [ "Test", "5" ],
       [ "Exam", "6" ],
       
+
+]
+
+WEIGHTAGE = [
+    #  Displayed       stored in db
+    [ '5 %',  5],
+    [ '10 %', 10],
+    [ '15 %', 15],
+    [ '20 %', 20],
+    [ '25 %', 25],
+    [ '30 %', 30],
+    [ '35 %', 35],
+    [ '40 %', 40],
+    [ '45 %', 45],
+    [ '50 %', 50],
+    [ '55 %', 55],
+    [ '60 %', 60],
+    [ '65 %', 65],
+    [ '70 %', 70],
+    [ '75 %', 75],
+    [ '80 %', 80],
+    [ '85 %', 85],
+    [ '90 %', 90],
+    [ '95 %', 95],
+    [ '100 %', 100]
 
 ]
 

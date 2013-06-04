@@ -1,0 +1,119 @@
+<!--DO NOT REMOVE YET-5JUNE2013-GOOD FOR CHECKING-
+formative qty:<%#=@formative_qty%>student<%#=@students_count%>summative weightage<%#=@weightage%>
+<br>formative_type....<%#=@formative_type0%>~<%#=@formative_type1%>~<%#=@formative_type2%>~<%#=@formative_type3%>~<%#=@formative_type4%>~<%#=@formative_type5%>
+<br>formative weightage....<%#=@formative_weight0%>~<%#=@formative_weight1%>~<%#=@formative_weight2%>~<%#=@formative_weight3%>~<%#=@formative_weight4%>~<%#=@formative_weight5%>
+<br>formative description...<%#=@formative_desc0%>~<%#=@formative_desc1%>~<%#=@formative_desc2%>~<%#=@formative_desc3%>~<%#=@formative_desc4%>~<%#=@formative_desc5%><br>
+-DO NOT REMOVE YET-5JUNE2013-GOOD FOR CHECKING-->
+
+<!--default first-display all six score types-->
+<% if @ft && @ft.count!=0%><% else %>
+	<%@ft=[]%>
+	<%@ft=[1,2,3,4,5,6]%>	
+<% end %>
+<!--default first-display all six score types-->
+
+<% if @formative_qty == 'Modify'%>
+	<%@formative_qty = 6 %>
+<% end %>	
+
+<% if @modify && @modify=="yes"%>
+	<!--from views/grades/edit_multiple.html.erb, line 87-89--><!--EDIT/UPDATE MULTIPLE GRADES-->
+	<%= hidden_field_tag "examweights[]", @weightage, :size=> 4 %><!--single value, sample:examweights=["25"]-->
+<% else %>
+	<!--from views/grades/_form_multiple_subject.html.erb, line 150-154--><!--NEW/CREATE MULTIPLE GRADES-->
+	<table border=1 cellspacing=0 cellpadding=0>
+	<%# 0.upto(@students_count-1) do |student_count|%>
+	<% @students.sort_by{|x|x.name}.each_with_index do |student, student_count| %>	
+	<%# @students.sort_by{|x|x.name}.each_with_index do |student, index| %><!--ref:_view_grades_from_multiple_subjects.html.erb-->
+		<% if student_count == 0 %>
+			<tr>
+				<th style="text-align:right;width:10px;">No
+				</th>
+				<th style="text-align:left;width:290px;">Student
+				</th>
+				<th style="text-align:right;width:100px;">
+					Score Type :
+					Description :
+					Weightage :
+				</th>	
+				<th style="text-align:center;">
+					<%=h (Score::E_TYPES.find_all{|disp, value| value == @formative_type0.to_i}).map {|disp, value| disp} %><br>
+					<%="("+"#{@formative_desc0}"+")" if @formative_desc0!='' %><br>
+					<%=@formative_weight0%> %
+				</th>
+				<th style="text-align:center;">
+					<%=h (Score::E_TYPES.find_all{|disp, value| value == @formative_type1.to_i}).map {|disp, value| disp} %><br>
+					<%="("+"#{@formative_desc1}"+")" if @formative_desc1!='' %><br>
+					<%=@formative_weight1%> %
+				</th>
+				<th style="text-align:center;">
+					<%=h (Score::E_TYPES.find_all{|disp, value| value == @formative_type2.to_i}).map {|disp, value| disp} %><br>
+					<%="("+"#{@formative_desc2}"+")" if @formative_desc2!='' %><br>
+					<%=@formative_weight2%> %
+					
+				</th>
+				<th style="text-align:center;">
+					<%=h (Score::E_TYPES.find_all{|disp, value| value == @formative_type3.to_i}).map {|disp, value| disp} %><br>
+					<%="("+"#{@formative_desc3}"+")" if @formative_desc3!='' %><br>
+					<%=@formative_weight3%> %
+				</th>
+				<th style="text-align:center;">
+					<%=h (Score::E_TYPES.find_all{|disp, value| value == @formative_type4.to_i}).map {|disp, value| disp} %><br>
+					<%="("+"#{@formative_desc4}"+")" if @formative_desc4!='' %><br>
+					<%=@formative_weight4%> %
+				</th>
+				<th style="text-align:center;">
+					<%=h (Score::E_TYPES.find_all{|disp, value| value == @formative_type5.to_i}).map {|disp, value| disp} %><br>
+					<%="("+"#{@formative_desc5}"+")" if @formative_desc5!='' %><br>
+					<%=@formative_weight5%> %
+				</th>
+			</tr>
+		<% end %>
+			<tr>
+				<td style="padding-right:0.5em;text-align:right;"><%=student_count+1%></td>
+				<td style="padding-left:3px;padding-right:1px;"><%=h student.name %></td><td style="padding-left:3px;padding-right:1px;"><%=h student.matrixno %></td>
+				<%= hidden_field "grades[#{student_count}]",:examweight,  :value=> @weightage, :size=>1 %>
+				<!---->
+				<% 0.upto(@formative_qty.to_i-1) do |formative_count|%>
+					<% if formative_count == 0 %>
+						<% @formative_val = @formative_type0 %>
+						<% @formative_weight = @formative_weight0 %>
+						<% @formative_desc = @formative_desc0 %>
+					<% elsif formative_count == 1 %>
+						<% @formative_val = @formative_type1 %>
+						<% @formative_weight = @formative_weight1 %>
+						<% @formative_desc = @formative_desc1 %>
+					<% elsif formative_count == 2 %>
+						<% @formative_val = @formative_type2 %>
+						<% @formative_weight = @formative_weight2 %>
+						<% @formative_desc = @formative_desc2 %>
+					<% elsif formative_count == 3 %>
+						<% @formative_val = @formative_type3 %>
+						<% @formative_weight = @formative_weight3 %>
+						<% @formative_desc = @formative_desc3 %>	
+					<% elsif formative_count == 4 %>
+						<% @formative_val = @formative_type4 %>
+						<% @formative_weight = @formative_weight4 %>
+						<% @formative_desc = @formative_desc4 %>
+					<% elsif formative_count == 5 %>
+						<% @formative_val = @formative_type5 %>
+						<% @formative_weight = @formative_weight5 %>
+						<% @formative_desc = @formative_desc5 %>
+					<% end %>
+			
+					<%=hidden_field "grades[#{student_count}][scores_attributes][#{formative_count}]", :type_id, :size=>1,:value=>@formative_val %>
+					<%=hidden_field "grades[#{student_count}][scores_attributes][#{formative_count}]",:description, :size=>4,:value=>@formative_desc  %>
+					<%=hidden_field "grades[#{student_count}][scores_attributes][#{formative_count}]", :weightage, :size=>1,:value=>@formative_weight %>
+					<td style="padding:0px;text-align:center;"><%=text_field "grades[#{student_count}][scores_attributes][#{formative_count}]", :marks, :size=>4, :placeholder=>'Marks'%></td>
+			
+					<%#=select_tag "grades[#{student_count}][score_attributes][#{formative_count}][type_id]", options_for_select(Score::E_TYPES, @ft[formative_count].to_i)%>
+					<%#=select_tag "grades[#{student_count}][score_attributes][#{formative_count}][weightage]", options_for_select(Grade::WEIGHTAGE)%>
+			
+				<% end %><!--<br>-->
+				<!---->
+			</tr>
+		
+	<% end %><!--end for-0.upto(@students_count-1) do |student_count|-->
+	</table>
+<% end %>
+<!--DO NOT REMOVE YET-5JUNE2013-GOOD FOR CHECKING-NEW formative qty:<%#=@formative_qty%>-->

@@ -6,14 +6,26 @@
 		<% unless @exam_id.blank? || @exam_id.nil? %>
 			<% @examquestions = Exam.find(@exam_id).examquestions %>
     		<% @students = Student.find(:all, :conditions=>['course_id=? and intake=?',@programme_id,@intake_id.to_s]) %>
+			<%# @exammark_exist_for_exam=Exammark.find(:all, :conditions => ['exam_id=?',@exam_id]).count%><!--2June2013-->
+			<% @exammark_exist_for_exam=Exammark.find(:all, :conditions => ['exam_id=? AND student_id IN(?)',@exam_id, @students.map(&:id)]).count %><!--2June2013-->
+			
+			
+			
 		<% end %>
 	<% end %>
 <% end %>
+
+
 
 <!--revised on 24th Sept 2012-->
 <%# unless @exam_id.blank? || @exam_id.nil?  %>
 <%# unless @aa.nil? %><% if @examquestions && @students %>
 <!--revised on 24th Sept 2012-->
+
+<!--2June2013--><% if @exammark_exist_for_exam && @exammark_exist_for_exam > 0 %>
+					Examination Marks for the <b>above</b> selected paper & current students&nbsp;(Tahun&nbsp;<%=Exam.find(@exam_id).set_year%>,&nbsp;Semester&nbsp;<%=Exam.find(@exam_id).set_semester%>) already exist. Please edit records accordingly or select other intakes.
+<!--2June2013--><% else %>
+
 
 <b>Intake : </b><%=@intake_id %><%#=@exam_id %>
 <b>Total students : </b><%= @students.count %><%#= @examquestions%>
@@ -50,7 +62,7 @@
 			<th>Q<%=count%>/ <%=@examquestions.acqq[count-1].marks %></th>
 		<% end %>
 	</tr>
-	<% @students.each_with_index do |student, index| %>
+	<% @students.sort_by{|x|x.name}.each_with_index do |student, index| %>
 		
 		<!--revised 24th Sept 2012-->	
 		<%= hidden_field "exammarks[#{index}]",:student_id,  :value=> student.id %>
@@ -63,7 +75,6 @@
 			<% @exammark_exist = Exammark.find(:all, :conditions => ['exam_id=? and student_id=?', @exam_id, student.id]) %>
 			<% @marks_exist = [] %>
 			<% @exammark_exist.each do |exammark_exist| %>
-				<%#= exammark_exist.studentmark.name %>
 				<% exammark_exist.marks.each do |mark_exist| %>
 					<%#= mark_exist.student_mark %>
 					<% @marks_exist << mark_exist.student_mark %>
@@ -157,6 +168,11 @@
 	<% end %>
 		
 </table>
+
+
+	
+	<% end %><!--2June2013-end for if @exammark_exist_for_exam==0-->
+	
 
 <!--revised on 24th Sept 2012-->
 <% else %>

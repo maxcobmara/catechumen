@@ -1,0 +1,192 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<% if @edit_type == "Edit Checked" %>
+			<h2 class="left">Edit Multiple Student Grades</h2>
+		<%# elsif @edit_type == "Edit by Subject" %>
+			<!--<h2 class="left">Edit Multiple Exam Mark By Examination - <%=@subject_name%></h2>-->
+		<% end %>
+	</div>
+</div>
+
+<div class="right" style="text-align:right;">
+&nbsp;&nbsp;<font size=-2 color=blue> <b>Total Formative</b> = Sum of scores(%), <b>CA+MSE</b> = Total Formative*(100-summative weightage)/100
+	<br><b>Total Summative</b> = (Final Exam * summative weightage) / 100, <b>Total Marks</b> = CA+MSE + Total Summative</font>
+</div>
+<br>
+
+<div class="tlist">
+<% form_for :grade, :url => update_multiple_grades_path, :html => {:method => :put} do |f| %>
+	
+	<% @subjects_of_grades = @grades.map(&:subject_id).uniq.count %><!--check if subject for all selected grades are same-->
+	<% if @subjects_of_grades==1 %>
+		&nbsp;<span style="text-decoration:underline;font-weight:bold;">Subject : <%=@grades[0].subjectgrade.subject_list%></span><br><br>
+	<% end %>
+	
+<%#====================================%>
+<fieldset style="width:300px;">
+	
+	<% if @subjects_of_grades==1 %><!--if same...-->
+	
+		<!--note: VAR:grade_summative_weightage, DIV:grade_weightage_multiple NOT grades_0_summative_weightage-->
+		<% @intake_val = @grades[0].studentgrade.intake.to_s %>
+		<% @programmeid = @grades[0].studentgrade.course_id %>
+		<% @modify = "yes" %>
+	
+		<!--&nbsp;<b>Subject : <%#=@grades[0].subjectgrade.subject_list%></b><br>-->
+		&nbsp;<b>Summative Weightage :</b> 
+
+		<%= f.select :summative_weightage, Grade::WEIGHTAGE, {:selected=> @grades[0].examweight}, :onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), :url => {:action=>'update_summative_weightage'}, :with => "'weightage='+$('"+"grade_summative_weightage"+"').value+'&intakeid='+'#{@intake_val}'+'&programmeid='+'#{@programmeid}'+'&modify='+'#{@modify}' ") %>
+		<!--note: VAR:grade_summative_weightage, DIV:grade_weightage_multiple NOT grades_0_summative_weightage-->
+	
+		<br>&nbsp;<b>Formative Scores :</b><br>
+		<table cellpadding=0 cellspacing=0>
+			<!--Please note : use this : scores_attributes[#{score_count}][type_id] INSTEAD OF this:scores_attributes[#{score_count}][type_id][]-->
+			<tr><th>Score type</th><th>Description</th><th>Weightage</th></tr>
+			<% 0.upto(@grades[0].scores.count-1) do |score_count|%>
+			<tr>
+				<td style="padding:0px;">
+					<%=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select(Score::E_TYPES,@grades[0].scores[score_count].type_id.to_i)%>	
+				</td>
+				<td style="padding:0px;">
+					<%= text_field_tag "scores_attributes[#{score_count}][description]", @grades[0].scores[score_count].description, :size=> 15 %>					
+				</td>
+				<td style="padding:0px;">
+					<%=select_tag "scores_attributes[#{score_count}][weightage]", options_for_select(Grade::WEIGHTAGE,@grades[0].scores[score_count].weightage.to_i)%>
+				</td>	
+			</tr>
+			<% end %>
+			<!--Please note : use this : scores_attributes[#{score_count}][type_id] INSTEAD OF this:scores_attributes[#{score_count}][type_id][]-->	
+		</table>
+		<br><%= submit_tag 'Apply Changes', :name =>:applychange %>
+	<% end %>
+	
+</fieldset>
+<%#====================================%>
+	
+	<table cellspacing=0 cellpadding=0>
+		<tr>
+			<th>Student</th>
+			<th>Mykad No</th>
+			<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different-->
+				<th>Subject</th>
+			<% end %>
+			<% if @subjects_of_grades > 1 %>
+			<% else %>
+				<% 0.upto(@grades[0].scores.count-1) do |score_count|%>
+					<th style="text-align:center;background-color:#EDFDEB;">
+						<font size=-2>
+						<%=h (Score::E_TYPES.find_all{|disp, value| value == @grades[0].scores[score_count].type_id.to_i}).map {|disp, value| disp} %>
+						<br>(<%=h @grades[0].scores[score_count].weightage.to_i %>%)</font>
+					</th>
+				<% end %>
+			<% end %>
+			<th style="background-color:#C3E9BF;">Total Formative</th>
+			<th>CA+MSE</th>
+			<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different-->
+				<th>Summative Weightage</th>
+			<% end %>
+			<th>Final Exam</th>
+			<th>Total Summative</th>
+			<th>Total Marks</th>
+			<!--
+			<th>Total MCQ</th>
+				<%# @examid = @exammarks[0].exam_id %>
+				<%# @mcqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"MCQ", @examid ]).count %>
+				<%# @meqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"MEQ", @examid ]).count %>
+				<%# @seqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"SEQ", @examid ]).count %>
+				<%# @acqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"ACQ", @examid ]).count %>
+			<%# 1.upto(@mcqcount) do |count|%>
+				<th>MCQ-Q <%#=count%></th>
+			<%# end %>
+			<%# 1.upto(@meqcount) do |count|%>
+				<th>MEQ-Q <%#=count%></th>
+			<%# end %>
+			<%# 1.upto(@seqcount) do |count|%>
+				<th>SEQ-Q <%#=count%></th>
+			<%# end %>
+			<%# 1.upto(@acqcount) do |count| %>
+				<th>ACQ-Q <%#=count%></th>
+			<%# end %>-->
+
+		</tr>
+		<%# for exammark in @exammarks %>
+		<%# @exammarks.sort_by{|x|x.studentmark.name}.each do |exammark| %>
+		<% @grades.sort_by{|x|x.studentgrade.name}.each do |grade| %>
+		
+			<!--note: DIV:grade_weightage_multiple NOT grades_0_weightage_multiple-refer grades/_update_weightage.html.erb-->
+			<%= tag("div", :id => form_tag_id(f.object_name, :weightage_multiple)) %></div>
+			<!--note: DIV:grade_weightage_multiple NOT grades_0_weightage_multiple-refer grades/_update_weightage.html.erb-->
+
+			<%= hidden_field_tag "grade_ids[]", grade.id %><%#result ==> "grade_ids"=>["4","3","2","1"]  == grade_ids[]  %>
+
+			<tr>
+			<tr>
+				<td><%#=exammark.id%><%=h grade.studentgrade.matrix_name %></td>
+				<td><%=h grade.studentgrade.icno %></td>
+<% if @edit_type == "Edit Checked" || @edit_type.nil? %>	
+	
+<%# elsif @edit_type == "Edit by Subject" %>
+	<%##= hidden_field_tag "subject_ids[]", @subject_id %>
+	<%#= hidden_field_tag "exam_ids[]", @exam_id %>
+<% end %>		
+				<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different-->
+					<td><b><%=h grade.subjectgrade.subject_list %></b></td>
+				<% end %>
+				<% if @subjects_of_grades > 1 %>
+				<% else %>
+					<% 0.upto(grade.scores.count-1) do |score_count|%>
+						<td style="text-align:center;background-color:#EDFDEB;">
+							<%#=h grade.scores[score_count].marks%>
+							<%= text_field_tag "scores_attributes[#{score_count}][marks][]", grade.scores[score_count].marks, :size=> 4 %>
+							<%#= grade.scores[score_count].id %>
+						</td>
+					<% end %>
+				<% end %>
+				<td style="text-align:center;background-color:#C3E9BF;">
+					<%#= hidden_field_tag "total_mcqs[]", exammark.total_mcq, :size=> 4 %><%#=exammark.total_mcq%>
+					<%#= text_field_tag "marks_attributes[#{index}][student_marks][]", aa.student_mark, :size=> 4 %>
+					<%#= text_field "grades[#{index}]",:subject_id, :value=> @subject_id %>
+					<%= text_field_tag "formatives[]", grade.formative, :size=> 4 %><%#=exammark.total_mcq%>
+					
+				</td>
+				<td style="text-align:center;"><%= text_field_tag "scores[]", grade.score, :size=> 4 %></td>
+				<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different-->
+					<td style="text-align:center;"><%= text_field_tag "examweights[]", grade.examweight, :size=> 4 %></td>
+				<% end %>
+				<td style="text-align:center;"><%= text_field_tag "exam1markss[]", grade.exam1marks, :size=> 4 %></th>
+				<td style="text-align:center;"><%= text_field_tag "summatives[]", grade.summative, :size=> 4 %></td>
+				<td style="text-align:center;"><%= text_field_tag "finalscores[]", grade.finalscore, :size=> 4 %></td>
+				<!--<td>-->
+					<%# 0.upto(exammark.marks.count-1) do |cc|%>
+						<%#= text_field_tag "marks_attributes[#{cc}][student_marks][]", exammark.marks[cc].student_mark, :size=> 4 %>
+						<%#= exammark.marks[cc].id %>
+						<%#= exammark.exampaper.examquestions[cc].questiontype %>
+					<%# end %>
+					<!--question marks order(BY TYPE) : MCQ, MEQ,SEQ,ACQ,OSCI,OSCII,OSCE,OSPE,VIVA-->
+					<!--for checking(line 44:use text_field_tag instead):mark id: 
+						<%#=Mark.find(:first, :conditions=>['exammark_id=?',exammark.id ]).id%>-->
+					<%# aaa=exammark.marks %><!--PENDING:DATA IS CORRENT BUT...DISPLAY:sequence of marks-depends on last updated record!-->
+					<%# aaa.each_with_index do |aa, index|%>
+						<!--<td>-->
+							<!--for checking:incase-marks value din not match student name
+							<%#= aa.id %>ddd-->
+							<%#= hidden_field_tag "marks_attributes[#{index}][exammark_id][]", aa.id %>
+							<%#= text_field_tag "marks_attributes[#{index}][student_marks][]", aa.student_mark, :size=> 4 %>
+						<!--</td>-->
+					<%# end %>
+					
+				<!--</td>-->
+			
+			</tr>	
+		<% end%>
+	</table>
+<%= f.submit "Submit" %>
+<%#= submit_tag "Edit Checked", :name => :grade_submit_button %>
+<%#= link_to 'New Grade', new_grade_path(:new_type => "0")%>
+
+
+<% end %>
+</div>
+

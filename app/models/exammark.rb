@@ -61,7 +61,7 @@ class Exammark < ActiveRecord::Base
           #return Mark.sum(:student_mark, :conditions => ["exammark_id=?", self.id])+total_mcq  #total_mcq (if exammark entered in multiple)
         #end 
       #end
-      return Mark.sum(:student_mark, :conditions => ["exammark_id=?", self.id])
+      return Mark.sum(:student_mark, :conditions => ["exammark_id=?", self.id])#+total_mcq.to_i
     else
       @total_marks	#any input by user will be ignored either edit form or new (including re-submission-invalid data)
 					          #value assigned from partial..(1) single entry(_form.html.erb-line 44-47) (2) multiple entry(_form_by_paper.html.erb-line88-91)
@@ -136,5 +136,18 @@ class Exammark < ActiveRecord::Base
   		return @intake_year.to_s+'-'+@intake_month+'-01'  #giving this format -->  2/2012
   end
   #14March2013
+  
+  #2June2013
+  def self.search2(search)
+      if search
+          if search == '0'
+              @exammarks = Exammark.all
+          else
+              @exammarks = Exammark.find(:all, :conditions=>['exam_id=?',search])
+          end
+      else
+          @exammarks = Exammark.all
+      end
+  end
   
 end

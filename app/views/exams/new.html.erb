@@ -41,18 +41,46 @@
 <% User.current_user.roles.each do |role|%>
 	<% current_user_roles<<role.id%>
 <% end %>
+
+<!---->
+<%#= current_user_roles.include?(2)%>
+<!--13/20Apr2013-DEPT UNIT for current user-->
+<%# if current_user_roles.include?(2) %><!--if administrator-->
+	<%# if @dept_unit != nil %><!--must also have dept unit(from ancestor-at_depth:2), or NO programme will be pre-selected-->
+		<%# @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+		<%# @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+	<%# end %>
+<%# else %>
+	<%# @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+	<%# @subjectlist_preselect_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+<%# end %>
+<!---->
+<!---->
 <%#= current_user_roles.include?(2)%>
 <!--13/20Apr2013-DEPT UNIT for current user-->
 <% if current_user_roles.include?(2) %><!--if administrator-->
 	<% if @dept_unit != nil %><!--must also have dept unit(from ancestor-at_depth:2), or NO programme will be pre-selected-->
-		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
-		<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+		<!--26 May 2013-HAVE TO MAKE SURE : position of current logged-in staff is between 7-16 OR line 29 & 30 will FAILED & ERROR-->
+		<% if current_user.staff.position.id > 6 && current_user.staff.position.id < 17 %>
+			<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+			<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+		<% end %>
+	<% else %>
+		<!--have to assign values for SUBJECT search form for ADMIN-->
+		<% @subjectlist_preselec_prog = Programme.at_depth(2) %>
 	<% end %>
 <% else %>
-	<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
-	<% @subjectlist_preselect_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+	<% if @anc_depth==1 %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+		<% @kupk = "yes" %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+	<% else %><%#=@dept_unit%><%#=@anc_depth%>
+		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+		<% @subjectlist_preselec_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
+	<% end %>
 <% end %>
 
+<!---->
 
 <% form_for(@exam) do |f| %>
   <%= f.error_messages %>
@@ -114,7 +142,10 @@
 						<% end %>
 					<% else %>
 					<!--default upon new entry-populated subject list based on - preselected programme-base on logged-in user-->
-				<!--fff--><%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank=>'Select a subject'%>
+				<!--fff-->
+					<% if @kupk!= "yes"%>
+						<%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank=>'Select a subject'%>
+					<% end %>
 					<!--default upon new entry-populated subject list based on - preselected programme-base on logged-in user-->	
 					<% end %>	
 				</div>

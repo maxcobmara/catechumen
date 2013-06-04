@@ -2,10 +2,11 @@ class ExammarksController < ApplicationController
   # GET /exammarks
   # GET /exammarks.xml
   def index
-    @exammarks = Exammark.all
-    #@exammarks = Exammark.find(:all, :order=>:exam_id)
+    submit_val = params[:exammark_search]
+    examid = params[:exam_id]
+    @exammarks = Exammark.search2(examid)
     @exammarks_group = @exammarks.group_by{|x|x.exam_id}
-    
+
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @exammarks }
@@ -87,6 +88,7 @@ class ExammarksController < ApplicationController
         end
         
       elsif @create_type == "Create By Paper"
+        #raise params.inspect
         @new_type = "2"
         #************************
         @exammarks_all = params[:exammarks]  
@@ -216,10 +218,11 @@ class ExammarksController < ApplicationController
      @exammarksid = params[:exammark_ids]	
      @totalmcqs =params[:total_mcqs]                                          
      @marks = params[:marks_attributes]
- 	   @exammarks = Exammark.find(@exammarksid)	             											 
-
- 		 @exammarks.each_with_index do |exammark,index|
-        exammark.total_mcq = @totalmcqs[index]
+ 	   @exammarks = Exammark.find(@exammarksid)	              											 
+     
+     #below (add-in sort_by) in order to get data match accordingly to form values (sorted by student name)
+     @exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark, index| #amended-2June2012-prev:#@exammarks.each_with_index do |exammark,index|
+ 		    exammark.total_mcq = @totalmcqs[index]
  			  0.upto(exammark.marks.count-1) do |cc|
  			        exammark.marks[cc].student_mark = params[:marks_attributes][cc.to_s][:student_marks][index]
  			        #--remove later-16Apr2013--

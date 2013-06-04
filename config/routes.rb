@@ -145,6 +145,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :staffcourses, :collection => { :indexapply => :get }
 
+  map.resources :grades, :collection => { :edit_multiple => :post, :update_multiple => :put }   #-- 3June2013 --
   map.resources :grades
 
   #map.connect '/time_table_entries/timetable_view', :controller => 'time_table_entries', :action => 'timetable_view'

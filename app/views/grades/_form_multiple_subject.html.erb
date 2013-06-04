@@ -1,0 +1,325 @@
+<!--11-12Apr2013-->
+<!--13Apr2013-DEPT UNIT for current user-->
+<% @anc_depth = current_user.staff.position.ancestry_depth %>
+
+<!--27May2013-how to retrieve position for staff with multiple positions?-->
+<% @multi_position = Position.find(:all, :conditions => ['staff_id=?',current_user.staff_id])%>
+<% @ifmulti_position = @multi_position.count %>
+
+<% if @anc_depth==2 %>
+	<% @dept_unit = current_user.staff.position.unit %>
+<% elsif @anc_depth < 2 %>
+	<%# @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<%# if @position_count > 1 %>
+	<% if @ifmulti_position > 1 %><!--DRY-27 May 2013-->
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
+	<% end %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+	<% if @anc_depth==1 %>
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=?', current_user.staff_id]).unit %>
+	<% end %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+<% elsif @anc_depth > 2 %>
+	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
+	<% if @ifmulti_position > 1 %>
+		<% @multi_position.each do |x|%>
+			<% if x.parent.id > 6 && x.parent.id < 17 %>
+				<!--hoho<%#= @dept_unit = x.parent.unit %>--><% @dept_unit = x.parent.unit %>
+			<% end %>	
+		<% end %>
+	<% else %>
+		<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+		<!--30Mei2013-->
+		<% if @dept_unit == "Pos Basik" && @anc_depth == 3 %><!--@anc_depth==3-->
+			<% @dept_unit = current_user.staff.position.unit %>
+		<% end %>
+		<!--30Mei2013-->
+	<% end %>
+	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
+<% end %>
+
+<% current_user_roles=[]%>
+<% User.current_user.roles.each do |role|%>
+	<% current_user_roles<<role.id%>
+<% end %>
+<%#= current_user_roles.include?(2)%>
+<!--13/20Apr2013-DEPT UNIT for current user-->
+
+<%###################################################%>
+<% if current_user_roles.include?(2) %>
+	<% @exam_list = Exam.all %>
+	<% @student_list = Student.all %>
+	<% @subject_list = Programme.at_depth(2) %>
+<%else%><!--if NOT ADMIN-->
+
+	<% if @anc_depth==1 %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+		<% @kupk = "yes" %>
+		<% @exam_list = Exam.all %>
+		<% @student_list = Student.all %>
+		<% @subject_list = Programme.at_depth(2) %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+	<% else %>
+		<!---->
+		<% @exam_list = [] %>
+		<% Exam.all.each do |x| %>
+			<% if x.subject.root.name == @dept_unit %>
+				<% @exam_list << x %>
+			<% end %>
+			<!--<br><%#= x.subject.root.name %> -->
+		<% end %>
+		<% @student_list = [] %>
+		<% Student.all.each do |y| %>
+			<% if y.course_id && y.course.name == @dept_unit %>
+				<% @student_list << y %>
+			<% end %>
+			<!--<br><%#= y.course_id? ? y.course.name : "programme not entered" %>-->
+		<% end %><%=@dept_unit%>
+		<% @subject_list = Programme.find_by_name(@dept_unit).descendants.at_depth(2)%>
+		<!---->	
+	<% end %>
+
+<% end %>
+<!--11-12Apr2013-->
+<%###################################################%>
+<%#--------------------------------------------------------------------------------------------------------------------------%>
+
+<% form_tag :action => 'create' do |f|%>
+	<%# @exammarks.each_with_index do |exammark, index| %>
+	<% @grades.each_with_index do |grade, index| %>
+		<%# fields_for "exammarks[#{index}]", exammark do |f| %>
+		<% fields_for "grades[#{index}]", grade do |f| %>
+			<% if index==0 %>
+			<div class="tform">
+
+			  <H2>Grade Details</H2>
+
+
+						<table width=100%>
+							<tr>
+								<td class="leftcol"><label>Subject</label></td>
+								<td><%# @selected_exam = Exam.find(@examid)%>
+									<% @selected_subject = Programme.find(@subjectid) %>
+								<!--DISPLAY GRADE DETAILS AT THIS LINE--><%=@selected_subject.subject_list %><br>
+								<!--bln:--><%# @exammonth=@selected_exam.exam_on.strftime("%m")%>
+											<% @current_month = Date.today.month %>
+								<!--tahun:--><%# @examyear=@selected_exam.exam_on.strftime("%Y")%>
+											<% @current_year = Date.today.year %>
+								<!--course_type:<%#=@selected_exam.subject.parent.course_type%>-->
+								<!--semester:--><%# @semester=@selected_exam.subject.parent.code%>
+											<% @semester = @selected_subject.parent.code %>
+								<!--Intake--><%# @iii=Exammark.set_intake_group(@examyear,@exammonth,@semester).to_s %>
+											<% @iii=Exammark.set_intake_group(@current_year,@current_month,@semester).to_s %>
+								<!--PROGRAMME NAME & ID-->
+								<%# @selected_exam.subject.root.name %><%# @programmeid=@selected_exam.subject.root.id %>
+								<% @selected_subject.root.name %><% @programmeid=@selected_subject.root.id %>
+								</td>
+							</tr>
+							<tr>
+								<td class="leftcol" style="vertical-align:middle;"><label>Student Intake</label></td>
+								<td>							
+									<% @intakes=[] %>
+									<% @intake_list = Student.find(:all,:conditions=> ['course_id=?',@programmeid]).group_by{|l|l.intake}%>
+									<% @counter = 0 %>
+									<% @intake_list.each do |m,n| %>
+										<% @intakes<<m %>
+									<% end %>
+									<%@intakes.each_with_index do |n,index|%>
+										<%if n.to_s == @iii %><!--yes--><%@aa=index%><%else %><!--no--><% end %>
+									<% end %>
+									
+									<% if @aa.nil? %>
+										<%= f.select :intake_id, @intakes, { :include_blank=> 'Select Intake'}, 
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :marks_multiple), 
+										:url => {:action=>'view_grades_form_multiple_subject'}, 
+										:with => "'intakeid='+$('"+"grades_0_intake_id"+"').value+'&subjectid='+'#{@subjectid}'+'&programmeid='+'#{@programmeid}'  ") %>
+									<% else %>
+										<!--use for default in partial:weightage_multiple-->
+										<%@intake_id = @intakes[@aa]%>
+										<!--use for default in partial:weightage_multiple-->
+										<%= f.select :intake_id, @intakes, {:selected=>@intakes[@aa], :include_blank=> 'Select Intake'}, 
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :marks_multiple), 
+										:url => {:action=>'view_grades_form_multiple_subject'}, 
+										:with => "'intakeid='+$('"+"grades_0_intake_id"+"').value+'&subjectid='+'#{@subjectid}'+'&programmeid='+'#{@programmeid}'  ") %>
+									<% end %>
+	
+								</td>
+							</tr>
+							<!---->
+							<tr>
+								<td class="leftcol">Formative Score</td>
+								<td>	
+									<!---->
+									<%# if @grades[0].id.nil? %>
+										<%#= f.select :formative_scores_var, [1,2,3,4,5,6], {:include_blank=>true, :selected=>6}, 
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :formative_scores_div), 
+										:url => {:action=>'update_formative_scores'}, 
+										:with => "'formativeqty='+$('"+"grades_0_formative_scores_var"+"').value ") %>
+									<%# else %>
+										<%= f.select :formative_scores_var, ['Modify',1,2,3,4,5,6], {:selected=>'Modify'}, 
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :formative_scores_div), 
+										:url => {:action=>'update_formative_scores'}, 
+										:with => "'formativeqty='+$('"+"grades_0_formative_scores_var"+"').value ") %>
+										<font size=-2>(Default value = 6 types)</font>
+									<%# end %>
+										<%= tag("div", :id => form_tag_id(f.object_name, :formative_scores_div)) %>
+											<% @formative_qty = 6 %>
+											<%= render :partial => 'update_formative', :formativeqty => @formative_qty %>
+											<%#= render :partial => 'formative_type', :locals => {:gradescount => @grades_count, 
+																								:formativetype_ids_main => @formativetype_ids_main} %>
+										</div>
+									
+									<!---->
+								</td>	
+							</tr>
+							<!---->
+							<!---->
+							<tr>
+								<td class="leftcol">Summative Weightage</td>
+								<td>	
+									<!---->
+									<!--if formative_scores_var==1-->
+									<SPAN class="bong", style="display:none;">
+										<!--1--><%= f.select :summative_weightage, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
+										:url => {:action=>'update_summative_weightage'}, 
+										:with => "'weightage='+$('"+"grades_0_summative_weightage"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value") %>
+									</SPAN>
+									<SPAN class="koik", style="display:none;">
+										<!--2--><%= f.select :summative_weightage2, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
+										:url => {:action=>'update_summative_weightage'}, 
+										:with => "'weightage='+$('"+"grades_0_summative_weightage2"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value ") %>
+									</SPAN>
+									<SPAN class="three", style="display:none;">
+										<!--3--><%= f.select :summative_weightage3, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
+										:url => {:action=>'update_summative_weightage'}, 
+										:with => "'weightage='+$('"+"grades_0_summative_weightage3"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value ") %>
+									</SPAN>
+									<SPAN class="four", style="display:none;">
+										<!--4--><%= f.select :summative_weightage4, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
+										:url => {:action=>'update_summative_weightage'}, 
+										:with => "'weightage='+$('"+"grades_0_summative_weightage4"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativetype3='+$('"+"grades_0_scores_attributes_3_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value +'&formativeweight3='+$('"+"grades_0_scores_attributes_3_weightage"+"').value+'&formativedesc3='+$('"+"grades_0_scores_attributes_3_description"+"').value  ") %>
+									</SPAN>
+									<SPAN class="five", style="display:none;">
+										<!--5--><%= f.select :summative_weightage5, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
+										:url => {:action=>'update_summative_weightage'}, 
+										:with => "'weightage='+$('"+"grades_0_summative_weightage5"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativetype3='+$('"+"grades_0_scores_attributes_3_type_id"+"').value+'&formativetype4='+$('"+"grades_0_scores_attributes_4_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value +'&formativeweight3='+$('"+"grades_0_scores_attributes_3_weightage"+"').value+'&formativedesc3='+$('"+"grades_0_scores_attributes_3_description"+"').value+'&formativeweight4='+$('"+"grades_0_scores_attributes_4_weightage"+"').value+'&formativedesc4='+$('"+"grades_0_scores_attributes_4_description"+"').value ") %>
+									</SPAN>
+									<SPAN class="six", style="display:block;">
+										<!--6--><%= f.select :summative_weightage6, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
+										:url => {:action=>'update_summative_weightage'}, 
+										:with => "'weightage='+$('"+"grades_0_summative_weightage6"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativetype3='+$('"+"grades_0_scores_attributes_3_type_id"+"').value+'&formativetype4='+$('"+"grades_0_scores_attributes_4_type_id"+"').value+'&formativetype5='+$('"+"grades_0_scores_attributes_5_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value +'&formativeweight3='+$('"+"grades_0_scores_attributes_3_weightage"+"').value+'&formativedesc3='+$('"+"grades_0_scores_attributes_3_description"+"').value+'&formativeweight4='+$('"+"grades_0_scores_attributes_4_weightage"+"').value+'&formativedesc4='+$('"+"grades_0_scores_attributes_4_description"+"').value+'&formativeweight5='+$('"+"grades_0_scores_attributes_5_weightage"+"').value+'&formativedesc5='+$('"+"grades_0_scores_attributes_5_description"+"').value ") %>
+									</SPAN>
+									<script type="text/javascript">
+											$j(document).ready(function(){
+											  $j('#grades_0_formative_scores_var').change(function() {
+											    if($j(this).val() == 1) {
+											      		$j('.bong').show();
+														$j('.koik').hide();
+														$j('.three').hide();
+														$j('.four').hide();
+														$j('.five').hide();
+														$j('.six').hide();
+											    }else if ($j(this).val() == 2) {
+											     	 	$j('.bong').hide();
+														$j('.koik').show();
+														$j('.three').hide();
+														$j('.four').hide();
+														$j('.five').hide();
+														$j('.six').hide();
+											    }
+												else if ($j(this).val() == 3) {
+											     	 	$j('.bong').hide();
+														$j('.koik').hide();
+														$j('.three').show();
+														$j('.four').hide();
+														$j('.five').hide();
+														$j('.six').hide();
+											    }
+												else if ($j(this).val() == 4) {
+											     	 	$j('.bong').hide();
+														$j('.koik').hide();
+														$j('.three').hide();
+														$j('.four').show();
+														$j('.five').hide();
+														$j('.six').hide();
+											    }
+												else if ($j(this).val() == 5) {
+											     	 	$j('.bong').hide();
+														$j('.koik').hide();
+														$j('.three').hide();
+														$j('.four').hide();
+														$j('.five').show();
+														$j('.six').hide();
+											    }
+												else if ($j(this).val() == 6) {
+											     	 	$j('.bong').hide();
+														$j('.koik').hide();
+														$j('.three').hide();
+														$j('.four').hide();
+														$j('.five').hide();
+														$j('.six').show();
+											    }
+												
+												});
+										});
+									</script>
+										<%#= f.select :summative_weightage, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
+										:url => {:action=>'update_summative_weightage'}, 
+										:with => "'weightage='+$('"+"grades_0_summative_weightage"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value 
+										+'&formativetype0='+$('"+"grades_0_score_attributes_0_type_id"+"').value
+										+'&formativetype1='+$('"+"grades_0_score_attributes_1_type_id"+"').value
+										+'&formativetype2='+$('"+"grades_0_score_attributes_2_type_id"+"').value
+										+'&formativetype3='+$('"+"grades_0_score_attributes_3_type_id"+"').value
+										+'&formativetype4='+$('"+"grades_0_score_attributes_4_type_id"+"').value+'&formativetype5='+$('"+"grades_0_score_attributes_5_type_id"+"').value") %>
+										<!--<font size=-2>(Default value = 100%)</font>-->
+										<%= tag("div", :id => form_tag_id(f.object_name, :weightage_multiple)) %>
+										<!--WEIGHTAGE DIV-->
+											<% @formative_qty = 6 %>
+											<%# @weightage = 100 %>		    
+											<%# @students_count = Student.find(:all, :conditions=>['course_id=? and intake=?',@programmeid,@intake_id.to_s]).count %>
+											<%#= render :partial => 'update_weightage', :locals =>{:formativeqty => @formative_qty, :weightage => @weightage, :student_count => @students_count}%>
+										</div>
+									<!---->
+								</td>	
+							</tr>
+							<!---->
+							
+							<tr>
+								<td colspan=2>
+									<%= tag("div", :id => form_tag_id(f.object_name, :marks_multiple)) %>
+										<%# if @examid.nil? || @examid.blank? %><!--tteeengook-->
+										<% if @subjectid.nil? || @subjectid.blank? %><!--tteeengook-->
+											<!--do nothing here-->
+										<% else %>
+											<%#=render :partial => 'view_marks_form_multiple_intake', :locals => {:f => f,:examid=>@examid, :intake_id=>@iii, :aaa=>@aa,:programmeid=>@programmeid } %> 
+											<%=render :partial => 'view_grades_form_multiple_subject', :locals => {:f => f,:subjectid=>@subjectid, :intake_id=>@iii, :aaa=>@aa,:programmeid=>@programmeid } %>
+										<% end %>
+									</div>
+								</td>
+							</tr>
+						</table>
+
+
+			</div>
+			<% end %>
+			<!--******************-->
+			
+		<% end %>	<!-- end of - @grades.each_with_index -->
+	<% end %>	<!-- end of - fields_for "grades[#{index}]"-->
+	<p><%= f.submit 'Create By Subject',:name => :new_submit %></p>
+<% end %>	<!-- end of - form_tag :action => 'create' do |f| %>-->
+<!--end-trial new grades by subject 3June2013-->

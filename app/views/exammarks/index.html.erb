@@ -1,15 +1,40 @@
 <!--13Apr2013-DEPT UNIT for current user-->
 <% @anc_depth = current_user.staff.position.ancestry_depth %>
 
+<!--27May2013-how to retrieve position for staff with multiple positions?-->
+<% @multi_position = Position.find(:all, :conditions => ['staff_id=?',current_user.staff_id])%>
+<% @ifmulti_position = @multi_position.count %>
+
 <% if @anc_depth==2 %>
 	<% @dept_unit = current_user.staff.position.unit %>
 <% elsif @anc_depth < 2 %>
-	<% @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
-	<% if @position_count > 1 %>
+	<%# @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<%# if @position_count > 1 %>
+	<% if @ifmulti_position > 1 %><!--DRY-27 May 2013-->
 		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
 	<% end %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+	<% if @anc_depth==1 %>
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=?', current_user.staff_id]).unit %>
+	<% end %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
 <% elsif @anc_depth > 2 %>
-	<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
+	<% if @ifmulti_position > 1 %>
+		<% @multi_position.each do |x|%>
+			<% if x.parent.id > 6 && x.parent.id < 17 %>
+				<!--hoho<%#= @dept_unit = x.parent.unit %>--><% @dept_unit = x.parent.unit %>
+			<% end %>	
+		<% end %>
+	<% else %>
+		<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+		<!--30Mei2013-->
+		<% if @dept_unit == "Pos Basik" && @anc_depth == 3 %><!--@anc_depth==3-->
+			<% @dept_unit = current_user.staff.position.unit %>
+		<% end %>
+		<!--30Mei2013-->
+	<% end %>
+	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
 <% end %>
 
 <% current_user_roles=[]%>
@@ -17,32 +42,75 @@
 	<% current_user_roles<<role.id%>
 <% end %>
 <%#= current_user_roles.include?(2)%>
-<!--13Apr2013-DEPT UNIT for current user-->
+<!--13/20Apr2013-DEPT UNIT for current user-->
+
+<%###################################################%>
+<!--existing exammark for certain exampaper-->
+<% @existing_exammark_ids = Exammark.find(:all,:select=>:exam_id).map(&:exam_id).uniq %>
+
 <% if current_user_roles.include?(2) %>
-	<% @exam_list = Exam.all %>
+	<%# @exam_list = Exam.all %>
+	<% if @existing_exammark_ids.count == 0 %>
+		<% @exam_list = Exam.all %>
+		<% @exam_list_exist_mark = []%>
+	<% else %>
+		<%# @exam_list = Exam.find(:all, :conditions=>['id NOT IN(?)', @existing_exammark_ids]) %>
+		<% @exam_list = Exam.all %>		
+		<% @exam_list_exist_mark = Exam.find(:all, :conditions=>['id IN(?)', @existing_exammark_ids]) %>
+	<% end %>
 	<% @student_list = Student.all %>
 	<% @subject_list = Programme.at_depth(2) %>
-<%else%>
-<!---->
-	<% @exam_list = [] %>
-	<% Exam.all.each do |x| %>
-		<% if x.subject.root.name == @dept_unit %>
-			<% @exam_list << x %>
+<%else%><!--if NOT ADMIN-->
+
+	<% if @anc_depth==1 %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+		<% @kupk = "yes" %>
+		<%# @exam_list = Exam.all %>
+		<% if @existing_exammark_ids.count == 0 %>
+			<% @exam_list = Exam.all %>
+			<% @exam_list_exist_mark = []%>
+		<% else %>
+			<%# @exam_list = Exam.find(:all, :conditions=>['id NOT IN(?)', @existing_exammark_ids]) %>
+			<% @exam_list = Exam.all %>
+			<% @exam_list_exist_mark = Exam.find(:all, :conditions=>['id IN(?)', @existing_exammark_ids]) %>
 		<% end %>
-	<!--<br><%#= x.subject.root.name %> -->
-	<% end %>
-	<% @student_list = [] %>
-	<% Student.all.each do |y| %>
-		<% if y.course_id && y.course.name == @dept_unit %>
-			<% @student_list << y %>
+		<% @student_list = Student.all %>
+		<% @subject_list = Programme.at_depth(2) %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+	<% else %>
+		<!---->
+		<% @exam_list = [] %>
+		<% @exam_list_exist_mark = [] %>
+		<% @examexist = Exam.find(:all, :conditions=>['id IN(?)', @existing_exammark_ids]) %>
+		<% Exam.all.each do |x| %>
+			<%# if x.subject.root.name == @dept_unit && @existing_exammark_ids.include?(x.id)==false %>
+			<% if x.subject.root.name == @dept_unit %>
+			
+				<% @exam_list << x %>
+			<% end %>
 		<% end %>
-		<!--<br><%#= y.course_id? ? y.course.name : "programme not entered" %>-->
+		<% @examexist.each do |x| %>
+			<%# if x.subject.root.name == @dept_unit && @existing_exammark_ids.include?(x.id)==true %>
+			<% if x.subject.root.name == @dept_unit %>
+			
+				<% @exam_list_exist_mark << x %>
+			<% end %>
+			<!--<br><%#= x.subject.root.name %> -->
+		<% end %>
+		<% @student_list = [] %>
+		<% Student.all.each do |y| %>
+			<% if y.course_id && y.course.name == @dept_unit %>
+				<% @student_list << y %>
+			<% end %>
+			<!--<br><%#= y.course_id? ? y.course.name : "programme not entered" %>-->
+		<% end %><%#=@dept_unit%>
+		<% @subject_list = Programme.find_by_name(@dept_unit).descendants.at_depth(2)%>
+		<!---->	
 	<% end %>
-	<% @subject_list = Programme.find_by_name(@dept_unit).descendants.at_depth(2)%>
-<!---->	
+
 <% end %>
 <!--11-12Apr2013-->
-
+<%###################################################%>
 
 <!-- Box -->
 <div class="box">
@@ -58,9 +126,9 @@
 <div class="right">
 	<% form_tag :action => 'new' do %>
 		<%= hidden_field_tag( "new_type","3" )%>
-		<%= select_tag('examid', options_from_collection_for_select(@exam_list, :id, :exam_code_date)) %>
+		<b>Exam Paper : </b><%= select_tag('examid', options_from_collection_for_select(@exam_list, :id, :exam_code_date)) %>
 		<%#= select_tag('subjectid', "<option value='0'>Select Exam Paper</option>" + options_from_collection_for_select(Exam.all, :id, :exam_code_date)) %>
-		<%= submit_tag 'New Multiple by Exam', :subject_id => nil %>
+		<%= submit_tag 'New Multiple Marks', :subject_id => nil %>
 	<% end %>
 </div>
 <br>
@@ -74,17 +142,18 @@
 		<tr>
 			<th>&nbsp;</th>
     		<th>Student</th>
-    		<th>MyKad No</th>
-			<th>Total Marks</th>
+    		<th width=80px>MyKad No</th>
+			<th width=40px>Total Marks</th>
+			<th width=150px>Remarks</th>
 			<th colspan=3>Control</th>
   		</tr>
 
 <% @exammarks_group.each do |exammarks_group, exammarks| %>
-	<% exammarks.each_with_index do |exammark,index|%>
-		<% if (@dept_unit==exammark.exampaper.subject.root.name) ||(current_user_roles.include?(2)) %><!--STAND BY:HIDE THIS LINE & LINE 66 to view ALL EXAM marks--> 
+	<% exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,index|%>
+		<% if (@dept_unit==exammark.exampaper.subject.root.name) ||(current_user_roles.include?(2))||@kupk == "yes" %><!--STAND BY:HIDE THIS LINE & LINE 66 to view ALL EXAM marks--> 
 			<% if index == 0%>
 			<tr>
-				<td colspan=7 style="background-color:#EFF1F1;">
+				<td colspan=8 style="background-color:#EFF1F1;">
 					<b>Examination Paper : <%=h Exam.find(exammarks_group).full_exam_name %></b>
 				</td>
 	  		</tr>
@@ -93,7 +162,24 @@
 				<td><%= check_box_tag "exammark_ids[]", exammark.id, :class => "check" %></td><!-- 15 May 2012-->
     			<td><%=h exammark.studentmark.matrix_name %></td>
     			<td><%=h exammark.studentmark.icno %></td>
- 				<td><%=h exammark.total_marks %></td>
+					<!--START-checking-if total marks equal to [total_mcq(EXAMMARKS) plus total_non_mcq(MARKS)]-->
+					<% @examquestions_qty = exammark.exampaper.examquestions.mcqq.count %><!--Qty of MCQ questions-->
+					<% total_marks = exammark.total_marks %><!--sum of student_mark from MARKS table, inc.MCQ & MEQ-->
+					<% total_mcq = exammark.total_mcq %><!--value of total_mcq in EXAMMARKS table-->
+					<% total_non_mcq = 0 %>
+					<% exammark.marks.each_with_index do |x, index|%>
+						<% if index > @examquestions_qty-1%>
+							<% total_non_mcq+=x.student_mark %><!--total_non_mcq : Total Marks 4 Non-MCQ fr MARKS table-->
+						<% end %>
+					<% end %>
+					<% total_mcq_plus_non_mcq = total_mcq+total_non_mcq %><!--total_mcq(EXAMMARKS) plus total_non_mcq(MARKS)-->
+					<!--END-checking-if total marks equal to [total_mcq(EXAMMARKS) plus total_non_mcq(MARKS)]-->		
+ 				<td align="center">
+ 					<% if total_marks!= total_mcq_plus_non_mcq %><font color=red>
+					<% else %><font color=black>
+					<% end %><%=h exammark.total_marks %></font>
+ 				</td>	
+				<td align="center"><% if total_marks!= total_mcq_plus_non_mcq %>(Please edit/insert MCQ<br>marks accordingly)<% end %></td>
   				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => exammark %></td>
     			<td width=10px>
 				<%#if problem arise- unremark line 26 & 28 & refer partial : view_marks_form.html.erb line 15-16, for multiple data entry that has only ONE questiontype=MCQ, data is not save at 'marks' table at all & total_mcq only saved in 'exammarks' table.... %>
@@ -108,26 +194,36 @@
 <% end %>
 		
 	</table>
+	<br>
 	
 	<!--for multiple edit-14Apr2013-->
-	<br>
+	<div class="left">
 	<!-- ref: http://railsforum.com/viewtopic.php?id=2151 rleblic2007-10-25 08:43:07 -->
 	<!--http://www.ryboe.com/2008/07/10/select-all-checkboxes-with-prototype-js.html -->
 	<input id="check_all" name="check_all" type="checkbox" checked="checked" onclick="
 	Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_all').checked})" />
 	<b>Check/Uncheck 				all</b>&nbsp;&nbsp;
-
+	</div>
+	
 	<!-- 15 -22 May 2012 -->
 	<%= submit_tag "Edit Checked", :name => :exammark_submit_button %>
 	<%#= submit_tag "Edit by Exam", :name => :exammark_submit_button %>
 	<% end %>
 	<!-- 15 - 22May 2012 -->
-	
-	
-	
+		
 	<!--for multiple edit-14Apr2013-->
 	
 </div>
+
+<div class="right">
+	<% form_tag '', :method => 'get' do %>
+		<%#= hidden_field_tag( "search_exist","1" )%>
+		<b>Exam Paper : </b><%= select_tag('exam_id', "<option value='0'>All Existing Exam Marks</option>" +options_from_collection_for_select(@exam_list_exist_mark, :id, :exam_code_date)) %>
+		<%#= select_tag('subjectid', "<option value='0'>Select Exam Paper</option>" + options_from_collection_for_select(Exam.all, :id, :exam_code_date)) %>
+		<%= submit_tag 'Search Exam Marks', :name => :exammark_search %>
+	<% end %>
+</div>
+
 <br />
 
 <%= link_to 'New Exam Marks', new_exammark_path(:new_type => "1") %>

@@ -7,6 +7,7 @@ class Examquestion < ActiveRecord::Base
   #belongs_to :programme
   belongs_to :topic,    :class_name => 'Programme', :foreign_key => 'topic_id'
   has_and_belongs_to_many :exams
+  belongs_to :examQ, :class_name => 'Examquestion', :foreign_key => 'id'		#download excel-->ref:11-14 may 2012
   
   has_many :answerchoices, :dependent => :destroy
   accepts_nested_attributes_for :answerchoices, :allow_destroy => true , :reject_if => lambda { |a| a[:description].blank? }
@@ -160,7 +161,30 @@ class Examquestion < ActiveRecord::Base
       Staff.find(:all, :condition => ['staff_id IS NULL'])
    end
    
-   
+   #download-excel file
+    #--start of-- 11 - 14 May 2012 --------------------------------------------------------------------------------------------------------
+    def difficultyname
+ 		#----------------start of--difficulty section----------11-14 May 2012
+ 		#Examquestion::QLEVEL[0].to_s 	#result -> "(R) Easy|Mudah1"
+ 		#Examquestion::QLEVEL[1].to_s 	#result -> "(S) Intermediate|Pertengahan2"
+ 		#Examquestion::QLEVEL[2].to_s 	#result -> "(T) Difficult|Sukar3"
+ 		#"#{difficulty}"   				#result -> "1" (value of difficulty column, table examquestion - a string)
+ 		#"#{difficulty}".to_i			#result -> 1 (value as an integer)
+ 		#Examquestion::QLEVEL[("#{difficulty}".to_i)-1].to_s		#result -> either 1 of result as line 39,40 or 41
+ 		#NESTED Array for -->["(R) Easy|Mudah","1"] <-------------------------------------------------------
+ 		Examquestion::QLEVEL[("#{difficulty}".to_i)-1][0].to_s		#result -> eg-line 48-> "(R) Easy|Mudah"
+ 		#Examquestion::QLEVEL[("#{difficulty}".to_i)-1][1].to_s		#result -> eg-line 48-> "1"
+ 		#---------------end of--difficulty section-------------11-14 May 2012												
+    end
+
+    def self.header_excel
+ 		["Programme","Subject Code","Subject Name","Topic","Question Type","Marks","Category","Construct","Difficulty","Question","Answer", "Status","Curriculum","Specification","Opportunity","Construct","Topic","Component","Creator Name" ]
+    end
+
+    def self.column_excel
+ 		[{:subject => [:programme_coursetype_name,:code, :name]}, {:topic=>:subject_list},:questiontype, :marks, :category,:construct,{:examQ=>[:difficultyname]},:question, :answer, :qstatus,:conform_curriculum,:conform_specification,:conform_opportunity,:accuracy_construct,:accuracy_topic,:accuracy_component,:fit_difficulty,:fit_important,:fit_fairness,{:creator=> [:staff_name_with_position] }]
+    end
+   #download-excel file
    
    def render_difficulty
      (Examquestion::QLEVEL.find_all{|disp, value| value == difficulty }).map {|disp, value| disp}
@@ -172,8 +196,8 @@ class Examquestion < ActiveRecord::Base
           [ "Subjektif - MEQ","MEQ" ],
           [ "Subjektif - SEQ","SEQ" ],
           [ "ACQ",            "ACQ" ],
-          [ "OSCI",           "OSCI" ],
-          [ "OSCII",          "OSCII" ],
+         # [ "OSCI",           "OSCI" ],  #hide on 31May2013
+         # [ "OSCII",          "OSCII" ], #hide on 31May2013
           [ "OSCE",           "OSCE"],  #10Apr2013-newly added - to confirm
           [ "OSPE",           "OSPE"],  #10Apr2013-newly added - to confirm
           [ "VIVA",           "VIVA"],   #10Apr2013-newly added - to confirm

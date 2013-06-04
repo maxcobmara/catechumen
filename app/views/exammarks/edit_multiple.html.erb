@@ -39,12 +39,13 @@
 			<% end %>
 
 		</tr>
-		<% for exammark in @exammarks %>
+		<%# for exammark in @exammarks %>
+		<% @exammarks.sort_by{|x|x.studentmark.name}.each do |exammark| %>
 			<%= hidden_field_tag "exammark_ids[]", exammark.id %><%#result ==> "grade_ids"=>["4","3","2","1"]  == grade_ids[]  %>
 			<%#= exammark.exampaper.examquestions.count %>
 			<tr>
 			<tr>
-				<td><%=h exammark.studentmark.matrix_name %><%#=h grade.student_id.blank? ? "" : grade.studentgrade.name %></td>
+				<td><%#=exammark.id%><%=h exammark.studentmark.matrix_name %><%#=h grade.student_id.blank? ? "" : grade.studentgrade.name %></td>
 				<td><%=h exammark.studentmark.icno %></td>
 <% if @edit_type == "Edit Checked" || @edit_type.nil? %>	
 				<!--<td>
@@ -58,7 +59,7 @@
 	<%= hidden_field_tag "exam_ids[]", @exam_id %>
 <% end %>
 		
-				<td><%= text_field_tag "total_mcqs[]", exammark.total_mcq, :size=> 4 %></td>
+				<td align=right><%= hidden_field_tag "total_mcqs[]", exammark.total_mcq, :size=> 4 %><%=exammark.total_mcq%></td>
 				<!--<td>-->
 					<%# 0.upto(exammark.marks.count-1) do |cc|%>
 						<%#= text_field_tag "marks_attributes[#{cc}][student_marks][]", exammark.marks[cc].student_mark, :size=> 4 %>
@@ -66,11 +67,14 @@
 						<%#= exammark.exampaper.examquestions[cc].questiontype %>
 					<%# end %>
 					<!--question marks order(BY TYPE) : MCQ, MEQ,SEQ,ACQ,OSCI,OSCII,OSCE,OSPE,VIVA-->
+					<!--for checking(line 44:use text_field_tag instead):mark id: 
+						<%#=Mark.find(:first, :conditions=>['exammark_id=?',exammark.id ]).id%>-->
 					<% aaa=exammark.marks %><!--PENDING:DATA IS CORRENT BUT...DISPLAY:sequence of marks-depends on last updated record!-->
 					<% aaa.each_with_index do |aa, index|%>
 						<td>
-							<%= aa.id %>
-							<%#= aa.student_mark %>
+							<!--for checking:incase-marks value din not match student name
+							<%#= aa.id %>ddd-->
+							<%#= hidden_field_tag "marks_attributes[#{index}][exammark_id][]", aa.id %>
 							<%= text_field_tag "marks_attributes[#{index}][student_marks][]", aa.student_mark, :size=> 4 %>
 						</td>
 					<% end %>
