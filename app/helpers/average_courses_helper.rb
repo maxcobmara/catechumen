@@ -1,0 +1,2 @@
+module AverageCoursesHelper
+end

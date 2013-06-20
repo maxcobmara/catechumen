@@ -1,0 +1,900 @@
+<% unless @exam_id.nil? || @exam_id.blank? %>
+	
+	<%#**************************************************************************************************************************************%>
+	<!--start-data assignment for edit of existing record-->
+	<% if @examquestions.nil? || @examquestions.blank? %>
+		<% @examquestions = Exam.find(@exam_id).examquestions %>
+		<% @exammarks= Exammark.find(:all, :order=>"created_at ASC", :conditions=> ['exam_id=?', @exam_id])%>
+		<% @exammarks_mark = Examanalysis.set_exammarks_mark(@exammarks) %>
+		<% @exammarks_intake = Exammark.find(:all, :order=>"created_at ASC", :conditions=> ['exam_id=?', @exam_id])[0].studentmark.intake%><!---->
+		<% @intakeyear = @exammarks_intake.year %>
+		<% @intakemonth = @exammarks_intake.month %>
+		<% @selected_subject = Exam.find(@exam_id).subject_id%>
+		<%# @students = Student.available_students2(@selected_subject)  %>
+		<!---->
+		<% @programme_id = Programme.find(@selected_subject).root_id %>
+		<% @examdate = Exam.find(@exam_id).exam_on %><!---->
+		<% @examyear2 = Exam.find(@exam_id).exam_on.year %><%# @examyear2 = Exam.find(21).exam_on.year %>
+		<% @exammonth2 = Exam.find(@exam_id).exam_on.month %><%# @exammonth2 = Exam.find(21).exam_on.month %>
+		<% if @intakeyear != @examyear2 && @intakemonth != @exammonth2 %>
+			<% @examyear2 = @intakeyear %><!--replace value-->
+			<% @exammonth2 = @intakeyear %><!--replace value-->
+		<% end %>
+		<% @semester =  Programme.find(@selected_subject).parent.code %>
+		<% @students = Examresult.get_students(@programme_id,@examyear2,@exammonth2,@semester) %><!--2011-07-->
+		<!---->
+		<% @students_qty = @students.count %>
+		<% @student_ca_mse = Examanalysis.set_array(@students,1,@selected_subject) %>
+		<% @student_exam1marks = Examanalysis.set_array(@students,2,@selected_subject) %>
+		<% @student_finale = Examanalysis.set_array(@students,3,@selected_subject) %>
+		<% @student_NG = Examanalysis.set_array(@students,4,@selected_subject) %>
+		<% @student_gred = Examanalysis.set_array(@students,5,@selected_subject) %>
+		<% @student_grade_by_subject = Examanalysis.set_array(@students,6,@selected_subject) %>
+	<% end %>
+	<!--end-data assignment for edit of existing record-->
+<!--sampai-->
+	<% @istemplate = Exam.find(@exam_id).klass_id %>
+	<% if @istemplate == 0 %>
+		<% @examtemplates = Exam.find(@exam_id).examtemplates %>
+		<% qty_ary = @examtemplates.map(&:quantity) %>
+		<% @questionscount = qty_ary.inject{|sum,x|sum+x} %>
+	<% else %>
+		<% @questionscount = @examquestions.count%>
+		<!--Type_count:--><% @questions_type_count = Exam.find(@exam_id).examquestions.map(&:questiontype).uniq.count %>
+	<% end %>
+	
+	<!--Existing marks(for how many students) : -->Total students : <%= @exammark_exist_for_currexam = Exammark.find(:all, :conditions => ['exam_id IN (?)', @exam_id]).count %>
+	<%# @exammark_exist_for_currexam > 0 %>
+	
+	<!--Start-Viewing part works for both edit & reselection of subject during edit-->
+	<% unless @examquestions.nil? || @examquestions.blank?  %>
+		
+
+		<% if @questionscount == 0 %>
+			No questions available in exam paper.
+		<% else %>
+			<% if @exammark_exist_for_currexam == 0 %>
+				No marks available for analysis.
+			<% else %>
+			<%#************************************************************************************%>
+			
+		<!--end-TESTING AREA 1--><!--ada soalan-->
+			<br>
+			<table border=1 cellspacing=0 cellpadding=1>
+				<tr>
+					<th rowspan=2>Name</th>
+					<th rowspan=2>Matric No</th>
+					<th rowspan=2>MyKad No</th>
+					<th rowspan=2>CA + <br>MSE</th>
+					<th rowspan=2>MCQ</th>
+					<% if @examquestions.meqq.count!=0 %>
+						<th colspan='<%=@examquestions.meqq.count%>'>MEQ</th>
+					<% end %>
+					<% if @examquestions.seqq.count!=0 %>
+						<th colspan='<%=@examquestions.seqq.count%>'>SEQ</th>
+					<% end %>
+					<% if @examquestions.acqq.count!=0 %>
+						<th colspan='<%=@examquestions.acqq.count%>'>ACQ</th>
+					<% end %>
+					<% if @examquestions.osce.count!=0 %>
+						<th colspan='<%=@examquestions.osce.count%>'>OSCE</th>
+					<% end %>
+					<% if @examquestions.ospe.count!=0 %>
+						<th colspan='<%=@examquestions.ospe.count%>'>OSPE</th>
+					<% end %>
+					<% if @examquestions.viva.count!=0 %>
+						<th colspan='<%=@examquestions.viva.count%>'>VIVA</th>
+					<% end %>
+					<% if @examquestions.truefalse.count!=0 %>
+						<th colspan='<%=@examquestions.truefalse.count%>'>TRUE/FALSE</th>
+					<% end %>
+					<% if @examquestions.seqq.count!=0 %>
+					<th rowspan=2>Total(SEQ)</th>
+					<% end %>
+					<th rowspan=2>Final Exam</th>
+					<th rowspan=2>Total Marks</th>
+					<th rowspan=2>Grade</th>
+					<th rowspan=2>NG</th>
+				</tr>
+				<tr>
+					<% 1.upto(@examquestions.meqq.count) do |count| %>
+						<th>Q<%=count%></th>
+					<% end %>
+					<% 1.upto(@examquestions.seqq.count) do |count| %>
+						<th>Q<%=count%></th>
+					<% end %>
+					<% 1.upto(@examquestions.acqq.count) do |count| %>
+						<th>Q<%=count%></th>
+					<% end %>
+					<% 1.upto(@examquestions.osce.count) do |count| %>
+						<th>Q<%=count%></th>
+					<% end %>
+					<% 1.upto(@examquestions.ospe.count) do |count| %>
+						<th>Q<%=count%></th>
+					<% end %>
+					<% 1.upto(@examquestions.viva.count) do |count| %>
+						<th>Q<%=count%></th>
+					<% end %>
+					<% 1.upto(@examquestions.truefalse.count) do |count| %>
+						<th>Q<%=count%></th>
+					<% end %>
+				</tr>
+
+				<%#---------------------------start-student details listing inclusive marks data assignment------------------------------------------------------%>
+				<%#-----this part will view student details as well as assign values for: (1) MCQ marks, (2) MEQ marks(hash), (3) SEQ marks(hash)----------------%>
+				<%#-----whereas Final Exam, Total Marks, Gred & NG for all students were assigned in controller/model--------------------------------------------%>
+
+				<% @total_MCQ_A = [] %><!--array of mcq marks of each students-->
+				<%# @students.each_with_index do |student,index| %>	
+				<% @students.sort_by{|x|x.name}.each_with_index do |student,index| %>
+				<tr>
+					<td width=25%><%= student.name %></td>
+					<td><%= student.matrixno %></td>
+					<td><%= student.icno %></td>
+					<td><%= @student_ca_mse[index] %></td>
+					<% @arrayfirst = [] %>
+					<% @arrayfirst2 = [] %>
+					<% @arrayfirst3 = [] %>
+					<% @arrayfirst4 = [] %>
+					<% @arrayfirst5 = [] %>
+					<% @arrayfirst6 = [] %>
+					<% @arrayfirst7 = [] %>
+					
+					<!--reference : MCQ, MEQ, SEQ, ACQ, OSCE, OSPE, VIVA, TRUEFALSE-->
+					<% 0.upto(7) do |count| %><%# 0.upto(2) do |count| %><!--2 for three type of questions-->
+						<% if count == 0 %>
+							<% @examquestions2 = @examquestions.mcqq %>
+							<% @index2 = 0 %>
+						<% elsif count == 1 %>
+						<!----><% if @examquestions.meqq.count != 0 %>
+							<% @examquestions2 = @examquestions.meqq %>
+							<%# @index2 = @examquestions.mcqq.count %><!--always 3--><!--BIG changes - mcq marks no longer available in MARKS table-->
+							<% @index2 = 0 %>
+						<!----><% end %>
+						<% elsif count == 2 %>	
+							<% @examquestions2 = @examquestions.seqq %>
+							<%# @index2 = @examquestions.mcqq.count+@examquestions.meqq.count %>	<!---always 3+0-->	
+							<% @index2 = @examquestions.meqq.count %><!--BIG changes - mcq marks no longer available in MARKS table-->
+						<% elsif count == 3 %>	
+							<% @examquestions2 = @examquestions.acqq %>
+							<% @index2 = @examquestions.meqq.count+@examquestions.seqq.count %>
+						<% elsif count == 4 %>	
+							<% @examquestions2 = @examquestions.osce %>
+							<% @index2 = @examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count %>
+						<% elsif count == 5 %>	
+							<% @examquestions2 = @examquestions.ospe %>
+							<% @index2 = @examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count %>
+						<% elsif count == 6 %>	
+							<% @examquestions2 = @examquestions.viva %>
+							<% @index2 = @examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count %>
+						<% elsif count == 7 %>	
+							<% @examquestions2 = @examquestions.truefalse %>
+							<% @index2 = @examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count %>
+						<% end %>
+
+						<% @examquestions2.each_with_index do |examquestion,index3| %>
+						<%# @examquestions.each_with_index do |examquestion,index3| %>
+							<% unless @exammarks_mark[index].nil? || @exammarks[index].blank? %>
+								<% @total_MCQ = 0.0 %>
+								<% if count==0 && index3==0 %>
+									<!--start-for mcq marks-->
+									<% @total_MCQ = @exammarks.sort_by{|x|x.studentmark.name}[index].total_mcq %>
+									<td><%= @total_MCQ %></td>
+									<% @total_MCQ_A << @total_MCQ %>
+									<!--end-for mcq marks-->
+
+								<% elsif count!=0 %>
+									<!--for other type of marks--><!--index-row/student, index3-column qty soalan, count-column jenis soalan,-->	
+									<!--berapa marks count=<%#= @exammarks_mark[index].count %>~<%#= @exammarks_mark[index][2].student_mark %>-->	
+									<% @exammarks_mark[index].each_with_index do |eq,index5| %>
+										<% if count == 1 && index3 == 0 %>
+											<!--@index2 dlm count=1  : <%#=@index2%>-<%#=@index2+@examquestions.meqq.count %><br>-->
+											
+											<!--BIG changes - mcq marks no longer available in MARKS table-->
+											<%# if index5 > @index2-1 && index5 < @index2+@examquestions.meqq.count %>
+											<% if index5 > @index2-1 && index5 < @index2+@examquestions.meqq.count %>
+												<td><!--A-ape-**<%#=index5%>--><%= @exammarks_mark[index][index5].student_mark %> 	
+												<!---<%#=index%>+<%#=index5%>^<%#=count%>-<%#=index3%>-->
+												</td>
+												<!--start-for meq marks-->
+												<!----><% if @examquestions.meqq.count != 0 %>
+												<% @arrayfirst<< @exammarks_mark[index][index5].student_mark %>
+												<% if index5 == @index2+@examquestions.meqq.count-1 %><!--4, 5th element of array-->
+													<% if index==0 %>
+														<% @hashmeq = {index.to_s=>@arrayfirst} %>
+													<% else %>
+														<% @hashmeq = @hashmeq.merge({index.to_s=>@arrayfirst}) %>
+													<% end %>
+												<% end %>
+												<!----><% end %>
+												<!--end-for meq marks-->
+											<% elsif index5 > @index2+@examquestions.meqq.count-1 && index5 < @index2+@examquestions.meqq.count+@examquestions.seqq.count %>
+												<td><!--B--><!--chup<%#=index%>==<%#=index5%><%#= @exammarks_mark.count %>-->
+												<%= @exammarks_mark[index][index5].student_mark %><!--=lalala	**<%#=index5%>-->	
+												 <!--,-<%#=index%>+<%#=index5%>^<%#=count%>--></td>
+												<!--start for seq marks-->
+												<!----><% if @examquestions.seqq.count != 0 %>
+												<% @arrayfirst2<< @exammarks_mark[index][index5].student_mark  %>
+												<% if index5 == @index2+@examquestions.meqq.count+@examquestions.seqq.count-1 %>
+												<!--@index2 always 3,meqq.count=0,seqq.count=1-->
+													<% if index==0 %>
+														<% @hashseq = {index.to_i=>@arrayfirst2} %>
+														<%# @hashseq = {index.to_s=>@arrayfirst2} %>
+													<% else %>
+														<% @hashseq = @hashseq.merge({index.to_i=>@arrayfirst2}) %>
+														<%# @hashseq = @hashseq.merge({index.to_s=>@arrayfirst2}) %>
+													<% end %>
+												<% end %>
+												<!----><% end %>
+												<!--end for seq marks-->
+											<%###%>
+											<%# elsif index5 > 1 && index5 < 3 %>
+											<% elsif index5 > @index2+@examquestions.meqq.count+@examquestions.seqq.count-1 && index5 < @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count%>
+											
+												<td><%= @exammarks_mark[index][index5].student_mark %><!--=lululu--></td>
+												<!--start for acq marks-->
+												<!----><% if @examquestions.acqq.count != 0 %>
+												<% @arrayfirst3<< @exammarks_mark[index][2].student_mark %>
+												<% if index5 == @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count-1 %>
+													<% if index==0 %>
+														<% @hashacq = {index.to_i=>@arrayfirst3} %>
+													<% else %>
+														<% @hashacq = @hashacq.merge({index.to_i=>@arrayfirst3}) %>	
+													<% end %>
+												<% end %>
+												<!----><% end %>
+												<!--end for acq marks-->
+											<%###%>
+											<%###%>
+											<% elsif index5 > @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count-1 && index5 < @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count%>
+												<td><%= @exammarks_mark[index][index5].student_mark %>=lili</td>
+												<!--start for osce marks-->
+												<!----><% if @examquestions.osce.count != 0 %>
+												<% @arrayfirst4<< @exammarks_mark[index][index5].student_mark  %>
+												<% if index5 == @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count-1 %>
+													<% if index==0 %>
+														<% @hashosce = {index.to_i=>@arrayfirst4} %>
+													<% else %>
+														<% @hashosce = @hashosce.merge({index.to_i=>@arrayfirst4}) %>	
+													<% end %>
+												<% end %>
+												<!----><% end %>
+												<!--end for osce marks-->
+											<%###%>
+											<%###%>
+											<% elsif index5 > @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count-1 && index5 < @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count %>
+												<td><%= @exammarks_mark[index][index5].student_mark %>=lele</td>
+												<!--start for ospe marks-->
+												<!----><% if @examquestions.ospe.count != 0 %>
+												<% @arrayfirst5<< @exammarks_mark[index][index5].student_mark  %>
+												<% if index5 == @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count-1 %>
+													<% if index==0 %>
+														<% @hashospe = {index.to_i=>@arrayfirst5} %>
+													<% else %>
+														<% @hashospe = @hashospe.merge({index.to_i=>@arrayfirst5}) %>	
+													<% end %>
+												<% end %>
+												<!----><% end %>
+												<!--end for ospe marks-->
+											<%###%>
+											<%###%>
+											<% elsif index5 > @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count-1 && index5 < @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count %>
+												<td><%= @exammarks_mark[index][index5].student_mark %>=copcop</td>
+												<!--start for viva marks-->
+												<!----><% if @examquestions.viva.count != 0 %>
+												<% @arrayfirst6<< @exammarks_mark[index][index5].student_mark  %>
+												<% if index5 == @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count-1 %>
+													<% if index==0 %>
+														<% @hashviva = {index.to_i=>@arrayfirst6} %>
+													<% else %>
+														<% @hashviva = @hashviva.merge({index.to_i=>@arrayfirst6}) %>	
+													<% end %>
+												<% end %>
+												<!----><% end %>
+												<!--end for viva marks-->
+											<%###%>
+											<%###%>
+											<% elsif index5 > @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count-1 && index5 < @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count+@examquestions.truefalse.count  %>
+												<td><%= @exammarks_mark[index][index5].student_mark %>=chipchip</td>
+												<!--start for truefalse marks-->
+												<!----><% if @examquestions.truefalse.count != 0 %>
+												<% @arrayfirst7<< @exammarks_mark[index][index5].student_mark  %>
+												<% if index5 == @index2+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count+@examquestions.truefalse.count-1 %>
+													<% if index==0 %>
+														<% @hashtruefalse = {index.to_i=>@arrayfirst7} %>
+													<% else %>
+														<% @hashtruefalse = @hashtruefalse.merge({index.to_i=>@arrayfirst7}) %>	
+													<% end %>
+												<% end %>
+												<!----><% end %>
+												<!--end for truefalse marks-->
+											<%###%>
+											<% end %>
+										<% end %>	<!--end for if count==1 && index3==0-->
+									<% end %> <!--end for @exammarks_mark[index].each_with_index do |eq,index5|-->
+								<% end %>	<!--end for if count==0 && index3==0-->	
+								<!--for other type of marks-->	
+							<% else %>
+								<% if count == 0 && index3 == 0 %>
+									<td colspan='<%=1+@examquestions.meqq.count+@examquestions.seqq.count %>'>
+										No record
+									</td>
+								<% end %>
+							<% end %>	<!--end for unless-->
+						<% end %>	<!--end for @examquestions2.each_with_index-->	
+					<% end %>	<!--end for 0.upto(2) do |count|-->
+					
+					<!--reference : MCQ, MEQ, SEQ, ACQ, OSCE, OSPE, VIVA, TRUEFALSE-->
+					
+					<!--start-for total of SEQ only-->
+					<!----><% if @examquestions.seqq.count != 0 %>
+					<% @total_seq_A = [] %>
+					<%## @hashseq.sort_by{|k|k}.each do |k,v| %>
+					<% @hashseq.sort.map do |k,v|%>
+						<% @total_seq = 0 %>
+						<% v.each do |value|%>
+							<% @total_seq = @total_seq+value %>
+						<%end %>
+						<% @total_seq_A << @total_seq %>
+					<% end %>
+					<!----><% end %>
+					<!--end-for total of SEQ only-->
+					<% if @examquestions.seqq.count!=0  %>
+						<td>
+					
+					<!--koson-->
+							<!--nilai @hashseq:<%#=@hashseq%>||<%#=@hashseq.sort%>||-->
+							<%= number_with_precision(@total_seq_A[index], :precision=>2) %><%#= (@total_seq_A[index]) %><!---->
+						</td>
+					<% end %>
+					<td><%= number_with_precision(@student_exam1marks[index],:precision=>2) %><%#= @student_exam1marks[index] %></td>
+					<td><%= number_with_precision(@student_finale[index],:precision=>2) %><%#= @student_finale[index] %></td>
+					<td><%= number_with_precision(@student_gred[index],:precision=>2) %><%#= @student_gred[index] %></td>
+					<td><%= number_with_precision(@student_NG[index],:precision =>2) %><%#= @student_NG[index] %></td>
+				</tr>
+				<% end %>	<!--end for @students.each_with_index do |student,index|-line 61-->
+				<%#---------------------------end-student details listing inclusive marks data assignment------------------------------%>
+
+				<tr>
+					<% if @examquestions.seqq.count!=0  %>
+					<td colspan='<%=1+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count+@examquestions.truefalse.count+6+2+1 %>'>&nbsp;</td>
+					<% else %>
+					<td colspan='<%=1+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count+@examquestions.truefalse.count+6+2 %>'>&nbsp;</td>
+					<% end %>
+				</tr>
+
+				<%#=======================start-analysis part-PART I======================================================%>
+				<!--statistic title assignment-->
+				<% @rowtitle = ['count','min','max','','mean','sd-population','','pass-rate','% pass']%>
+
+				<% 0.upto(8) do |count_analyse_item| %><!--count_analyse_item-row2 utk analisis-->
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td><%= @rowtitle[count_analyse_item] %></td>
+
+					<% @statistic_view = [] %>
+
+					<!--start-part for CA+MSE & MCQ marks column-->
+					<% 0.upto(1) do |loop_column| %>
+						<% if loop_column == 0 %>
+							<% @statistic_view = Examanalysis.statistic_item(@student_ca_mse,loop_column) %>
+						<% else %>
+							<% @statistic_view = Examanalysis.statistic_item(@total_MCQ_A,loop_column) %>
+						<% end %>
+
+						<% if count_analyse_item ==3 || count_analyse_item ==6 %>
+							<td>&nbsp;</td>
+						<% else %>
+							<% if count_analyse_item == 4 || count_analyse_item == 5%>
+								<td><!--case--><%= sprintf("%.2f",@statistic_view[count_analyse_item]) %></td>
+								<!--item(row-mean, sd population) for column CA+MSE & column MCQ-->
+							<% else %>
+								<td><% if count_analyse_item != 0 %>
+										<%= number_with_precision(@statistic_view[count_analyse_item],:precision=>2)%>
+									<% else %>
+										<%= @statistic_view[count_analyse_item].to_i %>
+									<% end %>
+								</td>
+								<!--item(row - count, min & max, pass rate & %pass) for column CA+MSE & column MCQ-->
+							<% end %>
+						<% end %>
+					<% end %>
+					<!--end-part for CA+MSE & MCQ marks column-->
+
+					<!--start-part for MEQ & SEQ marks column--><!--@questions_type_count:total type of questions available-->
+					<% @checker = 1 %>
+					<% 1.upto(@questions_type_count-1) do |count| %><%# 1.upto(@questions_type_count-1) do |count| %><%# 1.upto(2) do |count| %>
+						<% if count_analyse_item == 3 || count_analyse_item == 6 %><!--for rows with no data-->
+							<% if count == 1 %>
+								<!--0 for total mcq, 1-up to max examquestions count:this will generate columns individually-->
+								<% 1.upto(@examquestions.count-@examquestions.mcqq.count) do |l| %>
+								<%# 1.upto(@examquestions.meqq.count+@examquestions.seqq.count) do |l| %>
+									<td>&nbsp;</td>
+								<% end %>
+							<% end %>
+						<% else %>
+							<% if count == 1 %>
+							<% if @examquestions.meqq.count != 0 && @checker == count %>
+								<% @hashitem = @hashmeq %>
+								<% @examquestions_count = @examquestions.meqq.count-1 %>
+								<% @examquesting_list = @examquestions.meqq %>
+								<% @count_value = count %>
+								<% @checker = count+1 %>
+							<% end %>
+							<% elsif count == 2 %>
+							<% if @examquestions.seqq.count!= 0 && @checker == count %>
+								<% @hashitem = @hashseq %>
+								<% @examquestions_count = @examquestions.seqq.count-1 %>
+								<% @examquesting_list = @examquestions.seqq %>
+								<% @count_value = count %>
+								<% @checker = count+1 %>
+							<% end %>
+							<% elsif count == 3 %>
+							<%#-------------------------%>
+							<% if @examquestions.acqq.count!= 0 && @checker == count %>
+								<% @hashitem = @hashacq %>
+								<% @examquestions_count = @examquestions.acqq.count-1 %>
+								<% @examquesting_list = @examquestions.acqq %>
+								<% @count_value = count %>
+								<% @checker = count+1 %>
+							<% end %>
+							<%#-------------------------%>
+							<% elsif count == 4 %>
+							<%#-------------------------%>
+							<% if @examquestions.osce.count!= 0 && @checker == count %>
+								<% @hashitem = @hashosce %>
+								<% @examquestions_count = @examquestions.osce.count-1 %>
+								<% @examquesting_list = @examquestions.osce %>
+								<% @count_value = count %>
+								<% @checker = count+1 %>
+							<% end %>
+							<%#-------------------------%>
+							<% elsif count == 5 %>
+							<%#-------------------------%>
+							<% if @examquestions.ospe.count!= 0 && @checker == count %>
+								<% @hashitem = @hashospe %>
+								<% @examquestions_count = @examquestions.ospe.count-1 %>
+								<% @examquesting_list = @examquestions.ospe %>
+								<% @count_value = count %>
+								<% @checker = count+1 %>
+							<% end %>
+							<%#-------------------------%>
+							<% elsif count == 6 %>
+							<%#-------------------------%>
+							<% if @examquestions.viva.count!= 0 && @checker == count %>
+								<% @hashitem = @hashviva %>
+								<% @examquestions_count = @examquestions.viva.count-1 %>
+								<% @examquesting_list = @examquestions.viva %>
+								<% @count_value = count %>
+								<% @checker = count+1 %>
+							<% end %>
+							<%#-------------------------%>
+							<% elsif count == 7 %>
+							<%#-------------------------%>
+							<% if @examquestions.truefalse.count!= 0 && @checker == count %>
+								<% @hashitem = @hashtruefalse %>
+								<% @examquestions_count = @examquestions.truefalse.count-1 %>
+								<% @examquesting_list = @examquestions.truefalse %>
+								<% @count_value = count %>
+								<% @checker = count+1 %>
+							<% end %>
+							<%#-------------------------%>
+							<% end %>
+							
+							<% if @checker > count %>
+							<%#---------------------------------------------------------------------------------------%>
+							<% 0.upto(0) do |index7| %><!--only 1 type of question available (other than mcq) exist-->
+								<% @total_fr_hash = [] %>
+								<% @hashitem.each do |k,v|%><%# @hashmeq.each do |k,v|%>
+									<% v.each_with_index do |value, index6|%>
+										<% if index7 == index6 %>
+											<% @total_fr_hash << value %>
+										<% end %>
+									<% end %>
+								<% end %>
+
+								<% @statistic_view = Examanalysis.statistic_item(@total_fr_hash,count) %>
+
+								<%#@examquestions.seqq.each_with_index do |examquestion,index3| %>
+								<% @examquesting_list.each_with_index do |examquestion,index3| %>
+								
+									<%#**********LIMITATION-->checking line 235, only for up to 3 SEQ/MEQ question***************************%>
+									<%#******For more question, have to add (count == @count_value && index3 == ** && index7 == index3)******%>
+									<%#********for each additional question --> ** will takes value of SEQ question index********************%>
+									<% if (count == @count_value && index3 == 0 && index7 == index3)||(count == @count_value && index3 == 1 && index7 == index3)||(count == @count_value && index3 == 2 && index7 == index3) %>
+									<%# if (index7 == index3)||(index3 == 1 && index7 == index3)||(index3 == 2 && index7 == index3) %>
+									<%# if (index7 == index3) %>
+										<% if count_analyse_item == 4 || count_analyse_item == 5 %>
+											<td><!--tak tauA|||--><%= sprintf("%.2f",@statistic_view[count_analyse_item]) %></td>
+										<% else %>
+											<td><!--tak tauB-->
+												<%#= number_with_precision(@statistic_view[count_analyse_item],:precision=>2)%>
+												<% if count_analyse_item != 0 %>
+														<%= number_with_precision(@statistic_view[count_analyse_item],:precision=>2)%>
+												<% else %>
+														<%= @statistic_view[count_analyse_item].to_i %>
+												<% end %>
+											</td>
+										<% end %>
+									<% end %> 
+								<% end %>
+
+							<% end %><!--end for-0.upto(0) do |index7|-->
+							<%#---------------------------------------------------------------------------------------%>
+							<% end %><!-- end for - if @checker == count -->
+							
+						<% end %>
+
+					<% end %>	<!--end for 0.upto(2) do |count|-->
+					<!--end-part for MEQ & SEQ marks column-->
+
+					<!--start for Total SEQ, Final Exam, Total Marks, Gred & NG-->
+					<% 0.upto(4) do |count| %>
+						<% if count == 0 %>
+							<% if @examquestions.seqq.count != 0 %>
+								<% @total_items_A = @total_seq_A %>
+								<% @loop_column = 7 %>
+							<% end %>
+						<% elsif count == 1 %>
+							<% @total_items_A = @student_exam1marks %>
+							<% @loop_column = 5 %>
+						<% elsif count == 2 %>
+							<% @total_items_A = @student_finale %>
+							<% @loop_column = 5 %>
+						<% elsif count == 4 %>
+							<% @total_items_A = @student_NG %>
+							<% @loop_column = 6 %>
+						<% end %>
+						<% if count != 3 %>
+						<%# if count != 3 || count != '3' %> <!--use this instead for Windows7 version-1 August 2012-->
+							<% if @total_items_A %>
+								<% @statistic_view = Examanalysis.statistic_item(@total_items_A, @loop_column) %>
+							<% end %>
+							<% if count_analyse_item == 4 || count_analyse_item == 5 %>
+								
+									<td><!--ruu--><!--TENGOK @LOOP_COLUMN:<%#=@loop_column%>-->
+									
+										<% if @loop_column != 7%><%= number_with_precision(@statistic_view[count_analyse_item],:precision=>2)%>
+										<%#= sprintf("%.2f",@statistic_view[count_analyse_item]) %>
+										<% end %>
+									</td>
+							
+							<% elsif count_analyse_item ==3 || count_analyse_item ==6 %>
+								<td>&nbsp;<!--kt mane1--></td>
+							<% else %>
+								<td><!--eee--><!--TENGOK @LOOP_COLUMN:<%#=@loop_column%>-->
+									
+									<% if @loop_column != 7%>
+										<% if count_analyse_item != 0 %>
+											<%= number_with_precision(@statistic_view[count_analyse_item],:precision=>2)%>
+										<% else %>
+											<%= @statistic_view[count_analyse_item].to_i %>
+										<% end %>
+									<% end %></td>
+							<% end %>
+						<% else %>
+							<td>&nbsp;<!--empty spaces-kt mane2--></td>
+						<% end %>
+					<% end %>
+					<!--end for Total SEQ, Final Exam, Total Marks, Gred & NG-->
+				</tr>
+				<% end %>
+
+				<%#=======================end-analysis part-PART I===================================================%>
+
+				<!--<tr><td colspan='<%#=1+@examquestions.meqq.count+@examquestions.seqq.count+6+2+1 %>'>&nbsp;</td></tr>-->
+				<tr>
+					<% if @examquestions.seqq.count!=0  %>
+					<td colspan='<%=1+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count+@examquestions.truefalse.count+6+2+1 %>'>&nbsp;</td>
+					<% else %>
+					<td colspan='<%=1+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count+@examquestions.truefalse.count+6+2 %>'>&nbsp;</td>
+					<% end %>
+				</tr>
+				<%#=======================start-analysis part-PART II================================================%>
+				<% @ca_mse_rate = []%>
+				<% 0.upto(4) do |count_analyse_item2|%>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<!--start for CA+MSE & MCQ marks column-->
+						<% 0.upto(1) do |loop_column| %>
+							<% if loop_column == 0 %>
+								<% @statistic_view = Examanalysis.statistic_item2(@student_ca_mse,loop_column) %>
+								<% @ca_mse_rate = @statistic_view %>
+							<% elsif loop_column == 1 %>
+								<% @statistic_view = Examanalysis.statistic_item2(@total_MCQ_A,loop_column) %>
+								<% @total_MCQ_rate = @statistic_view %>
+							<% end %>
+
+							<td><%= @statistic_view[count_analyse_item2]%></td>
+						<% end %>
+						<!--end for CA+MSE & MCQ marks column-->
+
+						<!--start for MEQ & SEQ marks column-->
+						<% @total_meq_rate=[] %>
+						<% @total_seq_rate=[] %>
+						<% @total_acq_rate=[] %>
+						<% @total_osce_rate=[] %>
+						<% @total_ospe_rate=[] %>
+						<% @total_viva_rate=[] %>
+						<% @total_truefalse_rate=[] %>
+						
+						<% 1.upto(@questionscount-@examquestions.mcqq.count) do |count| %><%# 1.upto(2) do |count| %>
+							<% if count == 1 %>
+								<!----><% if @examquestions.meqq.count != 0 %>
+								<% @hashitem = @hashmeq %>
+								<% @examquestions_count = @examquestions.meqq.count-1 %>
+								<!----><% end %>
+							<% elsif count == 2 %>
+								<% if @examquestions.seqq.count != 0 %>
+									<% @hashitem = @hashseq %>
+									<% @examquestions_count = @examquestions.seqq.count-1 %>
+								<% end %>
+							<% elsif count == 3 %>
+								<% if @examquestions.acqq.count != 0 %>
+									<% @hashitem = @hashacq %>
+									<% @examquestions_count = @examquestions.acqq.count-1 %>
+								<% end %>
+							<% elsif count == 4 %>
+								<% if @examquestions.osce.count != 0 %>
+									<% @hashitem = @hashosce %>
+									<% @examquestions_count = @examquestions.osce.count-1 %>
+								<% end %>
+							<% elsif count == 5 %>
+								<% if @examquestions.ospe.count != 0 %>
+									<% @hashitem = @hashospe %>
+									<% @examquestions_count = @examquestions.ospe.count-1 %>
+								<% end %>
+							<% elsif count == 6 %>
+								<% if @examquestions.viva.count != 0 %>
+									<% @hashitem = @hashviva %>
+									<% @examquestions_count = @examquestions.viva.count-1 %>
+								<% end %>
+							<% elsif count == 7 %>
+								<% if @examquestions.truefalse.count != 0 %>
+									<% @hashitem = @hashtruefalse %>
+									<% @examquestions_count = @examquestions.truefalse.count-1 %>
+								<% end %>
+							<% end %>
+
+							<% 0.upto(0) do |index7| %><%# 0.upto(@examquestions_count) do |index7| %>
+								<% @total_fr_hash = [] %>
+								<% @hashmeq.each do |k,v|%>
+									<% v.each_with_index do |value, index6|%>
+										<% if index7 == index6 %>
+											<% @total_fr_hash << value %>
+										<% end %>
+									<% end %>
+								<% end %>
+								<% @statistic_view = Examanalysis.statistic_item2(@total_fr_hash,count+1) %>
+								<td><%= @statistic_view[count_analyse_item2]%><!--~~tengok ACQ=<%#=@hashacq%>--></td>
+								<% if count == 1 %>
+									<!----><%# if @examquestions.meqq.count != 0 %>
+									<% @total_meq_rate<< @statistic_view if @examquestions.meqq.count != 0 %>
+									<!----><%# end %>
+								<% elsif count == 2 %>
+									<% @total_seq_rate<< @statistic_view if @examquestions.seqq.count != 0 %>
+								<% elsif count == 3 %>
+									<% @total_acq_rate<< @statistic_view if @examquestions.acqq.count != 0 %>
+								<% elsif count == 4 %>
+									<% @total_osce_rate<< @statistic_view if @examquestions.osce.count != 0 %>
+								<% elsif count == 5 %>
+									<% @total_seq_rate<< @statistic_view if @examquestions.ospe.count != 0 %>
+								<% elsif count == 6 %>
+									<% @total_viva_rate<< @statistic_view if @examquestions.viva.count != 0 %>
+								<% elsif count == 7 %>
+									<% @total_truefalse_rate<< @statistic_view if @examquestions.truefalse.count != 0 %>
+								<% end %>
+							<% end %>
+						<% end %>
+						<!--end for MEQ & SEQ marks column-->
+						<% if @examquestions.seqq.count!=0%>
+						<td>&nbsp;</td><% end %>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+				<% end %>
+				<%#=======================end-analysis part-PART II================================================%>
+
+				<!--<tr><td colspan='<%#=1+@examquestions.meqq.count+@examquestions.seqq.count+6+2+1 %>'>&nbsp;</td></tr>-->
+				<tr>
+					<% if @examquestions.seqq.count!=0  %>
+					<td colspan='<%=1+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count+@examquestions.truefalse.count+6+2+1 %>'>&nbsp;</td>
+					<% else %>
+					<td colspan='<%=1+@examquestions.meqq.count+@examquestions.seqq.count+@examquestions.acqq.count+@examquestions.osce.count+@examquestions.ospe.count+@examquestions.viva.count+@examquestions.truefalse.count+6+2 %>'>&nbsp;</td>
+					<% end %>
+				</tr>
+
+				<%#=======================start-analysis part-PART III==============================================%>
+				<!--statistic title assignment-->
+				<% @rowtitle2 = ['Marks 0','Marks <20%','Marks <50%','Marks <80%','Marks >80%']%>
+
+				<% 0.upto(10) do |countgrade|%>
+					<tr>
+						<!--<td colspan='<%#=1+@examquestions.meqq.count+@examquestions.seqq.count+6 %>'></td>-->
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<% if countgrade <5 %>
+							<td><%= @rowtitle2[countgrade] %></td>
+						<% else %>
+							<td>&nbsp;</td>
+						<% end %>
+
+						<!--start for CA+MSE & MCQ marks column-->
+						<% 0.upto(1) do |loop_column| %>
+							<% if loop_column == 0 %>
+								<% @to_rate = @ca_mse_rate %>
+							<% elsif loop_column == 1 %>
+								<% @to_rate = @total_MCQ_rate %>
+							<% end %>
+
+							<% if countgrade < 5 %>
+								<% @rate_it = @to_rate[countgrade]-@to_rate[countgrade-1] %>
+								<% if @rate_it > 0 %>
+									<td><%=@rate_it %></td>
+								<% else %>
+									<td>0</td>
+								<% end %>
+							<% else %>
+								<td>&nbsp;</td>
+							<% end %>
+
+						<% end %>
+						<!--start for CA+MSE & MCQ marks column-->
+
+						<!--start for MEQ & SEQ marks column-->
+						<% 0.upto(@questionscount-@examquestions.mcqq.count-1) do |loop_column| %><%# 0.upto(1) do |loop_column| %>
+							<% if loop_column == 0 %>
+								<% @main_rate = @total_meq_rate if @examquestions.meqq.count != 0 %>
+							<% elsif loop_column == 1 %>
+								<% @main_rate = @total_seq_rate if @examquestions.seqq.count != 0 %>
+							<% elsif loop_column == 2 %>
+								<% @main_rate = @total_acq_rate if @examquestions.acqq.count != 0 %>	
+							<% elsif loop_column == 3 %>
+								<% @main_rate = @total_osce_rate if @examquestions.osce.count != 0 %>
+							<% elsif loop_column == 4 %>
+								<% @main_rate = @total_ospe_rate if @examquestions.ospe.count != 0 %>
+							<% elsif loop_column == 5 %>
+								<% @main_rate = @total_viva_rate if @examquestions.viva.count != 0 %>
+							<% elsif loop_column == 6 %>
+								<% @main_rate = @total_truefalse_rate if @examquestions.truefalse.count != 0 %>
+							<% end %>
+
+							<% @main_rate.each do |meq_rate| %>
+								<% @to_rate = meq_rate %>
+								<% if countgrade < 5 %>
+									<% @rate_it = @to_rate[countgrade]-@to_rate[countgrade-1] %>
+									<% if @rate_it > 0 %>
+										<td><%=@rate_it %><!--mana lak--></td>
+									<%else %>
+										<td>0</td>
+									<% end %>
+								<% else %>
+									<td>&nbsp;</td>
+								<% end %>
+							<% end %>
+						<% end %>
+						<!--end for MEQ & SEQ marks column-->
+						<% if @examquestions.seqq.count!=0  %>
+							<td>&nbsp;</td>
+						<% end %>
+						<td>&nbsp;</td>
+						
+						<th colspan=2 align=left>
+							<% if countgrade==0 %>
+								<%= t 'exammakeranalysis.gradea' %> 
+							<% elsif countgrade==1 %>
+								<%= t 'exammakeranalysis.gradeaminus' %> 
+							<% elsif countgrade==2 %>
+								<%= t 'exammakeranalysis.gradebplus' %>
+							<% elsif countgrade==3 %>
+								<%= t 'exammakeranalysis.gradeb' %>
+							<% elsif countgrade==4 %>
+								<%= t 'exammakeranalysis.gradebminus' %> 
+							<% elsif countgrade==5 %>
+								<%= t 'exammakeranalysis.gradecplus' %>
+							<% elsif countgrade==6 %>	
+								<%= t 'exammakeranalysis.gradec' %>
+							<% elsif countgrade==7 %>
+								<%= t 'exammakeranalysis.gradecminus' %> 
+							<% elsif countgrade==8 %>
+								<%= t 'exammakeranalysis.gradedplus' %> 
+							<% elsif countgrade==9 %>	
+								<%= t 'exammakeranalysis.graded' %> 
+							<% elsif countgrade==10 %>
+								<%= t 'exammakeranalysis.gradee' %> 
+							<% end %>
+						</th>
+						
+						<!--start-to differentiate this part between EDIT & SHOW page-->
+						<% if @job != 'show'%>
+							<!--start-edit page-->
+							<td>
+								<% if countgrade==0 %>
+									<%= @student_gred.find_all {|i|i == 'A'}.count  %>
+									<%= hidden_field "examanalysis",:gradeA, :size=>4, :value=> @student_gred.find_all {|i|i == 'A'}.count %> 
+								<% elsif countgrade==1 %>
+									<%= @student_gred.find_all {|i|i == 'A-'}.count  %>
+									<%= hidden_field "examanalysis",:gradeAminus, :size=>4, :value=> @student_gred.find_all {|i|i == 'A-'}.count  %>
+								<% elsif countgrade==2 %>
+									<%= @student_gred.find_all {|i|i == 'B+'}.count  %>
+									<%= hidden_field "examanalysis",:gradeBplus, :size=>4, :value=> @student_gred.find_all {|i|i == 'B+'}.count  %>
+								<% elsif countgrade==3 %>
+									<%= @student_gred.find_all {|i|i == 'B'}.count  %>
+									<%= hidden_field "examanalysis",:gradeB, :size=>4, :value=> @student_gred.find_all {|i|i == 'B'}.count  %>
+								<% elsif countgrade==4 %>
+									<%= @student_gred.find_all {|i|i == 'B-'}.count  %>
+									<%= hidden_field "examanalysis",:gradeBminus, :size=>4, :value=> @student_gred.find_all {|i|i == 'B-'}.count  %>
+								<% elsif countgrade==5 %>
+									<%= @student_gred.find_all {|i|i == 'C+'}.count  %>
+									<%= hidden_field "examanalysis",:gradeCplus, :size=>4, :value=> @student_gred.find_all {|i|i == 'C+'}.count  %>
+								<% elsif countgrade==6 %>	
+									<%= @student_gred.find_all {|i|i == 'C'}.count  %>
+									<%= hidden_field "examanalysis",:gradeC, :size=>4, :value=> @student_gred.find_all {|i|i == 'C'}.count  %>
+								<% elsif countgrade==7 %>
+									<%= @student_gred.find_all {|i|i == 'C-'}.count  %>
+									<%= hidden_field "examanalysis",:gradeCminus, :size=>4, :value=> @student_gred.find_all {|i|i == 'C-'}.count  %>
+								<% elsif countgrade==8 %>
+									<%= @student_gred.find_all {|i|i == 'D+'}.count  %>
+									<%= hidden_field "examanalysis",:gradeDplus, :size=>4, :value=> @student_gred.find_all {|i|i == 'D+'}.count  %>
+								<% elsif countgrade==9 %>	
+									<%= @student_gred.find_all {|i|i == 'D'}.count  %>
+									<%= hidden_field "examanalysis", :gradeD , :size=>4, :value=> @student_gred.find_all {|i|i == 'D'}.count  %>
+								<% elsif countgrade==10 %>
+									<%= @student_gred.find_all {|i|i == 'E'}.count  %>
+									<%= hidden_field "examanalysis",:gradeE , :size=>4, :value=>  @student_gred.find_all {|i|i == 'E'}.count  %>
+								<% end %>
+							</td>
+							<!--end-edit page-->
+						<% else %>
+							<!--start-show page-->
+							<td>
+								<!--<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>-->
+								<% if countgrade==0 %>
+									<%=h @examanalysis.gradeA %>
+								<% elsif countgrade==1 %>
+									<%=h @examanalysis.gradeAminus %>
+								<% elsif countgrade==2 %>
+							  		<%=h @examanalysis.gradeBplus %>
+								<% elsif countgrade==3 %>
+							  		<%=h @examanalysis.gradeB %>
+								<% elsif countgrade==4 %>
+							  		<%=h @examanalysis.gradeBminus %>	
+								<% elsif countgrade==5 %>
+							  		<%=h @examanalysis.gradeCplus %>	
+								<% elsif countgrade==6 %>	
+							  		<%=h @examanalysis.gradeC %>	
+								<% elsif countgrade==7 %>
+							  		<%=h @examanalysis.gradeCminus %>	
+								<% elsif countgrade==8 %>
+									<%=h @examanalysis.gradeDplus %>
+								<% elsif countgrade==9 %>	
+									<%=h @examanalysis.gradeD %>
+								<% elsif countgrade==10 %>
+							  		<%=h @examanalysis.gradeE %>
+								<% end %>
+							</td>
+							<!--end-show page-->
+						<% end %>
+						<!--end-to differentiate between EDIT & SHOW page-->
+						
+					</tr>
+				<% end %>
+				<%#=======================end-analysis part-PART III===============================================%>
+			</table>
+		
+		
+		<% end %>
+	
+		<%#************************************************************************************%>
+		<% end %><!--end for @exammark_exist_for_currexam == 0 -->
+	<% end %>
+	<!--End-Viewing part works for both edit & reselection of subject during edit-->
+	<%#***********************************************************************************************************************************************%>
+<% else %>
+	Please select a subject.
+<% end %>

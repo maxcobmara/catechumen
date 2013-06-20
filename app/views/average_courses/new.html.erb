@@ -1,0 +1,41 @@
+<h3>New Feedback/Course Evaluation - Analysis and Average Score</h3>
+<div class="tform">
+<h2>Feedback / Course Evaluation Details</h2>
+
+<% form_for(@average_course) do |f| %>
+  	<%= f.error_messages %>
+		<table width=100%>
+			<!--20Feb2013-add-in programme-->
+			<!--
+			<tr>
+				<td><label for="short_name">&nbsp;Course Name</label></td>
+				<td>:</td>
+				<td><%#= f.collection_select :programme_id, Programme.all, :id, :programme_coursetype_name, :selected => 1,:prompt => "Select Course Name"  %></td>
+			</tr>-->
+			<!--20Feb2013-add-in programme-->
+			<!--8March2013-display combination of staff & subject ONCE-->
+			<tr>
+				<td width=20%><label for="short_name">&nbsp;Lecturer Name & Subject</label></td>
+				<td width=3%><b>:</b></td>
+				<td><%#= f.collection_select :lecturer_subject, @lecturers_subjects, :id, :lecturer_subject_evaluate, :prompt => "Select Lecturer Name | Subject" %>		
+					<%= f.collection_select :lecturer_id, EvaluateCourse.find(:all), :id, :evaluate_detail, :prompt => "Select Programme Name | Lecturer Name | Subject Name" %>
+				</td>
+			</tr>
+			<!--8March2013-display combination of staff & subject ONCE-->
+		</table>
+		
+		<p><%= f.submit 'Create' %></p>
+		
+		<!--8March2013-remark added-->
+		<span class="remark">Remark :
+			<ul>
+				<li>Data Analysis and Average Score for Lecturers requires submission of <%= link_to 'Feedback/Course Evaluation', evaluate_courses_path %> by students.</li>
+				<li>Data Analysis and Average Score for Lecturer of a Subject can only be done once. </li>
+			</ul>
+		</span>
+		<!--8March2013-remark added-->
+		
+<% end %>
+
+</div>
+<%= link_to 'Back', average_courses_path %>

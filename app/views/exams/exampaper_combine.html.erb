@@ -49,7 +49,8 @@
 	    </tr>	
 
     	<tr>
-    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold;padding-top:30px;border-left:1px solid black; border-right:1px solid black;"><%=h (@exam.name).upcase %>&nbsp;</td>	
+    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold;padding-top:30px;border-left:1px solid black; border-right:1px solid black;"><%#=h (@exam.name).upcase %>
+<%=h (Exam::EXAMTYPE.find_all{|disp, value| value == @exam.name}).map {|disp, value| disp}.to_s.upcase %> &nbsp;</td>	
         </tr>
     	<tr>
     		<td align="center" colspan=3 style="font-family:arial; font-weight:bold;border-left:1px solid black;border-right:1px solid black;">

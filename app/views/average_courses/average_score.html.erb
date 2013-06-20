@@ -1,0 +1,261 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait">
+
+<form action="#">
+ <script>
+	document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+
+</script>
+</form>	
+<fieldset width=10px >
+
+<div id="title">
+<table width=100% border="0">
+	<tr>
+		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="" height="100"/></th>
+		<th><H4>PPL APMM<BR>NO.DOKUMEN: BK-KKM-04-04<br><br>BORANG DATA ANALISA SKOR PURATA PENILAIAN PENSYARAH</H4> </th>
+		<th width="2%"><img border="0" src="/images/maritim.png" alt="" width="" height="100"/></th>
+	</tr>
+</table>
+
+<div id="title">
+<center>(Diisi oleh Bahagian Kompetensi dan Kawalan Mutu)</center>
+
+
+
+<table width=100% cellspacing="0" cellpadding="3" font size="5px" border="0" bordercolor=black>
+	<tr>
+		<td colspan=3><font face="arial"><u><b>DATA PENSYARAH</font></td>
+	<tr>
+		<td width=2%>1.</td>
+		<td colspan=4><font face="arial">Nama Pensyarah : <%=h @average_lecturer.evaluated_lecturer.name %><!--8March2013--></td>
+	</tr>
+    <tr>
+		<td>2.</td>
+		<td colspan=1 width=25%><font face="arial">No K/P : <%=h @average_lecturer.evaluated_lecturer.icno %><!--8March2013--></td> 
+		<td ><font face="arial">Pangkat/Jawatan : <%=h @average_lecturer.evaluated_lecturer.position_for_staff %><!--8March2013--> </td>
+	</td>
+	<tr>
+		<td>3.</td>
+		<td colspan=3><font face="arial">Organisasi :</td>
+	</tr>
+	<tr>
+		<td>4.</td>
+		<td colspan=3><font face="arial">Kepakaran/Kelayakan :</td>
+	</tr>
+	</table>
+<table width=100% cellspacing="0" cellpadding="3" font size="5px" border="0" bordercolor=black>			
+	<tr>
+		<td colspan=3><font face="arial"><u><b><BR>DATA KURSUS</td>
+	</tr>
+	<tr>
+		<td width=2%>5.</td>
+		<td colspan=3><font face="arial">Nama Kursus/Program : <%=h @average_lecturer.course.name %><!--8March2013--></td>			
+	</tr>						
+	<tr>
+		<td>6.</td>
+		<td width=18%><font face="arial">Jenis Kursus : </td>
+		<td>
+			<!--20Feb2013-Display of course-specialisation according to its' value-->
+			<form><font face="arial"><%#=@average_lecturer.programme_id%>
+				<% @specialisation = Programme.find(@average_lecturer.programme_id).specialisation %>
+				<%= check_box_tag "specialisation[]", 'Asas', @specialisation.include?('Asas') %>Asas
+				<%= check_box_tag "specialisation[]", 'Pertengahan',@specialisation.include?('Pertengahan') %>Pertengahan
+				<%= check_box_tag "specialisation[]", 'Lanjutan', @specialisation.include?('Lanjutan') %>Lanjutan
+			</font></form>
+			<!--20Feb2013-Display of course-specialisation according to its' value-->
+		</td>
+	</tr>								
+	<tr>
+		<td>7.</td>
+		<td colspan=3><font face="arial">Jumlah Pelatih : 
+			<!--20Feb2013-Jumlah pelatih : total student completed appraisal out of total student--><!--8March2013-->
+			<%= AverageLecturer.find_evaluations(@average_lecturer.lecturer_id,@average_lecturer.subject_id).count %>
+			 / <%=h Student.find(:all, :conditions=>['course_id=?', @average_lecturer.programme_id]).count %>
+			<!--20Feb2013-Jumlah pelatih : total student completed appraisal out of total student--><!--8March2013-->
+		</td>
+	</tr>					
+	<tr>
+		<td>8.</td>
+		<td><font face="arial">Peringkat :</td>
+		<td><form>
+		<input type="checkbox" name="vehicle" value="Bike" /><font face="arial"> PEG
+		<input type="checkbox" name="vehicle" value="Car" /> LLP </font>
+		</form>
+		</td>
+	</tr>						
+	<tr>
+		<td colspan=3><font face="arial"><u><b>DATA ANALISIS PENILAIAN</td>
+	</tr>
+	<tr>
+		<td>9.</td>
+		<td colspan=3><font face="arial">Tajuk Pelajaran : <%=h @average_lecturer.subjectavg.name %><!--8March2013--> </td>
+	</tr>
+	<tr>
+		<td>10.</td>
+		<td colspan=3><font face="arial">Skor Purata : </td>
+	</tr>
+</table>
+<table width=100% border=1 cellspacing=0 cellpadding=7 BORDERCOLOR="#E8E8E8 ">	
+		<tr>
+			<td width="10" ><font size=2><b>BIL</b></font></td>
+			<td align="center" width=45%><font size=2 ><b>PERKARA</b></font></th>
+			<td width="10" colspan=9 align="center"><font size=2><b>SKOR</b></font></td>
+		</tr>
+		<!--20feb2013-display of table for Average Score-->
+		<% 1.upto(8) do |counter| %>
+		<tr>
+			<td><%=counter%>.</td>
+			<td>
+				<% if counter==1 %>Pencapaian objektif pelajaran
+				<% elsif counter==2 %>Pengetahuan pensyarah tentang pelajaran yang diajar
+				<% elsif counter==3 %>Mutu pencapaian pensyarah
+				<% elsif counter==4 %>Isi kandungan pelajaran
+				<% elsif counter==5 %>Mutu alat pandang dengar yang digunakan
+				<% elsif counter==6 %>Kesesuaian turutan topik dalam jadual
+				<% elsif counter==7 %>Kesesuaian kerja sindikit dengan objektif pelajaran
+				<% elsif counter==8 %>Faedah bahan/nota yang diedarkan
+				<% end %>
+				<!--8March2013-->
+				<% @purata = AverageLecturer.find_average(@average_lecturer.lecturer_id,@average_lecturer.subject_id,counter)%>
+			</td>
+			<td align="center"><% if @purata == 1  %><b><%= @purata %></b><% else %><font color="#A0A0A0">1</font><% end %></td>
+			<td align="center"><% if @purata == 2  %><b><%= @purata %></b<% else %><font color="#A0A0A0">2</font><% end %></td>	
+			<td align="center"><% if @purata == 3  %><b><%= @purata %></b<% else %><font color="#A0A0A0">3</font><% end %></td>
+			<td align="center"><% if @purata == 4  %><b><%= @purata %><b><% else %><font color="#A0A0A0">4</font><% end %></td>
+			<td align="center"><% if @purata == 5  %><b><%= @purata %></b<% else %><font color="#A0A0A0">5</font><% end %></td>
+			<td align="center"><% if @purata == 6  %><b><%= @purata %></b<% else %><font color="#A0A0A0">6</font><% end %></td>
+			<td align="center"><% if @purata == 7  %><b><%= @purata %></b<% else %><font color="#A0A0A0">7</font><% end %></td>
+			<td align="center"><% if @purata == 8  %><b><%= @purata %></b<% else %><font color="#A0A0A0">8</font><% end %></td>
+			<td align="center"><% if @purata == 9  %><b><%= @purata %></b<% else %><font color="#A0A0A0">9</font><% end %></td>
+		</tr>
+		<% end %>
+		<!--20feb2013-display of table for Average Score-->
+		
+</table>
+<BR>
+<center>1 daripada 2</center>
+<br><br>
+
+</div>
+</div>
+</fieldset>
+
+<fieldset width=10px >
+	<div id="title">
+	<table width=100% cellspacing="0" cellpadding="3" font size="5px" border="0" bordercolor=black>
+		<tr>
+			<td colspan=3><font face="arial"><b>&nbsp;</font></td>
+		</tr>
+		<tr>
+			<td colspan=3><font face="arial"><b>&nbsp;</font></td>
+		</tr>
+		<tr>
+			<td width=2%>11.</td>
+			<td colspan=4><font face="arial">Ketidakpuasan Am: <%=h @average_lecturer.dissactifaction %> </td>
+		</tr>
+	    <tr>
+			<td>12.</td>
+			<td colspan=1><font face="arial">Cadangan Penambaikan: <%=h @average_lecturer.recommend_for_improvement %> </td> 
+		</td>
+	
+</table>
+<BR>
+<table width=100% cellspacing="0" cellpadding="3" font size="5px" border="0" bordercolor=black>
+	<tr>
+		<td colspan=3><font face="arial"><u><b>RUMUSAN PENILAIAN</font></td>
+	</tr>
+	<tr>
+		<td colspan=3><font face="arial"><b>&nbsp;</font></td>
+	</tr>
+	<tr>
+		<td width=2%>13.</td>
+		<td colspan=4><font face="arial">Kriteria Penilaian LAYAK atau TIDAK LAYAK adalah berdasarkan tiga aspek teras di bawah yang mana skor purata setiap aspek tidak boleh kurang dari nilai 5:</td>
+	</tr>
+    <tr>
+		<td>&nbsp;</td>
+		<td width=17% align="center"><font face="arial">a. </td> 
+		<td width=30%><font face="arial">Pengetahuan Pensyarah </td> 
+		<td colspan=1><font face="arial"><%=h @average_lecturer.lecturer_knowledge %><!--8March2013--></td> 
+	</tr>
+	
+	<tr>
+		<td>&nbsp;</td>
+		<td colspan=1 align="center"><font face="arial">b. </td> 
+		<td colspan=1><font face="arial">Mutu Penyampaian </td> 
+		<td colspan=1><font face="arial"><%=h @average_lecturer.delivery_quality %><!--changed from 'lesson_topic' to 'delivery quality'--></td> 
+	</tr>
+	
+	<tr>
+		<td>&nbsp;</td>
+		<td colspan=1 align="center"><font face="arial">c. </td> 
+		<td colspan=1><font face="arial">Isi Kandungan Pelajaran </td> 
+		<td colspan=1><font face="arial"><%=h @average_lecturer.summary_evaluation %></td> 
+	</tr>
+	
+	<tr>
+		<td>14.</td>
+		<td colspan=1><font face="arial">Kategori Pilihan: </td>
+		<td>
+			<!--20Feb2013-Display of evaluation category according to its' value-->
+			<% unless @average_lecturer.evaluate_category.nil? || @average_lecturer.evaluate_category.blank?%>
+			<form><font face="arial">
+			<% 1.upto((AverageLecturer::CATEGORY).count) do |counter| %>
+				<%= check_box_tag "evaluate_category[]", counter.to_s, @average_lecturer.evaluate_category.include?(counter.to_s) %>
+				<%=h (AverageLecturer::CATEGORY.find_all{|disp, value| value == counter.to_s}).map {|disp, value| disp.upcase} %>
+			<% end %>
+			</font></form>
+			<% end %>
+			<!--20Feb2013-Display of evaluation category according to its' value-->
+		</td> 
+	</tr>
+	<tr>
+		<td>15.</td>
+		<td colspan=2><font face="arial"><b>JUSTIFIKASI SOKONGAN: <%=h @average_lecturer.support_justify %> </b></td> 
+	
+	</tr>
+</table>
+<BR>
+<table width=100% cellspacing="0" cellpadding="3" font size="5px" border="0" bordercolor=black>
+		<tr>
+			<td colspan=3><font face="arial"><b>PENGESAHAN KETUA SEKOLAH</font><BR><BR></td>
+		</tr>
+		<tr>
+			<td colspan=3><font face="arial">Tandatangan:</font></td>
+		</tr>
+		<tr>
+			<td colspan=3><font face="arial">Nama Penuh: <%#=h @average_lecturer.principal? ? "-" : @average_lecturer.principal.name %></font></td>
+		</tr>
+		<tr>
+			<td colspan=3><font face="arial">Pangkat: <%#=h @average_lecturer.principal? ? "-" : @average_lecturer.principal.title_for_staff %></font></td>
+		</tr>
+		<tr>
+			<td colspan=3><font face="arial">Tarikh: <%#=h @average_lecturer.principal_date.strftime("%d / %b / %Y") %></font></td>
+		</tr>
+</table>
+</div>	
+</fieldset>
+
+<table width=100% cellspacing="0" border="1">
+	<tr>
+		<th colspan=4 align="left"> DISEDIAKAN OLEH: BKMM</th>
+		<th colspan=2 align="left">TARIKH KEMASKINI: 5 DISEMBER 2011</th>
+	</tr>
+
+</table>
+
+<br><br><br><br>
+
+<center>2 daripada 2</center>
+
+<br><br>
+
+</div>
+</div>
+</fieldset>
+
+
+

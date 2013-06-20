@@ -26,8 +26,12 @@ class Examquestion < ActiveRecord::Base
   named_scope :meqq, :conditions => {:questiontype => 'MEQ'}      # 27 June 2012
   named_scope :seqq, :conditions => {:questiontype => 'SEQ'} 	  # 22 July 2012
   named_scope :acqq, :conditions => {:questiontype => 'ACQ'}
-  named_scope :osci2q, :conditions => {:questiontype => 'OSCI'}
-  named_scope :osci3q, :conditions => {:questiontype => 'OSCII'}
+  #named_scope :osci2q, :conditions => {:questiontype => 'OSCI'}
+  #named_scope :osci3q, :conditions => {:questiontype => 'OSCII'}
+  named_scope :osce, :conditions => {:questiontype => 'OSCE'}
+  named_scope :ospe, :conditions => {:questiontype => 'OSPE'}
+  named_scope :viva, :conditions => {:questiontype => 'VIVA'}
+  named_scope :truefalse, :conditions => {:questiontype => 'TRUEFALSE'}
   
   has_attached_file :diagram,
                     :url => "/assets/examquestions/:id/:style/:basename.:extension",
@@ -197,7 +201,7 @@ class Examquestion < ActiveRecord::Base
           [ "Subjektif - SEQ","SEQ" ],
           [ "ACQ",            "ACQ" ],
          # [ "OSCI",           "OSCI" ],  #hide on 31May2013
-         # [ "OSCII",          "OSCII" ], #hide on 31May2013
+          #[ "OSCII",          "OSCII" ], #hide on 31May2013
           [ "OSCE",           "OSCE"],  #10Apr2013-newly added - to confirm
           [ "OSPE",           "OSPE"],  #10Apr2013-newly added - to confirm
           [ "VIVA",           "VIVA"],   #10Apr2013-newly added - to confirm

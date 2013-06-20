@@ -17,25 +17,26 @@
 	</tr>
 	<tr>
 		<td class="leftcol"><label for="programme_id">Programme:</label></td>
-		<td><%=h @examresult.programmestudent.programme_code_with_programme_name %></td>
+		<td><%=h @examresult.programmestudent.name %></td>
 	</tr>
 	<tr><td class="leftcol" colspan=2><label for="resultlines">Results</label></td></tr>
 	<tr>
 		<td colspan=2>
-			<table>
+			<table border=1 cellpadding=0 cellspacing=0>
 				<tr>
-					<% @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester) %>
-					<% @subject_count = @subjects.count %>
+					<%# @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester) %>
+					<% @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)%><%#,@examresult.examdts) %>
+					<%# @subject_count = @subjects.count %>
 					<th rowspan=2>Name</th>
 					<th rowspan=2>Matric No</th>
 					<th rowspan=2>Mykad No</th>
 					<% for subject in @subjects %>
-						<th colspan=2><%=h subject.subjectcode %></th>
+						<th colspan=2 style="text-align:center;"><%=h subject.code %><%#=h subject.subjectcode %></th>
 					<% end %>
-					<th rowspan=2><%= t 'examresult.total' %></th>
-					<th rowspan=2><%= t 'examresult.pngs17' %></th>
-					<th rowspan=2><%= t 'examresult.status' %></th>
-					<th rowspan=2><%= t 'examresult.remark' %></th>
+					<th rowspan=2 style="text-align:center;"><%= t 'examresult.total' %></th>
+					<th rowspan=2 style="text-align:center;"><%= t 'examresult.pngs17' %></th>
+					<th rowspan=2 style="text-align:center;"><%= t 'examresult.status' %></th>
+					<th rowspan=2 style="text-align:center;"><%= t 'examresult.remark' %></th>
 				</tr>
 				<tr>
 					<% 0.upto(@subjects.count-1) do |count|%>
@@ -44,18 +45,18 @@
 				</tr>
 				<% for examresultline in @examresult.resultlines %>
 				<tr>
-					<td><%=h examresultline.student.name %></td>
-					<td><%=h examresultline.student.matrixno %></td>
-					<td><%=h examresultline.student.icno %></td>
+					<td style="padding:0px;text-align:;left;vertical-align:middle;"><%=h examresultline.student.name %></td>
+					<td style="padding:0px;text-align:center;vertical-align:middle;"><%=h examresultline.student.matrixno %></td>
+					<td style="padding:0px;text-align:center;vertical-align:middle;"><%=h examresultline.student.icno %></td>
 					<% for subject in @subjects %>
 						<% @student_grade = Grade.find(:first, :conditions=> ['student_id=? and subject_id=?',examresultline.student.id,subject.id]) %>
 						<% @student_finale = Grade.find(:first, :conditions=> ['student_id=? and subject_id=?',examresultline.student.id,subject.id]) %>
-						<td>
+						<td style="padding:0px;text-align:center;vertical-align:middle;">
 							<% unless @student_grade.nil? || @student_grade.blank? %>
 								<%=@student_grade.set_gred %>
 							<% end %>
 						</td>
-						<td>
+						<td style="padding:0px;text-align:center;vertical-align:middle;">
 							<% unless @student_finale.nil? || @student_finale.blank? %>
 								<%=@student_finale.set_NG.to_f%>
 							<% else %>
@@ -63,10 +64,10 @@
 							<% end %>
 						</td>
 					<% end %>
-					<td><%=h examresultline.total %></td>
-					<td><%=h examresultline.pngs17 %></td>
-					<td><%=h examresultline.render_status %></td>
-					<td><%=h examresultline.remark %></td>
+					<td style="padding:0px;text-align:center;vertical-align:middle;"><%=h examresultline.total %></td>
+					<td style="padding:0px;text-align:center;vertical-align:middle;"><%=h examresultline.pngs17 %></td>
+					<td style="padding:0px;text-align:center;vertical-align:middle;"><%=h examresultline.render_status %></td>
+					<td style="padding:0px;text-align:left;vertical-align:middle;"><%=h examresultline.remark %></td>
 				</tr>
 				<% end %>
 			</table>

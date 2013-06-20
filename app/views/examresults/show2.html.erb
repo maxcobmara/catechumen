@@ -1,0 +1,97 @@
+<div class="tform">
+<h2>Examination Result</h2>
+
+<table width=100% border=0>
+	<tr><td>Examination Centre : Kolej Kejururawatan Johor Bahru</td></tr>
+	<tr><td>Final Exam Result <%=h @resultline.examresult.render_semester %></td></tr>
+	<tr><td>Intake : <%=h @resultline.student.intake %></td></tr>
+	<tr><td>Examination Date : <%=h @resultline.examresult.examdts.strftime("%d %b %Y") %> - <%=h @resultline.examresult.examdte.strftime("%d %b %Y") %></td></tr>	
+</table>	
+
+<br>
+<fieldset><legend class="togvis">Students Details</legend>
+	<table width=100%>
+		<tr>
+			<td class="leftcol">Name</td>
+			<td><%=h @resultline.student.name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">MyKad No</td><td><%=h @resultline.student.icno %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Matric No </td><td><%=h @resultline.student.matrixno %></td>
+		</tr>
+	</table>
+</fieldset>	
+
+<br>	
+<fieldset><legend class="togvis">Final Examination Result <%=h @resultline.examresult.render_semester %></legend>
+<table>
+	<tr>
+		<th>No</th>
+		<th>Course Code</th>
+		<th>Grade</th>
+		<th>Grade Value</th>
+		<th>Remark</th>
+	</tr>
+	<% @programme_id = @resultline.examresult.programmestudent.id %>
+	<% @semester = @resultline.examresult.semester %>
+	<% @subjects = Examresult.get_subjects(@programme_id ,@semester)%>
+	<%@no=0%>
+	<%# for examresultline in @resultline %>
+	<% for subject in @subjects %>	
+	<tr>
+		<% @student_grade = Grade.find(:first, :conditions=> ['student_id=? and subject_id=?',@resultline.student.id,subject.id]) %>
+		<% @student_finale = Grade.find(:first, :conditions=> ['student_id=? and subject_id=?',@resultline.student.id,subject.id]) %>
+		<td><%=@no+=1%></td>
+		<td><%= subject.subject_list %></td>
+		<td>
+			<% unless @student_grade.nil? || @student_grade.blank? %>
+				<%=@grading=@student_grade.set_gred %>
+			<% end %>
+		</td>
+		<td>
+			<% unless @student_finale.nil? || @student_finale.blank? %>
+				<%=@student_finale.set_NG.to_f%>
+			<% else %>
+				<%= 0.00 %>
+			<% end %>
+		</td>
+		<td><% if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C" %>
+			Passed
+			<% else %>Failed<% end %>
+		</td>
+	 </tr>		
+		<% end %>
+	</table>
+	
+	<table>
+		<tr>
+			<th><%=h @resultline.examresult.render_semester %></th>
+			<th>Total</th>
+		</tr>
+		<tr>
+			<td class="leftcol">Total NGK</td>
+			<td><%=h @resultline.total%></td>
+		</tr>
+		<tr>
+			<td class="leftcol">PNGS</td>
+			<td><%=h @resultline.pngs17 %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">PNGK</td>
+			<td><%=h @resultline.pngk%></td>
+		</tr>
+		<tr>
+			<td class="leftcol">STATUS</td>
+			<td><%=h @resultline.remark%></td>
+		</tr>
+	</table>
+	
+</fieldset>	
+
+</div>
+
+<br>
+
+<%= link_to 'Back', examresults_path %>

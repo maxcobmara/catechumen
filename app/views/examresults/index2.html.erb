@@ -1,0 +1,48 @@
+<%=render :partial => 'exams/position_dept' %>
+
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Examination Slip by Programme</h2>
+	</div>
+</div>
+
+<div class="tlist">
+	<table width=90% border="0" cellpadding="0" cellspacing="0">
+	  <tr>
+		<th>Student</th>
+		<th>NGK</th>
+		<th>PNGS</th>
+    	<th>PNGK</th>
+		<th>Status</th>
+    	<th colspan=3>Control</th>
+  	</tr>
+
+<% @examresults.each do |examresult| %>
+	<% if (examresult.programmestudent.name == @dept_unit) ||(@current_user_roles.include?(2))||@kupk == "yes"%>
+		<tr>
+			<td colspan=7 style="background-color:#EFF1F1;font-weight:bold;">Programme : <%=h examresult.programmestudent.name %>, 
+				Semester: <%=h examresult.render_semester %>,&nbsp;
+				Exam Date : <%=h examresult.examdts.strftime("%d %b %Y") %> - <%=h examresult.examdte.strftime("%d %b %Y") %>
+			</td>
+		</tr>
+		<% examresult.resultlines.sort_by{|x|x.student.name}.each do |resultline| %>
+  		<tr>
+			<td><%=h resultline.student.name %></td>
+			<td><%=h resultline.total %></td>
+			<td><%=h resultline.pngs17 %></td>
+    		<td><%=h resultline.pngk %></td>
+    		<td><%=h resultline.remark %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show2', :id => resultline %></td>
+			<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Examslip'), :action => 'examslip', :id => resultline %></td>
+			<!--
+    		<td width=10px><%#= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => resultline %></td>
+    		<td width=10px><%#= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), resultline, :confirm => 'Are you sure?', :method => :delete %></td>-->
+  		</tr>
+		<% end %>
+	<% end %>
+<% end %>
+</table>
+
+<br />
+</div>
+<%#= link_to 'New Exam Result', new_examresult_path %>

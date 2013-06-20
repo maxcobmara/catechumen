@@ -54,15 +54,19 @@
 		<% if current_user.staff.position.id > 6 && current_user.staff.position.id < 17 %>
 			<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
 			<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+		<% elsif @dept_unit == "Teknologi Maklumat"%>
+			<!--have to assign values for SUBJECT search form for IT ADMIN-->
+			<% @subjectlist_preselec_prog = Programme.at_depth(2) %>
 		<% end %>
-	<% else %>
-		<!--have to assign values for SUBJECT search form for ADMIN-->
-		<% @subjectlist_preselec_prog = Programme.at_depth(2) %>
+	<%# else %>
+		<!--for ADMIN-ALL subject for grades-for NEW grades selection-->
+		<%# @subjectlist_preselec_prog = Programme.at_depth(2) %>
 	<% end %>
 	<%#=====================3June2013=========================%>
-	<% if @existing_grade_subject_idss.count == 0 %>
+	<% if @existing_grade_subject_ids.count == 0 %>
 		<% @grade_list_exist_subject = []%>
 	<% else %>
+		<!--ALL-exist grades for ADMIN-for EXIST grades selection-->
 		<% @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?)', @existing_grade_subject_ids]) %>
 	<% end %>
 	<%#=====================3June2013=========================%>
@@ -70,23 +74,26 @@
 	<% if @anc_depth==1 %>
 	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
 		<% @kupk = "yes" %>
-		<!--have to assign values for SUBJECT search form for KUPK-->
+		<!--for KUPK-ALL subject for grades-for NEW grades selection-->
 		<% @subjectlist_preselec_prog = Programme.at_depth(2) %>
 		<%#=====================3June2013=========================%>
 		<% if @existing_grade_subject_ids.count == 0 %>
 			<% @grade_list_exist_subject= []%>
 		<% else %>
+			<!--ALL-exist grades for KUPK-for EXIST grades selection-->
 			<% @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?)', @existing_grade_subject_ids]) %>
 		<% end %>
 		<%#=====================3June2013=========================%>
 	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
 	<% else %><%#=@dept_unit%><%#=@anc_depth%>
 		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+		<!--for lecturers(other than ADMIN & KUPK)-subject for NEW grades selection-->
 		<% @subjectlist_preselec_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
 		<%#=====================3June2013=========================%>
 		<% if @existing_grade_subject_ids.count == 0 %>
 			<% @grade_list_exist = []%>
 		<% else %>
+			<!--exist grades, within programme of logged-in user-for EXIST grades selection-->
 			<% @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?) and id IN(?)', @existing_grade_subject_ids, @subjectlist_preselec_prog]) %>
 		<% end %>
 		<%#=====================3June2013=========================%>
@@ -104,24 +111,37 @@
 	</div>
 </div>
 
-<div class="toolbar">	
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Grade') + "New", new_grade_path(:new_type => "0") %></p>
-</div>
-<div class="right">
-	<% form_tag :action => 'new' do %>
-		<%= hidden_field_tag( "new_type","3" )%>
-		<b>Subject : </b><%= select_tag('subjectid', options_from_collection_for_select(@subjectlist_preselec_prog, :id, :subject_list)) %>
-		<%#= select_tag('subjectid', "<option value='0'>Select Exam Paper</option>" + options_from_collection_for_select(Exam.all, :id, :exam_code_date)) %>
-		<%= submit_tag 'New Multiple Grades', :subject_id => nil %>
-	<% end %>
-</div>
-<br><br>
+<!--display subject for grade creation: only those exist in exam -->
+<% @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.all.map(&:subject_id) ])%>
+<!---->
 
-<div class="right" style="text-align:right;">
-&nbsp;&nbsp;<font size=-2 color=blue> <b>Total Formative</b> = Sum of scores, <b>CA+MSE</b> = Total Formative*(100-summative weightage)/100
-	<br><b>Total Summative</b> = (Final Exam * summative weightage) / 100, <b>Total Marks</b> = CA+MSE + Total Summative</font>
-</div>
-<br><br>
+<table width=100%>
+	<tr>
+		<td align=left>
+			<!---->
+			<div class="left" style="text-align:left;">
+				<font size=-2 color=blue> <b>Total Formative</b> = Sum of scores <br><b>CA+MSE</b> = Total Formative*(100-summative weightage) / 100
+				<br><b>Total Summative</b> = (Final Exam * summative weightage) / 100 <br><b>Total Marks</b> = CA+MSE + Total Summative</font>
+			</div>
+			<!---->
+		</td>
+		<td align=right>
+			<!--9June2013-->
+			<div class="right">
+				<% form_tag :action => 'new' do %>
+					<%#= hidden_field_tag( "new_type","3" )%>
+					<b>Subject : </b><%= select_tag('subjectid', options_from_collection_for_select(@subjectlist_preselec_prog2.sort_by{|x|x.code}, :id, :subject_list)) %>
+					<%= submit_tag "Single New Grade", :name => :submit_button1 %> <font size=3>/</font> <%#=image_submit_tag("add.png")+"New"%>
+					<%= submit_tag "Multiple New Grades", :name => :submit_button1 %><%#= submit_tag 'New Multiple Grades', :subject_id => nil %>
+				<% end %>
+			</div>
+			<!--9June2013-->
+		</td>
+	</tr>	
+</table>
+
+<br>
+
 <div class="tlist">
 	
 	<!-- 3June2013 -->
@@ -133,47 +153,73 @@
 	<th>&nbsp;</th><!--3June2013-->
     <th>Student</th>
     <th>Subject</th>
-   	<!--<th>Sent to bpl</th>-->
-    <th>Sent date</th>
-    <th>Total Formative</th>
+    <!--16June2013-HIDE THIS TO AVOID CONFUSION..<th style="text-align:center;">Total Formative</th>-->
 	<th>CA+MSE</th>
-	<th style="text-align:center;"width=70px>Summative Weightage</th>
+	<th colspan=2 style="text-align:center;">Sent to BPL (date sent)</th>
+    <!--<th>Sent date</th>-->
+	<th style="text-align:center;width:55px;padding:0;">Eligible for Exam</th>
+    <th style="text-align:center;">Carry Paper</th>
+	<th style="text-align:center;width:70px;">Summative Weightage</th>
     <!--<th>Score</th>-->
-    <!--<th>Eligible for Exam</th>-->
-    <!--<th>Carry Paper</th>-->
-	<th>Final Exam</th>
+	<th style="text-align:center;">Final Exam</th>
     <th style="text-align:center;"width=70px>Total Summative</th>
-    <!--<th>Resit</th>-->
-    <th>Total Marks</th>
-    <th>Grade</th>
+    <th style="text-align:center;">Resit</th>
+    <th style="text-align:center;">Total Marks</th>
+    <th style="text-align:center;">Grade</th>
     <th colspan=3 class="ac">Control</th>
 </tr>
-<% @grades_group.each do |grades_group, grades| %>
+<% @grades_group.sort.each do |grades_group, grades| %>
 <%# grades.each do |grade| %><!--@grades.sort_by{|x|x.studentgrade.name}-->
 
 <% grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade,index|%>
  <% if (@dept_unit==grade.subjectgrade.root.name) ||(current_user_roles.include?(2))||@kupk == "yes" %><!--STAND BY:HIDE THIS LINE & LINE 67 to view ALL GRADES-->
-		<% if index == 0%>
-		<tr><td colspan=14 style="background-color:#EFF1F1;"><b>Subject : <%=h Programme.find(grades_group).subject_list %></b></td></tr>
-		<% end %>
+	<% if index == 0%>
+		<tr><td colspan=18 style="background-color:#EFF1F1;"><b>Subject : <%=h Programme.find(grades_group).subject_list %></b></td></tr>
+	<% end %>
   <tr>
 	<td><%= check_box_tag "grade_ids[]", grade.id, :class => "check" %></td><!-- 3June2013-->
     <td><%=h grade.student_id.blank? ? "" : grade.studentgrade.matrix_name %></td>
     <td><%=h grade.subject_id.blank? ? "" : grade.subjectgrade.subject_list %></td>
-    <!-- <td><%=h grade.sent_to_BPL %></td>-->
-    <td><%=h grade.sent_date %></td>
-    <td style="text-align:center;"><%=grade.total_formative %> | <%=h grade.formative %></td>
-	<td style="text-align:center;"><%=grade.ca_plus_mse%></td>
-	<td style="text-align:center;"><%=grade.examweight%>&nbsp;%</td> 
-	<td style="text-align:center;"><%= grade.exam1marks %></td>
-    <!--<td><%=h grade.score %></td>-->
-    <!--<td><%=h grade.eligible_for_exam %></td>
-    <td><%=h grade.carry_paper %></td>-->
-    <td style="text-align:center;"><%#=h grade.summative %><%=grade.total_summative %></td>
-    <!--<td><%=h grade.resit %></td>-->
-    <td style="text-align:center;"><%#=h grade.finalscore %> <%=h grade.finale %></td>
-    <td><%#=h (Grade::GRADE.find_all{|disp, value| value == grade.grading_id.to_s}).map {|disp, value| disp} %>
-	<%=h grade.set_gred %></td>
+	<!--16June2013-HIDE THIS TO AVOID CONFUSION
+    <td style="text-align:center;">
+		<%#=h grade.formative.blank? ? grade.total_formative : number_with_precision(grade.formative,:precision=>2) %>
+		<%# totalformative = number_with_precision(grade.total_formative,:precision=>2) %>
+		<%# gradeformative = number_with_precision(grade.formative,:precision=>2) %>
+		<%# if totalformative != gradeformative %> 
+			*<font size=-3><%##=grade.total_formative%></font>
+		<%# end %>
+	</td>-->
+	<td style="text-align:center;">
+		<% if grade.scores.count>0 %>
+			<%#= grade.ca_plus_mse %>
+			<!--16June2013-use this instead-->
+			<%=h number_with_precision(grade.score,:precision=>2) %><!--use score field to save CA+MSE value, from model exammark-->
+		<% end %>
+	</td>
+	<td><%#=h grade.sent_to_BPL %><% if grade.sent_to_BPL == true %> &#10003;<% end %></td>
+    <td  style="padding-right:0;width:60px;"><%=h grade.sent_date %></td>
+	<td style="text-align:center;padding:0px;"><%#=h grade.eligible_for_exam %><% if grade.eligible_for_exam == true %> &#10003;<% end %></td>
+	<td style="text-align:center;"><% if grade.carry_paper ==true %> &#10003;<% end %></td>
+	<td style="text-align:center;">
+		<%=h grade.examweight.blank? ? "" : number_with_precision(grade.examweight,:precision=>2).to_s+" %" %></td> 
+	<td style="text-align:center;">
+		<%=h grade.exam1marks.blank? ? "" : number_with_precision(grade.exam1marks,:precision=>2) %></td>
+    <!--<td><%##=h grade.score %></td>-->
+
+    <td style="text-align:center;"><%##=h grade.summative %>
+		<% if grade.examweight.blank? == false && grade.exam1marks.blank? == false %> 
+			<%=h number_with_precision(grade.total_summative,:precision=>2) %> 
+		<% end %>
+	</td>
+    <td style="text-align:center;"><% if grade.resit==true%> &#10003;<% end %></td>
+    <td style="text-align:center;"><%##=h grade.finalscore %><!--column in grades table, once updated-data will be same as grade.finale--> 
+		<% if grade.examweight.blank? == false && grade.exam1marks.blank? == false %> 
+			<%=h number_with_precision(grade.finale,:precision=>2) %>
+		<% end %>
+	</td>
+    <td style="text-align:center;"><%##=h (Grade::GRADE.find_all{|disp, value| value == grade.grading_id.to_s}).map {|disp, value| disp} %>
+		<%=h grade.finale.blank? ? "" : grade.set_gred %>
+	</td>
     <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => grade %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => grade %></td>
     <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), grade, :confirm => 'Are you sure?', :method => :delete %></td>
@@ -185,7 +231,7 @@
 </div>
 <br />
 
-<!--for multiple edit-3June2013-->
+<!--start-for multiple edit-3June2013-->
 <div class="left">
 <!-- ref: http://railsforum.com/viewtopic.php?id=2151 rleblic2007-10-25 08:43:07 -->
 <!--http://www.ryboe.com/2008/07/10/select-all-checkboxes-with-prototype-js.html -->
@@ -198,19 +244,16 @@ Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_al
 <%= submit_tag "Edit Checked", :name => :grade_submit_button %>
 <%#= submit_tag "Edit by Exam", :name => :exammark_submit_button %>
 <% end %>
-<!-- 15 - 22May 2012 -->
-	
-<!--for multiple edit-3June2013-->
+<!-- 15 - 22May 2012 -->	
+<!--end-for multiple edit-3June2013-->
 
 <div class="right">
 	<% form_tag '', :method => 'get' do %>
-		<b>Subject : </b><%= select_tag('subject_id', "<option value='0'>All Existing Grades</option>" +options_from_collection_for_select(@grade_list_exist_subject, :id, :subject_list)) %>
+		<b>Subject : </b><%= select_tag('subject_id', "<option value='0'>All Existing Grades</option>" +options_from_collection_for_select(@grade_list_exist_subject.sort_by{|x|x.code}, :id, :subject_list)) %>
 		<%= submit_tag 'Search Existing Grades', :name => :grade_search %>
 	<% end %>
 </div>
 
-
-
 <%#= link_to 'New Grade', new_grade_path %> <!--10Apr2013-->
-<%= link_to 'New Grade', new_grade_path(:new_type => "0")%>
+<%#= link_to 'New Grade', new_grade_path(:new_type => "0")%>
 <%#= link_to 'Multiple New Grades', new_grade_path(:new_type => "2") %>

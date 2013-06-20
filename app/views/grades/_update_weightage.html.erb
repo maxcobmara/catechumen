@@ -16,14 +16,38 @@ formative qty:<%#=@formative_qty%>student<%#=@students_count%>summative weightag
 	<%@formative_qty = 6 %>
 <% end %>	
 
+
+<!--16June2013-->
+<% if @exist_ids %>
+	<!--exist--><%= @students2 = Student.find(:all, :conditions=>['id IN (?) and id NOT IN (?)',@students.map(&:id),@exist_ids])%>
+<% else %>
+	<!--not exist--><% @students2 = @students %>
+<% end %>
+
+<%#######%>
+<% if @students && @subjectid %>		
+	<% @grade_exist_subject_student=Grade.find(:all, :conditions => ['subject_id=? AND student_id IN(?)',@subjectid, @students.map(&:id)]) %>
+	<!--yg exist--><% @student_ids_exist_gradesubject = @grade_exist_subject_student.map(&:student_id) %>
+<% end %>						
+
+<% if @student_ids_exist_gradesubject.count>0 %>
+	<!--exist--><% @students2 = Student.find(:all, :conditions=>['id IN (?) and id NOT IN (?)',@students.map(&:id),@student_ids_exist_gradesubject])%>
+<% else %>
+	<!--not exist--><% @students2 = @students %>
+<% end %>
+<%#######%>
+<!--16June2013-->
+
+
 <% if @modify && @modify=="yes"%>
 	<!--from views/grades/edit_multiple.html.erb, line 87-89--><!--EDIT/UPDATE MULTIPLE GRADES-->
 	<%= hidden_field_tag "examweights[]", @weightage, :size=> 4 %><!--single value, sample:examweights=["25"]-->
 <% else %>
 	<!--from views/grades/_form_multiple_subject.html.erb, line 150-154--><!--NEW/CREATE MULTIPLE GRADES-->
+  <% if @students2 %><!--to avoid border fr displayed here when there's no data-->	
 	<table border=1 cellspacing=0 cellpadding=0>
 	<%# 0.upto(@students_count-1) do |student_count|%>
-	<% @students.sort_by{|x|x.name}.each_with_index do |student, student_count| %>	
+	<% @students2.sort_by{|x|x.name}.each_with_index do |student, student_count| %>	
 	<%# @students.sort_by{|x|x.name}.each_with_index do |student, index| %><!--ref:_view_grades_from_multiple_subjects.html.erb-->
 		<% if student_count == 0 %>
 			<tr>
@@ -41,38 +65,48 @@ formative qty:<%#=@formative_qty%>student<%#=@students_count%>summative weightag
 					<%="("+"#{@formative_desc0}"+")" if @formative_desc0!='' %><br>
 					<%=@formative_weight0%> %
 				</th>
+				<% if @formative_qty.to_i > 1%>
 				<th style="text-align:center;">
 					<%=h (Score::E_TYPES.find_all{|disp, value| value == @formative_type1.to_i}).map {|disp, value| disp} %><br>
 					<%="("+"#{@formative_desc1}"+")" if @formative_desc1!='' %><br>
 					<%=@formative_weight1%> %
 				</th>
+				<% end %>
+				<% if @formative_qty.to_i > 2%>
 				<th style="text-align:center;">
 					<%=h (Score::E_TYPES.find_all{|disp, value| value == @formative_type2.to_i}).map {|disp, value| disp} %><br>
 					<%="("+"#{@formative_desc2}"+")" if @formative_desc2!='' %><br>
 					<%=@formative_weight2%> %
 					
 				</th>
+				<% end %>
+				<% if @formative_qty.to_i > 3%>
 				<th style="text-align:center;">
 					<%=h (Score::E_TYPES.find_all{|disp, value| value == @formative_type3.to_i}).map {|disp, value| disp} %><br>
 					<%="("+"#{@formative_desc3}"+")" if @formative_desc3!='' %><br>
 					<%=@formative_weight3%> %
 				</th>
+				<% end%>
+				<% if @formative_qty.to_i > 4%>
 				<th style="text-align:center;">
 					<%=h (Score::E_TYPES.find_all{|disp, value| value == @formative_type4.to_i}).map {|disp, value| disp} %><br>
 					<%="("+"#{@formative_desc4}"+")" if @formative_desc4!='' %><br>
 					<%=@formative_weight4%> %
 				</th>
-				<th style="text-align:center;">
+				<% end %>
+				<% if @formative_qty.to_i > 5%>
+				<th style="text-align:center;"><!--koko-->
 					<%=h (Score::E_TYPES.find_all{|disp, value| value == @formative_type5.to_i}).map {|disp, value| disp} %><br>
 					<%="("+"#{@formative_desc5}"+")" if @formative_desc5!='' %><br>
 					<%=@formative_weight5%> %
 				</th>
+				<% end %>
 			</tr>
 		<% end %>
 			<tr>
 				<td style="padding-right:0.5em;text-align:right;"><%=student_count+1%></td>
 				<td style="padding-left:3px;padding-right:1px;"><%=h student.name %></td><td style="padding-left:3px;padding-right:1px;"><%=h student.matrixno %></td>
-				<%= hidden_field "grades[#{student_count}]",:examweight,  :value=> @weightage, :size=>1 %>
+				<!--Summative Weightage--><%= hidden_field "grades[#{student_count}]",:examweight,  :value=> @weightage, :size=>1 %>
 				<!---->
 				<% 0.upto(@formative_qty.to_i-1) do |formative_count|%>
 					<% if formative_count == 0 %>
@@ -104,7 +138,7 @@ formative qty:<%#=@formative_qty%>student<%#=@students_count%>summative weightag
 					<%=hidden_field "grades[#{student_count}][scores_attributes][#{formative_count}]", :type_id, :size=>1,:value=>@formative_val %>
 					<%=hidden_field "grades[#{student_count}][scores_attributes][#{formative_count}]",:description, :size=>4,:value=>@formative_desc  %>
 					<%=hidden_field "grades[#{student_count}][scores_attributes][#{formative_count}]", :weightage, :size=>1,:value=>@formative_weight %>
-					<td style="padding:0px;text-align:center;"><%=text_field "grades[#{student_count}][scores_attributes][#{formative_count}]", :marks, :size=>4, :placeholder=>'Marks'%></td>
+					<td style="padding:0px;text-align:center;"><%=text_field "grades[#{student_count}][scores_attributes][#{formative_count}]", :marks, :size=>4, :value=>0 %><!--:placeholder=>'Marks',--></td>
 			
 					<%#=select_tag "grades[#{student_count}][score_attributes][#{formative_count}][type_id]", options_for_select(Score::E_TYPES, @ft[formative_count].to_i)%>
 					<%#=select_tag "grades[#{student_count}][score_attributes][#{formative_count}][weightage]", options_for_select(Grade::WEIGHTAGE)%>
@@ -115,5 +149,6 @@ formative qty:<%#=@formative_qty%>student<%#=@students_count%>summative weightag
 		
 	<% end %><!--end for-0.upto(@students_count-1) do |student_count|-->
 	</table>
+  <% end %> <!-- end for - if @students2 --><!--to avoid border fr displayed at all when there's no data-->	
 <% end %>
 <!--DO NOT REMOVE YET-5JUNE2013-GOOD FOR CHECKING-NEW formative qty:<%#=@formative_qty%>-->

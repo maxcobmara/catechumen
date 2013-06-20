@@ -49,7 +49,7 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>
-			<td><%=h @grade.sent_to_BPL? ? "Yes on " + (@grade.sent_date.strftime("%d %b %Y")).to_s : "Not Sent" %></td>
+			<td><%#=h @grade.sent_to_BPL? ? "Yes on " + (@grade.sent_date.strftime("%d %b %Y")).to_s : "Not Sent" %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="eligible_for_exam">Eligible For Exam?:</label></td>
@@ -85,7 +85,11 @@
 	<table width=100%>
 		<tr>
 			<td class="leftcol"><label for="total_marks ">Final Score:</label></td>
-			<td><%=h @grade.finale %>% -- <b><%=h @grade.grade_it %></b>
+			<td>
+				<% if (@grade.exam1marks!= nil && @grade.examweight !=nil && @grade.total_formative != nil)%>
+					<%=h @grade.finale %> -- <b>
+					<%=@grade.set_gred %></b>
+				<% end %>
 				  <font color=#AAA size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					Formative x <%= (100 - @grade.examweight)%>% + Summative x <%= @grade.examweight %>%</font></td>
 		</tr>

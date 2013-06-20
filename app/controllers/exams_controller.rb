@@ -3,7 +3,7 @@ class ExamsController < ApplicationController
   # GET /exams.xml
   def index
     @exams = Exam.all
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @exams }
@@ -41,16 +41,46 @@ class ExamsController < ApplicationController
   # POST /exams.xml
   def create
     @exam = Exam.new(params[:exam])
-
+    @create_type = params[:submit_button]             #10June2013-pm
+    #if @create_type == "Create"
+        #respond_to do |format|
+          #if @exam.save
+            #format.html { redirect_to(@exam, :notice => 'Exam was successfully created.') }
+            ##format.html {render :action => "edit"}
+            ##flash[:notice] = 'Exam was successfully created. <b>You may now proceed with examquestion selection.</b>'
+            #format.xml  { head :ok }
+            #flash.discard
+            ##do not remove 2 lines at the bottom of this line
+            ##format.html { redirect_to(@exam, :notice => 'Exam was successfully created.') }
+            ##format.xml  { render :xml => @exam, :status => :created, :location => @exam }
+          #else
+            #format.html { render :action => "new" }
+            #format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
+          #end
+        #end
+    #elsif @create_type == "Create Template"
+    #10June2013-----
+       # @exam.klass_id = 0
+        #respond_to do |format|
+          #if @exam.save
+            #format.html { redirect_to(@exam, :notice => 'Exam template was successfully created.') }
+            #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
+          #else
+            #format.html { render :action => "new" }
+            #format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
+          #end
+        #end
+    #10June2013-----  
+    #end  
+    if @create_type == "Create"
+    elsif @create_type == "Create Template"
+        @exam.klass_id = 0
+    end   
     respond_to do |format|
       if @exam.save
-        format.html {render :action => "edit"}
-        flash[:notice] = 'Exam was successfully created. <b>You may now proceed with examquestion selection.</b>'
-        format.xml  { head :ok }
-        flash.discard
-        #do not remove 2 lines at the bottom of this line
-        #format.html { redirect_to(@exam, :notice => 'Exam was successfully created.') }
-        #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
+        flash[:notice] = 'Exam was successfully created.'
+        format.html { redirect_to (@exam) }
+        format.xml  { render :xml => @exam, :status => :created, :location => @exam }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
@@ -64,12 +94,26 @@ class ExamsController < ApplicationController
     #raise params.inspect
     params[:exam][:examquestion_ids] ||= []
     @exam = Exam.find(params[:id])
-  
-    respond_to do |format|
+    if @exam.klass_id == 0
+    #----for template
+      respond_to do |format|
+        if @exam.update_attributes(params[:exam]) 
+          format.html { redirect_to(@exam, :notice => 'Exam template was successfully updated.') }
+          format.xml  { head :ok }
+          #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
+        else
+          format.html { render :action => "new" } #edit
+          format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
+        end
+      end
+    #----for template  
+    else
+      respond_to do |format|
         if @exam.update_attributes(params[:exam]) 
             if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count ==  (params[:exam][:examquestion_ids]).count) 
                 format.html { redirect_to(@exam, :notice => 'Exam was successfully updated.') }
-                format.xml  { render :xml => @exam, :status => :created, :location => @exam }
+                format.xml  { head :ok }
+                #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
             else
                 #-------(1)for first time data entry--default to edit to set sequence------------------
                 #-------(2)for additional data entry--default to edit to set sequence------------------
@@ -133,7 +177,8 @@ class ExamsController < ApplicationController
             #end
         #------
         #end  
-    end     #end for respond_to do |format|
+      end     #end for respond_to do |format|
+    end   #end for if @exam.klass_id == 0
     
   end
 

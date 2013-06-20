@@ -6,176 +6,474 @@
 		<% unless @exam_id.blank? || @exam_id.nil? %>
 			<% @examquestions = Exam.find(@exam_id).examquestions %>
     		<% @students = Student.find(:all, :conditions=>['course_id=? and intake=?',@programme_id,@intake_id.to_s]) %>
-			<%# @exammark_exist_for_exam=Exammark.find(:all, :conditions => ['exam_id=?',@exam_id]).count%><!--2June2013-->
-			<% @exammark_exist_for_exam=Exammark.find(:all, :conditions => ['exam_id=? AND student_id IN(?)',@exam_id, @students.map(&:id)]).count %><!--2June2013-->
-			
-			
-			
+			<!--2June2013-if exammark EXIST for selected exampaper AND student-->
+			<% @exammark_exist_for_exam=Exammark.find(:all, :conditions => ['exam_id=? AND student_id IN(?)',@exam_id, @students.map(&:id)]).count %>
+			<!--10June2013-->
+			<% @istemplate = Exam.find(@exam_id).klass_id %>
+    		<% @examtemplates = Exam.find(@exam_id).examtemplates %>
+			<% qty_ary = @examtemplates.map(&:quantity) %>
+			<% @questioncount = qty_ary.inject{|sum,x|sum+x}%>
+			<!--10June2013-->
 		<% end %>
 	<% end %>
 <% end %>
 
-
-
-<!--revised on 24th Sept 2012-->
-<%# unless @exam_id.blank? || @exam_id.nil?  %>
-<%# unless @aa.nil? %><% if @examquestions && @students %>
-<!--revised on 24th Sept 2012-->
-
-<!--2June2013--><% if @exammark_exist_for_exam && @exammark_exist_for_exam > 0 %>
-					Examination Marks for the <b>above</b> selected paper & current students&nbsp;(Tahun&nbsp;<%=Exam.find(@exam_id).set_year%>,&nbsp;Semester&nbsp;<%=Exam.find(@exam_id).set_semester%>) already exist. Please edit records accordingly or select other intakes.
-<!--2June2013--><% else %>
-
-
-<b>Intake : </b><%=@intake_id %><%#=@exam_id %>
-<b>Total students : </b><%= @students.count %><%#= @examquestions%>
-
-<table border=1 cellspacing=0 cellpadding=0>
-	<tr>
-		<th rowspan=2>Name</th>
-		<th rowspan=2 width=150px>Matric No</th>
-		<th rowspan=2>MyKad No</th>
-		<!--<th colspan='<%#=@examquestions.mcqq.count%>'>MCQ</th>-->
-		<th rowspan='2'>MCQ</th>
-		<% if @examquestions.meqq.count!=0 %>
-			<th colspan='<%=@examquestions.meqq.count%>'>MEQ</th>
-		<% end %>
-		<% if @examquestions.seqq.count!=0 %>
-			<th colspan='<%=@examquestions.seqq.count%>' style="text-align:center;">SEQ</th>
-		<% end %>
-		<% if @examquestions.acqq.count!=0 %>
-			<th colspan='<%=@examquestions.acqq.count%>'>ACQ</th>
-		<% end %>
-		<th rowspan=2>Total marks</th>
-	</tr>
-	<tr>
-		<!--<%# 1.upto(@examquestions.mcqq.count) do |count| %>
-			<td>Q<%#=count%> / <%#=@examquestions.mcqq[count-1].marks %></td>
-		<%# end %>-->
-		<% 1.upto(@examquestions.meqq.count) do |count| %>
-			<th>Q<%=count%>/ <%=@examquestions.meqq[count-1].marks %></th>
-		<% end %>
-		<% 1.upto(@examquestions.seqq.count) do |count| %>
-			<th>Q<%=count%>/ <%=@examquestions.seqq[count-1].marks %></th>
-		<% end %>
-		<% 1.upto(@examquestions.acqq.count) do |count| %>
-			<th>Q<%=count%>/ <%=@examquestions.acqq[count-1].marks %></th>
-		<% end %>
-	</tr>
-	<% @students.sort_by{|x|x.name}.each_with_index do |student, index| %>
-		
-		<!--revised 24th Sept 2012-->	
-		<%= hidden_field "exammarks[#{index}]",:student_id,  :value=> student.id %>
-		<%= hidden_field "exammarks[#{index}]",:exam_id, :value=> @exam_id %>
-		<!--revised 24th Sept 2012-->
-		
-		<!--testing 3rd Oct 2012-4Liza-continue fr-last shared 18 Sept,not yet send 24 Sept & 3rd Oct(incomplete yet)-->
-			
-			<%# @subject => subject id & student.id => student id &  @exammaker_id => exammaker id%>
-			<% @exammark_exist = Exammark.find(:all, :conditions => ['exam_id=? and student_id=?', @exam_id, student.id]) %>
-			<% @marks_exist = [] %>
-			<% @exammark_exist.each do |exammark_exist| %>
-				<% exammark_exist.marks.each do |mark_exist| %>
-					<%#= mark_exist.student_mark %>
-					<% @marks_exist << mark_exist.student_mark %>
-				<% end %>
-				<!--<br>-->
+<!--start-13June2013-if EXAMQUESTIONS(+students) OR EXAMTEMPLATES(+students) exist-->
+<% if (@examquestions && @students) || (@examtemplates && @students) %>
+	<% if @exammark_exist_for_exam && @exammark_exist_for_exam > 0 %>
+		<!--2June2013-->
+		Examination Marks for the <b>above</b> selected paper & current students&nbsp; (Tahun&nbsp;<%=Exam.find(@exam_id).set_year%>, 	
+		&nbsp;Semester&nbsp;<%=Exam.find(@exam_id).set_semester%>) already exist. Please edit records accordingly or select other intakes.
+		<!--2June2013-->
+	<% else %>
+		<% if (@examquestions.count==0 && @examtemplates.count==0) %>
+			<% if @selected_exam.klass_id == 0 %>
+				Question type, quantity and marks
+			<% else %>
+				Questions details
 			<% end %>
-
-		<!--testing 3rd Oct 2012-->
-		
-	<tr>
-		<td><%= student.name %></td>
-		<td><%= student.matrixno %></td>
-		<td><%= student.icno %></td>
-		<% if @examquestions.mcqq.count==0 %>
-			<td><!--fff33 --></td>
+			must exist in selected examination paper.
 		<% else %>
-			<% @totalmcq=0%>
-			<% 0.upto(@examquestions.mcqq.count-1) do |y|%>
-				<% @totalmcq+=@marks_exist[y].to_f%>
-			<% end %>
-			<td><%#= text_field "exammarks[#{index}][marks_attributes][0]",:student_mark , :size=>4  %>
-				<%= text_field "exammarks[#{index}]",:total_mcq, :size=>4, :value=>@totalmcq  %>
-				<% 0.upto(@examquestions.mcqq.count-1) do |counter|%>
-					<!--dd--><%= hidden_field "exammarks[#{index}][marks_attributes][#{counter}]",:student_mark , :size=>4,:value=>0  %> 
-				<% end %>
-			</td>
+			<b>Intake : </b><%=@intake_id %>
+			<b>Total students : </b><%= @students.count %>
+
+			<table border=1 cellspacing=0 cellpadding=0>
+				<tr>
+					<th rowspan=2>Name</th>
+					<th rowspan=2 width=150px>Matric No</th>
+					<th rowspan=2>MyKad No</th>
+
+					<!--display heading for ALL types of questions-->
+					<!--MCQ-only 1 column required-->
+					<% if @examquestions.mcqq.count !=0 || @examtemplates.map(&:questiontype).include?("MCQ") %>
+						<th rowspan='2'>MCQ</th>
+					<% end %>
+					<!--Other type of questions requires column quantity based on quantity of questions-->
+					<% if @istemplate == 0 %>
+						<!--if exam template-->
+						<% if @examtemplates.map(&:questiontype).include?("MEQ")%>
+							<th style="text-align:center;" colspan='<%=@examtemplates.meqq[0].quantity%>'>MEQ</th>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("SEQ") %>
+							<th style="text-align:center;" colspan='<%=@examtemplates.seqq[0].quantity%>'>SEQ</th>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("ACQ") %> 
+							<th style="text-align:center;" colspan='<%=@examtemplates.acqq[0].quantity%>'>ACQ</th>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("OCSE") %> 
+							<th style="text-align:center;" colspan='<%=@examtemplates.acqq[0].quantity%>'>OSCE</th>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("OSPE") %> 
+							<th style="text-align:center;" colspan='<%=@examtemplates.acqq[0].quantity%>'>OSPE</th>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("VIVA") %> 
+							<th style="text-align:center;" colspan='<%=@examtemplates.acqq[0].quantity%>'>VIVA</th>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("TRUEFALSE") %> 
+							<th style="text-align:center;" colspan='<%=@examtemplates.acqq[0].quantity%>'>TRUE/FALSE</th>
+						<% end %>
+						<!--if exam template-->
+					<% else %>
+						<!--if full exam paper-->
+						<% if @examquestions.meqq.count!=0  %>
+							<th style="text-align:center;" colspan='<%=@examquestions.meqq.count%>'>MEQ</th>
+						<% end %>
+						<% if @examquestions.seqq.count!=0  %>
+							<th style="text-align:center;" colspan='<%=@examquestions.seqq.count%>'>SEQ</th> 
+						<% end %>
+						<% if @examquestions.acqq.count!=0 %>
+							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>ACQ</th>
+						<% end %>	
+						<% if @examquestions.osce.count!=0 %>
+							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>OSCE</th>
+						<% end %>
+						<% if @examquestions.ospe.count!=0 %>
+							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>OSPE</th>
+						<% end %>
+						<% if @examquestions.viva.count!=0 %>
+							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>VIVA</th>
+						<% end %>
+						<% if @examquestions.truefalse.count!=0 %>
+							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>TRUE/FALSE</th>
+						<% end %>
+						<!--if full exam paper-->
+					<% end %>
+
+					<th rowspan=2>Total marks</th>
+				</tr>
+				<tr>
+					<!--display SUBheading for ALL types of questions-->
+					<% if @istemplate == 0 %>
+						<!--if exam template-->
+						<% if @examtemplates.map(&:questiontype).include?("MEQ")%>
+							<% 1.upto(@examtemplates.meqq[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.meqq[0].total_marks/@examtemplates.meqq[0].quantity %></th>
+							<% end %>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("SEQ")%>
+							<% 1.upto(@examtemplates.seqq[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.seqq[0].total_marks/@examtemplates.seqq[0].quantity %></th>
+							<% end %>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("ACQ")%>
+							<% 1.upto(@examtemplates.acqq[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.acqq[0].total_marks/@examtemplates.acqq[0].quantity %></th>
+							<% end %>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("OSCE")%>
+							<% 1.upto(@examtemplates.osce[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.osce[0].total_marks/@examtemplates.osce[0].quantity %></th>
+							<% end %>
+						<% end %>	
+						<% if @examtemplates.map(&:questiontype).include?("OSPE")%>
+							<% 1.upto(@examtemplates.ospe[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.ospe[0].total_marks/@examtemplates.ospe[0].quantity %></th>
+							<% end %>
+						<% end %>	
+						<% if @examtemplates.map(&:questiontype).include?("VIVA")%>
+							<% 1.upto(@examtemplates.viva[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.viva[0].total_marks/@examtemplates.viva[0].quantity %></th>
+							<% end %>
+						<% end %>	
+						<% if @examtemplates.map(&:questiontype).include?("TRUEFALSE")%>
+							<% 1.upto(@examtemplates.truefalse[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.seqq[0].total_marks/@examtemplates.seqq[0].quantity %></th>
+							<% end %>
+						<% end %>
+						<!--if exam template-->
+					<% else %>
+						<!--if complete exampaper-->
+						<% 1.upto(@examquestions.meqq.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.meqq[count-1].marks %></th>
+						<% end %>
+						<% 1.upto(@examquestions.seqq.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.seqq[count-1].marks %></th>
+						<% end %>
+						<% 1.upto(@examquestions.acqq.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.acqq[count-1].marks %></th>
+						<% end %>
+						<% 1.upto(@examquestions.osce.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.osce[count-1].marks %></th>
+						<% end %>
+						<% 1.upto(@examquestions.ospe.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.ospe[count-1].marks %></th>
+						<% end %>
+						<% 1.upto(@examquestions.viva.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.viva[count-1].marks %></th>
+						<% end %>
+						<% 1.upto(@examquestions.truefalse.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.truefalse[count-1].marks %></th>
+						<% end %>
+						<!--if complete exampaper-->
+					<% end %>
+
+
+				</tr>
+				<% @students.sort_by{|x|x.name}.each_with_index do |student, index| %>
+
+					<!--revised 24th Sept 2012-->	
+					<%= hidden_field "exammarks[#{index}]",:student_id,  :value=> student.id %>
+					<%= hidden_field "exammarks[#{index}]",:exam_id, :value=> @exam_id %>
+					<!--revised 24th Sept 2012-->
+
+					<!--testing 3rd Oct 2012-4Liza-continue fr-last shared 18 Sept,not yet send 24 Sept & 3rd Oct(incomplete yet)-->			
+					<%# @subject => subject id & student.id => student id &  @exammaker_id => exammaker id%>
+					<% @exammark_exist = Exammark.find(:all, :conditions => ['exam_id=? and student_id=?', @exam_id, student.id]) %>
+					<% @marks_exist = [] %>
+					<% @exammark_exist.each do |exammark_exist| %>
+						<% exammark_exist.marks.each do |mark_exist| %><!--collect all marks from table marks...despite of mcq marks-no longer available-->
+							<% @marks_exist << mark_exist.student_mark %>
+						<% end %>
+					<% end %>
+					<!--testing 3rd Oct 2012-->
+
+					<tr>
+						<td><%= student.name %></td>
+						<td><%= student.matrixno %></td>
+						<td><%= student.icno %></td>
+
+						<!--start-Data column for total mcq-->
+						<% if @examquestions.mcqq.count !=0 || @examtemplates.map(&:questiontype).include?("MCQ") %>
+							<% if @istemplate == 0 %>
+								<% @totalmcq=0%>
+								<% 0.upto(@examtemplates.mcqq[0].quantity-1) do |y|%>
+									<% @totalmcq+=@marks_exist[y].to_i %>
+								<% end %>
+								<td>
+									<%#= text_field "exammarks[#{index}][marks_attributes][0]",:student_mark , :size=>4  %>
+									<%= text_field "exammarks[#{index}]",:total_mcq, :size=>2, :value=>@totalmcq,:class=>'g1',:id=>"mcqmark_"+"#{index}"+"_0" %>
+									<!--14June2013-am-->
+									<!--start-HIDE this part 1st- insert total MCQ data ONCE in exammarks table & no longer require to add-each MCQ question marks into marks table-->
+									<%# 0.upto(@examtemplates.mcqq[0].quantity-1) do |counter|%>
+										<!--dd--><%#= hidden_field "exammarks[#{index}][marks_attributes][#{counter}]",:student_mark , :size=>4,:value=>0  %> 
+									<%# end %>
+									<!--end-HIDE this part 1st- insert total MCQ data ONCE in exammarks table & no longer require to add-each MCQ question marks into marks table-->
+								</td>
+							<% else %>
+								<% @totalmcq=0%>
+								<% 0.upto(@examquestions.mcqq.count-1) do |y|%>
+									<% @totalmcq+=@marks_exist[y].to_i %>
+								<% end %>
+								<td>
+									<%#= text_field "exammarks[#{index}][marks_attributes][0]",:student_mark , :size=>4  %>
+									<%= text_field "exammarks[#{index}]",:total_mcq, :size=>2, :value=>@totalmcq,:class=>'g1',:id=>"mcqmark_"+"#{index}" %>
+									<!--14June2013-am-->
+									<!--start-HIDE this part 1st- insert total MCQ data ONCE in exammarks table & no longer require to add-each MCQ question marks into marks table-->
+									<%# 0.upto(@examquestions.mcqq.count-1) do |counter|%>
+										<!--dd--><%#= hidden_field "exammarks[#{index}][marks_attributes][#{counter}]",:student_mark , :size=>4,:value=>0  %> 
+									<%# end %>
+									<!--end-HIDE this part 1st- insert total MCQ data ONCE in exammarks table & no longer require to add-each MCQ question marks into marks table-->
+								</td>
+							<% end %>
+						<% end %>
+						<!--end-Data column for total mcq-->
+
+						<!--****-start-Data column for OTHER than MCQ marks(individually)-->
+						<% if @istemplate == 0 %> 
+							<% if (@examtemplates.map(&:questiontype).include?("MEQ") || @examtemplates.map(&:questiontype).include?("SEQ")|| @examtemplates.map(&:questiontype).include?("ACQ")||@examtemplates.map(&:questiontype).include?("MEQ")||@examtemplates.map(&:questiontype).include?("OSCE")|| @examtemplates.map(&:questiontype).include?("OSPE")||@examtemplates.map(&:questiontype).include?("VIVA")||@examtemplates.map(&:questiontype).include?("TRUEFALSE"))%>
+								<%#@c_count=1%>	
+								<%# (@examtemplates.mcqq[0].quantity).upto(@questioncount-1) do |count2| %>	
+								<% 0.upto(@questioncount-@examtemplates.mcqq[0].quantity-1) do |count2|%><!--@questioncount = total questions available in template-->
+									<td>
+										<!--KK--><%= text_field "exammarks[#{index}][marks_attributes][#{count2}]",:student_mark , :size=>3,:value=>@marks_exist[count2],:class=>'g1', :id=>"mark_"+"#{index}"+"_"+"#{count2}" %> 
+							<%#= text_field "exammarks[#{index}][marks_attributes][#{@index2}]",:student_mark , :size=>3,:value=>@marks_exist[@index2],:class=>'g1', :id=>"mark_"+"#{index}"+"_"+"#{@c_count}" %> <%#@c_count+=1%>
+									</td>
+								<% end %>
+							<% end %><!--end for - if @examtemplates.map(&:qu ........-->
+						<% else %>
+							<% if (@examquestions.meqq.count!=0 || @examquestions.seqq.count!=0 || @examquestions.acqq.count!=0 || @examquestions.osce.count!=0 || @examquestions.ospe.count!=0 || @examquestions.viva.count!=0 || @examquestions.truefalse.count!=0) %>
+								<%#@c_count=1%>
+								<% 0.upto(@examquestions.count-@examquestions.mcqq.count-1) do |count2|%>
+									<td>
+										<!--OKOK--><%= text_field "exammarks[#{index}][marks_attributes][#{count2}]",:student_mark , :size=>3,:value=>@marks_exist[count2],:class=>'g1', :id=>"mark_"+"#{index}"+"_"+"#{count2}" %> 
+							<%#= text_field "exammarks[#{index}][marks_attributes][#{@index2}]",:student_mark , :size=>3,:value=>@marks_exist[@index2],:class=>'g1',:id=>"mark_"+"#{index}"+"_"+"#{@c_count}" %> <%#@c_count+=1%>
+									</td>
+								<% end %>
+							<% end %>
+						<% end %><!--end for-if @istemplate == 0 -->
+						<!--****-end-Data column for OTHER than MCQ marks(individually)-->
+
+						<td><%= text_field "exammarks[#{index}]",:total_marks, :size => 4 , :value=> @value_total,:id=>"total"+"#{index}",:readonly => true  %><!--$$$--></td>
+					</tr>
+
+				<% end %><!--END FOR STUDENT SORT-->
+
+			</table>
+			
 		<% end %>
-		<!---->
-		<% 1.upto(3) do |count| %>
-			<%# if count == 0 %>
-				<%# @examquestions2 = @examquestions.mcqq %>
-				<%# @index2 = 0 %>
-				<%# @span_type_column = @examquestions.mcqq.count %>
-				<%# @title_span = 'MCQ'%>
-			<%# els%>
-			<% if count == 1 %>
-				<% @examquestions2 = @examquestions.meqq %>
-				<% @index2 = @examquestions.mcqq.count %>
-				<% @span_type_column = @examquestions.meqq.count %>
-				<% @title_span = 'MEQ'%>
-			<% elsif count == 2 %>
-				<% @examquestions2 = @examquestions.seqq %>
-				<% @index2 = @examquestions.mcqq.count+@examquestions.meqq.count %>
-				<% @span_type_column = @examquestions.seqq.count %>
-				<% @title_span = 'SEQ'%>
-			<% elsif count == 3 %>
-				<% @examquestions2 = @examquestions.acqq %>
-				<% @index2 = @examquestions.mcqq.count+@examquestions.meqq.count+@examquestions.seqq.count %>
-				<% @span_type_column = @examquestions.acqq.count %>
-				<% @title_span = 'ACQ'%>
-			<% end %>
-		
-	
-		
-				<% @examquestions2.each_with_index do |examquestion,index3| %>
-				<%# if @exammarks[index].marks[@index2] %>
-					<%# if @exammarks[index].marks[@index2].mark.blank? || @exammarks[index].marks[@index2].mark.nil? %>
-						<%# @val_mark = 0.0 %>
-					<%# else %>
-						<%# @val_mark = @exammarks[index].marks[@index2].mark %>
-					<%# end %>
-				<%# else %>
-					<%# @val_mark = 0.0 %>
-				<%# end %>
-			<td>
-				<!--testing 3rd Oct 2012-4Liza-continue fr-last shared 18 Sept,not yet send 24 Sept & 3rd Oct(incomplete yet)-->
-					<%#= @marks_exist[@index2] %>
-					<!--should include some checking here-->
-					<!--....refer partial:_student_listing.html.erb-to differentiate ID for existing record whereas NEW one doesn't hv any ID(only temporary one)-->
-					
-					<%# if @examquestions.mcqq.count!=0 || @examquestions.meqq.count!=0 || @examquestions.seqq.count!=0 || @examquestions.acqq.count!=0 %>
-					<!--this part for EDIT-->
-					<!--@@--><%= text_field "exammarks[#{index}][marks_attributes][#{@index2}]",:student_mark , :size=>4,:value=>@marks_exist[@index2]   %> 
-					<!--this part for EDIT-->
-					<%# end %>
-				<!--testing on 3rd Oct 2012-->
-				
-				<!--this part for NEW-->
-				<%#= text_field "exammarks[#{index}][marks_attributes][#{@index2}]",:mark , :size=>4,:value=>@val_mark   %> 
-				<!--this part for NEW-->
-			</td>
-			
-				<% @index2+=1%>
-			
-			<% end %>	
-		<% end %>	<!--end for 0.upto(2) do |count|-->
-		<!---->
-		<td><%= text_field "exammarks[#{index}]",:total_marks, :size => 5 , :value=> @value_total %><!--$$$--></td>
-	
-	</tr>
-	<% end %>
-		
-</table>
-
-
-	
 	<% end %><!--2June2013-end for if @exammark_exist_for_exam==0-->
-	
 
-<!--revised on 24th Sept 2012-->
-<% else %>
+<% elsif !@students %>
 	Please select an intake.
+	
+<!--else-13June2013-if EXAMQUESTIONS(+students) OR EXAMTEMPLATES(+students) exist-->
+	<!--Questions/question details (quantity, type, marks) must exist in selected examination paper.-->
+	
+<% end %><!--end-13June2013-if EXAMQUESTIONS(+students) OR EXAMTEMPLATES(+students) exist-->
+
+
+<!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-->
+<% if @istemplate == 0 %> 
+	<% if @examtemplates %>
+	<!--above IF statement-rescue..if 1st time New, but have no records due to NO INTAKE available (based on current date & subject)-->
+		<%# if @examtemplates.map(&:questiontype).include?("MCQ") %>
+			<% @examtemplates_mcqq_qty = @examtemplates.mcqq[0].quantity  %>
+		<%# else %>
+			<%# @examtemplates_mcqq_qty = 0 %>
+		<%# end %>	
+		<%=hidden_field_tag "exammark[trial2]", @examtemplates_mcqq_qty %>
+		<%=hidden_field_tag "exammark[trial3]", @questioncount %><!--refer line 14 & 15 OR exammarks_controller.rb(line 227-228)-->
+	<% end %>
+<% else %>
+	<% if @examquestions %>
+	<!--above IF statement-rescue..if 1st time New, but have no records due to NO INTAKE available (based on current date & subject)-->
+		<%=hidden_field_tag "exammark[trial2]", @examquestions.mcqq.count %>
+		<%=hidden_field_tag "exammark[trial3]", @examquestions.count %>
+	<% end %>
 <% end %>
-<!--revised on 24th Sept 2012-->
+<%=hidden_field_tag "exammark[trial1]", @studentscount%>
+
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			$j(".g1").keyup(function() {  
+				var studentcount = document.getElementById("exammark_trial1").value;
+				var mcqcount = document.getElementById("exammark_trial2").value;
+				var allcount = document.getElementById("exammark_trial3").value;
+				
+				//retrieve all other marks (other than mcq)
+				for (var i=0;i<studentcount;i++)
+				{
+					for (var j=0;j<allcount-mcqcount;j++)
+					{						
+						window["other"+i+j] = document.getElementById("mark_"+i+"_"+j).value;
+					}
+				}
+				//-8June2013-retrieve total mcq values
+				for (var i=0;i<studentcount;i++)
+				{
+					window["totalmcq"+i] = document.getElementById("mcqmark_"+i).value;
+				}
+				//-8June2013-retrieve variables for totalmarks for viewing
+				for (var i=0;i<studentcount;i++)
+				{
+					window["totalmarksview"+i] = document.getElementById("total"+i);			
+				}
+				//-8June2013-assign values into variable totalmarks for viewing
+				for (var i=0;i<studentcount;i++)
+				{					
+					var a = 0
+					for (var k=0;k<allcount-mcqcount;k++)
+					{
+						a=a*1+((window["other"+i+k])*1);
+					}
+						window["totalmarksview"+i].value = window["totalmcq"+i]*1+a
+				}
+			});		
+			
+	});
+</script>
+<!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-->
+
+
+
+
+
+
+
+<!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-WORKABLE-->
+<%#= text_field_tag "exammark[trial1]", @studentscount %>
+<%#= text_field_tag "exammark[trial2]", @examquestions.count %>
+<%#= text_field_tag "exammark[trial3]", @examquestions.mcqq.count %>
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			
+			$j(".g1").keyup(function() {  
+			  //	var e1g1q1 = $j("#exammark_trial1").val();
+			  	////var e1g1q2 = $j("#stationery_minquantity").val();
+			
+				//var ansP = document.getElementById("exammark_trial2");
+				//ansP.value = (e1g1q1*1)+10 //+e1g1q2 
+				//var studentcount = $j("#exammark_trial1").val();
+				//var qcount = $j("#exammark_trial2").val();
+				/*
+				for (var i=0;i<studentcount;i++)
+				{
+					for (var j=0;j<qcount;j++)
+					{
+						window["q"+i+j] = document.getElementById("mark_"+i+"_"+j).value;
+					}
+				}
+				for (var i=0;i<20;i++)
+					window["totalall"+i] = document.getElementById("total"+i);
+					window["totalall"+i].value = 5656;
+				}*/
+				
+				//window["totalall"+0] = document.getElementById("total"+0);
+				//window["totalall"+0].value = 8999; 
+				
+				
+				//window["totalall"+1] = document.getElementById("total"+1);
+				//window["totalall"+1].value = 7777; 
+				
+				/*
+				for (var i=0;i<studentcount;i++)
+				{
+					window["totalall"+i] = document.getElementById("total"+i);
+				}
+				for (var i=0;i<studentcount;i++)
+				{
+					(window["totalall"+i]).value =9898999;
+				}*/
+					/*
+					if (qcount < 2){	
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)
+					}
+					else if (qcount < 3)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)
+					}
+					else if (qcount < 4)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)
+					}
+					else if (qcount < 5)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)
+					}
+					else if (qcount < 6)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)
+					}
+					else if (qcount < 7)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)
+					}
+					else if (qcount < 8)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)
+					}					
+					else if (qcount < 9)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)
+					}					
+					else if (qcount < 10)
+					{
+						(window["totalall"+i]).value =
+						
+					 ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)
+					}					
+					else if (qcount < 11)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)+((window["q"+i+9])*1)
+					}
+					else if (qcount < 12)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)+((window["q"+i+9])*1)+((window["q"+i+10])*1)
+					}
+					else if (qcount < 13)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)+((window["q"+i+9])*1)+((window["q"+i+10])*1)+((window["q"+i+11])*1)
+					}
+					else if (qcount < 14)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)+((window["q"+i+9])*1)+((window["q"+i+10])*1)+((window["q"+i+11])*1)+((window["q"+i+12])*1)
+					}
+					else if (qcount < 15)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)+((window["q"+i+9])*1)+((window["q"+i+10])*1)+((window["q"+i+11])*1)+((window["q"+i+12])*1)+((window["q"+i+13])*1)
+					}
+					else if (qcount < 16)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)+((window["q"+i+9])*1)+((window["q"+i+10])*1)+((window["q"+i+11])*1)+((window["q"+i+12])*1)+((window["q"+i+13])*1)+((window["q"+i+14])*1)
+					}
+					else if (qcount < 17)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)+((window["q"+i+9])*1)+((window["q"+i+10])*1)+((window["q"+i+11])*1)+((window["q"+i+12])*1)+((window["q"+i+13])*1)+((window["q"+i+14])*1)+((window["q"+i+15])*1)
+					}
+					else if (qcount < 18)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)+((window["q"+i+9])*1)+((window["q"+i+10])*1)+((window["q"+i+11])*1)+((window["q"+i+12])*1)+((window["q"+i+13])*1)+((window["q"+i+14])*1)+((window["q"+i+15])*1)+((window["q"+i+16])*1)
+					}
+					else if (qcount < 19)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)+((window["q"+i+9])*1)+((window["q"+i+10])*1)+((window["q"+i+11])*1)+((window["q"+i+12])*1)+((window["q"+i+13])*1)+((window["q"+i+14])*1)+((window["q"+i+15])*1)+((window["q"+i+16])*1)+((window["q"+i+17])*1)
+					}
+					else if (qcount < 20)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)+((window["q"+i+9])*1)+((window["q"+i+10])*1)+((window["q"+i+11])*1)+((window["q"+i+12])*1)+((window["q"+i+13])*1)+((window["q"+i+14])*1)+((window["q"+i+15])*1)+((window["q"+i+16])*1)+((window["q"+i+17])*1)+((window["q"+i+18])*1)
+					}
+					else if (qcount < 21)
+					{
+						(window["totalall"+i]).value = ((window["q"+i+0])*1)+((window["q"+i+1])*1)+((window["q"+i+2])*1)+((window["q"+i+3])*1)+((window["q"+i+4])*1)+((window["q"+i+5])*1)+((window["q"+i+6])*1)+((window["q"+i+7])*1)+((window["q"+i+8])*1)+((window["q"+i+9])*1)+((window["q"+i+10])*1)+((window["q"+i+11])*1)+((window["q"+i+12])*1)+((window["q"+i+13])*1)+((window["q"+i+14])*1)+((window["q"+i+15])*1)+((window["q"+i+16])*1)+((window["q"+i+17])*1)+((window["q"+i+18])*1)+((window["q"+i+19])*1)
+					}
+					
+				}
+				
+				
+			});
+
+	});*/
+</script>
+<!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-WORKABLE-->

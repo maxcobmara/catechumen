@@ -1,71 +1,11 @@
-<!--13Apr2013-DEPT UNIT for current user-->
-<% @anc_depth = current_user.staff.position.ancestry_depth %>
+<%=render :partial => 'position_dept' %>
 
-<!--27May2013-how to retrieve position for staff with multiple positions?-->
-<% @multi_position = Position.find(:all, :conditions => ['staff_id=?',current_user.staff_id])%>
-<% @ifmulti_position = @multi_position.count %>
-
-<% if @anc_depth==2 %>
-	<% @dept_unit = current_user.staff.position.unit %>
-<% elsif @anc_depth < 2 %>
-	<%# @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
-	<%# if @position_count > 1 %>
-	<% if @ifmulti_position > 1 %><!--DRY-27 May 2013-->
-		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
-	<% end %>
-	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-	<% if @anc_depth==1 %>
-		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=?', current_user.staff_id]).unit %>
-	<% end %>
-	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-<% elsif @anc_depth > 2 %>
-	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
-	<% if @ifmulti_position > 1 %>
-		<% @multi_position.each do |x|%>
-			<% if x.parent.id > 6 && x.parent.id < 17 %>
-				<!--hoho<%#= @dept_unit = x.parent.unit %>--><% @dept_unit = x.parent.unit %>
-			<% end %>	
-		<% end %>
-	<% else %>
-		<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
-		<!--30Mei2013-->
-		<% if @dept_unit == "Pos Basik" && @anc_depth == 3 %><!--@anc_depth==3-->
-			<% @dept_unit = current_user.staff.position.unit %>
-		<% end %>
-		<!--30Mei2013-->
-	<% end %>
-	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
-<% end %>
-
-<% current_user_roles=[]%>
-<% User.current_user.roles.each do |role|%>
-	<% current_user_roles<<role.id%>
-<% end %>
-<%#= current_user_roles.include?(2)%>
-<!--13/20Apr2013-DEPT UNIT for current user-->
-<% if current_user_roles.include?(2) %><!--if administrator-->
-	<% if @dept_unit != nil %><!--must also have dept unit(from ancestor-at_depth:2), or NO programme will be pre-selected-->
-		<!--26 May 2013-HAVE TO MAKE SURE : position of current logged-in staff is between 7-16 OR line 29 & 30 will FAILED & ERROR-->
-		<% if current_user.staff.position.id > 6 && current_user.staff.position.id < 17 %>
-			<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
-			<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
-		<% end %>
-	<% else %>
-		<!--have to assign values for SUBJECT search form for ADMIN-->
-		<% @subjectlist_preselec_prog = Programme.at_depth(2) %>
-	<% end %>
-<% else %>
-	<% if @anc_depth==1 %>
-	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-		<% @kupk = "yes" %>
-	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-	<% else %><%#=@dept_unit%><%#=@anc_depth%>
-		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
-		<% @subjectlist_preselec_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
-	<% end %>
-<% end %>
-
-<!---->	
+<!--ADDED-18June2013-extract from exammarks/_exam_listing.html.erb-->
+<% @exam_ids_for_examtemplate = Examtemplate.all.map(&:exam_id).uniq %>
+<% @exam_ids_for_examquestions = Exam.find(:all,:joins=>:examquestions).map(&:id).uniq %>
+<% @complete_exampaper = Exam.find(:all, :conditions=>['id IN (?) OR id IN (?)',@exam_ids_for_examtemplate,@exam_ids_for_examquestions]) %>
+<% @ids_complete_exampaper = @complete_exampaper.map(&:id) %>
+<!--ADDED-18June2013-extract from exammarks/_exam_listing.html.erb-->
 
 <div class="box">
 	<div class="box-head">
@@ -91,12 +31,16 @@
 		<th>Marks</th>
 		<th colspan=4 class="ac">Control</th>
 	  </tr>
-
+	
 		<% @exams.each do |exam| %>
-		  <% if (exam.created_by == User.current_user.staff_id)||(@dept_unit==exam.subject.root.name) ||(current_user_roles.include?(2))||@kupk == "yes" %><!--STAND BY:HIDE THIS LINE & LINE 75 to view ALL EXAM paper-->
+		  <% if (exam.created_by == User.current_user.staff_id)||(@dept_unit==exam.subject.root.name) ||(@current_user_roles.include?(2))||@kupk == "yes" %><!--STAND BY:HIDE THIS LINE & LINE 75 to view ALL EXAM paper-->
 		
 		  <tr>
-		    <td><%=h exam.name %></td>
+		    <td><%#=h (@exam.name)%>
+<%=h (Exam::EXAMTYPE.find_all{|disp, value| value == exam.name}).map {|disp, value| disp} %>
+				<% if exam.klass_id == 0 %><span style="color:blue;">(Template)</span><% end %>
+				<% if @ids_complete_exampaper.include?(exam.id) %><% else%><font color="red">*</font><% end %>
+			</td>
 				<% if exam.subject_id!=nil && (exam.subject.parent.code == '1' || exam.subject.parent.code == '2') %>
 					<% @year = "1 / " %>
 				<% elsif exam.subject_id!=nil && (exam.subject.parent.code == '3' || exam.subject.parent.code == '4') %>
@@ -112,7 +56,21 @@
 		    <td><%=h exam.creator_details %></td>
 			<td><%=h (((exam.endtime - exam.starttime)/60) / 60).to_i %>&nbsp;hours
 				<%=h (((exam.endtime - exam.starttime)/60) % 60).to_i %>&nbsp;mins</td>
-			<td><%#=h exam.full_marks %><%=h exam.total_marks %></td>
+			<td><%#=h exam.full_marks %>
+				<!--11June2013-TEMPLATE-->
+				<% @istemplate = exam.klass_id %>
+				<% if @istemplate == 0 %>
+					<% @grand_total = 0 %>
+					<% @examtemplates = exam.examtemplates %>
+					<% @examtemplates.each do |examtemplate| %> 
+						<% @grand_total+= examtemplate.total_marks %>
+					<% end %>
+					<%=@grand_total.to_i%>
+				<% else %>
+					<%=h exam.total_marks %>
+				<% end %>
+				<!--11June2013-TEMPLATE-->
+			</td>
 		
 		    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => exam %></td>
 		    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => exam %></td>
@@ -133,7 +91,9 @@
 		  <% end %><!--STAND BY:HIDE THIS LINE & LINE 37 to view ALL EXAM paper-->
 		
 		<% end %>
+
 		</table>
+		<div class="right"><font color="red">*</font> indicates incomplete examination paper. Add question/question template accordingly.</div>
 
 <br />
 </div>

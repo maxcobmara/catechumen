@@ -1,0 +1,121 @@
+<!--20Feb2013-ALL part for data entry/edit EXCEPT for Lecturer & Course Details move to this partial-->
+<h2>Analysis Details</h2>
+<table width=100% border=0 >
+	<tr>
+		<td>Average Score</td>
+		<td width=3%><b>:</b></td>
+		<td>
+			<table width=100% border=1 cellspacing=0 cellpadding=7 BORDERCOLOR="#E8E8E8 ">	
+				<tr>
+					<td width="10" ><font size=2><b>BIL</b></font></td>
+					<td align="center" width=45%><font size=2 ><b>PERKARA</b></font></th>
+					<td width="10" colspan=9 align="center"><font size=2><b>SKOR</b></font></td>
+				</tr>
+		
+				<!--20feb2013-display of table for Average Score-->
+				<% 1.upto(8) do |counter| %>
+				<tr>
+					<td><%=counter%>.</td>
+					<td>
+						<% if counter==1 %>Pencapaian objektif pelajaran
+						<% elsif counter==2 %>Pengetahuan pensyarah tentang pelajaran yang diajar
+						<% elsif counter==3 %>Mutu pencapaian pensyarah
+						<% elsif counter==4 %>Isi kandungan pelajaran
+						<% elsif counter==5 %>Mutu alat pandang dengar yang digunakan
+						<% elsif counter==6 %>Kesesuaian turutan topik dalam jadual
+						<% elsif counter==7 %>Kesesuaian kerja sindikit dengan objektif pelajaran
+						<% elsif counter==8 %>Faedah bahan/nota yang diedarkan
+						<% end %><!--8March2013-->
+						<% @purata = AverageLecturer.find_average(@average_lecturer.lecturer_id,@average_lecturer.subject_id,counter)%>
+					</td>
+					<td align="center"><% if @purata == 1  %><b><%= @purata %></b><% else %><font color="#A0A0A0">1</font><% end %></td>
+					<td align="center"><% if @purata == 2  %><b><%= @purata %></b<% else %><font color="#A0A0A0">2</font><% end %></td>	
+					<td align="center"><% if @purata == 3  %><b><%= @purata %></b<% else %><font color="#A0A0A0">3</font><% end %></td>
+					<td align="center"><% if @purata == 4  %><b><%= @purata %><b><% else %><font color="#A0A0A0">4</font><% end %></td>
+					<td align="center"><% if @purata == 5  %><b><%= @purata %></b<% else %><font color="#A0A0A0">5</font><% end %></td>
+					<td align="center"><% if @purata == 6  %><b><%= @purata %></b<% else %><font color="#A0A0A0">6</font><% end %></td>
+					<td align="center"><% if @purata == 7  %><b><%= @purata %></b<% else %><font color="#A0A0A0">7</font><% end %></td>
+					<td align="center"><% if @purata == 8  %><b><%= @purata %></b<% else %><font color="#A0A0A0">8</font><% end %></td>
+					<td align="center"><% if @purata == 9  %><b><%= @purata %></b<% else %><font color="#A0A0A0">9</font><% end %></td>
+				</tr>
+				<% end %>
+				<!--20feb2013-display of table for Average Score-->
+			</table>
+		</td>
+	</tr>
+
+	
+	<tr>
+		<td width=20%><label for="short_name"><font size=2>&nbsp;General Dissatisfaction</font></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.text_area :dissactifaction, :size => "50x7" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="short_name">Improvements Proposal</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.text_area :recommend_for_improvement, :size => "50x7" %></td>
+	</tr>	
+</table>
+
+
+<h2>Summary Evaluation</h2>
+<table width=100% border=0 cellspacing=0 >
+	
+	<tr>
+		<td colspan=4><font color="grey", size="-2">Kriteria Penilaian LAYAK atau TIDAK LAYAK adalah berdasarkan tiga aspek
+	    teras di bawah yang mana skor purata setiap aspek tidak boleh kurang dari nilai 5:</font></td>
+	</tr>
+	
+	<tr>
+		<td width=20%><label for="short_name"><font size=2>&nbsp;Evaluation Criteria</font></label></td>
+		<td width=3%><b>:</b></td>
+		<td width=25%>a. Pengetahuan Pensyarah</td>
+		<td><%= f.text_field :lecturer_knowledge, :size => "5" %><!--8March2013--></td>
+	</tr>
+	
+	<tr>
+		<td width=20%><label for="short_name"><font size=2></font></label></td>
+		<td width=3%><b>:</b></td>
+		<td>b. Mutu Penyampaian</td>
+		<td><%= f.text_field :delivery_quality, :size => "5" %></td>
+	</tr>
+	
+	<tr>
+		<td width=20%><label for="short_name"><font size=2></font></label></td>
+		<td width=3%><b>:</b></td>
+		<td>c. Isi Kandungan Pelajaran</td>
+		<td><%= f.text_field :summary_evaluation, :size => "5" %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="short_name">Evaluation Category</label></td>
+		<td width=3%><b>:</b></td>
+		<td colspan=2><%= f.radio_button :evaluate_category,'1' %>Layak<%= f.radio_button :evaluate_category,'2' %>Tidak Layak</td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="short_name">Supporting Justification</label></td>
+		<td width=3%><b>:</b></td>
+		<td colspan=2><%= f.text_area :support_justify, :size => "50x7" %></td>
+	</tr>	
+</table>
+<h2>Authentication Principal</h2>
+<table width=100% >
+	
+	<tr>
+		<td width=20%><label for="short_name"><font size=2>&nbsp;Principal Name</font></label></td>
+		<td width=3%><b>:</b></td>
+		<td><%#= f.collection_select :principal_id, Staff.find(:all, :include => [:title], :order => 'titles.id ASC'), :id, :staff_name_with_title, :include_blank => true %>
+			<!--8March2013--><%= f.collection_select :principal_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_title %>
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="short_name">Date</label></td>
+		<td width=3%><b>:</b></td>
+		<td><%= f.date_select :principal_date, :order => [:day, :month, :year] %></td>
+	</tr>	
+</table>
+<BR>
+

@@ -2,57 +2,69 @@ class ExamquestionsController < ApplicationController
   # GET /examquestions
   # GET /examquestions.xml
   def index
-    #-----in case-use these 4 lines-------
-    @programmes = Programme.roots
-    #@examquestions = Examquestion.search2(params[:programmid])    #all if not specified
-    #@subject_exams = @examquestions.group_by { |t| t.subject_details }
-    #@topic_exams = @examquestions.group_by { |t| t.topic_id }
-    #-----in case-use these 4 lines-------
-    
-    @aaaaa=params[:subjectselect]
-    submit_val = params[:submit_button1]
-    if (params[:subjectselect] =='0' || params[:subjectselect] ==0) && submit_val == "Search"
-        @examquestions = Examquestion.search2(params[:programmid])    #all if not specified
-    elsif (params[:subjectselect] !='' || params[:subjectselect] !=nil) && submit_val == "Search"
-        @examquestions = Examquestion.find(:all, :conditions=>['subject_id=?',@aaaaa])
-    elsif !submit_val
-        @examquestions = Examquestion.search2(params[:programmid])    #all if not specified
-    end 
-    @subject_exams = @examquestions.group_by { |t| t.subject_details }    
-    @topic_exams = @examquestions.group_by { |t| t.topic_id } 
-    
+     #-----in case-use these 4 lines-------
+      @programmes = Programme.roots
+      #@examquestions = Examquestion.search2(params[:programmid])    #all if not specified
+      #@subject_exams = @examquestions.group_by { |t| t.subject_details }
+      #@topic_exams = @examquestions.group_by { |t| t.topic_id }
+      #-----in case-use these 4 lines-------
+
+      @aaaaa=params[:subjectselect]
+      submit_val = params[:submit_button1]
+      if (params[:subjectselect] =='0' || params[:subjectselect] ==0) && submit_val == "Search"
+          @examquestions = Examquestion.search2(params[:programmid])    #all if not specified
+      elsif (params[:subjectselect] !='' || params[:subjectselect] !=nil) && submit_val == "Search"
+          @examquestions = Examquestion.find(:all, :conditions=>['subject_id=?',@aaaaa])
+      elsif !submit_val
+          @examquestions = Examquestion.search2(params[:programmid])    #all if not specified
+      end 
+      @subject_exams = @examquestions.group_by { |t| t.subject_details }    
+      @topic_exams = @examquestions.group_by { |t| t.topic_id } 
+
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @examquestions }
-      #--download excel--start
-        format.xls {send_data @examquestions.to_xls(:name=>"Exam Questions",:headers => Examquestion.header_excel, 
-    		:columns => Examquestion.column_excel ), :file_name => 'examquestions.xls' }
-    		#----start of-same result as line 10-11----------------------------------------------------------
-    		#format.xls {send_data @examquestions.to_xls(:name=>"Exam Questions",:headers => ["Subject Code","Subject Name","Question Type","Marks","Category","Difficulty","Question","Answer", "Status","Creator Name"], 
-    		#:columns => [{:subject => [:subjectcode, :name]}, :questiontype, :marks, :category,{:examQ=>[:difficultyname]},:question, :answer, :qstatus,{:creator=> [:staff_name_with_position] }] ), :file_name => 'examquestions.xls' }
-    		#----end of-same result as line 10-11------------------------------------------------------------
+      format.xls {send_data @examquestions.to_xls(:name=>"Exam Questions",:headers => Examquestion.header_excel, 
+  		:columns => Examquestion.column_excel ), :file_name => 'examquestions.xls' }
+  		#----start of-same result as line 10-11----------------------------------------------------------
+  		#format.xls {send_data @examquestions.to_xls(:name=>"Exam Questions",:headers => ["Subject Code","Subject Name","Question Type","Marks","Category","Difficulty","Question","Answer", "Status","Creator Name"], 
+  		#:columns => [{:subject => [:subjectcode, :name]}, :questiontype, :marks, :category,{:examQ=>[:difficultyname]},:question, :answer, :qstatus,{:creator=> [:staff_name_with_position] }] ), :file_name => 'examquestions.xls' }
+  		#----end of-same result as line 10-11------------------------------------------------------------
+  		
+      #--start--alternative solution no.1--------------------------------------------
+  		##without usage of any gem or plugin (don't forget to set mime_types as well)
+      ##file type generated will be in HTML (excel user friendly)
+      #format.xls   #will generate excel file from index.xls.erb 
+      #--end--alternative solution no.1----------------------------------------------
 
-        #--start--alternative solution no.1--------------------------------------------
-    		##without usage of any gem or plugin (don't forget to set mime_types as well)
-        ##file type generated will be in HTML (excel user friendly)
-        #format.xls   #will generate excel file from index.xls.erb 
-        #--end--alternative solution no.1----------------------------------------------
+      #--start--alternative solution no.2 (part 1)-----------------------------------
+      ##to be used with view/examquestion/export.html.erb 
+      ##to activate - unremark line 113/116, routes.rb 
+      ##to add link_to in index page - view/examquestion/export.html.erb  
+      #--end--alternative solution no.2 (part 1)------------------------------------- 
+      
+      #----start of----PDF creation of examquestions-15 May 2012 --------------------
+      #--1) set -> mime-type : initializer/mimes_types.rb
+      #--2) include -> require 'pdf/writer', require 'pdf/simpletable' : lib/examquestion_drawer.rb
+      #--3) include -> link for pdf format : view/examquestions/index.html.erb
+      #--4) include format.pdf block as below...
+      format.pdf do
+ 			  send_data ExamquestionDrawer.draw(@examquestions),:filename => 'examquestion.pdf', :type=>'application/pdf',:disposition=>'inline'
+ 		  end
+ 		  #----end of----PDF creation of examquestions-15 May 2012 ----------------------
+ 		  
+    end   #--end for---respond_to do
+  end     #--end for---def index
 
-        #--start--alternative solution no.2 (part 1)-----------------------------------
-        ##to be used with view/examquestion/export.html.erb 
-        ##to activate - unremark line 113/116, routes.rb 
-        ##to add link_to in index page - view/examquestion/export.html.erb  
-        #--end--alternative solution no.2 (part 1)------------------------------------- 
-
-        #----start of----PDF creation of examquestions-15 May 2012 --------------------
-        #--1) set -> mime-type : initializer/mimes_types.rb
-        #--2) include -> require 'pdf/writer', require 'pdf/simpletable' : lib/examquestion_drawer.rb
-        #--3) include -> link for pdf format : view/examquestions/index.html.erb
-        #--4) include format.pdf block as below...
-      #--download excel--end
-    end
-  end
-
+  #--start--alternative solution no.2 (part 2)---------------------------------------
+    #def export 
+  	#@examquestions = Examquestion.find(:all)
+      #headers['Content-Type'] = "application/vnd.ms-excel"
+      #headers['Content-Disposition'] = 'attachment; filename="report.xls"'
+      #headers['Cache-Control'] = ''
+    #end
+  #--end--alternative solution no.2 (part 2)-----------------------------------------
+    
   # GET /examquestions/1
   # GET /examquestions/1.xml
   def show
@@ -61,6 +73,7 @@ class ExamquestionsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @examquestion }
+
     end
   end
 
@@ -102,9 +115,7 @@ class ExamquestionsController < ApplicationController
   # PUT /examquestions/1
   # PUT /examquestions/1.xml
   def update
-    #raise params.inspect
     @examquestion = Examquestion.find(params[:id])
-    #@subject_exams = @examquestions.group_by { |t| t.subject_details }
 
     respond_to do |format|
       if @examquestion.update_attributes(params[:examquestion])
@@ -122,15 +133,8 @@ class ExamquestionsController < ApplicationController
   # DELETE /examquestions/1.xml
   def destroy
     @examquestion = Examquestion.find(params[:id])
-    #22Apr2013--avoid deletion of examquestion that exist in exams-temp
-    @exist_in_exam = Exam.find(:all, :joins=>:examquestions, :conditions=> ['examquestion_id=?',params[:id]]).count
-    if @exist_in_exam == 0
-        @examquestion.destroy
-    else
-        flash[:error] = 'This examquestion EXIST in examination and is not allowed for deletion.'
-    end
-    #22Apr2013--avoid deletion of examquestion that exist in exams
-    
+    @examquestion.destroy
+
     respond_to do |format|
       format.html { redirect_to(examquestions_url) }
       format.xml  { head :ok }
@@ -153,5 +157,6 @@ class ExamquestionsController < ApplicationController
     end
     render :partial => 'view_topic', :layout => false
   end
+  
 
 end

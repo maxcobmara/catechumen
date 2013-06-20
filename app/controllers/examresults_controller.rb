@@ -9,6 +9,15 @@ class ExamresultsController < ApplicationController
       format.xml  { render :xml => @examresults }
     end
   end
+  
+  def index2
+    @examresults = Examresult.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @examresults }
+    end
+  end
 
   # GET /examresults/1
   # GET /examresults/1.xml
@@ -19,6 +28,20 @@ class ExamresultsController < ApplicationController
       format.html # show.html.erb
       format.xml  { render :xml => @examresult }
     end
+  end
+  
+  def show2
+    @resultline = Resultline.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @examresult }
+    end
+  end
+  
+  def examslip
+    @resultline = Resultline.find(params[:id])
+    render :layout => 'report'
   end
   
   def show_stat
@@ -110,12 +133,14 @@ class ExamresultsController < ApplicationController
     @exammonth2 = params[:exammonth]
     @examyear2 = params[:examyear]
     
+
     
     unless @programme_id.blank? || @programme_id.nil?
       unless @semester.blank? || @semester.nil?
         unless @examyear2.blank? || @examyear2.nil? || @exammonth2.blank? || @exammonth2.nil?
           @intake = Examresult.set_intake_group(@examyear2,@exammonth2,@semester)
-          @subjects = Examresult.get_subjects(@programme_id,@intake)
+          @subjects = Examresult.get_subjects(@programme_id,@semester)
+          #@subjects = Examresult.get_subjects(@programme_id,@intake)
           #@subjects = Examresult.get_subjects(@programme_id,@examyear2,@exammonth2,@intake) 
           @students = Examresult.get_students(@programme_id,@examyear2,@exammonth2,@semester)
         end

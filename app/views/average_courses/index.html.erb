@@ -1,0 +1,47 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Data Analysis and Average Score of Lecturers</h2>
+	</div>
+	</div>
+	
+	<div class="toolbar">
+		<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Feedback/Course Evaluation - Analysis and Average Score') + "New", new_average_course_path %></p>
+	</div>
+	
+	<div class="tlist">
+	    <table width=100% border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+    		<th>Lecturer Name</th>
+		    <th>Course Name</th>
+			<th>Subject Name</th>
+		    <th>Evaluation Category</th><!--changed from evaluation category-->
+    <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @average_courses.each do |average_course| %>
+<tr>
+	 <td><%#=h average_course.evaluated_lecturer.name %><!--8March2013--></td>
+	 <td><%=h average_course.programme_id%><!--.programme_coursetype_name 8March2013--></td>
+	 <!--20Feb2013-subject added-->
+	 <td><%=h average_course.subjectavg.subject_list %><!--8March2013--></td>
+	 <!--20Feb2013-subject added-->
+	 <!--20Feb2013-changed from lesson_topic-->	
+	 <td><%=h (AverageLecturer::CATEGORY.find_all{|disp, value| value == average_course.evaluate_category.to_s}).map {|disp, value| disp} %>		</td>
+	 <!--20Feb2013-changed from lesson_topic-->
+	 <td width=10px ><%= link_to image_tag("printer.png", :border => 0, :title => 'BK-KKM-04-04'), :action => 'average_score', :id => average_course %></td>
+	 <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => average_course %></td>	
+     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => average_course %></td>	
+	 <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), average_course, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+  
+<% end %>
+</table>
+</div>
+<br />
+
+<%= link_to 'New Data Analysis and Average Score', new_average_course_path %>
+
+
+

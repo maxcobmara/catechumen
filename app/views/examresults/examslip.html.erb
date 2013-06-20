@@ -1,0 +1,118 @@
+<%= stylesheet_link_tag 'report' %>
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>	
+<div class="A4potrait">
+
+<!-- Box Head -->
+<div id="kewpa">
+<p class="marginright" align="right"><b></b></p>
+<H5 align="center"><b><img border="0" src="/images/KM.jpg" alt="KKM" width="" height="70"/></b></H4>
+<H5 align="center" ><b>JAWATANKUASA PEPERIKSAAN<BR>KURSUS <%=h @resultline.examresult.programmestudent.programme_list.upcase%><br>LEMBAGA PENDIDIKAN<BR>KEMENTERIAN KESIHATAN MALAYSIA</b><BR><BR>
+	SLIP KEPUTUSAN TERPERINCI MENGIKUT KOD KURSUS</h4>
+
+<SPAN style="padding-left:120px;font-size:13px;">PUSAT PEPERIKSAAN : KOLEJ KEJURURAWATAN JOHOR BAHRU<span><BR>
+<SPAN style="padding-left:120px;font-size:13px;">KEPUTUSAN PEPERIKSAN AKHIR TAHUN  <%=h @resultline.examresult.render_semester.to_s.upcase %></span><br>
+<SPAN style="padding-left:120px;font-size:13px;">TAHUN PENGAMBILAN : <%=h @resultline.student.intake %></span><BR>
+<SPAN style="padding-left:120px;font-size:13px;">TARIKH PEPERIKSAAN : <%=h @resultline.examresult.examdts.strftime("%d %b %Y") %> - <%=h @resultline.examresult.examdte.strftime("%d %b %Y") %></span><br>
+<br>
+<SPAN style="padding-left:120px;font-size:13px;font-weight:bold;">MAKLUMAT BIODATA PELATIH</span>
+	<table width=70% align="center" border=1 cellpadding=0 cellspacing=0>
+		<tr>
+			<td class="leftcol">Name</td>
+			<td>: <%=h @resultline.student.name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">MyKad No</td><td>: <%=h @resultline.student.icno %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Matric No </td><td>: <%=h @resultline.student.matrixno %></td>
+		</tr>
+	</table>
+
+
+<br>	
+<SPAN style="padding-left:120px;font-size:13px;font-weight:bold;">KEPUTUSAN PEPERIKSAAN AKHIR <%=h @resultline.examresult.render_semester.to_s.upcase %></span>
+<table width=70% align="center" border=1 cellpadding=0 cellspacing=0>
+	<tr>
+		<td style="font-weight:bold;">Bil</td>
+		<td style="font-weight:bold;">Kod Kursus</td>
+		<td style="font-weight:bold;">Gred</th>
+		<td style="font-weight:bold;">Nilai Gred</td>
+		<td style="font-weight:bold;">Catatan</td>
+	</tr>
+	<% @programme_id = @resultline.examresult.programmestudent.id %>
+	<% @semester = @resultline.examresult.semester %>
+	<% @subjects = Examresult.get_subjects(@programme_id ,@semester)%>
+	<%@no=0%>
+	<%# for examresultline in @resultline %>
+	<% for subject in @subjects %>	
+	<tr>
+		<% @student_grade = Grade.find(:first, :conditions=> ['student_id=? and subject_id=?',@resultline.student.id,subject.id]) %>
+		<% @student_finale = Grade.find(:first, :conditions=> ['student_id=? and subject_id=?',@resultline.student.id,subject.id]) %>
+		<td><%=@no+=1%></td>
+		<td><%= subject.subject_list %></td>
+		<td>
+			<% unless @student_grade.nil? || @student_grade.blank? %>
+				<%=@grading=@student_grade.set_gred %>
+			<% end %>
+		</td>
+		<td>
+			<% unless @student_finale.nil? || @student_finale.blank? %>
+				<%=@student_finale.set_NG.to_f%>
+			<% else %>
+				<%= 0.00 %>
+			<% end %>
+		</td>
+		<td>
+			<%=h @resultline.render_status %>
+			<!--<%# if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C" %>
+			Passed
+			<%# else %>Failed<%# end %>-->
+		</td>
+	 </tr>		
+		<% end %>
+	</table>
+	<br>
+	<table width=70% align="center" border=1 cellpadding=0 cellspacing=0>
+	
+		<tr>
+			<td style="font-weight:bold;"><%=h @resultline.examresult.render_semester.to_s.upcase %></td>
+			<td style="font-weight:bold;text-align:center;">JUMLAH</td>
+		</tr>
+		<tr>
+			<td class="leftcol">Jumlah NGK (Nilai Gred Kumulatif)</td>
+			<td style="text-align:center;"><%=h @resultline.total%></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Purata Nilai Gred Semester (PNGS)</td>
+			<td style="text-align:center;"><%=h @resultline.pngs17 %></td>
+		</tr>
+		<tr>
+			<td class="leftcol">Purata Nilai Gred Kumulatif (PNGK)</td>
+			<td style="text-align:center;"><%=h @resultline.pngk%></td>
+		</tr>
+		<tr>
+			<td style="font-weight:bold;">STATUS</td>
+			<td style="font-weight:bold;text-align:center;"><%=h @resultline.remark%></td>
+		</tr>
+	</table>
+	
+<br>
+<p style="padding-left:120px;padding-right:95px;font-size:13px;">Pengerusi dan Ahli-ahli Jawatankuasa Peperiksaan Kursus <%=h @resultline.examresult.programmestudent.programme_list %>yang bermesyuarat pada ........ telah mengesahkan keputusan Peperiksaan Akhir Tahun <%=h @resultline.examresult.render_semester %> yang telah diadakan pada <%=h @resultline.examresult.examdts.strftime("%d %b %Y") %> - <%=h @resultline.examresult.examdte.strftime("%d %b %Y") %> seperti di atas.</span>
+	
+	<br>
+	<br>
+	
+<h4 align=center>......................................<br>
+<b>(HJ.MOHD ZULKIFLI BIN MOHD TAHIR)</b><br>
+Pengarah<br>
+Kolej Sains Kesihatan Bersekutu Johor Bahru</h4>
+
+</div></div>

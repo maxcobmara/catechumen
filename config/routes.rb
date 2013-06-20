@@ -1,4 +1,14 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :average_courses
+
+  map.resources :evaluate_courses
+
+  map.resources :examquestionanalyses
+
+  map.resources :examanalyses
+
+  map.resources :examtemplates
+
   map.resources :booleananswers
 
   map.resources :booleanchoices
@@ -11,6 +21,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :resultlines
 
+  #map.connect '/maintenances/index_up', :controller => 'maintenances', :action => 'index_up'
+  map.connect '/examresults/index2', :controller => 'examresults', :action => 'index2'
+  map.connect '/examresults/show2', :controller => 'examresults', :action => 'show2'
+  map.resources :examresults, :collection => { :examslip => :get }
   map.resources :examresults
 
   map.resources :marks

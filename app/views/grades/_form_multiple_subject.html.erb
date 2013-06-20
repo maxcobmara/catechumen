@@ -1,87 +1,6 @@
-<!--11-12Apr2013-->
-<!--13Apr2013-DEPT UNIT for current user-->
-<% @anc_depth = current_user.staff.position.ancestry_depth %>
+<%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
+<%=render :partial => 'exammarks/exam_listing.html.erb'%><!--retrieve exam listing, student listing for use-->
 
-<!--27May2013-how to retrieve position for staff with multiple positions?-->
-<% @multi_position = Position.find(:all, :conditions => ['staff_id=?',current_user.staff_id])%>
-<% @ifmulti_position = @multi_position.count %>
-
-<% if @anc_depth==2 %>
-	<% @dept_unit = current_user.staff.position.unit %>
-<% elsif @anc_depth < 2 %>
-	<%# @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
-	<%# if @position_count > 1 %>
-	<% if @ifmulti_position > 1 %><!--DRY-27 May 2013-->
-		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
-	<% end %>
-	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-	<% if @anc_depth==1 %>
-		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=?', current_user.staff_id]).unit %>
-	<% end %>
-	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-<% elsif @anc_depth > 2 %>
-	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
-	<% if @ifmulti_position > 1 %>
-		<% @multi_position.each do |x|%>
-			<% if x.parent.id > 6 && x.parent.id < 17 %>
-				<!--hoho<%#= @dept_unit = x.parent.unit %>--><% @dept_unit = x.parent.unit %>
-			<% end %>	
-		<% end %>
-	<% else %>
-		<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
-		<!--30Mei2013-->
-		<% if @dept_unit == "Pos Basik" && @anc_depth == 3 %><!--@anc_depth==3-->
-			<% @dept_unit = current_user.staff.position.unit %>
-		<% end %>
-		<!--30Mei2013-->
-	<% end %>
-	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
-<% end %>
-
-<% current_user_roles=[]%>
-<% User.current_user.roles.each do |role|%>
-	<% current_user_roles<<role.id%>
-<% end %>
-<%#= current_user_roles.include?(2)%>
-<!--13/20Apr2013-DEPT UNIT for current user-->
-
-<%###################################################%>
-<% if current_user_roles.include?(2) %>
-	<% @exam_list = Exam.all %>
-	<% @student_list = Student.all %>
-	<% @subject_list = Programme.at_depth(2) %>
-<%else%><!--if NOT ADMIN-->
-
-	<% if @anc_depth==1 %>
-	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-		<% @kupk = "yes" %>
-		<% @exam_list = Exam.all %>
-		<% @student_list = Student.all %>
-		<% @subject_list = Programme.at_depth(2) %>
-	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-	<% else %>
-		<!---->
-		<% @exam_list = [] %>
-		<% Exam.all.each do |x| %>
-			<% if x.subject.root.name == @dept_unit %>
-				<% @exam_list << x %>
-			<% end %>
-			<!--<br><%#= x.subject.root.name %> -->
-		<% end %>
-		<% @student_list = [] %>
-		<% Student.all.each do |y| %>
-			<% if y.course_id && y.course.name == @dept_unit %>
-				<% @student_list << y %>
-			<% end %>
-			<!--<br><%#= y.course_id? ? y.course.name : "programme not entered" %>-->
-		<% end %><%=@dept_unit%>
-		<% @subject_list = Programme.find_by_name(@dept_unit).descendants.at_depth(2)%>
-		<!---->	
-	<% end %>
-
-<% end %>
-<!--11-12Apr2013-->
-<%###################################################%>
 <%#--------------------------------------------------------------------------------------------------------------------------%>
 
 <% form_tag :action => 'create' do |f|%>
@@ -99,7 +18,8 @@
 							<tr>
 								<td class="leftcol"><label>Subject</label></td>
 								<td><%# @selected_exam = Exam.find(@examid)%>
-									<% @selected_subject = Programme.find(@subjectid) %>
+									<%# @selected_subject = Programme.find(@subjectid) %>
+									<% @selected_subject = Programme.find(:first,:conditions=>['id=?',@subjectid]) %>
 								<!--DISPLAY GRADE DETAILS AT THIS LINE--><%=@selected_subject.subject_list %><br>
 								<!--bln:--><%# @exammonth=@selected_exam.exam_on.strftime("%m")%>
 											<% @current_month = Date.today.month %>
@@ -173,6 +93,7 @@
 								</td>	
 							</tr>
 							<!---->
+
 							<!---->
 							<tr>
 								<td class="leftcol">Summative Weightage</td>
@@ -184,43 +105,65 @@
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 										:url => {:action=>'update_summative_weightage'}, 
 										:with => "'weightage='+$('"+"grades_0_summative_weightage"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
-										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value") %>
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&subjectid='+'#{@subjectid}'") %>
 									</SPAN>
 									<SPAN class="koik", style="display:none;">
 										<!--2--><%= f.select :summative_weightage2, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 										:url => {:action=>'update_summative_weightage'}, 
 										:with => "'weightage='+$('"+"grades_0_summative_weightage2"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
-										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value ") %>
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&subjectid='+'#{@subjectid}' ") %>
 									</SPAN>
 									<SPAN class="three", style="display:none;">
 										<!--3--><%= f.select :summative_weightage3, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 										:url => {:action=>'update_summative_weightage'}, 
 										:with => "'weightage='+$('"+"grades_0_summative_weightage3"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
-										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value ") %>
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value+'&subjectid='+'#{@subjectid}' ") %>
 									</SPAN>
 									<SPAN class="four", style="display:none;">
 										<!--4--><%= f.select :summative_weightage4, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 										:url => {:action=>'update_summative_weightage'}, 
 										:with => "'weightage='+$('"+"grades_0_summative_weightage4"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
-										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativetype3='+$('"+"grades_0_scores_attributes_3_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value +'&formativeweight3='+$('"+"grades_0_scores_attributes_3_weightage"+"').value+'&formativedesc3='+$('"+"grades_0_scores_attributes_3_description"+"').value  ") %>
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativetype3='+$('"+"grades_0_scores_attributes_3_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value +'&formativeweight3='+$('"+"grades_0_scores_attributes_3_weightage"+"').value+'&formativedesc3='+$('"+"grades_0_scores_attributes_3_description"+"').value+'&subjectid='+'#{@subjectid}'  ") %>
 									</SPAN>
 									<SPAN class="five", style="display:none;">
 										<!--5--><%= f.select :summative_weightage5, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 										:url => {:action=>'update_summative_weightage'}, 
 										:with => "'weightage='+$('"+"grades_0_summative_weightage5"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
-										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativetype3='+$('"+"grades_0_scores_attributes_3_type_id"+"').value+'&formativetype4='+$('"+"grades_0_scores_attributes_4_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value +'&formativeweight3='+$('"+"grades_0_scores_attributes_3_weightage"+"').value+'&formativedesc3='+$('"+"grades_0_scores_attributes_3_description"+"').value+'&formativeweight4='+$('"+"grades_0_scores_attributes_4_weightage"+"').value+'&formativedesc4='+$('"+"grades_0_scores_attributes_4_description"+"').value ") %>
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativetype3='+$('"+"grades_0_scores_attributes_3_type_id"+"').value+'&formativetype4='+$('"+"grades_0_scores_attributes_4_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value +'&formativeweight3='+$('"+"grades_0_scores_attributes_3_weightage"+"').value+'&formativedesc3='+$('"+"grades_0_scores_attributes_3_description"+"').value+'&formativeweight4='+$('"+"grades_0_scores_attributes_4_weightage"+"').value+'&formativedesc4='+$('"+"grades_0_scores_attributes_4_description"+"').value+'&subjectid='+'#{@subjectid}'") %>
 									</SPAN>
-									<SPAN class="six", style="display:block;">
-										<!--6--><%= f.select :summative_weightage6, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+					
+						<%# if @students %>				<!--subject<%#=@subjectid%>	student<%#=@students.map(&:student_id)%>-->	
+							<%# @grade_exist_subject_student=Grade.find(:all, :conditions => ['subject_id=? AND student_id IN(?)',@subjectid, @students.map(&:id)]) %>
+							<%# @student_ids_exist_gradesubject = @grade_exist_subject_student.map(&:student_id) %>
+						<%# end %>						
+						
+						<%# if @student_ids_exist_gradesubject %><%# if @exist_ids%>
+									
+									<!--<SPAN class="six", style="display:block;">-->
+										<!--6--><!--6<%#= f.select :summative_weightage6, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 										:url => {:action=>'update_summative_weightage'}, 
 										:with => "'weightage='+$('"+"grades_0_summative_weightage6"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
-										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativetype3='+$('"+"grades_0_scores_attributes_3_type_id"+"').value+'&formativetype4='+$('"+"grades_0_scores_attributes_4_type_id"+"').value+'&formativetype5='+$('"+"grades_0_scores_attributes_5_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value +'&formativeweight3='+$('"+"grades_0_scores_attributes_3_weightage"+"').value+'&formativedesc3='+$('"+"grades_0_scores_attributes_3_description"+"').value+'&formativeweight4='+$('"+"grades_0_scores_attributes_4_weightage"+"').value+'&formativedesc4='+$('"+"grades_0_scores_attributes_4_description"+"').value+'&formativeweight5='+$('"+"grades_0_scores_attributes_5_weightage"+"').value+'&formativedesc5='+$('"+"grades_0_scores_attributes_5_description"+"').value ") %>
-									</SPAN>
+										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativetype3='+$('"+"grades_0_scores_attributes_3_type_id"+"').value+'&formativetype4='+$('"+"grades_0_scores_attributes_4_type_id"+"').value+'&formativetype5='+$('"+"grades_0_scores_attributes_5_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value +'&formativeweight3='+$('"+"grades_0_scores_attributes_3_weightage"+"').value+'&formativedesc3='+$('"+"grades_0_scores_attributes_3_description"+"').value+'&formativeweight4='+$('"+"grades_0_scores_attributes_4_weightage"+"').value+'&formativedesc4='+$('"+"grades_0_scores_attributes_4_description"+"').value+'&formativeweight5='+$('"+"grades_0_scores_attributes_5_weightage"+"').value+'&formativedesc5='+$('"+"grades_0_scores_attributes_5_description"+"').value+'&existstudents_id='+$('"+"exist_ids"+"').value+'&subjectid='+'#{@subjectid}' ") %>
+									</SPAN>-->
+									
+						<%# else %>
+									<%#####################%>
+										<SPAN class="six", style="display:block;">
+											<!--5-->6b<%= f.select :summative_weightage6, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+											:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
+											:url => {:action=>'update_summative_weightage'}, 
+											:with => "'weightage='+$('"+"grades_0_summative_weightage6"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
+											+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativetype3='+$('"+"grades_0_scores_attributes_3_type_id"+"').value+'&formativetype4='+$('"+"grades_0_scores_attributes_4_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value +'&formativeweight3='+$('"+"grades_0_scores_attributes_3_weightage"+"').value+'&formativedesc3='+$('"+"grades_0_scores_attributes_3_description"+"').value+'&formativeweight4='+$('"+"grades_0_scores_attributes_4_weightage"+"').value+'&formativedesc4='+$('"+"grades_0_scores_attributes_4_description"+"').value+'&formativeweight5='+$('"+"grades_0_scores_attributes_5_weightage"+"').value+'&formativedesc5='+$('"+"grades_0_scores_attributes_5_description"+"').value+'&subjectid='+'#{@subjectid}'  ") %>
+										</SPAN>
+									
+									<%#####################%>
+									
+						<%# end %>
 									<script type="text/javascript">
 											$j(document).ready(function(){
 											  $j('#grades_0_formative_scores_var').change(function() {

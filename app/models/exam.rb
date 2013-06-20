@@ -4,13 +4,15 @@ class Exam < ActiveRecord::Base
   belongs_to :subject,  :class_name => 'Programme', :foreign_key => 'subject_id'
   has_and_belongs_to_many :examquestions
   has_many :exammarks   #11Apr2013
+  has_many :examtemplates, :dependent => :destroy #10June2013
+  accepts_nested_attributes_for :examtemplates, :reject_if => lambda { |a| a[:quantity].blank? }
   
   before_save :set_sequence
   
   attr_accessor :own_car, :dept_car,:programme_id #18Apr2013-programme_id used in views/exams/new.html.erb #9Apr2013-use course_id (temp) to capture semester (year as well)
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
-  validates_presence_of :programme_id,:subject_id
+  validates_presence_of :programme_id,:subject_id, :name
   validate :sequence_must_be_selected, :sequence_must_be_unique#,:sequence_must_increment_by_one
   
   def set_sequence
@@ -67,17 +69,29 @@ class Exam < ActiveRecord::Base
       return sum
   end
   
+  def render_full_name
+    (Exam::EXAMTYPE.find_all{|disp, value| value == name}).map {|disp, value| disp}
+  end  
+  
   def exam_name_date
-    "#{name}"+" - "+"#{exam_on.strftime("%d-%B-%Y")}"
+    "#{render_full_name}"+" - "+"#{exam_on.strftime("%d-%B-%Y")}"
   end
   #10Apr2013
   
   def exam_name_subject_date
-     "#{name}"+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"# +"#{subject.parent.course_type}"
+     "#{render_full_name}"+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"# +"#{subject.parent.course_type}"
   end
   
-  def exam_code_date
-    "#{subject.code}"+" | "+"#{exam_on.strftime("%d %b %y")}"
+  def exam_code_date_type
+    if klass_id == 0
+      "#{subject.code}"+" | "+"#{exam_on.strftime("%d %b %y")}"+" (#{name}-T)"
+    else
+      "#{subject.code}"+" | "+"#{exam_on.strftime("%d %b %y")}"+" (#{name})"
+    end
+  end
+  
+  def subject_date
+    "#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %b %y")}"
   end
   
   def set_year
@@ -92,10 +106,44 @@ class Exam < ActiveRecord::Base
   end
   
   def full_exam_name
-    "#{name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+set_semester.to_s+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"
+    "#{render_full_name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+set_semester.to_s+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"
      #  "#{name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+"#{subject.parent.code}"+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"
   end
   
+  #--12June2013
+  
+  def render_examtype
+    (Exam::EXAMTYPE.find_all{|disp, value| value == name}).map {|disp, value| disp}
+    #(Exam::EXAMTYPE.find_all{|disp, value| value == examtype}).map {|disp, value| disp}
+  end
+  
+  def subject_and_examtype_of_exammaker
+    #   "#{Subject.find(subject_id).subject_code_with_subject_name} - #{(Exammaker::EXAMTYPE.find_all{|disp, value| value == examtype}).map {|disp, value| disp}}"
+    "#{Programme.find(subject_id).subject_list}"
+  end
+  
+  def subject_of_exammaker
+    "#{Subject.find(subject_id).subject_code_with_subject_name} - #{description}"  #exammaker.examination.subject_code_with_subject_name
+  end
+  
+  def full_marks(exampaper_id)
+      Examquestion.sum(:marks,:joins=>:exammakers, :conditions => ["exammaker_id=?", exampaper_id]).to_f
+  end 
+  
+  def examtypename
+     (Exam::EXAMTYPE.find_all{|disp, value| value == name}).map {|disp, value| disp}
+  	#Exam::EXAMTYPE[("#{name}".to_i)-1][0].to_s	    #Exam::EXAMTYPE[("#{examtype}".to_i)-1][0].to_s	
+  end
+  
+  #--12June2013
+  
+  #----------------Coded List----------------------------------- 
+  EXAMTYPE = [
+            #  Displayed       stored in db
+               [ "Peperiksaan Pertengahan Semester",      "M" ],
+               [ "Peperiksaan Akhir Semester",            "F" ],
+               [ "Peperiksaan Ulangan",                   "R" ]
+  ]
 
 private
 

@@ -128,8 +128,37 @@ class ExammarksController < ApplicationController
   # PUT /exammarks/1
   # PUT /exammarks/1.xml
   def update
+    #raise params.inspect
     @exammark = Exammark.find(params[:id])
-    
+    @exammark.total_mcq = params[:exammark][:total_mcq] #5June2013-added refer exammark.rb(set_total_mcq) & _view_marks_form.html.erb 
+    #---
+    ###
+     #@totalmarks_in_grade = 0
+		 #@exammark.marks.sort_by{|x|x.created_at}.each_with_index do |aa, cc|
+		      #aa.student_mark = params[:marks_attributes][cc.to_s][:student_marks][index]
+		      #@totalmarks_in_grade += (params[:exammark][:marks_attributes][cc.to_s][:student_marks][index]).to_f
+		  #end
+    ###
+     
+     #@credit_hour=Programme.find(@exammark.exampaper.subject.id).credits.to_i
+	    #@grade_to_update = Grade.find(:first, :conditions=>['student_id =? and subject_id=?', @exammark.student_id,@exammark.exampaper.subject.id])
+	    #if @grade_to_update && @credit_hour 
+	      #if @credit_hour == 3
+	       # @grade_to_update.exam1marks = (@totalmarks_in_grade+@exammark.total_mcq.to_f)/0.9
+	       # @grade_to_update.summative = (@totalmarks_in_grade+@exammark.total_mcq.to_f)/0.9*0.7
+        #elsif @credit_hour == 4
+         # @grade_to_update.exam1marks = (@totalmarks_in_grade+@exammark.total_mcq.to_f)/1.2
+         # @grade_to_update.summative = (@totalmarks_in_grade+@exammark.total_mcq.to_f)/1.2*0.7
+        #elsif @credit_hour == 2
+         # @grade_to_update.exam1marks = (@totalmarks_in_grade+@exammark.total_mcq.to_f)/0.7
+         # @grade_to_update.summative = (@totalmarks_in_grade+@exammark.total_mcq.to_f)/0.7*0.7
+       # else
+        #  @grade_to_update.exam1marks = @totalmarks_in_grade+@exammark.total_mcq.to_f
+        #  @grade_to_update.summative = (@totalmarks_in_grade+@exammark.total_mcq.to_f)*0.7
+      #  end
+       # @grade_to_update.save
+    #  end
+    #---
     respond_to do |format|
       if @exammark.update_attributes(params[:exammark])
         format.html { redirect_to(@exammark, :notice => 'Exammark was successfully updated.') }
@@ -164,6 +193,7 @@ class ExammarksController < ApplicationController
     
   end
   
+  #start-NOT IN USE---
   #-----start-for multiple new entry-filter by programme----12,17-18 Sept 2012-----copy codes from examresults_controller.rb
    def view_marks_form_multiple
      @exam_id = params[:examid]    #Refers to label:subject 
@@ -178,19 +208,34 @@ class ExammarksController < ApplicationController
 
    end
    #-----end-for multiple new entry-filter by programme----12,17-18 Sept 2012-----
+   #end-NOT IN USE---
    
    #14Apr2013
    def view_marks_form_multiple_intake
      @exam_id = params[:examid]    
      @intake_id = params[:intakeid]
      @programme_id= params[:programmeid]
-     
+    
       unless @exam_id.blank? || @exam_id.nil? 
         @examquestions = Exam.find(@exam_id).examquestions
         @students = Student.find(:all, :conditions=>['course_id=? and intake=?',@programme_id,@intake_id.to_s])
         #@students = Student.find(:all, :conditions=>['course_id=? and intake=? and gender=?',3,'2011-07-01',1])
+        @studentscount = @students.count  #NEWLY ADDED
+        @exammark_exist_for_exam=Exammark.find(:all, :conditions => ['exam_id=? AND student_id IN(?)',@exam_id, @students.map(&:id)]).count ##NEWLY ADDED
+        @istemplate = Exam.find(@exam_id).klass_id
+        @examtemplates = Exam.find(@exam_id).examtemplates
+        @qty_ary = @examtemplates.map(&:quantity) ##NEW ADDED
+        @questioncount = @qty_ary.inject{|sum,x|sum+x} #@questioncount=0
+				#@examtemplates.each do |examtemplate| 
+						#@questioncount+= examtemplate.quantity 
+				#end
+        
       end
       render :partial => 'view_marks_form_multiple_intake', :layout => false
+      #@@@@@@@@@@@@@@@@@@@@@@@@
+      			
+      
+      #@@@@@@@@@@@@@@@@@@@@@@@@
    end
    #14Apr2013
    
@@ -201,6 +246,7 @@ class ExammarksController < ApplicationController
      @exammarkids = params[:exammark_ids]
      unless @exammarkids.blank? 
   	    @exammarks = Exammark.find(@exammarkids)
+  	    @student_count = @exammarks.map(&:student_id).uniq.count
   	    @edit_type = params[:exammark_submit_button]
  		    if @edit_type == "Edit Checked"
   	        ## continue multiple edit (including subject edit here) --> refer view
@@ -223,8 +269,14 @@ class ExammarksController < ApplicationController
      #below (add-in sort_by) in order to get data match accordingly to form values (sorted by student name)
      @exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark, index| #amended-2June2012-prev:#@exammarks.each_with_index do |exammark,index|
  		    exammark.total_mcq = @totalmcqs[index]
- 			  0.upto(exammark.marks.count-1) do |cc|
- 			        exammark.marks[cc].student_mark = params[:marks_attributes][cc.to_s][:student_marks][index]
+ 			  #0.upto(exammark.marks.count-1) do |cc|
+ 			  #rescue for 1st time entry--
+ 			  totalmarks_in_grade = 0
+ 			  #rescue for 1st time entry--
+ 			  exammark.marks.sort_by{|x|x.created_at}.each_with_index do |aa, cc|
+ 			        aa.student_mark = params[:marks_attributes][cc.to_s][:student_marks][index]
+ 			        totalmarks_in_grade += (params[:marks_attributes][cc.to_s][:student_marks][index]).to_f     #added on 16june2013-am
+ 			        #exammark.marks[cc].student_mark = params[:marks_attributes][cc.to_s][:student_marks][index]
  			        #--remove later-16Apr2013--
  			        #if cc==0
  			          #exammark.marks[cc].student_mark = params[:marks_attributes][cc.to_s][:student_marks][index]
@@ -235,7 +287,8 @@ class ExammarksController < ApplicationController
  			        #end 
  			        #--remove later-16Apr2013--
  			  end
- 			  exammark.save
+ 			  exammark.save 
+ 			 
  		  end			#--end of @grades.each_with_index do |grade,index|--
  		  
  		  flash[:notice] = "Updated exam marks!"

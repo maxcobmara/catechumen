@@ -4,29 +4,14 @@ class Exammark < ActiveRecord::Base
   has_many :marks, :dependent => :destroy                                                     
   accepts_nested_attributes_for :marks#, :reject_if => lambda { |a| a[:mark].blank? }   #use of validates_presence_of in mark model
   
-  before_save :set_total_mcq
-  
+  before_save :set_total_mcq, :apply_final_exam_into_grade
+  validates_presence_of   :student_id, :exam_id
   validates_uniqueness_of :student_id, :scope => :exam_id, :message => " - Mark of this exam for selected student already exist. Please edit/delete existing mark accordingly."
   
-  attr_accessor :total_marks, :subject_id, :intake_id
+  attr_accessor :total_marks, :subject_id, :intake_id,:trial1,:trial2, :total_marks_view, :trial3, :total_mcq_in_exammark_single
   
-  #14Apr2013-if done this way-UPDATE-method (refer controller) --> data updates not working.
-  #def set_total_mcq  #hold first
-        #if self.total_mcq!=nil
-            #sum_mcq=0
-            #@questions_mcqq = Exam.find(:all,:conditions=> ['id=?', exam_id])[0].examquestions.mcqq.count
-            #@marks = marks.dup
-           #@marks2 = @marks.sort_by{|x|x.id}
-            #@marks2.each_with_index do |mark, index|
-                #if index < @questions_mcqq
-                    #sum_mcq+=mark.student_mark
-                #end
-            #end 
-            #self.total_mcq = sum_mcq
-        #end
-  #end
   def set_total_mcq
-      #self.total_mcq = Mark.sum(:student_mark, :conditions => ["exammark_id=?", self.id]) ##MCQ ONLY!!
+    if total_mcq==nil   #5June2013-added-calculate here if not assign in _view_marks_form(otal_mcq==nil)
       count=0
       @examquestions = Exam.find(:first, :conditions=>['id=?', exam_id]).examquestions
       @examquestions.each do |x|
@@ -41,27 +26,16 @@ class Exammark < ActiveRecord::Base
             @sum_mcq +=y.student_mark
           end
       end
-      #@sum_mcq = @allmarks[0].student_mark+@allmarks[1].student_mark
       if self.total_mcq != 0 && @sum_mcq == 0     #in case - only total MCQ entered instead of entering each of MCQ marks
       else
         self.total_mcq = @sum_mcq       
       end
+    end               #5June2013-added-calculate here if not assign in _view_marks_form(otal_mcq==nil)
   end
   
   def total_marks
 	  if self.id	
-	    #if total_mcq==nil
-        #return Mark.sum(:student_mark, :conditions => ["exammark_id=?", self.id])
-      #elsif total_mcq!=nil
-        #if(Mark.find(:all, :conditions => ["exammark_id=?", self.id]).count ) < Exam.find(:first, :conditions=>['id=?', exam_id]).examquestions.count
-          #return Mark.sum(:student_mark, :conditions => ["exammark_id=?", self.id])+total_mcq  #total_mcq (if exammark entered in multiple)
-        #elsif (Mark.find(:all, :conditions => ["exammark_id=?", self.id]).count ) == Exam.find(:first, :conditions=>['id=?', exam_id]).examquestions.count
-          #return Mark.sum(:student_mark, :conditions => ["exammark_id=?", self.id])#.to_s+"bbb"
-        #else
-          #return Mark.sum(:student_mark, :conditions => ["exammark_id=?", self.id])+total_mcq  #total_mcq (if exammark entered in multiple)
-        #end 
-      #end
-      return Mark.sum(:student_mark, :conditions => ["exammark_id=?", self.id])#+total_mcq.to_i
+      return Mark.sum(:student_mark, :conditions => ["exammark_id=?", self.id])+total_mcq.to_i
     else
       @total_marks	#any input by user will be ignored either edit form or new (including re-submission-invalid data)
 					          #value assigned from partial..(1) single entry(_form.html.erb-line 44-47) (2) multiple entry(_form_by_paper.html.erb-line88-91)
@@ -77,7 +51,6 @@ class Exammark < ActiveRecord::Base
     exammark_list.each do |exammarksub|
       exammarksub.errors.each do |key,value|
           @key2 = key
-          #@exammarkerrors << '<b>'+I18n.t('activerecord.attributes.exammark.'+key)+'</b>'+' '+value+'<br>'
 			    @exammarkerrors << '<b>'+I18n.t('activerecord.attribute.exammark.'+key)+'</b>'+' '+value+'<br>'
 			    @errors_qty+=1
 		  end 	# end of exammarksub.errors.each do |key,value|
@@ -92,20 +65,38 @@ class Exammark < ActiveRecord::Base
     return @exammarkerrors_full
   end
   
-  def self.update_single_exam1mark_in_grades(exammaker_id,student_id,all_marks)
-    @subject_id = Exammaker.find(exammaker_id).subject_id
-    @examtype = Exammaker.find(exammaker_id).examtype
-    @grade1 = Grade.find(:first, :conditions=> ['student_id=? and subject_id=?', student_id, @subject_id])
-    @sum_of_marks = Exammark.sum_marks(all_marks)  #@all_marks["0"]["mark"]
-    unless @grade1.nil? || @grade1.blank?
-      @grade1.exam1marks = @sum_of_marks
-      @grade1.save if @grade1.exam1marks && @examtype == "2"  #2 for Peperiksaan Akhir Semester
+  #11June2013---
+  def apply_final_exam_into_grade
+    @subject_id = Exam.find(exam_id).subject_id
+    @examtype = Exam.find(exam_id).name
+    @grade_to_update = Grade.find(:first, :conditions=> ['student_id=? and subject_id=?', student_id, @subject_id])
+    @credit_hour=Programme.find(@subject_id).credits.to_i
+    unless @grade_to_update.nil? || @grade_to_update.blank?
+        if @credit_hour == 3
+	        @grade_to_update.exam1marks = total_marks.to_f/0.9
+	        @grade_to_update.summative = total_marks.to_f/0.9*0.7
+        elsif @credit_hour == 4
+          @grade_to_update.exam1marks = total_marks.to_f/1.2
+          @grade_to_update.summative = total_marks.to_f/1.2*0.7
+        elsif @credit_hour == 2
+          @grade_to_update.exam1marks = total_marks.to_f/0.7
+          @grade_to_update.summative = total_marks.to_f/0.7*0.7
+        else
+          @grade_to_update.exam1marks = total_marks.to_f
+          @grade_to_update.summative = total_marks.to_f*0.7
+        end
+        @grade_to_update.save if @grade_to_update.exam1marks && @examtype == "F"  #F for Peperiksaan Akhir Semester
     end
   end
+  #11June2013---
   
-  #14March2013
-  def self.set_intake_group(examyear,exammonth,semester)
-     if exammonth.to_i <= 7                                                # for 1st semester-month: Jan-July, exam should be between Feb-July
+  #14March2013 - rev 17June2013
+  def self.set_intake_group(examyear,exammonth,semester)    #semester refers to semester of selected subject - subject taken by student of semester???
+    @unit_dept = User.current_user.staff.position.unit
+    @unit_dept = User.current_user.staff.position.ancestors.at_depth(2)[0].unit if @unit_dept==nil
+     
+     #if exammonth.to_i <= 7
+     if (@unit_dept && @unit_dept == "Kebidanan" && exammonth.to_i <= 9) || (@unit_dept && @unit_dept != "Kebidanan" && exammonth.to_i <= 7)                                           # for 1st semester-month: Jan-July, exam should be between Feb-July
         @current_sem = 1 
         @current_year = examyear 
         if (semester.to_i-1) % 2 == 0                        					      # modulus-no balance
@@ -115,7 +106,8 @@ class Exammark < ActiveRecord::Base
           @intake_year = @current_year.to_i-((semester.to_i+1)/2) 
           @intake_sem = @current_sem + 1 
   			end 
-      elsif exammonth.to_i > 7                                              # 2nd semester starts on July-Dec- exam should be between August-Dec
+      elsif (@unit_dept && @unit_dept == "Kebidanan" && exammonth.to_i > 9) || (@unit_dept && @unit_dept != "Kebidanan" && exammonth.to_i > 7)                                                  # 2nd semester starts on July-Dec- exam should be between August-Dec
+      #elsif exammonth.to_i > 7
         @current_sem = 2 
         @current_year = examyear
         if (semester.to_i-1) % 2 == 0  
@@ -128,11 +120,14 @@ class Exammark < ActiveRecord::Base
       end
   		#return @intake_sem.to_s+'/'+@intake_year.to_s   #giving this format -->  2/2012  --> previously done on examresult(2012)
   		
-  		if @intake_sem == 1
-  		    @intake_month = '01'
+  		if @intake_sem == 1 
+  		    @intake_month = '03' if @unit_dept && @unit_dept == "Kebidanan"
+  		    @intake_month = '01' if @unit_dept && @unit_dept != "Kebidanan"
   		elsif @intake_sem == 2
-  		    @intake_month = '07'
+  		    @intake_month = '09' if @unit_dept && @unit_dept == "Kebidanan"
+  		    @intake_month = '07' if @unit_dept && @unit_dept != "Kebidanan"
   		end
+  		
   		return @intake_year.to_s+'-'+@intake_month+'-01'  #giving this format -->  2/2012
   end
   #14March2013

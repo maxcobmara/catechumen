@@ -3,7 +3,7 @@ class Score < ActiveRecord::Base
 before_save :save_my_vars  
 
 belongs_to :grade
-validates_presence_of :description
+validates_presence_of :description, :marks, :weightage
 
 def save_my_vars
   self.score	= type_marks

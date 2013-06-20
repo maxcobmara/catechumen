@@ -138,7 +138,9 @@ class Student < ActiveRecord::Base
       v=1
    end
    
-
+   def self.available_students2(subject)
+       Student.find(:all, :joins=>:klasses, :conditions=> ['subject_id=?',subject])
+   end
    
    
    

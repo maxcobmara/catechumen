@@ -1,16 +1,40 @@
 class Grade < ActiveRecord::Base
   
-  validates_presence_of   :student_id, :subject_id
+  validates_presence_of :student_id, :subject_id, :examweight#, :exam1marks #added examweight for multiple edit - same subject - this item must exist
   validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
   
   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
   belongs_to :subjectgrade, :class_name => 'Programme', :foreign_key => 'subject_id'  #Link to Model subject
 
   has_many :scores, :dependent => :destroy
-  accepts_nested_attributes_for :scores, :reject_if => lambda { |a| a[:description].blank? }
+  accepts_nested_attributes_for :scores,:allow_destroy => true, :reject_if => lambda { |a| a[:description].blank? } #allow for destroy - 17June2013
   
-  attr_accessor :programme_id, :final_exam_paper, :intake_id, :summative_weightage, :formative_scores_var,:summative_weightage2,:summative_weightage3,:summative_weightage4,:summative_weightage5,:summative_weightage6
+  attr_accessor :programme_id, :final_exam_paper, :intake_id, :summative_weightage, :formative_scores_var,:summative_weightage2,:summative_weightage3,:summative_weightage4,:summative_weightage5,:summative_weightage6,:score_count,:student_count,:column_count, :form_weight, :formative_count
+  before_save :save_bpl_sent_date#, :retrieve_final_exam_from_exammark
+  
+    def save_bpl_sent_date
+      if sent_to_BPL == true && sent_date == nil
+        self.sent_date = Date.today
+      elsif sent_to_BPL == false
+        self.sent_date = nil
+      end
+    end
     
+    #17June2013---
+    #def retrieve_final_exam_from_exammark
+      #@subject_id = Exam.find(exam_id).subject_id
+      #@examtype = Exam.find(exam_id).name
+      #@grade1 = Grade.find(:first, :conditions=> ['student_id=? and subject_id=?', student_id, @subject_id])
+      #unless @grade1.nil? || @grade1.blank?
+          #@grade1.exam1marks = total_marks
+          #@grade1.save if @grade1.exam1marks && @examtype == "F"  #F for Peperiksaan Akhir Semester
+      #end
+      #total_marks = Exammark.find().total_marks
+      #self.exammarks = total_marks if @examtype == "F"
+
+   # end
+    #17June2013---
+  
     # 22 May 2012
     ## CA + MSE (excel file) = (total_formative * (100 - examweight)/100)
     # sample : 19.34 = 64.47 x (100 - 70)/100   (note: examweight => summative weightage) [assumption-only 1 item of score for final/summative]
@@ -83,25 +107,25 @@ class Grade < ActiveRecord::Base
    end
 
    def set_NG
-     if finale <= 35 
+     if finale < 35  #<= 35 
        0.00
-     elsif finale <= 40
+     elsif finale < 40 #<= 40
        1.00
-     elsif finale <= 45
+     elsif finale < 45 #<= 45
        1.33
-     elsif finale <= 50
+     elsif finale < 50 #<= 50
        1.67
-     elsif finale <= 55
+     elsif finale < 55 #<= 55
        2.00
-     elsif finale <= 60
+     elsif finale < 60 #<= 60
        2.33
-     elsif finale <= 65
+     elsif finale < 65 #<= 65
        2.67
-     elsif finale <= 70
+     elsif finale < 70 #<= 70
        3.00
-     elsif finale <= 75
+     elsif finale < 75 #<= 75
        3.33
-     elsif finale <= 80
+     elsif finale < 80 #<= 80
        3.67
      else
        4.00
@@ -120,6 +144,32 @@ class Grade < ActiveRecord::Base
            @grades = Grade.all
        end
    end
+   
+   #########
+   #11Apr2013
+   def self.set_error_messages(exammark_list)
+ 	  @exammarkerrors = []
+ 	  @exammarkerrors2 = []
+ 	  @exammarkerrors_full = []
+     @errors_qty = 0
+     exammark_list.each do |exammarksub|
+       exammarksub.errors.each do |key,value|
+           @key2 = key
+           #@exammarkerrors << '<b>'+I18n.t('activerecord.attributes.exammark.'+key)+'</b>'+' '+value+'<br>'
+ 			    @exammarkerrors << '<b>'+I18n.t('activerecord.attribute.grade.'+key)+'</b>'+' '+value+'<br>'
+ 			    @errors_qty+=1
+ 		  end 	# end of exammarksub.errors.each do |key,value|
+ 	  end		# end of exammark_list.each do |exammarksub|
+     if @errors_qty == 1
+ 			  @exammarkerrors2 <<'<b>'+@errors_qty.to_s+' error '
+ 	  elsif @errors_qty > 1
+ 			  @exammarkerrors2 <<'<b>'+@errors_qty.to_s+' errors '
+ 	  end
+ 	  @exammarkerrors2 << 'prohibited this record from being saved</b><br><br>'
+ 	  @exammarkerrors_full << @exammarkerrors2.to_s+@exammarkerrors.to_s
+     return @exammarkerrors_full
+   end
+   #########
      
 #GRADE = [
   #  Displayed       stored in db
@@ -132,18 +182,17 @@ class Grade < ActiveRecord::Base
 #]
 GRADE = [
   #  Displayed       stored in db
-    [ "80-100% - A",  "1" ],
-    [ "75-79% - A-",  "2" ],
-    [ "70-74% - B+",  "3" ],
-    [ "65-69% - B",   "4" ],
-    [ "60-64% - B-",  "5" ],
-    [ "60-63% - D",   "6" ],
-    [ "55-59% - C+",  "7" ],
-    [ "50-54% - C",   "8" ],
-    [ "45-49% - C-",  "9" ],
-    [ "40-44% - D+",  "10" ],
-    [ "35-39% - D",   "11" ],
-    [ "0-34% - E",    "12" ]
+    [ "80-100% - A",  "A" ],
+    [ "75-79% - A-",  "A-" ],
+    [ "70-74% - B+",  "B+" ],
+    [ "65-69% - B",   "B" ],
+    [ "60-64% - B-",  "B-" ],
+    [ "55-59% - C+",  "C+" ],
+    [ "50-54% - C",   "C" ],
+    [ "45-49% - C-",  "C-" ],
+    [ "40-44% - D+",  "D+" ],
+    [ "35-39% - D",   "D" ],
+    [ "0-34% - E",    "E" ]
 ]
 
 E_TYPES = [

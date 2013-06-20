@@ -10,85 +10,245 @@
 	</div>
 </div>
 
+<% @exampaper_of_exammarks = @exammarks.map(&:exam_id).uniq.count %><!--check if subject for all selected grades are same-->
+<% if @exampaper_of_exammarks==1 %>
+<!--start-8June2013-MULTIPLE EDIT only allowed for same(1) examination paper-->
 
-<div class="tlist">
-<% form_for :exammark, :url => update_multiple_exammarks_path, :html => {:method => :put} do |f| %>
-<!--<table><tr><th></th></tr></table> -->	
-	<table>
-		<% %>
-		<tr>
-			<th>Student</th>
-			<th>Mykad No</th>
-			<th>Total MCQ</th>
+	&nbsp;<span style="text-decoration:underline;font-weight:bold;">
+	Examination Paper : <%=@exammarks[0].exampaper.full_exam_name%></span>
+	<!--11June2013-TEMPLATE-->
+	<% @istemplate = @exammarks[0].exampaper.klass_id %>
+	<% if @istemplate == 0 %>
+		<span style="color:blue;">(Template)</span>
+	<% end %>
+	<!--11June2013-TEMPLATE-->
+	<br><br>
+	
+	<div class="tlist">
+		<% form_for :exammark, :url => update_multiple_exammarks_path, :html => {:method => :put} do |f| %>
+
+		<table>
+			<tr>
+				<th>No</th>
+				<th>Student</th>
+				<th>Mykad No</th>
+				<% if @exampaper_of_exammarks==1 %>
+					<% else %>
+					<th>Examination<th>
+				<% end %>
+				<th>Total MCQ</th>
+				
 				<% @examid = @exammarks[0].exam_id %>
-				<% @mcqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"MCQ", @examid ]).count %>
-				<% @meqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"MEQ", @examid ]).count %>
-				<% @seqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"SEQ", @examid ]).count %>
-				<% @acqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"ACQ", @examid ]).count %>
-			<% 1.upto(@mcqcount) do |count|%>
-				<th>MCQ-Q <%=count%></th>
-			<% end %>
-			<% 1.upto(@meqcount) do |count|%>
-				<th>MEQ-Q <%=count%></th>
-			<% end %>
-			<% 1.upto(@seqcount) do |count|%>
-				<th>SEQ-Q <%=count%></th>
-			<% end %>
-			<% 1.upto(@acqcount) do |count| %>
-				<th>ACQ-Q <%=count%></th>
-			<% end %>
-
-		</tr>
-		<%# for exammark in @exammarks %>
-		<% @exammarks.sort_by{|x|x.studentmark.name}.each do |exammark| %>
-			<%= hidden_field_tag "exammark_ids[]", exammark.id %><%#result ==> "grade_ids"=>["4","3","2","1"]  == grade_ids[]  %>
-			<%#= exammark.exampaper.examquestions.count %>
-			<tr>
-			<tr>
-				<td><%#=exammark.id%><%=h exammark.studentmark.matrix_name %><%#=h grade.student_id.blank? ? "" : grade.studentgrade.name %></td>
-				<td><%=h exammark.studentmark.icno %></td>
-<% if @edit_type == "Edit Checked" || @edit_type.nil? %>	
-				<!--<td>
+				<% @istemplate = Exam.find(@examid).klass_id %>
+				<% if @istemplate == 0 %>
+					<% @examtemplates = Exam.find(@examid).examtemplates %>
+					<% qty_ary = @examtemplates.map(&:quantity) %>
+					<% @questioncount = qty_ary.inject{|sum,x|sum+x}%>
+					<% @mcqcount = @examtemplates.mcqq[0].quantity %>	
+					<% @meqcount = @examtemplates.meqq[0].quantity if @examtemplates.map(&:questiontype).include?("MEQ") %>
+					<% @seqcount = @examtemplates.seqq[0].quantity if @examtemplates.map(&:questiontype).include?("SEQ") %>
+					<% @acqcount = @examtemplates.acqq[0].quantity if @examtemplates.map(&:questiontype).include?("ACQ") %>
+					<% @oscecount = @examtemplates.osce[0].quantity if @examtemplates.map(&:questiontype).include?("OSCE") %>
+					<% @ospecount = @examtemplates.ospe[0].quantity if @examtemplates.map(&:questiontype).include?("OSPE") %>
+					<% @vivacount = @examtemplates.viva[0].quantity if @examtemplates.map(&:questiontype).include?("VIVA") %>
+					<% @truefalsecount = @examtemplates.truefalse[0].quantity if @examtemplates.map(&:questiontype).include?("TRUEFALSE") %>
+					<% @allcount = @questioncount %>
+				<% else %>
+					<% @mcqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"MCQ", @examid ]).count %>
+					<% @meqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"MEQ", @examid ]).count %>
+					<% @seqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"SEQ", @examid ]).count %>
+					<% @acqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"ACQ", @examid ]).count %>
+					<% @oscecount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"OSCE", @examid ]).count %>
+					<% @ospecount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"OSPE", @examid ]).count %>
+					<% @vivacount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"VIVA", @examid ]).count %>
+					<% @truefalsecount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"TRUEFALSE", @examid ]).count %>
+					<% @allcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['exam_id=?',@examid]).count %>
+				<% end %>
+				
+				<% if @meqcount %>
+					<% 1.upto(@meqcount) do |count|%>
+						<th>MEQ-Q <%=count%></th>
+					<% end %>
+				<% end %>
+				<% if @seqcount %>
+					<% 1.upto(@seqcount) do |count|%>
+						<th>SEQ-Q <%=count%></th>
+					<% end %>
+				<% end %>
+				<% if @acqcount %>
+					<% 1.upto(@acqcount) do |count| %>
+						<th>ACQ-Q <%=count%></th>
+					<% end %>
+				<% end %>
+				<% if @oscecount %>
+					<% 1.upto(@oscecount) do |count|%>
+						<th>OSCE-Q <%=count%></th>
+					<% end %>
+				<% end %>
+				<% if @ospecount %>
+					<% 1.upto(@ospecount) do |count|%>
+						<th>OSPE-Q <%=count%></th>
+					<% end %>
+				<% end %>
+				<% if @vivacount %>
+					<% 1.upto(@vivacount) do |count|%>
+						<th>VIVA-Q <%=count%></th>
+					<% end %>
+				<% end %>
+				<% if @truefalsecount %>
+					<% 1.upto(@truefalsecount) do |count|%>
+						<th>TRUE/FALSE-Q <%=count%></th>
+					<% end %>
+				<% end %>
+				<th colspan=2>TOTAL</th>
+			</tr>
 		
-					<%#= select_tag("subject_ids[]", "<option value="+grade.subject_id.to_s+">"+grade.subjectgrade.subject_code_with_subject_name.to_s+"</option>"+options_from_collection_for_select(Grade.set_subject_for_multiple_edit(grade.student_id), :id, :subject_code_with_subject_name, :selected => grade.subject_id))  %> 
-
+			<% @b_count=0 %><% @diff_total_mcq=0%>
+			<% @exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,no| %>
+				<%= hidden_field_tag "exammark_ids[]", exammark.id %><%#result ==> "grade_ids"=>["4","3","2","1"]  == grade_ids[]  %>
+				<%#= exammark.exampaper.examquestions.count %>
+			
+				<tr>
+					<td><%=no+1%></td>
+					<td><%#=exammark.id%><%=h exammark.studentmark.matrix_name %><%#=h grade.student_id.blank? ? "" : grade.studentgrade.name %></td>
+					<td><%=h exammark.studentmark.icno %></td>
 					
-				</td>-->
-<% elsif @edit_type == "Edit by Subject" %>
-	<%#= hidden_field_tag "subject_ids[]", @subject_id %>
-	<%= hidden_field_tag "exam_ids[]", @exam_id %>
-<% end %>
-		
-				<td align=right><%= hidden_field_tag "total_mcqs[]", exammark.total_mcq, :size=> 4 %><%=exammark.total_mcq%></td>
-				<!--<td>-->
-					<%# 0.upto(exammark.marks.count-1) do |cc|%>
-						<%#= text_field_tag "marks_attributes[#{cc}][student_marks][]", exammark.marks[cc].student_mark, :size=> 4 %>
-						<%#= exammark.marks[cc].id %>
-						<%#= exammark.exampaper.examquestions[cc].questiontype %>
-					<%# end %>
-					<!--question marks order(BY TYPE) : MCQ, MEQ,SEQ,ACQ,OSCI,OSCII,OSCE,OSPE,VIVA-->
-					<!--for checking(line 44:use text_field_tag instead):mark id: 
-						<%#=Mark.find(:first, :conditions=>['exammark_id=?',exammark.id ]).id%>-->
-					<% aaa=exammark.marks %><!--PENDING:DATA IS CORRENT BUT...DISPLAY:sequence of marks-depends on last updated record!-->
-					<% aaa.each_with_index do |aa, index|%>
-						<td>
-							<!--for checking:incase-marks value din not match student name
-							<%#= aa.id %>ddd-->
-							<%#= hidden_field_tag "marks_attributes[#{index}][exammark_id][]", aa.id %>
-							<%= text_field_tag "marks_attributes[#{index}][student_marks][]", aa.student_mark, :size=> 4 %>
-						</td>
+					<% if @exampaper_of_exammarks==1 %>
+					<% else %>
+						<td><%=h exammark.exampaper.subject_date %><td>
 					<% end %>
 					
-				<!--</td>-->
-			
-			</tr>	
+					<% if @edit_type == "Edit Checked" || @edit_type.nil? %>	
+					<!--<td><%#= select_tag("subject_ids[]", "<option value="+grade.subject_id.to_s+">"+grade.subjectgrade.subject_code_with_subject_name.to_s+"</option>"+options_from_collection_for_select(Grade.set_subject_for_multiple_edit(grade.student_id), :id, :subject_code_with_subject_name, :selected => grade.subject_id))  %></td>-->
+					<% elsif @edit_type == "Edit by Subject" %>
+						<%#= hidden_field_tag "subject_ids[]", @subject_id %>
+						<%= hidden_field_tag "exam_ids[]", @exam_id %>
+					<% end %>
+		
+					<td align=right style="background-color:#C3E9BF;"><%#= text_field_tag "total_mcqs[]", exammark.total_mcq, :size=> 4 %><%#=exammark.total_mcq%>
+						<%#= text_field_tag "total_mcqs[]", exammark.total_mcq,:id=>"total"+@b_count.to_s, :size=> 4,:readonly => true  %>
+						<%= text_field_tag "total_mcqs[]", exammark.total_mcq.to_i,:id=>"total"+@b_count.to_s, :size=> 4,:class=>'j1' %>
+					</td>
+					<!--<td>-->
+						<%# 0.upto(exammark.marks.count-1) do |cc|%>
+							<%#= text_field_tag "marks_attributes[#{cc}][student_marks][]", exammark.marks[cc].student_mark, :size=> 4 %>
+							<%#= exammark.marks[cc].id %>
+							<%#= exammark.exampaper.examquestions[cc].questiontype %>
+						<%# end %>
+						<!--question marks order(BY TYPE) : MCQ, MEQ,SEQ,ACQ,OSCI,OSCII,OSCE,OSPE,VIVA-->
+						<!--for checking(line 44:use text_field_tag instead):mark id: 
+							<%#=Mark.find(:first, :conditions=>['exammark_id=?',exammark.id ]).id%>-->
+					
+					<% aaa=exammark.marks %><!--PENDING:DATA IS CORRENT BUT...DISPLAY:sequence of marks-depends on last updated record!-->
+					<!--5June2013-sort by time created--><!----><% @a_count=0%>
+					<% aaa.sort_by{|x|x.created_at}.each_with_index do |aa, index|%>
+						
+						<!--for checking:incase-marks value did not match student name
+						<%#= aa.id %>ddd-->
+						<%#= hidden_field_tag "marks_attributes[#{index}][exammark_id][]", aa.id %>
+							<%# if index < @mcqcount %>
+								<!--	<td style="background-color:#EDFDEB;">-->
+								<!--gg--><%#= text_field_tag "marks_attributes[#{index}][student_marks][]", aa.student_mark, :size=> 4,:class=>'h1' %><!--
+								MMM<%#= text_field_tag "marks_attributes[#{index}][student_marks][]", aa.student_mark.to_i, 
+								:id=>"mark_"+"#{@b_count}"+"_"+@a_count.to_s, :size=> 2,:class=>'i1' %> 		
+								</td>-->
+								<%#@a_count+=1%>
+							<%# else %>
+								<td style="background-color:#EEF;">
+									<%= text_field_tag "marks_attributes[#{index}][student_marks][]", number_with_precision(aa.student_mark,:precision=>2),:id=>"student_mark_"+"#{@b_count}"+"_"+@a_count.to_s,:class=>'j1', :size=> 4 %><%@a_count+=1%>
+								</td>
+							<%# end %>
+					<% end %>
+					
+					<!--start-total marks for viewing only-8June2013-->
+					<td><!--
+						
+						<%# total_mcq_in_marks_table=0 %><%# other_mcq_in_marks_table=0 %>
+						<%# exammark.marks.sort_by{|x|x.created_at}.each_with_index do |x, index|%>
+							<%# if index < @mcqcount%>
+								<%# total_mcq_in_marks_table+=x.student_mark %>
+							<%# elsif index > @mcqcount-1 %>
+								<%# other_mcq_in_marks_table+=x.student_mark %>
+							<%# end %>
+						<%# end %>
+						<%# if exammark.total_mcq != total_mcq_in_marks_table %>
+							<%# @diff_total_mcq +=1 %>
+							<%# @total_marks_for_view = exammark.total_mcq+other_mcq_in_marks_table%>
+							
+						<%# else %>
+							<%# @total_marks_for_view = exammark.total_marks%>
+						<%# end %>
+						<%#= hidden_field_tag "mcq_in_marks[]", exammark.total_mcq, :id=>"mcq_in_marks"+@b_count.to_s, :size=>1%>-->
+						<%# @total_marks_for_view = @exammark.total_mcq + @exammark. %>
+						
+						<%= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true %>
+					</td>
+					<% @b_count+=1%>
+				</tr>	
+
 		<% end%>
 	</table>
 <%= f.submit "Submit" %>
 <%#= submit_tag "Edit Checked", :name => :grade_submit_button %>
 <%#= link_to 'New Grade', new_grade_path(:new_type => "0")%>
 
+<% end %><!--end of form-->
 
-<% end %>
-</div>
+</div><!--end for div tlist-->
+<!--end-8June2013-MULTIPLE EDIT only allowed for same(1) examination paper-->
+<% else %>
+	Please select students with the same <b>Examimation Paper</b> for multiple edit. 
+<% end %><br><br>
+
+<%= link_to 'Back', exammarks_path %>
+
+
+<!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-->
+<%=hidden_field_tag "exammark[trial2]", @mcqcount %>
+<%=hidden_field_tag "exammark[trial1]", @student_count%>
+<%=hidden_field_tag "exammark[trial3]", @allcount%>
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			$j(".j1").keyup(function() {  
+				var studentcount = document.getElementById("exammark_trial1").value;
+				var mcqcount = document.getElementById("exammark_trial2").value;
+				var allcount = document.getElementById("exammark_trial3").value;
+				//var a=0;
+				for (var i=0;i<studentcount;i++)
+				{
+					for (var j=0;j<allcount-mcqcount;j++)
+					{						
+						window["other"+i+j] = document.getElementById("student_mark_"+i+"_"+j).value;
+					}
+				}
+				//-8June2013-retrieve total mcq values
+				for (var i=0;i<studentcount;i++)
+				{
+					window["totalmcq"+i] = document.getElementById("total"+i).value;
+				}
+				//-8June2013-retrieve variables for totalmarks for viewing
+				for (var i=0;i<studentcount;i++)
+				{
+					window["totalmarksview"+i] = document.getElementById("total_marks_view"+i);			
+				}
+				//-8June2013-assign values into variable totalmarks for viewing
+				for (var i=0;i<studentcount;i++)
+				{					
+					var a = 0
+					for (var k=0;k<allcount-mcqcount;k++)
+					{
+						a=a*1+((window["other"+i+k])*1);
+					}
+						window["totalmarksview"+i].value = window["totalmcq"+i]*1+a
+				}
+			});		
+			
+	});
+</script>
+<!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-->
+
+
+
+
 

@@ -1,0 +1,22 @@
+<h1>Listing examtemplates</h1>
+
+<table>
+  <tr>
+    <th>Questiontype</th>
+    <th>Quantity</th>
+  </tr>
+
+<% @examtemplates.each do |examtemplate| %>
+  <tr>
+    <td><%=h examtemplate.questiontype %></td>
+    <td><%=h examtemplate.quantity %></td>
+    <td><%= link_to 'Show', examtemplate %></td>
+    <td><%= link_to 'Edit', edit_examtemplate_path(examtemplate) %></td>
+    <td><%= link_to 'Destroy', examtemplate, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New examtemplate', new_examtemplate_path %>

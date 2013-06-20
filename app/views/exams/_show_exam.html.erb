@@ -2,8 +2,9 @@
 	<legend>Exam Details</legend>
 	<table>
 		<tr>
-			<td class="leftcol"><label for="bplreserve"><b>Name</b></label></td>
-	    <td><%=h @exam.name %></td>
+			<td class="leftcol"><label for="bplreserve"><b>Name:</b></label></td>
+	    <td><%#=h @exam.name %>
+	<%=h (Exam::EXAMTYPE.find_all{|disp, value| value == @exam.name}).map {|disp, value| disp} %></td>
 		</tr>
 		<!--
 		<tr>
@@ -46,7 +47,21 @@
 
 		<tr>
 			<td class="leftcol"><label for="bplreserve"><b>Full marks:</b></label></td>
-	    <td><%=h @exam.total_marks %></td>
+	    	<td><%#=h @exam.total_marks %>
+				<!--11June2013-TEMPLATE-->
+				<% @istemplate = @exam.klass_id %>
+				<% if @istemplate == 0 %>
+					<% @grand_total = 0 %>
+					<% @examtemplates = @exam.examtemplates %>
+					<% @examtemplates.each do |examtemplate| %> 
+						<% @grand_total+= examtemplate.total_marks %>
+					<% end %>
+					<%=@grand_total.to_i%>
+				<% else %>
+					<%=h @exam.total_marks %>
+				<% end %>
+				<!--11June2013-TEMPLATE-->
+			</td>
 		</tr>
 		
 	</table>

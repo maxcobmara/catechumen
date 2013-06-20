@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130521191742) do
+ActiveRecord::Schema.define(:version => 20130620052013) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -386,6 +386,23 @@ ActiveRecord::Schema.define(:version => 20130521191742) do
     t.datetime "updated_at"
   end
 
+  create_table "average_courses", :force => true do |t|
+    t.integer  "lecturer_id"
+    t.integer  "programme_id"
+    t.string   "dissactifaction"
+    t.string   "recommend_for_improvement"
+    t.string   "summary_evaluation"
+    t.string   "evaluate_category"
+    t.string   "support_justify"
+    t.integer  "principal_id"
+    t.date     "principal_date"
+    t.integer  "subject_id"
+    t.integer  "delivery_quality"
+    t.integer  "lecturer_knowledge"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "bankaccounts", :force => true do |t|
     t.integer  "staff_id"
     t.integer  "student_id"
@@ -581,6 +598,27 @@ ActiveRecord::Schema.define(:version => 20130521191742) do
     t.datetime "updated_at"
   end
 
+  create_table "evaluate_courses", :force => true do |t|
+    t.integer  "course_id"
+    t.integer  "subject_id"
+    t.integer  "staff_id"
+    t.integer  "student_id"
+    t.date     "evaluate_date"
+    t.string   "comment"
+    t.integer  "ev_obj"
+    t.integer  "ev_knowledge"
+    t.integer  "ev_deliver"
+    t.integer  "ev_content"
+    t.integer  "ev_tool"
+    t.integer  "ev_topic"
+    t.integer  "ev_work"
+    t.integer  "ev_note"
+    t.string   "invite_lec"
+    t.integer  "average_course_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "events", :force => true do |t|
     t.integer  "eventname"
     t.integer  "location"
@@ -590,6 +628,23 @@ ActiveRecord::Schema.define(:version => 20130521191742) do
     t.datetime "end_at"
     t.integer  "created_by"
     t.boolean  "event_is_publik"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "examanalyses", :force => true do |t|
+    t.integer  "exam_id"
+    t.integer  "gradeA"
+    t.integer  "gradeAminus"
+    t.integer  "gradeBplus"
+    t.integer  "gradeB"
+    t.integer  "gradeBminus"
+    t.integer  "gradeCplus"
+    t.integer  "gradeC"
+    t.integer  "gradeCminus"
+    t.integer  "gradeDplus"
+    t.integer  "gradeD"
+    t.integer  "gradeE"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -629,6 +684,25 @@ ActiveRecord::Schema.define(:version => 20130521191742) do
     t.integer  "examquestion_id"
     t.string   "sequence"
     t.string   "answer"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "examquestionanalyses", :force => true do |t|
+    t.integer  "examquestion_id"
+    t.integer  "count"
+    t.decimal  "min"
+    t.decimal  "max"
+    t.decimal  "mean"
+    t.decimal  "sd_population"
+    t.integer  "pass_rate"
+    t.decimal  "pass_percentage"
+    t.integer  "mark0"
+    t.integer  "markless20"
+    t.integer  "markless50"
+    t.integer  "markless80"
+    t.integer  "markmore80"
+    t.integer  "examanalysis_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -723,6 +797,15 @@ ActiveRecord::Schema.define(:version => 20130521191742) do
     t.text     "answer"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "examtemplates", :force => true do |t|
+    t.integer  "quantity"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "exam_id"
+    t.decimal  "total_marks"
+    t.string   "questiontype"
   end
 
   create_table "grades", :force => true do |t|
@@ -1126,6 +1209,7 @@ ActiveRecord::Schema.define(:version => 20130521191742) do
     t.integer  "student_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "pngk"
   end
 
   create_table "roles", :force => true do |t|

@@ -9,6 +9,30 @@
 	<!--22Apr2013-refer model:attr_accessor:programme_id-->
 <!--</div>
 <div class="tform">-->
+
+
+<% if @exam.klass_id == 0 %>
+<!--start-Make use of klass.id for exam TEMPLATE creation-->
+	<H2>Questions</H2>
+	<div id="template">
+		<table width=100% border=0>
+			  <tr>
+		      	<td width=18% ><label for="type_id"><b>Question Type:</b></label></td>
+		      	<td width=12% ><label for="quantity"><b>Quantity:</b></label></td>
+				<td width=15% ><label for="total_marks"><b>Total Marks:</b></label></td>
+		      	<td width=40%></td>
+	      </tr>
+		 </table>
+		<% f.fields_for :examtemplates do |builder| %>
+			<%= render 'examtemplate_fields', :f => builder %>
+		<% end %>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :examtemplates %> - Add More </p>
+		<p><font size=-2>MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each</font></p>
+	</div>
+
+<!--else-Make use of klass.id for exam TEMPLATE creation-->
+<% else %>
+
 	
 	<H2>Filters</H2>
 		
@@ -188,6 +212,8 @@
 	
 	</div>
 	
+
+<% end %>	<!--end-OTHER THAN - Make use of klass.id for exam TEMPLATE creation-->
 
 </div>
 
