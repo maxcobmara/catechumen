@@ -20,7 +20,18 @@
 								<td><%# @selected_exam = Exam.find(@examid)%>
 									<%# @selected_subject = Programme.find(@subjectid) %>
 									<% @selected_subject = Programme.find(:first,:conditions=>['id=?',@subjectid]) %>
-								<!--DISPLAY GRADE DETAILS AT THIS LINE--><%=@selected_subject.subject_list %><br>
+								<!--DISPLAY GRADE DETAILS AT THIS LINE--><%=@selected_subject.subject_list %>
+								<!--23Jun2013-START-ADDED EXAM PAPER THAT WAS MATCHED WITH SELECTED SUBJECT (FINAL PAPER ONLY)-->
+									<% @examid_exist = Exam.find(:first, :conditions=> ['subject_id=? AND name=?', @subjectid, 'F'] )%>
+									<% if @examid_exist %>
+										<font size=-2 color=blue>
+											(<%= @exampaper = Exam.find(@examid_exist.id).exam_name_subject_date %>
+											<% @is_template = @examid_exist.klass_id %>
+											<%= "template" if @is_template == 0 %>)
+										</font>
+									<% end %>
+								<!--23Jun2013-START-ADDED EXAM PAPER THAT WAS MATCHED WITH SELECTED SUBJECT (FINAL PAPER ONLY)-->
+								<br>
 								<!--bln:--><%# @exammonth=@selected_exam.exam_on.strftime("%m")%>
 											<% @current_month = Date.today.month %>
 								<!--tahun:--><%# @examyear=@selected_exam.exam_on.strftime("%Y")%>
@@ -34,7 +45,7 @@
 								<%# @selected_exam.subject.root.name %><%# @programmeid=@selected_exam.subject.root.id %>
 								<% @selected_subject.root.name %><% @programmeid=@selected_subject.root.id %>
 								</td>
-							</tr>
+							</tr>		
 							<tr>
 								<td class="leftcol" style="vertical-align:middle;"><label>Student Intake</label></td>
 								<td>							

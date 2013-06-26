@@ -13,7 +13,12 @@ class Exam < ActiveRecord::Base
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
   validates_presence_of :programme_id,:subject_id, :name
-  validate :sequence_must_be_selected, :sequence_must_be_unique#,:sequence_must_increment_by_one
+  validates_uniqueness_of :name, :scope => "subject_id", :message => " - Examination of selected exam type (name) for selected subject already exist."
+  validate :sequence_must_be_selected, :sequence_must_be_unique #,:sequence_must_increment_by_one
+  
+  #remark : validation for:validates_uniqueness_of :name, :scope => "subject_id", 
+  #-> exam must unique for each subject, academic session, name(exam type) in full set @ template.
+  #eg. Final paper(exam_type) of subject A(subject) for session Jan-Jun2013(academic session) - can EXIST only ONCE (template @ full set).
   
   def set_sequence
     if seq!= nil

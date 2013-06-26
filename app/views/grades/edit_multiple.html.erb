@@ -316,10 +316,10 @@
 				<%# 0.upto(@grades[0].scores.count-1) do |score_count|%>
 					<th style="text-align:center;background-color:#EFE;">
 						<font size=-2>
-						<%=h (Score::E_TYPES.find_all{|disp, value| value == score_x.type_id}).map {|disp, value| disp} %>
+						<%=h (Score::E_TYPES.find_all{|disp, value| value == score_x.type_id}).map {|disp, value| disp} %><br>
 						<%#=h (Score::E_TYPES.find_all{|disp, value| value == @grades[0].scores[score_count].type_id.to_i}).map {|disp, value| disp} %>
-						<!--15June2013 HIDE this (<%#=h score_x.weightage.to_i %>%) instead display..this-->
-						<br>(in %)
+						(<%=h score_x.weightage.to_i %>%)<!--15June2013 HIDE this - instead display..this-->
+						<!--23June2013 (in %)-->
 						</font>
 					</th>
 				<% end %>
@@ -332,7 +332,8 @@
 			<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different-->
 				<th style="background-color:#EEF9F9;text-align:center;">Summative Weightage</th>
 			<% end %>
-			<th style="background-color:#FEE;text-align:center;">Final Exam</th>
+			<th style="background-color:#FEE;text-align:center;">
+				Final Exam<br><font size=-2>(Written Paper)</font></th>
 			<th style="background-color:#FEE;text-align:center;">Total Summative</th>
 			<th style="background-color:#EEF;text-align:center;">Total Marks</th>
 			<th>BPL</th>
@@ -412,7 +413,10 @@
 					<%= hidden_field_tag "formatives[]", number_with_precision(grade.formative,:precision=>2), :size=> 4,:id=>"totalformative"+no.to_s,:class=>'j1'  %><%##=exammark.total_mcq%>
 				<!--</td>-->
 				
+				<!--23June2013-no changes here but pls refer js part-->
 				<td style="background-color:#E5ECE5;text-align:center;"><%= text_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s %></td>
+				<!--23June2013-->
+				
 				<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different-->
 					<td style="background-color:#EEF9F9;text-align:center;">
 						<%= text_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :size=> 4, :id=>"examweight"+no.to_s %>
@@ -452,11 +456,22 @@
 <%=hidden_field_tag "grade[student_count]", @student_count%><!--trial1-->
 <%=hidden_field_tag "grade[column_count]", 4 %>
 
+<!--23June2013-add total fullmarks-->
+<% @examid_exist = Exam.find(:first, :conditions=> ['subject_id=? AND name=?', @grades[0].subject_id, 'F'] )%>
+<!--use FIRST-[0], must unique, only 1-->
+<!--EXAM ID (EXIST) YG DIBACA SEPATUTNYE FINAL = <%#= @examid_exist.id %>-->	
+<% if @examid_exist %>
+	<% @examid = @examid_exist.id %>
+<% end %>
+<%=hidden_field_tag "grade[fullmarks]", Exammark.fullmarks(@examid) %>
+<!--23June2013-add total fullmarks-->
+
 <script type="text/javascript">
 	$j(document).ready(function(){
 			$j(".i1").keyup(function() {  
 				var studentcount = $j("#grade_student_count").val();
 				var mcqcount = $j("#grade_score_count").val();
+				var fullmarks = $j("#grade_fullmarks").val();	//added 23June2013
 				for (var i=0;i<studentcount;i++)
 				{
 					for (var j=0;j<mcqcount;j++)
@@ -511,14 +526,18 @@
 					//added on 15June2013
 					for (var m=0;m<mcqcount;m++)
 					{	
-						b=b+(((window["mcq"+i+m])*1)*((window["fw"+i+m])*1)/100)								
+						//23Jun2013-refer UAT dated 21June2013-Fisioteraphy
+						//insert exact marks according to weightage
+						b=b+((window["mcq"+i+m])*1)
+						//b=b+(((window["mcq"+i+m])*1)*((window["fw"+i+m])*1)/100)								
 					}
 					//added on 15June 2013
 					((window["totalmcq"+i]).value) = a;
 					//amended on 15June 2013
 					//(window["camse"+i]).value = a*((100-(window["examweightage"+i]*1))/100)*1;	
 					(window["camse"+i]).value = b;
-					window["tsummative"+i].value = ((window["tfinalexam"+i]*1)*(window["examweightage"+i]*1)/100)		//9June2013-pm	
+					window["tsummative"+i].value = ((window["tfinalexam"+i]*1)/fullmarks*(window["examweightage"+i]*1))
+					//window["tsummative"+i].value = ((window["tfinalexam"+i]*1)*(window["examweightage"+i]*1)/100)		//9June2013-pm	
 					window["tfinalscore"+i].value = ((window["camse"+i]).value*1)+(window["tsummative"+i].value*1)	//9June2013-pm
 					//window["tfinalscore"+i].value = ((window["camse"+i]).value*1)+(window["tsummative"+i]*1)		//9June2013		
 					

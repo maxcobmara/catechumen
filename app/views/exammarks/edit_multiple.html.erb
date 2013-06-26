@@ -65,6 +65,8 @@
 					<% @allcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['exam_id=?',@examid]).count %>
 				<% end %>
 				
+				<% @fullmarks = Exammark.fullmarks(@examid) %><!--23June2013-works for both type of exam paper-->
+				
 				<% if @meqcount %>
 					<% 1.upto(@meqcount) do |count|%>
 						<th>MEQ-Q <%=count%></th>
@@ -100,7 +102,8 @@
 						<th>TRUE/FALSE-Q <%=count%></th>
 					<% end %>
 				<% end %>
-				<th colspan=2>TOTAL</th>
+				<th>Total <font size=-2>(<%=@fullmarks%>)</font></th>
+				<th>Summative</th>
 			</tr>
 		
 			<% @b_count=0 %><% @diff_total_mcq=0%>
@@ -183,6 +186,12 @@
 						
 						<%= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true %>
 					</td>
+					<!--23June2013-TEMPORARY USE FIXED FORMULA : TOTAL MARKS OF WRITTEN PAPER * 0.70 -->
+					<!--suppose...depends on struktur penilaian-for final exam : eg:fisioteraphy-mcq=40%(40 que), seq=30%(4 que=40marks)-->
+					<td>
+						<%= text_field_tag "total_summative[]", number_with_precision(exammark.total_marks/Exammark.fullmarks(@examid)*70,2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true %>
+					</td>	
+					<!--23June2013-->
 					<% @b_count+=1%>
 				</tr>	
 
@@ -206,7 +215,8 @@
 <!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-->
 <%=hidden_field_tag "exammark[trial2]", @mcqcount %>
 <%=hidden_field_tag "exammark[trial1]", @student_count%>
-<%=hidden_field_tag "exammark[trial3]", @allcount%>
+<%=hidden_field_tag "exammark[trial3]", @allcount%> 
+<%=hidden_field_tag "exammark[trial4]", @fullmarks%>
 
 <script type="text/javascript">
 	$j(document).ready(function(){
@@ -214,6 +224,7 @@
 				var studentcount = document.getElementById("exammark_trial1").value;
 				var mcqcount = document.getElementById("exammark_trial2").value;
 				var allcount = document.getElementById("exammark_trial3").value;
+				var fullmarks = document.getElementById("exammark_trial4").value;
 				//var a=0;
 				for (var i=0;i<studentcount;i++)
 				{
@@ -233,6 +244,12 @@
 					window["totalmarksview"+i] = document.getElementById("total_marks_view"+i);			
 				}
 				//-8June2013-assign values into variable totalmarks for viewing
+				//-23June2013-retrieve variables for total_summative (for viewing)
+				for (var i=0;i<studentcount;i++)
+				{
+					window["totalsummative"+i] = document.getElementById("total_summative"+i);			
+				}
+				//-23June2013-assign values into variable total_summative (for viewing)
 				for (var i=0;i<studentcount;i++)
 				{					
 					var a = 0
@@ -241,6 +258,7 @@
 						a=a*1+((window["other"+i+k])*1);
 					}
 						window["totalmarksview"+i].value = window["totalmcq"+i]*1+a
+						window["totalsummative"+i].value = (window["totalmcq"+i]*1+a)/fullmarks*70
 				}
 			});		
 			

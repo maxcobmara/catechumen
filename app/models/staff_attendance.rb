@@ -130,7 +130,9 @@ class StaffAttendance < ActiveRecord::Base
   end
   
   def group_by_thingy
-    logged_at.to_date.to_s
+    #logged_at.to_date.to_s                       #hide on 21June2013
+    logged_at.in_time_zone('UTC').to_date.to_s    #- AMENDED 21JUNE2013
+    
   end
   
   def r_u_late
@@ -219,8 +221,8 @@ class StaffAttendance < ActiveRecord::Base
     		minit_shift = (StaffShift.find(shift).start_at.min) if shift != nil
         
         
-        if timmy2 > starting_shift && self.trigger != false     #if 822 > 730 && self.trigger != false
-            diff = timmy2-starting_shift #(822-730)
+        if timmy2 > starting_shift && self.trigger != false           #if 822 > 730 && self.trigger != false
+            diff = timmy2-starting_shift #(822-730)            
             if minit_shift!=nil && mins.to_i < minit_shift                          #if 22 < 30
                 minit_diff = ((mins.to_i+60)-minit_shift)
                 #late = ((diff/100)-1).to_s+" hours " 
@@ -236,7 +238,7 @@ class StaffAttendance < ActiveRecord::Base
                 #$$$$$$-----------------------------
             else
                 if diff > 99 
-                    late = (diff/100).to_s+" hours " + (diff % 100).to_s+" minutes"       #in hours & minutes
+                    late = (diff/100).to_i.to_s+" hours " + (diff % 100).to_s+" minutes "       #in hours & minutes
                     #late = (((diff/100)* 60) + (diff % 100)).to_s + " minutes"           #in minutes only       
                 else
                     late = "#{diff} minutes"

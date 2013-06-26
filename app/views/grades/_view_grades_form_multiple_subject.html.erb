@@ -48,8 +48,12 @@
 		<% end %>
 
 		<% @student_ids = @students2.map(&:id)%>
-		<% @examid_exist = Exam.find_by_subject_id(@subject_id)%>
-		<%# @examid_exist = Exam.find_by_subject_id(808)%>
+		<%# @examid_exist = Exam.find_by_subject_id(808)%><!--SAMPLE SUBJECT-->
+		<%# @examid_exist = Exam.find_by_subject_id(@subject_id) %><!--DON'T USE THIS-->
+		<!--USE THIS INSTEAD-->
+		<% @examid_exist = Exam.find(:first, :conditions=> ['subject_id=? AND name=?', @subject_id, 'F'] )%>
+		<!--use FIRST-[0], must unique, only 1-->
+		<!--EXAM ID (EXIST) YG DIBACA SEPATUTNYE FINAL = <%#= @examid_exist.id %>-->
 		
 		<% if @examid_exist %>
 			<% @examid = @examid_exist.id %>
@@ -64,7 +68,7 @@
 				<% @curr_exammark = Exammark.find(:first, :conditions=>['student_id IN (?) and student_id NOT IN (?) AND exam_id=?',@student_ids,@student_ids_exist_gradesubject,@examid])%><!--refer line 122-->
 		<% else %>
 				<!--mmm<%#=@student_ids%>|<%#=@student_ids_exist_gradesubject%>|<%#=@examid%>-->
-				curr<%= @curr_exammark = Exammark.find(:first, :conditions=>['student_id IN (?) AND exam_id=?',@student_ids,101])%><!--refer line 122-->
+				curr<% @curr_exammark = Exammark.find(:first, :conditions=>['student_id IN (?) AND exam_id=?',@student_ids,@examid])%><!--refer line 122-->
 		<% end %>
 		
 		<% if @curr_exammark %>
@@ -87,10 +91,10 @@
 					<th rowspan=2 width=230px>Name</th>
 					<th rowspan=2 width=130px>Matric No</th>
 					<th rowspan=2>MyKad No</th>
-					<!--<th colspan=4>--><th rowspan=2 width=60px><!--MCQ-->Total Formative </th>
+					<!--<th colspan=4>--><!--23JUNE2013-HIDE TOTAL FORMATIVE COLUMN<th rowspan=2 width=60px>--><!--MCQ--><!--Total Formative </th>-->
 					<th rowspan=2>CA+MSE</th>
 					<!--<th rowspan=2 width=75px>Summative Weightage</th>-->
-					<th rowspan=2>Final Exam</th>
+					<th rowspan=2>Final Exam<br>(Written Paper)</th>
 					<th rowspan=2 width=60px>Total Summative</th>
 					<th rowspan=2>Total Marks</th>
 				</tr>
@@ -135,8 +139,10 @@
 						<td style="padding-left:4px;padding-right:4px;"><%= student.name %></td>
 						<td style="padding-left:4px;padding-right:4px;"><%= student.matrixno %></td>
 						<td style="padding-left:4px;padding-right:4px;"><%= student.icno %></td>
+						<!--23JUNE2013-HIDE COLUMN TOTAL FORMATIVE-->
 						<!--3June2013-<td colspan=4> this part for total formative-->
-						<td style="padding-left:4px;padding-right:4px;text-align:center;"><%= text_field "grades[#{index}]",:formative, :value=> 0, :size=>4 %></td>
+						<!--<td style="padding-left:4px;padding-right:4px;text-align:center;"><%#= text_field "grades[#{index}]",:formative, :value=> 0, :size=>4 %></td>-->
+						<!--23JUNE2013-HIDE COLUMN TOTAL FORMATIVE-->
 						<!--use column score for CA+MSE-->
 						<td style="padding-left:4px;padding-right:4px;text-align:center;"><%= text_field "grades[#{index}]",:score, :value=> 0, :size=>4 %>
 							<%##= text_field "exammarks[#{index}][marks_attributes][0]",:student_mark , :size=>4  %>
@@ -198,9 +204,28 @@
 						<!---->
 		
 		
-						<td style="padding-left:4px;padding-right:4px;text-align:center;"><%= text_field "grades[#{index}]",:exam1marks, :value=> 0, :size=>4 %>
-																						<%#= text_field "grades[#{index}]",:exam1marks, :value=> @finalfrexammark, :size=>4 %>
-						<td style="padding-left:4px;padding-right:4px;text-align:center;"><%= text_field "grades[#{index}]",:summative, :value=> 0, :size=>4 %></td>
+						<td style="padding-left:4px;padding-right:4px;text-align:center;">
+							<!--retrieve FINAL EXAM(WRITTEN PAPER) marks from exammarks & marks table-->
+							<% if @grade %>
+								<% @final_from_exammarks = Grade.retrieve_final_exam_from_exammark(@examid, student.id) %>
+							<% else %>
+								<% @final_from_exammarks = 0 %>
+							<% end %>
+							<%= text_field "grades[#{index}]",:exam1marks, :value=> number_with_precision(@final_from_exammarks,:precision=>2), :size=>4 %>
+							<!--below-BACKUP IN CASE-23June2013-->	
+							<%#= text_field "grades[#{index}]",:exam1marks, :value=> 0, :size=>4 %>
+							<!--above-BACKUP IN CASE-23June2013-->																
+							<%#= text_field "grades[#{index}]",:exam1marks, :value=> @finalfrexammark, :size=>4 %>
+						</td>
+						<td style="padding-left:4px;padding-right:4px;text-align:center;">
+							<% if @grade %>
+								<% @summative = @final_from_exammarks/Exammark.fullmarks(@examid)*70 %>
+							<% else %>
+								<% @summative = 0 %>
+							<% end %>	
+							<%= text_field "grades[#{index}]",:summative, :value=> number_with_precision(@summative,:precision=>2), :size=>4 %>
+							<%#= text_field "grades[#{index}]",:summative, :value=> 0, :size=>4 %>
+						</td>
 						<td style="padding-left:4px;padding-right:4px;text-align:center;"><%= text_field "grades[#{index}]",:finalscore, :value=> 0, :size=>4 %></td>
 					</tr>
 					

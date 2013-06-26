@@ -4,7 +4,31 @@ class StaffAttendancesController < ApplicationController
   def index
     #---
     submit_val = params[:submit_button1]
-    @staffthumb = params[:staffthumb]
+    @dept_select = params[:dept_select]
+    @staffthumb = params[:staffthumb1] if @dept_select == "Teknologi Maklumat"
+    @staffthumb = params[:staffthumb2] if @dept_select == "Perhotelan"
+    @staffthumb = params[:staffthumb3] if @dept_select == "Perpustakaan"
+    @staffthumb = params[:staffthumb4] if @dept_select == "Kaunter"
+    @staffthumb = params[:staffthumb5] if @dept_select == "Pembangunan"
+    @staffthumb = params[:staffthumb6] if @dept_select == "Kewangan & Stor"
+    @staffthumb = params[:staffthumb7] if @dept_select == "Perkhidmatan"
+    @staffthumb = params[:staffthumb8] if @dept_select == "Pentadbiran Am"
+    @staffthumb = params[:staffthumb9] if @dept_select == "Radiografi"
+    @staffthumb = params[:staffthumb10] if @dept_select == "Kejururawatan"
+    @staffthumb = params[:staffthumb11] if @dept_select == "Jurupulih Perubatan Anggota (Fisioterapi)"
+    @staffthumb = params[:staffthumb12] if @dept_select == "Jurupulih Perubatan Cara Kerja"
+    @staffthumb = params[:staffthumb13] if @dept_select == "Penolong Pegawai Perubatan"
+    @staffthumb = params[:staffthumb14] if @dept_select == "Pos Basik"
+    @staffthumb = params[:staffthumb15] if @dept_select == "Sains Perubatan Asas"
+    @staffthumb = params[:staffthumb16] if @dept_select == "Anatomi & Fisiologi"
+    @staffthumb = params[:staffthumb17] if @dept_select == "Sains Tingkahlaku"
+    @staffthumb = params[:staffthumb18] if @dept_select == "Komunikasi & Sains Pengurusan"
+    @staffthumb = params[:staffthumb19] if @dept_select == "Pembangunan Pelatih"
+    @staffthumb = params[:staffthumb20] if @dept_select == "Khidmat Sokongan Pelatih"
+    @staffthumb = params[:staffthumb21] if @dept_select == "Kokurikulum"
+    @staffthumb = params[:staffthumb22] if @dept_select == "Ketua Unit Penilaian & Kualiti"
+    
+    
     #---if search by date---------------------------------------------------------------------------------------------------------
     if submit_val == "Search"
         @aa=params[:search_from][:"(1i)"] 
@@ -36,7 +60,7 @@ class StaffAttendancesController < ApplicationController
         else
             @dadidu2=''
         end
-        @dept_select = params[:dept_select]
+        #@dept_select = params[:dept_select]
     
     
         params[:search_from]=nil  #this line is required
@@ -86,7 +110,7 @@ class StaffAttendancesController < ApplicationController
     @test_department = []
     @testalldepartmenttgroup = []
     0.upto(21) do |countt|
-        @position_staff_ids << Position.find(:first, :conditions=>['unit=?',@dept_names[countt]]).subtree.map(&:staff_id)   
+        @position_staff_ids << Position.find(:first, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').subtree.map(&:staff_id).uniq.delete_if{|x|x==nil}   
     end
     0.upto(21) do |countt2|
         @staff_in_department << Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',@position_staff_ids[countt2]]).map(&:thumb_id)
@@ -128,8 +152,7 @@ class StaffAttendancesController < ApplicationController
           #ADDD
           0.upto(@days_count) do |count| 
 		          testalldeptgroup.each do |d,k|
-		      
-				          if d == @loop_date # "2012-10-15" #date
+				          if d == @loop_date                                             # if d == @loop_date    #"2012-10-15" #date
 				              @selected_rec_by_date << k        #will retrieve existing record only...
 				              #@selected_rec_by_date[count] << k 
 				          end
@@ -141,8 +164,7 @@ class StaffAttendancesController < ApplicationController
         else
           #0.upto(1) do |count| 
 		          testalldeptgroup.each do |d,k|
-		      
-				          if d == @loop_date # "2012-10-15" #date
+				          if d == @loop_date   #if d == @loop_date # "2012-10-15" #date
 				              @selected_rec_by_date << k
 				          end
 				    
@@ -308,7 +330,7 @@ class StaffAttendancesController < ApplicationController
                   @dadidu=''
               end
     		      @next_date = @dadidu.to_date+1.month  #(next month)
-          elsif @find_type == "Report for 2 Week"
+          elsif @find_type == "Weekly Report"    #  "Report for 2 Week" 
               @aa=params[:month_year1][:"(1i)"]  #year
               @bb=params[:month_year1][:"(2i)"]  #month
      		      @cc=params[:month_year1][:"(3i)"]      #day
@@ -323,7 +345,23 @@ class StaffAttendancesController < ApplicationController
               else
                   @dadidu=''
               end
-              @next_date = @dadidu.to_date+2.week   #(next week)
+              @next_date = @dadidu.to_date+1.week  #(next week)
+           elsif @find_type == "Daily Report"    
+              @aa=params[:month_year3][:"(1i)"]  #year
+              @bb=params[:month_year3][:"(2i)"]  #month
+    		      @cc=params[:month_year3][:"(3i)"]      #day
+              if @aa!='' && @bb!='' && @cc!=''
+                 if @cc=='1'||@cc=='2'||@cc=='3'||@cc=='4'||@cc=='5'||@cc=='6'||@cc=='7'||@cc=='8'||@cc=='9'
+                     @cc='0'+@cc
+                 end
+                 if @bb=='1'||@bb=='2'||@bb=='3'||@bb=='4'||@bb=='5'||@bb=='6'||@bb=='7'||@bb=='8'||@bb=='9'
+                     @bb='0'+@bb
+                 end
+                 @dadidu=@aa+'-'+@bb+'-'+@cc
+             else
+                 @dadidu=''
+             end
+              @next_date = @dadidu.to_date+1.day 
            end
            #====refer model --> self.peep method==
            @hisstaff = Position.find(@superior_position_id).child_ids
@@ -331,10 +369,17 @@ class StaffAttendancesController < ApplicationController
            @thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", @hisstaffids]).map(&:thumb_id)
            #======================================
            #*******************refer model --> self.find_approveearly --(is_approved==false)
-           @notapproved_lateearly=StaffAttendance.find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) ", true, true, @thumbs], :order => 'logged_at DESC').group_by {|t| t.thumb_id }
-           #@notapproved_lateearly=StaffAttendance.find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, @thumbs, @dadidu, @next_date], :order => 'logged_at DESC').group_by {|t| t.thumb_id }
+           #@notapproved_lateearly=StaffAttendance.find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) ", true, true, @thumbs], :order => 'logged_at DESC').group_by {|t| t.thumb_id }
+           #NOT APPROVED....
+           @notapproved_lateearly=StaffAttendance.find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, @thumbs, @dadidu, @next_date], :order => 'logged_at DESC').group_by {|t| t.thumb_id }
+           #LATE EARLY....not yet approved....
+           @lateearly=StaffAttendance.find(:all, :conditions => ["trigger=? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, @thumbs, @dadidu, @next_date], :order => 'logged_at DESC').group_by {|t| t.thumb_id }
+           
            #**************************************
-
+           #-------for reference-------
+            #d1 = d.logged_at.in_time_zone('UTC').strftime('%Y-%m-%d').to_s  # logged_at.in_time_zone('UTC').strftime('%Y-%m-%d').to_s - 21June2013 - ADDED
+		          #if d1 == @loop_date
+           #-------for reference-------
            render :layout => 'report'
       end   #end for - if request.post?
   end

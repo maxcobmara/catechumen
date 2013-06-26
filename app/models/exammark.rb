@@ -8,7 +8,7 @@ class Exammark < ActiveRecord::Base
   validates_presence_of   :student_id, :exam_id
   validates_uniqueness_of :student_id, :scope => :exam_id, :message => " - Mark of this exam for selected student already exist. Please edit/delete existing mark accordingly."
   
-  attr_accessor :total_marks, :subject_id, :intake_id,:trial1,:trial2, :total_marks_view, :trial3, :total_mcq_in_exammark_single
+  attr_accessor :total_marks, :subject_id, :intake_id,:trial1,:trial2, :total_marks_view, :trial3, :total_mcq_in_exammark_single, :trial4
   
   def set_total_mcq
     if total_mcq==nil   #5June2013-added-calculate here if not assign in _view_marks_form(otal_mcq==nil)
@@ -65,30 +65,50 @@ class Exammark < ActiveRecord::Base
     return @exammarkerrors_full
   end
   
-  #11June2013---
+  def self.fullmarks(exam_id)
+      @istemplate = Exam.find(exam_id).klass_id
+      if @istemplate == 0 
+        fullmarks = Exam.find(exam_id).examtemplates.map(&:total_marks).inject{|sum,x|sum+x}
+      else
+        fullmarks = Exam.find(exam_id).examquestions.map(&:marks).to_a.inject{|sum,x|sum+x}
+      end
+      fullmarks
+  end
+  
+  #11June2013---updated 23June2013
   def apply_final_exam_into_grade
     @subject_id = Exam.find(exam_id).subject_id
     @examtype = Exam.find(exam_id).name
+    fullmarks = Exammark.fullmarks(exam_id)
     @grade_to_update = Grade.find(:first, :conditions=> ['student_id=? and subject_id=?', student_id, @subject_id])
-    @credit_hour=Programme.find(@subject_id).credits.to_i
+    #@credit_hour=Programme.find(@subject_id).credits.to_i
+    
     unless @grade_to_update.nil? || @grade_to_update.blank?
-        if @credit_hour == 3
-	        @grade_to_update.exam1marks = total_marks.to_f/0.9
-	        @grade_to_update.summative = total_marks.to_f/0.9*0.7
-        elsif @credit_hour == 4
-          @grade_to_update.exam1marks = total_marks.to_f/1.2
-          @grade_to_update.summative = total_marks.to_f/1.2*0.7
-        elsif @credit_hour == 2
-          @grade_to_update.exam1marks = total_marks.to_f/0.7
-          @grade_to_update.summative = total_marks.to_f/0.7*0.7
-        else
+        #if @credit_hour == 3
+          # if marks entered not in weightage marks, eg, weightage : mcq=40%(40 que), seq=30%(4 que=40marks), but marks were entered according to actual total marks : 80/80 (but weightage 70%) 
+          # TEMPORARY use these FORMULA --> total_marks.to_f/0.9,total_marks.to_f/0.7,total_marks.to_f/1.2  .....OR ELSE
+          
+          #------if marks entered already in weightage,...exam1marks = total_marks---------------------------------
           @grade_to_update.exam1marks = total_marks.to_f
-          @grade_to_update.summative = total_marks.to_f*0.7
-        end
+          @grade_to_update.summative = total_marks.to_f/fullmarks.to_f*70 #REQUIRES FORMULA HERE --> SEE ABOVE EXAMPLE ...LINE 76
+          #------------------------------use ABOVE formula for all conditions--HIDE ALL @credit_hour statement-----
+          
+	        #@grade_to_update.exam1marks = total_marks.to_f/0.9        #depends on weightage 
+	        #@grade_to_update.summative = total_marks.to_f/0.9*0.7
+        #elsif @credit_hour == 4
+          #@grade_to_update.exam1marks = total_marks.to_f/1.2        #depends on weightage
+          #@grade_to_update.summative = total_marks.to_f/1.2*0.7
+        #elsif @credit_hour == 2
+          #@grade_to_update.exam1marks = total_marks.to_f/0.7        #depends on weightage
+          #@grade_to_update.summative = total_marks.to_f/0.7*0.7
+        #else
+          #@grade_to_update.exam1marks = total_marks.to_f            #depends on weightage
+          #@grade_to_update.summative = total_marks.to_f*0.7
+        #end
         @grade_to_update.save if @grade_to_update.exam1marks && @examtype == "F"  #F for Peperiksaan Akhir Semester
     end
   end
-  #11June2013---
+  #11June2013------updated 23June2013
   
   #14March2013 - rev 17June2013
   def self.set_intake_group(examyear,exammonth,semester)    #semester refers to semester of selected subject - subject taken by student of semester???

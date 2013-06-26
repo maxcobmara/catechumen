@@ -25,15 +25,15 @@
 					  <tr>
 						  <td><%=h (Score::E_TYPES.find_all{|disp, value| value == score.type_id}).map {|disp, value| disp} %></td>
 				      <td><%=h score.description %></td>
-				      <td><%=h score.marks %>%</td>
-							<td><%=h score.weightage %>% of total</td>
+				      <td><%=h score.marks %><!--%--></td>
+							<td><%=h score.weightage %><!--% of total--></td>
 							<td><%=h score.type_marks %></td>
 						</tr>
 						<% end %>
 						<tr>
 						  <td></td>
 				      <td></td>
-				      <td></td>
+				      <td><b><%= @grade.total_formative2 %></b></td>
 							<td><%= @grade.total_per %>%</td>
 							<td><b><%= @grade.total_formative %>%</b></td> 
 						</tr>
@@ -45,7 +45,7 @@
 	<table width=100%>
 		<tr>
 			<td class="leftcol"><label for="total_formative">Total Formative:</label></td>
-			<td><%=h @grade.total_formative %>%</td>
+			<td><%=h @grade.total_formative2 %> | <%=h @grade.total_formative %>%</td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>

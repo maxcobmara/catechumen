@@ -111,9 +111,15 @@
 	</div>
 </div>
 
-<!--display subject for grade creation: only those exist in exam -->
-<% @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.all.map(&:subject_id) ])%>
+<!--display subject for grade creation: only those exist in exam & COMPULSORY FOR EXAM MUST USE WITH NAME = "F" & must UNIQUE-->
+<% @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.all.map(&:subject_id)] )%>
 <!---->
+
+<!--for testing-->
+<!--1-Exam all : <%#=Exam.find(:all, :conditions => ['name=?','F']).map(&:subject_id) %><br>-->	<!--subject_id in Exams table-->
+<!--2-Subject_ids : <%#=@subjectlist_preselec_prog.map(&:id)%><br>-->							<!--subject_id in Programmes table-->
+<!--3-Exam_ids :--><%#=@subjectlist_preselec_prog2.map(&:id)%>									<!--subject_id EXIST in Exams table & Programmes table-->
+<!--for testing-->
 
 <table width=100%>
 	<tr>

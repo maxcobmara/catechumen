@@ -10,7 +10,7 @@ class Grade < ActiveRecord::Base
   accepts_nested_attributes_for :scores,:allow_destroy => true, :reject_if => lambda { |a| a[:description].blank? } #allow for destroy - 17June2013
   
   attr_accessor :programme_id, :final_exam_paper, :intake_id, :summative_weightage, :formative_scores_var,:summative_weightage2,:summative_weightage3,:summative_weightage4,:summative_weightage5,:summative_weightage6,:score_count,:student_count,:column_count, :form_weight, :formative_count
-  before_save :save_bpl_sent_date#, :retrieve_final_exam_from_exammark
+  before_save :save_bpl_sent_date
   
     def save_bpl_sent_date
       if sent_to_BPL == true && sent_date == nil
@@ -20,20 +20,37 @@ class Grade < ActiveRecord::Base
       end
     end
     
-    #17June2013---
-    #def retrieve_final_exam_from_exammark
-      #@subject_id = Exam.find(exam_id).subject_id
-      #@examtype = Exam.find(exam_id).name
-      #@grade1 = Grade.find(:first, :conditions=> ['student_id=? and subject_id=?', student_id, @subject_id])
-      #unless @grade1.nil? || @grade1.blank?
-          #@grade1.exam1marks = total_marks
-          #@grade1.save if @grade1.exam1marks && @examtype == "F"  #F for Peperiksaan Akhir Semester
+    #23June2013---retrieve marks from exammarks & marks table to be inserted into 
+    #...grades/_view_grades_form_multiple_subject.html.erb (line 206-207), exam1marks 's field
+    def self.retrieve_final_exam_from_exammark(examid,studentid)
+      exammark_id = Exammark.find(:all, :conditions => ['exam_id=? AND student_id=?', examid, studentid])
+      @total_mcq = Exammark.find(exammark_id)[0].total_mcq
+      subject_id = Exammark.find(exammark_id)[0].exampaper.subject_id
+      total_marks = Mark.sum(:student_mark, :conditions => ["exammark_id=?", exammark_id])+@total_mcq
+      credit_hour=Programme.find(subject_id).credits.to_i
+      
+      #------if marks entered already in weightage,...exam1marks = total_marks---------------------------------
+      @total_marks = total_marks
+      summative = total_marks.to_f*0.7
+      #------------------------------use ABOVE formula for all conditions--HIDE ALL @credit_hour statement-----
+      
+      #if credit_hour == 3
+         #@total_marks = total_marks.to_f/0.9
+          ##summative = total_marks.to_f/0.9*0.7
+      #elsif credit_hour == 4
+          #@total_marks = total_marks.to_f/1.2
+          ##summative = total_marks.to_f/1.2*0.7
+      #elsif @credit_hour == 2
+          #@total_marks = total_marks.to_f/0.7
+          ##summative = total_marks.to_f/0.7*0.7
+      #else
+          #@total_marks = total_marks.to_f
+          ##summative = total_marks.to_f*0.7
       #end
-      #total_marks = Exammark.find().total_marks
-      #self.exammarks = total_marks if @examtype == "F"
-
-   # end
-    #17June2013---
+      
+      return @total_marks
+    end
+    #23June2013---
   
     # 22 May 2012
     ## CA + MSE (excel file) = (total_formative * (100 - examweight)/100)
@@ -50,6 +67,10 @@ class Grade < ActiveRecord::Base
     
     def total_formative
       Score.sum(:score, :conditions => ["grade_id = ?", id])
+    end
+    
+    def total_formative2  #temporary - to confirm with user-marks to be entered in weightage or %
+      Score.sum(:marks, :conditions => ["grade_id = ?", id])
     end
     
     def total_summative
