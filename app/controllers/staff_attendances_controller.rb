@@ -62,9 +62,16 @@ class StaffAttendancesController < ApplicationController
         end
         #@dept_select = params[:dept_select]
     
-    
+        
         params[:search_from]=nil  #this line is required
         params[:search_to]=nil    #this line is required
+        
+        ##27June2013-refer - add extra 1 day before & 1 day after
+        @dadidu_ori= @dadidu
+        @dadidu2_ori= @dadidu2
+        @dadidu = (@dadidu.to_date-1.day).to_s
+        @dadidu2 = (@dadidu2.to_date+1.day).to_s
+        ##27June2013-refer 
          
         #insert here....
         if (@dadidu=='' && @dadidu2=='')||(@dadidu==nil && @dadidu2==nil)
@@ -372,9 +379,11 @@ class StaffAttendancesController < ApplicationController
            #@notapproved_lateearly=StaffAttendance.find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) ", true, true, @thumbs], :order => 'logged_at DESC').group_by {|t| t.thumb_id }
            #NOT APPROVED....
            @notapproved_lateearly=StaffAttendance.find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, @thumbs, @dadidu, @next_date], :order => 'logged_at DESC').group_by {|t| t.thumb_id }
-           #LATE EARLY....not yet approved....
+           #LATE EARLY....regardless of APPROVAL status....
            @lateearly=StaffAttendance.find(:all, :conditions => ["trigger=? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, @thumbs, @dadidu, @next_date], :order => 'logged_at DESC').group_by {|t| t.thumb_id }
+           #27June2013-display colour card STATUS accordingly
            
+           #@color_status = 
            #**************************************
            #-------for reference-------
             #d1 = d.logged_at.in_time_zone('UTC').strftime('%Y-%m-%d').to_s  # logged_at.in_time_zone('UTC').strftime('%Y-%m-%d').to_s - 21June2013 - ADDED

@@ -206,25 +206,35 @@
 		
 						<td style="padding-left:4px;padding-right:4px;text-align:center;">
 							<!--retrieve FINAL EXAM(WRITTEN PAPER) marks from exammarks & marks table-->
-							<% if @grade %>
-								<% @final_from_exammarks = Grade.retrieve_final_exam_from_exammark(@examid, student.id) %>
+							<% if @grade %>	
+								<% unless @grade.id.nil? || @grade.id.blank? %>
+									<% @final_from_exammarks = Grade.retrieve_final_exam_from_exammark(@examid, student.id) %>
+								<% else %>
+									<% @final_from_exammarks = 0 %>
+								<% end %>
 							<% else %>
-								<% @final_from_exammarks = 0 %>
+								<% @final_from_exammarks = 0 %>	
 							<% end %>
 							<%= text_field "grades[#{index}]",:exam1marks, :value=> number_with_precision(@final_from_exammarks,:precision=>2), :size=>4 %>
 							<!--below-BACKUP IN CASE-23June2013-->	
 							<%#= text_field "grades[#{index}]",:exam1marks, :value=> 0, :size=>4 %>
 							<!--above-BACKUP IN CASE-23June2013-->																
 							<%#= text_field "grades[#{index}]",:exam1marks, :value=> @finalfrexammark, :size=>4 %>
+						
 						</td>
 						<td style="padding-left:4px;padding-right:4px;text-align:center;">
-							<% if @grade %>
-								<% @summative = @final_from_exammarks/Exammark.fullmarks(@examid)*70 %>
+							<% if @grade %>	
+								<% unless @grade.id.nil? || @grade.id.blank? %>
+									<% @summative = @final_from_exammarks/Exammark.fullmarks(@examid)*70 %>
+								<% else %>
+									<% @summative = 0 %>
+								<% end %>	
 							<% else %>
 								<% @summative = 0 %>
-							<% end %>	
+							<% end %>
 							<%= text_field "grades[#{index}]",:summative, :value=> number_with_precision(@summative,:precision=>2), :size=>4 %>
 							<%#= text_field "grades[#{index}]",:summative, :value=> 0, :size=>4 %>
+						
 						</td>
 						<td style="padding-left:4px;padding-right:4px;text-align:center;"><%= text_field "grades[#{index}]",:finalscore, :value=> 0, :size=>4 %></td>
 					</tr>

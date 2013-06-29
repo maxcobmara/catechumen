@@ -43,11 +43,11 @@ class Leaveforstudent < ActiveRecord::Base
   end
 
   def approver_details 
-    check_kin {staff.name}
+    check_kin{staff.name}
   end
 
   def student_details 
-    check_kin {student.formatted_mykad_and_student_name}
+    check_kin{student.formatted_mykad_and_student_name}
   end
 
 end

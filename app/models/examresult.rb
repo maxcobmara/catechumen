@@ -66,11 +66,19 @@ class Examresult < ActiveRecord::Base
          if (@dept_unit && @dept_unit == "Kebidanan" && exammonth.to_i <= 9) || (@dept_unit && @dept_unit != "Kebidanan" && exammonth.to_i <= 7)|| (@current_user_roles.include?(2) && exammonth.to_i <= 9)||(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i <= 9) #|| (@current_user_roles.include?(2) && exammonth.to_i <= 7) #(@dept_unit && @dept_unit == "Teknologi Maklumat" && exammonth.to_i <= 9)                                         # for 1st semester-month: Jan-July, exam should be between Feb-July
             @current_sem = 1 
             @current_year = examyear 
-            if (semester.to_i-1) % 2 == 0                        					      # modulus-no balance
+            if (semester.to_i-1) % 2 == 0                        					      # modulus-no balance - semester genab
               @intake_year = @current_year.to_i-((semester.to_i-1)/2) 
               @intake_sem = @current_sem 
-            elsif (semester.to_i-1) % 2 != 0                      				      # modulus-with balance
-              @intake_year = @current_year.to_i-((semester.to_i+1)/2) 
+            elsif (semester.to_i-1) % 2 != 0                      				      # modulus-with balance - semester ganjil
+              #29June2013-------------------OK
+              if (semester.to_i+1)/2 > 3  
+                @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
+              elsif (semester.to_i+1)/2 > 2
+                @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
+              elsif (semester.to_i+1)/2 > 1
+                @intake_year = @current_year.to_i-((semester.to_i+1)%2)
+              end  
+              #29June2013-------------------
               @intake_sem = @current_sem + 1 
       			end 
           elsif (@dept_unit&& @dept_unit == "Kebidanan" && exammonth.to_i > 9) || (@dept_unit && @dept_unit != "Kebidanan" && exammonth.to_i > 7) || (@current_user_roles.include?(2) && exammonth.to_i > 7)||(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i > 7)                                   # 2nd semester starts on July-Dec- exam should be between August-Dec
@@ -80,7 +88,17 @@ class Examresult < ActiveRecord::Base
               @intake_year = @current_year.to_i-((semester.to_i-1)/2) 				
               @intake_sem = @current_sem 
             elsif (semester.to_i-1) % 2 != 0                   					        # modulus-with balance
-              @intake_year = @current_year.to_i-((semester.to_i-1)/2).to_i      # (hasil bahagi bukan baki..)..cth semester 6 
+              #@intake_year = @current_year.to_i-((semester.to_i+1)%2)         #@intake_year = @current_year.to_i-((semester.to_i-1)/2).to_i      # (hasil bahagi bukan baki..)..cth semester 6 
+              #29June2013-------------------
+              if (semester.to_i+1)/2 > 3  
+                @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
+              elsif (semester.to_i+1)/2 > 2
+                @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
+              elsif (semester.to_i+1)/2 > 1
+                @intake_year = @current_year.to_i-((semester.to_i+1)%2)
+              end  
+              #29June2013-------------------
+              
               @intake_sem = @current_sem - 1
             end 
           end

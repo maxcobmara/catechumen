@@ -142,7 +142,8 @@ class ExamresultsController < ApplicationController
           @subjects = Examresult.get_subjects(@programme_id,@semester)
           #@subjects = Examresult.get_subjects(@programme_id,@intake)
           #@subjects = Examresult.get_subjects(@programme_id,@examyear2,@exammonth2,@intake) 
-          @students = Examresult.get_students(@programme_id,@examyear2,@exammonth2,@semester)
+          @students2 = Examresult.get_students(@programme_id,@examyear2,@exammonth2,@semester)
+           @students = Examresult.get_students(@programme_id,@examyear2,@exammonth2,@semester)
         end
       end
     end

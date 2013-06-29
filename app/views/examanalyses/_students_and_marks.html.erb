@@ -410,9 +410,11 @@
 									<% @total_MCQ = 0.0 %>
 									<% if count==0 && index3==0 %>
 										<!--start-for mcq marks-->
-										<% @total_MCQ = @exammarks.sort_by{|x|x.studentmark.name}[index].total_mcq %>
+										<%# @total_MCQ = @exammarks.sort_by{|x|x.studentmark.name}[index].total_mcq %>
+										<% @total_MCQ = @exammarks[index].total_mcq %>
+										<%# @total_MCQ = 25%>
 										<td><%= number_with_precision(@total_MCQ,:precision=>2) %></td>
-										<% @total_MCQ_A << @total_MCQ %>
+										<% @total_MCQ_A << @exammarks[index].total_mcq %>
 										<!--end-for mcq marks-->
 
 									<% elsif count!=0 %>

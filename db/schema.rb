@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130620052013) do
+ActiveRecord::Schema.define(:version => 20130627092331) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -1504,6 +1504,7 @@ ActiveRecord::Schema.define(:version => 20130620052013) do
     t.integer  "time_group_id"
     t.integer  "position_old"
     t.integer  "staff_shift_id"
+    t.integer  "att_colour"
   end
 
   create_table "stationeries", :force => true do |t|

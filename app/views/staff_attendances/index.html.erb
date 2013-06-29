@@ -793,8 +793,13 @@
 	<% if @dept_select!='All' %><p style="font-size:14px;">&nbsp;&nbsp;<b>Unit : <%=@dept_select %></b></p><% end %>
 	<% if @staffthumb!='All'%><p style="font-size:14px;">&nbsp;&nbsp;<b>Staff Name: <%=Staff.find_by_thumb_id(@staffthumb.to_i).name %></b></p><% end %>
 	
+<!--ori punye : <%#=@dadidu_ori %><%#=@dadidu2_ori %>	-->
+
 <% @ooo.keys.sort.each do |date|%><%# @ooo.keys.sort.reverse.each do |date|%>
 
+	<% if date >= @dadidu_ori && date <= @dadidu2_ori %>
+	<%#===============================================%>
+	
 	<!--newly added condition: although only 1 date entered, 2nd date will be defaulted to '16 October 2012 resulting-view of DATEs of unsearch date?'-->
 	<% if (@dadidu!='' && @dadidu2!='') %>
 	<tr><td colspan=13 style="background-color:#FDFCE8;"><!--yellow--><BR><b>Date  : <%= date unless date.blank? %></b></td></tr>
@@ -819,8 +824,9 @@
 
 			
 			<%#-----------------------------------------------%><%# if staff_attendance.logged_at.strftime("%Y-%m-%d").to_s == @selected_date %>
-			<% if staff_attendance.logged_at.strftime("%Y-%m-%d").to_s == date %>
-				
+			<% if staff_attendance.logged_at.in_time_zone('UTC').strftime("%Y-%m-%d").to_s == date %>
+			<%# if staff_attendance.logged_at.strftime("%Y-%m-%d").to_s == date %>
+			
 				<%#**************************************************************************************%>
 				
 					<% if staff_attendance.attended.blank? %> 
@@ -1005,7 +1011,10 @@
 	<!--COUNTING VAL<%#= counting%>-->
 	<% end %>
 	<% counter2+=1%>
-<% end %>
+	
+	<% end %><!--end for - if date >= @dadidu_ori && date <= @dadidu2_ori -->
+	
+<% end %><!-- end for - @ooo.keys.sort.each do |date|-->
 
 
 <%# end %><% else %>
@@ -1190,7 +1199,7 @@
 			<%count_dept+=1%>
 		<% end %>
 		
-		<tr><td colspan=10 style="background-color:red;"></td></tr>
+		<tr><td colspan=10 style="background-color:#FDDEDE;"><!--red--></td></tr>
 
 
 <% end %><!--@@@@@@@@@@@@@@@@@@--><!----><!----><!----><!----><!----><!----><!----><!---->

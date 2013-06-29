@@ -29,6 +29,7 @@
 <% unless @programme_id.blank? || @programme_id.nil? %>
 	<% unless @semester.blank? || @semester.nil? %>
 		<% unless @exammonth2.blank? || @exammonth2.nil? || @examyear2.blank? || @examyear2.nil? %>
+		
 			<!--nape tak masuk-->
 			<!--DO NOT REMOVE-start-checking-exam start month & year & semester-->
 			<!--EXAM MONTH2 <%#=@exammonth2%><br>
@@ -38,7 +39,7 @@
 			<!--DO NOT REMOVE-end-checking-exam end month & year & semester-->
 			
 			<!--start-listing of student if exist-->
-
+			
 			<% if @students.count != 0 %>
 			<table width=100% border=1 cellpadding=0 cellspacing=0>
 				<tr>
@@ -140,14 +141,14 @@
 					<% if @examresult %>
 						<% if @semester.to_i > 1 %>
 							<td style="padding:0;vertical-align:middle;text-align:center;">
-								<%= text_field "examresult[resultlines_attributes][#{@count1}]", :pngk, :size=>5, :value=>@pngk=number_with_precision(Examresult.pngk(student.id,@semester,@programme_id),:precision => 2)%>
+								<!--sini--><%= text_field "examresult[resultlines_attributes][#{@count1}]", :pngk, :size=>5, :value=>@pngk=number_with_precision(Examresult.pngk(student.id,@semester,@programme_id),:precision => 2)%>
 							</td>
 						<% else %>
 							<!--if semester == 1, default assign pngs into pngk column-examresult.rb-->
 						<% end %>
 					<% else %>
 						<% if @semester.to_i > 1 %>
-							<%= text_field "examresult[resultlines_attributes][#{@count1}]", :pngk, :size=>5 %>
+							<td style="padding:0;vertical-align:middle;"><!--sana--><%= text_field "examresult[resultlines_attributes][#{@count1}]", :pngk, :size=>5 %></td>
 						<% end %>
 					<% end %>	
 					

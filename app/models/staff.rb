@@ -445,6 +445,10 @@ class Staff < ActiveRecord::Base
         [ "Female","2"]
   ]
  
+#----------------Staff Attendance-colour status------
+  def render_colour_status
+    (StaffAttendance::ATT_STATUS.find_all{|disp, value| value == att_colour.to_i}).map {|disp, value| disp}
+  end
 
 #---------------Search--------------------------------------------------------------------------------
                         

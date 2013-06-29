@@ -123,7 +123,16 @@ class Exammark < ActiveRecord::Base
           @intake_year = @current_year.to_i-((semester.to_i-1)/2) 
           @intake_sem = @current_sem 
         elsif (semester.to_i-1) % 2 != 0                      				      # modulus-with balance
-          @intake_year = @current_year.to_i-((semester.to_i+1)/2) 
+          #29June2013-@intake_year = @current_year.to_i-((semester.to_i+1)%2)           #@intake_year = @current_year.to_i-((semester.to_i+1)%2) --> giving error : 2043/2
+          #29June2013-------------------OK
+          if (semester.to_i+1)/2 > 3  
+            @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
+          elsif (semester.to_i+1)/2 > 2
+            @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
+          elsif (semester.to_i+1)/2 > 1
+            @intake_year = @current_year.to_i-((semester.to_i+1)%2)
+          end  
+          #29June2013-------------------
           @intake_sem = @current_sem + 1 
   			end 
       elsif (@unit_dept && @unit_dept == "Kebidanan" && exammonth.to_i > 9) || (@unit_dept && @unit_dept != "Kebidanan" && exammonth.to_i > 7)                                                  # 2nd semester starts on July-Dec- exam should be between August-Dec
@@ -131,10 +140,19 @@ class Exammark < ActiveRecord::Base
         @current_sem = 2 
         @current_year = examyear
         if (semester.to_i-1) % 2 == 0  
-          @intake_year = @current_year.to_i-((semester.to_i-1)/2) 				
+          @intake_year = @current_year.to_i-((semester.to_i-1)/2).to_i				
           @intake_sem = @current_sem 
         elsif (semester.to_i-1) % 2 != 0                   					        # modulus-with balance
-          @intake_year = @current_year.to_i-((semester.to_i-1)/2).to_i      # (hasil bahagi bukan baki..)..cth semester 6 
+          #29June2013-@intake_year = @current_year.to_i-((semester.to_i-1)%2).to_i      # (hasil bahagi bukan baki..)..cth semester 6 
+           #29June2013-------------------
+            if (semester.to_i+1)/2 > 3  
+              @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
+            elsif (semester.to_i+1)/2 > 2
+              @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
+            elsif (semester.to_i+1)/2 > 1
+              @intake_year = @current_year.to_i-((semester.to_i+1)%2)
+            end  
+            #29June2013-------------------
           @intake_sem = @current_sem - 1
         end 
       end

@@ -326,6 +326,19 @@ class StaffAttendance < ActiveRecord::Base
     
   end
   
+  #--27Jun2013-refer .../monthly_weekly_report.html.erb
+  def self.count_non_approved(thumb_id, start_date,end_date)
+    find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, thumb_id, start_date, end_date], :order => 'logged_at DESC')
+  end
  
-  
+  def render_colour_status
+    (StaffAttendance::ATT_STATUS.find_all{|disp, value| value == attended.att_colour}).map {|disp, value| disp}
+  end
+ 
+  ATT_STATUS = [
+         #  Displayed       stored in db
+         [ "Yellow",1 ],
+         [ "Green",2 ],
+         [ "Red",3 ]
+   ]
 end
