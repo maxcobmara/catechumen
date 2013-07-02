@@ -790,8 +790,11 @@
 <% form_tag actionable_staff_attendances_path, :method => :put do %>
 <!----><!----><!----><!----><!----><!----><!---->
 <% if params[:submit_button1] == "Search" && (@dadidu!='' || @dadidu2!='') %><!--&& @dadidu!='' && @dadidu2!=''-->
-	<% if @dept_select!='All' %><p style="font-size:14px;">&nbsp;&nbsp;<b>Unit : <%=@dept_select %></b></p><% end %>
-	<% if @staffthumb!='All'%><p style="font-size:14px;">&nbsp;&nbsp;<b>Staff Name: <%=Staff.find_by_thumb_id(@staffthumb.to_i).name %></b></p><% end %>
+	<% if @dept_select!='All' %><p style="font-size:14px;">&nbsp;&nbsp;<b>Unit : <%=@dept_select %></b></p>
+		<% if @staffthumb!='All' %>
+			<p style="font-size:14px;">&nbsp;&nbsp;<b>Staff Name : <%=Staff.find_by_thumb_id(@staffthumb.to_i).name %></b></p>
+		<% end %>
+	<% end %>
 	
 <!--ori punye : <%#=@dadidu_ori %><%#=@dadidu2_ori %>	-->
 

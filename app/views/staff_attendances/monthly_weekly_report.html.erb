@@ -111,6 +111,9 @@ document.write("<input type='button' " +
 		<% @for_report = @lateearly %><!--display all late early record-->
 	<% end %>
 	
+	<% @green_count = 0%>
+	<% @red_count = 0%>
+	
 	<% @for_report.each do |thumb_id, items| %>
 	<tr>
 		<td>&nbsp;</td>
@@ -147,124 +150,91 @@ document.write("<input type='button' " +
 			
 		</td>
 		<td style="border-right:solid 1px;text-align:center;font-size:14px;font-family:arial;">
-			<% if @find_type == "Weekly Report" %>
+			<% if @find_type == "Weekly Report" || @find_type == "Monthly Report" %>
 			
-				<!--1-CURRENT DATA-To check colour status between - beginning of the CURRENT month - until last day of selected week-->
+				<!--1-start-CURRENT DATA-To check colour status for selected week-->
 				<% @start_date = @dadidu.to_date.beginning_of_month.to_s %>
-				<% @count_non_approved = StaffAttendance.count_non_approved(thumb_id,@start_date,@next_date) %>
-				<%#= @count_non_approved.count %><!--unremark to display-->	
-				<!--1-CURRENT DATA-To check colour status between - beginning of the CURRENT month - until last day of selected week-->
+				<% @count_non_approved = StaffAttendance.count_non_approved(thumb_id,@dadidu,@next_date).count %>
+				<!--1-end-CURRENT DATA-To check colour status for selected week-->
 				
-				<!--2-PREVIOUS DATA-To check colour status between - beginning of the PREVIOUS month - until 1 day before selected week-->
+				<!--2-PREVIOUS DATA-To check colour status between - beginning of (ALL) PREVIOUS month - until 1 day before selected week/month-->
+					
 					<!--previous status from staffs table if exist?-->
-					<% @previous_status = Staff.find(:first, :conditions=> ['thumb_id=?',thumb_id]).att_colour %>
-					<% @previous_colour_staff = (StaffAttendance::ATT_STATUS.find_all{|disp, value| value == @previous_status}).map {|disp, value| disp} %>
-				
-					<!--previous status...data retrieved from staff attendance table, for the last 3 months-->
-					<% @curr_month_b = @dadidu.to_date.beginning_of_month.to_s %>
-					<% @firstday_selectedweek = @dadidu.to_s %><!--supposed 1 day be4, but refer model; this condition:logged_at< at line 331-->
-					<% @previous_month_b = @dadidu.to_date.prev_month.beginning_of_month.to_s %>
-					prev month e<%= @previous_month_e = @dadidu.to_date.prev_month.end_of_month.to_s %>
-					<% @previous_2months_b = @dadidu.to_date.months_ago(2).beginning_of_month.to_s %>
-					<% @previous_2months_e = @dadidu.to_date.months_ago(2).end_of_month.to_s %>
-					<% @previous_3months_b = @dadidu.to_date.months_ago(3).beginning_of_month.to_s %>
-					<% @previous_3months_e = @dadidu.to_date.months_ago(3).end_of_month.to_s %>
+					<%# @previous_status_staff = Staff.find(:first, :conditions=> ['thumb_id=?',thumb_id]).att_colour %>
+					<%# @previous_colour_staff = (StaffAttendance::ATT_STATUS.find_all{|disp, value| value == @previous_status_staff}).map {|disp, value| disp} %>
 					
-					<% @cur_month_be4_count_non_approved = StaffAttendance.count_non_approved(thumb_id,@curr_month_b,@firstday_selectedweek).count %>
-					<!--curr--><%#= @cur_month_be4_count_non_approved %><!--unremark to display-->
-					<% @prev_month_count_non_approved = StaffAttendance.count_non_approved(thumb_id,@previous_month_b,@curr_month_b).count %>
-					<!--prev--><%#= @prev_month_count_non_approved%><!--unremark to display-->
-					<% @prev_2months_count_non_approved = StaffAttendance.count_non_approved(thumb_id,@previous_2months_b,@previous_month_b).count %>
-					<!--prev2--><%#= @prev_2months_count_non_approved %><!--unremark to display-->
-					<% @prev_3months_count_non_approved = StaffAttendance.count_non_approved(thumb_id,@previous_3months_b,@previous_2months_b).count %>
-					<!--prev3--><%#= @prev_3months_count_non_approved %><!--unremark to display-->
-
-					<% if @prev_month_count_non_approved >= 3 %><!--if yelow, will turn green-->
-					<% elsif @prev_month_count_non_approved >= 2 %><!--if green, will turn red-->
-					<% elsif @prev_month_count_non_approved == 0 %><!--if red, will turn green & if green, will turn yellow-->
+					<!--start-previous status...data retrieved from staff attendance table all existing data-->
+					<% @previous_status_for_SA = 1 %><!--set default : previous status as 1; ie:yellow -->
+					<% @previous_colour = "Yellow" %><!--will be use if no changes on previous status-->
+					<% if @find_type == "Weekly Report" %>
+						<!--retrieve all data until 1 day be4 selected week(EXCLUSIVE of selected week) & continue below:3(a)-[@start_date-1st day of the month]-->
+							<% @all_dates = StaffAttendance.find(:all, :conditions =>['thumb_id=? and logged_at>=? and logged_at<?',thumb_id,"2012-05-07",@start_date], :order => 'logged_at ASC').map(&:logged_at)%>   <%#=@all_dates.count%>
+					<% elsif @find_type == "Monthly Report" %>
+						<!--retrieve all data until end of selected month(INCLUSIVE of selected month)-[@next_date-1day after end of selected month]-->
+						<% @all_dates = StaffAttendance.find(:all, :conditions =>['thumb_id=? and logged_at>=? and logged_at<?',thumb_id,"2012-05-07",@next_date], :order => 'logged_at ASC').map(&:logged_at)%>  <%#=@all_dates.count%>
 					<% end %>
-					
-					<%#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$%>
-					<!--PENDING-for all staff(selected non_approved late/early-staff), check for 3 lateness/early return in a month if ever exist, as this will become-->
-					<!--PENDING-the starting point for changed status from YELLOW to GREEN, only then it has potential to turns into RED-->
-					<!--find first record-->
-					first date<%= @first_date = StaffAttendance.find(:all, :conditions =>['thumb_id=? and logged_at>=? and logged_at<?',thumb_id,"2012-05-07","2012-05-08"])[0].logged_at.in_time_zone('UTC').to_date.to_s   %>
-					nextfirst b<%= @next_first_date_b = @first_date.to_date.next_month.beginning_of_month.to_s %>
-					<!--nextfirst b+2month <%#= (@first_date.to_date+2.month).beginning_of_month.to_s %>-->
-					count:<%= @first_count_non_approved = StaffAttendance.count_non_approved(thumb_id,@first_date,@next_first_date_b).count %>
-					
-					<!--http://stackoverflow.com/questions/136793/is-there-a-do-while-loop-in-ruby-->
-					<!--http://ruby.activeventure.com/tutorial/part_02/while.html-->
-					<!--while loop -> assign 'count' into an array, compare 1 array item with previous item,....start everything with yellow..on 2012-05-07-->
-					<!--use for this page & reporting as well....-->
-					<% if @next_first_date_b == @previous_month_e %>
-						kk
-					<% else %>
-						noooo
-					<% end %>
-					<%#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$%>
+					<% @previous_status_SA = StaffAttendance.set_colour_status(@all_dates,thumb_id, @previous_status_for_SA) %>
+					<!--end-previous status...data retrieved from staff attendance table all existing data-->
 				
-					<!--assign previous colour(Yellow, Green, Red), according to @previous status(staffs table)-->
-					<% unless @previous_status.nil? || @previous_status.blank? %>
-						<!--prev:--><% @previous_colour = @previous_colour_staff %><!--from staffs table, column:att_colour-->
-					<% else %>
-						<%# if @prev_month_count_non_approved >= 3 || @prev_2months_count_non_approved >= 3 || @prev_3months_count_non_approved >= 3 %>
-							
-						<%# end %>
-						<% if @prev_month_count_non_approved >= 3 %>
-						
-						<% end %>
-						
-						<!--DEFAULT value-if no data available in staffs table-->
-						<% @previous_colour = "Yellow" %><!--unremark, for testing-->
-						<%# @previous_colour = "Green" %><!--unremark, for testing-->
-						<%# @previous_colour = "Red" %><!--unremark, for testing-->
-						<!--DEFAULT value-if no data available in staffs table-->
-					<% end %>
-				<!--2-check PREVIOUS status & assign LATEST status-->
-				
-				<!--3-check previous status & ASSIGN LATEST STATUS-->
-				<% if @previous_status == 1 %><!--if yellow-->
-					<% if @count_non_approved.count >= 3  %>
-						<% @latest_colour = "Green" %><!--previous:yellow & >= 3 red marking, change status into GREEN-->
-					<% else %>
-						<% @latest_colour = @previous_colour %><!--current:yellow & < 3 red marking, NO CHANGES-->
-					<% end %>
-				<% elsif @previous_status == 2 %><!--if green-->
-					<% if @count_non_approved.count >= 2 %>
-						<% @latest_colour = "Red" %><!--previous:green & >=2 red marking, [GREEN->RED]-->
-					<% elsif @count_non_approved.count == 1 %>
-						<% @latest_colour = @previous_colour %><!--current:green & = 1 red marking, NO CHANGES-->
-					<% elseif @count_non_approved.count == 0 %>
-						<% @latest_colour = "Yellow" %>
-					<% end %>
-				<% elsif @previous_status == 3 %>
-					<% if @next_date.to_date-1.day == @dadidu.to_date.end_of_month %><!--IF selected week-END OF THE MONTH-->
-						<% if @count_non_approved.count == 0 %>
-							<% @latest_colour = "Green" %><!--previous(MONTH+@dadidu-1day):red, NO red marking [RED->GREEN]-->
-						<% else %>
-							<% @latest_colour = @previous_colour %>
-						<% end %>
-					<% else %><!--IF selected week-NOT END OF THE MONTH-->
-						<% @latest_colour = @previous_colour %><!--although there's NO red marking, NO CHANGES-->
-					<% end %>
-				<% end %>
-				<!--3-check previous status & ASSIGN LATEST STATUS-->
-				
-			<% elsif @find_type == "Monthly Report" %>	
-				<!--FOR MONTHLY REPORT USE-->
-				<%# if @previous_colour == "red" %>
-					<%# if @beginmonth_currentweek_non_approved.count == 0 %>
-						<%# @latest_colour = "green" %>
-					<%# else %><!--ada tanda merah-->
-						<%# @latest_colour = @previous_colour %>
+					<!--to choose either one : attendance colour status (1)from staffs table-or (2)compare values from staff_attendances table-->
+					<%# if @previous_status_staff.nil? || @previous_status_staff.blank? %>
+						<% @previous_status = @previous_status_SA %>
+						<% @previous_colour = (StaffAttendance::ATT_STATUS.find_all{|disp, value| value == @previous_status}).map {|disp, value| disp} %>
+					<%# else %>
+						<!--staff--><%# @previous_status = @previous_status_staff %>
+						<%# @previous_colour = @previous_colour_staff %>
 					<%# end %>
-				<%# end %>
+				
+				<!--2-PREVIOUS DATA-To check colour status between - beginning of the (ALL) PREVIOUS month - until 1 day before selected week/month-->
+				
+				<% if @find_type == "Weekly Report" %>
+					<!--3a-start-WEEKLY REPORT-check previous status & ASSIGN LATEST STATUS-for selected week-->
+					<% if @previous_status == 1 %><!--if yellow-->
+						<% if @count_non_approved>= 1  %><!--change to 1 for checking, original value:3-->
+							<% @latest_colour = "Green" %><!--previous:yellow & >= 3 red marking, change status into GREEN-->
+						<% else %>
+							<% @latest_colour = @previous_colour %><!--current:yellow & < 3 red marking, NO CHANGES-->
+						<% end %>
+					<% elsif @previous_status == 2 %><!--if green-->
+						<% if @count_non_approved >= 1 %><!--change to 1 for checking, original value:2-->
+							<% @latest_colour = "Red" %><!--previous:green & >=2 red marking, [GREEN->RED]-->
+						<% elsif @count_non_approved == 1 %>
+							<% @latest_colour = @previous_colour %><!--current:green & = 1 red marking, NO CHANGES-->
+						<% elsif @count_non_approved == 0 %>
+							<% @latest_colour = "Yellow" %>
+						<% end %>
+					<% elsif @previous_status == 3 %>
+						<% if @next_date.to_date-1.day == @dadidu.to_date.end_of_month %><!--IF selected week-END OF THE MONTH-->
+							<% if @count_non_approved == 0 %>
+								<% @latest_colour = "Green" %><!--previous(MONTH+@dadidu-1day):red, NO red marking [RED->GREEN]-->
+							<% else %>
+								<% @latest_colour = @previous_colour %>
+							<% end %>
+						<% else %><!--IF selected week-NOT END OF THE MONTH-->
+							<% @latest_colour = @previous_colour %><!--although there's NO red marking, NO CHANGES-->
+						<% end %>
+					<% end %>
+					<!--weekly--><%=@latest_colour%>
+					<!--3a-end-WEEKLY REPORT-check previous status & ASSIGN LATEST STATUS-for selected week-->
+				<% else %>
+					<!--3b-start-MONTHLY REPORT-->
+					<!--monthly--><%=@latest_colour = @previous_colour %>
+					<!--3b-end-MONTHLY REPORT-->
+				<% end %>
+				
+				<% if @latest_colour == "Green" || @previous_status == 2 %>
+					<% @green_count+=1 %>
+				<% elsif @latest_colour == "Red" || @previous_status == 3 %>
+					<% @red_count+=1 %>	
+				<% end %>
+				
+
+	
 						
 			<% else %><!--for daily report-->
 				<%=items[0].logged_at.in_time_zone('UTC').strftime("%l:%M %p") %>
 			<% end %>
-			<!--latest:--><%=@latest_colour%>
+			
 		</td>
 	</tr>
 	<% end %>
@@ -287,13 +257,13 @@ document.write("<input type='button' " +
 		<tr>
 			<td>&nbsp;</td>
 			<td colspan=2 style="text-align:left;font-size:14px;font-family:arial;height:50px;">Jumlah Pegawai / Kakitangan <br>Yang memegang kad hijau : </td>
-			<td><!--GREEN CARD HOLDER--></td>
+			<td><!--GREEN CARD HOLDER--><%=@green_count%></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
 			<td colspan=2 style="text-align:left;font-size:14px;font-family:arial;height:50px;">Jumlah Pegawai / Kakitangan <br>Yang memegang kad merah: </td>
-			<td><!--red card holder--></td>
+			<td><!--red card holder--><%=@red_count%></td>
 			<td>&nbsp;</td>
 		</tr>
 	<% end %>

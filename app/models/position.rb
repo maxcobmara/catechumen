@@ -67,7 +67,15 @@ class Position < ActiveRecord::Base
   def hod
   end
   
-  
+  #1July2013
+  def staff_dept
+    if parent
+    "#{parent.unit} ~  #{id}- #{staff_id}"
+    else
+      "#{unit} ~ #{id}- #{staff_id}"
+    end 
+  end
+  #1July2013
   
   def self.search(search)
      if search

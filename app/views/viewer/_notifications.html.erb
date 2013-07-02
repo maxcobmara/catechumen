@@ -42,8 +42,14 @@
   <% dash_attendance = StaffAttendance.count(:all, :conditions => ['approved_by =? AND is_approved IS ?', User.current_user.staff_id, nil]) %>
   <% if dash_attendance == 0 %>
   <% else %>
-    <%= link_to "#{dash_attendance} late attendance for approval", { :controller => "staff_attendances", :action => "manage" } %><br>
+    <%= link_to "#{dash_attendance} Late/early attendance for approval", { :controller => "staff_attendances", :action => "manage" } %><br>
   <% end %>
+ 	<!--Notifications for Late/Early - require management-->	
+	<% lateearly = StaffAttendance.count(:all, :conditions => ["trigger=? AND reason IS NULL AND thumb_id=?", true, User.current_user.staff.thumb_id]) %>
+	<% if lateearly > 0 %>
+	   <%= link_to "#{lateearly} Late/early attendance require reason submission", { :controller => 'staff_attendances', :action => 'manage' } %><br>
+	<% else %>
+	<% end %>
 	
 	<!-- Notification for travel request -->
 	<% trvlreqst = TravelRequest.count(:all, :conditions => ['hod_id = ? AND hod_accept IS ?', User.current_user.staff_id, nil]) %>

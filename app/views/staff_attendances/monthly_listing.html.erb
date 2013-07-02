@@ -1,0 +1,65 @@
+<%= stylesheet_link_tag 'report' %>
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>	
+<div class="A4potrait">
+	<p style="font-size:13px;font-family:arial;padding-right:20px;" align="right">
+		<%=@dadidu_ori.to_date.strftime("%d-%m-%Y")%> to <%=(@next_date_ori.to_date-1.day).strftime("%d-%m-%Y")%>
+	</p>
+	
+	<H4 align="left" style="font-size:16px;font-weight:bold;font-family:arial;padding-left:50px;">Monthly Attendance Listing</h4>
+	
+	<div style="padding-left:50px;" align="left">
+		<p style="font-size:13px;font-family:arial;">
+			Dept : <%=@dept_select%><br>
+			<%=StaffAttendance.find_by_thumb_id(@staffthumb.to_i).attended.name.upcase %>
+		</p>
+		
+		<% if @monthly_list.count <= 0 %>
+			<p style="font-size:13px;font-family:arial;color:red;">
+				Record not exist 
+			</p>
+		<% else %>
+		
+			<% @count_in = 0 %>
+			<% @count_out = 0 %>
+			
+			<table border=1 cellspacing=0 cellpadding=1>
+			<% for att_list in @monthly_list %>
+				<% att_list2 = att_list.logged_at.in_time_zone('UTC') %>
+				<% if att_list2.to_date.to_s >= @dadidu_ori %>
+				<tr>
+					<td style="padding-left:15px;padding-right:30px;font-size:13px;font-family:arial;">
+						<%=att_list2.strftime("%m-%d") %>&nbsp;&nbsp;<%=att_list2.strftime("%H:%M")%>&nbsp;&nbsp;&nbsp;&nbsp;
+						<% if att_list.log_type=='i' || att_list.log_type=='I'%>
+					 		C/In <% @count_in+=1 %>
+						<% elsif att_list.log_type=='o' || att_list.log_type=='O'%> 
+							C/Out <% @count_out+=1 %>
+						<% end %>
+					</td>
+				</tr>
+				<% end %>
+			<% end %>
+			</table>
+		
+			<p style="font-size:13px;font-family:arial;padding-left:20px;">
+				C/In  : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=@count_in%><br>
+				C/Out : &nbsp;&nbsp;&nbsp;<%=@count_out%>
+			</p>
+		<% end %>
+	</div>
+	
+	
+		
+	
+	
+	
+	
+
+</div>

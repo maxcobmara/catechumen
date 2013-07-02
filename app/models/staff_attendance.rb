@@ -325,12 +325,77 @@ class StaffAttendance < ActiveRecord::Base
     end
     
   end
+  #--30June2013
+  def self.monthly_colour_status(every_month_begin,thumb_id,previous_status)
+    @begin_thismonth = every_month_begin 
+	  @begin_nextmonth = every_month_begin.to_date.next_month.beginning_of_month.to_s
+	  @monthly_non_approved = StaffAttendance.count_non_approved_monthly(thumb_id,@begin_thismonth,@begin_nextmonth).count
+	  if previous_status == 1 && @monthly_non_approved >= 2     #current:yellow    #change to 1 for checking
+		    previous_status = 2                                   #turn into green
+    elsif previous_status == 2                                #current:green
+		    if @monthly_non_approved >= 2                         #change to 1 for checking
+			    previous_status = 3                                 #turn into red
+        elsif @monthly_non_approved == 0 
+			    previous_status = 1                                 #turn into yellow
+		    end
+	  elsif previous_status == 3                                #current:red
+		    if @monthly_non_approved == 0 
+			    previous_status = 2                                 #turn into green
+		    end 						
+	  end
+	  return previous_status
+  end
+  #--30June2013
   
-  #--27Jun2013-refer .../monthly_weekly_report.html.erb
+  #--30June2013
+  def self.set_colour_status(all_dates,thumb_id,previous_status)
+    @all_begin_months = [] 
+		for dailydate in all_dates
+			@all_begin_months << dailydate.in_time_zone('UTC').to_date.beginning_of_month.to_s
+		end
+		@count_prev_stat_change = 0
+		for every_month_begin in @all_begin_months.uniq
+			  #every_month_begin.to_date.month
+			  @begin_thismonth = every_month_begin 
+			  @begin_nextmonth = every_month_begin.to_date.next_month.beginning_of_month.to_s
+			  @monthly_non_approved = StaffAttendance.count_non_approved(thumb_id,@begin_thismonth,@begin_nextmonth).count
+			  if previous_status == 1 && @monthly_non_approved >= 1 && @count_prev_stat_change == 0            #current:yellow    #change to 1 for checking, original value:3
+				    previous_status = 2        #turn into green
+				    @count_prev_stat_change+=1
+				    @date_prev_stat = every_month_begin
+			  elsif previous_status == 2     #current:green
+				    if @monthly_non_approved >= 1 && @count_prev_stat_change == 1 && (every_month_begin.to_date-@date_prev_stat.to_date) >= 28   #change to 1 for checking, original value:2
+					    previous_status = 3      #turn into red
+					    @count_prev_stat_change+=1 
+					    @date_prev_stat= every_month_begin
+				    elsif @monthly_non_approved == 0 && @count_prev_stat_change == 1 && (every_month_begin.to_date-@date_prev_stat.to_date) >= 28 
+					    previous_status = 1      #turn into yellow
+					    @count_prev_stat_change-=1
+					    @date_prev_stat= every_month_begin 
+				    end
+			  elsif previous_status == 3    #current:red
+				    if @monthly_non_approved == 0 && @count_prev_stat_change == 2 && (every_month_begin.to_date-@date_prev_stat.to_date) >= 28 
+					    previous_status = 2   #turn into green
+					    @count_prev_stat_change-=1 
+					    @date_prev_stat= every_month_begin 
+				    end 						
+			  end 
+		  end 
+		  return previous_status
+  end  
+  
+  #--27June2013-refer .../monthly_weekly_report.html.erb...thumb_id (array)
   def self.count_non_approved(thumb_id, start_date,end_date)
     find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, thumb_id, start_date, end_date], :order => 'logged_at DESC')
   end
- 
+  
+  #--1July2013.../status.html.erb..thumb_id(1 person)
+  def self.count_non_approved_monthly(thumb_id, start_date,end_date)
+    find(:all, :conditions => ["trigger IS TRUE AND is_approved IS FALSE AND thumb_id =? AND logged_at>=? AND logged_at<?", thumb_id, start_date, end_date], :order => 'logged_at DESC')
+    #find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, thumb_id, start_date, end_date], :order => 'logged_at DESC')
+    
+  end
+
   def render_colour_status
     (StaffAttendance::ATT_STATUS.find_all{|disp, value| value == attended.att_colour}).map {|disp, value| disp}
   end

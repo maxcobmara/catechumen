@@ -1,99 +1,221 @@
 <!--
 	HACK :: This page, must be a better way to get it done
 -->
+
+<!--1st JULY 2013-hide this part..
 <table class="attendance">
 	<tr>
-		<th>This Month <BR/><%= Date.today.strftime('%B-%Y') %></th>
-		<th>Last Month <BR/><%= Date.today.prev_month.strftime('%B-%Y') %></th>
-		<th>Previous Month<BR/><%= Date.today.months_ago(2).strftime('%B-%Y') %></th>
+		<th>This Month <BR/><%#= Date.today.strftime('%B-%Y') %></th>
+		<th>Last Month <BR/><%#= Date.today.prev_month.strftime('%B-%Y') %></th>
+		<th>Previous Month<BR/><%#= Date.today.months_ago(2).strftime('%B-%Y') %></th>
 	</tr>
 	<tr class="red_lates">
 		<td class="lattes">
-						<% if @thismonthreds.size == 0 %>
+						<%# if @thismonthreds.size == 0 %>
 							No staff in this category
-						<% else %>
-									<table width=85%>
+						<%# else %>
+									<table width=85%>-->
 										<!--
 										<tr>
 												<th class="inner">Name</th>
 												<th class="inner">Days Late</th>
 										</tr>-->
-										
-										<% @thismonthreds.each do |a,b | %>
+										<!--
+										<%# @thismonthreds.each do |a,b | %>
 										<tr>
-											<td class="inner"><%= Staff.find(:all, :select => 'name', :conditions => ["thumb_id = ?", a.to_i ]).map(&:name)%></td>
-											<td class="inner"><%= b %> Days</td>
+											<td class="inner"><%#= Staff.find(:all, :select => 'name', :conditions => ["thumb_id = ?", a.to_i ]).map(&:name)%></td>
+											<td class="inner"><%#= b %> Days</td>
 										</tr>
-										<% end %>
+										<%# end %>
 									</table>
-						<% end %></td>
+						<%# end %></td>
 		<td class="lattes">
-					<% if @lastmonthreds.size == 0 %>
+					<%# if @lastmonthreds.size == 0 %>
 						No staff in this category
-					<% else %>
+					<%# else %>
 							<table width=85%>
-							<% @lastmonthreds.each do | a,b | %>
+							<%# @lastmonthreds.each do | a,b | %>
 								<tr>
-									<td class="inner"><%= Staff.find(:all, :select => 'name', :conditions => ["thumb_id = ?", a.to_i ]).map(&:name)%></td>
-									<td class="inner"><%= b %> Days</td>
+									<td class="inner"><%#= Staff.find(:all, :select => 'name', :conditions => ["thumb_id = ?", a.to_i ]).map(&:name)%></td>
+									<td class="inner"><%#= b %> Days</td>
 								</tr>
-								<% end %>
+								<%# end %>
 							</table>
-					<% end %></td>
+					<%# end %></td>
 					
 		<td class="lattes">
-						<% if @prevmonthreds.size == 0 %>
+						<%# if @prevmonthreds.size == 0 %>
 							No staff in this category
-						<% else %>
+						<%# else %>
 								<table width=85%>
-								<% @prevmonthreds.each do | a,b | %>
+								<%# @prevmonthreds.each do | a,b | %>
 									<tr>
-										<td class="inner"><%= Staff.find(:all, :select => 'name', :conditions => ["thumb_id = ?", a.to_i ]).map(&:name)%></td>
-										<td class="inner"><%= b %> Days</td>
+										<td class="inner"><%#= Staff.find(:all, :select => 'name', :conditions => ["thumb_id = ?", a.to_i ]).map(&:name)%></td>
+										<td class="inner"><%#= b %> Days</td>
 									</tr>
-								<% end %>
+								<%# end %>
 								</table>
-						<% end %>
+						<%#end %>
 						</td>
 	</tr>
 	<tr class="green_lates">
 			<td class="lattes">
-						<% if @thismonthgreens.size == 0 %>
+						<%# if @thismonthgreens.size == 0 %>
 							No staff in this category
-						<% else %>
+						<%# else %>
 								<table width=85%>
-								<% @thismonthgreens.each do | a,b | %>
+								<%# @thismonthgreens.each do | a,b | %>
 									<tr>
-										<td class="inner"><%= Staff.find(:all, :select => 'name', :conditions => ["thumb_id = ?", a.to_i ]).map(&:name)%></td>
-										<td class="inner"><%= b %> Days</td>
+										<td class="inner"><%#= Staff.find(:all, :select => 'name', :conditions => ["thumb_id = ?", a.to_i ]).map(&:name)%></td>
+										<td class="inner"><%#= b %> Days</td>
 									</tr>
-								<% end %>
+								<%# end %>
 								</table>
-						<% end %></td>
+						<%# end %></td>
 						
 			<td class="lattes">
-						<% if @lastmonthgreens.size == 0 %>
+						<%# if @lastmonthgreens.size == 0 %>
 							No staff in this category
-						<% else %>
+						<%# else %>
 								<table width=85%>
-								<% @lastmonthgreens.each do | a,b | %>
+								<%# @lastmonthgreens.each do | a,b | %>
 								<tr>
-									<td class="inner"><%= Staff.find(:all, :select => 'name', :conditions => ["thumb_id = ?", a.to_i ]).map(&:name)%></td>
-									<td class="inner"><%= b %> Days</td>
+									<td class="inner"><%#= Staff.find(:all, :select => 'name', :conditions => ["thumb_id = ?", a.to_i ]).map(&:name)%></td>
+									<td class="inner"><%#= b %> Days</td>
 								</tr>
-								<% end %>
+								<%# end %>
 								</table>
-						<% end %></td>
+						<%# end %></td>
 					
 			<td class="lattes">
-						<% if @prevmonthgreens.size == 0 %>
+						<%# if @prevmonthgreens.size == 0 %>
 							No staff in this category
-						<% else %>
+						<%# else %>
 								<table width=85%>
-								<% @prevmonthgreens.each do |a,b | %>
-								  <BR/><%= a %>, <%= b %>
-								<% end %>
+								<%# @prevmonthgreens.each do |a,b | %>
+								  <BR/><%#= a %>, <%#= b %>
+								<%# end %>
 								</table>
-						<% end %></td>
+						<%# end %></td>
 		</tr>
-</table>
+</table>-HIDE ON 1st JULY 2013-->
+
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Laporan Status 'Punch Card'</h2>
+	</div>
+</div>
+
+<% @all_dates_staffs = StaffAttendance.find(:all, :conditions =>['logged_at>=? and logged_at<?',"2012-05-07","2012-10-16"], :order => 'logged_at ASC')%>   
+<% @logged_at_list =[] %>
+<% for all_dates_staff in @all_dates_staffs.map(&:logged_at)%>
+	<% @logged_at_list << all_dates_staff.in_time_zone('UTC').to_date.beginning_of_month.to_s %>
+<% end %>
+<% @title_for_month= @logged_at_list.uniq %>
+<% @all_thumbs = @all_dates_staffs.map(&:thumb_id).uniq.sort %>
+<% @staff_info = Staff.find(:all, :conditions=> ['thumb_id IN (?)',@all_thumbs], :order=>'thumb_id ASC', :select=>"thumb_id, name,id") %>
+<% @staff_thumb = Staff.find(:all, :conditions=> ['thumb_id IN (?)',@all_thumbs], :order=>'thumb_id ASC').map(&:thumb_id) %>
+<%# @staff_name = Staff.find(:all, :conditions=> ['thumb_id IN (?)',@all_thumbs], :order=>'thumb_id ASC').map(&:staff_thumb) %><!--for checking-->
+<% @all_dates = @all_dates_staffs.group_by{|x|x.thumb_id} %>
+
+<!--
+<table border=1>
+	<tr>
+		<th rowspan=2>aa</th>
+		<th rowspan=2>aa2</th>
+		<th colspan=2>dd</th>
+		<th rowspan=2>aa3</th>
+	</tr>
+	</tr>
+		<th>bb</th>
+		<th>cc</th>
+	</tr>
+</table>-->
+
+<%#=StaffAttendance.find(:all, :conditions => ["trigger IS TRUE AND is_approved IS FALSE AND thumb_id =? AND logged_at>=? AND logged_at<?", 773, "2012-10-01", "2012-11-01"], :order => 'logged_at DESC').count %>
+<%#=StaffAttendance.find(:all, :conditions => ["trigger IS TRUE AND is_approved IS FALSE AND thumb_id =? AND logged_at>=? AND logged_at<?", 772, "2012-10-01", "2012-11-01"], :order => 'logged_at DESC').count %>
+
+<table border=1>
+	<tr>
+		<th rowspan=2>No</th>
+		<th rowspan=2>Staff Name</th>
+		<th rowspan=2>Department</th>
+		<th colspan="<%=@title_for_month.count%>"><%=@title_for_month[0].to_date.strftime("%Y") %></th>
+		<!--UNHIDE for checking..
+		<th rowspan=2>Total Month</th>-->
+	</tr>
+	<tr>
+		<% 0.upto(@title_for_month.count-1) do |count|%>
+			<th><%=@title_for_month[count].to_date.strftime("%b") %></th>
+		<% end %>
+	</tr>
+
+	<% @all_dates.keys.sort.each_with_index do |thumbid, index| %>
+		<tr>
+			<td><%=index+1 %></td>
+			<td><%#=@all_thumbs[index] %><!--for checking-->
+				<% unless @staff_thumb.include?(@all_thumbs[index]) %>
+					<font color=red>Staff not exist in Staff Info (thumb_id : <%=@all_thumbs[index] %>)</font>
+				<% else %>
+					<% @staff_info.each do |staff| %>
+						<%= staff.staff_thumb if staff.thumb_id == @all_thumbs[index] %>
+					<% end %>
+				<% end %>
+			</td>
+			<td>
+				<% unless @staff_thumb.include?(@all_thumbs[index]) %>
+					<font color=red>No record</font>
+				<% else %>
+					<% @staff_info.each do |staff| %>
+						<%= staff.render_unit if staff.thumb_id == @all_thumbs[index] %>
+					<% end %>
+				<% end %>
+			</td>
+			<% @all_begin_months = [] %>
+			<% for dailydate in @all_dates[thumbid].map(&:logged_at) %> 
+				<% @all_begin_months << dailydate.in_time_zone('UTC').to_date.beginning_of_month.to_s%>
+			<% end %>
+			
+			<% @in_column = [] %>
+			<% count_status = 0 %>
+			<% for every_month_begin in @all_begin_months.uniq %>
+				<% if count_status == 0 %>
+					<% previous_stat = 1 %>
+					<% previous_status = StaffAttendance.monthly_colour_status(every_month_begin, thumbid,previous_stat)%>
+				<% else %>
+					<% previous_status = StaffAttendance.monthly_colour_status(every_month_begin, thumbid,previous_stat)%>
+				<% end %>
+				<% 0.upto(@title_for_month.count-1) do |count2|%>
+					<% if every_month_begin == @title_for_month[count2] %>
+						<% @in_column[count2] = previous_status %>
+					<% end %>
+				<% end %> 
+				<% previous_stat = previous_status %>
+				<% count_status+=1 %>
+			<% end %>
+			
+			<% 0.upto(@title_for_month.count-1) do |count2| %>
+				<% if @in_column[count2] == 1 %>
+					<td style="background:#F7F3A4;text-align:center;">K</td>
+				<% elsif @in_column[count2] == 2 %>
+					<td style="background:#7C8;text-align:center;">H</td>
+				<% elsif @in_column[count2] == 3 %>
+					<td style="bakground:#F77;;text-align:center;">M</td>
+				<% else %>
+					<td>&nbsp;</td>
+				<% end %>
+			<% end %>
+			
+			<!--UNHIDE for checking
+			<td><%# count3=0 %>
+				<%# for begin_month in @all_begin_months.uniq %>--><!--<%# display beginning month set of each staff %>
+					<%#= begin_month %><%# count3+=1 %>
+					<%# if count3 < @all_begin_months.uniq.count-1 %>,<%# end %>
+				<%# end %>thumb_id = <%#=thumbid%>
+			</td>-->
+		</tr>
+
+	<% end %>
+</table>	
+
+<br><br>

@@ -274,6 +274,34 @@ class Staff < ActiveRecord::Base
     end
   end
   
+  def render_unit
+    if position.blank? 
+      "Staff not exist in Task & Responsibilities"
+    #elsif position.parent.blank?
+     #   "-"
+    elsif position.is_root?
+        "Pengarah"
+    elsif position.parent.is_root?
+      if position.unit.blank?
+        "#{position.name}"                  #display position name instead - must be somebody!
+      else
+        "#{position.unit}"                  #   "#{position.unit} - 3"
+      end
+    elsif position.parent.staff.blank?      #no parent
+      #  "#{position.parent.unit} -1 "
+      if position.parent.unit.blank?
+        "#{position.unit}"                  #  "#{position.unit} - 1a"
+      else  
+        "#{position.parent.unit}"           #  "#{position.parent.unit} - 1b"
+      end
+    else                                    #got parent
+      if position.parent.unit.blank?
+        "#{position.unit}"                  #  "#{position.unit} - 2a"
+      else  
+        "#{position.parent.unit}"           #  "#{position.parent.unit} - 2b"
+      end
+    end
+  end
   
   def staff_positiontemp
     sid = staff.id
@@ -307,7 +335,12 @@ class Staff < ActiveRecord::Base
     v=1
   end
   
-
+  #1July2013
+  def staff_thumb
+    "#{name}  (thumb id : #{thumb_id})"
+  end  
+  
+  
 #------------------Coded Lists----------------------------------------- 
   MARITAL_STATUS = [
        #  Displayed       stored in db

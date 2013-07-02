@@ -5,28 +5,51 @@ class StaffAttendancesController < ApplicationController
     #---
     submit_val = params[:submit_button1]
     @dept_select = params[:dept_select]
-    @staffthumb = params[:staffthumb1] if @dept_select == "Teknologi Maklumat"
-    @staffthumb = params[:staffthumb2] if @dept_select == "Perhotelan"
-    @staffthumb = params[:staffthumb3] if @dept_select == "Perpustakaan"
-    @staffthumb = params[:staffthumb4] if @dept_select == "Kaunter"
-    @staffthumb = params[:staffthumb5] if @dept_select == "Pembangunan"
-    @staffthumb = params[:staffthumb6] if @dept_select == "Kewangan & Stor"
-    @staffthumb = params[:staffthumb7] if @dept_select == "Perkhidmatan"
-    @staffthumb = params[:staffthumb8] if @dept_select == "Pentadbiran Am"
-    @staffthumb = params[:staffthumb9] if @dept_select == "Radiografi"
-    @staffthumb = params[:staffthumb10] if @dept_select == "Kejururawatan"
-    @staffthumb = params[:staffthumb11] if @dept_select == "Jurupulih Perubatan Anggota (Fisioterapi)"
-    @staffthumb = params[:staffthumb12] if @dept_select == "Jurupulih Perubatan Cara Kerja"
-    @staffthumb = params[:staffthumb13] if @dept_select == "Penolong Pegawai Perubatan"
-    @staffthumb = params[:staffthumb14] if @dept_select == "Pos Basik"
-    @staffthumb = params[:staffthumb15] if @dept_select == "Sains Perubatan Asas"
-    @staffthumb = params[:staffthumb16] if @dept_select == "Anatomi & Fisiologi"
-    @staffthumb = params[:staffthumb17] if @dept_select == "Sains Tingkahlaku"
-    @staffthumb = params[:staffthumb18] if @dept_select == "Komunikasi & Sains Pengurusan"
-    @staffthumb = params[:staffthumb19] if @dept_select == "Pembangunan Pelatih"
-    @staffthumb = params[:staffthumb20] if @dept_select == "Khidmat Sokongan Pelatih"
-    @staffthumb = params[:staffthumb21] if @dept_select == "Kokurikulum"
-    @staffthumb = params[:staffthumb22] if @dept_select == "Ketua Unit Penilaian & Kualiti"
+    if @dept_select == "Teknologi Maklumat"
+        @staffthumb = params[:staffthumb1] 
+    elsif @dept_select == "Perhotelan" 
+        @staffthumb = params[:staffthumb2] 
+    elsif @dept_select == "Perpustakaan"
+        @staffthumb = params[:staffthumb3] 
+    elsif @dept_select == "Kaunter"
+        @staffthumb = params[:staffthumb4] 
+    elsif @dept_select == "Pembangunan"
+        @staffthumb = params[:staffthumb5] 
+    elsif @dept_select == "Kewangan & Stor"
+        @staffthumb = params[:staffthumb6] 
+    elsif @dept_select == "Perkhidmatan"
+        @staffthumb = params[:staffthumb7] 
+    elsif @dept_select == "Pentadbiran Am"
+        @staffthumb = params[:staffthumb8] 
+    elsif @dept_select == "Radiografi"
+        @staffthumb = params[:staffthumb9] 
+    elsif @dept_select == "Kejururawatan"
+        @staffthumb = params[:staffthumb10] 
+    elsif @dept_select == "Jurupulih Perubatan Anggota (Fisioterapi)"
+        @staffthumb = params[:staffthumb11] 
+    elsif @dept_select == "Jurupulih Perubatan Cara Kerja"
+        @staffthumb = params[:staffthumb12] 
+    elsif @dept_select == "Penolong Pegawai Perubatan"
+        @staffthumb = params[:staffthumb13] 
+    elsif @dept_select == "Pos Basik"
+        @staffthumb = params[:staffthumb14] 
+    elsif @dept_select == "Sains Perubatan Asas"
+        @staffthumb = params[:staffthumb15] 
+    elsif @dept_select == "Anatomi & Fisiologi"
+        @staffthumb = params[:staffthumb16] 
+    elsif @dept_select == "Sains Tingkahlaku"
+        @staffthumb = params[:staffthumb17] 
+    elsif @dept_select == "Komunikasi & Sains Pengurusan"
+        @staffthumb = params[:staffthumb18] 
+    elsif @dept_select == "Pembangunan Pelatih"
+        @staffthumb = params[:staffthumb19] 
+    elsif @dept_select == "Khidmat Sokongan Pelatih"
+        @staffthumb = params[:staffthumb20] 
+    elsif @dept_select == "Kokurikulum"
+        @staffthumb = params[:staffthumb21] 
+    elsif @dept_select == "Ketua Unit Penilaian & Kualiti"  
+        @staffthumb = params[:staffthumb22] 
+    end
     
     
     #---if search by date---------------------------------------------------------------------------------------------------------
@@ -313,8 +336,16 @@ class StaffAttendancesController < ApplicationController
   def report
     @dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Pembangunan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]
     @dept_superiors = []
+    @position_staff_ids = []
+    @staff_in_department = []
     0.upto(21) do |count|
       @dept_superiors << Position.find(:first, :conditions=>['unit=?',@dept_names[count]])
+    end
+    0.upto(21) do |countt|
+        @position_staff_ids << Position.find(:first, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').subtree.map(&:staff_id).uniq.delete_if{|x|x==nil}   
+    end
+    0.upto(21) do |countt2|
+        @staff_in_department << Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',@position_staff_ids[countt2]]).map(&:thumb_id)
     end
   end
   
@@ -392,5 +423,82 @@ class StaffAttendancesController < ApplicationController
            render :layout => 'report'
       end   #end for - if request.post?
   end
-   
+  
+  def monthly_listing
+    if request.post?
+          @find_type = params[:list_submit_button]
+    		  if @find_type == "Monthly Listing"
+    		      #---------
+    		      @dept_select = params[:dept_select]
+              if @dept_select == "Teknologi Maklumat"
+                  @staffthumb = params[:staffthumb1] 
+              elsif @dept_select == "Perhotelan" 
+                  @staffthumb = params[:staffthumb2] 
+              elsif @dept_select == "Perpustakaan"
+                  @staffthumb = params[:staffthumb3] 
+              elsif @dept_select == "Kaunter"
+                  @staffthumb = params[:staffthumb4] 
+              elsif @dept_select == "Pembangunan"
+                  @staffthumb = params[:staffthumb5] 
+              elsif @dept_select == "Kewangan & Stor"
+                  @staffthumb = params[:staffthumb6] 
+              elsif @dept_select == "Perkhidmatan"
+                  @staffthumb = params[:staffthumb7] 
+              elsif @dept_select == "Pentadbiran Am"
+                  @staffthumb = params[:staffthumb8] 
+              elsif @dept_select == "Radiografi"
+                  @staffthumb = params[:staffthumb9] 
+              elsif @dept_select == "Kejururawatan"
+                  @staffthumb = params[:staffthumb10] 
+              elsif @dept_select == "Jurupulih Perubatan Anggota (Fisioterapi)"
+                  @staffthumb = params[:staffthumb11] 
+              elsif @dept_select == "Jurupulih Perubatan Cara Kerja"
+                  @staffthumb = params[:staffthumb12] 
+              elsif @dept_select == "Penolong Pegawai Perubatan"
+                  @staffthumb = params[:staffthumb13] 
+              elsif @dept_select == "Pos Basik"
+                  @staffthumb = params[:staffthumb14] 
+              elsif @dept_select == "Sains Perubatan Asas"
+                  @staffthumb = params[:staffthumb15] 
+              elsif @dept_select == "Anatomi & Fisiologi"
+                  @staffthumb = params[:staffthumb16] 
+              elsif @dept_select == "Sains Tingkahlaku"
+                  @staffthumb = params[:staffthumb17] 
+              elsif @dept_select == "Komunikasi & Sains Pengurusan"
+                  @staffthumb = params[:staffthumb18] 
+              elsif @dept_select == "Pembangunan Pelatih"
+                  @staffthumb = params[:staffthumb19] 
+              elsif @dept_select == "Khidmat Sokongan Pelatih"
+                  @staffthumb = params[:staffthumb20] 
+              elsif @dept_select == "Kokurikulum"
+                  @staffthumb = params[:staffthumb21] 
+              elsif @dept_select == "Ketua Unit Penilaian & Kualiti"  
+                  @staffthumb = params[:staffthumb22] 
+              end 
+    		      #---------
+    		      @aa=params[:month_year4][:"(1i)"]  #year
+              @bb=params[:month_year4][:"(2i)"]  #month
+              @cc='01'                      #params[:month_year][:"(3i)"] #day
+              if @aa!='' && @bb!='' && @cc!=''
+                  if @bb=='1'||@bb=='2'||@bb=='3'||@bb=='4'||@bb=='5'||@bb=='6'||@bb=='7'||@bb=='8'||@bb=='9'
+                      @bb='0'+@bb
+                  end
+                  @dadidu=@aa+'-'+@bb+'-'+@cc
+              else
+                  @dadidu=''
+              end
+    		      @next_date = @dadidu.to_date+1.month  #(next month)
+    		      
+    		      #-refer - add extra 1 day before & 1 day after - to synchronize with timing zone
+              @dadidu_ori= @dadidu
+              @next_date_ori= @next_date
+              @dadidu = (@dadidu.to_date-1.day).to_s
+              @next_date = (@next_date.to_date+1.day).to_s
+              #-refer
+              
+              @monthly_list=StaffAttendance.find(:all, :conditions => ["thumb_id=? AND logged_at>=? AND logged_at<?", @staffthumb, @dadidu, @next_date], :order => 'logged_at ASC')
+    		  end
+    	end
+    	render :layout =>'report'
+  end
 end
