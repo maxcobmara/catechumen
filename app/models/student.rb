@@ -27,7 +27,8 @@ class Student < ActiveRecord::Base
   has_many  :tenants
   
   has_many  :librarytransactions                                                            #Link to LibraryTransactions
-  has_many :studentattendances
+  #has_many :studentattendances
+  has_many :student_attendances
   has_many :timetables, :through => :studentattendances
   
   has_many :exammarks                                                                       #11Apr2013-Link to Model Exammark

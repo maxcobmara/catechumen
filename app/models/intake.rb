@@ -10,7 +10,7 @@ class Intake < ActiveRecord::Base
   end  
   
   def programme_group_intake
-    "#{description}"+" ("+"#{name}"+")"+" | "+"#{Programme.find(id).name}"
+    "#{description}"+" ("+"#{name}"+")"+" | "+"#{programme.name}"
   end
 
   #25March2013==========

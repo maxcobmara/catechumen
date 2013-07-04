@@ -50,7 +50,7 @@
 	</tr>-->
 	<tr>
 		<td class="leftcol"><%= f.label :semester %></td>
-		<td><%= f.collection_select :semester, AcademicSession.all, :id, :semester, :prompt => "Select" %></td>
+		<td><%= f.collection_select :semester, AcademicSession.find(:all,:order=>'created_at DESC'), :id, :semester, :prompt => "Select" %></td>
 	</tr>
 	<tr>
 		<td class="leftcol"><%= f.label :week %></td>
@@ -59,11 +59,11 @@
 
 	<tr>
 		<td class="leftcol">Start Date</td>
-		<td><%= f.date_select :startdate, :include_blank => true %></td>
+		<td><%= f.date_select :startdate, :default => Date.today, :start_year => Date.today.year %></td>
 	</tr>	
 	<tr>
 		<td class="leftcol">End Date</td>
-		<td><%= f.date_select :enddate, :include_blank => true %></td>
+		<td><%= f.date_select :enddate, :default => 4.days.from_now, :start_year => Date.today.year %></td>
 	</tr>	
 
 	<tr>

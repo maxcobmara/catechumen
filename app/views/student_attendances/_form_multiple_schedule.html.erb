@@ -1,0 +1,72 @@
+<%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
+
+<% form_tag :action => 'create' do |f|%>
+	<% @student_attendances.each_with_index do |student_attendance, index| %>
+		<% fields_for "student_attendances[#{index}]", student_attendance do |f| %>
+			
+			<!--******************-->
+			<% if index==0 %>
+			<div class="tform">
+
+			  <H2>Student Attendance Details</H2>
+
+						<% @selected_class = WeeklytimetableDetail.find(@classid)%>
+						<% @subject_name = @selected_class.weeklytimetable_topic.parent.name %>
+						<% @programmeid = @selected_class.weeklytimetable_topic.root.id %>
+						<table width=100%>
+							<tr>
+								<td class="leftcol"><label>Programme :</label></td>
+								<td><%=@selected_class.weeklytimetable_topic.programme_coursetype_name %></td>
+							</tr>
+							<tr>
+								<td class="leftcol"><label>Class / Schedule :</label></td>
+								<td><%=@selected_class.day_time_slot %></td>
+							</tr>
+							<tr>
+								<td class="leftcol"><label>Lecture Method :</label></td>
+								<td><%= (WeeklytimetableDetail::CLASS_METHOD.find_all{|disp, value| value == @selected_class.lecture_method}).map {|disp, value| disp}%></td>
+							</tr>
+							<tr>
+								<td class="leftcol"><label>Student Intake :</label></td>
+								<td><% @iii = @selected_class.weeklytimetable.schedule_intake.monthyear_intake %><%=@iii.strftime("%b")%>&nbsp;<%=@iii.strftime("%Y")%></td>
+							</tr>
+						
+							<tr>
+								<td class="leftcol" style="vertical-align:middle;">Students - Attendances</td>
+								<td>
+									<!---->
+									<% @student_list = Student.find(:all, :conditions => ['course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day])%>
+									<% if @student_list.count <= 0 %>
+										No student available for this intake.
+									<% else %>
+										<table>
+											<tr>
+												<th>No</th>
+												<th>Student</th>
+												<th>Attendance</th>
+											</tr>
+											<% @student_list.each_with_index do |student, nos| %>
+												<%= hidden_field "student_attendances[#{nos}]",:student_id, :size=>2, :value=>student.id %>
+												<%= hidden_field "student_attendances[#{nos}]",:weeklytimetable_details_id, :size=>2, :value=> @classid %>
+												<tr>
+													<td><%=nos+1%></td>
+													<td><%= student.matrix_name %></td>
+													<td style="text-align:center;"><%= check_box_tag "student_attendances[#{nos}][attend]", true %>
+																					<%#= check_box_tag "attends[#{nos}]", true  %></td>
+												</tr>
+											<% end %>
+										</table>
+									<% end %>
+									<!---->
+								</td>
+							</tr>
+						</table><!--end for - table width=100-->
+			</div>
+			<% end %>
+			<!--******************-->
+			
+		<% end %>	<!-- end of - @exammarks.each_with_index -->
+	<% end %>	<!-- end of - fields_for "exammarks[#{index}]"-->
+	<p><%= f.submit 'Create By Class/Schedule',:name => :new_submit %></p>
+<% end %>	<!-- end of - form_tag :action => 'create' do |f| %>-->
+<!--end-trial new exammark by exampaper (filtered by programme)-12Sept2012-->

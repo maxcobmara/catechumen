@@ -1,0 +1,89 @@
+<%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Edit Multiple Student Attendance (by Intake)</h2>
+	</div>
+</div>
+	
+	<div class="tlist" style="padding-left:20px;">
+		<% form_for :student_attendance, :url => update_multiple_student_attendances_path, :html => {:method => :put, :id => "form1" } do |f| %>
+			
+			<% @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
+			<% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
+			<table>
+				<tr><th>Select Schedule :</th></tr>
+				<tr>
+					<td>
+						<% 0.upto(2) do |count| %>
+							<%#= select_tag ('student_attendances[#{count}][lecturer_id]',options_from_collection_for_select(@lecturer_list, :id, :name)) %>
+							<% if @studentattendances && @studentattendances[count].weeklytimetable_details_id!= nil %>
+								<%= @schedule_id = @studentattendances[count].weeklytimetable_details_id %>
+								<%= select_tag("weeklytimetable_details_ids[#{count}]", options_from_collection_for_select(@schedule_list, :id, :subject_day_time,@schedule_id)) %>
+							<% else %>
+								<%= select_tag("weeklytimetable_details_ids[#{count}]", options_from_collection_for_select(@schedule_list, :id, :subject_day_time)) %>
+							<% end %><br>
+						<% end %>
+					</td>
+				</tr>
+				<tr><td style="border:0px;"><div align=right>	<%= submit_tag 'Apply Changes', :name =>:applychange %></div></td></tr>
+			</table>
+			
+			
+			<table>
+				<tr>
+					<th>No</th>
+					<th>Student</th>
+					<th>Attendance</th>
+				</tr>
+				<% @studentattendance_ids=params[:student_attendance_ids]%>
+				<% @studentattendances = StudentAttendance.find(@studentattendance_ids) %>
+				<% @studentattendances_group = @studentattendances.group_by{|x|x.student_id} %>
+      			<% @student_count = @studentattendances.map(&:student_id).uniq.count %>
+				<% count = 0 %><% @next = 0 %>
+				<% @studentattendances_group.each do |student_id, studentattendances| %>
+					<tr>
+						<td><%=count+=1%></td>
+						<td><%= Student.find(student_id).name %><%#= student_id %></td>
+						<td> 
+							<% studentattendances.each_with_index do |studentattendance, no|%>
+								<%= hidden_field_tag "student_attendance_ids[]", studentattendance.id %><%#= studentattendance.id %>
+								<%= check_box_tag "attends[#{no+@next}]", true, studentattendance.attend, :class => "check" %>
+								<% if no == 2 %>
+									<% @next = @next+no+1 %>
+								<% end %>
+							<% end %>
+						</td>
+					</tr>
+				<% end %>
+			</table>
+			<br>
+			
+			
+			
+	</div><!--end for div tlist-->
+	
+			<table border=0 cellspacing=0 cellpadding=0>
+				<tr>
+					<td style="padding-left:20px;"><%= f.submit "Submit" %></td>
+					<td style="padding-left:65px;"><!-- ref: http://railsforum.com/viewtopic.php?id=2151 rleblic2007-10-25 08:43:07 -->
+					<!--http://www.ryboe.com/2008/07/10/select-all-checkboxes-with-prototype-js.html -->
+					<b>Check/Uncheck all</b>&nbsp; <input id="check_all" name="check_all" type="checkbox" checked="checked" onclick="Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_all').checked})" />
+					</td>
+				</tr>
+			</table>
+		
+		<% end %><!--end of form-->
+
+	<!--</div>--><!--end for div tlist-->
+<br><br>
+
+<%= link_to 'Back', student_attendances_path %> | 
+<% if @studentattendances && @studentattendances[0].weeklytimetable_details_id!= nil %>
+	<%= link_to 'View Attendance Form (c/w date & time slot)', :action => 'borang_kehadiran',:iddd => @studentattendance_ids %>
+<% else %>
+	<%= link_to 'View Blank Attendance Form', :action => 'borang_kehadiran',:iddd => @studentattendance_ids %>
+<% end %>
+
+													

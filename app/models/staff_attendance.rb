@@ -330,10 +330,10 @@ class StaffAttendance < ActiveRecord::Base
     @begin_thismonth = every_month_begin 
 	  @begin_nextmonth = every_month_begin.to_date.next_month.beginning_of_month.to_s
 	  @monthly_non_approved = StaffAttendance.count_non_approved_monthly(thumb_id,@begin_thismonth,@begin_nextmonth).count
-	  if previous_status == 1 && @monthly_non_approved >= 2     #current:yellow    #change to 1 for checking
+	  if previous_status == 1 && @monthly_non_approved >= 1     #current:yellow     #change from 3 to 1 for checking
 		    previous_status = 2                                   #turn into green
-    elsif previous_status == 2                                #current:green
-		    if @monthly_non_approved >= 2                         #change to 1 for checking
+    elsif previous_status == 2                                #current:green      #change from 2 to 1 for checking
+		    if @monthly_non_approved >= 1                        #change to 1 for checking
 			    previous_status = 3                                 #turn into red
         elsif @monthly_non_approved == 0 
 			    previous_status = 1                                 #turn into yellow

@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :student_attendances, :collection => { :edit_multiple => :post, :update_multiple => :put ,:borang_kehadiran => :get} 
+  map.resources :student_attendances
+
   map.resources :average_courses
 
   map.resources :evaluate_courses
