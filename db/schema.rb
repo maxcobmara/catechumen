@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130702181712) do
+ActiveRecord::Schema.define(:version => 20130711045332) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -1524,6 +1524,10 @@ ActiveRecord::Schema.define(:version => 20130702181712) do
     t.integer  "weeklytimetable_details_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "reason"
+    t.string   "action"
+    t.string   "status"
+    t.string   "remark"
   end
 
   create_table "student_counseling_sessions", :force => true do |t|

@@ -7,50 +7,130 @@
 		<% end %>
 	</div>
 </div>
-
+	<%#=@studentattendance_ids%><%#=@studentattendances_group.count %>
 <% @classsession_of_studentattendances = @studentattendances.map(&:weeklytimetable_details_id).uniq.count %>
-<% if @classsession_of_studentattendances==1 %>
-
-	<span style="text-decoration:underline;font-weight:bold;padding-left:20px;">
-		Subject : <%=@studentattendances[0].weeklytimetable_detail.weeklytimetable_topic.full_parent %>
-	</span><br>
-	<span style="text-decoration:underline;font-weight:bold;padding-left:20px;">
-		Topic : <%=@studentattendances[0].weeklytimetable_detail.weeklytimetable_topic.subject_list %>
-	</span><br>
-	<span style="text-decoration:underline;font-weight:bold;padding-left:20px;">
-		Date : <%=h @studentattendances[0].weeklytimetable_detail.get_date_day_of_schedule %>
-		&nbsp;Time : <% if @studentattendances[0].weeklytimetable_detail.time_slot==0 %>
-			<%=TimetablePeriod.find(@studentattendances[0].weeklytimetable_detail.time_slot2).timing %>
-		<% else %>
-			<%=TimetablePeriod.find(@studentattendances[0].weeklytimetable_detail.time_slot).timing %>
-		<% end %>
-	</span><br>
-	<span style="text-decoration:underline;font-weight:bold;padding-left:20px;">
-		Lecturer : <%=h @studentattendances[0].weeklytimetable_detail.weeklytimetable_lecturer.name %>
-	</span><br>
-	<span style="text-decoration:underline;font-weight:bold;padding-left:20px;">
-		Intake : <%=h @studentattendances[0].weeklytimetable_detail.weeklytimetable.schedule_intake.name %> 
-	</span>	
-	<br><br><br>
-	
+<%# if @classsession_of_studentattendances==1 %>
 	<div class="tlist" style="padding-left:20px;">
+		
+	<% index2 = 0 %>
+
+	<table>
+		<% @studentattendances_group.each do |student, studentattendances| %>
+			<% if index2 == 0 %>
+				<tr>
+					<th colspan="<%=studentattendances.count*2%>" align="center">Schedule / Class Details</th>
+				</tr>
+				<tr>
+					<% studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, index|%>
+						<% @one_student_atts_count=studentattendances.count %>
+						<% @one_student_atts=studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot} %>
+						<td><font color=blue><b><%=index+1 %></b></font></td>
+						<td>
+							<span style="text-decoration:underline;font-weight:bold;padding-left:5px;">
+								Subject : <%=studentattendance.weeklytimetable_detail.weeklytimetable_topic.full_parent%>
+							</span><br>
+							<span style="text-decoration:underline;font-weight:bold;padding-left:5px;">
+								Topic : <%=studentattendance.weeklytimetable_detail.weeklytimetable_topic.subject_list %>
+							</span><br>
+							<span style="text-decoration:underline;font-weight:bold;padding-left:5px;">
+								Date : <%=h studentattendance.weeklytimetable_detail.get_date_day_of_schedule %>
+								&nbsp;Time : 
+								<% if studentattendance.weeklytimetable_detail.time_slot==0 %>
+									<%=TimetablePeriod.find(studentattendance.weeklytimetable_detail.time_slot2).timing %>
+								<% else %>
+									<%=TimetablePeriod.find(studentattendance.weeklytimetable_detail.time_slot).timing %>
+								<% end %>
+							</span><br>
+							<span style="text-decoration:underline;font-weight:bold;padding-left:5px;">
+								Lecturer : <%=h studentattendance.weeklytimetable_detail.weeklytimetable_lecturer.name %>
+							</span><br>
+							<span style="text-decoration:underline;font-weight:bold;padding-left:5px;">
+								Intake : <%=h studentattendance.weeklytimetable_detail.weeklytimetable.schedule_intake.name %> 
+							</span>
+						</td>
+					<% end %><!--end for studentattendance.each_with_index do...-->
+				</tr>
+				<% index2+=1 %>
+			<% end %><!--end for if index2==0 -->
+		<% end %><!--end for -  @studentattendances_group.each do |student, studentattendances| -->
+	</table>	
+	<br><br>
+
+	<!--<div class="tlist" style="padding-left:20px;">-->
 		<% form_for :student_attendance, :url => update_multiple_student_attendances_path, :html => {:method => :put, :id => "form1" } do |f| %>
 
 			<table>
 				<tr>
 					<th>No</th>
 					<th>Student</th>
-					<th>Attendance</th>
+					<th style="text-align:left;">Attendance<br>
+						<% index3=0 %>&nbsp;&nbsp;
+						<% @studentattendances_group.each do |student, studentattendances| %>
+							<% if index3 == 0 %>
+								<font color=blue>
+									<% 1.upto(studentattendances.count) do |index4|%>
+										<% if studentattendances.count>1 %>
+											<% if index4 == 1 %>
+												&nbsp;
+											<% else %>
+												&nbsp;&nbsp;
+											<% end %>
+										<% end %>
+										<%= index4%>
+									<% end %>
+								</font>
+							<% end %>
+							<% index3+=1 %>
+						<% end %>
+					</th>
+					<th>&nbsp;</th>
 				</tr>
-				<% @studentattendances.sort_by{|x|x.student.name}.each_with_index do |studentattendance,no| %>
-					<%= hidden_field_tag "student_attendance_ids[]", studentattendance.id %>
+
+				<% count = 0 %><% @next = 0 %>
+				<% @sa_sort_then_group = @studentattendances.sort_by{|y|y.student.name}.group_by{|x|x.student_id} %>
+				
+				<%# @studentattendances_group.each do |student_id, studentattendances| %>
+				<% @sa_sort_then_group.each do |student_id, studentattendances| %>
+				
+					<% one_student_atts_count=studentattendances.count %>
+					
 					<tr>
-						<td><%=no+1%></td>
-						<td><%=h studentattendance.student.matrix_name %></td>
-						<!--<td><%#= text_field_tag "attends[]", studentattendance.attend,:size=> 4 %></td>	-->
-						<td style="text-align:center;"><%= check_box_tag "attends[#{no}]", true, studentattendance.attend, :class => "check" %></td>
-					</tr>										   
+						<td><%=count+=1%></td>
+						<td><%= Student.find(student_id).name %><%#= student_id %></td>
+						<td style="text-align:left;"> 
+							<%# if @studentattendances[0].weeklytimetable_details_id != nil%>
+							<% if @studentattendances[@studentattendances.count-1].weeklytimetable_details_id != nil%>
+								<% studentattendances_sorted = studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot} %>
+							<% else %>
+								<% studentattendances_sorted = studentattendances %>
+							<% end %>
+							
+							<% studentattendances_sorted.each_with_index do |studentattendance, no|%>
+							
+								<%= hidden_field_tag "student_attendance_ids[]", studentattendance.id %><%#= studentattendance.id %>
+								<%# if no == 0 %>
+									<%# @next+=1 %>
+								<%# end %>
+								<%= check_box_tag "attends[#{no+@next}]", true, studentattendance.attend, :class => "check" %>
+								<% if studentattendance.attend == true %>
+								<% else %>
+									Select <b>Reason / Action Taken / Action Closed?</b>
+									<%#= select_tag("reasons[#{no+@next}]", "<option value='0'>Reason</option>" +options_for_select(['Cuti Sakit','Kecemasan','Tiada'])) %>
+									<%##= f.select :cctype_id, StudentAttendance::REASON, :prompt => "Select"  %>
+									<%= select_tag("reasons[#{no+@next}]", "<option value='0'>Reason</option>" +options_for_select(StudentAttendance::REASON, studentattendance.reason)) %>&nbsp;
+									<%= select_tag("actions[#{no+@next}]", "<option value='0'>Action taken</option>" +options_for_select(StudentAttendance::ACTION, studentattendance.action)) %>&nbsp;
+									<%= select_tag("statuss[#{no+@next}]", "<option value='0'>Action close?</option>" +options_for_select(['Yes','No'],studentattendance.status)) %>&nbsp;
+									<%= text_field_tag "remarks[#{no+@next}]", studentattendance.remark %>
+								<% end %>
+								<% if no == one_student_atts_count-1 %><%# if no == 2 %>
+									<% @next = @next+no+1 %>
+								<% end %>
+							<% end %>
+						</td>
+								
+					</tr>
 				<% end %>
+				<!---->
 			</table>
 			<br>
 	</div><!--end for div tlist-->
@@ -70,8 +150,26 @@
 	<!--</div>--><!--end for div tlist-->
 
 
-<% else %>
-	Please select students of the same <b>class (subject+topic+date+time+lecturer+intake)</b> for multiple edit. 
-<% end %><br><br>
+<%# else %>
+	<!--Please select students of the same <b>class (subject+topic+date+time+lecturer+intake)</b> for multiple edit. -->
+<%# end %><br><br>
+<% count_form = 0 %>
 
-<%= link_to 'Back', student_attendances_path %>
+<%= link_to 'Back', student_attendances_path %> | <%#= link_to 'View Attendance Form', :action => 'borang_kehadiran',:iddd => @studentattendance_ids, :form_type => 1 %>
+
+<% if @studentattendances && @studentattendances[0].weeklytimetable_details_id!= nil %><%=%>	
+
+	<% 0.upto(@one_student_atts_count/3-1) do |count_link| %>
+		<%= link_to "Form #{count_link+1}", :action => 'borang_kehadiran',:iddd => @studentattendance_ids,:first => count_link %>
+		<% count_form+=(2*count_link) %>
+		<% if @studentattendances && @one_student_atts[count_form] && @one_student_atts[count_form].weeklytimetable_details_id!= nil %>
+			<font color=blue>*</font>
+		<% end %>
+		<% if count_link < @one_student_atts_count/3-1 %> |<% end %>
+	<% end %>
+	
+<% else %>
+	<%= link_to 'View Blank Attendance Form', :action => 'borang_kehadiran',:iddd => @studentattendance_ids %>
+<% end %>
+<BR><BR>
+<font size=-2 color=blue>* Indicates attendance form completed with date & time slot.</font>

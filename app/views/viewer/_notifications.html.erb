@@ -44,13 +44,20 @@
   <% else %>
     <%= link_to "#{dash_attendance} Late/early attendance for approval", { :controller => "staff_attendances", :action => "manage" } %><br>
   <% end %>
- 	<!--Notifications for Late/Early - require management-->	
+<% if User.current_user.staff  %>
+ 	<!--Notifications for Late/Early - require management-->
+	<% unless User.current_user.staff.position.blank?  %><!--15Jul2013-added-->
+	<%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%><!--15Jul2013-added-->
+	
 	<% lateearly = StaffAttendance.count(:all, :conditions => ["trigger=? AND reason IS NULL AND thumb_id=?", true, User.current_user.staff.thumb_id]) %>
 	<% if lateearly > 0 %>
 	   <%= link_to "#{lateearly} Late/early attendance require reason submission", { :controller => 'staff_attendances', :action => 'manage' } %><br>
 	<% else %>
 	<% end %>
 	
+	<% end %><!--15Jul2013-added-->
+	<%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%><!--15Jul2013-added-->
+<% end %>	
 	<!-- Notification for travel request -->
 	<% trvlreqst = TravelRequest.count(:all, :conditions => ['hod_id = ? AND hod_accept IS ?', User.current_user.staff_id, nil]) %>
 	<% if trvlreqst > 0 %>
@@ -89,11 +96,14 @@
 	<% end %>
 		
 	<!--Notification for Asset Loan-->	
-<% unless User.current_user.staff.blank?%>	
+
+<% unless User.current_user.staff.blank? %>	
 	<%#****special case for PA Pengarah%****%>
 	<% if User.current_user.staff.id != 101 %>
 	<%#**************************************%>
 	
+	<% unless User.current_user.staff.position.blank?  %><!--15Jul2013-added-->
+	<%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%><!--15Jul2013-added-->
 	<!--25Apr2013-check if ANY OF logged-in unit members of DEPT/UNIT same as loaned_by(asset owner); HAVE request of asset loan that still pending-->
 	<% hods = [6,7,8,9,10,11,12,13,14,15,16,17,18,19,25,26,27,28,29,30,31] %>
 	<% logged_user_positionid=User.current_user.staff.position.id %>
@@ -122,6 +132,7 @@
 	<% else %>
 		<% assetloanrequest2[0]=0%>
 	<% end %>
+
 	<!--25Apr2013-check if ANY OF logged-in unit members of DEPT/UNIT same as loaned_by(asset owner); HAVE request of asset loan that still pending-->
 
 	<!--25Apr2013-to notify user for not yet return on-loan asset on due date (expected_on)-->
@@ -159,8 +170,13 @@
 
 <% end %><!--end for unless User.current_user.staff.blank?-->
 	<%#****special case for PA Pengarah%****%>
+	
+	<% end %><!--15Jul2013-added-->
+	<%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%><!--15Jul2013-added-->
+	
 	<% end %>
 	<%#**************************************%>
+
 	<!--END-Notification for Asset Loan-->
 
 	<!-- Notification for Messages -->

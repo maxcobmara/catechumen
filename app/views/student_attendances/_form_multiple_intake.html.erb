@@ -58,7 +58,7 @@
 												<!--<th>Attendance</th>-->
 											</tr>
 											<% @next=0 %>
-											<% @student_list.each_with_index do |student, nos| %>
+											<% @student_list.sort_by{|x|x.name}.each_with_index do |student, nos| %>
 												<tr>
 													<td><%=nos+1%></td>
 													<td><%= student.matrix_name %></td>
@@ -66,13 +66,9 @@
 												<% @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
 												<% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
 												<% 0.upto(2) do |count| %>
-													<% if @next == 0 %>
-														<%= hidden_field "student_attendances[#{nos+count}]",:student_id, :size=>2, :value=>student.id %>
-													<% else %>
-														<%= hidden_field "student_attendances[#{nos+count+@next}]",:student_id, :size=>2, :value=>student.id %>
-													<% end %>
+													<%= hidden_field "student_attendances[#{nos+count+@next}]",:student_id, :size=>2, :value=>student.id %>
 													<% if count == 2 %>
-														<% @next = nos+count %>
+														<% @next = @next+count %>
 													<% end %>
 												<% end %>
 											<% end %>

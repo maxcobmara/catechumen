@@ -89,6 +89,10 @@ class Student < ActiveRecord::Base
     Date.today.year - sbirthdt.year
   end
   
+  def intake_acryn
+      intake.to_date.strftime("%b %Y") 
+  end 
+  
   #group by intake
  # def isorter
  #   suid = intake_id

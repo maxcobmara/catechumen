@@ -228,6 +228,7 @@ authorization do
       if_attribute :tpa_id => is {User.current_user.staff_id}
     end
     has_permission_on :timetables, :to => [:create]
+    has_permission_on :student_attendances, :to => :manage    #10July2013
   end
   
   

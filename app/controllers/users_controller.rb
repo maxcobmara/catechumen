@@ -2,19 +2,19 @@ class UsersController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
   
    
-  before_filter :login_required
-  
+  #before_filter :login_required   #for NEW(SIGNUP) - MUST LOGIN ???
+  before_filter :login_required, :except => [:new, :create]  
   
   
   def index
     #@users = User.find(:all)
     @filters = User::FILTERS
       if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-        #@users = User.with_permissions_to(:index).send(params[:show])
-        @users = User.send(params[:show])
+        @users = User.with_permissions_to(:index).send(params[:show]) #unhide - 15July2013
+        #@users = User.send(params[:show])                            #hide - 15July2013
       else
-        #@users = User.with_permissions_to(:index).relevant
-        @users = User.find(:all)
+        #@users = User.with_permissions_to(:index).relevant           
+        @users = User.find(:all)                                     
     end
      
    end
@@ -64,7 +64,8 @@ class UsersController < ApplicationController
       redirect_back_or_default('/')
       flash[:notice] = "Thanks for signing up!  The IT team will process your application as soon as possible"
     else
-      flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
+      #flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
+      flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin."
       render :action => 'new'
     end
   end

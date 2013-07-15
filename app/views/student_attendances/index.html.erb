@@ -16,11 +16,14 @@
 </div>
 
 <br><br>
-<% @intake_list = Student.find(:all, :conditions => ['course_id=?',@preselect_prog]).map(&:intake).uniq %>
+<%# @intake_list = Student.find(:all, :conditions => ['course_id=?',@preselect_prog]).map(&:intake).uniq %>
+<% @intake_list2 = Student.find(:all, :conditions => ['course_id=?',@preselect_prog], :select=> "DISTINCT intake") %>
+
 <div class="left">
 	<% form_tag :action => 'new' do %>
 		<%= hidden_field_tag( "new_type","3" )%>
-		<b>Intake : </b><%= select_tag('intake', options_for_select(@intake_list.sort)) %>
+		<b>Intake : </b><%#= select_tag('intake', options_for_select(@intake_list.sort)) %>
+		<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>
 		<%= submit_tag 'Multiple Attendance by Intake', :subject_id => nil %>
 	<% end %>
 </div>
@@ -45,50 +48,137 @@
 		<th>&nbsp;</th>
     	<th>Student</th>
 		<th>Attend</th>
+		<th>Reason</th>
+		<th>Action Taken</th>
+		<th>Action Closed?</th>
 		<th colspan=3>Control</th>
   	</tr>
 
-	<% @student_attendances_class.each do |class_session, student_attendances|%>
+<!---->
+	<% @student_attendances_intake.each do |intake, student_attendances|%>
+		<%@studentattendance_ids=student_attendances.map(&:id)%>
+
+		<tr>
+ 			<td colspan=9 style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">STUDENT INTAKE : <%=intake.to_date.strftime("%b %Y").upcase %></td>
+		</tr>
+
+		<% student_attendances.group_by{|xx|xx.weeklytimetable_details_id}.each do |classes_schedule| %>
+			<!--<%#=classes_schedule[0]%>~~<%#=classes_schedule[1]%>-->
+			<% if classes_schedule[0] != nil %>
+				<tr>
+					<td colspan=9 style="background-color:#EFF1F1;">
+						<span style="font-weight:bold;">
+							Subject : <%= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.full_parent %> | 
+							Topic : <%= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.subject_list %>
+						</span><br>
+						Date : <%=h WeeklytimetableDetail.find(classes_schedule[0]).get_date_day_of_schedule %> |
+						Time : 
+						<% if (WeeklytimetableDetail.find(classes_schedule[0])).time_slot==0 %>
+							<%=TimetablePeriod.find(WeeklytimetableDetail.find(classes_schedule[0]).time_slot2).timing %>				
+						<% else %>
+							<%=TimetablePeriod.find(WeeklytimetableDetail.find(classes_schedule[0]).time_slot).timing %>
+						<% end %> |
+						Lecturer : <%=h (WeeklytimetableDetail.find(classes_schedule[0])).weeklytimetable_lecturer.name %>
+					</td>
+				</tr>
+			<% else %>
+				<tr>
+					<td colspan=8 style="background-color:#FDDEDE;">Schedule / Classes - not defined (<%=intake.to_date.strftime("%b %Y").upcase %>)</td>
+				</tr>
+			<% end %>
+
+			<% classes_schedule[1].sort_by{|x|x.student.name}.each do |student_attendance|%>				
+				<tr>
+					<td><%= check_box_tag "student_attendance_ids[]", student_attendance.id, :class => "check" %></td>
+		    		<td><%=h student_attendance.student.matrix_name %></td>
+					<td>
+						<% if student_attendance.attend == true %> 
+							&#10003;
+						<% else %>
+							Absent
+						<% end %>
+					</td>
+					<td>	
+						<% if student_attendance.attend == true %> 
+						<% else %>
+							<% if student_attendance.reason != 0 || student_attendance.reason != nil %>
+								<%=h ((StudentAttendance::REASON.find_all{|disp, value| value == student_attendance.reason}).map {|disp, value| disp}) %>
+							<% end %>
+						<% end %>	
+					</td>
+					<td>	 
+						<% if student_attendance.attend == true %> 
+						<% else %>
+							<% if student_attendance.action != 0 || student_attendance.action != nil %>
+								<%=h ((StudentAttendance::ACTION.find_all{|disp, value| value == student_attendance.action}).map {|disp, value| disp}) %>
+							<% end %>
+						<% end %>
+					</td>
+					<td>
+						<% if student_attendance.attend == true %> 
+						<% else %>
+							<% if student_attendance.status != 0 || student_attendance.status != nil %>
+								<%=student_attendance.status %>
+							<% end %>
+						<% end %>
+					</td>
+					<td width=10px><%= link_to image_tag("document.png",:border => 0, :title => 'Show'), :action => 'show', :id => student_attendance %></td>
+					<td width=10px><%= link_to image_tag("edit.png",:border => 0, :title => 'Edit'),:action => 'edit', :id => student_attendance %></td>
+					<td width=10px ><%= link_to image_tag("delete.png",:border => 0, :title => 'Delete'), student_attendance,:confirm => 'Are you sure?',:method => :delete %></td>
+				</tr>	
+			<% end %>
+
+		<% end %><br>
+	<% end %>
+<!---->
+	
+	<!--START-NO LONGER USE--><%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%>
+	<!--
+	<%# @student_attendances_class.each do |class_session, student_attendances|%>
 		<tr>
 			<td colspan=8 style="background-color:#EFF1F1;">
-				<% unless student_attendances[0].weeklytimetable_details_id.blank? || student_attendances[0].weeklytimetable_details_id.nil? %>
-					<!--start:with weeklytimetable_details_id existance-->
+				<%# unless student_attendances[0].weeklytimetable_details_id.blank? || student_attendances[0].weeklytimetable_details_id.nil? %>
+					-->
+					<!--start:with weeklytimetable_details_id existance--><!--
 					<span style="font-weight:bold;">
-						Subject : <%=h student_attendances[0].weeklytimetable_detail.weeklytimetable_topic.full_parent %> | 
-						Topic : <%=h student_attendances[0].weeklytimetable_detail.weeklytimetable_topic.subject_list %><%#=class_session %>
+						Subject : <%#=h student_attendances[0].weeklytimetable_detail.weeklytimetable_topic.full_parent %> | 
+						Topic : <%#=h student_attendances[0].weeklytimetable_detail.weeklytimetable_topic.subject_list %><%#=class_session %>
 					</span><br>
-					Date : <%=h student_attendances[0].weeklytimetable_detail.get_date_day_of_schedule %> |
+					Date : <%#=h student_attendances[0].weeklytimetable_detail.get_date_day_of_schedule %> |
 					Time : 
-					<% if student_attendances[0].weeklytimetable_detail.time_slot==0 %>
-						<%=TimetablePeriod.find(student_attendances[0].weeklytimetable_detail.time_slot2).timing %>				
-					<% else %>
-						<%=TimetablePeriod.find(student_attendances[0].weeklytimetable_detail.time_slot).timing %>
-					<% end %> |
-					Lecturer : <%=h student_attendances[0].weeklytimetable_detail.weeklytimetable_lecturer.name %> |
-					Intake : <%=h student_attendances[0].weeklytimetable_detail.weeklytimetable.schedule_intake.name %>
-					(<%= (WeeklytimetableDetail::CLASS_METHOD.find_all{|disp, value| value == student_attendances[0].weeklytimetable_detail.lecture_method}).map {|disp, value| disp}%>)
+					<%# if student_attendances[0].weeklytimetable_detail.time_slot==0 %>
+						<%#=TimetablePeriod.find(student_attendances[0].weeklytimetable_detail.time_slot2).timing %>				
+					<%# else %>
+						<%#=TimetablePeriod.find(student_attendances[0].weeklytimetable_detail.time_slot).timing %>
+					<%# end %> |
+					Lecturer : <%#=h student_attendances[0].weeklytimetable_detail.weeklytimetable_lecturer.name %> |
+					Intake : <%#=h student_attendances[0].weeklytimetable_detail.weeklytimetable.schedule_intake.name %>
+					(<%#= (WeeklytimetableDetail::CLASS_METHOD.find_all{|disp, value| value == student_attendances[0].weeklytimetable_detail.lecture_method}).map {|disp, value| disp}%>)-->
 					<!--end:with weeklytimetable_details_id existance-->
-				<% else %>	
+				<%# else %>	
 					<!--start-display intakes only-->
 					<!--end-display intakes only-->
-				<% end %>
+				<%# end %><!--
 			</td>
 		</tr>
-		<% student_attendances.each do |student_attendance| %>
+		<%# student_attendances.each do |student_attendance| %>
   		<tr>
-			<td><%= check_box_tag "student_attendance_ids[]", student_attendance.id, :class => "check" %></td>
-    		<td><%=h student_attendance.student.matrix_name %></td>
-			<td><% if student_attendance.attend == true %> &#10003;<% end %></td>
-			<td width=10px><%= link_to image_tag("document.png",:border => 0, :title => 'Show'), :action => 'show', :id => student_attendance %></td>
-			<td width=10px><%= link_to image_tag("edit.png",:border => 0, :title => 'Edit'),:action => 'edit', :id => student_attendance %></td>
-			<td width=10px ><%= link_to image_tag("delete.png",:border => 0, :title => 'Delete'), student_attendance,:confirm => 'Are you sure?',:method => :delete %></td>
+			<td><%#= check_box_tag "student_attendance_ids[]", student_attendance.id, :class => "check" %></td>
+    		<td><%#=h student_attendance.student.matrix_name %></td>
+			<td><%# if student_attendance.attend == true %> &#10003;<%# end %></td>
+			<td width=10px><%#= link_to image_tag("document.png",:border => 0, :title => 'Show'), :action => 'show', :id => student_attendance %></td>
+			<td width=10px><%#= link_to image_tag("edit.png",:border => 0, :title => 'Edit'),:action => 'edit', :id => student_attendance %></td>
+			<td width=10px ><%#= link_to image_tag("delete.png",:border => 0, :title => 'Delete'), student_attendance,:confirm => 'Are you sure?',:method => :delete %></td>
 		</tr>
-		<% end %>
+		<%# end %>
 		
-	<% end %>
+	<%# end %>
+	-->
 	
+	<!--END - NO LONGER USE--><%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%>
+
 	</table>
-	<br><br>
+	<br>
 	
 	<div class="left">
 		<!-- ref: http://railsforum.com/viewtopic.php?id=2151 rleblic2007-10-25 08:43:07 -->
@@ -97,20 +187,56 @@
 		<b>Check/Uncheck all</b>&nbsp;&nbsp;
 	</div>
 
-	<%= submit_tag "Edit Checked", :name => :student_attendance_submit_button %>
+	<%= submit_tag "Edit Checked", :name => :student_attendance_submit_button %> <font size=-2px>(Edit by Schedule / Class)</font>
 	<% end %><!--end for form-->
 
-</div>
 
-<% @exist_attendances = StudentAttendance.all.map(&:weeklytimetable_details_id).uniq %>
-<% @exist_timetable_attendances = WeeklytimetableDetail.find(:all, :conditions=>['id IN (?)', @exist_attendances])%>
 
-<div class="right">
-	<% form_tag '', :method => 'get' do %>
-		<b>Class / Schedule : </b><%= select_tag('classid', "<option value='0'>All Existing Staff Attendance</option>" +options_from_collection_for_select(@exist_timetable_attendances, :id, :subject_day_time)) %><!--WeeklytimetableDetail.all, :id, :subject_day_time-->
-		<%= submit_tag 'Search Staff Attendances', :name => :exammark_search %>
-	<% end %>
-</div>
+	<% @exist_attendances = StudentAttendance.all.map(&:weeklytimetable_details_id).uniq %>
+	<% @exist_timetable_attendances = WeeklytimetableDetail.find(:all, :conditions=>['id IN (?)', @exist_attendances])%>
+
+
+	<div class="right">
+		<% form_tag '', :method => 'get' do %>
+			<b>Class / Schedule : </b><%= select_tag('classid', "<option value='0'>All Existing Student Attendance</option>" +options_from_collection_for_select(@exist_timetable_attendances, :id, :subject_day_time)) %><!--WeeklytimetableDetail.all, :id, :subject_day_time-->
+			<%= submit_tag 'Search Staff Attendances', :name => :attendance_search %>
+		<% end %>
+	</div>
+	
+	<br>
+	<div class="left">
+		<% @intatake = [] %>
+		<% @student_attendances_intake.each do |intake, student_attendances|%>
+			<% @intatake << intake %>
+		<% end %>	
+		
+		<% @intatake2 = Student.find(:all, :conditions => ['course_id=? AND intake IN (?)',@preselect_prog, @intatake], :select=> "DISTINCT intake") %>
+		
+		<% form_tag edit_multiple_intake_student_attendances_path do %>
+			<%#= select_tag('intake_student', options_for_select(@intatake)) %>		
+			<%= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %>				
+			<%= submit_tag 'Edit multiple by intake', :name => :student_attendance_intake %>			
+		<% end %>
+	</div>
+	<br>
+	
+
+
+	<div class="right">
+		<% form_tag '', :method => 'get' do %>
+			<%= hidden_field_tag( "programme",@preselect_prog)%>
+			<%= select_tag('intake_student', "<option value='0'>All Existing Intake</option>" +options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %><!--WeeklytimetableDetail.all, :id, :subject_day_time-->
+			<%= submit_tag 'Search by Intake', :name => :attendance_search %>
+		<% end %>
+	</div>
+
+</div><!--INTAKE<%#=@intake_student%>-->
+
+
 <br />
 
-<%= link_to 'New student attendance', new_student_attendance_path %>
+
+
+<%#= link_to 'New student attendance', new_student_attendance_path %>
+
+<br><br>
