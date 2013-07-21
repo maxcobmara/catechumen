@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130711045332) do
+ActiveRecord::Schema.define(:version => 20130721135919) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -244,6 +244,8 @@ ActiveRecord::Schema.define(:version => 20130711045332) do
     t.date     "endorsed_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_writeoff"
+    t.integer  "document_id"
   end
 
   create_table "asset_placements", :force => true do |t|
@@ -356,6 +358,40 @@ ActiveRecord::Schema.define(:version => 20130711045332) do
     t.boolean  "is_maintainable"
     t.boolean  "mark_as_lost"
     t.boolean  "mark_disposal"
+  end
+
+  create_table "assetsearches", :force => true do |t|
+    t.string   "assetcode"
+    t.integer  "assettype"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "purchaseprice"
+    t.date     "purchasedate"
+    t.date     "startdate"
+    t.date     "enddate"
+    t.integer  "category"
+    t.integer  "assignedto"
+    t.boolean  "bookable"
+    t.date     "loandate"
+    t.date     "returndate"
+    t.integer  "location"
+    t.integer  "defect_asset"
+    t.integer  "defect_reporter"
+    t.integer  "defect_processor"
+    t.string   "defect_process"
+    t.boolean  "maintainable"
+    t.string   "maintname"
+    t.string   "maintcode"
+    t.integer  "disposal"
+    t.string   "disposaltype"
+    t.string   "discardoption"
+    t.string   "disposalreport"
+    t.integer  "disposalcert"
+    t.string   "disposalreport2"
+    t.integer  "loss_start"
+    t.integer  "loss_end"
+    t.integer  "loss_cert"
   end
 
   create_table "assettracks", :force => true do |t|
@@ -1506,6 +1542,22 @@ ActiveRecord::Schema.define(:version => 20130711045332) do
     t.integer  "position_old"
     t.integer  "staff_shift_id"
     t.integer  "att_colour"
+  end
+
+  create_table "staffsearch2s", :force => true do |t|
+    t.string   "keywords"
+    t.integer  "position"
+    t.integer  "staff_grade"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "staffsearches", :force => true do |t|
+    t.string   "keywords"
+    t.integer  "position"
+    t.integer  "staff_grade"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "stationeries", :force => true do |t|

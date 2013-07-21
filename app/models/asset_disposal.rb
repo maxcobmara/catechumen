@@ -33,6 +33,21 @@ class AssetDisposal < ActiveRecord::Base
     end
   end
   
+  def disposal_malay
+    if disposal_type == "transfer"
+        "Pindahan/hadiah"
+    elsif disposal_type == "discard"
+        "Musnah"
+    elsif disposal_type == "sold"
+        "Jualan"
+    elsif disposal_type == "stock"
+        "Stok"
+    else
+        "Lain-lain"
+    end
+    
+  end
+  
   def discard_malay
     if discard_options == "bury"
       "Tanam"
@@ -61,5 +76,8 @@ class AssetDisposal < ActiveRecord::Base
     end
   end
       
-      
+  def complete_for_report
+    "#{asset.code_asset}"+" ("+"#{disposal_type.upcase}"+" on "+"#{disposed_on.strftime('%d-%b-%Y')}"+")"
+    
+  end    
 end

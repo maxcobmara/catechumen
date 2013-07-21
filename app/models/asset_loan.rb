@@ -10,6 +10,12 @@ class AssetLoan < ActiveRecord::Base
   belongs_to :hodept,   :class_name => 'Staff', :foreign_key => 'hod'
   belongs_to :receivedpfficer, :class_name => 'Staff', :foreign_key => 'received_officer'
   
+  validates_presence_of :reason, :if => :must_assign_if_external?   #16July2013
+  
+  def must_assign_if_external?  #16July2013
+    loantype==2 
+  end
+  
   def self.borrowings
     find(:all, :conditions => ['is_returned !=? OR is_approved IS NOT ?', true, nil])
   end
@@ -68,7 +74,7 @@ class AssetLoan < ActiveRecord::Base
   
   #---------
   named_scope :all 
-  named_scope :myloan,        :conditions =>  ["staff_id=?", User.current_user.staff_id]
+  #named_scope :myloan,        :conditions =>  ["staff_id=?", User.current_user.staff_id]
   named_scope :internal,      :conditions =>  ["loantype =? ", 1]
   named_scope :external,      :conditions =>  ["loantype =? ", 2]
   named_scope :onloan,        :conditions =>  ["is_approved IS TRUE AND is_returned IS NOT TRUE"]

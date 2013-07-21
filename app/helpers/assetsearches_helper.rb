@@ -1,0 +1,2 @@
+module AssetsearchesHelper
+end

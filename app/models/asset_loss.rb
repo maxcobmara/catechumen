@@ -9,6 +9,7 @@ class AssetLoss < ActiveRecord::Base
   belongs_to :investigator,     :class_name => 'Staff', :foreign_key => 'investigated_by'
   belongs_to :sec_officer,      :class_name => 'Staff', :foreign_key => 'security_officer_id'
   belongs_to :hod,              :class_name => 'Staff', :foreign_key => 'endorsed_hod_by'
+  belongs_to :document
   
   validates_presence_of :report_code, :loss_type
   

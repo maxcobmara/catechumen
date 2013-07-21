@@ -9,7 +9,7 @@
 			</div>
 	</div>
 </div>
-<%=params[:search]%>LLLL
+<%=params[:search]%><!--16Jul2013-LLLL-hide-->
 <div class="pagination">
  <%= will_paginate @books %>  
 </div>
@@ -17,7 +17,11 @@
 <div class="indextable">
 	<table>
 		<tr>
-			<th colspan=3><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Book') + "New book", new_book_path %></th>
+			<th colspan=3>
+				<% permitted_to? :manage, :books do %>
+					<%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Book') + "New book", new_book_path %>
+				<% end %>
+			</th>
 			<th style="text-align:right;"><%= link_to_function "Stock Listing by...", "$('byclass').toggle(); $('byaccessno').toggle();" %></th>
 			<th colspan=3 style="text-align:left;">
 				
@@ -39,15 +43,17 @@
 				</div>
 				
 			</th>
+			<th colspan=3>&nbsp;</th>
+			<!--HIDE ON 16JUL2013-
 			<th width=10px>
-				<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'All Books'), :action => 'stock_verification', :locals => {:class_type => '1'}  %><div class="noti_bubble">All</div></div>
+				<div class="noti_Container"><%#= link_to image_tag("printer.png", :border => 0, :title => 'All Books'), :action => 'stock_verification', :locals => {:class_type => '1'}  %><div class="noti_bubble">All</div></div>
 			</th>
 			<th width=10px>
-				<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'NLM'), :action => 'stock_verification', :locals => {:class_type => '2'}  %><div class="noti_bubble">NLM</div></div>
+				<div class="noti_Container"><%#= link_to image_tag("printer.png", :border => 0, :title => 'NLM'), :action => 'stock_verification', :locals => {:class_type => '2'}  %><div class="noti_bubble">NLM</div></div>
 			</th>
 			<th width=10px>
-				<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'LC'), :action => 'stock_verification', :locals => {:class_type => '3'}  %><div class="noti_bubble">LC</div></div>
-			</th>
+				<div class="noti_Container"><%#= link_to image_tag("printer.png", :border => 0, :title => 'LC'), :action => 'stock_verification', :locals => {:class_type => '3'}  %><div class="noti_bubble">LC</div></div>
+			</th>-->
 		</tr>
 		<tr>
 			<th>Media</th>
@@ -187,7 +193,8 @@
 
 <% permitted_to? :manage, :books do %>
 	<%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Book') + "New book", new_book_path %> |
-	<%= link_to 'All Books Listing', :action => 'stock_verification', :locals => {:class_type => '1',:dodo =>params[:search]} %> |
+	<%= link_to 'All Books Listing', :action => 'stock_verification', :locals => {:class_type => '1',:dodo =>params[:search]} %>
+	<!--HIDE ON 16JULY2013- |
 	<%= link_to 'Books of class NLM', :action => 'stock_verification', :locals => {:class_type => '2'} %> | 
-	<%= link_to 'Books of class LC', :action => 'stock_verification', :locals => {:class_type => '3'} %>  
+	<%= link_to 'Books of class LC', :action => 'stock_verification', :locals => {:class_type => '3'} %>  -->
 <% end %>

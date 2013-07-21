@@ -1,0 +1,383 @@
+<div class="tform">
+	<H2>Asset Search : KEW-PA 
+		<% if @searchtype=='1'%> 2 & 3
+		<% elsif @searchtype=='2'%> 4 (Harta Modal / Fixed Asset)
+		<% elsif @searchtype=='3'%> 5 (Inventori / Inventory)
+		<% elsif @searchtype=='4'%> 6 (Pergerakan Aset : Peminjaman)
+		<% elsif @searchtype=='5'%> 7 (Penempatan Aset)
+		<% elsif @searchtype=='6'%> 8 (Laporan Tahunan Harta Modal & Inventori)
+		<% elsif @searchtype=='7'%> 9 (Aduan Kerosakan Aset Alih)
+		<% elsif @searchtype=='8'%> 13 (Senarai Aset Alih yang Memerlukan Penyelenggaraan)
+		<% elsif @searchtype=='9'%> 14 (Daftar Penyelenggaraan Harta Modal)
+		<% elsif @searchtype=='10'%> 16 (Perakuan Pelupusan (PEP) Aset Alih Kerajaan)
+		<% elsif @searchtype=='11'%> 17 (Laporan Lembaga Pemeriksa Aset Alih Kerajaan)
+		<% elsif @searchtype=='12'%> 18 (Sijil Penyaksian Pemusnahan Aset Alih Kerajaan)
+		<% elsif @searchtype=='13'%> 19 (Sijil Pelupusan Aset Alih Kerajaan)
+		<% elsif @searchtype=='14'%> 20 (Laporan Tahunan Pemusnahan Aset Alih Kerajaan)
+		<% elsif @searchtype=='15'%> 28 (Laporan Awal Kehilangan Aset Alih Kerajaan)
+		<% elsif @searchtype=='16'%> 30 (Laporan Akhir Kehilangan Aset Alih Kerajaan)
+		<% elsif @searchtype=='17'%> 31 (Sijil Hapus Kira Aset Alih Kerajaan)
+		<% end %>
+	</H2>
+<!--
+	<%# form_for @assetsearch do |f| %>
+  		<%#= f.error_messages %>
+		<table width=100% >
+			<tr>
+				<td class="leftcol"> <%#= f.label :assetcode %></td>
+				<td><%#= f.text_field :assetcode %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%#= f.label :assettype %></td>
+				<td><%#= f.text_field :assettype %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%#= f.label :name %></td>
+				<td><%#= f.text_field :name %></td>
+			</tr>
+		</table>
+		<p><%#= f.submit 'Search' %></p>
+	<%#end %>
+-->
+	
+	<% form_for @assetsearch do |f| %>
+  		<%= f.error_messages %>
+		<table width=100% >
+			<% if @searchtype=='1' || @searchtype==1 %>
+				<%= hidden_field_tag :method,  1 %>
+				<tr>
+					<td class="leftcol"> Search by Asset Code :</td>
+					<td><%= f.text_field :assetcode %>&nbsp;&nbsp;
+						<font size=-2>Insert 'H' for listing of all 'Harta Modal / Fixed Asset' or 'I' for listing of all 'Inventori / Inventory'</font>
+							<br>&nbsp;<font size=-2 color=blue>(Format : KKM/BPL/010619/H/10/395)</font>
+						
+					</td>
+				</tr>
+				<tr>
+					<td class="leftcol">Search by Asset Name</td>
+					<td><%= f.text_field :name %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Purchase price <br>(More than or equal to) :</td>
+					<td><%= f.text_field :purchaseprice %> <font size=-2>(in RM)</font></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Purchase / Local Order date <br>(on or after)</td>
+					<td><%#= f.text_field :purchasedate %><%= date_select :purchasedate, params[:purchasedate], :include_blank => :true %></td>
+				</tr>
+			<% elsif @searchtype=='2' || @searchtype==2 %>
+				<%= hidden_field_tag :method, 2 %>
+				<%= f.hidden_field :assettype, :value => 1 %>
+				<tr>
+					<td class="leftcol">Purchase price <br>(More than or equal to) :</td>
+					<td><%= f.text_field :purchaseprice %> <font size=-2>(in RM)</font></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Purchase / Local Order date <br>(on or after)</td>
+					<td><%= date_select :startdate, params[:startdate], :include_blank => :true %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Purchase / Local Order date <br>(on or after)</td>
+					<td><%= date_select :enddate, params[:enddate], :include_blank => :true %></td>
+				</tr>
+			<% elsif @searchtype=='3' || @searchtype==3 %>
+				<%= hidden_field_tag :method, 3 %>
+				<%= f.hidden_field :assettype, :value => 2 %>
+				<tr>
+					<td class="leftcol">Purchase price <br>(More than or equal to) :</td>
+					<td><%= f.text_field :purchaseprice %> <font size=-2>(in RM)</font></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Purchase / Local Order date <br>(on or after)</td>
+					<td><%= date_select :startdate, params[:startdate], :include_blank => :true %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Purchase / Local Order date <br>(on or after)</td>
+					<td><%= date_select :enddate, params[:enddate], :include_blank => :true %></td>
+				</tr>
+			<% elsif @searchtype=='4' || @searchtype==4 %><!--Pergerakan Aset : Peminjaman-KEW-PA 6-->
+				<%= hidden_field_tag :method, 4 %>
+				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
+				<tr>
+					<td class="leftcol">Select Record By : </td>
+					<td><%= f.select :datetype, ['Loan Date','Return Date'], :prompt => "Select method" %>
+						<SPAN class="bong", style="display: none;">
+							<%= date_select :loandate, params[:loandate] %>
+						</SPAN>
+						<SPAN class="koik", style="display: none;">	
+							<%= date_select :returndate, params[:returndate], :include_blank => :true %>
+						</SPAN>
+					</td>
+				</tr>
+			<% elsif @searchtype=='5' || @searchtype==5 %><!--Senarai Aset Alih :Lokasi-KEW-PA 7-->
+				<%= hidden_field_tag :method, 5 %>
+				<%= f.hidden_field :category, :value=>5 %>
+				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
+				<tr>
+					<td class="leftcol">Select Record By : </td>
+					<td><%= f.select :locationtype, ['Person In-Charge','Asset Location'], :prompt => "Select method" %>
+						<SPAN class="bong2", style="display: none;">
+							<% @incharge_ids = Asset.find(:all, :conditions=>['assignedto_id is not null']).map(&:assignedto_id).uniq %>
+							<% @incharge = Staff.find(@incharge_ids) %>
+							<%= f.collection_select :assignedto, @incharge, :id, :name %>
+						</SPAN>
+						<SPAN class="koik2", style="display: none;">
+							<% @location_ids = Asset.find(:all, :conditions=>['location_id is not null']).map(&:location_id).uniq %>
+							<% @location = Location.find(@location_ids) %>	
+							<%= f.collection_select :location, @location, :id, :name %></td><!--attr_accessor-->	
+						</SPAN>
+					</td>
+				</tr>
+				<tr><td colspan=2>Note : <b>Person in-charge</b> and <b>Asset location</b> data are based on existing records.</td></tr>
+			<% elsif @searchtype=='6' || @searchtype==6 %><!--Laporan Tahunan (H & I) :Lokasi-KEW-PA 8-->
+				<%= hidden_field_tag :method, 6 %>
+				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
+				<tr>
+					<td class="leftcol">Select Year : </td>
+					<td>
+						<% @start_year = Asset.find(:all, :order=>'purchasedate ASC').map(&:purchasedate).uniq[0].year %>
+						<%= date_select :curryear, params[:curryear],:start_year => @start_year ,:end_year => (Time.now.year), :order => [:year] %>
+					</td>
+				</tr>
+			<% elsif @searchtype=='7' || @searchtype==7 %><!--Aduan Kerosakan Aset-KEW-PA 9-->
+				<%= hidden_field_tag :method, 7 %>
+				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
+				<!---->
+				<tr>
+					<td class="leftcol">Select Record By : </td>
+					<td><%= f.select :defect_type, ['Defected Asset','Person','Process Type'], :prompt => "Select search method" %>
+				</tr>
+				<tr>
+					<td class="leftcol">
+						<SPAN class="bong3", style="display: none;">Select an Asset : </SPAN>
+						<SPAN class="koik3", style="display: none;">Select a Person :</SPAN>
+						<SPAN class="chup3", style="display: none;">Select a Defect Process : </SPAN>	
+					</td>
+					<td>
+						<SPAN class="bong3", style="display: none;">
+							<%= f.collection_select :defect_asset, AssetDefect.find(:all,:order => "asset_id ASC"), :id, :asset_name2 %><!--id refers to asset_defect ID-->
+						</SPAN>
+						<SPAN class="koik3", style="display: none;">							
+							<%= f.radio_button :persontype, 1,	:id => 'button_report',  :class => 'radio_defect_options' %><label>Reported by</label>
+							<%= f.radio_button :persontype, 2,	:id => 'button_incharge',  :class => 'radio_defect_options' %><label>Person In-Charge</label>
+							<%= f.radio_button :persontype, 3,	:id => 'button_process',  :class => 'radio_defect_options' %><label>Processed By</label>
+						</SPAN>
+						<SPAN class="chup3", style="display: none;">
+							<%=f.select :defect_process, AssetDefect.find(:all,:select => "DISTINCT process_type").map(&:process_type).compact,:include_blank => "Select process type" %>	
+						</SPAN>
+					</td>
+				</tr>
+				<tr class="report_item" style="display: none;">
+					<td class="leftcol">Reported By : </td>
+					<td><%= f.collection_select :defect_reporter, AssetDefect.find(:all,:select => "DISTINCT reported_by"), :reported_by, :reported_name, :include_blank => "Select reported by" %></td>
+				</tr>
+				<tr class="incharge_item" style="display: none;">
+					<td class="leftcol">Person In-Charge : </td>
+					<td>
+						<% @defected_asset_ids = AssetDefect.all.map(&:asset_id) %>
+						<% @incharge_ids_of_defected = Asset.find(:all, :conditions=>['assignedto_id is not null AND id IN(?)',@defected_asset_ids]).map(&:assignedto_id).uniq %>
+						<% @incharge_staffs = Staff.find(@incharge_ids_of_defected) %>
+						<%= f.collection_select :assignedto, @incharge_staffs, :id, :name, :include_blank => "Select person in-charge" %>
+					</td>
+				</tr>
+				<tr class="process_item" style="display: none;">
+					<td class="leftcol">Processed By : </td>
+					<td><%= f.collection_select :defect_processor, AssetDefect.find(:all,:select => "DISTINCT processed_by"), :processed_by, :processor_name, :include_blank => "Select processed by" %></td>
+				</tr>
+				<!---->
+			<% elsif @searchtype=='8' || @searchtype==8 %><!--KEWPA 13-Senarai aset yg memerlukan penyelenggaraan (Edit Harta Modal)-->
+				<%= hidden_field_tag :method, 8 %>
+				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
+				<tr><td colspan=2><b>Listing</b> of Asset for Maintenance by</td></tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td><%= f.text_field :maintcode %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td><%= f.text_field :maintname %></td>
+				</tr>
+				<tr>
+					<td><b>Listing</b> ALL Asset for Maintenance</td>
+					<td><%= f.check_box :maintainable %> &nbsp;&nbsp;<font size=-2>Tick and leave other fields blank to display ALL asset for maintenance (KEW-PA 13)</font></td>
+				</tr>
+			
+			<% elsif @searchtype=='9' || @searchtype==9 %><!--KEWPA 14-Daftar individu aset yg memerlukan penyelenggaraan-->
+				<%= hidden_field_tag :method, 9 %>
+				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
+				<%= f.hidden_field :category, :value=>9 %>
+				<tr><td colspan=2><b>Search</b> Asset Maintenance Record by</td></tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td><%= f.text_field :maintcode %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td><%= f.text_field :maintname %></td>
+				</tr>
+			<% elsif @searchtype=='10' || @searchtype==10 %><!--KEW=PA 16-Perakuan Pelupusan-->
+				<%= hidden_field_tag :method, 10 %>
+				<%= f.hidden_field :disposal, :value => 1 %>
+				<tr><td colspan=2><b>Search</b> Disposed Asset Record by</td></tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td><%= f.text_field :assetcode %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td><%= f.text_field :name %></td>
+				</tr>
+			<% elsif @searchtype=='11' || @searchtype==11 %><!--KEW-PA 17-Laporan Lembaga Pemeriksa-->
+				<!--disposalreport field is used to saved asset_disposal_ids of selected disposal record(s) for reporting-->
+				<%= hidden_field_tag :method, 11 %>
+				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
+				<%= f.hidden_field :disposal, :value => 1 %>
+				<tr><td colspan=2>Disposed Asset For Yearly Examiner Board Report</td></tr>
+				<tr>
+					<% @disposals_disposed = AssetDisposal.find(:all, :conditions=>['is_disposed is TRUE'])%><!--for checking:AssetDisposal.all-->
+					
+					<td class="leftcol">Select Disposed Asset(s) : </td>
+					<td>
+						<% 0.upto (@disposals_disposed.count-1) do |no| %>
+							<%= check_box_tag "disposal_for_reports[#{@disposals_disposed[no].id}]", true, @disposals_disposed[no].id %>
+							<%=@disposals_disposed[no].complete_for_report %>
+							<!--for checking-<%#=@disposals_disposed[no].id%>~<%#=AssetDisposal.find(@disposals_disposed[no].id).asset_id %>--><br>
+						<% end %>
+					</td>
+				</tr>
+			<% elsif @searchtype=='12' || @searchtype==12 %><!--KEW-PA 18-Sijil Penyaksian Pemusnahan Aset-->
+				<%= hidden_field_tag :method, 12 %>
+				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
+				<%#= f.hidden_field :disposal, :value => 1 %>	
+				<%#= f.hidden_field :disposaltype, :value => 'discard' %><!--to compare must not blank-->
+				<tr><td colspan=2>Certificate of Witness for Asset Destruction (Discard)</td></tr>
+				<tr>
+					<td class="leftcol">Discard Option : </td>
+					<td><%= f.select :discardoption, ["bury", "burn", "throw", "sink"], :include_blank => "Select discard option"  %></td>
+				</tr>
+			<% elsif @searchtype=='13' || @searchtype==13 %><!--KEW-PA 19-Pelupusan Aset-->
+				<%= hidden_field_tag :method, 13 %>
+				<%= f.hidden_field :disposalcert, :value => 1 %>
+				<tr><td colspan=2><strong>Search</strong> Certificate for Asset Disposal</td></tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td><%= f.text_field :assetcode %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td><%= f.text_field :name %></td>
+				</tr>
+			<% elsif @searchtype=='14' || @searchtype==14 %><!--KEW-PA 20-Laporan Tahunan Pelupusan Aset-->
+				<!--disposalreport field is used to saved asset_disposal_ids of selected disposal record(s) for reporting-->
+				<%= hidden_field_tag :method, 14 %>
+				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
+				<%= f.hidden_field :disposal, :value => 1 %>
+				<tr><td colspan=2>Disposed Asset For Yearly Report</td></tr>
+				<tr>
+					<% @disposals_disposed = AssetDisposal.find(:all, :conditions=>['is_disposed is TRUE'])%><!--for checking:AssetDisposal.all-->
+
+					<td class="leftcol">Select Disposed Asset(s) : </td>
+					<td>
+						<% 0.upto (@disposals_disposed.count-1) do |no| %>
+							<%= check_box_tag "disposal_for_yearlyreports[#{@disposals_disposed[no].id}]", true, @disposals_disposed[no].id %>
+							<%=@disposals_disposed[no].complete_for_report %>
+							<!--for checking-<%#=@disposals_disposed[no].id%>~<%#=AssetDisposal.find(@disposals_disposed[no].id).asset_id %>--><br>
+						<% end %>
+					</td>
+				</tr>
+			<% elsif @searchtype=='15' || @searchtype==15 %><!--KEW-PA 28-Laporan Awal Kehilangan Aset Alih Kerajaan-->
+				<%= hidden_field_tag :method, 15 %>
+				<%= f.hidden_field :loss_start, :value => 1 %><!--losses-->
+				<tr><td colspan=2><b>Search</b> Preliminary Report for Asset Losses by</td></tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td><%= f.text_field :assetcode %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td><%= f.text_field :name %></td>
+				</tr>	
+			<% elsif @searchtype=='16' || @searchtype==16 %><!--KEW-PA 30-Laporan Akhir Kehilangan Aset Alih Kerajaant-->
+				<%= hidden_field_tag :method, 16 %>
+				<%= f.hidden_field :loss_end, :value => 1 %><!--losses-->
+				<tr><td colspan=2><strong>Search</strong> Final Report for Asset Loses by</td></tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td><%= f.text_field :assetcode %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td><%= f.text_field :name %></td>
+				</tr>
+			<% elsif @searchtype=='17' || @searchtype==17 %>
+				<%= hidden_field_tag :method, 17 %>
+				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
+				<tr><td colspan=2>Asset Write Off Certificate</td></tr>
+				<tr>
+					<td class="leftcol">Treasury Reference No : </td>
+					<td>
+						<%= f.collection_select :loss_cert, Document.find(:all, :conditions => ['id IN(?)',AssetLoss.all.map(&:document_id)]), :id, :doc_details %>
+					</td>
+				</tr>
+			<% end %>
+			
+		</table>
+		<p><%= f.submit 'Search' %></p>
+	<% end %>
+
+</div>
+
+<script type="text/javascript">
+		$j(document).ready(function(){
+		  $j('#assetsearch_datetype').change(function() {
+		    if($j(this).val() == 'Loan Date') {
+		      $j('.bong').show();
+					$j('.koik').hide();
+		    }else if ($j(this).val() == 'Return Date') {
+		     	 $j('.bong').hide();
+					 $j('.koik').show();
+		    }
+			});
+		  $j('#assetsearch_locationtype').change(function() {
+			 if($j(this).val() == 'Person In-Charge') {
+			    $j('.bong2').show();
+				$j('.koik2').hide();
+			 }else if ($j(this).val() == 'Asset Location') {
+			    $j('.bong2').hide();
+				$j('.koik2').show();
+			 }
+		  });
+		$j('#assetsearch_defect_type').change(function() {
+			 if($j(this).val() == 'Defected Asset') {
+			    $j('.bong3').show();
+				$j('.koik3').hide();
+				$j('.chup3').hide();
+			 }else if ($j(this).val() == 'Person') {
+			    $j('.bong3').hide();
+				$j('.koik3').show();
+				$j('.chup3').hide();
+			 }else if ($j(this).val() == 'Process Type') {
+				    $j('.bong3').hide();
+					$j('.koik3').hide();
+					$j('.chup3').show();
+			 }
+		  });
+		//----
+		$j("input[class='radio_defect_options']").change(function() {  
+		     	if($j('#button_report').is(':checked')) { 
+			       		$j(".report_item").show();
+						$j(".incharge_item").hide();
+						$j(".process_item").hide();
+			     }else if ($j('#button_incharge').is(':checked')){
+						$j(".report_item").hide();
+						$j(".incharge_item").show();
+						$j(".process_item").hide();
+			     }else if($j('#button_process').is(':checked')){
+			       		$j(".report_item").hide();
+			       		$j(".incharge_item").hide();
+						$j(".process_item").show();
+			    }
+		   });
+		//----
+	});
+</script>

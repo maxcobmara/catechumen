@@ -7,7 +7,7 @@ class StudentAttendancesController < ApplicationController
     classid = params[:classid]
     @intake_student = params[:intake_student] 
     @programme = params[:programme]
-    if submit_val == 'Search Staff Attendances'
+    if submit_val == 'Search Student Attendances'
         @student_attendances = StudentAttendance.search2(classid)
     else
         @student_attendances = StudentAttendance.search(@intake_student,@programme)
@@ -174,7 +174,7 @@ class StudentAttendancesController < ApplicationController
   	          @student_count = @studentattendances.map(&:student_id).uniq.count
   	          @edit_type = params[:student_attendance_submit_button]  
           else    
-              flash[:notice] = "Please select at least lalala record to edit."+@intake.to_s
+              flash[:notice] = "Please select an intake to edit."+@intake.to_s
               redirect_to student_attendances_path
           end
       end

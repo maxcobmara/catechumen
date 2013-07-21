@@ -15,5 +15,16 @@ class AssetDefect < ActiveRecord::Base
      self.asset = Asset.find_by_assetcode(assetcode) unless assetcode.blank?
    end
   
+   def asset_name2
+      "#{asset.assetcode}"+" - "+"#{asset.name}"
+   end
+  
+   def reported_name
+      "#{reporter.name}"
+   end
+   
+   def processor_name
+      "#{processor.name}"
+   end
   
 end

@@ -1,4 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :assetsearches
+
+  map.resources :staffsearch2s
+
+  map.resources :staffsearches
+
   map.resources :student_attendances, :collection => { :edit_multiple => :post,:edit_multiple_intake => :post, :update_multiple => :put ,:borang_kehadiran => :get} 
   map.resources :student_attendances
 
@@ -102,8 +108,10 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/student_counseling_sessions/feedback_referrer', :controller => 'student_counseling_sessions', :action => 'feedback_referrer'
   map.resources :student_counseling_sessions
 
-  map.resources :asset_losses, :collection => { :kewpa28 => :get, :kewpa29 => :get, :kewpa30 => :get }
-
+  map.connect '/asset_losses/kewpa31/', :controller => 'asset_losses', :action => 'kewpa31'
+  map.resources :asset_losses, :collection => { :kewpa28 => :get, :kewpa29 => :get, :kewpa30 => :get, :edit_multiple => :post, :update_multiple => :put }
+  #map.resources :asset_losses, :collection => { }  
+  map.resources :asset_losses
   
   map.connect '/exams/exampaper', :controller => 'exams', :action => 'exampaper'
   map.connect '/exams/exampaper_separate', :controller => 'exams', :action => 'exampaper_separate'

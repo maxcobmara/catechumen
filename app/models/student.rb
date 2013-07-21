@@ -93,6 +93,10 @@ class Student < ActiveRecord::Base
       intake.to_date.strftime("%b %Y") 
   end 
   
+  def intake_acryn_prog
+      intake.to_date.strftime("%b %Y")+" | #{course.course_type} - #{course.name}"
+  end
+  
   #group by intake
  # def isorter
  #   suid = intake_id

@@ -26,10 +26,23 @@
 		<% @asset_disposals.each do |asset_disposal| %>	
 			<% asal+=asset_disposal.asset.purchaseprice.to_f %>
 			<% current+=asset_disposal.current_value.to_f %>
-			<% musnah += asset_disposal.current_value if asset_disposal.disposal_type == "discard" %>
-			<% jualan += asset_disposal.current_value if asset_disposal.disposal_type == "sold" %>
-			<% pindahan += asset_disposal.current_value if asset_disposal.disposal_type == "transfer" %>
-			<% lain += asset_disposal.current_value if ((asset_disposal.disposal_type != "transfer") && (asset_disposal.disposal_type != "sold") && (asset_disposal.disposal_type != "discard") )%>
+			<%# musnah += asset_disposal.current_value if asset_disposal.disposal_type == "discard" %>
+			<%# jualan += asset_disposal.current_value if asset_disposal.disposal_type == "sold" %>
+			<%# pindahan += asset_disposal.current_value if asset_disposal.disposal_type == "transfer" %>
+			<%# lain += asset_disposal.current_value if ((asset_disposal.disposal_type != "transfer") && (asset_disposal.disposal_type != "sold") && (asset_disposal.disposal_type != "discard") )%>
+			<% if asset_disposal.disposal_type == "discard" %>
+				<% musnah += asset_disposal.current_value %>
+			<% elsif asset_disposal.disposal_type == "sold" %>
+				<% jualan += asset_disposal.current_value %>
+			<% elsif asset_disposal.disposal_type == "transfer" %>
+				<% pindahan += asset_disposal.current_value %>
+			<% else %>
+				<% if asset_disposal.current_value!= nil%>
+					<% lain += asset_disposal.current_value%>
+				<% else %>
+					<% lain = 0.00 %>
+				<% end %>
+			<% end %>
 		<% end %>
 		
 		

@@ -58,17 +58,20 @@
 			<!--pending asset requested for loan should not available for reservation-->
 			<%# @check_onloan = AssetLoan.find(:all, :conditions=>['asset_id=? AND is_approved is true AND is_returned is not true',asset]).count %>
 			<% @check_onloan = AssetLoan.find(:all, :conditions=>['asset_id=? AND is_returned is not true',asset]).count %>
-			<% @check_pending = AssetLoan.find(:all, :conditions=>['asset_id=? AND is_approved is not true AND is_returned is not true', asset]).count %><BR>
-			<% if @check_onloan == 0 %>
-				Available
-			<% elsif @check_onloan > 0 %>
-				<% if @check_pending > 0 %>
-					Pending Loan
-				<% else %>
-					On loan
-				<% end %>		
+			<% @check_pending = AssetLoan.find(:all, :conditions=>['asset_id=? AND is_approved is not true AND is_returned is not true', asset]).count %>
+			<% @bookable = Asset.on_loan.map(&:id) %>
+			<BR>
+			<% if @bookable.include?(asset.id) %>	
+				<% if @check_onloan == 0 %>
+					Available
+				<% elsif @check_onloan > 0 %>
+					<% if @check_pending > 0 %>
+						Pending Loan
+					<% else %>
+						On loan
+					<% end %>		
+				<% end %>
 			<% end %>
-			
 			<!--
 			jika onloan:<%#=AssetLoan.find(:all, :conditions=>['asset_id in (?) AND is_approved is true AND is_returned is not true',asset]).count %><br>
 			jika pending:<%#=AssetLoan.find(:all, :conditions=>['asset_id in (?) AND is_approved is not true AND is_returned is not true', asset]).count %><br>

@@ -249,6 +249,14 @@ class Staff < ActiveRecord::Base
     end
   end
   
+  def position_code_for_staff
+    if position.blank?
+      "-"
+    else
+      position.code
+    end
+  end
+  
   
   def my_bank
     sid = id

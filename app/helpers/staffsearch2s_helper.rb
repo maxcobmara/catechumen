@@ -1,0 +1,2 @@
+module Staffsearch2sHelper
+end

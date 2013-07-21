@@ -43,7 +43,7 @@ class Leaveforstudent < ActiveRecord::Base
   end
 
   def approver_details 
-    check_kin{staff.name}
+    staff.name#17Jul2013-check_kin{staff.name}
   end
 
   def student_details 

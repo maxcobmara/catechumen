@@ -260,7 +260,7 @@ class ExammarksController < ApplicationController
    
    #--start of multiple updates - 15-18, 27 May 2012 ----------------------------
    def update_multiple
-     #raise params.inspect
+     raise params.inspect
      @exammarksid = params[:exammark_ids]	
      @totalmcqs =params[:total_mcqs]                                          
      @marks = params[:marks_attributes]

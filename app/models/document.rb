@@ -13,6 +13,7 @@ belongs_to :cc1staff,     :class_name => 'Staff', :foreign_key => 'cc1staff_id'
 belongs_to :cofile,       :foreign_key => 'file_id'
 
 has_many :asset_disposals
+has_many :asset_losses
 has_many :travel_requests
 
 before_save :set_actionstaff2_to_blank_if_close_is_selected
@@ -122,6 +123,14 @@ CATEGORY = [
     
   def file_details 
     cofile.file_no_and_name
+  end
+  
+  def doc_details
+    "#{refno}"+" | "+"#{title.capitalize}"
+  end
+  
+  def doc_details_date 
+    "#{refno}"+" : "+"#{title.capitalize}"+" - "+"#{letterdt}"
   end
     
   #5Apr2013  -------------------------------------

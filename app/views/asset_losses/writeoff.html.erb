@@ -1,0 +1,111 @@
+<% form_for(@asset_loss) do |f| %>
+  <%= f.error_messages %>
+	<div class="tform">
+		<%= render :partial => 'show_asset_details' %>
+		<%= render :partial => 'show_loss_initial' %>
+		<H2>Disposal</H2>
+		<table width=85% >
+				<tr>
+					<td class="leftcol"><label for="document_id">Approval Document</label></td>
+					<td><%#= f.collection_select :notes, Document.find(:all), :id, :refno %>
+					<%= f.collection_select :document_id, Document.find(:all), :id, :refno %></td>
+				</tr>
+				<tr>
+					<td class="leftcol"><label for="is_writeoff"><!--Send to HOD for viewing-->Asset is written-off</label></td>
+					<td><%#= f.check_box :is_disposed, :id => 'is_disposed' %><%= f.check_box :is_writeoff, :id => 'is_writeoff' %></td>
+				</tr>
+			</table>
+	</div>		
+	
+<p>
+  <%= f.submit 'Update' %>
+</p>
+<% end %>
+
+
+<%= link_to 'Show', @asset_loss %> |
+<%= link_to 'Back', asset_losses_path %>
+
+
+<script type="text/javascript">
+	$j(document).ready(function(){ 
+	   $j("input[class='radio_disposal_type']").change(function() {  
+	     	if($j('#button_transfer').is(':checked')) { 
+		       $j(".transfer_item").show("slide");
+					 $j(".sold_item").hide("puff");
+					 $j(".discard_item").hide("puff");
+					 $j(".others_item").hide("puff");
+		     }else if ($j('#button_sold').is(':checked')){
+					 $j(".transfer_item").hide("puff");
+					 $j(".sold_item").show("puff");
+					 $j(".discard_item").hide("puff");
+					 $j(".others_item").hide("puff");
+		     }else if($j('#button_discard').is(':checked')){
+		       $j(".transfer_item").hide("puff");
+		       $j(".sold_item").hide("puff");
+					 $j(".discard_item").show("puff");
+					 $j(".others_item").hide("puff");
+		     }else if ($j('#button_stock').is(':checked')){
+		       $j(".transfer_item").hide("puff");
+		       $j(".sold_item").hide("puff");
+					 $j(".discard_item").hide("puff");
+					 $j(".others_item").hide("puff");
+	      }else if ($j('#button_others').is(':checked')){
+					 $j(".transfer_item").hide("puff");
+					 $j(".sold_item").hide("puff");
+					 $j(".discard_item").hide("puff");
+					 $j(".others_item").show("puff");
+		    }
+	   });
+
+			$j("input[class='radio_disposal_type']").each(function() {  
+		     	if($j('#button_transfer').is(':checked')) { 
+			       $j(".transfer_item").show("slide");
+						 $j(".sold_item").hide("puff");
+						 $j(".discard_item").hide("puff");
+						 $j(".others_item").hide("puff");
+			     }else if ($j('#button_sold').is(':checked')){
+						 $j(".transfer_item").hide("puff");
+						 $j(".sold_item").show("puff");
+						 $j(".discard_item").hide("puff");
+						 $j(".others_item").hide("puff");
+			     }else if($j('#button_discard').is(':checked')){
+			       $j(".transfer_item").hide("puff");
+			       $j(".sold_item").hide("puff");
+						 $j(".discard_item").show("puff");
+						 $j(".others_item").hide("puff");
+			     }else if ($j('#button_stock').is(':checked')){
+			       $j(".transfer_item").hide("puff");
+			       $j(".sold_item").hide("puff");
+						 $j(".discard_item").hide("puff");
+						 $j(".others_item").hide("puff");
+		      }else if ($j('#button_others').is(':checked')){
+						 $j(".transfer_item").hide("puff");
+						 $j(".sold_item").hide("puff");
+						 $j(".discard_item").hide("puff");
+						 $j(".others_item").show("puff");
+			    }
+		   });
+	
+			$j("input[id='is_disposed']").change(function() {  
+			 if($j('#is_disposed').is(':checked')) { 
+			    $j(".span_disposed_on").show("highlight"); 
+			 }else		{
+			    $j(".span_disposed_on").hide(""); 
+			 }	
+			});
+
+			$j("input[id='is_disposed']").each(function() {  
+			 if($j('#is_disposed').is(':checked')) { 
+			    $j(".span_disposed_on").show("highlight"); 
+			 }else		{
+			    $j(".span_disposed_on").hide(""); 
+			 }	
+			});
+	
+	});
+</script>
+
+
+
+

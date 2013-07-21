@@ -120,7 +120,7 @@
 				<li><%= link_to 'Residences', 	{:controller => 'locations', 		:action => 'index'} %></li>
 			  <% end %>
 				<li><%= link_to 'Tenants', {:controller => 'tenants', 		:action => 'index'} %></li>
-				<li><%= link_to 'Student Leave', 			{:controller => 'leaveforstudents', 	:action => 'index'} %></li>
+				<!--<li><%#= link_to 'Student Leave', 			{:controller => 'leaveforstudents', 	:action => 'index'} %></li>-->
 				<% permitted_to? :read, :locations do %>
 				<li><%= link_to 'Location Tree',			{:controller => 'locations', 		:action => 'indextree'} %></li>
 				<% end %>
@@ -140,9 +140,11 @@
 				<li><%= link_to 'Campus Events Calendar', {:controller => 'events', :action => 'calendar'} %></li>
 				<li><%= link_to 'Local Messaging', 		{:controller => 'messages', 		:action => 'index'} %></li>
 				<li><%= link_to 'Bulletin Board', 	  {:controller => 'bulletins', 		:action => 'index'} %></li>
-				<% permitted_to? :manage, :pages do %>
+				<% permitted_to? :manage, :pages do %><!--17Jul2013-use page-->
 				<li><%= link_to 'Equery/Reports', 		'/Reports' %></li>
 				<% end %>
+				<!--17Jun2013-use viewer-->
+				<li><%= link_to 'Equery/Reports2', {:controller => 'viewer', 	:action => 'equeryreports'} %></li>
 				<li><%= link_to 'Document Registry', 	{:controller => 'documents', 		:action => 'index'} %></li>
 				<li><%= link_to 'File Registry', 			{:controller => 'cofiles', 			:action => 'index'} %></li>
 			</ul>

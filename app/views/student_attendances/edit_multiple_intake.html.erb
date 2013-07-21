@@ -44,6 +44,12 @@
 			<%#= one_student_att3 = one_student_atts[2].weeklytimetable_details_id %>
 			
 			&nbsp;&nbsp;<b>Student Intake : <%= @studentattendances[0].student.intake.to_date.strftime("%b") %>&nbsp;<%= @studentattendances[0].student.intake.to_date.strftime("%Y") %> </b><br><br>
+			<!--17Jul2013-added for Administrator (not lecturer)-->
+			<% if @preselct_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+				<% @preselect_prog = Student.find(one_student_id).course_id %>
+			<% end %>
+			<!--17Jul2013-added for Administrator (not lecturer)-->
+
 			<% @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
 			<% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
 			<table>

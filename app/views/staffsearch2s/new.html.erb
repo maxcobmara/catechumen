@@ -1,0 +1,37 @@
+<div class="tform">
+	<H2>Carian Staf : Maklumat Perjawatan</H2>
+
+	<% form_for @staffsearch2 do |f| %>
+		<%= f.error_messages %>
+			<table width=100% >
+				<tr>
+					<td class="leftcol"><%= f.label :nama_staf %></td>
+					<td><%= f.text_field :keywords %></td>
+				</tr>
+				<tr>
+					<td class="leftcol"><%= f.label :kumpulan %></td>
+					<td>
+						<%#= f.text_field :position %>
+						<%= f.select :position,Employgrade::GROUP,:prompt => "Pilih kumpulan" %>
+					</td>
+				</tr>
+				<tr>
+					<td class="leftcol"><%= f.label :gred_staf %></td>
+					<td>
+						<%#= f.text_field :staff_grade %>
+						<%= f.collection_select :staff_grade, Employgrade.find(:all,:order=>"name ASC"), :id, :name_and_group, :include_blank=>"Pilih gred staf" %>
+					</td>
+				</tr>	<!--
+				<tr>
+					<td class="leftcol"><%#= f.label :jantina %></td>
+					<td>
+						<%#= f.text_field :position %>
+						<%#= f.select :gender,Staff::GENDER,:prompt => "Pilih jantina" %>
+					</td>
+				</tr>	-->
+			</table>
+  		<p><%#= f.submit %>    <%= f.submit 'Search' %></p>
+	<% end %>
+</div>
+
+

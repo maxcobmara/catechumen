@@ -38,7 +38,8 @@
 
 	<% if @unit_members.include?(current_user.staff_id) || current_user_roles.include?(11) || asset_loan.staff == current_user.staff || (asset_loan.hod == current_user.staff_id && asset_loan.is_approved==true && asset_loan.is_returned!=true ) %>
   	<tr>
-    	<td><%=h asset_loan.asset.assetcode %><BR/><%= asset_loan.asset.typename %></td>
+    	<td><%=h asset_loan.asset.assetcode %><BR/><%= asset_loan.asset.typename %>
+			<!--16July2013--><%= asset_loan.asset.name %></td>
     	<td><% unless current_user.staff == asset_loan.staff %>
 				<%=h asset_loan.staff.name %>
 			<% else %>
