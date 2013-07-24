@@ -64,12 +64,25 @@ class WeeklytimetableDetail < ActiveRecord::Base
       "#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"+" | "+"#{Programme.find(topic).subject_with_topic}"
    end
    
+   def day_time_slot2
+      "#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
+   end
+   
    def subject_day_time
       "#{Programme.find(topic).parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
    end
    
+   def subject_topic
+     #{}"#{Programme.find(topic).subject_with_topic}"
+     "#{Programme.find(topic).parent.code}"+" : "+"#{Programme.find(topic).subject_list}"
+   end
+   
    def render_class_method
      (WeeklytimetableDetail::CLASS_METHOD.find_all{|disp, value| value == lecture_method}).map {|disp, value| disp}
+   end
+   
+   def subject_day_time_class_method
+      "#{subject_day_time}"+ " ("+"#{render_class_method}"+")"
    end
 
    DAY_LIST = [

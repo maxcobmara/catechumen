@@ -1,3 +1,20 @@
+<!--
+<table>
+	<tr>
+		<th>No</th>
+		<th>Reference No</th>
+		<th>Title</th>
+	</tr>	
+	<%# @documentsearch.documents.each_with_index do |x,index| %>
+	<tr>	
+		<td><%#=index+1 %></td>
+		<td><%#=x.refno %></td>
+		<td><%#=x.title %></td>
+	</tr>
+	<%# end %>
+</table>-->
+
+<!----><!----><!----><!----><!----><!---->
 <%#=@documents%>
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
@@ -32,7 +49,7 @@
 	</thead>	
 	<tbody>
 		<% bil = 0 %>
-		<% @documents.each do |document|%>
+		<%# @documents.each do |document|%>	<% @documentsearch.documents.each do |document| %>
 			<% bil += 1 %>
 			<tr>
 				<td class="tdata" style="text-align:center;" ><%=h bil %></th>
@@ -50,5 +67,7 @@
 <BR/>	
 
 <div id="hideLink">
-<%= link_to 'Back', documents_path %>
+<%= link_to 'Back',{:controller => 'documentsearches', 	:action => 'new', :searchdoctype=>1} %>
 </div>
+
+

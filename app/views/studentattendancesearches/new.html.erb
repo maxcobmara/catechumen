@@ -1,0 +1,54 @@
+<div class="tform">
+	<H2>Student Attendances Search</H2>
+
+<% form_for @studentattendancesearch do |f| %>
+  <%= f.error_messages %>
+	<% if @searchstudentattendancetype=='1' || @searchstudentattendancetype==1 %>
+		<%= hidden_field_tag :method,  1 %>
+		
+		<table width=100% >
+			<tr><td colspan=2>Search Students Attendance By :</td></tr>
+			<!--retrieve data for weeklytimetable_details_ids-->
+			<% @exist_attendance_ids = StudentAttendance.all.map(&:weeklytimetable_details_id)%>
+			<% @topics_ids_this_prog = Programme.at_depth(3) %><!--select TOPICS for all programme-->
+			<% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) AND id IN(?)',@topics_ids_this_prog,@exist_attendance_ids])%>
+			<!--retrieve data for weeklytimetable_details_ids-->
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;Schedule / Class</td>
+				<td><%= f.collection_select :schedule_id, @schedule_list, :id, :subject_day_time, :include_blank=>"Select" %></td>
+			</tr>
+			<!--retrieve data for intake_ids-->
+			<% @intatake = [] %>
+			<% @student_attendances = StudentAttendance.all %>
+			<% @student_attendances_intake = @student_attendances.group_by{|x|x.student.intake}%>
+			<% @student_attendances_intake.each do |intake, student_attendances|%>
+				<% @intatake << intake %>
+			<% end %>
+			<% @students = StudentAttendance.all.map(&:student_id).uniq %><!--@student_attendances:refer controller:search result-->
+			<% @courses = Student.find(@students).map(&:course_id).uniq %>
+			<%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+				<% @intatake2 = Student.find(:all, :conditions => ['course_id IN (?) AND intake IN (?)',@courses, @intatake], :select=> "DISTINCT intake,course_id") %>
+				<% @intake_fr_intaketable = Intake.find(:all,:conditions => ['programme_id IN (?) AND register_on IN (?)',@courses, @intatake])%>
+			<%# else %>
+				<%# @intatake2 = Student.find(:all, :conditions => ['course_id=? AND intake IN (?)',@preselect_prog, @intatake], :select=> "DISTINCT intake") %>
+			<%# end %>
+			<!--retrieve data for intake_ids-->
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :intake %></td>
+				<td><%#= f.text_field :intake_id %>
+					<%#= f.collection_select :intake_id, @intatake2, :intake, :intake_acryn_prog, :include_blank=>"Select" %><!--intake from STUDENT table-->
+					<%= f.collection_select :intake_id, @intake_fr_intaketable, :id, :intake_programme, :include_blank=>"Select" %><!--intake from INTAKE table-->	
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :matrix_no %></td>
+				<td><%= f.text_field :student_id %></td>
+			</tr>
+		</table>
+		
+	<% end %>
+  <p><%= f.submit "Search" %></p>
+<% end %>
+
+</div>
+

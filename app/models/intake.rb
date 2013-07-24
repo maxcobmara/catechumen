@@ -12,6 +12,10 @@ class Intake < ActiveRecord::Base
   def programme_group_intake
     "#{description}"+" ("+"#{name}"+")"+" | "+"#{programme.name}"
   end
+  
+  def intake_programme
+    "#{name}"+" | "+"#{programme.course_type}"+" - "+"#{programme.name}"
+  end
 
   #25March2013==========
   def self.view_selected(intake_id)

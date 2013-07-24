@@ -1,4 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :studentattendancesearches
+
+  map.resources :studentsearches
+
+  map.resources :documentsearches
+
   map.resources :assetsearches
 
   map.resources :staffsearch2s

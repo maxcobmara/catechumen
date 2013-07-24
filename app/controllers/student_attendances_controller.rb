@@ -334,7 +334,7 @@ class StudentAttendancesController < ApplicationController
           @student_attendances = @student_attendancesA+@student_attendancesB
       end
       #@student_attendances = StudentAttendance.find(:all, :conditions => ['id IN (?)',@studentattendance_ids]).sort_by{|u|u.weeklytimetable_detail.get_time_slot}
-      @studentattendances_group = @student_attendances.group_by{|x|x.student_id} 
+      @studentattendances_group = @student_attendances.sort_by{|x|x.student.name}.group_by{|x|x.student_id} #sort first than group!
       render :layout => 'report'
   end
   

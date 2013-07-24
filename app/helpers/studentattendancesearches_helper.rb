@@ -1,0 +1,2 @@
+module StudentattendancesearchesHelper
+end

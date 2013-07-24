@@ -1,0 +1,2 @@
+module DocumentsearchesHelper
+end

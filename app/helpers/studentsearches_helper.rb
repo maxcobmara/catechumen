@@ -1,0 +1,2 @@
+module StudentsearchesHelper
+end

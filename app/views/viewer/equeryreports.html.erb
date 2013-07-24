@@ -142,21 +142,21 @@
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			Module : E-Filling</span></td></tr>
 		<tr>
-			<td>21</td>
-			<td>Document Registry</td>
-			<td><%= link_to 'Advance Search', {:controller => 'documents', 	:action => 'index'} %></td>
+			<td>21</td><% @searchdoctype=1 %>
+			<td><%= link_to 'Document Registry', {:controller => 'documents', 	:action => 'index'} %></td>
+			<td><%= link_to 'Advance Search', {:controller => 'documentsearches', 	:action => 'new', :searchdoctype=>@searchdoctype} %></td>
 		</tr>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			Module : Student</span></td></tr>
 		<tr>
-			<td>22</td>
+			<td>22</td><% @searchstudenttype=1 %>
 			<td><%= link_to 'Borang Maklumat Pelatih', {:controller => 'students',:action => 'index'} %></td>
-			<td>Advance Search (by programme,by intake, by gender, by year)</td>
+			<td><%= link_to 'Advance Search', {:controller => 'studentsearches', 	:action => 'new', :searchstudenttype=>@searchstudenttype} %></td>
 		</tr>
 		<tr>
-			<td>23</td>
-			<td>Borang Kehadiran Pelatih</td>
-			<td><%= link_to 'Advance Search', {:controller => 'student_attendances',:action => 'index'} %>100% ? by programme/semester/classes</td>
+			<td>23</td><% @searchstudentattendancetype=1 %>
+			<td><%= link_to 'Borang Kehadiran Pelatih', {:controller => 'student_attendances',:action => 'index'} %></td>
+			<td><%= link_to 'Advance Search', {:controller => 'studentattendancesearches', 	:action => 'new', :searchstudentattendancetype=>@searchstudentattendancetype} %>100% ? by programme/semester/classes</td>
 		</tr>
 		<tr>
 			<td>24</td>

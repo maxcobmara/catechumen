@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130721135919) do
+ActiveRecord::Schema.define(:version => 20130724090235) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -610,11 +610,28 @@ ActiveRecord::Schema.define(:version => 20130721135919) do
     t.integer  "dataaction_file_size"
     t.datetime "dataaction_updated_at"
     t.integer  "prepared_by"
+    t.string   "sender"
   end
 
   create_table "documents_staffs", :id => false, :force => true do |t|
     t.integer "document_id"
     t.integer "staff_id"
+  end
+
+  create_table "documentsearches", :force => true do |t|
+    t.string   "refno"
+    t.integer  "category"
+    t.string   "title"
+    t.date     "letterdt"
+    t.date     "letterxdt"
+    t.string   "from"
+    t.integer  "file_id"
+    t.boolean  "closed"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "sender"
+    t.date     "letterdtend"
+    t.date     "letterxdtend"
   end
 
   create_table "employgrades", :force => true do |t|
@@ -1646,6 +1663,14 @@ ActiveRecord::Schema.define(:version => 20130721135919) do
     t.datetime "updated_at"
   end
 
+  create_table "studentattendancesearches", :force => true do |t|
+    t.integer  "schedule_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.date     "intake_id"
+    t.string   "student_id"
+  end
+
   create_table "students", :force => true do |t|
     t.string   "icno"
     t.string   "name"
@@ -1681,6 +1706,25 @@ ActiveRecord::Schema.define(:version => 20130721135919) do
     t.date     "intake"
     t.string   "specialisation"
     t.integer  "intake_id"
+  end
+
+  create_table "studentsearches", :force => true do |t|
+    t.string   "icno"
+    t.string   "name"
+    t.string   "matrixno"
+    t.string   "ssponsor"
+    t.integer  "mrtlstatuscd"
+    t.integer  "course_id"
+    t.string   "physical"
+    t.date     "end_training"
+    t.date     "intake"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "gender"
+    t.string   "race"
+    t.string   "bloodtype"
+    t.string   "sstatus"
+    t.date     "end_training2"
   end
 
   create_table "suppliers", :force => true do |t|

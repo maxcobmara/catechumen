@@ -127,12 +127,26 @@ render :action => "edit_multiple_intake"-->
 			<% @studentattendances_group.each do |student_id, studentattendances|  %>
 				<% if count < @exist_student %>
 					<% studentattendances.each_with_index do |studentattendance, no|%>
+					<%# studentattendances.each_with_index do |studentattendance, no|%>
 						<% if no==0 %>
 							<tr>
 								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;"><%=count+1 %>&nbsp;</td>
-								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;"><%= Student.find(student_id).matrixno %></td>
-								<td colspan=2 style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;"><%= Student.find(student_id).name %></td>
-								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px" width=7%>&nbsp;<!--cc--></td>
+								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;">
+									<%=studentattendance.student.matrixno%>
+									<%#= Student.find(student_id).matrixno %>
+								</td>
+								<td colspan=2 style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;">
+									<%=studentattendance.student.name%>
+									<%#= Student.find(student_id).name %>
+								</td>
+								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px" width=7%>
+									&nbsp;<!--cc-->
+									<% if studentattendances[0].attend == true %> 
+										&#10003;
+									<% else %>
+										Absent
+									<% end %>
+								</td>
 								<% if no==0 && count==0 || no==0 && count==24 || no==0 && count==48 %><%# if no==0 && count==0 %>
 									<td rowspan=24 style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;"width=7%>
 									<!--<td rowspan="<%#=@exist_student%>" style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;"width=7%>-->
@@ -148,7 +162,14 @@ render :action => "edit_multiple_intake"-->
 									<% end %>
 									</td>
 								<% end%>
-								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px" width=7%>&nbsp;<!--eeee--></td>
+								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px" width=7%>
+									&nbsp;<!--eeee-->
+									<% if studentattendances[1].attend == true %> 
+										&#10003;
+									<% else %>
+										Absent
+									<% end %>
+								</td>
 								<% if no==0 && count==0 || no==0 && count==24 || no==0 && count==48 %><%# if no==0 && count==0 %>
 									<td rowspan=24 style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;" width=7%>
 									<!--<td rowspan="<%#=@exist_student%>" style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;" width=7%>-->
@@ -169,7 +190,14 @@ render :action => "edit_multiple_intake"-->
 										
 									</td>
 								<% end %>
-								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px"width=7%>&nbsp;<!--ggg--></td>
+								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px"width=7%>
+									&nbsp;<!--ggg-->
+									<% if studentattendances[2].attend == true %> 
+										&#10003;
+									<% else %>
+										Absent
+									<% end %>
+								</td>
 								<% if no==0 && count==0 || no==0 && count==24 || no==0 && count==48 %><%# if no==0 && count==0 %>
 									<td rowspan=24 style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;border-right:solid 1px;"width=7%>
 									<!--<td rowspan="<%#=@exist_student%>" style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;border-right:solid 1px;"width=7%>-->
