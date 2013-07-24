@@ -27,6 +27,14 @@ authorization do
     #has_permission_on :students,        :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
     #has_permission_on [:leaveforstudents],  :to => :manage #
     
+    #24July2013-added
+      has_permission_on :student_discipline_cases, :to => :manage
+      has_permission_on :student_counseling_sessions, :to => :feedback_referrer
+      
+      has_permission_on :student_counseling_sessions, :to => [:manage, :feedback_referrer]
+      has_permission_on :students, :to => :core
+    #24July2013-added
+    
     #Exam Menu Items
     has_permission_on :examquestions,   :to => :manage
     

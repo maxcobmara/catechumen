@@ -1,0 +1,29 @@
+<div class="tform">
+	<H2>Student Counseling Session Search (Referred Cases & Counselor's Feedback)</H2>
+
+<% form_for @studentcounselingsearch do |f| %>
+  <%= f.error_messages %>
+  	<% if @searchstudentcounselingtype=='1' || @searchstudentcounselingtype==1 %>
+		<%= hidden_field_tag :method,  1 %>
+		
+		<table width=100% >
+			<tr><td colspan=2>Search Counseling Session (for Referred Case c/w Counselor's Feedback) By :</td></tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :matrix_no %></td>
+				<td><%= f.text_field :matrixno %></td>
+			</tr>
+			<!--
+    		<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%#= f.label :case_reference_no %> <br>&nbsp;&nbsp;&nbsp;(Student Discipline Case Id)</td>
+				<td><%#= f.text_field :case_id %></td>
+			</tr>-->
+		</table>
+	<% end %>
+  <p><%= f.submit "Search"%>&nbsp;<font size=-2>Leaves all fields 'blank' to display ALL record.</font></p>
+
+  <br><br>
+<% end %>
+
+</div>
+
+

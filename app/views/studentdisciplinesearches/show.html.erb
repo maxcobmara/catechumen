@@ -1,0 +1,67 @@
+<% if @studentdisciplinesearch.matrixno && @studentdisciplinesearch.matrixno.blank? == false %>
+	<%=render :partial => 'anacdotal_report', :locals => {:studentdisciplines=> @studentdisciplinessearch} %> 
+<% else %>
+
+	<div style="padding-left:20px;padding-top:20px;padding-right:20px;font-family: Arial, Helvetica, sans-serif;font-size:12px;">
+		<H4>STUDENT DISCIPLINE CASES SEARCH :</h4>
+
+		<!--additional heading-->
+		<% if @studentdisciplinesearch.programme %>
+			<span style="text-decoration:underline;">
+				Search By Programme : <%=h Programme.find(@studentdisciplinesearch.programme).programme_list %><br><br>
+			</span>
+		<% end %>
+		<% if @studentdisciplinesearch.intake && @studentdisciplinesearch.intake.blank? == false %>
+			<span style="text-decoration:underline;">
+				Search By Intake : <%=@studentdisciplinesearch.intake.strftime("%b %Y")%><br><br>
+			</span>
+		<% end %>
+		&nbsp;Total Student Discipline Cases : <%=h @studentdisciplinesearch.studentdisciplines.count %><br><br>
+		<!--additional heading-->
+		
+		<!--student discipline cases display-->
+			<!--start:SEARCH BY INTAKE/PROGRAMME (multiple records)-->
+			<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
+				<tr>
+					<th>No</th>
+					<th>Matrix No</th>
+					<th>Name</th>
+					<% if @studentdisciplinesearch.programme.blank? %>
+						<th>Programme</th>
+					<% end %>
+					<% if @studentdisciplinesearch.intake.blank? %>
+						<th>Intake</th>
+					<% end %>
+					<th>Infraction</th>
+					<th>Reported on</th>
+					<th>Location</th>
+					<th>Status</th>
+					<th>Action Taken</th>
+				</tr>
+				<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|x.student.name}.each_with_index do |student_discipline, index|%>
+					<tr>
+						<td><%=index+1%></td>
+						<td><%=student_discipline.student.matrixno%></td>
+						<td><%=student_discipline.student.name%></td>
+						<% if @studentdisciplinesearch.programme.blank? %>
+							<td><%=student_discipline.student.course.programme_list%></td>
+						<% end %>
+						<% if @studentdisciplinesearch.intake.blank? %>
+							<td><%=student_discipline.student.intake.strftime("%b %Y")%></td>
+						<% end %>
+						<td><%=h (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == student_discipline.infraction_id}).map {|disp, value| disp} %></td>
+						<td><%=student_discipline.reported_on%></td>
+						<td><%=student_discipline.location.name%></td>
+						<td><%=student_discipline.status%></td>
+						<td><%=student_discipline.action_type%></td>
+					</tr>
+				<% end %>
+			</table>
+			<!--start:SEARCH BY INTAKE/PROGRAMME (multiple records)-->
+	
+		<!--student discipline cases display-->
+	<br>
+</div>
+
+<% end %>
+

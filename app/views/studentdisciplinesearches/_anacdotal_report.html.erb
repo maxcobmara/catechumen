@@ -1,0 +1,67 @@
+<%= stylesheet_link_tag 'report' %>
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>	
+<div class="A4potrait">
+
+<div id="hideLink">
+	<% @searchstudentdisciplinetype=1 %>
+	<%= link_to 'Back', :controller=> "studentdisciplinesearches", :action=>"new", :searchstudentdisciplinetype=>@searchstudentdisciplinetype %>
+</div>
+<br><br>	
+<!-- Box Head -->
+<div style="padding-left:50px;font-family: Arial, Helvetica, sans-serif;font-size:14px;">
+	
+	<span style="text-decoration:underline;">
+		'Anacdotal Report'<br><br>
+		<table style="font-family: Arial, Helvetica, sans-serif;font-size:14px;">
+			<tr>
+				<td>Name</td>
+				<td>:</td><%# @assets = @assetsearch.assets %><% @studentdisciplines = @studentdisciplinesearch.studentdisciplines %>
+				<td><%=h @studentdisciplinesearch.studentdisciplines[0].student.name %></td>
+			</tr>
+			<tr>
+				<td>Programme</td>
+				<td>:</td>
+				<td><%=h @studentdisciplinesearch.studentdisciplines[0].student.course.programme_list %></td>
+			</tr>
+			<tr>
+				<td>Intake</td>
+				<td>:</td>
+				<td><%=h @studentdisciplinesearch.studentdisciplines[0].student.intake.strftime("%b %Y") %></td>
+			</tr>
+		</table>
+		<br>
+	</span>
+	
+	<!--start:SEARCH BY MATRIXNO:one result-->
+	<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:14px;">
+		<tr>
+			<th>No</th>
+			<th>Reported on</th>
+			<th>Infraction</th>
+			<th>Location</th>
+			<th>Status</th>
+			<th>Action Taken</th>
+		</tr>
+		<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|x.student.name}.each_with_index do |student_discipline, index|%>
+			<tr>
+				<td><%=index+1%></td>
+				<td><%=student_discipline.reported_on%></td>
+				<td><%=h (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == student_discipline.infraction_id}).map {|disp, value| disp} %></td>
+				<td><%=student_discipline.location.name%></td>
+				<td><%=student_discipline.status%></td>
+				<td><%=student_discipline.action_type%></td>
+			</tr>
+		<% end %>
+	</table>
+	
+	<!--end:SEARCH BY MATRIXNO:one result-->
+
+</div></div>
