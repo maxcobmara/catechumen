@@ -110,8 +110,18 @@ class WeeklytimetablesController < ApplicationController
   end
   
   def personalize_timetable
+    #---start:added-26Jul2013-for e-query & report manager--
+    @hihi = params[:locals][:id]
+    @haha = params[:locals][:lecturer_id]
+    #---end:added-26Jul2013-for e-query & report manager--
     @selected_date = params[:id]
     @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',User.current_user.staff_id])
+    #---start:added-26Jul2013-for e-query & report manager--
+    if @hihi!=nil
+        @selected_date = @hihi
+        @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',@haha.to_i])
+    end
+    #---end:added-26Jul2013-for e-query & report manager--
     @all_combine = []
     @weeklytimetables_details.each do |x|
         @all_combine << Weeklytimetable.find(x.weeklytimetable_id)  #Weeklytimetable.find(x.weeklytimetable.id)

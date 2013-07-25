@@ -1,0 +1,2 @@
+module PersonalizetimetablesearchesHelper
+end

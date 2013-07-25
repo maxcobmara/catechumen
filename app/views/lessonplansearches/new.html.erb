@@ -1,0 +1,73 @@
+<div class="tform">
+	<H2>Lesson Plan / Lesson Plan Reporting Search</H2>
+
+<% form_for @lessonplansearch do |f| %>
+  <%= f.error_messages %>
+	<table width=100% >
+		<%if @searchlessonplantype=='1' || @searchlessonplantype==1 %>
+			<%= hidden_field_tag :method,  1 %>
+			<tr><td colspan=2></td>Search Lesson Plan / Lesson Plan Reporting By :</tr>
+			
+			<%# @topics_in_lessonplan = LessonPlan.all.map(&:topic).uniq %>
+			<%# @programme_ids = Programme.find(:all, :conditions=>['id IN (?)',@topics_in_lessonplan])%>
+			<tr class="programme_item" style="display:none;">
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :programme %></td>
+				<td> <%= f.collection_select :programme_id, Programme.roots, :id, :programme_list, :include_blank=> "Select" %></td>
+			</tr>
+			<!--retrieve data for intake_ids-->
+			<% @lessonplans_intake_ids = LessonPlan.all.map(&:intake_id) %>
+			<% @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN (?)',@lessonplans_intake_ids]).sort_by{|x|x.programme.course_type}%>
+			<!--retrieve data for intake_ids-->
+			<tr class="intake_item">
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;Intake - Programme</td>
+				<td>
+					<%#= date_select :intake, params[:intake], :order => [:month, :year], :include_blank => true %>
+					<%= f.collection_select :intake_id, @intake_fr_intaketable, :id, :intake_programme, :include_blank=>"Select" %><!--intake from INTAKE table-->	
+					
+				</td>
+			</tr>
+			<tr>
+				<td colspan=2 style="text-valign:top;">
+					&nbsp;&nbsp;&nbsp;<%= f.check_box :intake,:checked=>"checked",:class => 'intake_programme', :id=> 'intake_checker' %>&nbsp;
+					<font size=-2><b>Untick</b> to select by Programme. <b>Tick</b> to select by Intake-Programme.</font>
+				</td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :lecturer %></td>
+				<td>
+					<% @positions_staff_ids_of_trainer = Position.find(2).descendants.map(&:staff_id).compact %>
+					<%= f.collection_select :lecturer, Staff.find(:all, :conditions =>['id IN (?)',@positions_staff_ids_of_trainer]).sort_by{|x|x.name}, :id, :name, :include_blank=> "Select" %>
+				</td>
+			<tr>
+			<!--
+			<tr>
+				<td class="leftcol"> <%#= f.label :intake_id %></td>
+				<td><%#= f.text_field :intake_id %></td>
+			<tr>
+			<tr>
+				<td class="leftcol"><%#= f.label :programme_id %></td>
+				<td><%#= f.text_field :programme_id %></td>
+			<tr>-->
+		<% end %>
+	</table>
+
+  <p><%= f.submit "Search"%>&nbsp;<font size=-2>Leaves all fields 'blank' / 'unselected' to display ALL record.</font></p>
+<% end %>
+
+</div>
+
+<script type="text/javascript">
+		$j(document).ready(function(){
+			$j("input[class='intake_programme']").change(function() {  
+			     	if($j('#intake_checker').is(':checked')) { 
+				       		$j(".programme_item").hide();
+							$j(".intake_item").show();
+				     }else{
+							$j(".intake_item").hide();
+							$j(".programme_item").show();
+				     }
+			   });			
+		});
+</script>
+

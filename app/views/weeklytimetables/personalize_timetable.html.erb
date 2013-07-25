@@ -8,7 +8,9 @@
 			"value='Print This Page'/>");
 			</script>
 	</form>
-
+<!--check params value from controller-->
+<%=@selected_date%>**<%=@hihi%>@@<%=@haha%>
+<!--check params value from controller-->
 
 <div class="A4landscape" >
 		<% detailing=[] %>
@@ -40,7 +42,15 @@
 
 				<tr>
 					<th class="htitle2">NAMA PENSYARAH</th>
-					<th colspan="5" class="htitle2">:&nbsp;&nbsp;<%=h User.current_user.staff.name %></th>
+					<th colspan="5" class="htitle2">:&nbsp;&nbsp;
+						<!--added-26Jul2013-for e-query & report manager-->
+						<% if @hihi!= nil%>
+							<%=Staff.find(@haha).name%>
+						<% else %>
+							<%=h User.current_user.staff.name %>
+						<% end %>
+						<!--added-26Jul2013-for e-query & report manager-->
+					</th>
 				</tr>
 				<tr>
 					<th class="htitle2a">TARIKH </th>
@@ -59,7 +69,14 @@
 					<% enddt = item.enddate %>
 					
 					<% item.weeklytimetable_details.each do |h| %><!--<%#=h.lecturer_id%>!!<%#=User.current_user.staff_id%>-->
-						<% if h.lecturer_id == User.current_user.staff_id %>
+						<!--added-26Jul2013-for e-query & report manager-->
+						<% if @hihi!= nil%>
+							<% @timetable_owner = @haha.to_i %>
+						<% else %>
+							<% @timetable_owner = User.current_user.staff_id %>
+						<% end %>
+						<!--added-26Jul2013-for e-query & report manager-->
+						<% if h.lecturer_id == @timetable_owner %>
 							<% detailing << h %>
 							<% if h.day2 != 0 %>
 								<% detailing_monthurs<<h %>

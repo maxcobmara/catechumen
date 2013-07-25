@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130724175250) do
+ActiveRecord::Schema.define(:version => 20130725152128) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -1030,6 +1030,15 @@ ActiveRecord::Schema.define(:version => 20130724175250) do
     t.time     "end_meth"
   end
 
+  create_table "lessonplansearches", :force => true do |t|
+    t.integer  "lecturer"
+    t.integer  "intake_id"
+    t.integer  "programme_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "intake"
+  end
+
   create_table "librarytransactions", :force => true do |t|
     t.integer  "accession_id"
     t.boolean  "ru_staff"
@@ -1132,6 +1141,13 @@ ActiveRecord::Schema.define(:version => 20130724175250) do
     t.decimal  "maxquantity"
     t.decimal  "minquantity"
     t.integer  "asset_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "personalizetimetablesearches", :force => true do |t|
+    t.integer  "lecturer"
+    t.integer  "programme_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -2094,6 +2110,17 @@ ActiveRecord::Schema.define(:version => 20130724175250) do
     t.boolean  "hod_rejected"
     t.date     "hod_rejected_on"
     t.string   "reason"
+  end
+
+  create_table "weeklytimetablesearches", :force => true do |t|
+    t.integer  "programme_id"
+    t.date     "startdate"
+    t.date     "enddate"
+    t.integer  "preparedby"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "intake_id"
+    t.integer  "intake"
   end
 
 end

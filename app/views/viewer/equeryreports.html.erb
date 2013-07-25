@@ -171,9 +171,9 @@
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			Module : Training</span></td></tr>
 		<tr>
-			<td>26</td>
+			<td>26</td><%=@searchweeklytimetabletype=1%>
 			<td><%= link_to 'Weekly Timetables', {:controller => 'weeklytimetables',:action => 'index'}  %></td>
-			<td>Advance Search (by programme, by week,date, by lecturer-list of schedule)</td>
+			<td><%= link_to 'Advance Search', {:controller => 'weeklytimetablesearches', 	:action => 'new', :searchweeklytimetabletype=>@searchweeklytimetabletype} %></td>
 		</tr>
 		<tr>
 			<td>27</td>
@@ -181,24 +181,27 @@
 			<td>Advance Search (by programme, subject of programmes/semester,topics of subjects )</td>
 		</tr>
 		<tr>
-			<td>28</td>
-			<td><%= link_to 'Lesson Plans', {:controller => 'lesson_plans',:action => 'index'}  %></td>
-			<td>Advance Search (by programme, by lecturer, by year/semester, intake)</td>
-		</tr>
+			<td>28</td><%=@searchlessonplantype=1%>
+			<td>
+				<%= link_to 'Lesson Plans', {:controller => 'lesson_plans',:action => 'index'}  %> /
+				<%= link_to 'Lesson Plan Reporting', {:controller => 'lesson_plans',:action => 'index_report'}  %>
+			</td>
+			<td><%= link_to 'Advance Search', {:controller => 'lessonplansearches', 	:action => 'new', :searchlessonplantype=>@searchlessonplantype} %></td>
+		</tr><!--
 		<tr>
 			<td>29</td>
-			<td><%= link_to 'Lesson Plan Reporting', {:controller => 'lesson_plans',:action => 'index_report'}  %></td>
-			<td>Advance Search (by programme, by lecturer, by year/semester,intake)</td>
+			<td></td>
+			<td></td>
 		</tr>		
 		<tr>
 			<td>30</td>
-			<td><%= link_to 'Training Notes', {:controller => 'trainingnotes',:action => 'index'}  %></td>
+			<td><%#= link_to 'Training Notes', {:controller => 'trainingnotes',:action => 'index'}  %></td>
 			<td>Advance Search (by programme, by lecturer, by year/semester,intake)</td>
-		</tr>
+		</tr>-->
 		<tr>
-			<td>30</td>
+			<td>29</td><%=@searchpersonalizetimetabletype=1%>
 			<td><%= link_to 'Personalize Weekly Timetables', {:controller => 'weeklytimetables',:action => 'personalize_index'}  %></td>
-			<td>Advance Search (by programme, by lecturer, by year/semester)</td>
+			<td><%= link_to 'Advance Search', {:controller => 'personalizetimetablesearches', 	:action => 'new', :searchpersonalizetimetabletype=>@searchpersonalizetimetabletype} %></td>
 		</tr>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			Module : Examination</span></td></tr>

@@ -1,0 +1,83 @@
+<div>
+	<H3>LESSON PLAN / LESSON PLAN REPORTING SEARCH :</h3>
+		<!--additional heading-->
+		<% if @lessonplansearch.lecturer && @lessonplansearch.lecturer.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Lecturer : <b><%= Staff.find(@lessonplansearch.lecturer).name %></b><br><br>
+			</span>
+		<% end %>
+		<% if @lessonplansearch.intake_id &&@lessonplansearch.intake_id.blank? ==false && @lessonplansearch.intake == 1%>
+			<span style="text-decoration:underline;">
+				Search by Intake: <b><%= Intake.find(@lessonplansearch.intake).name %></b><br><br>
+			</span>
+		<% end %>
+		<% if @lessonplansearch.programme_id  &&@lessonplansearch.programme_id.blank? ==false && @lessonplansearch.intake != 1%>
+			<span style="text-decoration:underline;">
+				Search by Programme: <b><%= Programme.find(@lessonplansearch.programme_id).programme_list %></b><br><br>
+			</span>
+		<% end %>
+		
+		<% unless @lessonplansearch.lessonplans.nil?  %>
+			Total of Lesson Plans : <%=h @lessonplansearch.lessonplans.count %><br><br>
+		<% end %>
+
+		<% if @lessonplansearch.lessonplans.count > 0%>
+		<table border=1 cellpadding=3 cellspacing=0>
+			<tr>
+				<th>No</th>
+				<% if (@lessonplansearch.lecturer.blank? && @lessonplansearch.intake_id.blank? && @lessonplansearch.programme_id.blank?)|| (@lessonplansearch.lecturer && @lessonplansearch.intake_id.blank? && @lessonplansearch.programme_id.blank?) %>
+					<th>Programme</th>
+				<% end %>
+				<th>Lecturer</th>
+				<th width=65px>Intake</th>
+				<th>Total of Students</th>
+				<th>Year/Semester</th>
+				<th>Topic</th>
+				<th>Lecture Title</th>
+				<th width=65px>Lecture Date</th>
+				<th width=60px>Start</th>
+				<th width=60px>End</th>
+				<th>Status</th>
+				<th>Report</th>
+			</tr>	
+			<% @lessonplansearch.lessonplans.each_with_index do |lesson_plan, index| %>
+			<tr>
+				<td><%=index+1%><%#=lesson_plan.id%></td>
+				<% if (@lessonplansearch.lecturer.blank? && @lessonplansearch.intake_id.blank? && @lessonplansearch.programme_id.blank?)|| (@lessonplansearch.lecturer && @lessonplansearch.intake_id.blank? && @lessonplansearch.programme_id.blank?) %>
+					<td><%=lesson_plan.schedule_item.weeklytimetable_topic.programme_coursetype_name%></td>
+				<% end %>
+				<td><%=Staff.find(lesson_plan.lecturer).name%></td>
+				<td align="center"><%=lesson_plan.lessonplan_intake.name %></td>
+				<td align="center"><%=lesson_plan.student_qty%></td>
+				<td align="center"><%=lesson_plan.year%> / <%=lesson_plan.semester%></td> 
+				<td align="center"><%=h lesson_plan.schedule_item.weeklytimetable_topic.subject_with_topic %></td>
+				<td><%=h lesson_plan.lecture_title %></td>
+			    <td align="center"><%=h lesson_plan.lecture_date %></td>
+			    <td align="center"><%=h lesson_plan.schedule_item.get_start_time %></td>
+			    <td align="center"><%=h lesson_plan.schedule_item.get_end_time %></td>
+				<td>
+					<% if lesson_plan.hod_approved==true %>
+						Approved
+					<% else%>
+						<% if lesson_plan.hod_approved==false && lesson_plan.hod_rejected==true%>
+							Rejected (<%=timetable.reason%>)
+						<% elsif lesson_plan.hod_approved.blank? && lesson_plan.hod_rejected.blank? && lesson_plan.is_submitted==true%>
+							Submitted
+						<% end %>
+					<% end %>
+				</td>
+				<td>
+					<% if lesson_plan.report_submit == true %>
+						<% if lesson_plan.report_endorsed == true %>
+							Endorsed
+						<% else %>
+							Submitted
+						<% end %>
+					<% end %>
+				</td>
+			</tr>
+		<% end %>
+		</table>
+		<% end %>
+
+</div>

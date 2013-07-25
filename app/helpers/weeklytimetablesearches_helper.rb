@@ -1,0 +1,2 @@
+module WeeklytimetablesearchesHelper
+end

@@ -37,6 +37,9 @@ class Weeklytimetable < ActiveRecord::Base
     
   end
 
+  def main_details_for_weekly_timetable
+    "#{schedule_programme.programme_list}"+" Intake : "+"#{schedule_intake.name}" +" - (Week : "+"#{startdate.strftime('%d-%m-%Y')}"+" - "+"#{enddate.strftime('%d-%m-%Y')}"+")" 
+  end
   
   def hods  
       hod = User.current_user.staff.position.parent

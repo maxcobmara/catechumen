@@ -1,4 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :personalizetimetablesearches
+
+  map.resources :lessonplansearches
+
+  map.resources :weeklytimetablesearches
+
   map.resources :studentcounselingsearches
 
   map.resources :studentdisciplinesearches
