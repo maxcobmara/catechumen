@@ -36,7 +36,7 @@
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :lecturer %></td>
 				<td>
-					<% @positions_staff_ids_of_trainer = Position.find(2).descendants.map(&:staff_id).compact %>
+					<% @positions_staff_ids_of_trainer = Position.find(2).descendants.map(&:staff_id).compact+Position.find(4).staff_id.to_a %>
 					<%= f.collection_select :lecturer, Staff.find(:all, :conditions =>['id IN (?)',@positions_staff_ids_of_trainer]).sort_by{|x|x.name}, :id, :name, :include_blank=> "Select" %>
 				</td>
 			<tr>

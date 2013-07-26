@@ -149,6 +149,11 @@ class Exam < ActiveRecord::Base
                [ "Peperiksaan Akhir Semester",            "F" ],
                [ "Peperiksaan Ulangan",                   "R" ]
   ]
+  PAPERTYPE =[
+           #  Displayed       stored in db
+              ["Template",        0],
+              ["Complete Exam",  1]
+  ]
 
 private
 

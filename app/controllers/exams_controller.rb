@@ -73,6 +73,7 @@ class ExamsController < ApplicationController
     #10June2013-----  
     #end  
     if @create_type == "Create"
+        @exam.klass_id = 1  #added for use in E-Query & Report Manager (27Jul2013)
     elsif @create_type == "Create Template"
         @exam.klass_id = 0
     end   

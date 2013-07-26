@@ -1,0 +1,80 @@
+<div>
+	<H3>EXAMINATION PAPER SEARCH :</h3>
+		<!--additional heading-->
+		<% if @examsearch.programme_id && @examsearch.programme_id.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Programme : <b><%= Programme.find(@examsearch.programme_id).programme_coursetype_name %></b><br><br>
+			</span>
+		<% end %>		
+		<% if @examsearch.subject_id && @examsearch.subject_id.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Subject : <b><%= Programme.find(@examsearch.subject_id).subject_list %></b><br><br>
+			</span>
+		<% end %>
+		<% if @examsearch.examtype && @examsearch.examtype.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Examination Type : <b><%= (Exam::EXAMTYPE.find_all{|disp, value| value == @examsearch.examtype}).map {|disp, value| disp} %></b><br><br>
+			</span>
+		<% end %>
+		<% if @examsearch.examdate && @examsearch.examdate.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Examination Date : <b><%=@examsearch.examdate.strftime("%d-%m-%Y")%></b><br><br>
+			</span>
+		<% end %>
+		<% if @examsearch.created_by && @examsearch.created_by.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by - Prepared by : <b><%=Staff.find(@examsearch.created_by).name%></b><br><br>
+			</span>
+		<% end %>
+		<% if @examsearch.klass_id && @examsearch.klass_id.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Paper Type : <b><%= (Exam::PAPERTYPE.find_all{|disp, value| value == @examsearch.klass_id}).map {|disp, value| disp} %></b><br><br>
+			</span>
+		<% end %>
+		<!--additional heading-->
+		
+		Total Examination Paper : <%=@examsearch.exams.count%><br><br>
+
+		<% if @examsearch.exams.count>0 %>
+		<table border=1 cellpadding=3 cellspacing=0>
+			<tr>
+				<th>No</th>
+				<th>Programme</th>
+				<th>Subject</th>
+				<th>Exam Type</th>
+				<th width=65>Exam Date</th>
+				<th>Prepared By</th>
+				<th>Complete Set/Template</th>
+			</tr>
+			<% @examsearch.exams.each_with_index do |exam,index| %>
+				<tr>
+					<td><%=index+1%></td>
+					<td><%=exam.subject.programme_coursetype_name %></td>
+					<td><%=exam.subject.subject_list %></td>
+					<td><%=exam.examtypename%></td>
+					<td><%=exam.exam_on.strftime("%d-%m-%Y") %></td>
+					<td><%=exam.creator.name %></td>
+					<td>
+						<% if exam.klass_id == 0%>
+							Template
+						<% else %>
+							<!---->
+							<% if exam.sequ!=nil %>
+								<% sequ = exam.sequ.split(",")%>
+							<% end %>
+							<% if sequ!=nil && sequ.uniq.length == sequ.length &&  (exam.subject.root.id == 3 || exam.subject.root.id == 5 || exam.subject.root.id == 6 || exam.subject.root.id == 7 || exam.subject.root.id == 8 || exam.subject.root.id == 9 || exam.subject.root.id == 10 || exam.subject.root.id == 11 || exam.subject.root.id == 12 || exam.subject.root.id == 13 || exam.subject.root.id == 14)%>
+								<%= link_to "Exam Paper (S)", :controller=>'exams', :action => 'exampaper_separate', :id => exam.id %>
+							<% end %>
+							<% if sequ!=nil && sequ.uniq.length == sequ.length && (exam.subject.root.id == 1 || exam.subject.root.id == 2 || exam.subject.root.id == 4) %>
+								<%= link_to "Exam Paper (C)", :controller=>'exams', :action => 'exampaper_combine', :id => exam.id %>
+							<% end %>
+							<!---->
+						<% end %>
+					</td>
+				</tr>
+		
+			<% end %>
+		</table>
+		<% end %>
+		
+</div>

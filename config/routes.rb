@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :examsearches
+
   map.resources :curriculumsearches
 
   map.resources :personalizetimetablesearches
