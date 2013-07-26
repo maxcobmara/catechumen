@@ -1,0 +1,47 @@
+<div class="tform">
+	<H2>Curriculum Details Search</H2>
+
+
+<% form_for @curriculumsearch do |f| %>
+  <%= f.error_messages %>
+	<table width=100% >
+		<%if @searchcurriculumtype=='1' || @searchcurriculumtype==1 %>
+			<%= hidden_field_tag :method,  1 %>
+			<tr><td colspan=2></td>Search Curriculum Details By :</tr>
+			<tr>
+				<td width=8%>&nbsp;</td>
+				<td class="leftcol">
+					<%= f.check_box :programme_id,:checked=>"checked",:class => 'intake_programme', :id=> 'programme_checker' %>
+					&nbsp;&nbsp;&nbsp;<%= f.label :programme_id %>
+				</td>	
+			</tr>
+			<tr>
+				<td width=8%>&nbsp;</td>
+				<td class="leftcol">
+					<%= f.check_box :semester ,:checked=>"checked",:class => 'intake_programme', :id=> 'semester_checker' %>
+					&nbsp;&nbsp;&nbsp;<%= f.label :semester %>
+				</td>
+			</tr>
+			<tr>
+				<td width=8%>&nbsp;</td>
+				<td class="leftcol">
+					<%= f.check_box :subject,:checked=>"checked",:class => 'intake_programme', :id=> 'subject_checker' %>
+					&nbsp;&nbsp;&nbsp;<%= f.label :subject %>
+				</td>
+			</tr>
+			<tr>
+				<td width=8%>&nbsp;</td>
+				<td class="leftcol">
+					<%= f.check_box :topic,:checked=>"checked",:class => 'intake_programme', :id=> 'topic_checker' %>	
+					&nbsp;&nbsp;&nbsp;<%= f.label :topic %>
+				</td>
+			</tr>
+		<% end %>
+	</table>
+	
+  <p><%= f.submit "Search"%>&nbsp;<font size=-2>Selection of data type for searching, requires data type(s) selection with higher precedence.</font></p>
+<% end %>
+
+</div>
+
+

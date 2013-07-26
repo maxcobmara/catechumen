@@ -1,0 +1,2 @@
+module CurriculumsearchesHelper
+end

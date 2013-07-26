@@ -1,0 +1,125 @@
+<div>
+	<H3>CURRICULUM DETAILS SEARCH :</h3>
+	
+	<% if (@curriculumsearch.semester==1 && @curriculumsearch.programme_id==0) || (@curriculumsearch.subject==1 && @curriculumsearch.semester==0 && @curriculumsearch.programme_id==0) || (@curriculumsearch.subject==1 && @curriculumsearch.semester==1 && @curriculumsearch.programme_id==0) || (@curriculumsearch.subject==1 && @curriculumsearch.semester==0 && @curriculumsearch.programme_id==1) || (@curriculumsearch.topic==1 && @curriculumsearch.subject==0) || (@curriculumsearch.topic==1 && @curriculumsearch.programme_id==0) || (@curriculumsearch.topic==1 && @curriculumsearch.semester==0) %>
+		Search return no result. Selection of data type for searching, requires data type(s) selection with higher precedence.
+	<% end %>
+		
+		<% @curriculumsearch.curriculums.group_by{|y|y.ancestry_depth}.each do |semester,details| %>
+			<!--SEMESTER<%#= semester%><BR>-->
+			<% if semester == 0 %>				<!--programme only-->
+				<% @programme_only = details %>
+			<% elsif semester == 2 %>			<!--subject only-->
+				<% @subject_only = details %>
+			<% elsif semester == 3 %>		<!--topic only-->
+				<% @topic_only = details %>
+			<% end %>	
+		<% end %>
+		
+		<!--additional heading-->
+		<% if @curriculumsearch.programme_id==1 %>
+			Total Programme : <%=@programme_only.count%><br>
+		<% end %>
+		<% if @curriculumsearch.subject==1 && @curriculumsearch.semester==1 && @curriculumsearch.programme_id==1 %>
+			Total Subjects : <%=@subject_only.count%><br>
+		<% end %>
+		<% if @curriculumsearch.topic==1 && @curriculumsearch.subject==1 && @curriculumsearch.semester==1 && @curriculumsearch.programme_id==1 %>
+			Total Topics : <%=@topic_only.count%><br><br>
+		<% end %>
+		<!--additional heading-->
+		
+		<table border=1 cellspacing=0 cellpadding=3>
+			<% @curriculumsearch.curriculums.group_by{|y|y.ancestry_depth}.each do |semester,details| %>
+				<% @aaadetails=@curriculumsearch.curriculums.group_by{|y|y.ancestry}%>
+					<% if semester == 0 %>
+						<!--SEM<%#=semester%> ~~ DETAILS<%#=details%>-->
+						
+						<% 0.upto(details.count-1) do |p|%>
+							<tr style="background-color:#eeecec;">
+								<th><%=details[p].id%></th>
+								<th colspan=2><%=details[p].course_type%>&nbsp;<%=details[p].name%></th><!--display programme only-->
+								<th>Type</th>
+							</tr>
+							
+							<!--SEMESTER DISPLAY-->
+							<% @aaadetails.each do |ancestry,gt|%>
+								<!--<%#=ancestry%>~<%#=details[p].id%>-->
+								<% if ancestry.to_i == details[p].id %>
+									<% gt.each do |line|%>
+										<% if line.ancestry_depth == 1 %><!--start-display semester only-->
+											<tr style="background-color:#eeecec;">
+												<td>&nbsp;
+													<!--<%=line.id%>-<%=line.ancestry %>**<%=ancestry%>--><!--do not remove:for checking-->
+												</td>
+												<td colspan=2>
+													<center>
+													<% if line.course_type == "Semester"%>
+														<span style="color:#218AFB;font-weight:bold;">
+															Semester <%=line.name%>
+														</span>
+													<% else %>	
+														<span style="color:red;">
+															<%=line.name%>
+														</span>
+													<% end %>
+													</center>
+												</td>
+												<td>
+													<% if line.course_type == "Semester"%>
+														<font color=black>
+													<% else %>
+														<font color=red>
+													<% end %>
+													<%=line.course_type%><!--~~~~~~-->
+													</font>	
+												</td>
+											</tr>
+									
+											<!--SUBJECT DISPLAY-->
+											<% if @curriculumsearch.subject==1 %>
+												<% @subject_only.each do |jk| %><!--compare dgn line.id, kalau sama-->
+													<% @part_anc = jk.ancestry.split("/")%>
+													<% if @part_anc[1].to_i == line.id %>
+														<tr style="background-color:#DEE;color:green;font-weight:bold;">
+															<td>&nbsp;</td>
+															<td colspan=2><%=jk.code%> <%=jk.name.capitalize%></td>
+															<td><%=jk.course_type%></td>
+														</tr>
+														
+														<!--TOPIC DISPLAY-->
+														<% if @curriculumsearch.topic==1 %>
+															<% @topic_only.each do |topic| %>
+																<% @part_topic = topic.ancestry.split("/")%>
+																<% if @part_topic[2].to_i == jk.id %>
+																	<tr>
+																		<td>&nbsp;</td>
+																		<td><%=topic.code%></td>
+																		<td><%=topic.name.capitalize%></td>
+																		<td><%=topic.course_type%></td>
+																	</tr>
+																<% end %>
+															<% end %>
+														<% end %>
+														<!--TOPIC DISPLAY-->
+													
+													<% end %>
+												<% end %>
+											<% end %>
+											<!--SUBJECT DISPLAY-->
+									
+										<% end %><!--end-display semester only-->
+									<% end %>
+								<% end %>
+							<% end %>
+							<!--SEMESTER DISPLAY-->
+					
+					<% end %>
+				<% end %>
+			<% end %>
+		</table>
+
+	
+
+	<br>
+	
+</div>

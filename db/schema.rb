@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130725152128) do
+ActiveRecord::Schema.define(:version => 20130726061511) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -558,6 +558,15 @@ ActiveRecord::Schema.define(:version => 20130725152128) do
     t.integer  "student_id"
     t.integer  "programme_id"
     t.integer  "subject_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "curriculumsearches", :force => true do |t|
+    t.integer  "programme_id"
+    t.integer  "semester"
+    t.integer  "subject"
+    t.integer  "topic"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
