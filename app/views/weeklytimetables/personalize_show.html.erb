@@ -127,19 +127,22 @@
 			<% elsif count3!=2%>
 				<td align=center style="border:1px solid black; text-align:center; padding:4px;">
 					
+					<% nos=0 %><!--26Jul2013-toavoid multiple display:5 times of the same value in 1 field-->
 					<% detailing_monthurs.each do |j|%><%#= j.weeklytimetable.hod_approved %>
 						<% if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>
+						<!--26Jul2013--><% if nos==0%><% nos+=1%><!--26Jul2013-toavoid multiple display:5times of the same value in 1 field-->
 							<strong>
 								<%= j.weeklytimetable_topic.parent.code %><br>
 								<%= j.weeklytimetable_topic.name %>
-								<%= "(K)" if j.method == 1 %>
-								<%= "(T)" if j.method == 2 %>
-								<%= "(A)" if j.method == 3 %><br>
+								<%= "(K)" if j.lecture_method == 1 %>
+								<%= "(T)" if j.lecture_method == 2 %>
+								<%= "(A)" if j.lecture_method == 3 %><br>
 								<%= j.weeklytimetable_location.name %><br>
 								<%= j.weeklytimetable.schedule_programme.programme_list %><br>
 								<%= j.weeklytimetable.schedule_intake.description %>
 								<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %><br>
 							</strong>
+						<!--26Jul2013--><% end %>
 						<% end %>
 					<% end %>
 					

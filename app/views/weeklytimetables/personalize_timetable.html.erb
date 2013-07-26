@@ -8,8 +8,8 @@
 			"value='Print This Page'/>");
 			</script>
 	</form>
-<!--check params value from controller-->
-<%=@selected_date%>**<%=@hihi%>@@<%=@haha%>
+<!--check params value from controller--><!--
+<%#=@selected_date%>**<%#=@hihi%>@@<%#=@haha%>-->
 <!--check params value from controller-->
 
 <div class="A4landscape" >
@@ -283,10 +283,13 @@
 					<% end %>
 				</td>
 			<% else %>
-				<td class="data5">
+				<td class="data5"><!--kukku--> <%#=@column_count_monthur%><%#=count4%><%#=@column_count_monthur+count4%><!--revised : 26Jul2013-->
 					
 					<% detailing_friday.each do |j|%>
-						<% if j.is_friday == true  && j.time_slot2 == @column_count_monthur+count4 && j.weeklytimetable.hod_approved == true%>
+						<!--26Jul2013--><!--ERROR : FOR FRIDAY : TIME_SLOT WHEREAS TIME_SLOT 2 FOR MON-THURS-->
+						<%# if j.is_friday == true  && j.time_slot2 == @column_count_monthur+count4 && j.weeklytimetable.hod_approved == true%>
+						<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 && j.weeklytimetable.hod_approved == true%>
+						<!--26Jul2013-->
 								<strong>
 									<%= j.weeklytimetable_topic.parent.code %><br>
 									<%= j.weeklytimetable_topic.name %>

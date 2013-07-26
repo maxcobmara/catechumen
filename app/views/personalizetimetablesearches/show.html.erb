@@ -15,25 +15,113 @@
 		
 		Total of Personalize Timetable : <%= @personalize.count %><br><br>
 		
+		<!--backup--><!--
+		<%# @personalize.each do |startdate,personalize_timetables| %>
+			<%# bb = 0 %>
+			<%#=startdate%><br>
+			<%# personalize_timetables.each do |personal_timetable| %>
+				<%# if bb==0 %>
+					<%# bb+=1 %>
+					<%# personal_timetable.weeklytimetable_details.group_by{|x|x.lecturer_id}.each_with_index do |lili,no|%>
+						<%#=no+1%>:<%#=lili%>**<br>
+					<%# end %>
+				<%# end %>
+			<%# end %>
+		<%# end %>-->
+		<!--backup-->
+		
+		
+		<!---->
+		<table border=1 cellpadding=3 cellspacing=0>
+		<% @personalize.each do |startdate,personalize_timetables| %>
+			<% bb = 0 %>
+			<tr>
+				<th colspan=6 align="center" style="background-color:#EFF1F1;">
+					<span style="color:#218AFB;font-weight:bold;">Start Date : <%=startdate.strftime("%d %b %Y")%></span>
+				</th>
+			</tr>
+			<% personalize_timetables.each do |personal_timetable| %>
+				<% if bb==0 %>
+					<% bb+=1 %>
+					<% bil = 0 %>
+					<% personal_timetable.weeklytimetable_details.group_by{|x|x.lecturer_id}.each do |lecturer,timetable|%>
+			
+						<!--START-if search by lecturer, display selected lecturer only, view All if no lecturer selected-->
+						<% if (@personalizetimetablesearch.lecturer && lecturer == @personalizetimetablesearch.lecturer) || @personalizetimetablesearch.lecturer.blank? %>
+							<tr style="background-color:#eeecec;">
+								<th><%=bil+=1%></th>
+								<th colspan=4><%=Staff.find(lecturer).name.upcase%> - <%=personal_timetable.main_details_for_weekly_timetable%></th>
+								<th>
+									<% if personal_timetable.hod_approved == true %>
+										<%= link_to "View Personalize Timetable", :controller=>'weeklytimetables', :action => 'personalize_timetable', :locals=>{:id => startdate,:lecturer_id=>lecturer } %>
+									<% else %>
+										<span style="color:red;">
+										<% if personal_timetable.hod_rejected == true %>
+											Rejected
+										<% else %>
+											<% if personal_timetable.is_submitted == true %>
+												Submitted
+											<% else %>
+												Not submission
+											<% end %>
+										<% end %>
+										</span>
+									<% end %>
+								</th>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+								<th>No</th>
+								<th>Date Day</th>
+								<th>Time</th>
+								<th>Topic</th>
+								<th>Location</th>
+							</tr>
+							<% timetable.sort_by{|t|t.get_date_day_of_schedule}.each_with_index do |details, no| %>
+								<tr>
+									<td>&nbsp;</td>
+									<td><%=no+1%></td>
+									<td><%=details.get_date_day_of_schedule%></td>
+									<td><%=details.get_time_slot%></td>
+									<td><%=details.subject_topic %></td>
+									<td><%=details.weeklytimetable_location.name%></td>
+								</tr>
+							<% end %>
+						<% end %>
+						<!--END-if search by lecturer, display selected lecturer only, view All if no lecturer selected-->
+						
+					<% end %>
+				<% end %>
+			<% end %>
+		<% end %>
+		</table>
+		<!---->
+		
+		<br>
+		<!--
 		<table border=1 cellpadding=3 cellspacing=0>
 			
-			<% no=0 %>
-			<% @personalize.each do |startdate,personalize_timetables| %>
-				<% personalize_timetables.each_with_index do |personal_timetable,index2| %>
-					<% if index2 == 0 %>
+			<%# no=0 %>
+			<%# @personalize.each do |startdate,personalize_timetables| %>
+				<%# personalize_timetables.each_with_index do |personal_timetable,index2| %>
+					<%# if index2 == 0 %>
 						<tr style="background-color:#eeecec;">
 							<th colspan=4>
 								<%# @lecturer = @personalizetimetablesearch.lecturer %>
-								<% @lecturer = personal_timetable.weeklytimetable_details[index2].lecturer_id %>
-								<% if @personalizetimetablesearch.lecturer.blank? %>
-									<%=Staff.find(@lecturer).name.upcase%>&nbsp;:
-								<% end %>
-								<% @weeklytimetable = Weeklytimetable.find(personal_timetable.id) %>
-								<%=@weeklytimetable.main_details_for_weekly_timetable %>
-								<% @personalize2=startdate%>
+								0<%#=personal_timetable.weeklytimetable_details[0].lecturer_id %>
+								1<%#=personal_timetable.weeklytimetable_details[1].lecturer_id %>
+								2<%#=personal_timetable.weeklytimetable_details[2].lecturer_id %>
+								3<%#=personal_timetable.weeklytimetable_details[3].lecturer_id %><br>
+								<%# @lecturer = personal_timetable.weeklytimetable_details[index2].lecturer_id %>
+								<%# if @personalizetimetablesearch.lecturer.blank? %>
+									<%#=Staff.find(@lecturer).name.upcase%>&nbsp;:
+								<%# end %>
+								<%# @weeklytimetable = Weeklytimetable.find(personal_timetable.id) %>
+								<%#=@weeklytimetable.main_details_for_weekly_timetable %>
+								<%# @personalize2=startdate%>
 							</th>
 							<th>
-								<%= link_to "View Personalize Timetable", :controller=>'weeklytimetables', :action => 'personalize_timetable', :locals=>{:id => @personalize2,:lecturer_id=>@lecturer } %>
+								<%#= link_to "View Personalize Timetable", :controller=>'weeklytimetables', :action => 'personalize_timetable', :locals=>{:id => @personalize2,:lecturer_id=>@lecturer } %>
 								<%#= link_to "View Personalize Timetable", :controller=>'weeklytimetables', :action => 'personalize_timetable', :locals=>{:id => @personalize2,:lecturer_id=>@personalizetimetablesearch.lecturer } %>
 							</th>
 						</tr>
@@ -44,21 +132,21 @@
 							<th>Topic</th>
 							<th>Location</th>
 						</tr>	
-						<% personal_timetable.weeklytimetable_details.each_with_index do |one_slot,index|%>
-							<% if (one_slot.lecturer_id == @personalizetimetablesearch.lecturer && @personalizetimetablesearch.lecturer) || @personalizetimetablesearch.lecturer.blank? %>
+						<%# personal_timetable.weeklytimetable_details.each_with_index do |one_slot,index|%>
+							<%# if (one_slot.lecturer_id == @personalizetimetablesearch.lecturer && @personalizetimetablesearch.lecturer) || @personalizetimetablesearch.lecturer.blank? %>
 								<tr>
-									<td><%=index+1%></td>
-									<td><%=one_slot.get_date_day_of_schedule %></td>
-									<td><%=one_slot.get_time_slot%></td>
-									<td><%=one_slot.subject_topic %></td>
-									<td><%=one_slot.weeklytimetable_location.name %></td>
+									<td><%#=index+1%></td>
+									<td><%#=one_slot.get_date_day_of_schedule %></td>
+									<td><%#=one_slot.get_time_slot%></td>
+									<td><%#=one_slot.subject_topic %></td>
+									<td><%#=one_slot.weeklytimetable_location.name %></td>
 								</tr>
-							<% end %>
-						<% end %><!--end for personal_timetable.weeklytimetable_details-->
+							<%# end %>
+						<%# end %>--><!--end for personal_timetable.weeklytimetable_details-->
 						
-					<% end %><!--end for-if index2==0-->
-				<% end %><!--end for-personalize_timetables-->	
-			<% end %><!--end for-@personalize-->
-		</table>
+					<%# end %><!--end for-if index2==0-->
+				<%# end %><!--end for-personalize_timetables-->	
+			<%# end %><!--end for-@personalize--><!--
+		</table>-->
 	<br>
 </div>
