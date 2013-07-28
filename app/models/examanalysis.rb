@@ -14,6 +14,10 @@ class Examanalysis < ActiveRecord::Base
   #def self.average(a)
     #return self.inject(0){|acc,i|acc+i}/self.length.to_f
   #end
+  def exampaper_details
+    "#{exampaper2. exam_name_subject_date}"
+  end
+  
   def self.set_exammarks_mark(exammarks)
     @exammarks_mark = []
 	  exammarks.sort_by{|x|x.studentmark.name}.each do |exammark|

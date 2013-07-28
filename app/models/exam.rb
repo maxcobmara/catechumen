@@ -128,8 +128,13 @@ class Exam < ActiveRecord::Base
   end
   
   def subject_of_exammaker
-    "#{Subject.find(subject_id).subject_code_with_subject_name} - #{description}"  #exammaker.examination.subject_code_with_subject_name
+    "#{Programme.find(subject_id).subject_list}"
+    #  "#{Subject.find(subject_id).subject_code_with_subject_name} - #{description}"  #exammaker.examination.subject_code_with_subject_name
   end
+  
+  def programme_of_exammaker
+    "#{Programme.find(subject_id).root.programme_coursetype_name }"
+  end 
   
   def full_marks(exampaper_id)
       Examquestion.sum(:marks,:joins=>:exammakers, :conditions => ["exammaker_id=?", exampaper_id]).to_f

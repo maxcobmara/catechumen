@@ -1,0 +1,2 @@
+module ExamanalysissearchesHelper
+end
