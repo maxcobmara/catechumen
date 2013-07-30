@@ -9,10 +9,13 @@
 			</script>
 	</form>
 	
+	<%= link_to "Back", :controller=>'booksearches', :action => 'new', :searchbooktype => 3 %><br><br>
+	
 <div class="A4potrait" style="border: none;">
 <BR/>
 <table class="tlong">
 	<thead>
+				<%@books = @booksearch.sbooks %>
 				<tr>
 					<th class="tright" colspan=6><b></b></th>
 				</tr>
@@ -21,14 +24,16 @@
 				</tr>
 				<tr>
 					<th colspan=6 style="text-align:left;">
-						Total Books / Titles : <%#= @bob %><%=@books.count%>
-						<%if @bb==''||@bb=='2'||@bb=='3'%>
-							 / <%= Book.count('title', :distinct => true)%>
-						<% end%>
-						<% if @bb == '1' %> - Listing All Books
-						<% elsif @bb == '2' %> - Listing by Class No (NLM)
-						<% elsif @bb == '3' %> - Listing by Class No (LC)
-						<% elsif @bb == '4' %> - Listing Books <br>(<%=@searchby_items%>)
+						Total Books : <%#= @bob %><%=@books.count%> &nbsp;&nbsp;&nbsp;
+						<% if @booksearch.classno != '' %>
+							<%="Search by Class No (LC) / (NLM) : " + @booksearch.classno %> &nbsp;&nbsp;&nbsp;
+						<% end %>
+						<% if @booksearch.accessionno_start != '' %> 
+							Search by Accession No ( 
+							<%= @booksearch.accessionno_start %> 
+							<% if @booksearch.accessionno_end %>-
+								<%= @booksearch.accessionno_end %>)
+							<% end %>
 						<% end %>
 					</th>
 				</tr>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130728092813) do
+ActiveRecord::Schema.define(:version => 20130730104849) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -392,6 +392,8 @@ ActiveRecord::Schema.define(:version => 20130728092813) do
     t.integer  "loss_start"
     t.integer  "loss_end"
     t.integer  "loss_cert"
+    t.integer  "loanedasset"
+    t.integer  "alldefectasset"
   end
 
   create_table "assettracks", :force => true do |t|
@@ -503,6 +505,20 @@ ActiveRecord::Schema.define(:version => 20130728092813) do
     t.string   "indice"
     t.string   "notes"
     t.string   "backuproman"
+  end
+
+  create_table "booksearches", :force => true do |t|
+    t.string   "title"
+    t.string   "author"
+    t.string   "isbn"
+    t.string   "accessionno"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "classno"
+    t.string   "accessionno_start"
+    t.string   "accessionno_end"
+    t.integer  "stock_summary"
+    t.integer  "accumbookloan"
   end
 
   create_table "booleananswers", :force => true do |t|
@@ -1111,6 +1127,17 @@ ActiveRecord::Schema.define(:version => 20130728092813) do
     t.integer  "libcheckout_by"
     t.integer  "libextended_by"
     t.integer  "libreturned_by"
+  end
+
+  create_table "librarytransactionsearches", :force => true do |t|
+    t.integer  "accumbookloan"
+    t.integer  "programme"
+    t.integer  "fines"
+    t.integer  "bookloans"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.date     "yearstat"
+    t.integer  "details"
   end
 
   create_table "loans", :force => true do |t|

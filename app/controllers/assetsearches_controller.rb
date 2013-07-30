@@ -87,8 +87,8 @@ class AssetsearchesController < ApplicationController
         @assetsearch.startdate = @dadidu2
         @assetsearch.enddate = @dadidu3
     elsif (@searchtype == '6' || @searchtype == 6)
-        @assetsearch.startdate = @dadidu6a
-        @assetsearch.enddate = @dadidu6b
+        @assetsearch.startdate = @dadidu6b
+        @assetsearch.enddate = @dadidu6a
     end
     @assetsearch.loandate = @dadidu4
     @assetsearch.returndate= @dadidu5

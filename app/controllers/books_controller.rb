@@ -142,6 +142,9 @@ class BooksController < ApplicationController
   def stock_verification
      @bb = params[:locals][:class_type]
      @bob = params[:locals][:dodo]
+     if @bb == '4'
+        @searchby_items = params[:locals][:searchby_items]
+     end
      if @bb == '1'
        #if @bob
          #@books = Book.find(:all, :conditions=>['title =?', 'Abc of otolaryngology-4th edLLLL'])
@@ -154,6 +157,10 @@ class BooksController < ApplicationController
      if @bb == '3'
        @books_nlm = Book.find(:all, :conditions =>["classlcc LIKE ? OR classlcc LIKE ?", "Q%", "W%"], :select=>:classlcc).map {|x|x.classlcc}
        @books = Book.find(:all, :conditions => ["classlcc not in (?)", @books_nlm])
+     end
+    
+     if @bb == '4'
+          @books = Book.find(:all, :conditions => ["id IN (?)", @bob])
      end
      render :layout => 'report'
   end

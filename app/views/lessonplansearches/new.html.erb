@@ -8,11 +8,15 @@
 			<%= hidden_field_tag :method,  1 %>
 			<tr><td colspan=2></td>Search Lesson Plan / Lesson Plan Reporting By :</tr>
 			
-			<%# @topics_in_lessonplan = LessonPlan.all.map(&:topic).uniq %>
-			<%# @programme_ids = Programme.find(:all, :conditions=>['id IN (?)',@topics_in_lessonplan])%>
+			<% @topic_ids_in_lesson_plan = LessonPlan.all.map(&:topic).uniq %>
+			<% @root_programme_ids = []%>
+			<% @topic_ids_in_lesson_plan.each do |x| %>
+				<% @root_programme_ids << Programme.find(x).root_id %>
+			<% end %>
+			<% @programme_list = Programme.find(:all, :conditions=> ['id IN(?)', @root_programme_ids.uniq])%>
 			<tr class="programme_item" style="display:none;">
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :programme %></td>
-				<td> <%= f.collection_select :programme_id, Programme.roots, :id, :programme_list, :include_blank=> "Select" %></td>
+				<td> <%= f.collection_select :programme_id, @programme_list, :id, :programme_list, :include_blank=> "Select" %></td>
 			</tr>
 			<!--retrieve data for intake_ids-->
 			<% @lessonplans_intake_ids = LessonPlan.all.map(&:intake_id) %>

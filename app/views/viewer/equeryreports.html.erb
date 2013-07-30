@@ -60,7 +60,7 @@
 		</tr>
 		<tr>
 			<td>7</td><% @searchtype=4 %>
-			<td><%= link_to 'KEW.PA-6 (Daftar Pergerakan Daftar Harta Modal dan Inventori)', {:controller => 'assets', 	:action => 'index'} %></td>
+			<td><%= link_to 'KEW.PA-6 (Daftar Pergerakan Harta Modal dan Inventori)', {:controller => 'assets', 	:action => 'index'} %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'assetsearches',:action => 'new', :searchtype=>@searchtype}  %></td>
 		</tr>
 		<tr>
@@ -176,7 +176,7 @@
 			<td><%= link_to 'Advance Search', {:controller => 'weeklytimetablesearches', 	:action => 'new', :searchweeklytimetabletype=>@searchweeklytimetabletype} %></td>
 		</tr>
 		<tr>
-			<td>27</td><%=@searchcurriculumtype=1 %>
+			<td>27</td><% @searchcurriculumtype=1 %>
 			<td><%= link_to 'Curriculum Management', {:controller => 'programmes',:action => 'index'}  %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'curriculumsearches', :action => 'new', :searchcurriculumtype =>@searchcurriculumtype } %></td>
 		</tr>
@@ -213,7 +213,7 @@
 		</tr>-->			
 		<tr>
 			<td>30</td><% @searchexamtype=1%>
-			<td><%= link_to 'Examination Maker', {:controller => 'exams',:action => 'index'}  %></td>
+			<td><%= link_to 'Examination', {:controller => 'exams',:action => 'index'}  %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'examsearches', 	:action => 'new', :searchexamtype=>@searchexamtype} %></td>
 		</tr>	
 		<tr>
@@ -230,30 +230,30 @@
 		<tr>
 			<td>33</td><% @searchexamanalysistype=1%>
 			<td><%= link_to 'Examination Analysis by Examination Paper', {:controller =>'examanalyses',:action => 'index'}  %> 
-			<td><%= link_to 'Advance Search', {:controller => 'examanalysissearches', 	:action => 'new', :searchexamanalysistype=>@searchexamanalysistype} %>Advance Search (by by exam type, by exam date, y subject)</td>
+			<td><%= link_to 'Advance Search', {:controller => 'examanalysissearches', 	:action => 'new', :searchexamanalysistype=>@searchexamanalysistype} %></td>
 		</tr>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			Module : Library</span></td></tr>
 		<tr>
-			<td>35</td>
+			<td>35</td><% @searchbooktype=1%>
 			<td><%#= link_to 'Library Resources', {:controller =>'examanalyses',:action => 'index'}  %> 
 				<%= link_to 'All Books Listing (for stock verification)',{ :controller =>'books',:action => 'stock_verification', :locals => {:class_type => '1',:dodo =>"All"}} %>
-			<td>Advance Search (by title/author/isbn/accession no)</td>
+			<td><%= link_to 'Advance Search', {:controller => 'booksearches', :action => 'new', :searchbooktype=> @searchbooktype} %></td>
 		</tr>
 		<tr>
-			<td>36</td>
-			<td><%= link_to 'Stock Summary (end of the year : simple)', {:controller =>'books',:action => 'index'}  %> 
-			<td>Advance Search (by Class No(LC/NLM), by accession no)</td>
+			<td>36</td><% @searchbooktype=2%>
+			<td><%= link_to 'Stock Summary (by Class No / Accession No)', {:controller =>'books',:action => 'index'}  %> <!-- (end of the year : simple) [tertukar refer item 37]-->
+			<td><%= link_to 'Advance Search', {:controller => 'booksearches', :action => 'new', :searchbooktype=> @searchbooktype} %></td>
 		</tr>
 		<tr>
-			<td>37</td>
-			<td><%= link_to 'Stock Listing (daily-detail)', {:controller =>'books',:action => 'index'}  %> 
-			<td>Advance Search (by Class No(LC/NLM),accession no)</td>
+			<td>37</td><% @searchbooktype=3%>
+			<td><%= link_to 'Stock Listing (by Class No / Accession No)', {:controller =>'books',:action => 'index'}  %> <!--(daily-detail) [tertukar refer item 36]-->
+			<td><%= link_to 'Advance Search', {:controller => 'booksearches', :action => 'new', :searchbooktype=> @searchbooktype} %></td>
 		</tr>
 		<tr>
-			<td>38</td>
-			<td><%= link_to 'Library Resources Statistics', {:controller =>'books',:action => 'index'}  %> 
-			<td>Advance Search (Borrower by programme : monthly/yearly, jumlah pinjaman buku : sebulan/setahun, buku dipinjam)</td>
+			<td>38</td><% @searchlibrarytransactiontype=1%>
+			<td><%= link_to 'Library Resources Statistics / Transaction Analysis', {:controller =>'librarystats',:action => 'index'}  %> 
+			<td><%= link_to 'Advance Search', {:controller => 'librarytransactionsearches', :action => 'new', :searchlibrarytransactiontype=> @searchlibrarytransactiontype} %></td>
 		</tr>
 	</table>
 	<br>

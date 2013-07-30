@@ -1,5 +1,8 @@
 <div>
 	<H3>LESSON PLAN / LESSON PLAN REPORTING SEARCH :</h3>
+		
+		<%= link_to "Back", :controller=>'lessonplansearches', :action => 'new', :searchlessonplantype => 1 %><br><br>
+		
 		<!--additional heading-->
 		<% if @lessonplansearch.lecturer && @lessonplansearch.lecturer.blank? ==false %>
 			<span style="text-decoration:underline;">
@@ -55,23 +58,27 @@
 			    <td align="center"><%=h lesson_plan.lecture_date %></td>
 			    <td align="center"><%=h lesson_plan.schedule_item.get_start_time %></td>
 			    <td align="center"><%=h lesson_plan.schedule_item.get_end_time %></td>
-				<td>
-					<% if lesson_plan.hod_approved==true %>
+				<td align="center">
+					<%= link_to "Lesson Plan", :controller=>'lesson_plans', :action => 'lesson_plan', :id => lesson_plan.id %> <br>
+					(<% if lesson_plan.hod_approved==true %>
 						Approved
 					<% else%>
+						
 						<% if lesson_plan.hod_approved==false && lesson_plan.hod_rejected==true%>
 							Rejected (<%=timetable.reason%>)
 						<% elsif lesson_plan.hod_approved.blank? && lesson_plan.hod_rejected.blank? && lesson_plan.is_submitted==true%>
 							Submitted
+						<% else %>
+							Not Submitted
 						<% end %>
-					<% end %>
+					<% end %>)
 				</td>
 				<td>
 					<% if lesson_plan.report_submit == true %>
 						<% if lesson_plan.report_endorsed == true %>
-							Endorsed
+							<%= link_to "Endorsed", :controller=>'lesson_plans', :action => 'lesson_plan_report', :id => lesson_plan.id %> <br>
 						<% else %>
-							Submitted
+							<%= link_to "Submitted", :controller=>'lesson_plans', :action => 'lesson_plan_report', :id => lesson_plan.id %> <br>
 						<% end %>
 					<% end %>
 				</td>

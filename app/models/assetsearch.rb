@@ -1,6 +1,6 @@
 class Assetsearch < ActiveRecord::Base
   attr_accessible :assetcode, :assettype, :name, :purchaseprice, :purchasedate, :startdate, :enddate, :category, :assignedto, :bookable, :loandate, :returndate, :location, :defect_asset,:defect_reporter,:defect_processor,:defect_process,:maintainable 
-  attr_accessible :maintname, :maintcode, :disposal, :disposaltype, :discardoption, :disposalreport, :disposalcert, :disposalreport2,:loss_start,:loss_end,:loss_cert
+  attr_accessible :maintname, :maintcode, :disposal, :disposaltype, :discardoption, :disposalreport, :disposalcert, :disposalreport2,:loss_start,:loss_end,:loss_cert,:loanedasset,:alldefectasset
   #validates_numericality_of :purchaseprice, :message => "not a number"
   attr_accessor :method, :datetype, :curryear, :locationtype, :defect_type,:persontype,:disposal_for_reports
   
@@ -37,11 +37,11 @@ class Assetsearch < ActiveRecord::Base
     0.upto(AssetLoan.find(:all,:conditions=>['loaned_on=?',loandate]).map(&:asset_id).uniq.count-2) do |l|  
       a=a+'OR id=? '
     end 
-    return a unless loandate.blank?
+    return a if (loandate.blank? == false && loanedasset == 0)#unless loandate.blank?
   end
 
   def loandate_conditions  #one date only
-    [loandetails,AssetLoan.find(:all,:conditions=>['loaned_on=?',loandate]).map(&:asset_id).uniq] unless loandate.blank?
+    [loandetails,AssetLoan.find(:all,:conditions=>['loaned_on=?',loandate]).map(&:asset_id).uniq] if (loandate.blank? == false && loanedasset == 0)#unless loandate.blank?
     #[loandetails,AssetLoan.find(:all,:conditions=>['loaned_on=?',"2013-04-23"]).map(&:id).uniq] unless loandate.blank?
     #['id=? OR id=? OR id=? OR id=? OR id=? OR id=? OR id=? ',[37, 38, 39, 40, 41, 42, 43]]  #["loandate=?", loandate] unless enddate.blank?
   end
@@ -51,12 +51,39 @@ class Assetsearch < ActiveRecord::Base
     0.upto(AssetLoan.find(:all,:conditions=>['returned_on=?',returndate]).map(&:asset_id).uniq.count-2) do |l|  
       a=a+'OR id=? '
     end 
-    return a unless returndate.blank?
+    return a if (returndate.blank? == false && loanedasset == 0)#unless returndate.blank?
   end
 
   def returndate_conditions  #one date only
-    [loandetails2,AssetLoan.find(:all,:conditions=>['returned_on=?',returndate]).map(&:asset_id).uniq] unless returndate.blank?
+    [loandetails2,AssetLoan.find(:all,:conditions=>['returned_on=?',returndate]).map(&:asset_id).uniq] if (returndate.blank? == false && loanedasset == 0)#unless returndate.blank? 
   end
+  
+  #----newly added-30July2013
+  #---tick to display all asset loan records---
+  def loanedasset_details
+    a='id=? ' if AssetLoan.all.map(&:asset_id).uniq.count!=0
+    0.upto(AssetLoan.all.map(&:asset_id).uniq.count-2) do |l|  
+      a=a+'OR id=? '
+    end
+    return a if loanedasset == 1 
+  end
+  
+  def loanedasset_conditions
+    ["( "+loanedasset_details+")", AssetLoan.all.map(&:asset_id).uniq] if loanedasset == 1
+  end
+  #---tick to display all asset defect records---
+  def alldefectasset_details
+    a='id=? ' if AssetDefect.all.map(&:asset_id).uniq.count!=0
+    0.upto(AssetDefect.all.map(&:asset_id).uniq.count-2) do |l|  
+      a=a+'OR id=? '
+    end
+    return a if alldefectasset == 1 
+  end
+  
+  def alldefectasset_conditions
+    ["( "+ alldefectasset_details+")", AssetDefect.all.map(&:asset_id).uniq] if alldefectasset == 1
+  end
+  #----newly added-30July2013
 
   def name_conditions
     ["name ILIKE ?", "%#{name}%"] unless name.blank?    #ok
@@ -95,8 +122,9 @@ class Assetsearch < ActiveRecord::Base
   end
   
   def defect_asset_conditions
-    ["id=?", AssetDefect.find(defect_asset).asset_id] unless defect_asset.blank?
+    ["id=?", AssetDefect.find(defect_asset).asset_id] unless defect_asset.blank? 
   end
+  
   
   def defect_details
      a='id=? ' if AssetDefect.find(:all,:conditions=>['reported_by=?',defect_reporter]).map(&:asset_id).uniq.count!=0
@@ -106,6 +134,13 @@ class Assetsearch < ActiveRecord::Base
      return a unless defect_reporter.blank?
   end
   
+
+  
+  def defect_reporter_conditions
+    [defect_details, AssetDefect.find(:all, :conditions=>['reported_by=?',defect_reporter]).map(&:asset_id).uniq] unless defect_reporter.blank?
+    #["id=?",31] unless defect_reporter.blank?
+  end
+  
   def defect_details2
       a='id=? ' if AssetDefect.find(:all,:conditions=>['processed_by=?',defect_processor]).map(&:asset_id).uniq.count!=0
       0.upto(AssetDefect.find(:all,:conditions=>['processed_by=?',defect_processor]).map(&:asset_id).uniq.count-2) do |l|  
@@ -113,28 +148,25 @@ class Assetsearch < ActiveRecord::Base
       end 
       return a unless defect_processor.blank?
   end
-  
-  def defect_reporter_conditions
-    [defect_details, AssetDefect.find(:all, :conditions=>['reported_by=?',defect_reporter]).map(&:asset_id).uniq] unless defect_reporter.blank?
-    #["id=?",31] unless defect_reporter.blank?
-  end
 
   def defect_processor_conditions
     [defect_details2, AssetDefect.find(:all, :conditions=>['processed_by=?',defect_processor]).map(&:asset_id).uniq] unless defect_processor.blank?
     # ["id=?", AssetDefect.find(defect_processor).asset_id] unless defect_asset.blank?
   end
   
+  #%%%%%%%%%%%%%%%%%%%%%%%%%
   def defectprocess_details
-    a='id=? ' if AssetDefect.find(:all, :conditions=>['process_type=?',defect_process]).map(&:asset_id).uniq.count!=0
-    0.upto(AssetDefect.find(:all, :conditions=>['process_type=?',defect_process]).map(&:asset_id).uniq.count-2) do |l|  
-      a=a+'OR id=? '
-    end 
-    return a unless defect_process.blank?
+      a='id=? ' if AssetDefect.find(:all, :conditions=>['process_type=?',defect_process]).map(&:asset_id).uniq.count!=0
+      0.upto(AssetDefect.find(:all, :conditions=>['process_type=?',defect_process]).map(&:asset_id).uniq.count-2) do |l|  
+        a=a+'OR id=? '
+      end 
+      return a if defect_process=='dispose' || defect_process=='repair' #unless defect_process.blank?
   end  
   
   def defect_process_conditions    
-    [defectprocess_details, AssetDefect.find(:all, :conditions=>['process_type=?',defect_process]).map(&:asset_id).uniq] unless defect_process.blank?
+    [defectprocess_details, AssetDefect.find(:all, :conditions=>['process_type=?',defect_process]).map(&:asset_id).uniq] if defect_process=='dispose' || defect_process=='repair'    #unless defect_process.blank?
   end
+  #%%%%%%%%%%%%%%%%%%%%%%%%%
   
   def maintainable_conditions
       ['is_maintainable is TRUE'] unless maintainable.blank?# && maintainable==false

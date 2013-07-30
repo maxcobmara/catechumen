@@ -77,7 +77,7 @@
 					<td><%= date_select :startdate, params[:startdate], :include_blank => :true %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase / Local Order date <br>(on or after)</td>
+					<td class="leftcol">Purchase / Local Order date <br>(end)</td>
 					<td><%= date_select :enddate, params[:enddate], :include_blank => :true %></td>
 				</tr>
 			<% elsif @searchtype=='3' || @searchtype==3 %>
@@ -92,7 +92,7 @@
 					<td><%= date_select :startdate, params[:startdate], :include_blank => :true %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase / Local Order date <br>(on or after)</td>
+					<td class="leftcol">Purchase / Local Order date <br>(end)</td>
 					<td><%= date_select :enddate, params[:enddate], :include_blank => :true %></td>
 				</tr>
 			<% elsif @searchtype=='4' || @searchtype==4 %><!--Pergerakan Aset : Peminjaman-KEW-PA 6-->
@@ -108,6 +108,10 @@
 							<%= date_select :returndate, params[:returndate], :include_blank => :true %>
 						</SPAN>
 					</td>
+					<tr>
+						<td><b>Listing</b> ALL Asset Loan Records</td>
+						<td><%= f.check_box :loanedasset %> &nbsp;&nbsp;<font size=-2>Tick and leave other fields 'blank' to display ALL existing asset loan (KEW-PA 6)</font></td>
+					</tr>
 				</tr>
 			<% elsif @searchtype=='5' || @searchtype==5 %><!--Senarai Aset Alih :Lokasi-KEW-PA 7-->
 				<%= hidden_field_tag :method, 5 %>
@@ -155,7 +159,7 @@
 					</td>
 					<td>
 						<SPAN class="bong3", style="display: none;">
-							<%= f.collection_select :defect_asset, AssetDefect.find(:all,:order => "asset_id ASC"), :id, :asset_name2 %><!--id refers to asset_defect ID-->
+							<%= f.collection_select :defect_asset, AssetDefect.find(:all,:order => "asset_id ASC"), :id, :asset_name2, :include_blank=>true %><!--id refers to asset_defect ID-->
 						</SPAN>
 						<SPAN class="koik3", style="display: none;">							
 							<%= f.radio_button :persontype, 1,	:id => 'button_report',  :class => 'radio_defect_options' %><label>Reported by</label>
@@ -183,6 +187,10 @@
 				<tr class="process_item" style="display: none;">
 					<td class="leftcol">Processed By : </td>
 					<td><%= f.collection_select :defect_processor, AssetDefect.find(:all,:select => "DISTINCT processed_by"), :processed_by, :processor_name, :include_blank => "Select processed by" %></td>
+				</tr>
+				<tr>
+					<td><b>Listing</b> ALL Asset Defect Records</td>
+					<td><%= f.check_box :alldefectasset %> &nbsp;&nbsp;<font size=-2>Tick and leave other fields 'unselected' to display ALL existing asset defect (KEW-PA 9)</font></td>
 				</tr>
 				<!---->
 			<% elsif @searchtype=='8' || @searchtype==8 %><!--KEWPA 13-Senarai aset yg memerlukan penyelenggaraan (Edit Harta Modal)-->
@@ -215,6 +223,10 @@
 					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
 					<td><%= f.text_field :maintname %></td>
 				</tr>
+				<tr>
+					<td><b>Listing</b> ALL Asset for Maintenance</td>
+					<td><%= f.check_box :maintainable %> &nbsp;&nbsp;<font size=-2>Tick and leave other fields blank to display ALL asset for maintenance (KEW-PA 14)</font></td>
+				</tr>
 			<% elsif @searchtype=='10' || @searchtype==10 %><!--KEW=PA 16-Perakuan Pelupusan-->
 				<%= hidden_field_tag :method, 10 %>
 				<%= f.hidden_field :disposal, :value => 1 %>
@@ -226,6 +238,9 @@
 				<tr>
 					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
 					<td><%= f.text_field :name %></td>
+				</tr>
+				<tr>
+					<td colspan=2><font size=-2>Leave all fields 'blank' to view ALL disposed asset.</font></td>
 				</tr>
 			<% elsif @searchtype=='11' || @searchtype==11 %><!--KEW-PA 17-Laporan Lembaga Pemeriksa-->
 				<!--disposalreport field is used to saved asset_disposal_ids of selected disposal record(s) for reporting-->
@@ -258,7 +273,7 @@
 			<% elsif @searchtype=='13' || @searchtype==13 %><!--KEW-PA 19-Pelupusan Aset-->
 				<%= hidden_field_tag :method, 13 %>
 				<%= f.hidden_field :disposalcert, :value => 1 %>
-				<tr><td colspan=2><strong>Search</strong> Certificate for Asset Disposal</td></tr>
+				<tr><td colspan=2><strong>Search</strong> Certificate of Asset Disposal</td></tr>
 				<tr>
 					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
 					<td><%= f.text_field :assetcode %></td>
@@ -266,6 +281,9 @@
 				<tr>
 					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
 					<td><%= f.text_field :name %></td>
+				</tr>
+				<tr>
+					<td colspan=2><font size=-2>Leave all fields 'blank' to view ALL Certificate of Asset Disposal</font></td>
 				</tr>
 			<% elsif @searchtype=='14' || @searchtype==14 %><!--KEW-PA 20-Laporan Tahunan Pelupusan Aset-->
 				<!--disposalreport field is used to saved asset_disposal_ids of selected disposal record(s) for reporting-->
@@ -297,6 +315,9 @@
 					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
 					<td><%= f.text_field :name %></td>
 				</tr>	
+				<tr>
+					<td colspan=2><font size=-2>Leave all fields 'blank' to view ALL Preliminary Report for Asset Losses</font></td>
+				</tr>
 			<% elsif @searchtype=='16' || @searchtype==16 %><!--KEW-PA 30-Laporan Akhir Kehilangan Aset Alih Kerajaant-->
 				<%= hidden_field_tag :method, 16 %>
 				<%= f.hidden_field :loss_end, :value => 1 %><!--losses-->
@@ -309,7 +330,10 @@
 					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
 					<td><%= f.text_field :name %></td>
 				</tr>
-			<% elsif @searchtype=='17' || @searchtype==17 %>
+				<tr>
+					<td colspan=2><font size=-2>Leave all fields 'blank' to view ALL Final Refor for Asset Losses</font></td>
+				</tr>
+			<% elsif @searchtype=='17' || @searchtype==17 %><!--KEW-PA 31-SIJIL HAPUS KIRA ASET ALIH KERAJAAN-->
 				<%= hidden_field_tag :method, 17 %>
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
 				<tr><td colspan=2>Asset Write Off Certificate</td></tr>

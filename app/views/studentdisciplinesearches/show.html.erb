@@ -5,6 +5,8 @@
 	<div style="padding-left:20px;padding-top:20px;padding-right:20px;font-family: Arial, Helvetica, sans-serif;font-size:12px;">
 		<H4>STUDENT DISCIPLINE CASES SEARCH :</h4>
 
+			<%= link_to "Back", :controller=>'studentdisciplinesearches', :action => 'new', :searchstudentdisciplinetype => 1 %><br><br>
+			
 		<!--additional heading-->
 		<% if @studentdisciplinesearch.programme %>
 			<span style="text-decoration:underline;">
@@ -19,6 +21,7 @@
 		&nbsp;Total Student Discipline Cases : <%=h @studentdisciplinesearch.studentdisciplines.count %><br><br>
 		<!--additional heading-->
 		
+		<% if @studentdisciplinesearch.studentdisciplines.count > 0 %>
 		<!--student discipline cases display-->
 			<!--start:SEARCH BY INTAKE/PROGRAMME (multiple records)-->
 			<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
@@ -37,6 +40,7 @@
 					<th>Location</th>
 					<th>Status</th>
 					<th>Action Taken</th>
+					<th>Feedback from Counselor</th>
 				</tr>
 				<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|x.student.name}.each_with_index do |student_discipline, index|%>
 					<tr>
@@ -54,12 +58,14 @@
 						<td><%=student_discipline.location.name%></td>
 						<td><%=student_discipline.status%></td>
 						<td><%=student_discipline.action_type%></td>
+						<td><%= link_to "Feedback from Counselor",:controller=>'student_counseling_sessions', :action => 'feedback_referrer', :id => student_discipline.id if !student_discipline.counselor_feedback.blank? %></td>
 					</tr>
 				<% end %>
 			</table>
 			<!--start:SEARCH BY INTAKE/PROGRAMME (multiple records)-->
 	
 		<!--student discipline cases display-->
+		<% end %>
 	<br>
 </div>
 

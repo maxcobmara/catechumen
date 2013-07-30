@@ -1,5 +1,8 @@
 <div>
 	<H3>EXAMINATION ANALYSIS BY PAPER SEARCH :</h3>
+		
+		<%= link_to "Back", :controller=>'examanalysissearches', :action => 'new', :searchexamanalysistype => 1 %><br><br>
+		
 		<!--additional heading-->
 		<% if @examanalysissearch.examtype &&  @examanalysissearch.examtype.blank? ==false %>
 			<span style="text-decoration:underline;">
@@ -69,7 +72,7 @@
 							<td align="center"><%=examanalysis.gradeDplus%></td>
 							<td align="center"><%=examanalysis.gradeD%></td>
 							<td align="center"><%=examanalysis.gradeE%></td>
-							<td></td>
+							<td><%= link_to "View",:controller=>'examanalyses', :action => 'show', :id => examanalysis.id %></td>
 						</tr>
 					<% end %>
 				</table>	

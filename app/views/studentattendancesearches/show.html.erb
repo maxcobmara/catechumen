@@ -1,5 +1,7 @@
 <div>
 	<H3>STUDENT ATTENDANCES SEARCH :</h3> 
+	
+	<%= link_to "Back", :controller=>'studentattendancesearches', :action => 'new', :searchstudentattendancetype => 1 %><br><br>
 		
 		<!--additional heading-->
 		<% if @studentattendancesearch.schedule_id && @studentattendancesearch.schedule_id.blank? == false %>
@@ -8,7 +10,7 @@
 			</span>
 		<% elsif @studentattendancesearch.student_id && @studentattendancesearch.student_id.blank? == false %>
 			<span style="text-decoration:underline;">
-				Search by Student <br><br>
+				Search by Student<br><br>
 			</span>
 		<% else %>
 			<span style="text-decoration:underline;">
@@ -19,62 +21,67 @@
 		
 		<!--attendance data display-->
 		<% if @studentattendancesearch.student_id && @studentattendancesearch.student_id.blank? == false %>
-			<!--start : SEARCH BY MATRIX NO-->
-			<table>
-				<tr>
-					<td>Name</td><td>:</td><td><%=@studentattendancesearch.studentattendances[0].student.name%></td>
-				</tr>
-				<tr>
-					<td>Programme</td><td>:</td><td><%=@studentattendancesearch.studentattendances[0].weeklytimetable_detail.weeklytimetable.schedule_programme.programme_list%></td>
-				</tr>
-				<tr>
-					<td>Intake</td><td>:</td><td><%= @studentattendancesearch.studentattendances[0].weeklytimetable_detail.weeklytimetable.schedule_intake.name %></td>
-				</tr>
-				<tr>
-					<td>Matrix No </td><td>:</td><td><%=@studentattendancesearch.student_id%></td>
-				</tr>
-			</table><br>
-			<table border=1 cellspacing=0 cellpadding=3>
-				<tr>
-					<th>No</th>
-					<th>Date</th>
-					<th>Time</th>
-					<th>Subject : Topic</th>
-					<th>Lecturer</th>
-					<th>Location</th>
-					<th>Attendance</th>
-				</tr>
-				<% @sum_attend = 0 %>
-				<% @total_classes = @studentattendancesearch.studentattendances.count %>
-				<% @studentattendancesearch.studentattendances.each_with_index do |sa,index| %>
+			<% if Student.all.map(&:matrixno).include?(@studentattendancesearch.student_id) %>
+				<!--start : SEARCH BY MATRIX NO-->
+				<table>
 					<tr>
-						<td><%=index+1 %></td>
-						<td><%=sa.weeklytimetable_detail.get_date_day_of_schedule%></td>
-						<td><%=sa.weeklytimetable_detail.get_time_slot %></td>
-						<td><%=sa.weeklytimetable_detail.subject_topic%></td>
-						<td><%=sa.weeklytimetable_detail.weeklytimetable_lecturer.name %></td>
-						<td><%=sa.weeklytimetable_detail.weeklytimetable_location.name %></td>
-						<td align="center">
-							<% if sa.attend == true %> 
-								&#10003;
-								<% @sum_attend +=1 %>
-							<% else %>
-								Absent
-							<% end %>
-						</td>
+						<td>Name</td><td>:</td>
+						<td><%=@studentattendancesearch.studentattendances[0].student.name%></td>
 					</tr>
-				<% end %>
-				<tr>
-					<td colspan=6 align="right">Total Classes Attended :&nbsp;&nbsp;&nbsp;</td>
-					<td align="center"><%= @sum_attend %></td>
-				</tr>
-				<tr>
-					<td colspan=6 align="right">Attendance Percentage :&nbsp;&nbsp;&nbsp;</td>
-					<td align="center"><%= number_with_precision((@sum_attend.to_f / @total_classes.to_f * 100).to_f,:precision=>2) %> %</td>
-				</tr>
-			</table>
-			<!--end : SEARCH BY MATRIX NO-->
-			
+					<tr>
+						<td>Programme</td><td>:</td>						<td><%=@studentattendancesearch.studentattendances[0].weeklytimetable_detail.weeklytimetable.schedule_programme.programme_list%></td>
+					</tr>
+					<tr>
+						<td>Intake</td><td>:</td>
+						<td><%= @studentattendancesearch.studentattendances[0].weeklytimetable_detail.weeklytimetable.schedule_intake.name %></td>
+					</tr>
+					<tr>
+						<td>Matrix No </td><td>:</td><td><%=@studentattendancesearch.student_id%></td>
+					</tr>
+				</table><br>
+				<table border=1 cellspacing=0 cellpadding=3>
+					<tr>
+						<th>No</th>
+						<th>Date</th>
+						<th>Time</th>
+						<th>Subject : Topic</th>
+						<th>Lecturer</th>
+						<th>Location</th>
+						<th>Attendance</th>
+					</tr>
+					<% @sum_attend = 0 %>
+					<% @total_classes = @studentattendancesearch.studentattendances.count %>
+					<% @studentattendancesearch.studentattendances.each_with_index do |sa,index| %>
+						<tr>
+							<td><%=index+1 %></td>
+							<td><%=sa.weeklytimetable_detail.get_date_day_of_schedule%></td>
+							<td><%=sa.weeklytimetable_detail.get_time_slot %></td>
+							<td><%=sa.weeklytimetable_detail.subject_topic%></td>
+							<td><%=sa.weeklytimetable_detail.weeklytimetable_lecturer.name %></td>
+							<td><%=sa.weeklytimetable_detail.weeklytimetable_location.name %></td>
+							<td align="center">
+								<% if sa.attend == true %> 
+									&#10003;
+									<% @sum_attend +=1 %>
+								<% else %>
+									Absent
+								<% end %>
+							</td>
+						</tr>
+					<% end %>
+					<tr>
+						<td colspan=6 align="right">Total Classes Attended :&nbsp;&nbsp;&nbsp;</td>
+						<td align="center"><%= @sum_attend %></td>
+					</tr>
+					<tr>
+						<td colspan=6 align="right">Attendance Percentage :&nbsp;&nbsp;&nbsp;</td>
+						<td align="center"><%= number_with_precision((@sum_attend.to_f / @total_classes.to_f * 100).to_f,:precision=>2) %> %</td>
+					</tr>
+				</table>
+				<!--end : SEARCH BY MATRIX NO-->
+			<% else %>
+				Search by Matrix No requires complete & correct Matrix No.
+			<% end %>
 		<% else %>
 		
 			<!--start : SEARCH BY SCHEDULE/CLASS  ....OR ....SEARCH BY INTAKE-->
