@@ -132,7 +132,8 @@ class Asset < ActiveRecord::Base
   named_scope :lost,          :conditions =>  ["id in (?)", AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
   #pending asset requested for loan should not available for reservation
   named_scope :onloan,        :conditions =>  ["id in (?) and id in (?)", Asset.on_loan, AssetLoan.find(:all, :conditions=>['is_approved is true AND is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
-  named_scope :pendingloan,   :conditions =>  ["id in (?) and id in (?)", Asset.on_loan, AssetLoan.find(:all, :conditions=>['is_approved is not true AND is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
+  #named_scope :pendingloan,   :conditions =>  ["id in (?) and id in (?)", Asset.on_loan, AssetLoan.find(:all, :conditions=>['is_approved is not true AND is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
+  named_scope :pendingloan,   :conditions =>  ["id in (?)", AssetLoan.find(:all, :conditions=>['is_approved is not true AND is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
   named_scope :available,     :conditions =>  ["id in (?) and id not in (?)", Asset.on_loan, AssetLoan.find(:all, :conditions=>['is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
   named_scope :itdept,        :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)]
   named_scope :hotelunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Perhotelan"]).subtree.map(&:staff_id)]

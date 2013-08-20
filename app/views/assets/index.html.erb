@@ -56,10 +56,9 @@
 	    <td align="right" width=90px><%=h ringgols(asset.purchaseprice) %></td>
 		<td>
 			<!--pending asset requested for loan should not available for reservation-->
-			<%# @check_onloan = AssetLoan.find(:all, :conditions=>['asset_id=? AND is_approved is true AND is_returned is not true',asset]).count %>
 			<% @check_onloan = AssetLoan.find(:all, :conditions=>['asset_id=? AND is_returned is not true',asset]).count %>
 			<% @check_pending = AssetLoan.find(:all, :conditions=>['asset_id=? AND is_approved is not true AND is_returned is not true', asset]).count %>
-			<% @bookable = Asset.on_loan.map(&:id) %>
+			<% @bookable = Asset.find(:all, :conditions=>['bookable is true']).map(&:id) %>
 			<BR>
 			<% if @bookable.include?(asset.id) %>	
 				<% if @check_onloan == 0 %>
@@ -71,12 +70,7 @@
 						On loan
 					<% end %>		
 				<% end %>
-			<% end %>
-			<!--
-			jika onloan:<%#=AssetLoan.find(:all, :conditions=>['asset_id in (?) AND is_approved is true AND is_returned is not true',asset]).count %><br>
-			jika pending:<%#=AssetLoan.find(:all, :conditions=>['asset_id in (?) AND is_approved is not true AND is_returned is not true', asset]).count %><br>
-			jika available:<%#=AssetLoan.find(:all, :conditions=>['asset_id not in (?) AND is_returned is not true',asset]).count %>-->
-		  
+			<% end %>		  
 		</td>
 			
 <!--  Disposal Moved to repair
@@ -106,7 +100,15 @@
 						<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA2'), :action => 'kewpa2', :id => asset %><div class="noti_bubble">2</div></div>
 					<% end %></td>
 			<td class="action">
-			<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA6'), :action => 'kewpa6', :id => asset %><div class="noti_bubble">6</div></div>
+				<!--PENDING:19 August 2013-KEWPA 6 SHOULD ONLY AVAILABLE FOR BOOKABLE ASSET-->
+				<!--REFER LINE 61-->	
+				<%# if @bookable.include?(asset.id) %>	<!--UNREMARK accordingly-->
+				<div class="noti_Container">
+					<%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA6'), :action => 'kewpa6', :id => asset %>
+					<div class="noti_bubble">6</div>
+				</div>
+				<%# end %>	<!--UNREMARK accordingly-->
+				<!--PENDING:19 August 2013-KEWPA 6 SHOULD ONLY AVAILABLE FOR BOOKABLE ASSET-->
 			</td>		
 			<td class="action">
 					<% if asset.is_maintainable == true && asset.am_i_gone == false %>

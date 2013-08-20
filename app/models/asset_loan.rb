@@ -10,7 +10,7 @@ class AssetLoan < ActiveRecord::Base
   belongs_to :hodept,   :class_name => 'Staff', :foreign_key => 'hod'
   belongs_to :receivedpfficer, :class_name => 'Staff', :foreign_key => 'received_officer'
   
-  validates_presence_of :reason, :if => :must_assign_if_external?   #16July2013
+  validates_presence_of :reasons, :if => :must_assign_if_external?   #16July2013
   
   def must_assign_if_external?  #16July2013
     loantype==2 

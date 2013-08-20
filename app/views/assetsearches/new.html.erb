@@ -43,7 +43,7 @@
 	<% form_for @assetsearch do |f| %>
   		<%= f.error_messages %>
 		<table width=100% >
-			<% if @searchtype=='1' || @searchtype==1 %>
+			<% if @searchtype=='1' || @searchtype==1 %><!--KEWPA 2 & KEWPA 3-->
 				<%= hidden_field_tag :method,  1 %>
 				<tr>
 					<td class="leftcol"> Search by Asset Code :</td>
@@ -58,59 +58,95 @@
 					<td><%= f.text_field :name %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase price <br>(More than or equal to) :</td>
-					<td><%= f.text_field :purchaseprice %> <font size=-2>(in RM)</font></td>
+					<td class="leftcol">Purchase price</td>
+					<td>
+						<%= f.text_field :purchaseprice, :placeholder=> "from...", :size=>10 %> - 
+						<%= f.text_field :purchaseprice2, :placeholder=> "...until", :size=> 10%> <font size=-2>(in RM)</font>
+					</td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase / Local Order date <br>(on or after)</td>
-					<td><%#= f.text_field :purchasedate %><%= date_select :purchasedate, params[:purchasedate], :include_blank => :true %></td>
+					<td class="leftcol">Purchase / Local Order date</td>
+					<td>
+						<%= date_select :purchasedate, params[:purchasedate], :include_blank => :true %> - 
+						<%= date_select :purchasedate2, params[:purchasedate2], :include_blank => :true %>
+					</td>
 				</tr>
-			<% elsif @searchtype=='2' || @searchtype==2 %>
+				<tr><td colspan=2>&nbsp;<font size=-2>Leaves all fields 'blank' to display ALL record.</font></td></tr>
+				
+			<% elsif @searchtype=='2' || @searchtype==2 %><!--KEWPA 4-->
 				<%= hidden_field_tag :method, 2 %>
 				<%= f.hidden_field :assettype, :value => 1 %>
 				<tr>
-					<td class="leftcol">Purchase price <br>(More than or equal to) :</td>
-					<td><%= f.text_field :purchaseprice %> <font size=-2>(in RM)</font></td>
+					<td class="leftcol">Purchase Price</td>
+					<td>
+						<%= f.text_field :purchaseprice, :placeholder=> "from...", :size=>10 %> - 
+						<%= f.text_field :purchaseprice2, :placeholder=> "...until", :size=> 10%><font size=-2>(in RM)</font>
+					</td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase / Local Order date <br>(on or after)</td>
-					<td><%= date_select :startdate, params[:startdate], :include_blank => :true %></td>
+					<td class="leftcol">Purchase / Local Order Date </td>
+					<td>
+						<%= date_select :startdate, params[:startdate], :include_blank => :true %> -
+						<%= date_select :enddate, params[:enddate], :include_blank => :true %>
+					</td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase / Local Order date <br>(end)</td>
-					<td><%= date_select :enddate, params[:enddate], :include_blank => :true %></td>
+					<td class="leftcol">Received Date </td>
+					<td>
+						<%= date_select :receiveddate, params[:receiveddate], :include_blank => :true %> -
+						<%= date_select :receiveddate2, params[:receiveddate2], :include_blank => :true %>
+					</td>
 				</tr>
-			<% elsif @searchtype=='3' || @searchtype==3 %>
+				<tr><td colspan=2>&nbsp;<font size=-2>Leaves all fields 'blank' to display ALL record.</font></td></tr>
+				
+			<% elsif @searchtype=='3' || @searchtype==3 %><!--KEWPA 5-->
 				<%= hidden_field_tag :method, 3 %>
 				<%= f.hidden_field :assettype, :value => 2 %>
 				<tr>
-					<td class="leftcol">Purchase price <br>(More than or equal to) :</td>
-					<td><%= f.text_field :purchaseprice %> <font size=-2>(in RM)</font></td>
+					<td class="leftcol">Purchase Price</td>
+					<td>
+						<%= f.text_field :purchaseprice, :placeholder=> "from...", :size=>10 %>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; 
+						<%= f.text_field :purchaseprice2, :placeholder=> "...until", :size=> 10%><font size=-2>(in RM)</font>
+					</td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase / Local Order date <br>(on or after)</td>
-					<td><%= date_select :startdate, params[:startdate], :include_blank => :true %></td>
+					<td class="leftcol">Purchase / Local Order date</td>
+					<td>
+						<%= date_select :startdate, params[:startdate], :include_blank => :true %>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; 
+						<%= date_select :enddate, params[:enddate], :include_blank => :true %>
+					</td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase / Local Order date <br>(end)</td>
-					<td><%= date_select :enddate, params[:enddate], :include_blank => :true %></td>
+					<td class="leftcol">Received Date </td>
+					<td>
+						<%= date_select :receiveddate, params[:receiveddate], :include_blank => :true %>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; 
+						<%= date_select :receiveddate2, params[:receiveddate2], :include_blank => :true %>
+					</td>
 				</tr>
+				<tr><td colspan=2>&nbsp;<font size=-2>Leaves all fields 'blank' to display ALL record.</font></td></tr>
+				
 			<% elsif @searchtype=='4' || @searchtype==4 %><!--Pergerakan Aset : Peminjaman-KEW-PA 6-->
 				<%= hidden_field_tag :method, 4 %>
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
+				<%= f.hidden_field :loanedasset, :value=> 1 %>
 				<tr>
 					<td class="leftcol">Select Record By : </td>
-					<td><%= f.select :datetype, ['Loan Date','Return Date'], :prompt => "Select method" %>
+					<td><%= f.select :datetype, ['Loan Date','Return Date','Expected Return Date'], :prompt => "Select method" %>
 						<SPAN class="bong", style="display: none;">
-							<%= date_select :loandate, params[:loandate] %>
+							<%= date_select :loandate, params[:loandate], :include_blank => true %> - 
+							<%= date_select :loandate2, params[:loandate2], :include_blank => true %>
 						</SPAN>
 						<SPAN class="koik", style="display: none;">	
-							<%= date_select :returndate, params[:returndate], :include_blank => :true %>
+							<%= date_select :returndate, params[:returndate], :include_blank => true %> -
+							<%= date_select :returndate2, params[:returndate2], :include_blank => true %>
+						</SPAN>
+						<SPAN class="bing", style="display: none;">	
+							<%= date_select :expectedreturndate, params[:expectedreturndate], :include_blank => true %> -
+							<%= date_select :expectedreturndate2, params[:expectedreturndate2], :include_blank => true %>
 						</SPAN>
 					</td>
 					<tr>
-						<td><b>Listing</b> ALL Asset Loan Records</td>
-						<td><%= f.check_box :loanedasset %> &nbsp;&nbsp;<font size=-2>Tick and leave other fields 'blank' to display ALL existing asset loan (KEW-PA 6)</font></td>
+						<td colspan=2><font size=-2>Leave all fields 'unselected' to display ALL existing asset loan (KEW-PA 6)</font></td>
 					</tr>
 				</tr>
 			<% elsif @searchtype=='5' || @searchtype==5 %><!--Senarai Aset Alih :Lokasi-KEW-PA 7-->
@@ -355,12 +391,22 @@
 		$j(document).ready(function(){
 		  $j('#assetsearch_datetype').change(function() {
 		    if($j(this).val() == 'Loan Date') {
-		      $j('.bong').show();
+		      		$j('.bong').show();
 					$j('.koik').hide();
+					$j('.bing').hide();
 		    }else if ($j(this).val() == 'Return Date') {
-		     	 $j('.bong').hide();
-					 $j('.koik').show();
-		    }
+		     	 	$j('.bong').hide();
+					$j('.koik').show();
+					$j('.bing').hide();
+		    }else if ($j(this).val() == 'Expected Return Date') {
+				  	$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.bing').show();
+			}else{
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.bing').hide();
+			}
 			});
 		  $j('#assetsearch_locationtype').change(function() {
 			 if($j(this).val() == 'Person In-Charge') {

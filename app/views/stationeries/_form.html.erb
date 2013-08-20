@@ -32,9 +32,9 @@
 									<%= t 'supplier.quantity' %>  &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;  | 
 									<%= t 'supplier.unitcost' %>  &nbsp;  &nbsp; &nbsp; &nbsp;  | 
 									<%= t 'supplier.total' %>  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  | 
-									<%= t 'supplier.received' %></strong></p><% count=0%>
-		<% f.fields_for :addsuppliers do |builder| %>
-			<%= render 'addsupplier_fields', :f => builder %><% count+=1%>
+									<%= t 'supplier.received' %></strong></p><%# count=0%><%@index=-1%>
+		<% f.fields_for :addsuppliers do |builder| %><%# @index+=1 %>
+			<%= render 'addsupplier_fields', :f => builder, :index=>@index+=1 %><%# count+=1 %>
 		<% end %>
 		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :addsuppliers %> - Add More </p>
 	</div>

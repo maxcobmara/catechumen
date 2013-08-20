@@ -63,11 +63,12 @@ tome = <%=@tome.count%>-->
 		  <th>Closed</th>
 		  <th colspan=3 class="ac">Control</th>
 		</tr>
-	<!--***************************************************-->
+	<!--***************************************************--><%#=User.current_user.roles.map(&:id).include?(2)%>
 	<% @tome_document_files.each do |filedocer_tome, documents_tome| %>
 		<% documents_tome.each_with_index do |document,count| %>
 			<% document.staffs.each_with_index do |doc_recepient,ind|%>
-				<% if doc_recepient.id == User.current_user.staff_id && count == 0 && (document.owner_ids.include? User.current_user.staff_id)== false %>
+				<% if doc_recepient.id == User.current_user.staff_id && count == 0 && 
+					document.owner_ids.include?(User.current_user.staff_id)== false %>
 					<tr><td colspan=13 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 						<%=h filedocer_tome %></span></td></tr>
 				<% end %>	
@@ -84,7 +85,7 @@ tome = <%=@tome.count%>-->
 						<td><%=h document.title %></td>
 						<td><%=h l(document.letterdt) %></td>
 						<td><%=h l(document.letterxdt) %></td>
-						<td><%=h document.sender %><%#=h document.from %></td>
+						<td><%#=h document.sender %><%=h document.from %></td>
 						<td>
 							<% document.staffs.each_with_index do |doc_recepient,ind|%>
 								<% if doc_recepient.id == User.current_user.staff_id%>

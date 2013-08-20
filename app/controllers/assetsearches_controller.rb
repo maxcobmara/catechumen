@@ -18,6 +18,16 @@ class AssetsearchesController < ApplicationController
             @dadidu=''
         end
         #--purchasedate---
+        #--purchasedate2---
+        @aa7=params[:purchasedate2][:"(1i)"] 
+        @bb7=params[:purchasedate2][:"(2i)"]
+        @cc7=params[:purchasedate2][:"(3i)"]
+        if @aa7!='' && @bb7!='' && @cc7!=''
+            @dadidu7=@aa7+'-'+@bb7+'-'+@cc7  
+        else
+            @dadidu7=''
+        end
+        #--purchasedate2---
     elsif (@searchtype=='4' || @searchtype==4 )
         #--loandate---
         @aa4=params[:loandate][:"(1i)"] 
@@ -29,6 +39,43 @@ class AssetsearchesController < ApplicationController
             @dadidu4=''
         end
         #--loandate---
+        #--loandate2---
+        @aa4b=params[:loandate2][:"(1i)"] 
+        @bb4b=params[:loandate2][:"(2i)"]
+        @cc4b=params[:loandate2][:"(3i)"]
+        if @aa4b!='' && @bb4b!='' && @cc4b!=''
+            @dadidu4b=@aa4b+'-'+@bb4b+'-'+@cc4b  
+        else
+            @dadidu4b=''
+        end
+        #--loandate2---
+        #####
+        #--expectedreturndate---
+          @aa9=params[:expectedreturndate][:"(1i)"] 
+          @bb9=params[:expectedreturndate][:"(2i)"]
+          @cc9=params[:expectedreturndate][:"(3i)"]
+          if @aa9!='' && @bb9!='' && @cc9!=''
+              @dadidu9=@aa9+'-'+@bb9+'-'+@cc9  
+          else
+              @dadidu9=''
+          end
+          ####-set loandate as nil when user select to search KEW-PA6 using returndate
+          #if @dadidu5!=''
+            #@dadidu4=''
+          #end
+          ####
+          #--expectedreturndate---
+          #--expectedreturndate2---
+            @aa9b=params[:expectedreturndate2][:"(1i)"] 
+            @bb9b=params[:expectedreturndate2][:"(2i)"]
+            @cc9b=params[:expectedreturndate2][:"(3i)"]
+            if @aa9b!='' && @bb9b!='' && @cc9b!=''
+                @dadidu9b=@aa9b+'-'+@bb9b+'-'+@cc9b  
+            else
+                @dadidu9b=''
+            end
+          #--expectedreturndate2---
+        #####
          #--returndate---
           @aa5=params[:returndate][:"(1i)"] 
           @bb5=params[:returndate][:"(2i)"]
@@ -39,11 +86,27 @@ class AssetsearchesController < ApplicationController
               @dadidu5=''
           end
           ####-set loandate as nil when user select to search KEW-PA6 using returndate
-          if @dadidu5!=''
-            @dadidu4=''
-          end
+          #if @dadidu5!=''
+            #@dadidu4=''
+          #end
           ####
           #--returndate---
+          #--returndate2---
+            @aa5b=params[:returndate2][:"(1i)"] 
+            @bb5b=params[:returndate2][:"(2i)"]
+            @cc5b=params[:returndate2][:"(3i)"]
+            if @aa5b!='' && @bb5b!='' && @cc5b!=''
+                @dadidu5b=@aa5b+'-'+@bb5b+'-'+@cc5b  
+            else
+                @dadidu5b=''
+            end
+            ####-set loandate as nil when user select to search KEW-PA6 using returndate
+            if @dadidu5!=''|| @dadidu5b!=''
+              @dadidu4=''
+              @dadidu4b=''
+            end
+            ####
+            #--returndate2---
     elsif (@searchtype=='2'||@searchtype=='3')
         #--startdate---
         @aa2=params[:startdate][:"(1i)"] 
@@ -65,6 +128,26 @@ class AssetsearchesController < ApplicationController
             @dadidu3=''
         end
         #--enddate---
+        #--receiveddate---
+        @aa8=params[:receiveddate][:"(1i)"] 
+        @bb8=params[:receiveddate][:"(2i)"]
+        @cc8=params[:receiveddate][:"(3i)"]
+        if @aa8!='' && @bb8!='' && @cc8!=''
+            @dadidu8=@aa8+'-'+@bb8+'-'+@cc8  
+        else
+            @dadidu8=''
+        end
+        #--receiveddate---
+        #--receiveddate2---
+        @aa9=params[:receiveddate2][:"(1i)"] 
+        @bb9=params[:receiveddate2][:"(2i)"]
+        @cc9=params[:receiveddate2][:"(3i)"]
+        if @aa9!='' && @bb9!='' && @cc9!=''
+            @dadidu9=@aa9+'-'+@bb9+'-'+@cc9  
+        else
+            @dadidu9=''
+        end
+        #--receiveddate2---
     elsif (@searchtype == '6' || @searchtype == 6)
         #--purchasedate---
         @aa6=params[:curryear][:"(1i)"] 
@@ -82,16 +165,77 @@ class AssetsearchesController < ApplicationController
     end
     
     @assetsearch = Assetsearch.new(params[:assetsearch])
-    @assetsearch.purchasedate = @dadidu
-    if (@searchtype=='2'||@searchtype=='3')
-        @assetsearch.startdate = @dadidu2
-        @assetsearch.enddate = @dadidu3
+    if (@searchtype=='1'||@searchtype==1)
+        @assetsearch.purchasedate = @dadidu
+        @assetsearch.purchasedate2 = @dadidu7
+    elsif (@searchtype=='2'||@searchtype=='3')
+        @assetsearch.startdate = @dadidu2               #purchase date
+        @assetsearch.enddate = @dadidu3                 #purchase date
+        @assetsearch.receiveddate = @dadidu8
+        @assetsearch.receiveddate2 = @dadidu9
     elsif (@searchtype == '6' || @searchtype == 6)
         @assetsearch.startdate = @dadidu6b
         @assetsearch.enddate = @dadidu6a
+    elsif (@searchtype=='4'||@searchtype==4)
+        if @dadidu4 !=''
+        ab=AssetLoan.find(:all,:conditions=>['loaned_on>=? AND is_approved!=?',@dadidu4,false]).map(&:asset_id).uniq
+            if ab.count>0 
+                @assetsearch.loandate = @dadidu4
+            else
+                @assetsearch.loandate = ''    #'2010-01-01'
+            end
+        end
+        if @dadidu4b !=''
+        ab2=AssetLoan.find(:all,:conditions=>['loaned_on<=? AND is_approved!=?',@dadidu4b,false]).map(&:asset_id).uniq
+            if ab2.count>0 
+                @assetsearch.loandate2 = @dadidu4b
+            else
+                @assetsearch.loandate2 = ''    #'2010-01-01'
+            end
+        end
+        if @dadidu5 !=''
+        ab3=AssetLoan.find(:all,:conditions=>['returned_on>=? AND is_approved!=?',@dadidu5,false]).map(&:asset_id).uniq
+            if ab3.count>0 
+                @assetsearch.returndate= @dadidu5
+            else
+                @assetsearch.returndate = ''    #'2010-01-01'
+            end
+        end
+        if @dadidu5b !=''
+        ab4=AssetLoan.find(:all,:conditions=>['returned_on<=? AND is_approved!=?',@dadidu5b,false]).map(&:asset_id).uniq
+            if ab4.count>0 
+                @assetsearch.returndate2= @dadidu5b
+            else
+                @assetsearch.returndate2 = ''    #'2010-01-01'
+            end
+        end
+        if @dadidu9 !=''
+        ab5=AssetLoan.find(:all,:conditions=>['expected_on>=? AND is_approved!=?',@dadidu9,false]).map(&:asset_id).uniq
+            if ab5.count>0 
+                @assetsearch.expectedreturndate= @dadidu9
+            else
+                @assetsearch.expectedreturndate = ''    #'2010-01-01'
+            end
+        end
+        if @dadidu9b !=''
+        ab6=AssetLoan.find(:all,:conditions=>['expected_on<=? AND is_approved!=?',@dadidu9b,false]).map(&:asset_id).uniq
+            if ab6.count>0 
+                @assetsearch.expectedreturndate2 = @dadidu9b
+            else
+                @assetsearch.expectedreturndate2 = ''    #'2010-01-01'
+            end
+        end
+        
+        
+        #--backup in case--
+        #@assetsearch.loandate = @dadidu4
+        #@assetsearch.loandate2 = @dadidu4b
+        #@assetsearch.returndate= @dadidu5
+        #@assetsearch.returndate2= @dadidu5b
+        #@assetsearch.expectedreturndate= @dadidu9
+        #@assetsearch.expectedreturndate2= @dadidu9b
     end
-    @assetsearch.loandate = @dadidu4
-    @assetsearch.returndate= @dadidu5
+    
     if (@searchtype=='5'||@searchtype==5)
         @locationtype = params[:assetsearch][:locationtype]
         if @locationtype=="Person In-Charge"

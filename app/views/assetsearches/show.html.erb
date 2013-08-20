@@ -4,7 +4,9 @@
 	<% @ad_exist_assignedto = Asset.find(@ad_exist_assignedto_ids) %>
 <% end %>
 <!--continue-use this with method : assignedto_conditions in model : assetsearch.rb & CONTINUE AT LINE: 99-105-->
-<%#=@assetsearch.defect_type%>
+<%#=@assetsearch.defect_type%><%#=@assetsearch.nil? %>
+
+
 <% if @assetsearch.assets.count > 0 %><font size=-2><%=@assetsearch.assets.count%></font><%#=@assetsearch.defect_type%>
 	<!--for checking		
 	/<%#=@assetsearch.assets[0].id%>-<%#=@assetsearch.assets[1].id%>-<%#=@assetsearch.assets[2].id%>-<%#=@assetsearch.assets[3].id%>-<%#=@assetsearch.assets[4].id%>
@@ -15,7 +17,8 @@
 		<%=render :partial => 'kewpa4', :locals => {:assets => @assetsearch.assets} %> 	
 	<% elsif @assetsearch.startdate && @assetsearch.enddate && !@assetsearch.purchaseprice %>
 		<%=render :partial => 'kewpa8', :locals => {:assets => @assetsearch.assets} %> 
-	<% elsif (@assetsearch.maintainable==true && @assetsearch.category != 9 && !@assetsearch.discardoption && @assetsearch.disposalcert!=1 && @assetsearch.loss_start!=1 && @assetsearch.loss_end!=1 && !@assetsearch.loss_cert)|| ((@assetsearch.maintcode!=''|| @assetsearch.maintname!='') && @assetsearch.category != 9 && @assetsearch.disposal !=1&& !@assetsearch.discardoption && @assetsearch.disposalcert!=1 && @assetsearch.loss_start!=1 && @assetsearch.loss_end!=1 && !@assetsearch.loss_cert)  %>
+	<%# elsif (@assetsearch.maintainable==true && @assetsearch.category != 9 && !@assetsearch.discardoption && @assetsearch.disposalcert!=1 && @assetsearch.loss_start!=1 && @assetsearch.loss_end!=1 && !@assetsearch.loss_cert && @assetsearch.assetcode=='' && @assetsearch.name=='')|| ((@assetsearch.maintcode!=''|| @assetsearch.maintname!='') && @assetsearch.category != 9 && @assetsearch.disposal !=1&& !@assetsearch.discardoption && @assetsearch.disposalcert!=1 && @assetsearch.loss_start!=1 && @assetsearch.loss_end!=1 && !@assetsearch.loss_cert && @assetsearch.assetcode=='' && @assetsearch.name=='')  %>
+	<% elsif (@assetsearch.maintainable && @assetsearch.maintainable==true) || (@assetsearch.maintainable && @assetsearch.maintainable==false)%>
 		<%=render :partial => 'kewpa13', :locals => {:assets => @assetsearch.assets} %> 
 	<% elsif @assetsearch.disposalreport %>
 		<%=render :partial => 'kewpa17', :locals => {:assets => @assetsearch.assets} %> 
@@ -37,18 +40,19 @@
 			<% else %>
 				<div style="padding-left:50px;padding-top:20px;padding-bottom:20px;border-top:solid 1px;border-bottom:solid 1px;border-left:solid 1px;border-right:solid 1px;">
 					<H4>Asset Search : 
-						<% if (@assetsearch.loandate || @assetsearch.returndate) %>
+						<%# if (@assetsearch.loandate || @assetsearch.returndate) %>
+						<% if (@assetsearch.loanedasset == 1) %>
 							KEW-PA 6 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 4 %>
 						<% elsif (@assetsearch.defect_reporter || @assetsearch.defect_processor || @assetsearch.defect_process) %>
 							KEW-PA 9 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 7 %>
 						<% elsif (@assetsearch.assignedto || @assetsearch.location) %>
-							<% if @assetsearch.assignedto %>
+							<%# if @assetsearch.assignedto %>
 								<% if @assetsearch.category == 5 %><!--KEWPA 7 -->
 									KEW-PA 7 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 5 %>
 								<% else %>
 									KEW-PA 9 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 5 %>
 								<% end %>
-							<% end %>
+							<%# end %>
 						<% elsif (@assetsearch.category == 9 && @assetsearch.maintcode) || (@assetsearch.category == 9 && @assetsearch.maintname) %>
 							KEW-PA 14 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 9 %>
 						<% elsif (@assetsearch.disposal)%>
@@ -78,8 +82,42 @@
 					<% elsif (@assetsearch.alldefectasset==0 && @assetsearch.defect_reporter==nil && @assetsearch.defect_processor==nil && @assetsearch.defect_asset==nil && @assetsearch.defect_process=='' && @assetsearch.assignedto==nil && @assetsearch.defect_type==nil && @assetsearch.assets.count == Asset.all.count)%>
 						<font color=red>No asset defect found. Select method for record search appropiately.</font><br><br><br><br>
 					<% elsif (@assetsearch.maintainable==false && @assetsearch.maintname=='' && @assetsearch.maintcode==''&& @assetsearch.assets.count == Asset.all.count)%>
-						<font color=red>No asset for maintenance found. Select method for record search appropiately.</font><br><br><br><br>
+						<font color=red>No asset for maintenance found. Select method for record search appropiately.</font><br><br><br><br><!--
+					<%# elsif (@assetsearch.loanedasset==1 && @assetsearch.loandate==nil && @assetsearch.loandate2==nil)%>
+					<%# ||(@assetsearch.returndate==nil && @assetsearch.returndate2==nil)||(@assetsearch.expectedreturndate==nil && @assetsearch.expectedreturndate2==nil)%>
+						<font color=red>No asset on loan for selected date. </font><br><br><br><br>
+						<%#=@assetsearch.loandate%>-<%#=@assetsearch.loandate2%>-->
 					<% else %>
+						<!--start-addditional heading for KEW-PA 6-->
+						<% if ((@assetsearch.loandate||@assetsearch.loandate2) && @assetsearch.loanedasset == 1) %>
+								SEARCH BY : Loan Date - 
+								(<% if @assetsearch.loandate!= nil %>
+									<%=tarikh(@assetsearch.loandate)%>
+								<% end %>
+								<% if @assetsearch.loandate2!= nil %>
+									<% if @assetsearch.loandate!= nil %> - <% end %>
+									<%=tarikh(@assetsearch.loandate2)%>
+								<% end %>)
+						<% elsif ((@assetsearch.returndate||@assetsearch.returndate2) && @assetsearch.loanedasset == 1) %>
+								SEARCH BY : Return Date - 
+								(<% if @assetsearch.returndate!= nil %>
+									<%=tarikh(@assetsearch.returndate)%>
+								<% end %>
+								<% if @assetsearch.returndate2!= nil %>
+									<% if @assetsearch.returndate!= nil %> - <% end %>
+									<%=tarikh(@assetsearch.returndate2)%>
+								<% end %>)
+						<% elsif((@assetsearch.expectedreturndate||@assetsearch.expectedreturndate2) && @assetsearch.loanedasset == 1) %>
+								SEARCH BY : Expected Return Date - 
+								(<% if @assetsearch.expectedreturndate!= nil %>
+									<%=tarikh(@assetsearch.expectedreturndate)%>
+								<% end %>
+								<% if @assetsearch.expectedreturndate2!= nil %>
+									<% if @assetsearch.expectedreturndate!= nil %> - <% end %>
+									<%=tarikh(@assetsearch.expectedreturndate2)%>
+								<% end %>)
+						<% end %>
+						<!--end-additional heading for KEW-PA 6-->
 						<!--start-additional heading for KEW-PA 7-->
 						<% if @assetsearch.assignedto %>
 							<% if @assetsearch.category == 5%>
@@ -125,12 +163,14 @@
 									<th>Asset code</th>	
 									<th>Name</th>
 									<th>Asset Type</th>	
-									<% if @assetsearch.loandate && @assetsearch.loanedasset == 0 %>
-										<th>Loan Date</th>
-									<% end %>
-									<% if @assetsearch.returndate %>
-										<th>Return Date</th>
-									<% end %>
+									<%## if @assetsearch.loandate && @assetsearch.loanedasset == 0 %>
+									<%# if (@assetsearch.loandate && @assetsearch.loanedasset == 1) %>
+										<!--<th>Loan Date</th>-->
+									<%# end %>
+									<%## if @assetsearch.returndate %>
+									<%# if (@assetsearch.returndate && @assetsearch.loanedasset == 1) %>
+										<!--<th>Return Date</th>-->
+									<%# end %>
 									<% if @assetsearch.assignedto %>
 										<% if @assetsearch.category == 5 %>
 											<th>Location</th>
@@ -164,12 +204,14 @@
 											Inventori
 										<% end %>
 									</td>
-									<% if @assetsearch.loandate && @assetsearch.loanedasset == 0 %>
-										<td align=center><%=@assetsearch.loandate.strftime("%d-%m-%Y")%></td>
-									<% end %>
-									<% if @assetsearch.returndate && @assetsearch.loanedasset == 0%>
-										<td align=center><%=@assetsearch.returndate.strftime("%d-%m-%Y")%></td>
-									<% end %>
+									<%## if @assetsearch.loandate && @assetsearch.loanedasset == 0 %>
+									<%# if (@assetsearch.loandate && @assetsearch.loanedasset == 1) %>
+										<!--<td align=center><%#=@assetsearch.loandate.strftime("%d-%m-%Y")%></td>-->
+									<%# end %>
+									<%## if @assetsearch.returndate && @assetsearch.loanedasset == 0%>
+									<%# if (@assetsearch.returndate && @assetsearch.loanedasset == 1) %>
+										<!--<td align=center><%#=@assetsearch.returndate.strftime("%d-%m-%Y")%></td>-->
+									<%# end %>
 									<% if @assetsearch.assignedto %>
 										<% if @assetsearch.category == 5 %>
 											<td align=center>
@@ -193,8 +235,13 @@
 									<td align=center><%= x.purchasedate.blank? ? "" : x.purchasedate.strftime("%d-%m-%Y") %></td>
 									<td align=right><%= ringgols(x.purchaseprice) %>&nbsp;</td>
 									<td align=center>
-										<% if (@assetsearch.loandate || @assetsearch.returndate) %>
+										<%# if (@assetsearch.loandate || @assetsearch.returndate) %>
+										<% if (@assetsearch.loanedasset == 1) %>
 											<%= link_to "KEW-PA 6", :controller=>'assets', :action => 'kewpa6', :id => x.id %>
+										<!---->
+										<% elsif @assetsearch.alldefectasset==1 %>
+											<%= link_to "KEW-PA 9", :controller=>'asset_defects', :action => 'kewpa9', :id => x.id %>	
+										<!---->	
 										<% elsif @assetsearch.defect_reporter %>
 											<% @ad_id = AssetDefect.find(:first, :conditions=>['asset_id=? AND reported_by=?',x.id,@assetsearch.defect_reporter])%>
 											<% @ad_ids = AssetDefect.find(:all, :conditions=>['asset_id=? AND reported_by=?',x.id,@assetsearch.defect_reporter])%>
@@ -235,10 +282,10 @@
 														<% end %>
 													<% end %><!--used for checking|<%#=x.assignedto_id%>-->
 												<% else %><!--assignedto under KEW-PA 7-->
-													KEW-PA 7
+													<%= link_to "KEW-PA 7", :controller=>'locations', :action => 'kewpa7', :id => x.id %>
 												<% end %>
 											<% else %>
-												KEW-PA 7
+												KEW-PA 7<%= link_to "KEW-PA 7", :controller=>'locations', :action => 'kewpa7', :id => x.id %>
 											<% end %>
 										<% elsif (@assetsearch.category == 9 && @assetsearch.maintcode) || (@assetsearch.category == 9 && @assetsearch.maintname) %>
 											<%= link_to "KEW-PA 14", :controller=>'assets', :action => 'kewpa14', :id => x.id %>

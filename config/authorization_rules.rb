@@ -22,6 +22,7 @@ authorization do
     
     #E-Filing Menu Items
     #has_permission_on :documents,   :to => :manage                                #e-filing items
+    has_permission_on :documents, :to => [:manage, :generate_report]
     
     #Student Menu Items
     #has_permission_on :students,        :to => [:manage, :formforstudent, :maklumat_pelatih_intake]

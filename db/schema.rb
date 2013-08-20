@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130730104849) do
+ActiveRecord::Schema.define(:version => 20130731185304) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -394,6 +394,14 @@ ActiveRecord::Schema.define(:version => 20130730104849) do
     t.integer  "loss_cert"
     t.integer  "loanedasset"
     t.integer  "alldefectasset"
+    t.decimal  "purchaseprice2"
+    t.date     "purchasedate2"
+    t.date     "receiveddate"
+    t.date     "receiveddate2"
+    t.date     "loandate2"
+    t.date     "returndate2"
+    t.date     "expectedreturndate"
+    t.date     "expectedreturndate2"
   end
 
   create_table "assettracks", :force => true do |t|

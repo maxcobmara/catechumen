@@ -3,7 +3,7 @@ class Document < ActiveRecord::Base
 #belongs_to :documents, :foreign_key => 'staff_id'
 # has_one :title
 
-validates_presence_of :serialno, :refno, :category, :title,  :from, :stafffiled_id#,:letterdt, :letterxdt
+validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id#,:letterdt, :letterxdt, :sender,
 
 has_and_belongs_to_many   :staffs, :join_table => :documents_staffs   #5Apr2013
 
@@ -39,10 +39,16 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
     Cofile.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
   end
   
+  #<% @admin = User.current_user.roles.map(&:id).include?(2) %>
+  
   def owner_ids
     a = Array.new
     #a.push(stafffiled_id, cc1staff_id, cc2staff_id)
+    @admin = User.current_user.roles.map(&:id).include?(2) 
     a.push(stafffiled_id,prepared_by)#,cc1staff_id)
+    if @admin == true 
+        a.push(stafffiled_id,prepared_by,User.current_user.staff_id)
+    end
     a
   end
 
