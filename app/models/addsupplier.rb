@@ -5,7 +5,7 @@ class Addsupplier < ActiveRecord::Base
   attr_accessor :total
   
   def line_item_value
-    quantity * unitcost
+    quantity.to_i * unitcost.to_f
   end
   
   def total

@@ -195,8 +195,9 @@
 	<li><a href="#">Training</a>
 			<ul class="sub_menu">
 				<!--21March2013-have to give programme manager access to these menu without giving :manage -->
-				<% permitted_to? :index, :timetables do %>
-				<%# permitted_to? :manage, :timetables do %>
+				<%# permitted_to? :index, :timetables do %>
+				<%## permitted_to? :manage, :timetables do %>
+				<% permitted_to? :manage, :weeklytimetables do %>
 				<li><a href="#">Set Up ></a>
 					<ul class="sub_menu">
 							<li><%= link_to 'Create Timetable', {:controller => 'timetables', :action => 'index'} %></li>
@@ -205,9 +206,10 @@
 					</ul>
 				</li>
 				<li><%= link_to 'Time Table Entries',    {:controller => 'weeklytimetables', 	:action => 'index'} %></li>
+				<li><%= link_to 'Curriculum Management',    {:controller => 'programmes', 	:action => 'index'} %></li>
 				<% end %>
 				
-				<li><%= link_to 'Curriculum Management',    {:controller => 'programmes', 	:action => 'index'} %></li>
+				
 				<% permitted_to? :manage, :topics do %>
 				<li><a href="#">Lesson Plan ></a>
 					<ul class="sub_menu">

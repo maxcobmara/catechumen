@@ -227,7 +227,7 @@ authorization do
 #--21march2013-new role added    
   role :lecturer do
     has_permission_on :examquestions, :to => :manage
-    has_permission_on :programmes, :to => :core
+    has_permission_on :programmes, :to => [:core, :menu]
     has_permission_on :topics, :to => :manage
     has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar] do
       if_attribute :staff_id => is {User.current_user.staff_id}
@@ -238,6 +238,9 @@ authorization do
     end
     has_permission_on :timetables, :to => [:create]
     has_permission_on :student_attendances, :to => :manage    #10July2013
+    has_permission_on :weeklytimetables, :to => :personalize_index do
+      if_attribute :staff_id => is {User.current_user.staff_id}
+    end
   end
   
   

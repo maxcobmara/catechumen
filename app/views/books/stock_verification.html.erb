@@ -52,13 +52,6 @@
 				<tr>
 					
 					<td class="tdata" style="text-align:center;" ><%=h bil %></th>
-					<td class="tdata" style="white-space: nowrap; padding-right:3mm;" >
-						<%=h book.isbn.split("-").to_s if book.isbn!= nil %>
-					</th>
-					
-					<td class="tdata"><%=h book.classlcc if book.classlcc!=''%><%=h book.classddc if book.classddc!=''%></th>
-					<td class="tdata"><%=h book.author %></th>
-					<td class="tdata"><%=h book.title %></th>
 					<td class="tdata">
 						<!--1Apr2013-TEMPORARY solution until all data transformed into books+accessions tables-->
 							<!--DO NOT REMOVE until data transformation completed-->
@@ -67,19 +60,19 @@
 						<%= accession.accession_no %>
 						<!--1Apr2013-TEMPORARY solution until all data transformed into books+accessions tables-->
 					</th>
+					
+					<td class="tdata"><%=h book.classlcc if book.classlcc!=''%><%=h book.classddc if book.classddc!=''%></th>
+					<td class="tdata"><%=h book.author %></th>
+					<td class="tdata"><%=h book.title %></th>
+					<td class="tdata" style="white-space: nowrap; padding-right:3mm;" >
+						<%=h book.isbn.split("-").to_s if book.isbn!= nil %>
+					</th>	
 				</tr>
 				<% end %>
 				<!--for already amended data (books+accessions)-end-->
 				<% else %>
 				<tr>
 					<td class="tdata" style="text-align:center;" ><%=h bil %></th>					
-					<td class="tdata" style="white-space: nowrap; padding-right:3mm;" >
-						<%=h book.isbn.split("-").to_s if book.isbn!= nil %>
-					</th>
-					
-					<td class="tdata"><%=h book.classlcc if book.classlcc!=''%><%=h book.classddc if book.classddc!=''%> </th>
-					<td class="tdata"><%=h book.title %></th>
-					<td class="tdata"><%=h book.author %></th>
 					<td class="tdata">
 						<!--1Apr2013-TEMPORARY solution until all data transformed into books+accessions tables-->
 							<!--DO NOT REMOVE until data transformation completed-->
@@ -87,6 +80,14 @@
 							<!--DO NOT REMOVE until data transformation completed-->
 						<%= book.accessionno %>
 						<!--1Apr2013-TEMPORARY solution until all data transformed into books+accessions tables-->
+					</th>
+					
+					<td class="tdata"><%=h book.classlcc if book.classlcc!=''%><%=h book.classddc if book.classddc!=''%> </th>
+					<td class="tdata"><%=h book.title %></th>
+					<td class="tdata"><%=h book.author %></th>
+					
+					<td class="tdata" style="white-space: nowrap; padding-right:3mm;" >
+						<%=h book.isbn.split("-").to_s if book.isbn!= nil %>
 					</th>
 				</tr>
 				<% end %>

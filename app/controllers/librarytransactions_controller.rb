@@ -251,17 +251,21 @@ end
     render :layout => false
   end
   def check_availability2
+    #raise params.inspect
      if request.post?
        @rustaff = params[:ru_staff].to_s
-       @staffsearch = Staff.find_by_name(params[:librarytransaction][:staff_who]) 
+      
        #@staffsearch = params[:staff_search].to_i
-       #@studentsearch = Student.find_by_name(params[:librarytransaction][:student_who]) 
-       @studentsearch = Student.find_by_icno(params[:librarytransaction][:student_who]) 
-       #@studentsearch = params[:student_search].to_i
+        #@studentsearch = Student.find_by_icno(params[:librarytransaction][:student_who]) 
+         #@studentsearch = Student.find_by_name(params[:librarytransaction][:student_who]) 
+
        if @rustaff == '0'#|| @rustaff == 0
+           
+           @studentsearch = params[:student_search].to_i
            @loaned_books = Librarytransaction.find(:all, :conditions=>['student_id=? AND returned IS NOT TRUE', @studentsearch]).count 
            @books_on_loan = Librarytransaction.find(:all, :conditions=>['student_id=? AND returned IS NOT TRUE', @studentsearch])
        else
+           @staffsearch = Staff.find_by_name(params[:librarytransaction][:staff_who]) 
            @loaned_books = Librarytransaction.find(:all, :conditions=>['staff_id=? AND returned IS NOT TRUE', @staffsearch]).count
            @books_on_loan = Librarytransaction.find(:all, :conditions=>['staff_id=? AND returned IS NOT TRUE', @staffsearch])
        end
