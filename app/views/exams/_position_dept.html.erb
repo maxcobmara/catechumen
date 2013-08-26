@@ -63,7 +63,7 @@
 	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
 		<% @kupk = "yes" %>
 	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-	<% else %><%#=@dept_unit%><%#=@anc_depth%>
+	<% else %><%#=@dept_unit%><%#=@anc_depth%><!--add another else/elsif for @dept_unit=common subject...can select any programme-->
 		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
 		<% @subjectlist_preselect_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
 	<% end %>

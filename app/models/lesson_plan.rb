@@ -1,6 +1,6 @@
 class LessonPlan < ActiveRecord::Base
   
-  before_save :set_to_nil_where_false
+  before_save :set_to_nil_where_false, :assign_topic_intake_id
   
   belongs_to :lessonplan_owner,   :class_name => 'Staff',                 :foreign_key => 'lecturer'
   belongs_to :lessonplan_creator, :class_name => 'Staff',                 :foreign_key => 'prepared_by'
@@ -48,17 +48,18 @@ class LessonPlan < ActiveRecord::Base
       self.report_endorsed_on = Date.today
    end  
    
-   if schedule != nil
-      self.topic = WeeklytimetableDetail.find(schedule).topic
-   end   
+   #if schedule != nil
+      #self.topic = WeeklytimetableDetail.find(schedule).topic
+   #end   
     
   end
   
-  #def set_var_upon_selection_of_schedule
-    #if schedule != nil
-       # intake_id = 
-    #end
-  #end
+  def assign_topic_intake_id
+    if schedule != nil
+        self.topic = WeeklytimetableDetail.find(schedule).topic
+        self.intake_id = Weeklytimetable.find(WeeklytimetableDetail.find(schedule).weeklytimetable_id).intake_id
+    end
+  end
   
   def hods  
       hod = User.current_user.staff.position.parent

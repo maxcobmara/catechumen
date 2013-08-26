@@ -29,12 +29,21 @@
 <% @personalize = all_combine.group_by{|t|t.startdate}%>
 	<% @personalize.each do |sdate, items2|%>
 	<!--<%#=sdate%>~<%#=items2%>-->
+		<!--added-22August2013-->
+		<% @intakes_for_sdate=[] %>
+		<!--hihi<%#=items2%>-<%#=sdate%><br>-->
+		<% items2.group_by{|u|u.intake_id}.each do |intake_id, item3| %>
+			<!--<%#=intake_id%>~<%#=item3%>-->
+			<% @intakes_for_sdate<<Intake.find(intake_id).group_with_intake_name  %>
+			<% @intakes_for_sdate<<"<br>" %>
+		<% end %><br>
+		<!--added-22August2013-->
 		<% items2.each_with_index do |item, index|%>
 			<% if index==0%>
 
   <tr>
     <td><%= item.schedule_programme.programme_list%>&nbsp;<!--(ID weekly timetable bila index=0, <%=item.id %>)--></td>
-    <td><%= item.schedule_intake.group_with_intake_name %></td>
+    <td><%#= item.schedule_intake.group_with_intake_name %><%=@intakes_for_sdate%></td>
     <td><%=sdate%></td>
     <td><%= item.enddate %></td>
     <td><%= item.academic_semester.semester %></td>

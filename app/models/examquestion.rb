@@ -120,7 +120,7 @@ class Examquestion < ActiveRecord::Base
   end
   
   def question_approver #question_editor
-    multi_position = Position.find(:all, :conditions => ['staff_id=?',85])
+    multi_position = Position.find(:all, :conditions => ['staff_id=?',User.current_user.staff_id])  #85 --> Mohd Firdaus Fikri
     ifmulti_position = multi_position.count 
     xx=0
     if ifmulti_position > 1

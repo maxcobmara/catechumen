@@ -82,7 +82,8 @@ class Grade < ActiveRecord::Base
     end
     
     def finale
-      ((exam1marks * examweight)/100) + ((total_formative * (100 - examweight)/100))
+      score.to_f + total_summative
+      #((exam1marks * examweight)/100) + ((total_formative * (100 - examweight)/100))
     end
     
     def grade_it
