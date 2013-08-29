@@ -155,15 +155,15 @@ tome = <%=@tome.count%>-->
 
 <br />
 
-<% @a_creator=[] %>
-<% @a_filled=[] %>
-<% @documents.each do |x|%>
-	<% @a_creator << x.prepared_by %>
-	<% @a_filled << x.stafffiled_id %>
-<% end %>
+<%# @a_creator=[] %>
+<%# @a_filled=[] %>
+<%# @documents.each do |x|%>
+	<%# @a_creator << x.prepared_by %>
+	<%# @a_filled << x.stafffiled_id %>
+<%# end %>
 
 <% permitted_to? :manage, :documents do %>
-	<% if (@a_creator.include? User.current_user.staff_id) || (@a_filled.include? User.current_user.staff_id) %>
+	<%# if (@a_creator.include? User.current_user.staff_id) || (@a_filled.include? User.current_user.staff_id) %>
 		<%= link_to 'New Document', new_document_path %> | <%= link_to 'Generate Report', :action => 'generate_report', :locals => {:class_type => '1',:dodo =>params[:search],:dudu =>params[:search2],:startdate=>@dadidu,:enddate=>@dadidu2 } %>
-	<% end %>
+	<%# end %>
 <% end %>

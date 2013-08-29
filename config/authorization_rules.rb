@@ -101,11 +101,15 @@ authorization do
         if_attribute :decision_by => is {User.current_user.staff_id}
     end
     
-    has_permission_on :documents, :to => :approve, :join_by => :or do 
+    has_permission_on :documents, :to => [:approve,:menu], :join_by => :or do 
         if_attribute :stafffiled_id => is {User.current_user.staff_id}
         if_attribute :cc1staff_id => is {User.current_user.staff_id}
         if_attribute :cc2staff_id => is {User.current_user.staff_id}
     end  
+    
+    #to works in travel request..28 August 2013
+    #has_permission_on :documents, :to => :index 
+
     
     has_permission_on :student_discipline_cases, :to => :create
     has_permission_on :student_discipline_cases, :to => :approve do
@@ -166,7 +170,10 @@ authorization do
   #Group E-Filing ------------------------------------------------------------------------------- 
   role :e_filing do
     has_permission_on :cofiles, :to => :manage
-    has_permission_on :documents, :to => [:manage, :generate_report]
+    has_permission_on :documents, :to => [:manage, :generate_report] do
+        if_attribute :prepared_by => is {User.current_user.staff_id}
+        if_attribute :stafffiled_id => is {User.current_user.staff_id}
+    end
   end
   
   #Group Student --------------------------------------------------------------------------------

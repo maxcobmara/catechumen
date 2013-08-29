@@ -3,6 +3,9 @@ class DocumentsController < ApplicationController
   # GET /documents
   # GET /documents.xml
   def index
+    #-----####-DO NOT REMOVE THIS PART--COMPULSORY FOR AUTOCOMPLETE IN NEW TRAVEL REQUEST (DOCUMENT REF NO) TO WORK -- 29 August 2013
+    @documents = Document.find(:all, :conditions => ['refno ILIKE ?', "%#{params[:search4]}%"])#.search(params[:search])
+    #-----####-DO NOT REMOVE THIS PART--COMPULSORY FOR AUTOCOMPLETE IN NEW TRAVEL REQUEST (DOCUMENT REF NO) TO WORK -- 29 August 2013
     #----this part is for document administrator---
     submit_val = params[:submit_button1]
     if (params[:search2] =='' || params[:search2] ==nil) && submit_val == "Search"

@@ -1,0 +1,31 @@
+<div class="tform">
+<%=render :partial => 'show_main' %>
+
+<fieldset>
+	<legend>Submission Details</legend>
+		<table width=100% >
+			<tr>
+				<td class="leftcol">Submitted</td>
+		    <td><%=h @travel_request.is_submitted? ? image_tag("tick.png") + "   " + l(@travel_request.submitted_on) : image_tag("cross.png") %></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol">Replacement</td>
+			  <td>  <%=h @travel_request.replacement.staff_name_with_position unless @travel_request.replacement.blank? %></td>
+			</tr>
+			
+			<tr>
+				<td class="leftcol">HOD Accepted</td>
+		    <td><%=h @travel_request.hod_accept? ? 
+						image_tag("tick.png") + " on   " + tarikh(@travel_request.hod_accept_on) + " by   "  + @travel_request.headofdept.staff_name_with_position : image_tag("cross.png") %></td>
+			</tr>
+			
+			
+		</table>
+</fieldset>
+
+</div>
+
+
+<%= link_to 'Edit', edit_travel_request_path(@travel_request) %> |
+<%= link_to 'Back', travel_requests_path %>

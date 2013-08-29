@@ -1,6 +1,6 @@
 class LessonPlan < ActiveRecord::Base
   
-  before_save :set_to_nil_where_false, :assign_topic_intake_id
+  before_save :set_to_nil_where_false, :assign_topic_intake_id, :move_attached_doc_trainingnotes
   
   belongs_to :lessonplan_owner,   :class_name => 'Staff',                 :foreign_key => 'lecturer'
   belongs_to :lessonplan_creator, :class_name => 'Staff',                 :foreign_key => 'prepared_by'
@@ -17,8 +17,9 @@ class LessonPlan < ActiveRecord::Base
   
   #trial section------------
   has_many :lesson_plan_trainingnotes
-  accepts_nested_attributes_for :lesson_plan_trainingnotes, :reject_if => lambda {|a| a[:trainingnote_id].blank?}
+  accepts_nested_attributes_for :lesson_plan_trainingnotes, :allow_destroy => true, :reject_if => lambda {|a| a[:trainingnote_id].blank?}
   has_many :trainingnotes, :through => :lesson_plan_trainingnotes
+  #has_many :trainingnotes
   accepts_nested_attributes_for :trainingnotes, :reject_if => lambda {|a| a[:topic_id].blank?}
   #trial section------------
   
@@ -59,6 +60,18 @@ class LessonPlan < ActiveRecord::Base
         self.topic = WeeklytimetableDetail.find(schedule).topic
         self.intake_id = Weeklytimetable.find(WeeklytimetableDetail.find(schedule).weeklytimetable_id).intake_id
     end
+  end
+  
+  def move_attached_doc_trainingnotes
+    if data != nil
+        notes_for_lessonplan = Trainingnote.new     # @trainingnote = Trainingnote.new
+        notes_for_lessonplan.document_file_name = data_file_name
+        notes_for_lessonplan.document_content_type = data_content_type
+        notes_for_lessonplan.document_file_size = data_file_size
+        notes_for_lessonplan.save   #refer quotation syst.
+        #self.lesson_plan_trainingnotes.trainingnote_id = 10
+        #self.trainingnote_id = 10
+    end 
   end
   
   def hods  

@@ -299,6 +299,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :cofiles
 
   #map.connect '/documents/generate_report', :controller => 'books', :action => 'generate_report'
+  map.connect '/documents.js', :controller => 'documents', :action => 'index' , :collection => {:method => :get}
   map.resources :documents, :collection => {:generate_report => :get}
   map.resources :documents
 
