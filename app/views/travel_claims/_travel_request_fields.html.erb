@@ -22,7 +22,7 @@
 			<td class="tlight"><%= builder.object.start_at.strftime('%H:%M %p') %></td>
 			<td class="tlight"><%= builder.object.finish_at.strftime('%H:%M %p') %></td>
 			<td><%= builder.object.destination %></td>
-			<td class="tright"><%= builder.object.mileage %><label> km</label></td>
+			<td class="tright"><%= builder.object.mileage.blank? ? '' : builder.object.mileage.to_s + ' km' %></td>
 			<td class="tright"><%= ringgols(builder.object.km_money) %></td>
 			<td width=27% style="padding-left:15px;"%>
 				<label><%= builder.radio_button :checker, 'true' %> OK <%= builder.radio_button :checker, 'false' %> Query : <%= builder.text_field :checker_notes, :size => '15' %></td>

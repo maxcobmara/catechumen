@@ -13,7 +13,7 @@ class TravelRequest < ActiveRecord::Base
   validates_presence_of :staff_id, :destination, :depart_at, :return_at
   validates_presence_of :own_car_notes, :if => :mycar?
   validate :validate_end_date_before_start_date
-  validates_presence_of :replaced_by, :if => :check_submit?
+  #validates_presence_of :replaced_by, :if => :check_submit?
   validates_presence_of :hod_id,      :if => :check_submit?
   
   
@@ -29,6 +29,11 @@ class TravelRequest < ActiveRecord::Base
     
     if hod_accept == false
       self.hod_accept_on	= nil
+    end
+    
+    if !mycar?#own_car == false 
+      self.own_car_notes =''
+      self.mileage = nil
     end
   end
   
@@ -54,7 +59,7 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def requires_approval
-    if hod_accept == nil && hod_id == User.current_user.staff_id
+    if (hod_accept == nil || hod_accept == false) && hod_id == User.current_user.staff_id
       (link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => travel_request).to_s
     elsif is_submitted == true && hod_accept == nil && staff_id == User.current_user.staff_id
       ""
@@ -67,7 +72,7 @@ class TravelRequest < ActiveRecord::Base
   
   #controller searches
   def self.in_need_of_approval
-      find(:all, :conditions => ['hod_id = ? AND is_submitted = ? AND hod_accept IS ?', User.current_user.staff_id, true, nil])
+      find(:all, :conditions => ['hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', User.current_user.staff_id, true, nil, false])
   end
   
   def self.my_travel_requests

@@ -1,6 +1,7 @@
 <%= render :partial => 'show_main' %>
 
 
-
-<%= link_to 'Edit', edit_travel_claim_path(@travel_claim) %> |
+<% if (@travel_claim.is_submitted != true || (@travel_claim.is_submitted == true && @travel_claim.is_returned == true)) && @travel_claim.staff_id == User.current_user.staff_id %>
+	<%= link_to 'Edit', edit_travel_claim_path(@travel_claim) %> |
+<% end %>
 <%= link_to 'Back', travel_claims_path %>

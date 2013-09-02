@@ -25,6 +25,11 @@ class TravelClaim < ActiveRecord::Base
     else
       self.submitted_on	= nil
     end
+    if is_checked == false
+      self.is_returned = true
+      #self.is_submitted = false
+    end
+  
   end
   
   def set_total
@@ -36,7 +41,7 @@ class TravelClaim < ActiveRecord::Base
       "editing"
     elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == nil
       "submitted"
-    elsif staff_id != User.current_user.staff_id && is_submitted == true && is_checked == nil
+    elsif staff_id != User.current_user.staff_id && is_submitted == true && (is_checked == nil || is_checked == false)
       "for checking"
     elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == false
       "returned"

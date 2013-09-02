@@ -13,7 +13,14 @@
 				<td class="leftcol">Replacement</td>
 			  <td>  <%=h @travel_request.replacement.staff_name_with_position unless @travel_request.replacement.blank? %></td>
 			</tr>
-			
+			<tr>
+				<td class="leftcol">Approved Mileage</td>
+				<td>
+					Mileage Allowance : <%=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %> &nbsp; &nbsp;  
+					Mileage Replacement (Gantian tambang keretapi/kapal terbang) : <%=h !@travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %> &nbsp; &nbsp;
+				</td>
+			</tr>
+
 			<tr>
 				<td class="leftcol">HOD Accepted</td>
 		    <td><%=h @travel_request.hod_accept? ? 

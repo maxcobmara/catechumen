@@ -20,7 +20,7 @@
 				<% for travel_request in @travel_claim.travel_requests %>
 
 				<tr>
-					<th>Request Code</th>
+					<th>Document Ref No</th>
 					<th colspan=3>Purpose</th>
 					<th colspan=2>Travel Dates</th>
 				</tr>
@@ -31,7 +31,7 @@
 				</tr>
 				
 				<tr>
-					<th width=10% class="level_2">Date</th>
+					<th width=15% class="level_2">Date</th>
 					<th width=9%  class="level_2">Depart</th>
 					<th width=9%  class="level_2">Arrive</th>
 					<th class="level_2">Destination</th>
@@ -44,7 +44,7 @@
 					<td class="tlight"><%= travel_claim_log.start_at.strftime('%H:%M %p') %></td>
 					<td class="tlight"><%= travel_claim_log.finish_at.strftime('%H:%M %p') %></td>
 					<td><%= travel_claim_log.destination %></td>
-					<td class="tright"><%= travel_claim_log.mileage %><label> km</label></td>
+					<td class="tright"><%= travel_claim_log.mileage.blank? ? '' : travel_claim_log.mileage.to_s+' km' %></td>
 					<td class="tright"><%= ringgols(travel_claim_log.km_money) %></td>
 				</tr>
 				<% end %>

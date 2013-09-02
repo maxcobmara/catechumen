@@ -3,7 +3,8 @@
   <%= hidden_field_tag :redirect_location, travel_requests_path %>
 	<div class="tform">
 		<!--2Jan2013-amend this part - to make sure it works with conditions at line 22-->
-		<% if @travel_request.is_submitted == false || @travel_request.hod_id == nil || @travel_request.replaced_by == nil %>
+		<% if @travel_request.is_submitted == false || @travel_request.hod_id == nil %>
+		<%# if @travel_request.is_submitted == false || @travel_request.hod_id == nil || @travel_request.replaced_by == nil %>
 		<%# if @travel_request.is_submitted == false %>
 		<H2>Edit Travel Request</H2>
 		<table width=100% >
@@ -23,8 +24,8 @@
 		<% if @travel_request.is_submitted == true && @travel_request.hod_id == User.current_user.staff_id %>
 		<%# if @travel_request.is_submitted == true  %>
 		    <%=render :partial => 'show_main' %>
-				<%=render :partial => 'approval', :locals => {:f => f} %>
-		<% elsif @travel_request.is_submitted == true && @travel_request.staff_id == User.current_user.staff_id %>
+			<%=render :partial => 'approval', :locals => {:f => f} %>
+		<% elsif @travel_request.is_submitted == true && @travel_request.submitted_on != nil && @travel_request.staff_id == User.current_user.staff_id %>
 			<H2>Edit Travel Request</H2>
 			Travel request already submitted to HOD for approval and no longer editable.
 		<% end -%>
