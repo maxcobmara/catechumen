@@ -90,9 +90,14 @@ class TravelRequest < ActiveRecord::Base
     self.document = Document.find_by_refno(refno) unless refno.blank?
   end
   
-  
-  
-  
+  #ref:gmail-sept15,2012-Checking for broken association - refer document.rb (line 17),index-line 69, show_main-line 13
+  def reference_document
+    if document.blank?
+      "None Assigned"
+    else
+      document.refno+" : "+document.title+" : dated "+document.letterdt.strftime("%d-%b-%Y").to_s
+    end
+  end 
   
   def repl_staff
       siblings = User.current_user.staff.position.sibling_ids

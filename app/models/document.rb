@@ -14,7 +14,7 @@ belongs_to :cofile,       :foreign_key => 'file_id'
 
 has_many :asset_disposals
 has_many :asset_losses
-has_many :travel_requests
+has_many :travel_requests, :dependent => :nullify #ref:gmail-sept15,2012-Checking for broken association - refer document.rb (line 17)
 
 before_save :set_actionstaff2_to_blank_if_close_is_selected
 
