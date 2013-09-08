@@ -113,6 +113,7 @@ class TravelRequest < ActiveRecord::Base
         approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       else
         hod = User.current_user.staff.position.root.child_ids
+        hod << User.current_user.staff.position.root_id
         approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       end
       approver
