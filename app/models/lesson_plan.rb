@@ -1,6 +1,6 @@
 class LessonPlan < ActiveRecord::Base
   
-  before_save :set_to_nil_where_false, :assign_topic_intake_id, :move_attached_doc_trainingnotes
+  before_save :set_to_nil_where_false, :assign_topic_intake_id, :copy_attached_doc_trainingnotes
   
   belongs_to :lessonplan_owner,   :class_name => 'Staff',                 :foreign_key => 'lecturer'
   belongs_to :lessonplan_creator, :class_name => 'Staff',                 :foreign_key => 'prepared_by'
@@ -19,9 +19,10 @@ class LessonPlan < ActiveRecord::Base
   has_many :lesson_plan_trainingnotes
   accepts_nested_attributes_for :lesson_plan_trainingnotes, :allow_destroy => true, :reject_if => lambda {|a| a[:trainingnote_id].blank?}
   has_many :trainingnotes, :through => :lesson_plan_trainingnotes
-  #has_many :trainingnotes
   accepts_nested_attributes_for :trainingnotes, :reject_if => lambda {|a| a[:topic_id].blank?}
   #trial section------------
+  
+  attr_accessor :title
   
   def set_to_nil_where_false
     if is_submitted == true
@@ -62,15 +63,37 @@ class LessonPlan < ActiveRecord::Base
     end
   end
   
-  def move_attached_doc_trainingnotes
+  def copy_attached_doc_trainingnotes
     if data != nil
-        notes_for_lessonplan = Trainingnote.new     # @trainingnote = Trainingnote.new
+        notes_for_lessonplan = Trainingnote.new     
         notes_for_lessonplan.document_file_name = data_file_name
         notes_for_lessonplan.document_content_type = data_content_type
         notes_for_lessonplan.document_file_size = data_file_size
-        notes_for_lessonplan.save   #refer quotation syst.
-        #self.lesson_plan_trainingnotes.trainingnote_id = 10
-        #self.trainingnote_id = 10
+        notes_for_lessonplan.timetable_id = schedule
+        notes_for_lessonplan.staff_id = User.current_user.staff_id
+        notes_for_lessonplan.title = title
+        
+        #check if topicdetails for topic of selected schedule really exist 
+        #topiccode = WeeklytimetableDetail.find(schedule).topic
+        @topicdetail = Topicdetail.find_by_topic_code(topic)#code)
+        if @topicdetail != nil 
+            notes_for_lessonplan.topicdetail_id = @topicdetail.id #new record
+            @topicdetail_id = @topicdetail.id                    #update record
+        end 
+        
+        #check training note existance for current lesson plan(schedule) (IN TRAININGNOTES TABLE)
+        @trainingnote_lessonplan = Trainingnote.find_by_timetable_id(schedule)
+        
+        #if (new/changed) uploaded file & timetable_id(schedule) not exist[training note NOT EXIST for lesson plan], 
+        #==>INSERT NEW note (into trainingnotes table)
+        #if training note ALREADY EXIST for lesson plan, 
+        #==>UPDATE EXISTING note (in trainingnotes table)
+        
+        if Trainingnote.find_by_document_file_name(data_file_name)==nil && Trainingnote.find_by_timetable_id(schedule)==nil
+          notes_for_lessonplan.save   
+        else  
+          @trainingnote_lessonplan.update_attributes(:document_file_name=>data_file_name, :document_content_type=>data_content_type,:document_file_size=>data_file_size, :timetable_id=>schedule, :staff_id=>User.current_user.staff_id, :title=>title,:topicdetail_id=>@topicdetail_id)
+        end
     end 
   end
   

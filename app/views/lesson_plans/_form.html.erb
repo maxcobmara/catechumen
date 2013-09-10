@@ -80,15 +80,18 @@
 		    		<%= @lesson_plan.data_file_name %> &nbsp;&nbsp;&nbsp;
 		    	<%= link_to (t 'document.download'), @lesson_plan.data.url %> ||
 	        	<%= link_to "ALT", @lesson_plan.data.url %>
+				<% @title_fr_trainingnotes = Trainingnote.find_by_timetable_id(@lesson_plan.schedule).title %>
 		    <% else %>
 		    	No Attachment yet
+				<% @title_fr_trainingnotes ='' %>
 	    	<% end %>
 		</td>
 		
 		<tr>
 			<td class="leftcol"><label for="data">Upload/Change File:</label></td>
-			<td><%= f.file_field :data %></td>
-		</tr>-->
+			<td><%= f.file_field :data %><BR>
+			<%= f.text_field :title, :placeholder => 'Title', :size => '50x1', :value=>@title_fr_trainingnotes %></td>
+		</tr>
 		<!--trial section : 20May2013-->
 			<table width=100%>
 				<tr>

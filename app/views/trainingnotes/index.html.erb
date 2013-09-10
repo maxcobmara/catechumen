@@ -18,7 +18,7 @@
 			<th colspan=3>Control</th>
 	  </tr>
 	
-	TOPIC ID:<%#=@trainingnotes[1].topic_id %>
+	<!--TOPIC ID:<%#=@trainingnotes[1].topic_id %>-->
 	
 	<% @trainingnotes.group_by(&:topicdetail_id).each do |topicdetail_id, trainingnotes | %>
 			<tr><td colspan=8><strong>
@@ -34,11 +34,22 @@
 
 	    <% trainingnotes.each do |trainingnote| %>
 	  <tr>
-	    <td> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<%=h trainingnote.title %></td>
+	    <td> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<%=h trainingnote.title %>
+			<br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+			<% if trainingnote.topicdetail_id==nil && trainingnote.timetable_id!=nil %>
+				<font color=blue>
+					<b>Topic Detail</b> not exist, <%= link_to "CREATE ONE", new_topicdetail_path %> to match.
+					<% @topic=WeeklytimetableDetail.find(trainingnote.timetable_id).topic %>
+					(Topic : <%=Programme.find(@topic).semester_subject_topic %>)
+				</font>
+			<% end %>
+		</td>
 	    <td><%=h trainingnote.reference %></td>
 	    <td><%=h trainingnote.version %></td>
 	    <td><%=h trainingnote.release %></td>
 			<td><%= link_to image_tag('attach.png'), trainingnote.document.url%> &nbsp; <%= link_to trainingnote.document_file_name, trainingnote.document.url %>
+				
+			</td>
 			<td width=10px><% link_to image_tag("document.png", :border => 0), :action => 'show', :id => trainingnote %></td>
 			<td width=10px><% link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => trainingnote %></td>
 			<td width=10px ><% link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), trainingnote, :confirm => 'Are you sure?', :method => :delete %></td>

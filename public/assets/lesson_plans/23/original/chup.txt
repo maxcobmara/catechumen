@@ -1,0 +1,105 @@
+Accumulated Books on Loan
+-------------------------
+Book.find(:all, :conditions =>['accessionno IN(?)',Accession.find(:all,:conditions=>['id IN (?)',Librarytransaction.find(:all, :conditions=>['checkoutdate >=? AND checkoutdate <=?', '2013-04-01','2013-04-30']).map(&:accession_id)]).map(&:accession_no)])
+
+Book.find(:all, :conditions =>['accessionno IN(?)',Accession.find(:all,:conditions=>['id IN (?)',Librarytransaction.find(:all, :conditions=>['checkoutdate >=? AND checkoutdate <=?', '2013-01-01','2013-12-31']).map(&:accession_id)]).map(&:accession_no)]).count
+
+
+
+Book.find(:all, :conditions =>['accessionno IN(?)',Accession.find(:all,:conditions=>['id IN (?)',Librarytransaction.find(:all, :conditions=>['checkoutdate >=? AND checkoutdate <=?', '2013-04-01','2013-04-30']).map(&:accession_id)])
+
+
+================================
+<span style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
+	<H3>LIBRARY RESOURCES STATISTIC SEARCH :</h3>
+		<br>
+		Year : 2013 <br>
+		Accumulated Books on Loan : <%=@booksearch.sbooks.count %><br>
+		<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
+			<tr>
+				<th>No</th>
+				<th>Title</th>
+				<th>Accession No</th>
+				<th>Checkout Date</th>
+			</tr>
+			<% @bookmonth1 = []%><% @checkout1 = 0%>
+			<% @bookmonth2 = []%><% @checkout2 = 0%>
+			<% @bookmonth3 = []%><% @checkout3 = 0%>
+			<% @bookmonth4 = []%><% @checkout4 = 0%>
+			<% @bookmonth5 = []%><% @checkout5 = 0%>
+			<% @bookmonth6 = []%><% @checkout6 = 0%>
+			<% @bookmonth7 = []%><% @checkout7 = 0%>
+			<% @bookmonth8 = []%><% @checkout8 = 0%>
+			<% @bookmonth9 = []%><% @checkout9 = 0%>
+			<% @bookmonth10 = []%><% @checkout10 = 0%>
+			<% @bookmonth11 = []%><% @checkout11 = 0%>
+			<% @bookmonth12 = []%><% @checkout12 = 0%>
+			<% @booksearch.sbooks.each do |book|%>
+				<%# @checkoutdate = Librarytransaction.find_by_accession_id(Accession.find_by_accession_no(book.accessionno).id).checkoutdate %>
+				<% @checkoutdates = Librarytransaction.find(:all, :conditions=>['accession_id=? AND checkoutdate>=? AND checkoutdate<=?',Accession.find_by_accession_no(book.accessionno).id,'2013-01-01','2013-12-31']) %>
+				
+				<% @checkoutdates.each do |checkoutdates| %>
+					<!---->
+					<% if checkoutdates.checkoutdate.year == 2013 %>
+					<!---->
+				<!---->
+				<% if checkoutdates.checkoutdate.month == 1 %>
+					<% @checkout1+=1 %>
+					<% @bookmonth1<< book %>
+				<% elsif checkoutdates.checkoutdate.month == 2%>
+					<% @checkout2+=1 %>
+					<% @bookmonth2<< book %>
+				<% elsif checkoutdates.checkoutdate.month == 3%>
+					<% @checkout3+=1 %>
+					<% @bookmonth3<< book %>
+				<% elsif checkoutdates.checkoutdate.month == 4%>
+					<% @checkout4+=1 %>
+					<% @bookmonth4<< book %>
+				<% elsif checkoutdates.checkoutdate.month == 5%>
+					<% @checkout5+=1 %>
+					<% @bookmonth5<< book %>
+				<% elsif checkoutdates.checkoutdate.month == 6%>
+					<% @checkout6+=1 %>
+					<% @bookmonth6<< book %>
+				<% elsif checkoutdates.checkoutdate.month == 7%>
+					<% @checkout7+=1 %>
+					<% @bookmonth7<< book %>
+				<% elsif checkoutdates.checkoutdate.month == 8%>
+					<% @checkout8+=1 %>
+					<% @bookmonth8<< book %>
+				<% elsif checkoutdates.checkoutdate.month == 9%>
+					<% @checkout9+=1 %>
+					<% @bookmonth9<< book %>
+				<% elsif checkoutdates.checkoutdate.month == 10%>
+					<% @checkout10+=1 %>
+					<% @bookmonth10<< book %>
+				<% elsif checkoutdates.checkoutdate.month == 11%>
+					<% @checkout11+=1 %>
+					<% @bookmonth11<< book %>
+				<% elsif checkoutdates.checkoutdate.month == 12%>
+					<% @checkout12+=1 %>
+					<% @bookmonth12<< book %>
+				<% end %>
+					<!---->
+					<% end %>
+				<!---->
+				<% end %>
+				
+			<% end %>
+			<% @sorted_bookloan_by_months = @bookmonth1+@bookmonth2+@bookmonth3+@bookmonth4+@bookmonth5+@bookmonth6+@bookmonth7+@bookmonth8+@bookmonth9+@bookmonth10+@bookmonth11+@bookmonth12%>
+			<%# @booksearch.sbooks.each_with_index do |book,index|%>
+			<% @sorted_bookloan_by_months.each_with_index do |book, index|%>
+			<tr>
+				<td><%=index+1%></td>
+				<td><%=book.title%></td>
+				<td><%=book.accessionno %></td>
+				<td><%=Librarytransaction.find_by_accession_id(Accession.find_by_accession_no(book.accessionno).id).checkoutdate.strftime("%d-%m-%Y") %>
+					<%=Librarytransaction.find(:all, :conditions=>['accession_id=? AND checkoutdate>=? AND checkoutdate<=?',Accession.find_by_accession_no(book.accessionno).id,'2013-01-01','2013-12-31'])%>
+				</td>
+			</tr>
+		<% end %>
+		</table>
+</span>
+
+
+================================

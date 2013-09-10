@@ -70,9 +70,9 @@ bkLib.onDomLoaded(function() {
 		<tr>
 			<td class="leftcol">Add Training Notes</td>
 			<td>
-				<div>
+				<div><% @index=0 %>
 					<% f.fields_for :trainingnotes do |builder| %>
-						<%= render 'trainingnote_fields', {:f => builder,:aaa=> params[:topic_code] }%>
+						<%= render 'trainingnote_fields', {:f => builder,:aaa=> params[:topic_code],:index=>@index }%>
 					<% end %>
 						<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :trainingnotes %> - Add More </p>
 				</div>
