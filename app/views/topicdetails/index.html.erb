@@ -29,21 +29,41 @@
 	<th colspan=3 class="ac">Control</th>
   </tr>
 
-<% @topicdetails.each do |topicdetail| %>
-  <tr><!--
-    <td><%=h topicdetail.topic_name %></td>-->
-    <td><%=h topicdetail.subject_topic.name %></td>
-	<td><%=h topicdetail.version_no %></td>
-    <td><%=h topicdetail.duration.strftime("%HH %MMin") %></td>
-    <td><%=h topicdetail.theory.strftime("%HH %MMin") %></td>
-    <td><%=h topicdetail.tutorial.strftime("%HH%MMin") %></td>
-    <td><%=h topicdetail.practical.strftime("%HH %MMin") %></td>
-<td><%=h topicdetail.topic_creator.name %></td>
-	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => topicdetail %></td>
-	<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => topicdetail %></td>
-	<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), topicdetail, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+<% @topicdetails.group_by{|t|t.subject_topic.root}.each do |programme, topicdetails2| %>
+	<tr><td colspan=10 style="background-color:#EFF1F1;font-weight:bold;"><%=programme.name%></td></tr>
+	<% topicdetails2.group_by{|u|u.subject_topic.parent.parent.code}.sort.each do |semester,topicdetails3| %>
+		<!--<tr><td colspan=10>Sem <%#=semester %></td></tr>--><!--unremark to view semester heading-->
+		<% topicdetails3.group_by{|u|u.subject_topic.parent}.each do |subject,topicdetails| %>
+		<%# topicdetails3.group_by{|u|u.subject_topic}.each do |subject,topicdetails| %>
+			<% if subject.course_type == 'Subject' %>
+				<tr><td colspan=10 style="color:blue; font-weight:bold;background-color:#ECFBFC;">&nbsp;&nbsp;&nbsp;&nbsp;<%=subject.semester_subject %>
+				<%#=subject.subject_list %><!--unremark to view subject code & subject name only--></td></tr>
+			<% else %>
+				<tr><td colspan=10 style="font-weight:bold;">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=subject.subject_list.upcase%></td></tr>
+			<% end %>	
+			<% topicdetails.sort_by{|u|u.subject_topic.code.to_i}.each do |topicdetail| %>
+			
+  			<tr><!--
+    			<td><%#=h topicdetail.topic_name %></td>-->
+    			<td><% if topicdetail.subject_topic.course_type=='Subtopic' %>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<% end %>
+					&nbsp;&nbsp;&nbsp;&nbsp;<%=topicdetail.subject_topic.code %>)&nbsp;<%=h topicdetail.subject_topic.name %></td>
+				<td><%=h topicdetail.version_no %></td>
+    			<td><%=h topicdetail.duration.strftime("%HH %MMin") %></td>
+    			<td><%=h topicdetail.theory.strftime("%HH %MMin") %></td>
+    			<td><%=h topicdetail.tutorial.strftime("%HH%MMin") %></td>
+    			<td><%=h topicdetail.practical.strftime("%HH %MMin") %></td>
+				<td><%=h topicdetail.topic_creator.name %></td>
+				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => topicdetail %></td>
+				<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => topicdetail %></td>
+				<td width=10px ><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), topicdetail, :confirm => 'Are you sure?', :method => :delete %></td>
+  			</tr>
+			<% end %>
+		<% end %>
+	<% end %>
+<% end %>		
 </table>
 
 <br />

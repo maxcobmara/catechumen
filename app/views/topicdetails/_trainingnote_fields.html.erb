@@ -5,12 +5,12 @@
 	<!--end-for checking-->
 	
 	<font color=#444 size=-2>
-		<% if f.object.document.exists? then %>
+		<%# if f.object.document.exists? then %><% if f.object.document!= nil %>
 			Current file is : <%= f.object.document_file_name %> &nbsp;&nbsp;&nbsp;
     		<%= link_to (t 'document.download'), f.object.document.url %> ||
     		<%= link_to "ALT", f.object.document.url %>
 			<BR>Or 
-		<% end %> 
+		<% end %>
 	</font>
 			
 	<%= f.file_field :document %> &nbsp;   &nbsp;<BR>

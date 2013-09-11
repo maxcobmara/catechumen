@@ -2,6 +2,7 @@ class Programme < ActiveRecord::Base
     # befores, relationships, validations, before logic, validation logic, 
     #controller searches, variables, lists, relationship checking
     before_save :set_combo_code
+    after_save :copy_topic_topicdetail
     has_ancestry :cache_depth => true
 
     has_many :schedule_programmes, :class_name => 'Weeklytimetable', :foreign_key => 'programme_id'
@@ -19,6 +20,20 @@ class Programme < ActiveRecord::Base
       else
         self.combo_code = parent.combo_code + "-" + code
       end
+    end
+    
+    def copy_topic_topicdetail
+      @topiccode_in_topic_detail = Topicdetail.all.map(&:topic_code)
+      if course_type='Topic' && @topiccode_in_topic_detail.include?(id) == false
+        @newtopicdetail = Topicdetail.new
+        @newtopicdetail.topic_code = id
+        @newtopicdetail.duration = Time.now
+        @newtopicdetail.theory = Time.now
+        @newtopicdetail.tutorial = Time.now
+        @newtopicdetail.practical = Time.now
+        @newtopicdetail.prepared_by = User.current_user.staff_id
+        @newtopicdetail.save
+      end  
     end
 
     def tree_nd
@@ -43,6 +58,10 @@ class Programme < ActiveRecord::Base
     
     def semester_subject_topic
       "Sem #{parent.parent.code}"+"-"+"#{parent.code}"+" | "+"#{name}"
+    end
+    
+    def semester_subject
+      "Sem #{parent.code}"+"-"+"#{code}"+" | "+"#{name}"
     end
     
     def subject_with_topic  #use in lesson plan
