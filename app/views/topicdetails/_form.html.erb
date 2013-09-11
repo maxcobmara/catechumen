@@ -14,7 +14,7 @@ bkLib.onDomLoaded(function() {
 	<h2>Topic Detail Descriptions</h2>
 	<table width=100%>
 		<!--1st choice-refer ...views/weeklytimetables/weeklytimetable_fields.html.erb-->
-		<% @semester_subject_topic_list = Programme.find(:all,:conditions=>['ancestry_depth=? AND id NOT IN(?)',3,Topicdetail.all.map(&:topic_code).uniq], :order=>:combo_code) %>
+		<% @semester_subject_topic_list = Programme.find(:all,:conditions=>['(ancestry_depth=? OR ancestry_depth=?) AND id NOT IN(?)',3,4,Topicdetail.all.map(&:topic_code).uniq], :order=>:combo_code) %>
 		<%# @semester_subject_topic_list=[] %>
 		<%# aa.each do |bb| %>
 				<%# @semester_subject_topic_list<< bb %> <!--include all topic from Programmes table-->

@@ -17,12 +17,12 @@
 				<td><%#=h @weeklytimetable.group_id %></td>				
 			</tr>-->
 			<tr>
-				<td class="leftcol"><label>Startdate:</label></td>
-				<td><%=h @weeklytimetable.startdate %></td>				
+				<td class="leftcol"><label>Start date:</label></td>
+				<td><%=h @weeklytimetable.startdate.strftime('%d-%b-%Y')  %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Enddate:</label></td>
-				<td><%=h @weeklytimetable.enddate %></td>				
+				<td class="leftcol"><label>End date:</label></td>
+				<td><%=h @weeklytimetable.enddate.strftime('%d-%b-%Y')  %></td>				
 			</tr>
 			<tr>
 				<td class="leftcol"><label>Semester:</label></td>
@@ -105,8 +105,13 @@
 						<% if xx.day2 == count2 && xx.time_slot2 == count3 %>
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
-								<%= xx.weeklytimetable_topic.parent.code %><br>
-								<%= xx.weeklytimetable_topic.name %><br>
+								<% if xx.weeklytimetable_topic.ancestry_depth == 4 %>
+									<%= xx.weeklytimetable_topic.parent.parent.code %><br>
+									<%= xx.weeklytimetable_topic.parent.name %><br>
+								<% else %>
+									<%= xx.weeklytimetable_topic.parent.code %><br>
+									<%= xx.weeklytimetable_topic.name %><br>
+								<% end %>
 								<%= xx.weeklytimetable_lecturer.name %><br>
 								<%= xx.weeklytimetable_location.name %><br>
 								<%= "(K)" if xx.lecture_method == 1 %>
@@ -173,8 +178,13 @@
 						<% if xx.is_friday == true && xx.time_slot == @column_count_monthur+count4 %>
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
-								<%= xx.weeklytimetable_topic.parent.code %><br>
-								<%= xx.weeklytimetable_topic.name %><br>
+								<% if xx.weeklytimetable_topic.ancestry_depth == 4 %>
+									<%= xx.weeklytimetable_topic.parent.parent.code %><br>
+									<%= xx.weeklytimetable_topic.parent.name %><br>
+								<% else %>
+									<%= xx.weeklytimetable_topic.parent.code %><br>
+									<%= xx.weeklytimetable_topic.name %><br>
+								<% end %>
 								<%= xx.weeklytimetable_lecturer.name %><br>
 								<%= xx.weeklytimetable_location.name %><br>
 								<%= "(K)" if xx.lecture_method == 1 %>
@@ -190,8 +200,13 @@
 						<% if xx.is_friday == true && xx.time_slot == @column_count_monthur+count4 %>
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
-								<%= xx.weeklytimetable_topic.parent.code %><br>
-								<%= xx.weeklytimetable_topic.name %><br>
+								<% if xx.weeklytimetable_topic.ancestry_depth == 4 %>
+									<%= xx.weeklytimetable_topic.parent.parent.code %><br>
+									<%= xx.weeklytimetable_topic.parent.name %><br>
+								<% else %>
+									<%= xx.weeklytimetable_topic.parent.code %><br>
+									<%= xx.weeklytimetable_topic.name %><br>
+								<% end %>
 								<%= xx.weeklytimetable_lecturer.name %><br>
 								<%= xx.weeklytimetable_location.name %><br>
 								<%= "(K)" if xx.lecture_method  == 1 %>

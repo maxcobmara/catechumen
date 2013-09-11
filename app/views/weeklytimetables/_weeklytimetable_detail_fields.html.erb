@@ -63,7 +63,7 @@
 		<!--start-Subject, Lecturer, Topic section, Location & Teaching method-->
 		<tr>
 			<td class="leftcol">Lecturer</td>
-			<td><%= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar']), :id, :name, :prompt=>"Select Lecturer" %></td>
+			<td><%= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar'],:order=>'name ASC'), :id, :name, :prompt=>"Select Lecturer" %></td>
 		</tr>
 		<!--25March2013-hide subject
 		<tr>
@@ -71,11 +71,11 @@
 			<td><%#= f.collection_select :subject, Programme.at_depth(2), :id, :subject_list, :include_blank =>"Select Subject" %></td>
 		</tr>-->
 		<tr>
-			<td class="leftcol">Semester-Subject : Topic<!--Topic--></td>
+			<td class="leftcol">Semester-Subject : Topic / Subtopic<!--Topic--></td>
 			<td style="vertical-align:middle">
 				<!--25March2013-luar def subject_topic-(start)-->
 				<!--1st choice-->
-				<% aa=Programme.find(:all,:conditions=>['ancestry_depth=?',3], :order=>:combo_code) %>
+				<% aa=Programme.find(:all,:conditions=>['ancestry_depth=? OR ancestry_depth=?',3,4], :order=>:combo_code) %>
 				<% @semester_subject_topic_list=[] %>
 				<% aa.each do |bb| %>
 					<% if bb.root_id == @weeklytimetable.programme_id %><%# if bb.root_id == 2 %><!--the most workable-->
@@ -87,9 +87,9 @@
 					Sem <%#=j.parent.parent.code%> - <%#=j.parent.code%> | <%#=j.name%><br>
 				<%# end %>-->
 				<% if @object_index_id.to_i > 23 %>
-				<%= select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@object_index_id.to_i}][topic]","<option>Select Semester-Subject | Topic</option>"+"<option selected='selected' value="+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].topic.to_s+">"+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].weeklytimetable_topic.semester_subject_topic+"</option>"+options_from_collection_for_select(@semester_subject_topic_list, :id, :semester_subject_topic ) %>
+				<%= select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@object_index_id.to_i}][topic]","<option>Select Semester-Subject | Topic / Subtopic</option>"+"<option selected='selected' value="+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].topic.to_s+">"+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].weeklytimetable_topic.semester_subject_topic+"</option>"+options_from_collection_for_select(@semester_subject_topic_list, :id, :semester_subject_topic ) %>
 				<% else %>
-					<%= f.collection_select :topic, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> "Select Semester-Subject | Topic" %>
+					<%= f.collection_select :topic, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> "Select Semester-Subject | Topic / Subtopic" %>
 				<% end %>
 
 				<!--2nd choice - BACKUP 
@@ -115,7 +115,7 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><%= f.label :location %></td>
-			<td><%= f.collection_select :location, Weeklytimetable.location_list, :id, :name, :include_blank => "Select" %></td>
+			<td><%= f.collection_select :location, Weeklytimetable.location_list.sort_by{|x|x.name}, :id, :name, :include_blank => "Select" %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><%= f.label :method %></td>

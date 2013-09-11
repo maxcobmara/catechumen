@@ -11,7 +11,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    has_many   :student_attendances
    
    #validates_uniqueness_of :lecturer_id, :time_slot, :time_slot2, :day2, :is_friday, :scope => :weeklytimetable_id
-   
+   validates_presence_of :location, :lecturer_id, :topic#,:time_slot, :time_slot2, :day2, :is_friday
    def set_day_time_slot_for_non_selected
        if is_friday == true
          self.day2 = 0
