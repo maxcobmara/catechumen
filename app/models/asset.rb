@@ -14,7 +14,7 @@ class Asset < ActiveRecord::Base
   belongs_to :receivedby,   :class_name => 'Staff', :foreign_key => 'receiver_id'
   belongs_to :category,     :class_name => 'Assetcategory', :foreign_key => 'category_id'
   #belongs_to :subcategory,  :class_name => 'Assetcategory', :foreign_key => 'subcategory_id'
-  
+  attr_accessor :cardno2    #added - 4 Oct 2013 
   
   has_many :asset_defects
   has_one :asset_disposal       #Link to Model asset_disposals
@@ -37,6 +37,10 @@ class Asset < ActiveRecord::Base
   def save_my_vars
     if assetcode == nil
       self.assetcode = (suggested_serial_no).to_s
+      if assettype == 2
+          self.cardno = cardno2 + '-'+ quantity.to_s              #added - 4 Oct 2013 - quantity(form value)
+          self.quantity = quantity.to_i - cardno2.to_i + 1        #added - 4 Oct 2013    
+      end
     end
   end
   
@@ -139,7 +143,7 @@ class Asset < ActiveRecord::Base
   named_scope :hotelunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Perhotelan"]).subtree.map(&:staff_id)]
   named_scope :libraryunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Perpustakaan"]).subtree.map(&:staff_id)]
   named_scope :counterunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Kaunter"]).subtree.map(&:staff_id)]
-  named_scope :developunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Pembangunan"]).subtree.map(&:staff_id)]
+  named_scope :engineeringunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Kejuruteraan"]).subtree.map(&:staff_id)]
   named_scope :financestoreunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Kewangan & Stor"]).subtree.map(&:staff_id)]
   named_scope :serviceunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Perkhidmatan"]).subtree.map(&:staff_id)]
   named_scope :generaladminunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Pentadbiran Am"]).subtree.map(&:staff_id)]
@@ -148,7 +152,7 @@ class Asset < ActiveRecord::Base
   named_scope :fisioterapi,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Jurupulih Perubatan Anggota (Fisioterapi)"]).subtree.map(&:staff_id)]
   named_scope :carakerja,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Jurupulih Perubatan Cara Kerja"]).subtree.map(&:staff_id)]
   named_scope :pemperubatan,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Penolong Pegawai Perubatan"]).subtree.map(&:staff_id)]
-  named_scope :posbasik,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Pos Basik"]).subtree.map(&:staff_id)]
+  named_scope :pengkhususan,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Pengkhususan"]).subtree.map(&:staff_id)]
   named_scope :perubatanasas,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Sains Perubatan Asas"]).subtree.map(&:staff_id)]
   named_scope :anatomi,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Anatomi & Fisiologi"]).subtree.map(&:staff_id)]
   named_scope :tingkahlaku,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Sains Tingkahlaku"]).subtree.map(&:staff_id)]
@@ -191,7 +195,7 @@ class Asset < ActiveRecord::Base
     {:scope => "hotelunit",    :label => "Perhotelan"},
     {:scope => "libraryunit", :label => "Perpustakaan"},
     {:scope => "counterunit", :label => "Kaunter"},
-    {:scope => "developunit", :label => "Pembangunan"},
+    {:scope => "engineeringunit", :label => "Kejuruteraan"},
     {:scope => "financestoreunit", :label => "Kewangan & Stor"},
     {:scope => "serviceunit", :label => "Perkhidmatan"},
     {:scope => "generaladminunit", :label => "Pentadbiran Am"},
@@ -200,7 +204,7 @@ class Asset < ActiveRecord::Base
     {:scope => "fisioterapi", :label => "Fisioterapi" },
     {:scope => "carakerja", :label => "Jurupulih Carakerja"},
     {:scope => "pemperubatan", :label => "Pembantu Perubatan"},
-    {:scope => "posbasik", :label => "Pos Basik"},
+    {:scope => "pengkhususan", :label => "Pengkhususan"},
     {:scope => "perubatanasas", :label => "Perubatan Asas"},
     {:scope => "anatomi", :label => "Anatomi & Fisiologi"},
     {:scope => "tingkahlaku", :label => "Sains Tingkahlaku"},
@@ -271,10 +275,12 @@ class Asset < ActiveRecord::Base
       st = "KKM/BPL/010619/"
       if assettype == 1
        md = "H/"
+       st + md + syear + '/' + cardno                           #added - 4 Oct 2013 
       else
        md = "I/"
+       st + md + syear + '/' + cardno2 + '-' + quantity.to_s    #added - 4 Oct 2013 
       end
-      st + md + syear + '/' + cardno
+      #st + md + syear + '/' + cardno
     end
       
       

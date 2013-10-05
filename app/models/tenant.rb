@@ -1,7 +1,7 @@
 class Tenant < ActiveRecord::Base
-  belongs_to :location
-  belongs_to :staff
-  belongs_to :student
+  belongs_to :location, :foreign_key => 'location_id'
+  belongs_to :staff, :foreign_key => 'staff_id'
+  belongs_to :student, :foreign_key => 'student_id'
   
   
   def student_tenants
@@ -23,10 +23,12 @@ class Tenant < ActiveRecord::Base
   
   def student_name #16/11/2011 - Shaliza added code for student if no longer exist.
     check_kin {student.student_name_with_programme}
+    #student.student_name_with_programme
   end
 
   def staff_name #16/11/2011 - Shaliza added code for staff if no longer exist.
-    check_kin {staff.staff_name_with_position}
+    staff.staff_name_with_position
+    #check_kin {staff.staff_name_with_position}
   end
 
   def location_name #16/11/2011 - Shaliza added code for location if no longer exist.

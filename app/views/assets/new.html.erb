@@ -16,7 +16,7 @@
 						<%= f.text_field :cardno, :size => 6, :value => (Asset.find_last_by_assettype(1)[:assetcode].split("/")[5].to_i + 1) %>
 					</SPAN>
 					<SPAN class="koik", style="display: none;">
-						<%= f.text_field :cardno, :size => 6, :value => (Asset.find_last_by_assettype(2)[:assetcode].split(/[\/\-]/)[6].to_i + 1) %> - 
+						<%= f.text_field :cardno2, :size => 6, :value => (Asset.find_last_by_assettype(2)[:assetcode].split(/[\/\-]/)[6].to_i + 1) %> - 
 						<%= f.text_field :quantity, :size => 6 %>
 					</SPAN>
 			</strong></td>
@@ -25,7 +25,7 @@
 		<tr>
 			<td class="leftcol"><label>Previous</label></td>
 			<td><SPAN class="bong", style="display: none;"> <%= Asset.find_last_by_assettype(1)[:assetcode] %></SPAN>
-					<SPAN class="koik", style="display: none;"> last I <%= Asset.find_last_by_assettype(2)[:assetcode] %></SPAN></td>
+					<SPAN class="koik", style="display: none;"><!-- last I --><%= Asset.find_last_by_assettype(2)[:assetcode] %></SPAN></td>
 		</tr>
 	
 <script type="text/javascript">

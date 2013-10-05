@@ -100,11 +100,13 @@ class TravelRequest < ActiveRecord::Base
   end 
   
   def repl_staff
+    #if User.current_user.staff.position - temporary solution for PA pengarah
       siblings = User.current_user.staff.position.sibling_ids
       children = User.current_user.staff.position.child_ids
       possibles = siblings + children
       replacements = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", possibles]).map(&:staff_id)
       replacements
+    #end - temporary solution for PA pengarah
   end
   
   def hods

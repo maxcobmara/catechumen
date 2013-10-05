@@ -53,7 +53,8 @@
 			<th><%= t 'document.refno' %></th>
 			<th><%= t 'travel.sname' %></th>
 			<th><%= t 'travel.destination' %></th>
-			<th>Depart at</th>
+			<th><%= t 'travel.depart_at' %></th>
+			<th><%= t 'travel.return_at' %></th>
 			<th><%= t 'travel.purpose' %></th>
 			<th>Submitted?</th>
 			<th>Approved</th>
@@ -65,7 +66,10 @@
 			<td><%=h check_kin {travel_request.document.refno} %></td>
    		<td><%=h travel_request.applicant.staff_name_with_position unless travel_request.applicant.blank? %></td>
       <td><%=h travel_request.destination %></td>
-      <td><%=h l(travel_request.depart_at) %></td>
+      <td><%=h travel_request.depart_at.strftime("%l:%M %p")%>
+		  <%#=h l(travel_request.depart_at) %></td>
+	  <td><%=h travel_request.return_at.strftime("%l:%M %p")%>
+		  <%#=h l(travel_request.return_at) %></td>
       <td><%=h travel_request.document_id? ? truncate((travel_request.document.title), :length => 40, :separator => ' ') : "None" %></td>
 			<td><%=h travel_request.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 			<td><%=h travel_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png") %></td>

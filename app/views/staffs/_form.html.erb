@@ -99,12 +99,22 @@
 			                 :prompt => "Select" %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="transportclass_id"><b>Transport Class</b></td>
-			<td><%= f.select :transportclass_id, options_for_select(('A'..'F'), @staff.transportclass_id) %></td>
+			<td class="leftcol"><label for="transportclass_id"><b><%= t 'staff.transportclass_id' %></b></td>
+			<td><%= f.select :transportclass_id, options_for_select(('A'..'F'), @staff.transportclass_id) %>
+				<font size=-2>(Salary|Vehicle cc - <strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)</font>
+			</td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="upload"><b><%= t 'staff.upload' %></b></label></td>
-			<td><%= f.file_field :photo %></td></tr>
+			<td>
+				<% if f.object.photo!=nil %>Current file is : <%= f.object.photo_file_name %>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<%= link_to (t 'document.download'), f.object.photo.url %>||
+				<%= link_to "ALT", f.object.photo.url %>
+				<% end%>
+				<%= f.file_field :photo %>
+			</td>
+		</tr>
 	</table>
 	
 	<H2><%= t 'staff.employment_details' %></H2>
@@ -128,25 +138,37 @@
 			                 :prompt => "Select"  %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="appointdt"><b><%= t 'staff.appointdt' %></b></label></td>
+			<td class="leftcol"><label for="appointdt"><b><%= t 'staff.appointdt' %></b></label><font color="red"> * </font></td>
 			<td><%= f.date_select :appointdt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="schemedt"><b><%= t 'staff.schemedt' %></b></label></td>
-			<td><%= f.date_select :schemedt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="confirmdt"><b><%= t 'staff.confirmdt' %></b></label></td>
 			<td><%= f.date_select :confirmdt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="posconfirmdate"><b><%= t 'staff.posconfirmdate' %></b></label></td>
-			<td><%= f.date_select :posconfirmdate, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
-		</tr>
-		<tr>
 			<td class="leftcol"><label for="pension_confirm_date"><b><%= t 'staff.pension_confirm_date' %></b></label></td>
 			<td><%= f.date_select :pension_confirm_date, :start_year => 2000, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
+		<tr>
+			<td class="leftcol"><label for="pensionstat"><b><%= t 'staff.pensionstat' %></b></label></td>
+			<td><%= f.select :pensionstat, 
+			                  Staff::PENSION,
+			                 :prompt => "Select"  %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="pensiondt"><b><%= t 'staff.pensiondt' %></b></label></td>
+			<td><%= f.date_select :pensiondt, :start_year => 2010, :end_year => 2050, :order => [:day, :month, :year] %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="schemedt"><b><%= t 'staff.schemedt' %></b></label></td>
+			<td><%= f.date_select :schemedt, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="posconfirmdate"><b><%= t 'staff.posconfirmdate' %></b></label></td>
+			<td><%= f.date_select :posconfirmdate, :start_year => 1945, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+		</tr>
+
 		<tr>
 			<td class="leftcol"><label for="wealth_decleration_date"><b><%= t 'staff.wealth_decleration_date' %></b></label></td>
 			<td><%= f.date_select :wealth_decleration_date, :start_year => 2000, :order => [:day, :month, :year], :include_blank => true %></td>
@@ -166,7 +188,7 @@
 		</tr>-->
 		<tr>
 			<td class="leftcol"><label for="starting_salary"><b><%= t 'staff.starting_salary' %></b></label></td>
-			<td><%= f.text_field :starting_salary, :size => 14 %></td>
+			<td>RM <%= f.text_field :starting_salary, :size => 14 %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="appointby"><b><%= t 'staff.appointby' %></b></label></td>
@@ -186,16 +208,7 @@
 			                  Staff::TOS,
 			                 :prompt => "Select"  %></td>
 		</tr>	
-		<tr>
-			<td class="leftcol"><label for="pensionstat"><b><%= t 'staff.pensionstat' %></b></label></td>
-			<td><%= f.select :pensionstat, 
-			                  Staff::PENSION,
-			                 :prompt => "Select"  %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="pensiondt"><b><%= t 'staff.pensiondt' %></b></label></td>
-			<td><%= f.date_select :pensiondt, :start_year => 2010, :end_year => 2050, :order => [:day, :month, :year] %></td>
-		</tr>	
+
 		<tr>
 			<td class="leftcol"><label for="uniformstat"><b><%= t 'staff.uniformstat' %></b></label></td>
 			<td><%= f.select :uniformstat, 
@@ -207,7 +220,7 @@
 
 	<div>
 	  <H2><%= t 'staff.tqualification' %></H2>
-		<p><strong>|  Level Type |  Qualification Name |  Name of Institute</strong></p>
+		<p><strong>|  <%= t 'staff.level_id' %> |  <%= t 'staff.qname' %> |  <%= t 'staff.institute' %></strong></p>
 		<% f.fields_for :qualifications do |builder| %>
 			<%= render 'qualification_fields', :f => builder %>
 		<% end %>
@@ -220,9 +233,12 @@
 			 				<div style="width: 150px; float: left;">|  <%= t 'staff.loan.ltype' %>      </div>
 							<div style="width: 210px; float: left;">|  <%= t 'staff.loan.accno' %>      </div>
 							<div style="width: 120px; float: left;">|  <%= t 'staff.loan.startdt' %>    </div>
-							<div style="width: 120px; float: left;">|  <%= t 'staff.loan.durationmn' %> </div>
+							<div style="width: 100px; float: left;">|  <%= t 'staff.loan.durationmn' %> </div>
 							<div style="width: 100px; float: left;">|  <%= t 'staff.loan.amount' %>     </div>
 							<div style="width: 100px; float: left;">|  <%= t 'staff.loan.deductions' %> </div>
+							<div style="width: 100px; float: left;">|  <%= t 'staff.loan.firstdate' %> </div>
+							<div style="width: 100px; float: left;">|  <%= t 'staff.loan.enddate' %> </div>
+							<div style="width: 100px; float: left;">|  <%= t 'staff.loan.enddeduction' %> </div>
 						</strong></p><BR>
 					
 		<% f.fields_for :loans do |builder| %>

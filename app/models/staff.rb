@@ -195,13 +195,13 @@ class Staff < ActiveRecord::Base
   
   has_many :student_counseling_sessions, :as => :created_by,  :foreign_key => 'created_by' 
   
-
+  has_one :tenant
 
 
 #----------------------------code for repeating fields------------------------------------------  
  
   has_many :qualifications, :dependent => :destroy
-  accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
+  accepts_nested_attributes_for :qualifications, :allow_destroy => true, :reject_if => lambda { |a| a[:level_id].blank? }
   
   has_many :loans, :dependent => :destroy
   accepts_nested_attributes_for :loans, :reject_if => lambda { |a| a[:ltype].blank? }

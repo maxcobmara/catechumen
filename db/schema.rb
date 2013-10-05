@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130731185304) do
+ActiveRecord::Schema.define(:version => 20131004092729) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -1158,6 +1158,9 @@ ActiveRecord::Schema.define(:version => 20130731185304) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "amount"
+    t.date     "firstdate"
+    t.date     "enddate"
+    t.decimal  "enddeduction"
   end
 
   create_table "locations", :force => true do |t|
@@ -1620,7 +1623,6 @@ ActiveRecord::Schema.define(:version => 20130731185304) do
     t.integer  "religion"
     t.integer  "gender"
     t.string   "phonecell"
-    t.boolean  "phonehome"
     t.integer  "country_id"
     t.string   "photo_file_name"
     t.string   "photo_content_type"
@@ -1660,6 +1662,7 @@ ActiveRecord::Schema.define(:version => 20130731185304) do
     t.integer  "position_old"
     t.integer  "staff_shift_id"
     t.integer  "att_colour"
+    t.string   "phonehome"
   end
 
   create_table "staffsearch2s", :force => true do |t|
