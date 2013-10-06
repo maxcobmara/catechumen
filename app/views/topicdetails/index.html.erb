@@ -19,51 +19,52 @@
 <table>
   <tr><!--
     <th>Topic name</th>-->
+	<th width=80px>Subject</th>
     <th>Topic</th>
 	<th>Version no</th>
-    <th>Duration (Total Hours)</th>
-    <th>Theory</th>
-    <th>Tutorial</th>
-    <th>Practical</th>
+    <th width=65px>Duration (Total Hours)</th>
+    <th width=65px>Theory</th>
+    <th width=65px>Tutorial</th>
+    <th width=65px>Practical</th>
 	<th>Prepared by</th>
 	<th colspan=3 class="ac">Control</th>
   </tr>
 
-<% @topicdetails.group_by{|t|t.subject_topic.root}.each do |programme, topicdetails2| %>
-	<tr><td colspan=10 style="background-color:#EFF1F1;font-weight:bold;"><%=programme.name%></td></tr>
-	<% topicdetails2.group_by{|u|u.subject_topic.parent.parent.code}.sort.each do |semester,topicdetails3| %>
-		<!--<tr><td colspan=10>Sem <%#=semester %></td></tr>--><!--unremark to view semester heading-->
-		<% topicdetails3.group_by{|u|u.subject_topic.parent}.each do |subject,topicdetails| %>
-		<%# topicdetails3.group_by{|u|u.subject_topic}.each do |subject,topicdetails| %>
-			<% if subject.course_type == 'Subject' %>
-				<tr><td colspan=10 style="color:blue; font-weight:bold;background-color:#ECFBFC;">&nbsp;&nbsp;&nbsp;&nbsp;<%=subject.semester_subject %>
-				<%#=subject.subject_list %><!--unremark to view subject code & subject name only--></td></tr>
+	<% @topicdetails.sort_by{|u|u.subject_topic.combo_code}.each do |topicdetail| %>
+	<!--<%#=topicdetail.id %>==<%#=topicdetail.subject_topic.combo_code %> | <%#=topicdetail.subject_topic.code %> || <br>-->
+	
+	<tr><!--
+		<td><%#=h topicdetail.topic_name %></td>-->
+		<td>
+			<!--AVOID checking by : course_type=='Topic' or 'Subtopic', user may wrongly select Topic/Subtopic for course type!-->
+			<% if topicdetail.subject_topic.ancestry_depth == 3 %><!--Topic-->
+				<%= topicdetail.subject_topic.parent.code %>
+			<% elsif topicdetail.subject_topic.ancestry_depth == 4 %><!--Subtopic-->
+				<%= topicdetail.subject_topic.parent.parent.code %>
 			<% else %>
-				<tr><td colspan=10 style="font-weight:bold;">
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=subject.subject_list.upcase%></td></tr>
-			<% end %>	
-			<% topicdetails.sort_by{|u|u.subject_topic.code.to_i}.each do |topicdetail| %>
-			
-  			<tr><!--
-    			<td><%#=h topicdetail.topic_name %></td>-->
-    			<td><% if topicdetail.subject_topic.course_type=='Subtopic' %>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<% end %>
-					&nbsp;&nbsp;&nbsp;&nbsp;<%=topicdetail.subject_topic.code %>)&nbsp;<%=h topicdetail.subject_topic.name %></td>
-				<td><%=h topicdetail.version_no %></td>
-    			<td><%=h topicdetail.duration.strftime("%HH %MMin") %></td>
-    			<td><%=h topicdetail.theory.strftime("%HH %MMin") %></td>
-    			<td><%=h topicdetail.tutorial.strftime("%HH%MMin") %></td>
-    			<td><%=h topicdetail.practical.strftime("%HH %MMin") %></td>
-				<td><%=h topicdetail.topic_creator.name %></td>
-				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => topicdetail %></td>
-				<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => topicdetail %></td>
-				<td width=10px ><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), topicdetail, :confirm => 'Are you sure?', :method => :delete %></td>
-  			</tr>
+				&nbsp;
 			<% end %>
-		<% end %>
+		</td>
+		<td><%#=topicdetail.subject_topic.combo_code %>
+			<% if topicdetail.subject_topic.ancestry_depth == 3 %>
+				(<%=topicdetail.subject_topic.code %>)
+			<% elsif topicdetail.subject_topic.ancestry_depth == 4 %>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=topicdetail.subject_topic.code %>&nbsp;-
+			<% end %>
+			&nbsp;<%=h topicdetail.subject_topic.name %></td>
+		<td><%=h topicdetail.version_no %></td>
+		<td><%=h topicdetail.duration.strftime("%HH %MMin") %></td>
+		<td><%=h topicdetail.theory.strftime("%HH %MMin") %></td>
+		<td><%=h topicdetail.tutorial.strftime("%HH%MMin") %></td>
+		<td><%=h topicdetail.practical.strftime("%HH %MMin") %></td>
+		<td><%=h topicdetail.topic_creator.name %></td>
+		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => topicdetail %></td>
+		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => topicdetail %></td>
+		<td width=10px ><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), topicdetail, :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+		
 	<% end %>
-<% end %>		
+			
 </table>
 
 <br />

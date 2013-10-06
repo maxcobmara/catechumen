@@ -158,13 +158,15 @@ authorization do
   #Group Locations  -------------------------------------------------------------------------------
   role :facilities_administrator do
     has_permission_on :locations, :to => :manage
+    has_permission_on :tenants, :to => :manage
   end
   
   role :warden do
     has_permission_on :locations, :to => :core
-    has_permission_on :leaveforstudents, :to => [:index, :show, :update, :approve] do
-      if_attribute :studentsubmit => true
-    end
+    has_permission_on :leaveforstudents, :to => :manage
+    #has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve] do
+      #if_attribute :studentsubmit => true
+    #end
   end
   
   #Group E-Filing ------------------------------------------------------------------------------- 

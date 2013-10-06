@@ -57,16 +57,39 @@
 	</div>
 </div>
 
+
 <script type="text/javascript">
-	$j(document).ready(function(){
-			//show submit date
-			$j(".g1").keyup(function() {  
-			  var e1g1q1 = $j("#stationery_maxquantity").val();
-			  //var e1g1q2 = $j("#stationery_minquantity").val();
+	//$j(document).ready(function(){
+		//	//show submit date
+		//	$j(".g1").keyup(function() {  
+			//  var e1g1q1 = $j("#stationery_maxquantity").val();
+			//  //var e1g1q2 = $j("#stationery_minquantity").val();
 			
 				
-				var ansP = document.getElementById("stationery_minquantity");
-				ansP.value = (e1g1q1*1)+10 //+e1g1q2 
+			//	var ansP = document.getElementById("stationery_minquantity");
+			//	ansP.value = (e1g1q1*1)+10 //+e1g1q2 
+
+		//	});
+
+//	});
+	
+	$j(document).ready(function(){
+			//show submit date
+			$j(".g1").keyup(function() {  //for solution of retrieving UNIQUE id of fields for EACH item, refer skeleton (quotation project)	
+				//zero
+				var e1g1q1 = $j("#stationery_addsuppliers_attributes_0_quantity").val();
+				var e1g1q2 = $j("#stationery_addsuppliers_attributes_0_unitcost").val(); 
+
+				var ansP = document.getElementById("stationery_addsuppliers_attributes_0_total");
+				ansP.value = (e1g1q1*1)*(e1g1q2*1)
+				
+				//first
+				var qty = $j("#stationery_addsuppliers_attributes_1_quantity").val();
+				var unitcost = $j("#stationery_addsuppliers_attributes_1_unitcost").val(); 
+
+				var ansP1 = document.getElementById("stationery_addsuppliers_attributes_1_total");
+				ansP1.value = (qty*1)*(unitcost*1)
+				
 
 			});
 

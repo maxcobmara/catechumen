@@ -24,13 +24,14 @@ class Programme < ActiveRecord::Base
     
     def copy_topic_topicdetail
       @topiccode_in_topic_detail = Topicdetail.all.map(&:topic_code)
-      if course_type='Topic' && @topiccode_in_topic_detail.include?(id) == false
+      #if (course_type=='Topic' || course_type=='Subtopic') && @topiccode_in_topic_detail.include?(id) == false
+      if (ancestry_depth == 3 || ancestry_depth == 4) && @topiccode_in_topic_detail.include?(id) == false   #5thOct2013
         @newtopicdetail = Topicdetail.new
         @newtopicdetail.topic_code = id
-        @newtopicdetail.duration = Time.now
-        @newtopicdetail.theory = Time.now
-        @newtopicdetail.tutorial = Time.now
-        @newtopicdetail.practical = Time.now
+        @newtopicdetail.duration = duration.to_s #Time.now  #5thOct2013
+        @newtopicdetail.theory = '0'#Time.now               #5thOct2013
+        @newtopicdetail.tutorial = '0'#Time.now             #5thOct2013
+        @newtopicdetail.practical = '0'#Time.now            #5thOct2013
         @newtopicdetail.prepared_by = User.current_user.staff_id
         @newtopicdetail.save
       end  
