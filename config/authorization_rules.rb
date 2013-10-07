@@ -21,20 +21,11 @@ authorization do
     has_permission_on :locations,   :to => :manage                              #location items
     
     #E-Filing Menu Items
-    #has_permission_on :documents,   :to => :manage                                #e-filing items
-    has_permission_on :documents, :to => [:manage, :generate_report]
+    has_permission_on :documents, :to => [:manage, :generate_report]                 #e-filing items
     
     #Student Menu Items
     #has_permission_on :students,        :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
     #has_permission_on [:leaveforstudents],  :to => :manage #
-    
-    #24July2013-added
-      has_permission_on :student_discipline_cases, :to => :manage
-      has_permission_on :student_counseling_sessions, :to => :feedback_referrer
-      
-      has_permission_on :student_counseling_sessions, :to => [:manage, :feedback_referrer]
-      has_permission_on :students, :to => :core
-    #24July2013-added
     
     #Exam Menu Items
     has_permission_on :examquestions,   :to => :manage
@@ -48,6 +39,25 @@ authorization do
     
     #Administration Menu Items
     has_permission_on [:users, :roles, :pages],  :to => :manage #stuff in admin menu
+    
+    #Equery Menu Items
+    has_permission_on :staffsearch2s, :to => :read
+    has_permission_on :assetsearches, :to => :read
+    has_permission_on :documentsearches, :to => :read
+    has_permission_on :studentsearches, :to => :read
+    has_permission_on :studentattendancesearches, :to => :read
+    has_permission_on :studentdisciplinesearches, :to => :read
+    has_permission_on :studentcounselingsearches, :to => :read
+    has_permission_on :weeklytimetablesearches, :to => :read
+    has_permission_on :curriculumsearches, :to => :read
+    has_permission_on :lessonplansearches, :to => :read
+    has_permission_on :personalizetimetablesearches, :to => :read
+    has_permission_on :examsearches, :to => :read
+    has_permission_on :examresultsearches, :to => :read
+    has_permission_on :evaluatecoursesearches, :to => :read
+    has_permission_on :examanalysissearches, :to => :read
+    has_permission_on :booksearches, :to => :read
+    has_permission_on :librarytransactionsearches, :to => :read
   end
   
   
@@ -110,7 +120,7 @@ authorization do
     #to works in travel request..28 August 2013
     #has_permission_on :documents, :to => :index 
 
-    
+   
     has_permission_on :student_discipline_cases, :to => :create
     has_permission_on :student_discipline_cases, :to => :approve do
       if_attribute :assigned_to => is {User.current_user.staff_id}
@@ -133,6 +143,7 @@ authorization do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
      has_permission_on :attendances, :to => :manage
      has_permission_on :staff_attendances, :to => :manage   #29Apr2013-refer routes.rb
+     has_permission_on :staffsearch2s, :to => :read
   end
   
   role :finance_unit do
@@ -152,13 +163,15 @@ authorization do
   role :asset_administrator do
     has_permission_on :assets, :to => :manage
     has_permission_on :asset_defects, :to => :manage
+    has_permission_on :assetsearches, :to => :read
   end
 
   
   #Group Locations  -------------------------------------------------------------------------------
   role :facilities_administrator do
-    has_permission_on :locations, :to => :manage
+    has_permission_on :locations, :to => [:manage, :indextree]
     has_permission_on :tenants, :to => :manage
+    #has_permission_on :leaveforstudents, :to => :manage
   end
   
   role :warden do
@@ -172,10 +185,11 @@ authorization do
   #Group E-Filing ------------------------------------------------------------------------------- 
   role :e_filing do
     has_permission_on :cofiles, :to => :manage
-    has_permission_on :documents, :to => [:manage, :generate_report] do
-        if_attribute :prepared_by => is {User.current_user.staff_id}
-        if_attribute :stafffiled_id => is {User.current_user.staff_id}
-    end
+    has_permission_on :documents, :to => [:manage, :generate_report] #do
+        #if_attribute :prepared_by => is {User.current_user.staff_id}
+        #if_attribute :stafffiled_id => is {User.current_user.staff_id}
+    #end
+    has_permission_on :documentsearches, :to => :read
   end
   
   #Group Student --------------------------------------------------------------------------------
@@ -205,23 +219,26 @@ authorization do
   
   role :student_administrator do
      has_permission_on :students, :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
+     has_permission_on :studentsearches, :to => :read
   end
   
   role :disciplinary_officer do
     has_permission_on :student_discipline_cases, :to => :manage
     has_permission_on :student_counseling_sessions, :to => :feedback_referrer
+    has_permission_on :studentdisciplinesearches, :to => :read    
   end
   
   role :student_counsellor do
     has_permission_on :student_counseling_sessions, :to => [:manage, :feedback_referrer]
     has_permission_on :students, :to => :core
+    has_permission_on :studentcounselingsearches, :to => :read
   end
   
   #Group Training  -------------------------------------------------------------------------------
 
   role :programme_manager do
     has_permission_on :programmes, :to => :manage
-    has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar]
+    has_permission_on :timetables, :to => :manage#:to => [:index, :show, :edit, :update, :menu, :calendar]
     has_permission_on :topics, :to => :manage
     has_permission_on :weeklytimetables, :to => :manage #21March2013 added
   end
@@ -236,7 +253,7 @@ authorization do
 #--21march2013-new role added    
   role :lecturer do
     has_permission_on :examquestions, :to => :manage
-    has_permission_on :programmes, :to => [:core, :menu]
+    has_permission_on :programmes, :to => [:core,:menu]
     has_permission_on :topics, :to => :manage
     has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar] do
       if_attribute :staff_id => is {User.current_user.staff_id}
@@ -246,10 +263,19 @@ authorization do
       if_attribute :tpa_id => is {User.current_user.staff_id}
     end
     has_permission_on :timetables, :to => [:create]
-    has_permission_on :student_attendances, :to => :manage    #10July2013
+    has_permission_on :student_attendances, :to => :manage  #10July2013
     has_permission_on :weeklytimetables, :to => :personalize_index do
       if_attribute :staff_id => is {User.current_user.staff_id}
     end
+    has_permission_on :studentattendancesearches, :to => :read
+    has_permission_on :weeklytimetablesearches, :to => :read
+    has_permission_on :curriculumsearches, :to => :read
+    has_permission_on :lessonplansearches, :to => :read
+    has_permission_on :personalizetimetablesearches, :to => :read
+    has_permission_on :examsearches, :to => :read
+    has_permission_on :examresultsearches, :to => :read
+    has_permission_on :evaluatecoursesearches, :to => :read
+    has_permission_on :examanalysissearches, :to => :read
   end
   
   
@@ -261,6 +287,8 @@ authorization do
     has_permission_on :books, :to => [:manage, :extend, :return]
     has_permission_on :librarytransactions , :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try, :multiple_edit,:check_availability2,:multiple_update]#,:accession_list]  
     has_permission_on :students, :to => :index
+    has_permission_on :booksearches, :to => :read
+    has_permission_on :librarytransactionsearches, :to => :read
   end 
   
   role :guest do
