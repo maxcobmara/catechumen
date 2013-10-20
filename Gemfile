@@ -1,28 +1,31 @@
 source 'https://rubygems.org'
+ruby '2.0.0'
 
-gem 'rails', '3.2.13'
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '4.0.0'
+gem "thin", "~> 1.5.1"
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 #functional
 
-gem 'pg', '~> 0.12.2'
+gem 'pg', '~> 0.14.0'
 gem 'devise'
 gem "ransack"
 #ui/ux gems
 gem 'jquery-rails'
-gem 'bootstrap-sass', '~> 2.1'
+gem 'bootstrap-sass', '~> 2.3'
 gem "bootstrap-switch-rails"
 gem "bootstrap-datetimepicker-rails", "~> 0.0.11"
 #assistors
-gem "haml", "~> 4.0.2"
+gem "haml", "~> 4.0.3"
 
 
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'rspec-rails', '~> 2.11.0'
-  gem 'guard-rspec', '~> 1.2.1'
+  gem 'rspec-rails', '~> 2.14.0'
+  gem 'guard-rspec', '~> 2.5.0'
 end
 
 group :development do
@@ -32,9 +35,9 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.5'
-  gem 'coffee-rails', '~> 3.2.2'
-  gem 'uglifier', '~> 1.2.3'
+  gem 'sass-rails',   '~> 4.0.0'
+  gem 'coffee-rails', '~> 4.0.0'
+  gem 'uglifier', '~> 2.1.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
@@ -42,7 +45,7 @@ group :assets do
 end
 
 group :test do
-  gem 'capybara', '1.1.2'
+  gem 'capybara', '2.1.0'
   gem 'factory_girl_rails', '4.1.0'
 end
 
