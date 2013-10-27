@@ -18,8 +18,13 @@
 	<% elsif @assetsearch.startdate && @assetsearch.enddate && !@assetsearch.purchaseprice %>
 		<%=render :partial => 'kewpa8', :locals => {:assets => @assetsearch.assets} %> 
 	<%# elsif (@assetsearch.maintainable==true && @assetsearch.category != 9 && !@assetsearch.discardoption && @assetsearch.disposalcert!=1 && @assetsearch.loss_start!=1 && @assetsearch.loss_end!=1 && !@assetsearch.loss_cert && @assetsearch.assetcode=='' && @assetsearch.name=='')|| ((@assetsearch.maintcode!=''|| @assetsearch.maintname!='') && @assetsearch.category != 9 && @assetsearch.disposal !=1&& !@assetsearch.discardoption && @assetsearch.disposalcert!=1 && @assetsearch.loss_start!=1 && @assetsearch.loss_end!=1 && !@assetsearch.loss_cert && @assetsearch.assetcode=='' && @assetsearch.name=='')  %>
-	<% elsif (@assetsearch.maintainable && @assetsearch.maintainable==true) || (@assetsearch.maintainable && @assetsearch.maintainable==false)%>
+	
+	<!--KEWPA 13-Amended on 27th October 2013-->
+	<!--MANDATORY TO ADD ...()&&(@assetsearch.category=='8' || @assetsearch.category==8)....-->
+	<!--TO AVOID DISPLAY OF kewpa13 for KEWPA14 search!-->
+	<% elsif( (@assetsearch.maintainable && @assetsearch.maintainable==true) || (@assetsearch.maintainable && @assetsearch.maintainable==false)) && (@assetsearch.category=='8' || @assetsearch.category==8) %>
 		<%=render :partial => 'kewpa13', :locals => {:assets => @assetsearch.assets} %> 
+	<!--KEWPA 13-Amended on 27th October 2013-->
 	<% elsif @assetsearch.disposalreport %>
 		<%=render :partial => 'kewpa17', :locals => {:assets => @assetsearch.assets} %> 
 	<% elsif @assetsearch.disposalreport2 %>

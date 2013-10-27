@@ -13,7 +13,7 @@ class StaffAttendancesController < ApplicationController
         @staffthumb = params[:staffthumb3] 
     elsif @dept_select == "Kaunter"
         @staffthumb = params[:staffthumb4] 
-    elsif @dept_select == "Pembangunan"
+    elsif @dept_select == "Kejuruteraan"     #elsif @dept_select == "Pembangunan"
         @staffthumb = params[:staffthumb5] 
     elsif @dept_select == "Kewangan & Stor"
         @staffthumb = params[:staffthumb6] 
@@ -31,7 +31,7 @@ class StaffAttendancesController < ApplicationController
         @staffthumb = params[:staffthumb12] 
     elsif @dept_select == "Penolong Pegawai Perubatan"
         @staffthumb = params[:staffthumb13] 
-    elsif @dept_select == "Pos Basik"
+    elsif @dept_select == "Pengkhususan"       #elsif @dept_select == "Pos Basik"
         @staffthumb = params[:staffthumb14] 
     elsif @dept_select == "Sains Perubatan Asas"
         @staffthumb = params[:staffthumb15] 
@@ -134,7 +134,8 @@ class StaffAttendancesController < ApplicationController
     @ooo = StaffAttendance.is_controlled.group_by {|t| t.group_by_thingy }     
     #yg asal=============
   end
-    @dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Pembangunan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]
+    #@dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Pembangunan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]
+    @dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Kejuruteraan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pengkhususan","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]
     @position_staff_ids = []  
     @staff_in_department = []
     @test_department = []
@@ -334,7 +335,8 @@ class StaffAttendancesController < ApplicationController
   end
   
   def report
-    @dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Pembangunan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]
+    #@dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Pembangunan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]
+    @dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Kejuruteraan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pengkhususan","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]
     @dept_superiors = []
     @position_staff_ids = []
     @staff_in_department = []
@@ -438,7 +440,7 @@ class StaffAttendancesController < ApplicationController
                   @staffthumb = params[:staffthumb3] 
               elsif @dept_select == "Kaunter"
                   @staffthumb = params[:staffthumb4] 
-              elsif @dept_select == "Pembangunan"
+              elsif @dept_select == "Kejuruteraan"     #elsif @dept_select == "Pembangunan"
                   @staffthumb = params[:staffthumb5] 
               elsif @dept_select == "Kewangan & Stor"
                   @staffthumb = params[:staffthumb6] 
@@ -456,7 +458,7 @@ class StaffAttendancesController < ApplicationController
                   @staffthumb = params[:staffthumb12] 
               elsif @dept_select == "Penolong Pegawai Perubatan"
                   @staffthumb = params[:staffthumb13] 
-              elsif @dept_select == "Pos Basik"
+              elsif @dept_select == "Pengkhususan"      #elsif @dept_select == "Pos Basik"
                   @staffthumb = params[:staffthumb14] 
               elsif @dept_select == "Sains Perubatan Asas"
                   @staffthumb = params[:staffthumb15] 
