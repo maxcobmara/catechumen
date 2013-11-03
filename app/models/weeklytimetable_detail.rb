@@ -7,7 +7,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    belongs_to :weeklytimetable_topic,     :class_name => 'Programme',   :foreign_key => 'topic'
    belongs_to :weeklytimetable_lecturer,  :class_name => 'Staff',       :foreign_key => 'lecturer_id'
    belongs_to :weeklytimetable_location,  :class_name => 'Location',    :foreign_key => 'location'
-   has_one    :lessonplan,                :class_name => 'LessonPlan',  :foreign_key => 'schedule'
+   has_one    :lessonplan,                :class_name => 'LessonPlan',  :foreign_key => 'schedule', :dependent => :nullify #31OCT2013 - :dependent => :destroy
    has_many   :student_attendances
    
    #validates_uniqueness_of :lecturer_id, :time_slot, :time_slot2, :day2, :is_friday, :scope => :weeklytimetable_id

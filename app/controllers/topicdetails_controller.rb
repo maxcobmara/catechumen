@@ -2,8 +2,10 @@ class TopicdetailsController < ApplicationController
   # GET /topicdetails
   # GET /topicdetails.xml
   def index
-    @topicdetails = Topicdetail.all
-
+    @topicdetails = Topicdetail.find(:all, :order => 'updated_at DESC')
+    #@topicdetails = Topicdetail.all            #use this semula #before30Oct2013
+    #@topicdetails = Topicdetail.find(:all,:conditions=>['topic_code IS NOT NULL'])    #31Oct2013
+    @topicdetails2 = Topicdetail.find(:all,:conditions=>['topic_code IS NULL'])    #31Oct2013
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @topicdetails }

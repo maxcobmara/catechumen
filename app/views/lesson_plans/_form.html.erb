@@ -9,7 +9,16 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><%= f.label :schedule %></td>
-			<td><%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?',User.current_user.staff_id]), :id, :day_time_slot, :include_blank=>"Select Schedule" %></td>
+			<!--START-revised on 3Nov2013-->
+			<td>
+				<% if @lesson_plan && @lesson_plan.schedule.nil? == true %>
+					<% @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact %>
+					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id NOT IN (?)',User.current_user.staff_id,@lessonplan_schedule]), :id, :day_time_slot, :include_blank=>"Select Schedule" %>
+				<% else %>
+					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?',User.current_user.staff_id]), :id, :day_time_slot, :include_blank=>"Select Schedule" %>
+				<% end %>
+			</td>
+			<!--START-revised on 3Nov2013-->
 		</tr>
 		
 		<!--30March2013-Part A:Pre-selected data upon selection of schedule (start)-->
@@ -85,8 +94,8 @@
 		    	No Attachment yet
 				<% @title_fr_trainingnotes ='' %>
 	    	<% end %>
-		</td>
-		
+			</td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="data">Upload/Change File:</label></td>
 			<td><%= f.file_field :data %><BR>
@@ -117,7 +126,12 @@
 				</tr>-->
 			</table>
 		<!--trial section : 20May2013-->
-		
+		<!--start-added for clarification-3Nov2013-->
+		<tr>
+			<td class="leftcol"><label for="data">Remark :</label></td>
+			<td>For additional Training Notes, should you found there's no suitable EXISTING training notes available for selection, add ONE in topic details (menu : Training | Lesson Plan | Create Topic Details) accordingly.  </td>
+		</tr>
+		<!--end-added for clarification-3Nov2013-->
 	</table>
 
 <BR>

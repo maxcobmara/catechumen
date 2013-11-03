@@ -11,7 +11,10 @@ class Programme < ActiveRecord::Base
     has_many :schedule_details_subjects, :class_name => 'WeeklytimetableDetail', :foreign_key => 'subject'
     has_many :schedule_details_topics,  :class_name => 'WeeklytimetableDetail', :foreign_key => 'topic'
 
-    has_many :topic_details, :class_name => 'Topicdetail', :foreign_key => 'topic_code'   #26March2013
+    #has_many :topic_details, :class_name => 'Topicdetail', :foreign_key => 'topic_code'   #26March2013
+     #has_many :topic_details, :class_name => 'Topicdetail',:dependent => :destroy, :foreign_key => 'topic_code'   #30Oct2013
+     has_many :topic_details, :class_name => 'Topicdetail',:dependent =>:nullify, :foreign_key => 'topic_code'   #31Oct2013
+
     has_many :lessonplan_topics, :class_name => 'LessonPlan', :foreign_key =>'topic'      #26March2013
 
     def set_combo_code
@@ -28,7 +31,11 @@ class Programme < ActiveRecord::Base
       if (ancestry_depth == 3 || ancestry_depth == 4) && @topiccode_in_topic_detail.include?(id) == false   #5thOct2013
         @newtopicdetail = Topicdetail.new
         @newtopicdetail.topic_code = id
-        @newtopicdetail.duration = duration.to_s #Time.now  #5thOct2013
+        if duration==''|| duration.nil? == true             #3thNov2013
+          @newtopicdetail.duration = '0'                    #3thNov2013
+        else                                                #3thNov2013
+          @newtopicdetail.duration = duration.to_s #Time.now  #5thOct2013   
+        end                                                 #3thNov2013
         @newtopicdetail.theory = '0'#Time.now               #5thOct2013
         @newtopicdetail.tutorial = '0'#Time.now             #5thOct2013
         @newtopicdetail.practical = '0'#Time.now            #5thOct2013

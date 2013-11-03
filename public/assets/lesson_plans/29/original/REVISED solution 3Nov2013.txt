@@ -1,0 +1,19 @@
+3 Nov 2013 (REVISED)
+----------
+TOPIC DETAILS 
+=============
+1-controllers/topicdetails_controller.rb - line 5 ---> sort by 'updated_at DESC'.
+
+2-model/programme.rb - line 34-38 - for topic/subtopic creation/modification, supposed duration must be keyed-in, BUT if duration is not available --> assign '0' [00:00:00] for duration into topicdetails table.
+
+LESSON PLANS
+============
+
+1-models/lesson_plan.rb 
+- line 53-59 (as modified on 31st Oct 2013, schedule is no longer COMPULSORY, so if schedule EXIST/SELECTED, assign values of lecture_date, start_time & end_time accordingly [read from weeklytimetable_details])
+- (unremark this : ':copy_attached_doc_trainingnotes') ---> (make sure all uploaded/attached notes for a lesson plan being copied into TRAININGNOTES table)
+	* line 3
+	* line 75-83, 87-91, 94 & 101-107.
+
+
+2-views/lesson_plans/_form.html.erb - line 12-21 (as modified on 31st Oct 2013, schedule is no longer COMPULSORY, so have to define 2 collection_select, one for NEW lesson_plan/EXISTING lesson_plan without schedule & second for EXISTING lesson_plan with SELECTED schedule. Also include updates - collection select will only display schedule that NOT YET USED in any lesson_plan.)

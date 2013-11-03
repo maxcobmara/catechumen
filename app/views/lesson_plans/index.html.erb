@@ -44,16 +44,44 @@
 
   <tr>
     <td><%=h lesson_plan.lessonplan_owner.name %></td>
-    <td><%=h lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name %><%#=h lesson_plan.lessonplan_intake.name %></td>
+   <td>
+		<% @weeklytmetabledetails = WeeklytimetableDetail.all.map(&:id).uniq %><!--added 31st October2013-schedule no longer compulsory-->
+		<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %><!--added 31st October2013-schedule no longer compulsory-->
+			<%=h lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name %>
+			<%#=h lesson_plan.lessonplan_intake.name %>
+		<% else %><!--added 31st October2013-->
+			<font color=red>Schedule was not defined/removed.<br>Please select a schedule</font><!--added 31st October2013-->
+		<% end %><!--added 31st October2013-->
+	</td>
     <td><%=h lesson_plan.student_qty %></td>
     <td><%=h lesson_plan.year %></td>
     <td><%=h lesson_plan.semester %></td>
-    <td><%=h lesson_plan.schedule_item.weeklytimetable_topic.subject_with_topic %>
-		<%#=h lesson_plan.lessonplan_topic.subject_with_topic %></td>
+   <td>
+		<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %><!--added 31st October2013-schedule no longer compulsory-->
+			<%=h lesson_plan.schedule_item.weeklytimetable_topic.subject_with_topic %>
+			<%#=h lesson_plan.lessonplan_topic.subject_with_topic %>
+		<% else %><!--added 31st October2013-->
+			-
+		<% end %><!--added 31st October2013-->
+	</td>
     <td><%=h lesson_plan.lecture_title %></td>
     <td><%=h lesson_plan.lecture_date %></td>
-    <td><%=h lesson_plan.schedule_item.get_start_time %><%#=h lesson_plan.start_time.strftime("%H:%M") %></td>
-    <td><%=h lesson_plan.schedule_item.get_end_time %><%#=h lesson_plan.end_time.strftime("%H:%M") %></td>
+   	<td>
+		<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %><!--added 31st October2013-schedule no longer compulsory-->	
+			<%=h lesson_plan.schedule_item.get_start_time %>
+			<%#=h lesson_plan.start_time.strftime("%H:%M") %>
+		<% else %><!--added 31st October2013-->
+			-
+		<% end %><!--added 31st October2013-->
+	</td>
+    <td>
+		<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %><!--added 31st October2013-schedule no longer compulsory-->	
+			<%=h lesson_plan.schedule_item.get_end_time %>
+			<%#=h lesson_plan.end_time.strftime("%H:%M") %>
+		<% else %><!--added 31st October2013-->
+			-
+		<% end %><!--added 31st October2013-->
+	</td>
 	<td><%=h lesson_plan.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %>
 		<% if lesson_plan.hod_rejected==true && lesson_plan.is_submitted==nil %>
 			- Returned
