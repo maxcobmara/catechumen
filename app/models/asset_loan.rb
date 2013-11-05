@@ -43,7 +43,8 @@ class AssetLoan < ActiveRecord::Base
   
   def unit_members
       #6-Maslinda(IT),7-16-Ketua2 Program/Subjek(bwh TPA),17-19-Ketua2 Unit(bwh TPHEP),Unit2 bwh Pembantu Tadbir
-      hods = [6,7,8,9,10,11,12,13,14,15,16,17,18,19,25,26,27,28,29,30,31]     #positions of hod - Ketua-ketua Unit's position IDs
+      #hods = [6,7,8,9,10,11,12,13,14,15,16,17,18,19,25,26,27,28,29,30,31]     #positions of hod - Ketua-ketua Unit's position IDs
+      hods = Position.find(:all, :conditions=>['unit IS NOT NULL AND unit!=?','Ketua Unit Penilaian & Kualiti']).map(&:id).uniq   #5Nov2013-TO ADVISE KSKB-insert unit for HODs only
       loaned_by_position_id = Position.find_by_staff_id(self.loaned_by).id    #loaned_by --> staff_id 
       unit_members = []
       if hods.include?(loaned_by_position_id)                                 #if hods.include?(self.loaned_by)-if logged user 1 of hod 
