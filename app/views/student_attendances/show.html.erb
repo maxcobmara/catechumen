@@ -1,0 +1,19 @@
+<div class="tform">
+	<H2>Student Attendance Details</H2>
+	  	<table width=100%>
+			<tr>
+				<td class="leftcol">Student :</td>
+				<td><%=h @student_attendance.student.matrix_name %></td>
+			</tr>
+			<tr>
+				<td class="leftcol">Date | Time | Subject-Topic :</td>
+				<td><%=h @student_attendance.weeklytimetable_detail.day_time_slot %></td>
+			</tr>
+			<tr>
+				<td class="leftcol">Attendance :</td>
+				<td><% if @student_attendance.attend==true %>Attended<% else %>Absent<% end %></td>
+			</tr>
+		</table>
+</div>
+
+<%= link_to 'Back', student_attendances_path %> | <%= link_to 'Edit', edit_student_attendance_path(@student_attendance) %>

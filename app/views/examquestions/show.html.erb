@@ -43,7 +43,30 @@
 		</tr>
 		-->
 	
+<!--Usage Frequency-->
 
+	<% if @examquestion.usage_frequency > 0 %>
+	<fieldset>
+		<legend>Usage Frequency</legend>
+			<table>
+			<% count=1%>
+				 <% @q_frequency[0].exams.each do |paper| %>
+					<tr>
+						<td class="leftcol"><%=count%>) <%=paper.exam_on.strftime("%d %b %Y")%></td>
+						<td>
+							<%=paper.name%>
+							<%#=paper.id%> - 
+							<%=paper.subject.subject_list%>
+						</td>
+					</tr>
+					<% count+=1%>
+				<% end %>
+			</table>
+	</fieldset>
+	<% end %>
+	
+	
+<!--Usage Frequency-->
 	
 	
 	

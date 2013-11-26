@@ -1,0 +1,103 @@
+<%= stylesheet_link_tag 'report', :media => "print" %>
+
+	<form action="#">
+			<script>
+			document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+			</script>
+	</form>
+	
+<div class="A4potrait" style="border: none;">
+<BR/>
+<table class="tlong">
+	<thead>
+				<tr>
+					<th class="tright" colspan=6><b></b></th>
+				</tr>
+				<tr>
+					<th  colspan=6><b>BOOK LISTING</b></th>
+				</tr>
+				<tr>
+					<th colspan=6 style="text-align:left;">
+						Total Books / Titles : <%#= @bob %><%=@books.count%>/<%= Book.count('title', :distinct => true)%>
+						<%if @bb==''||@bb=='2'||@bb=='3'%>
+							 / <%= Book.count('title', :distinct => true)%>
+						<% end%>
+						<% if @bb == '1' %> - Listing All Books
+						<% elsif @bb == '2' %> - Listing by Class No (NLM)
+						<% elsif @bb == '3' %> - Listing by Class No (LC)
+						<% elsif @bb == '4' %> - Listing Books <br>(<%=@searchby_items%>)
+						<% end %>
+					</th>
+				</tr>
+				<tr>
+					<th class="tcol"><b>NO</b></th>
+					<th class="tcol"><b>ACC NO</b></th>
+					<th class="tcol"><b>NLM/LC NO</b></th>
+					<th class="tcol"><b>AUTHOR</b></th>
+					<th class="tcol"><b>TITLE</b></th>
+					<th class="tcol"><b>ISBN NO</b></th>
+				</tr>
+	</thead>
+	
+	<tbody>
+			<% bil = 0 %>
+			<% @books.each do |book|%>
+			<% bil += 1 %>
+				<% if book.accessions.count != 0 %>
+				<!--for already amended data (books+accessions)-start-->
+				<% book.accessions.each do |accession|%>
+				<tr>
+					
+					<td class="tdata" style="text-align:center;" ><%=h bil %></th>
+					<td class="tdata">
+						<!--1Apr2013-TEMPORARY solution until all data transformed into books+accessions tables-->
+							<!--DO NOT REMOVE until data transformation completed-->
+							<%#=h book.accessions.count %>
+							<!--DO NOT REMOVE until data transformation completed-->
+						<%= accession.accession_no %>
+						<!--1Apr2013-TEMPORARY solution until all data transformed into books+accessions tables-->
+					</th>
+					
+					<td class="tdata"><%=h book.classlcc if book.classlcc!=''%><%=h book.classddc if book.classddc!=''%></th>
+					<td class="tdata"><%=h book.author %></th>
+					<td class="tdata"><%=h book.title %></th>
+					
+					<td class="tdata" style="white-space: nowrap; padding-right:3mm;" >
+						<%=h book.isbn.split("-").to_s if book.isbn!= nil %>
+					</th>
+				</tr>
+				<% end %>
+				<!--for already amended data (books+accessions)-end-->
+				<% else %>
+				<tr>
+					<td class="tdata" style="text-align:center;" ><%=h bil %></th>					
+					<td class="tdata">
+						<!--1Apr2013-TEMPORARY solution until all data transformed into books+accessions tables-->
+							<!--DO NOT REMOVE until data transformation completed-->
+							<%#=h book.accessions.count %>
+							<!--DO NOT REMOVE until data transformation completed-->
+						<%= book.accessionno %>
+						<!--1Apr2013-TEMPORARY solution until all data transformed into books+accessions tables-->
+					</th>
+					
+					<td class="tdata"><%=h book.classlcc if book.classlcc!=''%><%=h book.classddc if book.classddc!=''%> </th>
+					<td class="tdata"><%=h book.title %></th>
+					<td class="tdata"><%=h book.author %></th>
+					
+					<td class="tdata" style="white-space: nowrap; padding-right:3mm;" >
+						<%=h book.isbn.split("-").to_s if book.isbn!= nil %>
+					</th>
+				</tr>
+				<% end %>
+			<% end %>
+	</tbody>
+</table>
+<div>	
+	
+
+<div id="hideLink">
+<%= link_to 'Back', books_path %>
+</div>

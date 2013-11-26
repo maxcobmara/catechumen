@@ -14,14 +14,31 @@
 			 	<td class="leftcol"><label for="evaldt"><b><%= t 'evaluation.form.evaluationdate' %></b></label></td>
 				<td><%= f.date_select :evaluation_year, :end_year => Time.now.year, :discard_month => true %></td>
 			</tr>
+			<!--newly added-->
+			<% if User.current_user.staff.position.parent.staff.blank? %>
+			<tr>
+				<td colspan=2><%= t 'evaluation.form.remark' %></td>
+			</tr>
+			<!--
+			<tr>
+			 	<td class="leftcol"><%#= t 'evaluation.form.ppp' %></td>
+				<td><%#=f.collection_select :eval1_by, Staff.find(:all, :order => "name ASC"), :id, :name, :include_blank => "Select" %></td>
+			</tr>		
+			<tr>
+			 	<td class="leftcol"><%#= t 'evaluation.form.ppk' %></td>
+				<td><%#=f.collection_select :eval2_by, Staff.find(:all, :order => "name ASC"), :id, :name, :include_blank => "Select" %></td>
+			</tr>	-->	
+			<% end %>
+			<!--newly added-->
 		</table>
-		
+		<% if User.current_user.staff.position.parent.staff.blank? == false %>
 		<%=render :partial => 'skt', :locals => {:f => f} %> 
+		<% end %>
 	</div>
 	<BR/>
 
-  <p>
-    <%= f.submit 'Create' %>
+  <p><% if User.current_user.staff.position.parent.staff.blank? == false %>
+    <%= f.submit t 'submit' %><% end %>
   </p>
 <% end %>
 

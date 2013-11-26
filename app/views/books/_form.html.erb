@@ -1,31 +1,67 @@
-<div class="tform">
-	<H2>Book Details</H2>
-  <table width=100% >
-			<tr>
-				<td class="leftcol"><%= t 'book.tagno' %></td>
-				<td><%= f.text_field :tagno, :default => :tag_suggest %></td>
-			</tr>
-	
+<!--<div class="tform">-->
+<!--<H2>Book Details</H2>-->
+  	<table width=100% >
+		<!--hide on 16July2013--><!--
+		<tr>
+			<td class="leftcol"><%#= t 'book.tagno' %></td>
+			<td>
+			<%# if @book.id.blank? || @book.id.nil? %>
+				<%#= (Book.find(:last).tagno.to_i+1).to_s   %>
+				<%#= f.hidden_field :tagno, :value => (Book.find(:last).tagno.to_i+1).to_s %>
+				<%#= f.hidden_field :tagno, :default => :tag_suggest %><%#= Book.find(:last).id+1 %>
+			<%# else %>
+				<%#= @book.tagno %>
+			<%# end %>--><!--1Apr2013--><!--</td>								
+		</tr>-->
+		<!--hide on 16July2013-->
+		
+		<!--1April2013-->
+		<tr>
+			<td class='leftcol2'>Accession No's</td>
+			<td>
+				<% f.fields_for :accessions do |builder| %>
+					<%= render 'accession_fields', :f => builder %>
+				<% end %>
+				<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More No.'), f, :accessions %> - Add More </p>
+			</td>
+		</tr>
+
+		<!--1April2013-->
+
 			<!--<tr>
 				<td class="leftcol"><label for="controlno"><b>Control No:</b></label><font color="red"> * </font></td>
 				<td><% f.text_field :controlno %></td>
 			</tr>-->
 	
+			<!--
 			<tr>
 				<td class="leftcol"><label for="isbn"><b>ISBN No:</b></label></td>
-				<td><%= f.text_area :isbn, :size =>  '30x2' %><font color="red"> * </font></td>
-			</tr>
-	
+				<td>
+					<%#= f.text_area :isbn, :size =>  '30x2' %>
+					-->
+					<!--for new(resubmit)-checking-->
+					<%# if @book %><%#= @book.isbn%><%# end %>
+					<!--for new(resubmit)-checking-->
+					
+					<%#=f.text_field :isbn, :value => @isbnsearch %>
+					<%#= text_field_with_auto_complete :book, :isbn, {:class => 'compulsory'}, 
+							{ :url => formatted_books_path(:js), 
+								:method => :get,
+								:with => "'search=' + element.value"} %><!--<font color="red"> * </font></td>
+			</tr>-->
+		
+		<!--1April2013-->	
+			<!--
 			<tr>
 				<td class="leftcol"><label for="issn">ISSN:</label></td>
-			  <td><%= f.text_field :issn %><font color="red"> * </font></td>
-			</tr>
+			  <td><%#= f.text_field :issn %>--><!--<font color="red"> * </font></td>
+			</tr>-->
 	
-	
+			<!--
 			<tr>
 				<td class="leftcol"><label for="bookcode"><b>Library Code:</b></label></td>
-		    <td><%= f.text_field :bookcode %></td>
-			</tr>
+		    <td><%#= f.text_field :bookcode %></td>
+			</tr>-->
 	
 			<tr>
 				<td class="leftcol"><label for="catsource"><b>Catalouging Source To:</b></label></td>
@@ -34,54 +70,54 @@
 			                 :prompt => "Select"  %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><label for="classlcc"><b>Class No (NLM):</b></label></td>
+				<td class="leftcol"><label for="classlcc"><b>Class No (NLM) / (LC):</b></label></td>
 				<td><%= f.text_field :classlcc %><font color="red"> * </font></td>
 			</tr>
+			<!--
+			<tr>
+				<td class="leftcol"><label for="classddc"><b>Class No (LC):</b></label></td> 
+			    <td><%#= f.text_field :classddc %><font color="red"> * </font></td>
+			</tr>-->
 	
 			<tr>
-				<td class="leftcol"><label for="classddc"><b>Class No (DDC):</b></label></td>
-			    <td><%= f.text_field :classddc %><font color="red"> * </font></td>
-			</tr>
-	
-			<tr>
-				<td class="leftcol"><%= t 'book.title' %></td>
+				<td class="leftcol"><%= t 'book.title' %>:</td>
 			    <td><%= f.text_area :title, :size => '60x2' %><font color="red"> * </font></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><%= t 'book.language' %></td>
+				<td class="leftcol"><%= t 'book.language' %>:</td>
 			    	<td><%= f.select :language, 
 					                  Book::LANGUAGE,
 					                 :prompt => "Select"  %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><%= t 'book.author' %></td>
+				<td class="leftcol"><%= t 'book.author' %>:</td>
 			  <td><%= f.text_area :author, :size => '60x2' %><font color="red"> * </font></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><%= t 'book.subject' %></td>
+				<td class="leftcol"><%= t 'book.subject' %>:</td>
 			  <td><%= f.text_area :subject, :size => '60x6' %><font color="red"> * </font></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><%= t 'book.publisher' %></td>
+				<td class="leftcol"><%= t 'book.publisher' %>:</td>
 			  <td><%= f.text_field :publisher, :size => 50 %><font color="red"> * </font></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><%= t 'book.publish_date' %></td>
+				<td class="leftcol"><%= t 'book.publish_date' %>:</td>
 			  <td><%= f.text_field :publish_date, :size => 7, :placeholder => "YYYY" %><font color="red"> * </font></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><%= t 'book.publish_location' %></td>
+				<td class="leftcol"><%= t 'book.publish_location' %>:</td>
 			  <td><%= f.text_field :publish_location, :size => 50 %><font color="red"> * </font></td>
 			</tr>
-	
+			<!--
 			<tr>
 				<td class="leftcol"><label for="description">Physical Description:</label></td>
-			  <td><%= f.text_field :description, :size => 50 %></td>
-			</tr>
+			  <td><%#= f.text_field :description, :size => 50 %></td>
+			</tr>-->
 			<tr>
 				<td class="leftcol"><%= t 'book.roman' %>:</td>
 			  <td><%= f.text_field :roman %><font color="red"> * </font></td>
@@ -154,32 +190,19 @@
 			</tr>
 	
 			<tr>
-				<td class="leftcol">Upload Book Image</td>
+				<td class="leftcol">Upload Book Image:</td>
 				<td><%= f.file_field :photo %>
 						<span STYLE="font-size:0.9em; font-family: courier"><%=h @book.photo_file_name unless @book.photo_file_name.blank?  %> - 
 						<%=h (@book.photo_file_size/1024) unless @book.photo_file_name.blank? %> Kb</span></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><%= t 'book.links' %></td>
+				<td class="leftcol"><%= t 'book.links' %>:</td>
 			  <td><%= f.text_area :links, :size => '60x6' %></td>
 			</tr>
 	</table>
 	
-	<div>
-		<H2>Accessions</H2>
-		<table width=100%>
-			<tr>
-				<td class='leftcol'>Accession No's</td>
-				<td>
-					<% f.fields_for :accessions do |builder| %>
-						<%= render 'accession_fields', :f => builder %>
-					<% end %>
-					<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More No.'), f, :accessions %> - Add More </p>
-				</td>
-			</tr>
-		</table>
-	</div>
+
 	
 	
 	<H2>Purchase Information</H2>
@@ -216,6 +239,6 @@
 		</tr>
 	</table>
 <BR>
-</div>
+<!--</div>-->
 	
 	

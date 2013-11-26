@@ -1,0 +1,35 @@
+<div class="tform">
+	<H2>Student Discipline Cases Search</H2>
+
+<% form_for @studentdisciplinesearch do |f| %>
+  <%= f.error_messages %>
+	<% if @searchstudentdisciplinetype=='1' || @searchstudentdisciplinetype==1 %>
+		<%= hidden_field_tag :method,  1 %>
+		
+		<table width=100% >
+			<tr><td colspan=2>Search Students Discipline Cases By :</td></tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :programme %></td>
+				<td> <%= f.collection_select :programme, Programme.roots, :id, :programme_list, :include_blank=> true %></td>
+			</tr>		
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :intake %></td>
+				<td><%= date_select :intake, params[:intake], :order => [:month, :year], :include_blank => true %></td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :matrix_no %></td>
+				<td><%= f.text_field :matrixno %></td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :student_name %></td>
+				<td><%= f.text_field :name %></td>
+			</tr>
+		</table>	
+	<% end %>
+	
+  <p><%= f.submit "Search"%>&nbsp;<font size=-2>Leaves all fields 'blank' to display ALL record. 
+	To generate <b>Anacdotal Report</b>, insert a <b>Matrix No<b> and click 'search'.</font></p>
+<br><br>
+<% end %>
+</div>
+

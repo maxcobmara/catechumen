@@ -54,7 +54,14 @@
 				<% myhod = Position.find(:all, :conditions => ['id IN (?)', bosses ], :select => :staff_id).map(&:staff_id) %>
 				<tr class="span_is_processed" style="display: none;">
 					<td class="leftcol"><label for="approved_date">Notify HOD</label></td>
-			    <td><%= f.collection_select :decision_by, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %></td>
+			    	<td>
+						<% if User.current_user.staff.position.is_root? == false %>
+							<%= f.collection_select :decision_by, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %>				
+						<% else %>
+							<% myhod = User.current_user.staff.id %>
+							<%= f.collection_select :decision_by, Staff.find(:all, :conditions => ['id=?', myhod]), :id, :name %>
+						<% end %>
+					</td>
 				</tr>
 			</table>
 <% end %>

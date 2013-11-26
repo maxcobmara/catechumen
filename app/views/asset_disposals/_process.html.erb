@@ -42,21 +42,93 @@
 										3. <%= f.text_field :justify3_disposal %></label></td>
 			
 			</tr>
+			
+			
+			
+			<!--TO DO--><%#----------------start------additional part-for lembaga pemeriksa-appointed-KEWPA 15(letter)---------%>
+			<tr>
+			  <td class="leftcol"><label for="is_checked"><!--Checked By-->Lembaga Pemeriksa</label></td>
+				<td>
+					<%= f.date_select :checked_on, :order => [:day, :month, :year], :default => Date.today %>
+					<%#= f.hidden_field :checked_on, :order => [:day, :month, :year], :default => Date.today %>
+				</td>
+			</tr>
+			<tr>
+			  <td class="leftcol"><label for="is_staff1">1. Name (Tick & select if STAFF)</label></td>
+				<td>
+					<%= f.check_box :is_staff1, :id => 'is_staff1' %> &nbsp;&nbsp;
+					
+					<span class="span_staff1_on" style="display: none;">
+						<!--yg asal-->
+						<%#= select_tag "asset_disposal[examiner_staff1]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+						<!--yg asal-->
+						<!--modified one 13dec2012-->
+						<% if @asset_disposal.examiner_staff1.blank? || @asset_disposal.examiner_staff1.to_s.nil?%>
+							<%= select_tag "asset_disposal[examiner_staff1]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+						<% else %>
+							<%= select_tag "asset_disposal[examiner_staff1]","<option value='"+@asset_disposal.examiner_staff1.to_s+"'>" +Staff.find(@asset_disposal.examiner_staff1).staff_name_with_position+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+						<% end %>
+						<!--modified one 13dec2012-->
+						<%#= f.collection_select :examiner_staff1, Staff.find(:all), :id, :staff_name_with_position %>
+						<%#= f.collection_select :checked_by, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %>
+					</span>
+					<span class="span_staff1_off" style="display: none;">
+						<%= f.text_field :examiner1, :size=> 50  %>
+					</span>
+				</td>
+			</tr>
+			
+		<!---->
+			<%#= f.date_select :verified_on, :order => [:day, :month, :year], :default => Date.today %>
+			<%#= f.hidden_field :verified_on, :order => [:day, :month, :year], :default => Date.today %>
+			<tr>
+			  <td class="leftcol"><label for="is_staff2">2. Name (Tick & select if STAFF)</label></td>
+				<td>
+					<%= f.check_box :is_staff2, :id => 'is_staff2' %> &nbsp;&nbsp;
+
+					<span class="span_staff2_on" style="display: none;">
+						<!--yg asal-->
+						<%#= select_tag "asset_disposal[examiner_staff2]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+						<!--yg asal-->
+						<!--modified one 13dec2012-->
+						<% if @asset_disposal.examiner_staff2.blank? || @asset_disposal.examiner_staff2.to_s.nil?%>
+							<%= select_tag "asset_disposal[examiner_staff2]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+						<% else %>
+							<%= select_tag "asset_disposal[examiner_staff2]","<option value='"+@asset_disposal.examiner_staff2.to_s+"'>" +Staff.find(@asset_disposal.examiner_staff2).staff_name_with_position+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+						<% end %>
+						<!--modified one 13dec2012-->
+						<%#= f.collection_select :examiner_staff2, Staff.find(:all), :id, :staff_name_with_position %>
+						<%#= f.collection_select :checked_by, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %>
+					</span>
+						<span class="span_staff2_off" style="display: none;">
+							<%= f.text_field :examiner2, :size=> 50 %>
+						</span>
+				</td>
+			</tr>
+		<!----><%#----------------end------additional part-for lembaga pemeriksa-appointed-KEWPA 15(letter)---------%>
+			
+			<!--TO DO-->
+			
+			
+			
+			
 			<tr>
 			  <td class="leftcol"><label for="is_checked">Checked By</label></td>
 				<td><%= f.check_box :is_checked, :id => 'is_checked' %>
-						<SPAN class="span_is_checked" style="display: none;"><%= f.date_select :checked_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
+						<SPAN class="span_is_checked" style="display: none;"><%= f.date_select :checked_on, :order => [:day, :month, :year], :default => Date.today %></SPAN>
+						</td>
 			</tr>
 			
 			<tr class="span_is_checked" style="display: none;">
 				<td class="leftcol"><label for="processed_by">Name</label></td>
-				<td><%= f.collection_select :checked_by, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %></td>
+				<td><%= f.collection_select :checked_by, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %>
+				</td>
 			</tr>
 			
 			<% bosses = User.current_user.staff.position.ancestor_ids %>
 			<% myhod = Position.find(:all, :conditions => ['id IN (?)', bosses ], :select => :staff_id).map(&:staff_id) %>
 			<tr class="span_is_checked" style="display: none;">
-				<td class="leftcol"><label for="approved_date">Verified By</label></td>
+				<td class="leftcol"><label for="approved_date">To be verified by</label></td>
 		    <td><%= f.collection_select :verified_by, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %></td>
 			</tr>	
 </table>
@@ -69,16 +141,61 @@
 			$j("input[id='is_checked']").change(function() {  
 			 if($j('#is_checked').is(':checked')) { 
 			    $j(".span_is_checked").show("highlight"); 
+				
 			 }else		{
 			    $j(".span_is_checked").hide(""); 
+				
 			 }	
 			});
 
 			$j("input[id='is_checked']").each(function() {  
 			 if($j('#is_checked').is(':checked')) { 
 			    $j(".span_is_checked").show("highlight"); 
+				
 			 }else		{
 			    $j(".span_is_checked").hide(""); 
+				
+			 }	
+			});
+			//staff1
+			$j("input[id='is_staff1']").change(function() {  
+			 if($j('#is_staff1').is(':checked')) { 
+			    $j(".span_staff1_on").show("highlight"); 
+				$j(".span_staff1_off").hide(""); 
+			 }else		{
+			    $j(".span_staff1_on").hide(""); 
+				$j(".span_staff1_off").show("highlight"); 
+			 }	
+			});
+
+			$j("input[id='is_staff1']").each(function() {  
+			 if($j('#is_staff1').is(':checked')) { 
+			    $j(".span_staff1_on").show("highlight"); 
+				$j(".span_staff1_off").hide(""); 
+			 }else		{
+			    $j(".span_staff1_on").hide(""); 
+				$j(".span_staff1_off").show("highlight"); 
+			 }	
+			});
+			
+			//staff2
+			$j("input[id='is_staff2']").change(function() {  
+			 if($j('#is_staff2').is(':checked')) { 
+			    $j(".span_staff2_on").show("highlight"); 
+				$j(".span_staff2_off").hide(""); 
+			 }else		{
+			    $j(".span_staff2_on").hide(""); 
+				$j(".span_staff2_off").show("highlight"); 
+			 }	
+			});
+
+			$j("input[id='is_staff2']").each(function() {  
+			 if($j('#is_staff2').is(':checked')) { 
+			    $j(".span_staff2_on").show("highlight"); 
+				$j(".span_staff2_off").hide(""); 
+			 }else		{
+			    $j(".span_staff2_on").hide(""); 
+				$j(".span_staff2_off").show("highlight"); 
 			 }	
 			});
 

@@ -6,7 +6,10 @@ class Ptdo < ActiveRecord::Base
   belongs_to  :applicant, :class_name => 'Staff',   :foreign_key => 'staff_id'
   belongs_to  :replacement, :class_name => 'Staff', :foreign_key => 'replacement_id'
   
+  
   has_many    :staff_appraisals, :through => :staff
+  
+  
   
   def whoami
     #self.staff_id = User.current_user.staff.id
@@ -32,7 +35,20 @@ class Ptdo < ActiveRecord::Base
   end
   
   def applicant_details 
-    staff.mykad_with_staff_name
+       suid = staff_id.to_a
+       exists = Staff.find(:all, :select => "id").map(&:id)
+       checker = suid & exists     
+   
+       if staff_id == nil
+          "" 
+        elsif checker == []
+          "Staff No Longer Exists" 
+       else
+         staff.mykad_with_staff_name
+       end
   end
+  
+  
+
   
 end

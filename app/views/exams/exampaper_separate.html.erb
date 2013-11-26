@@ -1,0 +1,861 @@
+<%= stylesheet_link_tag 'report' %>
+<div id="A4potrait"><!--<div class="A4potrait" style="border: none;">-->
+
+	<form action="#">
+		<script>
+		document.write("<input type='button' " +
+		"onClick='window.print()' " +
+		"class='printbutton' " +
+		"value='Print This Page'/>");
+		</script>
+	</form>
+
+<%#----------------------cover-start--------------------------------------------------%>
+	<div id="hideLink">
+		<%= link_to (t 'icms.back'), exams_path %>
+	</div>
+
+<fieldset width=10px >
+
+	<% if @exam.subject_id!=nil && (@exam.subject.parent.code == '1' || @exam.subject.parent.code == '2') %>
+		<% @year = "TAHUN 1  SEMESTER " %>
+	<% elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '3' || @exam.subject.parent.code == '4') %>
+		<% @year = "TAHUN 2  SEMESTER " %>
+	<% elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '5' || @exam.subject.parent.code == '6') %>
+		<% @year = "TAHUN 3  SEMESTER " %>
+	<% end %>
+	
+<div id="title">
+
+<table width=100% border="0" cellspacing="0" cellpadding="5" align="center">
+<!--<table width=80% border="0" cellspacing="0" cellpadding="5" align="center">-->
+	<tr>
+		<td width="75%"  style="vertical-align:middle; text-align:left; font-family:arial;">SULIT</td>
+		<td width="25%" style="vertical-align:middle; text-align:right; font-family:arial;height:20px;">&nbsp;</td>
+    </tr>
+</table>
+	
+<table width=100% border="0" cellspacing="0" cellpadding="5" align="center">
+<!--<table width=80% border="0" cellspacing="0" cellpadding="5" align="center">-->
+		<tr>
+			<td align="center" colspan=3 style="height:30px;">&nbsp;</td>	
+    	</tr>
+		<tr>
+			<td align="center" colspan=3  style="border-top:1px solid black;border-left:1px solid black;border-right:1px solid black;"><BR><BR><img border="0" src="/images/KM.jpg" alt="KKM" width="" height="90"/></td>
+	    </tr>	
+
+	    <tr>
+			<td align="center" colspan=3 style="border-bottom:1px solid black;padding-bottom:10px;border-left:1px solid black;border-right:1px solid black;"><font size=4; style="font-family:arial"><b>LEMBAGA PENDIDIKAN<BR>KEMENTERIAN KESIHATAN MALAYSIA</b></font></td>
+	    </tr>	
+
+    	<tr>
+    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold;padding-top:30px;border-left:1px solid black; border-right:1px solid black;"><%#=h (@exam.name).upcase %>
+<%=h (Exam::EXAMTYPE.find_all{|disp, value| value == @exam.name}).map {|disp, value| disp}.to_s.upcase %> &nbsp;</td>	
+        </tr>
+    	<tr>
+    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold;border-left:1px solid black;border-right:1px solid black;">
+				<%=h @exam.subject_id? ? @year + @exam.subject.parent.code.to_s : "" %></td>	
+        </tr>
+    	<tr>
+    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold;border-bottom:1px solid black;padding-bottom:30px;border-left:1px solid black;border-right:1px solid black;"><%=h @exam.subject_id? ? "KURSUS "+@exam.subject.root.course_type.upcase+" "+@exam.subject.root.name.upcase : "" %></td>	
+        </tr>
+    	<tr>
+    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold; padding-top:20px;border-left:1px solid black;border-right:1px solid black;"><%=h @exam.subject_id? ? @exam.subject.name : "" %></td>	
+        </tr>
+    	<tr>
+    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold;border-bottom:1px solid black;padding-bottom:20px;border-left:1px solid black;border-right:1px solid black;"><%=h @exam.subject_id? ? @exam.subject.code : "" %></td>	
+        </tr>
+
+        <tr>
+    		<td align="center" style="font-family:arial;border-right:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-spacing:0;font-size:18px;padding-top:15px;padding-bottom:15px;">
+				Tarikh : <%=h (@exam.exam_on.blank? ? "-" : @exam.exam_on.strftime("%d %B %Y")).upcase+ " ("+ @exam.exam_on.strftime("%A") +")" %>
+				
+				<br>Masa : <%=h @exam.starttime.strftime('%H:%M %p') %> - <%=h @exam.endtime.strftime('%H:%M %p') %>
+			</td>
+    		<td colspan=2 style="font-family:arial;font-weight:bold;text-align:center;border-bottom:1px solid black;border-right:1px solid black;" >MCQ<!--SEQ--></td>	
+        </tr>
+        <tr>
+    		<td style="font-family:arial;text-align:left;border-right:1px solid black;font-size:18px;padding-top:15px;border-left:1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No K/P : </td>
+    		<td rowspan=2 style="font-family:arial;border-right:1px solid black;border-bottom:1px solid black;text-align:center;width:60px;"><!--S1-->&nbsp;</td>
+    		<td rowspan=2 style="border-right:1px solid black;border-bottom:1px solid black;width:40px;">&nbsp;</td>		
+        </tr>
+        <tr>
+    		<td style="font-family:arial;text-align:left;border-right:1px solid black;font-size:18px;border-left:1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No Matrik : <br>&nbsp;</td>
+
+        </tr>
+<!---->
+		<tr>
+	    	<td style="font-family:arial;text-align:left;border-right:1px solid black;font-size:16px;border-left:1px solid black;">&nbsp;&nbsp;Arahan kepada calon:<br>
+		 		<ul>
+					<li>Jangan buka buku soalan ini sehingga diberitahu.</li></ul>
+			</td>
+	    		<td style="font-family:arial;border-right:1px solid black;border-bottom:1px solid black;text-align:center;"><!--S2-->&nbsp;</td>
+	    		<td style="border-right:1px solid black;border-bottom:1px solid black;">&nbsp;</td>		
+	    </tr>
+
+		<tr>
+	    		<td style="font-family:arial;text-align:left;border-right:1px solid black;font-size:16px;border-left:1px solid black;">	
+					<ul><li>Bahagian A mengandungi 20 soalan Objektif (Respon Tunggal). Jawab <b>SEMUA</b> soalan pada borang OMR yang disediakan.</li>
+						</ul>
+				</td>
+	    		<td rowspan=2 style="font-family:arial;border-right:1px solid black;border-bottom:1px solid black;text-align:center;"><!--S3-->&nbsp;</td>
+	    		<td rowspan=2 style="border-right:1px solid black;border-bottom:1px solid black;">&nbsp;</td>		
+	    </tr>
+	    <tr>
+	    		<td style="font-family:arial;text-align:left;border-right:1px solid black;border-left:1px solid black;">&nbsp;</td>
+
+	    </tr>
+		 <tr>
+	    		<td style="font-family:arial;text-align:left;border-right:1px solid black;border-left:1px solid black;border-bottom:1px solid black;"><!--<ul><li>Bahagian B mengandungi 3 soalan SEQ (10 markah setiap satu). Jawab DUA (2) soalan sahaja dari bahagian ini.</li></ul>--> &nbsp;</td>
+	    		<td rowspan=2 style="font-family:arial;border-right:1px solid black;border-bottom:1px solid black;text-align:center;">Jumlah</td>
+	    		<td rowspan=2 style="border-right:1px solid black;border-bottom:1px solid black;">&nbsp;</td>		
+	        </tr>
+
+<!---->
+
+</table>
+
+<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+
+	<table width=100% border="0" cellspacing="0" cellpadding="5" align="center">
+	<!--<table width=80% border="0" cellspacing="0" cellpadding="5" align="center">-->
+			<tr>
+				<td width="75%"  style="vertical-align:middle; text-align:left; font-family:arial;">&nbsp;</td>
+				<td width="25%" style="vertical-align:middle; text-align:right; font-family:arial;height:20px;">SULIT</td>
+		    </tr>
+	</table>
+	
+<BR>
+
+</div>
+</form>
+</fieldset>
+<%#----------------------cover-end-------------------------------------------------%>
+
+<%#==========checking for all pages===========%>
+<% @questions_type = [] %>
+<% @exam.examquestions.each do |question|%>
+	<% @questions_type<<question.questiontype %>
+<% end %>
+<%#==========checking for all pages===========%>
+
+
+<% if @questions_type.include?("MCQ")%>
+<%#------------------------------------------------------------------------------%>
+<!--start of 2nd page-QUESTION OF TYPE MCQ-->
+<%#------------------------------------------------------------------------------%>
+
+<table class="tlong" width=100% height=100% align="center">
+	<thead>
+				<tr><td colspan=6>&nbsp;</td></tr>
+				<tr>
+					<td width="5%"></td>
+					<td width="7%"  style="vertical-align:middle; text-align:left; font-family:arial;">SULIT</td>
+					<td width="5%"></td>
+					
+					<td with="60%" style="vertical-align:middle; text-align:center;font-family:arial;"><%=h @exam.subject_id? ? @exam.subject.code+" "+@exam.subject.name : "" %></td>
+					<td width="20%" style="vertical-align:middle; text-align:left; font-family:arial;height:20px;">No. Matrik .............</td>
+			    	<td width="3%">&nbsp;</td>
+				</tr>
+	</thead>
+
+	<tbody>
+			<%#################################--------from show page----------#############################################%>
+			<tr><td colspan=6>&nbsp;</td></tr>
+
+			<% @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype} %>
+			<!---->
+			<% if @exam.sequ!= nil %><!--IF SEQUENCE EXIST-->
+				<% sequ = @exam.sequ.split(",")%>
+				<% seq_questionid = [] %>
+				<% hash_seqid = Hash.new %>
+				<% tosort_seqid = Hash.new %>
+				<% select_questionid = []  %>
+				<% count = 0 %>
+
+				<!--START-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+				<% @examquestions_by_type.each do |qtype,examquestions|%>
+					<% for examquestion in examquestions %>
+						<% if sequ[count] != "Select" %>
+							<% hash_seqid = {sequ[count] => examquestion.id}%>
+							<% tosort_seqid = tosort_seqid.merge(hash_seqid) %><!--merge shall replace value for same key-->
+						<% else %>
+							<% select_questionid << examquestion.id %>
+						<% end %>
+						<% count+=1 %>
+					<% end %>
+				<% end %>
+				<!--for question with sequence-SORT by its' sequence-->	
+				<% tosort_seqid.sort.each do |x,y|%>
+					<% seq_questionid << y %>
+				<% end %>
+				<!--for question with sequence-SORT by its' sequence-->	
+				<!--END-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+
+				
+					<!--START-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+					<% count_title=0 %>
+					<% current_qtype = "MCQ" %>
+					<% 0.upto(tosort_seqid.count-1) do |count| %>
+						<% current_question = Examquestion.find(seq_questionid[count])%>
+						<!--display header-question type-->
+						<% if count == 0 && current_qtype == current_question.questiontype %>
+							<tr><td>&nbsp;</th><td colspan=4><font face="arial"><b>BAHAGIAN A - Jawab SEMUA soalan</b></font></td></tr>
+							<tr><td colspan=5>&nbsp;</td></tr>
+						<% end %>
+						<!--display header-question type-->
+						<!--display quention-answer-mark set-->
+						<% if current_qtype == current_question.questiontype %>
+							<%count_title+=1%>
+							<tr>
+								<td>&nbsp;</th>
+								<td><%=count_title%></th>
+								<td colspan=2><%=current_question.question%></th>
+								<td>&nbsp;</th>
+								<td>&nbsp;</th>
+								<!--<td class="tdata"></th>-->
+							</tr>
+						
+							<% if current_question.diagram_file_name == nil %>
+							<% else %>
+								<tr>
+									<td>&nbsp;</th>
+									<td>&nbsp;</th>
+									<td colspan=2><%= image_tag current_question.diagram.url, :class => 'diagram' %></th>
+									<td>&nbsp;</th>
+									<td>&nbsp;</th>
+								</tr>			
+							<% end %>
+							
+							<!--if not exist at all OR exist but 1st item has no value-->	
+							<% if current_question.answerchoices.count != 0 && current_question.answerchoices[0].description!=""%>
+								<% for answerchoice in current_question.answerchoices.sort_by{|x|x.item}%>
+									<tr>
+										<td>&nbsp;</td>
+										<td>&nbsp;</th>
+										<td><%= answerchoice.item %>&nbsp;</td>
+										<td><%= answerchoice.description %></td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+								<% end %>
+							<% end %>
+							<tr><td colspan=5>&nbsp;</td></tr>
+						
+							<!--if not exist at all OR exist but 1st item has no value-->	
+							<% for examanswer in current_question.examanswers.sort_by{|y|y.item}%>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td><%= examanswer.item %></td>
+									<td><%= examanswer.answer_desc %></td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>	
+								</tr>
+							<% end %>
+							<tr><td colspan=5>&nbsp;</td></tr>
+
+							<!--display quention-answer-mark set-->				
+						<% end %><!--if current_qtype == current_question.questiontype-->
+					<% end %><!--end for  0.upto(tosort_seqid.count-1) do |count|-->
+					<!--END-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+
+			<% end %><!--end for if @exam.sequ!= nil -->
+			<%#################################--------from show page----------#############################################%>
+			
+	</tbody>
+	
+</table>
+</br></br>
+
+<%#------------------------------------------------------------------------------%>
+<% end %><!--end for - if @questions_type.include?("MCQ")%>-->
+
+
+<%#-----------------2nd COVER-START----------------------------------------------%>
+
+<fieldset width=10px >
+
+	<% if @exam.subject_id!=nil && (@exam.subject.parent.code == '1' || @exam.subject.parent.code == '2') %>
+		<% @year = "TAHUN 1  SEMESTER " %>
+	<% elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '3' || @exam.subject.parent.code == '4') %>
+		<% @year = "TAHUN 2  SEMESTER " %>
+	<% elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '5' || @exam.subject.parent.code == '6') %>
+		<% @year = "TAHUN 3  SEMESTER " %>
+	<% end %>
+	
+<div id="title">
+
+<table width=100% border="0" cellspacing="0" cellpadding="5" align="center">
+<!--<table width=80% border="0" cellspacing="0" cellpadding="5" align="center">-->
+	<tr>
+		<td width="75%"  style="vertical-align:middle; text-align:left; font-family:arial;">SULIT</td>
+		<td width="25%" style="vertical-align:middle; text-align:right; font-family:arial;height:20px;">&nbsp;</td>
+    </tr>
+</table>
+	
+<table width=100% border="0" cellspacing="0" cellpadding="5" align="center">
+<!--<table width=80% border="0" cellspacing="0" cellpadding="5" align="center">-->
+		<tr>
+			<td align="center" colspan=3 style="height:30px;">&nbsp;</td>	
+    	</tr>
+		<tr>
+			<td align="center" colspan=3  style="border-top:1px solid black;border-left:1px solid black;border-right:1px solid black;"><BR><BR><img border="0" src="/images/KM.jpg" alt="KKM" width="" height="90"/></td>
+	    </tr>	
+
+	    <tr>
+			<td align="center" colspan=3 style="border-bottom:1px solid black;padding-bottom:10px;border-left:1px solid black;border-right:1px solid black;"><font size=4; style="font-family:arial"><b>LEMBAGA PENDIDIKAN<BR>KEMENTERIAN KESIHATAN MALAYSIA</b></font></td>
+	    </tr>	
+
+    	<tr>
+    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold;padding-top:30px;border-left:1px solid black; border-right:1px solid black;"><%=h (@exam.name).upcase %>&nbsp;</td>	
+        </tr>
+    	<tr>
+    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold;border-left:1px solid black;border-right:1px solid black;">
+				<%=h @exam.subject_id? ? @year + @exam.subject.parent.code.to_s : "" %></td>	
+        </tr>
+    	<tr>
+    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold;border-bottom:1px solid black;padding-bottom:30px;border-left:1px solid black;border-right:1px solid black;"><%=h @exam.subject_id? ? "KURSUS "+@exam.subject.root.course_type.upcase+" "+@exam.subject.root.name.upcase : "" %></td>	
+        </tr>
+    	<tr>
+    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold; padding-top:20px;border-left:1px solid black;border-right:1px solid black;"><%=h @exam.subject_id? ? @exam.subject.name : "" %></td>	
+        </tr>
+    	<tr>
+    		<td align="center" colspan=3 style="font-family:arial; font-weight:bold;border-bottom:1px solid black;padding-bottom:20px;border-left:1px solid black;border-right:1px solid black;"><%=h @exam.subject_id? ? @exam.subject.code : "" %></td>	
+        </tr>
+
+        <tr>
+    		<td align="center" style="font-family:arial;border-right:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-spacing:0;font-size:18px;padding-top:15px;padding-bottom:15px;">
+				Tarikh : <%=h (@exam.exam_on.blank? ? "-" : @exam.exam_on.strftime("%d %B %Y")).upcase+ " ("+ @exam.exam_on.strftime("%A") +")" %>
+				
+				<br>Masa : <%=h @exam.starttime.strftime('%H:%M %p') %> - <%=h @exam.endtime.strftime('%H:%M %p') %>
+			</td>
+    		<td colspan=2 style="font-family:arial;font-weight:bold;text-align:center;border-bottom:1px solid black;border-right:1px solid black;" >SEQ</td>	
+        </tr>
+        <tr>
+    		<td style="font-family:arial;text-align:left;border-right:1px solid black;font-size:18px;padding-top:15px;border-left:1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No K/P : </td>
+    		<td rowspan=2 style="font-family:arial;border-right:1px solid black;border-bottom:1px solid black;text-align:center;width:60px;">S1</td>
+    		<td rowspan=2 style="border-right:1px solid black;border-bottom:1px solid black;width:40px;">&nbsp;</td>		
+        </tr>
+        <tr>
+    		<td style="font-family:arial;text-align:left;border-right:1px solid black;font-size:18px;border-left:1px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No Matrik : <br>&nbsp;</td>
+
+        </tr>
+<!---->
+		<tr>
+	    	<td style="font-family:arial;text-align:left;border-right:1px solid black;font-size:16px;border-left:1px solid black;">&nbsp;&nbsp;Arahan kepada calon:<br>
+		 		<ul>
+					<li>Jangan buka buku soalan ini sehingga diberitahu.</li></ul>
+			</td>
+	    		<td style="font-family:arial;border-right:1px solid black;border-bottom:1px solid black;text-align:center;">S2</td>
+	    		<td style="border-right:1px solid black;border-bottom:1px solid black;">&nbsp;</td>		
+	    </tr>
+
+		<tr>
+	    		<td style="font-family:arial;text-align:left;border-right:1px solid black;font-size:16px;border-left:1px solid black;">	
+					<!--<ul><li>Bahagian A mengandungi 20 soalan Objektif (Respon Tunggal). Jawab <b>SEMUA</b> soalan pada borang OMR yang disediakan.</li>
+						</ul>-->&nbsp;
+				</td>
+	    		<td rowspan=2 style="font-family:arial;border-right:1px solid black;border-bottom:1px solid black;text-align:center;">S3</td>
+	    		<td rowspan=2 style="border-right:1px solid black;border-bottom:1px solid black;">&nbsp;</td>		
+	    </tr>
+	    <tr>
+	    		<td style="font-family:arial;text-align:left;border-right:1px solid black;border-left:1px solid black;">&nbsp;</td>
+
+	    </tr>
+		 <tr>
+	    		<td style="font-family:arial;text-align:left;border-right:1px solid black;border-left:1px solid black;border-bottom:1px solid black;"><ul><li>Bahagian B mengandungi 3 soalan SEQ (10 markah setiap satu). Jawab DUA (2) soalan sahaja dari bahagian ini.</li></ul> </td>
+	    		<td rowspan=2 style="font-family:arial;border-right:1px solid black;border-bottom:1px solid black;text-align:center;">Jumlah</td>
+	    		<td rowspan=2 style="border-right:1px solid black;border-bottom:1px solid black;">&nbsp;</td>		
+	        </tr>
+
+<!---->
+
+</table>
+
+<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+
+	<table width=100% border="0" cellspacing="0" cellpadding="5" align="center">
+	<!--<table width=80% border="0" cellspacing="0" cellpadding="5" align="center">-->
+			<tr>
+				<td width="75%"  style="vertical-align:middle; text-align:left; font-family:arial;">&nbsp;</td>
+				<td width="25%" style="vertical-align:middle; text-align:right; font-family:arial;height:20px;">SULIT</td>
+		    </tr>
+	</table>
+	
+<BR>
+
+</div>
+</form>
+</fieldset>
+<%#----------------------2ND COVER-end-------------------------------------------------%>
+
+
+
+<% if @questions_type.include?("MEQ")%>
+<%#------------------------------------------------------------------------------%>
+<!--start of 3rd page(FIRST PAGE OF 'BAHAGIAN B-MEQ')-->
+<%#------------------------------------------------------------------------------%>
+
+<P class="breakhere">
+
+<table class="tlong" width=100% align="center">
+	<thead>
+				<tr><td colspan=6>&nbsp;</td></tr>
+				<tr>
+					<td width="5%"></td>
+					<td width="7%"  style="vertical-align:middle; text-align:left; font-family:arial;">SULIT</td>
+					<td width="5%"></td>
+					
+					<td with="60%" style="vertical-align:middle; text-align:center;font-family:arial;"><%=h @exam.subject_id? ? @exam.subject.code+" "+@exam.subject.name : "" %></td>
+					<td width="20%" style="vertical-align:middle; text-align:left; font-family:arial;height:20px;">No. Matrik .............</td>
+			    	<td width="3%">&nbsp;</td>
+				</tr>
+	</thead>
+	
+	<tbody>
+			<%#################################--------from show page----------#############################################%>
+			<tr><td colspan=6>&nbsp;</td></tr>
+
+			<% @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype} %>
+			<!---->
+			<% if @exam.sequ!= nil %><!--IF SEQUENCE EXIST-->
+				<% sequ = @exam.sequ.split(",")%>
+				<% seq_questionid = [] %>
+				<% hash_seqid = Hash.new %>
+				<% tosort_seqid = Hash.new %>
+				<% select_questionid = []  %>
+				<% count = 0 %>
+
+				<!--START-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+				<% @examquestions_by_type.each do |qtype,examquestions|%>
+					<% for examquestion in examquestions %>
+						<% if sequ[count] != "Select" %>
+							<% hash_seqid = {sequ[count] => examquestion.id}%>
+							<% tosort_seqid = tosort_seqid.merge(hash_seqid) %><!--merge shall replace value for same key-->
+						<% else %>
+							<% select_questionid << examquestion.id %>
+						<% end %>
+						<% count+=1 %>
+					<% end %>
+				<% end %>
+				<!--for question with sequence-SORT by its' sequence-->	
+				<% tosort_seqid.sort.each do |x,y|%>
+					<% seq_questionid << y %>
+				<% end %>
+				<!--for question with sequence-SORT by its' sequence-->	
+				<!--END-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+				
+					<!--START-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+					<% count_title = 0 %>
+					<% current_qtype = "MEQ" %>
+					<% 0.upto(tosort_seqid.count-1) do |count| %>
+						<% current_question = Examquestion.find(seq_questionid[count])%>
+						<!--display header-question type-->
+						<% if count_title == 0 && current_qtype == current_question.questiontype %>
+							<tr><td>&nbsp;</th><td colspan=4><font face="arial"><b>BAHAGIAN B - Jawab SEMUA soalan-MEQ</b></font></td></tr>
+							<tr><td colspan=5>&nbsp;</td></tr>
+						<% end %>
+						<!--display header-question type-->
+						<!--display quention-answer-mark set-->
+						<% if current_qtype == current_question.questiontype %>
+							<% count_title+=1 %>
+							<tr>
+								<td>&nbsp;</th>
+								<td><%=count_title%></th>
+								<td colspan=2><%=current_question.question%></th>
+								<td>&nbsp;</th>
+								<td>&nbsp;</th>
+								<!--<td class="tdata"></th>-->
+							</tr>
+							<% if current_question.diagram_file_name == nil %>
+							<% else %>
+								<tr>
+									<td>&nbsp;</th>
+									<td>&nbsp;</th>
+									<td colspan=2><%= image_tag current_question.diagram.url, :class => 'diagram' %></th>
+									<td>&nbsp;</th>
+									<td>&nbsp;</th>
+								</tr>			
+							<% end %>		
+							<tr><td colspan=5>&nbsp;</td></tr>	
+						<% end %><!--if current_qtype == current_question.questiontype-->
+						<!--display quention-answer-mark set-->					
+					<% end %><!--end for  0.upto(tosort_seqid.count-1) do |count|-->
+					<!--END-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+
+			<% end %><!--end for if @exam.sequ!= nil -->
+			<%#################################--------from show page----------#############################################%>
+			
+	</tbody>
+</table>
+</br></br>
+</p>
+
+<%#------------------------------------------------------------------------------%>
+<% end %><!--end for - if @questions_type.include?("MEQ")-->
+
+
+<% if @questions_type.include?("SEQ")%>
+<%#------------------------------------------------------------------------------%>
+<!--start of 4th page(FIRST PAGE OF 'BAHAGIAN B-SEQ')-->
+<%#------------------------------------------------------------------------------%>
+
+<P class="breakhere">
+
+<table class="tlong" width=100% align="center">
+	<thead>
+				<tr><td colspan=6>&nbsp;</td></tr>
+				<tr>
+					<td width="5%"></td>
+					<td width="7%"  style="vertical-align:middle; text-align:left; font-family:arial;">SULIT</td>
+					<td width="5%"></td>
+					
+					<td with="60%" style="vertical-align:middle; text-align:center;font-family:arial;"><%=h @exam.subject_id? ? @exam.subject.code+" "+@exam.subject.name : "" %></td>
+					<td width="20%" style="vertical-align:middle; text-align:left; font-family:arial;height:20px;">No. Matrik .............</td>
+			    	<td width="3%">&nbsp;</td>
+				</tr>
+	</thead>
+	
+	<tbody>
+			<%#################################--------from show page----------#############################################%>
+			<tr><td colspan=6>&nbsp;</td></tr>
+
+			<% @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype} %>
+			<!---->
+			<% if @exam.sequ!= nil %><!--IF SEQUENCE EXIST-->
+				<% sequ = @exam.sequ.split(",")%>
+				<% seq_questionid = [] %>
+				<% hash_seqid = Hash.new %>
+				<% tosort_seqid = Hash.new %>
+				<% select_questionid = []  %>
+				<% count = 0 %>
+
+				<!--START-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+				<% @examquestions_by_type.each do |qtype,examquestions|%>
+					<% for examquestion in examquestions %>
+						<% if sequ[count] != "Select" %>
+							<% hash_seqid = {sequ[count] => examquestion.id}%>
+							<% tosort_seqid = tosort_seqid.merge(hash_seqid) %><!--merge shall replace value for same key-->
+						<% else %>
+							<% select_questionid << examquestion.id %>
+						<% end %>
+						<% count+=1 %>
+					<% end %>
+				<% end %>
+				<!--for question with sequence-SORT by its' sequence-->	
+				<% tosort_seqid.sort.each do |x,y|%>
+					<% seq_questionid << y %>
+				<% end %>
+				<!--for question with sequence-SORT by its' sequence-->	
+				<!--END-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+
+				
+					<!--START-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+					<% count_title = 0 %>
+					<% current_qtype = "SEQ" %>
+					<% 0.upto(tosort_seqid.count-1) do |count| %>
+						<% current_question = Examquestion.find(seq_questionid[count])%>
+						<!--display header-question type-->
+						<% if count_title == 0 && current_qtype == current_question.questiontype %>
+							<tr><td>&nbsp;</th><td colspan=4><font face="arial"><b>BAHAGIAN B - Jawab SEMUA soalan-SEQ</b></font></td></tr>
+							<tr><td colspan=5>&nbsp;</td></tr>
+						<% end %>
+						<!--display header-question type-->
+						<!--display quention-answer-mark set-->
+						<% if current_qtype == current_question.questiontype %>
+							<% count_title+=1 %>
+							<tr>
+								<td>&nbsp;</th>
+								<td><%=count_title%></th>
+								<td colspan=2><%=current_question.question%></th>
+								<td>&nbsp;</th>
+								<td>&nbsp;</th>
+								<!--<td class="tdata"></th>-->
+							</tr>
+							<% if current_question.diagram_file_name == nil %>
+							<% else %>
+								<tr>
+									<td>&nbsp;</th>
+									<td>&nbsp;</th>
+									<td colspan=2><%= image_tag current_question.diagram.url, :class => 'diagram' %></th>
+									<td>&nbsp;</th>
+									<td>&nbsp;</th>
+								</tr>			
+							<% end %>
+							<tr><td colspan=5>&nbsp;</td></tr>	
+							<% for shortessay in current_question.shortessays.sort_by{|x|x.item}%>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td><%=shortessay.item %></td>
+									<td colspan=2><%=h shortessay.subquestion %></td>
+									<td>&nbsp;</td>
+									<td>(<%=h shortessay.submark.to_i%> markah)</td>
+								</tr>
+								<tr><td colspan=5>&nbsp;</td></tr>
+							<% end %>
+							
+							
+						<% end %><!--if current_qtype == current_question.questiontype-->
+						<!--display quention-answer-mark set-->				
+					<% end %><!--end for  0.upto(tosort_seqid.count-1) do |count|-->
+					<!--END-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+
+			<% end %><!--end for if @exam.sequ!= nil -->
+			<%#################################--------from show page----------#############################################%>
+			
+	</tbody>
+</table>
+</br></br>
+</p>
+
+<%#------------------------------------------------------------------------------%>
+<% end %><!--end for - if @questions_type.include?("SEQ")-->
+
+
+<% if @questions_type.include?("TRUEFALSE")%>
+<%#------------------------------------------------------------------------------%>
+<!--start of 5th page-QUESTION OF TYPE objective - TRUE/FALSE-->
+<%#------------------------------------------------------------------------------%>
+
+<P class="breakhere">
+	
+<table class="tlong" width=100% height=100% align="center">
+	<thead>
+				<tr><td colspan=6>&nbsp;</td></tr>
+				<tr>
+					<td width="5%"></td>
+					<td width="7%"  style="vertical-align:middle; text-align:left; font-family:arial;">SULIT</td>
+					<td width="5%"></td>
+					
+					<td with="60%" style="vertical-align:middle; text-align:center;font-family:arial;"><%=h @exam.subject_id? ? @exam.subject.code+" "+@exam.subject.name : "" %></td>
+					<td width="20%" style="vertical-align:middle; text-align:left; font-family:arial;height:20px;">No. Matrik .............</td>
+			    	<td width="3%">&nbsp;</td>
+				</tr>
+	</thead>
+
+	<tbody>
+			<%#################################--------from show page----------#############################################%>
+			<tr><td colspan=6>&nbsp;</td></tr>
+
+			<% @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype} %>
+			<!---->
+			<% if @exam.sequ!= nil %><!--IF SEQUENCE EXIST-->
+				<% sequ = @exam.sequ.split(",")%>
+				<% seq_questionid = [] %>
+				<% hash_seqid = Hash.new %>
+				<% tosort_seqid = Hash.new %>
+				<% select_questionid = []  %>
+				<% count = 0 %>
+
+				<!--START-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+				<% @examquestions_by_type.each do |qtype,examquestions|%>
+					<% for examquestion in examquestions %>
+						<% if sequ[count] != "Select" %>
+							<% hash_seqid = {sequ[count] => examquestion.id}%>
+							<% tosort_seqid = tosort_seqid.merge(hash_seqid) %><!--merge shall replace value for same key-->
+						<% else %>
+							<% select_questionid << examquestion.id %>
+						<% end %>
+						<% count+=1 %>
+					<% end %>
+				<% end %>
+				<!--for question with sequence-SORT by its' sequence-->	
+				<% tosort_seqid.sort.each do |x,y|%>
+					<% seq_questionid << y %>
+				<% end %>
+				<!--for question with sequence-SORT by its' sequence-->	
+				<!--END-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+
+				
+					<!--START-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+					<% count_title = 0 %>
+					<% current_qtype = "TRUEFALSE" %>
+					<% 0.upto(tosort_seqid.count-1) do |count| %>
+						<% current_question = Examquestion.find(seq_questionid[count])%>
+						<!--display header-question type-->
+						<% if count_title == 0 && current_qtype == current_question.questiontype %>
+							<tr><td>&nbsp;</th><td colspan=4><font face="arial"><b>BAHAGIAN - OBJEKTIF (TRUE/FALSE)</b></font></td></tr>
+							<tr><td colspan=5>&nbsp;</td></tr>
+						<% end %>
+						<!--display header-question type-->
+						<!--display quention-answer-mark set-->
+						<% if current_qtype == current_question.questiontype %>
+							<% count_title+=1 %>
+							<tr>
+								<td>&nbsp;</th>
+								<td><%=count_title%></th>
+								<td colspan=2><%=current_question.question%></th>
+								<td>&nbsp;</th>
+								<td>&nbsp;</th>
+								<!--<td class="tdata"></th>-->
+							</tr>
+						
+							<% if current_question.diagram_file_name == nil %>
+							<% else %>
+								<tr>
+									<td>&nbsp;</th>
+									<td>&nbsp;</th>
+									<td colspan=2><%= image_tag current_question.diagram.url, :class => 'diagram' %></th>
+									<td>&nbsp;</th>
+									<td>&nbsp;</th>
+								</tr>			
+							<% end %>
+							
+							<!--if not exist at all OR exist but 1st item has no value-->	
+							<%# if current_question.answerchoices.count != 0 && current_question.answerchoices[0].description!=""%>
+								<% for booleanchoice in current_question.booleanchoices.sort_by{|x|x.item}%>
+									<tr>
+										<td>&nbsp;</td>
+										<td>&nbsp;</th>
+										<td><%= booleanchoice.item %>&nbsp;</td>
+										<td><%= booleanchoice.description %></td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+								<% end %>
+							<%# end %>
+							<tr><td colspan=5>&nbsp;</td></tr>
+						
+							<!--if not exist at all OR exist but 1st item has no value-->	
+							<% for booleananswer in current_question.booleananswers.sort_by{|y|y.item}%>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td><%= booleananswer.item %></td>
+									<td><%= booleananswer.answer %></td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>	
+								</tr>
+							<% end %>
+							<tr><td colspan=5>&nbsp;</td></tr>
+
+							<!--display quention-answer-mark set-->				
+						<% end %><!--if current_qtype == current_question.questiontype-->
+					<% end %><!--end for  0.upto(tosort_seqid.count-1) do |count|-->
+					<!--END-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+
+			<% end %><!--end for if @exam.sequ!= nil -->
+			<%#################################--------from show page----------#############################################%>
+			
+	</tbody>
+	
+</table>
+</br></br>
+</p>
+
+<%#------------------------------------------------------------------------------%>
+<% end %><!--end for - if @questions_type.include?("TRUEFALSE")%>-->
+
+
+
+<% if @questions_type.include?("ACQ") || @questions_type.include?("OSCI") || @questions_type.include?("OSCII") || @questions_type.include?("OSCE") || @questions_type.include?("OSPE") || @questions_type.include?("VIVA") %>    
+<%#------------------------------------------------------------------------------%>
+<!--start of 6th page(FIRST PAGE OF 'BAHAGIAN ....ACQ/OSCII/OSCII/OSCE/OSPE/VIVA')-->
+<%#------------------------------------------------------------------------------%>
+
+<P class="breakhere">
+
+<table class="tlong" width=100% align="center">
+	<thead>
+				<tr><td colspan=6>&nbsp;</td></tr>
+				<tr>
+					<td width="5%"></td>
+					<td width="7%"  style="vertical-align:middle; text-align:left; font-family:arial;">SULIT</td>
+					<td width="5%"></td>
+					
+					<td with="60%" style="vertical-align:middle; text-align:center;font-family:arial;"><%=h @exam.subject_id? ? @exam.subject.code+" "+@exam.subject.name : "" %></td>
+					<td width="20%" style="vertical-align:middle; text-align:left; font-family:arial;height:20px;">No. Matrik .............</td>
+			    	<td width="3%">&nbsp;</td>
+				</tr>
+	</thead>
+	
+	<tbody>
+			<%#################################--------from show page----------#############################################%>
+			<tr><td colspan=6>&nbsp;</td></tr>
+
+			<% @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype} %>
+			<!---->
+			<% if @exam.sequ!= nil %><!--IF SEQUENCE EXIST-->
+				<% sequ = @exam.sequ.split(",")%>
+				<% seq_questionid = [] %>
+				<% hash_seqid = Hash.new %>
+				<% tosort_seqid = Hash.new %>
+				<% select_questionid = []  %>
+				<% count = 0 %>
+
+				<!--START-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+				<% @examquestions_by_type.each do |qtype,examquestions|%>
+					<% for examquestion in examquestions %>
+						<% if sequ[count] != "Select" %>
+							<% hash_seqid = {sequ[count] => examquestion.id}%>
+							<% tosort_seqid = tosort_seqid.merge(hash_seqid) %><!--merge shall replace value for same key-->
+						<% else %>
+							<% select_questionid << examquestion.id %>
+						<% end %>
+						<% count+=1 %>
+					<% end %>
+				<% end %>
+				<!--for question with sequence-SORT by its' sequence-->	
+				<% tosort_seqid.sort.each do |x,y|%>
+					<% seq_questionid << y %>
+				<% end %>
+				<!--for question with sequence-SORT by its' sequence-->	
+				<!--END-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+				
+					<!--START-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+					<% count_title = 0 %>
+					<% 0.upto(tosort_seqid.count-1) do |count| %>
+						<% current_question = Examquestion.find(seq_questionid[count])%>
+						<!--display header-question type-->
+						<% if current_question.questiontype == "ACQ" %>
+							<tr><td>&nbsp;</th><td colspan=4><font face="arial"><b>BAHAGIAN - ACQ</b></font></td></tr>
+							<tr><td colspan=5>&nbsp;</td></tr>
+						<% elsif (current_question.questiontype == "OSCI")|| (current_question.questiontype == "OSCII")|| (current_question.questiontype == "OSCE")|| (current_question.questiontype == "OSPE")|| (current_question.questiontype == "VIVA") %>
+							<tr><td>&nbsp;</th><td colspan=4><font face="arial"><b>
+									<%=h (Examquestion::QTYPE.find_all{|disp, value| value == current_question.questiontype}).map {|disp, value| disp} %>
+								</b></font></td></tr>
+								<%# current_qtype = current_question.questiontype %>
+						<% end %>
+						<!--display header-question type-->
+						
+						<!--display quention-answer-mark set-->
+						<% if (current_question.questiontype == "ACQ")|| (current_question.questiontype == "OSCI")|| (current_question.questiontype == "OSCII")|| (current_question.questiontype == "OSCE")|| (current_question.questiontype == "OSPE")|| (current_question.questiontype == "VIVA") %>
+							<% if current_question.questiontype == "ACQ" %>
+								<%count_title+=1%>
+							<% end %>
+							<tr>
+								<td>&nbsp;</th>
+								<td><%=count_title%><%#=count_title%></th>
+								<td colspan=2><%=current_question.question%></th>
+								<td>&nbsp;</th>
+								<td>&nbsp;</th>
+								<!--<td class="tdata"></th>-->
+							</tr>
+							<% if current_question.diagram_file_name == nil %>
+							<% else %>
+								<tr>
+									<td>&nbsp;</th>
+									<td>&nbsp;</th>
+									<td colspan=2><%= image_tag current_question.diagram.url, :class => 'diagram' %></th>
+									<td>&nbsp;</th>
+									<td>&nbsp;</th>
+								</tr>			
+							<% end %>		
+							<tr><td colspan=5>&nbsp;</td></tr>	
+						<% end %><!--if current_question.questiontype == "ACQ"....-->
+						<!--display quention-answer-mark set-->					
+					<% end %><!--end for  0.upto(tosort_seqid.count-1) do |count|-->
+					<!--END-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+
+			<% end %><!--end for if @exam.sequ!= nil -->
+			<%#################################--------from show page----------#############################################%>
+			
+	</tbody>
+</table>
+</br></br>
+</p>
+
+<%#------------------------------------------------------------------------------%>
+<% end %><!--end for - if @questions_type.include?("  ")-->

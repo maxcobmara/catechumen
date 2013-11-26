@@ -1,0 +1,63 @@
+<div class="tform">
+
+<fieldset>
+	<legend class='togvis'>Topic Details</legend>
+		<table width=85% >
+			<tr>
+				<td class="leftcol"><label>Topic</label></td>
+				<td>
+					<% unless @topicdetail.topic_code.blank? %><!--31 Oct 2013-->
+						<% @topic_id_programme = Programme.all.map(&:id).uniq %>
+						<% if @topic_id_programme.include?(@topicdetail.topic_code)%>
+							<%=h @topicdetail.subject_topic.semester_subject_topic %>
+						<% else %>
+							<font color=red><strong>Removed topic/subtopic (Curriculum Management) - before 31st October 2013</strong></font>
+						<% end %>
+					<% else %>
+						<font color=red><strong>Removed topic/subtopic (Curriculum Management) - 31st October 2013 onwards</strong></font>
+					<% end %>
+					<%#=h @topicdetail.topic_code.blank? ?  "" :  @topicdetail.subject_topic.semester_subject_topic %><!--31 Oct 2013-->
+					<%#=h @topicdetail.subject_topic.semester_subject_topic %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Duration:</label></td>
+				<td><%=h @topicdetail.duration.strftime("%H:%M") %> (Hours : Minutes)</td>				
+			</tr>		  
+			<tr>
+				<td class="leftcol">Version no:<label></label></td>
+				<td><%=h @topicdetail.version_no %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Objectives:</label></td>
+				<td><%=h simple_format(@topicdetail.objctives) %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Contents:</label></td>
+				<td><%=h simple_format(@topicdetail.contents) %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Training Notes:</label></td>
+				<% count=0%>
+				<td><% for trainingnote in @topicdetail.trainingnotes %>
+						<%=count+=1%>-<%= trainingnote.title %> : <%=trainingnote.document_file_name%><br>
+					<% end %>
+				</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Theory:</label></td>
+				<td><%=h @topicdetail.theory.strftime("%H:%M") %> (Hours : Minutes)</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Tutorial:</label></td>
+				<td><%=h @topicdetail.tutorial.strftime("%H:%M") %> (Hours : Minutes)</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Practical:</label></td>
+				<td><%=h @topicdetail.practical.strftime("%H:%M") %> (Hours : Minutes)</td>				
+			</tr>
+		</table>
+</fieldset>
+</div>			
+<!--31 Oct 2013--><% unless @topicdetail.topic_code.blank? %><!--31 Oct 2013-->
+<%= link_to 'Edit', edit_topicdetail_path(@topicdetail) %> |<% end %>
+<%= link_to 'Back', topicdetails_path %>

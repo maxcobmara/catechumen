@@ -3,6 +3,8 @@ class AssetDisposal < ActiveRecord::Base
   #controller searches, variables, lists, relationship checking
   
   belongs_to :asset
+  belongs_to :inspect1or, :class_name => 'Staff', :foreign_key => 'examiner_staff1'
+  belongs_to :inspect2or, :class_name => 'Staff', :foreign_key => 'examiner_staff2'
   belongs_to :processor, :class_name => 'Staff', :foreign_key => 'checked_by'
   belongs_to :verifier,  :class_name => 'Staff', :foreign_key => 'verified_by'
   belongs_to :revaluer,  :class_name => 'Staff', :foreign_key => 'revalued_by'
@@ -12,6 +14,8 @@ class AssetDisposal < ActiveRecord::Base
   
   belongs_to :document
   
+  validates_presence_of :examiner_staff1, :if => :is_staff1?
+  validates_presence_of :examiner_staff2, :if => :is_staff2?
   
   def age
     Date.today - @asset.purchasedate
@@ -60,6 +64,9 @@ class AssetDisposal < ActiveRecord::Base
       " Tanam /  Bakar / Buang / Tenggelam "
     end
   end
-      
-      
+  
+  def complete_for_report
+    "#{asset.code_asset}"+" ("+"#{disposal_type.upcase}"+" on "+"#{disposed_on.strftime('%d-%b-%Y')}"+")"
+    
+  end         
 end

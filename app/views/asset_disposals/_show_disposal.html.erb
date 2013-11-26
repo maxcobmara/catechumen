@@ -30,8 +30,12 @@
 							</tr>
 							<tr>
 								<td class="leftcol"><label>Witnessed By</label></td>
-								<td><%=h @asset_disposal.discardw1tness.staff_name_with_position %> AND 
-										<%=h @asset_disposal.discardw2tness.staff_name_with_position %></td>			
+								<td>
+									<%#=h @asset_disposal.discardw1tness.staff_name_with_position %>
+									<%=h @asset_disposal.witness_is_staff1? ? @asset_disposal.discardw1tness.name.to_s : @asset_disposal.witness_outsider1 %> AND 
+									<%#=h @asset_disposal.discardw2tness.staff_name_with_position %>
+									<%=h @asset_disposal.witness_is_staff2? ? @asset_disposal.discardw2tness.name.to_s : @asset_disposal.witness_outsider2 %>
+								</td>			
 							</tr>
 				
 							<% elsif @asset_disposal.disposal_type == "stock" %>

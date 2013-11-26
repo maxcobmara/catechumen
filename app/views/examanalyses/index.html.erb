@@ -1,0 +1,62 @@
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Examination Analysis by Examination Paper</h2>
+	</div>
+</div>
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Exam Question Analysis') + "New", :controller=>"examanalyses",:action=> "new" %></p>
+</div><br><br>
+<div class="tlist">
+	<table width=90% border="0" cellpadding="0" cellspacing="0">
+	  <tr>
+	    <th>Examination Type</th>
+		<th>Examination Date</th>
+		<th>Subject</th>
+		<th>Grade A</th>
+	    <th>Grade A-</th>
+	    <th>Grade B+</th>
+	    <th>Grade B</th>
+	    <th>Grade B-</th>
+	    <th>Grade C+</th>
+	    <th>Grade C</th>
+	    <th>Grade C-</th>
+	    <th>Grade D+</th>
+	    <th>Grade D</th>
+	    <th>Grade E</th>
+		<th colspan=3>Control</th>
+  	</tr>
+
+<% @examanalyses.each do |examanalysis| %>
+  <tr>
+    <td><%#=h examanalysis.exammaker_id %><%=h examanalysis.exampaper.render_examtype %>
+		<% if examanalysis.exampaper.klass_id==0 %>
+			<font color="blue">(Template)</font>
+		<% else %>
+		<% end %>
+	</td>
+	<td><%=h examanalysis.exampaper.exam_on.strftime("%d %b %Y") %></td>
+	<td><%=h examanalysis.exampaper.subject.subject_list %></td>
+    <td><%=h examanalysis.gradeA %></td>
+    <td><%=h examanalysis.gradeAminus %></td>
+    <td><%=h examanalysis.gradeBplus %></td>
+    <td><%=h examanalysis.gradeB %></td>
+    <td><%=h examanalysis.gradeBminus %></td>
+    <td><%=h examanalysis.gradeCplus %></td>
+    <td><%=h examanalysis.gradeC %></td>
+    <td><%=h examanalysis.gradeCminus %></td>
+    <td><%=h examanalysis.gradeDplus %></td>
+    <td><%=h examanalysis.gradeD %></td>
+    <td><%=h examanalysis.gradeE %></td>
+	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => examanalysis %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => examanalysis %></td>
+    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), examanalysis, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+</div>
+<%= link_to 'New Analysis', :controller=>"examanalyses",:action=> "new" %> | 
+<%= link_to 'Download Excel', examanalyses_path(request.parameters.merge({:format => :xls}))%> | 
+<%= link_to 'View PDF', formatted_examanalyses_path(:pdf), :popup=>true %>
+<br/>

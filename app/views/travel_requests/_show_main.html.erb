@@ -7,9 +7,11 @@
 			</tr>
 			<tr>
 				<td class="leftcol"><label for="request_code"><%= t 'document.refno' %></label></td>
-				<td><%=h @travel_request.document.refno %> &nbsp; : &nbsp;   
-					  <%=h @travel_request.document.title %> &nbsp; : &nbsp;   
-					  <label>dated</label> <%=h tarikh(@travel_request.document.letterdt) %></td>
+				<td><!--<%#=h @travel_request.document.refno %> &nbsp; : &nbsp;   
+					  <%#=h @travel_request.document.title %> &nbsp; : &nbsp;   
+					  <label>dated</label><%#=h tarikh(@travel_request.document.letterdt) %>-->
+					<%=h @travel_request.reference_document %>
+				</td>
 			</tr>
 		</table>
 </fieldset>
@@ -24,12 +26,12 @@
 
 			<tr>
 			 	<td class="leftcol"><label for="depart_at"><%= t 'travel.depart_at' %></label></td>
-				<td><%=h l(@travel_request.depart_at) %></td>
+				<td><%#=h l(@travel_request.depart_at) %><%=h @travel_request.depart_at.strftime('%d %B %Y') %>,&nbsp;<%=h l(@travel_request.depart_at) %></td>
 			</tr>
 
 			<tr>
 			 	<td class="leftcol"><label for="return_at"><%= t 'travel.return_at' %></label></td>
-				<td><%=h l(@travel_request.return_at) %></td>
+				<td><%#=h l(@travel_request.return_at) %><%=h @travel_request.return_at.strftime('%d %B %Y') %>,&nbsp;<%=h l(@travel_request.return_at)%></td>
 			</tr>
 
 			<tr>
@@ -46,7 +48,7 @@
 						<%=h @travel_request.taxi? ? 	image_tag("tick.png") : image_tag("cross.png") %>Taxi &nbsp; &nbsp; 
 						<%=h @travel_request.bus? ? 	image_tag("tick.png") : image_tag("cross.png") %> Bus &nbsp; &nbsp; 
 						<%=h @travel_request.train? ? image_tag("tick.png") : image_tag("cross.png") %> Other's Car &nbsp; &nbsp; 
-						<%=h @travel_request.plane? ? image_tag("tick.png") : image_tag("cross.png") %> Other's Car &nbsp; &nbsp; 
+						<%=h @travel_request.plane? ? image_tag("tick.png") : image_tag("cross.png") %> Plane &nbsp; &nbsp; 
 						<%=h @travel_request.other? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.other_desc %>Own Car &nbsp; &nbsp; </label></td>                                                        
 			</tr>
 

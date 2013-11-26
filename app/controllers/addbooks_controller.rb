@@ -84,11 +84,10 @@ class AddbooksController < ApplicationController
   end
   
   def quickfill
-    @addbook = Addbook.new
+    @addbook = Addbook.new(params[:addbook]) #@create_type = params[:new_submit]
     render :layout => 'popup'
-    #@addbook = Addbook.new(params[:addbook])
-    #render :layout => 'popup'
-    #@addbook.save
+    #raise params.inspect
+    @addbook.save
   end
 
 end

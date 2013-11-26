@@ -42,6 +42,7 @@ class TimetablesController < ApplicationController
   # POST /timetables
   # POST /timetables.xml
   def create
+#raise params.inspect
     @timetable = Timetable.new(params[:timetable])
 
     respond_to do |format|

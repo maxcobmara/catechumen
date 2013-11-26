@@ -5,8 +5,13 @@
 	<table width=100% >
 		<tr>
 		  <td class="leftcol"><label for="replacement_id"><b><%= t 'staffleave.replacement_id' %> :</b></label></td>
-			<td><%h @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name %></td>
+			<td><%=h @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name %></td>
 		</tr>
+		<tr>
+		  <td class="leftcol"><label for="replacement_id"><b><%= t 'staffleave.entitlement' %> :</b></label></td>
+			<td><%= @leaveforstaff.leave_balance %>/<%= @leaveforstaff.cuti_rehat_entitlement %></td>
+		</tr>
+		
 	</table>
 
 <H2><%= t 'staffleave.approve_leave' %></H2>

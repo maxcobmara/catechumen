@@ -4,10 +4,17 @@ class AssetLoan < ActiveRecord::Base
   before_save :set_staff_when_blank, :set_loaned_by
   
   belongs_to :asset
-  belongs_to :staff
+  belongs_to :staff   #staff_id
   belongs_to :owner, :class_name => 'Staff', :foreign_key => 'loaned_by'
-  belongs_to :hod,   :class_name => 'Staff', :foreign_key => 'loan_officer'
+  belongs_to :loanofficer,   :class_name => 'Staff', :foreign_key => 'loan_officer'
+  belongs_to :hodept,   :class_name => 'Staff', :foreign_key => 'hod'
+  belongs_to :receivedpfficer, :class_name => 'Staff', :foreign_key => 'received_officer'
   
+  validates_presence_of :reasons, :if => :must_assign_if_external?   #16July2013
+  
+  def must_assign_if_external?  #16July2013
+    loantype==2 
+  end
   
   def self.borrowings
     find(:all, :conditions => ['is_returned !=? OR is_approved IS NOT ?', true, nil])
@@ -34,6 +41,28 @@ class AssetLoan < ActiveRecord::Base
      end
   end
   
+  def unit_members
+      #6-Maslinda(IT),7-16-Ketua2 Program/Subjek(bwh TPA),17-19-Ketua2 Unit(bwh TPHEP),Unit2 bwh Pembantu Tadbir
+      #hods = [6,7,8,9,10,11,12,13,14,15,16,17,18,19,25,26,27,28,29,30,31,129]     #positions of hod - Ketua-ketua Unit's position IDs
+      hods = Position.find(:all, :conditions=>['unit IS NOT NULL AND unit!=?','Ketua Unit Penilaian & Kualiti']).map(&:id).uniq #5Nov2013-TO ADVISE KSKB-insert unit for HODs only
+      loaned_by_position_id = Position.find_by_staff_id(self.loaned_by).id    #loaned_by --> staff_id 
+      unit_members = []
+      if hods.include?(loaned_by_position_id)                                 #if hods.include?(self.loaned_by)-if logged user 1 of hod 
+        #subordinates = Position.find(:first,:conditions=>['staff_id=?',self.loaned_by]).descendants
+        #unit_members << self.loaned_by  #loaned_by_position_id
+        subordinates = Position.find(:first,:conditions=>['staff_id=?',self.loaned_by]).subtree #(self+descendants) - replace line 44 & 45 with this
+			else
+			  superior = Position.find(:first,:conditions=>['staff_id=?',self.loaned_by]).parent.staff_id
+			  subordinates = Position.find(:first,:conditions=>['staff_id=?',self.loaned_by]).siblings  #(siblings only)
+			  unit_members << superior if superior != nil
+			end
+			subordinates.each do |x|
+			  unit_members << x.staff_id if x.staff_id !=nil
+		  end
+			unit_members    #collection of staff_id (member of a unit/dept)
+			
+  end
+  
   def status
     if is_approved == true
       "tick.png"
@@ -43,5 +72,25 @@ class AssetLoan < ActiveRecord::Base
       "new.png"
     end
   end
+  
+  #---------
+  named_scope :all 
+  #named_scope :myloan,        :conditions =>  ["staff_id=?", User.current_user.staff_id]
+  named_scope :internal,      :conditions =>  ["loantype =? ", 1]
+  named_scope :external,      :conditions =>  ["loantype =? ", 2]
+  named_scope :onloan,        :conditions =>  ["is_approved IS TRUE AND is_returned IS NOT TRUE"]
+  named_scope :pending,       :conditions =>  ["is_approved IS NULL AND loan_officer IS NULL"]
+  named_scope :rejected,      :conditions =>  ["is_approved IS FALSE"]
+  named_scope :overdue,       :conditions =>  ["is_approved IS TRUE AND is_returned IS NULL AND expected_on>=?",Date.today]
+  FILTERS = [
+    {:scope => "all",       :label => "All"},
+    {:scope => "myloan",    :label => "My Loan"},
+    {:scope => "internal",  :label => "Internal"},
+    {:scope => "external",  :label => "External"},
+    {:scope => "onloan",    :label => "On Loan"},
+    {:scope => "pending",   :label => "Pending"},
+    {:scope => "rejected",  :label => "Rejected"},
+    {:scope => "overdue",   :label => "Due/Overdue"}
+  ]
   
 end

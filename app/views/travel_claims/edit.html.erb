@@ -2,8 +2,11 @@
   <%= f.error_messages %>
 
 	<div class="tform">
-		<% if @travel_claim.staff_id == User.current_user.staff_id && @travel_claim.is_submitted != true %>
+		<% if @travel_claim.my_claim_status == "editing" || @travel_claim.my_claim_status == "returned" %>
 		<H2>Edit travel claims for <%=h @travel_claim.claim_month.strftime("%B %Y") %> 
+			<!--4Jan2013-just for title-->
+			<% if @travel_claim.my_claim_status == "returned" %>- Returned for Amendment<% end %>
+			<!--4Jan2013-just for title-->
 			<div class="right"><%=h @travel_claim.staff.name %></div></H2> 
 			<%=render :partial => 'form', :locals => {:f => f} %> 
 		<% end %>
@@ -15,6 +18,15 @@
 
 				
 		<% end %>
+		
+		<!--4Jan2013-just add-in fieldset-->
+		<% if @travel_claim.my_claim_status == "returned" %>
+		<fieldset><legend>Notes from Finance Unit</legend>
+		<p><%=h @travel_claim.notes %> </p>
+		</fieldset>
+		<% end %>
+		<!--4Jan2013-just add-in fieldset-->
+		
 		
 		
 		

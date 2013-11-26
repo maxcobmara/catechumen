@@ -2,15 +2,23 @@
 	<legend>Exam Details</legend>
 	<table>
 		<tr>
-			<td class="leftcol"><label for="bplreserve"><b>Name</b></label></td>
-	    <td><%=h @exam.name %></td>
+			<td class="leftcol"><label for="bplreserve"><b>Name:</b></label></td>
+	    <td><%#=h @exam.name %>
+	<%=h (Exam::EXAMTYPE.find_all{|disp, value| value == @exam.name}).map {|disp, value| disp} %></td>
 		</tr>
-		
+		<!--
 		<tr>
 			<td class="leftcol"><label for="bplreserve"><b>Description:</b></label></td>
-	    <td><%=h @exam.description %></td>
+	    <td><%#=h @exam.description %></td>
+		</tr>-->
+		<tr>
+			<td class="leftcol"><label for="bplreserve"><b>Programme:</b></label></td>
+	    <td><%=h @exam.subject_id? ? @exam.subject.root.course_type+" "+@exam.subject.root.name : "" %></td>
 		</tr>
-		
+		<tr>
+			<td class="leftcol"><label for="bplreserve"><b>Subject:</b></label></td>
+	    <td><%=h @exam.subject_id? ? @exam.subject.subject_list : "" %></td>
+		</tr>
 		<tr>
 			<td class="leftcol"><label for="bplreserve"><b>Created by:</b></label></td>
 	    <td><%=h @exam.creator_details %></td>
@@ -20,20 +28,40 @@
 			<td class="leftcol"><label for="bplreserve"><b>Exam on:</b></label></td>
 	    <td><%=h l(@exam.exam_on) unless @exam.exam_on.nil? %></td>
 		</tr>
-		
 		<tr>
-			<td class="leftcol"><label for="bplreserve"><b>Duration:</b></label></td>
-	    <td><%=h @exam.duration %>&nbsp; minutes</td>
+			<td class="leftcol"><label for="bplreserve"><b>Time:</b></label></td>
+	    <td><%=h @exam.starttime.strftime('%H:%M %p') %> - <%=h @exam.endtime.strftime('%H:%M %p') %></td>
 		</tr>
-	
+		<tr><!--9Apr2013-->
+			<td class="leftcol"><label for="bplreserve"><b>Duration:</b></label></td>
+	    	<td>
+				<%=h (((@exam.endtime - @exam.starttime)/60) / 60).to_i %>&nbsp;hours
+				<%=h (((@exam.endtime - @exam.starttime)/60) % 60).to_i %>&nbsp;minutes
+			</td>
+		</tr><!--9Apr2013-->
+		<!--
 		<tr>
 			<td class="leftcol"><label for="bplreserve"><b>Class:</b></label></td>
-	    <td><%=h @exam.klass_id %></td>
-		</tr>
+	    <td><%#=h @exam.klass_id %></td>
+		</tr>-->
 
 		<tr>
 			<td class="leftcol"><label for="bplreserve"><b>Full marks:</b></label></td>
-	    <td><%=h @exam.full_marks %></td>
+	    	<td><%#=h @exam.total_marks %>
+				<!--11June2013-TEMPLATE-->
+				<% @istemplate = @exam.klass_id %>
+				<% if @istemplate == 0 %>
+					<% @grand_total = 0 %>
+					<% @examtemplates = @exam.examtemplates %>
+					<% @examtemplates.each do |examtemplate| %> 
+						<% @grand_total+= examtemplate.total_marks %>
+					<% end %>
+					<%=@grand_total.to_i%>
+				<% else %>
+					<%=h @exam.total_marks %>
+				<% end %>
+				<!--11June2013-TEMPLATE-->
+			</td>
 		</tr>
 		
 	</table>

@@ -1,0 +1,138 @@
+
+	<H2>Lesson Plan Details</H2>
+	<table>
+		<tr>
+			<td class="leftcol"><%= f.label :lecturer %></td>
+			<td><%#= f.collection_select :lecturer, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar']), :id, :name, :include_blank=>"Select Lecturer", :selected => User.current_user.staff_id %>
+				&nbsp;&nbsp;<%=h User.current_user.staff.name %><%= f.hidden_field :lecturer, :value=>User.current_user.staff_id %>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :schedule %></td>
+			<!--START-revised on 3Nov2013-->
+			<td>
+				<% if @lesson_plan && @lesson_plan.schedule.nil? == true %>
+					<% @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact %>
+					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id NOT IN (?)',User.current_user.staff_id,@lessonplan_schedule]), :id, :day_time_slot, :include_blank=>"Select Schedule" %>
+				<% else %>
+					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?',User.current_user.staff_id]), :id, :day_time_slot, :include_blank=>"Select Schedule" %>
+				<% end %>
+			</td>
+			<!--START-revised on 3Nov2013-->
+		</tr>
+		
+		<!--30March2013-Part A:Pre-selected data upon selection of schedule (start)-->
+		<!--<tr>
+			<td class="leftcol"><%#= f.label :intake_id %></td>
+			<td><%#= f.collection_select :intake_id, Intake.all, :id, :programme_group_intake, :include_blank=> "Select Intake" %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%#= f.label :lecture_date %></td>
+			<td><%#= f.date_select :lecture_date %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%#= f.label :start_time %></td>
+			<td><%#= f.time_select :start_time, :minute_step => 15 %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%#= f.label :end_time %></td>
+			<td><%#= f.time_select :end_time, :minute_step => 15 %></td>
+		</tr>-->
+		<!--1st choice-refer ...views/weeklytimetables/weeklytimetable_fields.html.erb-->
+		<!--
+		<%# aa=Programme.find(:all,:conditions=>['ancestry_depth=?',3], :order=>:combo_code) %>
+		<%# @semester_subject_topic_list=[] %>
+		<%# aa.each do |bb| %>
+			<%## if bb.root_id == @lesson_plan.programme_id %>
+				<%# @semester_subject_topic_list<< bb %> <
+			<%## end %>
+		<%# end %>
+		<tr>
+			<td class="leftcol"><%#= f.label :topic %></td>
+			<td><%#= f.collection_select :topic, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> "Select Semester-Subject | Topic" %>
+			</td>
+		</tr>-->
+		<!--30March2013-Part A:Pre-selected data upon selection of schedule (start)-->
+	
+		<!--30March2013-Part B:Newly key-in data (start)-->
+		<tr>
+			<td class="leftcol"><%= f.label :prerequisites %></td>
+			<td><%= f.text_field :prerequisites, :size =>51 %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label>Total Number of Student</label></td>
+			<td><%= f.text_field :student_qty, :size=>11 %></td>
+		</tr>    
+		<tr>
+			<td class="leftcol"><%= f.label :year %></td>
+			<td><%= f.select :year, 1..3, :include_blank => 'Select Year'  %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :semester %></td>
+			<td><%= f.select :semester, 1..6, :include_blank => 'Select Semester' %></td>
+		</tr>
+		<!--
+		<tr>
+			<td class="leftcol"><%#= f.label :lecture_title %></td>
+			<td><%#= f.text_field :lecture_title, :size =>51 %></td>
+		</tr>-->
+		<!--30March2013-Part B:Newly key-in data (end)-->
+
+		<tr>
+			<td class="leftcol"><%= f.label :reference %></td>
+			<td><%= f.text_area :reference, :size=> '50x5' %></td>
+		</tr>
+			<!--THIS ONE WILL SAVE TRAINING NOTES IN lesson_plans table instead of trainingnotes table.-->
+			<tr>
+				<td class="leftcol"><label for="data">Current Attachment:</label></td>
+				<td><% if @lesson_plan.data.exists? then %>
+			    		<%= @lesson_plan.data_file_name %> &nbsp;&nbsp;&nbsp;
+			    	<%= link_to (t 'document.download'), @lesson_plan.data.url %> ||
+		        	<%= link_to "ALT", @lesson_plan.data.url %>
+					<% @title_fr_trainingnotes = Trainingnote.find_by_timetable_id(@lesson_plan.schedule).title %>
+			    <% else %>
+			    	No Attachment yet
+					<% @title_fr_trainingnotes ='' %>
+		    	<% end %>
+			</td>
+
+			<tr>
+				<td class="leftcol"><label for="data">Upload/Change File:</label></td>
+				<td><%= f.file_field :data %><BR>
+				<%= f.text_field :title, :placeholder => 'Title', :size => '50x1', :value=>@title_fr_trainingnotes %></td>
+			</tr>
+			<!--trial section : 20May2013-->
+				<table width=100%>
+					<tr>
+						<td class="leftcol">Add Existing Training Notes</td>
+						<td>
+							<div>
+							<% f.fields_for :lesson_plan_trainingnotes do |builder| %>
+								<%= render 'lesson_plan_trainingnote_fields', :f => builder %>
+							<% end %>
+							<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :lesson_plan_trainingnotes %> - Add More </p>
+							</div></td>
+					</tr>
+					<!--
+					<tr>
+						<td class="leftcol">Add New Training Notes</td>
+						<td>
+							<div>Current file is : LUAR<%#=@lesson_plan.trainingnotes%>
+							<%# f.fields_for :trainingnotes do |builder| %>
+								<%#= render 'trainingnote_fields', :f => builder %>
+							<%# end %>
+							<p><%#= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :trainingnotes %> - Add More </p>
+							</div></td>
+					</tr>-->
+				</table>
+			<!--trial section : 20May2013-->
+			<!--start-added for clarification-3Nov2013-->
+			<tr>
+				<td class="leftcol"><label for="data">Remark :</label></td>
+				<td>For additional Training Notes, should you found there's no suitable EXISTING training notes available for selection, add ONE in topic details (menu : Training | Lesson Plan | Create Topic Details) accordingly.  </td>
+			</tr>
+			<!--end-added for clarification-3Nov2013-->
+
+		</table>
+
+<BR>

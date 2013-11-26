@@ -5,7 +5,8 @@ class StaffsController < ApplicationController
   # GET /staffs
   # GET /staffs.xml
   def index
-    @staffs = Staff.find(:all, :conditions => ['name ILIKE ?', "%#{params[:search]}%"])
+    #@staffs = Staff.find(:all, :conditions => ['name ILIKE ?', "%#{params[:search]}%"])
+    @staffs = Staff.find(:all, :conditions => ['name ILIKE ?', "%#{params[:search]}%"],:order=>"name ASC")
     #@staffs = Staff.find(:all, :order => sort_column + " " + sort_direction, :conditions => ['name ILIKE ?', "%#{params[:search]}%"])
     @staff_filtered = Staff.with_permissions_to(:edit).find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
     #@staffs = Staff.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])

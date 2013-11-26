@@ -1,0 +1,274 @@
+<%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Student Attendance List</h2>
+			<div class="right">
+	    	<%# form_tag books_path, :method => 'get' do %>
+				<%#= text_field_tag :search, params[:search], :placeholder => "ISBN, Title, Author, Location" %>
+				<%#= submit_tag "Search", :title => nil %>
+			<%# end %><%=@dept_unit%><%=@preselect_prog%>
+			</div>
+	</div>
+</div>
+
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Student Attendance') + "New", new_student_attendance_path(:new_type => "1") %></p>
+</div>
+<br><br>
+
+<!--17Jul2013-added-line 20,21,22,23&26-->
+<% @programme_list_ids = Programme.at_depth(0).map(&:id)%>
+<% if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+	<% @intake_list2 = Student.find(:all, :conditions => ['course_id IS NOT NULL and course_id IN(?)',@programme_list_ids], :select=> "DISTINCT intake, course_id",:order=>"course_id,intake") %>
+<% else %>
+	<%# @intake_list = Student.find(:all, :conditions => ['course_id=?',@preselect_prog]).map(&:intake).uniq %>
+	<% @intake_list2 = Student.find(:all, :conditions => ['course_id=?',@preselect_prog], :select=> "DISTINCT intake") %>
+<% end %>
+<!--17Jul2013-added-line 20,21,22,23&26-->
+
+<div class="left">
+	<% form_tag :action => 'new' do %>
+		<%= hidden_field_tag( "new_type","3" )%>
+		<b>Intake : </b><%#= select_tag('intake', options_for_select(@intake_list.sort)) %>
+		<!--17Jul2013-added-line 33,34,35&37-->
+		<% if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+			<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn_prog)) %>
+		<% else %>
+			<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>
+		<% end %>
+		<!--17Jul2013-added-line 33,34,35&37-->
+		<%= submit_tag 'Multiple Attendance by Intake', :subject_id => nil %>
+	<% end %>
+</div>
+
+<!--17Jul2013-added-line 44,45,46&48-->
+<% if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+	<% @topics_ids_this_prog = Programme.at_depth(3) %><!--select TOPICS for all programme-->
+<% else %>
+	<% @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
+<% end %>
+<!--17Jul2013-added-line 44,45,46&48-->
+
+<% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
+<div class="right">
+	<% form_tag :action => 'new' do %>
+		<%= hidden_field_tag( "new_type","2" )%>
+		<b>Class / Schedule : </b><%= select_tag('classid', options_from_collection_for_select(@schedule_list, :id, :subject_day_time)) %>
+		<%= submit_tag 'Multiple Attendance by Schedule', :subject_id => nil %>
+	<% end %>
+</div>
+<br><br>
+
+<div class="tlist">
+	
+	<% form_tag edit_multiple_student_attendances_path, :id => "form1" do %>
+	
+	<table width=100% border="0" cellpadding="0" cellspacing="0">
+  	<tr>
+		<th>&nbsp;</th>
+    	<th>Student</th>
+		<th>Attend</th>
+		<th>Reason</th>
+		<th>Action Taken</th>
+		<th>Action Closed?</th>
+		<th colspan=3>Control</th>
+  	</tr>
+
+<!---->
+	<% @student_attendances_intake.each do |intake, student_attendances|%>
+		<%@studentattendance_ids=student_attendances.map(&:id)%>
+
+		<tr>
+ 			<td colspan=9 style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">STUDENT INTAKE : <%=intake.to_date.strftime("%b %Y").upcase %></td>
+		</tr>
+
+		<% student_attendances.group_by{|xx|xx.weeklytimetable_details_id}.each do |classes_schedule| %>
+			<!--<%#=classes_schedule[0]%>~~<%#=classes_schedule[1]%>-->
+			<% if classes_schedule[0] != nil %>
+				<tr>
+					<td colspan=9 style="background-color:#EFF1F1;">
+						<span style="font-weight:bold;">
+							Subject : <%= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.full_parent %> | 
+							Topic : <%= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.subject_list %>
+						</span><br>
+						Date : <%=h WeeklytimetableDetail.find(classes_schedule[0]).get_date_day_of_schedule %> |
+						Time : 
+						<% if (WeeklytimetableDetail.find(classes_schedule[0])).time_slot==0 %>
+							<%=TimetablePeriod.find(WeeklytimetableDetail.find(classes_schedule[0]).time_slot2).timing %>				
+						<% else %>
+							<%=TimetablePeriod.find(WeeklytimetableDetail.find(classes_schedule[0]).time_slot).timing %>
+						<% end %> |
+						Lecturer : <%=h (WeeklytimetableDetail.find(classes_schedule[0])).weeklytimetable_lecturer.name %>
+					</td>
+				</tr>
+			<% else %>
+				<tr>
+					<td colspan=8 style="background-color:#FDDEDE;">Schedule / Classes - not defined (<%=intake.to_date.strftime("%b %Y").upcase %>)</td>
+				</tr>
+			<% end %>
+
+			<% classes_schedule[1].sort_by{|x|x.student.name}.each do |student_attendance|%>				
+				<tr>
+					<td><%= check_box_tag "student_attendance_ids[]", student_attendance.id, :class => "check" %></td>
+		    		<td><%=h student_attendance.student.matrix_name %></td>
+					<td>
+						<% if student_attendance.attend == true %> 
+							&#10003;
+						<% else %>
+							Absent
+						<% end %>
+					</td>
+					<td>	
+						<% if student_attendance.attend == true %> 
+						<% else %>
+							<% if student_attendance.reason != 0 || student_attendance.reason != nil %>
+								<%=h ((StudentAttendance::REASON.find_all{|disp, value| value == student_attendance.reason}).map {|disp, value| disp}) %>
+							<% end %>
+						<% end %>	
+					</td>
+					<td>	 
+						<% if student_attendance.attend == true %> 
+						<% else %>
+							<% if student_attendance.action != 0 || student_attendance.action != nil %>
+								<%=h ((StudentAttendance::ACTION.find_all{|disp, value| value == student_attendance.action}).map {|disp, value| disp}) %>
+							<% end %>
+						<% end %>
+					</td>
+					<td>
+						<% if student_attendance.attend == true %> 
+						<% else %>
+							<% if student_attendance.status != 0 || student_attendance.status != nil %>
+								<%=student_attendance.status %>
+							<% end %>
+						<% end %>
+					</td>
+					<td width=10px><%= link_to image_tag("document.png",:border => 0, :title => 'Show'), :action => 'show', :id => student_attendance %></td>
+					<td width=10px><%= link_to image_tag("edit.png",:border => 0, :title => 'Edit'),:action => 'edit', :id => student_attendance %></td>
+					<td width=10px ><%= link_to image_tag("delete.png",:border => 0, :title => 'Delete'), student_attendance,:confirm => 'Are you sure?',:method => :delete %></td>
+				</tr>	
+			<% end %>
+
+		<% end %><br>
+	<% end %>
+<!---->
+	
+	<!--START-NO LONGER USE--><%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%>
+	<!--
+	<%# @student_attendances_class.each do |class_session, student_attendances|%>
+		<tr>
+			<td colspan=8 style="background-color:#EFF1F1;">
+				<%# unless student_attendances[0].weeklytimetable_details_id.blank? || student_attendances[0].weeklytimetable_details_id.nil? %>
+					-->
+					<!--start:with weeklytimetable_details_id existance--><!--
+					<span style="font-weight:bold;">
+						Subject : <%#=h student_attendances[0].weeklytimetable_detail.weeklytimetable_topic.full_parent %> | 
+						Topic : <%#=h student_attendances[0].weeklytimetable_detail.weeklytimetable_topic.subject_list %><%#=class_session %>
+					</span><br>
+					Date : <%#=h student_attendances[0].weeklytimetable_detail.get_date_day_of_schedule %> |
+					Time : 
+					<%# if student_attendances[0].weeklytimetable_detail.time_slot==0 %>
+						<%#=TimetablePeriod.find(student_attendances[0].weeklytimetable_detail.time_slot2).timing %>				
+					<%# else %>
+						<%#=TimetablePeriod.find(student_attendances[0].weeklytimetable_detail.time_slot).timing %>
+					<%# end %> |
+					Lecturer : <%#=h student_attendances[0].weeklytimetable_detail.weeklytimetable_lecturer.name %> |
+					Intake : <%#=h student_attendances[0].weeklytimetable_detail.weeklytimetable.schedule_intake.name %>
+					(<%#= (WeeklytimetableDetail::CLASS_METHOD.find_all{|disp, value| value == student_attendances[0].weeklytimetable_detail.lecture_method}).map {|disp, value| disp}%>)-->
+					<!--end:with weeklytimetable_details_id existance-->
+				<%# else %>	
+					<!--start-display intakes only-->
+					<!--end-display intakes only-->
+				<%# end %><!--
+			</td>
+		</tr>
+		<%# student_attendances.each do |student_attendance| %>
+  		<tr>
+			<td><%#= check_box_tag "student_attendance_ids[]", student_attendance.id, :class => "check" %></td>
+    		<td><%#=h student_attendance.student.matrix_name %></td>
+			<td><%# if student_attendance.attend == true %> &#10003;<%# end %></td>
+			<td width=10px><%#= link_to image_tag("document.png",:border => 0, :title => 'Show'), :action => 'show', :id => student_attendance %></td>
+			<td width=10px><%#= link_to image_tag("edit.png",:border => 0, :title => 'Edit'),:action => 'edit', :id => student_attendance %></td>
+			<td width=10px ><%#= link_to image_tag("delete.png",:border => 0, :title => 'Delete'), student_attendance,:confirm => 'Are you sure?',:method => :delete %></td>
+		</tr>
+		<%# end %>
+		
+	<%# end %>
+	-->
+	
+	<!--END - NO LONGER USE--><%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%>
+
+	</table>
+	<br>
+	
+	<div class="left">
+		<!-- ref: http://railsforum.com/viewtopic.php?id=2151 rleblic2007-10-25 08:43:07 -->
+		<!--http://www.ryboe.com/2008/07/10/select-all-checkboxes-with-prototype-js.html -->
+		<input id="check_all" name="check_all" type="checkbox" checked="checked" onclick="Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_all').checked})" />
+		<b>Check/Uncheck all</b>&nbsp;&nbsp;
+	</div>
+
+	<%= submit_tag "Edit Checked", :name => :student_attendance_submit_button %> <font size=-2px>(Edit by Schedule / Class)</font>
+	<% end %><!--end for form-->
+
+
+
+	<% @exist_attendances = StudentAttendance.all.map(&:weeklytimetable_details_id).uniq %>
+	<% @exist_timetable_attendances = WeeklytimetableDetail.find(:all, :conditions=>['id IN (?)', @exist_attendances])%>
+
+
+	<div class="right">
+		<% form_tag '', :method => 'get' do %>
+			<b>Class / Schedule : </b><%= select_tag('classid', "<option value='0'>All Existing Student Attendance</option>" +options_from_collection_for_select(@exist_timetable_attendances, :id, :subject_day_time)) %><!--WeeklytimetableDetail.all, :id, :subject_day_time-->
+			<%= submit_tag 'Search Student Attendances', :name => :attendance_search %>
+		<% end %>
+	</div>
+	
+	<br>
+	<div class="left">
+		<% @intatake = [] %>
+		<% @student_attendances_intake.each do |intake, student_attendances|%>
+			<% @intatake << intake %>
+		<% end %>	
+		
+		<!--17Jul2013-added-line 233,234,235,236&238-->
+		<% @students = @student_attendances.map(&:student_id).uniq %><!--@student_attendances:refer controller:search result-->
+		<% @courses = Student.find(@students).map(&:course_id).uniq %>
+		<% if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+			<% @intatake2 = Student.find(:all, :conditions => ['course_id IN (?) AND intake IN (?)',@courses, @intatake], :select=> "DISTINCT intake,course_id") %>
+		<% else %>
+			<% @intatake2 = Student.find(:all, :conditions => ['course_id=? AND intake IN (?)',@preselect_prog, @intatake], :select=> "DISTINCT intake") %>
+		<% end %>
+		<!--17Jul2013-added-line 233,234,235&237-->
+		
+		<% form_tag edit_multiple_intake_student_attendances_path do %>
+			<!--17July2013-added-line 242,243,244 & 246-->
+			<% if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+				<%#= select_tag('intake_student', options_for_select(@intatake)) %>		
+				<%= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn_prog)) %>	
+			<% else %>
+				<%= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %>	
+			<% end %>
+			<!--17July2013-added-line 242,243,244 & 246-->			
+			<%= submit_tag 'Edit multiple by intake', :name => :student_attendance_intake %>			
+		<% end %>
+	</div>
+	<br>
+
+	<div class="right">
+		<% form_tag '', :method => 'get' do %>
+			<%= hidden_field_tag( "programme",@preselect_prog)%>
+			<%= select_tag('intake_student', "<option value='0'>All Existing Intake</option>" +options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %><!--WeeklytimetableDetail.all, :id, :subject_day_time-->
+			<%= submit_tag 'Search by Intake', :name => :attendance_search %>
+		<% end %>
+	</div>
+
+</div><!--INTAKE<%#=@intake_student%>-->
+
+
+<br />
+
+
+
+<%#= link_to 'New student attendance', new_student_attendance_path %>
+
+<br><br>

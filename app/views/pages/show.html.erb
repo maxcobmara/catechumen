@@ -14,7 +14,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="body">Body : </label></td>
-		<td><%=h @page.body %></td>
+		<td><%=h simple_format(@page.body) %></td>
 	</tr>
 
 	<tr>
@@ -25,5 +25,16 @@
 </table>
 </div>
 <BR>
+	<% User.current_user.roles.each do |role| %>
+		<% @lib=true if role.id==5 %>
+		<% @admin=true if role.id == 2%>
+	<% end %>
 <%= link_to 'Edit', edit_page_path(@page) %> |
-<%= link_to 'Back', pages_path %>
+<% if @admin==true %>
+	<%= link_to 'Back', pages_path %>
+<% else %>
+	<% if @lib==true%>
+		<%#= link_to 'Back', librarytransactions_path %>
+		<%= link_to 'Back',    '/rules' %>
+	<% end %>
+<% end %>

@@ -4,7 +4,7 @@
 	<tr>
 		<td class="leftcol"><label for="book_id"><b><%= t 'book.title' %></b></label></td>
 		<td>  <%=h @librarytransaction.accession.accession_no unless @librarytransaction.accession_id.blank? %> -  
-					<%=h @librarytransaction.accession.book.title unless @librarytransaction.accession_id.blank? %></td>
+				<%=h @librarytransaction.accession.book.title unless @librarytransaction.accession_id.blank? %></td>
 	</tr>
 
 	<tr>
@@ -16,7 +16,11 @@
 		<td class="leftcol"><label for="checkoutdate"><b><%= t 'librarytransaction.checkoutdate' %></b></label></td>
 		<td> <%=h l(@librarytransaction.checkoutdate) unless @librarytransaction.checkoutdate.blank? %></td>
 	</tr>
-
+	<tr>
+		<td class="leftcol"><label for="checkoutby"><b><%= t 'librarytransaction.checkoutby' %></b></label></td>
+		<td> <%=h @librarytransaction.libcheckoutby.name unless @librarytransaction.libcheckout_by.blank? %>
+</td>
+	</tr>
 	<tr>
 		<td class="leftcol"><label for="returndate"><b><%= t 'librarytransaction.duedate' %></b></label></td>
 		<td><%=h l(@librarytransaction.returnduedate) unless @librarytransaction.checkoutdate.blank? %></td>
@@ -27,12 +31,20 @@
 		<td class="leftcol"><label for="extend"><b><%= t 'librarytransaction.extend' %></b></label></td>
 		<td><%=h @librarytransaction.extended? ? "Yes" : "No Extension Taken" %></td>
 	</tr>
+	<tr>
+		<td class="leftcol"><label for="extendby"><b><%= t 'librarytransaction.extendby' %></b></label></td>
+		<td><%=h @librarytransaction.libextendby.name unless @librarytransaction.libextended_by.blank? %></td>
+	</tr>
 	<% end %>
 
 	<% if @librarytransaction.returned? %>
 			<tr>
 				<td class="leftcol" ><label for="returneddate"><b><%= t 'librarytransaction.returneddate' %></b></label></td>
 			  <td><%=h l(@librarytransaction.returneddate) unless @librarytransaction.returneddate.blank? %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="returnby"><b><%= t 'librarytransaction.returnby' %></b></label></td>
+				<td><%=h @librarytransaction.libreturnby.name unless @librarytransaction.libreturned_by.blank? %></td>
 			</tr>
 	<% end %>
 	

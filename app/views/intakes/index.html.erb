@@ -1,28 +1,44 @@
-<h1>Listing intakes</h1>
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Listing intakes</h2>
+	</div>
+</div>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Register on</th>
-    <th>Programme</th>
-    <th>Is active</th>
-  </tr>
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Intake') + "New", new_intake_path %></p>
+</div>
 
-<% @intakes.each do |intake| %>
-  <tr>
-    <td><%=h intake.name %></td>
-    <td><%=h intake.description %></td>
-    <td><%=h intake.register_on %></td>
-    <td><%=h intake.programme_id %></td>
-    <td><%=h intake.is_active %></td>
-    <td><%= link_to 'Show', intake %></td>
-    <td><%= link_to 'Edit', edit_intake_path(intake) %></td>
-    <td><%= link_to 'Destroy', intake, :confirm => 'Are you sure?', :method => :delete %></td>
+<div class="indextable">
+	<table>
+	  <tr>
+    	<th>Group</th><!--20March2013-->
+    	<th>Register on</th>
+    	<th>Programme</th>
+    	<th>Is active</th>
+		<th colspan=3 class="ac">Control</th>
+  	  </tr>
+<!--28March2013-group display by intake name-->
+<% @intakes.each do |intakename,intakedetails| %>
+  <!--Display intake name first-->
+  <tr><td colspan="7" style="background-color:#eee;font-weight:bold;">Intake : <%=h intakename %></td></tr>
+  <!--Display intake details accordingly-->
+	<% for details in intakedetails %>
+	<tr>
+    	<td><%=h details.description %></td>
+    	<td><%=h details.register_on %></td>
+    	<td><%=h details.programme.programme_list %></td>
+    	<td><%=h details.is_active %></td>
+    	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => details %></td>
+    	<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => details %></td>
+ 		<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), details, :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+	<% end %>
   </tr>
+<!--28March2013-group display by intake name-->
 <% end %>
 </table>
 
 <br />
+</div>
 
 <%= link_to 'New intake', new_intake_path %>

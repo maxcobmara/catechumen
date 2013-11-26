@@ -1,22 +1,177 @@
 <div class="showform">
+<br>
   <%=render :partial => 'show_exam' %>
-	
-<fieldset>
-	<legend>Questions</legend>
-	<table border=0 >
-	<% bil = 0 %>
-	<% for examquestion in @exam.examquestions %>
-	<% bil += 1 %>
-		<tr>
-			<td colspan=2><b><%=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion.questiontype}).map {|disp, value| disp} %></b></td>
-		</tr>
-		<tr>
-			<td><center><%=h bil %></center></td>
-			<td><%=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %> <BR> <%=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %> </td>
-		</tr>
-	<% end %>
-	</table>
 
+<% if @exam.klass_id == 0 %>
+	<fieldset>
+		<legend class='togvis'>Exam Template</legend>
+			<table border=0>
+				<tr>
+					<td class="leftcol">Questions</td>
+					<td class="leftcol">Question Type:</td>
+					<td class="leftcol">Quantity:</td>
+					<td class="leftcol">Total Marks:</td>
+				<tr>
+				<% for examtemplate in @exam.examtemplates %>
+				<tr>
+					<td>&nbsp;</td>
+					
+					<td><%=h (Examquestion::QTYPE.find_all{|disp, value| value == examtemplate.questiontype}).map {|disp, value| disp} %></td>
+			
+					
+					<td><%=h examtemplate.quantity %></td>
+			
+					
+					<td><%=h examtemplate.total_marks  %></td>
+				</tr>
+				<% end %>
+			</table>
+	</fieldset>
+<% else %>
+<!---->	
+<fieldset>
+	<legend class='togvis'>Questions</legend>
+	<table border=0>
+	
+		<% @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype} %>
+		<!---->
+		<% if @exam.sequ!= nil %><!--IF SEQUENCE EXIST-->
+			<% sequ = @exam.sequ.split(",")%>
+			<% seq_questionid = [] %>
+			<% hash_seqid = Hash.new %>
+			<% tosort_seqid = Hash.new %>
+			<% select_questionid = []  %>
+			<% count = 0 %>
+			
+			<!--START-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+			<% @examquestions_by_type.each do |qtype,examquestions|%>
+				<% for examquestion in examquestions %>
+					<!--Sequ[count] :<%#= sequ[count]%>
+					Examquestion_id : <%#=examquestion.id%><br>-->
+					<% if sequ[count] != "Select" %>
+						<!--hash_seqid-->
+						<% hash_seqid = {sequ[count] => examquestion.id}%><!--<br>--><!--FORMAT:grades = { "Jane Doe" => 10, "Jim Doe" => 6 }-->
+						<!--<b>tosort_seqid</b>-->
+						<% tosort_seqid = tosort_seqid.merge(hash_seqid) %><!--merge shall replace value for same key-->
+					<% else %>
+						<% select_questionid << examquestion.id %>
+					<% end %>
+					<% count+=1 %>
+				<% end %>
+			<% end %>
+			
+			<!--for question with sequence-SORT by its' sequence-->	
+			<% tosort_seqid.sort_by{|k,v|k.to_i}.each do |x,y|%> <!--to overcome this sort result:1,10,11,2,3,4,5,6,7,8,9-->
+				<!--<br>--><% seq_questionid << y %><%#=x%><!-- Y:--><%#=y%>
+			<% end %>
+			<!--for question with sequence-SORT by its' sequence-->	
+			<!--END-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+			
+			<!--START-QUESTIONS WITH & WITHOUT SEQUENCE NO ACCORDINGLY-->
+				<!--START-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+				<% current_qtype = "MCQ" %>
+				<% 0.upto(tosort_seqid.count-1) do |count| %>
+					<% current_question = Examquestion.find(seq_questionid[count])%>
+					<!--display header-question type-->
+					<% if count == 0 && current_qtype == current_question.questiontype %>
+						<tr><td colspan=3><b>
+							<%=h (Examquestion::QTYPE.find_all{|disp, value| value == "MCQ"}).map {|disp, value| disp} %>
+					</b></td></tr>
+					<% elsif count > 0 && current_qtype != current_question.questiontype %>
+						<tr><td colspan=3><b>
+							<%=h (Examquestion::QTYPE.find_all{|disp, value| value == current_question.questiontype}).map {|disp, value| disp} %>
+						</b></td></tr>
+						<% current_qtype = current_question.questiontype %>
+					<% end %>
+					<!--display header-question type-->
+					<!--display quention-answer-mark set-->
+					<tr>
+						<td><center>Sequence : <%=count+1 %></center></td>
+						<td>Question : <%#=current_question.id%><%=current_question.question %><br>Answer   :<%=current_question.answer %></td>
+						<td>Marks   : <%=current_question.marks %></td>
+					</tr>
+					<!--display quention-answer-mark set-->				
+				<% end %>
+				<!--END-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO-->
+				
+				<!--START-WORKABLE ONE-FOR EXAMQUESTION-WITHOUT SEQUENCE NO-->
+				<% current_qtype2 = "MCQ" %>
+				<% 0.upto(sequ.count-tosort_seqid.count-1) do |counter| %>
+					<% current_question = Examquestion.find(select_questionid[counter])%>
+					<% if counter == 0 && current_qtype2 == current_question.questiontype %>
+						<tr><td colspan=3><b>
+							<%=h (Examquestion::QTYPE.find_all{|disp, value| value == "MCQ"}).map {|disp, value| disp} %>
+						</b></td></tr>
+					<% elsif counter > 0 && current_qtype2 != current_question.questiontype %>
+						<tr><td colspan=3><b>
+							<%=h (Examquestion::QTYPE.find_all{|disp, value| value == current_question.questiontype}).map {|disp, value| disp} %>
+						</b></td></tr>
+						<% current_qtype2 = current_question.questiontype %>
+					<% end %>
+					<tr>
+						<td><center>Sequence : not selected </center></td>
+						<td>Question : <%=current_question.question %><br>Answer  :<%=current_question.answer %></td>
+						<td>Marks   : <%=current_question.marks %></td>
+					</tr>
+				<% end %>
+				<!--END-WORKABLE ONE-FOR EXAMQUESTION-WITHOUT SEQUENCE NO-->
+				
+				<!-- DO NOT REMOVE - FOR CHECKING
+				<%# all_q=[] %>
+				<%# count_sequence = 0 %>
+				<%# all_q = Examquestion.find(:all, :conditions => ['id IN (?)', seq_questionid ]) %>
+				<%# all_q.each do |qq| %>
+					hhh<br>all_q = <%#=qq.id%>~<%#=qq.question%>
+					<%# end %>
+				<%# all_q.group_by{|u|u.questiontype}.each do |type,ques| %>
+					<tr><td colspan=3><b>
+						<%#=h (Examquestion::QTYPE.find_all{|disp, value| value == type}).map {|disp, value| disp} %>
+						</b></td></tr>
+					<%# ques.each_with_index do |que, index| %>
+						<%#=que%>
+						<tr>
+							<td><center><%#=que.id%>Sequence : <%#=count_sequence+1%></center></td>
+							<td>
+								Question : <%#= que.question %>
+								<%##=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %> <BR> 
+								Answer : <%#= que.answer %><%#=raw sanitize(simple_format(que.answer), :tags => %w(br p) ) %> 
+								<%#count_sequence+=1%>
+							</td>
+							<td><%#=que.marks%></td>	
+						</tr>
+					<%# end %>
+				<%# end %> DO NOT REMOVE - FOR CHECKING-->
+			
+			<!--END-QUESTIONS WITH & WITHOUT SEQUENCE NO ACCORDINGLY-->
+			
+		<% else %><!--else for if @exam.sequ!= nil (SEQUENCE NEVER SET YET..first time data entry only:column sequence in exam table BLANK)-->	
+			<% @examquestions_by_type.each do |qtype,examquestions|%>
+				<% examquestions.each_with_index do |examquestion, index| %>
+					<% if index == 0 %>
+					<tr>
+						<td colspan=2><b>
+							<%#=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion_type}).map {|disp, value| disp} %>
+							<%=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion.questiontype}).map {|disp, value| disp} %>
+						</b></td>
+					</tr>
+					<% end %>
+					<tr><td><center>Sequence : Not set</center></td>
+					<td>
+						Question : <%= examquestion.question %>
+						<%##=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %> <BR> 
+						Answer : <%= examquestion.answer %>
+						<%#=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %> 
+					</td>
+				</tr>
+				<% end %>
+			<% end %>
+		<% end %><!--end for if @exam.sequ!= nil -->
+		<!---->
+	</table>
+</fieldset>
+
+<!---->
+<% end %><%# end for - if @exam.klass_id == 0 %>	
 </div>
 <BR>
 

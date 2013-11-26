@@ -1,0 +1,847 @@
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Staff Attendance - Report / Monthly Listing</h2>
+	</div>
+</div>
+
+<div class="indextable">
+	<h3>&nbsp;&nbsp;&nbsp;Daily / Weekly / Monthly Report</h3>
+	<table>
+		<tr>
+			<th width=220px>&nbsp;&nbsp;Department </th>
+			<th width=310px>&nbsp;&nbsp;Report Type</th>
+			<th width=400px>&nbsp;Month & Year / Week starting</th>
+		</tr> 
+		
+		<%#@dept_superiors.each_with_index do |superior, index|%>
+		<%# if index == 0 %>
+		
+		<!--open form-->
+		<% form_tag(:action => :monthly_weekly_report) do %>
+		<tr>
+			<td>
+				<!--name=superior's position NAME,id=superior's position ID, unit=superior's UNIT-->
+				<!--selection default to first item-->
+				<%= select_tag(:superior_position_id,"<option value='All'>Select Department</option>"+options_from_collection_for_select(@dept_superiors, :id, :unit)) %>
+				<%#= select_tag(:superior_position_id,"<option>Select a department / unit</option>"+options_from_collection_for_select(@dept_superiors, :id, :unit)) %>
+			</td>
+			<td width=310px>
+			
+			<!--<div class="report_type" style="display:none;">-->	
+			<SPAN class="report_type", style="display: none;">
+				<%= radio_button_tag 'feedback', "day",false, :class => "radio_feedback" %><label>Daily Report</label> 
+				<!--radio_button_tag 'color', "green", true, :class => "color_input"
+				# => <input checked="checked" class="color_input" id="color_green" name="color" type="radio" value="green" />-->
+				<%= radio_button_tag 'feedback', "cou",false, :class => "radio_feedback" %><label>Weekly Report</label> 
+				<!--name=feedback,id=feedback_cou-->
+				<%= radio_button_tag 'feedback', "final",false, :class => "radio_feedback" %><label>Monthly Report</label>
+				<!--name=feedback,id=feedback_final-->
+			<!--</div>--></span>
+				
+			</td>
+			<td>
+				<div class="daily" style="display:none;width:400px;">
+					<!--default to current date,-->
+					Date :<%= date_select :month_year3, params[:month_year3], :order => [:day, :month, :year], :start_year => Time.now.year - 2, :end_year => Time.now.year %>
+					<%#= date_select :month_year1, params[:month_year1], :order => [:day, :month, :year],:include_blank => true%>
+					<%= submit_tag "Daily Report", :name => :list_submit_button %>
+				</div>
+				<div class="twoweek" style="display:none;width:400px;">
+					<!--default to first month,-->
+					Starting Date :<%= date_select :month_year1, params[:month_year1], :order => [:day, :month, :year], :start_year => Time.now.year - 2, :end_year => Time.now.year %>
+					<%#= date_select :month_year1, params[:month_year1], :order => [:day, :month, :year],:include_blank => true%>
+					<%#= submit_tag "Report for 2 Week", :name => :list_submit_button %>
+					<%= submit_tag "Weekly Report", :name => :list_submit_button %>
+				</div>
+				<div class="monthly" style="display:none;width:400px;">
+					<!--default to first month,-->
+					<%= date_select :month_year2, params[:month_year2], :order => [:month, :year], :start_year => Time.now.year - 2, :end_year => Time.now.year %>
+					<%#= date_select :month_year2, params[:month_year2], :order => [:month, :year],:include_blank => true%>
+					<%= submit_tag "Monthly Report", :name => :list_submit_button %>
+				</div>
+				
+				<!--
+					<%# form_tag(:action => :stock_listing) do %>
+						Class No
+						<%#= text_field_tag(:isbn_search, params[:isbn_search], :size=>14, :placeholder=> "..starting with") %>
+						<%#= submit_tag "List by class no", :name => :list_submit_button %>
+					<%# end %>
+				-->
+				<!--
+					<%# form_tag '', :method => 'get' do %>
+					From: <%#= date_select :search_from, params[:search_from], :include_blank => :true %>
+					&nbsp; &nbsp;To: <%#= date_select :search_to, params[:search_to], :include_blank => :true %>
+					<%#= submit_tag "Search by received date", :name => :submit_button1 %>
+					<%# end %>
+				-->
+			</td>
+		</tr>
+		<% end %><!--close form-->	
+			
+		<%# end %>
+		<%# end %>
+	</table>
+	
+	<br><br>
+	
+	<!--start-2July2013-second section-->
+	<h3>&nbsp;&nbsp;&nbsp;Monthly Listing</h3>
+	<table>
+		<tr>
+			<th width=220px>&nbsp;&nbsp;Department</th>
+			<th width=310px>&nbsp;&nbsp;</th>
+			<th width=400px>&nbsp;Month & Year </th>
+		</tr>
+		
+		<!--open form-->
+		<% form_tag(:action => :monthly_listing) do %>
+		<tr>
+			<td><%= select_tag(:dept_select,"<option value='All'>Select Department</option>"+options_for_select(@dept_names)) %></td>
+			<td>
+				<!--display staff listing accordingly (department) -->
+				<!--<SPAN class="bong", style="display: none;"></SPAN>-->
+				<SPAN class="koik", style="display: none;">
+					<%= select_tag(:staffthumb1, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[0]]), :thumb_id, :name)) %>
+				</SPAN>
+
+				<SPAN class="hotel", style="display: none;">
+					<%= select_tag(:staffthumb2, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[1]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="library", style="display: none;">
+					<%= select_tag(:staffthumb3, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[2]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="kaunter", style="display: none;">
+					<%= select_tag(:staffthumb4,options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[3]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="bangun", style="display: none;">
+					<%= select_tag(:staffthumb5, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[4]]), :thumb_id, :name)) %>
+				</SPAN>
+				<!--just added 20June2013-->
+
+			<!--"Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja",-->
+			    <!--wang khidmat tadbir radiografi kejururawatan fisioterapi carakerja-->
+
+				<SPAN class="wang", style="display: none;">
+					<%= select_tag(:staffthumb6, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[5]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="khidmat", style="display: none;">
+					<%= select_tag(:staffthumb7,options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[6]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="tadbir", style="display: none;">
+					<%= select_tag(:staffthumb8, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[7]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="radiografi", style="display: none;">
+					<%= select_tag(:staffthumb9,options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[8]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="kejururawatan", style="display: none;">
+					<%= select_tag(:staffthumb10, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[9]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="fisioterapi", style="display: none;">
+					<%= select_tag(:staffthumb11, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[10]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="carakerja", style="display: none;">
+					<%= select_tag(:staffthumb12, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[11]]), :thumb_id, :name)) %>
+				</SPAN>
+
+				<!--"Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]-->
+
+				<!--pegawai  posbasik  sains  anatomi  tingkahlaku  komunikasi  ppelatih  khidmatpelatih  kokurikulum  kupk-->
+				<SPAN class="pegawai", style="display: none;">
+					<%= select_tag(:staffthumb13, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[12]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="posbasik", style="display: none;">
+					<%= select_tag(:staffthumb14, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[13]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="sains", style="display: none;">
+					<%= select_tag(:staffthumb15, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[14]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="anatomi", style="display: none;">
+					<%= select_tag(:staffthumb16, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[15]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="tingkahlaku", style="display: none;">
+					<%= select_tag(:staffthumb17, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[16]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="komunikasi", style="display: none;">
+					<%= select_tag(:staffthumb18, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[17]]), :thumb_id, :name)) %>
+				</SPAN>	
+				<SPAN class="ppelatih", style="display: none;">
+					<%= select_tag(:staffthumb19, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[18]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="khidmatpelatih", style="display: none;">
+					<%= select_tag(:staffthumb20, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[19]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="kokurikulum", style="display: none;">
+					<%= select_tag(:staffthumb21, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[20]]), :thumb_id, :name)) %>
+				</SPAN>
+				<SPAN class="kupk", style="display: none;">
+					<%= select_tag(:staffthumb22, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[21]]), :thumb_id, :name)) %>
+				</SPAN>
+				<!--display staff listing (department) accordingly-->
+			</td>
+		
+			<td>
+				<span class="monthly_listing", style="display:none;">	
+					<!--default to first month,-->
+					<%= date_select :month_year4, params[:month_year4], :order => [:month, :year], :start_year => Time.now.year - 2, :end_year => Time.now.year %>
+					<%= submit_tag "Monthly Listing", :name => :list_submit_button %>
+				</span>
+			</td>
+		</tr>
+		<% end %><!--close form-->	
+	</table>
+	<!--end-2July2013-second section-->
+</div>
+
+<script type="text/javascript">
+	
+	$j(document).ready(function(){ 
+		//2July2013-added for monthly listing
+		$j('#superior_position_id').change(function() {
+		    if($j(this).val() == "All") {
+		      	$j('.report_type').hide();
+				$j('.monthly').hide();
+				$j('.twoweek').hide();
+				$j('.daily').hide();
+			}
+			else if($j(this).val() != "All") {
+		      	$j('.report_type').show();
+			}
+		});
+		
+	   $j("input[class='radio_feedback']").change(function() {  
+	     	if($j('#feedback_final').is(':checked')) { 
+		       		$j(".monthly").show("highlight");
+					$j(".twoweek").hide();
+					$j(".daily").hide();
+		     }else if ($j('#feedback_cou').is(':checked')){
+					$j(".monthly").hide();
+					$j(".twoweek").show("highlight");
+					$j(".daily").hide();
+	     	}else if ($j('#feedback_day').is(':checked')){
+					$j(".monthly").hide();
+					$j(".twoweek").hide();
+					$j(".daily").show("highlight");
+			}
+	
+	   });
+
+		$j("input[class='radio_feedback']").each(function() {  
+	     	if($j('#feedback_final').is(':checked')) { 
+		       		$j(".monthly").show("highlight");
+					$j(".twoweek").hide();
+					$j(".daily").hide();
+		     }else if ($j('#feedback_cou').is(':checked')){
+					$j(".monthly").hide();
+					$j(".twoweek").show("highlight");
+					$j(".daily").hide();
+	      	}else if ($j('#feedback_day').is(':checked')){
+					$j(".monthly").hide();
+					$j(".twoweek").hide();
+					$j(".daily").show("highlight");
+		  	}
+	   });
+	
+		//2July2013-added for monthly listing
+		$j('#dept_select').change(function() {
+		    if($j(this).val() == "All") {
+		      		$j('.bong').show();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+					$j('.wang').hide();
+					$j('.khidmat').hide();
+					$j('.tadbir').hide();
+					$j('.radiografi').hide();
+					$j('.kejururawatan').hide();
+					$j('.fisioterapi').hide();
+					$j('.carakerja').hide();
+					$j('.pegawai').hide();
+					$j('.posbasik').hide();
+					$j('.sains').hide();
+					$j('.anatomi').hide();
+					$j('.tingkahlaku').hide();
+					$j('.komunikasi').hide();
+					$j('.ppelatih').hide();
+					$j('.khidmatpelatih').hide();
+					$j('.kokurikulum').hide();
+					$j('.kupk').hide();
+					$j('.monthly_listing').hide();
+		    }else if ($j(this).val() == "Teknologi Maklumat") {
+		     	 	$j('.bong').hide();
+					$j('.koik').show();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();	
+						$j('.monthly_listing').show();		
+		    }
+			else if ($j(this).val() == "Perhotelan") {
+				    $j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').show();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();		
+			}
+			else if ($j(this).val() == "Perpustakaan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').show();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();	
+			}
+			else if ($j(this).val() == "Kaunter") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').show();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();							
+			}
+			else if ($j(this).val() == "Pembangunan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').show();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();							
+			}
+			else if ($j(this).val() == "Kewangan & Stor") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').show();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();	
+			}
+			else if ($j(this).val() == "Perkhidmatan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').show();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();	
+			}
+			else if ($j(this).val() == "Pentadbiran Am") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').show();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();	
+			}
+			else if ($j(this).val() == "Radiografi") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').show();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();	
+			}
+			else if ($j(this).val() == "Kejururawatan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').show();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();	
+			}
+			else if ($j(this).val() == "Jurupulih Perubatan Anggota (Fisioterapi)") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').show();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();	
+			}
+			else if ($j(this).val() == "Jurupulih Perubatan Cara Kerja") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').show();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();	
+			}
+			else if ($j(this).val() == "Penolong Pegawai Perubatan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').show();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();	
+			}
+			else if ($j(this).val() == "Pos Basik") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').show();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();	
+			}
+			else if ($j(this).val() == "Sains Perubatan Asas") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').show();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+						$j('.monthly_listing').show();	
+			}
+				else if ($j(this).val() == "Anatomi & Fisiologi") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').show();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').hide();
+							$j('.kupk').hide();
+							$j('.monthly_listing').show();	
+				}
+				else if ($j(this).val() == "Sains Tingkahlaku") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').show();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').hide();
+							$j('.kupk').hide();
+							$j('.monthly_listing').show();	
+				}
+				else if ($j(this).val() == "Komunikasi & Sains Pengurusan") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').show();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').hide();
+							$j('.kupk').hide();
+								$j('.monthly_listing').show();	
+				}
+				else if ($j(this).val() == "Pembangunan Pelatih") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').show();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').hide();
+							$j('.kupk').hide();
+							$j('.monthly_listing').show();	
+				}
+				else if ($j(this).val() == "Khidmat Sokongan Pelatih") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').show();
+							$j('.kokurikulum').hide();
+							$j('.kupk').hide();
+							$j('.monthly_listing').show();	
+				}
+				else if ($j(this).val() == "Kokurikulum") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').show();
+							$j('.kupk').hide();
+							$j('.monthly_listing').show();	
+				}
+				else if ($j(this).val() == "Ketua Unit Penilaian & Kualiti") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').hide();
+							$j('.kupk').show();
+							$j('.monthly_listing').show();	
+				}
+			});
+		//2July2013-added for monthly listing
+	});	
+	
+</script>

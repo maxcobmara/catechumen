@@ -42,7 +42,14 @@
 	
 	<tr id="borrower" style="display: none;">
 		<td class="leftcol" ><label for="staffloan_id"><b><%= t 'cofile.onloan_to' %> :</b></label></td>
-	  <td><%= f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %></td><!--, :conditions => ["id != ?", @cofile.owner.id ]!-->
+	  	<td>
+			<%#= f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :include_blank => true %>
+			<% if @cofile.onloanxdt == nil %>
+				<%= f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :selected=> @cofile.staffloan_id,:include_blank => true %>
+			<% else %>
+				<%= f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :selected =>'',:include_blank => true %>
+			<% end %>
+		</td><!--, :conditions => ["id != ?", @cofile.owner.id ]!-->
 	</tr>
 	<tr id="loaneddate" style="display: none;">
 		<td class="leftcol"><label for="onloandt"><b><%= t 'cofile.onloandt' %> :</b></label></td>
@@ -51,7 +58,7 @@
 	
 	<tr id="returneddate" style="display: none;">
 		<td class="leftcol"><label for="onloanxdt"><b><%= t 'cofile.onloanxdt' %> :</b></label></td>
-		<td><%= f.date_select :onloanxdt, :order => [:day, :month, :year], :include_blank => true %></td>
+		<td><%= f.date_select :onloanxdt, :order => [:day, :month, :year], :include_blank => true %>	</td>
 	</tr>
 	
 </table>

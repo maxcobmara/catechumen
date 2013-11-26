@@ -34,15 +34,41 @@
 				<td><%=h @student_discipline_case.other_info %></td>
 			</tr>
 			<% end -%>
-	
+			
+		
 			<% if @student_discipline_case.action_type == "counseling" %>
-			<% for student_counseling_session in @student_discipline_case.student_counseling_sessions %>
 			<tr>
-				<td class="leftcol"><label for="investigation">Date Requested:</label></td>
-				<td><%=h student_counseling_session.requested_at %></td>
+				<td class="leftcol">Counseling Session Details</td>
+				<td>
+					<!---->
+					<table>
+						<tr>
+							<th>No</th>
+							<th>Date Requested</th>	
+							<th>Date Confirmed</th>
+							<th>Counselor's Feedback</th>
+							<th>Session Notes</th>
+						</tr>
+						<%count=0%>
+						<% for student_counseling_session in @student_discipline_case.student_counseling_sessions %>
+						<tr>
+							<td><%= count+=1%> </td>
+							<td><%=h student_counseling_session.requested_at.strftime("%d %b %y, %l:%M %p")  %></td>
+							<td><%=h student_counseling_session.confirmed_at.strftime("%d %b %y, %l:%M %p")  if student_counseling_session.is_confirmed == true%></td>
+							<td><%=h student_counseling_session.remark %></td> 
+							<td><%= (link_to "view", :action => 'show', :controller=> 'student_counseling_sessions',:id => student_counseling_session.id) if !student_counseling_session.remark.blank? %></td>
+						</tr>
+						<% end -%>
+					</table>
+					<!---->
+				</td>
 			</tr>
-			<% end -%><% end -%>
-	
+			<tr>
+				<td class="leftcol">Summary/Final Feedback from Counselor</td>
+				<td>&nbsp;&nbsp;&nbsp;<%= @student_discipline_case.counselor_feedback %></td>
+			</tr>
+			<% end -%>
+			
 			<% if @student_discipline_case.action_type == "Ref TPHEP" %>
 			<tr>
 				<td class="leftcol"><label for="investigation">Notified:</label></td>

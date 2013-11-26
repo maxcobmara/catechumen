@@ -6,4 +6,9 @@ class TimetablePeriod < ActiveRecord::Base
        [ "Mon-Thur",  1 ],
        [ "Friday",    2 ]
   ]
+  
+  def timing
+    "#{start_at.strftime("%l:%M %p")}"+" -"+"#{end_at.strftime("%l:%M %p")}"
+  end 
+  
 end

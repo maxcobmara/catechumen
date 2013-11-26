@@ -1,11 +1,15 @@
 class StudentCounselingSessionsController < ApplicationController
-  filter_resource_access
+  ##filter_resource_access #hide first-29Apr2013-no idea
+  filter_access_to :all   #feedback_referrer - may have multiple sessions -> refer config/routes.rb
+  
   # GET /student_counseling_sessions
   # GET /student_counseling_sessions.xml
   def index
     @student_counseling_sessions = StudentCounselingSession.find(:all, :order => 'confirmed_at DESC')
     @appointments = StudentCounselingSession.find_appointment(params[:search])
+    @appointments_by_case = @appointments.group_by{|item|item.case_id}
     @session_dones = StudentCounselingSession.find_session_done(params[:search])
+    @session_dones_by_case = @session_dones.group_by{|item|item.case_id}
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @student_counseling_sessions }
@@ -27,7 +31,7 @@ class StudentCounselingSessionsController < ApplicationController
   # GET /student_counseling_sessions/new.xml
   def new
     @student_counseling_session = StudentCounselingSession.new
-
+    @case_id = params[:caseid]
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @student_counseling_session }
@@ -59,7 +63,15 @@ class StudentCounselingSessionsController < ApplicationController
   # PUT /student_counseling_sessions/1.xml
   def update
     @student_counseling_session = StudentCounselingSession.find(params[:id])
-
+    @abc = StudentDisciplineCase.find(@student_counseling_session.case_id)
+    @feedback = params[:student_counseling_session][:feedback]
+    if @feedback==1|| @feedback=='1'
+        @abc.counselor_feedback = params[:student_counseling_session][:feedback_final]
+		else
+		    @abc.counselor_feedback =''
+    end
+    @abc.save
+    
     respond_to do |format|
       if @student_counseling_session.update_attributes(params[:student_counseling_session])
         format.html { redirect_to(@student_counseling_session, :notice => 'StudentCounselingSession was successfully updated.') }
@@ -82,4 +94,12 @@ class StudentCounselingSessionsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def feedback_referrer 
+    #@asset = Asset.find(params[:id]) #params[:id]  --> case_id
+    @sessions_by_case = StudentCounselingSession.find(:all, :conditions => ['case_id=?',params[:id]], :order=>'confirmed_at ASC')
+    @case_details = StudentDisciplineCase.find(params[:id])
+    render :layout => 'report'
+  end
+    
 end

@@ -1,0 +1,15 @@
+<fieldset><legend>Remark</legend><br><br><br><br>
+<!--<br><br><br><br>-->
+<br><br><br><br></fieldset>
+<b>PROCEED TO RETURN ?</b><br><br><br>
+
+<% form_for(@librarytransaction) do |f| %>
+  <%= f.error_messages %>
+	<%= f.check_box :returned %>on Return? <br>
+	<%= f.date_select :returneddate, :order => [:day, :month, :year], :default => Date.today  %>
+	Fine :<%= f.text_field :fine, :placeholder => (@librarytransaction.recommended_fine_value).to_s, :size=>10%> 
+			<font color=#AAA size=-2> late by <%= @librarytransaction.recommended_fine_value %> days x RM0.20/day</font><br>
+	Fine Paid? :<%= f.check_box :finepay %>on <br>
+	<%= f.date_select :finepaydate, :order => [:day, :month, :year], :default => Date.today %>			
+<%= f.submit 'Return', :name => :extend2_submit %>
+<% end %>

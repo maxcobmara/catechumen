@@ -1,0 +1,32 @@
+<!-- Box -->
+<div class="box">
+<!-- Box Head -->
+  <div class="box-head">
+    <h2 class="left">Counseling Sessions</h2>
+	<div class="right">
+		</div></div>
+
+<div class="tlist">
+<table width=100%>
+  <tr>
+    <th>Student Name</th>
+    <th>MyKad No</th>
+    <th>File No</th>
+      <th colspan=3 class="ac">Control</th>
+  </tr>
+
+<% @counsellings.each do |counselling| %>
+  <tr>
+    <td><%=h counselling.student.name%></td>
+    <td><%=h counselling.student.formatted_mykad%></td>
+    <td><%=h counselling.cofile_id.blank? ? "No File" : counselling.cofile.file_no_and_name %></td>
+    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => counselling %></td>
+    <td width=10px ><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => counselling %></td>
+    <td width=10px><%= link_to 'Destroy', counselling, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Counseling', new_counselling_path %>

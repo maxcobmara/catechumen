@@ -1,0 +1,48 @@
+<%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
+<%=render :partial => 'exammarks/exam_listing.html.erb'%><!--retrieve exam listing, student listing for use-->
+
+<% @exam_ids_in_exammark = Exammark.all.map(&:exam_id).uniq %>
+<% @exam_list_index_for_analysis = Exam.find(:all, :conditions => ['id IN (?) and id IN (?)', @exam_list_index,@exam_ids_in_exammark ])%>
+
+<div class="tform">
+<H2>Examination Analysis Details</H2>
+<table width=100% >
+	<tr>
+		<td class="leftcol"><%=t 'exammakeranalysis.exampaper'%>
+							<!--<%#= t 'exammakeranalysis.exammaker_id' %> - <%#= t 'exammakeranalysis.examtype' %>--></td>
+		<td>
+			<%#= f.collection_select :exammaker_id, Exammaker.all, :id, :subject_and_examtype_of_exammaker,{:include_blank => true} %>
+			<%#= f.text_field :exam_id %><%#= @exam_list_index[0].id %>
+			<%= f.collection_select :exam_id, @exam_list_index_for_analysis, :id, :exam_code_date_type,{:include_blank => true},
+									:onchange => remote_function(:update => form_tag_id(f.object_name, :students_marks_listing), 
+									:url => {:action => 'view_students_and_marks' }, 
+									:with => "'examid='+$('"+form_tag_id(f.object_name, :exam_id)+"').value  ") %>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+			<%= tag("div", :id => form_tag_id(f.object_name, :students_marks_listing)) %>
+				<% unless @examanalysis.id.nil? || @examanalysis.id.blank? %>
+					<!--start-for edit part-existing record-->
+					<% @exam_id = @examanalysis.exam_id %>
+					<%= render :partial => 'students_and_marks', :locals => {:exammakerid=>@exam_id} %> 
+					<!--end-for edit part-existing record-->
+				<% end %>
+			</div>
+		</td>
+	</tr>
+</table>
+<br>
+
+</div>
+
+
+
+   
+   
+   
+   
+   
+   
+   
+   

@@ -1,0 +1,38 @@
+<%=render :partial => 'exams/position_dept' %>
+
+<div class="box">
+	<div class="box-head">
+		<h2 class="left">Examination Result by Programme</h2>
+	</div>
+</div>
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Exam Question') + "New", new_examresult_path %></p>
+</div><br><br>
+<div class="tlist">
+	<table width=90% border="0" cellpadding="0" cellspacing="0">
+	  <tr>
+		<th>Examination Start Date</th>
+		<th>Examination End Date</th>
+		<th>Semester</th>
+    	<th>Programme</th>
+    	<th colspan=3>Control</th>
+  	</tr>
+
+<% @examresults.each do |examresult| %>
+	<% if (examresult.programmestudent.name == @dept_unit) ||(@current_user_roles.include?(2))||@kupk == "yes"%>
+  		<tr>
+			<td><%=h examresult.examdts %></td>
+			<td><%=h examresult.examdte %></td>
+    		<td><%=h examresult.render_semester %></td>
+    		<td><%=h examresult.programmestudent.name %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => examresult %></td>
+    		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => examresult %></td>
+    		<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), examresult, :confirm => 'Are you sure?', :method => :delete %></td>
+  		</tr>
+	<% end %>
+<% end %>
+</table>
+
+<br />
+</div>
+<%= link_to 'New Exam Result', new_examresult_path %>

@@ -1,0 +1,385 @@
+<% unless @exam_id.nil? || @exam_id.blank? %><%# if @examid %>
+	<% @examquestions = Exam.find(@exam_id).examquestions %><%# @examquestions = Exam.find(@examid).examquestions %>
+
+	<!---->
+	<%# if @exam_id %>
+
+	<!--start-marks listing-->
+	<table>
+		<tr>
+			<th>Type</th>
+			<th>No</th>
+			<th>Question</th>
+			<th width=20%>Mark</th>
+		</tr>
+		
+		<!--retrieve existing marks first-->  
+		<% if @exammark %><!--@exammark refers to @exammark.id-->
+			<%# @marks_for_questions = Mark.find(:all, :order=>"created_at ASC", :conditions=>['exammark_id=?', @exammark.id]) %>
+			<!--5June2013-sort by time created-->
+			<% @current_mark = @exammark.total_mcq %>
+			<% @marks_for_questions = Mark.find(:all, :conditions=>['exammark_id=?', @exammark.id]).sort_by{|x|x.created_at} %>	
+			<!--<%#= @marks_for_questions[0].id%> is not working for multiple data entry that has only question of questiontype=MCQ, refer exammarks/index.html for reference - EDIT icon-->
+			<%#=@marks_for_questions.count%><!--id utk mark table--><%#= @marks_for_questions[0].id%>
+		<% end %>
+		
+		
+		<!--start-MCQ questions-->
+		<tr>
+			<% if @examquestions.mcqq.count > 0 %>
+				<td style="vertical-align:middle;font-weight:bold">MCQ</td>
+				<td>
+					<% 1.upto(@examquestions.mcqq.count) do |no|%>
+						<%=no%><br>
+					<% end %>
+				</td>
+				<td>
+					<%for examquestion in @examquestions.mcqq %>
+						<%=examquestion.question%><br>
+					<%end%>
+				</td>
+				<% if @exammark %>
+					<% @exist_mark = @current_mark %>
+				<% else %>
+					<% @exist_mark = 0.00 %>
+				<% end %>
+				<td style="vertical-align:middle;">
+					<% marks_ary = @examquestions.mcqq.map(&:marks) %>
+					<% @mcq_totalmarks = marks_ary.inject{|sum,x|sum+x}%>
+					<%#= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5,:readonly=>true %>
+					<%= text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>4,  :class=>'g1' %>
+					/ <%=number_with_precision(@mcq_totalmarks,:precision=>2) %>	 
+				</td>
+			<% end %>	
+		</tr>
+		<!--end-MCQ questions-->
+	
+		<!--start-MEQ questions-->
+		<% count2 = 0 %>
+		<% if @examquestions.meqq.count > 0 %>
+			<% 0.upto(@examquestions.meqq.count-1) do |count| %>
+				<tr>
+					<% if count == 0 %>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.meqq.count%>'>MEQ</td>
+					<% end %>
+					<td><%=count+1%></td>
+					<td><%=@examquestions.meqq[count].question %></td>
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<!--for edit (exist ib db)-->
+							<% @exist_mark = @marks_for_questions[count2].student_mark %>
+						<% else %>
+							<% if @exammark %>
+								<!--for resubmission (new) with data-->
+								<% @exist_mark = @exammark.marks[count2].student_mark%>
+							<% else %>
+								<% @exist_mark = 0.00 %>
+							<% end %>
+						<% end %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :value=> number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'h1' %> / <%=number_with_precision(@examquestions.meqq[count2].marks,:precision=>2) %>
+						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
+						<% end %>
+					</td>
+					<% count2+=1 %>
+				<% end %>
+			</tr>
+		<% end %>
+		<!--end-MEQ questions-->
+	
+		<!--start-SEQ questions-->
+		<% if @examquestions.seqq.count > 0 %>
+			<% 0.upto(@examquestions.seqq.count-1) do |count| %>
+				<tr>
+					<% if count == 0 %>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.seqq.count%>'>SEQ</td>
+					<% end %>
+					<td><%=count+1%></td>
+					<td><%=@examquestions.seqq[count].question %></td>
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<!--for edit (exist ib db)-->
+							<% @exist_mark = @marks_for_questions[count2].student_mark %>
+						<% else %>
+							<% if @exammark %>
+								<!--for resubmission (new) with data-->
+								<% @exist_mark = @exammark.marks[count2].student_mark%>
+							<% else %>
+								<% @exist_mark = 0.00 %>
+							<% end %>
+						<% end %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'h1' %> / <%=number_with_precision(@examquestions.seqq[count].marks,2) %>
+						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
+						<% end %>
+					</td>
+					<% count2+=1 %>
+				<% end %>
+			</tr>
+		<% end %>
+		<!--end-SEQ questions-->
+	
+		<!--start-ACQ questions-->
+		<% if @examquestions.acqq.count > 0 %>
+			<% 0.upto(@examquestions.acqq.count-1) do |count| %>
+				<tr>
+					<% if count == 0 %>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.acqq.count%>'>ACQ</td>
+					<% end %>
+					<td><%=count+1%></td>
+					<td><%=@examquestions.acqq[count].question %></td>
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<!--for edit (exist ib db)-->
+							<% @exist_mark = @marks_for_questions[count2].student_mark %>
+						<% else %>
+							<% if @exammark %>
+								<!--for resubmission (new) with data-->
+								<% @exist_mark = @exammark.marks[count2].student_mark%>
+							<% else %>
+								<% @exist_mark = 0.00 %>
+							<% end %>
+						<% end %>
+						<td><%= text_field "exammark[marks_attributes][#{count2}]", :student_mark,:value=>number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'h1' %> / <%=number_with_precision(@examquestions.acqq[count].marks,2) %>
+						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
+						<% if @exammark  && @marks_for_questions.count!=0 %>
+							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
+						<% end %>
+					</td>
+					<% count2+=1 %>
+				<% end %>
+			</tr>
+		<% end %>
+		<!--end-ACQ questions-->
+	
+		<!--start-OSCE questions-->
+		<% if @examquestions.osce.count > 0 %>
+			<% 0.upto(@examquestions.osce.count-1) do |count| %>
+				<tr>
+					<% if count == 0 %>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.osce.count%>'>OSCE</td>
+					<% end %>
+					<td><%=count+1%></td>
+					<td><%=@examquestions.osce[count].question %></td>
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<!--for edit (exist ib db)-->
+							<% @exist_mark = @marks_for_questions[count2].student_mark %>
+						<% else %>
+							<% if @exammark %>
+								<!--for resubmission (new) with data-->
+								<% @exist_mark = @exammark.marks[count2].student_mark%>
+							<% else %>
+								<% @exist_mark = 0.00 %>
+							<% end %>
+						<% end %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'h1' %> / <%=number_with_precision(@examquestions.osce[count].marks,2) %>
+						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
+						<% end %>
+					</td>
+					<% count2+=1 %>
+				<% end %>
+			</tr>
+		<% end %>
+		<!--end-OSCE questions-->
+	
+		<!--start-OSPE questions-->
+		<% if @examquestions.ospe.count > 0 %>
+			<% 0.upto(@examquestions.ospe.count-1) do |count| %>
+				<tr>
+					<% if count == 0 %>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.ospe.count%>'>OSPE</td>
+					<% end %>
+					<td><%=count+1%></td>
+					<td><%=@examquestions.ospe[count].question %></td>
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<!--for edit (exist ib db)-->
+							<% @exist_mark = @marks_for_questions[count2].student_mark %>
+						<% else %>
+							<% if @exammark %>
+								<!--for resubmission (new) with data-->
+								<% @exist_mark = @exammark.marks[count2].student_mark%>
+							<% else %>
+								<% @exist_mark = 0.00 %>
+							<% end %>
+						<% end %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'h1' %> / <%=number_with_precision(@examquestions.ospe[count].marks,2) %>
+						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
+						<% end %>
+					</td>
+					<% count2+=1 %>
+				<% end %>
+			</tr>
+		<% end %>
+		<!--end-OSPE questions-->
+	
+		<!--start-VIVA questions-->
+		<% if @examquestions.viva.count > 0 %>			
+			<% 0.upto(@examquestions.viva.count-1) do |count| %>
+				<tr>
+					<% if count == 0 %>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.viva.count%>'>VIVA</td>						
+					<% end %>
+					<td><%=count+1%></td>
+					<td><%=@examquestions.viva[count].question %></td>
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<!--for edit (exist ib db)-->
+							<% @exist_mark = @marks_for_questions[count2].student_mark %>
+						<% else %>
+							<% if @exammark %>
+								<!--for resubmission (new) with data-->
+								<% @exist_mark = @exammark.marks[count2].student_mark%>
+							<% else %>
+								<% @exist_mark = 0.00 %>
+							<% end %>
+						<% end %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark, :precision=>2), :size=>4, :class=>'h1' %> / <%=@examquestions.viva[count].marks %>
+						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
+						<% end %>
+					</td>
+					<% count2+=1 %>
+				<% end %>
+			</tr>
+		<% end %>
+		<!--end-VIVA questions-->
+	
+		<!--start-TRUEFALSE questions-->
+		<% if @examquestions.truefalse.count > 0 %>
+			<% 0.upto(@examquestions.truefalse.count-1) do |count| %>
+				<tr>
+					<% if count == 0 %>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.truefalse.count%>'>TRUE/FALSE</td>
+					<% end %>
+					<td><%=count+1%></td>
+					<td><%=@examquestions.truefalse[count].question %></td>
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<% @exist_mark = @marks_for_questions[count2].student_mark %>
+						<% else %>
+							<% if @exammark %>
+								<!--for resubmission (new) with data-->
+								<% @exist_mark = @exammark.marks[count2].student_mark%>
+							<% else %>
+								<% @exist_mark = 0.00 %>
+							<% end %>
+						<% end %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2), :size=>4, :class=>'h1' %> / <%=@examquestions.truefalse[count].marks %>
+						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
+						<% end %>
+					</td>
+					<% count2+=1 %>
+				<% end %>
+			</tr>
+		<% end %>	
+		<!--end-TRUEFALSEquestions-->	
+	
+
+				<%#########################%>
+				<!--START - for edit-existing record-->
+				<%#if @exammark && @marks_for_questions %>
+					
+					<!--this hidden_field - ID is required/compulsory to make sure existing record of mark was modified instead of adding new record--><%#=@marks_for_questions.count%>
+					<%# if @marks_for_questions.count != 0 %>
+			<!--if ada MCQ TAPI tak simpan data markah MCQ dlm table mark, tak yah buat line 78-83-->
+						<%# @value_id = @marks_for_questions[@index2].id %><%#= @value_id = @marks_for_questions[0].id %>
+						<%# unless @value_id.blank? || @value_id.nil? %>
+					
+								<%#= hidden_field "exammark[marks_attributes][#{@index2}]", :id, :value => @value_id %>
+							
+						<%# end %>
+						<!--this part for EDIT, which HAVE mark data in marks table-->
+						<%# @current_mark = @marks_for_questions[@index2].student_mark %>
+					<%# else %>
+						<!--this part for EDIT, which HAVE NO mark data in marks table-->
+						<%# @current_mark = 0%>
+					<%# end %>
+					
+					<!--other example of the above condition hidden_field-ID for nested attribute - line 90-104, ...view/examresult/_included_subjects.html.erb... -->
+					<%# if count == 0 %>
+						<!--h1--><%#= text_field "exammark[marks_attributes][#{@index2}]",:student_mark , :size=>4, :value=>@current_mark, :class=>'h1' %>  <%#=examquestion.marks %>
+						
+					<!--	
+						<%# if index == @examquestions.mcqq.count-1 %>
+							<br><br>
+							<div style="width:100%;">
+								<%#= text_field_tag "exammark[total_mcq]", @exammark.total_mcq, :size=>4,:class => 'i1' %>
+								<%# if total_mcq_in_marks_table != @exammark.total_mcq %>
+									<%#@not_equal="yes"%>
+									<span class="bong" style="color:blue;display:block;" id="bong2">
+										<font size=3 color=blue>*</font>
+									</span>
+								<%# end %>
+							</div>-->
+						<%# end %>
+					<%# else %>
+						<!--nono--><%#= text_field "exammark[marks_attributes][#{@index2}]",:student_mark , :size=>4, :value=>@current_mark %>  <%#=examquestion.marks %>
+					<%# end %>
+				<%# else %>
+					<!--h1b--><%#= text_field "exammark[marks_attributes][#{@index2}]",:student_mark , :size=>4 %>  <%#=examquestion.marks %>
+					<!--pending:for resubmission of NEW form (rejected after validation)-->
+				<%# end %>			
+				<!--END - for edit-existing record-->
+				<%#########################%>
+		
+		<!--HIDE THIS PART-->
+		<tr>
+			<td></td><td></td><td style="font-size:14px; font-weight:bold;text-align:right;padding-right:0px;"><!--Total Marks :--></td>
+			<td>
+				<%# if @exammark %>
+					<%#= text_field_tag "exammark[total_marks_view]", @exammark.total_mcq+other_mcq_in_marks_table , :size=>4 %>
+				<%#else %>
+					<%=hidden_field_tag "exammark[total_marks_view]", {}, :id=>"total_marks_view1",:size=>4 %>
+					<%#= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,2) ,:id=>"total_marks_view"+@b_count.to_s,:size=> 5, %>
+				<%# end %>
+			</td>
+		</tr>
+		<!--HIDE THIS PART-->
+	</table>
+	<br>
+
+	<!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-->
+	<%= hidden_field_tag "exammark[trial1]", nil, :class=>'k1'%>
+	<%#= text_field_tag "exammark[trial2]", nil, :class=>'g1' %>
+	<%=hidden_field_tag "exammark[trial2]", @examquestions.mcqq.count, :class=>'k1' %>
+	<%=hidden_field_tag "exammark[trial3]", @examquestions.count %>
+	<% if @exammark %><!--12June2013-->
+		<%=hidden_field_tag "exammark[total_mcq_in_exammark_single]", @exammark.total_mcq %>
+	<% end %>
+	<script type="text/javascript">
+		$j(document).ready(function(){
+			$j(".k1").keyup(function() {  
+			  	var trial1 = $j("#exammark_trial1").val();
+			  	var trial2 = $j("#exammark_trial2").val();
+				var ansP2 = document.getElementById("exammark_trial3");
+				ansP2.value = (trial1*1)+(trial2*1) 
+			});
+			/*
+			$j(".g1").keyup(function() {  
+				var mcqcount = $j("#exammark_trial2").val();//document.getElementById("exammark_trial2").value;
+				var allcount = $j("#exammark_trial3").val();//document.getElementById("exammark_trial3").value;
+				var trial1 = $j("#exammark_trial1").val();
+				//var totalmcq = document.getElementById("total_mcq1").value;
+				var totalmcq = $j("#total_mcq1").val();
+				//for (var l=mcqcount;l<allcount;l++)
+				//{
+				//	window["other"+l] = document.getElementById("exammark_marks_attributes_"+l+"_student_mark").value;
+				//}
+				var totalmarks = document.getElementById("total_marks_view1");
+				//var totalmarks = document.getElementById("exammark_trial3");
+				totalmarks.value = 44
+			});	*/
+	
+		});
+	</script>
+	<!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-->
+				
+				
+				
+<% else %>
+	Please select an exam paper first.
+<% end %>

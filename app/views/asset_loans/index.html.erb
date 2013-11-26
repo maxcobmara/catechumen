@@ -1,45 +1,153 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Loanable Assets</h2>
+		<h2 class="left">Assets on Loan</h2>
 		<div class="right">
 		</div>
   </div>
 </div>
 <div class="indextable">
-
+	
+  <% current_user_roles=[]%>
+  <% User.current_user.roles.each do |role|%>
+	<% current_user_roles<<role.id%>
+  <% end %>
+  <b><%#=current_user_roles.include?(11) %></b><!--11 for asset administrator-->
+	
+<div class="toolbar">
+	<table width=100%><tr>
+		<td width=80%><div class="pagination"><%#= will_paginate @loanables %></div></td>
+		<td width=20% style="text-align:right;"><%= select_tag_for_filter("asset_loans", @filters, params) %></td>
+	</tr></table>
+</div>
+	
 <table>
   <tr>
     <th>Asset</th>
-    <th>Staff<BR/>Reasons</th>
+    <th><!--Staff<BR/>-->Reasons</th>
+	<th>Owner/Responsible Unit</th>
+	<!--<th>Loan Type</th>-->
     <th>Requested For<BR/>To Be Returned On</th>
-		<th>Status</th>
-    <th>Owner</th>
-    <th>Approved On</th>
-		<th colspan=4 class="ac">Control</th>
+	<th>Approved On</th>
+	<th style="text-align:center;">Status</th>
+	<th colspan=4 class="ac">Control</th>
   </tr>
 
 <% @asset_loans.each do |asset_loan| %>
-  <tr>
-    <td><%=h asset_loan.asset.assetcode %><BR/><%= asset_loan.asset.typename %></td>
-    <td><%=h asset_loan.staff.name %><BR/><%=h asset_loan.reasons %></td>
-    <td><%=h l(asset_loan.loaned_on) %><BR/><%=h l(asset_loan.expected_on) %></td>
-		<td align=center><%=h image_tag("#{asset_loan.status}") %></td>
+  	<% @unit_members = asset_loan.unit_members %>
 
-    <td><%=h asset_loan.asset.assignedto.name unless asset_loan.asset.assignedto.blank? %></td>
-    <td><%=h asset_loan.approved_date %></td>
+	<% if @unit_members.include?(current_user.staff_id) || current_user_roles.include?(11) || asset_loan.staff == current_user.staff || (asset_loan.hod == current_user.staff_id && asset_loan.is_approved==true && asset_loan.is_returned!=true ) %>
+  	<tr>
+    	<td><%=h asset_loan.asset.assetcode %><BR/><%= asset_loan.asset.typename %>
+			<!--16July2013--><%= asset_loan.asset.name %></td>
+    	<td><% unless current_user.staff == asset_loan.staff %>
+				<%=h asset_loan.staff.name %>
+			<% else %>
+				<%= "<b>"+asset_loan.staff.name+"</b>" if current_user_roles.include?(11) %><!--highlighted for asset admin only-as list may long!-->
+			<% end %>
 
-    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => asset_loan %></td>
-		<td width=10px>
-			<% if asset_loan.is_approved == nil && asset_loan.loaned_by == User.current_user.staff_id %>
-				<%= link_to image_tag("approval.png", :border => 0, :title => 'Approve'), :action => 'approve', :id => asset_loan %>
-			<% elsif asset_loan.is_approved == true && asset_loan.loaned_by == User.current_user.staff_id %>
-				<%= link_to image_tag("cog_go.png", :border => 0, :title => 'Return'), :action => 'edit', :id => asset_loan %>
+			<BR/><%=h asset_loan.reasons %></td>
+		<td><%=h asset_loan.asset.assignedto.name unless asset_loan.asset.assignedto.blank? %><br>
+			<b><%=h asset_loan.asset.assignedto.position.unit unless asset_loan.asset.assignedto.blank? %></b>
+		</td>
+		<!--<td><%#=h "Internal" if asset_loan.loantype == 1 %><%#=h "External" if asset_loan.loantype == 2 %></td>-->
+    	<td><%=h l(asset_loan.loaned_on) %><BR/><%=h l(asset_loan.expected_on) %></td>
+		<td>
+			<% if asset_loan.is_approved == true %>
+				<%=h asset_loan.approved_date %>
 			<% elsif asset_loan.is_approved == false %>
-			<% end %></td>
-	  <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Lampiran A'), :action => 'lampiran', :id => asset_loan %></td>
-    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset_loan, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+				<span style="font-weight:bold;color:red;">Rejected</span>
+			<% else %>
+				<span style="font-weight:bold;color:green;">Pending</span>
+			<% end %>
+		</td>
+		<td align=center>
+			<%#=h image_tag("#{asset_loan.status}") %>
+			<% if asset_loan.is_approved == true && asset_loan.is_returned != true %>
+				Sedang dipinjam 
+				<% if asset_loan.expected_on == Date.today %>
+					<br><span style="font-weight:bold; color:red;">Tarikh akhir<!--(Due)--></span>
+				<% elsif asset_loan.expected_on < Date.today %><!--amended after retest-3Mei2013-->
+					<br><span style="font-weight:bold; color:red;">Tamat tempoh<!--(Overdue)--></span>	
+				<% end %>
+			<% elsif asset_loan.is_approved == true && asset_loan.is_returned == true %>
+				Telah dipulangkan
+			<% end %>
+		</td>
+    	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => asset_loan %></td>
+
+		<%#-------------------------------------------------%>
+  		<% if @unit_members.include?(current_user.staff_id) %><%# if asset_loan.loaned_by == User.current_user.staff_id %>
+	
+			<td width=10px>
+				<!---->
+				<%# if (asset_loan.is_approved == nil && asset_loan.loaned_by == User.current_user.staff_id) %>
+				<%# if (asset_loan.is_approved == nil && asset_loan.loaned_by == User.current_user.staff_id) || (asset_loan.is_approved == nil && current_user_roles.include?(11)) %>
+				<%# elsif (asset_loan.is_approved == true && asset_loan.loaned_by == User.current_user.staff_id) %>
+				<%# elsif (asset_loan.is_approved == true && asset_loan.loaned_by == User.current_user.staff_id) || (asset_loan.is_approved == true && current_user_roles.include?(11)) %>
+		
+				<% if (asset_loan.is_approved == nil) %>
+					<%= link_to image_tag("approval.png", :border => 0, :title => 'Approve'), :action => 'approve', :id => asset_loan %>
+				<% elsif (asset_loan.is_approved == true && asset_loan.is_returned != true) %>
+					<%= link_to image_tag("cog_go.png", :border => 0, :title => 'Return'), :action => 'edit', :id => asset_loan %>
+				<% elsif asset_loan.is_approved == false %>
+				<% end %>
+				<!---->
+			</td>
+	
+			<td class="action">
+				<%# if (asset_loan.is_approved == true && asset_loan.loaned_by == User.current_user.staff_id) %>
+			
+				<% if (asset_loan.is_approved == true) %>
+					<div class="noti_Container">
+						<% if asset_loan.loantype == 2 %>
+							<%= link_to image_tag("printer.png", :border => 0, :title => 'Lampiran A'), :action => 'lampiran', :id => asset_loan %>
+							<div class="noti_bubble">A</div>
+						<% end %>
+					</div>
+				<% end %>
+			</td>
+			
+		<% end %>
+		<%#-------------------------------------------------%>
+		
+		<!--special for hod only (Pengarah-external)- those not in hods list-->
+		<% if (asset_loan.hod == current_user.staff_id) && (@unit_members.include?(current_user.staff_id)==false) %>
+			<td class="action">
+				<% if (asset_loan.is_approved == true) %>
+					<div class="noti_Container">
+						<% if asset_loan.loantype == 2 %>
+							<%= link_to image_tag("printer.png", :border => 0, :title => 'Lampiran A'), :action => 'lampiran', :id => asset_loan %>
+							<div class="noti_bubble">A</div>
+						<% end %>
+					</div>
+				<% end %>
+			</td>
+		<% end %>
+		<!--special for hod only (Pengarah-external)- those not in hods list-->
+		
+		<!--
+		<td width=10px>
+			<%# if asset_loan.loantype == 2 %>
+				<%#= link_to image_tag("printer.png", :border => 0, :title => 'Lampiran A'), :action => 'lampiran', :id => asset_loan %>
+			<%# end %>
+		</td>-->
+		<% if @unit_members.include?(current_user.staff_id) || current_user_roles.include?(11) %>
+   			<td width=10px>
+				<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset_loan, :confirm => 'Are you sure?', :method => :delete %>
+			</td>
+		<% end %>
+  		<!--for better view only-screen-loaner(peminjam) & bukan asset administrator-->
+		<% if (current_user.staff == asset_loan.staff) && current_user_roles.include?(11)==false %><td>&nbsp;</td><% end %>
+  		<!--for better view only-screen-loaner(peminjam) & bukan asset administrator-->
+		<!--for better view only-screen-loaner(peminjam)-yg pd ms sama merupakan (peg pengeluar) member of responsible unit bagi ASEI di baris2 lain TETAPI BUKAN (peg pengeluar) BAGI ASET PADA BARIS NIH & & bukan asset administrator-->
+		<% if current_user.staff == asset_loan.staff && @unit_members.include?(current_user.staff_id)==false && current_user_roles.include?(11)==false %>
+			<td>&nbsp;</td><td>&nbsp;</td>
+		<% end %>
+		<!--for better view only-screen-loaner(peminjam)-yg pd ms sama merupakan (peg pengeluar) member of responsible unit bagi ASEI di baris2 lain TETAPI BUKAN (peg pengeluar) BAGI ASET PADA BARIS NIH & bukan asset administrator-->
+	</tr>
+	<% end %>
+
 <% end %>
 </table>
 </div>

@@ -7,7 +7,7 @@
 						<th><%= t 'evaluation.skt.performance' %></th>
 					</tr>
 					<% just_a_counter = 0 %>
-					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half IS ?', nil], :order => :priority) %>
+					<%# for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half IS ?', nil], :order => :priority) %>	<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half =?', 1], :order => :priority) %>
 					<% just_a_counter += 1 %>
 					<% if staff_appraisal_skt.is_dropped == true %>
 						<% format = 'style="text-decoration: line-through;"' %>

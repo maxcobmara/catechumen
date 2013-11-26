@@ -5,8 +5,28 @@ class Examquestion < ActiveRecord::Base
   belongs_to :editor,   :class_name => 'Staff', :foreign_key => 'editor_id'
   belongs_to :subject,  :class_name => 'Programme', :foreign_key => 'subject_id'
   #belongs_to :programme
-  belongs_to :topic
+  belongs_to :topic,    :class_name => 'Programme', :foreign_key => 'topic_id'
   has_and_belongs_to_many :exams
+  
+  has_many :answerchoices, :dependent => :destroy
+  accepts_nested_attributes_for :answerchoices, :allow_destroy => true , :reject_if => lambda { |a| a[:description].blank? }
+  has_many :examanswers, :dependent => :destroy
+  accepts_nested_attributes_for :examanswers, :allow_destroy => true , :reject_if => lambda { |a| a[:answer_desc].blank? }
+  has_many :shortessays, :dependent => :destroy
+  accepts_nested_attributes_for :shortessays#, :allow_destroy => true , :reject_if => lambda { |a| a[:subquestion].blank? }
+  has_many :booleanchoices, :dependent => :destroy
+  accepts_nested_attributes_for :booleanchoices, :allow_destroy => true , :reject_if => lambda { |a| a[:description].blank? }
+  has_many :booleananswers, :dependent => :destroy
+  accepts_nested_attributes_for :booleananswers, :allow_destroy => true , :reject_if => lambda { |a| a[:answer].blank? }
+  
+  attr_accessor :activate, :answermcq
+  
+  named_scope :mcqq,  :conditions => {:questiontype => 'MCQ'}     # 27 June 2012
+  named_scope :meqq, :conditions => {:questiontype => 'MEQ'}      # 27 June 2012
+  named_scope :seqq, :conditions => {:questiontype => 'SEQ'} 	  # 22 July 2012
+  named_scope :acqq, :conditions => {:questiontype => 'ACQ'}
+  named_scope :osci2q, :conditions => {:questiontype => 'OSCI'}
+  named_scope :osci3q, :conditions => {:questiontype => 'OSCII'}
   
   has_attached_file :diagram,
                     :url => "/assets/examquestions/:id/:style/:basename.:extension",
@@ -14,7 +34,7 @@ class Examquestion < ActiveRecord::Base
                     
                     #may require validation
                     
-  validates_presence_of :questiontype, :question, :answer, :marks, :qstatus
+  validates_presence_of :subject_id, :topic_id, :questiontype, :question, :marks, :qstatus #17Apr2013,:answer #9Apr2013-compulsory for subject_id
   
   
   #has_many :examsubquestions, :dependent => :destroy
@@ -23,7 +43,35 @@ class Examquestion < ActiveRecord::Base
   #has_many :exammcqanswers, :dependent => :destroy
   #accepts_nested_attributes_for :exammcqanswers, :reject_if => lambda { |a| a[:answer].blank? }
   
+  attr_accessor :programme_id #9Apr2013 - rely on subject (root of subject[programme])
+  #attr_accessor :question1,:question2,:question3,:question4,:questiona,:questionb,:questionc,:questiond
   
+  before_save :set_nil_if_not_activate, :set_subquestions_if_seq, :set_answer_for_mcq
+  
+  def set_nil_if_not_activate
+      if self.id != nil   
+          if questiontype=="MCQ" && activate != "1" 
+              self.answerchoices[0].description = "" if self.answerchoices[0]#.id !=nil
+              self.answerchoices[1].description = "" if self.answerchoices[1]#.id !=nil
+              self.answerchoices[2].description = "" if self.answerchoices[2]#.id !=nil
+              self.answerchoices[3].description = "" if self.answerchoices[3]#.id !=nil
+          end
+      end
+  end
+  
+  def set_answer_for_mcq
+      if answermcq !=nil
+        self.answer=answermcq.to_s
+      end
+  end
+  
+  def set_subquestions_if_seq   
+    if self.id == nil && questiontype=="SEQ" 
+        self.shortessays[0].item = "a"    #new 
+        self.shortessays[1].item = "b" 
+        self.shortessays[2].item = "c"
+    end
+  end
   
   def status_workflow
     flow = Array.new
@@ -43,10 +91,44 @@ class Examquestion < ActiveRecord::Base
   end
   
   def question_editor
-    sibpos = creator.position.parent.sibling_ids
+    multi_position = Position.find(:all, :conditions => ['staff_id=?',User.current_user.staff_id])  #85 --> Mohd Firdaus Fikri
+    ifmulti_position = multi_position.count 
+    xx=0
+    if ifmulti_position > 1
+        multi_position.each do |x|
+  			    if x.parent.id > 6 && x.parent.id < 17 
+  			        xx=x.id
+  			    end 	
+  		  end 
+  		  sibpos = Position.find(:first, :conditions => ['id=?', xx]).sibling_ids
+    else
+        sibpos = creator.position.sibling_ids
+    end
     sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
     applicant = Array(creator_id)
     sibs - applicant
+    #[83, 85, 84, 86, 87] #return sibpos
+  end
+  
+  def question_approver #question_editor
+    multi_position = Position.find(:all, :conditions => ['staff_id=?',User.current_user.staff_id])  #85 --> Mohd Firdaus Fikri
+    ifmulti_position = multi_position.count 
+    xx=0
+    if ifmulti_position > 1
+        multi_position.each do |x|
+  			    if x.parent.id > 6 && x.parent.id < 17 
+  			        xx=x.id
+  			    end 	
+  		  end 
+  		  sibpos = Position.find(:first, :conditions => ['id=?', xx]).parent.sibling_ids
+    else
+        sibpos = creator.position.parent.sibling_ids  #sibpos = creator.position.sibling_ids
+    end
+    
+    sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
+    #applicant = Array(creator_id)
+    #sibs - applicant
+    sibs
   end
   
   
@@ -87,7 +169,11 @@ class Examquestion < ActiveRecord::Base
           [ "Subjektif - SEQ","SEQ" ],
           [ "ACQ",            "ACQ" ],
           [ "OSCI",           "OSCI" ],
-          [ "OSCII",          "OSCII" ]
+          [ "OSCII",          "OSCII" ],
+          [ "OSCE",           "OSCE"],  #10Apr2013-newly added - to confirm
+          [ "OSPE",           "OSPE"],  #10Apr2013-newly added - to confirm
+          [ "VIVA",           "VIVA"],   #10Apr2013-newly added - to confirm
+          [ "Objektif - True/False",  "TRUEFALSE"]   #10Apr2013-newly added - to confirm
           
    ]
    
@@ -157,8 +243,11 @@ class Examquestion < ActiveRecord::Base
       approver.name
     end
   end
-        
-
-   
+     
+  #10Apr2013      
+  def usage_frequency
+      Examquestion.find(:all, :joins=>:exams,:conditions=>['examquestion_id=?',id]).count
+  end
+  #10Apr2013 
   
 end

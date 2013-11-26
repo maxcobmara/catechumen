@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.10' unless defined? RAILS_GEM_VERSION
+#RAILS_GEM_VERSION = '2.3.10' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -15,8 +15,9 @@ Rails::Initializer.run do |config|
   #     require "ruport/acts_as_reportable"
   #end
   
-  config.gem 'will_paginate', :version => '~> 2.3.16'
-  #config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"
+  #config.gem 'will_paginate', :version => '~> 2.3.14' ###this one used at mac book pro
+  config.gem 'will_paginate', :version => '~> 2.3.16' ## use this one at tpsb server
+  #config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"  ###this one used at KSKB server & Win7's notebook
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
@@ -26,10 +27,9 @@ Rails::Initializer.run do |config|
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
   
-  config.gem "declarative_authorization"#, :source => "http://gemcutter.org"
+  config.gem "declarative_authorization", :source => "http://gemcutter.org"
   config.gem "ancestry"
-  config.gem 'rake', :version => '~> 0.8.7'
-
+  config.gem 'to_xls'
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]

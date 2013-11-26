@@ -1,0 +1,132 @@
+<fieldset>
+	<legend class='togvis'>Lesson Plan</legend>
+		<table width=85% >
+			<tr>
+				<td class="leftcol"><label>Lecturer:</label></td>
+				<td><%=h @lesson_plan.lessonplan_owner.name %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Intake:</label></td>
+				<td>
+					<% @weeklytmetabledetails = WeeklytimetableDetail.all.map(&:id).uniq %><!--added 31st October2013-->
+					<% if @weeklytmetabledetails.include?(@lesson_plan.schedule) %><!--added 31st October2013-->
+						Group <%=h @lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name %>
+						<%#=h @lesson_plan.lessonplan_intake.group_with_intake_name%>
+					<% else %><!--added 31st October2013-->
+						<font color=red>Schedule was not defined/removed. Please select a schedule.</font><!--added 31st October2013-->
+					<% end %><!--added 31st October2013-->
+				</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Total of Student:</label></td>
+				<td><%=h @lesson_plan.student_qty %></td>				
+			</tr>	
+			<tr>
+				<td class="leftcol"><label>Year:</label></td>
+				<td>Year <%=h @lesson_plan.year %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Semester:</label></td>
+				<td>Semester <%=h @lesson_plan.semester %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Topic:</label></td>
+				<td>
+					<% if @weeklytmetabledetails.include?(@lesson_plan.schedule) %><!--added 31st October2013-->
+						<%=h @lesson_plan.schedule_item.weeklytimetable_topic.full_parent %>
+						<%#=h @lesson_plan.lessonplan_topic.subject_with_topic %>
+					<% else %> - 
+					<% end %>
+				</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Lecture title:</label></td>
+				<td>
+					<% if @weeklytmetabledetails.include?(@lesson_plan.schedule) %><!--added 31st October2013-->
+						<%#=h @lesson_plan.lecture_title %>
+						Topic <%=h @lesson_plan.schedule_item.weeklytimetable_topic.code %> - <%=h @lesson_plan.schedule_item.weeklytimetable_topic.name %>
+					<% else %> -
+					<% end %>
+				</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Lecture date:</label></td>
+				<td>
+					<% if @weeklytmetabledetails.include?(@lesson_plan.schedule) %><!--added 31st October2013-->
+						<%=h @lesson_plan.schedule_item.get_date_for_lesson_plan %>
+					<% else %> -
+					<% end %>
+				</td>				
+			</tr>	
+			<tr>
+				<td class="leftcol"><label>Start time:</label></td>
+				<td>
+					<% if @weeklytmetabledetails.include?(@lesson_plan.schedule) %><!--added 31st October2013-->
+						<%#=h @lesson_plan.start_time.strftime("%H:%M") %>
+						<%=h @lesson_plan.schedule_item.get_start_time %>
+					<% else %> -
+					<% end %>
+				</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>End time:</label></td>
+				<td>
+					<% if @weeklytmetabledetails.include?(@lesson_plan.schedule) %><!--added 31st October2013-->
+						<%#=h @lesson_plan.end_time.strftime("%H:%M") %>
+						<%=h @lesson_plan.schedule_item.get_end_time %>
+					<% else %> -
+					<% end %>
+				</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Prerequisites:</label></td>
+				<td><%=h @lesson_plan.prerequisites %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Objectives:</label></td>
+				<td>
+					<%=h check_kin {simple_format(@lesson_plan.schedule_item.weeklytimetable_topic.topic_details.last.objctives)} %>	
+					<%#=h check_kin {simple_format(@lesson_plan.lessonplan_topic.topic_details.last.objctives)} %>
+				</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label>Reference:</label></td>
+				<td><%=h @lesson_plan.reference %></td>				
+			</tr>
+			<!--START-Added training notes listing-3Nov2013-->
+			<tr>
+				<td class="leftcol"><label>Training Notes:</label></td>
+				<% count=0%>
+				<td><% for trainingnote in @lesson_plan.trainingnotes %>
+						<%=count+=1%>-<%= trainingnote.title %> : <%=trainingnote.document_file_name%><br>
+					<% end %>
+				</td>				
+			</tr>
+			<!--END-Added training notes listing-3Nov2013-->
+		</table>
+
+		<table>
+			<tr><td colspan="6" style="text-align:center;border-bottom: 1px solid black;"><b>METHODOLOGIES</b></td></tr>
+				<tr>
+					<td class="leftcol">Time</td>
+					<td class="leftcol">Content/Subtopic</td>
+					<td class="leftcol">Lecturer Activity</td>
+					<td class="leftcol">Student Activity</td>
+					<td class="leftcol">Training Aids</td>
+					<td class="leftcol">Evaluation</td>
+				</tr>
+				<% @lesson_plan.lessonplan_methodologies.each do |l| %>
+				<tr>
+					<td style="text-align:left;">
+						<%= l.start_meth.strftime("%H:%M") %> - <%= l.end_meth.strftime("%H:%M %p") %>
+						<br>(<%=h (((l.end_meth - l.start_meth )/60 ) % 60).to_i %> minutes) 
+					</td>
+					<td style="text-align:left;"><%= simple_format(l.content) %></td>
+					<td style="text-align:left;"><%= simple_format(l.lecturer_activity) %></td>
+					<td style="text-align:left;"><%= simple_format(l.student_activity) %></td>
+					<td style="text-align:left;"><%= simple_format(l.training_aids) %></td>
+					<td style="text-align:left;"><%= simple_format(l.evaluation) %></td>
+				<tr>	
+				<% end%>
+		</table>		
+</fieldset>

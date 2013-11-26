@@ -3,7 +3,7 @@
 		<p>	<%= t 'evaluation.form.label_001' %></p>
 		<table width=90%>
 			<tr>
-				<th width=30%>Date</th>
+				<!--<th width=30%>Date</th>-->
 				<th width=35%>Activity</th>
 				<th width=25%>Level</th>
 				<th width=10%></th>
@@ -29,13 +29,17 @@
 				<th>Duration</th>
 			</tr>
 			<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', User.current_user.staff_id]) %>
+				<% if ptdo.ptschedule.start.year==@staff_appraisal.evaluation_year.year%>
+			<!---->
 			<tr>
-				<td><%= ptdo.ptschedule.ptcourse.name %></td>
+				<td><%= ptdo.ptschedule.ptcourse.name %><%=%></td>
 			
 				<td><%= (Ptcourse::COURSE_TYPE.find_all{|disp, value| value == ptdo.ptschedule.ptcourse.course_type}).map {|disp, value| disp} %></td>
 				<td><%= l(ptdo.ptschedule.start) %></td>
 				<td><%= ptdo.ptschedule.ptcourse.duration %> Days</td>
 			</tr>
+			<!---->
+				<% end %>
 		<% end -%>
 		</table>
 	
@@ -43,7 +47,7 @@
 		<p><font size=-2><%= t 'evaluation.form.label_004' %></font></p>
 		<table width=90%>
 			<tr>
-				<th width=45%>Activity</th>
+				<th width=45%>Name</th>
 				<th width=45%>Reason</th>
 				<th width=10%></th>
 			</tr>

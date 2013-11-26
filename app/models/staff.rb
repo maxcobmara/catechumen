@@ -17,7 +17,7 @@ class Staff < ActiveRecord::Base
  #---------------Validations------------------------------------------------
   validates_numericality_of :icno#, :kwspcode
   validates_length_of       :icno, :is =>12
-  validates_presence_of     :icno, :name, :coemail, :code
+  validates_presence_of     :icno, :name, :coemail, :code, :appointdt #appointment date must exist be4 can apply leave
   validates_uniqueness_of   :icno, :fileno, :coemail, :code
   validates_format_of       :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
   validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd, :fileno
@@ -42,10 +42,11 @@ class Staff < ActiveRecord::Base
   has_many :sdiciplines,  :foreign_key => 'reportedby_id'
   has_many :strainings,   :foreign_key => 'staff_id'
   has_many :librarytransactions
-  has_one  :position
+  has_one  :position #has_many :positions #  #20Apr2013
   has_many :events,       :foreign_key => 'createdby'                                      #link to created by in events
   has_many :users
   has_many :timetables
+  has_one  :staff_shift
   # has_many :topics, :foreign_key => 'creator_id' 
   #has_many :curriculums, :foreign_key => 'staff_id'
   #has_many :txsuppliess, :foreign_key => 'staff_id'
@@ -96,6 +97,10 @@ class Staff < ActiveRecord::Base
   #
   has_and_belongs_to_many :messages
   has_many :from, :class_name => 'Staff', :foreign_key => 'from_id'
+  
+  #5APR2013
+  has_and_belongs_to_many :documents
+  #has_many :from, :class_name => 'Staff', :foreign_key => 'from_id'
   
   #links to Model Cofile
   has_many :owners,    :class_name => 'Cofiles', :foreign_key => 'owner_id'
@@ -163,7 +168,16 @@ class Staff < ActiveRecord::Base
    has_many :staff_that_need_training, :class_name => 'Trainneed', :foreign_key => 'staff_id'
    has_many :training_managers, :class_name => 'Trainneed', :foreign_key => 'confirmedby_id'
    
-   
+  #links to Model Weeklytimetables-20March2013
+   has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by', :dependent => :nullify
+   has_many :endorsed_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'endorsed_by', :dependent => :nullify
+  #links to Model Weeklytimetables-21March2013
+   has_many :weekly_schedule_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'lecturer_id', :dependent => :nullify
+  #links to Model Topicdetail
+   has_many :topic_details, :class_name => 'Topicdetail', :foreign_key => 'prepared_by', :dependent => :nullify
+  #links to Model LessonPlan-26March2013
+   has_many :lessonplan_lecturers, :class_name => 'LessonPlan', :foreign_key => 'lecturer' 
+   has_many :lessonplan_creators, :class_name => 'LessonPlan', :foreign_key => 'prepared_by'
 #-------------Empty Field for Foreign Key Link------------------------
   has_many :courses
   has_many :sdiciplines
@@ -187,7 +201,7 @@ class Staff < ActiveRecord::Base
 #----------------------------code for repeating fields------------------------------------------  
  
   has_many :qualifications, :dependent => :destroy
-  accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
+  accepts_nested_attributes_for :qualifications, :allow_destroy => true, :reject_if => lambda { |a| a[:level_id].blank? }
   
   has_many :loans, :dependent => :destroy
   accepts_nested_attributes_for :loans, :reject_if => lambda { |a| a[:ltype].blank? }
@@ -235,6 +249,14 @@ class Staff < ActiveRecord::Base
     end
   end
   
+  def position_code_for_staff
+    if position.blank?
+      "-"
+    else
+      position.code
+    end
+  end
+  
   
   def my_bank
     sid = id
@@ -260,6 +282,34 @@ class Staff < ActiveRecord::Base
     end
   end
   
+  def render_unit
+    if position.blank? 
+      "Staff not exist in Task & Responsibilities"
+    #elsif position.parent.blank?
+     #   "-"
+    elsif position.is_root?
+        "Pengarah"
+    elsif position.parent.is_root?
+      if position.unit.blank?
+        "#{position.name}"                  #display position name instead - must be somebody!
+      else
+        "#{position.unit}"                  #   "#{position.unit} - 3"
+      end
+    elsif position.parent.staff.blank?      #no parent
+      #  "#{position.parent.unit} -1 "
+      if position.parent.unit.blank?
+        "#{position.unit}"                  #  "#{position.unit} - 1a"
+      else  
+        "#{position.parent.unit}"           #  "#{position.parent.unit} - 1b"
+      end
+    else                                    #got parent
+      if position.parent.unit.blank?
+        "#{position.unit}"                  #  "#{position.unit} - 2a"
+      else  
+        "#{position.parent.unit}"           #  "#{position.parent.unit} - 2b"
+      end
+    end
+  end
   
   def staff_positiontemp
     sid = staff.id
@@ -276,6 +326,14 @@ class Staff < ActiveRecord::Base
     Position.find(:all, :select => "name", :conditions => {:staff_id => sid}).map(&:name)
   end
  
+  def shift_for_staff
+    ssft = StaffShift.find(:first, :conditions=> ['id=?',staff_shift_id])
+    if ssft == nil
+      "-"
+    else
+      ssft.start_end
+    end
+  end
 
   def icno_with_staff_name
     "#{icno}  #{name}"
@@ -285,7 +343,12 @@ class Staff < ActiveRecord::Base
     v=1
   end
   
-
+  #1July2013
+  def staff_thumb
+    "#{name}  (thumb id : #{thumb_id})"
+  end  
+  
+  
 #------------------Coded Lists----------------------------------------- 
   MARITAL_STATUS = [
        #  Displayed       stored in db
@@ -423,6 +486,10 @@ class Staff < ActiveRecord::Base
         [ "Female","2"]
   ]
  
+#----------------Staff Attendance-colour status------
+  def render_colour_status
+    (StaffAttendance::ATT_STATUS.find_all{|disp, value| value == att_colour.to_i}).map {|disp, value| disp}
+  end
 
 #---------------Search--------------------------------------------------------------------------------
                         

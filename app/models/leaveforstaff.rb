@@ -27,7 +27,7 @@ class Leaveforstaff < ActiveRecord::Base
 
 
   FILTERS = [
-    {:scope => "relevant",   :label => "All"},
+    {:scope => "relevant",        :label => "All"},
     {:scope => "mine",       :label => "My Leave"},
     {:scope => "forsupport", :label => "For My Support"},
     {:scope => "forapprove", :label => "For My Approval"}
@@ -108,8 +108,27 @@ class Leaveforstaff < ActiveRecord::Base
     end
   end
   
+  def leave_balance
+    accumulated_leave = 0
+    leavedays = Leaveforstaff.find(:all, :conditions=>['staff_id=? AND leavetype=?',applicant, 1])
+    leavedays.each do |leave|
+      accumulated_leave+=leave.leavenddate+1-leave.leavestartdate
+    end
+    cuti_rehat_entitlement - accumulated_leave
+  end
+  
   def applicant_details 
-    applicant.mykad_with_staff_name
+       suid = staff_id.to_a
+       exists = Staff.find(:all, :select => "id").map(&:id)
+       checker = suid & exists     
+   
+       if staff_id == nil
+          "" 
+        elsif checker == []
+          "Staff No Longer Exists" 
+       else
+         applicant.mykad_with_staff_name
+       end
   end
   
   def endorser

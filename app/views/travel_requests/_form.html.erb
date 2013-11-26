@@ -22,9 +22,16 @@
 	<tr>
 		<td class="leftcol"><label for="transport_type">Transport Choice</label></td>
 		<td><%= f.check_box :own_car, 		:id => 'mycar',  :class => 'tt'%><label> Own Car </label>
-				<span id="tr_my_car"><%= f.text_field :own_car_notes, :size => '40', :placeholder => 'Reasons' %></span> &nbsp; 
-				<%= f.check_box :dept_car, 		:id => 'offcar', :class => 'tt'%><label> Office Car &nbsp; </label>
-				<%= f.check_box :others_car, 	:id => 'othcar', :class => 'tt'%><label> Other's Car &nbsp;</label></td>   
+			<%= f.check_box :dept_car, 		:id => 'offcar', :class => 'tt'%><label> Office Car &nbsp; </label>
+			<%= f.check_box :others_car, 	:id => 'othcar', :class => 'tt'%><label> Other's Car &nbsp;</label>
+				<span id="tr_my_car">
+					<%= f.text_field :own_car_notes, :size => '40', :placeholder => 'Reasons (for using own car)' %><br>
+					<%= f.radio_button :mileage, true,	:id => 'mileage',  :class => 'radio_mileage' %>
+					<label>Mileage Allowance</label>
+					<%= f.radio_button :mileage, false,	:id => 'mileage',  :class => 'radio_mileage' %>
+					<label>Mileage Replacement <font size=-2>(Gantian tambang keretapi/kapal terbang)</font></label>
+				</span> &nbsp; 
+				</td>   
 		<td></td>                                                            
 	</tr>
 	

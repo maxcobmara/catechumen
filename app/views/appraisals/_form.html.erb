@@ -1,0 +1,117 @@
+<div class="tform">
+<H2><%= t 'evaluation.form.title_part1' %></H2>
+
+  <table width=100%>
+		<tr>
+			<td class="leftcol"><label for="staff_id"><b><%= t 'evaluation.form.name' %></b><font color="red"> * </font></label></td>
+			<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ['id = ?', User.current_user.staff_id]), :id, :mykad_with_staff_name%></td>
+		</tr>
+		<tr>
+		 <td class="leftcol"><label for="evaldt"><b><%= t 'evaluation.form.evaluationdate' %></b></label></td>
+			<td><%= f.date_select :evaldt,  :order => [:day, :month, :year] %></td>
+		</tr>
+	</table>
+	
+	
+		
+	
+	<div>
+		<H2><%= t 'evaluation.form.title_partIIa' %></H2>
+		<p>	<%= t 'evaluation.form.label_001' %></p>
+		<p><strong>
+							<div style="width: 220px; float: left;">|  Date </div>
+							<div style="width: 310px; float: left;">|  Activity </div> | Width </strong></p>
+		<% f.fields_for :evactivities do |builder| %>
+			<%= render 'evactivity_fields', :f => builder %>
+		<% end %>
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :evactivities %> - Add More </p>
+	
+	
+	<p><font size=-2><%= t 'evaluation.form.label_002' %></font></p>
+	<HR>
+	</div>
+	
+
+<H2><%= t 'evaluation.form.title_part2b' %></H2>
+<p><font size=-2><%= t 'evaluation.form.label_003' %></font></p>
+	<table width=75%>
+		<tr>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Date</th>
+			<th>Duration</th>
+		</tr>
+		<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', User.current_user.staff_id]) %>
+		<tr>
+			<td><%= ptdo.ptschedule.ptcourse.name %></td>
+			
+			<td><%= (Ptcourse::COURSE_TYPE.find_all{|disp, value| value == ptdo.ptschedule.ptcourse.course_type}).map {|disp, value| disp} %></td>
+			<td><%= l(ptdo.ptschedule.start) %></td>
+			<td><%= ptdo.ptschedule.ptcourse.duration %> Days</td>
+		</tr>
+	<% end -%>
+	<tr>
+		<td colspan=3><font size=-2><%= t 'evaluation.form.label_004' %></font></td>
+	</tr>
+	<tr>
+	  <td class="leftcol"><label for="parttwodt"><%= t 'evaluation.form.parttwodate' %></label></td>
+		<td><%= f.date_select :parttwodt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
+	</tr>
+</table>
+
+
+<table>
+
+
+
+
+<!-- Code Block for Straining  -->
+<BR><BR>
+	
+
+	
+<!--Part III-->
+<H2>Part III: Hasil Kerja (50%)</H2>
+<table width=100%>
+	<tr>
+		<th colspan=3><%= t 'evaluation.form.label_005' %></th>
+	<tr>
+</table>
+
+<%=render :partial => 'form_ppp', :locals => {:f => f} %> 
+
+<BR>
+	
+
+<BR>
+		
+<!--Part IX -->
+<table>
+	<tr class="toprow">
+		<th colspan=2><%= t 'evaluation.form.title_part9' %></td>
+	</tr>
+
+	<tr>
+		<td width=40%><label for="pppyears"><b><%= t 'evaluation.form.part8_desc' %></b></label></td>
+		<td><%= f.select :ppkyears, 0..21  %> <%= t 'years_label' %> <%= f.select :ppkmonths, 0..11 %> <%= t 'months_label' %></td>
+	</tr>
+
+	<tr>
+		<td><label for="pppoverall"><b><%= t 'evaluation.form.part9_desc' %></b></label></td>
+		<td><%= f.text_area :ppkoverall, :size => '45x5' %></td>
+	</tr>
+
+	<tr>
+		<td><label for="ppp_id"><b><%= t 'evaluation.form.ppkid' %></b></label></td>
+		<td><%= f.collection_select :ppk_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+	</tr>
+	
+	<tr>
+		<td><label for="pppevaldt"><b><%= t 'datelabel' %></b></label></td>
+		<td><%= f.date_select :ppkevaldt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
+	</tr>
+</table>
+<BR>
+	
+
+</div>

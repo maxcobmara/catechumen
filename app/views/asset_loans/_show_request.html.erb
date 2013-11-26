@@ -31,8 +31,13 @@
 				</tr>
 				
 				<tr>
-					<td class="leftcolwide"><label>Loaned By</td>
-					<td><%=h @asset_loan.asset.assignedto.name unless @asset_loan.asset.assignedto.blank? %></td>
+					<td class="leftcolwide"><label>Owner/Responsible Unit</td>
+					<td><%=h @asset_loan.asset.assignedto.name unless @asset_loan.asset.assignedto.blank? %> /
+					<%=h @asset_loan.asset.assignedto.position.unit%></td>
+				</tr>
+				<tr>
+					<td class="leftcolwide"><label>Loan Type</td>
+					<td><%=h "Internal" if @asset_loan.loantype == 1 %><%=h "External" if @asset_loan.loantype == 2 %></td>
 				</tr>
 				<% end %>
 

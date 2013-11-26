@@ -22,7 +22,7 @@
 			<th><%= t 'supplier.current' %></th>
 			<th><%= t 'supplier.maxquantity' %></th>
 			<th><%= t 'supplier.minquantity' %></th>
-			<th colspan=3 class="ac">Control</th>
+			<th colspan=4 class="ac">Control</th>
 		</tr>
 
 
@@ -30,11 +30,12 @@
 		<tr class="<%= (stationery.set_row_color) %>">
 			<td><%=h stationery.code %></td>
 			<td><%=h stationery.category %></td>
-			<td><%=h stationery.current_quantity %> &nbsp; <%=h stationery.unittype %></td>
-			<td><%=h stationery.maxquantity %></td>
-			<td><%=h stationery.minquantity %></td>
+			<td><%=h stationery.current_quantity.to_i %> &nbsp; <%=h stationery.unittype %></td>
+			<td><%=h stationery.maxquantity.to_i %></td>
+			<td><%=h stationery.minquantity.to_i %></td>
 			<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => stationery %></td>
 			<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => stationery %></td>
+			  <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'supplies_list'), :action => 'supplies', :id => stationery %></td>
 			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), stationery, :confirm => 'Are you sure?', :method => :delete %></td>
 		</tr>
 		<% end %>

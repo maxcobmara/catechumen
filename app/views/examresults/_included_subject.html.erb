@@ -1,0 +1,185 @@
+<!--Program<%#= @programme_id%>|Sem<%#=@semester%>|Exammonth<%#=@exammonth2%>|Examyear<%#=@examyear2%>
+<br>Subject<%#=@subjects%>-Student<%#@students%><%#=@students.count%>-->
+<% if @examresult_programme_id %>
+	<% unless @examresult_programme_id.blank? || @examresult_programme_id.nil? %>
+		<% @programme_id = @examresult_programme_id %>
+	<% end %>
+	<% unless @examresult_semester.blank? || @examresult_semester.nil? %>
+		<% @semester = @examresult_semester %>
+	<% end %>
+	
+	<% unless @examresult_examdts.nil? || @examresult_examdts.blank? %>
+		<% @exammonth2 = @examresult_examdts.month %>
+		<% @examyear2 = @examresult_examdts.year %>
+	<% else %>
+		<% @exammonth2 = @exammonth %>
+		<% @examyear2 = @examyear %>
+	<% end %>
+
+	<% @examresult_eq = @examresult_id %>
+	<%# @examresult_q = Examresult.find(@examresult_eq.to_i).students if @examresult_id %>
+	<% if @programme_id %>
+		<% @subjects = Examresult.get_subjects(@programme_id,@semester) %>
+		<% @students = Examresult.get_students(@programme_id,@examyear2,@exammonth2,@semester) %><%#=@programme_id%>
+		<%# @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)%>
+	<% end %>
+	Total records : <%= @resultlines = @examresult.resultlines.count %>
+<% end %>
+
+<% unless @programme_id.blank? || @programme_id.nil? %>
+	<% unless @semester.blank? || @semester.nil? %>
+		<% unless @exammonth2.blank? || @exammonth2.nil? || @examyear2.blank? || @examyear2.nil? %>
+		
+			<!--nape tak masuk-->
+			<!--DO NOT REMOVE-start-checking-exam start month & year & semester-->
+			<!--EXAM MONTH2 <%#=@exammonth2%><br>
+			Exam month : new-first/edit-select tag<%#=@exammonth%>/new-resubmit/edit<%#=@examresult_exammonth%><br>
+			Exam year : new-first/edit-select tag<%#=@examyear%>/new-resubmit/edit<%#= @examresult_examyear%><br>
+			Semester : <%#= @semester %><br>-->
+			<!--DO NOT REMOVE-end-checking-exam end month & year & semester-->
+			
+			<!--start-listing of student if exist-->
+			
+			<% if @students.count != 0 %>
+			<table width=100% border=1 cellpadding=0 cellspacing=0>
+				<tr>
+					<th rowspan=2 width=10%>Name</th>
+					<th rowspan=2>Matric<br> No</th>
+					<th rowspan=2>MyKad No</th>
+					<% @subject_ids=[] %>
+					<% @subject_credits=[] %>
+					<% unless @subjects.nil? || @subjects.blank? %>
+						<% @subjects.each do |subject| %>
+						<th colspan=2 style="text-align:center;">
+							<%= subject.code %><%#= subject.subjectcode %>
+							<% @subject_ids << subject.id %>
+							<% @subject_credits << subject.credits %>
+						</th>
+						<% end %>
+					<% end %>
+					<th rowspan=2><%= t 'examresult.total' %></th>
+					<th rowspan=2><%= t 'examresult.pngs17' %></th>
+					<% if @semester.to_i > 1 %>
+						<th rowspan=2><%= t 'examresult.pngk'%></td>
+					<% end %>
+					<th rowspan=2><%= t 'examresult.status' %></th>
+					<th rowspan=2><%= t 'examresult.remark' %></th>
+				</tr>
+				<tr>
+				<% unless @subjects.nil? || @subjects.blank? %>
+					<% 0.upto(@subjects.count-1) do |count|%>
+						<th>Grade</th><th>NG</th>
+					<% end %>
+				<% else %>
+					&nbsp;&nbsp;Selected programme have no subject at the moment.<br><br>
+				<% end %>
+				</tr>
+				<%# @grade_student_ids = Grade.students_to_array(Grade.all)%>		
+				<!--DRY up codes! replacing @grade_student_ids = Examresult.grade_student_ids-->
+				<% @grade_student_ids = Grade.all.map(&:student_id) %>
+				<% @count1 = 0 %>
+				<% @students.each do |student| %>
+				<tr>
+					<td style="padding:0;vertical-align:middle;"><%#= student.id %><%= student.name %><%= hidden_field "examresult[resultlines_attributes][#{@count1}]", :student_id, :size=>5, :value => student.id  %></td>
+					<td style="padding:0;vertical-align:middle;"><%= student.matrixno %></td>
+					<td style="padding:0;vertical-align:middle;"><%= student.icno %></td>
+					<% @subjects_student = Examresult.grade_student_subjects(student.id)%>
+					<% @finale_all=[] %>
+					<% unless @subjects.nil? || @subjects.blank? %>
+						<% 0.upto @subjects.count-1 do |count|%>
+						<!--<td>-->
+							<!--student exist in grade table?:/does current subject for current student exist in grade table:-->
+							<%#= @grade_student_ids.include?(student.id) %><!--/--><%#= @subjects_student.include?(@subject_ids[count]) %>
+							<% if @grade_student_ids.include?(student.id)==true && @subjects_student.include?(@subject_ids[count])==true %>
+								<% @gradeit=Grade.find(:all, :conditions=> ['student_id=? and subject_id=?',student.id,@subject_ids[count]])[0].set_gred %>		<!--DRY-->
+								<% @finale=Grade.find(:all, :conditions=> ['student_id=? and subject_id=?',student.id,@subject_ids[count]])[0].set_NG.to_f %>	<!--DRY-->
+								<% @finale_all << @finale %>
+								<td style="padding:0;text-align:center;vertical-align:middle;"><%= @gradeit %></td>
+								<td style="padding:0;text-align:center;vertical-align:middle;"><%= @finale %></td>
+							<% else %>
+							<!--this part-if no grade record exist-->
+								<% @finale_all << 0.00 %>
+								<td style="padding:0;text-align:center;vertical-align:middle;">&nbsp;</td>
+								<td style="padding:0;text-align:center;vertical-align:middle;">0.00</td>
+							<% end %>
+							<!--this part-if no grade record exist-->
+						<!--</td>-->
+						<% end %>
+					<% end %>	<!--end for unless @subjects.nil? || @subjects.blank? -->
+					
+					<% if @examresult %>
+						<% @value_status = @examresult.resultlines[@count1].status %>
+						<% @value_remark = @examresult.resultlines[@count1].remark %>
+						<% @value_id = @examresult.resultlines[@count1].id %>
+						<% unless @value_id.blank? || @value_id.nil? %>
+							<%= hidden_field "examresult[resultlines_attributes][#{@count1}]", :id, :value=> @value_id %>
+						<% end %>
+					<% else %>
+						<%@value_status=""%>
+						<%@value_remark=""%>
+					<% end %>
+					<td style="padding:0;vertical-align:middle;">
+						<% if @examresult %>
+							<%= text_field "examresult[resultlines_attributes][#{@count1}]", :total, :size=>5, :value=>number_with_precision(@finaletotal=Examresult.total(@finale_all,@subject_credits),:precision=>2)  %>
+						<% else %>
+							<%= text_field "examresult[resultlines_attributes][#{@count1}]", :total, :size=>5 %>
+						<% end %>
+					</td>
+					<td style="padding:0;vertical-align:middle;">
+						<% if @examresult %>
+							<% if @subject_credits == 0 || @finaletotal==0 %>
+								<% @pngs17=number_with_precision(0,:precision=>2) %>
+							<% else %>
+								<% @pngs17=number_with_precision(Examresult.pngs17(@finaletotal,@subject_credits), :precision => 2) %>
+							<% end %>
+							<%= text_field "examresult[resultlines_attributes][#{@count1}]", :pngs17, :size=>5, :value=>@pngs17 %>
+						<% else %>
+							<%= text_field "examresult[resultlines_attributes][#{@count1}]", :pngs17, :size=>5 %>
+						<% end %>
+					</td>
+					<!--12June2013-->
+					<% if @examresult %>
+						<% if @semester.to_i > 1 %>
+							<td style="padding:0;vertical-align:middle;text-align:center;">
+								<!--sini--><%= text_field "examresult[resultlines_attributes][#{@count1}]", :pngk, :size=>5, :value=>@pngk=number_with_precision(Examresult.pngk(student.id,@semester,@programme_id),:precision => 2)%>
+							</td>
+						<% else %>
+							<!--if semester == 1, default assign pngs into pngk column-examresult.rb-->
+						<% end %>
+					<% else %>
+						<% if @semester.to_i > 1 %>
+							<td style="padding:0;vertical-align:middle;"><!--sana--><%= text_field "examresult[resultlines_attributes][#{@count1}]", :pngk, :size=>5 %></td>
+						<% end %>
+					<% end %>	
+					
+					
+					<!--12June2013-->
+					<td style="padding:0;vertical-align:middle;"><% @value_status=Examresult.status(@pngs17.to_f)%>
+						<%= select_tag "examresult[resultlines_attributes][#{@count1}][status]","<option></option>"+options_for_select(Resultline::STATUS,@value_status)  %>
+					</td>
+					<td style="padding:0;vertical-align:middle;">
+						<%= text_field "examresult[resultlines_attributes][#{@count1}]",:remark,:size=>12,:value=> @value_remark %></td>
+				</tr>
+				<% @count1+=1%>
+				<% end %>	<!--end for @students.each do |student| -->
+			</table>
+				
+			<% else %>
+				<br>No students have taken this programme
+			<% end %>
+			<!--end-listing of student if exist-->
+		
+
+		<% else %> <!--else for unless @exammonth2.blank? || @exammonth2.nil? || @examyear2.blank? || @examyear2.nil? -->
+			Please select examination start date and reselect semester or/and programme
+		<% end %>
+		
+		
+	<% else %><!--else for unless @semester.blank? || @semester.nil?-->
+		Please select semester
+	<% end%>
+
+
+<% else %><!--else for unless @programme_id.blank? || @programme_id.nil?-->
+	Please select programme
+<% end %>

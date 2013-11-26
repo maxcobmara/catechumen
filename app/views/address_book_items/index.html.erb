@@ -1,0 +1,22 @@
+<h1>Listing address_book_items</h1>
+
+<table>
+  <tr>
+    <th>Address book</th>
+    <th>Item</th>
+  </tr>
+
+<% @address_book_items.each do |address_book_item| %>
+  <tr>
+    <td><%=h address_book_item.address_book_id %></td>
+    <td><%=h address_book_item.item %></td>
+    <td><%= link_to 'Show', address_book_item %></td>
+    <td><%= link_to 'Edit', edit_address_book_item_path(address_book_item) %></td>
+    <td><%= link_to 'Destroy', address_book_item, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New address_book_item', new_address_book_item_path %>

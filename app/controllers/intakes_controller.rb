@@ -2,7 +2,8 @@ class IntakesController < ApplicationController
   # GET /intakes
   # GET /intakes.xml
   def index
-    @intakes = Intake.all
+    @intakes = Intake.all.group_by{|t|t.name} #28Feb2013-changed view by intake name
+    
 
     respond_to do |format|
       format.html # index.html.erb
@@ -40,6 +41,7 @@ class IntakesController < ApplicationController
   # POST /intakes
   # POST /intakes.xml
   def create
+    
     @intake = Intake.new(params[:intake])
 
     respond_to do |format|

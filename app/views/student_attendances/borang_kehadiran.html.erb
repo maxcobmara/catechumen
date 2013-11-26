@@ -1,0 +1,307 @@
+
+
+<%= stylesheet_link_tag 'report', :media => "print"  %>
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>	
+<%#= link_to 'Back to Index', student_attendances_path %>
+<div class="A4potrait" style="border: none;">
+
+<!--params[:student_attendance_ids] = @student_attendances.map(&:id)
+render :action => "edit_multiple_intake"-->
+<%#= link_to 'Back',:action => 'edit_multiple_intake', :id => @studentattendance_ids %>
+<%#= @studentattendance_ids%><%#=params[:iddd]%>
+
+<!-- Box Head -->
+<div id="kewpa">
+<!--<p class="marginright" align="right"><b></b></p><BR><BR><BR>-->
+
+<% class_date=[]%>
+<% index = 0 %>
+<% @studentattendances_group.each do |student_id,student_attendance| %><!--inclusive of record : weeklytimetable_detais_id NOT EXIST-->
+	<% if index == 0 %>
+		<% @one_student_atts=student_attendance%><!--already sorted in controller!-->
+		<%# @one_student_atts=student_attendance.sort_by{|u|u.weeklytimetable_detail.day_time_slot}%>
+	<% end %>
+	<% index+=1 %>
+<% end %>
+<!--one_student_atts_count : <%#=@one_student_atts.count%>-->
+
+<% first = @first %>
+<% if first == 0 %>
+<% else %>
+	<% first=first+(2*@first) %>
+<% end %>
+<% second = first+1 %>
+<% third = first+2 %>
+
+<%# 0.upto((@one_student_atts.count/3)-1) do |count_table| %>
+	<%# if count_table == 0 %>
+		<%# first = 0 %>		
+		<%# second = 1 %>
+		<%# third = 2 %>
+	<%# else %>
+		<%# first = first+3 %>
+		<%# second = second+3 %>
+		<%# third = third+3 %>
+	<%# end %>
+	<table border=0 cellpadding=0 cellspacing=0 width=85% style="page-break-inside:auto">
+	<!--	<table class="tlong" border=1 cellpadding=0 cellspacing=0 width=85%>-->
+	
+  		<thead>
+			<tr><td style="border:0;text-align:center;" colspan=10><img border="0" src="/images/KM.jpg" alt="KKM" width="" height="70"/><br><br></td></tr>
+			<tr><td style="border:0;text-align:center;"colspan=10><SPAN style="text-align:center;font-size:13px;font-family: Arial, sans-serif;">KEMENTERIAN KESIHATAN MALAYSIA<br><br></td></tr>
+			<tr><td style="border:0;text-align:center;" colspan=10><SPAN style="text-align:center;font-size:13px;font-family: Arial, sans-serif;font-weight:bold;">BORANG KEHADIRAN PELATIH<span><br><br></td></tr>
+			<tr style="background-color:#EFF1F1;">
+				<td rowspan=2 width=5% style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-top:solid 1px;border-bottom:solid 1px;">Bil</td>
+				<td rowspan=2 width=10% style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-top:solid 1px;border-bottom:solid 1px;">No.Matriks</td>
+				<td rowspan=2 width=30% style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-top:solid 1px;border-bottom:solid 1px;">Nama Pelatih</td>
+				<td width=9% style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-top:solid 1px;">Tarikh</td>
+
+				<% if @one_student_atts && @one_student_atts[first].weeklytimetable_details_id!= nil  %>
+				<%# if @student_attendances && @student_attendances[0].weeklytimetable_details_id!= nil  %>		
+					<% class_date[0]= @one_student_atts[first].weeklytimetable_detail.get_date_for_lesson_plan %>
+					<% if @one_student_atts[second] != nil %>
+						<% class_date[1]= @one_student_atts[second].weeklytimetable_detail.get_date_for_lesson_plan %>
+					<% end %>
+					<% if @one_student_atts[third] != nil %>
+						<% class_date[2]= @one_student_atts[third].weeklytimetable_detail.get_date_for_lesson_plan %>
+					<% end %>
+					<% if class_date[0] != class_date[1]|| class_date[0] != class_date[2] %>
+						<% 0.upto(2) do |count_class| %>
+							<% if count_class < 2 %>
+								<td colspan=2 style="font-size:13px;font-family: Arial, sans-serif;text-align:center;border-left:solid 1px;border-top:solid 1px;"><%= class_date[count_class] %>&nbsp;</td>
+							<% elsif count_class==2 %>
+								<td colspan=2 style="font-size:13px;font-family: Arial, sans-serif;text-align:center;border-left:solid 1px;border-top:solid 1px;border-right:solid 1px;"><%= class_date[count_class] %>&nbsp;</td>
+							<% end %>
+						<% end %>
+					<% else %>
+						<td colspan=6 style="font-size:13px;font-family: Arial, sans-serif;text-align:center;border-left:solid 1px;border-top:solid 1px;border-right:solid 1px;"><%= @one_student_atts[first].weeklytimetable_detail.get_date_for_lesson_plan %>
+						</td>
+					<% end %>
+				<% else %>
+					<td colspan=6 style="font-size:13px;font-family: Arial, sans-serif;text-align:center;border-left:solid 1px;border-top:solid 1px;border-right:solid 1px;">&nbsp;</td>
+				<% end %>
+			</tr>
+  
+			<tr style="background-color:#EFF1F1;font-size:13px;font-family: Arial, sans-serif;">
+				<td width=9% style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-top:solid 1px;border-bottom:solid 1px;border-right:solid 1 px;">Masa</td> 
+				<% if @one_student_atts && @one_student_atts[first].weeklytimetable_details_id!= nil %>
+				<%# if @student_attendances && @student_attendances[0].weeklytimetable_details_id!= nil %>
+		
+					<% first.upto(third) do |nos|%><%# 0.upto(2) do |nos|%>
+						<% if nos < third%>
+							<td colspan=2 style="font-size:10px;font-family: Arial, sans-serif;border-left:solid 1px;border-top:solid 1px;border-bottom:solid 1px;">
+						<% elsif nos == third %>
+							<td colspan=2 style="font-size:10px;font-family: Arial, sans-serif;border-left:solid 1px;border-top:solid 1px;border-bottom:solid 1px;border-right:solid 1px;">
+						<% end %>
+							<% if @one_student_atts[nos] != nil %>
+								<%= @one_student_atts[nos].weeklytimetable_detail.get_time_slot %>
+								<%#= @student_attendances[nos].weeklytimetable_detail.get_time_slot %>
+							<% else %>
+								&nbsp;
+							<% end %>
+						</td>
+					<% end %>
+					
+				<% else %>
+					<td colspan=2 style="border-left:solid 1px;border-top:solid 1px;border-bottom:solid 1px;">&nbsp;</td>
+					<td colspan=2 style="border-left:solid 1px;border-top:solid 1px;border-bottom:solid 1px;" >&nbsp;</td>
+					<td colspan=2 style="border-left:solid 1px;border-top:solid 1px;border-bottom:solid 1px;border-right:solid 1px;">&nbsp;</td>
+				<% end %>
+			</tr>
+ 
+  		</thead>
+  		<tbody> 
+			<% @page = 0 %>
+			<% count = 0 %>
+			<%#= @student_attendances.count %><!--qty of students * qty of time slots-->
+			<% @exist_student = @studentattendances_group.count %>
+			<%# if @exist_student > 0 && @exist_student <= 24 %>
+			<% @studentattendances_group.each do |student_id, studentattendances|  %>
+				<% if count < @exist_student %>
+					<% studentattendances.each_with_index do |studentattendance, no|%>
+					<%# studentattendances.each_with_index do |studentattendance, no|%>
+						<% if no==0 %>
+							<tr>
+								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;"><%=count+1 %>&nbsp;</td>
+								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;">
+									<%=studentattendance.student.matrixno%>
+									<%#= Student.find(student_id).matrixno %>
+								</td>
+								<td colspan=2 style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;">
+									<%=studentattendance.student.name%>
+									<%#= Student.find(student_id).name %>
+								</td>
+								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px" width=7%>
+									&nbsp;<!--cc-->
+									<% if studentattendances[0].attend == true %> 
+										&#10003;
+									<% else %>
+										Absent
+									<% end %>
+								</td>
+								<% if no==0 && count==0 || no==0 && count==24 || no==0 && count==48 %><%# if no==0 && count==0 %>
+									<td rowspan=24 style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;"width=7%>
+									<!--<td rowspan="<%#=@exist_student%>" style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;"width=7%>-->
+										
+									<%# if @student_attendances && @student_attendances[0].weeklytimetable_details_id!= nil %>
+										<%#= @student_attendances[0].weeklytimetable_detail.weeklytimetable_topic.name %>
+									<!--/--><%#= @student_attendances[0].weeklytimetable_detail.render_class_method %>
+									<% if @one_student_atts && @one_student_atts[first].weeklytimetable_details_id!= nil %>
+										<%= @one_student_atts[first].weeklytimetable_detail.weeklytimetable_topic.name %>
+										/<%= @one_student_atts[first].weeklytimetable_detail.render_class_method %>
+									<% else %>
+										&nbsp;
+									<% end %>
+									</td>
+								<% end%>
+								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px" width=7%>
+									&nbsp;<!--eeee-->
+									<% if studentattendances[1].attend == true %> 
+										&#10003;
+									<% else %>
+										Absent
+									<% end %>
+								</td>
+								<% if no==0 && count==0 || no==0 && count==24 || no==0 && count==48 %><%# if no==0 && count==0 %>
+									<td rowspan=24 style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;" width=7%>
+									<!--<td rowspan="<%#=@exist_student%>" style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;" width=7%>-->
+									
+										<%# if @student_attendances && @student_attendances[1].weeklytimetable_details_id!= nil %>
+											<%#= @student_attendances[1].weeklytimetable_detail.weeklytimetable_topic.name %>
+											<!--/--> <%#= @student_attendances[1].weeklytimetable_detail.render_class_method %>
+										<% if @one_student_atts[second] != nil %>
+											<% if @one_student_atts && @one_student_atts[second].weeklytimetable_details_id!= nil %>
+												<%= @one_student_atts[second].weeklytimetable_detail.weeklytimetable_topic.name %>
+												/<%= @one_student_atts[second].weeklytimetable_detail.render_class_method %>	
+											<% else %>
+												&nbsp;
+											<% end %>
+										<% else %>
+											&nbsp;
+										<% end %>
+										
+									</td>
+								<% end %>
+								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px"width=7%>
+									&nbsp;<!--ggg-->
+									<% if studentattendances[2].attend == true %> 
+										&#10003;
+									<% else %>
+										Absent
+									<% end %>
+								</td>
+								<% if no==0 && count==0 || no==0 && count==24 || no==0 && count==48 %><%# if no==0 && count==0 %>
+									<td rowspan=24 style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;border-right:solid 1px;"width=7%>
+									<!--<td rowspan="<%#=@exist_student%>" style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;border-right:solid 1px;"width=7%>-->
+									
+										<%# if @student_attendances && @student_attendances[2].weeklytimetable_details_id!= nil %>
+											<%#= @student_attendances[2].weeklytimetable_detail.weeklytimetable_topic.name %>
+											<!--/--> <%#= @student_attendances[2].weeklytimetable_detail.render_class_method %>
+										<% if @one_student_atts[third] != nil %>
+											<% if @one_student_atts && @one_student_atts[third].weeklytimetable_details_id!= nil %>
+												<%= @one_student_atts[third].weeklytimetable_detail.weeklytimetable_topic.name %>
+												/<%= @one_student_atts[third].weeklytimetable_detail.render_class_method %>
+											<% else %>
+												&nbsp;
+											<% end %>
+										<% else %>
+											&nbsp;
+										<% end %>
+									</td>
+								<% end %>
+							</tr>
+						<% end %>	<%# end for - if no==0 %>
+						
+					<% end %><%# end for - studentattendances.each_with_index do |studentattendance, no|%>
+				<% count+=1%>
+				
+			<% end %><%# end for - if count < @exist_student %>
+		<% end %>
+		<%# else%>
+
+		<%# end %><!--end for @exist_student-->
+
+		<% remaining_count = count+1 %>
+		<% if count > 24 %>
+			<% last_count = 48 %>
+		<% else %>
+			<% last_count = 24 %>
+		<% end %>
+		<% remaining_count.upto(last_count) do |index| %>
+		<tr>
+			<td style="border-left:solid 1px;border-bottom:solid 1px;font-size:13px;font-family: Arial, sans-serif;"><%=index%></td>
+			<td style="border-left:solid 1px;border-bottom:solid 1px;font-size:13px;font-family: Arial, sans-serif;">&nbsp;<!--ss--></td>
+			<td colspan=2 style="border-left:solid 1px;border-bottom:solid 1px;font-size:13px;font-family: Arial, sans-serif;">&nbsp;<!--ee--></td>
+			<td width=8% style="border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px;font-size:13px;font-family: Arial, sans-serif;">&nbsp;<!--rr--></td>
+			<td width=8% style="border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px;font-size:13px;font-family: Arial, sans-serif;">&nbsp;<!--tt--></td>
+			<td width=8% style="border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px;font-size:13px;font-family: Arial, sans-serif;">&nbsp;<!--yy--></td>
+		</tr>
+		<% end %>
+	
+	</tbody>
+	<tfoot>
+		<tr>
+			<td style="border-left:solid 1px;border-bottom:solid 1px;">&nbsp;</td>
+			<td style="border-left:solid 1px;border-bottom:solid 1px;">&nbsp;</td>
+			<td colspan=2 style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;">Nama dan Tandatangan Pengajar</td>
+			<td style="font-size:10px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;" colspan=2>
+				<% if @one_student_atts && @one_student_atts[first].weeklytimetable_details_id!= nil %>
+					<%= @one_student_atts[first].weeklytimetable_detail.weeklytimetable_lecturer.name %><br>&nbsp;
+				<% else %>
+					&nbsp;<br>&nbsp;
+				<% end %>
+			</td>
+			<td style="font-size:10px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;" colspan=2>
+				<% if @one_student_atts[second] != nil %>
+					<% if @one_student_atts && @one_student_atts[second].weeklytimetable_details_id!= nil %>
+						<%= @one_student_atts[second].weeklytimetable_detail.weeklytimetable_lecturer.name %><br>&nbsp;
+					<% else %>
+						&nbsp;<br>&nbsp;
+					<% end %>
+				<% else %>
+					&nbsp;
+				<% end %>
+			</td>
+			<td style="font-size:10px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px;" colspan=2>
+				<% if @one_student_atts[third] != nil %>
+					<% if @one_student_atts && @one_student_atts[third].weeklytimetable_details_id!= nil %>
+						<%= @one_student_atts[third].weeklytimetable_detail.weeklytimetable_lecturer.name %><br>&nbsp;
+					<% else %>
+						&nbsp;<br>&nbsp;
+					<% end %>
+				<% else %>
+					&nbsp;
+				<% end %>
+			</td>
+		</tr>
+		<tr>
+			<td colspan=10>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td style="font-size:13px;font-family: Arial, sans-serif;" colspan=9>
+				Nota :<br>
+				Setiap pelatih perlu menandatangani borang kehadiran.
+			</td>
+		</tr>
+
+		<% 0.upto(6) do |blank_row| %>	
+			<tr>
+				<td colspan=10>&nbsp;</td>
+			</tr>
+		<% end %>
+	</tfoot>
+</table>
+<%# end %><%# END FOR - 0.upto((@one_student_atts.count/3)-1) do |count_table| %>
+
+
+</div></div>
+

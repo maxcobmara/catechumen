@@ -8,7 +8,7 @@
 		<th width=10%>Drop</th>
 	</tr>	
 	<% f.fields_for :staff_appraisal_skts do |builder| %>
-	<% if builder.object.description.blank? != true %>
+	<% if builder.object.description.blank? != true && builder.object.half == 1 %>
 	<tr>
 		<td><%= builder.object.priority %></td>
 		<td><%= builder.object.description %></td>
@@ -26,10 +26,18 @@
 			<th width=10%></th>
 		</tr>
 	</table>
+<!--additional skts-->
+	<% f.fields_for :staff_appraisal_skts do |builder| %>
+	<% if builder.object.description.blank? != true && builder.object.half == 2 %>
+		<%= render 'staff_appraisal_skt_fields', :f => builder %>
+	<% end %>
+	<% end %>
+<!---->
+	
 	<% f.fields_for :staff_appraisal_skts do |builder| %>
 	  <% if builder.object.description.blank? == true %>
 	  	<%= render ':staff_appraisal_skt_fields', :f => builder %>
-			<%= f.hidden_field :half, :value => 2 %>
+			<%#= f.hidden_field :half, :value => 2 %><%#else%><!--ooop--><%#= builder.object.half %>
 		<% end %>
 	<% end %>
 	

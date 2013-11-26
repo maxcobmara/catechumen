@@ -1,0 +1,24 @@
+<h1>Listing staffsearches</h1>
+
+<table>
+  <tr>
+    <th>Keywords</th>
+    <th>Position</th>
+    <th>Staff grade</th>
+  </tr>
+
+<% @staffsearches.each do |staffsearch| %>
+  <tr>
+    <td><%=h staffsearch.keywords %></td>
+    <td><%=h staffsearch.position %></td>
+    <td><%=h staffsearch.staff_grade %></td>
+    <td><%= link_to 'Show', staffsearch %></td>
+    <td><%= link_to 'Edit', edit_staffsearch_path(staffsearch) %></td>
+    <td><%= link_to 'Destroy', staffsearch, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New staffsearch', new_staffsearch_path %>

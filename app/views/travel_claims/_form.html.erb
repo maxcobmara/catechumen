@@ -22,22 +22,56 @@
 			</tr>
 			<% end %>
 	<% else %>
-	
+			<!--3Jan2012-view travel logs accordingly-->
+			<fieldset>
+				<legend class='togvis'>Travel Request & Logs</legend>
+			
 			<% for travel_request in @travel_claim.travel_requests %>
-
-			<tr>
-				<th>Request Code</th>
-				<th colspan=3>Purpose</th>
-				<th colspan=2>Travel Dates</th>
-			</tr>
-			<tr>
-			  <td class="tlight"><%= check_kin {travel_request.document.refno} %></td>
-			  <td colspan=3><%= check_kin {travel_request.document.title} %></td>
-			  <td colspan=2><%= travel_request.depart_at.strftime("%d %b") %> - <%= travel_request.return_at.strftime("%d %b %Y") %></td>
-			</tr>
-	
-	
+				<!--<fieldset>
+					<legend class='togvis'><%#= travel_request.destination %> (<%#= travel_request.depart_at.strftime("%d %b") %> - <%#= travel_request.return_at.strftime("%d %b %Y")%>)</legend>-->
+				<table width=90%>
+				<tr>
+					<th colspan=2>Document Ref No</th>
+					<th colspan=2>Purpose</th>
+					<th colspan=2>Travel Dates</th>
+				</tr>
+				<tr>
+			  		<td class="tlight" colspan=2><%= check_kin {travel_request.document.refno} %></td>
+			  		<td colspan=2><%= check_kin {travel_request.document.title} %></td>
+			  		<td colspan=2><%= travel_request.depart_at.strftime("%d %b") %> - <%= travel_request.return_at.strftime("%d %b %Y") %></td>
+				</tr>
+			
+				<tr>
+					<th class="level_2">Date</th>
+					<th class="level_2">Start</th>
+					<th class="level_2">Finish</th>
+					<th class="level_2">Destination</th>
+					<th class="level_2">Mileage</th>
+					<th class="level_2">Value</th>
+				</tr>	
+			
+				<% travel_request.travel_claim_logs.each do |travel_log| %>
+				<tr>
+					<td><%= l(travel_log.travel_on) %></td>
+					<td><%= travel_log.start_at.strftime('%H:%M %p') %></td>
+					<td><%= travel_log.finish_at.strftime('%H:%M %p') %></td>
+					<td><%= travel_log.destination %></td>
+					<td><%= travel_log.mileage %>
+						<!--2Jan2013-show KM when mileage exist-->
+						<% if travel_log.mileage.nil? != true || travel_log.mileage.blank? != true %>
+							<label> km</label>
+						<% end %>
+						<!--2Jan2012-show KM when mileage exist-->
+					</td>
+					<td><%= ringgols(travel_log.km_money) %></td>
+				</tr>	
+				<% end %>
+				</table>
+				<!--</fieldset>-->
 			<% end %>
+			</fieldset>
+			
+			<!--3Jan2012-view travel logs accordingly-->
 <% end %>
 </table><BR/>
 
@@ -84,13 +118,23 @@
 
 <H2>Submission</H2>
 <table width=100%>
+	<!--4Jan2013-view submit button differently-->
+	<% if @travel_claim.my_claim_status != "returned" %>
 	<tr>
 	  <td class="leftcol"><label for="is_submitted">Submit</label></td>
 		<td><%= f.check_box :is_submitted, :id => 'submit1' %>
 				<SPAN class="span_submit1" style="display: none;"> &nbsp; <%= tarikh (Date.today) %></SPAN></td>
 		<td class="pagenote">Clicking on submit notifies claims officer and disables your editing this record further</td>
 	</tr>
-
+	<% else %>
+	<tr>
+	  <td class="leftcol"><label for="is_submitted">Resubmit</label></td>
+		<td><%= f.check_box :is_returned, :id => 'submit1' %>
+				<SPAN class="span_submit1" style="display: none;"> &nbsp; <%= tarikh (Date.today) %></SPAN></td>
+		<td class="pagenote">Clicking on submit notifies claims officer and disables your editing this record further</td>
+	</tr>
+	<% end %>
+	<!--4Jan2013-view submit button differently-->
 </table>
 
 <script type="text/javascript">

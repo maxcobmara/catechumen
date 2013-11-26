@@ -1,0 +1,39 @@
+<div class="tform">
+	<H2>Feedback / Course Evaluation Search</H2>
+
+<% form_for @evaluatecoursesearch do |f| %>
+  <%= f.error_messages %>
+	<table width=100% >
+		<% if @searchevaluatecoursetype=='1' || @searchevaluatecoursetype==1 %>
+			<%= hidden_field_tag :method,  1 %>
+			<tr><td colspan=2>Search Examination Result By :</td></tr>
+			
+			<% @programme_ids_in_evaluatecourse = EvaluateCourse.all.map(&:course_id).uniq %>
+			<% @programme_list = Programme.find(:all, :conditions=> ['id IN (?)',@programme_ids_in_evaluatecourse]) %>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :programme_id %></td>
+				<td><%= f.collection_select :programme_id, @programme_list, :id, :programme_list, :include_blank=> "Select" %></td>
+			</tr>
+			<% @subject_ids_in_evaluatecourse = EvaluateCourse.all.map(&:subject_id)%>
+			<% @subject_list = Programme.find(:all, :conditions=> ['id IN (?)', @subject_ids_in_evaluatecourse ])%>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :subject_id %></td>
+				<td><%=f.collection_select :subject_id, @subject_list, :id, :subject_list, :include_blank => "Select" %></td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :evaluation_date %></td>
+				<td><%= date_select :evaldate, params[:evaldate], :include_blank => true %></td>
+			</tr>
+			<% @lecturer_ids_in_evaluatecourse = EvaluateCourse.all.map(&:staff_id).uniq %>
+			<% @lecturer_list = Staff.find(:all, :conditions => ['id IN (?)',@lecturer_ids_in_evaluatecourse])%>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :lecturer_id %></td>
+				<td><%= f.collection_select :lecturer_id, @lecturer_list, :id, :name, :include_blank => "Select" %></td>
+			</tr>
+		<% end %>
+	</table>
+
+  <p><%= f.submit "Search"%>&nbsp;<font size=-2>Leaves all fields 'unselected' to display ALL record.</font></p>
+<% end %>
+
+</div>

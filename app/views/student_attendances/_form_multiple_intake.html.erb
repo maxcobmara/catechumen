@@ -1,0 +1,91 @@
+<%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
+
+<% form_tag :action => 'create' do |f|%>
+	<% @student_attendances.each_with_index do |student_attendance, index| %>
+		<% fields_for "student_attendances[#{index}]", student_attendance do |f| %>
+			
+			<!--******************-->
+			<% if index==0 %>
+			<div class="tform">
+
+			  <H2>Student Attendance Details</H2>
+						
+						<%# @selected_class = WeeklytimetableDetail.find(@classid)%>
+						<%# @subject_name = @selected_class.weeklytimetable_topic.parent.name %>
+						<%# @programmeid = @selected_class.weeklytimetable_topic.root.id %>
+						<% @programmeid = @preselect_prog %>
+						<table width=100%>
+							<tr>
+								<td class="leftcol"><label>Programme :</label></td>
+								<td>&nbsp;&nbsp;&nbsp;<%= Programme.find(@preselect_prog).programme_coursetype_name %>
+									<%#=@selected_class.weeklytimetable_topic.programme_coursetype_name %></td>
+							</tr>
+							<!--
+							<tr>
+								<td class="leftcol"><label>Lecturer :</label></td>
+								<td><%#= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar']), :id, :name, :selected=>User.current_user.staff_id %></td>
+								<%# @lecturer_list = Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar'])%>
+								<%# 0.upto(2) do |count| %>
+									<%#= select_tag ('student_attendances[#{count}][lecturer_id]',options_from_collection_for_select(@lecturer_list, :id, :name)) %>
+								<%# end %>
+							</tr>-->
+							<!--
+							<tr>
+								<td class="leftcol"><label>Class / Schedule :</label></td>
+								<td><%#=@selected_class.day_time_slot %></td>
+							</tr>
+							<tr>
+								<td class="leftcol"><label>Lecture Method :</label></td>
+								<td><%#= (WeeklytimetableDetail::CLASS_METHOD.find_all{|disp, value| value == @selected_class.lecture_method}).map {|disp, value| disp}%></td>
+							</tr>-->
+							<tr>
+								<td class="leftcol"><label>Student Intake :</label></td>
+								<td>&nbsp;&nbsp;&nbsp;<% @iii=@intake %><%=@iii.to_date.strftime("%b") %>&nbsp;<%=@iii.to_date.strftime("%Y")%></td>
+							</tr>
+						
+							<tr>
+								<td class="leftcol" style="vertical-align:middle;">Available Students</td>
+								<td>
+									<!---->
+									<% @student_list = Student.find(:all, :conditions => ['course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day])%>
+									<% if @student_list.count <= 0 %>
+										No student available for this intake.
+									<% else %>
+										<table>
+											<tr>
+												<th>No</th>
+												<th>Student</th>
+												<!--<th>Attendance</th>-->
+											</tr>
+											<% @next=0 %>
+											<% @student_list.sort_by{|x|x.name}.each_with_index do |student, nos| %>
+												<tr>
+													<td><%=nos+1%></td>
+													<td><%= student.matrix_name %></td>
+												</tr>
+												<% @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
+												<% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
+												<% 0.upto(2) do |count| %>
+													<%= hidden_field "student_attendances[#{nos+count+@next}]",:student_id, :size=>2, :value=>student.id %>
+													<% if count == 2 %>
+														<% @next = @next+count %>
+													<% end %>
+												<% end %>
+											<% end %>
+											
+										</table>
+									<% end %>
+									<!---->
+								</td>
+							</tr>
+						
+						</table><!--end for - table width=100-->
+			</div>
+			<% end %>
+			<!--******************-->
+			
+		<% end %>	<!-- end of - @exammarks.each_with_index -->
+	<% end %>	<!-- end of - fields_for "exammarks[#{index}]"-->
+	<p><%= f.submit 'Create By Intake',:name => :new_submit %></p>
+<% end %>	<!-- end of - form_tag :action => 'create' do |f| %>-->
+<!--end-trial new exammark by exampaper (filtered by programme)-12Sept2012-->

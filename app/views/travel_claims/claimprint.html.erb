@@ -43,43 +43,55 @@
 			<tr>
 				<td rowspan=3>PENDAPATAN (RM)</td>
 				<td>GAJI</td>
-				<td class="filler"><%=h ringgols(@travel_claim.staff.starting_salary) %></td>
+				<td class="filler"><%= @travel_claim.staff.starting_salary? ? @travel_claim.staff.starting_salary : "&nbsp;" %><%#=h ringgols(@travel_claim.staff.starting_salary) %></td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>ELAUN-ELAUN</td>
-				<td class="filler"></td>
+				<td class="filler">&nbsp;</td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>JUMLAH</td>
-				<td class="filler"></td>
+				<td class="filler">&nbsp;</td>
 			</tr>
 			
 			<tr>
 				<td rowspan=4>KENDERAAN</td>
 				<td>JENIS MODEL</td>
-				<td class="filler"></td>
+				<td class="filler">&nbsp;</td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>NO PENDAFTARAN</td>
-				<td class="filler"></td>
+				<td class="filler">&nbsp;</td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>KUASA (C.C)</td>
-				<td class="filler"></td>
+				<td class="filler">&nbsp;</td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>KELAS TUNTUTAN</td>
-				<td class="filler">A / B / C / D / E</td>
+				<td class="filler"><!--A / B / C / D / E-->
+						<% if @travel_claim.staff.transportclass_id == 'A' %>
+							A <del>/ B / C / D / E</del>
+						<% elsif @travel_claim.staff.transportclass_id == 'B' %>
+							<del>A&nbsp;/</del>&nbsp;B&nbsp;<del>/&nbsp;C&nbsp;/&nbsp;D&nbsp;/&nbsp;E</del>
+						<% elsif @travel_claim.staff.transportclass_id == 'C' %>
+							<del>A&nbsp;/&nbsp;B&nbsp;/</del>&nbsp;C&nbsp;<del>/&nbsp;D&nbsp;/&nbsp;C</del>
+						<% elsif @travel_claim.staff.transportclass_id == 'D' %>
+							<del>A&nbsp;/&nbsp;B&nbsp;/&nbsp;C&nbsp;/</del>&nbsp;D&nbsp;<del>/&nbsp;E</del>
+						<% elsif @travel_claim.staff.transportclass_id == 'E' %>
+							<del>A&nbsp;/&nbsp;B&nbsp;/&nbsp;C&nbsp;/&nbsp;D&nbsp;/</del>&nbsp;E
+						<% end %> <!--"Diluluskan / <del> Tidak Diluluskan </del>  " : "<del> Diluluskan </del> /  Tidak Diluluskan" -->
+				</td>
 			</tr>
 			
 			<tr>
@@ -94,7 +106,7 @@
 			
 			<tr>
 				<td>ALAMAT PENGINAPAN</td>
-				<td colspan=2 class="filler"></td>
+				<td colspan=2 class="filler">&nbsp;</td>
 			</tr>
 			
 			<tr>
@@ -157,13 +169,19 @@
 		</tr>
 		<!-- Travel Details -->
 		
-		<tr class="grey">
+		<!--4Jan2013-change display-->
+		<tr class="grey2">
 			<td colspan="6">
-					<%=h travel_request.document.title %>
-					<%=h travel_request.destination %>
-					<%=h travel_request.document.refno %>
+					TUJUAN<br>
+					No. Rujukan : <%=h travel_request.document.refno %> bertarikh <%=h travel_request.document.letterdt %><br>
+					Tajuk       : <%=h travel_request.document.title %><br>
+					Tarikh      :<%=h travel_request.depart_at.strftime("%d/%m/%Y") %>-<%=h travel_request.return_at.strftime("%d/%m/%Y") %>
+					<%#=h travel_request.destination %>
+					
 			</td>
 		</tr>
+		<!--4Jan2013-change display-->
+		
 				<% for travel_claim_log in TravelClaimLog.find(:all, :conditions => ['travel_request_id =?', travel_request.id ]) %>
 
 					<tr>

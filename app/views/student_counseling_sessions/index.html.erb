@@ -32,41 +32,97 @@
 
 <table>
   <tr>
+	<th>Matrix No</th>
     <th>Student Name</th>
+	<th>Programme</th>
+	<th>Year/Semester</th>
     <th>Appointment For</th>
-    <th>Duration (Minutes)</th>
+    <th>Duration<br>(Minutes)</th>
     <th>Is confirmed</th>
-		<th colspan=3>Control</th>
+	<th>Feedback to<br>Referrer</th>
+	<th colspan=3>Control</th>
   </tr>
+<% @appointments_by_case.each do |case_id, appointments|%>
+<%# @appointments.each do |appointment| %><% count=0 %>
+<% appointments.each do |appointment| %>
 
-<% @appointments.each do |appointment| %>
 <% if appointment.is_confirmed? == true %>
 <tr class="blue">
 <% else %>	
 <tr class="red">
 <% end -%>
-  <td><%=h appointment.student.name %>  &nbsp; <%=h appointment.c_type == 'involuntary' ? image_tag("flag_red.png") : ""  %></td>
-  <td><%=h appointment.is_confirmed? ?  l(appointment.confirmed_at) :  l(appointment.requested_at) %></td>
-  <td><%=h appointment.duration %></td>
-  <td><%=h appointment.is_confirmed? ? image_tag("tick.png") : ""  %></td>
-  <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => appointment %></td>
-  <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => appointment %></td>
-  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), appointment, :confirm => 'Are you sure?', :method => :delete %></td>   
+	
+	<td><%=h appointment.student.matrixno %></td>
+	<td><%=h appointment.student.name %>  &nbsp; <%=h appointment.c_type == 'involuntary' ? image_tag("flag_red.png") : ""  %></td>
+	<!--NEW DB-programme_id (1-14), OLD DB-programme_id-refer prev one-->
+  	<td><%=h appointment.student.programme_for_student2 if appointment.student.course_id <15 %></td>
+  	<td><%=h strip_tags(Student.year_and_sem(appointment.student.intake)) %></td>
+  	<td><%#=h appointment.is_confirmed? ?  appointment.confirmed_at :  appointment.requested_at %>
+<%=h appointment.is_confirmed? ?  appointment.confirmed_at.strftime("%d %b %y, %l:%M %p") :  appointment.requested_at.strftime("%d %b %y, %l:%M %p") %></td>
+  	<td><%=h appointment.duration %></td>
+  	<td><%=h appointment.is_confirmed? ? image_tag("tick.png") : ""  %></td>
+	
+		<% if appointment.c_scope == "case" && !appointment.case_id.blank? %><!--check if referred case first-->	
+			<% if count==0 %>
+				<td rowspan="<%= appointments.count%>" style="text-align:center">
+					<font size=-2>
+					<%=h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + "Add", new_student_counseling_session_path(:caseid => appointment.case_id)) : image_tag("tick.png")  %>
+					</font>
+					<!--test link for report-->
+					<%= link_to image_tag("printer.png", :border => 0, :title => 'Feedback Referrer'), :action => 'feedback_referrer', :id => appointment.case_id if !appointment.student_discipline_case.counselor_feedback.blank? %>
+					<!--test link for report-->
+				</td>
+			<% end %>
+			<%count+=1%>
+		<% else %>
+			<td style="text-align:center"><font size=-2>Not related</font></td>
+		<% end %>
+	
+  	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => appointment %></td>
+  	<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => appointment %></td>
+  	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), appointment, :confirm => 'Are you sure?', :method => :delete %></td>   
 </tr>
 <% end -%>
-<tr><td colspan=7 align=center><b>Appointments <BR/><HR>Sessions</b></td></tr>
-<% @session_dones.each do |session_done| %>
-  <tr class="green">
-    <td><%=h session_done.student.name %> &nbsp; <%=h session_done.c_type == 'involuntary' ? image_tag("flag_red.png") : ""  %></td>
 
-    <td><%=h l(session_done.confirmed_at) unless session_done.confirmed_at.blank? %></td>
+<% end -%><!--end for @appointments_by_case-->
+<tr><td colspan=11 align=center><b>Appointments <BR/><HR>Sessions</b></td></tr>
+<% @session_dones_by_case.each do |case_id,session_dones|%>
+<%# @session_dones.each do |session_done| %><% count2=0 %>
+<% session_dones.each do |session_done| %>
+  <tr class="green">
+	<td><%=h session_done.student.matrixno %></td>
+	<td><%=h session_done.student.name %> &nbsp; <%=h session_done.c_type == 'involuntary' ? image_tag("flag_red.png") : ""  %></td>
+	<!--NEW DB-programme_id (1-14), OLD DB-programme_id-refer prev one-->
+	<td><%=h session_done.student.programme_for_student2 if session_done.student.course_id <15 %></td>
+	<td><%=h strip_tags(Student.year_and_sem(session_done.student.intake)) %></td>
+	<td><%=h session_done.confirmed_at.strftime("%d %b %Y, %H:%M%p") unless session_done.confirmed_at.blank? %></td>
     <td><%=h session_done.duration %></td>
     <td><%=h session_done.is_confirmed? ? image_tag("tick.png") : ""  %></td>
+	
+		
+		<% if session_done.c_scope == "case" && !session_done.case_id.blank? %><!--check if referred case first-->	
+			<% if count2==0 %>
+				<td rowspan="<%= session_dones.count%>" style="text-align:center">
+					<font size=-2>
+					<%=h session_done.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + "Add", new_student_counseling_session_path(:caseid => session_done.case_id)) : image_tag("tick.png")  %>
+					</font>
+					<!--test link for report-->
+					<%= link_to image_tag("printer.png", :border => 0, :title => 'Feedback Referrer'), :action => 'feedback_referrer', :id => session_done.case_id if !session_done.student_discipline_case.counselor_feedback.blank? %>
+					<!--test link for report-->
+				</td>
+			<% end %>
+			<%count2+=1%>
+		<% else %>
+			<td style="text-align:center"><font size=-2>Not related</font></td>
+		<% end %>
+		
+	
     <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => session_done %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => session_done %></td>
     <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), session_done, :confirm => 'Are you sure?', :method => :delete %></td>   
   </tr>
 <% end %>
+<% end %><!--END for @session_dones_by_case-->
 </table>
 </div>
 <BR/><BR/>

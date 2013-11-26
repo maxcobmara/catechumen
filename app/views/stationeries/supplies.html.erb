@@ -1,0 +1,98 @@
+<%= stylesheet_link_tag 'report' %>
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>	
+<div class="A4potrait">
+
+<!-- Box Head -->
+<div id="kewpa">
+	<p class="marginright" align="right"></p>
+	<br><br>
+	<H4 align="center" style="font-size:16px;font-weight:bold;font-family:arial;">
+		OFFICE SUPPLIES
+	</H4>
+<BR>
+
+<table width=90% cellpadding=0 cellspacing=0>
+
+	<tr>
+		<td class="leftcol" style="font-size:14px;font-weight:bold;font-family:arial;">
+			<label for="supplycode"><%= t 'stationery.code' %> :</label></td>
+		<td colspan=3 style="font-size:14px;font-family:arial;"><%=h @stationery.code %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol" style="font-size:14px;font-weight:bold;font-family:arial;">
+			<label for="category"><%= t 'supplier.category' %> :</label></td>
+		<td colspan=3 style="font-size:14px;font-family:arial;"><%=h @stationery.category %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol" style="font-size:14px;font-weight:bold;font-family:arial;">
+			<label for="maxquantity"><%= t 'supplier.current'%> :</label></td>
+		<td colspan=3 style="font-size:14px;font-family:arial;"><%=h @stationery.current_quantity %>&nbsp;<%=h @stationery.unittype %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol" style="font-size:14px;font-weight:bold;font-family:arial;">
+			<label for="maxquantity"><%= t 'supplier.maxquantity'%> :</label></td>
+		<td colspan=3 style="font-size:14px;font-family:arial;"><%=h @stationery.maxquantity %><%=h @stationery.unittype %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcol" style="font-size:14px;font-weight:bold;font-family:arial;">
+			<label for="minquantity"><%= t 'supplier.minquantity' %> :</label></td>
+		<td colspan=3 style="font-size:14px;font-family:arial;"><%=h @stationery.minquantity %><%=h @stationery.unittype %></td>
+	</tr>
+	<tr><td colspan=4 height=50px>&nbsp;</tr>
+	<tr><td colspan=4 style="font-size:14px;font-weight:bold;font-family:arial;">ADDITIONS</td></tr>
+	<tr>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">LPO No</td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Supplier Name</td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Quantity</td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Price per Unit</td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Total</td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Received Date</td>
+	</tr>
+<% for addsuppliers in @stationery.addsuppliers %>
+  	<tr>
+		<td><%= addsuppliers.lpono %></td>
+		<td><%= addsuppliers.document %></td>
+		<td><%= addsuppliers.quantity %></td>
+		<td><%= ringgols(addsuppliers.unitcost) %></td>
+		<td><%= ringgols(addsuppliers.line_item_value) %></td>
+		<td><%= addsuppliers.received? ? addsuppliers.received.strftime("%d %b %Y") : "-" %></td>
+	</tr>
+<% end %>
+	<tr><td colspan=4 height=100px></tr>
+	<tr><td colspan=4 style="font-size:14px;font-weight:bold;font-family:arial;">DEDUCTIONS</td></tr>
+	<tr>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Issues By</td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Received By</td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Quantity</td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Issue Date</td>
+	</tr>
+
+	<% for usesupplies in @stationery.usesupplies %>
+		<tr>
+			<td><%= Staff.find(usesupplies.issuedby).name %></td>
+			<td><%= Staff.find(usesupplies.receivedby).name %></td>
+			<td><%= usesupplies.quantity %></td>
+			<td><%= usesupplies.issuedate? ? usesupplies.issuedate.strftime("%d %b %Y") : "-" %></td>
+		</tr>
+	<% end %>
+
+</table>
+<BR>
+</div>
+
+</div>
+
+
+

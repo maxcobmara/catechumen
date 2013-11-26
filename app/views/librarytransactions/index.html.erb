@@ -9,39 +9,51 @@
 
 <% permitted_to? :manage, :librarytransactions do %>
 <div class="toolbar">	
-	<%= link_to image_tag("book_go.png", :border => 0, :title => 'New Library Transaction') + "New Loan", new_librarytransaction_path %>
+	<%= link_to image_tag("book_go.png", :border => 0, :title => 'New Library Transaction') + "Library Transaction - Loan Page", new_librarytransaction_path %> <!--|--> 
+	<%#= link_to 'Library Transaction Page', :action => 'transaction_pag', :locals => {:class_type => '1'} %>
+	<%= link_to image_tag("book_go.png", :border => 0, :title => 'Edit Library Transaction') + "Library Transaction - Return Page", :action=> :multiple_edit %>
 </div>
 <% end %>
 
 
 <div class="tlist">
 	  <table width=100%>
-			  <tr>
-				  <th>Book ID</th>
-	        <th>ISBN No</th>
-	   		  <th><%= t 'book.title' %></th>
-			    <th><%= t 'librarytransaction.borrower' %></th>
-			    <th>Class No</th>
-					<th> No</th>
-			    <th><%= t 'librarytransaction.duedate' %></th>
-			    <th><%= t 'librarytransaction.returneddate' %></th>
-					<% permitted_to? :manage, :librarytransactions do %>
-			    <th colspan=4><%= t 'action' %></th>
-					<% end %>
+			<tr>
+			<th>Accession No</th>
+			<th>Call No (NLM/LC)</th>
+	        <th><%= t 'librarytransaction.author' %></th>
+	   		<th><%= t 'book.title' %></th>
+			<th><%= t 'librarytransaction.staffstudent' %></th>
+			<th><%= t 'librarytransaction.borrower' %></th>
+			<!--<th>No</th>-->
+			<th width="80px" style="text-align:center;"><%= t 'librarytransaction.duedate' %></th>
+			<th><%=t 'librarytransaction.extend'%></th>
+			<th width="80px" style="text-align:center;"><%= t 'librarytransaction.returneddate' %></th>
+			<% permitted_to? :manage, :librarytransactions do %>
+			 	<th colspan=3 style="text-align:center;"><%= t 'action' %></th>
+			<% end %>
 	     </tr>
 
 	    <% @libtran_days.sort.reverse.each do |checkoutdate, librarytransactions| %>
-			<tr><td colspan=12><%= checkoutdate.strftime("%A, %v") %></td></tr>
+			<tr><td colspan=12 style="background-color:#EFF1F1";><span style="color:#218AFB;font-weight:bold;"><%= checkoutdate.strftime("%A, %v") %></span></td></tr>
 	    <% for librarytransaction in librarytransactions%>
 	    <tr>
 		  	<td><%=h librarytransaction.accession.accession_no unless librarytransaction.accession_id.blank? %></td>
-		    <td><%=h librarytransaction.accession.book.isbn unless librarytransaction.accession_id.blank?  %></td>
+		    <td><%=h librarytransaction.accession.book.classlcc? ?  librarytransaction.accession.book.classlcc : librarytransaction.accession.book.classddc %><%#=h librarytransaction.accession.book.classddc unless librarytransaction.accession_id.blank? %></td>
+		    <td><%=h librarytransaction.accession.book.author unless librarytransaction.accession_id.blank?  %></td>
 		    <td><%=h librarytransaction.accession.book.title unless librarytransaction.accession_id.blank? %></td>
-		    <td><%=h librarytransaction.borrower_name %></td>
-		    <td><%=h librarytransaction.accession.book.classddc unless librarytransaction.accession_id.blank? %></td>
-				<td><%=h librarytransaction.accession.book.orderno unless librarytransaction.accession_id.blank?%></td>
-				<td><%=h librarytransaction.returnduedate.strftime('%d %b %Y') %></td>
-		    <td><%=h librarytransaction.returneddate %></td>
+		    <td style="text-align:center"><%=h librarytransaction.ru_staff? ? t('librarytransaction.staff') : t( 'librarytransaction.student') %>
+				<%#=h librarytransaction.ru_staff? ? image_tag("cross.png", :border=>0, :title=>'is staff') : image_tag("tick.png", :border=>0, :title=>'is staff') %></td>
+			<td><%=h librarytransaction.borrower_name %></td>
+			<!--<td><%#=h librarytransaction.accession.book.orderno unless librarytransaction.accession_id.blank?%></td>-->
+			<td style="text-align:center;">
+				<% if librarytransaction.returnduedate < Date.today.yesterday && librarytransaction.returneddate.blank? %><span style="color:red;"><% else %><span style="color:black;">
+				<% end %>
+				<%=h librarytransaction.returnduedate.strftime('%d %b %Y') %>
+				</span>
+			</td>
+			<td style="text-align:center;"><%=h image_tag("tick.png", :border=>0, :title=>'is staff') if librarytransaction.extended? %></td>
+		    <td style="text-align:center;"><%=h librarytransaction.returneddate.strftime('%d %b %Y') unless librarytransaction.returneddate.blank? %></td>
 				<% permitted_to? :manage, :librarytransactions do %>
 				<td width=10px>				  
 						<% if librarytransaction.extended != true && librarytransaction.returned != true %>
@@ -53,8 +65,8 @@
 		    		<% end %></td>
 				<td width=10px><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => librarytransaction %></td>
 		    <!--<td width=10px><%= link_to image_tag("edit.png",     :border => 0,  :title => 'Edit'), :action => 'edit', :id => librarytransaction %></td>-->
-	    	<td width=10px>
-							<%= link_to image_tag("delete.png",   :border => 0,  :title => 'Delete'), librarytransaction, :confirm => 'Are you sure?', :method => :delete %></td>
+	    <!--	<td width=10px>
+							<%#= link_to image_tag("delete.png",   :border => 0,  :title => 'Delete'), librarytransaction, :confirm => 'Are you sure?', :method => :delete %></td>-->
 		  </tr>
 				<% end %>
 			<% end %>

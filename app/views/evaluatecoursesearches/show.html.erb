@@ -1,0 +1,190 @@
+<div>
+	<H3>FEEDBACK / COURSE EVALUATION SEARCH :</h3>
+		
+		<%= link_to "Back", :controller=>'evaluatecoursesearches', :action => 'new', :searchevaluatecoursetype => 1 %><br><br>
+		
+		<!--additional heading-->
+		<% if @evaluatecoursesearch.programme_id && @evaluatecoursesearch.programme_id.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Programme : <b><%= Programme.find(@evaluatecoursesearch.programme_id).programme_coursetype_name %></b><br><br>
+			</span>
+		<% end %>
+		<% if @evaluatecoursesearch.subject_id && @evaluatecoursesearch.subject_id.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Subject : <b><%= Programme.find(@evaluatecoursesearch.subject_id).subject_list %></b><br><br>
+			</span>
+		<% end %>
+		<% if @evaluatecoursesearch.lecturer_id && @evaluatecoursesearch.lecturer_id.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Lecturer : <b><%= Staff.find(@evaluatecoursesearch.lecturer_id).name %></b><br><br>
+			</span>
+		<% end %>
+		<% if @evaluatecoursesearch.evaldate && @evaluatecoursesearch.evaldate.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Evaluation Date : <b><%=h @evaluatecoursesearch.evaldate.strftime("%d-%m-%Y") %></b><br><br>
+			</span>
+		<% end %>
+		<% if @evaluatecoursesearch.lecturer_id && @evaluatecoursesearch.lecturer_id.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Lecturer : <b><%=h Staff.find(@evaluatecoursesearch.lecturer_id).name %></b><br><br>
+			</span>
+		<% end %>
+		
+		Total of Feedback / Course Evaluation (student) : <%=@evaluatecoursesearch.evaluatecourses.count%><br><br>
+		
+		<!---->	
+		<table border=1 cellpadding=3 cellspacing=0>
+			<% @ev_obj_sum=0 %>
+			<% @ev_knowledge_sum=0 %>
+			<% @ev_deliver_sum=0 %>
+			<% @ev_content_sum=0 %>
+			<% @ev_tool_sum=0 %>
+			<% @ev_topic_sum=0 %>
+			<% @ev_work_sum=0 %>
+			<% @ev_note_sum=0 %>
+			<% @total_sum=0%>
+			<% @total_student=@evaluatecoursesearch.evaluatecourses.count%>	
+			<% @by_subject = @evaluatecoursesearch.evaluatecourses.group_by{|x|x.subject_id}%>
+			<% @by_subject.each do |subject,evaluations|%>
+				<tr style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">
+					<td colspan=15>
+						Programme : <%=Programme.find(subject).root.programme_coursetype_name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						Subject : <%=Programme.find(subject).subject_list %>
+					</td>
+				</tr>
+				<% evaluations.each_with_index do |evaluate_course, index| %>
+					<!--display heading before first record only-->
+					<% if index == 0 %>
+						<tr style="background-color:#EFF1F1;">
+							<th>No</th>
+							<th>Evaluation Date</th>
+							<th>Lecturer</th>
+							<th>Q1</th>
+							<th>Q2</th>
+							<th>Q3</th>
+							<th>Q4</th>
+							<th>Q5</th>
+							<th>Q6</th>
+							<th>Q7</th>
+							<th>Q8</th>
+							<th>Total</th>
+							<th>Link</th>
+						</tr>
+					<% end %>
+					<!--display heading before first record only-->
+					<tr>
+						<td><%=index+1%></td>
+						<td align="center"><%=evaluate_course.evaluate_date.strftime("%d-%m-%Y") %></td>
+						<td><%=evaluate_course.staffevaluate.name %></td>
+						<td align="center"><%=evaluate_course.ev_obj %><% @ev_obj_sum+=evaluate_course.ev_obj %></td>
+						<td align="center"><%=evaluate_course.ev_knowledge %><% @ev_knowledge_sum+=evaluate_course.ev_knowledge%></td>
+						<td align="center"><%=evaluate_course.ev_deliver %><% @ev_deliver_sum+=evaluate_course.ev_deliver%></td>
+						<td align="center"><%=evaluate_course.ev_content %><% @ev_content_sum+=evaluate_course.ev_content %></td>
+						<td align="center"><%=evaluate_course.ev_tool %><% @ev_tool_sum+=evaluate_course.ev_tool %></td>
+						<td align="center"><%=evaluate_course.ev_topic %><% @ev_topic_sum+=evaluate_course.ev_topic %></td>
+						<td align="center"><%=evaluate_course.ev_work %><% @ev_work_sum+=evaluate_course.ev_work %></td>
+						<td align="center"><%=evaluate_course.ev_note %><% @ev_note_sum+=evaluate_course.ev_note %></td>
+						<td align="center"><%=@total_each = evaluate_course.ev_obj+evaluate_course.ev_knowledge+evaluate_course.ev_deliver+evaluate_course.ev_content+evaluate_course.ev_tool+evaluate_course.ev_topic+evaluate_course.ev_work+evaluate_course.ev_note%><%@total_sum+=@total_each%></td>
+						<td><%= link_to "Evaluation Form",:controller=>'evaluate_courses', :action => 'courseevaluation', :id => evaluate_course.id %></td>
+					</tr>
+				<% end %>
+			
+				<!--display total scores-->
+				<tr style="background-color:#eeecec;font-weight:bold;">
+					<td colspan=3 style="text-align:right;padding-right:15px;">Total Scores :</td>
+					<td align="center"><%=@ev_obj_sum%></td>
+					<td align="center"><%=@ev_knowledge_sum%></td>
+					<td align="center"><%=@ev_deliver_sum%></td>
+					<td align="center"><%=@ev_content_sum%></td>
+					<td align="center"><%=@ev_tool_sum%></td>
+					<td align="center"><%=@ev_topic_sum%></td>
+					<td align="center"><%=@ev_work_sum%></td>
+					<td align="center"><%=@ev_note_sum%></td>
+					<td align="center"><%=@total_sum%></td>
+					<td align="center">&nbsp;</td>
+				</tr>
+				<!--display total scores-->	
+			
+				<!--display average scores-->
+				<tr style="background-color:#eeecec;font-weight:bold;">
+					<td colspan=3 style="text-align:right;padding-right:15px;">Average Scores :</td>
+					<td align="center">
+						<%@avg1=@ev_obj_sum/@total_student%>
+						<% if @avg1 % 1 == 0 %><!--returns integer-->
+							<%=@avg1%>
+						<% else %>
+							<%=number_with_precision(@avg1,:precision=>2)%>
+						<% end %>
+					</td>
+					<td align="center">
+						<%@avg2=@ev_knowledge_sum/@total_student%>
+						<% if @avg2 % 1 == 0 %><!--returns integer-->
+							<%=@avg2%>
+						<% else %>
+							<%=number_with_precision(@avg2,:precision=>2)%>
+						<% end %>
+					</td>
+					<td align="center">
+						<%@avg3=@ev_deliver_sum/@total_student%>
+						<% if @avg3 % 1 == 0 %><!--if returns integer-->
+							<%=@avg3%>
+						<% else %>
+							<%=number_with_precision(@avg3,:precision=>2)%>
+						<% end %>
+					</td>
+					<td align="center">
+						<%@avg4=@ev_content_sum/@total_student%>
+						<% if @avg4 % 1 == 0 %><!--if returns integer-->
+							<%=@avg4%>
+						<% else %>
+						<%=number_with_precision(@avg4,:precision=>2)%>
+							<% end %>
+					</td>
+					<td align="center">
+						<%@avg5=@ev_tool_sum/@total_student%>
+						<% if @avg5 % 1 == 0 %><!--if returns integer-->
+							<%=@avg5%>
+						<% else %>
+							<%=number_with_precision(@avg5,:precision=>2)%>
+						<% end %>
+					</td>
+					<td align="center">
+					<%@avg6=@ev_topic_sum/@total_student%>
+						<% if @avg6 % 1 == 0 %><!--if returns integer-->
+							<%=@avg6%>
+						<% else %>
+							<%=number_with_precision(@avg6,:precision=>2)%>
+						<% end %>
+					</td>
+					<td align="center">
+						<%@avg7=@ev_work_sum/@total_student%>
+						<% if @avg7 % 1 == 0 %><!--if returns integer-->
+							<%=@avg7%>
+						<% else %>
+							<%=number_with_precision(@avg7,:precision=>2)%>
+						<% end %>
+					</td>
+					<td align="center">
+					<%@avg8=@ev_note_sum/@total_student%>
+						<% if @avg8 % 1 == 0 %><!--if returns integer-->
+							<%=@avg8%>
+						<% else %>
+							<%=number_with_precision(@avg8,:precision=>2)%>
+						<% end %>
+					</td>
+					<td align="center">
+						<% @average=@total_sum/@total_student%>
+						<% if @average % 1 == 0 %><!--if returns integer-->
+							<%=@average%>
+						<% else %>
+							<%=number_with_precision(@average,:precision=>2)%>
+						<% end %>
+					</td>
+					<td align="center">&nbsp;</td><!--blank field-->
+				</tr>
+				<tr><td colspan=13>&nbsp;</td></tr><!--blank row-->
+			<% end %>
+		</table>
+		<!---->
+	<br>
+</div>

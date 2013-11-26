@@ -30,7 +30,7 @@
 
 <% @leaveforstaffs.each do |leaveforstaff| %>
   <tr>
-    <td><%=h check_kin {leaveforstaff.applicant.mykad_with_staff_name} %></td>
+    <td><%=h leaveforstaff.applicant_details %></td>
     <td><%=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} %></td>
     <td><%=h leaveforstaff.leavestartdate.strftime("%a, %d %b") %><%=h leaveforstaff.show_to_day %></td>
     <td><%=h leaveforstaff.reason %>

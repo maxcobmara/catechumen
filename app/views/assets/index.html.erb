@@ -34,11 +34,12 @@
       <th><%= t 'asset.name' %></th>
       <th><%= t 'asset.purchasedate' %></th>
 	    <th align="right"><%= t 'asset.purchaseprice' %></th>
-	    <th colspan=7 class="ac">Control</th>
+		<th>Status</th>
+	    <th colspan=8 class="ac">Control</th>
     </tr>
 		<% @asset_gbtype.sort.each do |gbtype, assets| %>
   	<tr>
-    	<td colspan=10><b>
+    	<td colspan=13><b>
 				<% if gbtype.to_s == "I" %>
 				 <BR><BR>Harta Inventori
 				<% else %>
@@ -49,11 +50,28 @@
 		
   	<% for asset in assets %>
 		<tr>
-	    <td><%=h asset.assetcode %></td>
+	    <td><%#=asset.id%><%=h asset.assetcode %></td>
 	    <td><%=h asset.subcategory %> - <%=h asset.typename %> - <%=h asset.name %> - <%=h asset.modelname %></td>
 	    <td><%=h asset.purchasedate %></td>
 	    <td align="right" width=90px><%=h ringgols(asset.purchaseprice) %></td>
-	
+		<td>
+			<!--pending asset requested for loan should not available for reservation-->
+			<% @check_onloan = AssetLoan.find(:all, :conditions=>['asset_id=? AND is_returned is not true',asset]).count %>
+			<% @check_pending = AssetLoan.find(:all, :conditions=>['asset_id=? AND is_approved is not true AND is_returned is not true', asset]).count %>
+			<% @bookable = Asset.find(:all, :conditions=>['bookable is true']).map(&:id) %>
+			<BR>
+			<% if @bookable.include?(asset.id) %>	
+				<% if @check_onloan == 0 %>
+					Available
+				<% elsif @check_onloan > 0 %>
+					<% if @check_pending > 0 %>
+						Pending Loan
+					<% else %>
+						On loan
+					<% end %>		
+				<% end %>
+			<% end %>		  
+		</td>
 			
 <!--  Disposal Moved to repair
 	    <td width=10px>
@@ -81,7 +99,17 @@
 					<% else %>
 						<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA2'), :action => 'kewpa2', :id => asset %><div class="noti_bubble">2</div></div>
 					<% end %></td>
-					
+			<td class="action">
+				<!--PENDING:19 August 2013-KEWPA 6 SHOULD ONLY AVAILABLE FOR BOOKABLE ASSET-->
+				<!--REFER LINE 61-->	
+				<%# if @bookable.include?(asset.id) %>	<!--UNREMARK accordingly-->
+				<div class="noti_Container">
+					<%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA6'), :action => 'kewpa6', :id => asset %>
+					<div class="noti_bubble">6</div>
+				</div>
+				<%# end %>	<!--UNREMARK accordingly-->
+				<!--PENDING:19 August 2013-KEWPA 6 SHOULD ONLY AVAILABLE FOR BOOKABLE ASSET-->
+			</td>		
 			<td class="action">
 					<% if asset.is_maintainable == true && asset.am_i_gone == false %>
 						<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA14'), :action => 'kewpa14', :id => asset %><div class="noti_bubble">14</div></div></td>

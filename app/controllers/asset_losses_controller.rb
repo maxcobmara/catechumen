@@ -3,7 +3,7 @@ class AssetLossesController < ApplicationController
   # GET /asset_losses.xml
   def index
     @asset_losses = AssetLoss.find(:all, :order => 'lost_at DESC')
-
+    @asset_losses_group_writeoff = @asset_losses.group_by{|x|x.document_id}
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @asset_losses }
@@ -89,5 +89,55 @@ class AssetLossesController < ApplicationController
   def kewpa30
     @asset_loss = AssetLoss.find(params[:id])
     render :layout => 'report'
+  end
+
+  def kewpa31
+    #@asset_loss = AssetLoss.find(params[:id])
+    #@asset_losses = AssetLoss.find(:all, :order => 'created_at DESC')
+    @document_id = params[:id]
+    @asset_losses = AssetLoss.find(:all, :conditions=>['document_id=?', @document_id], :order => 'created_at DESC') 
+    render :layout => 'report'
+  end
+  
+    #def writeoff
+    #@asset_loss = AssetLoss.find(params[:id])
+  #end
+  
+  
+  def edit_multiple
+    #raise params.inspect
+    @assetlosses_ids = params[:asset_loss_ids]
+    unless @assetlosses_ids.blank? 
+ 	      @asset_losses = AssetLoss.find(@assetlosses_ids)
+ 	      @asset_losses_count = @asset_losses.count
+ 	      @asset_losses_docs_count = @asset_losses.map(&:endorsed_on).count
+ 	      @edit_type = params[:grade_submit_button]
+		    if @edit_type == "Write Off Checked" && (@asset_losses_count == @asset_losses_docs_count)
+ 	          ## continue multiple edit (including subject edit here) --> refer view
+ 	      else
+ 	          flash[:error] = "HOD endorsement is compulsory before write off(Treasury Approval) is done!"
+ 	          redirect_to asset_losses_path
+        end    # end for if @edit_type=="Edit Checked"
+    else    
+        flash[:notice] = "Please select at least 1 record to edit."
+        redirect_to asset_losses_path
+    end
+  end
+  
+  def update_multiple
+    #raise params.inspect
+    @assetlosses_ids = params[:asset_loss_ids]
+    @document_id = params[:asset_loss][:document_id]
+    @asset_losses = AssetLoss.find(@assetlosses_ids)	
+    
+    @asset_losses.each_with_index do |asset_loss, index| 
+        asset_loss.is_writeoff = true
+        asset_loss.document_id = @document_id 
+    		asset_loss.save
+   	end			
+
+   	flash[:notice] = "Assets write off details updated!"
+    redirect_to asset_losses_path
+   
   end
 end

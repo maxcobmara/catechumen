@@ -1,0 +1,216 @@
+
+
+<!--part for staff details & student details (start)-->
+<% if @rustaff == '0' && @studentsearch != 0 %>
+	<% student= Student.find(@studentsearch) %>
+	<% quota = 2 %>
+	<fieldset>
+		<legend class='togvis'><b>Student Details</b></legend>
+			<table>
+				<tr>
+					<td class="leftcol">Name : </td>
+					<td><%=h student.name %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Matrix :</td>
+					<td><%=h student.matrixno %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">MyKad No :</td>
+					<td><%=h student.icno %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Programme : </td>
+					<td><%=h check_kin{student.course.programme_list} %></td>
+				</tr>
+			</table>
+	</fieldset>
+<% elsif @rustaff != '0' && @staffsearch != 0 %>
+	<% staff = Staff.find(@staffsearch) %>
+	<% quota = 5 %>
+	<fieldset>
+		<legend class='togvis'><b>Staff Details</b></legend>
+			<table>
+				<tr>
+					<td class="leftcol">MyKad No :</td>
+					<td><%=h staff.icno %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Name : </td>
+					<td><%=h staff.name %></td>
+				</tr>
+				<tr>
+					<td class="leftcol">Position : </td>
+					<td><%#=h staff.position.name %><%=h staff.position_for_staff%></td>
+				</tr>
+		</table>
+		</fieldset>
+<% elsif @rustaff == '0' && @studentsearch == 0 %>
+	&nbsp;&nbsp;&nbsp;<span class="isbn_bg3">Please select a student name</span>
+<% elsif @rustaff != '0' && @staffsearch == 0 %>
+	&nbsp;&nbsp;&nbsp;<span class="isbn_bg1">Please select a staff name</span>
+<% end %>
+<!--part for staff details & student details (end)-->
+
+<!--part for loaned book details (start)-->
+<% if (@rustaff == '0' && @studentsearch != 0) || (@rustaff != '0' && @staffsearch != 0) %>
+	
+	<H2><%= t 'librarytransaction.details' %></H2>
+	
+	<table border=0 cellspacing=0 cellpadding=0>
+		<tr>
+			<td colspan="6" class='tlight'><b>Total books on loan : <%= @loaned_books %></b></td>
+		</tr>
+		<% if @loaned_books > 0 %>
+		<tr>
+			<th>No</th>
+			<th colspan=2 width=400px>Accession No - Title</th>
+			<th width=100px>Due Date</th>
+			<th width=90px>Return</th>
+			<th width=180px>Fine</th>
+		</tr>
+		<% end %>
+		<% bil=0 %>
+		<% for book_on_loan in @books_on_loan %>
+			<%= hidden_field_tag "librarytransaction_ids[]", book_on_loan.id %>
+			<%#= hidden_field_tag "returneduedates[]", book_on_loan.returnduedate %>
+			
+		<tr>
+			<td class='tlight' style="text-align:center;vertical-align:middle;"><%=bil+1%></td>
+			<td colspan=2 class='tlight' style="vertical-align:middle;"><%= check_kin {book_on_loan.accession.acc_book} %></td><!--4Apr2013-->
+			<td class='tlight' style="vertical-align:middle;"><%= l(book_on_loan.returnduedate) %></td>
+			<!--
+			<td>
+				<%# if book_on_loan.extended != true && book_on_loan.returned != true %>
+					<%##= link_to image_tag("clock_add.png", :border => 0, :title => 'Extend'), :action => 'extend', :id => book_on_loan %> 
+					<%#= link_to_remote image_tag("clock_add.png", :border => 0, :title => 'Extend'), :url => {:action => 'extend2', :id => book_on_loan}, :update => 'extend_return' %> Extend
+    			<%# end %>
+			</td>-->
+			<td class='tlight' style="vertical-align:middle;">
+				<% if book_on_loan.returned != true %>
+				<!--yg asal
+					<%#= link_to_remote image_tag("book_previous.png", :border => 0, :title => 'Return'), :url => {:action => 'return2', :id => book_on_loan}, :update => 'extend_return' %> Return-->
+					
+					<!---->
+				
+					<%#= check_box_tag "returneds[]" %>
+					<%=   check_box_tag("returneds[]")%>
+					<%=   hidden_field_tag "returneds[]", "0" %> Return <br>on <b><%= Date.today.strftime("%d %b %y")  %></b>
+					<%#=  hidden_field_tag "libreturneds_by[]", User.current_user.staff_id %><!--remove this to model-->
+				  
+					<!--<input type="hidden" name="returneds[]" value="0" />-->
+					<%#= hidden_field_tag "returneds[]", "0" %>
+					<!--http://www.ruby-forum.com/topic/103195-->
+					
+					<!---->
+					
+					<!--sample tag-->
+					<%#= check_box :ru_staff,{}, :id => 'staff', :onchange => "switchvisibility('staff')", :checked=>"unchecked" %>
+					<!--sample tag-->
+					<!--sample tag-from form_try.html.erb-->
+					<%#= select_tag("librarytransactions[#{count}][accession_id]", "<option>Accession No - Title</option>" + options_from_collection_for_select(Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :acc_book)) %> 
+					<%#= hidden_field_tag("librarytransactions[#{count}][staff_id]", @staffid ) %>	
+					<%#= date_select("librarytransactions[#{count}]", "returnduedate", :order => [:day, :month, :year], :default => 2.weeks.from_now)%>
+					<!--sample tag-->
+					
+				<% end %>
+			</td>
+			<td class='tlight' style="vertical-align:middle;">
+				<% if Date.today > book_on_loan.returnduedate %>
+					<%#= book_on_loan.recommended_fine_value %>
+					<%# @fine_pay = (book_on_loan.returnduedate - Date.today).to_i * -0.2 %>
+					<% @fine_pay = book_on_loan.recommended_fine_value %>
+					<%= check_box_tag "finepays[]", 1 %> Paid :
+					RM <%= text_field_tag "fines[]",nil, :placeholder => "#{@fine_pay.to_s}", :size=>10 %>
+					on <b><%= Date.today.strftime("%d %b %y")  %></b>
+					<br><font color=#AAA size=-2> late by <%= (Date.today-book_on_loan.returnduedate).to_i %> days x RM0.20/day</font><br>
+				<% else %>			
+					<%#= check_box_tag "finepays[]", 0 %> 
+					<%= hidden_field_tag "finepays[]", 0 %>	
+					<%= hidden_field_tag "fines[]", 0.0 %>
+				<% end %>
+			</td>
+		</tr>
+		<%# end %><!--4Apr2013-->
+		
+		<% bil+=1%>
+		<% end %>
+	</table>
+	
+	<br>
+	
+	<%# @librarytransactions = Array.new(1) {Librarytransaction.new} %>
+	
+	<table width="60%">
+		<!--
+		<tr>
+			<td colspan="4" class="leftcol">Available book loan quota balance : <%#= @quota_bal=quota-@loaned_books %> out of <%#=quota%> books </td>
+		</tr>-->
+		
+		<%# 0.upto(@quota_bal-1) do |count| %><% count=0 %>
+		<%# fields_for "librarytransactions[#{count}]" do |f|%><!--TRIAL-LALALAL-->
+
+		<!--
+		<tr>-->
+			<!--compulsory to have this line here-->
+			<% @librarytransaction = Librarytransaction.new %>
+			
+			<!--just for checking (start)--><!--do not remove
+			<%#= @librarytransaction.books_that_are_out %>
+			<%#= Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out])%><br>-->
+			<!--just for checking (end)-->
+			<!--
+			<td><%#= count %></td>
+			<td>
+				<%#= f.collection_select :accession_id, Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :accession_no, :include_blank => :true %>
+				<%#= select_tag("librarytransactions[1][accession_id]", "<option>Select Book</option>" + options_from_collection_for_select(Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :acc_book)) %> 
+				<%#= hidden_field_tag("librarytransactions[1][student_id]", @studentsearch) %>
+			</td>
+			<td></td>
+			<td></td>
+		</tr>-->
+		
+		<%# end %>
+		<%# end%>
+		
+		
+	</table>
+	<%# if @quota_bal > 0 %><!--
+	<div id="barunyediv">
+		<p><%#= link_to_remote image_tag("add.png", :border => 0, :title => 'Add More'), :url => {:action => 'form_try', :index => count,:student=>@studentsearch, :staff=>@staffsearch, :rustaff=>@rustaff, :quota_bal=>@quota_bal }, :update => 'barunyediv' %> - Add More </p>
+		
+	</div>-->
+	<%# else %>
+		<%#= hidden_field_tag("no_quota_bal", @quota_bal ) %>
+		<%#= hidden_field_tag("staff_first", @staffsearch)%>
+		<%#= hidden_field_tag("student_first", @studentsearch)%>
+	<%#end%>
+	
+
+
+<% end %>
+
+<!--part for loaned book details (end)-->		
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			//show submit date
+
+			$j("input[id='returneds_']").change(function() {  
+			 if($j('#returneds_').is(':checked')) { 
+			    $j(".span_is_checked").show("highlight"); 
+			 }else		{
+			    $j(".span_is_checked").hide(""); 
+			 }	
+			});
+
+			$j("input[id='returneds_']").each(function() {  
+			 if($j('#returneds_').is(':checked')) { 
+			    $j(".span_is_checked").show("highlight"); 
+			 }else		{
+			    $j(".span_is_checked").hide(""); 
+			 }	
+			});
+
+	});
+</script>

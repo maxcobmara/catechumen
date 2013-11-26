@@ -76,15 +76,19 @@
 											3. <%=h @asset_disposal.justify3_disposal %></label></td>
 
 				</tr>
-				
+		
 				<tr>
-				  <td class="leftcol"><label for="is_checked">Is Checked</label></td>
-					<td><%=h @asset_disposal.is_checked? ? "Yes, by  " + @asset_disposal.processor.name.to_s + " on  " + (l(@asset_disposal.checked_on)).to_s : "No" %></td>
+				  <td class="leftcol"><label for="is_checked"><!--Is Checked-->Lembaga Pemeriksa</label></td>
+					<td>1. <%#=h @asset_disposal.is_checked? ? @asset_disposal.processor.name.to_s : @asset_disposal.examiner1 %>
+					<%=h @asset_disposal.is_staff1? ? @asset_disposal.inspect1or.name.to_s : @asset_disposal.examiner1 %><!--inspector-relationship-->
+					</td>
 				</tr>
 				
 				<tr>
-				  <td class="leftcol"><label for="is_checked">Is Verified</label></td>
-					<td><%=h @asset_disposal.is_verified? ? "Yes, by  " + @asset_disposal.verifier.name.to_s + " on  " + (l(@asset_disposal.verified_on)).to_s : "No" %></td>
+				  <td class="leftcol"><label for="is_checked"><!--Is Verified-->&nbsp;</label></td>
+					<td>2. <%#=h @asset_disposal.is_verified? ? @asset_disposal.verifier.name.to_s : @asset_disposal.examiner2 %>
+					<%=h @asset_disposal.is_staff2? ? @asset_disposal.inspect2or.name.to_s : @asset_disposal.examiner2 %>
+					</td>
 				</tr>
 				
 		</table>

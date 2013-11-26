@@ -14,7 +14,9 @@
 								</tr>
 								<% for evactivity in @staff_appraisal.evactivities %>
 								<tr>
-									<td><%= l(evactivity.actdt) %></td>
+									<td>
+										<% evactivity.actdt.blank? ? "-" : l(evactivity.actdt) %><%#= l(evactivity.actdt) %>
+									</td>
 									<td><%= evactivity.evactivity %></td>
 									<td><%= (Evactivity::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp} %></td>
 								</tr>
@@ -40,11 +42,16 @@
 									<th>Duration</th>
 								</tr>
 								<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', @staff_appraisal.appraised]) %>
+									<% if ptdo.ptschedule.start.year==@staff_appraisal.evaluation_year.year%>
+								<!---->
 								<tr>
 									<td><%= ptdo.ptschedule.ptcourse.name %></td>
 									<td><%= (Ptcourse::COURSE_TYPE.find_all{|disp, value| value == ptdo.ptschedule.ptcourse.course_type}).map {|disp, value| disp} %></td>
 									<td><%= l(ptdo.ptschedule.start) %></td>
 									<td><%= ptdo.ptschedule.ptcourse.duration %> Days</td></tr>
+								<!---->
+									<% end %>	
+								
 								<% end -%>
 							</table></td>
 			</tr>

@@ -1,0 +1,41 @@
+<!--Part VIII  -->
+<H2><%= t 'evaluation.form.title_part8' %>
+	<% if @staff_appraisal.is_submit_e2 == true %>
+	<div class="right" >Endorsed on <%= l(@staff_appraisal.submit_e2_on) %></div>
+	<% end %>
+	</H2>
+
+<table width=90%>
+	<tr valign=bottom>
+		<td class="leftcolwide"><label for="pppyears"><%= t 'evaluation.form.part8_desc' %></label></td>
+		<td><%=@staff_appraisal.e1_years %> &nbsp; <label><%= t 'years_label' %></label>  &nbsp;&nbsp; &nbsp; &nbsp;
+								<%=@staff_appraisal.e1_months %> &nbsp; <label><%= t 'months_label' %></label><BR/><BR/></td>
+		<td></td>
+	</tr>
+
+	<tr>
+		<td colspan=3><label for="pppoverall"><b><%= t 'evaluation.form.part8i_desc' %></b></label></td>
+	</tr>
+
+	<tr>
+		<td class="leftcolwide"><label for="pppoverall"><%= t 'evaluation.form.part8i' %></label></td>
+		<td colspan=2><%=h @staff_appraisal.e1_performance %></td>
+	</tr>
+
+	<tr>
+		<td class="leftcolwide"><label for="pppadvancemet"><%= t 'evaluation.form.part8ii' %></label></td>
+		<td colspan=2><%=@staff_appraisal.e1_progress %></td>
+	</tr>
+	
+	<% if @staff_appraisal.is_submit_e2 == true %>
+	<tr>
+		<td colspan=3><%= t 'evaluation.form.ppp_statement' %> on <%= l(@staff_appraisal.submit_e2_on) %></td>
+	</tr>
+	<% end -%>
+
+	<tr>
+		<td class="leftcolwide"><label for="ppp_id"><%= t 'evaluation.form.pppid' %></label></td>
+		<td><%=h @staff_appraisal.eval1_officer.name %></td>
+		<td></td>
+	</tr>
+</table>

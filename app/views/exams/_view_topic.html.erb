@@ -1,0 +1,13 @@
+<% if @subject!='0' #|| @subject !=0 %>
+		<%= select_tag "exam[topic_filter]",
+						"<option value=0>Select TOPIC</option>"+options_from_collection_for_select(@topics.sort_by{|x|x.code},:id,:subject_list),
+						{:onchange => remote_function(:update => "exam_questions_list_available", 
+						:url=>{:action =>'view_questions'},
+						:with => "'topicid='+$('"+"exam_topic_filter"+"').value + '&examid='+'#{@exam_id}'+ '&exam_id2='+'#{@exam_id2}'")}%> 
+		<%#= f.collection_select :topic_filter, Programme.find(@exam.subject.id).descendants.at_depth(3), :id, :subject_list, 
+						{:include_blank=>'Select a topic', :selected => @exam.subject_id },
+						:onchange => remote_function(:update => "exam_questions_list", :url => {:action=>'view_questions'}, 
+						:with => "'topicid='+$('"+"exam_topic_filter"+"').value + '&exam_id='+'#{@exam.id}' ") %>
+<% elsif @subject=='0' %>
+		&nbsp;&nbsp; Select a subject first
+<% end%>

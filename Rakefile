@@ -3,10 +3,8 @@
 
 require(File.join(File.dirname(__FILE__), 'config', 'boot'))
 
-
 require 'rake'
 require 'rake/testtask'
-require 'rake/task'
-require 'rdoc/task'
-
+require 'rdoc/task'#but this one to work in macbook     #
+#require 'rake/rdoctask' #--> original @ kskb
 require 'tasks/rails'

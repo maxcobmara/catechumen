@@ -1,0 +1,105 @@
+<div class="tform">
+	<H2>Student Search</H2>
+<% form_for @studentsearch do |f| %>
+  <%= f.error_messages %>
+	<% if @searchstudenttype=='1' || @searchstudenttype==1 %>
+		<%= hidden_field_tag :method,  1 %>
+		
+		<!--<fieldset><legend class="togvis"></legend></fieldset>-->
+		
+		<table width=100% >
+			<tr><td colspan=2>Search Students By :</td></tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :course_id %></td>
+				<td><%#= f.collection_select :course_id, Programme.roots.sort_by{|x|x.id}, :id, :programme_list, :include_blank => "Select" %>
+					<%= f.collection_select :course_id, Programme.find(:all, :conditions=>['ancestry_depth=? AND id IN(?)',0,Student.all.map(&:course_id)]).sort_by{|x|x.id}, :id, :programme_list, :include_blank => "Select" %>
+				</td>
+			</tr>
+			<!--
+			<tr class="bong", style="display: none;">
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%#= f.label :semester%></td>
+				<td><%#= f.select :name, [1,2,3,4,5,6], :include_blank => "Select" %></td>
+			</tr>-->
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :sponsorship %></td>
+				<td><%= f.select :ssponsor,
+				           Student::SPONSOR,
+				           :prompt => "Select"  %>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :intake %></td>
+				<td><%= date_select :intake, params[:intake], :order => [:month, :year],:start_year=>2007,:include_blank => true %></td>
+			</tr>
+			<tr >
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :end_training %></td>
+				<td><%= date_select :end_training, params[:end_training], :include_blank => true %></td>
+			</tr>	
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :gender %></td>
+				<td><!--<%#= f.radio_button :gender,1 %>Male<%#= f.radio_button :gender,2 %>Female-->
+					<%= f.select :gender, 
+			           Student::GENDER,
+			           :prompt => "Select"  %>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :race %></td>
+				<td><%= f.text_field :race %></td>
+			</tr>	
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :physical %></td>
+				<td><%= f.text_field :physical %></td>
+			</tr>	
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :blood_type %></td>
+				<td><%= f.select :bloodtype,
+				           Student::BLOOD_TYPE,
+				           :prompt => "Select" %>
+				</td>
+			</tr>	
+			<!--
+			<tr>
+				<td class="leftcol"><%#= f.label :mykad_no %></td>
+				<td><%#= f.text_field :icno %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%#= f.label :name %></td>
+				<td><%#= f.text_field :name %></td>
+			
+			<tr>
+				<td class="leftcol"><%#= f.label :matrixno %></td>
+				<td><%#= f.text_field :matrixno %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%#= f.label :student_status %></td>
+				<td><%#= f.select :sstatus, 
+				           Student::STATUS,
+				           :prompt => "Select"  %>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%#= f.label :marital_status %></td>
+				<td><%#= f.select :mrtlstatuscd, 
+				           Student::MARITAL_STATUS,
+				           :prompt => "Select"  %></td>
+			</tr>-->
+		</table>	
+	<% end %>
+  <p><%= f.submit "Search" %>&nbsp;<font size=-2>Leaves all fields blank to display ALL records.</font></p>
+<% end %>
+
+</div>
+
+
+<script type="text/javascript">
+		//$j(document).ready(function(){
+		  //$j('#studentsearch_course_id').change(function() {
+		    //if($j(this).val() == 'Select') {
+		      //	$j('.bong').hide();
+		    //}else  {
+		    // 	$j('.bong').show();
+		    //}
+			//});
+		//});
+</script>

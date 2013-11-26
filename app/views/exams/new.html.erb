@@ -1,3 +1,5 @@
+<%=render :partial => 'position_dept' %>
+
 <% form_for(@exam) do |f| %>
   <%= f.error_messages %>
 
@@ -6,53 +8,104 @@
 	<table width=100% >
 		<tr>
 			<td class="leftcol"><%= f.label :name %></td>
-			<td><%= f.text_field :name %></td>
+			<td><!--<%#= f.text_field :name %>&nbsp;<font size=-2><i>(eg. Peperiksaan Pertengahan Semester)</i></font>--><%= f.select :name, Exam::EXAMTYPE, :include_blank => 'Select Exam Type' %></td>
 		</tr>
+		<!--22Apr2013-this field no longer required
 		<tr>
-			<td class="leftcol"><%= f.label :description %></td>
-			<td><%= f.text_area :description, :size => '60x3' %></td>
-		</tr>
+			<td class="leftcol"><%#= f.label :description %></td>
+			<td><%#= f.text_area :description, :size => '60x3' %></td>
+		</tr>-->
 
 		<tr>
 			<td class="leftcol">Creator Name</td>
-			<td><%= f.collection_select :created_by, Staff.find(:all, :order => :name), :id, :staff_name_with_position, :include_blank => true %></td>
+			<td><%= f.collection_select :created_by, Staff.find(:all, :order => :name), :id, :staff_name_with_position, :include_blank => 'Select a creator', :selected => current_user.staff_id %></td>
 		</tr>
+	
+		<tr>
+			<td class="leftcol">Programme</td>
+			<td>
+				<% if @exam.programme_id %>
+				<!--resubmission(NEW entry)-->
+					<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
+											{:include_blank => "Select a programme", :selected => @exam.programme_id.to_i},
+											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+											:url => {:action => 'view_subject_main' }, 
+											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+				<!--resubmission(NEW entry)-->
+				<% else %>
+				<!--default upon new entry-preselected programme-base on logged-in user-->
+					<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
+											{:include_blank => "Select a programme", :selected => @preselect_prog},
+											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+											:url => {:action => 'view_subject_main' }, 
+											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+				<!--default upon new entry-preselected programme-base on logged-in user-->
+				<% end %>
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol">Subject<font color="red"> * </font></td>
+			<td>
+				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+					<% if @exam.programme_id %>
+						<% if @exam.programme_id == 0 || @exam.programme_id.blank? || @exam.programme_id.nil? %>
+							<!--resubmission(NEW entry)-create but change to 'Please Select'-->
+							Please select a PROGRAMME first
+							<!--resubmission(NEW entry)-create but change to 'Please Select'-->
+						<% else %>
+							<!--resubmission(NEW entry)-regardless value of programme_id (except for-'Please select')-->
+							<%= f.collection_select :subject_id, Programme.find(@exam.programme_id).descendants.at_depth(2), :id, :subject_list, :include_blank=>'Select a subject'%>
+							<!--resubmission(NEW entry)-regardless value of programme_id (except for-'Please select')-->
+						<% end %>
+					<% else %>
+					<!--default upon new entry-populated subject list based on - preselected programme-base on logged-in user-->
+				<!--fff-->
+					<% if @kupk!= "yes"%>
+						<%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank=>'Select a subject'%>
+					<% end %>
+					<!--default upon new entry-populated subject list based on - preselected programme-base on logged-in user-->	
+					<% end %>	
+				</div>
+				
+			</td>
+		</tr>	
+		<!--9Apr2013-->
 
-		<tr>
-			<td class="leftcol">Course Name</td>
-			<td><%= f.collection_select :course_id, Programme.find(:all, :order => :name), :id, :programme_with_specialisation, :include_blank => true %> </td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol">Subject</td>
-			<td><%= f.collection_select :subject_id, Subject.find(:all, :order => :subjectcode), :id, :subject_code_with_subject_name, :include_blank => true %> </td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol">Class</td>
-			<td><%= f.collection_select :klass_id, Klass.find(:all), :id, :name, :include_blank => true %></td>
-		</tr>
 
 		<tr>
 			<td class="leftcol">Date</td>
 			<td><%= f.date_select :exam_on, :order => [:day, :month, :year] %></td>
 		</tr>
-
+		
+		<!--10Apr2013-this field no longer required
 		<tr>
 			<td class="leftcol">Time</td>
-			<td><%= f.text_field :duration, :size => 15, :placeholder => "minutes" %></td>
+			<td><%#= f.text_field :duration, :size => 15, :placeholder => "minutes" %></td>
+		</tr>-->
+		
+		<tr>
+			<td class="leftcol">Start Time</td>
+			<td><%= f.time_select :starttime %> (Hours : Minutes)</td>
+		</tr>
+		<tr>
+			<td class="leftcol">End Time</td>
+			<td><%= f.time_select :endtime %> (Hours : Minutes)</td>
 		</tr>
 		<!--  Will calculate this
 
 				<tr>
 					<td class="leftcol">Full Marks</td>
-					<td><%= f.text_field :full_marks, :size => 12 %></td>
+					<td><%#= f.text_field :full_marks, :size => 12 %></td>
 				</tr>-->
 
 </table>
 </div>
 	<p>
-	  <%= f.submit 'Create' %>
+	  <%= f.submit 'Create Exam', :name=> :submit_button %>
+	  <%= f.submit 'Create Template', :name=> :submit_button %>
+		<%#= submit_tag "Single New Grade", :name => :submit_button1 %> 
+		<%#= submit_tag "Multiple New Grades", :name => :submit_button1 %>
 	</p>
 <% end %>
 

@@ -1,0 +1,43 @@
+<div class="tform">
+	<H2>Examination Result & Slip Search</H2>
+	
+<% form_for @examresultsearch do |f| %>
+  <%= f.error_messages %>
+	<table width=100% >
+		<% if @searchexamresulttype=='1' || @searchexamresulttype==1 %>
+			<%= hidden_field_tag :method,  1 %>
+			<tr><td colspan=2>Search Examination Result By :</td></tr>
+			
+			<% @programme_list_in_examresult = Examresult.all.map(&:programme_id).uniq %>
+			<% @programme_list = Programme.find(:all, :conditions=> ['id IN (?)', @programme_list_in_examresult]) %>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :programme_id %></td>
+				<td><%= f.collection_select :programme_id, @programme_list, :id, :programme_list, :include_blank=> "Select" %></td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :semester %></td>
+				<td><%= f.select :semester, Examresult::SEMESTER, :include_blank=> "Select" %></td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :examnination_start_date %></td>
+				<td><%= date_select :examdts, params[:examdts], :include_blank=>"Select"%></td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :examnination_end_date %></td>
+				<td><%= date_select :examdte, params[:examdte], :include_blank=>"Select"%></td>
+			</tr>
+			<tr>
+				<td colspan=2 style="text-valign:top;">
+					&nbsp;&nbsp;&nbsp;<%= f.check_box :student_id,:checked=>"unchecked", :id=> 'student_checker' %>&nbsp;
+					<font size=-2><b>Tick</b> to includes <b>Student Examination Slip</b> in search results.</font>
+				</td>
+			</tr>
+		<% end %>
+	</table>
+
+  <p><%= f.submit "Search"%>&nbsp;<font size=-2>Leaves all fields 'blank' / 'unselected' to display ALL record.</font></p>
+<% end %>
+
+
+</div>
+

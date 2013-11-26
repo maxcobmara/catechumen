@@ -11,7 +11,8 @@
 		<%= render :partial => 'show_action_taken' %>
 	<% end %>
 
-	<% if ["Closed","Refer to BPL"].include? (@student_discipline_case.status)  %>
+	<% if ["Refer to BPL"].include? (@student_discipline_case.status)  %>
+	<%# if ["Closed","Refer to BPL"].include? (@student_discipline_case.status)  %>
 	<fieldset>
 		<legend class='togvis'>Refer to BPL</legend>
 			<table width=100%>
@@ -63,6 +64,10 @@
 </div>
 
 <% if permitted_to? :manage, :student_discipline_cases %>
-	<%= link_to 'Edit', edit_student_discipline_case_path(@student_discipline_case) %> |
+	<%# if @student_discipline_case.status !="Closed" %>
+	<% if (@student_discipline_case.status=="New" && @student_discipline_case.assigned_to == current_user.staff_id) || (@student_discipline_case.status == "Refer to TPHEP" && @student_discipline_case.assigned2_to == current_user.staff_id)%>
+
+		<%= link_to 'Edit', edit_student_discipline_case_path(@student_discipline_case) %> |
+	<% end %>
 <% end %>
 <%= link_to 'Back', student_discipline_cases_path %>

@@ -1,0 +1,29 @@
+<div class="tform">
+	<H2>Personalize Timetable Search</H2>
+
+<% form_for @personalizetimetablesearch do |f| %>
+  <%= f.error_messages %>
+
+	<table width=100% >
+		<%if @searchpersonalizetimetabletype=='1' || @searchpersonalizetimetabletype==1 %>
+			<%= hidden_field_tag :method,  1 %>
+			<tr><td colspan=2></td>Search Personalize Timetable  By :</tr>
+			<tr>
+				<td class="leftcol"><%= f.label :lecturer %></td>
+				<td>
+					<%#= f.text_field :lecturer %>
+					<% @positions_staff_ids_of_trainer = Position.find(2).descendants.map(&:staff_id).compact %>
+					<%= f.collection_select :lecturer, Staff.find(:all, :conditions =>['id IN (?)',@positions_staff_ids_of_trainer]).sort_by{|x|x.name}, :id, :name, :include_blank=> "Select" %>
+				</td>
+			<tr><!--
+			<tr>
+				<td class="leftcol"><%#= f.label :programme_id %></td>
+				<td><%#= f.text_field :programme_id %></td>
+			<tr>-->	
+		<% end %>
+	</table>
+
+  <p><%= f.submit "Search" %>&nbsp;<font size=-2>Leaves all fields 'blank' / 'unselected' to display ALL record.</font></p>
+<% end %>
+
+</div>

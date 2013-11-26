@@ -1,0 +1,83 @@
+<div>
+	<H3>EXAMINATION RESULT & SLIP SEARCH :</h3>
+		
+		<%= link_to "Back", :controller=>'examresultsearches', :action => 'new', :searchexamresulttype => 1 %><br><br>
+		
+		<!--additional heading-->
+		<% if @examresultsearch.programme_id && @examresultsearch.programme_id.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Programme : <b><%= Programme.find(@examresultsearch.programme_id).programme_coursetype_name %></b><br><br>
+			</span>
+		<% end %>
+		<% if @examresultsearch.semester && @examresultsearch.semester.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Semester : 
+				<b><%=(Examresult::SEMESTER.find_all{|disp, value| value == @examresultsearch.semester}).map {|disp, value| disp}%></b><br><br>
+			</span>
+		<% end %>
+		<% if @examresultsearch.examdts && @examresultsearch.examdts.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Examination Start Date : <b><%= @examresultsearch.examdts.strftime("%d-%m-%Y") %></b><br><br>
+			</span>
+		<% end %>
+		<% if @examresultsearch.examdte && @examresultsearch.examdte.blank? ==false %>
+			<span style="text-decoration:underline;">
+				Search by Examination End Date : <b><%= @examresultsearch.examdte.strftime("%d-%m-%Y") %></b><br><br>
+			</span>
+		<% end %>
+		
+		Total of Examination Result : <%= @examresultsearch.examresults.count %><br><br>
+		
+		<% if @examresultsearch.examresults.count > 0 %>
+		<table border=1 cellpadding=3 cellspacing=0>
+			<tr style="background-color:#EFF1F1;color:#218AFB">
+				<th>No</th>
+				<th colspan=4>Programme</th>
+				<th>Start Date</th>
+				<th>End Date</th>
+				<th>Semester</th>
+				<th>Links</th>
+			</tr>
+			<% @examresultsearch.examresults.sort_by{|x|x.programme_id}.each_with_index do |examresult, index| %>
+				<tr style="background-color:#EFF1F1;">
+					<td><%=index+1%></td>
+					<td colspan=4><%=examresult.programmestudent.programme_coursetype_name %></td>
+					<td><%=examresult.examdts.strftime("%d-%m-%Y") %></td>
+					<td><%=examresult.examdte.strftime("%d-%m-%Y")%></td>
+					<td><%=examresult.render_semester %></td>
+					<td><%= link_to "Exam Result", :controller=>'examresults', :action => 'show', :id => examresult.id %></td>
+				</tr>
+				<!--START-VIEW IF SELECTED TO DISPLAY STUDENT EXAMINATION DETAILS & EXAM SLIP-->
+				<% if @examresultsearch.student_id && @examresultsearch.student_id == 1 %>
+					<tr style="background-color:#eeecec;">
+						<th>&nbsp;</th>
+						<th>No</th>
+						<th>Matrix No</th>
+						<th>Student</th>
+						<th>Total</th>
+						<th>PNGS</th>
+						<th>PNGK</th>
+						<th>Status</th>
+						<th>Links</th>
+					</tr>	
+					<%index2=0%>
+					<% examresult.resultlines.sort_by{|x|x.student.name}.each do |resultline| %>
+						<tr>
+							<td>&nbsp;</td>
+							<td><%=index2+=1%></td>
+							<td><%=h resultline.student.matrixno %></td>
+							<td><%=h resultline.student.name %></td>
+							<td><%=h resultline.total %></td>
+							<td><%=h resultline.pngs17 %></td>
+			    			<td><%=h resultline.pngk %></td>
+			    			<td><%=h resultline.remark %></td>
+							<td><%= link_to "Exam Slip",:controller=>'examresults', :action => 'examslip', :id => resultline.id %></td>
+			  			</tr>
+					<% end %>
+				<% end %>
+				<!--END-VIEW IF SELECTED TO DISPLAY STUDENT EXAMINATION DETAILS & EXAM SLIP-->
+			<% end %>
+		</table>
+		<% end %>
+	<br>
+</div>

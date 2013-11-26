@@ -34,7 +34,13 @@
 			<% bil += 1 %>
 				<tr>
 					<td class="tdata" style="text-align:center;" ><%=h bil %></th>
-					<td class="tdata" style="white-space: nowrap; padding-right:3mm;" ><%=h asset.assetcode %></th>
+					<td class="tdata" style="white-space: nowrap; padding-right:3mm;" ><%=h asset.assetcode %>
+						<%# if asset.quantity.nil? || asset.quantity.blank? %>
+						<%# else %>
+							<%#if asset.quantity > 1%>
+							<!-- - --> <%#=(asset.assetcode.split("/")[5]).to_i+asset.quantity-1%>
+							<%# end %>
+						<%# end %></th>
 					<td class="tdata"><%=h asset.name %></th>
 					<td class="tdata"><%=h tarikh(asset.receiveddate) %> </th>
 					<td class="tdata" style="text-align:right; padding-right:3mm;"><%=h ringgols(asset.purchaseprice) %></th>

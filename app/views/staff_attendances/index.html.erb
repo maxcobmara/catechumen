@@ -1,68 +1,1395 @@
 <div class="box">
 	<div class="box-head">
 		<h2 class="left">Staff Attendance - Full List</h2>
-		<div class="right">
-		</div>
+		<div class="right"><!--<font color=black>--><%=@dadidu%>$$$<%=@dadidu2%><!--***<%#=@abababa.count if @abababa%>~~<%#=@selected_date%>@@<%#=@selected_rec_by_date.count%>-<%#=params[:id]%>@@<%#=@ooo.count %>--><!--
+		<%#=@position_staff_ids[3]%>|<%#=@position_staff_ids[4]%>|<%#=@position_staff_ids[5]%><br>
+		<%#= @staff_in_department[3]%>|<%#= @staff_in_department[4]%>|<%#= @staff_in_department[5]%><br>
+		<%#= @test_department[3].count%>|<%#= @test_department[4].count%>|<%#= @test_department[5].count%>,<br>
+		<%#=@testalldepartmenttgroup[3].count%>|<%#=@testalldepartmenttgroup[4].count%>|<%#=@testalldepartmenttgroup[5].count%></font>--></div>
 	</div>
 </div>
-  
-<div class="indextable">
-	<div class="pagination">
-		<%= will_paginate @staff_attendances %>  
-	</div>
+<!--search by date-->
+<div class="left">
+	<% form_tag '', :method => 'get' do %>
+	Department: <%= select_tag(:dept_select,"<option value='All'>All Department</option>"+options_for_select(@dept_names)) %><%#=  :dept_select, params[:dept_select], :include_blank => :true %>	&nbsp;&nbsp&nbsp;
+		From: <%= date_select :search_from, params[:search_from], :include_blank => :true, :start_year => Time.now.year - 1, :end_year => Time.now.year  %>
+	&nbsp; &nbsp;To: <%= date_select :search_to, params[:search_to], :include_blank => :true, :start_year => Time.now.year - 1, :end_year => Time.now.year  %><%= submit_tag "Search", :name => :submit_button1 %>
+			
+	<br>
+	<SPAN class="bong", style="display: none;"></SPAN>
+	<SPAN class="koik", style="display: none;">
+		Staff: <%= select_tag(:staffthumb1, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[0]]), :thumb_id, :name)) %>
+	</SPAN>
+	
+	<SPAN class="hotel", style="display: none;">
+		Staff: <%= select_tag(:staffthumb2, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[1]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="library", style="display: none;">
+		Staff: <%= select_tag(:staffthumb3, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[2]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="kaunter", style="display: none;">
+		Staff: <%= select_tag(:staffthumb4, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[3]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="bangun", style="display: none;">
+		Staff: <%= select_tag(:staffthumb5, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[4]]), :thumb_id, :name)) %>
+	</SPAN>
+	<!--just added 20June2013-->
+	
+<!--"Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja",-->
+    <!--wang khidmat tadbir radiografi kejururawatan fisioterapi carakerja-->
 
+	<SPAN class="wang", style="display: none;">
+		Staff: <%= select_tag(:staffthumb6, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[5]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="khidmat", style="display: none;">
+		Staff: <%= select_tag(:staffthumb7, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[6]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="tadbir", style="display: none;">
+		Staff: <%= select_tag(:staffthumb8, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[7]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="radiografi", style="display: none;">
+		Staff: <%= select_tag(:staffthumb9, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[8]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="kejururawatan", style="display: none;">
+		Staff: <%= select_tag(:staffthumb10, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[9]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="fisioterapi", style="display: none;">
+		Staff: <%= select_tag(:staffthumb11, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[10]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="carakerja", style="display: none;">
+		Staff: <%= select_tag(:staffthumb12, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[11]]), :thumb_id, :name)) %>
+	</SPAN>
+		
+	<!--"Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]-->
+
+	<!--pegawai  posbasik  sains  anatomi  tingkahlaku  komunikasi  ppelatih  khidmatpelatih  kokurikulum  kupk-->
+	<SPAN class="pegawai", style="display: none;">
+		Staff: <%= select_tag(:staffthumb13, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[12]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="posbasik", style="display: none;">
+		Staff: <%= select_tag(:staffthumb14, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[13]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="sains", style="display: none;">
+		Staff: <%= select_tag(:staffthumb15, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[14]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="anatomi", style="display: none;">
+		Staff: <%= select_tag(:staffthumb16, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[15]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="tingkahlaku", style="display: none;">
+		Staff: <%= select_tag(:staffthumb17, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[16]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="komunikasi", style="display: none;">
+		Staff: <%= select_tag(:staffthumb18, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[17]]), :thumb_id, :name)) %>
+	</SPAN>	
+	<SPAN class="ppelatih", style="display: none;">
+		Staff: <%= select_tag(:staffthumb19, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[18]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="khidmatpelatih", style="display: none;">
+		Staff: <%= select_tag(:staffthumb20, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[19]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="kokurikulum", style="display: none;">
+		Staff: <%= select_tag(:staffthumb21, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[20]]), :thumb_id, :name)) %>
+	</SPAN>
+	<SPAN class="kupk", style="display: none;">
+		Staff: <%= select_tag(:staffthumb22, "<option value='All'>All Staff in this Department</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[21]]), :thumb_id, :name)) %>
+	</SPAN>
+	<%#= submit_tag "Search", :name => :submit_button1 %>
+	<% end %>
+</div><br><br><br><br>
+
+<!--wang khidmat tadbir radiografi kejururawatan fisioterapi carakerja-->
+<!--pegawai  posbasik  sains  anatomi  tingkahlaku  komunikasi  ppelatih  khidmatpelatih  kokurikulum  kupk-->
+
+<script type="text/javascript">
+		$j(document).ready(function(){
+		  $j('#dept_select').change(function() {
+		    if($j(this).val() == "All") {
+		      		$j('.bong').show();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+					$j('.wang').hide();
+					$j('.khidmat').hide();
+					$j('.tadbir').hide();
+					$j('.radiografi').hide();
+					$j('.kejururawatan').hide();
+					$j('.fisioterapi').hide();
+					$j('.carakerja').hide();
+					$j('.pegawai').hide();
+					$j('.posbasik').hide();
+					$j('.sains').hide();
+					$j('.anatomi').hide();
+					$j('.tingkahlaku').hide();
+					$j('.komunikasi').hide();
+					$j('.ppelatih').hide();
+					$j('.khidmatpelatih').hide();
+					$j('.kokurikulum').hide();
+					$j('.kupk').hide();
+		    }else if ($j(this).val() == "Teknologi Maklumat") {
+		     	 	$j('.bong').hide();
+					$j('.koik').show();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();			
+		    }
+			else if ($j(this).val() == "Perhotelan") {
+				    $j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').show();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Perpustakaan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').show();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Kaunter") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').show();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Pembangunan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').show();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Kewangan & Stor") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').show();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Perkhidmatan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').show();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Pentadbiran Am") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').show();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Radiografi") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').show();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Kejururawatan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').show();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Jurupulih Perubatan Anggota (Fisioterapi)") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').show();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Jurupulih Perubatan Cara Kerja") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').show();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Penolong Pegawai Perubatan") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').show();
+						$j('.posbasik').hide();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Pos Basik") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').show();
+						$j('.sains').hide();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+			else if ($j(this).val() == "Sains Perubatan Asas") {
+					$j('.bong').hide();
+					$j('.koik').hide();
+					$j('.hotel').hide();
+					$j('.library').hide();
+					$j('.kaunter').hide();
+					$j('.bangun').hide();
+						$j('.wang').hide();
+						$j('.khidmat').hide();
+						$j('.tadbir').hide();
+						$j('.radiografi').hide();
+						$j('.kejururawatan').hide();
+						$j('.fisioterapi').hide();
+						$j('.carakerja').hide();
+						$j('.pegawai').hide();
+						$j('.posbasik').hide();
+						$j('.sains').show();
+						$j('.anatomi').hide();
+						$j('.tingkahlaku').hide();
+						$j('.komunikasi').hide();
+						$j('.ppelatih').hide();
+						$j('.khidmatpelatih').hide();
+						$j('.kokurikulum').hide();
+						$j('.kupk').hide();
+			}
+				else if ($j(this).val() == "Anatomi & Fisiologi") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').show();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').hide();
+							$j('.kupk').hide();
+				}
+				else if ($j(this).val() == "Sains Tingkahlaku") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').show();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').hide();
+							$j('.kupk').hide();
+				}
+				else if ($j(this).val() == "Komunikasi & Sains Pengurusan") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').show();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').hide();
+							$j('.kupk').hide();
+				}
+				else if ($j(this).val() == "Pembangunan Pelatih") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').show();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').hide();
+							$j('.kupk').hide();
+				}
+				else if ($j(this).val() == "Khidmat Sokongan Pelatih") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').show();
+							$j('.kokurikulum').hide();
+							$j('.kupk').hide();
+				}
+				else if ($j(this).val() == "Kokurikulum") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').show();
+							$j('.kupk').hide();
+				}
+				else if ($j(this).val() == "Ketua Unit Penilaian & Kualiti") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').hide();
+							$j('.kupk').show();
+				}
+			});
+	});
+</script>
+
+<!--"Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja",-->
+<!--"Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]-->
+
+<!--search by date-->  
+<div class="indextable">
+	<!---->
+	<% if params[:submit_button1] && params[:submit_button1] == "Search" %>
+	<% else %>
+	<div class="pagination">
+		<%##= will_paginate @staff_attendance_days %>
+		<%##= will_paginate @ooo %>  
+		<%#= will_paginate @ooo_key2 %> 
+
+		<% @ooo.keys.sort.reverse.each_with_index do |date,index| %>
+			<% if date > @selected_date %>
+				<% @previous_date = date %>	<!--loop until...retrieve last item yg besar drpd selected date-->
+			<% end %>
+			<% if @selected_date == date %>
+				<% @current_index=index%>
+			<% end %>
+		<% end %><!--END for - @ooo.keys.sort.reverse.each_with_index do |date,index| -->
+		
+		<% counter=0%>	<% counterabc=1%><!--check selected date dulu <%#=@selected_date %>==--><%#=@current_index%><!--<br>-->
+		<% @ooo.keys.sort.reverse.each_with_index do |date,index| %>
+			<% if index == 0 %>
+				<% if @current_index == index %>
+					<span style="color:grey;">
+						Previous<<
+					</span>
+				<% else %>
+						<%= link_to "Previous<<", :action => 'index', :id => @previous_date %>
+				<% end %>
+				<% if index != @current_index && @current_index > 1 %>
+					<!--first--><%= link_to "#{index+1}", :action => 'index', :id => date %>&nbsp;...&nbsp;
+				<% end %>
+			<% end %>
+
+			<% if @selected_date == date %>
+				<span class="current">
+					<%=index+1%>
+				</span>
+			<% else %><!--display all links-->
+				
+				<% if date > @selected_date %>
+					<% if index >= @current_index-1 %>
+					<%# if index >= 10 %><!--if 11-20--> <%# if index >= 0 %><!--if 1-10-->
+						<!--abc--><%= link_to "#{index+1}", :action => 'index', :id => date %>
+					<% end%>
+				<% elsif date < @selected_date %>
+					<% if index >= @current_index-1 && index < (@current_index-1)+10 %>
+					<%# if index >= 10 && index < 20 %><!--if 11-20--> <%# if index >= 0 && index < 10 %><!--if 1-10-->	
+						<!--xyz--><%= link_to "#{index+1}", :action => 'index', :id => date %>
+					<% end 	%>
+				<% end %>
+				
+				<!--backup-->
+				<%#= link_to "#{index+1}", :action => 'index', :id => date %>
+				<!--backup-->
+			<% end %>
+			<% if date < @selected_date && counter==0 %>
+				<% @next_date = date %>	
+				<% counter+=1%>
+			<% end %>
+
+			<% if index == @ooo.count-1 %>
+				<% if index != @current_index && @current_index < 66%>
+					<!--last-->&nbsp;...&nbsp;<%= link_to "#{index+1}", :action => 'index', :id => date %>
+				<% end %>
+				<%#= link_to "Next>>", :action => 'index', :id => @next_date %>		
+				<% if @current_index == index %>
+					<span style="color:grey;">
+						Next>>
+					</span>
+				<% else %>
+					<%= link_to "Next>>", :action => 'index', :id => @next_date %>		
+				<% end %>
+			<% end %>
+		
+		<% end %>
+		
+	</div>
+	<% end %>
+	<!---->
+	
+	
 <table>
   <tr>
-		<th>Flag</th>
-    <th>Staff Name</th>
+	<th>Flag</th>
+    <th>Staff Name</th><!--
     <th>Logged at</th>
-    <th>Log type</th>
+    <th>Log type</th>-->
+	<th>Logged-In</th>
+	<th>Logged-Out</th>
+	<th style="text-align:center;">Waktu Anjal</th>
+	<th style="text-align:center; width:80px;">Late</th>
+	<th style="text-align:center; width:80px;">Early</th>
     <th>Action</th>
-		<th>Ignore</th>
-		<th>Test</th>
-    <th colspan=3>Control</th>
-  </tr>
+	<th>Ignore</th>
+	<!--
+	<th>Test</th>-->
+    <th  style="text-align:center;" colspan=3>Control</th>
+<!--for testing-->
+
+
+<% counter2 = 0 %>
+<% count_date = 0 %>
 <% form_tag actionable_staff_attendances_path, :method => :put do %>
+<!----><!----><!----><!----><!----><!----><!---->
+<% if params[:submit_button1] == "Search" && (@dadidu!='' || @dadidu2!='') %><!--&& @dadidu!='' && @dadidu2!=''-->
+	<% if @dept_select!='All' %><p style="font-size:14px;">&nbsp;&nbsp;<b>Unit : <%=@dept_select %></b></p>
+		<% if @staffthumb!='All' %>
+			<p style="font-size:14px;">&nbsp;&nbsp;<b>Staff Name : <%=Staff.find_by_thumb_id(@staffthumb.to_i).name %></b></p>
+		<% end %>
+	<% end %>
+	
+<!--ori punye : <%#=@dadidu_ori %><%#=@dadidu2_ori %>	-->
 
-	<% @staff_attendance_days.keys.sort.reverse.each do |date| %>
-		<tr><td colspan=3><BR><b>Date  : <%= date unless date.blank? %></b></td>
-			<td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+<% @ooo.keys.sort.each do |date|%><%# @ooo.keys.sort.reverse.each do |date|%>
+
+	<% if date >= @dadidu_ori && date <= @dadidu2_ori %>
+	<%#===============================================%>
+	
+	<!--newly added condition: although only 1 date entered, 2nd date will be defaulted to '16 October 2012 resulting-view of DATEs of unsearch date?'-->
+	<% if (@dadidu!='' && @dadidu2!='') %>
+	<tr><td colspan=13 style="background-color:#FDFCE8;"><!--yellow--><BR><b>Date  : <%= date unless date.blank? %></b></td></tr>
+	<% else %>
+		<% if count_date == 0 %>
+	<tr><td colspan=13 style="background-color:#ECFDDE;"><!--green--><BR><b>Date  : <%= date unless date.blank? %></b></td></tr>	
+		<% count_date+=1%>
+		<% end %>
+	<% end %>
+
+	
+
+	<% count_dept = 0 %>
+	<% @selected_rec_by_date.each_with_index do |record,counting| %><!----><%#  0.upto(1) do |count| %>
+	<!--counting will DEFINITELY EXCEED 21-coz all record are added into this 1 & only 1 array-->
+	<!--problem : dept name (0-21), but group of dept/unit set of record (0-50)-->
 		
+		
+			<% count_each_dept = 0 %>
+			<% record.each do |staff_attendance|%><%#= staff_attendance.logged_at.strftime("%Y-%m-%d").to_s%>
+			
 
-			<% for staff_attendance in @staff_attendance_days[date].sort_by{|e| e[:thumb_id]} %>
+			
+			<%#-----------------------------------------------%><%# if staff_attendance.logged_at.strftime("%Y-%m-%d").to_s == @selected_date %>
+			<% if staff_attendance.logged_at.in_time_zone('UTC').strftime("%Y-%m-%d").to_s == date %>
+			<%# if staff_attendance.logged_at.strftime("%Y-%m-%d").to_s == date %>
+			
+				<%#**************************************************************************************%>
+				
+					<% if staff_attendance.attended.blank? %> 
+					<%# else %>
+						<!--<td colspan=13><%#=h staff_attendance.attendee_details %>
+						</td>-->
+					<%# end %>
+					
+					<!----><!----><!----><!----><!--LATEST-LATEST-LATEST-LATEST-LATEST-->
+					
+					<% else %>
+					   
+					  <% if count_dept < 21 %>
+					    <% if @staffthumb=="All" || (@staffthumb.to_i == staff_attendance.thumb_id) %><!--view by staff selected @ All-->
+					  <%# not <22-avoid avoid last after checking(increased item) wont be taken into action+++++++++++++++++++%>	
+						
+						<!--start-checked if department/unit selected (or all department) for searching-->
+						<%@dep_unit = Position.find(:first,:conditions=>['staff_id=? ',Staff.find_by_thumb_id(staff_attendance.thumb_id).id]).unit %>
+						<% if @dep_unit.nil? || @dep_unit.blank? %>
+							<%@dep_unit = Position.find(:first,:conditions=>['staff_id=? ',Staff.find_by_thumb_id(staff_attendance.thumb_id).id]).parent.unit %>
+						<% end %>
+						<!--for staff with 2 positions-pn azizah binti Kadir - staff_id: 69-->
+						<% if @dep_unit.nil? || @dep_unit.blank? %>
+							<%@dep_unit = Position.find(:last,:conditions=>['staff_id=? ',Staff.find_by_thumb_id(staff_attendance.thumb_id).id]).unit %>
+						<% end %>
+						<!--end-checked if department/unit selected (or all department) for searching-->
+						
+						<!--start-view staff attendances according to department selection-->
+						<% if @dept_select == 'All' || (@dept_select == @dep_unit && @dept_select != nil) %>
+						
+							<% if @dept_select == 'All' && @dept_names[count_dept] == @dep_unit && count_each_dept == 0 %>
+								<%# count_dept = 0 %><%# count_each_dept = 0 %>
+								<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%=@dept_names[count_dept]%><!--*--></td></tr> 
+								<% count_each_dept+=1 %>
+							<% elsif @dept_select == 'All' && @dept_names[count_dept] == @dep_unit && count_each_dept != 0 %>
+								<% count_each_dept+=1 %>
+							<% end %>
+		
+							<% if @dept_select == 'All' && @dept_names[count_dept] != @dep_unit && count_each_dept == 0 %>
+								<% count_dept += 1 %><%# count_each_dept = 0 %>
+								<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%=@dept_names[count_dept]%><!--@--></td></tr> 
+								<% count_each_dept+=1 %>
+								<% @a=0%>
+								<% if @dept_names[count_dept] == @dep_unit %><% @a=3%>
+								<% end %>
+							<% elsif @dept_select == 'All' && @dept_names[count_dept] != @dep_unit && count_each_dept != 0 %>
+								<% count_each_dept+=1 %>
+							<% end %>
+							
+								<!--==========-->
+								<% if (@dept_names[count_dept] != @dep_unit)&& (@dept_select != @dep_unit) %><%#asal--> if @dept_names[count_dept] != @dep_unit %>
+								
+									<% if @a!=1%><!--just added-->
+										<%@a=1%>
+										<tr><td colspan=12 style="color:red;">
+											No record available</td></tr>
+											<!--just added-->
+											
+									<% end %>
+										<% count_dept += 1 %><!--@a to avoid repetive no record-->
+									<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%=@dept_names[count_dept]%><!--LALA-<%#=@dept_names[count_dept]%>~<%#=@dep_unit%>~<%#=@a%>~~~SEMAK THUMB<%#= staff_attendance.thumb_id%>--></td></tr>
+									
+									
+									<% if @dept_names[count_dept] != @dep_unit || ((@dept_names[count_dept] == @dep_unit) && @a!=1)%>
+									<!--2nd condition just added-->
+										<tr><td colspan=12 style="color:red;">
+											NO record available </td></tr><%@a=1%><!--just added-->
+									<% end %>
+				
+								<%# end %>
+								<!--============-->
+								<!--============######################-->
+								
+								<!--============######################-->
+							<% else %>
+						
+								<% @a=1%>		
+						<tr>
+							<td>
+								<%=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %>
+								<%=h staff_attendance.r_u_early == "flag" ? image_tag("flag_red.png") : "" %>
+								<!--ALTERNATIVE-display dept/unit name one by one-->
+								<b><%#=staff_attendance.log_type%>
+									<!--staff_id = <%#= Staff.find_by_thumb_id(staff_attendance.thumb_id).id %>-->
+									<% if @dept_select == 'All' %>	
+										<%#= @dep_unit%><!--DO NOT REMOVE-for checking:view department name at each row-->
+									<% end %>
+									
+								</b>
+								<!--alternative-display dept/unit name one by one-->
+							</td>
+						    <td><%=h staff_attendance.attendee_details %>(<%=h staff_attendance.thumb_id %>)==<%=staff_attendance.id%></td>
+						    <!--<td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+						    <td><%#=h staff_attendance.log_type == "I" ? "IN" : "OUT" %></td>-->
+							<td><%=h staff_attendance.log_type == "I" ? staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') : "" %></td>
+							<td>
+								<% if staff_attendance.log_type == "O" || staff_attendance.log_type == "o"%>
+									<%=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M')%>
+								<% end %>
+							</td>
+							<td align="center">
+								<%=h Staff.find(:first, :conditions => ['thumb_id=?',staff_attendance.thumb_id]).shift_for_staff %>
+			<!--CHECKING PART-15Mei2013-->
+			<%#=========================================================================================%>
+			<!--
+			<%# @shift = Staff.find(:first, :conditions => ['thumb_id=?',staff_attendance.thumb_id]).staff_shift_id %>
+			<%#=h @shift_start = StaffShift.find(@shift).start_at.strftime('%H:%M') if @shift != nil %>
+			<%# @shift_start = (StaffShift.find(@shift).start_at.strftime('%H').to_i * 100) if @shift != nil  %>
+			<%#= @shift_start += (StaffShift.find(@shift).start_at.strftime('%M').to_i) if @shift != nil  %>
+			<%# @shift_end = (StaffShift.find(@shift).end_at.strftime('%H').to_i * 100) if @shift != nil  %>
+			<%#= @shift_end += (StaffShift.find(@shift).end_at.strftime('%M').to_i) if @shift != nil  %>
+
+			<%# minit=99%>
+			<br>YAYA<%#= (staff_attendance.logged_at.hour - 8).to_s+(staff_attendance.logged_at.min).to_s %>
+			<br>YOYO<%#= ((StaffShift.find(@shift).end_at.hour - 8).to_s+ (StaffShift.find(@shift).end_at.min).to_s if @shift != nil) %>
+			<br>YOYI<%#= (StaffShift.find(@shift).end_at.strftime('%H').to_i) - 8 if @shift != nil %>
+			<br>minit <%#= minit = (StaffShift.find(@shift).end_at.min).to_s if @shift != nil %>
+
+			<%# if minit = 0 %>
+				<br>jam<%#=jam = ( ( (StaffShift.find(@shift).end_at.strftime('%H').to_i) - 8)-1 ) if @shift != nil %>
+				min<%#=60 %>
+				<br>jam min <%# jam.to_s + minit.to_s %>
+			<%# end %>-->
+			<%#=========================================================================================%>
+			<!--CHECKING PART-->
+
+							</td>
+							<td style="text-align:center;">
+								<% if staff_attendance.log_type == "I" %>
+									<%= staff_attendance.late_early %>
+								<% else %>
+									-
+								<% end %>
+							</td>
+							<td style="text-align:center;">
+								<% if staff_attendance.log_type == "O" %>
+									<%= staff_attendance.late_early %>
+								<% else %>
+									-
+								<% end %>
+							</td>
+						    <td style="text-align:center;">
+												<% if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+													<%= check_box_tag "triggers[]", staff_attendance.id %>
+												<% elsif staff_attendance.trigger == nil && staff_attendance.r_u_early == "flag"  %> 
+													<%= check_box_tag "triggers[]", staff_attendance.id %>
+												<% elsif staff_attendance.trigger == true %>   
+													<%= image_tag("user_go.png") %> 
+												<% end %></td>
+							<td	style="text-align:center;">
+												<% if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+													<%= check_box_tag "ignores[]", staff_attendance.id %>
+												<% elsif staff_attendance.trigger == nil && staff_attendance.r_u_early == "flag" %> 
+													<%= check_box_tag "ignores[]", staff_attendance.id %>
+												<% elsif staff_attendance.trigger == false %>   
+													<%= image_tag("tick.png") %>  
+												<% end %><%#=staff_attendance.logged_at.strftime("%d%b%y")%></td>
+				<!--	<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>-->
+						    <td width=10px><!--<%= link_to 'Show', staff_attendance %>--></td>
+						    <td width=10px><!--<%= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %>--></td>
+						    <td width=10px><%= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>	
+						<% end %>
+					<!----><!----><!----><!----><!--LATEST-LATEST-LATEST-LATEST-LATEST-->
+						</tr>
+						<% end %>	<%# end for-if @dept_names[count_dept] != @dep_unit %>
+						
+						
+						<% end %>
+						<!--end-view staff attendances according to department selection-->
+					 
+					    <% end %><!--end for @staffthumb=="All" || (@staffthumb == staff_attendance.thumb_id) : staff selection-->
+					
+					  <%# #end for if count_dept < 21 not <22-avoid last after checking(increased item) wont be taken into action++++++++++%>	
+					  <% end %>	
+					  	
+					<% end %>
+					<%#**************************************************************************************%>
+		
+			<% end %>
+			
+			<!---->
+	<!--COUNTING VAL<%#= counting%>-->
+	<% end %>
+	<% counter2+=1%>
+	
+	<% end %><!--end for - if date >= @dadidu_ori && date <= @dadidu2_ori -->
+	
+<% end %><!-- end for - @ooo.keys.sort.each do |date|-->
+
+
+<%# end %><% else %>
+<!----><!----><!----><!----><!----><!----><!---->
+		<%# date = "2012-10-16" %><%# date = "2012-10-15"%>
+	<%# @staff_attendance_days.keys.sort.reverse.each do |date|%>
+	<%# @ooo.keys.sort.reverse.each do |date|%>
+<!--		<tr><td colspan=3><BR><b>Date  : <%#= date unless date.blank? %></b></td>
+			<td></td><td></td><td></td><td></td><td colspan=3></td></tr>-->
+		<!--start-PART 1-IT DEPT--><!--
+		<%# if @test_itdept_group[date] %>
+			<tr><td colspan=3><BR><b>Department/Unit  : Teknologi Maklumat</b></td>
+				<td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+			<%# for staff_attendance in @test_itdept_group[date].sort_by{|e| e[:thumb_id]} %>--><!--ordered hash--><!--
+				<tr>
+					<%# if staff_attendance.attended.blank? %> 
+					<%# else %>
+							<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+					    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+					    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+					    <td style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+												<%#= check_box_tag "triggers[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == true %>   
+												<%#= image_tag("user_go.png") %> 
+											<%# end %></td>
+							<td	style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+												<%#= check_box_tag "ignores[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == false %>   
+												<%#= image_tag("tick.png") %>  
+											<%# end %></td>
+							<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
+					    
+					    <td width=10px>--><!--<%#= link_to 'Show', staff_attendance %>--><!--</td>
+					    <td width=10px>--><!--<%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %>--><!--</td>
+					    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>	
+					<%# end %>
+				<tr>
+			<%# end %>
+		<%# end %>-->
+		<!--END-PART 1-IT DEPT-->
+		<!--START-PART 2-PERHOTELAN--><!--
+		<%# if @test_hoteldept_group[date] %>
+			<tr><td colspan=3><BR><b>Department/Unit  : Perhotelan</b></td>
+				<td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+			<%# for staff_attendance in @test_hoteldept_group[date].sort_by{|e| e[:thumb_id]} %>
+				<tr>
+					<%# if staff_attendance.attended.blank? %> 
+					<%# else %>
+						<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+					    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+					    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+					    <td style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+												<%#= check_box_tag "triggers[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == true %>   
+												<%#= image_tag("user_go.png") %> 
+											<%# end %></td>
+						<td	style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+												<%#= check_box_tag "ignores[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == false %>   
+												<%#= image_tag("tick.png") %>  
+											<%# end %></td>
+						<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
+					    <td width=10px>--><!--<%#= link_to 'Show', staff_attendance %>--><!--</td>
+					    <td width=10px>--><!--<%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %>--><!--</td>
+					    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>	
+					<%# end %>
+				<tr>
+			<%# end %>
+		<%# end %>-->
+		<!--END-PART 2-PERHOTELAN-->
+		
+		<!--TESTING--><%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%>
+		<tr><td colspan=12 style="background-color:#FDDEDE;"><!--red--></td></tr>
+		
+		<tr><td colspan=3><BR><b>Date  : <%= @selected_date %></b></td>
+			<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+		<% count_dept = 0 %>
+		<% @selected_rec_by_date.each_with_index do |record,counting| %><!----><%#  0.upto(1) do |count| %>
+				<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%=@dept_names[count_dept]%></td></tr>
+					
+			<!--CHECKING FOR no staff in Position table for CURRENT department-->
+				<% if @test_department[counting].count == 0 %>	
+					<tr><td>&nbsp;</td><td colspan=11 style="color:red;">No record available</td></tr>
+					<% count_dept+=1%>
+					<tr><td colspan=12 style="background-color:#EFF1F1; font-weight:bold;"><BR>Department/Unit  : <%=@dept_names[count_dept]%></td></tr>
+				<% end %>
+																
+			<% record.each do |staff_attendance|%><%#= staff_attendance.logged_at.strftime("%Y-%m-%d").to_s%>
+			<%#-----------------------------------------------%><%# if staff_attendance.logged_at.strftime("%Y-%m-%d").to_s == @selected_date %>
+				
+				
+				<tr>
 					<% if staff_attendance.attended.blank? %> 
 					<% else %>
-					  <tr>
-							<td><%=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
-					    <td><%=h staff_attendance.attendee_details %>(<%=h staff_attendance.thumb_id %>)</td>
-					    <td><%=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
-					    <td><%=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+						<td><b><%#=staff_attendance.log_type%></b>
+							<%=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %>
+							<%=h staff_attendance.r_u_early == "flag" ? image_tag("flag_red.png") : "" %>
+						</td>
+					    <td><%=h staff_attendance.attendee_details %>(<%=h staff_attendance.thumb_id %>)==<%=staff_attendance.id%></td>
+					    <!--<td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type == "I" ? "IN" : "OUT" %></td>-->
+						<td><%=h staff_attendance.log_type == "I" ? staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') : "" %></td>
+						<td>
+							<% if staff_attendance.log_type == "O" || staff_attendance.log_type == "o"%>
+								<%=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M')%>
+							<% end %>
+						</td>
+						<td align="center">
+							<%=h Staff.find(:first, :conditions => ['thumb_id=?',staff_attendance.thumb_id]).shift_for_staff %>
+		<!--CHECKING PART-15Mei2013-->
+		<%#=========================================================================================%>
+		<!--
+		<%# @shift = Staff.find(:first, :conditions => ['thumb_id=?',staff_attendance.thumb_id]).staff_shift_id %>
+		<%#=h @shift_start = StaffShift.find(@shift).start_at.strftime('%H:%M') if @shift != nil %>
+		<%# @shift_start = (StaffShift.find(@shift).start_at.strftime('%H').to_i * 100) if @shift != nil  %>
+		<%#= @shift_start += (StaffShift.find(@shift).start_at.strftime('%M').to_i) if @shift != nil  %>
+		<%# @shift_end = (StaffShift.find(@shift).end_at.strftime('%H').to_i * 100) if @shift != nil  %>
+		<%#= @shift_end += (StaffShift.find(@shift).end_at.strftime('%M').to_i) if @shift != nil  %>
+		
+		<%# minit=99%>
+		<br>YAYA<%#= (staff_attendance.logged_at.hour - 8).to_s+(staff_attendance.logged_at.min).to_s %>
+		<br>YOYO<%#= ((StaffShift.find(@shift).end_at.hour - 8).to_s+ (StaffShift.find(@shift).end_at.min).to_s if @shift != nil) %>
+		<br>YOYI<%#= (StaffShift.find(@shift).end_at.strftime('%H').to_i) - 8 if @shift != nil %>
+		<br>minit <%#= minit = (StaffShift.find(@shift).end_at.min).to_s if @shift != nil %>
+		
+		<%# if minit = 0 %>
+			<br>jam<%#=jam = ( ( (StaffShift.find(@shift).end_at.strftime('%H').to_i) - 8)-1 ) if @shift != nil %>
+			min<%#=60 %>
+			<br>jam min <%# jam.to_s + minit.to_s %>
+		<%# end %>-->
+		<%#=========================================================================================%>
+		<!--CHECKING PART-->
+							
+						</td>
+						<td style="text-align:center;">
+							<% if staff_attendance.log_type == "I" %>
+								<%= staff_attendance.late_early %>
+							<% else %>
+								-
+							<% end %>
+						</td>
+						<td style="text-align:center;">
+							<% if staff_attendance.log_type == "O" %>
+								<%= staff_attendance.late_early %>
+							<% else %>
+								-
+							<% end %>
+						</td>
 					    <td style="text-align:center;">
 											<% if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+												<%= check_box_tag "triggers[]", staff_attendance.id %>
+											<% elsif staff_attendance.trigger == nil && staff_attendance.r_u_early == "flag"  %> 
 												<%= check_box_tag "triggers[]", staff_attendance.id %>
 											<% elsif staff_attendance.trigger == true %>   
 												<%= image_tag("user_go.png") %> 
 											<% end %></td>
-							<td	style="text-align:center;">
+						<td	style="text-align:center;">
 											<% if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+												<%= check_box_tag "ignores[]", staff_attendance.id %>
+											<% elsif staff_attendance.trigger == nil && staff_attendance.r_u_early == "flag" %> 
 												<%= check_box_tag "ignores[]", staff_attendance.id %>
 											<% elsif staff_attendance.trigger == false %>   
 												<%= image_tag("tick.png") %>  
-											<% end %></td>
-							<td><%=h staff_attendance.timmy2 %><%= staff_attendance.trigger %> </td>
-					    
+											<% end %><%#=staff_attendance.logged_at.strftime("%d%b%y")%></td>
+			<!--	<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>-->
 					    <td width=10px><!--<%= link_to 'Show', staff_attendance %>--></td>
 					    <td width=10px><!--<%= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %>--></td>
-					    <td width=10px><%= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>
+					    <td width=10px><%= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>	
+					<% end %>
+				<tr><%# end %><!--end for  0.upto(1) do |count|-->
+					
+			<%#-----------------------------------------------%>
+			<% end %><!----><%# end for record.each%>
+			
+
+			<%count_dept+=1%>
+		<% end %>
+		
+		<tr><td colspan=10 style="background-color:#FDDEDE;"><!--red--></td></tr>
+
+
+<% end %><!--@@@@@@@@@@@@@@@@@@--><!----><!----><!----><!----><!----><!----><!----><!---->
+
+		<!--TESTING--><%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%>
+		
+		<!--START-ALL DEPT-->	
+				<%# date = "2012-10-15"%>
+				<%# count1=0%>
+				<%# for testalldeptgroup in @testalldeptgroup %>
+				<%# for testalldeptgroup in @testalldepartmenttgroup %>
+				<!---->
+					<%# testalldeptgroup.each do |d,k| %>
+						<%# if d == date %>
+							<!----><!--
+							<tr><td colspan=3><BR><b>Department/Unit  : <%#=@dept_names[count1]%>
+								</b>
+								</td>
+							<td></td><td></td><td></td><td></td><td colspan=3><%#=@staff_attendances.count%></td></tr>-->
+							<!---->
+
+							<%# k.each do |staff_attendance|%>
+
+								<%#-----------------------------------------------%><!--
+									<tr>
+										<%# if staff_attendance.attended.blank? %> 
+										<%# else %>
+											<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+										    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+										    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+										    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+										    <td style="text-align:center;">
+																<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+																	<%#= check_box_tag "triggers[]", staff_attendance.id %>
+																<%# elsif staff_attendance.trigger == true %>   
+																	<%#= image_tag("user_go.png") %> 
+																<%# end %></td>
+											<td	style="text-align:center;">
+																<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+																	<%#= check_box_tag "ignores[]", staff_attendance.id %>
+																<%# elsif staff_attendance.trigger == false %>   
+																	<%#= image_tag("tick.png") %>  
+																<%# end %></td>
+											<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
+										    <td width=10px>--><!--<%#= link_to 'Show', staff_attendance %>--><!--</td>
+										    <td width=10px>--><!--<%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %>--><!--</td>
+										    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>-->	
+										<%# end %>
+									<!--<tr>-->
+								<%#-----------------------------------------------%>
+							<%# end %><!--END FOR k.each-->
+						<%# end %><!--end for( if d == date )-->
+			
+					<%# end %><%# count1+=1%><!--testalldeptgroup.each -->
+				<%# end %><!--end for : for testalldeptgroup in @testalldepartmenttgroup/for testalldeptgroup in @testalldeptgroup-->
+				<!---->
+			<!--END-ALL DEPT-->
+		
+		<!---->
+	<%# end %><!--end for : @staff_attendance_days.keys.sort.reverse.each do |date|-->
+
+<!--
+<tr><td colspan=8 style="background-color:yellow;">-->
+	<%#no=0%>
+	<%# for test_department in @test_department%>
+		<%#=no+=1%><!--qty for each dept <%#= test_department.count%>BB<%#= @testalldepartmenttgroup.count%><br>
+	<%# end %>--><!--
+</tr>	
+<tr><td colspan=8 style="background-color:green;">&nbsp;</tr>	-->
+	<!--
+	<%# @test_itdept_group.keys.sort.reverse.each do |date| %>
+	<%# @test_hoteldept_group.keys.sort.reverse.each do |date| %>
+		<tr><td colspan=3><BR><b>Date  : <%#= date unless date.blank? %></b></td>
+			<td></td><td></td><td></td><td></td><td colspan=3></td></tr>	
+			<%# for staff_attendance in @test_itdept_group[date].sort_by{|e| e[:thumb_id]} %>
+			<%# for staff_attendance in @test_hoteldept_group[date].sort_by{|e| e[:thumb_id]} %>
+			
+				<tr>
+					<%# if staff_attendance.attended.blank? %> 
+					<%# else %>
+						<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+					    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+					    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+					    <td style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+												<%#= check_box_tag "triggers[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == true %>   
+												<%#= image_tag("user_go.png") %> 
+											<%# end %></td>
+						<td	style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+												<%#= check_box_tag "ignores[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == false %>   
+												<%#= image_tag("tick.png") %>  
+											<%# end %></td>
+						<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
+					    <td width=10px>--><!--<%#= link_to 'Show', staff_attendance %>--><!--</td>
+					    <td width=10px>--><!--<%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %>--><!--</td>
+					    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>
+					<%# end %>
+				</tr>
+			<%# end %>
+		<%# end %>--><!--
+		<%# @test_hoteldept_group.keys.sort.reverse.each do |date| %>
+			<tr><td colspan=3><BR><b>Date  : <%#= date unless date.blank? %></b></td>
+				<td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+			<%# for staff_attendance in @test_hoteldept_group[date].sort_by{|e| e[:thumb_id]} %>
+			
+				<tr>
+					<%# if staff_attendance.attended.blank? %> 
+					<%# else %>
+							<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+					    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+					    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+					    <td style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+												<%#= check_box_tag "triggers[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == true %>   
+												<%#= image_tag("user_go.png") %> 
+											<%# end %></td>
+							<td	style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+												<%#= check_box_tag "ignores[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == false %>   
+												<%#= image_tag("tick.png") %>  
+											<%# end %></td>
+							<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
 					    
-					  </tr>
-						<% end %>
-			<% end %>
-	<!--	<#% end %>-->
-	<% end %>
+					    <td width=10px>--><!--<%#= link_to 'Show', staff_attendance %></td>
+					    <td width=10px>--><%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %><!--</td>
+					    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>
+					<%# end %>
+				</tr>
+			<%# end %>
+	<%# end %>-->
 	<tr><td colspan=4></td>
 		<td  colspan=2><%= submit_tag "save action"%></td><td></td><td colspan=3 ></td></tr>
-<% end %>
+<% end %><!--end of form tag-->
+<!--for testing-->
+<!--separator-->
+<!--<tr><td colspan=8>LALALA</td></tr>-->
+<!--separator-->
+
+  <!--</tr>-->
+<%# form_tag actionable_staff_attendances_path, :method => :put do %>
+
+	<%# @staff_attendance_days.keys.sort.reverse.each do |date| %><!--
+		<tr><td colspan=3><BR><b>Date  : <%#= date unless date.blank? %></b></td>
+			<td></td><td></td><td></td><td></td><td colspan=3></td></tr>
+		
+
+			<%# for staff_attendance in @staff_attendance_days[date].sort_by{|e| e[:thumb_id]} %>
+					<%# if staff_attendance.attended.blank? %> 
+					<%# else %>
+					  <tr>
+							<td><%#=h staff_attendance.r_u_late == "flag" ? image_tag("flag_red.png") : "" %></td>
+					    <td><%#=h staff_attendance.attendee_details %>(<%#=h staff_attendance.thumb_id %>)</td>
+					    <td><%#=h staff_attendance.logged_at.in_time_zone('UTC').strftime('%H:%M') %></td>
+					    <td><%#=h staff_attendance.log_type = "I" ? "IN" : "OUT" %></td>
+					    <td style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag"  %> 
+												<%#= check_box_tag "triggers[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == true %>   
+												<%#= image_tag("user_go.png") %> 
+											<%# end %></td>
+							<td	style="text-align:center;">
+											<%# if staff_attendance.trigger == nil && staff_attendance.r_u_late == "flag" %> 
+												<%#= check_box_tag "ignores[]", staff_attendance.id %>
+											<%# elsif staff_attendance.trigger == false %>   
+												<%#= image_tag("tick.png") %>  
+											<%# end %></td>
+							<td><%#=h staff_attendance.timmy2 %><%#= staff_attendance.trigger %> </td>
+					    
+					    <td width=10px><%#= link_to 'Show', staff_attendance %>--><!--</td>
+					    <td width=10px>--><!--<%#= link_to 'Edit', edit_staff_attendance_path(staff_attendance) %></td>
+					    <td width=10px><%#= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), staff_attendance, :confirm => 'Are you sure?', :method => :delete %></td>
+					    
+					  </tr>-->
+						<%# end %>
+			<%# end %>
+	<!--	<#% end %>-->
+	<%# end %><!--
+	<tr><td colspan=4></td>
+		<td  colspan=2><%#= submit_tag "save action"%></td><td></td><td colspan=3 ></td></tr>
+<%# end %>-->
 </table>
 </div>
 <br />

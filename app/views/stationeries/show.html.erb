@@ -13,17 +13,17 @@
 	
 		<tr>
 			<td class="leftcol"><label for="maxquantity"><%= t 'supplier.current'%> :</label></td>
-			<td><%=h @stationery.current_quantity %>&nbsp;<%=h @stationery.unittype %></td>
+			<td><%=h @stationery.current_quantity.to_i %>&nbsp;<%=h @stationery.unittype %></td>
 		</tr>
 	
 		<tr>
 			<td class="leftcol"><label for="maxquantity"><%= t 'supplier.maxquantity'%> :</label></td>
-			<td><%=h @stationery.maxquantity %><%=h @stationery.unittype %></td>
+			<td><%=h @stationery.maxquantity.to_i %>&nbsp;<%=h @stationery.unittype %></td>
 		</tr>
 	
 		<tr>
 			<td class="leftcol"><label for="minquantity"><%= t 'supplier.minquantity' %> :</label></td>
-			<td><%=h @stationery.minquantity %><%=h @stationery.unittype %></td>
+			<td><%=h @stationery.minquantity.to_i %>&nbsp;<%=h @stationery.unittype %></td>
 		</tr>	
 	</table>
 	<BR>
@@ -32,20 +32,46 @@
 		<table width=100%>
 			<tr>
 				<td>LPO No</td>
+				<td>Supplier Name</td>
 				<td>Quantity</td>
-				<td>Unit Cost</td>
+				<td>Price per Unit</td>
 				<td>Total</td>
+				<td>Received Date</td>
 			</tr>
 		<% for addsuppliers in @stationery.addsuppliers %>
 			<tr>
 				<td><%= addsuppliers.lpono %></td>
-				<td><%= addsuppliers.quantity %></td>
+				<td><%= addsuppliers.document %></td>
+				<td><%= addsuppliers.quantity.to_i %></td>
 				<td><%= ringgols(addsuppliers.unitcost) %></td>
 				<td><%= ringgols(addsuppliers.line_item_value) %></td>
+				<td><%= addsuppliers.received? ? addsuppliers.received.strftime("%d %b %Y") : "-" %></td>
 			</tr>
 		<% end %>
 		</table>
+		
+	<%# if @stationery.usesupplies %>
+		<H2>Deductions</H2>
+		<table width=100%>
+			<tr>
+				<td>Issues By</td>
+				<td>Received By</td>
+				<td>Quantity</td>
+				<td>Issue Date</td>
+			</tr>
+		<% for usesupplies in @stationery.usesupplies %>
+			<tr>
+				<td><%= usesupplies.issuedby %></td>
+				<td><%= usesupplies.receivedby %></td>
+				<td><%= usesupplies.quantity.to_i %></td>
+				<td><%= usesupplies.issuedate? ? usesupplies.issuedate.strftime("%d %b %Y") : "-" %></td>
+			</tr>
+		<% end %>
+	<%# end %>
+		</table>
 </div>
+
+
 
 <%= link_to (t 'icms.update'), edit_stationery_path(@stationery) %> |
 <%= link_to (t 'icms.back'), stationeries_path %>

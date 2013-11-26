@@ -2,7 +2,7 @@
 
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
-config.cache_classes = false
+config.cache_classes = true
 
 # Log error messages when you accidentally call methods on nil.
 #config.whiny_nils = true

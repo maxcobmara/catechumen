@@ -5,17 +5,49 @@
     <h2 class="left">Lists of Documents</h2>
 		<div class="right">
       <% form_tag documents_path, :method => 'get' do %>
-	  		<%= text_field_tag :search, params[:search], :placeholder => "RefNo,Title" %>
-	  		<%= submit_tag I18n.t('search'), :title => nil %>
+	  		<%= text_field_tag :search, params[:search], :placeholder => "RefNo, Title" %>
+	  		<%= submit_tag "Search", :title => nil, :name => :submit_button1  %>
 			<% end %>
 		</div>
   </div>
 </div>
 
-<div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Document') + "New", new_document_path %></p>
-</div>
-
+<table width=100%><tr><td>
+	<% permitted_to? :manage, :documents do %>
+	<div class="toolbar">
+		<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Document') + "New", new_document_path %></p>
+	</div>
+	<% end %>
+	</td>
+	<td align="right"><!--<div class="right">
+		<%# form_tag documents_path, :method => 'get' do %><i>(Format : 2012-10-12)</i>
+	  		<%#= text_field_tag :search2, params[:search2], :placeholder => "Letter Date" %>
+	  		<%#= submit_tag "Search by date", :title => nil , :name => :submit_button1%>
+		<%#end %></div><br>-->
+		<div class="right">
+			<% form_tag '', :method => 'get' do %>
+			From: <%= date_select :search_from, params[:search_from], :include_blank => :true %>
+			&nbsp; &nbsp;To: <%= date_select :search_to, params[:search_to], :include_blank => :true %>
+			<%= submit_tag "Search by received date", :name => :submit_button1 %>
+			<% end %>
+		</div>
+	</td>
+</table>
+<!--	
+search 1:<%#=params[:search]%><br>
+search 2:<%#=params[:search2]%>--><!--
+date1 : <%#=@date1a%> ** <%#=@date1b%> ** <%#=@date1c%> - <%#=@datefrom%><br>
+date2 : <%#=@date2%> - <%#=@dateto%><br>
+datafrom : <%#=@datafrom%><br>
+datefrom : <%#=@datefrom%>nini
+dadu : <%#=@dadu%><br>
+dadi : <%#=@dadi%>
+<br><%#=@aa%>
+<br><%#=@bb%>
+<br><%#=@cc%>
+<br> DADIDU :<%#=@dadidu%>
+<br> DADIDU2 :<%#=@dadidu2%>
+tome = <%=@tome.count%>-->
 <div class="indextable">
 	<table width=100% border="0" cellpadding="0" cellspacing="0">
 		<tr>
@@ -23,45 +55,115 @@
 		  <th>Ref No</th>
 		  <th>Category</th>
 		  <th>Title</th>
-		  <th>Letter Date</th>
-		  <th>Received Date</th>
+		  <th style="width:75px;">Letter Date</th>
+		  <th style="width:75px;">Received Date</th>
 		  <th>From</th>
-		  <th>Filed By</th>
+		  <th>Circulate To</th>
+			<th>Actions/Notifications</th>
 		  <th>Closed</th>
 		  <th colspan=3 class="ac">Control</th>
 		</tr>
+	<!--***************************************************--><%#=User.current_user.roles.map(&:id).include?(2)%>
+	<% @tome_document_files.each do |filedocer_tome, documents_tome| %>
+		<% documents_tome.each_with_index do |document,count| %>
+			<% document.staffs.each_with_index do |doc_recepient,ind|%>
+				<% if doc_recepient.id == User.current_user.staff_id && count == 0 && 
+					document.owner_ids.include?(User.current_user.staff_id)== false %>
+					<tr><td colspan=13 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
+						<%=h filedocer_tome %></span></td></tr>
+				<% end %>	
+			<% end %>
 
-    <% @document_files.each do |filedocer, documents| %>
-    <tr>
-      <td colspan=12><BR> <b><%=h filedocer %><b></td>
-   	</tr>
-        
-			<% for document in documents %>
-			<tr>
-				<td><%=h document.serialno %></td>
-				<td><%=h document.refno %></td>
-				<td><%=h (Document::CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} %></td>
-				<td><%=h document.title %></td>
-				<td><%=h l(document.letterdt) %></td>
-				<td><%=h tarikh(document.letterxdt) %></td>
-				<td><%=h document.from %></td>
-				<td><%=h check_kin {document.stafffilled.name} %></td>
-				<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
-				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
-				<td width=10px>
-						<% if document.owner_ids.include? current_user.staff_id %>
-							<%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %>
-						<% end %></td>
-				<td width=10px>
-					  <% if document.stafffiled_id == current_user.staff_id %>
-				    	<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %>
-						<% end %></td>
-			</tr>
+		<% end %>
+		<% documents_tome.each_with_index do |document,count| %>
+			<%document.staffs.each_with_index do |doc_recepient, ind|%>
+				<% if doc_recepient.id == User.current_user.staff_id && (document.owner_ids.include? doc_recepient.id)== false %>
+					<tr>
+						<td><%=h document.serialno %></td>
+						<td><%=h document.refno %></td>
+						<td><%=h document.category %></td>
+						<td><%=h document.title %></td>
+						<td><%=h l(document.letterdt) %></td>
+						<td><%=h l(document.letterxdt) %></td>
+						<td><%#=h document.sender %><%=h document.from %></td>
+						<td>
+							<% document.staffs.each_with_index do |doc_recepient,ind|%>
+								<% if doc_recepient.id == User.current_user.staff_id%>
+									<%if ind!=0 %><br><%end%><b>(<%=ind+=1%>) <%=h doc_recepient.name %><%#=h doc_recepient.name.upcase %></b>	
+								<% else %>
+									<br>(<%=ind+=1%>) <%=h doc_recepient.name %>
+								<% end %>	
+							<% end %>
+						</td>
+						<td><%=h document.otherinfo %></td>
+	    				<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
+						<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
+						<td width=10px></td>
+						<td width=10px></td>
+					</tr>
+				<% end %>
 			<% end %>
 		<% end %>
+	<% end %><!--end for @tome_document_files.each-->
+	<!--***************************************************-->
+    <% @document_files.each do |filedocer, documents| %>
+		<% documents.each_with_index do |document,count| %>
+			<% if (document.owner_ids.include? current_user.staff_id) && count == 0%>
+    			<tr><td colspan=13 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;"><%=h filedocer %></span></td></tr>
+			<% end %>
+		<% end %>
+		<!--5Apr2013-->
+        <% for document in documents %>
+			<% if (document.owner_ids.include? current_user.staff_id) %>
+				<tr>
+					<td><%=h document.serialno %></td>
+					<td><%=h document.refno %></td>
+					<td><%=h (Document::CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} %></td>
+					<td><%=h document.title %></td>
+					<td><%=h l(document.letterdt) %></td>
+					<td><%=h tarikh(document.letterxdt) %></td>
+					<td><%=h document.from %></td>
+					<td><%#=h check_kin {document.cc1staff.name} %> <!--5Apr2013-to move this line later (single circulation)-->
+						<% document.staffs.each_with_index do |doc_recepient,ind| %>
+							<%if ind!=0 %><br><%end%>
+							<% if doc_recepient.id == User.current_user.staff_id %><b><% end %>
+							(<%=ind+=1%>) <%= doc_recepient.name %>
+							<% if doc_recepient.id == User.current_user.staff_id %></b><% end %>
+						<% end %>
+					</td>
+					<td><%=h document.otherinfo %></td>
+					<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
+					<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
+					<td width=10px>
+						<% if (document.closed != true && document.stafffilled.id == current_user.staff_id) || (document.closed != true && document.preparedby.id == current_user.staff_id) %>
+							<%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %>
+						<% end %>
+					</td>
+					<td width=10px>
+						<% if document.stafffilled.id == current_user.staff_id || document.preparedby.id == current_user.staff_id %>
+				   			<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %>
+						<% end %>
+					</td>
+				</tr>
+			<% end %>
+		<% end %><!--end for... for document in documents-->
+		<!--5Apr2013-->
+	<% end %>
+	
   </table> 
 </div>
 
 <br />
 
-<%= link_to 'New Document', new_document_path %>
+<%# @a_creator=[] %>
+<%# @a_filled=[] %>
+<%# @documents.each do |x|%>
+	<%# @a_creator << x.prepared_by %>
+	<%# @a_filled << x.stafffiled_id %>
+<%# end %>
+
+<% permitted_to? :manage, :documents do %>
+	<%# if (@a_creator.include? User.current_user.staff_id) || (@a_filled.include? User.current_user.staff_id) %>
+		<%= link_to 'New Document', new_document_path %> | <%= link_to 'Generate Report', :action => 'generate_report', :locals => {:class_type => '1',:dodo =>params[:search],:dudu =>params[:search2],:startdate=>@dadidu,:enddate=>@dadidu2 } %>
+	<%# end %>
+<% end %>

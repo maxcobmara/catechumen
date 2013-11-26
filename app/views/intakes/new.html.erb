@@ -1,31 +1,12 @@
-<h1>New intake</h1>
-
 <% form_for(@intake) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :description %><br />
-    <%= f.text_field :description %>
-  </p>
-  <p>
-    <%= f.label :register_on %><br />
-    <%= f.date_select :register_on %>
-  </p>
-  <p>
-    <%= f.label :programme_id %><br />
-    <%= f.collection_select :course_id, Programme.roots, :id, :programme_list, :include_blank => true %>
-  </p>
-  <p>
-    <%= f.label :is_active %><br />
-    <%= f.check_box :is_active %>
-  </p>
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
+	<%= f.error_messages %>
+	<div class="tform">
+		<H2>New Intake</H2>
+		<%=render :partial => 'form', :locals => {:f => f} %>
+	</div>
+  	<p>
+    	<%= f.submit 'Create' %>
+  	</p>
 <% end %>
 
 <%= link_to 'Back', intakes_path %>

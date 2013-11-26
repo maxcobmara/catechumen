@@ -43,7 +43,7 @@
 	
 		<tr>
 			<td class="leftcol"><label for="cobirthdt"><%= t 'staff.cobirthdt' %> :</label></td>
-			<td><%=h l(@staff.cobirthdt) %></td>
+			<td><%#=h l(@staff.cobirthdt) %><%=h @staff.cobirthdt.blank? ? "-" : @staff.cobirthdt.strftime('%d %m %Y') %></td>
 		</tr>
 	
 		<tr>
@@ -83,7 +83,7 @@
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="addr"><%= t 'staff.addr' %> :</label></td>
+			<td class="leftcol"><label for="addr"><%= t 'staff.address' %> :</label></td>
 			<td><%=h @staff.addr %></td>
 		
 		</tr>
@@ -254,30 +254,42 @@
 	<% end %>
 	</table>
 	
-	<H2><%= t 'staff.loans' %></H2>
+	<H2><%= t 'staff.loan.loans' %></H2>
 	<table width=100%>
 	<% for loan in @staff.loans %>	
 		<tr>
-			<td class="leftcol"><label for="ltype "> <%= t 'staff.ltype' %> :</label></td>
+			<td class="leftcol"><label for="ltype "> <%= t 'staff.loan.ltype' %>  :</label></td>
 			<td><%=h (Loan::LTYPE.find_all{|disp, value| value == loan.ltype}).map {|disp, value| disp} %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="accno "><%= t 'staff.accno' %> :</label></td>
+			<td class="leftcol"><label for="accno "><%= t 'staff.loan.accno' %> :</label></td>
 			<td><%=h loan.accno %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="startdt "><%= t 'staff.startdt' %> :</label></td>
-			<td><%=h loan.startdt %></td>
+			<td class="leftcol"><label for="startdt "><%= t 'staff.loan.startdt' %> :</label></td>
+			<td><%#=h l(loan.startdt) %><%#=h %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="durationmn "><%= t 'staff.durationmn' %> : </label></td>
+			<td class="leftcol"><label for="durationmn "><%= t 'staff.loan.durationmn' %> : </label></td>
 			<td><%=h loan.durationmn %> Months</td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="deductions "><%= t 'staff.deductions' %> :</label></td>
+			<td class="leftcol"><label for="deductions "><%= t 'staff.loan.deductions' %> :</label></td>
 			<td>RM <%=h loan.deductions %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="deductions "><%= t 'staff.loan.firstdate' %> :</label></td>
+			<td><%=h loan.firstdate.blank? ? "-" : loan.firstdate %><%#=h l(loan.firstdate) %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="deductions "><%= t 'staff.loan.enddate' %> :</label></td>
+			<td><%=h loan.enddate.blank? ? "-" : loan.enddate %><%#=h l(loan.enddate) %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="deductions "><%= t 'staff.loan.enddeduction' %> :</label></td>
+			<td>RM <%=h loan.enddeduction %></td>
 		</tr>
 
 		<tr><td colspan=4><HR></td></tr>
@@ -296,7 +308,7 @@
 				<td><%=h @staff.taxcode %></td>
 			</tr>
 			<tr>
-				<td class="leftcol">Bank Accounts</td>
+				<td class="leftcol"><%= t 'staff.bank.banks' %></td>
 				<td>
 					<% for bankaccount in @staff.bankaccounts %>
 							<%=h bankaccount.bank.long_name %>   -   
@@ -307,7 +319,7 @@
 			</tr>
 	</table>
 	
-	<H2><%= t 'staff.emencengy' %></H2>
+	<H2><%= t 'staff.emergency' %></H2>
 	<table width=100%>
 		<% for kin in @staff.kins %>
 			<tr>
@@ -319,8 +331,8 @@
 				<td><%=h kin.name.blank? ? "" : kin.name %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><label for="kinbirthdt "><%= t 'staff.kinbirthdt' %> :</label></td>
-				<td><%=h kin.kinbirthdt %></td>
+				<td class="leftcol"><label for="kinmykadno "><%= t 'staff.kinmykadno' %> :</label></td>
+				<td><%=h kin.mykadno %></td>
 			</tr>
 
 			<tr>

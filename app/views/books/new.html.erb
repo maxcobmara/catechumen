@@ -1,13 +1,63 @@
 <h3>New Book</h3>
 
-<% form_for(@book, :html => { :multipart => true}) do |f| %>
-  <%= f.error_messages %>
+<div class="tform">
 
-  <%=render :partial => 'form', :locals => {:f => f} %> 
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
-<% end %>
+	<div id="new_form">
+		
+		<% if @book.isbn.nil? == true %>
+			<H2>Check ISBN availability</H2>
+			<table width=100%>
+				<tr>
+					<td class="leftcol">ISBN / ISSN No:</td>
+					<td><!--<%#= @book.id%>|<%#= @book.nil? %>*<%#=@book.blank? %>~<%#= !@book %>^<%#= @book %>-->
+						<%# if @book.id == nil%>
+						<% form_remote_tag(:url => {:action => :check_availability}, :update => 'new_form2' ) do %>
+							<%= text_field_tag(:isbn_search, params[:isbn_search]) %>
+							<%= submit_tag "Check Availability" %>
+						<% end %>
+					</td>
+				</tr>
+			</table>
+		<% end %>
+
+	</div>
+
+	<H2>Book Details</H2>
+
+	<% form_for(@book, :html => { :multipart => true}) do |f| %>
+  		
+		<%= f.error_messages %>
+		<!--LOLO-do not remove<%#=@book.isbn%>**<%#= @book.isbn!=nil%>-->
+		<div id="new_form2">
+			<!--for NEW(resubmit)-->
+			<%if @book.isbn!=nil%>
+				<table width="100%">
+				<tr>
+					<td class="leftcol"><label for="isbn"><b>ISBN / ISSN No:</b></label></td>
+					<td>
+						<%#= f.text_area :isbn, :size =>  '30x2' %>
+						<!--for new(resubmit)-checking-->
+						<% if @book %>
+							<span><%= @book.isbn%></span>
+						<% end %>
+						<%= hidden_field_tag("book[isbn]", @book.isbn) %>
+						<!--for new(resubmit)-checking-->
+						<font color="red"> * </font>
+					</td>
+				</tr> 
+				</table>
+			<% end %>
+			<!--for NEW(resubmit)-->
+		</div><!--ISBN No -->
+		
+		<%=render :partial => 'form', :locals => {:f => f} %> 
+		<p><%= f.submit 'Create' %></p>
+
+	<% end %>
+
+
+<!--</div>-->
+
 </div>
 
 <%= link_to 'Back', books_path %>

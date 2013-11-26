@@ -1,0 +1,137 @@
+<div class="fields">
+	<span class="show_hide"><%= link_to_function "Click to <b>SELECT Day & Time Slot</b> accordingly", "$('"+form_tag_id(f.object_name, :reference)+"').toggle(); $('"+form_tag_id(f.object_name, :reference2)+"').toggle()" %></span>
+	<%#= link_to_function "[+/-] HIDE DETAILS...", "$('"+form_tag_id(f.object_name, :full_details)+"').toggle()" %>
+	<br>
+
+	<!--Format:Time slot for Mon-Thursday:1-7 (1,3,5,7,[2 & 4:break])-->
+	<% @timeslot=[]%>
+	<% for timetable in Timetable.find(@weeklytimetable.format1).timetable_periods %>
+		<% @timeslot << timetable if timetable.is_break != true%>
+	<% end %>
+	
+	<!--Format:Time slot for Friday:8-12 (8,10,12,[9 & 11:break])-->
+	<% @timeslot2=[]%>
+	<% for timetable in Timetable.find(@weeklytimetable.format2).timetable_periods %>
+		<% @timeslot2 << timetable if timetable.is_break != true%>
+	<% end %>
+
+	<br>
+	<table>
+		<tr><td></td><td></td></tr>
+		<tr>
+			<td class="leftcol">Day/Time</td>
+			<td>
+				<!--find INDEX for THIS repeating fields-->
+				<% @object_full_id = f.object_name.gsub(/(\])?\[/,"_").chop %>
+				<% @object_index_id = @object_full_id.to_s.split("attributes_").last %>
+				<!--find INDEX for THIS repeating fields-->
+				
+				<% if @weeklytimetable.weeklytimetable_details[@object_index_id.to_i] %><!--23March2013-check if record exist-->
+				<!--Part A:Existing record (start)-->
+					<!--Slot:--><% @selected_timeslot= @weeklytimetable.weeklytimetable_details[@object_index_id.to_i].time_slot %>
+					<!--Slot2:--><% @selected_timeslot2= @weeklytimetable.weeklytimetable_details[@object_index_id.to_i].time_slot2 %>
+					<!--Day:--><%# @selected_day= @weeklytimetable.weeklytimetable_details[@object_index_id.to_i].day %>
+					<!--Day2:--><%# @selected_day2= @weeklytimetable.weeklytimetable_details[@object_index_id.to_i].day2 %>
+					<% if @selected_timeslot.to_i>7%>
+						<% @aaa="display:block" %>
+						<% @bbb="display:none" %>
+					<% elsif @selected_timeslot2.to_i<8%>
+						<% @aaa="display:none" %>
+						<% @bbb="display:block" %>
+					<% end %>
+				<!--Part A:Existing record (start)-->
+				<% else %>
+				<!--Part B:New record (start)-->
+					<% @aaa="display:none" %>
+					<% @bbb="display:block" %>
+				<!--Part B:New record (end)-->
+				<% end %>
+				
+				<%= tag("span", :id => form_tag_id(f.object_name, :reference), :style=>"#{@bbb}") %>
+					<%= f.select :day2, WeeklytimetableDetail::DAY_LIST, :include_blank => "Select Day"  %>
+					- <%= f.collection_select :time_slot2, @timeslot, :id, :timing, :include_blank => "Select Time Slot (M-T)" %>
+					
+				</span>
+				<%= tag("span", :id => form_tag_id(f.object_name, :reference2), :style=>"#{@aaa}") %>
+					<%#= f.select :day, [["Friday",5]], :include_blank=>"UnSelect if NOT Friday" %>
+					<%= f.check_box :is_friday %>Tick if Friday
+					- <%= f.collection_select :time_slot, @timeslot2, :id, :timing, :include_blank => "Select Time Slot (F)" %>
+				</span>
+			
+			</td> 
+		</tr>
+		<!--start-Subject, Lecturer, Topic section, Location & Teaching method-->
+		<tr>
+			<td class="leftcol">Lecturer</td>
+			<td><%= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar'],:order=>'name ASC'), :id, :name, :prompt=>"Select Lecturer" %></td>
+		</tr>
+		<!--25March2013-hide subject
+		<tr>
+			<td class="leftcol">Subject</td>
+			<td><%#= f.collection_select :subject, Programme.at_depth(2), :id, :subject_list, :include_blank =>"Select Subject" %></td>
+		</tr>-->
+		<tr>
+			<td class="leftcol">Semester-Subject : Topic<!--Topic--></td>
+			<td style="vertical-align:middle">
+				<!--25March2013-luar def subject_topic-(start)-->
+				<!--1st choice-->
+				<% aa=Programme.find(:all,:conditions=>['ancestry_depth=? OR ancestry_depth=?',3,4], :order=>:combo_code) %>
+				<% @semester_subject_topic_list=[] %>
+				<% aa.each do |bb| %>
+					<% if bb.root_id == @weeklytimetable.programme_id %><%# if bb.root_id == 2 %><!--the most workable-->
+						<% @semester_subject_topic_list<< bb %>
+					<% end %>
+				<% end %>
+				<!-- this part for data viewing test only
+				<%# @semester_subject_topic_list.each do |j|%>
+					Sem <%#=j.parent.parent.code%> - <%#=j.parent.code%> | <%#=j.name%><br>
+				<%# end %>-->
+				<% if @object_index_id.to_i > 23 %>
+				<%= select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@object_index_id.to_i}][topic]","<option>Select Semester-Subject | Topic / Subtopic</option>"+"<option selected='selected' value="+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].topic.to_s+">"+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].weeklytimetable_topic.semester_subject_topic+"</option>"+options_from_collection_for_select(@semester_subject_topic_list, :id, :semester_subject_topic ) %>
+				<% else %>
+					<%= f.collection_select :topic, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> "Select Semester-Subject | Topic / Subtopic" %>
+				<% end %>
+
+				<!--2nd choice - BACKUP 
+				<%#= f.collection_select :topic, Programme.find(:all,:conditions=>['ancestry_depth=?',3], :order=>:name), :id, :semester_subject_topic, :include_blank=> "Select topic" %>-->				
+				<%#= f.collection_select :topic, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> "Select Semester-Subject | Topic" %>
+				
+				<!--3rd choice-->
+				<%#= f.collection_select :topic, Programme.find(:all,:conditions=>['ancestry_depth=?',3], :order=>:name), :id, :semester_subject_topic, :include_blank=> "Select topic" %>
+				
+				<!--4th choice--><%#= f.collection_select :topic, Programme.at_depth(3), :id, :subject_list, :prompt => "Select Topic" %>
+				<%#= f.grouped_collection_select(:topic, WeeklytimetableDetail::OPTIONS, :options, :type_name, :id, :name, :include_blank=>"Select Topic")%>		
+				<!--25March2013-def subject_topic-(START)**********************************************************************-->
+				<%#= f.collection_select(:topic, WeeklytimetableDetail.subject_topic(@weeklytimetable.programme_id), :id, :name, :include_blank=>"Select Topic")%>
+				<%# if @weeklytimetable.weeklytimetable_details.id.nil? || @weeklytimetable.weeklytimetable_details.id.blank? %>
+				<!--chup<%#= @object_index_id%>===<%#=@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].topic%>-->
+				<%# if @object_index_id.to_i >=24 %>
+					<%#= f.grouped_collection_select(:topic, WeeklytimetableDetail.subject_topic(@weeklytimetable.programme_id), :options, :type_name, :id, :name, :include_blank=>"Select Topic")%>
+				<%# else %>
+					<%#= f.grouped_collection_select(:topic, WeeklytimetableDetail.subject_topic(@weeklytimetable.programme_id), :options, :type_name, :id, :name)%> <!--@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].topic-->				   
+				<%#end %>
+				<!--25March2013-def subject_topic-(START)**********************************************************************-->
+			</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :location %></td>
+			<td><%= f.collection_select :location, Weeklytimetable.location_list.sort_by{|x|x.name}, :id, :name, :include_blank => "Select" %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :method %></td>
+			<td><%= f.select :lecture_method, WeeklytimetableDetail::CLASS_METHOD, :include_blank => "Select" %></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<%= f.hidden_field :weeklytimetable_id %>
+				<%= f.hidden_field :_destroy %><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>
+			</td>
+		</tr>
+		<!--end -Subject, Lecturer, Topic section, Location & Teaching method-->	
+	</table>
+	<br>
+</div>
+
+
+
+

@@ -1,12 +1,12 @@
-<H2>Applicant Details</H2>
+<H2><%= t 'staffleave.leavereq' %></H2>
 <table>
 	<tr>
-		<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
+		<td class="leftcol"><label for="staff_id"><b><%= t 'staffleave.staff_id' %>:</b></label></td>
 		<td><%=h @leaveforstaff.applicant.mykad_with_staff_name %></td>
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="leavetype"><b>Leave Type:</b></label></td>
+		<td class="leftcol"><label for="leavetype"><b><%= t 'staffleave.leavetype' %>:</b></label></td>
 		<td><%=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp} %></td>
 	</tr>
 
@@ -17,11 +17,11 @@
 	  		<%=h @leaveforstaff.leave_for %> Days</td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="reason"><b>Reason:</b></label></td>
+		<td class="leftcol"><label for="reason"><b><%= t 'staffleave.reason' %>:</b></label></td>
 		<td><%=h @leaveforstaff.reason %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="notes"><b>Notes:</b></label></td>
+		<td class="leftcol"><label for="notes"><b><%= t 'staffleave.notes' %>:</b></label></td>
 		<td><%=h @leaveforstaff.notes %></td>
 	</tr>
 </table>

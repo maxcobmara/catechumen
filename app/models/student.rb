@@ -2,7 +2,7 @@ class Student < ActiveRecord::Base
   
   before_save  :titleize_name
 
-  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake
+  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id
   validates_numericality_of :icno, :stelno
   validates_length_of       :icno, :is =>12
   validates_uniqueness_of   :icno
@@ -27,8 +27,11 @@ class Student < ActiveRecord::Base
   has_many  :tenants
   
   has_many  :librarytransactions                                                            #Link to LibraryTransactions
-  has_many :studentattendances
+  #has_many :studentattendances
+  has_many :student_attendances
   has_many :timetables, :through => :studentattendances
+  
+  has_many :exammarks                                                                       #11Apr2013-Link to Model Exammark
   
   #has_many :sdiciplines, :foreign_key => 'student_id'
   #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
@@ -46,6 +49,37 @@ class Student < ActiveRecord::Base
       Programme.find(:all, :condition => ['programme_id IS NULL'])
   end
   
+  def self.year_and_sem(intake)
+      current_month = Date.today.strftime("%m")
+		  current_year = Date.today.strftime("%Y")
+		  intake_month = intake.strftime("%m")
+		  intake_year = intake.strftime("%Y")
+		  diff_year = current_year.to_i-intake_year.to_i
+		  start_year = 1
+		  start_sem = 1
+		
+		  if intake_month.to_i < 7 
+			  if current_month.to_i < 7 
+				  @year = start_year + diff_year 
+				  @semester = start_sem 
+			  elsif current_month.to_i > 6 
+				  @year = start_year + diff_year 
+				  @semester = 2 
+			  end 
+		  elsif intake_month.to_i > 6 
+			  if current_month.to_i < 7 
+				  @year = diff_year 
+				  @semester = 2 							
+			  elsif current_month.to_i > 6 
+			    @year = start_year + diff_year 
+				  @semester = 1 
+			  end
+		  end 
+	
+		  "Year #{@year}, <br> Semester #{@semester}"
+  
+  end
+  
 #----------------------Declarations---------------------------------------------------------------------------------
   def titleize_name
     self.name = name.titleize
@@ -53,6 +87,14 @@ class Student < ActiveRecord::Base
   
   def age
     Date.today.year - sbirthdt.year
+  end
+  
+  def intake_acryn
+      intake.to_date.strftime("%b %Y") 
+  end 
+  
+  def intake_acryn_prog
+      intake.to_date.strftime("%b %Y")+" | #{course.course_type} - #{course.name}"
   end
   
   #group by intake
@@ -88,6 +130,13 @@ class Student < ActiveRecord::Base
       "[#{course.course_type} - #{course.name}]"
     end
   end
+  def programme_for_student2
+    if course.blank?
+      "N/A"
+    else
+      "#{course.course_type} - #{course.name}"
+    end
+  end
   
   def list_programme
     suid = course_id 
@@ -98,7 +147,9 @@ class Student < ActiveRecord::Base
       v=1
    end
    
-
+   def self.available_students2(subject)
+       Student.find(:all, :joins=>:klasses, :conditions=> ['subject_id=?',subject])
+   end
    
    
    

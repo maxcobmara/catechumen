@@ -1,0 +1,95 @@
+<script type="text/javascript">
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+    nicEditors.editors.push(
+        new nicEditor().panelInstance(
+            document.getElementById('myNicEditor')
+        )
+    );
+});
+//]]>
+</script>
+
+<div class="tform">
+	<h2>Topic Detail Descriptions</h2>
+	<table width=100%>
+		<!--1st choice-refer ...views/weeklytimetables/weeklytimetable_fields.html.erb-->
+
+		<% if @topicdetail.topic_code %>
+			<!--this one works for EDIT existing record - ALL TOPICS INCLUDED-->
+			<!--selection LIMITS to CURRENT topic & topics with NO topicdetail-->
+			<% @semester_subject_topic_list = Programme.find(:all,:conditions=>['(ancestry_depth=? OR ancestry_depth=?) AND id NOT IN(?) OR id=?',3,4,Topicdetail.all.map(&:topic_code).uniq,@topicdetail.topic_code], :order=>:combo_code) %>
+			<%=@semester_subject_topic_list.count%>
+		<% else %>
+			<!--only works for ADD new record-->
+			<!--selection LIMITS to topics with NO topicdetail-->
+			<% @semester_subject_topic_list = Programme.find(:all,:conditions=>['(ancestry_depth=? OR ancestry_depth=?) AND id NOT IN(?)',3,4,Topicdetail.all.map(&:topic_code).uniq], :order=>:combo_code) %>
+			<%=@semester_subject_topic_list.count%>
+		<% end %>
+
+		<!--this will list all AVAILABLE topics-->
+		<%# @semester_subject_topic_list = Programme.find(:all,:conditions=>['ancestry_depth=? OR ancestry_depth=?',3,4], :order=>:combo_code) %>
+		<!---->
+
+		<tr>
+			<td class="leftcol"><label>Topic</label></td>
+			<td>
+				<%= f.collection_select :topic_code, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> "Select Semester-Subject | Topic" %>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :version_no %></td>
+			<td><%= f.text_field :version_no %></td>
+		</tr>
+		<!--
+		<tr>
+			<td class="leftcol"><label></label></td>
+			<td><%#= f.text_field :topic_name %></td>
+		</tr>-->
+
+		<tr>
+			<td class="leftcol"><label>Duration (Total Hours)</label></td>
+			<td><%= f.time_select :duration %> (Hours : Minutes)</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :lecture %></td>
+			<td><%= f.time_select :theory %> (Hours : Minutes)</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :tutorial %></td>
+			<td><%= f.time_select :tutorial %> (Hours : Minutes)</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :practical %></td>
+			<td><%= f.time_select :practical %> (Hours : Minutes)</td>
+		</tr>
+
+		<tr>
+			<td class="leftcol"><%= f.label :objectives %></td>
+			<td><%= f.text_area :objctives, :size => '90x10', :id => 'myNicEditor'  %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%= f.label :contents %></td>
+			<td><%= f.text_area :contents, :size => '90x10', :id => 'myNicEditor'  %></td>
+		</tr>
+		<!--Add training Notes for these specific topic (details)-->
+		<tr>
+			<td class="leftcol">Add Training Notes</td>
+			<td>
+				<div><% @index=0 %>
+					<% f.fields_for :trainingnotes do |builder| %>
+						<%= render 'trainingnote_fields', {:f => builder,:aaa=> params[:topic_code],:index=>@index }%>
+					<% end %>
+						<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :trainingnotes %> - Add More </p>
+				</div>
+			</td>
+		</tr>	
+		<!--Add training Notes for these specific topic (details)-->
+		<tr>
+			<td class="leftcol"><%= f.label :prepared_by %></td>
+			<td><%= f.collection_select :prepared_by, Staff.find(:all, :conditions => ['id =?', User.current_user.staff_id] ), :id, :name %></td>
+		</tr>
+
+	</table>
+</div>
+<BR/>

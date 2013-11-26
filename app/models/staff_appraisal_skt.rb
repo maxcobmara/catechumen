@@ -10,8 +10,16 @@ class StaffAppraisalSkt < ActiveRecord::Base
   end
   
   def set_review
-    if staff_appraisal.is_skt_endorsed == true
-      self.half = 2
+    #if staff_appraisal.is_skt_endorsed == true
+      #self.half = 2
+   # end
+  	if staff_appraisal.is_skt_submit == true && staff_appraisal.is_skt_endorsed == nil
+      self.half = 1
+    elsif staff_appraisal.is_skt_submit != true && staff_appraisal.is_skt_endorsed == nil
+    	self.half = 1
+    end
+    if staff_appraisal.is_skt_endorsed == true && self.half == nil
+    	self.half = 2
     end
   end
 end

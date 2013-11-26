@@ -88,6 +88,8 @@ class StaffAppraisal < ActiveRecord::Base
   def evaluation_status
     if is_skt_submit != true
       "SKT being formulated"
+    elsif is_complete == true
+   		"Staff Appraisal complete"
     elsif is_skt_submit == true && is_skt_endorsed != true
       "SKT awaiting PPP endorsement"
     elsif is_skt_submit == true && is_skt_endorsed == true && is_skt_pyd_report_done != true
@@ -98,8 +100,8 @@ class StaffAppraisal < ActiveRecord::Base
       "PPP Report complete"
     elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true
       "Submitted for Evaluation by PPP"
-    elsif is_submit_for_evaluation == true && is_submit_e2 == true
-      "Submitted by PPP for Evaluation  to PPK"
+   	elsif is_submit_for_evaluation == true && is_submit_e2 == true
+   	   "Submitted by PPP for Evaluation  to PPK"
     end
   end
   
@@ -146,7 +148,7 @@ class StaffAppraisal < ActiveRecord::Base
   end
   
   def when_ppp_is_ppk
-    if eval1_by == eval2_by && e1_total > 1
+    if eval1_by == eval2_by && e1_total != nil #> 1
       self.e2g1q1        =  e1g1q1
       self.e2g1q2        =  e1g1q2
       self.e2g1q3        =  e1g1q3
@@ -173,7 +175,7 @@ class StaffAppraisal < ActiveRecord::Base
       self.e2_total      =  e1_total
       self.e2_years      =  e1_years
       self.e2_months     =  e1_months
-      self.is_submit_e2  =  true
+      self.is_submit_e2  =  false
       self.submit_e2_on  =  Date.today
     end 
   end

@@ -6,7 +6,7 @@
 		<% if @staff_appraisal.evaluation_status == "SKT being formulated" %>
 			<%=render :partial => 'skt', :locals => {:f => f} %> 
 		<% elsif @staff_appraisal.evaluation_status == "SKT awaiting PPP endorsement" && @staff_appraisal.eval1_by == User.current_user.staff_id %> 
-			<%=render :partial => 'show_skt' %> 
+			<%=render :partial => 'show_skt' %>
 			<%=render :partial => 'skt_endorse', :locals => {:f => f} %> 
 		<% elsif @staff_appraisal.evaluation_status == "SKT Review" && @staff_appraisal.staff_id == User.current_user.staff_id %>
 			<%=render :partial => 'skt_review_staff', :locals => {:f => f} %>
@@ -37,6 +37,7 @@
 					<% elsif @staff_appraisal.person_type == 3 %>
 						<%=render :partial => 'eval2_41', :locals => {:f => f} %>
 					<% end %>
+			<%=render :partial => 'show_eval_review1', :locals => {:f => f} %>		
 			<%=render :partial => 'eval2_review', :locals => {:f => f} %>
 
 			

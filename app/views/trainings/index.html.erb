@@ -1,0 +1,56 @@
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Training</h2>
+		<div class="right">
+	  </div>
+	</div>
+</div>
+
+<div class="indextree">
+<table id="tree" style="width:100%">
+	<thead>
+	  <tr>
+	    <th width=50%>Combo code</th>
+			<th width=10%>Credits</th>
+			<th width=10%>Status</th>
+			<th width=10%>Duration</th>
+			<th colspan=4 class="ac">Control</th>
+	  </tr>
+	</thead>
+
+	<tbody>
+		<% @trainings.each do |training| %>
+	  <tr id="node-<%= (training.id) %>" <%= training.tree_nd %>>
+	    <td><%=h training.code %> &nbsp; &nbsp; &nbsp;
+					<% if training.course_type == 'Subject' || training.course_type == 'Topic' %>
+					<% else %>
+						<%=h training.course_type %>  &nbsp; &nbsp; 
+					<% end %>
+					<%=h training.name %></td>
+			<td><% if training.credits == 0 %><%else%><%=h training.credits %><%end%></td>
+			<td><%=h check_kin_blank {(Training::COURSE_STATUS.find_all{|disp, value| value == training.status}).map {|disp, value| disp} }%></td>
+			<td><%=h training.duration %> <%=h check_kin_blank {(Training::DURATION_TYPES.find_all{|disp, value| value == training.duration_type}).map {|disp, value| disp} }%>
+			<td width=10%><%= link_to "(+)", new_training_path(:parent_id => training)%></td>
+      <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => training %></td>
+      <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => training %></td>
+      <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), training, :confirm => 'Are you sure?', :method => :delete %></td>
+	  </tr>
+		<% end %>
+	</tbody>
+</table>
+<br /><br />
+
+<br /><br />
+
+<%= link_to 'New training', new_training_path %>
+
+</div>
+
+<script type="text/javascript">
+
+$j(document).ready(function()  {
+  $j("#tree").treeTable();
+});
+
+</script>

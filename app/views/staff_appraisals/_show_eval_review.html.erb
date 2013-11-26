@@ -40,7 +40,7 @@
 	</tr>
 </table>
 
-<% if @staff_appraisal.is_submit_e2 == true %>
+<%# if @staff_appraisal.is_submit_e2 == true %><% if @staff_appraisal.is_submit_e2 != nil %>
 <!--Part VIII-->
 		<H2><%= t 'evaluation.form.title_part9' %>
 			<% if @staff_appraisal.is_complete == true %>
@@ -63,7 +63,7 @@
 	
 			<% if @staff_appraisal.is_complete == true %>
 			<tr>
-				<td colspan=3><%= t 'evaluation.form.ppp_statement' %> on <%= l(@staff_appraisal.is_completed_on) %></td>
+				<td colspan=3><%#= t 'evaluation.form.ppp_statement' %> <!--on--> <%#= l(@staff_appraisal.is_completed_on) %></td>
 			</tr>
 			<% end -%>
 
@@ -75,7 +75,9 @@
 
 			<tr>
 				<td class="leftcolwide"><label for="PPK_id"><%= t 'evaluation.form.ppkid' %></label></td>
-				<td><%=h @staff_appraisal.eval2_officer.name %></td>
+				<td><%=h @staff_appraisal.eval2_officer.blank? ? "-" : @staff_appraisal.eval2_officer.name %>
+					<%#=h @staff_appraisal.eval2_officer.name%>
+				</td>
 				<td></td>
 			</tr>
 		</table>

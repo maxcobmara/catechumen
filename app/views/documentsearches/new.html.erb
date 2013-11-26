@@ -1,0 +1,72 @@
+<div class="tform">
+	<H2>Document Search</H2>
+<% form_for @documentsearch do |f| %>
+	<%= f.error_messages %>
+	<table width=100% >
+		<% if @searchdoctype=='1' || @searchdoctype==1 %>
+			<%= hidden_field_tag :method,  1 %>
+			<tr><td colspan=2>Search Documents By :</td></tr>
+			<tr>
+				<td class="leftcol"><%= f.label :document_reference_no %></td>
+				<td><%= f.text_field :refno %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label :title %></td>
+				<td><%= f.text_field :title %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label :from %></td>
+				<td><%= f.text_field :sender %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label :file_reference %></td>
+				<td><%= f.collection_select :file_id, Cofile.find(:all, :conditions=>["id IN (?)",Document.all.map(&:file_id)],:order => :cofileno), :id, :file_no_and_name, :include_blank => "Select" %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label :letter_date %></td>
+				<td><%= date_select :letterdt, params[:letterdt], :include_blank => true %> 
+					<%= date_select :letterdtend, params[:letterdtend], :include_blank => true %>
+				</td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label :received_date %></td>
+				<td><%= date_select :letterxdt, params[:letterxdt], :include_blank => true %> 
+					<%= date_select :letterxdtend, params[:letterxdtend], :include_blank => true %>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label :category %></td>
+				<td><%= f.select :category,Document::CATEGORY,:prompt => "Select"  %></td>
+			</tr>
+
+			<tr>
+				<td class="leftcol"><%= f.label :list_all_documents %></td>
+				<td>
+					<%= f.check_box :from,:checked=>"checked",:class => 'all_records', :id=> 'all_checker' %>
+					&nbsp;<font size=-2><b>Tick</b> & leaves other fields 'blank' to display ALL record. 
+					<b>Untick</b> to select document by (closed) status.</font> 
+				</td>
+			</tr>
+			<tr class="closed_item", style="display: none;">
+				<td class="leftcol">Closed</td>
+				<td><%=f.select :closed, ['Yes','No']%><%#=f.select :closed, ['True','False']%></td>	
+			</tr>
+		
+		<% end %>
+	</table>
+
+  <p><%= f.submit "Search"%></p>
+<% end %>
+</div>
+
+<script type="text/javascript">
+		$j(document).ready(function(){
+			$j("input[class='all_records']").change(function() {  
+			     	if($j('#all_checker').is(':checked')) { 
+				       		$j(".closed_item").hide();
+				     }else{
+							$j(".closed_item").show();
+				     }
+			   });			
+		});
+</script>

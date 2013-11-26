@@ -93,7 +93,8 @@ class AssetDefectsController < ApplicationController
   end
   
   def kewpa13
-    @asset_defects = AssetDefect.find(:all, :order => 'created_at DESC')
+    #@asset_defects = AssetDefect.find(:all, :order => 'created_at DESC')
+    @asset_defects = AssetDefect.find(:all,:conditions=>['process_type=?','repair'], :order => 'created_at DESC')
     render :layout => 'report'
   end
   

@@ -14,6 +14,7 @@ en:
   control: Control
   thank: "Staff was successfully created"
   addmore: "Add More"
+  submit: Submit
   
   activerecord:
       models:
@@ -26,6 +27,7 @@ en:
           disposal: "Disposal"
           asset_loss: "Asset Loss"
           librarytransaction: "Library Transaction"
+          grade: "Grade"
           
       attribute:
           staff:
@@ -59,12 +61,21 @@ en:
           disposal:
              asset_id: "Asset Code"
              currentvalue: "Current Value"
+          grade:
+             examweight: "Summative Weightage"
+             exam1marks: "Summative Marks"
           asset_loss:
              reportcode: "Internal Loss Report Code"
              losstype: "Lost Type"
              sio_id: "Investigating Officer"
           librarytransaction:
-             book_id: "Accession No"          
+             book_id: "Accession No"
+          exammark:
+             total_marks: "Total marks"
+             student_id: "Student"
+             marks:
+                 mark: "Mark"      
+             
       errors:
           template:
             body: "There were problems with the following fields:"
@@ -90,6 +101,7 @@ en:
     
   staff: 
     new: New Staff
+    edit: Edit Staff
     menu: Staff
     list: Staff List
     icno: MyKad No
@@ -99,6 +111,8 @@ en:
 
     personal_details: Personal Details
     code: Staff Code
+    thumb: Thumb ID
+    shift: Staff Shift
     fileno: Personal File No
     cobirthdt: Date Of Birth
     birthcertno: Birth Cert No
@@ -154,8 +168,12 @@ en:
       accno: Loan Account No
       startdt: Approval Date
       durationmn: Duration
-      deductions: Deductions
-      amount: Amount
+      deductions: Monthly Installments
+      amount: Loan Amount
+      firstdate: Start Date
+      enddate: End Date
+      enddeduction: Last Month Installment
+      
 
     finance: Finance Details
     kwspcode: EPF No
@@ -170,6 +188,7 @@ en:
     emergency: Emergency Contact Information
     kintype_id: Relationship
     kinbirthdt: DOB
+    kinmykadno: MyKad No
     phone: Telephone
     kinaddr: Address
     profession: Profession
@@ -180,10 +199,18 @@ en:
      staff_details: Staff Details
      staff_id: Staff
      attendance_details: Attendance Details
-     attdate: Date
+     attdate: "Date & Time"
      time_in: Time In
      time_out: Time Out
-     reason: Reason If Late
+     fingerprint_statement: Fingerprint Statement
+     reason: Reason If Late / Early
+     status: Status
+     outstation: Outstation / Course
+     official: Official Matter / Personal 
+     forgot: Forgot to fingerprint
+     early_late: Return Early / Late Fingerprint
+     others: Other Matter
+     details: Attendance Details
      approve_id: Approving Officer
      approvestatus: Approving Status
      create: Create New Attendance
@@ -216,6 +243,8 @@ en:
     leavestartdate: Leave Start Date
     leavenddate: Leave End Date
     back: Show My Leave
+    entitlement: "Balance of Entitled Leave (Cuti Rehat)"
+    duration: Duration
     reason: Reason
     notes: Notes
     create: Apply for Leave
@@ -372,10 +401,12 @@ en:
     
     add: Add Supplies
     lpono: LPO No
-    unitcost: Unit Cost
+    unitcost: Price per Unit
+    total: Total
     document: Document
+    name: Supplier Name
     quantity: Quantity
-    received: Received
+    received: Received Date
     
     use: Use/Issue Supplies   
     issuedby: Issues By
@@ -525,6 +556,8 @@ en:
       title: "Attachment A Part I - Setting Annual Work Targets"
       description: Description of Activities and Projects
       performance:  Performance Indicators
+      priority: Priority
+      submiteval: Submit for evaluation
     skt_review:
       title: "Attachment A Part II - Mid Year Review"
       drop: "Drop existing Activity/Project"
@@ -545,11 +578,14 @@ en:
       icno: MykadNo
       position: Position
       evaluationdate: Evaluation Year
+      remark: You have no superiors assigned in the system. Please contact system administrator for assistance.
+      ppp: First Evaluating Officer (PPP)
+      ppk: Second Evaluating Officer (PPK)
       title_partIIa: 'Part IIa - Activities'
       label_001: '1. Activities and contributions outside of official duties'
       label_002: 'List activities and contributions outside of official duties such as sports, organisations or creative contributions at the community, department, district, state or international level that have benefitted the organisation, community of country for the year of evaluation.'
       title_part2b: 'Part IIb:  Training'
-      label_003: '(i) List training programmes (seminar, courses, workshops, etc that have ben attended this year.'
+      label_003: '(i) List training programmes (seminar, courses, workshops, etc that have been attended this year.'
       label_004: '(ii). List Training Needed'
       parttwodate: Date
       label_005: Evaluation Criteria
@@ -699,6 +735,7 @@ en:
     title: Title
     letterdt: Letter Date
     letterxdt: Received Date
+    circulatedt: Circulation Date
     from: From
     stafffiled_id: Filled By
     closed: Closed
@@ -806,24 +843,64 @@ en:
     list: Library Transaction List
     book_id: Book ID
     borrower: Borrowed By
+    author: Author
+    staffstudent: Staff / Trainee
+    staff: S
+    student: T
     checkoutdate: Checked Out
+    checkoutby: Loan Released By
+    extendby: Loan Extended By
+    returnby: Received By
     studentname: Borrowed By
     duedate: Due Date
     extend: Extend
     extended: Returned
     returneddate: Returned On
     newrec: Create New Transaction
+    returnrec: Return Transaction
     edit: Edit Library Transaction
     details: Loaned Book Details
     loanedtotype: Member is Staff?
-    fine: Denda Perlu Dibayar
+    fine: Fine to be Paid
     finepay: Fine Paid?
     finepaydate: Fine Paid Date
     lost: Lost?
     reportdetails: Report Details
     reportlostdate: Report Lost Date
     replaceddate: Replaced Date
-    report: Report Lost
+    report: Report Lost  
+    
+  grade:
+    examweight: Summative Weightage
+    exam1marks: Summative Marks  
+      
+  examresult: 
+    examinationresult: "Examination Result"
+    semester: "Semester"
+    programme_id: "Programme"
+    total: "Total"
+    examdate1: "Examination Start Date"
+    examdate2: "Examination End Date"
+    pngs17: "PNGS"
+    pngk: "PNGK"
+    status: "Status"
+    remark: "Remark"
+
+  exammakeranalysis:
+    examtype: "Examination Type"
+    exampaper: "Examination Paper"
+    exammaker_id: "Subject"
+    gradea: "Grade A"
+    gradeaminus: "Grade A-"
+    gradebplus: "Grade B+"
+    gradeb: "Grade B"
+    gradebminus: "Grade B-"
+    gradecplus: "Grade C+"
+    gradec: "Grade C"
+    gradecminus: "Grade C-"
+    gradedplus: "Grade D+"
+    graded: "Grade D"
+    gradee: "Grade E"
     
   date:
     formats:

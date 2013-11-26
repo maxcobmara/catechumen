@@ -1,0 +1,70 @@
+<!--13Apr2013-DEPT UNIT for current user-->
+<% @anc_depth = current_user.staff.position.ancestry_depth %>
+
+<!--27May2013-how to retrieve position for staff with multiple positions?-->
+<% @multi_position = Position.find(:all, :conditions => ['staff_id=?',current_user.staff_id])%>
+<% @ifmulti_position = @multi_position.count %>
+
+<% if @anc_depth==2 %>
+	<% @dept_unit = current_user.staff.position.unit %>
+<% elsif @anc_depth < 2 %>
+	<%# @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<%# if @position_count > 1 %>
+	<% if @ifmulti_position > 1 %><!--DRY-27 May 2013-->
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
+	<% end %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+	<% if @anc_depth==1 %>
+		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=?', current_user.staff_id]).unit %>
+	<% end %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+<% elsif @anc_depth > 2 %>
+	<!--27 May 2013-START-added for iz mohd zaki(radiografi)-MULTIPLE positions-->
+	<% if @ifmulti_position > 1 %>
+		<% @multi_position.each do |x|%>
+			<% if x.parent.id > 6 && x.parent.id < 17 %>
+				<% @dept_unit = x.parent.unit %>
+			<% end %>	
+		<% end %>
+	<% else %>
+		<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+		<!--30Mei2013-->
+		<% if @dept_unit == "Pos Basik" && @anc_depth == 3 %><!--@anc_depth==3-->
+			<% @dept_unit = current_user.staff.position.unit %><!--17JUNE2013-For posbasik SUP - in POSITIONS table - compulsory to have unit & this unit must TALLY with name in PROGRAMMES table-->
+		<% end %>
+		<!--30Mei2013-->
+	<% end %>
+	<!--27 May 2013-START-added for iz mohd zaki(radiografi)-MULTIPLE positions-->
+<% end %>
+
+<% @current_user_roles=[]%>
+<% User.current_user.roles.each do |role|%>
+	<% @current_user_roles<<role.id%>
+<% end %>
+
+<!--13/20Apr2013-DEPT UNIT for current user-->
+<% if @current_user_roles.include?(2) %><!--if administrator-->
+	<% if @dept_unit != nil %><!--must also have dept unit(from ancestor-at_depth:2), or NO programme will be pre-selected-->
+		<!--26 May 2013-HAVE TO MAKE SURE : position of current logged-in staff is between 7-16 OR line 29 & 30 will FAILED & ERROR-->
+		<% if current_user.staff.position.id > 6 && current_user.staff.position.id < 17 %>
+		<!--if admin among Ketua Program-->
+			<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+			<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+		<!--if admin from IT Department-->
+		<% elsif @dept_unit == "Teknologi Maklumat"%>
+			<!--have to assign values for SUBJECT search form for IT ADMIN-->
+			<% @subjectlist_preselect_prog = Programme.at_depth(2) %>
+		<% end %>
+	<% else %>
+		<!--if admin but have no department unit?....nobody with this rules yet-->Admin but have no dept
+	<% end %>
+<% else %>
+	<% if @anc_depth==1 %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+		<% @kupk = "yes" %>
+	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
+	<% else %><%#=@dept_unit%><%#=@anc_depth%>
+		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+		<% @subjectlist_preselect_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
+	<% end %>
+<% end %>

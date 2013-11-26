@@ -1,0 +1,108 @@
+<%= stylesheet_link_tag 'report' %>
+
+<form action="#">	
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print This Page'/>");
+</script>
+</form>	
+<div class="A4potrait">
+
+<!-- Box Head -->
+<div id="kewpa" ><br><br>
+<p class="marginright" align="right"><b>KEW. PA-31</b></p>
+<!--<H4 style="margin-left:12mm;">KEMENTERIAN/JABATAN : KKM/KSKBJB</H4>--><br>
+<H4 align="center"><b>SIJIL HAPUS KIRA ASET ALIH KERAJAAN </b></H4>
+<BR>
+<p style="margin-left:30mm;margin-right:30mm;">Merujuk kelulusan Perbendaharaan Bil ............<%= @asset_losses[0].document_id.blank? ? "" : @asset_losses[0].document.refno %>............ bertarikh ...<%= @asset_losses[0].document_id.blank? ? "" : @asset_losses[0].document.letterdt.strftime("%d-%m-%Y") %>... Aset berikut telah dihapuskira dan Daftar Harta Modal/Inventori berkenaan telah dikemaskini.</p>
+<BR>
+		
+		<!--<table  class="lampiran_kewpa" style="margin: 0 4cm;">-->
+		<table style="margin: 0 3cm;"border=1	cellpadding=0 cellspacing=0>
+			<tr>
+				<td class="dotts">Bil </td>
+				<td>Jenis Aset</td>
+				<td class="leftcol">No.Pendaftaran</td>
+				
+			
+			</tr>
+			
+			<% @asset_losses.each_with_index do |asset_loss, index| %>
+			<tr>
+				<td class="dotts"><%=index+1%></td>
+				<td class="filler" width=300 style="border-bottom-style: dotted; text-align:left;">
+					<SPAN class="fff">
+						<%= asset_loss.asset.typename.capitalize %> -   
+						<%=h asset_loss.asset.name %>  -  
+						<%=h asset_loss.asset.modelname %>
+					</SPAN>
+				</td>
+				<td class="leftcol" width=150><%=h asset_loss.asset.assetcode %>&nbsp;</td>
+			</tr>
+			<!--
+			<tr>
+				<td class="dotts">&nbsp;</td>
+				<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+						<SPAN class="fff"><%#= @asset_disposal.asset.secara_malay %></SPAN></td>
+				<td class="leftcol">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="dotts">&nbsp;</td>
+				<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+						<SPAN class="fff"><%#=h l(asset_loss.discarded_on) %></SPAN></td>
+				<td class="leftcol">&nbsp;</td>
+
+			</tr>
+			<tr>
+				<td class="dotts">&nbsp;</td>
+				<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+						<SPAN class="fff"><%#=h asset_loss.discard_location %></SPAN></td>
+				<td class="leftcol">&nbsp;</td>
+			</tr>-->
+			<% end %>
+			<% 0.upto(8-@asset_losses.count-1) do |num| %>
+				<tr>
+					<td class="dotts">&nbsp;</td>
+					<td class="filler" style="border-bottom-style: dotted; text-align:center;">
+							<SPAN class="fff">&nbsp;</SPAN></td>
+					<td class="leftcol">&nbsp;</td>
+				</tr>
+			<% end %>
+
+	</table><BR><BR><BR>
+		
+	<table style="margin: 0 3cm;" class="lampiran_kewpa">
+
+		<tr>
+				<td class="leftcol" width=200>Tandatangan Ketua Jabatan</td>
+				<td class="dotts">:</td>
+				<td class="filler" style="border-bottom-style: dotted; text-align:center;" >&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="leftcol">Nama</td>
+			<td class="dotts">:</td>
+			<td class="filler" style="border-bottom-style: dotted; text-align:left;" ><%=h @asset_losses[0].endorsed_on.blank? ? "" : @asset_losses[0].hod.name %></td>
+			</tr>
+
+		<tr>
+			<td class="leftcol">Jawatan</td>
+			<td class="dotts">:</td>
+			<td class="filler" style="border-bottom-style: dotted; text-align:left;"><%= @asset_losses[0].endorsed_on.blank? ? "-" : @asset_losses[0].hod.position.name %></td>
+		</tr>
+
+		<tr>
+			<td class="leftcol">Tarikh</td>
+			<td class="dotts">:</td>
+			<td class="filler" style="border-bottom-style: dotted; text-align:left;"><%=@asset_losses[0].updated_at.strftime("%d-%m-%Y") %></td>
+			</tr>
+		
+		<tr>
+			<td class="leftcol">Cop Kementerian/Jabatan</td>
+			<td class="dotts">:</td>
+			<td class="filler"></td>
+	
+		</tr>
+	</table>
+			

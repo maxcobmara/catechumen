@@ -30,6 +30,11 @@ class TravelRequest < ActiveRecord::Base
     if hod_accept == false
       self.hod_accept_on	= nil
     end
+    
+    if !mycar?#own_car == false 
+      self.own_car_notes =''
+      self.mileage = nil
+    end
   end
   
   def set_total
@@ -67,7 +72,7 @@ class TravelRequest < ActiveRecord::Base
   
   #controller searches
   def self.in_need_of_approval
-      find(:all, :conditions => ['hod_id = ? AND is_submitted = ? AND hod_accept IS ?', User.current_user.staff_id, true, nil])
+    find(:all, :conditions => ['hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', User.current_user.staff_id, true, nil, false])
   end
   
   def self.my_travel_requests
@@ -85,9 +90,14 @@ class TravelRequest < ActiveRecord::Base
     self.document = Document.find_by_refno(refno) unless refno.blank?
   end
   
-  
-  
-  
+  #ref:gmail-sept15,2012-Checking for broken association - refer document.rb (line 17), index-line 69, show_main-line 13
+  def reference_document
+    if document.blank?
+      "None Assigned"
+    else
+      document.refno+" : "+document.title+" : dated "+document.letterdt.strftime("%d-%b-%Y").to_s
+    end
+  end
   
   def repl_staff
       siblings = User.current_user.staff.position.sibling_ids
@@ -103,6 +113,7 @@ class TravelRequest < ActiveRecord::Base
         approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       else
         hod = User.current_user.staff.position.root.child_ids
+        hod << User.current_user.staff.position.root_id
         approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       end
       approver
