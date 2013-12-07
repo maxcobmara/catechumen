@@ -1,25 +1,62 @@
-@import "bootstrap";
-@import "bootstrap-responsive";
-/*@import 'bootstrap-datetimepicker';*/
+/*@import "bootstrap";*/
 
 /* mixins, variables, etc. */
 
 $grayMediumLight: #eaeaea;
+$grayLight: #999;
+$grayDarker: #222;
 
 @mixin box_sizing {
-  -moz-box-sizing: border-box; 
-  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+[class^="icon-"] {
+  background-image:none;
+}
+
 /* universal */
 
-html {overflow-y: scroll;}
-/*body {padding-top: 60px;}*/
-section {overflow: auto;}
+html, body, .container, .scroller {
+	height: 100%;
+}
+
+html { /*overflow-y: scroll;*/}
+body {/*padding-top: 60px;*/}
+/*section {overflow: auto;}*/
 textarea {resize: vertical;}
-.panel {padding-top: 60px;}
-.center {text-align: center;}
-.center h1 {margin-bottom: 10px;}
+
+
+.container {
+	position: relative;
+	/*overflow: hidden;
+	/*max-width: none !important;*/
+	/*background: #34495e;*/
+}
+/*scroller to activate menu*/
+.scroller {/*overflow-y: scroll;*/}
+.scroller, .scroller-inner {position: relative;}
+
+
+
+.center {
+  text-align: center;
+}
+
+.center h1 {
+  margin-bottom: 10px;
+}
+
+.mp-menu {
+	a {text-decoration: none; color: #f7f7f7; outline: none;
+		&:hover, &:focus {
+			color: #fff;
+			outline: none;
+		}	
+	}
+	h2 {color: #f7f7f7; }
+}
+
 
 /* typography */
 
@@ -35,7 +72,7 @@ h1 {
 }
 
 h2 {
-  font-size: 1.7em;
+  font-size: 1.2em;
   letter-spacing: -1px;
   margin-bottom: 30px;
   text-align: center;
@@ -43,11 +80,17 @@ h2 {
   color: #999;
 }
 
-p {font-size: 1.1em; line-height: 1.7em;}
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
 
 
 /* header */
-
+.topnav {height:40px; padding-top:5px;
+  a {color:#606060; font-size:1.3em; padding-right:5px;}
+  a:hover{color:#606060; background-color:white; font-size:1.3em;}
+}
 #logo {
   float: left;
   margin-right: 10px;
@@ -56,7 +99,6 @@ p {font-size: 1.1em; line-height: 1.7em;}
   text-transform: uppercase;
   letter-spacing: -1px;
   padding-top: 9px;
-  padding-left: 70px;
   font-weight: bold;
   line-height: 1;
 }
@@ -66,22 +108,31 @@ p {font-size: 1.1em; line-height: 1.7em;}
   text-decoration: none;
 }
 
-
 /* footer */
 
 footer {
   margin-top: 45px;
   padding-top: 5px;
-  border-top: 1px solid #eaeaea;
-  color: #999;
+  border-top: 1px solid $grayMediumLight;
+  color: $grayLight;
+  a {
+    color: gray;
+    &:hover {
+      color: $grayDarker;
+    }
+  }
+  small {
+    float: left;
+  }
+  ul {
+    float: right;
+    list-style: none;
+    li {
+      float: left;
+      margin-left: 10px;
+    }
+  }
 }
-
-footer a {color: #555;}  
-footer a:hover {color: #222;}
-footer small {float: left;}
-footer ul {float: right; list-style: none;}
-footer ul li {float: left; margin-left: 10px;}
-
 
 /* miscellaneous */
 
@@ -94,53 +145,29 @@ footer ul li {float: left; margin-left: 10px;}
 }
 
 
-/* sidebar */
-
-aside {
-  section {
-    padding: 10px 0;
-    border-top: 1px solid $grayLighter;
-    &:first-child {
-      border: 0;
-      padding-top: 0;
-    }
-    span {
-      display: block;
-      margin-bottom: 3px;
-      line-height: 1;
-    }
-    h1 {
-      font-size: 1.4em;
-      text-align: left;
-      letter-spacing: -1px;
-      margin-bottom: 3px;
-      margin-top: 0px;
-    }
-  }
-}
-
-.gravatar {
-  float: left;
-  margin-right: 10px;
-}
 
 /* forms */
 
 input, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
   width: 80%;
-  padding: 10px;
   margin-bottom: 15px;
   @include box_sizing;
 }
 
-input {
-  height: auto !important;
+label {
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
 }
+input {height: auto !important;}
+.text_field.mandatory {background-color:#FFF0F5;}
+.dropdown, select {position: relative;}
 
-
-
-#sidebar {padding-top: 40px;}
+input[type=checkbox] {width:13px; height:13px; *overflow: hidden; }
+.form-group {
+	padding: 1em 0;
+}
 
 
 #error_explanation {
@@ -156,30 +183,8 @@ input {
   @extend .error;
 }
 
-/* forms */
-.dropdown-menu a {font-size:0.9em;}
-.dropdown-menu li.danger > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a  {background-image:none; background-color:#9d261d;}
-.placeholder {font-size:0.6em;}
+/* shows */
 
-#error_explanation {color: #f00;
-  ul {list-style: none; margin: 0 0 18px 0;}
+.dl-horizontal {padding:0; margin:0;
+  dt {font-weight:bold;}
 }
-.field_with_errors {
-  @extend .control-group;
-  @extend .error;
-}
-
-
-/* custom icons */
-.icon-tree-node {
-    background-image:url('./bstrap_icons/tree_structure.png');
-    background-position: center center;
-}
-
-.icon-tree {
-    background-image:url('./bstrap_icons/tree.png');
-    background-position: center center;
-}
-
-
-

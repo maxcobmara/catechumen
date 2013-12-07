@@ -5,6 +5,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
   config.mailer_sender = "please-change-me-at-config-initializers-devise@example.com"
+  config.secret_key = '1c33318fdd4bc810a868c26fb6b1005dc77c6d1eb7f7196256dfcbc1efefa9e5a80078854c7ddd6cee54551f6940a8caa1969c6c7cead65deb92c867e969489f'
 
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
@@ -76,6 +77,12 @@ Devise.setup do |config|
   # passing :skip => :sessions to `devise_for` in your config/routes.rb
   config.skip_session_storage = [:http_auth]
 
+  # By default, Devise cleans up the CSRF token on authentication to
+  # avoid CSRF token fixation attacks. This means that, when using AJAX
+  # requests for sign in and sign up, you need to get a new CSRF token
+  # from the server. You can disable this option at your own risk.
+  # config.clean_up_csrf_token_on_authentication = true
+
   # ==> Configuration for :database_authenticatable
   # For bcrypt, this is the cost for hashing the password and defaults to 10. If
   # using other encryptors, it sets how many times you want the password re-encrypted.
@@ -86,7 +93,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Setup a pepper to generate the encrypted password.
-  # config.pepper = "a73107fb43229b5b1d2e869d2d9ab0f05d44c6325377d252da7c07627b6631088e0a322e977243b9d833df996df0e822bda3c360316e59d30d8b709c2cd0c1ce"
+  # config.pepper = "17a5aafab2ea3490cbc04c4ca02805ff8d74458cbf4162edcb1fea2d9552e676fb034477c1b59d181687b8b8b32b4031ac5eb5a20773e7a7f47df078549f133a"
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
