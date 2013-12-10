@@ -1,7 +1,0 @@
-<% if @programme_id.blank? %>
-	&nbsp;&nbsp; Select a programme first.
-<% else %>	
-	<% unless @exam_id.blank? %> 
-		<%= select_tag "exam[subject_filter]", "<option value=0>Select a SUBJECT</option>"+options_from_collection_for_select(@subjects,:id, :subject_list), {:onchange => remote_function(:update => "exam_topic_list", :url => {:action=>'view_topic'}, :with => "'subject='+$('"+"exam_subject_filter"+"').value + '&examid='+'#{@exam_id}' ")} %>		
-	<% end%>
-<% end %>

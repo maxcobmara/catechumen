@@ -1,2 +1,0 @@
-module ExamquestionanalysesHelper
-end

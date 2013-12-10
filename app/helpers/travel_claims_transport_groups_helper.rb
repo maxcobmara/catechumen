@@ -1,2 +1,0 @@
-module TravelClaimsTransportGroupsHelper
-end

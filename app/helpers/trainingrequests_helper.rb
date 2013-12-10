@@ -1,2 +1,0 @@
-module TrainingrequestsHelper
-end
