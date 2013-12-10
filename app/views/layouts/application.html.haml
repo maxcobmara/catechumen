@@ -1,0 +1,31 @@
+!!!
+%html
+  %head
+    %title= full_title(yield(:title))
+    = stylesheet_link_tag    "application", media: "all"#, "data-turbolinks-track" => true
+    //%link{:href=>"//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css", :rel=>"stylesheet"}                     |
+    = javascript_include_tag :modernizr
+    = javascript_include_tag "application"#, "data-turbolinks-track" => true
+    = csrf_meta_tags
+    = render 'layouts/shim'
+
+  %body
+    //.container
+    #mp-pusher.mp-pusher
+      .nav#mp-menu.mp-menu
+        = render 'layouts/menu'
+      .scroller
+        .scroller-inner
+          .content.clearfix
+            .block
+              = render 'layouts/header'
+              - flash.each do |key, value|
+                %div{:class => "alert alert-#{key}"}= value
+              .my_content
+                = yield
+              = render 'layouts/footer'
+              
+              
+
+    :javascript
+      new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger' ) );

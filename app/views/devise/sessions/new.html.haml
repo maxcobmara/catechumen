@@ -1,0 +1,23 @@
+- provide(:title, 'Sign In')
+%h1 Sign in
+= form_for(resource, :as => resource_name, :url => session_path(resource_name), :classis => 'form-horizontal"', :role => 'form') do |f|
+  .row
+    .col-lg-6.col-lg-offset-2
+      = render 'shared/error_messages'
+      = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+        .form-group
+          %label.col-lg-2.control-label= f.label :email
+          .col-lg-10= f.text_field :email, :placeholder => "Email", :class => "form-control"
+        .form-group
+          %label.col-lg-2.control-label= f.label :password
+          .col-lg-10= f.password_field :password, :placeholder => "Password", :class => "form-control"
+        - if devise_mapping.rememberable?
+          .col-lg-offset-2.col-lg-10
+            .checkbox
+              = f.check_box :remember_me, :type => "checkbox"
+              = f.label :remember_me
+        .col-lg-offset-2.col-lg-10
+          = f.submit "Sign in", :class => "btn btn-lg btn-primary", :type => "submit"
+          %p
+            New user? #{link_to "Sign up now!", new_user_registration_path} <BR/>
+            = render "devise/shared/links"
