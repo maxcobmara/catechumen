@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131004091521) do
+ActiveRecord::Schema.define(:version => 20140101000000) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -1110,6 +1110,8 @@ ActiveRecord::Schema.define(:version => 20131004091521) do
     t.datetime "updated_at"
   end
 
+  add_index "locations", ["ancestry"], :name => "index_locations_on_ancestry"
+
   create_table "maints", :force => true do |t|
     t.integer  "asset_id"
     t.integer  "maintainer_id"
@@ -1188,6 +1190,8 @@ ActiveRecord::Schema.define(:version => 20131004091521) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "positions", ["ancestry"], :name => "index_positions_on_ancestry"
 
   create_table "programmes", :force => true do |t|
     t.string   "code"
@@ -1597,6 +1601,9 @@ ActiveRecord::Schema.define(:version => 20131004091521) do
     t.datetime "updated_at"
   end
 
+  add_index "staffs", ["icno"], :name => "index_staffs_on_icno"
+  add_index "staffs", ["name"], :name => "index_staffs_on_name"
+
   create_table "staffsearch2s", :force => true do |t|
     t.string   "keywords"
     t.integer  "position"
@@ -1759,6 +1766,10 @@ ActiveRecord::Schema.define(:version => 20131004091521) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "students", ["icno"], :name => "index_students_on_icno"
+  add_index "students", ["matrixno"], :name => "index_students_on_matrixno"
+  add_index "students", ["name"], :name => "index_students_on_name"
 
   create_table "studentsearches", :force => true do |t|
     t.string   "icno"
