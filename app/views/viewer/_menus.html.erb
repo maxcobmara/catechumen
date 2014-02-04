@@ -257,7 +257,7 @@
 				<li><%= link_to 'Rules & Regulations',    '/rules' %></li>
 				<% permitted_to? :read, :librarytransactions do %>
 					<li><%= link_to 'Library Transactions',   {:controller => 'librarytransactions', 	:action => 'index'} %></li>
-          <li><%= link_to 'New Library Transactions',  'http://localhost:3003' %></li>
+          <a href="<%= request.fullpath.split(":")[0]  %>:3003/library/librarytransactions">New Library Transactions</a>
 				<% end %>
 					<li><%= link_to 'Resources',    					{:controller => 'books', 	:action => 'index'} %></li>
 				<% permitted_to? :manage, :librarytransactions do %>
