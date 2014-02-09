@@ -19,14 +19,14 @@ class Staff < ActiveRecord::Base
   validates_length_of       :icno, :is =>12
   validates_presence_of     :icno, :name, :coemail, :code, :appointdt #appointment date must exist be4 can apply leave
   validates_uniqueness_of   :icno, :fileno, :coemail, :code
-  validates_format_of       :name, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters" #add unwanted chars between bracket
+  validates_format_of       :name, :with => /^[a-zA-Z'`\/\. ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add unwanted chars between bracket
   validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd, :fileno
   #validates_length_of      :cooftelno, :is =>10
   #validates_length_of      :cooftelext, :is =>5
   validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"
   validates_format_of       :coemail,
                                :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,
-                               :message => "Email Not Valid"
+                               :message => I18n.t('activerecord.errors.messages.invalid')
  #-----------------------------------------------------------------------------------------------------------
   
   
@@ -204,13 +204,14 @@ class Staff < ActiveRecord::Base
   accepts_nested_attributes_for :qualifications, :allow_destroy => true, :reject_if => lambda { |a| a[:level_id].blank? }
   
   has_many :loans, :dependent => :destroy
-  accepts_nested_attributes_for :loans, :reject_if => lambda { |a| a[:ltype].blank? }
+  accepts_nested_attributes_for :loans, :allow_destroy => true,:reject_if => lambda { |a| a[:ltype].blank? }
 
   has_many :kins, :dependent => :destroy
-  accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
+  accepts_nested_attributes_for :kins, :allow_destroy => true, :reject_if => lambda { |a| a[:kintype_id].blank? }
+  validates_associated :kins
   
   has_many :bankaccounts, :dependent => :destroy
-  accepts_nested_attributes_for :bankaccounts, :reject_if => lambda { |a| a[:account_no].blank? }
+  accepts_nested_attributes_for :bankaccounts,:allow_destroy => true, :reject_if => lambda { |a| a[:account_no].blank? }
   
  
      

@@ -47,6 +47,15 @@
 			<td class="leftcol"><label for="tasks_other"><%= t 'positions.tasks_other' %> :</label></td>
 			<td> <%=h @position.tasks_other %></td>
 		</tr>
+
+		<tr>
+			<td class="leftcol"><label for="postinfo_id"><%= t 'positions.postinfo_id' %> :</label></td>
+			<td> <%=h @position.postinfo.details_grade %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="status"><%= t 'positions.status' %> :</label></td>
+			<td><%=h (Position::STATUS.find_all{|disp, value| value == @position.status.to_i}).map {|disp, value| disp} %></td>
+		</tr>
 	</table>
 <BR>
 </div>
