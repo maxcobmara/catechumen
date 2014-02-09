@@ -7,7 +7,8 @@ class Position < ActiveRecord::Base
 
   belongs_to :staffgrade, :class_name => 'Employgrade', :foreign_key => 'staffgrade_id'
   belongs_to :staff
-
+  belongs_to :postinfo
+  
   validates_uniqueness_of :combo_code
   validates_presence_of   :name
   
@@ -64,6 +65,12 @@ class Position < ActiveRecord::Base
   def hod
   end
   
+  STATUS = [
+        #  Displayed       stored in db
+        [ "Hakiki", 1],
+        [ "Kontrak", 2],
+        [ "KUP",3]
+  ]
   
   
   def self.search(search)
