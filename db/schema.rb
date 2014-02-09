@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140101000000) do
+ActiveRecord::Schema.define(:version => 20140208213335) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -933,11 +933,6 @@ ActiveRecord::Schema.define(:version => 20140101000000) do
     t.datetime "updated_at"
   end
 
-  create_table "klasses_students", :id => false, :force => true do |t|
-    t.integer "klass_id"
-    t.integer "student_id"
-  end
-
   create_table "leaveforstaffs", :force => true do |t|
     t.integer  "staff_id"
     t.integer  "leavetype"
@@ -1189,9 +1184,19 @@ ActiveRecord::Schema.define(:version => 20140101000000) do
     t.integer  "ancestry_depth"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "postinfo_id"
+    t.integer  "status"
   end
 
   add_index "positions", ["ancestry"], :name => "index_positions_on_ancestry"
+
+  create_table "postinfos", :force => true do |t|
+    t.string   "details"
+    t.integer  "staffgrade_id"
+    t.integer  "post_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "programmes", :force => true do |t|
     t.string   "code"

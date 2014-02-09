@@ -26,7 +26,7 @@ class Staff < ActiveRecord::Base
   validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"
   validates_format_of       :coemail,
                                :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,
-                               :message => "Email Not Valid"
+                               :message => I18n.t('activerecord.errors.messages.invalid')
  #-----------------------------------------------------------------------------------------------------------
   
   
