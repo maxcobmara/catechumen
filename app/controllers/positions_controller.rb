@@ -88,7 +88,8 @@ class PositionsController < ApplicationController
   def maklumat_perjawatan_LA
     #@pages = Page.find(:all, :order => :position)
     #@positions = Position.find(:all, :order => :code)
-    @positions = Position.find(:all, :order => :id)
+    #@positions = Position.find(:all, :order => :id)
+    @positions = Position.find(:all, :order => :ancestry_depth)
     render :layout => 'report'
   end
 end

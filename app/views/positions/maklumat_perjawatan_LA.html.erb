@@ -26,24 +26,28 @@
 <table width=100% border=1px cellspacing=0 align="center" >
 	
 	<tr>
-		<th width=1cm valign="top" >BIL</th>
-		<th width=1cm valign="top" >KOD</th>
-		<th width=1cm valign="top" >BUT.</th>
-		<th width=4cm valign="top">JAWATAN</th>
-		<th width=2cm valign="top">GRED</th>
-		<th width=5cm valign="top">JUM JWT</th>
-		<th width=2cm valign="top">ISI</th>
+		<th width=1cm valign="top" rowspan=2>BIL</th>
+		<th width=1cm valign="top" rowspan=2>KOD</th>
+		<th width=1cm valign="top" rowspan=2>BUT.</th>
+		<th width=4cm valign="top" rowspan=2>JAWATAN</th>
+		<th width=2cm valign="top" rowspan=2>GRED</th>
+		<th width=5cm valign="top" rowspan=2>JUM JWT</th>
+		<th width=2cm valign="top" rowspan=2>ISI</th>
+		<th colspan=3>STATUS PENGISIAN</th>
+
+		<th width=2cm valign="top" rowspan=2>KSG</th>
+		<th width=5cm valign="top" rowspan=2>NAMA</th>
+		<th width=4cm valign="top" rowspan=2>NO K/P</th>
+		<th width=2cm valign="top" rowspan=2>JANTINA</th>
+		<th width=4cm valign="top" rowspan=2>TARIKH LAHIR</th>
+		<th width=4cm valign="top" rowspan=2>TARIKH LANTIKAN PERTAMA</th>
+		<th width=4cm valign="top" rowspan=2>TARIKH KENAIKAN PANGKAT KE GRED SEKARANG</th>
+		<th valign="top" rowspan=2>CATATAN *</th>
+	</tr>
+	<tr>
 		<th width=2cm valign="top">HAKIKI</th>
 		<th width=2cm valign="top">KONTRAK</th>
 		<th width=2cm valign="top">KUP</th>
-		<th width=2cm valign="top">KSG</th>
-		<th width=5cm valign="top">NAMA</th>
-		<th width=4cm valign="top">NO K/P</th>
-		<th width=2cm valign="top">JANTINA</th>
-		<th width=4cm valign="top">TARIKH LAHIR</th>
-		<th width=4cm valign="top">TARIKH LANTIKAN PERTAMA</th>
-		<th width=4cm valign="top">TARIKH KENAIKAN PANGKAT KE GRED SEKARANG</th>
-		<th  valign="top">CATATAN *</th>
 	</tr>
 <!--	
 	 <%# just_a_counter = 0 %>
@@ -81,10 +85,10 @@
 	<%# end %>
 -->	
 	<!---->
- <%# just_a_counter = 0 %>
- <% @positions.group_by(&:postinfo_id).each do |butiran, positions| %><!--group by butiran-->
-    <%# just_a_counter += 1 %>
-	 <% just_a_counter = 0 %>
+ <% just_a_counter = 0 %>
+ <% @positions.group_by(&:postinfo_id).each do |butiran, positions| %><!--group by butiran--><!--sort_by{|x|x.studentgrade.name}.-->
+    <%# just_a_counter += 1 %><%#=butiran%>
+	 <%# just_a_counter = 0 %>
 	<% positions.each do |position|%><!--staffgrade.name--><!--position should be sorted accordingly, as above (group by butiran)-->
 		<% just_a_counter += 1 %>
     <tr align="center">
@@ -116,10 +120,9 @@
 			<% end %>
 		<% end %>
 	</td>
-	<td><%=h position.staff.blank? ? "-" : position.staff.cobirthdt %>
-		<%#=h position.staff.blank? ? "-" : position.staff.cobirthdt.strftime('%d-%m-%Y') %></td>
-	<td><%=h position.staff.blank? ? "-" : position.staff.appointdt %></td>
-	<td><%=h position.staff.blank? ? "-" : position.staff.posconfirmdate %></td>
+	<td><%= check_kin_blank{position.staff.cobirthdt.strftime ('%d-%m-%Y')} %></td>
+	<td><%= check_kin_blank{position.staff.appointdt.strftime ('%d-%m-%Y')}%></td>
+	<td><%= check_kin_blank {position.staff.posconfirmdate.strftime ('%d-%m-%Y')}%></td>
 	<td> </td>
 	</tr>
 
