@@ -12,78 +12,73 @@
 	</div>
 </div>
 
-<%# @intakes_list=[]%>
-<%# @intakes.each do |x, y|%>
-	<%# x2 = x.strftime('%b %Y')%>
-	<%##=x%>
-	<%# @intakes_list << {:scope => "x", :label => x2} %>	
-<%# end %>
-
-	
-	<%#= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>
-
-<%# form_tag :action => 'new' do %>
-<%# form_tag students_path, :method => 'get' do %>
-	<%#= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>
-	<%# submit_tag "Search"%>
-<%# end %>
-<%#= select_tag_for_filter("students", @intakes_list, params)%>	
-
 <div class="indextable">
 	<div align="right">
-		<% @intake_list2 = Student.find(:all, :select=> "DISTINCT intake", :order=> "intake") %>
+		<% @intake_list = Student.find(:all, :select=> "DISTINCT intake", :order=> "intake") %>
+		<% @programme_list = Programme.find(:all, :conditions => ['ancestry_depth=?',0])%>
 		<% form_tag students_path, :method => 'get' do %>
-			<%= select_tag('search2', "<option value='0'>All Existing Intake</option>" +options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>
-			<%= submit_tag 'Search by Intake', :name => :searchby %>
+			<%= select_tag('intake', "<option value='0'>All Intakes</option>" +options_from_collection_for_select(@intake_list,:intake, :intake_acryn)) %>
+			<%= select_tag('programme', "<option value='0'>All Programmes</option>" +options_from_collection_for_select(@programme_list,:id, :programme_list)) %>
+			<%= submit_tag 'Search by Intake/Programme', :name => :searchby %>
 		<% end %>
 	</div>
-	<div align="LEFT">
-		
-		<%= select_tag_for_filter("students", @filters, params) %>
-	</div><br>
+	<% count=0 %>
+	<br>
 	<div class="pagination">
 		<%= will_paginate @students %>  
 	</div>
 	<table width=100%>
-			<tr>
-				<th>MyKad No</th>
-				<th>Name</th>
-				<th>Matrixno</th>
-				<th colspan=4 class="ac">Control</th>
-			</tr>
+		<tr>
+			<th>MyKad No</th>
+			<th>Name</th>
+			<th>Matrixno</th>
+			<th colspan=4 class="ac">Control</th>
+		</tr>
+		<%# for student in @students %><!--sort by intake only-->
+		<%# @students.group_by{|t|t.course_id}.each do |m,students| %><!--group by program, then sort by intake (first)-->
+		<% @students.group_by{|t|t.intake}.each do |m,students| %><!--group by intake, then sort by programme (first)-->
 			
-			<!-- 21/10/2011 - Shaliza changed group_ by.filter fetch from intake -->
-   	  <% @student_intakes.each do |month, students| %>
-				<tr><td colspan=8><BR><b>Intake <%= month.strftime('%B/%Y') unless month.blank? %></b></td></tr>
-				<!--
-					<#% @student_programmes.each do |programme, students| %>
-										<tr><td colspan=8><BR><b><#%= Programme.find(:all, :select => "name", :conditions => {:id => programme}).map(&:name) %>
-																						 <#%= Programme.find(:all, :select => "specialisation", :conditions => {:id => programme}).map(&:specialisation) %></b></td></tr>-->
+			<tr><td colspan=8 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;"><%= m.strftime('%B/%Y') %></span></td></tr>
 				
-						<% for student in students %>
-							<!--	<#% @students.each do |student| %>-->
-								<tr>
-									<!-- ><td><#%=h student.course_id.blank? ? " " : student.course.programme_with_specialisation %></td> -->
-									<td><%=h student.formatted_mykad %></td>
-									<td><%=h student.name %></td>
-									<td><%=h student.matrixno %></td>
-									<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => student %></td>
-									<td width=10px><%= link_to image_tag("printer.png",   :border => 0, :title => 'Borang Maklumat Pelajar'), :action => 'formforstudent', :id => student %></td>
-									<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => student %></td>
-									<td width=10px >
-										<% if permitted_to? :destroy, @student %>
-											<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), student, :confirm => 'Are you sure?', :method => :delete %></td>
-											<% end %>
-									</td>
-								</tr>
+			<% for student in students %>
+			<% if count==0 %>
+				<!--<tr><td colspan=8><BR><b>Intake <%# a=student.intake%><%#= student.intake.strftime('%B/%Y')%>
+				<%##=@intake[count].strftime('%B/%Y')%><%#= month.strftime('%B/%Y') unless month.blank? %></b></td></tr>-->
+				<tr><td colspan=8 style="background-color:#EFF1F1;"><BR><b>Program&nbsp;<% a=student.course_id%><%= Programme.find(student.course_id).programme_list %>
+				<%##=@intake[count].strftime('%B/%Y')%><%#= month.strftime('%B/%Y') unless month.blank? %></b></td></tr
+				<% count+=1%>
+			<% else %>
+				<!--<%# if a!=student.intake%>
+					<tr><td colspan=8><BR><b>Intake <%# a=student.intake%><%= student.intake.strftime('%B/%Y')%></b></td></tr>
+				<%# end %>-->
+				<% if a!=student.course_id %>
+					<tr><td colspan=8 style="background-color:#EFF1F1;"><BR><b>Program&nbsp;<% a=student.course_id%><%= Programme.find(student.course_id).programme_list %></b></td></tr>
+				<% end %>
+				<% count+=1%>
+			<% end %>
+
+			<tr>
+				<!-- ><td><#%=h student.course_id.blank? ? " " : student.course.programme_with_specialisation %></td> -->
+				<td><%=h student.formatted_mykad %><!--FOR CHECKING : &nbsp;(<%= student.intake %>)&nbsp;(<%= student.course_id%>)--></td>
+				<td><%=h student.name %></td>
+				<td><%=h student.matrixno %></td>
+				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => student %></td>
+				<td width=10px><%= link_to image_tag("printer.png",   :border => 0, :title => 'Borang Maklumat Pelajar'), :action => 'formforstudent', :id => student %></td>
+				<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => student %></td>
+				<td width=10px >
+					<% if permitted_to? :destroy, @student %>
+						<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), student, :confirm => 'Are you sure?', :method => :delete %></td>
 					<% end %>
-			<!--<#% end %>-->
+				</td>
+			</tr>
+			<% end %>
+		<%# end %>
 		<% end %>
 	</table>
-<!--17/11/2011 - Shaliza added pagination for student -->	
-<div class="pagination">
-	<%= will_paginate @students %>  
-</div>
+
+	<div class="pagination">
+		<%= will_paginate @students %>  
+	</div>
 </div>
 <BR>
 

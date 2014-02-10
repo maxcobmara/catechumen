@@ -45,11 +45,19 @@ class Student < ActiveRecord::Base
     end
   end
 
-  def self.search2(search2)
-    if search2
-     @students = Student.find(:all, :conditions=> ['intake =?',"%#{search2}%"])
+  def self.search2(intake, programme)
+    if intake!='0' && programme!='0'
+        #@students = Student.find(:all, :conditions=> ['intake =? AND course_id=?',"%#{intake}%",programme]).sort_by{|t|t.intake} #group by program, then sort by intake (first) 
+        @students = Student.find(:all, :conditions=> ['intake =? AND course_id=?',"%#{intake}%",programme]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
+    elsif intake!='0' && programme=='0'
+        #@students = Student.find(:all, :conditions=> ['intake =?',"%#{intake}%"]).sort_by{|t|t.intake} #group by program, then sort by intake (first)
+        @students = Student.find(:all, :conditions=> ['intake =?',"%#{intake}%"]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
+    elsif intake=='0' && programme!='0'
+        #@students = Student.find(:all, :conditions=> ['course_id=?',programme]).sort_by{|t|t.intake} #group by program, then sort by intake (first)
+        @students = Student.find(:all, :conditions=> ['course_id=?',programme]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
     else
-     @students = Student.find(:all)
+       #@students = Student.find(:all).sort_by{|t|t.intake} #group by program, then sort by intake (first)
+       @students = Student.find(:all).sort_by{|t|t.intake} .sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
     end
   end
   
