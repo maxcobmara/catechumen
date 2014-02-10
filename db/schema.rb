@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140208213335) do
+ActiveRecord::Schema.define(:version => 20140209214622) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -1770,6 +1770,8 @@ ActiveRecord::Schema.define(:version => 20140208213335) do
     t.integer  "intake_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "course_remarks"
+    t.integer  "race2"
   end
 
   add_index "students", ["icno"], :name => "index_students_on_icno"

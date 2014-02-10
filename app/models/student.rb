@@ -38,12 +38,56 @@ class Student < ActiveRecord::Base
   
   def self.search(search)
     if search
-     @students = Student.find(:all, :conditions => ["icno LIKE ? or name ILIKE ? or matrixno ILIKE ?", "%#{search}%","%#{search}%","%#{search}%"], :order => :icno)
+     @students = Student.find(:all, :conditions => ["icno LIKE ? or name ILIKE ? or matrixno ILIKE ? ", "%#{search}%","%#{search}%","%#{search}%"], :order => :icno)
      # @students = Student.find(:all, :condition => ["course_id LIKE ?", "%#{search}"])
     else
      @students = Student.find(:all)
     end
   end
+
+  def self.search2(search2)
+    if search2
+     @students = Student.find(:all, :conditions=> ['intake =?',"%#{search2}%"])
+    else
+     @students = Student.find(:all)
+    end
+  end
+  
+  named_scope :all 
+  named_scope :carakerja,     :conditions =>  ["course_id=?", 1]
+  named_scope :fisioterapi,   :conditions =>  ["course_id=?", 2]
+  named_scope :kejururawatan, :conditions =>  ["course_id=?", 3]
+  named_scope :peg_perubatan, :conditions =>  ["course_id=?",4]
+  named_scope :radiografi, :conditions =>  ["course_id=?",5]
+  named_scope :perioperating, :conditions =>  ["course_id=?",6]
+  named_scope :orthopedik, :conditions =>  ["course_id=?",7]
+  named_scope :onkologi, :conditions =>  ["course_id=?",8]
+  named_scope :koronari, :conditions =>  ["course_id=?",9]
+  named_scope :perawatanrapi, :conditions =>  ["course_id=?",10]
+  named_scope :perawatanrenal, :conditions =>  ["course_id=?",11]
+  named_scope :psikiatri, :conditions =>  ["course_id=?",12]
+  named_scope :neonate, :conditions =>  ["course_id=?",67]
+  named_scope :kebidanan, :conditions =>  ["course_id=?",13]
+  named_scope :imejan, :conditions =>  ["course_id=?",14]
+  
+  FILTERS = [
+    {:scope => "all",       :label => "All"},
+    {:scope => "carakerja",    :label => "Diploma Jurupulih Perubatan Cara Kerja"},
+    {:scope => "fisioterapi",     :label => "Diploma Jurupulih Perubatan Anggota (Fisioterapi)"},
+    {:scope => "kejururawatan", :label => "Diloma Kejururawatan"},
+    {:scope => "peg_perubatan", :label => "Diploma Pen Pegawai Perubatan"},
+    {:scope => "radiografi",  :label => "Diploma Radiografi"},
+    {:scope => "perioperating",  :label => "Posbasik Perioperating"},
+    {:scope => "orthopedik",:label => "Posbasik Orthopedik"},
+    {:scope => "onkologi",      :label => "Posbasik Onkologi"},
+    {:scope => "koronari",    :label => "Posbasik Perubatan Koronari"},
+    {:scope => "perawatanrapi", :label => "Posbasik Perawatan Rapi"},
+    {:scope => "perawatanrenal", :label => "Posbasik Perawatan Renal"},
+    {:scope => "psikiatri", :label =>"Posbasik Perawatan Psikiatri"},
+    {:scope => "neonate", :label => "Posbasik Neonate"},
+    {:scope => "kebidanan", :label =>"Diploma lanjutan Kebidanan"},
+    {:scope => "imejan", :label =>"Diploma Lanjutan Pengimejan Perubatan Payudara"}
+    ]
   
   def self.find_main
       Programme.find(:all, :condition => ['programme_id IS NULL'])
@@ -185,6 +229,16 @@ GENDER = [
         #  Displayed       stored in db
         [ "Male","1" ],
         [ "Female","2" ]
+]
+
+#Pls note 'race2' field is for race whereas 'race' field is for etnic
+RACE = [
+        #  Displayed       stored in db
+        [ "Melayu", 1 ],
+        [ "Cina", 2],
+        [ "India", 3],
+        [ "Bumiputera Sabah & Sarawak", 4],
+        [ "Lain-Lain", 5]
 ]
   
 SESSION = [
