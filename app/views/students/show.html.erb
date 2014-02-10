@@ -58,8 +58,14 @@
 		</tr>	
 		<tr>
 			<td class="leftcol"><%= t 'student.race' %></td>
+			<td><%=h (Student::RACE.find_all{|disp, value| value == @student.race2.to_i}).map {|disp, value| disp} %></td>
+		</tr>	
+		<% if @student.race2 == 21%>
+		<tr>
+			<td class="leftcol"><%= t 'student.etnic' %></td>
 			<td><%=h @student.race %></td>
 		</tr>	
+		<% end %>
 		<tr>
 			<td class="leftcol"><label for="semail"><%= t 'student.semail' %> :</label></td>
 			<td><%=h @student.semail %></td>

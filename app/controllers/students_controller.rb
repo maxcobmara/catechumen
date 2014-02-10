@@ -125,6 +125,17 @@ class StudentsController < ApplicationController
       end
     end
   end
+  
+  def ethnic_listing
+    if request.post?
+      @find_type = params[:list_submit_button]
+  		  if @find_type == "Ethnic Listing by Programme"
+          @programme_id = params[:programme]
+          @students_of_programme = Student.find(:all, :conditions => ['course_id=?',@programme_id ])  
+        end
+      render :layout => 'report'
+    end
+  end
 
   # DELETE /students/1
   # DELETE /students/1.xml

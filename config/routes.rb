@@ -293,6 +293,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/residences/addasset', :controller => 'residences', :action => 'addasset'
   map.connect '/students/maklumat_pelatih_intake', :controller => 'students', :action => 'maklumat_pelatih_intake'
   map.connect '/students/formforstudent', :controller => 'students', :action => 'formforstudent'
+  map.resources :students, :collection => {:ethnic_listing => :get}
   map.resources :students
 
   map.connect '/position/maklumat_perjawatan_LA', :controller => 'positions', :action => 'maklumat_perjawatan_LA'

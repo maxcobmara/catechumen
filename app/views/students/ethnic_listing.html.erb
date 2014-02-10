@@ -1,0 +1,277 @@
+<%= stylesheet_link_tag 'report', :media => "print" %>
+
+	<form action="#">
+			<script>
+			document.write("<input type='button' " +
+			"onClick='window.print()' " +
+			"class='printbutton' " +
+			"value='Print This Page'/>");
+			</script>
+	</form>
+
+	<style type="text/css">.r2 {
+	-webkit-transform: rotate(270deg);
+	-moz-transform: rotate(270deg);
+	-o-transform: rotate(270deg);
+	-ms-transform: rotate(270deg);
+	transform: rotate(270deg);
+	width: 1em;
+	line-height: 1ex; 
+	}</style>
+	
+<div class="A4landscape" style="border: none;">
+<BR/>
+
+<!--to revised-11feb2014-->
+<%=@students_of_programme.count%>
+<% @students_of_programme.group_by(&:intake).sort.each do |intake,students|%>
+<br><%=intake%>
+	<% students.group_by(&:race2).each do |race2, student2|%>
+		: <%= race2%> |
+		<%= student2.count%>
+	<% end %>
+<% end %>
+<!--to revised-11feb2014-->
+
+<table class="plong" >
+	<thead>
+		<tr><th colspan=25 align="center"><img src="/images/KM.jpg" alt="km"/ height="25%" width="6%"></th></tr>
+		<tr><th colspan=25><b>BAHAGIAN PENGURUSAN LATIHAN<BR>KEMENTERIAN KESIHATAN MALAYSIA</b></th></tr>
+		<tr><th colspan=25>MAKLUMAT KUMPULAN ETNIK PELATIH DI INSTITUSI LATIHAN KEMENTERIAN KESIHATAN MALAYSIA</th></tr>	
+		<tr><th class="tright" colspan=25><b>SESI:</b></th></tr>
+		<tr>
+			<th align="left" colspan=25><b>INSTITUSI LATIHAN : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU</b></th>
+		</tr>
+		<tr height=10px>&nbsp;</tr>
+		<tr>
+			<th class="tcol2a" rowspan=2>JENIS PROGRAM<br>/KURSUS</th>
+			<th class="tcol2a" rowspan=2>KUMP</th>
+			<th class="tcol2a" rowspan=2>JANTINA</th>
+			<th class="tcol2a" colspan=21>KUMPULAN ETNIK</th>
+			<th class="tcol2" rowspan=2>JUMLAH</th>
+		</tr>	
+		<tr>
+			<th class="tcol2a">Melayu</th>
+			<th class="tcol2a">Cina</th>
+			<th class="tcol2a">India</th>
+			<th class="tcol2a">Orang Asli</th>
+			<th class="tcol2a">Bajau</th>
+			<th class="tcol2a">Murut</th>
+			<th class="tcol2a">Brunei</th>
+			<th class="tcol2a">Bisaya</th>
+			<th class="tcol2a">Kadazan</th>
+			<th class="tcol2a">Suluk</th>
+			<th class="tcol2a">Kedayan</th>
+			<th class="tcol2a">Iban</th>
+			<th class="tcol2a">Kadazan Dusun</th>
+			<th class="tcol2a">Sungal</th>
+			<th class="tcol2a">Siam</th>
+			<th class="tcol2a">Melanau</th>
+			<th class="tcol2a">Bugis</th>
+			<th class="tcol2a">Bidayuh</th>
+			<th class="tcol2a">Momogu Rumus</th>
+			<th class="tcol2a">Dusun</th>
+			<th class="tcol2a">Lain-Lain</th>
+		</tr>	
+</thead>
+
+
+	
+	<tbody>
+			<%count=0%>
+			<tr>
+				<td class="tdata" rowspan=6><%=Programme.find(@programme_id).programme_list%></td>
+				<td class="tdata">T1SI</td>
+				<td class="tdata">P</td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+			</tr>
+			<tr>
+				<td class="tdata">T1SI</td>
+				<td class="tdata">L</td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+			</tr>
+			<tr>
+				<td class="tdata">T2SI</td>
+				<td class="tdata">P</td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+			</tr>
+			<tr>
+				<td class="tdata">T2SII</td>
+				<td class="tdata">L</td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+			</tr>
+			<tr>
+				<td class="tdata">T3SI</td>
+				<td class="tdata">P</td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+			</tr>
+			<tr>
+				<td class="tdata">T3SII</td>
+				<td class="tdata">L</td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+			</tr>
+
+			<tr>
+				<td colspan=2 class="tdata">JUMLAH</td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>
+				<td class="tdata"></td>	
+				<td class="tdata"></td>	
+			</tr>
+			<%# for loanable in @loanable do %>
+			
+			<%# end %>
+			
+	</tbody>
+</table>
+<div>	
+<br>	
+
+<div id="hideLink">
+<%= link_to 'Back', students_path %>
+</div>
