@@ -4,10 +4,35 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.xml
   def index
-    @students_list = Student.with_permissions_to(:index).all
-    @students = Student.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page])#17/11/2011 - Shaliza added pagination for student
-    @student_intakes = @students.group_by { |t| t.intake } # 21/10/2011 - Shaliza changed with group by intake
-    #@student_programmes = @students.group_by { |t| t.course_id }
+    submit_val = params[:searchby]
+    @intakes = Student.all.group_by { |t| t.intake }.sort
+    @filters = Student::FILTERS
+      if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+        #@assets = Asset.send(params[:show]).paginate(:order => :assetcode, :per_page => 30, :page => params[:page])
+        #@asset_gbtype = @assets.group_by { |t| t.gbtype }
+        
+        @students_list = Student.with_permissions_to(:index).all
+        @students = Student.with_permissions_to(:index).send(params[:show]).paginate(:per_page => 20, :page => params[:page])#17/11/2011 - Shaliza added pagination for student
+        @student_intakes = @students.group_by { |t| t.intake } # 21/10/2011 - Shaliza changed with group by intake
+        #@student_programmes = @students.group_by { |t| t.course_id }
+      
+      else
+        #@assets = Asset.search(params[:search]).paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])
+        #@asset_gbtype = @assets.group_by { |t| t.gbtype }
+   
+        #@student_programmes = @students.group_by { |t| t.course_id }
+        if submit_val == "Search" 
+          
+          @students = Student.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page])#17/11/2011 - Shaliza added pagination for student
+          
+        else
+          @students = Student.with_permissions_to(:index).search2(params[:search2]).paginate(:per_page => 20, :page => params[:page])#17/11/2011 - Shaliza added pagination for student
+        end
+        @students_list = Student.with_permissions_to(:index).all
+        @student_intakes = @students.group_by { |t| t.intake } # 21/10/2011 - Shaliza changed with group by intake
+      end
+    
+
     respond_to do |format|
      # flash[:notice] = "Sorry, your search didn't return any results."
       format.html # index.html.erb

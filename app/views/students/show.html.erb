@@ -90,6 +90,10 @@
 			<td class="leftcol"><label for="intake"><%= t 'student.intake_id' %> :</label></td>
 			<td><%=h @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y") %></td>
 		</tr>
+		<tr>
+			<td class="leftcol"><label for="remarks">Remarks :</label></td>
+			<td><%=h @student.course_remarks %></td>
+		</tr>
 	</table>
 	<BR><BR>
 		
@@ -239,5 +243,6 @@
 </div>
 
 <%= link_to 'Edit', edit_student_path(@student) %> |
-<%= link_to 'formforstudent', @student %> |
+<%#= link_to 'formforstudent', @student %>
+<%= link_to 'Form for student',:action => 'formforstudent', :id => @student %> |
 <%= link_to 'Back', students_path %>

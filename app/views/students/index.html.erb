@@ -6,13 +6,41 @@
 		<div class="right">
 			<% form_tag students_path, :method => 'get' do %>
 			<%= text_field_tag :search, params[:search], :placeholder => "MykadNo, Name, MatricNo" %>
-			<%= submit_tag "Search", :icno => nil %>
+			<%= submit_tag "Search", :icno => nil, :name => :searchby %>
 			<% end %>
 		</div>
 	</div>
 </div>
-  
+
+<%# @intakes_list=[]%>
+<%# @intakes.each do |x, y|%>
+	<%# x2 = x.strftime('%b %Y')%>
+	<%##=x%>
+	<%# @intakes_list << {:scope => "x", :label => x2} %>	
+<%# end %>
+
+	
+	<%#= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>
+
+<%# form_tag :action => 'new' do %>
+<%# form_tag students_path, :method => 'get' do %>
+	<%#= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>
+	<%# submit_tag "Search"%>
+<%# end %>
+<%#= select_tag_for_filter("students", @intakes_list, params)%>	
+
 <div class="indextable">
+	<div align="right">
+		<% @intake_list2 = Student.find(:all, :select=> "DISTINCT intake", :order=> "intake") %>
+		<% form_tag students_path, :method => 'get' do %>
+			<%= select_tag('search2', "<option value='0'>All Existing Intake</option>" +options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>
+			<%= submit_tag 'Search by Intake', :name => :searchby %>
+		<% end %>
+	</div>
+	<div align="LEFT">
+		
+		<%= select_tag_for_filter("students", @filters, params) %>
+	</div><br>
 	<div class="pagination">
 		<%= will_paginate @students %>  
 	</div>

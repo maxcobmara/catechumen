@@ -103,7 +103,7 @@
 
 		<tr>
 			<td>12</th>
-			<td><label for="semail">Email</label></th>
+			<td><label for="semail">Emel</label></th>
 			<td>:</th>
 			<td><%=h @student.semail %></td>
 		</tr>
@@ -144,7 +144,12 @@
 			<td>:</th>
 			<td><%=h @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y") %></td><!-- 21/10/2011 - Shaliza changed for intake -->
 		</tr>
-		
+		<tr>
+			<td>16</th>
+			<td><label for="course_remark">Catatan</label></th>
+			<td>:</th>
+			<td><%=h @student.course_remarks %></td>
+		</tr>
 		
 		<tr></tr>
 		</table>
@@ -155,43 +160,43 @@
 		<tr></tr>
 		
 		<tr>
-			<td width="1%">16</th>
+			<td width="1%">17</th>
 			<td width="20%"><label for="physical">Fizikal</label></th>
 			<td width="1%">:</th>
 			<td><%=h @student.physical %></td>
 		</tr>
 		
 		<tr>
-			<td>17</th>
+			<td>18</th>
 			<td><label for="allergy">Alergik</label></th>
 			<td>:</th>
 			<td><%=h @student.allergy %></td>
 		</tr>
 		
 		<tr>
-			<td>18</th>
+			<td>19</th>
 			<td><label for="disease">Penyakit</label></th>
 			<td>:</th>
 			<td><%=h @student.disease %></td>
 		</tr>
 		
 		<tr>
-			<td>19</th>
+			<td>20</th>
 			<td><label for="bloodtype">Jenis Darah</label></th>
 			<td>:</th>
 			<td><%=h (Student::BLOOD_TYPE.find_all{|disp, value| value == @student.bloodtype}).map {|disp, value| disp} %></td>
 		</tr>
 		
 		<tr>
-			<td>20</th>
+			<td>21</th>
 			<td><label for="medication">Ubat</label></th>
 			<td>:</th>
 			<td><%=h @student.medication %></td>
 		</tr>
 		
 		<tr>
-			<td>21</th>
-			<td><label for="remarks">Remarks</label></th>
+			<td>22</th>
+			<td><label for="remarks">Catatan</label></th>
 			<td>:</th>
 			<td><%=h @student.remarks %></td>
 		</tr>
@@ -211,11 +216,11 @@
 							<%=h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp} %></label>
 					</td>
 					<td>:</td>
-					<td><%=h qualification.qname %> &nbsp &nbsp from &nbsp &nbsp <%=h qualification.institute %></td>
+					<td><%=h qualification.qname %> &nbsp; &nbsp; dari &nbsp; &nbsp; <%=h qualification.institute %></td>
 				</tr>
 	  	<% end %>
 				<tr> <!-- 06/10/2011 - Shaliza Update to display grade such as 1A,2A,3B and so on as user requested -->
-					<td class="leftcol"> SPM Results</td>
+					<td class="leftcol"> Keputusan SPM</td>
 					<td>:</td>
 					<td>
 						<table>
@@ -239,7 +244,7 @@
 		</tr>
 		<tr></tr>
 			<tr>
-				<td width="1%">22</td>
+				<td width="1%">23</td>
 				<td width="20%">Maklumat Penjamin </td>
 				<td width="1%">:</td>
 				<td></td>
@@ -253,25 +258,25 @@
 	
 		<tr>
 			<td></td>
-			<td class="leftcol">a. <%= t 'student.kintype_id' %> :</td>
+			<td class="leftcol">a. <%= t 'student.kintype_id' %> </td>
 			<td>:</td>
 			<td>Penjamin I</td>
 		</tr>
 		<tr>
 			<td></td>
-			<td class="leftcol"><label for="kintype ">b. <%= t 'student.name' %> :</label></td>
+			<td class="leftcol"><label for="kintype ">b. <%= t 'student.name' %> </label></td>
 			<td>:</td>
 			<td><%=h e.name.blank? ? "" : e.name %></td>
 		</tr>
 	    <tr>
 		    <td></td>
-			<td class="leftcol"><label for="icno ">c. <%= t 'student.icno' %> :</label></td>
+			<td class="leftcol"><label for="icno ">c. <%= t 'student.icno' %> </label></td>
 			<td>:</td>
 			<td><%=h e.mykadno %></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td class="leftcol"><label for="kinaddr ">d. <%= t 'student.kinaddr' %> :</label></td>
+			<td class="leftcol"><label for="kinaddr ">d. <%= t 'student.kinaddr' %> </label></td>
 			<td>:</td>
 			<td><%=h e.kinaddr %></td>
 		</tr>
@@ -285,25 +290,25 @@
 		
 		<tr>
 			<td></td>
-			<td class="leftcol">e. <%= t 'student.kintype_id' %> :</td>
+			<td class="leftcol">e. <%= t 'student.kintype_id' %> </td>
 			<td>:</td>
 			<td>Penjamin II</td>
 		</tr>
 		<tr>
 			<td></td>
-			<td class="leftcol"><label for="kintype ">f. <%= t 'student.name' %> :</label></td>
+			<td class="leftcol"><label for="kintype ">f. <%= t 'student.name' %> </label></td>
 			<td>:</td>
 			<td><%=h e.name.blank? ? "" : e.name %></td>
 		</tr>
 	    <tr>
 		    <td></td>
-			<td class="leftcol"><label for="icno ">g. <%= t 'student.icno' %> :</label></td>
+			<td class="leftcol"><label for="icno ">g. <%= t 'student.icno' %> </label></td>
 			<td>:</td>
 			<td><%=h e.mykadno %></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td class="leftcol"><label for="kinaddr ">h. <%= t 'student.kinaddr' %> :</label></td>
+			<td class="leftcol"><label for="kinaddr ">h. <%= t 'student.kinaddr' %> </label></td>
 			<td>:</td>
 			<td><%=h e.kinaddr %></td>
 		</tr>
@@ -316,7 +321,7 @@
 		</tr>
 		
 			<tr>
-					<td width="1%">23</td>
+					<td width="1%">24</td>
 					<td width="20%">Maklumat Keluarga : </td>
 					<td width="1%">:</td>
 					<td></td>
