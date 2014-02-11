@@ -5,34 +5,39 @@ class StudentsController < ApplicationController
   # GET /students.xml
   def index
     submit_val = params[:searchby]
-    @intakes = Student.all.group_by { |t| t.intake }.sort
-    @filters = Student::FILTERS
-      if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-        #@assets = Asset.send(params[:show]).paginate(:order => :assetcode, :per_page => 30, :page => params[:page])
-        #@asset_gbtype = @assets.group_by { |t| t.gbtype }
-        
-        @students_list = Student.with_permissions_to(:index).all
-        @students = Student.with_permissions_to(:index).send(params[:show]).paginate(:per_page => 20, :page => params[:page])#17/11/2011 - Shaliza added pagination for student
-        @student_intakes = @students.group_by { |t| t.intake } # 21/10/2011 - Shaliza changed with group by intake
-        #@student_programmes = @students.group_by { |t| t.course_id }
-      
-      else
-        #@assets = Asset.search(params[:search]).paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])
-        #@asset_gbtype = @assets.group_by { |t| t.gbtype }
-   
-        #@student_programmes = @students.group_by { |t| t.course_id }
-        if submit_val == "Search" 
-          
-          @students = Student.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page])#17/11/2011 - Shaliza added pagination for student
-          
-        else
-          @students = Student.with_permissions_to(:index).search2(params[:search2]).paginate(:per_page => 20, :page => params[:page])#17/11/2011 - Shaliza added pagination for student
-        end
-        @students_list = Student.with_permissions_to(:index).all
-        @student_intakes = @students.group_by { |t| t.intake } # 21/10/2011 - Shaliza changed with group by intake
-      end
+    #@inta2 = Student.with_permissions_to(:index).sort_by{|t|t.intake} #group by program, then sort by intake (first)
+    @inta2 = Student.with_permissions_to(:index).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
+    #@student_intakes = @inta2.group_by { |t| t.intake } #group by program, then sort by intake (first)
+    @student_programmes = @inta2.group_by { |t| t.course_id } #group by intake, then sort by programme (first)
+		
+    #BELOW - group by program, then sort by intake (first)
+    #@intake=[] 
+		#@student_count=[] 
+		#@student_intakes.each do |x,y| 
+			#@intake<<x
+			#@student_count<< y.count 
+      #end 
     
+    #BELOW - #group by intake, then sort by programme (first)
+		@programme=[] 
+		@student_count=[] 
+		@student_programmes.each do |x,y| 
+			@programme<<x
+			@student_count<< y.count 
+		end 
+    
+        if submit_val == "Search" 
+            @students = Student.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page])
+            #17/11/2011 - Shaliza added pagination for student  
+        elsif submit_val == "Search by Intake/Programme"
+            @students = Student.with_permissions_to(:index).search2(params[:intake],params[:programme]).paginate(:per_page => 20, :page => params[:page])
+            #17/11/2011 - Shaliza added pagination for student
+        else
+            @students = @inta2.paginate(:per_page => 20, :page => params[:page])
+        end
 
+    #@students_list = Student.with_permissions_to(:index).all
+    
     respond_to do |format|
      # flash[:notice] = "Sorry, your search didn't return any results."
       format.html # index.html.erb
@@ -118,6 +123,17 @@ class StudentsController < ApplicationController
         format.html { render :action => "edit" }
         format.xml  { render :xml => @student.errors, :status => :unprocessable_entity }
       end
+    end
+  end
+  
+  def ethnic_listing
+    if request.post?
+      @find_type = params[:list_submit_button]
+  		  if @find_type == "Ethnic Listing by Programme"
+          @programme_id = params[:programme]
+          @students_of_programme = Student.find(:all, :conditions => ['course_id=?',@programme_id ])  
+        end
+      render :layout => 'report'
     end
   end
 

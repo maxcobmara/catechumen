@@ -60,10 +60,12 @@
 					           Student::RACE,
 					           :prompt => t('select')  %></td>
 			</tr>
-			<tr>
+		
+			<tr class="bong", style="display: none;">
 					<td class="leftcol"><%= t 'student.etnic' %></td>
 					<td><%= f.text_field :race %></td>
 			</tr>
+		
 			<tr>
 					<td class="leftcol"><label for="semail"><%= t 'student.semail' %></label></td>
 					<td><%= f.text_field :semail %></td>
@@ -199,7 +201,19 @@
 
 </div>
 
-
+<script type="text/javascript">
+		$j(document).ready(function(){
+		  $j('#student_race2').change(function() {
+		    if($j(this).val() == 21) {
+		      $j('.bong').show();
+					//$j('.koik').hide();
+		    }else {
+		     	 $j('.bong').hide();
+					 //$j('.koik').show();
+		    }
+			});
+	});
+</script>
 
 
 

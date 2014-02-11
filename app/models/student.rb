@@ -45,49 +45,21 @@ class Student < ActiveRecord::Base
     end
   end
 
-  def self.search2(search2)
-    if search2
-     @students = Student.find(:all, :conditions=> ['intake =?',"%#{search2}%"])
+  def self.search2(intake, programme)
+    if intake!='0' && programme!='0'
+        #@students = Student.find(:all, :conditions=> ['intake =? AND course_id=?',"%#{intake}%",programme]).sort_by{|t|t.intake} #group by program, then sort by intake (first) 
+        @students = Student.find(:all, :conditions=> ['intake =? AND course_id=?',"%#{intake}%",programme]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
+    elsif intake!='0' && programme=='0'
+        #@students = Student.find(:all, :conditions=> ['intake =?',"%#{intake}%"]).sort_by{|t|t.intake} #group by program, then sort by intake (first)
+        @students = Student.find(:all, :conditions=> ['intake =?',"%#{intake}%"]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
+    elsif intake=='0' && programme!='0'
+        #@students = Student.find(:all, :conditions=> ['course_id=?',programme]).sort_by{|t|t.intake} #group by program, then sort by intake (first)
+        @students = Student.find(:all, :conditions=> ['course_id=?',programme]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
     else
-     @students = Student.find(:all)
+       #@students = Student.find(:all).sort_by{|t|t.intake} #group by program, then sort by intake (first)
+       @students = Student.find(:all).sort_by{|t|t.intake} .sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
     end
   end
-  
-  named_scope :all 
-  named_scope :carakerja,     :conditions =>  ["course_id=?", 1]
-  named_scope :fisioterapi,   :conditions =>  ["course_id=?", 2]
-  named_scope :kejururawatan, :conditions =>  ["course_id=?", 3]
-  named_scope :peg_perubatan, :conditions =>  ["course_id=?",4]
-  named_scope :radiografi, :conditions =>  ["course_id=?",5]
-  named_scope :perioperating, :conditions =>  ["course_id=?",6]
-  named_scope :orthopedik, :conditions =>  ["course_id=?",7]
-  named_scope :onkologi, :conditions =>  ["course_id=?",8]
-  named_scope :koronari, :conditions =>  ["course_id=?",9]
-  named_scope :perawatanrapi, :conditions =>  ["course_id=?",10]
-  named_scope :perawatanrenal, :conditions =>  ["course_id=?",11]
-  named_scope :psikiatri, :conditions =>  ["course_id=?",12]
-  named_scope :neonate, :conditions =>  ["course_id=?",67]
-  named_scope :kebidanan, :conditions =>  ["course_id=?",13]
-  named_scope :imejan, :conditions =>  ["course_id=?",14]
-  
-  FILTERS = [
-    {:scope => "all",       :label => "All"},
-    {:scope => "carakerja",    :label => "Diploma Jurupulih Perubatan Cara Kerja"},
-    {:scope => "fisioterapi",     :label => "Diploma Jurupulih Perubatan Anggota (Fisioterapi)"},
-    {:scope => "kejururawatan", :label => "Diloma Kejururawatan"},
-    {:scope => "peg_perubatan", :label => "Diploma Pen Pegawai Perubatan"},
-    {:scope => "radiografi",  :label => "Diploma Radiografi"},
-    {:scope => "perioperating",  :label => "Posbasik Perioperating"},
-    {:scope => "orthopedik",:label => "Posbasik Orthopedik"},
-    {:scope => "onkologi",      :label => "Posbasik Onkologi"},
-    {:scope => "koronari",    :label => "Posbasik Perubatan Koronari"},
-    {:scope => "perawatanrapi", :label => "Posbasik Perawatan Rapi"},
-    {:scope => "perawatanrenal", :label => "Posbasik Perawatan Renal"},
-    {:scope => "psikiatri", :label =>"Posbasik Perawatan Psikiatri"},
-    {:scope => "neonate", :label => "Posbasik Neonate"},
-    {:scope => "kebidanan", :label =>"Diploma lanjutan Kebidanan"},
-    {:scope => "imejan", :label =>"Diploma Lanjutan Pengimejan Perubatan Payudara"}
-    ]
   
   def self.find_main
       Programme.find(:all, :condition => ['programme_id IS NULL'])
@@ -237,8 +209,24 @@ RACE = [
         [ "Melayu", 1 ],
         [ "Cina", 2],
         [ "India", 3],
-        [ "Bumiputera Sabah & Sarawak", 4],
-        [ "Lain-Lain", 5]
+        [ "Orang Asli", 4],
+        [ "Bajau", 5],
+        [ "Murut",6],
+        [ "Brunei",7],
+        [ "Bisaya",8],
+        [ "Kadazan",9],
+        [ "Suluk",10],
+        [ "Kedayan",11],
+        [ "Iban",12],
+        [ "Kadazan Dusun",13],
+        [ "Sungal",14],
+        [ "Siam",15],
+        [ "Melanau",16],
+        [ "Bugis",17],
+        [ "Bidayuh",18],
+        [ "Momogun Rungus",19],
+        [ "Dusun",20],
+        [ "Lain-Lain",21]
 ]
   
 SESSION = [
