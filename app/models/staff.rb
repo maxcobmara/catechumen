@@ -272,15 +272,7 @@ class Staff < ActiveRecord::Base
 
   
   def render_reports_to
-    if position.blank? 
-      ""
-    elsif position.parent.blank?
-      "-"
-    elsif position.parent.staff.blank?
-      "#{position.parent.name}"
-    else 
-      "#{position.parent.name} - #{position.parent.staff.name}"
-    end
+      "#{position.try(:parent).try(:name)} - #{position..try(:parent).try(:staff).try(:name)}"
   end
   
   def render_unit

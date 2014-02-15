@@ -27,9 +27,10 @@ Rails::Initializer.run do |config|
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
   
-  config.gem "declarative_authorization", :source => "http://gemcutter.org"
-  config.gem "ancestry"
-  config.gem 'to_xls'
+  #config.gem "declarative_authorization", :source => "http://gemcutter.org"
+  config.gem "declarative_authorization", :version => '~> 0.5.1'
+  config.gem "ancestry", :version => '~> 1.2.0'
+  config.gem 'to_xls',  :version => '~> 0.1.2'
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
