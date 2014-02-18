@@ -58,12 +58,17 @@
 					<td class="leftcol"><%= t 'student.race' %></td>
 					<td><%= f.select :race2, 
 					           Student::RACE,
-					           :prompt => t('select')  %></td>
+					           :prompt => t('select')  %>
+						<!--display previously entered race-->
+						<font color="blue">Previous race entered: <%= @student.race.blank? ? "" : @student.race %></font>
+					</td>
 			</tr>
 		
 			<tr class="bong", style="display: none;">
 					<td class="leftcol"><%= t 'student.etnic' %></td>
-					<td><%= f.text_field :race %></td>
+					<td><%= f.text_field :race %>
+						<!--'race' is now use to store ethnic, field only displayed upon selection of LAIN-LAIN RACE-->
+					</td>
 			</tr>
 		
 			<tr>
@@ -126,7 +131,7 @@
 	</table>
 	<BR><BR>
 	
-	<H2><%=t('student.health_status')%>s</H2>
+	<H2><%=t('student.health_status')%></H2>
 	<table width=100%>
 			<tr>
 					<td class="leftcol"><label for="physical"><%=t('student.physical')%></label></td>

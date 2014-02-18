@@ -19,7 +19,7 @@ class Staff < ActiveRecord::Base
   validates_length_of       :icno, :is =>12
   validates_presence_of     :icno, :name, :coemail, :code, :appointdt #appointment date must exist be4 can apply leave
   validates_uniqueness_of   :icno, :fileno, :coemail, :code
-  validates_format_of       :name, :with => /^[a-zA-Z'`\/\. ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add unwanted chars between bracket
+  validates_format_of       :name, :with => /^[a-zA-Z'`\/\.\@\ ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add allowed chars between bracket
   validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd, :fileno
   #validates_length_of      :cooftelno, :is =>10
   #validates_length_of      :cooftelext, :is =>5

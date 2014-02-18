@@ -6,9 +6,10 @@ class StudentsController < ApplicationController
   def index
     submit_val = params[:searchby]
     #@inta2 = Student.with_permissions_to(:index).sort_by{|t|t.intake} #group by program, then sort by intake (first)
-    @inta2 = Student.with_permissions_to(:index).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
+    #@inta2 = Student.with_permissions_to(:index).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
+    @inta3 = Student.with_permissions_to(:index).sort_by{|t|t.intake} #sort by intake (before split into pages)
     #@student_intakes = @inta2.group_by { |t| t.intake } #group by program, then sort by intake (first)
-    @student_programmes = @inta2.group_by { |t| t.course_id } #group by intake, then sort by programme (first)
+    @student_programmes = @inta3.group_by { |t| t.course_id } #group by intake, then sort by programme (first)
 		
     #BELOW - group by program, then sort by intake (first)
     #@intake=[] 
@@ -33,7 +34,8 @@ class StudentsController < ApplicationController
             @students = Student.with_permissions_to(:index).search2(params[:intake],params[:programme]).paginate(:per_page => 20, :page => params[:page])
             #17/11/2011 - Shaliza added pagination for student
         else
-            @students = @inta2.paginate(:per_page => 20, :page => params[:page])
+            #@students = @inta2.paginate(:per_page => 20, :page => params[:page])   #before 18Feb2014
+            @students = @inta3.paginate(:per_page => 20, :page => params[:page])    #paginate(after sorted by intake) & TO BE group by course(in index) 
         end
 
     #@students_list = Student.with_permissions_to(:index).all

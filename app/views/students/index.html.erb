@@ -33,19 +33,20 @@
 			<th>Name</th>
 			<th>Matrixno</th>
 			<th colspan=4 class="ac">Control</th>
+			<th>&nbsp;</th>
 		</tr>
 		<%# for student in @students %><!--sort by intake only-->
 		<%# @students.group_by{|t|t.course_id}.each do |m,students| %><!--group by program, then sort by intake (first)-->
 		<% @students.group_by{|t|t.intake}.each do |m,students| %><!--group by intake, then sort by programme (first)-->
 			
-			<tr><td colspan=8 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;"><%= m.strftime('%B/%Y') %></span></td></tr>
+			<tr><td colspan=8 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;"><!--<%#= m%> | --><%= m.strftime('%B %Y') %></span></td></tr>
 				
 			<% for student in students %>
 			<% if count==0 %>
 				<!--<tr><td colspan=8><BR><b>Intake <%# a=student.intake%><%#= student.intake.strftime('%B/%Y')%>
 				<%##=@intake[count].strftime('%B/%Y')%><%#= month.strftime('%B/%Y') unless month.blank? %></b></td></tr>-->
 				<tr><td colspan=8 style="background-color:#EFF1F1;"><BR><b>Program&nbsp;<% a=student.course_id%><%= Programme.find(student.course_id).programme_list %>
-				<%##=@intake[count].strftime('%B/%Y')%><%#= month.strftime('%B/%Y') unless month.blank? %></b></td></tr
+				<%##=@intake[count].strftime('%B/%Y')%><%#= month.strftime('%B/%Y') unless month.blank? %></b></td></tr>
 				<% count+=1%>
 			<% else %>
 				<!--<%# if a!=student.intake%>
@@ -62,13 +63,21 @@
 				<td><%=h student.formatted_mykad %><!--FOR CHECKING : &nbsp;(<%= student.intake %>)&nbsp;(<%= student.course_id%>)--></td>
 				<td><%=h student.name %></td>
 				<td><%=h student.matrixno %></td>
-				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => student %></td>
+				<td width=10px>
+					<%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => student %></td>
 				<td width=10px><%= link_to image_tag("printer.png",   :border => 0, :title => 'Borang Maklumat Pelajar'), :action => 'formforstudent', :id => student %></td>
-				<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => student %></td>
+				<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => student %>
+				</td>
 				<td width=10px >
 					<% if permitted_to? :destroy, @student %>
 						<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), student, :confirm => 'Are you sure?', :method => :delete %></td>
 					<% end %>
+				</td>
+				<td>
+					<% if (student.race2.nil? && !student.race.nil? && student.race!='')||(student.race2.blank? && !student.race.blank? &&  student.race!='') %>
+						<font color="red">*<%=student.race%></font>
+					<% end %>
+	
 				</td>
 			</tr>
 			<% end %>
@@ -81,7 +90,6 @@
 	</div><br>
 	<div align="right">
 		<% form_tag(:action => :ethnic_listing) do %>
-			Class No
 			<%= select_tag('programme', options_from_collection_for_select(@programme_list,:id, :programme_list)) %>
 			<%= submit_tag "Ethnic Listing by Programme", :name => :list_submit_button %>
 		<% end %>
