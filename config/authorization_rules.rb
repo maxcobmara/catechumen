@@ -218,7 +218,7 @@ authorization do
   end
   
   role :student_administrator do
-     has_permission_on :students, :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
+     has_permission_on :students, :to => [:manage, :formforstudent, :maklumat_pelatih_intake, :ethnic_listing]
      has_permission_on :studentsearches, :to => :read
   end
   

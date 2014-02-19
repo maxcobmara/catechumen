@@ -167,7 +167,62 @@ class Student < ActiveRecord::Base
        Student.find(:all, :joins=>:klasses, :conditions=> ['subject_id=?',subject])
    end
    
+   def self.get_intake(main_semester, main_year, programme)
+     current_year = Date.today.year
+     current_month = Date.today.month     #for testing - assign value as 8 (August)
+     if current_month < 7 
+       current_semester = 1
+       current_sem_month = 1              #Sem January
+     else 
+       current_semester = 2 
+       current_sem_month = 7              #Sem July
+     end 
+     if main_semester == 1 
+       intake_month = current_sem_month 
+       if main_year >1 
+         intake_year = current_year-(main_year-1)
+       else 
+         intake_year = current_year 
+       end 
+     elsif main_semester == 2
+       if current_sem_month == 1 
+         intake_month = 7 
+         intake_year = current_year-main_year 
+       else 
+         intake_month = 1 
+         intake_year = current_year-(main_year-1) 
+       end 
+     end 
+     return Date.new(intake_year, intake_month,1) 
+   end 
    
+   def self.get_student_by_intake_gender_race(main_semester, main_year, gender, programme, race)
+     intake_start = Student.get_intake(main_semester, main_year, programme)
+     intake_end = intake_start.end_of_month
+     return Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=?',intake_start, intake_end, programme, race, gender])
+   end
+   
+   def self.get_student_by_intake_gender(main_semester, main_year, gender, programme)
+     intake_start = Student.get_intake(main_semester, main_year, programme)
+     intake_end = intake_start.end_of_month
+     return Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND gender=? AND race2 IS NOT NULL',intake_start, intake_end, programme, gender])
+   end
+   
+   def self.get_student_by_6intake(programme) #return all students for these 6 intake - valid & invalid
+     intake_start1 = Student.get_intake(1, 1, programme)
+     intake_end1 = intake_start1.end_of_month
+     intake_start2 = Student.get_intake(2, 1, programme)
+     intake_end2 = intake_start2.end_of_month
+     intake_start3 = Student.get_intake(1, 2, programme)
+     intake_end3 = intake_start3.end_of_month
+     intake_start4 = Student.get_intake(2, 2, programme)
+     intake_end4 = intake_start4.end_of_month
+     intake_start5 = Student.get_intake(1, 3, programme)
+     intake_end5 = intake_start5.end_of_month
+     intake_start6 = Student.get_intake(2, 3, programme)
+     intake_end6 = intake_start6.end_of_month
+     return Student.find(:all, :conditions => ['((intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=?',intake_start1, intake_end1,intake_start2, intake_end2, intake_start3, intake_end3, intake_start4, intake_end4,intake_start5, intake_end5,intake_start6, intake_end6,programme])
+   end
    
 # ------------------------------code for repeating field qualification---------------------------------------------------
  has_many :qualifications, :dependent => :destroy
