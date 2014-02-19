@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140209214622) do
+ActiveRecord::Schema.define(:version => 20140219125542) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -1127,6 +1127,8 @@ ActiveRecord::Schema.define(:version => 20140209214622) do
     t.string   "ancestry"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "combo_code"
+    t.integer  "ancestry_depth", :default => 0
   end
 
   add_index "locations", ["ancestry"], :name => "index_locations_on_ancestry"
