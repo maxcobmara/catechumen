@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140219125542) do
+ActiveRecord::Schema.define(:version => 20140220194455) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -29,6 +29,9 @@ ActiveRecord::Schema.define(:version => 20140219125542) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "accessions", ["accession_no"], :name => "index_accessions_on_accession_no"
+  add_index "accessions", ["id"], :name => "index_accessions_on_id"
 
   create_table "addbooks", :force => true do |t|
     t.string   "name"
@@ -507,6 +510,9 @@ ActiveRecord::Schema.define(:version => 20140219125542) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "books", ["id"], :name => "index_books_on_id"
+  add_index "books", ["isbn"], :name => "index_books_on_isbn"
 
   create_table "booksearches", :force => true do |t|
     t.string   "title"
@@ -1132,6 +1138,8 @@ ActiveRecord::Schema.define(:version => 20140219125542) do
   end
 
   add_index "locations", ["ancestry"], :name => "index_locations_on_ancestry"
+  add_index "locations", ["combo_code"], :name => "index_locations_on_combo_code"
+  add_index "locations", ["id"], :name => "index_locations_on_id"
 
   create_table "maints", :force => true do |t|
     t.integer  "asset_id"
@@ -1633,6 +1641,7 @@ ActiveRecord::Schema.define(:version => 20140219125542) do
   end
 
   add_index "staffs", ["icno"], :name => "index_staffs_on_icno"
+  add_index "staffs", ["id"], :name => "index_staffs_on_id"
   add_index "staffs", ["name"], :name => "index_staffs_on_name"
 
   create_table "staffsearch2s", :force => true do |t|
@@ -1801,6 +1810,7 @@ ActiveRecord::Schema.define(:version => 20140219125542) do
   end
 
   add_index "students", ["icno"], :name => "index_students_on_icno"
+  add_index "students", ["id"], :name => "index_students_on_id"
   add_index "students", ["matrixno"], :name => "index_students_on_matrixno"
   add_index "students", ["name"], :name => "index_students_on_name"
 
@@ -1844,6 +1854,8 @@ ActiveRecord::Schema.define(:version => 20140219125542) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "tenants", ["id"], :name => "index_tenants_on_id"
 
   create_table "timetable_periods", :force => true do |t|
     t.integer  "timetable_id"
@@ -2121,6 +2133,7 @@ ActiveRecord::Schema.define(:version => 20140219125542) do
     t.datetime "updated_at"
   end
 
+  add_index "users", ["id"], :name => "index_users_on_id"
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
 
   create_table "usesupplies", :force => true do |t|
