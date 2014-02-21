@@ -89,8 +89,9 @@
 		<%= will_paginate @students %>  
 	</div><br>
 	<div align="right">
+		<% @programme_diploma_only = Programme.find(:all, :conditions => ['ancestry_depth=? AND course_type=?',0,'Diploma'])%>
 		<% form_tag(:action => :ethnic_listing) do %>
-			<%= select_tag('programme', options_from_collection_for_select(@programme_list,:id, :programme_list)) %>
+			<%= select_tag('programme', options_from_collection_for_select(@programme_diploma_only,:id, :programme_list)) %>
 			<%= submit_tag "Ethnic Listing by Programme", :name => :list_submit_button %>
 		<% end %>
 	</div>

@@ -21,254 +21,228 @@
 	
 <div class="A4landscape" style="border: none;">
 <BR/>
+	<table class="plong" >
+		<thead>
+			<tr><th colspan=25 align="center"><img src="/images/KM.jpg" alt="km"/ height="25%" width="6%"></th></tr>
+			<tr><th colspan=25><b>BAHAGIAN PENGURUSAN LATIHAN<BR>KEMENTERIAN KESIHATAN MALAYSIA</b></th></tr>
+			<tr><th colspan=25><i>MAKLUMAT KUMPULAN ETNIK PELATIH DI INSTITUSI LATIHAN KEMENTERIAN KESIHATAN MALAYSIA</i></th></tr>	
+			<tr><th colspan=25 style="height:20px;"&nbsp;</th></tr>
+			<tr><th align="left" colspan=19><b>INSTITUSI LATIHAN : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU</b></th>
+			<th align="left" colspan=6>
+				<b>** SESI : JAN-JUN 
+				<% if Date.today.month < 7 %><%=Date.today.year%>
+				<% else %>........
+				<% end %>
+				JUL-DIS
+				<% if Date.today.month >6 %><%=Date.today.year%>
+				<% else %>........
+				<% end %>
+				</b>
+			</th></tr>
+			<tr height=10px>&nbsp;</tr>
+			<tr>
+				<th class="tcol2a" rowspan=2 style="text-align:center;">JENIS PROGRAM<br>/KURSUS</th>
+				<th class="tcol2a" rowspan=2>KUMP</th>
+				<th class="tcol2a" rowspan=2>JANTINA</th>
+				<th class="tcol2a" colspan=21 style="text-align:center;">KUMPULAN ETNIK</th>
+				<th class="tcol2" rowspan=2>JUMLAH</th>
+			</tr>
+			<tr>
+				<th class="tcol2a">Melayu</th>
+				<th class="tcol2a">Cina</th>
+				<th class="tcol2a">India</th>
+				<th class="tcol2a">Orang Asli</th>
+				<th class="tcol2a">Bajau</th>
+				<th class="tcol2a">Murut</th>
+				<th class="tcol2a">Brunei</th>
+				<th class="tcol2a">Bisaya</th>
+				<th class="tcol2a">Kadazan</th>
+				<th class="tcol2a">Suluk</th>
+				<th class="tcol2a">Kedayan</th>
+				<th class="tcol2a">Iban</th>
+				<th class="tcol2a">Kadazan Dusun</th>
+				<th class="tcol2a">Sungal</th>
+				<th class="tcol2a">Siam</th>
+				<th class="tcol2a">Melanau</th>
+				<th class="tcol2a">Bugis</th>
+				<th class="tcol2a">Bidayuh</th>
+				<th class="tcol2a">Momogu Rumus</th>
+				<th class="tcol2a">Dusun</th>
+				<th class="tcol2a">Lain-Lain</th>
+			</tr>	
+		</thead>
+		<tbody>
+			<tr>
+				<td class="tdata" rowspan=12><%=Programme.find(@programme_id).programme_list%></td>
+				<td class="tdata" rowspan=2 style="text-align:center;">T1SI</td>
+				<td class="tdata" style="text-align:center;">P</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;">
+						<!--SEMESTER, YEAR, GENDER-->
+						<%=Student.get_student_by_intake_gender_race(1, 1, 2,@programme_id, race).count %>&nbsp;
+					</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(1, 1, 2,@programme_id).count %>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdata" style="text-align:center;">L</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender_race(1, 1, 1,@programme_id, race).count %>&nbsp;</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(1, 1, 1,@programme_id).count %>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdata" rowspan=2 style="text-align:center;">T1SII</td>
+				<td class="tdata" style="text-align:center;">P</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender_race(2, 1, 2,@programme_id, race).count %>&nbsp;</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(2, 1, 2,@programme_id).count %>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdata" style="text-align:center;">L</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender_race(2, 1, 1,@programme_id, race).count %>&nbsp;</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(2, 1, 2,@programme_id).count %>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdata" rowspan=2 style="text-align:center;">T2SI</td>
+				<td class="tdata" style="text-align:center;">P</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender_race(1, 2, 2,@programme_id, race).count %>&nbsp;</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(1, 2, 2,@programme_id).count %>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdata" style="text-align:center;">L</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender_race(1, 2, 1,@programme_id, race).count %>&nbsp;</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(1, 2, 1,@programme_id).count %>&nbsp;</td>
+			</tr>
+			</tr>
+			<tr>
+				<td class="tdata" rowspan=2 style="text-align:center;">T2SII</td>
+				<td class="tdata" style="text-align:center;">P</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender_race(2, 2, 2,@programme_id, race).count %>&nbsp;</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(2, 2, 2,@programme_id).count %>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdata" style="text-align:center;">L</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender_race(2, 2, 1,@programme_id, race).count %>&nbsp;</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(2, 2, 1,@programme_id).count %>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdata" rowspan=2 style="text-align:center;">T3SI</td>
+				<td class="tdata" style="text-align:center;">P</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender_race(1, 3, 2,@programme_id, race).count %>&nbsp;</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(1, 3, 2,@programme_id).count %>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdata" style="text-align:center;">L</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender_race(1, 3, 1,@programme_id, race).count %>&nbsp;</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(1, 3, 1,@programme_id).count %>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdata" rowspan=2 style="text-align:center;">T3SII</td>
+				<td class="tdata" style="text-align:center;">P</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender_race(2, 3, 2,@programme_id, race).count %>&nbsp;</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(2, 3, 2,@programme_id).count %>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tdata" style="text-align:center;">L</td>
+				<% 1.upto(21) do |race|%>
+					<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, race).count %>&nbsp;</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%=Student.get_student_by_intake_gender(2, 3, 1,@programme_id).count %>&nbsp;</td>
+			</tr>
+			
+			<!--retrieve ALL student of current programme with VALID & invalid, valid, invalid race2 value first-->
+			<% students_all_6intakes = Student.get_student_by_6intake(@programme_id)%><!--valid & invalid-->
+			<% students_6intakes_ids = students_all_6intakes.map(&:id)%>
+			<% students_all_6intakes_count = students_all_6intakes.count %>
+			<% @valid=Student.find(:all,:conditions=>['course_id=? AND race2 IS NOT NULL AND id IN(?)',@programme_id,students_6intakes_ids])%><!--valid-->
+			<% @invalid=Student.find(:all,:conditions=>['course_id=? AND race2 IS NULL AND id IN(?)',@programme_id,students_6intakes_ids]) %><!--invalid-->
+			<!--retrieve ALL student of current programme with VALID & invalid, valid, invalid race2 value first-->
+			
+			<tr>	
+				<td colspan=2 class="tdata" style="text-align:right;">JUMLAH</td>
+				<td class="tdata">&nbsp;</td>
+				<% 1.upto(21) do |count_race| %>
+					<td class="tdata" style="text-align:center;">
+						<%= @total_by_race=Student.find(:all, :conditions=>['course_id=? AND race2=? AND id IN (?)', @programme_id, count_race,students_6intakes_ids]).count%>&nbsp;
+					</td>
+				<% end %>
+				<td class="tdata" style="text-align:center;"><%= @valid.count %></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td colspan=18><br>* P - Perempuan<br>* L - Lelaki</td>
+				<td colspan=5>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan=25>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td colspan=5 align=center>Disediakan oleh :</td>
+				<td colspan=13>&nbsp;</td>
+				<td colspan=5 align=center>Disahkan oleh :</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td style="height: 50px;">&nbsp;</td>
+				<td colspan=5 align=center style="border-bottom: 1px solid black;">&nbsp;</td>
+				<td colspan=13>&nbsp;</td>
+				<td colspan=5 align=center style="border-bottom: 1px solid black;">&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td colspan=5 align=left>Nama : <br>Jawatan</td>
+				<td colspan=13>&nbsp;</td>
+				<td colspan=5 align=center>Pengarah :</td>
+				<td>&nbsp;</td>
+			</tr>			
+			<tr>
+				<td>&nbsp;</td>
+				<td colspan=7 align=left><br><br>* Laporan setiap 6 bulan pada 15 Februari & <br>15 Ogos</td>
+				<td colspan=11>&nbsp;</td>
+				<td colspan=5 align=center>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+		</tbody>
+	</table>
 
-<!--to revised-11feb2014-->
-<%=@students_of_programme.count%>
-<% @students_of_programme.group_by(&:intake).sort.each do |intake,students|%>
-<br><%=intake%>
-	<% students.group_by(&:race2).each do |race2, student2|%>
-		: <%= race2%> |
-		<%= student2.count%>
-	<% end %>
-<% end %>
-<!--to revised-11feb2014-->
-
-<table class="plong" >
-	<thead>
-		<tr><th colspan=25 align="center"><img src="/images/KM.jpg" alt="km"/ height="25%" width="6%"></th></tr>
-		<tr><th colspan=25><b>BAHAGIAN PENGURUSAN LATIHAN<BR>KEMENTERIAN KESIHATAN MALAYSIA</b></th></tr>
-		<tr><th colspan=25>MAKLUMAT KUMPULAN ETNIK PELATIH DI INSTITUSI LATIHAN KEMENTERIAN KESIHATAN MALAYSIA</th></tr>	
-		<tr><th class="tright" colspan=25><b>SESI:</b></th></tr>
-		<tr>
-			<th align="left" colspan=25><b>INSTITUSI LATIHAN : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU</b></th>
-		</tr>
-		<tr height=10px>&nbsp;</tr>
-		<tr>
-			<th class="tcol2a" rowspan=2>JENIS PROGRAM<br>/KURSUS</th>
-			<th class="tcol2a" rowspan=2>KUMP</th>
-			<th class="tcol2a" rowspan=2>JANTINA</th>
-			<th class="tcol2a" colspan=21>KUMPULAN ETNIK</th>
-			<th class="tcol2" rowspan=2>JUMLAH</th>
-		</tr>	
-		<tr>
-			<th class="tcol2a">Melayu</th>
-			<th class="tcol2a">Cina</th>
-			<th class="tcol2a">India</th>
-			<th class="tcol2a">Orang Asli</th>
-			<th class="tcol2a">Bajau</th>
-			<th class="tcol2a">Murut</th>
-			<th class="tcol2a">Brunei</th>
-			<th class="tcol2a">Bisaya</th>
-			<th class="tcol2a">Kadazan</th>
-			<th class="tcol2a">Suluk</th>
-			<th class="tcol2a">Kedayan</th>
-			<th class="tcol2a">Iban</th>
-			<th class="tcol2a">Kadazan Dusun</th>
-			<th class="tcol2a">Sungal</th>
-			<th class="tcol2a">Siam</th>
-			<th class="tcol2a">Melanau</th>
-			<th class="tcol2a">Bugis</th>
-			<th class="tcol2a">Bidayuh</th>
-			<th class="tcol2a">Momogu Rumus</th>
-			<th class="tcol2a">Dusun</th>
-			<th class="tcol2a">Lain-Lain</th>
-		</tr>	
-</thead>
-
-
+	<br>
+	<br>
 	
-	<tbody>
-			<%count=0%>
-			<tr>
-				<td class="tdata" rowspan=6><%=Programme.find(@programme_id).programme_list%></td>
-				<td class="tdata">T1SI</td>
-				<td class="tdata">P</td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-			</tr>
-			<tr>
-				<td class="tdata">T1SI</td>
-				<td class="tdata">L</td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-			</tr>
-			<tr>
-				<td class="tdata">T2SI</td>
-				<td class="tdata">P</td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-			</tr>
-			<tr>
-				<td class="tdata">T2SII</td>
-				<td class="tdata">L</td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-			</tr>
-			<tr>
-				<td class="tdata">T3SI</td>
-				<td class="tdata">P</td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-			</tr>
-			<tr>
-				<td class="tdata">T3SII</td>
-				<td class="tdata">L</td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-			</tr>
-
-			<tr>
-				<td colspan=2 class="tdata">JUMLAH</td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>
-				<td class="tdata"></td>	
-				<td class="tdata"></td>	
-			</tr>
-			<%# for loanable in @loanable do %>
-			
-			<%# end %>
-			
-	</tbody>
-</table>
+	<!--start: display if & only if there's an invalid race2 value-->
+	<% if @invalid.count>0 %>
+		<br>
+		Total Students = <%=students_all_6intakes_count %><br>
+		Total Students with valid race = <%= @valid.count %><br>
+		Total Students with INVALID race = <%=@invalid.count %>
+		<ol>
+			<% for student in @invalid %>
+				<li>&nbsp;<%=student.icno%>&nbsp;<%=student.name%></li>
+			<% end %>
+		</ol>
+	<% end %>
+	<!--end: display if & only if there's an invalid race2 value-->
+	
 <div>	
 <br>	
 
