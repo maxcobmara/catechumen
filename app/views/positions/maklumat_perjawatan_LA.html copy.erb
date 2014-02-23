@@ -1,0 +1,142 @@
+<%= stylesheet_link_tag 'report' %> 
+
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='Print This Page'/>");
+	</script>
+	<fieldset width=10px >
+
+<div id="title" width=21cm>	
+<H2>LAMPIRAN A</H2> 
+
+
+<H3>MAKLUMAT PERJAWATAN DI KOLEJ-KOLEJ LATIHAN</H3>
+<H3>KEMENTERIAN KESIHATAN MALAYSIA</H3>
+<H3>SEHINGGA <%= Date.today.strftime('%d-%m-%Y') %></H3>
+
+<BR>
+
+<p>KOLEJ: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU </p>
+<BR>
+	
+<div id="tprintreport">
+<table width=100% border=1px cellspacing=0 align="center" >
+	
+	<tr>
+		<th width=1cm valign="top" rowspan=2>BIL</th>
+		<th width=1cm valign="top" rowspan=2>KOD</th>
+		<th width=1cm valign="top" rowspan=2>BUT.</th>
+		<th width=4cm valign="top" rowspan=2>JAWATAN</th>
+		<th width=2cm valign="top" rowspan=2>GRED</th>
+		<th width=5cm valign="top" rowspan=2>JUM JWT</th>
+		<th width=2cm valign="top" rowspan=2>ISI</th>
+		<th colspan=3>STATUS PENGISIAN</th>
+
+		<th width=2cm valign="top" rowspan=2>KSG</th>
+		<th width=5cm valign="top" rowspan=2>NAMA</th>
+		<th width=4cm valign="top" rowspan=2>NO K/P</th>
+		<th width=2cm valign="top" rowspan=2>JANTINA</th>
+		<th width=4cm valign="top" rowspan=2>TARIKH LAHIR</th>
+		<th width=4cm valign="top" rowspan=2>TARIKH LANTIKAN PERTAMA</th>
+		<th width=4cm valign="top" rowspan=2>TARIKH KENAIKAN PANGKAT KE GRED SEKARANG</th>
+		<th valign="top" rowspan=2>CATATAN *</th>
+	</tr>
+	<tr>
+		<th width=2cm valign="top">HAKIKI</th>
+		<th width=2cm valign="top">KONTRAK</th>
+		<th width=2cm valign="top">KUP</th>
+	</tr>
+<!--	
+	 <%# just_a_counter = 0 %>
+	 <%# @positions.each do |position| %>
+	    <%# just_a_counter += 1 %>
+    <tr align="center">
+	<td><%#=h just_a_counter %> </td>
+	<td align="left"><%#=h position.code %> </td>	
+    <td align="left"><%#=h position.postinfo.blank? ? "-" : position.postinfo.details %> </td>
+	<td align="left"><%#=h position.name %></td>	
+	<td><%#=h position.staffgrade.blank? ? "-" : position.staffgrade.name %></td>
+	<td><%#=h position.postinfo.blank? ? "-" : position.postinfo.post_count %></td>
+	<td>
+		<%# unless position.postinfo.blank? %>
+			<%#= Postinfo.find(:all, :conditions => ['id=?',position.postinfo_id]).count %>
+		<%# end %>
+	</td>
+	<td><%# if position.status == 1 %>1<%# else %>0<%# end %></td>
+	<td><%# if position.status==2 %>1<%# else %>0<%# end %></td>
+	<td><%# if position.status==3 %>1<%# else %>0<%# end %></td>
+	<td>
+		<%# unless position.postinfo.blank? %>
+			<%#= position.postinfo.post_count - Postinfo.find(:all, :conditions => ['id=?',position.postinfo_id]).count %>
+		<%# end %>
+	</td>
+	<td align="left"><%#=h position.staff.blank? ? "-" : position.staff.name %></td>	
+	<td><%#=h position.staff.blank? ? "-" : position.staff.formatted_mykad %></td>
+	<td><%#=h position.staff.blank? ? "-" : position.staff.cobirthdt %>
+		<%##=h position.staff.blank? ? "-" : position.staff.cobirthdt.strftime('%d-%m-%Y') %></td>
+	<td><%#=h position.staff.blank? ? "-" : position.staff.appointdt %></td>
+	<td><%#=h position.staff.blank? ? "-" : position.staff.posconfirmdate %></td>
+	<td> </td>
+	</tr>
+	
+	<%# end %>
+-->	
+	<!---->
+ <% just_a_counter = 0 %>
+ <% @positions.group_by(&:postinfo_id).each do |butiran, positions| %><!--group by butiran--><!--sort_by{|x|x.studentgrade.name}.-->
+    <%# just_a_counter += 1 %><%#=butiran%>
+	 <%# just_a_counter = 0 %>
+	<% positions.each do |position|%><!--staffgrade.name--><!--position should be sorted accordingly, as above (group by butiran)-->
+		<% just_a_counter += 1 %>
+    <tr align="center">
+	<td><%=h just_a_counter %> </td>
+	<td align="left"><%=h position.code %> </td>	
+    <td align="left"><%=h position.postinfo.blank? ? "-" : position.postinfo.details %> </td>
+	<td align="left"><%=h position.name %></td>	
+	<td><%=h position.staffgrade.blank? ? "-" : position.staffgrade.name %></td>
+	<td><%=h position.postinfo.blank? ? "-" : position.postinfo.post_count %></td>
+	<td>
+		<% unless position.postinfo.blank? %>
+			<%= Postinfo.find(:all, :conditions => ['id=?',position.postinfo_id]).count %>
+		<% end %>
+	</td>
+	<td><% if position.status == 1 %>1<% else %>0<% end %></td>
+	<td><% if position.status==2 %>1<% else %>0<% end %></td>
+	<td><% if position.status==3 %>1<% else %>0<% end %></td>
+	<td>
+		<% unless position.postinfo.blank? %>
+			<%= position.postinfo.post_count - Postinfo.find(:all, :conditions => ['id=?',position.postinfo_id]).count %>
+		<% end %>
+	</td>
+	<td align="left"><%=h position.staff.blank? ? "-" : position.staff.name %></td>	
+	<td><%=h position.staff.blank? ? "-" : position.staff.formatted_mykad %></td>
+	<td><% unless position.staff.blank? %>
+			<%#=h (Staff::GENDER.find_all{|disp, value| value == position.staff.gender.to_s}).map {|disp, value| disp} %>
+			<% if position.staff.gender == 1%>L
+			<% else %>P
+			<% end %>
+		<% end %>
+	</td>
+	<td><%= check_kin_blank {position.staff.cobirthdt.strftime ('%d-%m-%Y')} %></td>
+	<td><%= check_kin_blank {position.staff.appointdt.strftime ('%d-%m-%Y')}%></td>
+	<td><%= check_kin_blank {position.staff.posconfirmdate.strftime ('%d-%m-%Y')}%></td>
+	<td> </td>
+	</tr>
+
+	<% end%>
+
+<% end %>
+		
+	<!---->
+	
+	
+</table>
+<br>
+<font size=-2>Tarikh Kemaskini Akhir: <%=Date.today.strftime('%d-%b-%Y')%></font>
+
+</div>
+</fieldset>
+</form>
