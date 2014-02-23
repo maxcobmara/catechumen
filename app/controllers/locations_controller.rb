@@ -92,7 +92,7 @@ class LocationsController < ApplicationController
   
   def indextree
     #locations = Location.search(params[:search])
-    @locations = Location.find(:all, :order => :code)
+    @locations = Location.find(:all, :order => :combo_code)
     #@locations = Location.find(:all)
     #@locations = Location.order(:names_depth_cache).map { |c| ["-" * c.depth + c.name,c.id] }
   end
