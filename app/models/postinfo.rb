@@ -3,6 +3,6 @@ class Postinfo < ActiveRecord::Base
   belongs_to :employgrade, :foreign_key => "staffgrade_id"
   
   def details_grade 
-    "#{details}"+" - "+"#{employgrade.name}"
+    "#{details}"+" - "+"#{employgrade.name_and_group}"
   end
 end

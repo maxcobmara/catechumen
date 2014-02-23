@@ -141,7 +141,9 @@ class StaffAttendancesController < ApplicationController
     @test_department = []
     @testalldepartmenttgroup = []
     0.upto(21) do |countt|
-        @position_staff_ids << Position.find(:first, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').subtree.map(&:staff_id).uniq.delete_if{|x|x==nil}   
+        #@position_staff_ids << Position.find(:first, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').subtree.map(&:staff_id).uniq.delete_if{|x|x==nil}  
+        #starting 23Feb2014 - Positon table - unit value - compulsory for staff (which work) under unit? (task & responsibilites format change)
+        @position_staff_ids << Position.find(:all, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').map(&:staff_id).uniq.delete_if{|x|x==nil}    
     end
     0.upto(21) do |countt2|
         @staff_in_department << Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',@position_staff_ids[countt2]]).map(&:thumb_id)
@@ -341,10 +343,12 @@ class StaffAttendancesController < ApplicationController
     @position_staff_ids = []
     @staff_in_department = []
     0.upto(21) do |count|
-      @dept_superiors << Position.find(:first, :conditions=>['unit=?',@dept_names[count]])
+      @dept_superiors << Position.find(:first, :conditions=>['unit=?',@dept_names[count]])  #starting 23Feb2014-no changes-unit @ dept superior-usually w HIGHEST@FIRSTLY INSERTED
     end
     0.upto(21) do |countt|
-        @position_staff_ids << Position.find(:first, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').subtree.map(&:staff_id).uniq.delete_if{|x|x==nil}   
+        #@position_staff_ids << Position.find(:first, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').subtree.map(&:staff_id).uniq.delete_if{|x|x==nil}   
+        #starting 23Feb2014 - Positon table - unit value - compulsory for staff (which work) under unit? (task & responsibilites format change)
+        @position_staff_ids << Position.find(:all, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').map(&:staff_id).uniq.delete_if{|x|x==nil} 
     end
     0.upto(21) do |countt2|
         @staff_in_department << Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',@position_staff_ids[countt2]]).map(&:thumb_id)

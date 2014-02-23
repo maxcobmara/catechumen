@@ -41,7 +41,7 @@ $j(document).ready(function()  {
     <tr id="node-<%= (position.id) %>" <%= position.tree_nd %>>
        <td><%=h position.is_root? ? " " : "        "   %><%=h position.combo_code %> &nbsp; : &nbsp; <%=h position.name %> &nbsp; (<%=h check_kin_blank {position.staffgrade.name} %>)</td>
        <td><%=h position.staff.blank? ? "-" : position.staff.name + "  (" + (check_kin {position.staff.staffgrade.name}) + ")" %></td>
-       <td><%=h truncate(position.tasks_main, :length => 60) %>
+       <td><%=h truncate(position.tasks_main, :length => 60) %> <%=h position.postinfo_id.blank? ? "-" : "Butiran : "+ position.postinfo.details %>
 	     <td width=10px><%= link_to "(+)", new_position_path(:parent_id => position)%></td>
        <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => position %></td>
        <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => position %></td>
