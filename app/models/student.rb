@@ -235,6 +235,46 @@ class Student < ActiveRecord::Base
  has_many :spmresults, :dependent => :destroy
  accepts_nested_attributes_for :spmresults, :reject_if => lambda { |a| a[:spm_subject].blank? }
  
+ 
+ def display_race
+   "#{(Student::RACE.find_all{|disp, value| value == race2.to_i}).map {|disp, value| disp}}"
+ end
+ 
+ def display_intake
+   "#{intake.to_date.strftime("%b %Y") }"
+ end
+ 
+ def display_regdate
+   "#{regdate.to_date.strftime("%d-%b-%Y")}"
+ end
+ def display_gender
+  "#{(Student::GENDER.find_all{|disp, value| value == gender.to_s}).map {|disp, value| disp}}"
+ end   
+ 
+ def display_enddate
+   "#{end_training.to_date.strftime("%d-%b-%Y")}"
+ end
+ 
+ def display_bloodtype
+   "#{(Student::BLOOD_TYPE.find_all{|disp, value| value == bloodtype.to_s}).map {|disp, value| disp}}"
+ end
+ 
+ def display_address
+   address.to_s
+ end
+ #export excel section ---
+ 
+ def self.header_excel
+  ["Mykad No", "Student Name", "Matrix No", "Programme", "Intake", "Registration Date","End Training Date","Remarks", "Offer Letter","Race","Status","Gender","Tel No.", "Email","Physical","Allergy","Disease","Blood Type", "Medication", "Remarks"]
+  #, "Address" - to add in later
+ end
+ 
+ def self.column_excel
+   #[{:exampaper=>[:examtypename,{:subject => :subject_list}]},:gradeA, :gradeAminus, :gradeBplus,:gradeB, :gradeBminus, :gradeCplus,:gradeC, :gradeCminus,:gradeDplus,:gradeD,:gradeE ]
+
+   [:formatted_mykad, :name, :matrixno, {:course => :programme_list}, :display_intake, :display_regdate,:display_enddate,:course_remarks, :offer_letter_serial,:display_race,:sstatus,:display_gender,:stelno,:semail, :physical,:allergy,:disease,:display_bloodtype,:medication, :remarks]  #  , :display_address --> to add in later
+ end
+  
   
 STATUS = [
            #  Displayed       stored in db
