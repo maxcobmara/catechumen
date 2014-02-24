@@ -65,6 +65,31 @@ class Position < ActiveRecord::Base
   def hod
   end
   
+  #export excel section ---
+  def totalpost
+	  "#{postinfo.post_count}"
+  end
+  
+  def occupied_post
+    "#{Position.find(:all, :conditions=> ['postinfo_id=? AND staff_id IS NOT NULL',postinfo_id]).count}"
+  end
+  
+  def available_post
+    "#{totalpost.to_i-occupied_post.to_i}"
+  end
+  
+  def hakiki
+    "#{Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 1]).count }"
+  end
+  
+  def kontrak
+    "#{Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 2]).count}"
+  end
+  
+  def kup
+    "#{Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 3]).count}"
+  end
+  
   STATUS = [
         #  Displayed       stored in db
         [ "Hakiki", 1],
