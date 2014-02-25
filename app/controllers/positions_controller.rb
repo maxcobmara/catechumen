@@ -86,10 +86,26 @@ class PositionsController < ApplicationController
   end
   
   def maklumat_perjawatan_LA
-    #@pages = Page.find(:all, :order => :position)
-    #@positions = Position.find(:all, :order => :code)
-    #@positions = Position.find(:all, :order => :id)
+    @ppp = params[:ppp]
     @positions = Position.find(:all, :order => :ancestry_depth)
-    render :layout => 'report'
+    if @ppp=='1'
+      render :layout => 'report'
+    elsif @ppp=='2'
+      @positions2=[]
+      #BELOW SAME AS : unless position.staffgrade.blank? && position.postinfo_id.blank? 
+      @positions_raw = Position.find(:all, :conditions=> ['staffgrade_id IS NOT NULL AND postinfo_id IS NOT NULL']) 
+      @positions_raw.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[1].to_i}.sort.reverse!.each do |staffgrade2, positions_of_grade_no|
+         positions_of_grade_no.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[0]}.sort.reverse!.each do |staffgrade, positions_by_grade|
+           @positions2.concat(positions_by_grade)
+         end
+      end
+      
+      respond_to do |format|
+        #format.xls { send_data @positions.to_xls, :filename => 'positions.xls' }  #baru OK 
+        format.xls { send_data @positions2.to_xls(:headers=>["BUT.","JAWATAN","GRED","JUM JWT","ISI","HAKIKI","KONTRAK","KUP","KSG","NAMA PENYANDANG","NO.KP/PASSPORT","JANTINA(L/P)","BIDANG KEPAKARAN/SUB-KEPAKARAN","TARIKH WARTA PAKAR","PENEMPATAN","Akt.","Penempatan","Akt.","Penempatan", "CATATAN*"], 
+          :columns => [{:postinfo => :details},:name,{:staffgrade=>:name},:totalpost,:occupied_post,:available_post,:hakiki,:kontrak,:kup,{:staff=>[:name,:icno,:jantina]}]) , :filename => 'positions.xls' } 
+      end
+    end
   end
+  
 end

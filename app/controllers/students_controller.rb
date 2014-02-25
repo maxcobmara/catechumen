@@ -5,6 +5,11 @@ class StudentsController < ApplicationController
   # GET /students.xml
   def index
     submit_val = params[:searchby]
+    ## start-critical updates
+    #@students3 = Student.find(:all, :conditions => ['icno ILIKE ?', "%#{params[:search3]}%"],:order=>"name ASC")
+    @students3 = Student.search3(params[:search3])
+    ## end-critical updates
+    
     #@inta2 = Student.with_permissions_to(:index).sort_by{|t|t.intake} #group by program, then sort by intake (first)
     #@inta2 = Student.with_permissions_to(:index).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
     @inta3 = Student.with_permissions_to(:index).sort_by{|t|t.intake} #sort by intake (before split into pages)
