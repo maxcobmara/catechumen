@@ -44,6 +44,7 @@ class StudentsController < ApplicationController
      # flash[:notice] = "Sorry, your search didn't return any results."
       format.html # index.html.erb
       format.xml  { render :xml => @students }
+      format.xls {send_data @students.to_xls(:name=>"Student Information",:headers => Student.header_excel, :columns => Student.column_excel ), :file_name => 'students.xls' }
       format.js
     end
   end

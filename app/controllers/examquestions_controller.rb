@@ -24,6 +24,7 @@ class ExamquestionsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @examquestions }
+      #to do - refer examanalysis.rb & examanalysis_controller.rb for sample
     end
   end
 
