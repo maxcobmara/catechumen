@@ -54,7 +54,7 @@ class Location < ActiveRecord::Base
    end
    
    def location_list
-      "#{code}  #{name}"
+      "#{combo_code}  #{name}"
    end
    
    
