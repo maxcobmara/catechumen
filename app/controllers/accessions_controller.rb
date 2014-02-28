@@ -3,10 +3,12 @@ class AccessionsController < ApplicationController
   # GET /accessions.xml
   def index
     @accessions = Accession.all
-
+    @accessions3 = Accession.search3(params[:search3])
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @accessions }
+      format.js
+      format.json { render :json => @accessions3.map(&:attributes)}
     end
   end
 
