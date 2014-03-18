@@ -36,6 +36,20 @@ class Student < ActiveRecord::Base
   #has_many :sdiciplines, :foreign_key => 'student_id'
   #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
   
+  def student_list
+    "#{icno}"+" "+"#{name}"
+    
+  end  
+  #@positions2.concat(positions_by_grade)
+  def self.search3(search3)
+     if search3
+      @students3 = Student.find(:all, :conditions => ["icno LIKE ? ", "%#{search3}%"], :order => "name ASC")
+
+     else
+      @students3 = Student.find(:all,  :order => :icno)
+     end
+  end
+  
   def self.search(search)
     if search
      @students = Student.find(:all, :conditions => ["icno LIKE ? or name ILIKE ? or matrixno ILIKE ? ", "%#{search}%","%#{search}%","%#{search}%"], :order => :icno)

@@ -9,7 +9,7 @@ class Librarytransaction < ActiveRecord::Base
   belongs_to :libextendby, :class_name => 'Staff', :foreign_key => 'libextended_by'
   belongs_to :libreturnby, :class_name => 'Staff', :foreign_key => 'libreturned_by'
   
-  attr_accessor :booktitle, :staf_who, :student_who
+  attr_accessor :booktitle, :staf_who, :student_who, :accessionbook
   
   validates_presence_of :accession_id
   validate :staff_or_student_borrower
@@ -19,7 +19,15 @@ class Librarytransaction < ActiveRecord::Base
   end
   def student_who
   end
-
+  def accessionbook 
+  end
+  
+  #this part works for 1 item only
+  def self.get_accession_id(accession_no_title) 
+    accession_no = accession_no_title.split(" ")[0]
+    return Accession.find_by_accession_no(accession_no).id unless accession_no_title.blank?
+  end
+  
   def staff_or_student_borrower
     if %w(staff_id student_id).all?{|attr| self[attr].blank?}
       errors.add_to_base("A borrower is required")
@@ -51,9 +59,6 @@ class Librarytransaction < ActiveRecord::Base
     Librarytransaction.find(:all, :select => 'accession_id', :conditions => ["returned = ? OR returned IS ?", false, nil ]).map(&:accession_id)
   end
   
-  
-  
-  
   def varmyass
     if extended == true && (returnduedate - checkoutdate).to_i < 15
       self.returnduedate = returnduedate + 14.days
@@ -74,7 +79,7 @@ class Librarytransaction < ActiveRecord::Base
       if fine == nil
         self.fine = self.recommended_fine_value
       end 
-    end
+    end 
   end
   
   def extoond
@@ -83,8 +88,7 @@ class Librarytransaction < ActiveRecord::Base
     #elsif extended == nil
       #'never'
     #else
-    end
-      
+    end      
   end
   
   def recommended_fine_value
@@ -102,8 +106,6 @@ class Librarytransaction < ActiveRecord::Base
      ""
     end 
   end
-  
-  
   
   def borrower_name
    stid = Array(staff_id)
@@ -134,9 +136,5 @@ class Librarytransaction < ActiveRecord::Base
     dash_student = Librarytransaction.find(:all, :select => 'student_id', :conditions => ["student_id IS NOT ?", nil ]).map(&:student_id)
     b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h } 
   end
-  
-
-
-
   
 end

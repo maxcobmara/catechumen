@@ -1,18 +1,6 @@
 <!--<h3><%#= t 'librarytransaction.newrec' %></h3>-->
 <h3>Library Transaction Details</h3> 
 
-<!--in case user click at 'Create All Records' button whereby book loan quota already exceeded-->
-
-	<% if (params[:student_first] == '0') || (params[:staff_first] == 0) %>
-		<% @current_staff = params[:staff_first] %>
-	<% end %>
-	
-	<% if (params[:staff_first] == '0') || (params[:staff_first] == 0) %>
-		<% @current_student = params[:student_first] %>
-	<% end %>	
-	
-<!--in case user click at 'Create All Records' button whereby book loan quota already exceeded-->
-
 <% if @librarytransaction %>
 
 	<!--START-this part is for EXTEND & RETURN(IF 'UNREMARK') - Process:SINGLE Transaction-->	
@@ -32,7 +20,7 @@
 
 <% else %>
 
-	<!--START-this part is for MULTIPLE CREATION OF LOAN, when CREATE ALL RECORDS was clicked-->
+	<!--START-this part is for MULTIPLE CREATION OF LOAN, when CREATE ALL RECORDS (latest one: ADD BOOK) was clicked-->
 	<% if @librarytransactions %>
 		<% if @librarytransactions[0].ru_staff == true %>
 			<% @current_staff = @librarytransactions[0].staff_id %>
@@ -40,150 +28,117 @@
 			<% @current_student = @librarytransactions[0].student_id %>
 		<% end %>
 	<% end %>
-	<!--END-this part is for MULTIPLE CREATION OF LOAN, when CREATE ALL RECORDS was clicked-->
+	<!--END-this part is for MULTIPLE CREATION OF LOAN, when CREATE ALL RECORDS (latest one: ADD BOOK) was clicked-->
 
 <% end %>
 
 <div class="tform">
-
-	<div id="new_form"><%#=@librarytransactions[0]%><%#=@librarytransaction.staff_id%><%#=@librarytransaction.student_id%><%#=@librarytransaction.ru_staff%>
-		<%#if @book.isbn.nil? == true %>
-			<H2>Library Transaction - Loan Page</H2>
-				<table width=100%>
-					<tr>
-						<td class="leftcol"><%= t 'librarytransaction.loanedtotype' %></td>
-						<td><!--<%#= @book.id%>|<%#= @book.nil? %>*<%#=@book.blank? %>~<%#= !@book %>^<%#= @book %>-->
-						
-						<%# if @book.id == nil%>
-							<% form_remote_tag(:url => {:action => :check_availability}, :update => 'new_form2' ) do %>
-								
-								<!---->
-								<% if @current_staff %>
-
+	<div id="new_form">
+		<div align=right>
+			<%= link_to image_tag("book_go.png",:border => 0,:title =>'Edit Library Transaction')+" Return Page",:action=> :multiple_edit %>
+		</div>
+		<H2>Library Transaction - Loan Page </H2>
+			<table width=100%>
+				<tr>
+					<td class="leftcol"><%= t 'librarytransaction.loanedtotype' %></td>
+					<td>
+						<% form_remote_tag(:url => {:action => :check_availability}, :update => 'new_form2' ) do %>
+							<!---->
+							<% if @current_staff %>
+							
 								<!--START-AFTER UPDATE-multiple edit screen:loan screen-->
-									<%= check_box :ru_staff,{}, :id => 'staff', :onchange => "switchvisibility('staff')", :checked=>"checked" %>
+								<%= check_box :ru_staff,{}, :id => 'staff', :onchange => "switchvisibility('staff')", :checked=>"checked" %>
 
-									<span id="bstaff" style="display:table-row">
-										<%#= select_tag(:staff_search,"<option>Select Staff</option>"+
-										"<option value=#{ @current_staff } selected='selected'>#{Staff.find( @current_staff ).staff_name_then_mykad}</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['id!=?',@current_staff]),:id, :staff_name_then_mykad)) %> 
-										<!--testing search by name-->
-										<%= text_field_with_auto_complete :librarytransaction, :staff_who ,{ :size => 50,:value=>Staff.find(@current_staff).name }, 
+								<span id="bstaff" style="display:table-row">
+									<%#= select_tag(:staff_search,"<option>Select Staff</option>"+"<option value=#{ @current_staff } selected='selected'>#{Staff.find( @current_staff ).staff_name_then_mykad}</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['id!=?',@current_staff]),:id, :staff_name_then_mykad)) %> 
+									<%= text_field_with_auto_complete :librarytransaction, :staff_who ,{ :size => 50,
+																		:value=>Staff.find(@current_staff).name }, 
 																		{ :url => formatted_staffs_path(:js), 
-													  					  :method => :get,
-																		  :param_name => 'search' } %>
-										<!--testing search by name-->
-										<%= submit_tag "Check Loan Details" %>
-									</span>
-									<span id="bstudent" style="display:none;">
-										<!--testing search by name-->
-										<%= text_field_with_auto_complete :librarytransaction, :student_who ,{ :size => 50 }, 
+																		:method => :get,:param_name => 'search' } %>
+									<%= submit_tag "Check Loan Details" %>
+								</span>
+								<span id="bstudent" style="display:none;">
+									<%#= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
+									<%= text_field_with_auto_complete :librarytransaction, :student_who ,{ :size => 50 }, 
 																		{ :url => formatted_students_path(:js), 
 													  					  :method => :get,
-																		  :param_name => 'search' } %>
-										<!--testing search by name-->
-										<%#= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
-										<%= submit_tag "Check Loan Details" %>
-									</span>	
+																		  :param_name => 'search3' } %>
+									<%= submit_tag "Check Loan Details" %>
+								</span>	
 								<!--END-AFTER UPDATE-multiple edit screen:loan screen-->
 
-								<% else %>
+							<% else %>
 
 								<!--START-first time - multiple edit screen:loan screen OR AFTER UPDATE:STUDENT-->
-									<%= check_box :ru_staff,{}, :id => 'staff', :onchange => "switchvisibility('staff')", :checked=>"unchecked" %>
+								<%= check_box :ru_staff,{}, :id => 'staff', :onchange => "switchvisibility('staff')", :checked=>"unchecked" %>
 
-									<span id="bstaff" style="display: none;">
-										<%#= select_tag(:staff_search,"<option>Select Staff</option>"+options_from_collection_for_select(Staff.all,:id, :staff_name_then_mykad)) %> 
-										<!--testing search by name-->
-										
-										<%= text_field_with_auto_complete :librarytransaction, :staff_who ,{ :size => 50 }, 
+								<span id="bstaff" style="display: none;">
+									<%#= select_tag(:staff_search,"<option>Select Staff</option>"+options_from_collection_for_select(Staff.all,:id, :staff_name_then_mykad)) %> 
+									<%= text_field_with_auto_complete :librarytransaction, :staff_who ,{ :size => 50 }, 
 																		{ :url => formatted_staffs_path(:js), 
 													  					  :method => :get,
 																		  :param_name => 'search' } %>
-										<%#= text_field_with_auto_complete :librarytransaction, :staff_search ,{ :size => 100 }, 
-																		{ :tokens => ",",:url => formatted_staffs_path(:js), 
-																		  :method => :get,
-																		  :param_name => 'search' } %>
-										<!--testing search by name-->
-										<%= submit_tag "Check Loan Details" %>
-									</span>
+									<%= submit_tag "Check Loan Details" %>
+								</span>
 		
-									<% if @current_student %><%#=@current_student%>
+								<% if @current_student %>
 
 									<!--START-AFTER UPDATE:STUDENT-->
-										<span id="bstudent" style="display: table-row;">
-											<%#= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
-											<!--testing search by name-->
-											<%#= text_field_with_auto_complete :librarytransaction, :student_who ,{ :size => 50,:value=>Student.find(@current_student).name }, 
+									<span id="bstudent" style="display: table-row;">
+										<%#= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
+										<%= text_field_with_auto_complete :librarytransaction, :student_who ,
+																			{ :size => 50,:value=>Student.find(@current_student).icno }, 
 																			{ :url => formatted_students_path(:js), 
 														  					  :method => :get,
-																			  :param_name => 'search' } %>
-											<!--testing search by name-->
-											<!--testing search by icno-->
-											<%= text_field_with_auto_complete :librarytransaction, :student_who ,{ :size => 50,:value=>Student.find(@current_student).icno }, 
-																			{ :url => formatted_students_path(:js), 
-														  					  :method => :get,
-																			  :param_name => 'search' } %>
-											<!--testing search by icno-->
-											<%#= select_tag(:student_search,"<option>Select Student</option>"+
-											"<option value=#{ @current_student } selected='selected'>#{Student.find( @current_student).matrix_name}</option>"+options_from_collection_for_select(Student.find(:all, :conditions=>['id!=?',@current_student]),:id, :matrix_name)) %>
-											<%= submit_tag "Check Loan Details" %>
-										</span>
+																			  :param_name => 'search3' } %>
+										<%= submit_tag "Check Loan Details" %>
+									</span>
 									<!--END-AFTER UPDATE:STUDENT-->
+								
+								<% else %>
 
-
-									<% else %>
-
-										<span id="bstudent" style="display: table-row;">
-											<!--testing search by name-->
-											<%= text_field_with_auto_complete :librarytransaction, :student_who ,{ :size => 50}, 
+									<span id="bstudent" style="display: table-row;">
+										<%#= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
+										<%= text_field_with_auto_complete :librarytransaction, :student_who ,{ :size => 50}, 
 																			{ :url => formatted_students_path(:js), 
 														  					  :method => :get,
-																			  :param_name => 'search' } %>
-											<!--testing search by name-->
-											<%#= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
-											<%= submit_tag "Check Loan Details" %>
-										</span>
-
-									<% end %>
-
-								<!--START-first time - multiple edit screen:loan screen OR AFTER UPDATE:STUDENT-->
-
+																			  :param_name => 'search3' } %>
+										<%= submit_tag "Check Loan Details" %>
+									</span>
 
 								<% end %>
-								<!---->
-						
 							
-								<%#= submit_tag "Check Loan Details" %>
+								<!--END-first time - multiple edit screen:loan screen OR AFTER UPDATE:STUDENT-->
+								
 							<% end %>
-						<%# end%>
+							<!---->
 						
-						</td>
-					</tr>	
-				</table>
-		<%# end %>
-	</div>
+						<% end %><!--end for form remote tag-->
+					</td>
+				</tr>	
+			</table>
+	</div><!-- enddiv id="new_form"-->
 
-<table width="100%">
-	<tr>
-		<td width="80%">
-		<% form_tag :action => 'create' do |f|%>	
-			<%# @librarytransactions.each_with_index do |librarytransaction, index| %>
-				<div id="new_form2"></div>
-			<%# end %><!--baru tambah-->
-		</td>
-		<td id="extend_return" style="border:0px solid blue; width:20%;"></td>
-	</tr>
-</table><br>
-			<p><%= submit_tag 'Create All Records',:name => :new_submit %><!--baru tambah--></p>
+	<table width="100%">
+		<tr>
+			<td width="80%">
+				<%# form_tag :action => 'create' do |f|%><!--moved to form_try.html.erb 28Feb2014-->	
+					<%# @librarytransactions.each_with_index do |librarytransaction, index| %>
+						<div id="new_form2"></div>
+					<%# end %>
+					<%#= submit_tag 'Create All Records',:name => :new_submit %><!--moved to form_try.html.erb 28Feb2014-->
+				<%# end %><!--move to form_try.html.erb-28Feb2014-->
+			</td>
+			<td id="extend_return" style="border:0px solid blue; width:20%;"></td>
+		</tr>
+	</table>
 
+</div><!--end for div class="tform"-->
 
-</div>
 <%= link_to (t 'back'), librarytransactions_path %>
 
-<% end %><!--baru tambah-->
-
 <script type="text/javascript">
-	  function switchvisibility(el) {
+	function switchvisibility(el) {
 	    if (document.getElementById(el).checked) {
 	      document.getElementById('bstaff').style.display = "table-row";
 	      document.getElementById('bstudent').style.display = "none";
@@ -191,25 +146,19 @@
 	      document.getElementById('bstaff').style.display = "none";
 	      document.getElementById('bstudent').style.display = "table-row";
 	    }
-	  }
-	</script>
+	}
+</script>
 
 <script type="text/javascript">
-		$j(document).ready(function(){
-		  $j('#librarytransaction_staff_id').change(function() {
-		    /*if($j(this).val() == 1) {*/
-		      $j('.bong').show();
-					$j('.koik').hide();
-		    /*}else if ($j(this).val() == 2) {
-		     	 $j('.bong').hide();
-					 $j('.koik').show();
-		    }*/
-			});
+	$j(document).ready(function(){
+		$j('#librarytransaction_staff_id').change(function() {
+		    $j('.bong').show();
+			$j('.koik').hide();
+		});
 		  	
-			$j('#librarytransaction_student_id').change(function() {
-			   
-			    $j('.bong').hide();
-				$j('.koik').show();
-			});
+		$j('#librarytransaction_student_id').change(function() {
+			$j('.bong').hide();
+			$j('.koik').show();
+		});
 	});
 </script>

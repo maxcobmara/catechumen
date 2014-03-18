@@ -98,7 +98,11 @@ module AutoCompleteMacrosHelper
     items = entries.map { |entry| content_tag("li", phrase ? highlight(entry[field], phrase) : h(entry[field])) }
     content_tag("ul", items.uniq)
   end
-  
+  def auto_complete_result2(entries, method, phrase = nil)
+    return unless entries
+    items = entries.map { |entry| content_tag("li", phrase ? highlight(entry.send(method), phrase) : h(entry.send(method))) }
+    content_tag("ul", items.uniq)
+  end
   # Wrapper for text_field with added AJAX autocompletion functionality.
   #
   # In your controller, you'll need to define an action called
