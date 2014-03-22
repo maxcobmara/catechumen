@@ -272,7 +272,7 @@ class Staff < ActiveRecord::Base
 
   
   def render_reports_to
-      "#{position.try(:parent).try(:name)} - #{position..try(:parent).try(:staff).try(:name)}"
+      "#{position.try(:parent).try(:name)} - #{position.try(:parent).try(:staff).try(:name)}"
   end
   
   def render_unit
@@ -492,6 +492,14 @@ class Staff < ActiveRecord::Base
      else
       @staff = Staff.find(:all,  :order => :icno)
      end
+  end
+  
+  def jantina 
+    if gender==2
+       "P"
+    elsif gender==1
+      "L"
+    end
   end
  
 end

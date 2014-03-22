@@ -18,6 +18,7 @@ class Librarytransaction < ActiveRecord::Base
   def staff_who
   end
   def student_who
+    #return student.id
   end
 
   def staff_or_student_borrower

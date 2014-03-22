@@ -238,7 +238,10 @@ end
       @staffsearch = Staff.find_by_name(params[:librarytransaction][:staff_who]) 
       #@staffsearch = params[:staff_search].to_i
       #@studentsearch = Student.find_by_name(params[:librarytransaction][:student_who]) 
-      @studentsearch = Student.find_by_icno(params[:librarytransaction][:student_who]) 
+      #@studentsearch = Student.find_by_icno(params[:librarytransaction][:student_who]) ##working used before critical updates
+      @student_icno_name=params[:librarytransaction][:student_who]
+      @student_icno=@student_icno_name.split[0]
+      @studentsearch = Student.find_by_icno(@student_icno)
       #@studentsearch = params[:student_search].to_i
       if @rustaff == '0'#|| @rustaff == 0
           @loaned_books = Librarytransaction.find(:all, :conditions=>['student_id=? AND returned IS NOT TRUE', @studentsearch]).count 
@@ -252,18 +255,20 @@ end
   end
   def check_availability2
      if request.post?
-       #raise params.inspect
         @rustaff = params[:ru_staff].to_s
-        #@staffsearch = Staff.find_by_name(params[:librarytransaction][:staff_who]) 
-        #@studentsearch = Student.find_by_name(params[:librarytransaction][:student_who]) 
-        #@studentsearch = Student.find_by_icno(params[:librarytransaction][:student_who]) 
 
         if @rustaff == '0'#|| @rustaff == 0
-            @studentsearch = params[:student_search].to_i
+            #@studentsearch = params[:student_search].to_i
+            @student_icno_name=params[:librarytransaction][:student_who]
+            @student_icno=@student_icno_name.split[0]
+            @student_id = Student.find_by_icno(@student_icno).id
+            @studentsearch = @student_id.to_i
             @loaned_books = Librarytransaction.find(:all, :conditions=>['student_id=? AND returned IS NOT TRUE', @studentsearch]).count 
             @books_on_loan = Librarytransaction.find(:all, :conditions=>['student_id=? AND returned IS NOT TRUE', @studentsearch])
         else
-            @staffsearch = params[:staff_search].to_i
+            #@staffsearch = params[:staff_search].to_i
+            @staff_id = Staff.find_by_name(params[:librarytransaction][:staff_who]).id  
+            @staffsearch = @staff_id.to_i
             @loaned_books = Librarytransaction.find(:all, :conditions=>['staff_id=? AND returned IS NOT TRUE', @staffsearch]).count
             @books_on_loan = Librarytransaction.find(:all, :conditions=>['staff_id=? AND returned IS NOT TRUE', @staffsearch])
         end
