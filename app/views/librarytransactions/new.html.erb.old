@@ -1,0 +1,37 @@
+<h3><%= t 'librarytransaction.check' %></h3>
+
+<div align=right>
+	<%= link_to image_tag("book_go.png",:border => 0,:title =>'Edit Library Transaction')+" Return Page",:action=> :multiple_edit %>
+</div>
+<div class="tform">
+	<div id="new_form">
+    <H2><%= t 'librarytransaction.list' %> - <%= t 'librarytransaction.search_person' %></H2>
+		<table width=100%>
+			<tr>
+				<td class="leftcol"><%= t 'librarytransaction.loanedtotype' %></td>
+				<td>
+				  <% form_remote_tag(:url => {:action => :check_availability}, :update => 'new_form2' ) do %>
+            <% if @current_staff %>
+              <%= check_box :ru_staff,{}, :id => 'staff', :onchange => "switchvisibility('staff')", :checked=>"checked" %>
+            <% end %>
+          <% end %>
+				</td>
+        </tr>
+        </table>
+
+
+
+
+</div></div>
+  
+<script type="text/javascript">
+	function switchvisibility(el) {
+	    if (document.getElementById(el).checked) {
+	      document.getElementById('bstaff').style.display = "table-row";
+	      document.getElementById('bstudent').style.display = "none";
+	    } else {
+	      document.getElementById('bstaff').style.display = "none";
+	      document.getElementById('bstudent').style.display = "table-row";
+	    }
+	}
+</script>
