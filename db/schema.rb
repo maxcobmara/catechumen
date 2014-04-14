@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140413090015) do
+ActiveRecord::Schema.define(:version => 20140414171719) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -32,6 +32,25 @@ ActiveRecord::Schema.define(:version => 20140413090015) do
 
   add_index "accessions", ["accession_no"], :name => "index_accessions_on_accession_no"
   add_index "accessions", ["id"], :name => "index_accessions_on_id"
+
+  create_table "addbooks", :force => true do |t|
+    t.string   "name"
+    t.string   "phone"
+    t.string   "address"
+    t.string   "mail"
+    t.string   "web"
+    t.string   "fax"
+    t.string   "shortname"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "address_book_items", :force => true do |t|
+    t.integer  "address_book_id"
+    t.string   "item"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "addsuppliers", :force => true do |t|
     t.integer  "supplier_id"
@@ -1129,6 +1148,8 @@ ActiveRecord::Schema.define(:version => 20140413090015) do
     t.datetime "updated_at"
     t.string   "combo_code"
     t.integer  "ancestry_depth", :default => 0
+    t.boolean  "damaged"
+    t.string   "status"
   end
 
   add_index "locations", ["ancestry"], :name => "index_locations_on_ancestry"
