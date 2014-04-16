@@ -124,22 +124,26 @@
 	<li><a href="#">Locations</a>
 			<ul class="sub_menu">
 				<% permitted_to? :read, :locations do %>
-				<li><%= link_to 'Residences', 	{:controller => 'locations', 		:action => 'index'} %></li>
+				<!--
+				<li><%#= link_to 'Residences', 	{:controller => 'locations', 		:action => 'index'} %></li>-->
         <li><a href="http://<%= request.host  %>:3003/campus/locations">New Location Manager</a></li>
 				<li><a href="#">Student Residence ></a>
 					<ul class="sub_menu">
             <li><a href="http://<%= request.host  %>:3003/student/tenants/room_map">Student Room Map</a></li>
             <li><a href="http://<%= request.host  %>:3003/student/tenants/statistics">Student Room Statistics</a></li>
             <li><a href="http://<%= request.host  %>:3003/student/tenants">New Student Tenants Manager</a></li>
-            <li><a href="http://<%= request.host  %>:3003/student/tenants/return_key">Return Key</a></li>
+			<!--
+            <li><a href="http://<%= request.host  %>:3003/student/tenants/return_key">Return Key</a></li>-->
           </ul>
         
 			  <% end %>
-				<li><%= link_to 'Tenants', {:controller => 'tenants', 		:action => 'index'} %></li>
+			  <!--
+				<li><%#= link_to 'Tenants', {:controller => 'tenants', 		:action => 'index'} %></li>-->
 				<!--<li><%#= link_to 'Student Leave', 			{:controller => 'leaveforstudents', 	:action => 'index'} %></li>-->
-				<% permitted_to? :read, :locations do %>
-				<li><%= link_to 'Location Tree',			{:controller => 'locations', 		:action => 'indextree'} %></li>
-				<% end %>
+				<%# permitted_to? :read, :locations do %>
+				<!--
+				<li><%#= link_to 'Location Tree',			{:controller => 'locations', 		:action => 'indextree'} %></li>-->
+				<%# end %>
 			</ul>
 	</li>
 	<% end %>
