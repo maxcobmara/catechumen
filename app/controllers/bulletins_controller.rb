@@ -78,6 +78,7 @@ class BulletinsController < ApplicationController
     @bulletin.destroy
 
     respond_to do |format|
+      flash[:notice] = 'Bulletin was successfully removed.'
       format.html { redirect_to(bulletins_url) }
       format.xml  { head :ok }
     end
