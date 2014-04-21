@@ -6,12 +6,16 @@
 	
 	<tr>
 		<td><%= f.label :course_type %></td>
-		<td><label>
+		<td>
 		<% if @programme.parent_id == nil %>
-				<%= f.radio_button :course_type, 'Diploma' %> Diploma <%= f.radio_button :course_type,'Pos Basik' %> Pos Basik 
-				<%= f.radio_button :course_type,'Diploma Lanjutan ' %> Diploma Lanjutan </label>
+			<!--<label>
+				<%#= f.radio_button :course_type, 'Diploma' %> Diploma <%= f.radio_button :course_type,'Pos Basik' %> Pos Basik 
+				<%#= f.radio_button :course_type,'Diploma Lanjutan ' %> Diploma Lanjutan </label>-->
+			<%= f.select :course_type, [['Diploma','Diploma'],['Pos Basik','Pos Basik'],['Diploma Lanjutan','Diploma Lanjutan']], :include_blank => 'Select Course Type' %>
 		<% else %>
-			<%= f.radio_button :course_type, 'Semester' %> Semester <%= f.radio_button :course_type, 'Subject' %> Subject  <%= f.radio_button :course_type, 'Commonsubject' %> Common Subject <%= f.radio_button :course_type,'Topic' %> Topic <%= f.radio_button :course_type,'Subtopic' %> Subtopic 
+			<!--
+			<%= f.radio_button :course_type, 'Semester' %> Semester <%= f.radio_button :course_type, 'Subject' %> Subject  <%= f.radio_button :course_type, 'Commonsubject' %> Common Subject <%= f.radio_button :course_type,'Topic' %> Topic <%= f.radio_button :course_type,'Subtopic' %> Subtopic -->
+			<%= f.select :course_type, [['Semester', 'Semester'],['Subject', 'Subject'],['Common Subject','Commonsubject'],['Topic','Topic'],['Subtopic','Subtopic']], :include_blank => 'Select Course Type' %>
 		<% end %></label></td>
 	
 	</tr>
@@ -39,7 +43,9 @@
 	
 	<tr>
 		<td><%= f.label :status %></td>
-		<td><label><%= f.radio_button :status,'1' %> Major <%= f.radio_button :status,'2' %> Minor <%= f.radio_button :status,'3' %> Elective</label></td>
+		<td><!--<label><%#= f.radio_button :status,'1' %> Major <%#= f.radio_button :status,'2' %> Minor <%#= f.radio_button :status,'3' %> Elective</label>-->
+			<%= f.select :status, [['Major','1'],['Minor','2'],['Elective','3']], :include_blank => 'Select Status' %>
+		</td>
 	</tr>
 	
 		<tr><td colspan=2><font size=-2>* <strong>TOPIC DETAILS</strong> will be automatically created upon creation/update of topic/subtopic.</font></td></tr>
