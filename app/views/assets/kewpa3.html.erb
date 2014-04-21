@@ -28,33 +28,33 @@
 			</tr>
 			<tr>
 				<td>Kategori</td>
-				<td colspan=5><%=h @asset.category.description unless @asset.category_id.nil?  %></td>
+				<td colspan=5>&nbsp;<%=h @asset.category.description unless @asset.category_id.nil?  %></td>
 			</tr>
 			<tr>
 				<td>Sub Kategori</td>
-				<td colspan=5><%=h @asset.subcategory  %></td>
+				<td colspan=5>&nbsp;<%=h @asset.subcategory  %></td>
 			</tr>
 			<tr>
 				<td>Jenis</td>
-				<td colspan=2 width=120px><%=h @asset.typename %></td>
+				<td colspan=2 width=120px>&nbsp;<%=h @asset.typename %></td>
 				<td width=160px>Harga Perolehan Asal</td>
-				<td colspan=2 align="center"><%=h ringgols(@asset.purchaseprice) %></td>
+				<td colspan=2 align="center">&nbsp;<%=h ringgols(@asset.purchaseprice) %></td>
 			</tr>
 			<tr>
 				<td>Kuantiti</td>
-				<td colspan=2><%=h @asset.quantity %></td>
+				<td colspan=2>&nbsp;<%=h @asset.quantity %></td>
 				<td width=160px>Tarikh Diterima</td>
-				<td colspan=2 align="center"><%=h (@asset.receiveddate) %></td>
+				<td colspan=2 align="center">&nbsp;<%=h (@asset.receiveddate) %></td>
 			</tr>
 			<tr>
 				<td>Unit Pengukuruan</td>
-				<td colspan=2><%=h @asset.quantity_type %></td>
+				<td colspan=2>&nbsp;<%=h @asset.quantity_type %></td>
 				<td rowspan=2 width=160px>No Pesanan Rasmi<BR>Kerajaan & Tarikh</td>
-				<td rowspan=2 colspan=2 align="center"><%=h @asset.orderno %><BR><%=h (@asset.purchasedate) %></td>
+				<td rowspan=2 colspan=2 align="center">&nbsp;<%=h @asset.orderno %><BR><%=h (@asset.purchasedate.strftime("%d-%m-%Y")) %></td>
 			</tr>
 			<tr>
 				<td>Tempoh Jaminan</td>
-				<td colspan=2><%=h @asset.warranty_length %> Bulan</td>
+				<td colspan=2>&nbsp;<%=h @asset.warranty_length.nil? ? "" :  @asset.warranty_length.to_s+" Bulan"%></td>
 			</tr>
 			<tr>
 				<td colspan=2 valign="top">Nama Pembekal Dan Alamat:
@@ -72,7 +72,7 @@
 					Tandatangan Ketua Jabatan <BR>
 					<BR>Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <SPAN class="filler"><%=h Position.find_by_code("1").staff.name %></SPAN>
 					<BR>Jawatan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <SPAN class="filler"><%=h Position.find_by_code("1")[:name]  %></SPAN>
-					<BR>Tarikh &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  <SPAN class="filler"><%= l(Date.today()) %></SPAN>
+					<BR>Tarikh &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  <SPAN class="filler">&nbsp;</SPAN>
 					<BR>Cop &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
 			
 			</tr>
@@ -116,24 +116,24 @@
 			<div style="none; background-color:#FFF; font:Times New Roman; font-size:13; font-weight:bold; text-align:center; padding:0px 0px;  margin:0 0 0 -3px; width:25mm; float:left;">
 				<table width=100% border=1px cellspacing=0px style="padding:0; margin:0;" >
 				<tr>
-				<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:0; margin:0;">
+				<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:0; margin:0;">&nbsp;
 						<%= (asset_placement.asset.assetcode.split(/[\/\-]/)[6].to_i) - (asset_placement.asset.assetcode.split(/[\/\-]/)[5].to_i) + 1 %></td>
 				</tr>
 				<tr>
-				<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:0; margin:0;">
+				<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:0; margin:0;">&nbsp;
 						<%= (asset_placement.asset.assetcode.split("/")[3..6].join("/"))%></td>
 				</tr>
 				<tr>
-				<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:0; margin:0;"><%= check_kin {asset_placement.location.code} %></td>
+				<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:0; margin:0;">&nbsp;<%= check_kin {asset_placement.location.code} %></td>
 				</tr>
 				<tr>
-				<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:0; margin:0;"><%= tarikh(asset_placement.reg_on) %></td>
+				<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center; padding:0; margin:0;">&nbsp;<%#= tarikh(asset_placement.reg_on) %><%= asset_placement.reg_on.strftime("%d/%m/%Y") %></td>
 				</tr>
 				<tr>
-				<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center;padding:0; margin:0;"><%= (check_kin {asset_placement.staff.name}).split(" ")[0..1].join(" ") %></td>
+				<td style="font-family:tahoma; font-size:9;height:6mm; text-align:center;padding:0; margin:0;">&nbsp;<%= (check_kin {asset_placement.staff.name}).split(" ")[0..1].join(" ") %></td>
 				</tr>
 				<tr>
-				<td style="font-family:tahoma; font-size:9;height:6mm;"></td>
+				<td style="font-family:tahoma; font-size:9;height:6mm;"><PRE></td>
 				</tr>
 
 		</table>
@@ -146,7 +146,7 @@
 				<% for bb in 1..6 %>
 				<tr>
 	 			<% for ss in 1..(7 - @asset.asset_placements.size) %>
-	 			<td style="height:6mm;"></td>
+	 			<td style="height:6mm;"><PRE></td>
 				<% end %>
 				</tr>
 				<% end %>
