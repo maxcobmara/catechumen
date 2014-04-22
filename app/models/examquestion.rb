@@ -108,15 +108,19 @@ class Examquestion < ActiveRecord::Base
   
   
   def self.search2(search2)
-     if search2 
-       if search2 != '0'
-         @examquestions = Examquestion.find(:all, :conditions => ["subject_id IN (?)", Programme.find(search2).descendants.at_depth(2).map(&:id)])#["programme_id=?", search2 ])
-       else
-         @examquestions = Examquestion.find(:all)
-       end
-     else
+    common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+    if search2 
+      if search2 == '0'
+        @examquestions = Examquestion.find(:all)
+      elsif search2 == '1'
+        @examquestions = Examquestion.find(:all, :conditions => ["subject_id IN (?)", common_subject])
+      else
+        subject_of_program = Programme.find(search2).descendants.at_depth(2).map(&:id)
+        @examquestions = Examquestion.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
+      end
+    else
        @examquestions = Examquestion.find(:all)
-     end
+    end
   end
   
   #def self.find_main

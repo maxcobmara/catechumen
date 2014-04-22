@@ -4,6 +4,13 @@
 		<h2 class="left">Lists of Exam Questions</h2>
 	</div>
 </div>
+<% unless @position_exist %>	
+	You have no position assigned yet. <br>
+	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
+		Programme / Unit is not defined. <br>
+	<% end %>
+	Please contact administrator.
+<% else %>
 <div class="toolbar">
 	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Exam Question') + "New", new_examquestion_path %></p>
 </div>
@@ -14,7 +21,7 @@
 	  	<%#= submit_tag "Search", :title => nil, :name => :submit_button1  %>
 	<% end %>
 </div>
-<br>
+<br><%#=@lecturer_programme%><%#=@programme.name%><%#=@programme.id%>
 <!--
 <div width=80% style="text-align:right;">
 	<%# form_tag '', :method => 'get' do %>
@@ -23,9 +30,6 @@
 		<%#= submit_tag "List by Programme", :name => :list_submit_button %>
 	<%# end %>
 </div>--><br>
-<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
-	Programme / Unit is not defined. Please contact administrator.
-<% end %>
 <div class="indextable">	
 	<table>
 		<tr>
@@ -39,7 +43,7 @@
 		<th width=30px>Usage Frequency</th>
 	    <th colspan=3 class="ac">Control</th>
 		</tr>
-		
+
 	<% @programme_exams.each do |prog, examquestions| %>
 		<tr><td colspan=11 style="background-color:#BCBEBF;">
 			<% unless prog.blank? %>
@@ -115,7 +119,7 @@
 	<% end %>	
 
 	
-	
+
 	</table>
 
 <br />
@@ -131,3 +135,4 @@
 <!--download excel-end-31May2013-->
  <br>
 </div>
+<% end %>	
