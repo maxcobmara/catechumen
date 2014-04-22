@@ -3,23 +3,21 @@ class ExamquestionsController < ApplicationController
   # GET /examquestions.xml
   def index
     #-----in case-use these 4 lines-------
-    @programmes = Programme.roots
+    #@programmes = Programme.roots
     #@examquestions = Examquestion.search2(params[:programmid])    #all if not specified
     #@subject_exams = @examquestions.group_by { |t| t.subject_details }
     #@topic_exams = @examquestions.group_by { |t| t.topic_id }
     #-----in case-use these 4 lines-------
     
-    @aaaaa=params[:subjectselect]
-    submit_val = params[:submit_button1]
-    if (params[:subjectselect] =='0' || params[:subjectselect] ==0) && submit_val == "Search"
-        @examquestions = Examquestion.search2(params[:programmid])    #all if not specified
-    elsif (params[:subjectselect] !='' || params[:subjectselect] !=nil) && submit_val == "Search"
-        @examquestions = Examquestion.find(:all, :conditions=>['subject_id=?',@aaaaa])
-    elsif !submit_val
-        @examquestions = Examquestion.search2(params[:programmid])    #all if not specified
-    end 
-    @subject_exams = @examquestions.group_by { |t| t.subject_details }    
-    @topic_exams = @examquestions.group_by { |t| t.topic_id } 
+    @lecturer_programme = current_user.staff.position.unit
+    @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    unless @programme.nil?
+      @programme_id = @programme.id
+    else
+      @programme_id='0'
+    end
+    @examquestions = Examquestion.search2(@programme_id) 
+    @programme_exams = @examquestions.group_by {|t| t.subject.root} 
     
     respond_to do |format|
       format.html # index.html.erb
