@@ -3,7 +3,7 @@
 	<table>
 		<tr>
 			<td class="leftcol"><label for="editor_id"><b>Editor:</b></label></td>
-			<td><%#=@examquestion.question_editor %><%= f.collection_select :editor_id, Staff.find(:all, :order => :name, :conditions => ["id IN (?)", @examquestion.question_editor]), :id, :name, :include_blank => 'Please select editor', :selected => current_user.staff_id %></td>
+			<td><%#=@examquestion.question_editor %><%= f.collection_select :editor_id, Staff.find(:all, :order => "staffgrade_id DESC", :conditions => ["id IN (?)", @examquestion.question_editor]), :id, :name, :include_blank => 'Please select editor', :selected => current_user.staff_id %></td>
 		</tr>
 	</table>
 

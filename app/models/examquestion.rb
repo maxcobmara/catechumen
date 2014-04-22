@@ -91,51 +91,26 @@ class Examquestion < ActiveRecord::Base
   end
   
   def question_editor
-    multi_position = Position.find(:all, :conditions => ['staff_id=?',User.current_user.staff_id])  #85 --> Mohd Firdaus Fikri
-    ifmulti_position = multi_position.count 
-    xx=0
-    if ifmulti_position > 1
-        multi_position.each do |x|
-  			    if x.parent.id > 6 && x.parent.id < 17 
-  			        xx=x.id
-  			    end 	
-  		  end 
-  		  sibpos = Position.find(:first, :conditions => ['id=?', xx]).sibling_ids
-    else
-        sibpos = creator.position.sibling_ids
-    end
-    sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
-    applicant = Array(creator_id)
-    sibs - applicant
-    #[83, 85, 84, 86, 87] #return sibpos
+    programme = User.current_user.staff.position.unit
+    editors = Position.find(:all,:conditions => ['unit=?',programme]).map(&:staff_id).compact
+    editors
   end
   
-  def question_approver #question_editor
-    multi_position = Position.find(:all, :conditions => ['staff_id=?',User.current_user.staff_id])  #85 --> Mohd Firdaus Fikri
-    ifmulti_position = multi_position.count 
-    xx=0
-    if ifmulti_position > 1
-        multi_position.each do |x|
-  			    if x.parent.id > 6 && x.parent.id < 17 
-  			        xx=x.id
-  			    end 	
-  		  end 
-  		  sibpos = Position.find(:first, :conditions => ['id=?', xx]).parent.sibling_ids
-    else
-        sibpos = creator.position.parent.sibling_ids  #sibpos = creator.position.sibling_ids
-    end
+  def question_approver #to assign question -> KP
+    ###latest finding - as of Mei-Jul/Aug 2013 - approver should be at Ketua Program level ONLY (own programme @ other programme)### 
     
-    sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
-    #applicant = Array(creator_id)
-    #sibs - applicant
-    sibs
+    role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
+    staff_with_kprole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_kp]).map(&:staff_id).compact.uniq
+    programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
+    approver = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
+    approver   
   end
   
   
   def self.search2(search2)
      if search2 
        if search2 != '0'
-         @examquestions = Examquestion.find(:all, :conditions => ["programme_id=?", search2 ])
+         @examquestions = Examquestion.find(:all, :conditions => ["subject_id IN (?)", Programme.find(search2).descendants.at_depth(2).map(&:id)])#["programme_id=?", search2 ])
        else
          @examquestions = Examquestion.find(:all)
        end
