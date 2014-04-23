@@ -60,7 +60,13 @@
 						<% if @examtemplates.map(&:questiontype).include?("ACQ") %> 
 							<th style="text-align:center;" colspan='<%=@examtemplates.acqq[0].quantity%>'>ACQ</th>
 						<% end %>
-						<% if @examtemplates.map(&:questiontype).include?("OCSE") %> 
+						<% if @examtemplates.map(&:questiontype).include?("OSCI") %> 
+							<th style="text-align:center;" colspan='<%=@examtemplates.acqq[0].quantity%>'>OSCI</th>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("OSCII") %> 
+							<th style="text-align:center;" colspan='<%=@examtemplates.acqq[0].quantity%>'>OSCII</th>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("OSCE") %> 
 							<th style="text-align:center;" colspan='<%=@examtemplates.acqq[0].quantity%>'>OSCE</th>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("OSPE") %> 
@@ -84,16 +90,22 @@
 						<% if @examquestions.acqq.count!=0 %>
 							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>ACQ</th>
 						<% end %>	
-						<% if @examquestions.osce.count!=0 %>
+						<% if @examquestions.osci2q.count!=0 %>
+							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>OSCI</th>
+						<% end %>
+						<% if @examquestions.osci3q.count!=0 %>
+							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>OSCII</th>
+						<% end %>
+						<% if @examquestions.osceq.count!=0 %>
 							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>OSCE</th>
 						<% end %>
-						<% if @examquestions.ospe.count!=0 %>
+						<% if @examquestions.ospeq.count!=0 %>
 							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>OSPE</th>
 						<% end %>
-						<% if @examquestions.viva.count!=0 %>
+						<% if @examquestions.vivaq.count!=0 %>
 							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>VIVA</th>
 						<% end %>
-						<% if @examquestions.truefalse.count!=0 %>
+						<% if @examquestions.truefalseq.count!=0 %>
 							<th style="text-align:center;" colspan='<%=@examquestions.acqq.count%>'>TRUE/FALSE</th>
 						<% end %>
 						<!--if full exam paper-->
@@ -120,24 +132,34 @@
 								<th>Q<%=count%>/ <%=@examtemplates.acqq[0].total_marks/@examtemplates.acqq[0].quantity %></th>
 							<% end %>
 						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("OSCI")%>
+							<% 1.upto(@examtemplates.osci2q[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.osci2q[0].total_marks/@examtemplates.osci2q[0].quantity %></th>
+							<% end %>
+						<% end %>	
+						<% if @examtemplates.map(&:questiontype).include?("OSCII")%>
+							<% 1.upto(@examtemplates.osci3q[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.osci3q[0].total_marks/@examtemplates.osci3q[0].quantity %></th>
+							<% end %>
+						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("OSCE")%>
-							<% 1.upto(@examtemplates.osce[0].quantity) do |count| %>
-								<th>Q<%=count%>/ <%=@examtemplates.osce[0].total_marks/@examtemplates.osce[0].quantity %></th>
+							<% 1.upto(@examtemplates.osceq[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.osceq[0].total_marks/@examtemplates.osceq[0].quantity %></th>
 							<% end %>
 						<% end %>	
 						<% if @examtemplates.map(&:questiontype).include?("OSPE")%>
-							<% 1.upto(@examtemplates.ospe[0].quantity) do |count| %>
-								<th>Q<%=count%>/ <%=@examtemplates.ospe[0].total_marks/@examtemplates.ospe[0].quantity %></th>
+							<% 1.upto(@examtemplates.ospeq[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.ospeq[0].total_marks/@examtemplates.ospeq[0].quantity %></th>
 							<% end %>
 						<% end %>	
 						<% if @examtemplates.map(&:questiontype).include?("VIVA")%>
-							<% 1.upto(@examtemplates.viva[0].quantity) do |count| %>
-								<th>Q<%=count%>/ <%=@examtemplates.viva[0].total_marks/@examtemplates.viva[0].quantity %></th>
+							<% 1.upto(@examtemplates.vivaq[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.vivaq[0].total_marks/@examtemplates.vivaq[0].quantity %></th>
 							<% end %>
 						<% end %>	
 						<% if @examtemplates.map(&:questiontype).include?("TRUEFALSE")%>
-							<% 1.upto(@examtemplates.truefalse[0].quantity) do |count| %>
-								<th>Q<%=count%>/ <%=@examtemplates.seqq[0].total_marks/@examtemplates.seqq[0].quantity %></th>
+							<% 1.upto(@examtemplates.truefalseq[0].quantity) do |count| %>
+								<th>Q<%=count%>/ <%=@examtemplates.truefalseq[0].total_marks/@examtemplates.truefalseq[0].quantity %></th>
 							<% end %>
 						<% end %>
 						<!--if exam template-->
@@ -152,17 +174,23 @@
 						<% 1.upto(@examquestions.acqq.count) do |count| %>
 							<th>Q<%=count%>/ <%=@examquestions.acqq[count-1].marks %></th>
 						<% end %>
-						<% 1.upto(@examquestions.osce.count) do |count| %>
-							<th>Q<%=count%>/ <%=@examquestions.osce[count-1].marks %></th>
+						<% 1.upto(@examquestions.osci2q.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.osci2q[count-1].marks %></th>
 						<% end %>
-						<% 1.upto(@examquestions.ospe.count) do |count| %>
-							<th>Q<%=count%>/ <%=@examquestions.ospe[count-1].marks %></th>
+						<% 1.upto(@examquestions.osci3q.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.osci3q[count-1].marks %></th>
 						<% end %>
-						<% 1.upto(@examquestions.viva.count) do |count| %>
-							<th>Q<%=count%>/ <%=@examquestions.viva[count-1].marks %></th>
+						<% 1.upto(@examquestions.osceq.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.osceq[count-1].marks %></th>
 						<% end %>
-						<% 1.upto(@examquestions.truefalse.count) do |count| %>
-							<th>Q<%=count%>/ <%=@examquestions.truefalse[count-1].marks %></th>
+						<% 1.upto(@examquestions.ospeq.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.ospeq[count-1].marks %></th>
+						<% end %>
+						<% 1.upto(@examquestions.vivaq.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.vivaq[count-1].marks %></th>
+						<% end %>
+						<% 1.upto(@examquestions.truefalseq.count) do |count| %>
+							<th>Q<%=count%>/ <%=@examquestions.truefalseq[count-1].marks %></th>
 						<% end %>
 						<!--if complete exampaper-->
 					<% end %>
@@ -230,7 +258,7 @@
 
 						<!--****-start-Data column for OTHER than MCQ marks(individually)-->
 						<% if @istemplate == 0 %> 
-							<% if (@examtemplates.map(&:questiontype).include?("MEQ") || @examtemplates.map(&:questiontype).include?("SEQ")|| @examtemplates.map(&:questiontype).include?("ACQ")||@examtemplates.map(&:questiontype).include?("MEQ")||@examtemplates.map(&:questiontype).include?("OSCE")|| @examtemplates.map(&:questiontype).include?("OSPE")||@examtemplates.map(&:questiontype).include?("VIVA")||@examtemplates.map(&:questiontype).include?("TRUEFALSE"))%>
+							<% if (@examtemplates.map(&:questiontype).include?("MEQ") || @examtemplates.map(&:questiontype).include?("SEQ")|| @examtemplates.map(&:questiontype).include?("ACQ")||@examtemplates.map(&:questiontype).include?("MEQ")||@examtemplates.map(&:questiontype).include?("OSCI")|| @examtemplates.map(&:questiontype).include?("OSCII")||@examtemplates.map(&:questiontype).include?("OSCE")|| @examtemplates.map(&:questiontype).include?("OSPE")||@examtemplates.map(&:questiontype).include?("VIVA")||@examtemplates.map(&:questiontype).include?("TRUEFALSE"))%>
 								<%#@c_count=1%>	
 								<%# (@examtemplates.mcqq[0].quantity).upto(@questioncount-1) do |count2| %>	
 								<% 0.upto(@questioncount-@examtemplates.mcqq[0].quantity-1) do |count2|%><!--@questioncount = total questions available in template-->
@@ -241,7 +269,7 @@
 								<% end %>
 							<% end %><!--end for - if @examtemplates.map(&:qu ........-->
 						<% else %>
-							<% if (@examquestions.meqq.count!=0 || @examquestions.seqq.count!=0 || @examquestions.acqq.count!=0 || @examquestions.osce.count!=0 || @examquestions.ospe.count!=0 || @examquestions.viva.count!=0 || @examquestions.truefalse.count!=0) %>
+							<% if (@examquestions.meqq.count!=0 || @examquestions.seqq.count!=0 || @examquestions.acqq.count!=0 || @examquestions.osci2q.count!=0 || @examquestions.osci3q.count!=0 || @examquestions.osce.count!=0 || @examquestions.ospe.count!=0 || @examquestions.viva.count!=0 || @examquestions.truefalse.count!=0) %>
 								<%#@c_count=1%>
 								<% 0.upto(@examquestions.count-@examquestions.mcqq.count-1) do |count2|%>
 									<td>

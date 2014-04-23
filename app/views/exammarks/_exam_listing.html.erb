@@ -7,7 +7,7 @@
 <% @exam_ids_for_examquestions = Exam.find(:all,:joins=>:examquestions).map(&:id).uniq %>
 <% @complete_exampaper = Exam.find(:all, :conditions=>['id IN (?) OR id IN (?)',@exam_ids_for_examtemplate,@exam_ids_for_examquestions]) %>
 <!--ADDED-18June2013-->
-<% if @current_user_roles.include?(2) || (!@current_user_roles.include?(2) && @anc_depth==1) %>
+<%# if @current_user_roles.include?(2) || (!@current_user_roles.include?(2) && @anc_depth==1) %>
 	<% if @existing_exammark_ids.count == 0 %>
 		<% @exam_list_exist_mark = []%>
 	<% else %>	
@@ -18,8 +18,8 @@
 	<% @subject_list = Programme.at_depth(2) %>
 	<%# @exam_list_index = Exam.all %><!--question OR question template must exist-->	
 	<% @exam_list_index = @complete_exampaper %>
-<% end %>
-<% if !@current_user_roles.include?(2) && @anc_depth!=1 %>
+<%# end %>
+<%# if !@current_user_roles.include?(2) && @anc_depth!=1 %>
 	<% @exam_list = [] %>
 	<% @exam_list_exist_mark = [] %>
 	<% @exam_list_index = []%>
@@ -28,29 +28,29 @@
 	<!--for INDEX use-->
 	<%# Exam.all.each do |x| %>
 	<% @complete_exampaper.each do |x| %>
-		<% if x.subject.root.name == @dept_unit %>
+		<% if x.subject.root.name == @lecturer_programme %>
 			<% @exam_list_index << x %>
 		<% end %>
 	<% end %>
 	<!--complete question exam, for NEW exam selection list-use in NEW & EDIT (_form.html.erb)-->
 	<% @examlist2.each do |x| %>
-		<% if x.subject.root.name == @dept_unit %>
+		<% if x.subject.root.name == @lecturer_programme %>
 			<% @exam_list << x %>
 		<% end %>
-	<% end %>
+	<% end %><% if @lecturer_programme!='Commonsubject'%>
 	<!--exist exam, for EXIST exam selection list-->
 	<% @examexist.each do |x| %>
-		<% if x.subject.root.name == @dept_unit %>		
+		<% if x.subject.root.name == @lecturer_programme %>		
 			<% @exam_list_exist_mark << x %>
 		<% end %>
-	<% end %>
+	<% end %><% end %>
 	<% @student_list = [] %>
 	<% Student.all.each do |y| %>
-		<% if y.course_id && y.course.name == @dept_unit %>
+		<% if y.course_id && y.course.name == @lecturer_programme %>
 			<% @student_list << y %>
 		<% end %>
 	<% end %>
-	<% @subject_list = Programme.find_by_name(@dept_unit).descendants.at_depth(2)%>
-<% end %>
+	<% @subject_list = Programme.find_by_name(@lecturer_programme).descendants.at_depth(2)%>
+<%# end %>
 <!--11-12Apr2013-->
 <%###################################################%>

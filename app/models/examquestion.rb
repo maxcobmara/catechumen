@@ -27,6 +27,10 @@ class Examquestion < ActiveRecord::Base
   named_scope :acqq, :conditions => {:questiontype => 'ACQ'}
   named_scope :osci2q, :conditions => {:questiontype => 'OSCI'}
   named_scope :osci3q, :conditions => {:questiontype => 'OSCII'}
+  named_scope :osceq, :conditions => {:questiontype =>'OSCE'}
+  named_scope :ospeq, :conditions =>  {:questiontype =>'OSPE'}
+  named_scope :vivaq, :conditions =>  {:questiontype =>'VIVA'}
+  named_scope :truefalseq, :conditions =>  {:questiontype =>'TRUEFALSE'}
   
   has_attached_file :diagram,
                     :url => "/assets/examquestions/:id/:style/:basename.:extension",

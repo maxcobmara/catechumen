@@ -113,7 +113,7 @@ class Exammark < ActiveRecord::Base
   #14March2013 - rev 17June2013
   def self.set_intake_group(examyear,exammonth,semester)    #semester refers to semester of selected subject - subject taken by student of semester???
     @unit_dept = User.current_user.staff.position.unit
-    @unit_dept = User.current_user.staff.position.ancestors.at_depth(2)[0].unit if @unit_dept==nil
+    #@unit_dept = User.current_user.staff.position.ancestors.at_depth(2)[0].unit if @unit_dept==nil
      
      #if exammonth.to_i <= 7
      if (@unit_dept && @unit_dept == "Kebidanan" && exammonth.to_i <= 9) || (@unit_dept && @unit_dept != "Kebidanan" && exammonth.to_i <= 7)                                           # for 1st semester-month: Jan-July, exam should be between Feb-July
@@ -170,14 +170,13 @@ class Exammark < ActiveRecord::Base
   end
   #14March2013
   
-  #2June2013
   def self.search2(search)
       if search
-          if search == '0'
-              @exammarks = Exammark.all
-          else
-              @exammarks = Exammark.find(:all, :conditions=>['exam_id=?',search])
-          end
+        #if search #!=['0']
+          @exammarks = Exammark.find(:all, :conditions =>['exam_id IN(?)',search])
+          #else
+          #@exammarks = Exammark.all
+          #end
       else
           @exammarks = Exammark.all
       end
