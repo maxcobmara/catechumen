@@ -12,7 +12,10 @@ class ExamquestionsController < ApplicationController
     @position_exist = current_user.staff.position
     if @position_exist  
       @lecturer_programme = current_user.staff.position.unit
-      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+      unless @lecturer_programme.nil?
+        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+      end
+      #@programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       unless @programme.nil?
         @programme_id = @programme.id
       else
@@ -49,13 +52,15 @@ class ExamquestionsController < ApplicationController
     @examquestion = Examquestion.new
     #--newly added
     @lecturer_programme = current_user.staff.position.unit      
-    @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    unless @lecturer_programme.nil?
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    end
     unless @programme.nil?
       @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
       if @lecturer_programme == 'Commonsubject'
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme])
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme]) 
       else
         @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'])  #'Subject' 
       end

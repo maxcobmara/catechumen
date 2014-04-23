@@ -2,8 +2,26 @@ class ExamsController < ApplicationController
   # GET /exams
   # GET /exams.xml
   def index
-    @exams = Exam.all
-    
+    #@exams = Exam.all
+    ##----------
+    @position_exist = current_user.staff.position
+    if @position_exist  
+      @lecturer_programme = current_user.staff.position.unit
+      unless @lecturer_programme.nil?
+        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+      end
+      unless @programme.nil?
+        @programme_id = @programme.id #3 for Kejururawatan
+      else
+        if @lecturer_programme == 'Commonsubject'
+          @programme_id ='1'
+        else
+          @programme_id='0'
+        end
+      end
+      @exams = Exam.search(@programme_id) 
+    end
+    ##----------
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @exams }
@@ -25,7 +43,23 @@ class ExamsController < ApplicationController
   # GET /exams/new.xml
   def new
     @exam = Exam.new
-
+    #--newly added
+    @lecturer_programme = current_user.staff.position.unit      
+    unless @lecturer_programme.nil?
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    end
+    unless @programme.nil?
+      @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
+      @preselect_prog = @programme.id
+      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
+      @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'])  #'Subject' 
+    else  #if programme not pre-selected (Commonsubject lecturer)
+      if @lecturer_programme == 'Commonsubject' #Commonsubject LECTURER have no selected programme
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
+      end
+      @programme_listing = Programme.roots
+    end
+    #--newly added
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @exam }
@@ -35,6 +69,14 @@ class ExamsController < ApplicationController
   # GET /exams/1/edit
   def edit
     @exam = Exam.find(params[:id])
+    @programme_id = @exam.subject.root.id
+    @lecturer_programme = current_user.staff.position.unit  
+    all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+    if @lecturer_programme == 'Commonsubject'
+      @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
+    else
+      @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'])  #'Subject' 
+    end
   end
 
   # POST /exams
@@ -95,6 +137,18 @@ class ExamsController < ApplicationController
     #raise params.inspect
     params[:exam][:examquestion_ids] ||= []
     @exam = Exam.find(params[:id])
+    
+    ###----subject + common subject
+    @programme_id = @exam.subject.root.id
+    @lecturer_programme = current_user.staff.position.unit  
+    all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+    if @lecturer_programme == 'Commonsubject'
+      @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
+    else
+      @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'])  #'Subject' 
+    end
+    ###----subject + common subject
+    
     if @exam.klass_id == 0
     #----for template
       respond_to do |format|
@@ -211,18 +265,32 @@ class ExamsController < ApplicationController
   end
   
   def view_subject_main
+    @lecturer_programme = current_user.staff.position.unit 
     @programme_id = params[:programmeid]
     unless @programme_id.blank? 
-      @subjects = Programme.find(@programme_id).descendants.at_depth(2)
+      all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+      if @lecturer_programme == 'Commonsubject'
+        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
+      else
+        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'])  #'Subject' 
+      end
+      #@subjects = Programme.find(@programme_id).descendants.at_depth(2)
     end
     render :partial => 'view_subject_main', :layout => false
   end
   
   def view_subject
+    @lecturer_programme = current_user.staff.position.unit 
     @programme_id = params[:programmeid]
     @exam_id = params[:examid]
     unless @programme_id.blank? 
-      @subjects = Programme.find(@programme_id).descendants.at_depth(2)
+      all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+      if @lecturer_programme == 'Commonsubject'
+        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
+      else
+        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'])  #'Subject' 
+      end
+      #@subjects = Programme.find(@programme_id).descendants.at_depth(2)
     end
     render :partial => 'view_subject', :layout => false
   end
