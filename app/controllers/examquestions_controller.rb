@@ -9,16 +9,22 @@ class ExamquestionsController < ApplicationController
     #@topic_exams = @examquestions.group_by { |t| t.topic_id }
     #-----in case-use these 4 lines-------
     
-    @lecturer_programme = current_user.staff.position.unit
-    @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
-    unless @programme.nil?
-      @programme_id = @programme.id
-    else
-      @programme_id='0'
-    end
-    @examquestions = Examquestion.search2(@programme_id) 
-    @programme_exams = @examquestions.group_by {|t| t.subject.root} 
-    
+    @position_exist = current_user.staff.position
+    if @position_exist  
+      @lecturer_programme = current_user.staff.position.unit
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+      unless @programme.nil?
+        @programme_id = @programme.id
+      else
+        if @lecturer_programme == 'Commonsubject'
+          @programme_id ='1'
+        else
+          @programme_id='0'
+        end
+      end
+      @examquestions = Examquestion.search2(@programme_id) 
+      @programme_exams = @examquestions.group_by {|t| t.subject.root} 
+    end  
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @examquestions }
@@ -41,6 +47,22 @@ class ExamquestionsController < ApplicationController
   # GET /examquestions/new.xml
   def new
     @examquestion = Examquestion.new
+    #--newly added
+    @lecturer_programme = current_user.staff.position.unit      
+    @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    unless @programme.nil?
+      @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
+      @preselect_prog = @programme.id
+      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
+      if @lecturer_programme == 'Commonsubject'
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme])
+      else
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'])  #'Subject' 
+      end
+    else
+      @programme_listing = Programme.roots
+    end
+    #--newly added
     #@examquestion.exammcqanswers.build
     #@examquestion.examsubquestions.build
     3.times { @examquestion.shortessays.build }
@@ -53,13 +75,83 @@ class ExamquestionsController < ApplicationController
   # GET /examquestions/1/edit
   def edit
     @examquestion = Examquestion.find(params[:id])
+    
+    #--newly added--same as create--required during edit
+    @lecturer_programme = current_user.staff.position.unit      
+    if @lecturer_programme != 'Commonsubject'
+      @programme = Programme.find(:first,:conditions=>["name ILIKE (?) AND ancestry_depth=?","%#{@lecturer_programme}%",0])
+    end
+    unless @programme.nil?  
+      @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
+      @preselect_prog = @programme.id
+      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
+      unless @examquestion.topic_id.nil?
+        @all_subjects1 = Programme.find(@examquestion.topic.root.id).descendants.at_depth(2).map(&:id)
+      else
+        @all_subjects2 = Programme.find(@examquestion.programme_id).descendants.at_depth(2).map(&:id)
+      end
+      
+      if @lecturer_programme == 'Commonsubject'
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme])
+        unless @examquestion.topic_id.nil?
+          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme])  
+        else
+          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme])  
+        end 
+      else
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'])  #'Subject' 
+        unless @examquestion.topic_id.nil?
+          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, 'Subject'])  #'Subject' 
+        else
+          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, 'Subject'])  #'Subject'
+        end
+      end
+    else  
+      @programme_listing = Programme.roots
+    end
+    #--newly added--same as create--required during edit
   end
 
   # POST /examquestions
   # POST /examquestions.xml
   def create
     @examquestion = Examquestion.new(params[:examquestion])
-
+    
+    #--newly added--same as edit--required when incomplete data submitted
+    @lecturer_programme = current_user.staff.position.unit      
+    if @lecturer_programme != 'Commonsubject'
+      @programme = Programme.find(:first,:conditions=>["name ILIKE (?) AND ancestry_depth=?","%#{@lecturer_programme}%",0])
+    end
+    unless @programme.nil?  
+      @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
+      @preselect_prog = @programme.id
+      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
+      unless @examquestion.topic_id.nil?
+        @all_subjects1 = Programme.find(@examquestion.topic.root.id).descendants.at_depth(2).map(&:id)
+      else
+        @all_subjects2 = Programme.find(@examquestion.programme_id).descendants.at_depth(2).map(&:id)
+      end
+      
+      if @lecturer_programme == 'Commonsubject'
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme])
+        unless @examquestion.topic_id.nil?
+          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme])  
+        else
+          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme])  
+        end 
+      else
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'])  #'Subject' 
+        unless @examquestion.topic_id.nil?
+          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, 'Subject'])  #'Subject' 
+        else
+          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, 'Subject'])  #'Subject'
+        end
+      end
+    else  
+      @programme_listing = Programme.roots
+    end
+    #--newly added--same as edit--required when incomplete data submitted
+    
     respond_to do |format|
       if @examquestion.save
         flash[:notice] = 'Examquestion was successfully created.'
@@ -111,10 +203,16 @@ class ExamquestionsController < ApplicationController
   end
   
   def view_subject
+    @lecturer_programme = current_user.staff.position.unit 
     @programme_id = params[:programmeid]
     unless @programme_id.blank? 
-      #@subjects = Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?', @programme_id])
-      @subjects = Programme.find(@programme_id).descendants.at_depth(2)
+      all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+      if @lecturer_programme == 'Commonsubject'
+        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
+      else
+        #@subjects = Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?', @programme_id])
+        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'])  #'Subject' 
+      end
     end
     render :partial => 'view_subject', :layout => false
   end
