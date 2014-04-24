@@ -28,9 +28,9 @@
 		<% examresult.resultlines.sort_by{|x|x.student.name}.each do |resultline| %>
   		<tr>
 			<td><%=h resultline.student.name %></td>
-			<td><%=h resultline.total %></td>
-			<td><%=h resultline.pngs17 %></td>
-    		<td><%=h resultline.pngk %></td>
+			<td><%=h number_with_precision(resultline.total,:precision=>2) %></td>
+			<td><%=h number_with_precision(resultline.pngs17, :precision=>2) %></td>
+    		<td><%=h number_with_precision(resultline.pngk, :precision=>2) %></td>
     		<td><%=h resultline.remark %></td>
 			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show2', :id => resultline %></td>
 			<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Examslip'), :action => 'examslip', :id => resultline %></td>

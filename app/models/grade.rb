@@ -153,15 +153,10 @@ class Grade < ActiveRecord::Base
        4.00
      end
    end 
-
-   #3June2013
+   
    def self.search2(search)
        if search
-           if search == '0'
-               @grades = Grade.all
-           else
-               @grades = Grade.find(:all, :conditions=>['subject_id=?',search])
-           end
+           @grades = Grade.find(:all, :conditions =>['subject_id IN(?)',search])
        else
            @grades = Grade.all
        end
@@ -224,9 +219,7 @@ E_TYPES = [
       [ "Project", "3" ],
       [ "Clinical Report", "4" ],
       [ "Test", "5" ],
-      [ "Exam", "6" ],
-      
-
+      [ "Exam", "6" ]
 ]
 
 WEIGHTAGE = [

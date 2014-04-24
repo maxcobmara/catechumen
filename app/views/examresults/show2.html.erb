@@ -52,9 +52,9 @@
 		</td>
 		<td>
 			<% unless @student_finale.nil? || @student_finale.blank? %>
-				<%=@student_finale.set_NG.to_f%>
+				<%=number_with_precision(@student_finale.set_NG.to_f,:precision=>2)%>
 			<% else %>
-				<%= 0.00 %>
+				<%= number_with_precision(0.00,:precision=>2) %>
 			<% end %>
 		</td>
 		<td><% if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C" %>
@@ -72,15 +72,15 @@
 		</tr>
 		<tr>
 			<td class="leftcol">Total NGK</td>
-			<td><%=h @resultline.total%></td>
+			<td><%=h number_with_precision(@resultline.total,:precision=>2) %></td>
 		</tr>
 		<tr>
 			<td class="leftcol">PNGS</td>
-			<td><%=h @resultline.pngs17 %></td>
+			<td><%=h number_with_precision(@resultline.pngs17,:precision=>2) %></td>
 		</tr>
 		<tr>
 			<td class="leftcol">PNGK</td>
-			<td><%=h @resultline.pngk%></td>
+			<td><%=h number_with_precision(@resultline.pngk,:precision=>2) %></td>
 		</tr>
 		<tr>
 			<td class="leftcol">STATUS</td>

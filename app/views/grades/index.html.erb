@@ -1,104 +1,104 @@
 <!--13Apr2013-DEPT UNIT for current user-->
-<% @anc_depth = current_user.staff.position.ancestry_depth %>
+<%# @anc_depth = current_user.staff.position.ancestry_depth %>
 
 <!--27May2013-how to retrieve position for staff with multiple positions?-->
-<% @multi_position = Position.find(:all, :conditions => ['staff_id=?',current_user.staff_id])%>
-<% @ifmulti_position = @multi_position.count %>
+<%# @multi_position = Position.find(:all, :conditions => ['staff_id=?',current_user.staff_id])%>
+<%# @ifmulti_position = @multi_position.count %>
 
-<% if @anc_depth==2 %>
-	<% @dept_unit = current_user.staff.position.unit %>
-<% elsif @anc_depth < 2 %>
-	<%# @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
-	<%# if @position_count > 1 %>
-	<% if @ifmulti_position > 1 %><!--DRY-27 May 2013-->
-		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
-	<% end %>
+<%# if @anc_depth==2 %>
+	<%# @dept_unit = current_user.staff.position.unit %>
+<%# elsif @anc_depth < 2 %>
+	<%## @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<%## if @position_count > 1 %>
+	<%# if @ifmulti_position > 1 %><!--DRY-27 May 2013-->
+		<%# @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
+	<%# end %>
 	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-	<% if @anc_depth==1 %>
-		<% @dept_unit = Position.find(:first,:conditions=>['staff_id=?', current_user.staff_id]).unit %>
-	<% end %>
+	<%# if @anc_depth==1 %>
+		<%# @dept_unit = Position.find(:first,:conditions=>['staff_id=?', current_user.staff_id]).unit %>
+	<%# end %>
 	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-<% elsif @anc_depth > 2 %>
+<%# elsif @anc_depth > 2 %>
 	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
-	<% if @ifmulti_position > 1 %>
-		<% @multi_position.each do |x|%>
-			<% if x.parent.id > 6 && x.parent.id < 17 %>
-				<!--hoho<%#= @dept_unit = x.parent.unit %>--><% @dept_unit = x.parent.unit %>
-			<% end %>	
-		<% end %>
-	<% else %>
-		<% @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+	<%# if @ifmulti_position > 1 %>
+		<%# @multi_position.each do |x|%>
+			<%# if x.parent.id > 6 && x.parent.id < 17 %>
+				<!--hoho<%#= @dept_unit = x.parent.unit %>--><%# @dept_unit = x.parent.unit %>
+			<%# end %>	
+		<%# end %>
+	<%# else %>
+		<%# @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
 		<!--30Mei2013-->
-		<% if @dept_unit == "Pos Basik" && @anc_depth == 3 %><!--@anc_depth==3-->
-			<% @dept_unit = current_user.staff.position.unit %>
-		<% end %>
+		<%# if @dept_unit == "Pos Basik" && @anc_depth == 3 %><!--@anc_depth==3-->
+			<%# @dept_unit = current_user.staff.position.unit %>
+		<%# end %>
 		<!--30Mei2013-->
-	<% end %>
+	<%# end %>
 	<!--27 May 2013-START-added for mohd firdaus fikri(radiografi)-MULTIPLE positions-->
-<% end %>
+<%# end %>
 
-<% current_user_roles=[]%>
-<% User.current_user.roles.each do |role|%>
-	<% current_user_roles<<role.id%>
-<% end %>
-<%#= current_user_roles.include?(2)%>
+<%# current_user_roles=[]%>
+<%# User.current_user.roles.each do |role|%>
+	<%# current_user_roles<<role.id%>
+<%# end %>
+<%##= current_user_roles.include?(2)%>
 <!--13/20Apr2013-DEPT UNIT for current user-->
 
 <%###################################################%>
 <!--existing grade for certain subject-->
-<% @existing_grade_subject_ids = Grade.find(:all,:select=>:subject_id).map(&:subject_id).uniq %>
+<%# @existing_grade_subject_ids = Grade.find(:all,:select=>:subject_id).map(&:subject_id).uniq %>
 
-<% if current_user_roles.include?(2) %><!--if administrator-->
-	<% if @dept_unit != nil %><!--must also have dept unit(from ancestor-at_depth:2), or NO programme will be pre-selected-->
+<%# if current_user_roles.include?(2) %><!--if administrator-->
+	<%# if @dept_unit != nil %><!--must also have dept unit(from ancestor-at_depth:2), or NO programme will be pre-selected-->
 		<!--26 May 2013-HAVE TO MAKE SURE : position of current logged-in staff is between 7-16 OR line 29 & 30 will FAILED & ERROR-->
-		<% if current_user.staff.position.id > 6 && current_user.staff.position.id < 17 %>
-			<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
-			<% @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
-		<% elsif @dept_unit == "Teknologi Maklumat"%>
+		<%# if current_user.staff.position.id > 6 && current_user.staff.position.id < 17 %>
+			<%# @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+			<%# @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2) %>
+		<%# elsif @dept_unit == "Teknologi Maklumat"%>
 			<!--have to assign values for SUBJECT search form for IT ADMIN-->
-			<% @subjectlist_preselec_prog = Programme.at_depth(2) %>
-		<% end %>
+			<%# @subjectlist_preselec_prog = Programme.at_depth(2) %>
+		<%# end %>
 	<%# else %>
 		<!--for ADMIN-ALL subject for grades-for NEW grades selection-->
 		<%# @subjectlist_preselec_prog = Programme.at_depth(2) %>
-	<% end %>
+	<%# end %>
 	<%#=====================3June2013=========================%>
-	<% if @existing_grade_subject_ids.count == 0 %>
-		<% @grade_list_exist_subject = []%>
-	<% else %>
+	<%# if @existing_grade_subject_ids.count == 0 %>
+		<%# @grade_list_exist_subject = []%>
+	<%# else %>
 		<!--ALL-exist grades for ADMIN-for EXIST grades selection-->
-		<% @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?)', @existing_grade_subject_ids]) %>
-	<% end %>
+		<%# @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?)', @existing_grade_subject_ids]) %>
+	<%# end %>
 	<%#=====================3June2013=========================%>
-<% else %>
-	<% if @anc_depth==1 %>
+<%# else %>
+	<%# if @anc_depth==1 %>
 	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-		<% @kupk = "yes" %>
+		<%# @kupk = "yes" %>
 		<!--for KUPK-ALL subject for grades-for NEW grades selection-->
-		<% @subjectlist_preselec_prog = Programme.at_depth(2) %>
+		<%# @subjectlist_preselec_prog = Programme.at_depth(2) %>
 		<%#=====================3June2013=========================%>
-		<% if @existing_grade_subject_ids.count == 0 %>
-			<% @grade_list_exist_subject= []%>
-		<% else %>
+		<%# if @existing_grade_subject_ids.count == 0 %>
+			<%# @grade_list_exist_subject= []%>
+		<%# else %>
 			<!--ALL-exist grades for KUPK-for EXIST grades selection-->
-			<% @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?)', @existing_grade_subject_ids]) %>
-		<% end %>
+			<%# @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?)', @existing_grade_subject_ids]) %>
+		<%# end %>
 		<%#=====================3June2013=========================%>
 	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
-	<% else %><%#=@dept_unit%><%#=@anc_depth%>
-		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
+	<%# else %><%#=@dept_unit%><%#=@anc_depth%>
+		<%# @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
 		<!--for lecturers(other than ADMIN & KUPK)-subject for NEW grades selection-->
-		<% @subjectlist_preselec_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
+		<%# @subjectlist_preselec_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
 		<%#=====================3June2013=========================%>
-		<% if @existing_grade_subject_ids.count == 0 %>
-			<% @grade_list_exist = []%>
-		<% else %>
+		<%# if @existing_grade_subject_ids.count == 0 %>
+			<%# @grade_list_exist = []%>
+		<%# else %>
 			<!--exist grades, within programme of logged-in user-for EXIST grades selection-->
-			<% @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?) and id IN(?)', @existing_grade_subject_ids, @subjectlist_preselec_prog]) %>
-		<% end %>
+			<%# @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?) and id IN(?)', @existing_grade_subject_ids, @subjectlist_preselec_prog]) %>
+		<%# end %>
 		<%#=====================3June2013=========================%>
-	<% end %>
-<% end %>
+	<%# end %>
+<%# end %>
 	
 	
 <!---->
@@ -112,7 +112,7 @@
 </div>
 
 <!--display subject for grade creation: only those exist in exam & COMPULSORY FOR EXAM MUST USE WITH NAME = "F" & must UNIQUE-->
-<% @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.all.map(&:subject_id)] )%>
+<%# @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.all.map(&:subject_id)] )%>
 <!---->
 
 <!--for testing-->
@@ -120,7 +120,14 @@
 <!--2-Subject_ids : <%#=@subjectlist_preselec_prog.map(&:id)%><br>-->							<!--subject_id in Programmes table-->
 <!--3-Exam_ids :--><%#=@subjectlist_preselec_prog2.map(&:id)%>									<!--subject_id EXIST in Exams table & Programmes table-->
 <!--for testing-->
-
+<% unless @position_exist %>	
+	You have no position assigned yet. <br>
+	Please contact administrator.
+<% else %>
+	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
+		Programme / Unit is not defined. <br>
+	<% else %>
+	
 <table width=100%>
 	<tr>
 		<td align=left>
@@ -178,7 +185,7 @@
 <%# grades.each do |grade| %><!--@grades.sort_by{|x|x.studentgrade.name}-->
 
 <% grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade,index|%>
- <% if (@dept_unit==grade.subjectgrade.root.name) ||(current_user_roles.include?(2))||@kupk == "yes" %><!--STAND BY:HIDE THIS LINE & LINE 67 to view ALL GRADES-->
+ <%# if (@dept_unit==grade.subjectgrade.root.name) ||(current_user_roles.include?(2))||@kupk == "yes" %><!--STAND BY:HIDE THIS LINE & LINE 67 to view ALL GRADES-->
 	<% if index == 0%>
 		<tr><td colspan=18 style="background-color:#EFF1F1;"><b>Subject : <%=h Programme.find(grades_group).subject_list %></b></td></tr>
 	<% end %>
@@ -230,7 +237,7 @@
     <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => grade %></td>
     <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), grade, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
-	<% end %> <!--HIDE THIS LINE & LINE 49 to view ALL GRADES-->
+	<%# end %> <!--HIDE THIS LINE & LINE 49 to view ALL GRADES-->
 <% end %>
 <% end %><!--end for @grades_group.each do |grades_group, grades| -->
 </table>
@@ -263,3 +270,6 @@ Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_al
 <%#= link_to 'New Grade', new_grade_path %> <!--10Apr2013-->
 <%#= link_to 'New Grade', new_grade_path(:new_type => "0")%>
 <%#= link_to 'Multiple New Grades', new_grade_path(:new_type => "2") %>
+
+<% end %>
+<% end %>
