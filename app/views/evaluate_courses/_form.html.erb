@@ -1,4 +1,4 @@
-<%=render :partial => 'exams/position_dept' %>
+<%#=render :partial => 'exams/position_dept' %>
 
 <div class="tform">
 	<H2>Feedback / Course Details</H2>
@@ -13,8 +13,8 @@
 			<tr>
 				<td class="leftcol"><label for="course_id">Course Name</label></td>
 				<td>:</td>
-				<td>&nbsp;<%=Programme.find(@preselect_prog).programme_list %><%= f.hidden_field :course_id, :value=>@preselect_prog %>
-					<%#= f.collection_select :course_id, Programme.roots, :id, :programme_coursetype_name, {:include_blank => "Select a programme", :selected => @preselect_prog} %></td>
+				<td><%#=Programme.find(@preselect_prog).programme_list %><%#= f.hidden_field :course_id, :value=>@preselect_prog %>
+					<%= f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank => "Select a programme", :selected => @preselect_prog} %></td>
 			</tr>
 				
 			<tr>
@@ -27,9 +27,9 @@
 			<tr>
 				<td class="leftcol"><label for="staff_id">Lecturer Name</label></td>
 				<td>:</td>
-					<% @dept_position_staff_ids = Position.find_by_unit(@dept_unit).subtree.map(&:staff_id) %>
-					<% @dept_staff = Staff.find(:all, :conditions => ['id IN(?)', @dept_position_staff_ids])%>
-				<td><%= f.collection_select :staff_id, @dept_staff, :id, :name, :include_blank => true %>
+					<%# @dept_position_staff_ids = Position.find_by_unit(@dept_unit).subtree.map(&:staff_id) %>
+					<%# @dept_staff = Staff.find(:all, :conditions => ['id IN(?)', @dept_position_staff_ids])%>
+				<td><%= f.collection_select :staff_id, @lecturer_list, :id, :name, :include_blank => true %>
 					<%#= f.collection_select :staff_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
 			</tr>
 			
