@@ -172,11 +172,7 @@ class Exammark < ActiveRecord::Base
   
   def self.search2(search)
       if search
-        #if search #!=['0']
           @exammarks = Exammark.find(:all, :conditions =>['exam_id IN(?)',search])
-          #else
-          #@exammarks = Exammark.all
-          #end
       else
           @exammarks = Exammark.all
       end
