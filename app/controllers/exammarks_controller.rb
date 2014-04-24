@@ -3,10 +3,38 @@ class ExammarksController < ApplicationController
   # GET /exammarks.xml
   def index
     submit_val = params[:exammark_search]
-    examid = params[:exam_id]
-    @exammarks = Exammark.search2(examid)
+    @lecturer_programme = current_user.staff.position.unit
+    common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+    unless @lecturer_programme.nil?
+      if @lecturer_programme=='Commonsubject'
+        @exam_list_index = Exam.find(:all, :conditions=>['subject_id IN(?)', common_subject])
+        #@exam_list_exist_mark = Exammark.find(:all, :conditions=>['exam_id IN(?)', @exam_list_index.map(&:id)])                          #exammarks
+        @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index.map(&:id)]).uniq    #exam
+        exam_ids = @exam_list_exist_mark.map(&:id)
+      else
+        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])  
+        unless @programme.nil?
+          @programme_id = @programme.id
+          subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+          @exam_list_index = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
+          #@exam_list_exist_mark = Exammark.find(:all, :conditions=>['exam_id IN(?)', @exam_list_index.map(&:id)])                        #exammarks
+          @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index.map(&:id)]).uniq  #exam
+          exam_ids = @exam_list_exist_mark.map(&:id)
+        end
+      end
+    end
+    if submit_val == 'Search Exam Marks'
+      search_item = params[:exam_id]
+      if search_item == '0'
+        exam_ids = @exam_list_exist_mark  #replace value
+      else  
+        exam_ids = Array(search_item)  #replace value
+      end
+    end
+    
+    @exammarks = Exammark.search2(exam_ids)
     @exammarks_group = @exammarks.group_by{|x|x.exam_id}
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @exammarks }
@@ -27,6 +55,24 @@ class ExammarksController < ApplicationController
   # GET /exammarks/new
   # GET /exammarks/new.xml
   def new
+    ###--just added
+    @lecturer_programme = current_user.staff.position.unit
+    common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+    unless @lecturer_programme.nil?
+      if @lecturer_programme=='Commonsubject'
+        @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?)', common_subject])
+        @student_list = Student.all
+      else
+        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])  
+        unless @programme.nil?
+          @programme_id = @programme.id
+          subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+          @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
+          @student_list = Student.find(:all,:conditions=>['course_id=?', @programme.id], :order=>'name ASC')
+        end
+      end
+    end
+    ###--just added
     @new_type = params[:new_type]                                                       
 	  if @new_type && @new_type == "1"
         #===========
@@ -59,6 +105,24 @@ class ExammarksController < ApplicationController
   # GET /exammarks/1/edit
   def edit
     @exammark = Exammark.find(params[:id])
+    ###--just added
+    @lecturer_programme = current_user.staff.position.unit
+    common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+    unless @lecturer_programme.nil?
+      if @lecturer_programme=='Commonsubject'
+        @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?)', common_subject])
+        @student_list = Student.all
+      else
+        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])  
+        unless @programme.nil?
+          @programme_id = @programme.id
+          subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+          @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
+          @student_list = Student.find(:all,:conditions=>['course_id=?', @programme.id], :order=>'name ASC')
+        end
+      end
+    end
+    ###--just added
   end
 
   # POST /exammarks
@@ -88,7 +152,7 @@ class ExammarksController < ApplicationController
         end
         
       elsif @create_type == "Create By Paper"
-        raise params.inspect
+        #raise params.inspect
         @new_type = "2"
         #************************
         @exammarks_all = params[:exammarks]  

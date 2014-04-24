@@ -150,16 +150,16 @@
 			</tr>
 		<% end %>
 		<!--end-ACQ questions-->
-	
-		<!--start-OSCE questions-->
-		<% if @examquestions.osce.count > 0 %>
-			<% 0.upto(@examquestions.osce.count-1) do |count| %>
+
+		<!--start-OSCI questions-->
+		<% if @examquestions.osci2q.count > 0 %>
+			<% 0.upto(@examquestions.osci2q.count-1) do |count| %>
 				<tr>
 					<% if count == 0 %>
-						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.osce.count%>'>OSCE</td>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.osci2q.count%>'>OSCI</td>
 					<% end %>
 					<td><%=count+1%></td>
-					<td><%=@examquestions.osce[count].question %></td>
+					<td><%=@examquestions.osci2q[count].question %></td>
 						<% if @exammark && @marks_for_questions.count!=0 %>
 							<!--for edit (exist ib db)-->
 							<% @exist_mark = @marks_for_questions[count2].student_mark %>
@@ -171,7 +171,72 @@
 								<% @exist_mark = 0.00 %>
 							<% end %>
 						<% end %>
-					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'h1' %> / <%=number_with_precision(@examquestions.osce[count].marks,2) %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'h1' %> / <%=number_with_precision(@examquestions.osci2q[count].marks,2) %>
+						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
+						<% end %>
+					</td>
+					<% count2+=1 %>
+				<% end %>
+			</tr>
+		<% end %>
+		<!--end-OSCI questions-->
+
+
+		<!--start-OSCII questions-->
+		<% if @examquestions.osci3q.count > 0 %>
+			<% 0.upto(@examquestions.osci3q.count-1) do |count| %>
+				<tr>
+					<% if count == 0 %>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.osci3q.count%>'>OSCII</td>
+					<% end %>
+					<td><%=count+1%></td>
+					<td><%=@examquestions.osci3q[count].question %></td>
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<!--for edit (exist ib db)-->
+							<% @exist_mark = @marks_for_questions[count2].student_mark %>
+						<% else %>
+							<% if @exammark %>
+								<!--for resubmission (new) with data-->
+								<% @exist_mark = @exammark.marks[count2].student_mark%>
+							<% else %>
+								<% @exist_mark = 0.00 %>
+							<% end %>
+						<% end %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'h1' %> / <%=number_with_precision(@examquestions.osci3q[count].marks,2) %>
+						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
+						<% end %>
+					</td>
+					<% count2+=1 %>
+				<% end %>
+			</tr>
+		<% end %>
+		<!--end-OSCII questions-->
+
+		<!--start-OSCE questions-->
+		<% if @examquestions.osceq.count > 0 %>
+			<% 0.upto(@examquestions.osceq.count-1) do |count| %>
+				<tr>
+					<% if count == 0 %>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.osceq.count%>'>OSCE</td>
+					<% end %>
+					<td><%=count+1%></td>
+					<td><%=@examquestions.osceq[count].question %></td>
+						<% if @exammark && @marks_for_questions.count!=0 %>
+							<!--for edit (exist ib db)-->
+							<% @exist_mark = @marks_for_questions[count2].student_mark %>
+						<% else %>
+							<% if @exammark %>
+								<!--for resubmission (new) with data-->
+								<% @exist_mark = @exammark.marks[count2].student_mark%>
+							<% else %>
+								<% @exist_mark = 0.00 %>
+							<% end %>
+						<% end %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'h1' %> / <%=number_with_precision(@examquestions.osceq[count].marks,2) %>
 						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
 						<% if @exammark && @marks_for_questions.count!=0 %>
 							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
@@ -184,14 +249,14 @@
 		<!--end-OSCE questions-->
 	
 		<!--start-OSPE questions-->
-		<% if @examquestions.ospe.count > 0 %>
-			<% 0.upto(@examquestions.ospe.count-1) do |count| %>
+		<% if @examquestions.ospeq.count > 0 %>
+			<% 0.upto(@examquestions.ospeq.count-1) do |count| %>
 				<tr>
 					<% if count == 0 %>
-						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.ospe.count%>'>OSPE</td>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.ospeq.count%>'>OSPE</td>
 					<% end %>
 					<td><%=count+1%></td>
-					<td><%=@examquestions.ospe[count].question %></td>
+					<td><%=@examquestions.ospeq[count].question %></td>
 						<% if @exammark && @marks_for_questions.count!=0 %>
 							<!--for edit (exist ib db)-->
 							<% @exist_mark = @marks_for_questions[count2].student_mark %>
@@ -203,7 +268,7 @@
 								<% @exist_mark = 0.00 %>
 							<% end %>
 						<% end %>
-					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'h1' %> / <%=number_with_precision(@examquestions.ospe[count].marks,2) %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'h1' %> / <%=number_with_precision(@examquestions.ospeq[count].marks,2) %>
 						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
 						<% if @exammark && @marks_for_questions.count!=0 %>
 							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
@@ -216,14 +281,14 @@
 		<!--end-OSPE questions-->
 	
 		<!--start-VIVA questions-->
-		<% if @examquestions.viva.count > 0 %>			
-			<% 0.upto(@examquestions.viva.count-1) do |count| %>
+		<% if @examquestions.vivaq.count > 0 %>			
+			<% 0.upto(@examquestions.vivaq.count-1) do |count| %>
 				<tr>
 					<% if count == 0 %>
-						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.viva.count%>'>VIVA</td>						
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.vivaq.count%>'>VIVA</td>						
 					<% end %>
 					<td><%=count+1%></td>
-					<td><%=@examquestions.viva[count].question %></td>
+					<td><%=@examquestions.vivaq[count].question %></td>
 						<% if @exammark && @marks_for_questions.count!=0 %>
 							<!--for edit (exist ib db)-->
 							<% @exist_mark = @marks_for_questions[count2].student_mark %>
@@ -235,7 +300,7 @@
 								<% @exist_mark = 0.00 %>
 							<% end %>
 						<% end %>
-					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark, :precision=>2), :size=>4, :class=>'h1' %> / <%=@examquestions.viva[count].marks %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark, :precision=>2), :size=>4, :class=>'h1' %> / <%=@examquestions.vivaq[count].marks %>
 						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
 						<% if @exammark && @marks_for_questions.count!=0 %>
 							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>
@@ -248,14 +313,14 @@
 		<!--end-VIVA questions-->
 	
 		<!--start-TRUEFALSE questions-->
-		<% if @examquestions.truefalse.count > 0 %>
-			<% 0.upto(@examquestions.truefalse.count-1) do |count| %>
+		<% if @examquestions.truefalseq.count > 0 %>
+			<% 0.upto(@examquestions.truefalseq.count-1) do |count| %>
 				<tr>
 					<% if count == 0 %>
-						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.truefalse.count%>'>TRUE/FALSE</td>
+						<td style="vertical-align:middle;font-weight:bold" rowspan='<%=@examquestions.truefalseq.count%>'>TRUE/FALSE</td>
 					<% end %>
 					<td><%=count+1%></td>
-					<td><%=@examquestions.truefalse[count].question %></td>
+					<td><%=@examquestions.truefalseq[count].question %></td>
 						<% if @exammark && @marks_for_questions.count!=0 %>
 							<% @exist_mark = @marks_for_questions[count2].student_mark %>
 						<% else %>
@@ -266,7 +331,7 @@
 								<% @exist_mark = 0.00 %>
 							<% end %>
 						<% end %>
-					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2), :size=>4, :class=>'h1' %> / <%=@examquestions.truefalse[count].marks %>
+					<td><%= text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2), :size=>4, :class=>'h1' %> / <%=@examquestions.truefalseq[count].marks %>
 						<!--HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one-->
 						<% if @exammark && @marks_for_questions.count!=0 %>
 							<%= hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id %>

@@ -111,17 +111,51 @@
 							</tr>
 						<% end %>
 						<!--send-display ACQ questions details-->
-						<!--start-display OSCE questions details-->
-						<% if @examquestions.osce.count > 0 %>
-							<% 0.upto(@examquestions.osce.count-1) do |count| %>
+						<!--start-display OSCI questions details-->
+						<% if @examquestions.osci2q.count > 0 %>
+							<% 0.upto(@examquestions.osci2q.count-1) do |count| %>
 								<tr>
 									<% if count == 0 %>
-										<td style="vertical-align:middle;font-weight:bold;" rowspan='<%=@examquestions.osce.count%>'>OSCE</td>
+										<td style="vertical-align:middle;font-weight:bold;" rowspan='<%=@examquestions.osci2q.count%>'>OSCE</td>
 									<% end %>
 									<td><%=count+1%></td>
-									<td><%=@examquestions.osce[count].question %></td>
+									<td><%=@examquestions.osci2q[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
-										<%= @exammark.marks[count2].student_mark%> / <%=number_with_precision(@examquestions.osce[count].marks,2) %>
+										<%= @exammark.marks[count2].student_mark%> / <%=number_with_precision(@examquestions.osci2q[count].marks,2) %>
+									</td>
+									<% count2+=1 %>
+								<% end %>
+							</tr>
+						<% end %>
+						<!--end-display OSCI questions details-->
+						<!--start-display OSCII questions details-->
+						<% if @examquestions.osci3q.count > 0 %>
+							<% 0.upto(@examquestions.osci3q.count-1) do |count| %>
+								<tr>
+									<% if count == 0 %>
+										<td style="vertical-align:middle;font-weight:bold;" rowspan='<%=@examquestions.osci3q.count%>'>OSCE</td>
+									<% end %>
+									<td><%=count+1%></td>
+									<td><%=@examquestions.osci3q[count].question %></td>
+									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
+										<%= @exammark.marks[count2].student_mark%> / <%=number_with_precision(@examquestions.osci3q[count].marks,2) %>
+									</td>
+									<% count2+=1 %>
+								<% end %>
+							</tr>
+						<% end %>
+						<!--end-display OSCII questions details-->
+						<!--start-display OSCE questions details-->
+						<% if @examquestions.osceq.count > 0 %>
+							<% 0.upto(@examquestions.osceq.count-1) do |count| %>
+								<tr>
+									<% if count == 0 %>
+										<td style="vertical-align:middle;font-weight:bold;" rowspan='<%=@examquestions.osceq.count%>'>OSCE</td>
+									<% end %>
+									<td><%=count+1%></td>
+									<td><%=@examquestions.osceq[count].question %></td>
+									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
+										<%= @exammark.marks[count2].student_mark%> / <%=number_with_precision(@examquestions.osceq[count].marks,2) %>
 									</td>
 									<% count2+=1 %>
 								<% end %>
@@ -129,16 +163,16 @@
 						<% end %>
 						<!--end-display OSCE questions details-->
 						<!--start-display OSPE questions details-->
-						<% if @examquestions.ospe.count > 0 %>
-							<% 0.upto(@examquestions.ospe.count-1) do |count| %>
+						<% if @examquestions.ospeq.count > 0 %>
+							<% 0.upto(@examquestions.ospeq.count-1) do |count| %>
 								<tr>
 									<% if count == 0 %>
-										<td style="vertical-align:middle;font-weight:bold;" rowspan='<%=@examquestions.ospe.count%>'>OSPE</td>
+										<td style="vertical-align:middle;font-weight:bold;" rowspan='<%=@examquestions.ospeq.count%>'>OSPE</td>
 									<% end %>
 									<td><%=count+1%></td>
-									<td><%=@examquestions.ospe[count].question %></td>
+									<td><%=@examquestions.ospeq[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
-										<%= @exammark.marks[count2].student_mark%> / <%=number_with_precision(@examquestions.ospe[count].marks,2) %>
+										<%= @exammark.marks[count2].student_mark%> / <%=number_with_precision(@examquestions.ospeq[count].marks,2) %>
 									</td>
 									<% count2+=1 %>
 								<% end %>
@@ -146,16 +180,16 @@
 						<% end %>
 						<!--end-display OSPE questions details-->
 						<!--start-display VIVA questions details-->
-						<% if @examquestions.viva.count > 0 %>
-							<% 0.upto(@examquestions.viva.count-1) do |count| %>
+						<% if @examquestions.vivaq.count > 0 %>
+							<% 0.upto(@examquestions.vivaq.count-1) do |count| %>
 								<tr>
 									<% if count == 0 %>
-										<td style="vertical-align:middle;font-weight:bold;" rowspan='<%=@examquestions.viva.count%>'>VIVA</td>
+										<td style="vertical-align:middle;font-weight:bold;" rowspan='<%=@examquestions.vivaq.count%>'>VIVA</td>
 									<% end %>
 									<td><%=count+1%></td>
-									<td><%=@examquestions.viva[count].question %></td>
+									<td><%=@examquestions.vivaq[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
-										<%= @exammark.marks[count2].student_mark%> / <%=number_with_precision(@examquestions.viva[count].marks,2) %>
+										<%= @exammark.marks[count2].student_mark%> / <%=number_with_precision(@examquestions.vivaq[count].marks,2) %>
 									</td>
 									<% count2+=1 %>
 								<% end %>
@@ -163,16 +197,16 @@
 						<% end %>
 						<!--end-display VIVA questions details-->
 						<!--start-display TRUEFALSE questions details-->
-						<% if @examquestions.truefalse.count > 0 %>
-							<% 0.upto(@examquestions.truefalse.count-1) do |count| %>
+						<% if @examquestions.truefalseq.count > 0 %>
+							<% 0.upto(@examquestions.truefalseq.count-1) do |count| %>
 								<tr>
 									<% if count == 0 %>
-										<td style="vertical-align:middle;font-weight:bold;" rowspan='<%=@examquestions.truefalse.count%>'>TRUE/FALSE</td>
+										<td style="vertical-align:middle;font-weight:bold;" rowspan='<%=@examquestions.truefalseq.count%>'>TRUE/FALSE</td>
 									<% end %>
 									<td><%=count+1%></td>
-									<td><%=@examquestions.truefalse[count].question %></td>
+									<td><%=@examquestions.truefalseq[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
-										<%= @exammark.marks[count2].student_mark%> / <%=number_with_precision(@examquestions.truefalse[count].marks,2) %>
+										<%= @exammark.marks[count2].student_mark%> / <%=number_with_precision(@examquestions.truefalseq[count].marks,2) %>
 									</td>
 									<% count2+=1 %>
 								<% end %>
