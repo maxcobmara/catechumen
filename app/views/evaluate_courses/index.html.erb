@@ -7,7 +7,16 @@
 		</div>
 	</div>
 </div>
-
+<% unless @position_exist %>	
+	You have no position assigned yet. <br>
+	Please contact administrator.
+<% else %>
+	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
+		Programme / Unit is not defined. <br>
+	<% elsif @lecturer_programme == 'Commonsubject'%>
+		This feature only accessible to Programme lecturers.
+	<% else %>
+	
 <div class="toolbar">
 	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Feedback/Course Evaluation') + "New", new_evaluate_course_path %></p>
 </div>
@@ -15,7 +24,7 @@
 <div class="indextable">
 <table>
   <tr class="toprow">
-    <th>Student Name</th>
+    <!--<th>Student Name</th>-->
     <th>Programme - Subject Name</th>
     <th>Evaluate Date</th>
     <th>Lecturer's Name</th>
@@ -25,7 +34,7 @@
 
 <% @evaluate_courses.each do |evaluate_course| %>
   <tr>
-	<td><%= evaluate_course.student_id.blank? ? "No Student" : evaluate_course.studentevaluate.name %></td>
+	<!--<td><%#= evaluate_course.student_id.blank? ? "No Student" : evaluate_course.studentevaluate.name %></td>-->
 	<!--20Feb2013-subject added-->
 	<td><%= evaluate_course.course_id.blank? ? "No Course" : evaluate_course.stucourse.programme_coursetype_name+" - "+evaluate_course.subjectevaluate.subject_list %></td>
 	<!--20Feb2013-subject added-->
@@ -62,5 +71,7 @@
 <%= link_to 'New Feedback/Course Evaluation', new_evaluate_course_path %>
 <%# end %>
 
+<% end %>
+<% end %>
 
 

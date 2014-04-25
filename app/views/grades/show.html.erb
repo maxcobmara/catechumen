@@ -25,17 +25,17 @@
 					  <tr>
 						  <td><%=h (Score::E_TYPES.find_all{|disp, value| value == score.type_id}).map {|disp, value| disp} %></td>
 				      <td><%=h score.description %></td>
-				      <td><%=h score.marks %><!--%--></td>
-							<td><%=h score.weightage %><!--% of total--></td>
-							<td><%=h score.type_marks %></td>
+				      <td><%=h number_with_precision(score.marks,:precision=>2) %><!--%--></td>
+							<td><%=h number_with_precision(score.weightage,:precision=>2) %><!--% of total--></td>
+							<td><%=h number_with_precision(score.type_marks, :precision=>2) %></td>
 						</tr>
 						<% end %>
 						<tr>
 						  <td></td>
 				      <td></td>
-				      <td><b><%= @grade.total_formative2 %></b></td>
-							<td><%= @grade.total_per %>%</td>
-							<td><b><%= @grade.total_formative %>%</b></td> 
+				      <td><b><%= number_with_precision(@grade.total_formative2,:precision=>2) %></b></td>
+							<td><%= number_with_precision(@grade.total_per,:precision=>2) %>%</td>
+							<td><b><%= number_with_precision(@grade.total_formative,:precision=>2) %>%</b></td> 
 						</tr>
 					</table></td>
 		</tr>
@@ -45,7 +45,7 @@
 	<table width=100%>
 		<tr>
 			<td class="leftcol"><label for="total_formative">Total Formative:</label></td>
-			<td><%=h @grade.total_formative2 %> | <%=h @grade.total_formative %>%</td>
+			<td><%=h number_with_precision(@grade.total_formative2, :precision=>2) %> | <%=h number_with_precision(@grade.total_formative,:precision=>2) %>%</td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>
@@ -73,9 +73,9 @@
 							<tr>
 								<td><%=h @grade.exam1name %></td>
 								<td><%=h @grade.exam1desc %></td>
-								<td><%=h @grade.exam1marks %>%</td>
-								<td><%=h @grade.examweight %>%</td>
-								<td><%=h check_kin {@grade.total_summative} %>%</td><!--TODO : Fix This-->
+								<td><%=h number_with_precision(@grade.exam1marks,:precision=>2) %>%</td>
+								<td><%=h number_with_precision(@grade.examweight,:precision=>2) %>%</td>
+								<td><%=h check_kin {number_with_precision(@grade.total_summative,:precision=>2)} %>%</td><!--TODO : Fix This-->
 							</tr>
 						</table></td>
 		</tr>
@@ -87,11 +87,11 @@
 			<td class="leftcol"><label for="total_marks ">Final Score:</label></td>
 			<td>
 				<% if (@grade.exam1marks!= nil && @grade.examweight !=nil && @grade.total_formative != nil)%>
-					<%=h @grade.finale %> -- <b>
+					<%=h number_with_precision(@grade.finale,:precision=>2) %> -- <b>
 					<%=@grade.set_gred %></b>
 				<% end %>
 				  <font color=#AAA size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					Formative x <%= (100 - @grade.examweight)%>% + Summative x <%= @grade.examweight %>%</font></td>
+					Formative x <%= number_with_precision((100 - @grade.examweight),:precision=>2)%>% + Summative x <%= number_with_precision(@grade.examweight,:precision=>2) %>%</font></td>
 		</tr>
 	
 		<tr>

@@ -58,14 +58,14 @@
 						</td>
 						<td style="padding:0px;text-align:center;vertical-align:middle;">
 							<% unless @student_finale.nil? || @student_finale.blank? %>
-								<%=@student_finale.set_NG.to_f%>
+								<%=number_with_precision(@student_finale.set_NG.to_f,:precision=>2)%>
 							<% else %>
-								<%= 0.00 %>
+								<%= number_with_precision(0.00,:precision=>2) %>
 							<% end %>
 						</td>
 					<% end %>
-					<td style="padding:0px;text-align:center;vertical-align:middle;"><%=h examresultline.total %></td>
-					<td style="padding:0px;text-align:center;vertical-align:middle;"><%=h examresultline.pngs17 %></td>
+					<td style="padding:0px;text-align:center;vertical-align:middle;"><%=h number_with_precision(examresultline.total,:precision=>2) %></td>
+					<td style="padding:0px;text-align:center;vertical-align:middle;"><%=h number_with_precision(examresultline.pngs17,:precision=>2) %></td>
 					<td style="padding:0px;text-align:center;vertical-align:middle;"><%=h examresultline.render_status %></td>
 					<td style="padding:0px;text-align:left;vertical-align:middle;"><%=h examresultline.remark %></td>
 				</tr>

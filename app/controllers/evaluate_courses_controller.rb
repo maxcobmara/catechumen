@@ -2,8 +2,24 @@ class EvaluateCoursesController < ApplicationController
   # GET /evaluate_courses
   # GET /evaluate_courses.xml
   def index
-    @evaluate_courses = EvaluateCourse.all
-
+    #@evaluate_courses = EvaluateCourse.all
+    ###--just added
+    @position_exist = current_user.staff.position
+    if @position_exist     
+      @lecturer_programme = current_user.staff.position.unit
+      unless @lecturer_programme.nil?
+        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+      end
+      unless @programme.nil?
+        @evaluate_courses = EvaluateCourse.find(:all, :conditions => ['course_id=?',@programme.id])
+      else
+        if @lecturer_programme == 'Commonsubject'
+        else
+          @evaluate_courses = EvaluateCourse.all
+        end
+      end
+    end 
+    ###--just added
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @evaluate_courses }
@@ -25,7 +41,24 @@ class EvaluateCoursesController < ApplicationController
   # GET /evaluate_courses/new.xml
   def new
     @evaluate_course = EvaluateCourse.new
-
+    @lecturer_programme = current_user.staff.position.unit
+    unless @lecturer_programme.nil?
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    end
+    unless @programme.nil?
+      @programme_list = Programme.find(:all, :conditions=>['id IN (?)',Array(@programme.id)])
+      @staff_id_lecturer = Position.find(:all, :conditions=>['unit IN(?)',@programme_list.map(&:name)]).map(&:staff_id).compact
+      @lecturer_list = Staff.find(:all, :conditions=>['id IN(?)',@staff_id_lecturer],:order=>'name ASC')
+      @subjectlist_preselect_prog = Programme.find(@programme.id).descendants.at_depth(2)
+    else
+      if @lecturer_programme == 'Commonsubject'
+      else
+        @programme_list = Programme.roots
+        @staff_id_lecturer = Position.find(:all, :conditions=>['unit IN(?)',@programme_list.map(&:name)]).map(&:staff_id).compact
+        @lecturer_list = Staff.find(:all, :conditions=>['id IN(?)',@staff_id_lecturer],:order=>'name ASC')
+        @subjectlist_preselect_prog = Programme.at_depth(2)
+      end
+    end
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @evaluate_course }

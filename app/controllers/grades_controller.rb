@@ -3,12 +3,46 @@ class GradesController < ApplicationController
   # GET /grades.xml
   def index
     submit_val = params[:grade_search]
-    subjectid = params[:subject_id]
-    @grades = Grade.search2(subjectid)
-    @grades_group = @grades.group_by{|x|x.subject_id}
     
-    #@grades = Grade.all
-    #@grades_group = @grades.group_by{|x|x.subject_id}
+    ###--just added
+    @grade_list_exist_subject=[]
+    @existing_grade_subject_ids = Grade.find(:all,:select=>:subject_id).map(&:subject_id).uniq
+    
+    @position_exist = current_user.staff.position
+    if @position_exist     
+      @lecturer_programme = current_user.staff.position.unit
+      common_subject_a = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
+      unless @lecturer_programme.nil?
+        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+      end
+      unless @programme.nil?
+        @preselect_prog = @programme.id
+        @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2)  #.sort_by{|y|y.code}
+        @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.all.map(&:subject_id), common_subject_a.map(&:id)] )
+      else
+        if @lecturer_programme == 'Commonsubject'
+          @subjectlist_preselec_prog = common_subject_a
+        else
+          @subjectlist_preselec_prog = Programme.at_depth(2) 
+        end
+        @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.all.map(&:subject_id)] )
+      end
+      @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?) and id IN(?)', @existing_grade_subject_ids, @subjectlist_preselec_prog])
+      if submit_val == 'Search Existing Grades'
+        search_item = params[:subject_id]
+        if search_item == '0' 
+          grade_ids = @grade_list_exist_subject.map(&:id)  
+        else  
+          grade_ids = Array(search_item)  
+        end
+      else
+        grade_ids = @grade_list_exist_subject.map(&:id)
+      end
+    
+      @grades = Grade.search2(grade_ids)
+      @grades_group = @grades.group_by{|x|x.subject_id}
+    end 
+    ###--just added
     
     respond_to do |format|
       format.html # index.html.erb
@@ -30,9 +64,7 @@ class GradesController < ApplicationController
   # GET /grades/new
   # GET /grades/new.xml
   def new
-    #raise params.inspect
     #@new_type = params[:new_type]                                                       # retrieve - parameter sent via link_to
-	  #@new_type = params[:new_type]  
     submit_val = params[:submit_button1]      
     @new_type = "0" if submit_val == "Single New Grade"    
     @new_type = "3" if submit_val == "Multiple New Grades"                              # retrieve - parameter sent via link_to
@@ -86,6 +118,34 @@ class GradesController < ApplicationController
     
     #@grade = Grade.new
     #@grade.scores.build
+    
+    #---just added
+    @lecturer_programme = current_user.staff.position.unit
+    common_subject_a = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
+    unless @lecturer_programme.nil?
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    end
+    unless @programme.nil?
+      @preselect_prog = @programme.id
+      @student_list = Student.find(:all,:conditions=>['course_id=?', @preselect_prog], :order=>'name ASC')
+      @subject_list = Programme.find(@preselect_prog).descendants.at_depth(2)
+      @intake_list = @student_list.group_by{|l|l.intake}
+    else
+      if @lecturer_programme == 'Commonsubject'
+         @student_list = Student.all 
+         @subject_list = common_subject_a
+      else
+         @student_list = Student.all 
+         @subject_list = Programme.at_depth(2) 
+      end
+      #for administrator & Commonsubject lecturer : to assign programme, based on selected exampaper 
+      @subjectid2 = params[:subjectid]  #force - Retrieve this params value TWICE
+      @dept_unit = Programme.find(@subjectid2).root  
+      @intake_list = Student.find(:all, :conditions=>['course_id=?',@dept_unit.id]).group_by{|l|l.intake}
+    end
+    arr = []
+    @intakes = @intake_list.each {|i,k| arr<<i} 
+    #---just added
     
     respond_to do |format|
       format.html # new.html.erb

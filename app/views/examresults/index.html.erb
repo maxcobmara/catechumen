@@ -1,10 +1,21 @@
-<%=render :partial => 'exams/position_dept' %>
+<%#=render :partial => 'exams/position_dept' %>
 
 <div class="box">
 	<div class="box-head">
 		<h2 class="left">Examination Result by Programme</h2>
 	</div>
 </div>
+
+<% unless @position_exist %>	
+	You have no position assigned yet. <br>
+	Please contact administrator.
+<% else %>
+	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
+		Programme / Unit is not defined. <br>
+	<% elsif @lecturer_programme == 'Commonsubject'%>
+		This feature only accessible to Programme lecturers.
+	<% else %>
+	
 <div class="toolbar">
 	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Exam Question') + "New", new_examresult_path %></p>
 </div><br><br>
@@ -19,7 +30,7 @@
   	</tr>
 
 <% @examresults.each do |examresult| %>
-	<% if (examresult.programmestudent.name == @dept_unit) ||(@current_user_roles.include?(2))||@kupk == "yes"%>
+	<%# if (examresult.programmestudent.name == @dept_unit) ||(@current_user_roles.include?(2))||@kupk == "yes"%>
   		<tr>
 			<td><%=h examresult.examdts %></td>
 			<td><%=h examresult.examdte %></td>
@@ -29,10 +40,13 @@
     		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => examresult %></td>
     		<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), examresult, :confirm => 'Are you sure?', :method => :delete %></td>
   		</tr>
-	<% end %>
+	<%# end %>
 <% end %>
 </table>
 
 <br />
 </div>
 <%= link_to 'New Exam Result', new_examresult_path %>
+
+<% end %>
+<% end %>

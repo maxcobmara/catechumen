@@ -2,8 +2,24 @@ class ExamresultsController < ApplicationController
   # GET /examresults
   # GET /examresults.xml
   def index
-    @examresults = Examresult.all
-
+    #@examresults = Examresult.all
+    ###--just added
+    @position_exist = current_user.staff.position
+    if @position_exist     
+      @lecturer_programme = current_user.staff.position.unit
+      unless @lecturer_programme.nil?
+        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+      end
+      unless @programme.nil?
+        @examresults = Examresult.find(:all, :conditions => ['programme_id=?',@programme.id])
+      else
+        if @lecturer_programme == 'Commonsubject'
+        else
+          @examresults = Examresult.all
+        end
+      end
+    end 
+    ###--just added
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @examresults }
