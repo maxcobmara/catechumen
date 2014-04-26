@@ -107,8 +107,15 @@ class LessonPlan < ActiveRecord::Base
    end
    
   def hods  
-      hod = User.current_user.staff.position.parent
-      approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
+      #hod = User.current_user.staff.position.parent
+      #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
+      role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
+      staff_with_kprole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_kp]).map(&:staff_id).compact.uniq
+      #programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
+      #approver = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
+      programme_name = User.current_user.staff.position.unit
+      approver = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND staff_id IN(?)', programme_name, staff_with_kprole])
+      approver  
   end
   
   

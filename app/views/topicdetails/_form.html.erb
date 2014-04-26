@@ -19,12 +19,12 @@ bkLib.onDomLoaded(function() {
 			<!--this one works for EDIT existing record - ALL TOPICS INCLUDED-->
 			<!--selection LIMITS to CURRENT topic & topics with NO topicdetail-->
 			<% @semester_subject_topic_list = Programme.find(:all,:conditions=>['(ancestry_depth=? OR ancestry_depth=?) AND id NOT IN(?) OR id=?',3,4,Topicdetail.all.map(&:topic_code).uniq,@topicdetail.topic_code], :order=>:combo_code) %>
-			<%=@semester_subject_topic_list.count%>
+			<%#=@semester_subject_topic_list.count%>
 		<% else %>
 			<!--only works for ADD new record-->
 			<!--selection LIMITS to topics with NO topicdetail-->
-			<% @semester_subject_topic_list = Programme.find(:all,:conditions=>['(ancestry_depth=? OR ancestry_depth=?) AND id NOT IN(?)',3,4,Topicdetail.all.map(&:topic_code).uniq], :order=>:combo_code) %>
-			<%=@semester_subject_topic_list.count%>
+			<%# @semester_subject_topic_list = Programme.find(:all,:conditions=>['(ancestry_depth=? OR ancestry_depth=?) AND id NOT IN(?)',3,4,Topicdetail.all.map(&:topic_code).uniq], :order=>:combo_code) %>
+			<%#=@semester_subject_topic_list.count%>
 		<% end %>
 
 		<!--this will list all AVAILABLE topics-->
