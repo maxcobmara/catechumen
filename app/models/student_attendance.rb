@@ -45,7 +45,11 @@ class StudentAttendance < ActiveRecord::Base
               #@student_attendances = StudentAttendance.find(:all, :conditions=>['weeklytimetable_details_id=?',search])
           end
       else
+        unless programme.nil?
+          @student_attendances = StudentAttendance.find(:all, :joins=>:student, :conditions => ['course_id=?',programme])
+        else  #if admin
           @student_attendances = StudentAttendance.all
+        end
       end
   end
   

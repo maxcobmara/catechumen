@@ -1,4 +1,4 @@
-<%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
+<%#=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
 <div class="box">
 	<div class="box-head">
 		<h2 class="left">Student Attendance List</h2>
@@ -6,7 +6,7 @@
 	    	<%# form_tag books_path, :method => 'get' do %>
 				<%#= text_field_tag :search, params[:search], :placeholder => "ISBN, Title, Author, Location" %>
 				<%#= submit_tag "Search", :title => nil %>
-			<%# end %><%=@dept_unit%><%=@preselect_prog%>
+			<%# end %><%#=@dept_unit%><%#=@preselect_prog%>
 			</div>
 	</div>
 </div>
@@ -17,13 +17,13 @@
 <br><br>
 
 <!--17Jul2013-added-line 20,21,22,23&26-->
-<% @programme_list_ids = Programme.at_depth(0).map(&:id)%>
-<% if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
-	<% @intake_list2 = Student.find(:all, :conditions => ['course_id IS NOT NULL and course_id IN(?)',@programme_list_ids], :select=> "DISTINCT intake, course_id",:order=>"course_id,intake") %>
-<% else %>
-	<%# @intake_list = Student.find(:all, :conditions => ['course_id=?',@preselect_prog]).map(&:intake).uniq %>
-	<% @intake_list2 = Student.find(:all, :conditions => ['course_id=?',@preselect_prog], :select=> "DISTINCT intake") %>
-<% end %>
+<%# @programme_list_ids = Programme.at_depth(0).map(&:id)%>
+<%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+	<%# @intake_list2 = Student.find(:all, :conditions => ['course_id IS NOT NULL and course_id IN(?)',@programme_list_ids], :select=> "DISTINCT intake, course_id",:order=>"course_id,intake") %>
+<%# else %>
+	<%## @intake_list = Student.find(:all, :conditions => ['course_id=?',@preselect_prog]).map(&:intake).uniq %>
+	<%# @intake_list2 = Student.find(:all, :conditions => ['course_id=?',@preselect_prog], :select=> "DISTINCT intake") %>
+<%# end %>
 <!--17Jul2013-added-line 20,21,22,23&26-->
 
 <div class="left">
@@ -31,10 +31,12 @@
 		<%= hidden_field_tag( "new_type","3" )%>
 		<b>Intake : </b><%#= select_tag('intake', options_for_select(@intake_list.sort)) %>
 		<!--17Jul2013-added-line 33,34,35&37-->
-		<% if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
-			<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn_prog)) %>
+		<%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+		<% unless @programme.nil? %>
+			<%#= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn_prog)) %>
+			<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>	
 		<% else %>
-			<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>
+			<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>	
 		<% end %>
 		<!--17Jul2013-added-line 33,34,35&37-->
 		<%= submit_tag 'Multiple Attendance by Intake', :subject_id => nil %>
@@ -42,14 +44,14 @@
 </div>
 
 <!--17Jul2013-added-line 44,45,46&48-->
-<% if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
-	<% @topics_ids_this_prog = Programme.at_depth(3) %><!--select TOPICS for all programme-->
-<% else %>
-	<% @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
-<% end %>
+<%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+	<%# @topics_ids_this_prog = Programme.at_depth(3) %><!--select TOPICS for all programme-->
+<%# else %>
+	<%# @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
+<%# end %>
 <!--17Jul2013-added-line 44,45,46&48-->
 
-<% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
+<%# @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
 <div class="right">
 	<% form_tag :action => 'new' do %>
 		<%= hidden_field_tag( "new_type","2" )%>
@@ -212,8 +214,8 @@
 
 
 
-	<% @exist_attendances = StudentAttendance.all.map(&:weeklytimetable_details_id).uniq %>
-	<% @exist_timetable_attendances = WeeklytimetableDetail.find(:all, :conditions=>['id IN (?)', @exist_attendances])%>
+	<%# @exist_attendances = StudentAttendance.all.map(&:weeklytimetable_details_id).uniq %>
+	<%# @exist_timetable_attendances = WeeklytimetableDetail.find(:all, :conditions=>['id IN (?)', @exist_attendances])%>
 
 
 	<div class="right">
@@ -225,28 +227,30 @@
 	
 	<br>
 	<div class="left">
-		<% @intatake = [] %>
-		<% @student_attendances_intake.each do |intake, student_attendances|%>
-			<% @intatake << intake %>
-		<% end %>	
+		<%# @intatake = [] %>
+		<%# @student_attendances_intake.each do |intake, student_attendances|%>
+			<%# @intatake << intake %>
+		<%# end %>	
 		
 		<!--17Jul2013-added-line 233,234,235,236&238-->
-		<% @students = @student_attendances.map(&:student_id).uniq %><!--@student_attendances:refer controller:search result-->
-		<% @courses = Student.find(@students).map(&:course_id).uniq %>
-		<% if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
-			<% @intatake2 = Student.find(:all, :conditions => ['course_id IN (?) AND intake IN (?)',@courses, @intatake], :select=> "DISTINCT intake,course_id") %>
-		<% else %>
-			<% @intatake2 = Student.find(:all, :conditions => ['course_id=? AND intake IN (?)',@preselect_prog, @intatake], :select=> "DISTINCT intake") %>
-		<% end %>
+		<%# @students = @student_attendances.map(&:student_id).uniq %><!--@student_attendances:refer controller:search result-->
+		<%# @courses = Student.find(@students).map(&:course_id).uniq %>
+		<%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+			<%# @intatake2 = Student.find(:all, :conditions => ['course_id IN (?) AND intake IN (?)',@courses, @intatake], :select=> "DISTINCT intake,course_id") %>
+		<%# else %>
+			<%# @intatake2 = Student.find(:all, :conditions => ['course_id=? AND intake IN (?)',@preselect_prog, @intatake], :select=> "DISTINCT intake") %>
+		<%# end %>
 		<!--17Jul2013-added-line 233,234,235&237-->
 		
 		<% form_tag edit_multiple_intake_student_attendances_path do %>
 			<!--17July2013-added-line 242,243,244 & 246-->
-			<% if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+			<%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+			<% unless @programme.nil? %>
 				<%#= select_tag('intake_student', options_for_select(@intatake)) %>		
-				<%= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn_prog)) %>	
+				<%= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %>	
 			<% else %>
 				<%= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %>	
+				<%#= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn_prog)) %>	
 			<% end %>
 			<!--17July2013-added-line 242,243,244 & 246-->			
 			<%= submit_tag 'Edit multiple by intake', :name => :student_attendance_intake %>			
