@@ -4,6 +4,14 @@
 	</div>
 </div>
 
+<% unless @position_exist %>	
+	You have no position assigned yet. <br>
+	Please contact administrator.
+<% else %>
+	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
+		Programme / Unit is not defined. <br>
+	<% else %>
+	
 <div class="toolbar">
 	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Weekly Timetable') + "New", new_weeklytimetable_path %></p>
 </div>
@@ -24,11 +32,12 @@
 		<th colspan=3 class="ac">Control</th>
   	  </tr>
 <!--hack-21March2013-->
-<% current_roles=[]%><% User.current_user.roles.each do |x| %><% current_roles << x.name %><% end %><%#=current_roles.include? 'Administration'%>
+<%# current_roles=[]%><%# User.current_user.roles.each do |x| %><%# current_roles << x.name %><%# end %><%#=current_roles.include? 'Administration'%>
 <!--hack-21March2013-->
-<% @weeklytimetables.each do |weeklytimetable| %>
+<% @weeklytimetables.group_by{|x|x.programme_id}.each do |p,weeklytimetables| %>
+	<% weeklytimetables.each do |weeklytimetable|%>
 <!--hack-21March2013-->
-  <% if  (weeklytimetable.prepared_by == User.current_user.staff_id) || (weeklytimetable.endorsed_by == User.current_user.staff_id) ||(current_roles.include? 'Administration') %>
+  <%# if  (weeklytimetable.prepared_by == User.current_user.staff_id) || (weeklytimetable.endorsed_by == User.current_user.staff_id) ||(current_roles.include? 'Administration') %>
 <!--hack-21March2013-->
 </b>
   <tr>
@@ -62,6 +71,7 @@
     <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'General Timetable'), :action => 'general_timetable', :id => weeklytimetable %></td>
  	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), weeklytimetable, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
+  <%# end %>
   <% end %>
 <% end %>
 </table>
@@ -70,3 +80,6 @@
 </div>
 
 <%= link_to 'New Weekly Timetable', new_weeklytimetable_path %>
+
+<% end %>
+<% end %>

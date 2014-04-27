@@ -3,6 +3,7 @@ class Programme < ActiveRecord::Base
     #controller searches, variables, lists, relationship checking
     before_save :set_combo_code
     after_save :copy_topic_topicdetail
+    before_destroy :check_examquestion_of_subject_exist, :check_examquestion_of_topic_exist
     has_ancestry :cache_depth => true
 
     has_many :schedule_programmes, :class_name => 'Weeklytimetable', :foreign_key => 'programme_id'
@@ -16,6 +17,9 @@ class Programme < ActiveRecord::Base
     has_many :topic_details, :class_name => 'Topicdetail',:dependent =>:nullify, :foreign_key => 'topic_code'   #31Oct2013
     
     has_many :lessonplan_topics, :class_name => 'LessonPlan', :foreign_key =>'topic'      #26March2013
+    
+    has_many :examquestion_subject, :class_name => 'Examquestion', :foreign_key => 'subject_id'
+    has_many :examquestion_topic, :class_name => 'Examquestion', :foreign_key => 'topic_id'
 
     def set_combo_code
       if ancestry_depth == 0
@@ -117,5 +121,19 @@ class Programme < ActiveRecord::Base
          [ "Years",      365 ]
     ]
 
+    private
+    
+    def check_examquestion_of_subject_exist
+      subject_exist = Examquestion.find(:all,:conditions=>['subject_id=?', id])
+      if subject_exist.count>0
+        return false
+      end
+    end
+    def check_examquestion_of_topic_exist
+      topic_exist = Examquestion.find(:all, :conditions=>['topic_id=?',id])
+      if topic_exist.count>0
+        return false
+      end
+    end
   
 end

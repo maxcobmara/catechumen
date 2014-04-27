@@ -27,7 +27,19 @@ class TopicdetailsController < ApplicationController
   # GET /topicdetails/new.xml
   def new
     @topicdetail = Topicdetail.new
-
+    @lecturer_programme = current_user.staff.position.unit
+    unless @lecturer_programme.nil?
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    end
+    unless @programme.nil?
+      @programme_id = @programme.id 
+      @topic_programme = Programme.find(@programme_id).descendants.at_depth(3)
+      @subtopic_programme = Programme.find(@programme_id).descendants.at_depth(4)
+      @topic_subtopic = @topic_programme + @subtopic_programme
+      @semester_subject_topic_list = Programme.find(:all,:conditions=>['id IN(?) AND id NOT IN(?)',@topic_subtopic, Topicdetail.all.map(&:topic_code).compact.uniq], :order=>:combo_code)
+    else
+      @semester_subject_topic_list = Programme.find(:all,:conditions=>['ancestry_depth=? OR ancestry_depth=?',3,4], :order=>:combo_code)
+    end
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @topicdetail }

@@ -36,6 +36,14 @@ class Weeklytimetable < ActiveRecord::Base
    end
     
   end
+  
+  def self.search(search)
+    if search         
+      @weeklytimetables = Weeklytimetable.find(:all,:conditions => ['programme_id=?', search])
+    else
+      @weeklytimetables = Weeklytimetable.find(:all)
+    end
+  end
 
   def main_details_for_weekly_timetable
     "#{schedule_programme.programme_list}"+" Intake : "+"#{schedule_intake.name}" +" - (Week : "+"#{startdate.strftime('%d-%m-%Y')}"+" - "+"#{enddate.strftime('%d-%m-%Y')}"+")" 
