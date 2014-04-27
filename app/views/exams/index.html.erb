@@ -41,7 +41,8 @@
 		<th colspan=4 class="ac">Control</th>
 	  </tr>
 	
-		<% @exams.each do |exam| %>
+		<% @exams.group_by{|x|x.subject.root}.each do |programme, exams| %>
+			<% exams.each do |exam| %>
 		  <%# if (exam.created_by == User.current_user.staff_id)||(@dept_unit==exam.subject.root.name) ||(@current_user_roles.include?(2))||@kupk == "yes" %><!--STAND BY:HIDE THIS LINE & LINE 75 to view ALL EXAM paper-->
 		
 		  <tr>
@@ -98,7 +99,7 @@
 		    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), exam, :confirm => 'Are you sure?', :method => :delete %></td>
 		  </tr>
 		  <%# end %><!--STAND BY:HIDE THIS LINE & LINE 37 to view ALL EXAM paper-->
-		
+			<% end %>
 		<% end %>
 
 		</table>
