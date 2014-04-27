@@ -2,19 +2,55 @@ class StudentAttendancesController < ApplicationController
   # GET /student_attendances
   # GET /student_attendances.xml
   def index
-    ##
+
     submit_val = params[:attendance_search]
     classid = params[:classid]
     @intake_student = params[:intake_student] 
     @programme = params[:programme]
+    ######==============
+    @programme_list_ids = Programme.at_depth(0).map(&:id)
+    @lecturer_programme = current_user.staff.position.unit
+    unless @lecturer_programme.nil?
+      @programme2 = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    end
+    unless @programme2.nil?
+      @preselect_prog= @programme2.id     #@preselect_prog (programme_id)
+      @intake_list2 = Student.find(:all, :conditions => ['course_id=?',@preselect_prog], :select=> "DISTINCT intake")
+      @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id)
+    else  #admin
+      @intake_list2 = Student.find(:all, :conditions => ['course_id IS NOT NULL and course_id IN(?)',@programme_list_ids], :select=> "DISTINCT intake, course_id",:order=>"course_id,intake") 
+      @topics_ids_this_prog = Programme.at_depth(3) 
+    end
+    @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])
+    ######==============
     if submit_val == 'Search Student Attendances'
         @student_attendances = StudentAttendance.search2(classid)
     else
-        @student_attendances = StudentAttendance.search(@intake_student,@programme)
+        #@student_attendances = StudentAttendance.search(@intake_student,@programme)
+        @student_attendances = StudentAttendance.search(@intake_student,@preselect_prog)
     end
-    @student_attendances_class = @student_attendances.group_by{|x|x.weeklytimetable_details_id}
     
+    #listing of student attendance
+    @student_attendances_class = @student_attendances.group_by{|x|x.weeklytimetable_details_id}
     @student_attendances_intake = @student_attendances.group_by{|x|x.student.intake}
+    
+    #for ALL existing student attendance
+  	@exist_attendances = @student_attendances.map(&:weeklytimetable_details_id).uniq 
+  	@exist_timetable_attendances = WeeklytimetableDetail.find(:all, :conditions=>['id IN (?)', @exist_attendances])
+    
+    #for EDIT multiple by intake & SEARCH by intake
+		@intatake = [] 
+		@student_attendances_intake.each do |intake, student_attendances|
+			 @intatake << intake 
+		end 
+		@students = @student_attendances.map(&:student_id).uniq 
+		@courses = Student.find(@students).map(&:course_id).uniq 
+		unless @programme2.nil?                       
+	    @intatake2 = Student.find(:all, :conditions => ['course_id=? AND intake IN (?)',@preselect_prog, @intatake], :select=> "DISTINCT intake") 
+    else 
+      @intatake2 = Student.find(:all, :conditions => ['course_id IN (?) AND intake IN (?)',@courses, @intatake], :select=> "DISTINCT intake,course_id") 
+		end 
+    
     #yg asal---below this line---
     #@student_attendances = StudentAttendance.all
     #@student_attendances_class = @student_attendances.group_by{|x|x.weeklytimetable_details_id}

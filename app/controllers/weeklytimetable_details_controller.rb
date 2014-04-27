@@ -60,7 +60,7 @@ class WeeklytimetableDetailsController < ApplicationController
 
     respond_to do |format|
       if @weeklytimetable_detail.update_attributes(params[:weeklytimetable_detail])
-        format.html { redirect_to(@weeklytimetable_detail, :notice => 'WeeklytimetableDetail was successfully updated.') }
+        format.html { redirect_to(@weeklytimetable_detail, :notice => 'Weeklytimetable Detail was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -73,8 +73,12 @@ class WeeklytimetableDetailsController < ApplicationController
   # DELETE /weeklytimetable_details/1.xml
   def destroy
     @weeklytimetable_detail = WeeklytimetableDetail.find(params[:id])
-    @weeklytimetable_detail.destroy
-
+    #@weeklytimetable_detail.destroy
+    if @weeklytimetable_detail.destroy
+      flash[:notice] => 'WeeklytimetableDetail was succesfully removed'
+    else
+      flash[:error] => 'Removal of Weeklytimetable Details is forbidden, due to existance in Student Attendance module.'
+    end
     respond_to do |format|
       format.html { redirect_to(weeklytimetable_details_url) }
       format.xml  { head :ok }

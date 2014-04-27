@@ -16,7 +16,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="postedby_id"><b>Posted By:</b></label></td>
-		<td><%= f.collection_select :postedby_id, Staff.find(:all), :id, :name %></td>
+		<td><%= f.collection_select :postedby_id, Staff.find(:all, :order=>'name ASC'), :id, :name, :selected=> current_user.staff_id %></td>
 	</tr>
 	<!-- if id validated for presence... no need to put , :include_blank => true -->
 	<tr>
