@@ -156,6 +156,26 @@ class GradesController < ApplicationController
   # GET /grades/1/edit
   def edit
     @grade = Grade.find(params[:id])
+    #---just added
+    @lecturer_programme = current_user.staff.position.unit
+    common_subject_a = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
+    unless @lecturer_programme.nil?
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    end
+    unless @programme.nil?
+      @preselect_prog = @programme.id
+      @student_list = Student.find(:all,:conditions=>['course_id=?', @preselect_prog], :order=>'name ASC')
+      @subject_list = Programme.find(@preselect_prog).descendants.at_depth(2)
+    else
+      if @lecturer_programme == 'Commonsubject'
+         @student_list = Student.all 
+         @subject_list = common_subject_a
+      else
+         @student_list = Student.all 
+         @subject_list = Programme.at_depth(2) 
+      end
+    end
+    #---just added
   end
 
   # POST /grades
@@ -231,7 +251,26 @@ class GradesController < ApplicationController
   # PUT /grades/1.xml
   def update
     @grade = Grade.find(params[:id])
-
+    #---just added
+    @lecturer_programme = current_user.staff.position.unit
+    common_subject_a = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
+    unless @lecturer_programme.nil?
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    end
+    unless @programme.nil?
+      @preselect_prog = @programme.id
+      @student_list = Student.find(:all,:conditions=>['course_id=?', @preselect_prog], :order=>'name ASC')
+      @subject_list = Programme.find(@preselect_prog).descendants.at_depth(2)
+    else
+      if @lecturer_programme == 'Commonsubject'
+         @student_list = Student.all 
+         @subject_list = common_subject_a
+      else
+         @student_list = Student.all 
+         @subject_list = Programme.at_depth(2) 
+      end
+    end
+    #---just added
     respond_to do |format|
       if @grade.update_attributes(params[:grade])
         flash[:notice] = 'Grade was successfully updated.'
