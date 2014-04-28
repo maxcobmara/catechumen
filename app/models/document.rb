@@ -2,6 +2,7 @@ class Document < ActiveRecord::Base
 # has_many :cofiles, :foreign_key => 'document_id'
 #belongs_to :documents, :foreign_key => 'staff_id'
 # has_one :title
+before_destroy :check_asset_losses_exist
 
 validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id#,:letterdt, :letterxdt, :sender,
 
@@ -174,5 +175,13 @@ CATEGORY = [
       return @to_id_A
   end
   
+  private
   
+  def check_asset_losses_exist
+    asset_losses_exist = AssetLoss.find(:all, :conditions => ['document_id=?', id])
+    if asset_losses_exist.count>0
+      return false
+    end
+  end  
+    
 end

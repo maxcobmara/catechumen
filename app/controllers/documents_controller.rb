@@ -193,7 +193,13 @@ class DocumentsController < ApplicationController
   # DELETE /documents/1.xml
   def destroy
     @document = Document.find(params[:id])
-    @document.destroy
+    #@document.destroy
+    
+    if @document.destroy
+      flash[:notice] = 'Document was successfully removed.'
+    else
+      flash[:error] = 'Removal of document is forbidden, due to existance in Asset Loss module.'
+    end
 
     respond_to do |format|
       format.html { redirect_to(documents_url) }
