@@ -32,6 +32,8 @@ class ExamquestionsController < ApplicationController
       format.html # index.html.erb
       format.xml  { render :xml => @examquestions }
       #to do - refer examanalysis.rb & examanalysis_controller.rb for sample
+      format.xls {send_data @examquestions.to_xls(:name=>"Examination Questions",:headers => Examquestion.header_excel, 
+  		:columns => Examquestion.column_excel ), :file_name => 'examquestions.xls' }
     end
   end
 
@@ -97,22 +99,27 @@ class ExamquestionsController < ApplicationController
       end
       
       if @lecturer_programme == 'Commonsubject'
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme])
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme],:order=>'ancestry ASC')
         unless @examquestion.topic_id.nil?
-          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme])  
+          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme],:order=>'ancestry ASC')  
         else
-          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme])  
+          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme],:order=>'ancestry ASC')  
         end 
       else
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'])  #'Subject' 
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'],:order=>'ancestry ASC')  #'Subject' 
         unless @examquestion.topic_id.nil?
-          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, 'Subject'])  #'Subject' 
+          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, 'Subject'], :order=>'ancestry ASC')  
         else
-          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, 'Subject'])  #'Subject'
+          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, 'Subject'], :order=>'ancestry ASC')  
         end
       end
-    else  
+    else  #for admin (has no programme in current_user.staff.position.unit)
       @programme_listing = Programme.roots
+      unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank?   #if subject already selected
+        @subjects1 = Programme.find(@examquestion.subject.root_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
+      else  # if subject not selected yet 
+        @subjects1 = Programme.find(:all, :conditions=>['ancestry_depth=?',2],:order=>'ancestry ASC')
+      end
     end
     #--newly added--same as create--required during edit
   end
@@ -138,18 +145,18 @@ class ExamquestionsController < ApplicationController
       end
       
       if @lecturer_programme == 'Commonsubject'
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme])
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme],:order=>'ancestry ASC')
         unless @examquestion.topic_id.nil?
-          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme])  
+          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme],:order=>'ancestry ASC')  
         else
-          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme])  
+          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme],:order=>'ancestry ASC')  
         end 
       else
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'])  #'Subject' 
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'],:order=>'ancestry ASC')   
         unless @examquestion.topic_id.nil?
-          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, 'Subject'])  #'Subject' 
+          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, 'Subject'],:order=>'ancestry ASC')  
         else
-          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, 'Subject'])  #'Subject'
+          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, 'Subject'],:order=>'ancestry ASC')  
         end
       end
     else  
@@ -213,10 +220,10 @@ class ExamquestionsController < ApplicationController
     unless @programme_id.blank? 
       all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
       if @lecturer_programme == 'Commonsubject'
-        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
+        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme],:order=>'ancestry ASC')  
       else
         #@subjects = Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?', @programme_id])
-        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'])  #'Subject' 
+        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'],:order=>'ancestry ASC')  
       end
     end
     render :partial => 'view_subject', :layout => false

@@ -233,4 +233,23 @@ class Examquestion < ActiveRecord::Base
   end
   #10Apr2013 
   
+  def combine_subquestions
+    shortessays2=Shortessay.find(:all, :conditions=>['examquestion_id=?',id])
+    subq=[]
+    shortessays2.each do |y|
+      unless y.subquestion.nil? || y.subquestion.blank?
+        subq<<"("+y.item.to_s+") "+y.subquestion+" ("+y.submark.to_s+") ["+y.subanswer.to_s+"]"
+      end
+    end
+    subq.to_s
+  end
+  
+  #to do LATER - DOWNLOAD EXCEL - BPL reserve onwards
+  def self.header_excel
+    ["Programme","Subject","Question Type","Question","Answer","SEQ-Question(Marks)[Answer]","Marks","Category","Keyword","Status","Creator","Creation Date","Difficulty","Status Remark","Editor","Editing Date","Approver","Approval Date"]
+  end
+ 
+  def self.column_excel
+    [{:subject=>:programme_coursetype_name},{:subject=>:subject_list},:questiontype,:question,:answer,:combine_subquestions,:marks,:category,:qkeyword,:qstatus,{:creator=>:name},:createdt,:render_difficulty,:statusremark,{:editor=>:name},:editdt,{:approver=>:name},:approvedt]
+  end
 end
