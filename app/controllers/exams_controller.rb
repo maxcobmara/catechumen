@@ -58,6 +58,7 @@ class ExamsController < ApplicationController
         @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
       end
       @programme_listing = Programme.roots
+      @subjectlist_preselect_prog = Programme.at_depth(2)
     end
     #--newly added
     respond_to do |format|

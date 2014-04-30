@@ -48,7 +48,7 @@
 				<% @creator = @examquestion.creator_id  %>
 			<% end %>
 			<!--13Apr2013-assign creator value-->
-			<td><%= f.collection_select :creator_id, Staff.find(:all), :id, :name,:selected=> @creator %></td>
+			<td><%#= f.collection_select :creator_id, Staff.find(:all,:order=>'name ASC'), :id, :name,:selected=> @creator %><%= f.collection_select :creator_id, Staff.find(:all, :order => 'name ASC', :conditions => ["id IN (?)", @examquestion.question_creator]), :id, :name, :include_blank => 'Please select creator', :selected => @creator  %></td>
 		</tr>
 	
 		<tr>
