@@ -97,12 +97,13 @@ class Examquestion < ActiveRecord::Base
   def question_creator
     programme = User.current_user.staff.position.unit
     programme_name = Programme.roots.map(&:name)
+    creator_prog= Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', programme_name]).map(&:id)
     if programme_name.include?(programme)
       creator = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
     else
       role_admin = Role.find_by_name('Administration')  #must have role as administrator
       staff_with_adminrole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_admin]).map(&:staff_id).compact.uniq 
-      creator_adm = Staff.find(:all, :joins=>:position, :conditions=>['staff_id IN(?)', staff_with_adminrole])
+      creator_adm = Staff.find(:all, :joins=>:position, :conditions=>['staff_id IN(?)', staff_with_adminrole]).map(&:id)
       creator=creator_prog+creator_adm
     end
     creator

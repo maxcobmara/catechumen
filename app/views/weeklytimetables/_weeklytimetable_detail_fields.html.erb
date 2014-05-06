@@ -63,7 +63,8 @@
 		<!--start-Subject, Lecturer, Topic section, Location & Teaching method-->
 		<tr>
 			<td class="leftcol">Lecturer</td>
-			<td><%= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar'],:order=>'name ASC'), :id, :name, :prompt=>"Select Lecturer" %></td>
+			<td><%= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar'],:order=>'name ASC'), :id, :name, :prompt=>"Select Lecturer" %>
+			<%#= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=? AND positions.unit=?','Pengajar',Programme.find(@weeklytimetable.programme_id).name],:order=>'name ASC'), :id, :name, :prompt=>"Select Lecturer" %></td>
 		</tr>
 		<!--25March2013-hide subject
 		<tr>
