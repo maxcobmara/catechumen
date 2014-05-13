@@ -1,5 +1,5 @@
-<%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
-<%=render :partial => 'exammarks/exam_listing.html.erb'%><!--retrieve exam listing, student listing for use-->
+<%#=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
+<%#=render :partial => 'exammarks/exam_listing.html.erb'%><!--retrieve exam listing, student listing for use-->
 
 
 <div class="tform">
@@ -7,7 +7,12 @@
 	<table width=100%>
 		<tr>
 			<td class="leftcol"><label for="student_id">Student Name:</label></td>
-			<td><%= f.collection_select :student_id, @student_list, :id, :matrix_name, :include_blank => 'Select student' %></td>
+			<td><% if @grade.id.nil? %>
+					<%= f.collection_select :student_id, @student_list, :id, :matrix_name, :include_blank => 'Select student' %>
+				<% else %>
+					<%= f.collection_select :student_id, @student_list, :id, :matrix_name, :selected=> @grade.student_id %>
+				<% end %>
+			</td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="subject_id">Subject Name:</label></td>

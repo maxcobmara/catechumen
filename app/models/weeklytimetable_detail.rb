@@ -1,6 +1,7 @@
 class WeeklytimetableDetail < ActiveRecord::Base
    
    before_save :set_day_time_slot_for_non_selected
+   before_destroy :check_student_attendance
    
    belongs_to :weeklytimetable,     :foreign_key => 'weeklytimetable_id'
    belongs_to :weeklytimetable_subject,   :class_name => 'Programme',   :foreign_key => 'subject' #starting 25March2013-no longer use
@@ -184,4 +185,13 @@ class WeeklytimetableDetail < ActiveRecord::Base
 
   end
      #25March2013==========
+     private
+     
+     def check_student_attendance
+       student_attendance_exist = StudentAttendance.find(:all, :conditions=>['weeklytimetable_details_id=?',id])
+       if student_attendance_exist.count>0
+         return false
+       end
+     end
+     
 end

@@ -61,13 +61,13 @@ document.write("<input type='button' " +
 		<td>
 			<% unless @student_grade.nil? || @student_grade.blank? %>
 				<%=@grading=@student_grade.set_gred %>
-			<% end %>
+			<% end %>&nbsp;
 		</td>
 		<td>
 			<% unless @student_finale.nil? || @student_finale.blank? %>
-				<%=@student_finale.set_NG.to_f%>
+				<%=number_with_precision(@student_finale.set_NG.to_f,:precision=>2)%>
 			<% else %>
-				<%= 0.00 %>
+				<%= number_with_precision(0.00,:precision=>2) %>
 			<% end %>
 		</td>
 		<td>
@@ -88,19 +88,19 @@ document.write("<input type='button' " +
 		</tr>
 		<tr>
 			<td class="leftcol">Jumlah NGK (Nilai Gred Kumulatif)</td>
-			<td style="text-align:center;"><%=h @resultline.total%></td>
+			<td style="text-align:center;"><%=h number_with_precision(@resultline.total, :precision=>2)%></td>
 		</tr>
 		<tr>
 			<td class="leftcol">Purata Nilai Gred Semester (PNGS)</td>
-			<td style="text-align:center;"><%=h @resultline.pngs17 %></td>
+			<td style="text-align:center;"><%=h number_with_precision(@resultline.pngs17, :precision=>2) %></td>
 		</tr>
 		<tr>
 			<td class="leftcol">Purata Nilai Gred Kumulatif (PNGK)</td>
-			<td style="text-align:center;"><%=h @resultline.pngk%></td>
+			<td style="text-align:center;"><%=h number_with_precision(@resultline.pngk, :precision=>2)%></td>
 		</tr>
 		<tr>
 			<td style="font-weight:bold;">STATUS</td>
-			<td style="font-weight:bold;text-align:center;"><%=h @resultline.remark%></td>
+			<td style="font-weight:bold;text-align:center;"><%=h @resultline.remark%>&nbsp;</td>
 		</tr>
 	</table>
 	

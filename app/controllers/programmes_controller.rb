@@ -73,7 +73,12 @@ class ProgrammesController < ApplicationController
   # DELETE /programmes/1.xml
   def destroy
     @programme = Programme.find(params[:id])
-    @programme.destroy
+    #@programme.destroy
+    if @programme.destroy
+      flash[:notice] = 'Programme was successfully removed.'
+    else
+      flash[:error] = 'Removal of Subject/Topic is forbidden, due to existance of Subject/Topic in Examquestion.'
+    end  
 
     respond_to do |format|
       format.html { redirect_to(programmes_url) }

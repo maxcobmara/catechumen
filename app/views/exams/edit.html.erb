@@ -68,7 +68,11 @@
 				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
 					<% if @exam.subject_id.nil? || @exam.subject_id.blank? %>
 					<% else %>
-						<%= f.collection_select :subject_filter, Programme.find(@exam.subject.root.id).descendants.at_depth(2), :id, :subject_list, 
+						<%= f.collection_select :subject_filter, @subjects, :id, :subject_list, 
+												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
+												:onchange => remote_function(:update => "exam_topic_list", :url => {:action=>'view_topic'}, 
+												:with => "'subject='+$('"+"exam_subject_filter"+"').value + '&examid='+'#{@exam.id}' ") %>
+						<%#= f.collection_select :subject_filter, Programme.find(@exam.subject.root.id).descendants.at_depth(2), :id, :subject_list, 
 												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
 												:onchange => remote_function(:update => "exam_topic_list", :url => {:action=>'view_topic'}, 
 												:with => "'subject='+$('"+"exam_subject_filter"+"').value + '&examid='+'#{@exam.id}' ") %>

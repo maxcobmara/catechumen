@@ -1,5 +1,5 @@
-<%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
-<%=render :partial => 'exam_listing.html.erb'%><!--retrieve exam listing, student listing for use-->
+<%#=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
+<%#=render :partial => 'exam_listing.html.erb'%><!--retrieve exam listing, student listing for use-->
 
 <!-- Box -->
 <div class="box">
@@ -8,6 +8,15 @@
 		<h2 class="left">Examination Marks by Examination Paper</h2>
 	</div>
 </div>
+
+<% unless @position_exist %>	
+	You have no position assigned yet. <br>
+	Please contact administrator.
+<% else %>
+	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
+		Programme / Unit is not defined. <br>
+	<% else %>
+	
 <div class="toolbar">
 	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Exam Question') + "New", new_exammark_path(:new_type => "1") %></p>
 </div>
@@ -38,7 +47,7 @@
 		<% @exammarks_group.sort.each do |exammarks_group, exammarks| %>
 			<% exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,index|%>
 				<!--STAND BY:HIDE THIS LINE & LINE 149 to view ALL EXAM marks--> 
-				<% if (@dept_unit==exammark.exampaper.subject.root.name) ||(@current_user_roles.include?(2))||@kupk == "yes" %>
+				<%# if (@dept_unit==exammark.exampaper.subject.root.name) ||(@current_user_roles.include?(2))||@kupk == "yes" %>
 					<% if index == 0%>
 					<tr>
 						<td colspan=8 style="background-color:#EFF1F1;">
@@ -110,7 +119,7 @@
 						<%# @diff_total_mcq +=1 %>
 					<%# end %>
 			
-				<% end %><!--STAND BY:HIDE THIS LINE & LINE 80 to view ALL EXAM marks--> 
+				<%# end %><!--STAND BY:HIDE THIS LINE & LINE 80 to view ALL EXAM marks--> 
 			<% end %><!-- end for - exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,index| -->		
 		<% end %><!-- end for -  @exammarks_group.sort.each do |exammarks_group, exammarks| -->		
 		
@@ -151,3 +160,5 @@
 
 <%= link_to 'New Exam Marks', new_exammark_path(:new_type => "1") %>
 <!-- | <%#= link_to 'Multiple New Exam Marks', new_exammark_path(:new_type => "2") %> | <%#= link_to 'Multiple New Exam Marks by Intake', new_exammark_path(:new_type => "3") %>-->
+<% end %>
+<% end %>

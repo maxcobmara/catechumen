@@ -27,6 +27,10 @@ class Examquestion < ActiveRecord::Base
   named_scope :acqq, :conditions => {:questiontype => 'ACQ'}
   named_scope :osci2q, :conditions => {:questiontype => 'OSCI'}
   named_scope :osci3q, :conditions => {:questiontype => 'OSCII'}
+  named_scope :osceq, :conditions => {:questiontype =>'OSCE'}
+  named_scope :ospeq, :conditions =>  {:questiontype =>'OSPE'}
+  named_scope :vivaq, :conditions =>  {:questiontype =>'VIVA'}
+  named_scope :truefalseq, :conditions =>  {:questiontype =>'TRUEFALSE'}
   
   has_attached_file :diagram,
                     :url => "/assets/examquestions/:id/:style/:basename.:extension",
@@ -90,58 +94,61 @@ class Examquestion < ActiveRecord::Base
     flow
   end
   
-  def question_editor
-    multi_position = Position.find(:all, :conditions => ['staff_id=?',User.current_user.staff_id])  #85 --> Mohd Firdaus Fikri
-    ifmulti_position = multi_position.count 
-    xx=0
-    if ifmulti_position > 1
-        multi_position.each do |x|
-  			    if x.parent.id > 6 && x.parent.id < 17 
-  			        xx=x.id
-  			    end 	
-  		  end 
-  		  sibpos = Position.find(:first, :conditions => ['id=?', xx]).sibling_ids
+  def question_creator
+    programme = User.current_user.staff.position.unit
+    programme_name = Programme.roots.map(&:name)
+    creator_prog= Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', programme_name]).map(&:id)
+    if programme_name.include?(programme)
+      creator = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
     else
-        sibpos = creator.position.sibling_ids
+      role_admin = Role.find_by_name('Administration')  #must have role as administrator
+      staff_with_adminrole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_admin]).map(&:staff_id).compact.uniq 
+      creator_adm = Staff.find(:all, :joins=>:position, :conditions=>['staff_id IN(?)', staff_with_adminrole]).map(&:id)
+      creator=creator_prog+creator_adm
     end
-    sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
-    applicant = Array(creator_id)
-    sibs - applicant
-    #[83, 85, 84, 86, 87] #return sibpos
+    creator
+  end
+    
+  def question_editor
+    programme = User.current_user.staff.position.unit
+    unless subject_id.nil?
+      if subject.root.name == programme
+        editors = Position.find(:all,:conditions => ['unit=?',programme]).map(&:staff_id).compact
+      else
+        editors = Position.find(:all,:conditions => ['unit=?',subject.root.name]).map(&:staff_id).compact
+      end
+    else
+      programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
+      editors = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
+    end
+    editors   
   end
   
-  def question_approver #question_editor
-    multi_position = Position.find(:all, :conditions => ['staff_id=?',User.current_user.staff_id])  #85 --> Mohd Firdaus Fikri
-    ifmulti_position = multi_position.count 
-    xx=0
-    if ifmulti_position > 1
-        multi_position.each do |x|
-  			    if x.parent.id > 6 && x.parent.id < 17 
-  			        xx=x.id
-  			    end 	
-  		  end 
-  		  sibpos = Position.find(:first, :conditions => ['id=?', xx]).parent.sibling_ids
-    else
-        sibpos = creator.position.parent.sibling_ids  #sibpos = creator.position.sibling_ids
-    end
+  def question_approver #to assign question -> KP
+    ###latest finding - as of Mei-Jul/Aug 2013 - approver should be at Ketua Program level ONLY (own programme @ other programme)### 
     
-    sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
-    #applicant = Array(creator_id)
-    #sibs - applicant
-    sibs
+    role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
+    staff_with_kprole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_kp]).map(&:staff_id).compact.uniq
+    programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
+    approver = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
+    approver   
   end
   
   
   def self.search2(search2)
-     if search2 
-       if search2 != '0'
-         @examquestions = Examquestion.find(:all, :conditions => ["programme_id=?", search2 ])
-       else
-         @examquestions = Examquestion.find(:all)
-       end
-     else
+    common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+    if search2 
+      if search2 == '0'
+        @examquestions = Examquestion.find(:all)
+      elsif search2 == '1'
+        @examquestions = Examquestion.find(:all, :conditions => ["subject_id IN (?)", common_subject])
+      else
+        subject_of_program = Programme.find(search2).descendants.at_depth(2).map(&:id)
+        @examquestions = Examquestion.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
+      end
+    else
        @examquestions = Examquestion.find(:all)
-     end
+    end
   end
   
   #def self.find_main
@@ -250,4 +257,23 @@ class Examquestion < ActiveRecord::Base
   end
   #10Apr2013 
   
+  def combine_subquestions
+    shortessays2=Shortessay.find(:all, :conditions=>['examquestion_id=?',id])
+    subq=[]
+    shortessays2.each do |y|
+      unless y.subquestion.nil? || y.subquestion.blank?
+        subq<<"("+y.item.to_s+") "+y.subquestion+" ("+y.submark.to_s+") ["+y.subanswer.to_s+"]"
+      end
+    end
+    subq.to_s
+  end
+  
+  #to do LATER - DOWNLOAD EXCEL - BPL reserve onwards
+  def self.header_excel
+    ["Programme","Subject","Question Type","Question","Answer","SEQ-Question(Marks)[Answer]","Marks","Category","Keyword","Status","Creator","Creation Date","Difficulty","Status Remark","Editor","Editing Date","Approver","Approval Date"]
+  end
+ 
+  def self.column_excel
+    [{:subject=>:programme_coursetype_name},{:subject=>:subject_list},:questiontype,:question,:answer,:combine_subquestions,:marks,:category,:qkeyword,:qstatus,{:creator=>:name},:createdt,:render_difficulty,:statusremark,{:editor=>:name},:editdt,{:approver=>:name},:approvedt]
+  end
 end

@@ -3,10 +3,43 @@ class ExammarksController < ApplicationController
   # GET /exammarks.xml
   def index
     submit_val = params[:exammark_search]
-    examid = params[:exam_id]
-    @exammarks = Exammark.search2(examid)
-    @exammarks_group = @exammarks.group_by{|x|x.exam_id}
-
+    @position_exist = current_user.staff.position
+    if @position_exist     
+      @lecturer_programme = current_user.staff.position.unit
+      common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+      unless @lecturer_programme.nil?
+        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+      end
+      unless @programme.nil?
+        @programme_id = @programme.id
+        subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+        @exam_list_index = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
+        #@exam_list_exist_mark = Exammark.find(:all, :conditions=>['exam_id IN(?)', @exam_list_index.map(&:id)])                        #exammarks
+        @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index.map(&:id)]).uniq  #exam
+      else
+        if @lecturer_programme == 'Commonsubject'
+          @exam_list_index = Exam.find(:all, :conditions=>['subject_id IN(?)', common_subject])
+          @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index.map(&:id)]).uniq    
+        else
+          @exam_list_index = Exam.all
+          @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks).uniq
+        end
+      end
+      if submit_val == 'Search Exam Marks'
+        search_item = params[:exam_id]
+        if search_item == '0' 
+          exam_ids = @exam_list_exist_mark.map(&:id)  
+        else  
+          exam_ids = Array(search_item)  
+        end
+      else
+        exam_ids = @exam_list_exist_mark.map(&:id)
+      end
+    
+      @exammarks = Exammark.search2(exam_ids)
+      @exammarks_group = @exammarks.group_by{|x|x.exam_id}
+    end  
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @exammarks }
@@ -50,6 +83,55 @@ class ExammarksController < ApplicationController
     #14Apr2013
     end
     
+    ###--to do LATER---start----##### (part 1-ref:24 April 2014) 
+    #new multiple marks
+    #1st time - new multiple exammarks :
+    #sample - intake 1/3/2013, kebidanan - mid sem on 24/5/2013, final on 24/8/2013 - (BOTH) - 1st time created OK
+    #2nd time - new multiple exammarks :
+    #ok : (1) intake 1/3/2013 - kebidanan - mid sem 24/5/2013 - error : already exist (CORRECT)
+    #TO DO : (2) intake 1/9/2013 - kebidanan - mid sem 24/5/2013 - error : already exist (WRONG) - EXPECTED error : intake date > exam date(@ hide terus)
+    #ok : (1) intake 1/3/2013 - kebidanan - final 24/8/2013 - error : already exist (CORRECT)
+    #TO DO : (2) intake 1/9/2013 - kebidanan - final 24/8/2013 - no error (WRONG) - EXPECTED error : intake date > exam date (@ hide terus)
+    ###--to do LATER---end----#######
+    ###--to do LATER---start---##### (part 2-ref:24 April 2014)
+    #login as Commonsubject lecturer - can view all Commonsubject exampapers (exam/exammaker)
+    #new multiple marks
+    #intake listing should be based on student intake of selected exampaper, 
+    #eg. exampaper for Commonsubject (of POSBASIK kebidanan) - student INTAKE should be among Kebidanan Intake ONLY, not other programme INTAKE
+    #pls note - Kebidanan - intake March & Sept while the rest - intake Jan & July - upon selection of exampaper(Commonsubject), should already know 
+    #..Commonsubject goes under which programme? -> refer @dept_unit_prog value for guidance (note - @examid).
+    ###--to do LATER---end----####### 
+    
+    ###--just amended
+    @lecturer_programme = current_user.staff.position.unit
+    common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+    unless @lecturer_programme.nil?
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    end
+    unless @programme.nil?
+      @programme_id = @programme.id
+      subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+      @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
+      @student_list = Student.find(:all,:conditions=>['course_id=?', @programme.id], :order=>'name ASC')
+      @dept_unit_prog = @lecturer_programme   #form_multiple_intake, line 98
+      @intake_list = @student_list.group_by{|l|l.intake}
+    else
+      if @lecturer_programme == 'Commonsubject'
+        @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?)', common_subject])
+        @student_list = Student.all 
+      else
+        @exam_list = Exam.all
+        @student_list = Student.all
+      end
+      #for administrator & Commonsubject lecturer : to assign programme, based on selected exampaper 
+      @dept_unit = Programme.find(Exam.find(@examid).subject_id).root
+      @dept_unit_prog = @dept_unit.name   #form_multiple_intake, line 98
+      @intake_list = Student.find(:all, :conditions=>['course_id=?',@dept_unit.id]).group_by{|l|l.intake}
+    end
+    arr = []
+    @intakes = @intake_list.each {|i,k| arr<<i}   #form_multiple_intake, line 128
+    ###--just amended
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @exammark }
@@ -59,6 +141,27 @@ class ExammarksController < ApplicationController
   # GET /exammarks/1/edit
   def edit
     @exammark = Exammark.find(params[:id])
+    ###--just amended
+    @lecturer_programme = current_user.staff.position.unit
+    common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+    unless @lecturer_programme.nil?
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    end
+    unless @programme.nil?
+      @programme_id = @programme.id
+      subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+      @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
+      @student_list = Student.find(:all,:conditions=>['course_id=?', @programme.id], :order=>'name ASC')
+    else
+      if @lecturer_programme == 'Commonsubject'
+        @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?)', common_subject])
+        @student_list = Student.all  
+      else
+        @exam_list = Exam.all
+        @student_list = Student.all
+      end
+    end
+    ###--just amended
   end
 
   # POST /exammarks
@@ -88,7 +191,7 @@ class ExammarksController < ApplicationController
         end
         
       elsif @create_type == "Create By Paper"
-        raise params.inspect
+        #raise params.inspect
         @new_type = "2"
         #************************
         @exammarks_all = params[:exammarks]  

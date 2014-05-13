@@ -1,4 +1,4 @@
-<%=render :partial => 'position_dept' %>
+<%#=render :partial => 'position_dept' %>
 
 <!--ADDED-18June2013-extract from exammarks/_exam_listing.html.erb-->
 <% @exam_ids_for_examtemplate = Examtemplate.all.map(&:exam_id).uniq %>
@@ -12,6 +12,15 @@
 		<h2 class="left">Exam Maker<%#=@dept_unit%></h2>
 	</div>
 </div>
+
+<% unless @position_exist %>	
+	You have no position assigned yet. <br>
+	Please contact administrator.
+<% else %>
+	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
+		Programme / Unit is not defined. <br>
+	<% else %>
+
 
 <div class="toolbar">
 	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Exam Question') + "New", new_exam_path %></p>
@@ -32,8 +41,9 @@
 		<th colspan=4 class="ac">Control</th>
 	  </tr>
 	
-		<% @exams.each do |exam| %>
-		  <% if (exam.created_by == User.current_user.staff_id)||(@dept_unit==exam.subject.root.name) ||(@current_user_roles.include?(2))||@kupk == "yes" %><!--STAND BY:HIDE THIS LINE & LINE 75 to view ALL EXAM paper-->
+		<% @exams.group_by{|x|x.subject.root}.each do |programme, exams| %>
+			<% exams.each do |exam| %>
+		  <%# if (exam.created_by == User.current_user.staff_id)||(@dept_unit==exam.subject.root.name) ||(@current_user_roles.include?(2))||@kupk == "yes" %><!--STAND BY:HIDE THIS LINE & LINE 75 to view ALL EXAM paper-->
 		
 		  <tr>
 		    <td><%#=h (@exam.name)%>
@@ -88,8 +98,8 @@
 
 		    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), exam, :confirm => 'Are you sure?', :method => :delete %></td>
 		  </tr>
-		  <% end %><!--STAND BY:HIDE THIS LINE & LINE 37 to view ALL EXAM paper-->
-		
+		  <%# end %><!--STAND BY:HIDE THIS LINE & LINE 37 to view ALL EXAM paper-->
+			<% end %>
 		<% end %>
 
 		</table>
@@ -98,3 +108,6 @@
 <br />
 </div>
 <%= link_to 'New Exam', new_exam_path %>
+
+<% end %>
+<% end %>

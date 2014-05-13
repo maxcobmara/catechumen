@@ -48,16 +48,20 @@
 					<% @meqcount = @examtemplates.meqq[0].quantity if @examtemplates.map(&:questiontype).include?("MEQ") %>
 					<% @seqcount = @examtemplates.seqq[0].quantity if @examtemplates.map(&:questiontype).include?("SEQ") %>
 					<% @acqcount = @examtemplates.acqq[0].quantity if @examtemplates.map(&:questiontype).include?("ACQ") %>
-					<% @oscecount = @examtemplates.osce[0].quantity if @examtemplates.map(&:questiontype).include?("OSCE") %>
-					<% @ospecount = @examtemplates.ospe[0].quantity if @examtemplates.map(&:questiontype).include?("OSPE") %>
-					<% @vivacount = @examtemplates.viva[0].quantity if @examtemplates.map(&:questiontype).include?("VIVA") %>
-					<% @truefalsecount = @examtemplates.truefalse[0].quantity if @examtemplates.map(&:questiontype).include?("TRUEFALSE") %>
+					<% @oscicount = @examtemplates.osci2q[0].quantity if @examtemplates.map(&:questiontype).include?("OSCI") %>
+					<% @osciicount = @examtemplates.osci3q[0].quantity if @examtemplates.map(&:questiontype).include?("OSCII") %>
+					<% @oscecount = @examtemplates.osceq[0].quantity if @examtemplates.map(&:questiontype).include?("OSCE") %>
+					<% @ospecount = @examtemplates.ospeq[0].quantity if @examtemplates.map(&:questiontype).include?("OSPE") %>
+					<% @vivacount = @examtemplates.vivaq[0].quantity if @examtemplates.map(&:questiontype).include?("VIVA") %>
+					<% @truefalsecount = @examtemplates.truefalseq[0].quantity if @examtemplates.map(&:questiontype).include?("TRUEFALSE") %>
 					<% @allcount = @questioncount %>
 				<% else %>
 					<% @mcqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"MCQ", @examid ]).count %>
 					<% @meqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"MEQ", @examid ]).count %>
 					<% @seqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"SEQ", @examid ]).count %>
 					<% @acqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"ACQ", @examid ]).count %>
+					<% @oscicount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"OSCI", @examid ]).count %>
+					<% @osciicount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"OSCII", @examid ]).count %>
 					<% @oscecount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"OSCE", @examid ]).count %>
 					<% @ospecount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"OSPE", @examid ]).count %>
 					<% @vivacount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"VIVA", @examid ]).count %>
@@ -80,6 +84,16 @@
 				<% if @acqcount %>
 					<% 1.upto(@acqcount) do |count| %>
 						<th>ACQ-Q <%=count%></th>
+					<% end %>
+				<% end %>
+				<% if @oscicount %>
+					<% 1.upto(@oscicount) do |count|%>
+						<th>OSCI-Q <%=count%></th>
+					<% end %>
+				<% end %>
+				<% if @osciicount %>
+					<% 1.upto(@osciicount) do |count|%>
+						<th>OSCII-Q <%=count%></th>
 					<% end %>
 				<% end %>
 				<% if @oscecount %>
