@@ -81,8 +81,8 @@ document.write("<input type='button' " +
 
 	<% for usesupplies in @stationery.usesupplies %>
 		<tr>
-			<td><%= Staff.find(usesupplies.issuedby).name %></td>
-			<td><%= Staff.find(usesupplies.receivedby).name %></td>
+			<td><%= usesupplies.issuedby.try(:name) %></td>
+			<td><%= usesupplies.receivedby.try(:name) %></td>
 			<td><%= usesupplies.quantity %></td>
 			<td><%= usesupplies.issuedate? ? usesupplies.issuedate.strftime("%d %b %Y") : "-" %></td>
 		</tr>
