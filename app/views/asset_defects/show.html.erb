@@ -27,7 +27,7 @@
 				
 				<tr>
 					<td class="leftcol"><label>Reported By</label></td>
-					<td><%=h @asset_defect.reporter.staff_name_with_position %></td>
+					<td><%=h @asset_defect.reporter.try(:staff_name_with_position) %></td>
 				</tr>			
 		</table>
 </fieldset>
@@ -74,7 +74,7 @@
 
 <% unless @asset_defect.is_processed == true %>
 	<!--if not PROCESSED yet-->
-	<% if @asset_defect.reported_by == User.current_user.staff.id %>
+	<% if @asset_defect.reported_by == User.current_user.staff.try(:id) %>
 		<%= link_to 'Edit', edit_asset_defect_path(@asset_defect) %>
 	<% else %>
 		<!--access for other than kewpa9 creator, but must have authority to manage!-->
