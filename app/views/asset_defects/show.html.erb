@@ -85,7 +85,7 @@
 	
 <% else %>
 	<!--if PROCESSED, give access to ONLY those who have authority ie. ASSET ADMIN-->
-	<% if @asset_defect.reported_by != User.current_user.staff.id %>
+	<% if @asset_defect.reported_by != User.current_user.staff.try(:id) %>
 		<% permitted_to? :manage, :asset_defects do %>
 			<%= link_to 'Edit', edit_asset_defect_path(@asset_defect) %>
 		<% end %>
