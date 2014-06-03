@@ -330,6 +330,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :pages
   
   map.with_options :controller => 'viewer' do |viewer|
+    viewer.librarystats 'library_rules', :action => 'library_rules'
     viewer.librarystats 'librarystats', :action => 'librarystats'
     viewer.librarystats 'asset_reports', :action => 'assetreports'
   end

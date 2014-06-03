@@ -8,5 +8,8 @@ class ViewerController < ApplicationController
   
   def librarystats
   end
+  
+  def library_rules
+  end
 
 end
