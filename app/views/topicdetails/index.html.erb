@@ -66,11 +66,11 @@
 		<% end %>
 		</td>
 		<td><%=h topicdetail.version_no %></td>
-		<td><%=h topicdetail.duration.strftime("%HH %MMin") %></td>
-		<td><%=h topicdetail.theory.strftime("%HH %MMin") %></td>
-		<td><%=h topicdetail.tutorial.strftime("%HH%MMin") %></td>
-		<td><%=h topicdetail.practical.strftime("%HH %MMin") %></td>
-		<td><%=h topicdetail.topic_creator.name %></td>
+		<td><%=h topicdetail.duration.try(:strftime, "%HH %MMin") %></td>
+		<td><%=h topicdetail.theory.try(:strftime, "%HH %MMin") %></td>
+		<td><%=h topicdetail.tutorial.try(:strftime, "%HH%MMin") %></td>
+		<td><%=h topicdetail.practical.try(:strftime, "%HH %MMin") %></td>
+		<td><%=h topicdetail.topic_creator.try(:name) %></td>
 		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => topicdetail %></td>
 		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => topicdetail %></td>
 		<td width=10px ><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), topicdetail, :confirm => 'Are you sure?', :method => :delete %></td>
