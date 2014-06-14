@@ -140,7 +140,7 @@ tome = <%=@tome.count%>-->
 						<% end %>
 					</td>
 					<td width=10px>
-						<% if document.stafffilled.id == current_user.staff_id || document.preparedby.id == current_user.staff_id %>
+						<% if document.stafffilled.try(:id) == current_user.staff_id || document.preparedby.try(:id) == current_user.staff_id %>
 				   			<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %>
 						<% end %>
 					</td>
