@@ -135,7 +135,7 @@ tome = <%=@tome.count%>-->
 					<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
 					<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
 					<td width=10px>
-						<% if (document.closed != true && document.stafffilled.id == current_user.staff_id) || (document.closed != true && document.preparedby.id == current_user.staff_id) %>
+						<% if (document.closed != true && document.stafffilled.try(:id) == current_user.staff_id) || (document.closed != true && document.preparedby.try(:id) == current_user.staff_id) %>
 							<%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %>
 						<% end %>
 					</td>
