@@ -8,8 +8,8 @@ class Asset < ActiveRecord::Base
   #validates_presence_of  :category_id, :typename
   #validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
   
-  belongs_to :manufacturedby, :class_name => 'Addbook', :foreign_key => 'manufacturer_id'
-  belongs_to :suppliedby,     :class_name => 'Addbook', :foreign_key => 'supplier_id'
+  belongs_to :manufacturedby, :class_name => 'AddressBook', :foreign_key => 'manufacturer_id'
+  belongs_to :suppliedby,     :class_name => 'AddressBook', :foreign_key => 'supplier_id'
   belongs_to :assignedto,   :class_name => 'Staff', :foreign_key => 'assignedto_id'
   belongs_to :receivedby,   :class_name => 'Staff', :foreign_key => 'receiver_id'
   belongs_to :category,     :class_name => 'Assetcategory', :foreign_key => 'category_id'
@@ -231,7 +231,7 @@ class Asset < ActiveRecord::Base
     #3end
     
     #3def self.find_main
-       #3Addbook.find(:all, :condition => ['addbook_id IS NULL'])
+       #3AddressBook.find(:all, :condition => ['address_book_id IS NULL'])
     #end
     
      #def self.find_main

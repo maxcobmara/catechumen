@@ -1,2 +1,2 @@
-module AddbooksHelper
+module AddressBooksHelper
 end

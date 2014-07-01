@@ -274,7 +274,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :loans
 
-  map.resources :addbooks
+  map.resources :address_books
 
   map.resources :maints
 

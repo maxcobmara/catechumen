@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(:version => 20140414171719) do
   add_index "accessions", ["accession_no"], :name => "index_accessions_on_accession_no"
   add_index "accessions", ["id"], :name => "index_accessions_on_id"
 
-  create_table "addbooks", :force => true do |t|
+  create_table "address_books", :force => true do |t|
     t.string   "name"
     t.string   "phone"
     t.string   "address"
