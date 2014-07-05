@@ -1,93 +1,93 @@
-class AddbooksController < ApplicationController
-  # GET /addbooks
-  # GET /addbooks.xml
+class AddressBooksController < ApplicationController
+  # GET /address_books
+  # GET /address_books.xml
   def index
-    @addbooks = Addbook.search(params[:search])
+    @address_books = AddressBook.search(params[:search])
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @addbooks }
+      format.xml  { render :xml => @address_books }
     end
   end
 
-  # GET /addbooks/1
-  # GET /addbooks/1.xml
+  # GET /address_books/1
+  # GET /address_books/1.xml
   def show
-    @addbook = Addbook.find(params[:id])
+    @address_book = AddressBook.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @addbook }
+      format.xml  { render :xml => @address_book }
     end
   end
 
-  # GET /addbooks/new
-  # GET /addbooks/new.xml
+  # GET /address_books/new
+  # GET /address_books/new.xml
   def new
-    @addbook = Addbook.new
+    @address_book = AddressBook.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @addbook }
+      format.xml  { render :xml => @address_book }
     end
   end
 
-  # GET /addbooks/1/edit
+  # GET /address_books/1/edit
   def edit
-    @addbook = Addbook.find(params[:id])
+    @address_book = AddressBook.find(params[:id])
   end
 
-  # POST /addbooks
-  # POST /addbooks.xml
+  # POST /address_books
+  # POST /address_books.xml
   def create
-    @addbook = Addbook.new(params[:addbook])
+    @address_book = AddressBook.new(params[:address_book])
 
     respond_to do |format|
-      if @addbook.save
-        flash[:notice] = 'Addbook was successfully created.'
-        format.html { redirect_to(@addbook) }
-        format.xml  { render :xml => @addbook, :status => :created, :location => @addbook }
+      if @address_book.save
+        flash[:notice] = 'AddressBook was successfully created.'
+        format.html { redirect_to(@address_book) }
+        format.xml  { render :xml => @address_book, :status => :created, :location => @address_book }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @addbook.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @address_book.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PUT /addbooks/1
-  # PUT /addbooks/1.xml
+  # PUT /address_books/1
+  # PUT /address_books/1.xml
   def update
-    @addbook = Addbook.find(params[:id])
+    @address_book = AddressBook.find(params[:id])
 
     respond_to do |format|
-      if @addbook.update_attributes(params[:addbook])
-        flash[:notice] = 'Addbook was successfully updated.'
-        format.html { redirect_to(@addbook) }
+      if @address_book.update_attributes(params[:address_book])
+        flash[:notice] = 'AddressBook was successfully updated.'
+        format.html { redirect_to(@address_book) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @addbook.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @address_book.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /addbooks/1
-  # DELETE /addbooks/1.xml
+  # DELETE /address_books/1
+  # DELETE /address_books/1.xml
   def destroy
-    @addbook = Addbook.find(params[:id])
-    @addbook.destroy
+    @address_book = AddressBook.find(params[:id])
+    @address_book.destroy
 
     respond_to do |format|
-      format.html { redirect_to(addbooks_url) }
+      format.html { redirect_to(address_books_url) }
       format.xml  { head :ok }
     end
   end
   
   def quickfill
-    @addbook = Addbook.new(params[:addbook]) #@create_type = params[:new_submit]
+    @address_book = AddressBook.new(params[:address_book]) #@create_type = params[:new_submit]
     render :layout => 'popup'
     #raise params.inspect
-    @addbook.save
+    @address_book.save
   end
 
 end

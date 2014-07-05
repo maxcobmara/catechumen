@@ -1,4 +1,4 @@
 require 'test_helper'
 
-class AddbooksHelperTest < ActionView::TestCase
+class AddressBooksHelperTest < ActionView::TestCase
 end

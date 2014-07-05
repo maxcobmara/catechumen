@@ -88,8 +88,8 @@ class WeeklytimetableDetailsController < ApplicationController
   def quickfill
     @weeklytimetable_detail = WeeklytimetableDetail.new
     render :layout => 'popup'
-    #@addbook = Addbook.new(params[:addbook])
+    #@address_book = AddressBook.new(params[:address_book])
     #render :layout => 'popup'
-    #@addbook.save
+    #@address_book.save
   end
 end

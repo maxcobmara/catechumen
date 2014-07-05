@@ -8,10 +8,10 @@
 	<table style="width:75%;">
 		<tr>
 			<td width=200px><p><%= link_to image_tag("add.png", :border => 0, :title => 'New Travel Request') + "New", new_travel_request_path %></p></td>
-			<td><%= link_to 'ALL', addbooks_path %></td>
+			<td><%= link_to 'ALL', address_books_path %></td>
 			<% alphatab = Array('A' .. 'Z') %>
 			<% alphatab.each do |alphatab| %>
-			  <% add_exist = Addbook.count(:all, :conditions => ['name ILIKE ?', "#{alphatab}%"]) %>
+			  <% add_exist = AddressBook.count(:all, :conditions => ['name ILIKE ?', "#{alphatab}%"]) %>
 			  <% if add_exist < 1 %>
 					<td><%= alphatab %></td>
 				<% else %>
@@ -33,18 +33,18 @@
 	    <th>Web</th>
 	    <th colspan=3 class="ac">Control</th>
   </tr>
-	<% @addbooks.each do |addbook| %>
+	<% @address_books.each do |address_book| %>
   <tr>
-    <td><%=h addbook.name %></td>
-    <td><%=h addbook.phone %></td>
-    <td><%=h addbook.fax %></td>
-    <td><%=h addbook.address %></td>
-    <td><%=h addbook.mail %></td>
-    <td><%=h addbook.web %></td>
+    <td><%=h address_book.name %></td>
+    <td><%=h address_book.phone %></td>
+    <td><%=h address_book.fax %></td>
+    <td><%=h address_book.address %></td>
+    <td><%=h address_book.mail %></td>
+    <td><%=h address_book.web %></td>
 
-    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => addbook %></td>
-    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => addbook %></td>
-    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), addbook, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => address_book %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => address_book %></td>
+    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), address_book, :confirm => 'Are you sure?', :method => :delete %></td>
 
   </tr>
 <% end %>
@@ -52,6 +52,6 @@
 
 <br />
 
-<%= link_to 'New Contact', new_addbook_path %>
+<%= link_to 'New Contact', new_address_book_path %>
 
 </div>

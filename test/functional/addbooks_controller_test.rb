@@ -1,10 +1,10 @@
 require 'test_helper'
 
-class AddbooksControllerTest < ActionController::TestCase
+class AddressBooksControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:addbooks)
+    assert_not_nil assigns(:address_books)
   end
 
   test "should get new" do
@@ -12,34 +12,34 @@ class AddbooksControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should create addbook" do
-    assert_difference('Addbook.count') do
-      post :create, :addbook => { }
+  test "should create address_book" do
+    assert_difference('AddressBook.count') do
+      post :create, :address_book => { }
     end
 
-    assert_redirected_to addbook_path(assigns(:addbook))
+    assert_redirected_to address_book_path(assigns(:address_book))
   end
 
-  test "should show addbook" do
-    get :show, :id => addbooks(:one).to_param
+  test "should show address_book" do
+    get :show, :id => address_books(:one).to_param
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, :id => addbooks(:one).to_param
+    get :edit, :id => address_books(:one).to_param
     assert_response :success
   end
 
-  test "should update addbook" do
-    put :update, :id => addbooks(:one).to_param, :addbook => { }
-    assert_redirected_to addbook_path(assigns(:addbook))
+  test "should update address_book" do
+    put :update, :id => address_books(:one).to_param, :address_book => { }
+    assert_redirected_to address_book_path(assigns(:address_book))
   end
 
-  test "should destroy addbook" do
-    assert_difference('Addbook.count', -1) do
-      delete :destroy, :id => addbooks(:one).to_param
+  test "should destroy address_book" do
+    assert_difference('AddressBook.count', -1) do
+      delete :destroy, :id => address_books(:one).to_param
     end
 
-    assert_redirected_to addbooks_path
+    assert_redirected_to address_books_path
   end
 end
