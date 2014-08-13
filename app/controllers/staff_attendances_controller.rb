@@ -167,7 +167,7 @@ class StaffAttendancesController < ApplicationController
       @selected_date = params[:id]
     end
     if @selected_date.blank?
-      @selected_date = "2012-10-16" #default to first page
+      @selected_date = @ooo.keys.sort.reverse[0] #"2012-10-16" #default to first page
     end
     
     @selected_rec_by_date=[]
