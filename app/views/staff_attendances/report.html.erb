@@ -98,23 +98,54 @@
 		<tr>
 			<td><%= select_tag(:dept_select,"<option value='All'>Select Department</option>"+options_for_select(@dept_names)) %></td>
 			<td>
+				<!--START : temporary solutions as of 15 August 2014-should match checking in JS part below-->
+				<%@dept_names.each_with_index do |name, nos|%>
+					<% @wala1=nos if name=="Teknologi Maklumat"%>
+					<% @wala2=nos if name=="Perhotelan"%>
+					<% @wala3=nos if name=="Perpustakaan"%>
+					<% @wala4=nos if name=="Kaunter"%>
+					<% @wala5=nos if name=="Pembangunan" || name=="Kejuruteraan"%>
+					<% @wala6=nos if name=="Kewangan & Stor"%>
+					<% @wala7=nos if name=="Perkhidmatan"%>
+					<% @wala8=nos if name=="Pentadbiran Am"%>
+					<% @wala9=nos if name=="Radiografi"%>
+					<% @wala10=nos if name=="Kejururawatan"%>
+					<% @wala11=nos if name=="Jurupulih Perubatan Anggota (Fisioterapi)"%>
+					<% @wala12=nos if name=="Jurupulih Perubatan Cara Kerja"%>
+					<% @wala13=nos if name=="Penolong Pegawai Perubatan"%>
+					<% @wala14=nos if name=="Pos Basik" || name == "Pengkhususan"%>
+					<% @wala15=nos if name=="Sains Perubatan Asas"%>
+					<% @wala16=nos if name=="Anatomi & Fisiologi"%>
+					<% @wala17=nos if name=="Sains Tingkahlaku"%>
+					<% @wala18=nos if name=="Komunikasi & Sains Pengurusan"%>
+					<% @wala19=nos if name=="Pembangunan Pelatih"%>
+					<% @wala20=nos if name=="Khidmat Sokongan Pelatih"%>
+					<% @wala21=nos if name=="Kokurikulum"%>
+					<% @wala22=nos if name=="Ketua Unit Penilaian & Kualiti"%>
+					<% @wala23=nos if name=="Pengurusan Tertinggi"%>
+					<%# @wala24=nos if name==""%>
+					<%# @wala25=nos if name==""%>
+				<%end%>
+				<!--END : temporary solutions as of 15 August 2014-->
 				<!--display staff listing accordingly (department) -->
 				<!--<SPAN class="bong", style="display: none;"></SPAN>-->
-				<SPAN class="koik", style="display: none;">
-					<%= select_tag(:staffthumb1, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[0]]), :thumb_id, :name)) %>
+				<SPAN class="koik", style="display: none;"> <!--KOIK is for IT dept-->				
+					<%= select_tag(:staffthumb1, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala1]]), :thumb_id, :name)) %>
 				</SPAN>
 
 				<SPAN class="hotel", style="display: none;">
-					<%= select_tag(:staffthumb2, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[1]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb2, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala2]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="library", style="display: none;">
-					<%= select_tag(:staffthumb3, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[2]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb3, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala3]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="kaunter", style="display: none;">
-					<%= select_tag(:staffthumb4,options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[3]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb4,options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala4]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="bangun", style="display: none;">
-					<%= select_tag(:staffthumb5, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[4]]), :thumb_id, :name)) %>
+				    <% if @wala5%>
+					<%= select_tag(:staffthumb5, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala5]]), :thumb_id, :name)) %>
+				    <% end %>
 				</SPAN>
 				<!--just added 20June2013-->
 
@@ -122,59 +153,66 @@
 			    <!--wang khidmat tadbir radiografi kejururawatan fisioterapi carakerja-->
 
 				<SPAN class="wang", style="display: none;">
-					<%= select_tag(:staffthumb6, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[5]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb6, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala6]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="khidmat", style="display: none;">
-					<%= select_tag(:staffthumb7,options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[6]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb7,options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala7]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="tadbir", style="display: none;">
-					<%= select_tag(:staffthumb8, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[7]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb8, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala8]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="radiografi", style="display: none;">
-					<%= select_tag(:staffthumb9,options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[8]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb9,options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala9]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="kejururawatan", style="display: none;">
-					<%= select_tag(:staffthumb10, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[9]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb10, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala10]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="fisioterapi", style="display: none;">
-					<%= select_tag(:staffthumb11, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[10]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb11, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala11]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="carakerja", style="display: none;">
-					<%= select_tag(:staffthumb12, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[11]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb12, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala12]]), :thumb_id, :name)) %>
 				</SPAN>
 
 				<!--"Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]-->
 
 				<!--pegawai  posbasik  sains  anatomi  tingkahlaku  komunikasi  ppelatih  khidmatpelatih  kokurikulum  kupk-->
 				<SPAN class="pegawai", style="display: none;">
-					<%= select_tag(:staffthumb13, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[12]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb13, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala13]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="posbasik", style="display: none;">
-					<%= select_tag(:staffthumb14, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[13]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb14, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala14]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="sains", style="display: none;">
-					<%= select_tag(:staffthumb15, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[14]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb15, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala15]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="anatomi", style="display: none;">
-					<%= select_tag(:staffthumb16, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[15]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb16, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala16]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="tingkahlaku", style="display: none;">
-					<%= select_tag(:staffthumb17, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[16]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb17, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala17]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="komunikasi", style="display: none;">
-					<%= select_tag(:staffthumb18, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[17]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb18, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala18]]), :thumb_id, :name)) %>
 				</SPAN>	
 				<SPAN class="ppelatih", style="display: none;">
-					<%= select_tag(:staffthumb19, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[18]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb19, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala19]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="khidmatpelatih", style="display: none;">
-					<%= select_tag(:staffthumb20, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[19]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb20, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala20]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="kokurikulum", style="display: none;">
-					<%= select_tag(:staffthumb21, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[20]]), :thumb_id, :name)) %>
+					<%= select_tag(:staffthumb21, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala21]]), :thumb_id, :name)) %>
 				</SPAN>
 				<SPAN class="kupk", style="display: none;">
-					<%= select_tag(:staffthumb22, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[21]]), :thumb_id, :name)) %>
+				      <% if @wala22%>
+					<%= select_tag(:staffthumb22, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala22]]), :thumb_id, :name)) %>
+				      <% end %>
+				</SPAN>
+				<SPAN class="tinggi", style="display: none;">
+				      <% if @wala23 %>
+					<%= select_tag(:staffthumb23, options_from_collection_for_select(Staff.find(:all, :conditions=>['thumb_id in(?)',@staff_in_department[@wala23]]), :thumb_id, :name)) %>
+				      <%end%>
 				</SPAN>
 				<!--display staff listing (department) accordingly-->
 			</td>
@@ -267,6 +305,7 @@
 					$j('.khidmatpelatih').hide();
 					$j('.kokurikulum').hide();
 					$j('.kupk').hide();
+					$j('.tinggi').hide();
 					$j('.monthly_listing').hide();
 		    }else if ($j(this).val() == "Teknologi Maklumat") {
 		     	 	$j('.bong').hide();
@@ -292,6 +331,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();	
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();		
 		    }
 			else if ($j(this).val() == "Perhotelan") {
@@ -318,6 +358,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();		
 			}
 			else if ($j(this).val() == "Perpustakaan") {
@@ -344,6 +385,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();	
 			}
 			else if ($j(this).val() == "Kaunter") {
@@ -370,9 +412,10 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();							
 			}
-			else if ($j(this).val() == "Pembangunan") {
+			else if ($j(this).val() == "Pembangunan" || $j(this).val() == "Kejuruteraan") {
 					$j('.bong').hide();
 					$j('.koik').hide();
 					$j('.hotel').hide();
@@ -396,6 +439,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();							
 			}
 			else if ($j(this).val() == "Kewangan & Stor") {
@@ -422,6 +466,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();	
 			}
 			else if ($j(this).val() == "Perkhidmatan") {
@@ -448,6 +493,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();	
 			}
 			else if ($j(this).val() == "Pentadbiran Am") {
@@ -474,6 +520,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();	
 			}
 			else if ($j(this).val() == "Radiografi") {
@@ -500,6 +547,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();	
 			}
 			else if ($j(this).val() == "Kejururawatan") {
@@ -526,6 +574,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();	
 			}
 			else if ($j(this).val() == "Jurupulih Perubatan Anggota (Fisioterapi)") {
@@ -552,6 +601,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();	
 			}
 			else if ($j(this).val() == "Jurupulih Perubatan Cara Kerja") {
@@ -578,6 +628,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();	
 			}
 			else if ($j(this).val() == "Penolong Pegawai Perubatan") {
@@ -604,6 +655,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();	
 			}
 			else if ($j(this).val() == "Pos Basik") {
@@ -630,6 +682,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();	
 			}
 			else if ($j(this).val() == "Sains Perubatan Asas") {
@@ -656,6 +709,7 @@
 						$j('.khidmatpelatih').hide();
 						$j('.kokurikulum').hide();
 						$j('.kupk').hide();
+						$j('.tinggi').hide();
 						$j('.monthly_listing').show();	
 			}
 				else if ($j(this).val() == "Anatomi & Fisiologi") {
@@ -682,6 +736,7 @@
 							$j('.khidmatpelatih').hide();
 							$j('.kokurikulum').hide();
 							$j('.kupk').hide();
+							$j('.tinggi').hide();
 							$j('.monthly_listing').show();	
 				}
 				else if ($j(this).val() == "Sains Tingkahlaku") {
@@ -708,6 +763,7 @@
 							$j('.khidmatpelatih').hide();
 							$j('.kokurikulum').hide();
 							$j('.kupk').hide();
+							$j('.tinggi').hide();
 							$j('.monthly_listing').show();	
 				}
 				else if ($j(this).val() == "Komunikasi & Sains Pengurusan") {
@@ -734,6 +790,7 @@
 							$j('.khidmatpelatih').hide();
 							$j('.kokurikulum').hide();
 							$j('.kupk').hide();
+							$j('.tinggi').hide();
 								$j('.monthly_listing').show();	
 				}
 				else if ($j(this).val() == "Pembangunan Pelatih") {
@@ -760,6 +817,7 @@
 							$j('.khidmatpelatih').hide();
 							$j('.kokurikulum').hide();
 							$j('.kupk').hide();
+							$j('.tinggi').hide();
 							$j('.monthly_listing').show();	
 				}
 				else if ($j(this).val() == "Khidmat Sokongan Pelatih") {
@@ -786,6 +844,7 @@
 							$j('.khidmatpelatih').show();
 							$j('.kokurikulum').hide();
 							$j('.kupk').hide();
+							$j('.tinggi').hide();
 							$j('.monthly_listing').show();	
 				}
 				else if ($j(this).val() == "Kokurikulum") {
@@ -812,6 +871,7 @@
 							$j('.khidmatpelatih').hide();
 							$j('.kokurikulum').show();
 							$j('.kupk').hide();
+							$j('.tinggi').hide();
 							$j('.monthly_listing').show();	
 				}
 				else if ($j(this).val() == "Ketua Unit Penilaian & Kualiti") {
@@ -838,6 +898,34 @@
 							$j('.khidmatpelatih').hide();
 							$j('.kokurikulum').hide();
 							$j('.kupk').show();
+							$j('.tinggi').hide();
+							$j('.monthly_listing').show();	
+				}
+				else if ($j(this).val() == "Pengurusan Tertinggi") {
+						$j('.bong').hide();
+						$j('.koik').hide();
+						$j('.hotel').hide();
+						$j('.library').hide();
+						$j('.kaunter').hide();
+						$j('.bangun').hide();
+							$j('.wang').hide();
+							$j('.khidmat').hide();
+							$j('.tadbir').hide();
+							$j('.radiografi').hide();
+							$j('.kejururawatan').hide();
+							$j('.fisioterapi').hide();
+							$j('.carakerja').hide();
+							$j('.pegawai').hide();
+							$j('.posbasik').hide();
+							$j('.sains').hide();
+							$j('.anatomi').hide();
+							$j('.tingkahlaku').hide();
+							$j('.komunikasi').hide();
+							$j('.ppelatih').hide();
+							$j('.khidmatpelatih').hide();
+							$j('.kokurikulum').hide();
+							$j('.kupk').hide();
+							$j('.tinggi').show();
 							$j('.monthly_listing').show();	
 				}
 			});
