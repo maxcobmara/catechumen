@@ -11,18 +11,22 @@
 	<% permitted_to? :menu, :staffs do %>
   	<li><a href="#">Staff</a>
 			<ul class="sub_menu">
-				<li><%= link_to 'Staff Information', 	{:controller => 'staffs', 			:action => 'index'} %></li>
+				<li><%= link_to 'Staff Information', {:controller => 'staffs', :action => 'index'} %></li>
 				
 				<li><a href="#">Attendance ></a>
 						<ul class="sub_menu">
-								<li><%= link_to 'Manage Lateness / Early Return ', 						{:controller => 'staff_attendances', 	:action => 'manage'} %></li>
-								<%# if permitted_to? :destroy, @attendance %>
-								<% permitted_to? :manage, :staffs do %>
-								<li><%= link_to 'Staff Attendance', 	{:controller => 'staff_attendances', 	:action => 'index'} %></li>
-								<li><%= link_to 'Status', 						{:controller => 'staff_attendances', 	:action => 'status'} %></li>
-								<li><%= link_to 'Report / Monthly Listing', 						{:controller => 'staff_attendances', 	:action => 'report'} %></li>
+							<!--<li><%= link_to t('attendance.lateness_earlyreturn'),{:controller => 'staff_attendances', :action => 'manage'} %></li>-->
+							<%# if permitted_to? :destroy, @attendance %>
+							<% permitted_to? :manage, :staffs do %>
+							<!--
+							<li><%#= link_to 'Staff Attendance', 	{:controller => 'staff_attendances', 	:action => 'index'} %></li>
+							<li><%#= link_to 'Status', 						{:controller => 'staff_attendances', 	:action => 'status'} %></li>-->
+								<li><a href="http://<%= request.host  %>:3003/staff/staff_attendances?locale=ms_MY"><%=t('attendance.list')%></a></li>	
+								<li><a href="http://<%= request.host  %>:3003/attendance/status"><%=t('attendance.punchcard_status')%></a></li>
+								<li><%= link_to t('attendance.report_monthlylisting'),{:controller => 'staff_attendances', 	:action => 'report'} %></li>
 								<li><a href="http://<%= request.host  %>:3003/staff/staff_attendances/import_excel?locale=ms_MY"><%=t('attendance.import_excel')%></a></li>
-								<% end -%>
+							<% end -%>
+							<li><a href="http://<%= request.host  %>:3003/attendance/manage"><%=t('attendance.lateness_earlyreturn')%></a></li>
 						</ul>
 				</li>
 				
