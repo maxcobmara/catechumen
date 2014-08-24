@@ -40,18 +40,18 @@
 	    <tr>
 		  	<td><%=h librarytransaction.accession.accession_no unless librarytransaction.accession_id.blank? %></td>
 		    <td> 
-			<% unless librarytransaction.accession.book.nil?%>
+			<% if librarytransaction.accession %>
 			<%=h librarytransaction.accession.book.classlcc? ?  librarytransaction.accession.book.classlcc : librarytransaction.accession.book.classddc %>
 			<%#=h librarytransaction.accession.book.classddc unless librarytransaction.accession_id.blank? %>
 			<% end %>
 		    </td>
 		    <td>
-			<% unless librarytransaction.accession.book.nil?%>
+			<% if librarytransaction.accession %>
 			    <%=h librarytransaction.accession.book.author unless librarytransaction.accession_id.blank?  %>
 			<% end %>
 		    </td>
 		    <td>
-			 <% unless librarytransaction.accession.book.nil?%>
+			 <%if librarytransaction.accession %>
 			    <%=h librarytransaction.accession.book.title unless librarytransaction.accession_id.blank? %>
 			 <% else %>
 			      <span style="color:red;">Book no longer available</span>
