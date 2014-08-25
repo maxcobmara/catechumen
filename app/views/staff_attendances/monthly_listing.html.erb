@@ -18,12 +18,21 @@ document.write("<input type='button' " +
 	<div style="padding-left:50px;" align="left">
 		<p style="font-size:13px;font-family:arial;">
 			Dept : <%=@dept_select%><br>
-			<%=StaffAttendance.find_by_thumb_id(@staffthumb.to_i).attended.name.upcase %>
+			<% @exist_SA = StaffAttendance.find_by_thumb_id(@staffthumb.to_i) %>
+			<% unless @exist_SA==nil %>
+			    <%=StaffAttendance.find_by_thumb_id(@staffthumb.to_i).attended.name.upcase %>
+			<% else%>
+			    <%=Staff.find_by_thumb_id(@staffthumb.to_i).name.upcase%>
+			<% end %>
 		</p>
 		
 		<% if @monthly_list.count <= 0 %>
 			<p style="font-size:13px;font-family:arial;color:red;">
-				Record not exist 
+			    <% unless @exist_SA==nil %>
+				Record not exist (for selected month).
+			    <% else %>
+				Selected staff has NO attendance record at all.
+			    <% end %>
 			</p>
 		<% else %>
 		

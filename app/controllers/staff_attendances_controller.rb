@@ -167,7 +167,7 @@ class StaffAttendancesController < ApplicationController
       @selected_date = params[:id]
     end
     if @selected_date.blank?
-      @selected_date = "2012-10-16" #default to first page
+      @selected_date = @ooo.keys.sort.reverse[0] #"2012-10-16" #default to first page
     end
     
     @selected_rec_by_date=[]
@@ -336,21 +336,18 @@ class StaffAttendancesController < ApplicationController
     @prevmonthgreens = StaffAttendance.previous_month_green
   end
   
-  def report
-    #@dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Pembangunan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]
-    @dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Kejuruteraan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pengkhususan","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]   
+  def report 
+    @dept_names = Position.find(:all,:conditions=>['unit is not null and unit !=?', ""]).map(&:unit).uniq.sort
     @dept_superiors = []
     @position_staff_ids = []
     @staff_in_department = []
-    0.upto(21) do |count|
-      @dept_superiors << Position.find(:first, :conditions=>['unit=?',@dept_names[count]])  #starting 23Feb2014-no changes-unit @ dept superior-usually w HIGHEST@FIRSTLY INSERTED
+    0.upto(@dept_names.count-1) do |count|
+      @dept_superiors <<  Position.find(:all, :conditions=>['unit=?',@dept_names[count]], :order=>'ancestry asc').first
     end
-    0.upto(21) do |countt|
-        #@position_staff_ids << Position.find(:first, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').subtree.map(&:staff_id).uniq.delete_if{|x|x==nil}   
-        #starting 23Feb2014 - Positon table - unit value - compulsory for staff (which work) under unit? (task & responsibilites format change)
+    0.upto(@dept_names.count-1) do |countt|
         @position_staff_ids << Position.find(:all, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').map(&:staff_id).uniq.delete_if{|x|x==nil} 
     end
-    0.upto(21) do |countt2|
+    0.upto(@dept_names.count-1) do |countt2|
         @staff_in_department << Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',@position_staff_ids[countt2]]).map(&:thumb_id)
     end
   end
@@ -408,9 +405,10 @@ class StaffAttendancesController < ApplicationController
               @next_date = @dadidu.to_date+1.day 
            end
            #====refer model --> self.peep method==
-           @hisstaff = Position.find(@superior_position_id).child_ids
-           @hisstaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", @hisstaff]).map(&:staff_id)
-           @thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", @hisstaffids]).map(&:thumb_id)
+           #@hisstaff = Position.find(@superior_position_id).child_ids
+           #@hisstaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", @hisstaff]).map(&:staff_id)
+	   @hisstaffids = Position.find(:all, :conditions=>['unit=? and id!=?',@dept_name, @superior_position_id]).map(&:staff_id)
+           @thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", @hisstaffids]).map(&:thumb_id)	   
            #======================================
            #*******************refer model --> self.find_approveearly --(is_approved==false)
            #@notapproved_lateearly=StaffAttendance.find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) ", true, true, @thumbs], :order => 'logged_at DESC').group_by {|t| t.thumb_id }
@@ -444,7 +442,7 @@ class StaffAttendancesController < ApplicationController
                   @staffthumb = params[:staffthumb3] 
               elsif @dept_select == "Kaunter"
                   @staffthumb = params[:staffthumb4] 
-              elsif @dept_select == "Kejuruteraan"     #elsif @dept_select == "Pembangunan"
+              elsif @dept_select == "Kejuruteraan" || @dept_select == "Pembangunan"
                   @staffthumb = params[:staffthumb5] 
               elsif @dept_select == "Kewangan & Stor"
                   @staffthumb = params[:staffthumb6] 
@@ -462,7 +460,7 @@ class StaffAttendancesController < ApplicationController
                   @staffthumb = params[:staffthumb12] 
               elsif @dept_select == "Penolong Pegawai Perubatan"
                   @staffthumb = params[:staffthumb13] 
-              elsif @dept_select == "Pengkhususan"      #elsif @dept_select == "Pos Basik"
+              elsif @dept_select == "Pengkhususan" || @dept_select == "Pos Basik"
                   @staffthumb = params[:staffthumb14] 
               elsif @dept_select == "Sains Perubatan Asas"
                   @staffthumb = params[:staffthumb15] 
@@ -480,6 +478,10 @@ class StaffAttendancesController < ApplicationController
                   @staffthumb = params[:staffthumb21] 
               elsif @dept_select == "Ketua Unit Penilaian & Kualiti"  
                   @staffthumb = params[:staffthumb22] 
+	      elsif @dept_select == "Pengurusan Tertinggi"  
+                  @staffthumb = params[:staffthumb23] 
+	      elsif @dept_select == "Kejuruteraan"  
+                  @staffthumb = params[:staffthumb24] 
               end 
     		      #---------
     		      @aa=params[:month_year4][:"(1i)"]  #year

@@ -85,7 +85,7 @@ class Book < ActiveRecord::Base
         self.tagno=1
       else
         #(Book.last.id + 1).to_s
-        self.tagno = (Book.tagno.id + 1).to_s
+        self.tagno = (Book.last.tagno.to_i+1).to_s		#(Book.tagno.id + 1).to_s
       end
       
     end 
