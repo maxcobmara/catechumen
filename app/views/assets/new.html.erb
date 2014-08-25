@@ -3,6 +3,8 @@
 	<div class="tform">
 	
 	<H2><%= t 'asset.new' %></H2>
+
+  <% asset_years = Asset.find(:all, :select => :assetcode).map(&:assetcode).map{|d| d.split("/")[4]}.uniq %>
 	<table width=100% >
 		
 
@@ -35,9 +37,21 @@
 		
 		<tr>
 			<td class="leftcol"><label>Previous</label></td>
-			<td><SPAN class="bong", style="display: none;"><!-- Last H--><%= Asset.find_last_by_assettype(1)[:assetcode] %></SPAN>
-				<SPAN class="koik", style="display: none;"><!-- last I --><%= Asset.find_last_by_assettype(2)[:assetcode] %><!-- - 
-					<%#= (Asset.find_last_by_assettype(2)[:cardno]).to_i+(Asset.find_last_by_assettype(2)[:quantity])-1 %>--></SPAN></td>
+			<td>
+        <SPAN class="bong", style="display: none;">
+          <% asset_years.each do | asset_year | %>
+            <%= (Asset.find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', asset_year, 1]).last)[:assetcode] rescue nil %>
+            <BR/>
+          <% end %>
+        </SPAN>
+				<SPAN class="koik", style="display: none;">
+          <% asset_years.each do | asset_year | %>
+            <% last_item = Asset.find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', asset_year, 2]).last %>
+            <%= last_item[:assetcode] rescue nil   %>
+            <BR>
+          <% end %>
+        </SPAN>
+      </td>
 		</tr>
 	
 <script type="text/javascript">
