@@ -114,18 +114,20 @@ class Librarytransaction < ActiveRecord::Base
    stuexists = Student.find(:all, :select => "id").map(&:id)
    staffchecker = stid & stexists
    studentchecker = suid & stuexists
-   
-      if student_id == 0 && staff_id == 0 #student_id == nil && staff_id == nil 
-           "" 
-      elsif staff_id == 0 && stexists == [] #staff_id == nil && stexists == []
-           "Student No Longer Exists" 
-      elsif student_id == 0 && stuexists == []  #student_id == nil && stuexists == []
-          "Staff No Longer Exists" 
-      elsif student_id == 0
-          staff.name
-      elsif staff_id == 0
-          student.name
-      end
+     
+   if ru_staff==true
+     if staffchecker.count==1
+       staff.name
+     else
+       "Staff No Longer Exist"
+     end
+   else
+     if studentchecker.count==1
+       student.name
+     else
+       "Student No Longer Exist"
+     end  
+   end
   end
   
   def book_details 
