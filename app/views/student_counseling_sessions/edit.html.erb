@@ -2,17 +2,16 @@
   <%= f.error_messages %>
 	<div class="tform">
 		<H2>Edit Counseling Appointment / Session </H2>
-		 <% if @student_counseling_session.confirmed_at? %>
-				<%=render :partial => 'appointment_show', :locals => {:f => f} %>
-				<%=render :partial => 'form', :locals => {:f => f} %> 
-				
+		 <%# if @student_counseling_session.confirmed_at? &&  @student_counseling_session.confirmed_at<(Time.now - 2.hours).in_time_zone('UTC')%>
+		 <% if @student_counseling_session.confirmed_at? &&  @student_counseling_session.confirmed_at<Time.now.in_time_zone('UTC')%>
+			<!--a session-->	
+			<%=render :partial => 'appointment_show', :locals => {:f => f} %>
+			<%=render :partial => 'form', :locals => {:f => f} %> 	
 		 <% else %>
+			<!--an appointment, confirm date mesti > time now baru boleh tukar-->
 			<%=render :partial => 'appointment', :locals => {:f => f} %>
 		 <% end -%>
-
-
 	</div>
-
   <p>
     <%= f.submit 'Update' %>
   </p>

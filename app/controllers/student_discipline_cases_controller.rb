@@ -34,7 +34,7 @@ class StudentDisciplineCasesController < ApplicationController
   def new
     @student_discipline_case = StudentDisciplineCase.new
     @student_discipline_case.student_counseling_sessions.build
-
+    @myhod = Position.find(:all, :conditions => ['tasks_main ILIKE (?)', "%Ketua Program%"], :select => :staff_id).map(&:staff_id)
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @student_discipline_case }
@@ -50,6 +50,7 @@ class StudentDisciplineCasesController < ApplicationController
   # POST /student_discipline_cases.xml
   def create
     @student_discipline_case = StudentDisciplineCase.new(params[:student_discipline_case])
+    @myhod = Position.find(:all, :conditions => ['tasks_main ILIKE (?)', "%Ketua Program%"], :select => :staff_id).map(&:staff_id)
     respond_to do |format|
       if @student_discipline_case.save
         format.html { redirect_to(@student_discipline_case, :notice => 'Your new case was successfully registered') }
