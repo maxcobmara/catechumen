@@ -3,12 +3,23 @@
 		<h2 class="left">Student Counseling Appointments & Sessions</h2>
 		<div class="right">
 			<% form_tag student_counseling_sessions_path, :method => 'get' do %>
-			<%= text_field_tag :search, params[:search], :placeholder => "Name"  %>
+			Appointment / Session : <%= text_field_tag :search, params[:search], :placeholder => "Name, Matric No"  %>
 			<%= submit_tag I18n.t('search'), :name => nil %>
 			<% end %>
 		</div>
 	</div>
 </div>
+
+<div class="right">
+    <% form_tag '', :method => 'get' do %>
+	From: <%= date_select :search_from, params[:search_from], :include_blank => :true %>
+	&nbsp; &nbsp;To: <%= date_select :search_to, params[:search_to], :include_blank => :true %>
+	<%= submit_tag "Search by appointment/session date", :name => :submit_button1 %>
+    <% end %>
+</div>
+<br><br>
+<%=params[:search_from]%>
+<%=params[:search_to]%>
 <!-- HACK : Hack a CSS for item legend -->
 <font size="-2">
 <table align="center" cellpadding="7">
@@ -22,13 +33,11 @@
 
 <div class="indextable">
 <!-- HACK : create float left divs for toolbar -->
+
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + "New", new_student_counseling_session_path %></p>
+  <p><%= link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + "New", new_student_counseling_session_path %></p>
 </div>
-
-
-
-
+<br>
 
 <table>
   <tr>
@@ -95,7 +104,7 @@
 	<!--NEW DB-programme_id (1-14), OLD DB-programme_id-refer prev one-->
 	<td><%=h session_done.student.programme_for_student2 if session_done.student.course_id <15 %></td>
 	<td><%=h strip_tags(Student.year_and_sem(session_done.student.intake)) %></td>
-	<td><%=h session_done.confirmed_at.strftime("%d %b %Y, %H:%M%p") unless session_done.confirmed_at.blank? %></td>
+	<td><%=h session_done.confirmed_at.strftime("%d %b %Y, %l:%M%p") unless session_done.confirmed_at.blank? %></td>
     <td><%=h session_done.duration %></td>
     <td><%=h session_done.is_confirmed? ? image_tag("tick.png") : ""  %></td>
 	

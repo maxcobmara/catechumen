@@ -37,16 +37,15 @@
 				<td class="leftcol"><label for="otherinfo"><b>Advice Given:</b></label></td>
 				<td><%= f.text_area :other_info, :size => "40x5" %></td>
 			</tr>
-			<% myhod = Position.find(:all, :conditions => ['id=?', '3'], :select => :staff_id).map(&:staff_id)  %>
-			<%# myhod = Position.find(:all, :conditions => ['positioncode=?', '1.2'], :select => :staff_id).map(&:staff_id)  %>
-			<%# myhod = Position.find(:all, :conditions => ['staff_id IS NOT ? AND ancestry_depth =?', nil, 1 ], :select => :staff_id).map(&:staff_id) %>
+			<!--Position for TPHEP-->
+			<% myhod = Position.find(:all, :conditions => ['id=?', 3], :select => :staff_id).map(&:staff_id)  %>
 			<tr class="au_item" style="display: none;">
 				<td class="leftcol"><label for="approved_date">Notify HOD</label></td>
-		    <td>
-				<%= f.collection_select :assigned2_to, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %>
-				<!-- replace this with - model/student_discipline_case.rb - line 46- self.assigned2_to = nil-->
-				<%#= select_tag "student_discipline_case[assigned2_to]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name) %>					
-			</td>
+				<td>
+				  <%= f.collection_select :assigned2_to, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %>
+				  <!-- replace this with - model/student_discipline_case.rb - line 46- self.assigned2_to = nil-->
+				  <%#= select_tag "student_discipline_case[assigned2_to]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name) %>
+				</td>
 			</tr>
 			
 			<tr  class="au_item" style="display: none;">
