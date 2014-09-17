@@ -18,14 +18,10 @@ class StudentCounselingSession < ActiveRecord::Base
     end
   end
   
-  #appoinment : if requested_at value is between 2 hours be4 time now, until now - will redundant with sessions data
-  #appointment : if requested_at > time now, an appointment
   def self.find_appointment(search)
     if search
-      #find(:all, :include => :student, :conditions => ['requested_at > ? AND (students.name ILIKE ? OR students.matrixno ILIKE ?)', (Time.now-2.hours).in_time_zone('UTC'), "%#{search}%", "%#{search}%"], :order => 'requested_at DESC')
       find(:all, :include => :student, :conditions => ['requested_at > ? AND (students.name ILIKE ? OR students.matrixno ILIKE ?)', Time.now.in_time_zone('UTC'), "%#{search}%", "%#{search}%"], :order => 'requested_at DESC')
     else
-      #find(:all, :include => :student, :conditions => ['requested_at > ?', (Time.now - 2.hours).in_time_zone('UTC') ], :order => 'requested_at DESC')
       find(:all, :include => :student, :conditions => ['requested_at > ?', Time.now.in_time_zone('UTC') ], :order => 'requested_at DESC')
     end
   end
