@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
    before_filter :set_locale
    before_filter :get_pages_for_tabs
    before_filter :put_current_login_into_model
-   before_filter { |c| Authorization.current_login = Login.current_login}
+   before_filter { |c| Authorization.current_user = Login.current_login}
    
 
     def get_pages_for_tabs
@@ -23,6 +23,11 @@ class ApplicationController < ActionController::Base
     end
     
     protected
+
+      def current_user
+        Authorization.current_user = Login.current_login || nil
+      end
+
 
       def set_locale
         session[:locale] = params[:locale] if params[:locale]

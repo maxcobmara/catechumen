@@ -16,7 +16,7 @@ class Student < ActiveRecord::Base
   belongs_to :course,         :class_name => 'Programme', :foreign_key => 'course_id'       #Link to Programme
   belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
   
-  has_one   :user,              :dependent => :destroy                                      #Link to Model user
+  has_one   :login,              :dependent => :destroy                                      #Link to Model user
   has_many  :leaveforstudents,  :dependent => :destroy                                      #Link to LeaveStudent
   has_many  :student_counseling_sessions                                                    #Link to Counselling
   

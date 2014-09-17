@@ -27,7 +27,7 @@ class LoginsController < ApplicationController
      @login = Login.find(params[:id])
      @login.destroy
 
-     redirect_to(users_url)
+     redirect_to(logins_url)
    end
 
    def edit
@@ -37,7 +37,7 @@ class LoginsController < ApplicationController
    def update
      @login = Login.find(params[:id])
 
-     if @login.update_attributes(params[:user])
+     if @login.update_attributes(params[:login])
        flash[:notice] = 'Login was successfully updated.'
        redirect_to(login_path(@login))
      else
@@ -53,7 +53,7 @@ class LoginsController < ApplicationController
  
   def create
     logout_keeping_session!
-    @login = Login.new(params[:user])
+    @login = Login.new(params[:login])
     success = @login && @login.save
     if success && @login.errors.empty?
             # Protects against session fixation attacks, causes request forgery

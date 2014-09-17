@@ -43,13 +43,13 @@ module LoginsHelper
   #   link_to_login @login, :content_text => 'Your user page'
   #   # => <a href="/users/3" title="barmy" class="nickname">Your user page</a>
   #
-  def link_to_login(user, options={})
-    raise "Invalid user" unless user
+  def link_to_login(login, options={})
+    raise "Invalid user" unless login
     options.reverse_merge! :content_method => :login, :title_method => :login, :class => :nickname
     content_text      = options.delete(:content_text)
     content_text    ||= login.send(options.delete(:content_method))
     options[:title] ||= login.send(options.delete(:title_method))
-    link_to h(content_text), login_path(user), options
+    link_to h(content_text), login_path(login), options
   end
 
   #

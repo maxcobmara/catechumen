@@ -44,7 +44,7 @@ class Staff < ActiveRecord::Base
   has_many :librarytransactions
   has_one  :position #has_many :positions #  #20Apr2013
   has_many :events,       :foreign_key => 'createdby'                                      #link to created by in events
-  has_many :users
+  has_many :logins
   has_many :timetables
   has_one  :staff_shift
   # has_many :topics, :foreign_key => 'creator_id' 
