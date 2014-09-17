@@ -8,7 +8,8 @@ class LibrarytransactionsController < ApplicationController
     if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
       @librarytransactions = Librarytransaction.with_permissions_to.send(params[:show])
     else
-      @librarytransactions = Librarytransaction.with_permissions_to.all
+      #default to - borrowed items only (as previously requested)
+      @librarytransactions = Librarytransaction.with_permissions_to.send("borrowed") 	
     end
     @libtran_days =  @librarytransactions.group_by {|t| t.checkoutdate}
   end
