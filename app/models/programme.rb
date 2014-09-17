@@ -43,7 +43,7 @@ class Programme < ActiveRecord::Base
           @newtopicdetail.theory = '0'#Time.now               #5thOct2013
           @newtopicdetail.tutorial = '0'#Time.now             #5thOct2013
           @newtopicdetail.practical = '0'#Time.now            #5thOct2013
-          @newtopicdetail.prepared_by = User.current_user.staff_id
+          @newtopicdetail.prepared_by = Login.current_login.staff_id
           @newtopicdetail.save
         end  
     end

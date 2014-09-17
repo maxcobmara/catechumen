@@ -1,21 +1,21 @@
 module AuthenticatedSystem
   protected
     # Returns true or false if the user is logged in.
-    # Preloads @current_user with the user model if they're logged in.
+    # Preloads @current_login with the user model if they're logged in.
     def logged_in?
-      !!current_user
+      !!current_login
     end
 
     # Accesses the current user from the session.
     # Future calls avoid the database because nil is not equal to false.
-    def current_user
-      @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie) unless @current_user == false
+    def current_login
+      @current_login ||= (login_from_session || login_from_basic_auth || login_from_cookie) unless @current_login == false
     end
 
     # Store the given user id in the session.
-    def current_user=(new_user)
-      session[:user_id] = new_user ? new_user.id : nil
-      @current_user = new_user || false
+    def current_login=(new_login)
+      session[:login_id] = new_login ? new_login.id : nil
+      @current_login = new_login || false
     end
 
     # Check if the user is authorized
@@ -28,7 +28,7 @@ module AuthenticatedSystem
     #
     #  # only allow nonbobs
     #  def authorized?
-    #    current_user.login != "bob"
+    #    current_login.login != "bob"
     #  end
     #
     def authorized?(action = action_name, resource = nil)
@@ -93,25 +93,25 @@ module AuthenticatedSystem
       session[:return_to] = nil
     end
 
-    # Inclusion hook to make #current_user and #logged_in?
+    # Inclusion hook to make #current_login and #logged_in?
     # available as ActionView helper methods.
     def self.included(base)
-      base.send :helper_method, :current_user, :logged_in?, :authorized? if base.respond_to? :helper_method
+      base.send :helper_method, :current_login, :logged_in?, :authorized? if base.respond_to? :helper_method
     end
 
     #
     # Login
     #
 
-    # Called from #current_user.  First attempt to login by the user id stored in the session.
+    # Called from #current_login.  First attempt to login by the user id stored in the session.
     def login_from_session
-      self.current_user = User.find_by_id(session[:user_id]) if session[:user_id]
+      self.current_login = Login.find_by_id(session[:login_id]) if session[:login_id]
     end
 
-    # Called from #current_user.  Now, attempt to login by basic authentication information.
+    # Called from #current_login.  Now, attempt to login by basic authentication information.
     def login_from_basic_auth
       authenticate_with_http_basic do |login, password|
-        self.current_user = User.authenticate(login, password)
+        self.current_login = Login.authenticate(login, password)
       end
     end
 
@@ -119,14 +119,14 @@ module AuthenticatedSystem
     # Logout
     #
 
-    # Called from #current_user.  Finaly, attempt to login by an expiring token in the cookie.
-    # for the paranoid: we _should_ be storing user_token = hash(cookie_token, request IP)
+    # Called from #current_login.  Finaly, attempt to login by an expiring token in the cookie.
+    # for the paranoid: we _should_ be storing login_token = hash(cookie_token, request IP)
     def login_from_cookie
-      user = !cookies[:auth_token].blank? && User.find_by_remember_token(cookies[:auth_token])
-      if user && user.remember_token?
-        self.current_user = user
+      user = !cookies[:auth_token].blank? && Login.find_by_remember_token(cookies[:auth_token])
+      if user && login.remember_token?
+        self.current_login = user
         handle_remember_cookie! false # freshen cookie token (keeping date)
-        self.current_user
+        self.current_login
       end
     end
 
@@ -135,10 +135,10 @@ module AuthenticatedSystem
     # However, **all session state variables should be unset here**.
     def logout_keeping_session!
       # Kill server-side auth cookie
-      @current_user.forget_me if @current_user.is_a? User
-      @current_user = false     # not logged in, and don't do it for me
+      @current_login.forget_me if @current_login.is_a? Login
+      @current_login = false     # not logged in, and don't do it for me
       kill_remember_cookie!     # Kill client-side auth cookie
-      session[:user_id] = nil   # keeps the session but kill our variable
+      session[:login_id] = nil   # keeps the session but kill our variable
       # explicitly kill any other session variables you set
     end
 
@@ -160,18 +160,18 @@ module AuthenticatedSystem
     # and they should be changed at each login
 
     def valid_remember_cookie?
-      return nil unless @current_user
-      (@current_user.remember_token?) &&
-        (cookies[:auth_token] == @current_user.remember_token)
+      return nil unless @current_login
+      (@current_login.remember_token?) &&
+        (cookies[:auth_token] == @current_login.remember_token)
     end
 
     # Refresh the cookie auth token if it exists, create it otherwise
     def handle_remember_cookie!(new_cookie_flag)
-      return unless @current_user
+      return unless @current_login
       case
-      when valid_remember_cookie? then @current_user.refresh_token # keeping same expiry date
-      when new_cookie_flag        then @current_user.remember_me
-      else                             @current_user.forget_me
+      when valid_remember_cookie? then @current_login.refresh_token # keeping same expiry date
+      when new_cookie_flag        then @current_login.remember_me
+      else                             @current_login.forget_me
       end
       send_remember_cookie!
     end
@@ -182,8 +182,8 @@ module AuthenticatedSystem
 
     def send_remember_cookie!
       cookies[:auth_token] = {
-        :value   => @current_user.remember_token,
-        :expires => @current_user.remember_token_expires_at }
+        :value   => @current_login.remember_token,
+        :expires => @current_login.remember_token_expires_at }
     end
 
 end

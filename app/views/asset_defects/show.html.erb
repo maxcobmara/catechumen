@@ -74,7 +74,7 @@
 
 <% unless @asset_defect.is_processed == true %>
 	<!--if not PROCESSED yet-->
-	<% if @asset_defect.reported_by == User.current_user.staff.try(:id) %>
+	<% if @asset_defect.reported_by == Login.current_login.staff.try(:id) %>
 		<%= link_to 'Edit', edit_asset_defect_path(@asset_defect) %>
 	<% else %>
 		<!--access for other than kewpa9 creator, but must have authority to manage!-->
@@ -85,7 +85,7 @@
 	
 <% else %>
 	<!--if PROCESSED, give access to ONLY those who have authority ie. ASSET ADMIN-->
-	<% if @asset_defect.reported_by != User.current_user.staff.try(:id) %>
+	<% if @asset_defect.reported_by != Login.current_login.staff.try(:id) %>
 		<% permitted_to? :manage, :asset_defects do %>
 			<%= link_to 'Edit', edit_asset_defect_path(@asset_defect) %>
 		<% end %>

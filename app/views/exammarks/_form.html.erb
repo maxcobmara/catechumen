@@ -2,24 +2,24 @@
 <%#=render :partial => 'exam_listing.html.erb'%><!--retrieve exam listing, student listing for use-->
 
 <!--11Apr2013-->
-<%# @anc_depth = current_user.staff.position.ancestry_depth %>
+<%# @anc_depth = current_login.staff.position.ancestry_depth %>
 
 <%# if @anc_depth==2 %>
-	<%# @dept_unit = current_user.staff.position.unit %>
+	<%# @dept_unit = current_login.staff.position.unit %>
 <%# elsif @anc_depth < 2 %>
-	<%# @position_count = Position.find(:all, :conditions=>['staff_id=?',current_user.staff]).count %>
+	<%# @position_count = Position.find(:all, :conditions=>['staff_id=?',current_login.staff]).count %>
 	<%# if @position_count > 1 %>
-		<%# @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_user.staff_id,2]).unit %>			
+		<%# @dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', current_login.staff_id,2]).unit %>			
 	<%# end %>
 <%# elsif @anc_depth > 2 %>
-	<%# @dept_unit = current_user.staff.position.ancestors.at_depth(2)[0].unit %>
+	<%# @dept_unit = current_login.staff.position.ancestors.at_depth(2)[0].unit %>
 <%# end %>
 
 
 
 <%# @examlist2 = Exam.find(:all, :conditions=>['klass_id is null or klass_id!=?',0]) %>
 
-<%# if (current_user.roles.name.include? 'Administration') %>
+<%# if (current_login.roles.name.include? 'Administration') %>
 	<%# @exam_list = @examlist2 %>
 	<%# @student_list = Student.all %>
 	<%# @subject_list = Programme.at_depth(2) %>

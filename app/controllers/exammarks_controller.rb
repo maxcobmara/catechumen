@@ -3,9 +3,9 @@ class ExammarksController < ApplicationController
   # GET /exammarks.xml
   def index
     submit_val = params[:exammark_search]
-    @position_exist = current_user.staff.position
+    @position_exist = current_login.staff.position
     if @position_exist     
-      @lecturer_programme = current_user.staff.position.unit
+      @lecturer_programme = current_login.staff.position.unit
       common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
@@ -103,7 +103,7 @@ class ExammarksController < ApplicationController
     ###--to do LATER---end----####### 
     
     ###--just amended
-    @lecturer_programme = current_user.staff.position.unit
+    @lecturer_programme = current_login.staff.position.unit
     common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
@@ -142,7 +142,7 @@ class ExammarksController < ApplicationController
   def edit
     @exammark = Exammark.find(params[:id])
     ###--just amended
-    @lecturer_programme = current_user.staff.position.unit
+    @lecturer_programme = current_login.staff.position.unit
     common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])

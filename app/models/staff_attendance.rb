@@ -12,34 +12,34 @@ class StaffAttendance < ActiveRecord::Base
   end
   #--shift?
   def self.find_mylate  
-    staffshift_id = Staff.find(:first, :conditions => ['thumb_id=?', User.current_user.staff.thumb_id]).staff_shift_id
+    staffshift_id = Staff.find(:first, :conditions => ['thumb_id=?', Login.current_login.staff.thumb_id]).staff_shift_id
     if staffshift_id != nil
       start_time = StaffShift.find(staffshift_id).start_at.strftime("%H:%M") 
     else
       start_time = "08:00"
     end
-    find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", User.current_user.staff.thumb_id, start_time ], :order => 'logged_at')
+    find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", Login.current_login.staff.thumb_id, start_time ], :order => 'logged_at')
     #asal--below
-    #find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", User.current_user.staff.thumb_id, "08:30" ], :order => 'logged_at')
+    #find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", Login.current_login.staff.thumb_id, "08:30" ], :order => 'logged_at')
   end
   def self.find_myearly
-    staffshift_id = Staff.find(:first, :conditions => ['thumb_id=?', User.current_user.staff.thumb_id]).staff_shift_id
+    staffshift_id = Staff.find(:first, :conditions => ['thumb_id=?', Login.current_login.staff.thumb_id]).staff_shift_id
     if staffshift_id != nil
         end_time = StaffShift.find(staffshift_id).end_at.strftime("%H:%M") 
     else
         end_time = "17:00"
     end
     #TESTING-OK:find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", 772, "18:00" ], :order => 'logged_at')
-    find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", User.current_user.staff.thumb_id, end_time ], :order => 'logged_at')
+    find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", Login.current_login.staff.thumb_id, end_time ], :order => 'logged_at')
     #asal--below
-    #find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", User.current_user.staff.thumb_id, "17:00" ], :order => 'logged_at')
+    #find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", Login.current_login.staff.thumb_id, "17:00" ], :order => 'logged_at')
   end
   #--shift?
   def i_have_a_thumb
-    if User.current_user.staff.thumb_id == nil
+    if Login.current_login.staff.thumb_id == nil
       772
     else
-      User.current_user.staff.thumb_id
+      Login.current_login.staff.thumb_id
     end
   end 
   
@@ -100,21 +100,21 @@ class StaffAttendance < ActiveRecord::Base
   
   
   
-  #Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", User.current_user.staff.position.child_ids]).map(&:staff_id)
+  #Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", Login.current_login.staff.position.child_ids]).map(&:staff_id)
   
-  #User.current_user.staff.position.child_ids
+  #Login.current_login.staff.position.child_ids
   #Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", possibles]).map(&:staff_id)
   
   def self.peeps
-    mystaff = User.current_user.staff.position.child_ids
+    mystaff = Login.current_login.staff.position.child_ids
     mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff]).map(&:staff_id)
     thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", mystaffids]).map(&:thumb_id)
   end
 
   def self.peeps2
-    mystaff = User.current_user.staff.position.child_ids  #position_ids for mystaff
+    mystaff = Login.current_login.staff.position.child_ids  #position_ids for mystaff
     #myotherstaff--added-if no superior(act as approver for staff who has no superior)
-    #myotherstaff = StaffAttendance.find(:all,:select=>:thumb_id,:conditions=>['approved_by=?',User.current_user.staff_id]).map(&:thumb_id) #position_ids for myotherstaff
+    #myotherstaff = StaffAttendance.find(:all,:select=>:thumb_id,:conditions=>['approved_by=?',Login.current_login.staff_id]).map(&:thumb_id) #position_ids for myotherstaff
     #mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff+myotherstaff]).map(&:staff_id)
     mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff]).map(&:staff_id)
     thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", mystaffids]).map(&:thumb_id)

@@ -70,7 +70,7 @@
 						<% end %>
 						<!--modified one 13dec2012-->
 						<%#= f.collection_select :examiner_staff1, Staff.find(:all), :id, :staff_name_with_position %>
-						<%#= f.collection_select :checked_by, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %>
+						<%#= f.collection_select :checked_by, Staff.find(:all, :conditions => ["id = ?", current_login.staff_id]), :id, :staff_name_with_position %>
 					</span>
 					<span class="span_staff1_off" style="display: none;">
 						<%= f.text_field :examiner1, :size=> 50  %>
@@ -98,7 +98,7 @@
 						<% end %>
 						<!--modified one 13dec2012-->
 						<%#= f.collection_select :examiner_staff2, Staff.find(:all), :id, :staff_name_with_position %>
-						<%#= f.collection_select :checked_by, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %>
+						<%#= f.collection_select :checked_by, Staff.find(:all, :conditions => ["id = ?", current_login.staff_id]), :id, :staff_name_with_position %>
 					</span>
 						<span class="span_staff2_off" style="display: none;">
 							<%= f.text_field :examiner2, :size=> 50 %>
@@ -121,11 +121,11 @@
 			
 			<tr class="span_is_checked" style="display: none;">
 				<td class="leftcol"><label for="processed_by">Name</label></td>
-				<td><%= f.collection_select :checked_by, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %>
+				<td><%= f.collection_select :checked_by, Staff.find(:all, :conditions => ["id = ?", current_login.staff_id]), :id, :staff_name_with_position %>
 				</td>
 			</tr>
 			
-			<% bosses = User.current_user.staff.position.ancestor_ids %>
+			<% bosses = Login.current_login.staff.position.ancestor_ids %>
 			<% myhod = Position.find(:all, :conditions => ['id IN (?)', bosses ], :select => :staff_id).map(&:staff_id) %>
 			<tr class="span_is_checked" style="display: none;">
 				<td class="leftcol"><label for="approved_date">To be verified by</label></td>

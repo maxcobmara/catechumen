@@ -10,8 +10,8 @@
 				  <% else %>
 	          <p><%= dash_attendance %> <%= link_to "late attendance for approval", { :controller => "attendances", :action => "index" } %></p>
 	        <% end %>
-	        <% c = User.find(:all, :select => "id", :conditions => ['roles.id =?', 7], :include => :roles).map(&:id) %>
-	        <% d = User.current_user.id.to_a %>
+	        <% c = Login.find(:all, :select => "id", :conditions => ['roles.id =?', 7], :include => :roles).map(&:id) %>
+	        <% d = Login.current_login.id.to_a %>
 	        <% if d & c == c %>
 	        "Yes"
 	        <% else %>

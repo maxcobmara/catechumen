@@ -28,11 +28,11 @@
 		<%=render :partial => 'form', :locals => {:f => f} %> 
 		<% end -%>
 		<!--2Jan2013-add additional condition for approval, must be submitted & login as hod WHEREAS for travel request owner, if submitted display acknowledgement only-->
-		<% if @travel_request.is_submitted == true && @travel_request.hod_id == User.current_user.staff_id %>
+		<% if @travel_request.is_submitted == true && @travel_request.hod_id == Login.current_login.staff_id %>
 		<%# if @travel_request.is_submitted == true  %>
 		    <%=render :partial => 'show_main' %>
 				<%=render :partial => 'approval', :locals => {:f => f} %>
-		<% elsif @travel_request.is_submitted == true && @travel_request.staff_id == User.current_user.staff_id %>
+		<% elsif @travel_request.is_submitted == true && @travel_request.staff_id == Login.current_login.staff_id %>
 			<H2>Edit Travel Request</H2>
 			Travel request already submitted to HOD for approval and no longer editable.
 		<% end -%>

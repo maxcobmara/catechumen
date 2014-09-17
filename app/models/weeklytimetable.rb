@@ -31,7 +31,7 @@ class Weeklytimetable < ActiveRecord::Base
       self.hod_approved_on	= nil
     end
     
-    if hod_rejected == true && endorsed_by == User.current_user.staff_id
+    if hod_rejected == true && endorsed_by == Login.current_login.staff_id
       self.is_submitted = nil
    end
     
@@ -50,17 +50,17 @@ class Weeklytimetable < ActiveRecord::Base
   end
   
   def hods  
-      hod = User.current_user.staff.position.parent
+      hod = Login.current_login.staff.position.parent
       approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
     
       #Ketua Program - ancestry_depth.2
       #hod = Position.find(:all, :conditions => ["ancestry=?","1/2"])
       
-      #if User.current_user.staff.position.root_id == User.current_user.staff.position.parent_id
-        #hod = User.current_user.staff.position.root_id
+      #if Login.current_login.staff.position.root_id == Login.current_login.staff.position.parent_id
+        #hod = Login.current_login.staff.position.root_id
         #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       #else
-        #hod = User.current_user.staff.position.root.child_ids
+        #hod = Login.current_login.staff.position.root.child_ids
         #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       #end
       #approver

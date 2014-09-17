@@ -5,7 +5,7 @@ module Paperclip
       # the given attachment as specified.
       #
       # Example:
-      #   describe User do
+      #   describe Login do
       #     it { should validate_attachment_content_type(:icon).
       #                   allowing('image/png', 'image/gif').
       #                   rejecting('text/plain', 'text/xml') }

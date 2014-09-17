@@ -73,7 +73,7 @@ module Paperclip
     # also queues up the previous file for deletion, to be flushed away on
     # #save of its host.  In addition to form uploads, you can also assign
     # another Paperclip attachment:
-    #   new_user.avatar = old_user.avatar
+    #   new_login.avatar = old_login.avatar
     def assign uploaded_file
       ensure_required_accessors!
 

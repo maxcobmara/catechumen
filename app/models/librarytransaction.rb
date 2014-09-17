@@ -62,14 +62,14 @@ class Librarytransaction < ActiveRecord::Base
   def varmyass
     if extended == true && (returnduedate - checkoutdate).to_i < 15
       self.returnduedate = returnduedate + 14.days
-      self.libextended_by = User.current_user.staff_id
+      self.libextended_by = Login.current_login.staff_id
     end
     
     if returned == false
       self.returneddate = nil
     elsif returned == true
       self.returneddate = Date.today
-      self.libreturned_by = User.current_user.staff_id
+      self.libreturned_by = Login.current_login.staff_id
     end
     
     if finepay == false

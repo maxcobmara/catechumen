@@ -62,21 +62,21 @@ class StaffAppraisal < ActiveRecord::Base
   
   #logic to set editable
   def edit_icon
-    if evaluation_status == "SKT awaiting PPP endorsement" && staff_id == User.current_user.staff_id
+    if evaluation_status == "SKT awaiting PPP endorsement" && staff_id == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "SKT awaiting PPP endorsement" && eval1_by == User.current_user.staff_id
+    elsif evaluation_status == "SKT awaiting PPP endorsement" && eval1_by == Login.current_login.staff_id
       "approval.png"
-    elsif evaluation_status == "SKT Review" && eval1_by == User.current_user.staff_id
+    elsif evaluation_status == "SKT Review" && eval1_by == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "Ready for PPP SKT Report" && staff_id == User.current_user.staff_id
+    elsif evaluation_status == "Ready for PPP SKT Report" && staff_id == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "PPP Report complete" && eval1_by == User.current_user.staff_id
+    elsif evaluation_status == "PPP Report complete" && eval1_by == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "Submitted for Evaluation by PPP"&& staff_id == User.current_user.staff_id
+    elsif evaluation_status == "Submitted for Evaluation by PPP"&& staff_id == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "Submitted for Evaluation by PPP to PPK" && staff_id == User.current_user.staff_id
+    elsif evaluation_status == "Submitted for Evaluation by PPP to PPK" && staff_id == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "Submitted by PPP for Evaluation  to PPK" && eval1_by == User.current_user.staff_id
+    elsif evaluation_status == "Submitted by PPP for Evaluation  to PPK" && eval1_by == Login.current_login.staff_id
       "noedit"
     elsif is_complete == true
       "noedit"

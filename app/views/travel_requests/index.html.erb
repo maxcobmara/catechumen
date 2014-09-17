@@ -26,7 +26,7 @@
       <td><%=h l(for_approval.depart_at) %></td>
       <td><%=h for_approval.document.title %></td>
 			<td><%=h for_approval.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
-			<td><%=h for_approval.hod_accept? ? image_tag("tick.png") : image_tag("user_go.png") %></td>
+			<td><%=h for_approval.hod_accept? ? image_tag("tick.png") : image_tag("login_go.png") %></td>
       <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => for_approval %></td>
 			<td width=10px><%= link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => for_approval %></td>
     </tr>
@@ -75,9 +75,9 @@
 			<td><%=h travel_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png") %></td>
       <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => travel_request %></td>
 			<td width=10px>
-					<% if travel_request.hod_accept == nil && travel_request.hod_id == User.current_user.staff_id%>
+					<% if travel_request.hod_accept == nil && travel_request.hod_id == Login.current_login.staff_id%>
 							<%= link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => travel_request  %>
-					<% elsif travel_request.is_submitted == true && travel_request.hod_accept == nil && travel_request.staff_id == User.current_user.staff_id %>
+					<% elsif travel_request.is_submitted == true && travel_request.hod_accept == nil && travel_request.staff_id == Login.current_login.staff_id %>
 					<% elsif travel_request.is_submitted == false || travel_request.is_submitted == nil %>
 							<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => travel_request%>
 					<% end %>

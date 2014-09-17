@@ -21,22 +21,22 @@ class Examresult < ActiveRecord::Base
   
   #14March2013 - rev 18June2013
      def self.set_intake_group(examyear,exammonth,semester)    #semester refers to semester of selected subject - subject taken by student of semester???
-        #@unit_dept = User.current_user.staff.position.unit
-        #@unit_dept = User.current_user.staff.position.ancestors.at_depth(2)[0].unit if @unit_dept==nil
+        #@unit_dept = Login.current_login.staff.position.unit
+        #@unit_dept = Login.current_login.staff.position.ancestors.at_depth(2)[0].unit if @unit_dept==nil
         
         #------------in case , error ..use the above 2 lines--------
        
-        @anc_depth = User.current_user.staff.position.ancestry_depth
-        @multi_position = Position.find(:all, :conditions => ['staff_id=?',User.current_user.staff_id])
+        @anc_depth = Login.current_login.staff.position.ancestry_depth
+        @multi_position = Position.find(:all, :conditions => ['staff_id=?',Login.current_login.staff_id])
         @ifmulti_position = @multi_position.count 
         if @anc_depth==2 
-          @dept_unit = User.current_user.staff.position.unit
+          @dept_unit = Login.current_login.staff.position.unit
         elsif @anc_depth < 2 
         	if @ifmulti_position > 1 
-        		@dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', User.current_user.staff_id,2]).unit 	
+        		@dept_unit = Position.find(:first,:conditions=>['staff_id=? and ancestry_depth=?', Login.current_login.staff_id,2]).unit 	
         	end 
         	if @anc_depth==1 
-        		@dept_unit = Position.find(:first,:conditions=>['staff_id=?', User.current_user.staff_id]).unit 
+        		@dept_unit = Position.find(:first,:conditions=>['staff_id=?', Login.current_login.staff_id]).unit 
         	end 
         elsif @anc_depth > 2
         	if @ifmulti_position > 1 
@@ -46,24 +46,24 @@ class Examresult < ActiveRecord::Base
         			end
         		end
         	else
-        		@dept_unit = User.current_user.staff.position.ancestors.at_depth(2)[0].unit 
+        		@dept_unit = Login.current_login.staff.position.ancestors.at_depth(2)[0].unit 
         	  if @dept_unit == "Pos Basik" && @anc_depth == 3
-        			@dept_unit = User.current_user.staff.position.unit 
+        			@dept_unit = Login.current_login.staff.position.unit 
         	 end 
         end 
        end
        
-       @current_user_roles=[]
-       User.current_user.roles.each do |role|
-       	  @current_user_roles<<role.id
+       @current_login_roles=[]
+       Login.current_login.roles.each do |role|
+       	  @current_login_roles<<role.id
        end 
 
      
-     #if @current_user_roles.include?(2)
+     #if @current_login_roles.include?(2)
         
         #--------------------
         
-         if (@dept_unit && @dept_unit == "Kebidanan" && exammonth.to_i <= 9) || (@dept_unit && @dept_unit != "Kebidanan" && exammonth.to_i <= 7)|| (@current_user_roles.include?(2) && exammonth.to_i <= 9)||(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i <= 9) #|| (@current_user_roles.include?(2) && exammonth.to_i <= 7) #(@dept_unit && @dept_unit == "Teknologi Maklumat" && exammonth.to_i <= 9)                                         # for 1st semester-month: Jan-July, exam should be between Feb-July
+         if (@dept_unit && @dept_unit == "Kebidanan" && exammonth.to_i <= 9) || (@dept_unit && @dept_unit != "Kebidanan" && exammonth.to_i <= 7)|| (@current_login_roles.include?(2) && exammonth.to_i <= 9)||(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i <= 9) #|| (@current_login_roles.include?(2) && exammonth.to_i <= 7) #(@dept_unit && @dept_unit == "Teknologi Maklumat" && exammonth.to_i <= 9)                                         # for 1st semester-month: Jan-July, exam should be between Feb-July
             @current_sem = 1 
             @current_year = examyear 
             if (semester.to_i-1) % 2 == 0                        					      # modulus-no balance - semester genab
@@ -81,7 +81,7 @@ class Examresult < ActiveRecord::Base
               #29June2013-------------------
               @intake_sem = @current_sem + 1 
       			end 
-          elsif (@dept_unit&& @dept_unit == "Kebidanan" && exammonth.to_i > 9) || (@dept_unit && @dept_unit != "Kebidanan" && exammonth.to_i > 7) || (@current_user_roles.include?(2) && exammonth.to_i > 7)||(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i > 7)                                   # 2nd semester starts on July-Dec- exam should be between August-Dec
+          elsif (@dept_unit&& @dept_unit == "Kebidanan" && exammonth.to_i > 9) || (@dept_unit && @dept_unit != "Kebidanan" && exammonth.to_i > 7) || (@current_login_roles.include?(2) && exammonth.to_i > 7)||(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i > 7)                                   # 2nd semester starts on July-Dec- exam should be between August-Dec
             @current_sem = 2 
             @current_year = examyear
             if (semester.to_i-1) % 2 == 0  
@@ -107,12 +107,12 @@ class Examresult < ActiveRecord::Base
       		if @intake_sem == 1 
       		    @intake_month = '03' if( @dept_unit && @dept_unit == "Kebidanan") 
       		    @intake_month = '01' if @dept_unit && @dept_unit != "Kebidanan"  
-      		    @intake_month = '03' if(@dept_unit && @current_user_roles.include?(2) && exammonth.to_i <=9 && exammonth.to_i > 7) 
+      		    @intake_month = '03' if(@dept_unit && @current_login_roles.include?(2) && exammonth.to_i <=9 && exammonth.to_i > 7) 
       		    @intake_month = '03' if(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i <=9 && exammonth.to_i > 7)
       		elsif @intake_sem == 2
       		    @intake_month = '09' if (@dept_unit && @dept_unit == "Kebidanan") 
       		    @intake_month = '07' if @dept_unit && @dept_unit != "Kebidanan"
-         		  @intake_month = '09' if(@dept_unit && @current_user_roles.include?(2) && exammonth.to_i >1 && exammonth.to_i <=3 ) 
+         		  @intake_month = '09' if(@dept_unit && @current_login_roles.include?(2) && exammonth.to_i >1 && exammonth.to_i <=3 ) 
       		    @intake_month = '03' if(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i >1 && exammonth.to_i <=3)    		  
       		end
 

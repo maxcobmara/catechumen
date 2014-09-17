@@ -33,10 +33,10 @@ h2. Site Key
 
 A Site key gives additional protection against a dictionary attack if your
 DB is ever compromised.  With no site key, we store
-  DB_password = hash(user_password, DB_user_salt)
+  DB_password = hash(login_password, DB_login_salt)
 If your database were to be compromised you'd be vulnerable to a dictionary
 attack on all your stupid users' passwords.  With a site key, we store
-  DB_password = hash(user_password, DB_user_salt, Code_site_key)
+  DB_password = hash(login_password, DB_login_salt, Code_site_key)
 That means an attacker needs access to both your site's code *and* its
 database to mount an "offline dictionary attack.":http://www.dwheeler.com/secure-programs/Secure-Programs-HOWTO/web-authentication.html
 

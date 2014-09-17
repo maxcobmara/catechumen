@@ -49,14 +49,14 @@
 				<% if asset_defect.decision != nil %><% permitted_to? :manage, :assets do %>
 				<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-9'), :action => 'kewpa9', :id => asset_defect %><div class="noti_bubble">9</div></div><% end %>
 				<!--add in this condition for asset admin who process a defect (KEWPA 9-aduan kerosakan:key-in 'syor pegawai aset' part)- giving her permission to submit form to Pengarah for view/verification as well as printing document & walk to Pengarah & request for his signature-but compulsory action be4 can print-must submit the form first(sent to Pengarah-is_processed will become TRUE)...This form become availabke 4 printing only to persion who processed this form-->
-				<% elsif asset_defect.is_processed == true && asset_defect.processed_by == User.current_user.staff_id %>
+				<% elsif asset_defect.is_processed == true && asset_defect.processed_by == Login.current_login.staff_id %>
 					<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-9'), :action => 'kewpa9', :id => asset_defect %><div class="noti_bubble">9</div></div>
 				<!--end of line 51-->
 				<% end %></td>
 		<td width=10px>
-			<% if asset_defect.is_processed == true && asset_defect.decision_by == User.current_user.staff_id && asset_defect.decision == nil %>
+			<% if asset_defect.is_processed == true && asset_defect.decision_by == Login.current_login.staff_id && asset_defect.decision == nil %>
 					<%= link_to image_tag("approval.png", :border => 0, :title => 'Approve'), :action => 'approve', :id => asset_defect %>
-			<% elsif asset_defect.is_processed == true || asset_defect.decision != nil && asset_defect.processed_by == User.current_user.staff_id %>
+			<% elsif asset_defect.is_processed == true || asset_defect.decision != nil && asset_defect.processed_by == Login.current_login.staff_id %>
 			<% else %>
 				<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => asset_defect %>
 			<% end %></td>

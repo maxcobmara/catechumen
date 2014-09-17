@@ -4,9 +4,9 @@ Given "I have a rails application" do
     And this plugin is available
     And I have a "users" resource with "name:string"
     And I turn off class caching
-    Given I save the following as "app/models/user.rb"
+    Given I save the following as "app/models/login.rb"
       """
-      class User < ActiveRecord::Base
+      class Login < ActiveRecord::Base
       end
       """
     And I save the following as "config/s3.yml"
@@ -17,7 +17,7 @@ Given "I have a rails application" do
       """
     And I save the following as "app/views/users/new.html.erb"
       """
-      <% form_for @user, :html => { :multipart => true } do |f| %>
+      <% form_for @login, :html => { :multipart => true } do |f| %>
         <%= f.text_field :name %>
         <%= f.file_field :avatar %>
         <%= submit_tag "Submit" %>
@@ -25,8 +25,8 @@ Given "I have a rails application" do
       """
     And I save the following as "app/views/users/show.html.erb"
       """
-      <p>Name: <%= @user.name %></p>
-      <p>Avatar: <%= image_tag @user.avatar.url %></p>
+      <p>Name: <%= @login.name %></p>
+      <p>Avatar: <%= image_tag @login.avatar.url %></p>
       """
     And I run "script/generate paperclip user avatar"
     And the rails application is prepped and running

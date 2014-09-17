@@ -84,7 +84,7 @@ class TravelRequestsController < ApplicationController
   end
   
   def travel_log_index
-    @my_approved_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=?', User.current_user.staff_id, true])
+    @my_approved_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=?', Login.current_login.staff_id, true])
 
     respond_to do |format|
       format.html # index.html.erb

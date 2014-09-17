@@ -12,7 +12,7 @@ class Ptdo < ActiveRecord::Base
   
   
   def whoami
-    #self.staff_id = User.current_user.staff.id
+    #self.staff_id = Login.current_login.staff.id
     self.ptcourse_id = ptschedule.ptcourse.id
   end
   

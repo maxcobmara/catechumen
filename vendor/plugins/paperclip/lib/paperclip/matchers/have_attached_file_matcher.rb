@@ -5,7 +5,7 @@ module Paperclip
       # given name.
       #
       # Example:
-      #   describe User do
+      #   describe Login do
       #     it { should have_attached_file(:avatar) }
       #   end
       def have_attached_file name

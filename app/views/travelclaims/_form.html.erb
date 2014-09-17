@@ -7,7 +7,7 @@
 		<th>Purpose</th>
 		<th>Travel Dates</th>
 	</tr>
-	<% for travel_request in TravelRequest.find(:all, :conditions => ['staff_id =?', User.current_user.staff_id]) %>
+	<% for travel_request in TravelRequest.find(:all, :conditions => ['staff_id =?', Login.current_login.staff_id]) %>
 	<tr>
 		<td width=10px><%= check_box_tag "travelclaim[travel_request_ids][]", travel_request.id, @travelclaim.travel_requests.include?(travel_request) %>
 	  <td><%= travel_request.request_code %></td>

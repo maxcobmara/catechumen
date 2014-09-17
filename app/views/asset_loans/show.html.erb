@@ -14,7 +14,7 @@
 
 
 
-<% if @asset_loan.is_approved == nil && @asset_loan.loaned_by == User.current_user.staff_id %>
+<% if @asset_loan.is_approved == nil && @asset_loan.loaned_by == Login.current_login.staff_id %>
 <%= link_to "Approve", :action => 'approve', :id => @asset_loan %>
 <% elsif @asset_loan.is_approved == false || @asset_loan.is_approved == true %>
 <% else %>

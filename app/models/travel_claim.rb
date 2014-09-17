@@ -42,22 +42,22 @@ class TravelClaim < ActiveRecord::Base
   end
   
   def my_claim_status
-    if staff_id == User.current_user.staff_id && is_submitted != true 
+    if staff_id == Login.current_login.staff_id && is_submitted != true 
       "editing"
     #----4Jan2012
-    elsif staff_id != User.current_user.staff_id && is_submitted != true	#add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
+    elsif staff_id != Login.current_login.staff_id && is_submitted != true	#add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
      "editing by staff"
     #----4Jan2012
-    elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == nil
+    elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == nil
       "submitted"
-    elsif staff_id != User.current_user.staff_id && is_submitted == true && is_checked == nil
+    elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == nil
       "for checking"
-    elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == false && is_returned != true
+    elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned != true
       "returned"
-    elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == false && is_returned == true
+    elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == true
       "resubmitted to finance"
     #----4Jan2013
-    elsif staff_id != User.current_user.staff_id && is_submitted == true && is_checked == false	&& is_returned != true #&& is_returned != true	#for status viewing or "status not known" will appear if login as finance staff!
+    elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == false	&& is_returned != true #&& is_returned != true	#for status viewing or "status not known" will appear if login as finance staff!
       "returned to staff for amendment"
     #----4Jan2013
     elsif is_submitted == true && is_checked == true && is_approved != true
@@ -65,7 +65,7 @@ class TravelClaim < ActiveRecord::Base
     elsif is_submitted == true && is_checked == true && is_approved == true
       "approved"
     #----4Jan2012
-    elsif staff_id != User.current_user.staff_id && is_submitted == true && is_checked != true && is_returned == true 	#for status viewing only or "status not known" will appear if login as finance staff!
+    elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked != true && is_returned == true 	#for status viewing only or "status not known" will appear if login as finance staff!
       "amended and resubmit for finance check"
     #----4Jan2012
     else

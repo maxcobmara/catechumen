@@ -2,11 +2,11 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Lists of Users</h2>
+		<h2 class="left">Lists of Logins</h2>
 	</div>
 </div>
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Course')+ "New",  new_user_path  %></p>
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Course')+ "New",  new_login_path  %></p>
 </div>
 <div class="indextable">
 	<table>
@@ -20,20 +20,20 @@
     	<th>Email</th>
 			<th colspan=4 class="ac">Control</th>
   	</tr>
-		<% for user in @users %>
+		<% for user in @logins %>
 	  <tr>
-			<td><%=h user.user_nama %></td>
-	    <td><%=h user.login %></td>
-	    <td><%=h user.email %></td>
-	    <td width=10px><% if user.staff_id == nil && user.student_id == nil%>
+			<td><%=h login.login_nama %></td>
+	    <td><%=h login.login %></td>
+	    <td><%=h login.email %></td>
+	    <td width=10px><% if login.staff_id == nil && login.student_id == nil%>
 					<%= link_to image_tag("accept.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => user %>
 					<% end %></td>
 	    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => user %></td>
 	    <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => user %></td>
-	    <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), user, :confirm => "Are you sure you want to delete '#{user.login}'?", :method => :delete %></td>
+	    <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), user, :confirm => "Are you sure you want to delete '#{login.login}'?", :method => :delete %></td>
 	  </tr>
 	<% end %>
 	</table>
 </div>
 <br />
-<%= link_to 'New User', new_user_path %>
+<%= link_to 'New Login', new_login_path %>

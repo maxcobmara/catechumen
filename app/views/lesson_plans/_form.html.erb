@@ -3,8 +3,8 @@
 	<table>
 		<tr>
 			<td class="leftcol"><%= f.label :lecturer %></td>
-			<td><%#= f.collection_select :lecturer, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar']), :id, :name, :include_blank=>"Select Lecturer", :selected => User.current_user.staff_id %>
-				&nbsp;&nbsp;<%=h User.current_user.staff.name %><%= f.hidden_field :lecturer, :value=>User.current_user.staff_id %>
+			<td><%#= f.collection_select :lecturer, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar']), :id, :name, :include_blank=>"Select Lecturer", :selected => Login.current_login.staff_id %>
+				&nbsp;&nbsp;<%=h Login.current_login.staff.name %><%= f.hidden_field :lecturer, :value=>Login.current_login.staff_id %>
 			</td>
 		</tr>
 		<tr>
@@ -13,9 +13,9 @@
 			<td>
 				<% if @lesson_plan && @lesson_plan.schedule.nil? == true %>
 					<% @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact %>
-					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id NOT IN (?)',User.current_user.staff_id,@lessonplan_schedule]), :id, :day_time_slot, :include_blank=>"Select Schedule" %>
+					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id NOT IN (?)',Login.current_login.staff_id,@lessonplan_schedule]), :id, :day_time_slot, :include_blank=>"Select Schedule" %>
 				<% else %>
-					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?',User.current_user.staff_id]), :id, :day_time_slot, :include_blank=>"Select Schedule" %>
+					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?',Login.current_login.staff_id]), :id, :day_time_slot, :include_blank=>"Select Schedule" %>
 				<% end %>
 			</td>
 			<!--START-revised on 3Nov2013-->

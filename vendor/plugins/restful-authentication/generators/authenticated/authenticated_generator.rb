@@ -27,7 +27,7 @@ class AuthenticatedGenerator < Rails::Generator::NamedBase
                 :model_controller_class_name,
                 :model_controller_singular_name,
                 :model_controller_plural_name,
-                :model_controller_routing_name,           # new_user_path
+                :model_controller_routing_name,           # new_login_path
                 :model_controller_routing_path,           # /users/new
                 :model_controller_controller_name         # users
   alias_method  :model_controller_file_name,  :model_controller_singular_name
@@ -165,11 +165,11 @@ class AuthenticatedGenerator < Rails::Generator::NamedBase
                     File.join('spec/helpers',
                               model_controller_class_path,
                               "#{table_name}_helper_spec.rb")
-        m.template  'spec/models/user_spec.rb',
+        m.template  'spec/models/login_spec.rb',
                     File.join('spec/models',
                               class_path,
                               "#{file_name}_spec.rb")
-        m.template 'spec/fixtures/users.yml',
+        m.template 'spec/fixtures/logins.yml',
                     File.join('spec/fixtures',
                                class_path,
                               "#{table_name}.yml")
@@ -181,7 +181,7 @@ class AuthenticatedGenerator < Rails::Generator::NamedBase
          File.join('features/step_definitions/ra_response_steps.rb')
         m.template  'features/step_definitions/ra_resource_steps.rb',
          File.join('features/step_definitions/ra_resource_steps.rb')
-        m.template  'features/step_definitions/user_steps.rb',
+        m.template  'features/step_definitions/login_steps.rb',
          File.join('features/step_definitions/', "#{file_name}_steps.rb")
         m.template  'features/accounts.feature',
          File.join('features', 'accounts.feature')
@@ -208,7 +208,7 @@ class AuthenticatedGenerator < Rails::Generator::NamedBase
         if options[:include_activation]
           m.template 'test/mailer_test.rb', File.join('test/unit', class_path, "#{file_name}_mailer_test.rb")
         end
-        m.template 'spec/fixtures/users.yml',
+        m.template 'spec/fixtures/logins.yml',
                     File.join('test/fixtures',
                               class_path,
                               "#{table_name}.yml")
@@ -430,7 +430,7 @@ protected
       :model_controller_class_name,
       :model_controller_singular_name,
       :model_controller_plural_name,
-      :model_controller_routing_name,           # new_user_path
+      :model_controller_routing_name,           # new_login_path
       :model_controller_routing_path,           # /users/new
       :model_controller_controller_name,        # users
       :model_controller_file_name,  :model_controller_singular_name,

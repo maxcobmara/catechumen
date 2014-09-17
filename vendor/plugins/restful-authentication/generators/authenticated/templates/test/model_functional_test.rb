@@ -50,20 +50,20 @@ class <%= model_controller_class_name %>ControllerTest < ActionController::TestC
     end
   end
   <% if options[:stateful] %>
-  def test_should_sign_up_user_in_pending_state
+  def test_should_sign_up_login_in_pending_state
     create_<%= file_name %>
     assigns(:<%= file_name %>).reload
     assert assigns(:<%= file_name %>).pending?
   end<% end %>
 
   <% if options[:include_activation] %>
-  def test_should_sign_up_user_with_activation_code
+  def test_should_sign_up_login_with_activation_code
     create_<%= file_name %>
     assigns(:<%= file_name %>).reload
     assert_not_nil assigns(:<%= file_name %>).activation_code
   end
 
-  def test_should_activate_user
+  def test_should_activate_login
     assert_nil <%= class_name %>.authenticate('aaron', 'test')
     get :activate, :activation_code => <%= table_name %>(:aaron).activation_code
     assert_redirected_to '/<%= controller_routing_path %>/new'
@@ -71,14 +71,14 @@ class <%= model_controller_class_name %>ControllerTest < ActionController::TestC
     assert_equal <%= table_name %>(:aaron), <%= class_name %>.authenticate('aaron', 'monkey')
   end
   
-  def test_should_not_activate_user_without_key
+  def test_should_not_activate_login_without_key
     get :activate
     assert_nil flash[:notice]
   rescue ActionController::RoutingError
     # in the event your routes deny this, we'll just bow out gracefully.
   end
 
-  def test_should_not_activate_user_with_blank_key
+  def test_should_not_activate_login_with_blank_key
     get :activate, :activation_code => ''
     assert_nil flash[:notice]
   rescue ActionController::RoutingError

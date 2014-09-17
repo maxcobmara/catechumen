@@ -4,7 +4,7 @@
   <table width=100%>
 		<tr>
 			<td class="leftcol"><label for="staff_id"><b><%= t 'evaluation.form.name' %></b><font color="red"> * </font></label></td>
-			<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ['id = ?', User.current_user.staff_id]), :id, :mykad_with_staff_name%></td>
+			<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ['id = ?', Login.current_login.staff_id]), :id, :mykad_with_staff_name%></td>
 		</tr>
 		<tr>
 		 <td class="leftcol"><label for="evaldt"><b><%= t 'evaluation.form.evaluationdate' %></b></label></td>
@@ -41,7 +41,7 @@
 			<th>Date</th>
 			<th>Duration</th>
 		</tr>
-		<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', User.current_user.staff_id]) %>
+		<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', Login.current_login.staff_id]) %>
 		<tr>
 			<td><%= ptdo.ptschedule.ptcourse.name %></td>
 			

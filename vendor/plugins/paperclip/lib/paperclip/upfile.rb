@@ -1,7 +1,7 @@
 module Paperclip
   # The Upfile module is a convenience module for adding uploaded-file-type methods
   # to the +File+ class. Useful for testing.
-  #   user.avatar = File.new("test/test_avatar.jpg")
+  #   login.avatar = File.new("test/test_avatar.jpg")
   module Upfile
 
     # Infer the MIME-type of the file from the extension.

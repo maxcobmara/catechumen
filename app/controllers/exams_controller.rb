@@ -4,9 +4,9 @@ class ExamsController < ApplicationController
   def index
     #@exams = Exam.all
     ##----------
-    @position_exist = current_user.staff.position
+    @position_exist = current_login.staff.position
     if @position_exist  
-      @lecturer_programme = current_user.staff.position.unit
+      @lecturer_programme = current_login.staff.position.unit
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end
@@ -44,7 +44,7 @@ class ExamsController < ApplicationController
   def new
     @exam = Exam.new
     #--newly added
-    @lecturer_programme = current_user.staff.position.unit      
+    @lecturer_programme = current_login.staff.position.unit      
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end
@@ -71,7 +71,7 @@ class ExamsController < ApplicationController
   def edit
     @exam = Exam.find(params[:id])
     @programme_id = @exam.subject.root.id
-    @lecturer_programme = current_user.staff.position.unit  
+    @lecturer_programme = current_login.staff.position.unit  
     all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
     if @lecturer_programme == 'Commonsubject'
       @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
@@ -141,7 +141,7 @@ class ExamsController < ApplicationController
     
     ###----subject + common subject
     @programme_id = @exam.subject.root.id
-    @lecturer_programme = current_user.staff.position.unit  
+    @lecturer_programme = current_login.staff.position.unit  
     all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
     if @lecturer_programme == 'Commonsubject'
       @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
@@ -266,7 +266,7 @@ class ExamsController < ApplicationController
   end
   
   def view_subject_main
-    @lecturer_programme = current_user.staff.position.unit 
+    @lecturer_programme = current_login.staff.position.unit 
     @programme_id = params[:programmeid]
     unless @programme_id.blank? 
       all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
@@ -281,7 +281,7 @@ class ExamsController < ApplicationController
   end
   
   def view_subject
-    @lecturer_programme = current_user.staff.position.unit 
+    @lecturer_programme = current_login.staff.position.unit 
     @programme_id = params[:programmeid]
     @exam_id = params[:examid]
     unless @programme_id.blank? 

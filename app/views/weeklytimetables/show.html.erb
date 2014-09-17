@@ -224,7 +224,7 @@
 </table>
 </fieldset>
 <!---->
-<% if (@weeklytimetable.is_submitted != true && @weeklytimetable.prepared_by == User.current_user.staff_id) || (@weeklytimetable.prepared_by == User.current_user.staff_id && @weeklytimetable.hod_rejected? == true && @weeklytimetable.is_submitted != true) %>
+<% if (@weeklytimetable.is_submitted != true && @weeklytimetable.prepared_by == Login.current_login.staff_id) || (@weeklytimetable.prepared_by == Login.current_login.staff_id && @weeklytimetable.hod_rejected? == true && @weeklytimetable.is_submitted != true) %>
 	<%= link_to 'Edit', edit_weeklytimetable_path(@weeklytimetable) %> |
 <% end %>
 <%= link_to 'Back', weeklytimetables_path %>

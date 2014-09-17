@@ -13,13 +13,13 @@ class DocumentsController < ApplicationController
       #@documents = Document.find(:all, :conditions => ['refno ILIKE ? or title ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])#.search(params[:search])
       @documents = Document.search(params[:search])
       #-------recipient
-      @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and (refno ILIKE ? or title ILIKE ?)', User.current_user.staff_id,"%#{params[:search]}%", "%#{params[:search]}%"], :order => "created_at DESC")
+      @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and (refno ILIKE ? or title ILIKE ?)', Login.current_login.staff_id,"%#{params[:search]}%", "%#{params[:search]}%"], :order => "created_at DESC")
       #-------recipient
     elsif (params[:search] == '' && params[:search2] =='') || (params[:search] == nil && params[:search2] ==nil)
       #@documents = Document.find(:all, :conditions => ['refno ILIKE ? or title ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
       @documents = Document.search(params[:search])
       #-------recipient
-      @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and (refno ILIKE ? or title ILIKE ?)', User.current_user.staff_id,"%#{params[:search]}%", "%#{params[:search]}%"], :order => "created_at DESC")
+      @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and (refno ILIKE ? or title ILIKE ?)', Login.current_login.staff_id,"%#{params[:search]}%", "%#{params[:search]}%"], :order => "created_at DESC")
       #-------recipient
     end
     @document_files = @documents.group_by { |t| t.filedocer }
@@ -50,16 +50,16 @@ class DocumentsController < ApplicationController
 
       if (@dadidu=='' && @dadidu2=='')||(@dadidu==nil && @dadidu2==nil)
            @documents = Document.find(:all)
-           @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =?',User.current_user.staff_id], :order => "created_at DESC")
+           @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =?',Login.current_login.staff_id], :order => "created_at DESC")
       elsif @dadidu!='' && @dadidu2 ==''
           @documents = Document.find(:all, :conditions=> ['letterxdt=?',"#{@dadidu}"])
-          @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and letterxdt=?', User.current_user.staff_id,"#{@dadidu}"], :order => "created_at DESC")
+          @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and letterxdt=?', Login.current_login.staff_id,"#{@dadidu}"], :order => "created_at DESC")
       elsif @dadidu2!='' && @dadidu ==''
           @documents = Document.find(:all, :conditions=> ['letterxdt=?',"#{@dadidu2}"])
-          @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and letterxdt=?', User.current_user.staff_id,"#{@dadidu2}"], :order => "created_at DESC")
+          @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and letterxdt=?', Login.current_login.staff_id,"#{@dadidu2}"], :order => "created_at DESC")
       elsif @dadidu!='' && @dadidu2!=''
           @documents = Document.find(:all, :conditions=> ["letterxdt>=? AND letterxdt<=?","#{@dadidu}","#{@dadidu2}"])
-          @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? AND letterxdt>=? AND letterxdt<=?', User.current_user.staff_id,"#{@dadidu}","#{@dadidu2}"], :order => "created_at DESC")
+          @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? AND letterxdt>=? AND letterxdt<=?', Login.current_login.staff_id,"#{@dadidu}","#{@dadidu2}"], :order => "created_at DESC")
           #@documents = Document.find(:all, :conditions=> ['letterdt=?',"2013-04-01"])  #for testing
       end
       @document_files = @documents.group_by { |t| t.filedocer }

@@ -27,7 +27,7 @@ class TopicdetailsController < ApplicationController
   # GET /topicdetails/new.xml
   def new
     @topicdetail = Topicdetail.new
-    @lecturer_programme = current_user.staff.position.unit
+    @lecturer_programme = current_login.staff.position.unit
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end

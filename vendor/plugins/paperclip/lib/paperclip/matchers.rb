@@ -18,7 +18,7 @@ module Paperclip
     #   end
     #
     # Example:
-    #   describe User do
+    #   describe Login do
     #     it { should have_attached_file(:avatar) }
     #     it { should validate_attachment_presence(:avatar) }
     #     it { should validate_attachment_content_type(:avatar).

@@ -11,7 +11,7 @@ class Travelclaimrequest < ActiveRecord::Base
   end
   
   def unclaimed_travel_requests
-    Travelrequest.find(:all, :condition => ['staff_id =?', User.current_user.staff_id])
+    Travelrequest.find(:all, :condition => ['staff_id =?', Login.current_login.staff_id])
   end
   
 end

@@ -5,7 +5,7 @@
 	<H2>Lesson Plan Reporting</H2>
 	<%=render :partial => 'show_main_report' %>
 
-	<% if @lesson_plan.lecturer == User.current_user.staff_id && @lesson_plan.report_submit != true %>
+	<% if @lesson_plan.lecturer == Login.current_login.staff_id && @lesson_plan.report_submit != true %>
 		<BR>
 		<H2>Report Details</H2>
 	
@@ -57,7 +57,7 @@
 			</tr>
 		</table>
 	
-	<% elsif @lesson_plan.endorsed_by == User.current_user.staff_id && @lesson_plan.report_submit == true %>
+	<% elsif @lesson_plan.endorsed_by == Login.current_login.staff_id && @lesson_plan.report_submit == true %>
 	
 		<H2>Review by TPA/Head of Programme</H2>
 		<table width=100% >

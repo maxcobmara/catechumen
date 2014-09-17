@@ -59,9 +59,9 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def requires_approval
-    if hod_accept == nil && hod_id == User.current_user.staff_id
+    if hod_accept == nil && hod_id == Login.current_login.staff_id
       (link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => travel_request).to_s
-    elsif is_submitted == true && hod_accept == nil && staff_id == User.current_user.staff_id
+    elsif is_submitted == true && hod_accept == nil && staff_id == Login.current_login.staff_id
       ""
     elsif is_submitted == false || is_submitted == nil
       (link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => travel_request).to_s
@@ -72,11 +72,11 @@ class TravelRequest < ActiveRecord::Base
   
   #controller searches
   def self.in_need_of_approval
-    find(:all, :conditions => ['hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', User.current_user.staff_id, true, nil, false])
+    find(:all, :conditions => ['hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', Login.current_login.staff_id, true, nil, false])
   end
   
   def self.my_travel_requests
-      find(:all, :conditions => ['staff_id = ?', User.current_user.staff_id])
+      find(:all, :conditions => ['staff_id = ?', Login.current_login.staff_id])
   end
   
   
@@ -100,20 +100,20 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def repl_staff
-      siblings = User.current_user.staff.position.sibling_ids
-      children = User.current_user.staff.position.child_ids
+      siblings = Login.current_login.staff.position.sibling_ids
+      children = Login.current_login.staff.position.child_ids
       possibles = siblings + children
       replacements = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", possibles]).map(&:staff_id)
       replacements
   end
   
   def hods
-      if User.current_user.staff.position.root_id == User.current_user.staff.position.parent_id
-        hod = User.current_user.staff.position.root_id
+      if Login.current_login.staff.position.root_id == Login.current_login.staff.position.parent_id
+        hod = Login.current_login.staff.position.root_id
         approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       else
-        hod = User.current_user.staff.position.root.child_ids
-        hod << User.current_user.staff.position.root_id
+        hod = Login.current_login.staff.position.root.child_ids
+        hod << Login.current_login.staff.position.root_id
         approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       end
       approver

@@ -4,9 +4,9 @@ class EvaluateCoursesController < ApplicationController
   def index
     #@evaluate_courses = EvaluateCourse.all
     ###--just added
-    @position_exist = current_user.staff.position
+    @position_exist = current_login.staff.position
     if @position_exist     
-      @lecturer_programme = current_user.staff.position.unit
+      @lecturer_programme = current_login.staff.position.unit
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end
@@ -41,7 +41,7 @@ class EvaluateCoursesController < ApplicationController
   # GET /evaluate_courses/new.xml
   def new
     @evaluate_course = EvaluateCourse.new
-    @lecturer_programme = current_user.staff.position.unit
+    @lecturer_programme = current_login.staff.position.unit
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end

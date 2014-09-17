@@ -32,14 +32,14 @@
 
 			<!--</table>-->
 			
-		  <% if User.current_user.staff.position.is_root? == false %>
-				<%# if User.current_user.staff.position.parent.staff_id!=nil %>
-					<%= f.hidden_field :approved_by, :value => User.current_user.staff.position.parent.staff_id %>
+		  <% if Login.current_login.staff.position.is_root? == false %>
+				<%# if Login.current_login.staff.position.parent.staff_id!=nil %>
+					<%= f.hidden_field :approved_by, :value => Login.current_login.staff.position.parent.staff_id %>
 				<%# else %>
 					<!--those who has no superior?--><!--require tester confirmation--><!--
 					<tr><td class="leftcol"><%#= t 'attendance.approve_id' %></td>
 					<td><%#= f.collection_select :approved_by, Staff.find(:all, :order=> :name), :id, :name, :include_blank => "Select Approving Officer" %>
-						<%#= f.collection_select :approved_by, Staff.find( User.current_user.staff_id).position.ancestors, :id, :staff_name, :include_blank => true %></td></tr>	    	
+						<%#= f.collection_select :approved_by, Staff.find( Login.current_login.staff_id).position.ancestors, :id, :staff_name, :include_blank => true %></td></tr>	    	
 				<%# end %>-->
 		  <% else %>
 		  <% end -%>

@@ -112,8 +112,8 @@ class Exammark < ActiveRecord::Base
   
   #14March2013 - rev 17June2013
   def self.set_intake_group(examyear,exammonth,semester)    #semester refers to semester of selected subject - subject taken by student of semester???
-    @unit_dept = User.current_user.staff.position.unit
-    #@unit_dept = User.current_user.staff.position.ancestors.at_depth(2)[0].unit if @unit_dept==nil
+    @unit_dept = Login.current_login.staff.position.unit
+    #@unit_dept = Login.current_login.staff.position.ancestors.at_depth(2)[0].unit if @unit_dept==nil
      
      #if exammonth.to_i <= 7
      if (@unit_dept && @unit_dept == "Kebidanan" && exammonth.to_i <= 9) || (@unit_dept && @unit_dept != "Kebidanan" && exammonth.to_i <= 7)                                           # for 1st semester-month: Jan-July, exam should be between Feb-July

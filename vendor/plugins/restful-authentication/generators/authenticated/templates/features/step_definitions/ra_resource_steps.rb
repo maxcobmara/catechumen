@@ -8,7 +8,7 @@
 #
 # Build a resource as described, store it as an @instance variable. Ex:
 #   "Given a user with login: 'mojojojo'"
-# produces a User instance stored in @user with 'mojojojo' as its login
+# produces a Login instance stored in @login with 'mojojojo' as its login
 # attribute.
 #
 Given "a $resource instance with $attributes" do |resource, attributes|
@@ -22,7 +22,7 @@ end
 #
 # Stuff attributes into a preexisting @resource
 #   "And the user has thac0: 3"
-# takes the earlier-defined @user instance and sets its thac0 to '3'.
+# takes the earlier-defined @login instance and sets its thac0 to '3'.
 #
 Given "the $resource has $attributes" do |resource, attributes|
   klass, instance, attributes = parse_resource_args resource, attributes
@@ -171,7 +171,7 @@ end
 #   klass, instance = parse_resource_args 'user'
 #   instance = klass.new({login => 'me', password => 'monkey', ...})
 #   keep_instance! resource, instance
-# keeps the just-constructed User model in the @user instance variable.
+# keeps the just-constructed Login model in the @login instance variable.
 #
 def keep_instance! resource, object
   instance_variable_set("@#{resource}", object)

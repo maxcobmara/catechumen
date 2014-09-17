@@ -3,21 +3,21 @@
 <% form_for(@document, :html => { :multipart => true }) do |f| %>
   <%= f.error_messages %>
 
-	<% if (current_user.staff_id == @document.prepared_by) || (current_user.staff_id == @document.stafffiled_id) %>
+	<% if (current_login.staff_id == @document.prepared_by) || (current_login.staff_id == @document.stafffiled_id) %>
 		<%=render :partial => 'form', :locals => {:f => f} %> 
 	<% end %>
 	
 	<!--5Apr2013-recepient is no longer edit able to edit..view only-->
-	<%# if current_user.staff_id == @document.cc1staff_id %><%#|| current_user.staff_id == @document.cc2staff_id %>
+	<%# if current_login.staff_id == @document.cc1staff_id %><%#|| current_login.staff_id == @document.cc2staff_id %>
    		<!--<div class="tform"><%#= render 'show' %></div>-->
 	<%# end %>
 	<!--5Apr2013-recepient is no longer edit able to edit..view only-->
 	
 	<!--Upon UAT(retest) dated 5Apr2013-this part is taken out-not required-no need to reply any action, dacument circulated just for 'makluman'-->
-	<%# if current_user.staff_id == @document.cc1staff_id %>
+	<%# if current_login.staff_id == @document.cc1staff_id %>
    		<%#= render  :partial => 'action1', :locals => {:f => f} %>
 	<%# end %>
-	<%# if current_user.staff_id == @document.cc2staff_id %>
+	<%# if current_login.staff_id == @document.cc2staff_id %>
    		<%#= render  :partial => 'action2', :locals => {:f => f} %>
 	<%# end %>
 	<!--Upon UAT(retest) dated 5Apr2013-this part is taken out-not required-no need to reply any action, dacument circulated just for 'makluman'-->

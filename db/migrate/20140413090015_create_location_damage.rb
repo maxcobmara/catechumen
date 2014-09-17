@@ -7,7 +7,7 @@ class CreateLocationDamage < ActiveRecord::Migration
       t.date      :repaired_on
       t.integer   :document_id
       t.date      :inspection_on
-      t.integer   :user_id
+      t.integer   :login_id
       t.integer   :college_id
       t.timestamps      
     end

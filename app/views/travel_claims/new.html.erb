@@ -2,7 +2,7 @@
   <%= f.error_messages %>
 	<div class="tform">
 		<H2>New Travel Claims</H2>
-		<% @my_approved_unclaimed_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=?', User.current_user.staff_id, true])%>
+		<% @my_approved_unclaimed_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=?', Login.current_login.staff_id, true])%>
 		<% if @my_approved_unclaimed_requests.count < 1 %>
 		You have no approved travel requests for processing
 		</div>
@@ -15,7 +15,7 @@
 
 					<tr>
 						<td class="leftcol"><label for="staff_id"><b>Staff Name:</b></label></td>
-						<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :name %></td>
+						<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_login.staff_id]), :id, :name %></td>
 					</tr>
 				</table><BR/>
 				<%=render :partial => 'form', :locals => {:f => f} %> 

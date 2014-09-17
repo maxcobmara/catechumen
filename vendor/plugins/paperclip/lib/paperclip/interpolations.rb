@@ -63,7 +63,7 @@ module Paperclip
     end
 
     # Returns the underscored, pluralized version of the class name.
-    # e.g. "users" for the User class.
+    # e.g. "users" for the Login class.
     # NOTE: The arguments need to be optional, because some tools fetch
     # all class names. Calling #class will return the expected class.
     def class attachment = nil, style_name = nil

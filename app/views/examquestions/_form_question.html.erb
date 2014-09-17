@@ -43,7 +43,7 @@
 			<td class="leftcol"><label for="creator_id"><b>Creator:<%#=@dept_unit%></b></label></td>
 			<!--13Apr2013-assign creator value-->
 			<% if @examquestion.id.nil? || @examquestion.id.blank? %>
-				<% @creator = User.current_user.staff_id %>
+				<% @creator = Login.current_login.staff_id %>
 			<% else %>
 				<% @creator = @examquestion.creator_id  %>
 			<% end %>

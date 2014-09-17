@@ -40,15 +40,15 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
     Cofile.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
   end
   
-  #<% @admin = User.current_user.roles.map(&:id).include?(2) %>
+  #<% @admin = Login.current_login.roles.map(&:id).include?(2) %>
   
   def owner_ids
     a = Array.new
     #a.push(stafffiled_id, cc1staff_id, cc2staff_id)
-    @admin = User.current_user.roles.map(&:id).include?(2) 
+    @admin = Login.current_login.roles.map(&:id).include?(2) 
     a.push(stafffiled_id,prepared_by)#,cc1staff_id)
     if @admin == true 
-        a.push(stafffiled_id,prepared_by,User.current_user.staff_id)
+        a.push(stafffiled_id,prepared_by,Login.current_login.staff_id)
     end
     a
   end

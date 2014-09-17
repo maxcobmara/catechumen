@@ -26,11 +26,11 @@
     <th colspan="4">Control</th>
   </tr>
 <!--hack-21March2013-->
-<% current_roles=[]%><% User.current_user.roles.each do |x| %><% current_roles << x.name %><% end %><%#=current_roles.include? 'Administration'%>
+<% current_roles=[]%><% Login.current_login.roles.each do |x| %><% current_roles << x.name %><% end %><%#=current_roles.include? 'Administration'%>
 <!--hack-21March2013-->
 <% @lesson_plans.each do |lesson_plan| %>
 <!--hack-21March2013-->
-  <% if  (lesson_plan.lecturer == User.current_user.staff_id) || (lesson_plan.endorsed_by == User.current_user.staff_id) ||(current_roles.include? 'Administration')|| (lesson_plan.lecturer == User.current_user.staff_id) %>
+  <% if  (lesson_plan.lecturer == Login.current_login.staff_id) || (lesson_plan.endorsed_by == Login.current_login.staff_id) ||(current_roles.include? 'Administration')|| (lesson_plan.lecturer == Login.current_login.staff_id) %>
 <!--hack-21March2013-->
 
   <tr>
@@ -49,9 +49,9 @@
 	<td><%=h lesson_plan.report_endorsed? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => lesson_plan %></td>
 	<td width=10px>
-	<% if (lesson_plan.report_submit != true && lesson_plan.prepared_by == User.current_user.staff_id) || (lesson_plan.prepared_by == User.current_user.staff_id && lesson_plan.hod_rejected? == true && lesson_plan.report_submit==nil) || (lesson_plan.report_submit == false&&User.current_user.staff_id) || (lesson_plan.report_submit == nil && User.current_user.staff_id) %>
+	<% if (lesson_plan.report_submit != true && lesson_plan.prepared_by == Login.current_login.staff_id) || (lesson_plan.prepared_by == Login.current_login.staff_id && lesson_plan.hod_rejected? == true && lesson_plan.report_submit==nil) || (lesson_plan.report_submit == false&&Login.current_login.staff_id) || (lesson_plan.report_submit == nil && Login.current_login.staff_id) %>
 		<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'lessonplan_reporting', :id => lesson_plan %>
-	<% elsif (lesson_plan.report_submit == true && lesson_plan.endorsed_by == User.current_user.staff_id && (lesson_plan.report_endorsed != true||lesson_plan.report_endorsed==false))  %>
+	<% elsif (lesson_plan.report_submit == true && lesson_plan.endorsed_by == Login.current_login.staff_id && (lesson_plan.report_endorsed != true||lesson_plan.report_endorsed==false))  %>
 		<%= link_to image_tag("approval.png", :border => 0), :action => 'lessonplan_reporting', :id => lesson_plan %>
 	<% end %>
 	</td>

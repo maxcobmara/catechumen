@@ -15,7 +15,7 @@ class CreateAdmins < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :users, [:login], :name => "index_users_on_login", :unique => true
+    add_index :users, [:login], :name => "index_logins_on_login", :unique => true
     
     create_table :roles do |t|
       t.string   :name
@@ -23,9 +23,9 @@ class CreateAdmins < ActiveRecord::Migration
       t.timestamps
     end
 
-    create_table :roles_users, :id => false do |t|
+    create_table :roles_logins, :id => false do |t|
       t.integer :role_id
-      t.integer :user_id
+      t.integer :login_id
     end
     
     create_table :pages do |t|

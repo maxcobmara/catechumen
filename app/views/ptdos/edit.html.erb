@@ -64,7 +64,7 @@
   <% end %>
 			
   <% permitted_to? :approve, :ptdos do %>
-		<% if @ptdo.dept_approve? && @ptdo.final_approve.blank? && current_user.staff.position.name == "Pengarah" %>
+		<% if @ptdo.dept_approve? && @ptdo.final_approve.blank? && current_login.staff.position.name == "Pengarah" %>
 		<tr>
 			<td class="leftcol"><label for="final_approve">Final Approve : </label></td>
 			<td><%= f.check_box :final_approve %></td>
@@ -72,7 +72,7 @@
 		<% end %>
 	<% end %>
 	
-	<% if @ptdo.dept_approve? && @ptdo.final_approve? && @ptdo.staff_id == current_user.staff_id %>	
+	<% if @ptdo.dept_approve? && @ptdo.final_approve? && @ptdo.staff_id == current_login.staff_id %>	
 		<tr>
 			<td class="leftcol"><label for="trainee_report">Trainee Report : </label></td>
 			<td><%= f.text_area :trainee_report, :size => '60x10' %></td>

@@ -8,10 +8,10 @@
 	</tr>
 </table>
 
-<% if User.current_user.staff.position.is_root? == true %>
-	<%= f.hidden_field :eval2_by, :value => User.current_user.staff.position.staff_id %>
+<% if Login.current_login.staff.position.is_root? == true %>
+	<%= f.hidden_field :eval2_by, :value => Login.current_login.staff.position.staff_id %>
 <% else %>
-	<%= f.hidden_field :eval2_by, :value => User.current_user.staff.position.parent.staff_id %>
+	<%= f.hidden_field :eval2_by, :value => Login.current_login.staff.position.parent.staff_id %>
 <% end %>
 
 

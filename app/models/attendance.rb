@@ -12,15 +12,15 @@ class Attendance < ActiveRecord::Base
  
  
   def self.find_mylate
-    find(:all, :conditions => ["staff_id=? AND time_in > ?", User.current_user.staff_id, "8:30"])
+    find(:all, :conditions => ["staff_id=? AND time_in > ?", Login.current_login.staff_id, "8:30"])
   end
   
   def self.find_approvelate
-    find(:all, :conditions => ["approve_id=? AND approvestatus IS ?", User.current_user.staff_id, nil])
+    find(:all, :conditions => ["approve_id=? AND approvestatus IS ?", Login.current_login.staff_id, nil])
   end
   
   def late_to_be_approved
-      Attendance.count(:all, :conditions => ["approve_id=? AND approvestatus IS ?", User.current_user.staff_id, nil])
+      Attendance.count(:all, :conditions => ["approve_id=? AND approvestatus IS ?", Login.current_login.staff_id, nil])
   end
 
   

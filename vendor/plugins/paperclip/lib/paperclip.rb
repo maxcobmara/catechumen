@@ -12,15 +12,15 @@
 # for image files. You can declare that a model has an attached file with the
 # +has_attached_file+ method:
 #
-#   class User < ActiveRecord::Base
+#   class Login < ActiveRecord::Base
 #     has_attached_file :avatar, :styles => { :thumb => "100x100" }
 #   end
 #
-#   user = User.new
-#   user.avatar = params[:user][:avatar]
-#   user.avatar.url
+#   user = Login.new
+#   login.avatar = params[:user][:avatar]
+#   login.avatar.url
 #   # => "/users/avatars/4/original_me.jpg"
-#   user.avatar.url(:thumb)
+#   login.avatar.url(:thumb)
 #   # => "/users/avatars/4/thumb_me.jpg"
 #
 # See the +has_attached_file+ documentation for more details.
@@ -164,7 +164,7 @@ module Paperclip
 
   module ClassMethods
     # +has_attached_file+ gives the class it is called on an attribute that maps to a file. This
-    # is typically a file stored somewhere on the filesystem and has been uploaded by a user.
+    # is typically a file stored somewhere on the filesystem and has been uploaded by a login.
     # The attribute returns a Paperclip::Attachment object which handles the management of
     # that file. The intent is to make the attachment as much like a normal attribute. The
     # thumbnails will be created when the new file is assigned, but they will *not* be saved
@@ -185,7 +185,7 @@ module Paperclip
     #   This field is interpolated just as the url is. The default value is
     #   "/:attachment/:style/missing.png"
     #     has_attached_file :avatar, :default_url => "/images/default_:style_avatar.png"
-    #     User.new.avatar_url(:small) # => "/images/default_small_avatar.png"
+    #     Login.new.avatar_url(:small) # => "/images/default_small_avatar.png"
     # * +styles+: A hash of thumbnail styles and their geometries. You can find more about
     #   geometry strings at the ImageMagick website
     #   (http://www.imagemagick.org/script/command-line-options.php#resize). Paperclip
@@ -196,7 +196,7 @@ module Paperclip
     #   Defaults to +original+.
     #     has_attached_file :avatar, :styles => { :normal => "100x100#" },
     #                       :default_style => :normal
-    #     user.avatar.url # => "/avatars/23/normal_me.png"
+    #     login.avatar.url # => "/avatars/23/normal_me.png"
     # * +whiny+: Will raise an error if Paperclip cannot post_process an uploaded file due
     #   to a command line error. This will override the global setting for this attachment.
     #   Defaults to true. This option used to be called :whiny_thumbanils, but this is

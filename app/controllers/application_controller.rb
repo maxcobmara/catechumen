@@ -9,8 +9,8 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
    before_filter :set_locale
    before_filter :get_pages_for_tabs
-   before_filter :put_current_user_into_model
-   before_filter { |c| Authorization.current_user = User.current_user}
+   before_filter :put_current_login_into_model
+   before_filter { |c| Authorization.current_login = Login.current_login}
    
 
     def get_pages_for_tabs
@@ -43,10 +43,10 @@ class ApplicationController < ActionController::Base
         I18n.locale = session[:locale] = I18n.default_locale
       end
       
-      def put_current_user_into_model
-        @user = User.find_by_id(session[:user_id])
-        if @user
-          User.current_user = @user
+      def put_current_login_into_model
+        @login = Login.find_by_id(session[:login_id])
+        if @login
+          Login.current_login = @login
         end
       end
       
@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
       end
       
       def late_to_be_approved
-        Attendance.count(:all, :conditions => ["approve_id=? AND approvestatus IS ?", User.current_user.staff_id, nil])
+        Attendance.count(:all, :conditions => ["approve_id=? AND approvestatus IS ?", Login.current_login.staff_id, nil])
       end
     
     

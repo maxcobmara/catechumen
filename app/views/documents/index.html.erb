@@ -63,12 +63,12 @@ tome = <%=@tome.count%>-->
 		  <th>Closed</th>
 		  <th colspan=3 class="ac">Control</th>
 		</tr>
-	<!--***************************************************--><%#=User.current_user.roles.map(&:id).include?(2)%>
+	<!--***************************************************--><%#=Login.current_login.roles.map(&:id).include?(2)%>
 	<% @tome_document_files.each do |filedocer_tome, documents_tome| %>
 		<% documents_tome.each_with_index do |document,count| %>
 			<% document.staffs.each_with_index do |doc_recepient,ind|%>
-				<% if doc_recepient.id == User.current_user.staff_id && count == 0 && 
-					document.owner_ids.include?(User.current_user.staff_id)== false %>
+				<% if doc_recepient.id == Login.current_login.staff_id && count == 0 && 
+					document.owner_ids.include?(Login.current_login.staff_id)== false %>
 					<tr><td colspan=13 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 						<%=h filedocer_tome %></span></td></tr>
 				<% end %>	
@@ -77,7 +77,7 @@ tome = <%=@tome.count%>-->
 		<% end %>
 		<% documents_tome.each_with_index do |document,count| %>
 			<%document.staffs.each_with_index do |doc_recepient, ind|%>
-				<% if doc_recepient.id == User.current_user.staff_id && (document.owner_ids.include? doc_recepient.id)== false %>
+				<% if doc_recepient.id == Login.current_login.staff_id && (document.owner_ids.include? doc_recepient.id)== false %>
 					<tr>
 						<td><%=h document.serialno %></td>
 						<td><%=h document.refno %></td>
@@ -88,7 +88,7 @@ tome = <%=@tome.count%>-->
 						<td><%#=h document.sender %><%=h document.from %></td>
 						<td>
 							<% document.staffs.each_with_index do |doc_recepient,ind|%>
-								<% if doc_recepient.id == User.current_user.staff_id%>
+								<% if doc_recepient.id == Login.current_login.staff_id%>
 									<%if ind!=0 %><br><%end%><b>(<%=ind+=1%>) <%=h doc_recepient.name %><%#=h doc_recepient.name.upcase %></b>	
 								<% else %>
 									<br>(<%=ind+=1%>) <%=h doc_recepient.name %>
@@ -108,13 +108,13 @@ tome = <%=@tome.count%>-->
 	<!--***************************************************-->
     <% @document_files.each do |filedocer, documents| %>
 		<% documents.each_with_index do |document,count| %>
-			<% if (document.owner_ids.include? current_user.staff_id) && count == 0%>
+			<% if (document.owner_ids.include? current_login.staff_id) && count == 0%>
     			<tr><td colspan=13 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;"><%=h filedocer %></span></td></tr>
 			<% end %>
 		<% end %>
 		<!--5Apr2013-->
         <% for document in documents %>
-			<% if (document.owner_ids.include? current_user.staff_id) %>
+			<% if (document.owner_ids.include? current_login.staff_id) %>
 				<tr>
 					<td><%=h document.serialno %></td>
 					<td><%=h document.refno %></td>
@@ -126,21 +126,21 @@ tome = <%=@tome.count%>-->
 					<td><%#=h check_kin {document.cc1staff.name} %> <!--5Apr2013-to move this line later (single circulation)-->
 						<% document.staffs.each_with_index do |doc_recepient,ind| %>
 							<%if ind!=0 %><br><%end%>
-							<% if doc_recepient.id == User.current_user.staff_id %><b><% end %>
+							<% if doc_recepient.id == Login.current_login.staff_id %><b><% end %>
 							(<%=ind+=1%>) <%= doc_recepient.name %>
-							<% if doc_recepient.id == User.current_user.staff_id %></b><% end %>
+							<% if doc_recepient.id == Login.current_login.staff_id %></b><% end %>
 						<% end %>
 					</td>
 					<td><%=h document.otherinfo %></td>
 					<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
 					<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
 					<td width=10px>
-						<% if (document.closed != true && document.stafffilled.try(:id) == current_user.staff_id) || (document.closed != true && document.preparedby.try(:id) == current_user.staff_id) %>
+						<% if (document.closed != true && document.stafffilled.try(:id) == current_login.staff_id) || (document.closed != true && document.preparedby.try(:id) == current_login.staff_id) %>
 							<%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %>
 						<% end %>
 					</td>
 					<td width=10px>
-						<% if document.stafffilled.try(:id) == current_user.staff_id || document.preparedby.try(:id) == current_user.staff_id %>
+						<% if document.stafffilled.try(:id) == current_login.staff_id || document.preparedby.try(:id) == current_login.staff_id %>
 				   			<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %>
 						<% end %>
 					</td>
@@ -163,7 +163,7 @@ tome = <%=@tome.count%>-->
 <%# end %>
 
 <% permitted_to? :manage, :documents do %>
-	<%# if (@a_creator.include? User.current_user.staff_id) || (@a_filled.include? User.current_user.staff_id) %>
+	<%# if (@a_creator.include? Login.current_login.staff_id) || (@a_filled.include? Login.current_login.staff_id) %>
 		<%= link_to 'New Document', new_document_path %> | <%= link_to 'Generate Report', :action => 'generate_report', :locals => {:class_type => '1',:dodo =>params[:search],:dudu =>params[:search2],:startdate=>@dadidu,:enddate=>@dadidu2 } %>
 	<%# end %>
 <% end %>

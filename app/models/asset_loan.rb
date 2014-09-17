@@ -23,7 +23,7 @@ class AssetLoan < ActiveRecord::Base
   
   def set_staff_when_blank
     if staff_id.blank?
-      self.staff_id = User.current_user.staff_id
+      self.staff_id = Login.current_login.staff_id
     end
   end
   
@@ -35,7 +35,7 @@ class AssetLoan < ActiveRecord::Base
   
   def loaner
      if staff_id.blank?
-       User.current_user.staff.staff_name_with_position
+       Login.current_login.staff.staff_name_with_position
      else
        staff.staff_name_with_position
      end
@@ -75,7 +75,7 @@ class AssetLoan < ActiveRecord::Base
   
   #---------
   named_scope :all 
-  #named_scope :myloan,        :conditions =>  ["staff_id=?", User.current_user.staff_id]
+  #named_scope :myloan,        :conditions =>  ["staff_id=?", Login.current_login.staff_id]
   named_scope :internal,      :conditions =>  ["loantype =? ", 1]
   named_scope :external,      :conditions =>  ["loantype =? ", 2]
   named_scope :onloan,        :conditions =>  ["is_approved IS TRUE AND is_returned IS NOT TRUE"]

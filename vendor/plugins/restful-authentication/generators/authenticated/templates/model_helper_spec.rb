@@ -93,31 +93,31 @@ describe "<%= model_controller_class_name %>Helper.link_to_current_<%= file_name
   end
 
   it "should use given link text if :content_text is specified" do
-    link_to_current_user(:content_text => 'Hello there!').should have_tag("a", 'Hello there!')
+    link_to_current_login(:content_text => 'Hello there!').should have_tag("a", 'Hello there!')
   end
 
   it "should use the login as link text with no :content_method specified" do
-    link_to_current_user().should have_tag("a", 'quentin')
+    link_to_current_login().should have_tag("a", 'quentin')
   end
 
   it "should use the name as link text with :content_method => :name" do
-    link_to_current_user(:content_method => :name).should have_tag("a", 'Quentin')
+    link_to_current_login(:content_method => :name).should have_tag("a", 'Quentin')
   end
 
   it "should use the login as title with no :title_method specified" do
-    link_to_current_user().should have_tag("a[title='quentin']")
+    link_to_current_login().should have_tag("a[title='quentin']")
   end
 
   it "should use the name as link title with :content_method => :name" do
-    link_to_current_user(:title_method => :name).should have_tag("a[title='Quentin']")
+    link_to_current_login(:title_method => :name).should have_tag("a[title='Quentin']")
   end
 
   it "should have nickname as a class" do
-    link_to_current_user().should have_tag("a.nickname")
+    link_to_current_login().should have_tag("a.nickname")
   end
 
   it "should take other classes and no longer have the nickname class" do
-    result = link_to_current_user(:class => 'foo bar')
+    result = link_to_current_login(:class => 'foo bar')
     result.should have_tag("a.foo")
     result.should have_tag("a.bar")
   end
@@ -125,33 +125,33 @@ end
 
 
 
-describe "<%= model_controller_class_name %>Helper.link_to_current_user, When logged out" do
+describe "<%= model_controller_class_name %>Helper.link_to_current_login, When logged out" do
   include AuthenticatedTestHelper
   before do
   end
 
   it "should link to the signin_path" do
-    link_to_current_user().should have_tag("a[href='/signin']")
+    link_to_current_login().should have_tag("a[href='/signin']")
   end
 
   it "should use given link text if :content_text is specified" do
-    link_to_current_user(:content_text => 'Hello there!').should have_tag("a", 'Hello there!')
+    link_to_current_login(:content_text => 'Hello there!').should have_tag("a", 'Hello there!')
   end
 
   it "should use the IP address as link text with no :content_method specified" do
-    link_to_current_user().should have_tag("a", '0.0.0.0')
+    link_to_current_login().should have_tag("a", '0.0.0.0')
   end
 
   it "should use the ip address as title" do
-    link_to_current_user().should have_tag("a[title='0.0.0.0']")
+    link_to_current_login().should have_tag("a[title='0.0.0.0']")
   end
 
   it "should by default be like school in summer and have no class" do
-    link_to_current_user().should_not have_tag("a.nickname")
+    link_to_current_login().should_not have_tag("a.nickname")
   end
 
   it "should have some class if you tell it to" do
-    result = link_to_current_user(:class => 'foo bar')
+    result = link_to_current_login(:class => 'foo bar')
     result.should have_tag("a.foo")
     result.should have_tag("a.bar")
   end

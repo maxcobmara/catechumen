@@ -4,9 +4,9 @@ class ExamresultsController < ApplicationController
   def index
     #@examresults = Examresult.all
     ###--just added
-    @position_exist = current_user.staff.position
+    @position_exist = current_login.staff.position
     if @position_exist     
-      @lecturer_programme = current_user.staff.position.unit
+      @lecturer_programme = current_login.staff.position.unit
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end

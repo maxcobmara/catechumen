@@ -95,14 +95,14 @@ class Examquestion < ActiveRecord::Base
   end
   
   def question_creator
-    programme = User.current_user.staff.position.unit
+    programme = Login.current_login.staff.position.unit
     programme_name = Programme.roots.map(&:name)
     creator_prog= Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', programme_name]).map(&:id)
     if programme_name.include?(programme)
       creator = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
     else
       role_admin = Role.find_by_name('Administration')  #must have role as administrator
-      staff_with_adminrole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_admin]).map(&:staff_id).compact.uniq 
+      staff_with_adminrole = Login.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_admin]).map(&:staff_id).compact.uniq 
       creator_adm = Staff.find(:all, :joins=>:position, :conditions=>['staff_id IN(?)', staff_with_adminrole]).map(&:id)
       creator=creator_prog+creator_adm
     end
@@ -110,7 +110,7 @@ class Examquestion < ActiveRecord::Base
   end
     
   def question_editor
-    programme = User.current_user.staff.position.unit
+    programme = Login.current_login.staff.position.unit
     unless subject_id.nil?
       if subject.root.name == programme
         editors = Position.find(:all,:conditions => ['unit=?',programme]).map(&:staff_id).compact
@@ -128,7 +128,7 @@ class Examquestion < ActiveRecord::Base
     ###latest finding - as of Mei-Jul/Aug 2013 - approver should be at Ketua Program level ONLY (own programme @ other programme)### 
     
     role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
-    staff_with_kprole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_kp]).map(&:staff_id).compact.uniq
+    staff_with_kprole = Login.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_kp]).map(&:staff_id).compact.uniq
     programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
     approver = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
     approver   

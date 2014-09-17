@@ -33,12 +33,12 @@ class LessonPlan < ActiveRecord::Base
       self.hod_approved_on	= nil
     end
     
-    if hod_rejected == true && endorsed_by == User.current_user.staff_id
+    if hod_rejected == true && endorsed_by == Login.current_login.staff_id
       self.is_submitted = nil
    end
    
    if prepared_by == nil
-      self.prepared_by = User.current_user.staff_id
+      self.prepared_by = Login.current_login.staff_id
    end
    
    if report_submit == true
@@ -79,7 +79,7 @@ class LessonPlan < ActiveRecord::Base
          notes_for_lessonplan.document_content_type = data_content_type
          notes_for_lessonplan.document_file_size = data_file_size
          notes_for_lessonplan.timetable_id = schedule
-         notes_for_lessonplan.staff_id = User.current_user.staff_id
+         notes_for_lessonplan.staff_id = Login.current_login.staff_id
          notes_for_lessonplan.title = title
 
          #check if topicdetails for topic of selected schedule really exist 
@@ -101,19 +101,19 @@ class LessonPlan < ActiveRecord::Base
          if Trainingnote.find_by_document_file_name(data_file_name)==nil && Trainingnote.find_by_timetable_id(schedule)==nil
            notes_for_lessonplan.save   
          else  
-           @trainingnote_lessonplan.update_attributes(:document_file_name=>data_file_name, :document_content_type=>data_content_type,:document_file_size=>data_file_size, :timetable_id=>schedule, :staff_id=>User.current_user.staff_id, :title=>title,:topicdetail_id=>@topicdetail_id)
+           @trainingnote_lessonplan.update_attributes(:document_file_name=>data_file_name, :document_content_type=>data_content_type,:document_file_size=>data_file_size, :timetable_id=>schedule, :staff_id=>Login.current_login.staff_id, :title=>title,:topicdetail_id=>@topicdetail_id)
          end
      end 
    end
    
   def hods  
-      #hod = User.current_user.staff.position.parent
+      #hod = Login.current_login.staff.position.parent
       #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
-      staff_with_kprole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_kp]).map(&:staff_id).compact.uniq
+      staff_with_kprole = Login.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_kp]).map(&:staff_id).compact.uniq
       #programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
       #approver = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
-      programme_name = User.current_user.staff.position.unit
+      programme_name = Login.current_login.staff.position.unit
       approver = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND staff_id IN(?)', programme_name, staff_with_kprole])
       approver  
   end

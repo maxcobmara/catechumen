@@ -3,11 +3,11 @@ class MessagesController < ApplicationController
   # GET /messages.xml
   def index
     @messages = Message.all(params[:id])
-    @sentmessages = Message.find(:all, :conditions => ['from_id =?', User.current_user.staff_id], :order => "created_at DESC")
-    #@staffs = Staff.find(:all, :conditions => ['id =?', User.current_user.staff_id])
-    @tome = Message.find(:all, :joins => :staffs, :conditions => ['staff_id =?', User.current_user.staff_id], :order => "created_at DESC")
+    @sentmessages = Message.find(:all, :conditions => ['from_id =?', Login.current_login.staff_id], :order => "created_at DESC")
+    #@staffs = Staff.find(:all, :conditions => ['id =?', Login.current_login.staff_id])
+    @tome = Message.find(:all, :joins => :staffs, :conditions => ['staff_id =?', Login.current_login.staff_id], :order => "created_at DESC")
     #@resources = Resource.find(:all, :select=>"resources.*", :joins=>"JOIN categorizations ON resources.id = categorizations.resource_id", :conditions=>["categorizations.resource_id = resources.id AND categorizations.category_id = ?", 1])
-    #User.all(:include => :roles, :conditions => {:roles => { :names => 'subscriber', :authorizable_id => self.id, :authorizable_type => self.class.to_s }})
+    #Login.all(:include => :roles, :conditions => {:roles => { :names => 'subscriber', :authorizable_id => self.id, :authorizable_type => self.class.to_s }})
     
     respond_to do |format|
       format.html # index.html.erb

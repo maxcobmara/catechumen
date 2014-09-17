@@ -8,9 +8,9 @@ class GradesController < ApplicationController
     @grade_list_exist_subject=[]
     @existing_grade_subject_ids = Grade.find(:all,:select=>:subject_id).map(&:subject_id).uniq
     
-    @position_exist = current_user.staff.position
+    @position_exist = current_login.staff.position
     if @position_exist     
-      @lecturer_programme = current_user.staff.position.unit
+      @lecturer_programme = current_login.staff.position.unit
       common_subject_a = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
@@ -120,7 +120,7 @@ class GradesController < ApplicationController
     #@grade.scores.build
     
     #---just added
-    @lecturer_programme = current_user.staff.position.unit
+    @lecturer_programme = current_login.staff.position.unit
     common_subject_a = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
@@ -157,7 +157,7 @@ class GradesController < ApplicationController
   def edit
     @grade = Grade.find(params[:id])
     #---just added
-    @lecturer_programme = current_user.staff.position.unit
+    @lecturer_programme = current_login.staff.position.unit
     common_subject_a = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
@@ -252,7 +252,7 @@ class GradesController < ApplicationController
   def update
     @grade = Grade.find(params[:id])
     #---just added
-    @lecturer_programme = current_user.staff.position.unit
+    @lecturer_programme = current_login.staff.position.unit
     common_subject_a = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])

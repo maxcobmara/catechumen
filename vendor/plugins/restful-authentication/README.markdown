@@ -129,7 +129,7 @@ To use the generator:
 
 * The first parameter specifies the model that gets created in signup (typically
   a user or account model).  A model with migration is created, as well as a
-  basic controller with the create method. You probably want to say "User" here.
+  basic controller with the create method. You probably want to say "Login" here.
 
 * The second parameter specifies the session controller name.  This is the
   controller that handles the actual login/logout function on the site.
@@ -166,7 +166,7 @@ To use the generator:
 
 ## After installing
 
-The below assumes a Model named 'User' and a Controller named 'Session'; please
+The below assumes a Model named 'Login' and a Controller named 'Session'; please
 alter to suit. There are additional security minutae in @notes/README-Tradeoffs@
 -- only the paranoid or the curious need bother, though.
 
@@ -187,7 +187,7 @@ alter to suit. There are additional security minutae in @notes/README-Tradeoffs@
   and add an observer to @config/environment.rb@:
 
     <pre><code>
-    config.active_record.observers = :user_observer
+    config.active_record.observers = :login_observer
     </code></pre>
 
   Pay attention, may be this is not an issue for everybody, but if you should
@@ -196,14 +196,14 @@ alter to suit. There are additional security minutae in @notes/README-Tradeoffs@
   something like:
 
     <pre><code>
-    class UserObserver < ActiveRecord::Observer
+    class LoginObserver < ActiveRecord::Observer
       def after_create(user)
-        user.reload
-        UserMailer.deliver_signup_notification(user)
+        login.reload
+        LoginMailer.deliver_signup_notification(user)
       end
       def after_save(user)
-        user.reload
-        UserMailer.deliver_activation(user) if user.recently_activated?
+        login.reload
+        LoginMailer.deliver_activation(user) if login.recently_activated?
       end
     end
     </code></pre>
@@ -212,7 +212,7 @@ alter to suit. There are additional security minutae in @notes/README-Tradeoffs@
 * With @--stateful@, add an observer to config/environment.rb:
 
     <pre><code>
-    config.active_record.observers = :user_observer
+    config.active_record.observers = :login_observer
     </code></pre>
 
   and modify the users resource line to read

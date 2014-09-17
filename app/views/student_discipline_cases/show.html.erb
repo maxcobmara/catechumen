@@ -65,7 +65,7 @@
 
 <% if permitted_to? :manage, :student_discipline_cases %>
 	<%# if @student_discipline_case.status !="Closed" %>
-	<% if (@student_discipline_case.status=="New" && @student_discipline_case.assigned_to == current_user.staff_id) || (@student_discipline_case.status == "Refer to TPHEP" && @student_discipline_case.assigned2_to == current_user.staff_id)%>
+	<% if (@student_discipline_case.status=="New" && @student_discipline_case.assigned_to == current_login.staff_id) || (@student_discipline_case.status == "Refer to TPHEP" && @student_discipline_case.assigned2_to == current_login.staff_id)%>
 
 		<%= link_to 'Edit', edit_student_discipline_case_path(@student_discipline_case) %> |
 	<% end %>

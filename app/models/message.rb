@@ -6,7 +6,7 @@ class Message < ActiveRecord::Base
   
   before_save :varmyass
   def varmyass
-    self.from_id	= User.current_user.staff_id
+    self.from_id	= Login.current_login.staff_id
   end
   
   def to_name

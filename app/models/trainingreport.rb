@@ -16,9 +16,9 @@ class Trainingreport < ActiveRecord::Base
   end
   
   def edit_icon
-    if staff_id == User.current_user.staff_id
+    if staff_id == Login.current_login.staff_id
       "edit.png"
-    elsif tpa_id == User.current_user.staff_id
+    elsif tpa_id == Login.current_login.staff_id
       "approval.png"
     else
       ""

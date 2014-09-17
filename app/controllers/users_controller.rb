@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class LoginsController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
   
    
@@ -7,39 +7,39 @@ class UsersController < ApplicationController
   
   
   def index
-    #@users = User.find(:all)
-    @filters = User::FILTERS
+    #@logins = Login.find(:all)
+    @filters = Login::FILTERS
       if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-        @users = User.with_permissions_to(:index).send(params[:show]) #unhide - 15July2013
-        #@users = User.send(params[:show])                            #hide - 15July2013
+        @logins = Login.with_permissions_to(:index).send(params[:show]) #unhide - 15July2013
+        #@logins = Login.send(params[:show])                            #hide - 15July2013
       else
-        #@users = User.with_permissions_to(:index).relevant           
-        @users = User.find(:all)                                     
+        #@logins = Login.with_permissions_to(:index).relevant           
+        @logins = Login.find(:all)                                     
     end
      
    end
 
    def show
-     @user = User.find(params[:id])
+     @login = Login.find(params[:id])
    end
 
    def destroy
-     @user = User.find(params[:id])
-     @user.destroy
+     @login = Login.find(params[:id])
+     @login.destroy
 
      redirect_to(users_url)
    end
 
    def edit
-     @user = User.find(params[:id])
+     @login = Login.find(params[:id])
    end
 
    def update
-     @user = User.find(params[:id])
+     @login = Login.find(params[:id])
 
-     if @user.update_attributes(params[:user])
-       flash[:notice] = 'User was successfully updated.'
-       redirect_to(user_path(@user))
+     if @login.update_attributes(params[:user])
+       flash[:notice] = 'Login was successfully updated.'
+       redirect_to(login_path(@login))
      else
        render :action => 'edit'
      end
@@ -48,19 +48,19 @@ class UsersController < ApplicationController
 
   # render new.rhtml
   def new
-    @user = User.new
+    @login = Login.new
   end
  
   def create
     logout_keeping_session!
-    @user = User.new(params[:user])
-    success = @user && @user.save
-    if success && @user.errors.empty?
+    @login = Login.new(params[:user])
+    success = @login && @login.save
+    if success && @login.errors.empty?
             # Protects against session fixation attacks, causes request forgery
       # protection if visitor resubmits an earlier form using back
       # button. Uncomment if you understand the tradeoffs.
       # reset session
-      self.current_user = @user # !! now logged in
+      self.current_login = @login # !! now logged in
       redirect_back_or_default('/')
       flash[:notice] = "Thanks for signing up!  The IT team will process your application as soon as possible"
     else

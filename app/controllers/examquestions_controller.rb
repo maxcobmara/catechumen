@@ -9,9 +9,9 @@ class ExamquestionsController < ApplicationController
     #@topic_exams = @examquestions.group_by { |t| t.topic_id }
     #-----in case-use these 4 lines-------
     
-    @position_exist = current_user.staff.position
+    @position_exist = current_login.staff.position
     if @position_exist  
-      @lecturer_programme = current_user.staff.position.unit
+      @lecturer_programme = current_login.staff.position.unit
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end
@@ -53,7 +53,7 @@ class ExamquestionsController < ApplicationController
   def new
     @examquestion = Examquestion.new
     #--newly added
-    @lecturer_programme = current_user.staff.position.unit      
+    @lecturer_programme = current_login.staff.position.unit      
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end
@@ -84,7 +84,7 @@ class ExamquestionsController < ApplicationController
     @examquestion = Examquestion.find(params[:id])
     
     #--newly added--same as create--required during edit
-    @lecturer_programme = current_user.staff.position.unit      
+    @lecturer_programme = current_login.staff.position.unit      
     if @lecturer_programme != 'Commonsubject'
       @programme = Programme.find(:first,:conditions=>["name ILIKE (?) AND ancestry_depth=?","%#{@lecturer_programme}%",0])
     end
@@ -113,7 +113,7 @@ class ExamquestionsController < ApplicationController
           @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, 'Subject'], :order=>'ancestry ASC')  
         end
       end
-    else  #for admin (has no programme in current_user.staff.position.unit)
+    else  #for admin (has no programme in current_login.staff.position.unit)
       @programme_listing = Programme.roots
       unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank?   #if subject already selected
         @subjects1 = Programme.find(@examquestion.subject.root_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
@@ -130,7 +130,7 @@ class ExamquestionsController < ApplicationController
     @examquestion = Examquestion.new(params[:examquestion])
     
     #--newly added--same as edit--required when incomplete data submitted
-    @lecturer_programme = current_user.staff.position.unit      
+    @lecturer_programme = current_login.staff.position.unit      
     if @lecturer_programme != 'Commonsubject'
       @programme = Programme.find(:first,:conditions=>["name ILIKE (?) AND ancestry_depth=?","%#{@lecturer_programme}%",0])
     end
@@ -215,7 +215,7 @@ class ExamquestionsController < ApplicationController
   end
   
   def view_subject
-    @lecturer_programme = current_user.staff.position.unit 
+    @lecturer_programme = current_login.staff.position.unit 
     @programme_id = params[:programmeid]
     unless @programme_id.blank? 
       all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)

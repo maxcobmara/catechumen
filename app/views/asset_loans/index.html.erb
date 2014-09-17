@@ -8,11 +8,11 @@
 </div>
 <div class="indextable">
 	
-  <% current_user_roles=[]%>
-  <% User.current_user.roles.each do |role|%>
-	<% current_user_roles<<role.id%>
+  <% current_login_roles=[]%>
+  <% Login.current_login.roles.each do |role|%>
+	<% current_login_roles<<role.id%>
   <% end %>
-  <b><%#=current_user_roles.include?(11) %></b><!--11 for asset administrator-->
+  <b><%#=current_login_roles.include?(11) %></b><!--11 for asset administrator-->
 	
 <div class="toolbar">
 	<table width=100%><tr>
@@ -36,14 +36,14 @@
 <% @asset_loans.each do |asset_loan| %>
   	<% @unit_members = asset_loan.unit_members %>
 
-	<% if @unit_members.include?(current_user.staff_id) || current_user_roles.include?(11) || asset_loan.staff == current_user.staff || (asset_loan.hod == current_user.staff_id && asset_loan.is_approved==true && asset_loan.is_returned!=true ) %>
+	<% if @unit_members.include?(current_login.staff_id) || current_login_roles.include?(11) || asset_loan.staff == current_login.staff || (asset_loan.hod == current_login.staff_id && asset_loan.is_approved==true && asset_loan.is_returned!=true ) %>
   	<tr>
     	<td><%=h asset_loan.asset.assetcode %><BR/><%= asset_loan.asset.typename %>
 			<!--16July2013--><%= asset_loan.asset.name %></td>
-    	<td><% unless current_user.staff == asset_loan.staff %>
+    	<td><% unless current_login.staff == asset_loan.staff %>
 				<%=h asset_loan.staff.name %>
 			<% else %>
-				<%= "<b>"+asset_loan.staff.name+"</b>" if current_user_roles.include?(11) %><!--highlighted for asset admin only-as list may long!-->
+				<%= "<b>"+asset_loan.staff.name+"</b>" if current_login_roles.include?(11) %><!--highlighted for asset admin only-as list may long!-->
 			<% end %>
 
 			<BR/><%=h asset_loan.reasons %></td>
@@ -77,14 +77,14 @@
     	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => asset_loan %></td>
 
 		<%#-------------------------------------------------%>
-  		<% if @unit_members.include?(current_user.staff_id) %><%# if asset_loan.loaned_by == User.current_user.staff_id %>
+  		<% if @unit_members.include?(current_login.staff_id) %><%# if asset_loan.loaned_by == Login.current_login.staff_id %>
 	
 			<td width=10px>
 				<!---->
-				<%# if (asset_loan.is_approved == nil && asset_loan.loaned_by == User.current_user.staff_id) %>
-				<%# if (asset_loan.is_approved == nil && asset_loan.loaned_by == User.current_user.staff_id) || (asset_loan.is_approved == nil && current_user_roles.include?(11)) %>
-				<%# elsif (asset_loan.is_approved == true && asset_loan.loaned_by == User.current_user.staff_id) %>
-				<%# elsif (asset_loan.is_approved == true && asset_loan.loaned_by == User.current_user.staff_id) || (asset_loan.is_approved == true && current_user_roles.include?(11)) %>
+				<%# if (asset_loan.is_approved == nil && asset_loan.loaned_by == Login.current_login.staff_id) %>
+				<%# if (asset_loan.is_approved == nil && asset_loan.loaned_by == Login.current_login.staff_id) || (asset_loan.is_approved == nil && current_login_roles.include?(11)) %>
+				<%# elsif (asset_loan.is_approved == true && asset_loan.loaned_by == Login.current_login.staff_id) %>
+				<%# elsif (asset_loan.is_approved == true && asset_loan.loaned_by == Login.current_login.staff_id) || (asset_loan.is_approved == true && current_login_roles.include?(11)) %>
 		
 				<% if (asset_loan.is_approved == nil) %>
 					<%= link_to image_tag("approval.png", :border => 0, :title => 'Approve'), :action => 'approve', :id => asset_loan %>
@@ -96,7 +96,7 @@
 			</td>
 	
 			<td class="action">
-				<%# if (asset_loan.is_approved == true && asset_loan.loaned_by == User.current_user.staff_id) %>
+				<%# if (asset_loan.is_approved == true && asset_loan.loaned_by == Login.current_login.staff_id) %>
 			
 				<% if (asset_loan.is_approved == true) %>
 					<div class="noti_Container">
@@ -112,7 +112,7 @@
 		<%#-------------------------------------------------%>
 		
 		<!--special for hod only (Pengarah-external)- those not in hods list-->
-		<% if (asset_loan.hod == current_user.staff_id) && (@unit_members.include?(current_user.staff_id)==false) %>
+		<% if (asset_loan.hod == current_login.staff_id) && (@unit_members.include?(current_login.staff_id)==false) %>
 			<td class="action">
 				<% if (asset_loan.is_approved == true) %>
 					<div class="noti_Container">
@@ -132,16 +132,16 @@
 				<%#= link_to image_tag("printer.png", :border => 0, :title => 'Lampiran A'), :action => 'lampiran', :id => asset_loan %>
 			<%# end %>
 		</td>-->
-		<% if @unit_members.include?(current_user.staff_id) || current_user_roles.include?(11) %>
+		<% if @unit_members.include?(current_login.staff_id) || current_login_roles.include?(11) %>
    			<td width=10px>
 				<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset_loan, :confirm => 'Are you sure?', :method => :delete %>
 			</td>
 		<% end %>
   		<!--for better view only-screen-loaner(peminjam) & bukan asset administrator-->
-		<% if (current_user.staff == asset_loan.staff) && current_user_roles.include?(11)==false %><td>&nbsp;</td><% end %>
+		<% if (current_login.staff == asset_loan.staff) && current_login_roles.include?(11)==false %><td>&nbsp;</td><% end %>
   		<!--for better view only-screen-loaner(peminjam) & bukan asset administrator-->
 		<!--for better view only-screen-loaner(peminjam)-yg pd ms sama merupakan (peg pengeluar) member of responsible unit bagi ASEI di baris2 lain TETAPI BUKAN (peg pengeluar) BAGI ASET PADA BARIS NIH & & bukan asset administrator-->
-		<% if current_user.staff == asset_loan.staff && @unit_members.include?(current_user.staff_id)==false && current_user_roles.include?(11)==false %>
+		<% if current_login.staff == asset_loan.staff && @unit_members.include?(current_login.staff_id)==false && current_login_roles.include?(11)==false %>
 			<td>&nbsp;</td><td>&nbsp;</td>
 		<% end %>
 		<!--for better view only-screen-loaner(peminjam)-yg pd ms sama merupakan (peg pengeluar) member of responsible unit bagi ASEI di baris2 lain TETAPI BUKAN (peg pengeluar) BAGI ASET PADA BARIS NIH & bukan asset administrator-->

@@ -7,7 +7,7 @@
 		 <table width=100%>
 			<tr>
 				<td class="leftcol"><label for="staff_id"><b><%= t 'evaluation.form.name' %></b><font color="red"> * </font></label></td>
-				<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ['id = ?', User.current_user.staff_id]), :id, :mykad_with_staff_name%></td>
+				<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ['id = ?', Login.current_login.staff_id]), :id, :mykad_with_staff_name%></td>
 			</tr>
 
 			<tr>
@@ -15,7 +15,7 @@
 				<td><%= f.date_select :evaluation_year, :end_year => Time.now.year, :discard_month => true %></td>
 			</tr>
 			<!--newly added-->
-			<% if User.current_user.staff.position.parent.staff.blank? %>
+			<% if Login.current_login.staff.position.parent.staff.blank? %>
 			<tr>
 				<td colspan=2><%= t 'evaluation.form.remark' %></td>
 			</tr>
@@ -31,13 +31,13 @@
 			<% end %>
 			<!--newly added-->
 		</table>
-		<% if User.current_user.staff.position.parent.staff.blank? == false %>
+		<% if Login.current_login.staff.position.parent.staff.blank? == false %>
 		<%=render :partial => 'skt', :locals => {:f => f} %> 
 		<% end %>
 	</div>
 	<BR/>
 
-  <p><% if User.current_user.staff.position.parent.staff.blank? == false %>
+  <p><% if Login.current_login.staff.position.parent.staff.blank? == false %>
     <%= f.submit t 'submit' %><% end %>
   </p>
 <% end %>

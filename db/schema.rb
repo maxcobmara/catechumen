@@ -1184,7 +1184,7 @@ ActiveRecord::Schema.define(:version => 20140414171719) do
     t.date     "repaired_on"
     t.integer  "document_id"
     t.date     "inspection_on"
-    t.integer  "user_id"
+    t.integer  "login_id"
     t.integer  "college_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -1423,9 +1423,9 @@ ActiveRecord::Schema.define(:version => 20140414171719) do
     t.datetime "updated_at"
   end
 
-  create_table "roles_users", :id => false, :force => true do |t|
+  create_table "roles_logins", :id => false, :force => true do |t|
     t.integer "role_id"
-    t.integer "user_id"
+    t.integer "login_id"
   end
 
   create_table "rxparts", :force => true do |t|
@@ -2203,8 +2203,8 @@ ActiveRecord::Schema.define(:version => 20140414171719) do
     t.datetime "updated_at"
   end
 
-  add_index "users", ["id"], :name => "index_users_on_id"
-  add_index "users", ["login"], :name => "index_users_on_login", :unique => true
+  add_index "users", ["id"], :name => "index_logins_on_id"
+  add_index "users", ["login"], :name => "index_logins_on_login", :unique => true
 
   create_table "usesupplies", :force => true do |t|
     t.integer  "supplier_id"

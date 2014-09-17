@@ -173,14 +173,14 @@
 <table>
 
 <table width=100%>
-  <% if User.current_user.staff.position.is_root? == false %>
+  <% if Login.current_login.staff.position.is_root? == false %>
 	<tr>
 	  <td class="leftcolwide"><label for="submit_for_appraisal1_on">Submit for evaluation</label></td>
 		<td><%= f.check_box :submit_for_evaluation2, :id => 'submit_for_evaluation2' %>
 				<SPAN id="span_submit2" style="display: none;"><%= f.date_select :submit_for_evaluation2_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
 		<td class="pagenote">Clicking on submit notifies the Second Evaluating Officer (PPK)<BR/> and disables your editing this record further</td>
 	</tr>
-	<%= f.hidden_field :evaluation2_by, :value => User.current_user.staff.position.parent.staff_id %>
+	<%= f.hidden_field :evaluation2_by, :value => Login.current_login.staff.position.parent.staff_id %>
 	<% else %>
 	
 	<tr>

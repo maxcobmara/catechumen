@@ -3,9 +3,9 @@ class WeeklytimetablesController < ApplicationController
   # GET /weeklytimetables.xml
   def index
     #@weeklytimetables = Weeklytimetable.all
-    @position_exist = current_user.staff.position
+    @position_exist = current_login.staff.position
     if @position_exist  
-      @lecturer_programme = current_user.staff.position.unit
+      @lecturer_programme = current_login.staff.position.unit
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end
@@ -22,7 +22,7 @@ class WeeklytimetablesController < ApplicationController
   end
   
   def personalize_index
-    @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',User.current_user.staff_id])
+    @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',Login.current_login.staff_id])
 
     respond_to do |format|
       format.html { render :action => "personalize_index" }
@@ -43,7 +43,7 @@ class WeeklytimetablesController < ApplicationController
   
   def personalize_show  #yg dihantar : startdate
     @selected_date = params[:id]
-    @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',User.current_user.staff_id])
+    @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',Login.current_login.staff_id])
     @all_combine = []
     @weeklytimetables_details.each do |x|
         @all_combine << Weeklytimetable.find(x.weeklytimetable.id)
@@ -129,7 +129,7 @@ class WeeklytimetablesController < ApplicationController
         @haha = params[:locals][:lecturer_id]
     end
     #---end:added-26Jul2013-for e-query & report manager--
-    @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',User.current_user.staff_id])
+    @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',Login.current_login.staff_id])
     #---start:added-26Jul2013-for e-query & report manager--
     if @hihi!=nil
         @selected_date = @hihi

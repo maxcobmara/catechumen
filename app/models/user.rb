@@ -1,6 +1,6 @@
 require 'digest/sha1'
 
-class User < ActiveRecord::Base
+class Login < ActiveRecord::Base
   include Authentication
   include Authentication::ByPassword
   include Authentication::ByCookieToken
@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   #attr_accessible :login, :email, :name, :password, :password_confirmation, :isstaff, :staff_id, 
                   #:student_id
                   
-  cattr_accessor :current_user
+  cattr_accessor :current_login
 
   def role_symbols
     roles.map do |role|
@@ -63,7 +63,7 @@ class User < ActiveRecord::Base
     write_attribute :email, (value ? value.downcase : nil)
   end
   
-  def user_nama
+  def login_nama
     stid = Array(staff_id)
     suid = Array(student_id)
     stexists = Staff.find(:all, :select => "id").map(&:id)
@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   end
   
   def assigned_staff
-    User.find(:all, :select => "staff_id", :conditions => ["staff_id IS NOT ?", nil]).map(&:staff_id)
+    Login.find(:all, :select => "staff_id", :conditions => ["staff_id IS NOT ?", nil]).map(&:staff_id)
   end
   
   named_scope :all

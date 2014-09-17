@@ -11,7 +11,7 @@ pages = Page.create([
   {:name => 'home', :title => 'Home', :admin => false, :navlabel => 'Home', :redirect => false}])
   
 roles = Role.create([
-  {:name => 'User',           :authname => 'user'},
+  {:name => 'Login',           :authname => 'user'},
   {:name => 'Administration', :authname => 'administration'},
   {:name => 'Student',        :authname => 'student'},
   {:name => 'Administration Staff', :authname => 'administration_staff'},
@@ -34,8 +34,8 @@ roles = Role.create([
   
 
 
-if !User.find_by_login('admin')
-  u = User.create(:login => 'admin', :email => 'email@mail.com', 
+if !Login.find_by_login('admin')
+  u = Login.create(:login => 'admin', :email => 'email@mail.com', 
               :password => 'changeme', :password_confirmation => 'changeme',
               :icno => '012345678901')
   Role.all.each { |role| u.roles << role }

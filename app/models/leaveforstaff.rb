@@ -17,13 +17,13 @@ class Leaveforstaff < ActiveRecord::Base
   end
   
   def moo
-    User.current_user.staff_id unless User.current_user.staff_id.blank?
+    Login.current_login.staff_id unless Login.current_login.staff_id.blank?
   end
   
-  named_scope :relevant,    :conditions =>  ["staff_id=? OR approval1_id=? OR approval2_id=?", User.current_user.staff_id, User.current_user.staff_id, User.current_user.staff_id]
-  named_scope :mine,        :conditions =>  ["staff_id=?", User.current_user[:staff_id]]
-  named_scope :forsupport,  :conditions =>  ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]
-  named_scope :forapprove,  :conditions =>  ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]
+  named_scope :relevant,    :conditions =>  ["staff_id=? OR approval1_id=? OR approval2_id=?", Login.current_login.staff_id, Login.current_login.staff_id, Login.current_login.staff_id]
+  named_scope :mine,        :conditions =>  ["staff_id=?", Login.current_login[:staff_id]]
+  named_scope :forsupport,  :conditions =>  ["approval1_id=? AND approval1 IS ?", Login.current_login.staff_id, nil]
+  named_scope :forapprove,  :conditions =>  ["approval2_id=? AND approver2 IS ? AND approval1=?", Login.current_login.staff_id, nil, true]
 
 
   FILTERS = [
@@ -35,7 +35,7 @@ class Leaveforstaff < ActiveRecord::Base
 
   
   def self.find_main
-    Staff.find(:all, :condition => ["staff_id=? OR approval1_id=? OR approval2_id=?", User.current_user.staff_id, User.current_user.staff_id, User.current_user.staff_id])
+    Staff.find(:all, :condition => ["staff_id=? OR approval1_id=? OR approval2_id=?", Login.current_login.staff_id, Login.current_login.staff_id, Login.current_login.staff_id])
   end
   
   def save_my_approvers

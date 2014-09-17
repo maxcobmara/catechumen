@@ -69,52 +69,52 @@ authorization do
     has_permission_on :books, :to => :core
     has_permission_on :ptdos, :to => :create
     has_permission_on :ptdos, :to => :index do
-      if_attribute :staff_id => is {User.current_user.staff_id}
+      if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     has_permission_on :staffs, :to => [:show, :menu]
     has_permission_on :staffs, :to => [:edit, :update, :menu] do
-      if_attribute :id => is {User.current_user.staff_id}
+      if_attribute :id => is {Login.current_login.staff_id}
     end
     has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update] do
-      if_attribute :staff_id => is {User.current_user.staff_id}
+      if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     has_permission_on :attendances, :to => [:index, :show, :approve, :update] do
-        if_attribute :approve_id => is {User.current_user.staff_id}
+        if_attribute :approve_id => is {Login.current_login.staff_id}
     end
     
     has_permission_on :staff_appraisals, :to => :create
     has_permission_on :staff_appraisals, :to => :manage, :join_by => :or do 
-        if_attribute :staff_id => is {User.current_user.staff_id}
-        if_attribute :eval1_by => is {User.current_user.staff_id}
-        if_attribute :eval2_by => is {User.current_user.staff_id}
+        if_attribute :staff_id => is {Login.current_login.staff_id}
+        if_attribute :eval1_by => is {Login.current_login.staff_id}
+        if_attribute :eval2_by => is {Login.current_login.staff_id}
     end
     
     has_permission_on :leaveforstaffs, :to => :create
     has_permission_on :leaveforstaffs, :to => [:index, :show, :edit, :update] do
-      if_attribute :staff_id => is {User.current_user.staff_id}
+      if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     has_permission_on :leaveforstaffs, :to => [:index, :show, :approve1, :update] do
-        if_attribute :approval1_id => is {User.current_user.staff_id}
+        if_attribute :approval1_id => is {Login.current_login.staff_id}
     end
     has_permission_on :leaveforstaffs, :to => [:index, :show, :approve2, :update] do
-        if_attribute :approval2_id => is {User.current_user.staff_id}
+        if_attribute :approval2_id => is {Login.current_login.staff_id}
     end
     has_permission_on :ptdos, :to => :delete do
-        if_attribute :staff_id => is {User.current_user.staff_id}
+        if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     
     has_permission_on :asset_defects, :to => :create
     has_permission_on :asset_defects, :to => [:read, :update]  do
-        if_attribute :reported_by => is {User.current_user.staff_id}
+        if_attribute :reported_by => is {Login.current_login.staff_id}
     end
     has_permission_on :asset_defects, :to => [:manage]  do
-        if_attribute :decision_by => is {User.current_user.staff_id}
+        if_attribute :decision_by => is {Login.current_login.staff_id}
     end
     
     has_permission_on :documents, :to => [:approve,:menu], :join_by => :or do 
-        if_attribute :stafffiled_id => is {User.current_user.staff_id}
-        if_attribute :cc1staff_id => is {User.current_user.staff_id}
-        if_attribute :cc2staff_id => is {User.current_user.staff_id}
+        if_attribute :stafffiled_id => is {Login.current_login.staff_id}
+        if_attribute :cc1staff_id => is {Login.current_login.staff_id}
+        if_attribute :cc2staff_id => is {Login.current_login.staff_id}
     end  
     
     #to works in travel request..28 August 2013
@@ -123,19 +123,19 @@ authorization do
    
     has_permission_on :student_discipline_cases, :to => :create
     has_permission_on :student_discipline_cases, :to => :approve do
-      if_attribute :assigned_to => is {User.current_user.staff_id}
+      if_attribute :assigned_to => is {Login.current_login.staff_id}
     end
     has_permission_on :student_discipline_cases, :to => :manage do
-      if_attribute :assigned2_to => is {User.current_user.staff_id}
+      if_attribute :assigned2_to => is {Login.current_login.staff_id}
     end
     has_permission_on :student_discipline_cases, :to => :read, :join_by => :or do
-      if_attribute :reported_by => is {User.current_user.staff_id}
-      if_attribute :assigned_to => is {User.current_user.staff_id}
-      if_attribute :assigned2_to => is {User.current_user.staff_id}
+      if_attribute :reported_by => is {Login.current_login.staff_id}
+      if_attribute :assigned_to => is {Login.current_login.staff_id}
+      if_attribute :assigned2_to => is {Login.current_login.staff_id}
     end
 
     has_permission_on :librarytransactions, :to => :read do
-      if_attribute :staff_id => is {User.current_user.staff_id}
+      if_attribute :staff_id => is {Login.current_login.staff_id}
     end
   end
   
@@ -186,8 +186,8 @@ authorization do
   role :e_filing do
     has_permission_on :cofiles, :to => :manage
     has_permission_on :documents, :to => [:manage, :generate_report] #do
-        #if_attribute :prepared_by => is {User.current_user.staff_id}
-        #if_attribute :stafffiled_id => is {User.current_user.staff_id}
+        #if_attribute :prepared_by => is {Login.current_login.staff_id}
+        #if_attribute :stafffiled_id => is {Login.current_login.staff_id}
     #end
     has_permission_on :documentsearches, :to => :read
   end
@@ -198,21 +198,21 @@ authorization do
       has_permission_on :locations, :to => :menu
     
       has_permission_on :tenants, :to => :read do
-        if_attribute :student_id => is {User.current_user.student_id}
+        if_attribute :student_id => is {Login.current_login.student_id}
       end
       
       #has_permission_on :student_counseling_sessions, :to => :create
       #has_permission_on :student_counseling_sessions, :to => :show do
-        #if_attribute :student_id => is {User.current_user.student_id}
+        #if_attribute :student_id => is {Login.current_login.student_id}
       #end
     
       has_permission_on :programmes, :to => :menu
       has_permission_on :books, :to => :core
       has_permission_on :students, :to => [:read, :update, :menu] do
-        if_attribute :student_id => is {User.current_user.student_id}
+        if_attribute :student_id => is {Login.current_login.student_id}
       end
       has_permission_on :leaveforstudents, :to => [:read, :update] do
-        if_attribute :student_id => is {User.current_user.student_id}
+        if_attribute :student_id => is {Login.current_login.student_id}
       end
       has_permission_on :leaveforstudents, :to => [:create]
   end
@@ -247,7 +247,7 @@ authorization do
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => :manage
     has_permission_on :weeklytimetables, :to => :manage do
-      if_attribute :prepared_by => is {User.current_user.staff_id}
+      if_attribute :prepared_by => is {Login.current_login.staff_id}
     end
  end
 #--21march2013-new role added    
@@ -256,16 +256,16 @@ authorization do
     has_permission_on :programmes, :to => [:core,:menu]
     has_permission_on :topics, :to => :manage
     has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar] do
-      if_attribute :staff_id => is {User.current_user.staff_id}
+      if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     has_permission_on :trainingreports, :to => :manage, :join_by => :or do
-      if_attribute :staff_id => is {User.current_user.staff_id}
-      if_attribute :tpa_id => is {User.current_user.staff_id}
+      if_attribute :staff_id => is {Login.current_login.staff_id}
+      if_attribute :tpa_id => is {Login.current_login.staff_id}
     end
     has_permission_on :timetables, :to => [:create]
     has_permission_on :student_attendances, :to => :manage  #10July2013
     has_permission_on :weeklytimetables, :to => :personalize_index do
-      if_attribute :staff_id => is {User.current_user.staff_id}
+      if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     has_permission_on :studentattendancesearches, :to => :read
     has_permission_on :weeklytimetablesearches, :to => :read

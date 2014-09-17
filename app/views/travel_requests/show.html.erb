@@ -26,7 +26,7 @@
 
 
 <!--31Dec2012-testing for travel claim logs display (if any)-->
-<% if @travel_request.travel_claim_logs && @travel_request.staff_id == User.current_user.staff_id && @travel_request.hod_accept == true%>
+<% if @travel_request.travel_claim_logs && @travel_request.staff_id == Login.current_login.staff_id && @travel_request.hod_accept == true%>
 	<fieldset>
 		<legend>Travel Log Details</legend>
 			<table width=100% >	
@@ -61,7 +61,7 @@
 <% if @travel_request.hod_accept != true %>
 	<%= link_to 'Edit', edit_travel_request_path(@travel_request) %> |
 <% end %>
-<% if @travel_request.staff_id == User.current_user.staff_id &&  @travel_request.hod_accept == true %>
+<% if @travel_request.staff_id == Login.current_login.staff_id &&  @travel_request.hod_accept == true %>
 	<%= link_to 'Edit Travel Logs', :action => 'travel_log', :id => @travel_request  %> | 
 <% end %>
 <!--31dec2012-show EDIT link when 'hod_accept' NOT TRUE &/or show EDIT TRAVEL LOGS link when 'hod_accept' is TRUE & login as travel_request owner-->

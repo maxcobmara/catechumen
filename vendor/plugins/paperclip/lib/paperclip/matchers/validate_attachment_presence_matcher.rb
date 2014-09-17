@@ -4,7 +4,7 @@ module Paperclip
       # Ensures that the given instance or class validates the presence of the
       # given attachment.
       #
-      # describe User do
+      # describe Login do
       #   it { should validate_attachment_presence(:avatar) }
       # end
       def validate_attachment_presence name

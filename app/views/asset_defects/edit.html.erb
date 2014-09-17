@@ -47,20 +47,20 @@
 				
 				<tr class="span_is_processed" style="display: none;">
 					<td class="leftcol"><label for="processed_by">Name</label></td>
-					<td><%= f.collection_select :processed_by, Staff.find(:all, :conditions => ["id = ?", current_user.staff_id]), :id, :staff_name_with_position %></td>
+					<td><%= f.collection_select :processed_by, Staff.find(:all, :conditions => ["id = ?", current_login.staff_id]), :id, :staff_name_with_position %></td>
 				</tr>
 				
-				<% bosses = User.current_user.staff.try(:position).try(:ancestor_ids) %>
+				<% bosses = Login.current_login.staff.try(:position).try(:ancestor_ids) %>
 				<% myhod = Position.find(:all, :conditions => ['id IN (?)', bosses ], :select => :staff_id).map(&:staff_id) %>
 				<tr class="span_is_processed" style="display: none;">
 					<td class="leftcol"><label for="approved_date">Notify HOD</label></td>
 			    	<td>
             <!-->  
-            <%# if User.current_user.staff.position == true %>
-  						<%# if User.current_user.staff.position.is_root? == false %>
+            <%# if Login.current_login.staff.position == true %>
+  						<%# if Login.current_login.staff.position.is_root? == false %>
   							<%#= f.collection_select :decision_by, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %>				
   						<%# else %>
-  							<%# myhod = User.current_user.staff.id %>
+  							<%# myhod = Login.current_login.staff.id %>
   							<%#= f.collection_select :decision_by, Staff.find(:all, :conditions => ['id=?', myhod]), :id, :name %>
   						<%# end %>
             <%# end %>

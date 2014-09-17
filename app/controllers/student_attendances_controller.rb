@@ -9,7 +9,7 @@ class StudentAttendancesController < ApplicationController
     @programme = params[:programme]
     ######==============
     @programme_list_ids = Programme.at_depth(0).map(&:id)
-    @lecturer_programme = current_user.staff.position.unit
+    @lecturer_programme = current_login.staff.position.unit
     unless @lecturer_programme.nil?
       @programme2 = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end

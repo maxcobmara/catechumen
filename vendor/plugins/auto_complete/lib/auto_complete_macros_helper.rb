@@ -49,7 +49,7 @@ module AutoCompleteMacrosHelper
   #                                  user has selected one of the proposed values. 
   #                                  The expression should take two variables: element and value.
   #                                  Element is a DOM element for the field, value
-  #                                  is the value selected by the user.
+  #                                  is the value selected by the login.
   # <tt>:select</tt>::               Pick the class of the element from which the value for 
   #                                  insertion should be extracted. If this is not specified,
   #                                  the entire element is used.

@@ -6,7 +6,7 @@ module Paperclip
   # These macros are intended for use with shoulda, and will be included into
   # your tests automatically. All of the macros use the standard shoulda
   # assumption that the name of the test is based on the name of the model
-  # you're testing (that is, UserTest is the test for the User model), and
+  # you're testing (that is, LoginTest is the test for the Login model), and
   # will load that class for testing purposes.
   module Shoulda
     include Matchers

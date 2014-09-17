@@ -1,4 +1,4 @@
-Users want to know that nobody can masquerade as them.  We want to extend trust
+Logins want to know that nobody can masquerade as them.  We want to extend trust
 only to visitors who present the appropriate credentials.  Everyone wants this
 identity verification to be as secure and convenient as possible.
 
@@ -53,7 +53,7 @@ Story: Logging in
      And  reggie should be logged in
      And  she should have an auth_token cookie
 	      # assumes fixtures were run sometime
-     And  her session store should have user_id: 4
+     And  her session store should have login_id: 4
    
   #
   # Log in unsuccessfully
@@ -72,7 +72,7 @@ Story: Logging in
     Then  she should see an error message 'Couldn't log you in as 'reggie''
      And  she should not be logged in
      And  she should not have an auth_token cookie
-     And  her session store should not have user_id
+     And  her session store should not have login_id
   
   Scenario: Log-in with bogus info should fail until it doesn't
     Given an activated user named 'reggie'
@@ -81,25 +81,25 @@ Story: Logging in
     Then  she should see an error message 'Couldn't log you in as 'reggie''
      And  she should not be logged in
      And  she should not have an auth_token cookie
-     And  her session store should not have user_id
+     And  her session store should not have login_id
     When  she creates a singular sessions with login: 'reggie', password: ''
     Then  she should be at the new sessions page
     Then  she should see an error message 'Couldn't log you in as 'reggie''
      And  she should not be logged in
      And  she should not have an auth_token cookie
-     And  her session store should not have user_id
+     And  her session store should not have login_id
     When  she creates a singular sessions with login: '', password: 'monkey'
     Then  she should be at the new sessions page
     Then  she should see an error message 'Couldn't log you in as '''
      And  she should not be logged in
      And  she should not have an auth_token cookie
-     And  her session store should not have user_id
+     And  her session store should not have login_id
     When  she creates a singular sessions with login: 'leonard_shelby', password: 'monkey'
     Then  she should be at the new sessions page
     Then  she should see an error message 'Couldn't log you in as 'leonard_shelby''
      And  she should not be logged in
      And  she should not have an auth_token cookie
-     And  her session store should not have user_id
+     And  her session store should not have login_id
     When  she creates a singular sessions with login: 'reggie', password: 'monkey', remember me: '1'
     Then  she should be redirected to the home page
     When  she follows that redirect!
@@ -107,7 +107,7 @@ Story: Logging in
      And  reggie should be logged in
      And  she should have an auth_token cookie
 	      # assumes fixtures were run sometime
-     And  her session store should have user_id: 4
+     And  her session store should have login_id: 4
 
 
   #
@@ -121,7 +121,7 @@ Story: Logging in
     Then  she should see a notice message 'You have been logged out'
      And  she should not be logged in
      And  she should not have an auth_token cookie
-     And  her session store should not have user_id
+     And  her session store should not have login_id
 
   Scenario: Logged in user can log out.
     Given an activated user logged in as 'reggie'
@@ -131,4 +131,4 @@ Story: Logging in
     Then  she should see a notice message 'You have been logged out'
      And  she should not be logged in
      And  she should not have an auth_token cookie
-     And  her session store should not have user_id
+     And  her session store should not have login_id

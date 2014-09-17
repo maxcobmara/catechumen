@@ -2,7 +2,7 @@
   <%= f.error_messages %>
 
 	
-		<% if (@weeklytimetable.prepared_by == User.current_user.staff_id && @weeklytimetable.is_submitted != true)  || (@weeklytimetable.prepared_by == User.current_user.staff_id && @weeklytimetable.hod_rejected? == true )%>
+		<% if (@weeklytimetable.prepared_by == Login.current_login.staff_id && @weeklytimetable.is_submitted != true)  || (@weeklytimetable.prepared_by == Login.current_login.staff_id && @weeklytimetable.hod_rejected? == true )%>
 			<h3>Editing Weekly Timetable</h3>
 			<div class="tform">
 				<%=render :partial => 'show_first' %>
@@ -11,7 +11,7 @@
 
 			</div>
 		<% end -%>
-		<% if @weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == User.current_user.staff_id %>
+		<% if @weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == Login.current_login.staff_id %>
 			<h3>Weekly Timetable Approval</h3>
 			<div class="tform">
 				<%=render :partial => 'show_main' %>

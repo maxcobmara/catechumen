@@ -15,8 +15,8 @@ Rails::Initializer.run do |config|
   #     require "ruport/acts_as_reportable"
   #end
   
-  #config.gem 'will_paginate', :version => '~> 2.3.14' ###this one used at mac book pro
-  config.gem 'will_paginate', :version => '~> 2.3.16' ## use this one at tpsb server
+  config.gem 'will_paginate', :version => '~> 2.3.14' ###this one used at mac book pro
+  #config.gem 'will_paginate', :version => '~> 2.3.16' ## use this one at tpsb server
   #config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"  ###this one used at KSKB server & Win7's notebook
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )

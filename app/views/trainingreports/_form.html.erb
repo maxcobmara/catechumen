@@ -39,7 +39,7 @@
 						<SPAN class="span_is_submitted_on" style="display: none;"><%#= f.date_select :is_submitted_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
 			</tr>
 			
-			<% bosses = User.current_user.staff.position.ancestor_ids %>
+			<% bosses = Login.current_login.staff.position.ancestor_ids %>
 			<% myhod = Position.find(:all, :conditions => ['id IN (?)', bosses ], :select => :staff_id).map(&:staff_id) %>
 			<tr class="span_is_submitted_on" style="display: none;">
 				<td class="leftcol"><label for="tpa_id">TPA/KP</label></td>

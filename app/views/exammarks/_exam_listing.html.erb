@@ -7,7 +7,7 @@
 <% @exam_ids_for_examquestions = Exam.find(:all,:joins=>:examquestions).map(&:id).uniq %>
 <% @complete_exampaper = Exam.find(:all, :conditions=>['id IN (?) OR id IN (?)',@exam_ids_for_examtemplate,@exam_ids_for_examquestions]) %>
 <!--ADDED-18June2013-->
-<%# if @current_user_roles.include?(2) || (!@current_user_roles.include?(2) && @anc_depth==1) %>
+<%# if @current_login_roles.include?(2) || (!@current_login_roles.include?(2) && @anc_depth==1) %>
 	<% if @existing_exammark_ids.count == 0 %>
 		<% @exam_list_exist_mark = []%>
 	<% else %>	
@@ -19,7 +19,7 @@
 	<%# @exam_list_index = Exam.all %><!--question OR question template must exist-->	
 	<% @exam_list_index = @complete_exampaper %>
 <%# end %>
-<%# if !@current_user_roles.include?(2) && @anc_depth!=1 %>
+<%# if !@current_login_roles.include?(2) && @anc_depth!=1 %>
 	<% @exam_list = [] %>
 	<% @exam_list_exist_mark = [] %>
 	<% @exam_list_index = []%>
