@@ -16,6 +16,16 @@ class AssetDisposal < ActiveRecord::Base
   
   validates_presence_of :examiner_staff1, :if => :is_staff1?
   validates_presence_of :examiner_staff2, :if => :is_staff2?
+  validates_presence_of :checked_by, :checked_on, :verified_by, :if => :check_checked?
+  validates_presence_of :type_others_desc, :if => :disposaltype_others?
+    
+  def check_checked?
+    is_checked == true
+  end
+    
+  def disposaltype_others?
+    disposal_type=='others'
+  end
   
   def age
     Date.today - @asset.purchasedate
