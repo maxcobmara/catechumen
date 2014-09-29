@@ -4,6 +4,8 @@ class Intake < ActiveRecord::Base
   has_many   :weeklytimetables  #20March2013
   has_many   :lessonplans, :class_name => 'LessonPlan', :foreign_key=>'intake_id' #26March2013
   
+  validates_presence_of :programme_id, :name, :description, :register_on
+  
   #20March2013
   def group_with_intake_name
     "#{description}"+' (Intake '+"#{name}"+')'

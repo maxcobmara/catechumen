@@ -64,11 +64,11 @@
 					<!--hide REVALUE part iF all processes already completed-->
 					<% if asset_disposal.is_disposed == true && asset_disposal.disposed_by != nil%>
 					<% else %>
-					<!---->
+					<!----><% if asset_disposal.checked_on %>
 							<% if Date.today - asset_disposal.checked_on > -1 %><% Date.today - asset_disposal.checked_on %>
 								<%= link_to image_tag("money_delete.png", :border => 0), :action => 'revalue', :id => asset_disposal %>
 							<% end %>
-					<!---->
+					<!----><% end %>
 					<% end %>
 					<!--hide REVALUE part iF all processes already completed-->	
 					</td>
