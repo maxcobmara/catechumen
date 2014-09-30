@@ -286,7 +286,7 @@
 				<%= f.hidden_field :disposal, :value => 1 %>
 				<tr><td colspan=2>Disposed Asset For Yearly Examiner Board Report</td></tr>
 				<tr>
-					<% @disposals_disposed = AssetDisposal.find(:all, :conditions=>['is_disposed is TRUE'])%><!--for checking:AssetDisposal.all-->
+					<% @disposals_disposed = AssetDisposal.find(:all, :conditions=>['is_disposed is TRUE and disposed_on is not null'])%><!--for checking:AssetDisposal.all-->
 					
 					<td class="leftcol">Select Disposed Asset(s) : </td>
 					<td>
@@ -329,7 +329,7 @@
 				<%= f.hidden_field :disposal, :value => 1 %>
 				<tr><td colspan=2>Disposed Asset For Yearly Report</td></tr>
 				<tr>
-					<% @disposals_disposed = AssetDisposal.find(:all, :conditions=>['is_disposed is TRUE'])%><!--for checking:AssetDisposal.all-->
+					<% @disposals_disposed = AssetDisposal.find(:all, :conditions=>['is_disposed is TRUE and disposed_on is not null'])%><!--for checking:AssetDisposal.all-->
 
 					<td class="leftcol">Select Disposed Asset(s) : </td>
 					<td>

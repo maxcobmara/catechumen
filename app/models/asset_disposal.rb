@@ -47,6 +47,20 @@ class AssetDisposal < ActiveRecord::Base
     end
   end
   
+  def disposal_malay
+    if disposal_type == 'transfer'
+      "Pindahan / Hadiah"
+    elsif disposal_type == 'sold'
+      "Jualan"
+    elsif disposal_type == 'discard'
+      "Hapus"
+    elsif disposal_type == 'stock'
+      "Stok"
+    elsif disposal_type == 'others'
+      "Lain - lain"
+    end
+  end
+  
   def discard_malay
     if discard_options == "bury"
       "Tanam"
