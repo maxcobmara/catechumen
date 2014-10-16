@@ -60,14 +60,14 @@ document.write("<input type='button' " +
 		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Total</td>
 		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Received Date</td>
 	</tr>
-<% for addsuppliers in @stationery.addsuppliers %>
+<% for stationery_add in @stationery.stationery_adds%>
   	<tr>
-		<td><%= addsuppliers.lpono %></td>
-		<td><%= addsuppliers.document %></td>
-		<td><%= addsuppliers.quantity %></td>
-		<td><%= ringgols(addsuppliers.unitcost) %></td>
-		<td><%= ringgols(addsuppliers.line_item_value) %></td>
-		<td><%= addsuppliers.received? ? addsuppliers.received.strftime("%d %b %Y") : "-" %></td>
+		<td><%= stationery_add.lpono %></td>
+		<td><%= stationery_add.document %></td>
+		<td><%= stationery_add.quantity %></td>
+		<td><%= ringgols(stationery_add.unitcost) %></td>
+		<td><%= ringgols(stationery_add.line_item_value) %></td>
+		<td><%= stationery_add.received? ? stationery_add.received.strftime("%d %b %Y") : "-" %></td>
 	</tr>
 <% end %>
 	<tr><td colspan=4 height=100px></tr>
@@ -79,12 +79,12 @@ document.write("<input type='button' " +
 		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Issue Date</td>
 	</tr>
 
-	<% for usesupplies in @stationery.usesupplies %>
+	<% for stationery_use in @stationery.stationery_uses %>
 		<tr>
-			<td><%= usesupplies.issuedby.try(:name) %></td>
-			<td><%= usesupplies.receivedby.try(:name) %></td>
-			<td><%= usesupplies.quantity %></td>
-			<td><%= usesupplies.issuedate? ? usesupplies.issuedate.strftime("%d %b %Y") : "-" %></td>
+			<td><%= stationery_use.issuer.try(:name) %></td>
+			<td><%= stationery_use.receiver.try(:name) %></td>
+			<td><%= stationery_use.quantity %></td>
+			<td><%= stationery_use.issuedate? ? stationery_use.issuedate.strftime("%d %b %Y") : "-" %></td>
 		</tr>
 	<% end %>
 
