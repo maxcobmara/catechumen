@@ -111,8 +111,8 @@ class Staff < ActiveRecord::Base
   has_many :approvers,           :class_name => 'TravelClaim',      :foreign_key => 'approved_by'
   
   #Link to Model Supplier
-  has_many :issuesupply,      :class_name => 'usesupply',   :foreign_key => 'issuedby'
-  has_many :receivesupply,    :class_name => 'usesupply',   :foreign_key => 'receivedby'
+  has_many :issueds,      :class_name => 'StationeryUse',   :foreign_key => 'issuedby'
+  has_many :receiveds,    :class_name => 'StatoneryUse',   :foreign_key => 'receivedby'
   
   #Link to Model Topic
   has_many :creator,    :class_name => 'Topic',    :foreign_key => 'creator_id'

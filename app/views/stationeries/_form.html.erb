@@ -33,10 +33,10 @@
 									<%= t 'supplier.unitcost' %>  &nbsp;  &nbsp; &nbsp; &nbsp;  | 
 									<%= t 'supplier.total' %>  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;  | 
 									<%= t 'supplier.received' %></strong></p><%# count=0%><%@index=-1%>
-		<% f.fields_for :addsuppliers do |builder| %><%# @index+=1 %>
-			<%= render 'addsupplier_fields', :f => builder, :index=>@index+=1 %><%# count+=1 %>
+		<% f.fields_for :stationery_adds do |builder| %><%# @index+=1 %>
+			<%= render 'stationery_add_fields', :f => builder, :index=>@index+=1 %><%# count+=1 %>
 		<% end %>
-		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :addsuppliers %> - Add More </p>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :stationery_adds %> - Add More </p>
 	</div>
 	
 <!--usesupply Details-->		
@@ -50,10 +50,10 @@
 				&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
 										<!--<div style="width: 90px; float: left;">-->| <%= t 'supplier.issuedate' %><!--</div>-->
 			</strong></p>
-			<% f.fields_for :usesupplies do |builder| %>
-				<%= render 'usesupply_fields', :f => builder %>
+			<% f.fields_for :stationery_uses do |builder| %>
+				<%= render 'stationery_use_fields', :f => builder %>
 			<% end %>
-			<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :usesupplies %> - Add More </p>
+			<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :stationery_uses %> - Add More </p>
 	</div>
 </div>
 

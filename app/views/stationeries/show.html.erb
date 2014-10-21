@@ -38,19 +38,19 @@
 				<td>Total</td>
 				<td>Received Date</td>
 			</tr>
-		<% for addsuppliers in @stationery.addsuppliers %>
+		<% for stationery_add in @stationery.stationery_adds %>
 			<tr>
-				<td><%= addsuppliers.lpono %></td>
-				<td><%= addsuppliers.document %></td>
-				<td><%= addsuppliers.quantity.to_i %></td>
-				<td><%= ringgols(addsuppliers.unitcost) %></td>
-				<td><%= ringgols(addsuppliers.line_item_value) %></td>
-				<td><%= addsuppliers.received? ? addsuppliers.received.strftime("%d %b %Y") : "-" %></td>
+				<td><%= stationery_add.lpono %></td>
+				<td><%= stationery_add.document %></td>
+				<td><%= stationery_add.quantity.to_i %></td>
+				<td><%= ringgols(stationery_add.unitcost) %></td>
+				<td><%= ringgols(stationery_add.line_item_value) %></td>
+				<td><%= stationery_add.received? ? stationery_add.received.strftime("%d %b %Y") : "-" %></td>
 			</tr>
 		<% end %>
 		</table>
 		
-	<%# if @stationery.usesupplies %>
+	<%# if @stationery.stationery_uses %>
 		<H2>Deductions</H2>
 		<table width=100%>
 			<tr>
@@ -59,12 +59,12 @@
 				<td>Quantity</td>
 				<td>Issue Date</td>
 			</tr>
-		<% for usesupplies in @stationery.usesupplies %>
+		<% for stationery_use in @stationery.stationery_uses %>
 			<tr>
-				<td><%= usesupplies.issuedby %></td>
-				<td><%= usesupplies.receivedby %></td>
-				<td><%= usesupplies.quantity.to_i %></td>
-				<td><%= usesupplies.issuedate? ? usesupplies.issuedate.strftime("%d %b %Y") : "-" %></td>
+				<td><%= stationery_use.issuer.try(:name) %></td>
+				<td><%= stationery_use.receiver.try(:name) %></td>
+				<td><%= stationery_use.quantity.to_i %></td>
+				<td><%= stationery_use.issuedate? ? stationery_use.issuedate.strftime("%d %b %Y") : "-" %></td>
 			</tr>
 		<% end %>
 	<%# end %>

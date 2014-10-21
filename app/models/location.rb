@@ -75,7 +75,15 @@ class Location < ActiveRecord::Base
      Tenant.find(:all, :select => "id", :conditions => ["location_id =?", myid]).map(&:id)
    end
      
-   
+   def self.incharge
+     incharge_ids = Asset.find(:all, :conditions=>['assignedto_id is not null']).map(&:assignedto_id).uniq 
+     staffs_ids = Staff.all.map(&:id)
+     incharge_ids2 = []
+     incharge_ids.each do |incharge| 
+       incharge_ids2 << incharge if staffs_ids.include?(incharge)
+     end
+     incharge_ids2
+   end
  
  
  CLASS = [

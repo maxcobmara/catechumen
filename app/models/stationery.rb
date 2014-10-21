@@ -2,22 +2,22 @@ class Stationery < ActiveRecord::Base
   validates_presence_of :category
   validates_uniqueness_of :category, :code
   
-  has_many :addsuppliers, :foreign_key => 'supplier_id' , :dependent => :destroy
-  accepts_nested_attributes_for :addsuppliers, :allow_destroy => true
+  has_many :stationery_adds, :foreign_key => 'stationery_id' , :dependent => :destroy
+  accepts_nested_attributes_for :stationery_adds, :allow_destroy => true
   
-  has_many :usesupplies, :foreign_key => 'supplier_id', :dependent => :destroy
-  accepts_nested_attributes_for :usesupplies, :allow_destroy => true
+  has_many :stationery_uses, :foreign_key => 'stationery_id', :dependent => :destroy
+  accepts_nested_attributes_for :stationery_uses, :allow_destroy => true
   
   
   def current_quantity
-    a = Addsupplier.sum(:quantity, :conditions => ["supplier_id = ?", id])
-    b = Usesupply.sum(:quantity, :conditions => ["supplier_id = ?", id])
+    a = StationeryAdd.sum(:quantity, :conditions => ["stationery_id = ?", id])
+    b = StationeryUse.sum(:quantity, :conditions => ["stationery_id = ?", id])
     a - b
   end
   
   def total_value
     sid = id
-    cost = addsuppliers.find(:all, :conditions => {:supplier_id => sid}, :select => "line_item_value")
+    cost = StationeryAdd.find(:all, :conditions => {:stationery_id => sid}, :select => "line_item_value")
     if b == nil
       "No Account Registered"
     else 
