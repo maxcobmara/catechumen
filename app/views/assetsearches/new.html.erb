@@ -157,14 +157,12 @@
 					<td class="leftcol">Select Record By : </td>
 					<td><%= f.select :locationtype, ['Person In-Charge','Asset Location'], :prompt => "Select method" %>
 						<SPAN class="bong2", style="display: none;">
-							<% @incharge_ids = Asset.find(:all, :conditions=>['assignedto_id is not null']).map(&:assignedto_id).uniq %>
-							<% @incharge = Staff.find(@incharge_ids) %>
-							<%= f.collection_select :assignedto, @incharge, :id, :name %>
+							<%= f.collection_select :assignedto, Staff.find(Location.incharge), :id, :name %>
 						</SPAN>
 						<SPAN class="koik2", style="display: none;">
 							<% @location_ids = Asset.find(:all, :conditions=>['location_id is not null']).map(&:location_id).uniq %>
 							<% @location = Location.find(@location_ids) %>	
-							<%= f.collection_select :location, @location, :id, :name %></td><!--attr_accessor-->	
+							<%= f.collection_select :location, @location, :id, :name%></td><!--attr_accessor-->	
 						</SPAN>
 					</td>
 				</tr>
@@ -195,7 +193,7 @@
 					</td>
 					<td>
 						<SPAN class="bong3", style="display: none;">
-							<%= f.collection_select :defect_asset, AssetDefect.find(:all,:order => "asset_id ASC"), :id, :asset_name2, :include_blank=>true %><!--id refers to asset_defect ID-->
+							<%= f.collection_select :defect_asset, AssetDefect.find(:all,:order => "asset_id ASC"), :id, :asset_name, :include_blank=>true %><!--id refers to asset_defect ID-->
 						</SPAN>
 						<SPAN class="koik3", style="display: none;">							
 							<%= f.radio_button :persontype, 1,	:id => 'button_report',  :class => 'radio_defect_options' %><label>Reported by</label>
@@ -214,15 +212,12 @@
 				<tr class="incharge_item" style="display: none;">
 					<td class="leftcol">Person In-Charge : </td>
 					<td>
-						<% @defected_asset_ids = AssetDefect.all.map(&:asset_id) %>
-						<% @incharge_ids_of_defected = Asset.find(:all, :conditions=>['assignedto_id is not null AND id IN(?)',@defected_asset_ids]).map(&:assignedto_id).uniq %>
-						<% @incharge_staffs = Staff.find(@incharge_ids_of_defected) %>
-						<%= f.collection_select :assignedto, @incharge_staffs, :id, :name, :include_blank => "Select person in-charge" %>
+						<%= f.collection_select :assignedto,  Staff.find(AssetDefect.incharge_staffs), :id, :name, :include_blank => "Select person in-charge" %>
 					</td>
 				</tr>
 				<tr class="process_item" style="display: none;">
 					<td class="leftcol">Processed By : </td>
-					<td><%= f.collection_select :defect_processor, AssetDefect.find(:all,:select => "DISTINCT processed_by"), :processed_by, :processor_name, :include_blank => "Select processed by" %></td>
+					<td><%= f.collection_select :defect_processor, AssetDefect.find(:all,:conditions => "processed_by is not null", :select => "DISTINCT processed_by"), :processed_by, :processor_name, :include_blank => "Select processed by" %></td>
 				</tr>
 				<tr>
 					<td><b>Listing</b> ALL Asset Defect Records</td>
