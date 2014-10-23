@@ -1,7 +1,7 @@
 class TravelRequest < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
-  before_save :set_to_nil_where_false, :set_total
+  before_save :set_to_nil_where_false, :set_total, :set_mileage_nil_when_not_own_car
   
   belongs_to :applicant,    :class_name => 'Staff', :foreign_key => 'staff_id'
   belongs_to :replacement,  :class_name => 'Staff', :foreign_key => 'replaced_by'
@@ -34,6 +34,14 @@ class TravelRequest < ActiveRecord::Base
     if !mycar?#own_car == false 
       self.own_car_notes =''
       self.mileage = nil
+    end
+  end
+  
+  def set_mileage_nil_when_not_own_car
+    #true for mileage allowance
+    #false for mileage replacement
+    unless own_car
+      self.mileage_replace = nil
     end
   end
   
