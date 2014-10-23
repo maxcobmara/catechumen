@@ -24,7 +24,7 @@
    		<td><%=h for_approval.applicant.staff_name_with_position unless for_approval.applicant.blank? %></td>
       <td><%=h for_approval.destination %></td>
       <td><%=h l(for_approval.depart_at) %></td>
-      <td><%=h for_approval.document.title %></td>
+      <td><%=h for_approval.document.try(:title) %></td>
 			<td><%=h for_approval.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 			<td><%=h for_approval.hod_accept? ? image_tag("tick.png") : image_tag("login_go.png") %></td>
       <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => for_approval %></td>
