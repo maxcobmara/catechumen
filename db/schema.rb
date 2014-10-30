@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140912000001) do
+ActiveRecord::Schema.define(:version => 20141016073418) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -48,17 +48,6 @@ ActiveRecord::Schema.define(:version => 20140912000001) do
     t.string   "web"
     t.string   "fax"
     t.string   "shortname"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "addsuppliers", :force => true do |t|
-    t.integer  "supplier_id"
-    t.string   "lpono"
-    t.string   "document"
-    t.decimal  "quantity"
-    t.decimal  "unitcost"
-    t.date     "received"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1177,6 +1166,11 @@ ActiveRecord::Schema.define(:version => 20140912000001) do
   add_index "logins", ["id"], :name => "index_logins_on_id"
   add_index "logins", ["login"], :name => "index_logins_on_login", :unique => true
 
+  create_table "logins_roles", :id => false, :force => true do |t|
+    t.integer "role_id"
+    t.integer "login_id"
+  end
+
   create_table "maints", :force => true do |t|
     t.integer  "asset_id"
     t.integer  "maintainer_id"
@@ -1393,11 +1387,6 @@ ActiveRecord::Schema.define(:version => 20140912000001) do
     t.string   "authname"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "roles_users", :id => false, :force => true do |t|
-    t.integer "role_id"
-    t.integer "user_id"
   end
 
   create_table "rxparts", :force => true do |t|
@@ -1708,6 +1697,27 @@ ActiveRecord::Schema.define(:version => 20140912000001) do
     t.string   "unittype"
     t.decimal  "maxquantity"
     t.decimal  "minquantity"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "stationery_adds", :force => true do |t|
+    t.integer  "stationery_id"
+    t.string   "lpono"
+    t.string   "document"
+    t.decimal  "quantity"
+    t.decimal  "unitcost"
+    t.date     "received"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "stationery_uses", :force => true do |t|
+    t.integer  "stationery_id"
+    t.integer  "issuedby"
+    t.integer  "receivedby"
+    t.decimal  "quantity"
+    t.date     "issuedate"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -2124,6 +2134,7 @@ ActiveRecord::Schema.define(:version => 20140912000001) do
     t.decimal  "log_fare"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "code"
   end
 
   create_table "traveldetailreceipts", :force => true do |t|
@@ -2159,15 +2170,27 @@ ActiveRecord::Schema.define(:version => 20140912000001) do
     t.text    "details"
   end
 
-  create_table "usesupplies", :force => true do |t|
-    t.integer  "supplier_id"
-    t.integer  "issuedby"
-    t.integer  "receivedby"
-    t.decimal  "quantity"
-    t.date     "issuedate"
+  create_table "users", :force => true do |t|
+    t.string   "login",                                 :default => "", :null => false
+    t.string   "email",                                 :default => "", :null => false
+    t.string   "encrypted_password",                    :default => "", :null => false
+    t.integer  "userable_id"
+    t.string   "userable_type"
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                         :default => 0,  :null => false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip",     :limit => nil
+    t.string   "last_sign_in_ip",        :limit => nil
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["userable_id", "userable_type"], :name => "index_users_on_userable_id_and_userable_type"
 
   create_table "weeklytimetable_details", :force => true do |t|
     t.integer  "subject"
