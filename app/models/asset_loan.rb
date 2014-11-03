@@ -42,25 +42,15 @@ class AssetLoan < ActiveRecord::Base
   end
   
   def unit_members
-      #6-Maslinda(IT),7-16-Ketua2 Program/Subjek(bwh TPA),17-19-Ketua2 Unit(bwh TPHEP),Unit2 bwh Pembantu Tadbir
-      #hods = [6,7,8,9,10,11,12,13,14,15,16,17,18,19,25,26,27,28,29,30,31,129]     #positions of hod - Ketua-ketua Unit's position IDs
-      hods = Position.find(:all, :conditions=>['unit IS NOT NULL AND unit!=?','Ketua Unit Penilaian & Kualiti']).map(&:id).uniq #5Nov2013-TO ADVISE KSKB-insert unit for HODs only
-      loaned_by_position_id = Position.find_by_staff_id(self.loaned_by).id    #loaned_by --> staff_id 
-      unit_members = []
-      if hods.include?(loaned_by_position_id)                                 #if hods.include?(self.loaned_by)-if logged user 1 of hod 
-        #subordinates = Position.find(:first,:conditions=>['staff_id=?',self.loaned_by]).descendants
-        #unit_members << self.loaned_by  #loaned_by_position_id
-        subordinates = Position.find(:first,:conditions=>['staff_id=?',self.loaned_by]).subtree #(self+descendants) - replace line 44 & 45 with this
-			else
-			  superior = Position.find(:first,:conditions=>['staff_id=?',self.loaned_by]).parent.staff_id
-			  subordinates = Position.find(:first,:conditions=>['staff_id=?',self.loaned_by]).siblings  #(siblings only)
-			  unit_members << superior if superior != nil
-			end
-			subordinates.each do |x|
-			  unit_members << x.staff_id if x.staff_id !=nil
-		  end
-			unit_members    #collection of staff_id (member of a unit/dept)
-			
+    exist_unit_of_staff_in_position = Position.find(:all, :conditions =>['unit is not null and staff_id is not null']).map(&:staff_id).uniq
+    if exist_unit_of_staff_in_position.include?(self.loaned_by)
+      current_unit = Position.find_by_staff_id(self.loaned_by).unit    ##Position.where(staff_id: self.loaned_by).unit
+      unit_members = Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]   
+      #unit_members = Position.where(unit: unit_hod).pluck(:staff_id)
+    else
+      unit_members = []#Position.find(:all, :conditions=>['unit=?', 'Teknologi Maklumat']).map(&:staff_id).uniq-[nil]  
+    end
+    unit_members    #collection of staff_id (member of a unit/dept)
   end
   
   def status
