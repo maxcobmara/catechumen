@@ -37,7 +37,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :staffsearches
 
-  map.resources :student_attendances, :collection => { :edit_multiple => :post,:edit_multiple_intake => :post, :update_multiple => :put ,:borang_kehadiran => :get} 
+  map.resources :student_attendances, :collection => { :edit_multiple => :post,:edit_multiple_intake => :post, :update_multiple => :put ,:borang_kehadiran => :get}
   map.resources :student_attendances
 
   map.resources :average_courses
@@ -91,7 +91,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :weeklytimetables, :collection => { :general_timetable => :get, :personalize_timetable => :get}
   map.resources :weeklytimetables
   #map.connect ':controller/:action.:format' #24March2013 - this will cause "No Action responded to 3.Actions:create, destroy,edit..."
-  
+
   map.resources :intakes
 
   map.resources :staff_shifts
@@ -116,17 +116,17 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/asset_defects/kewpa13', :controller => 'asset_defects', :action => 'kewpa13'
   map.connect '/asset_defects/approve/', :controller => 'asset_defects', :action => 'approve'
   map.resources :asset_defects, :collection => { :kewpa9 => :get }
-  
+
   map.connect '/asset_loans/approve/', :controller => 'asset_loans', :action => 'approve'
   map.resources :asset_loans, :collection => { :lampiran => :get}
 
   map.connect '/travel_claims/check/', :controller => 'travel_claims', :action => 'check'
   map.resources :travel_claims, :collection => { :claimprint => :get }
 
-  map.connect '/attendance/status/', :controller => 'staff_attendances', :action => 'status' 
-  map.connect '/attendance/approve/', :controller => 'staff_attendances', :action => 'approve' 
+  map.connect '/attendance/status/', :controller => 'staff_attendances', :action => 'status'
+  map.connect '/attendance/approve/', :controller => 'staff_attendances', :action => 'approve'
   map.connect '/attendance/manage/', :controller => 'staff_attendances', :action => 'manage'
-  map.connect '/attendance/report', :controller => 'staff_attendances', :action => 'report' 
+  map.connect '/attendance/report', :controller => 'staff_attendances', :action => 'report'
   map.resources :staff_attendances, :collection => { :actionable => :put }
 
   map.resources :staff_appraisals, :collection => { :appraisal_form => :get }
@@ -142,9 +142,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect '/asset_losses/kewpa31/', :controller => 'asset_losses', :action => 'kewpa31'
   map.resources :asset_losses, :collection => { :kewpa28 => :get, :kewpa29 => :get, :kewpa30 => :get, :edit_multiple => :post, :update_multiple => :put }
-  #map.resources :asset_losses, :collection => { }  
+  #map.resources :asset_losses, :collection => { }
   map.resources :asset_losses
-  
+
   map.connect '/exams/exampaper', :controller => 'exams', :action => 'exampaper'
   map.connect '/exams/exampaper_separate', :controller => 'exams', :action => 'exampaper_separate'
   map.connect '/exams/exampaper_combine', :controller => 'exams', :action => 'exampaper_combine'
@@ -159,8 +159,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :studentattendances
 
   map.resources :exammakers
- 
-  map.connect '/events/calendar/', :controller => 'events', :action => 'calendar' 
+
+  map.connect '/events/calendar/', :controller => 'events', :action => 'calendar'
   map.connect '/timetables/calendar/', :controller => 'timetables', :action => 'calendar'
   map.resources :timetables#, :collection => { :calendar => :get }
 
@@ -218,7 +218,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :addsupplies
 
   map.resources :supplies
- 
+
   map.connect '/assettracks/register', :controller => 'assettracks', :action => 'register'
   map.resources :assettracks
 
@@ -232,7 +232,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/librarytransactions/extend2', :controller => 'librarytransactions', :action => 'extend2'  #4Apr2013
   map.connect '/librarytransactions/multiple_edit', :controller => 'librarytransactions', :action => 'multiple_edit'  #4Apr2013
   map.resources :librarytransactions, :collection => {:multiple_update => :put }
-  
+
  # map.resources :librarytransactions, :collection => { :multiple_edit => :post, :multiple_update => :put }
   map.resources :librarytransactions
 
@@ -268,7 +268,7 @@ ActionController::Routing::Routes.draw do |map|
   #map.resources :documents
 
   map.resources :curriculums
-  
+
   map.connect '/attendances/approve', :controller => 'attendances', :action => 'approve'
   map.resources :attendances
 
@@ -309,34 +309,34 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :events
 
   map.resources :titles
-  
+
   map.connect '/staffs.js', :controller => 'staffs', :action => 'index' , :collection => {:method => :get}
   map.connect '/indexmessage.js', :controller => 'staffs', :action => 'indexmessage' , :collection => {:method => :get}
   map.connect '/staffs/reportforstaff', :controller => 'staffs', :action => 'reportforstaff'
   map.resources :staffs
-  
+
   #map.calendar '/calendar/:year/:month', :controller => 'calendar', :action => 'index', :requirements => {:year => /\d{4}/, :month => /\d{1,2}/}, :year => nil, :month => ni
-  
-  
+
+
 
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
-  map.register '/register', :controller => 'users', :action => 'create'
-  map.signup '/signup', :controller => 'users', :action => 'new'
-  map.resources :users
+  map.register '/register', :controller => 'logins', :action => 'create'
+  map.signup '/signup', :controller => 'logins', :action => 'new'
+  map.resources :logins
 
   map.resource :session
 
   map.resources :pages
-  
+
   map.with_options :controller => 'viewer' do |viewer|
     viewer.librarystats 'library_rules', :action => 'library_rules'
     viewer.librarystats 'librarystats', :action => 'librarystats'
     viewer.librarystats 'asset_reports', :action => 'assetreports'
   end
-  
+
   map.view_page ':name', :controller => 'viewer', :action => 'show'
-  
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -357,7 +357,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # Sample resource route with sub-resources:
   #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-  
+
   # Sample resource route with more complex sub-resources
   #   map.resources :products do |products|
   #     products.resources :comments

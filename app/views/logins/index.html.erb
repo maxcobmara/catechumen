@@ -12,7 +12,7 @@
 	<table>
 		<tr>
 			<th colspan=2><% link_to image_tag("money_add.png", :border => 0, :title => 'Enter New Budget') + "New Budget", new_ptbudget_path %></th>
-			<th colspan=5><div class="right"><%= select_tag_for_filter("users", @filters, params) %></th>
+			<th colspan=5><div class="right"><%= select_tag_for_filter("logins", @filters, params) %></th>
 		</tr>
 		<tr>
 			<th>Name</th>
@@ -20,17 +20,18 @@
     	<th>Email</th>
 			<th colspan=4 class="ac">Control</th>
   	</tr>
-		<% for user in @logins %>
+		<% @logins.each do |login| %>
 	  <tr>
 			<td><%=h login.login_nama %></td>
 	    <td><%=h login.login %></td>
 	    <td><%=h login.email %></td>
-	    <td width=10px><% if login.staff_id == nil && login.student_id == nil%>
-					<%= link_to image_tag("accept.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => user %>
-					<% end %></td>
-	    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => user %></td>
-	    <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => user %></td>
-	    <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), user, :confirm => "Are you sure you want to delete '#{login.login}'?", :method => :delete %></td>
+	    <td width=10px>
+						<% if login.staff_id == nil && login.student_id == nil -%>
+							<%= link_to image_tag("accept.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => login %>
+						<% end -%></td>
+	    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => login %></td>
+	    <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => login %></td>
+	    <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), login_path, :confirm => "Are you sure you want to delete #{login.login_nama}?", :method => :delete %></td>
 	  </tr>
 	<% end %>
 	</table>

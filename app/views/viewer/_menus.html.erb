@@ -6,13 +6,13 @@
 			<li><%= link_to ' Home',  root_url %></li>
 		</ul>
 	</li>
-	
+
 	<!-- Staff Menu -->
 	<% permitted_to? :menu, :staffs do %>
   	<li><a href="#">Staff</a>
 			<ul class="sub_menu">
 				<li><%= link_to 'Staff Information', {:controller => 'staffs', :action => 'index'} %></li>
-				
+
 				<li><a href="#">Attendance ></a>
 						<ul class="sub_menu">
 							<!--<li><%= link_to t('attendance.lateness_earlyreturn'),{:controller => 'staff_attendances', :action => 'manage'} %></li>-->
@@ -21,7 +21,7 @@
 							<!--
 							<li><%#= link_to 'Staff Attendance', 	{:controller => 'staff_attendances', 	:action => 'index'} %></li>
 							<li><%#= link_to 'Status', 						{:controller => 'staff_attendances', 	:action => 'status'} %></li>-->
-								<li><a href="http://<%= request.host  %>:3003/staff/staff_attendances?locale=ms_MY"><%=t('attendance.list')%></a></li>	
+								<li><a href="http://<%= request.host  %>:3003/staff/staff_attendances?locale=ms_MY"><%=t('attendance.list')%></a></li>
 								<li><a href="http://<%= request.host  %>:3003/attendance/status"><%=t('attendance.punchcard_status')%></a></li>
 								<li><%= link_to t('attendance.report_monthlylisting'),{:controller => 'staff_attendances', 	:action => 'report'} %></li>
 								<li><a href="http://<%= request.host  %>:3003/staff/staff_attendances/import_excel?locale=ms_MY"><%=t('attendance.import_excel')%></a></li>
@@ -29,9 +29,9 @@
 							<li><a href="http://<%= request.host  %>:3003/attendance/manage"><%=t('attendance.lateness_earlyreturn')%></a></li>
 						</ul>
 				</li>
-				
+
 				<li><%= link_to 'Staff Appraisal', 		{:controller => 'staff_appraisals', 	:action => 'index'} %></li>
-				
+
 				<% permitted_to? :manage, :staffs do %>
 					<li><a href="#">Tasks & Responsibilities ></a>
 						<ul class="sub_menu">
@@ -41,7 +41,7 @@
 						</ul>
 					</li>
 				<% end %>
-				
+
 			  <li><a href="#">Leave ></a>
 					<ul class="sub_menu">
 							<li><%= link_to 'Apply', 				{:controller => 'leaveforstaffs', 	:action => 'new'} %></li>
@@ -67,7 +67,7 @@
 							<li><%= link_to 'Training Schedule', ptschedules_path %></li>
 							<% end %>
 							<li><%= link_to 'Apply for Training', 	{:controller => 'ptschedules', :action => 'apply'} %></li>
-						<% permitted_to? :index, :ptdos do %>	
+						<% permitted_to? :index, :ptdos do %>
 							<li><%= link_to 'Training Applications Status', ptdos_path %></li>
 						<% end %>
 					</ul>
@@ -82,7 +82,7 @@
 			</ul>
 		</li>
 	<% end %><!--end for staff menu-->
-	
+
 	<!-- Asset Menu -->
 	<% permitted_to? :menu, :assets do %>
 	<li><a href="#">Assets</a>
@@ -105,7 +105,7 @@
 						<li><%= link_to 'Assets On Loan', 				{:controller => 'asset_loans', 	:action => 'index'} %></li>
 					</ul>
 				</li>
-				
+
 				<%# permitted_to? :manage, :assets do %>
 				<li><%= link_to 'Report / Downloads', {:controller => 'viewer', 	:action => 'assetreports'} %></li>
 				<% permitted_to? :manage, :assets do %>
@@ -125,8 +125,8 @@
 			</ul>
 	</li>
 	<% end %>
-	
-	
+
+
 	<!-- Locations Menu -->
 	<% permitted_to? :menu, :locations do %>
 	<li><a href="#">Locations</a>
@@ -142,7 +142,7 @@
             <li><a href="http://<%= request.host  %>:3003/student/tenants">New Student Tenants Manager</a></li>
             <li><a href="http://<%= request.host  %>:3003/student/tenants/return_key">Return Key</a></li>
           </ul>
-        
+
 			  <% end %>
 			  <!--
 				<li><%#= link_to 'Tenants', {:controller => 'tenants', 		:action => 'index'} %></li>-->
@@ -154,8 +154,8 @@
 			</ul>
 	</li>
 	<% end %>
-	
-	
+
+
 	<!-- E-Filing Menu -->
 	<% permitted_to? :read, :documents do %>
 	<li><a href="#">E-Filing</a>
@@ -177,8 +177,8 @@
 			</ul>
 	</li>
 	<% end %>
-	
-	
+
+
 	<!-- Student Menu -->
 	<% permitted_to? :create, :student_discipline_cases do %>
 	<li><a href="#">Students</a>
@@ -186,11 +186,11 @@
 				<% permitted_to? :index, :students do %>
 				<li><%= link_to 'Student Info', 			{:controller => 'students', 		:action => 'index'} %></li>
 				<% end %>
-				
+
 				<% permitted_to? :manage, :leaveforstudents do %>
 				<li><%= link_to 'Student Leave', 			{:controller => 'leaveforstudents', 	:action => 'index'} %></li>
 				<% end %>
-				
+
 				<% permitted_to? :manage, :student_attendances do %>
 				<li><%= link_to 'Attendance', 			{:controller => 'student_attendances', :action=>'index' } %></li>
 				<% end %>
@@ -199,13 +199,13 @@
 								<#% permitted_to? :create, :sdiciplines do %>
 								<li><#%= link_to 'Discipline', 				{:controller => 'sdiciplines', 	:action => 'index'} %></li>
 								<#% end %>-->
-				
-				
+
+
 				<% permitted_to? :create, :student_discipline_cases do %>
 				<li><%= link_to 'Discipline', 				{:controller => 'Student_discipline_cases', 	:action => 'index'} %></li>
 				<% end %>
-				
-			
+
+
 				<% permitted_to? :index, :student_counseling_sessions do %>
 					<li><%= link_to 'Counselling', 	  		{:controller => 'student_counseling_sessions', :action => 'index'} %></li>
 				<% end %>
@@ -216,7 +216,7 @@
 			</ul>
 	</li>
 	<% end %>
-	
+
 	<!-- Training Menu -->
 	<% permitted_to? :menu, :programmes do %>
 	<li><a href="#">Training</a>
@@ -228,22 +228,22 @@
 				<li><a href="#">Set Up ></a>
 					<ul class="sub_menu">
 							<li><%= link_to 'Create Timetable', {:controller => 'timetables', :action => 'index'} %></li>
-							<li><%= link_to 'Create Intakes', 					{:controller => 'intakes', 		:action => 'index'} %></li>	
+							<li><%= link_to 'Create Intakes', 					{:controller => 'intakes', 		:action => 'index'} %></li>
 							<li><%= link_to 'Create Academic Session', 					{:controller => 'academic_sessions', 		:action => 'index'} %></li>
 					</ul>
 				</li>
 				<li><%= link_to 'Time Table Entries',    {:controller => 'weeklytimetables', 	:action => 'index'} %></li>
 				<li><%= link_to 'Curriculum Management',    {:controller => 'programmes', 	:action => 'index'} %></li>
 				<% end %>
-				
-				
+
+
 				<% permitted_to? :manage, :topics do %>
 				<li><a href="#">Lesson Plan ></a>
 					<ul class="sub_menu">
 							<!--26March2013-<li><%#= link_to 'Subjects', 			{:controller => 'subjects', 		:action => 'index'} %></li>-->
 							<li><%= link_to 'Create Topics Details', 				{:controller => 'topicdetails', 			:action => 'index'} %></li>
 							<li><%= link_to 'Lesson Plan', 	{:controller => 'lesson_plans', 			:action => 'index'} %></li>
-							<li><%= link_to 'Lesson Plan Reporting', 	{:controller => 'lesson_plans',	:action => 'index_report'} %></li>	
+							<li><%= link_to 'Lesson Plan Reporting', 	{:controller => 'lesson_plans',	:action => 'index_report'} %></li>
 					</ul>
 				</li>
 				<% end %>
@@ -254,7 +254,7 @@
 			</ul>
 	</li>
 	<% end %>
-	
+
 	<!-- Examination Menu -->
 	<% permitted_to? :manage, :examquestions do %>
 	<li><a href="#">Exams</a>
@@ -300,12 +300,12 @@
 				<% end %>
 			</ul>
 	</li>
-	
+
 	<!-- Administration Menu -->
 	<% permitted_to? :core, :roles do %>
 	<li><a href="#">Administration</a>
 			<ul class="sub_menu">
-				<li><%= link_to 'Logins',   				{:controller => 'users', 	:action => 'index'} %></li>
+				<li><%= link_to 'User Logins',   				{:controller => 'logins', 	:action => 'index'} %></li>
 				<li><%= link_to 'Roles',   				{:controller => 'roles', 	:action => 'index'} %></li>
 				<li><%= link_to 'Pages',   				{:controller => 'pages', 	:action => 'index'} %></li>
 				<li><%= link_to 'Address Book',   {:controller => 'address_books', :action => 'index'} %></li>
@@ -324,10 +324,10 @@
 			</ul>
 	</li>
 	<% end %>
-	
-	
+
+
 </ul>
-				
+
 
 <!-- old code>
 <ul>
