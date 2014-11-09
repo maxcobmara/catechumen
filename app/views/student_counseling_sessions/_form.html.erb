@@ -66,7 +66,11 @@
 				<% if @student_counseling_session.student_discipline_case.counselor_feedback== nil || @student_counseling_session.student_discipline_case.counselor_feedback=='' %>
 					<%= f.radio_button :feedback, 1,	:id => 'final_feedback',  :class => 'radio_feedback' %>
 					<label>Complete sessions</label>
-					<%= f.radio_button :feedback, 2,	:id => 'cou',  :class => 'radio_feedback' %>
+					<% if @student_counseling_session.student_discipline_case.counselor_feedback== nil %>
+					      <%= f.radio_button :feedback, 2,	:id => 'cou',  :class => 'radio_feedback' %>
+					<% elsif @student_counseling_session.student_discipline_case.counselor_feedback== '' %>
+					       <%= f.radio_button :feedback, 2,	:id => 'cou',  :class => 'radio_feedback', :checked=>true %>
+					<% end %>
 					<label>To have another counseling session</label>
 				<% else %>
 					<%= f.radio_button :feedback, 1,	:id => 'final_feedback',  :class => 'radio_feedback', :checked=>true %>
@@ -87,6 +91,7 @@
 			<td class="leftcol"></td>
 			<td>
 				<!--if required to display anything-->
+				In Index, under column 'Feedback to Referrer', click 'Add' for additional counseling session to current discipline case.
 			</td>
 		</tr>
 		<!--END-add remark for FINAL feedback into student_discipline_case table (for all associated counseling session)-->

@@ -8,9 +8,12 @@ class AssetLoan < ActiveRecord::Base
   belongs_to :owner, :class_name => 'Staff', :foreign_key => 'loaned_by'
   belongs_to :loanofficer,   :class_name => 'Staff', :foreign_key => 'loan_officer'
   belongs_to :hodept,   :class_name => 'Staff', :foreign_key => 'hod'
-  belongs_to :receivedpfficer, :class_name => 'Staff', :foreign_key => 'received_officer'
+  belongs_to :receivedofficer, :class_name => 'Staff', :foreign_key => 'received_officer'
   
+  validates_presence_of :loantype
   validates_presence_of :reasons, :if => :must_assign_if_external?   #16July2013
+  validates_presence_of :hod, :if => :is_approved?
+  validates_presence_of :returned_on, :received_officer, :if => :is_returned?
   
   def must_assign_if_external?  #16July2013
     loantype==2 
@@ -71,7 +74,7 @@ class AssetLoan < ActiveRecord::Base
   named_scope :onloan,        :conditions =>  ["is_approved IS TRUE AND is_returned IS NOT TRUE"]
   named_scope :pending,       :conditions =>  ["is_approved IS NULL AND loan_officer IS NULL"]
   named_scope :rejected,      :conditions =>  ["is_approved IS FALSE"]
-  named_scope :overdue,       :conditions =>  ["is_approved IS TRUE AND is_returned IS NULL AND expected_on>=?",Date.today]
+  named_scope :overdue,       :conditions =>  ["is_approved IS TRUE AND is_returned IS NULL AND expected_on<=?",Date.today]
   FILTERS = [
     {:scope => "all",       :label => "All"},
     {:scope => "myloan",    :label => "My Loan"},
