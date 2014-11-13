@@ -1,6 +1,6 @@
-<%= error_messages_for :user %>
-<% form_for @login do |f| -%>
-
+<%= error_messages_for :login %>
+<%#form_for @login,  :url => edit_login_path(@login) do |f| -%>
+<% form_for @login,  :url =>logins_path do |f| -%>
 
 <!-- Edit Login -->
 <div class="tform">
@@ -55,7 +55,8 @@
 <p><%= submit_tag 'Update' %></p>
 <% end -%>
 
-<%= link_to 'Show', @login %> |
-<%= link_to 'Back', users_path %>
+<%#= link_to 'Show', login_path(@login) %>
+<%= link_to 'Show',  :action => 'show', :id => @login.id %>|
+<%= link_to 'Back', logins_path %>
 
 </div>
