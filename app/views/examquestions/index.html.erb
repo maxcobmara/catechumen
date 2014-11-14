@@ -103,7 +103,11 @@
 						<td style="text-align:center;"><%=h question.usage_frequency %></td>
 						<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => question %></td>
 					<% permitted_to? :manage, :examquestions do %>
-				    	<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => question %></td>
+				    	<td width=10px>
+					    <%unless question.qstatus=="Rejected"%>
+					      <%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => question %>
+					    <% end %>
+					</td>
 				    	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), question, :confirm => 'Are you sure?', :method => :delete %></td>
 					<% end %>
 					</tr>
