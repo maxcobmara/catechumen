@@ -1,7 +1,7 @@
 <%= error_messages_for :login %>
 <%#form_for @login,  :url => edit_login_path(@login) do |f| -%>
 <% form_for @login,  :url =>logins_path do |f| -%>
-
+<%= hidden_field_tag :id, @login.id %>
 <!-- Edit Login -->
 <div class="tform">
 	<H2>System Login Details</H2>
@@ -45,7 +45,8 @@
 		<% Role.all.in_groups_of(5, false) do |row_roles| %>
 		<tr>
 			<% for role in row_roles %>
-			<td><%= check_box_tag "user[role_ids][]", role.id, @login.roles.include?(role) %> <%= role.name %></td>
+			<td><%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role) %> <%= role.name %>
+			</td>
 		  <% end %>
 		</tr>
 		<% end %>
@@ -55,8 +56,8 @@
 <p><%= submit_tag 'Update' %></p>
 <% end -%>
 
-<%#= link_to 'Show', login_path(@login) %>
-<%= link_to 'Show',  :action => 'show', :id => @login.id %>|
+<%= link_to 'Show',  :action => 'show', :id => @login.id %>
+<%#= link_to 'Show', login_path(@login) %>|
 <%= link_to 'Back', logins_path %>
 
 </div>

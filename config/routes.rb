@@ -324,6 +324,7 @@ ActionController::Routing::Routes.draw do |map|
   map.register '/register', :controller => 'logins', :action => 'create'
   map.signup '/signup', :controller => 'logins', :action => 'new'
   map.resources :logins
+  map.connect 'logins/:id', :controller => 'logins', :action => 'update', :member => {:method => :put}
 
   map.resource :session
 
