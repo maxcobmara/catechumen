@@ -39,7 +39,9 @@ class LoginsController < ApplicationController
 
      if @login.update_attributes(params[:login])
        flash[:notice] = 'Login was successfully updated.'
-       redirect_to(login_path(@login))
+       #redirect_to(login_path(@login))
+       render :action => 'show'
+       flash.discard
      else
        render :action => 'edit'
      end
