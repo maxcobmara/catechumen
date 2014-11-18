@@ -64,18 +64,18 @@
 			<td><%=h (exam.exam_on.blank? ? "-" : exam.exam_on.strftime("%d-%b-%Y")) %></td>
 			<td><%=h exam.starttime.strftime('%H:%M %p') %> -<br> <%=h exam.endtime.strftime('%H:%M %p') %></td>
 		    <td><%=h exam.creator_details %></td>
-			<td><%=h (((exam.endtime - exam.starttime)/60) / 60).to_i %>&nbsp;hours
-				<%=h (((exam.endtime - exam.starttime)/60) % 60).to_i %>&nbsp;mins</td>
+			<td>
+				<% if exam.duration!=nil %>
+				    <%=h (exam.duration/60).to_i.to_s+" hours "+(exam.duration%60).to_i.to_s+" mins"%>
+				<% else %>                    
+				    <%=h (((exam.endtime - exam.starttime)/60) / 60).to_i.to_s+" hours "+ (((exam.endtime - exam.starttime)/60) % 60).to_i.to_s+" mins"%>
+				<% end %>
+			</td>
 			<td><%#=h exam.full_marks %>
 				<!--11June2013-TEMPLATE-->
 				<% @istemplate = exam.klass_id %>
 				<% if @istemplate == 0 %>
-					<% @grand_total = 0 %>
-					<% @examtemplates = exam.examtemplates %>
-					<% @examtemplates.each do |examtemplate| %> 
-						<% @grand_total+= examtemplate.total_marks %>
-					<% end %>
-					<%=@grand_total.to_i%>
+					<%= exam.examtemplates.sum(:total_marks).to_i %>
 				<% else %>
 					<%=h exam.total_marks %>
 				<% end %>

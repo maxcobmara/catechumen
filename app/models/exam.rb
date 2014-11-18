@@ -7,7 +7,7 @@ class Exam < ActiveRecord::Base
   has_many :examtemplates, :dependent => :destroy #10June2013
   accepts_nested_attributes_for :examtemplates, :reject_if => lambda { |a| a[:quantity].blank? }
   
-  before_save :set_sequence
+  before_save :set_sequence, :set_duration, :set_full_marks
   
   attr_accessor :own_car, :dept_car,:programme_id #18Apr2013-programme_id used in views/exams/new.html.erb #9Apr2013-use course_id (temp) to capture semester (year as well)
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
@@ -34,6 +34,33 @@ class Exam < ActiveRecord::Base
         end    
         self.sequ = sequence    
     end
+  end
+  
+  def set_duration
+    if starttime!=nil && endtime!=nil
+      starthour=starttime.hour*60
+      if starttime.min!=nil 
+      startminute=starttime.min 
+      else
+	startminute=0
+      end
+      endhour=endtime.hour*60
+      if endtime.min!=nil 
+        endminute=endtime.min 
+      else
+	endminute=0
+      end
+      self.duration = ((endhour+endminute) - (starthour+startminute)).to_i
+    end
+  end
+  
+  def set_full_marks
+    if klass_id == 0
+      self.full_marks = examtemplates.sum(:total_marks).to_i
+    else
+      self.full_marks = total_marks
+    end
+    
   end
   
   def self.search(search)
