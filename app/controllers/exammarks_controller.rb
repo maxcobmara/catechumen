@@ -129,7 +129,7 @@ class ExammarksController < ApplicationController
       @intake_list = Student.find(:all, :conditions=>['course_id=?',@dept_unit.id]).group_by{|l|l.intake}
     end
     arr = []
-    @intakes = @intake_list.each {|i,k| arr<<i}   #form_multiple_intake, line 128
+    @intakes = @intake_list.each {|i,k| arr<< i}   #form_multiple_intake, line 128
     ###--just amended
     
     respond_to do |format|
