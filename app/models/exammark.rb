@@ -56,9 +56,9 @@ class Exammark < ActiveRecord::Base
 		  end 	# end of exammarksub.errors.each do |key,value|
 	  end		# end of exammark_list.each do |exammarksub|
     if @errors_qty == 1
-			  @exammarkerrors2 <<'<b>'+@errors_qty.to_s+' error '
+			  @exammarkerrors2 << '<b>'+@errors_qty.to_s+' error '
 	  elsif @errors_qty > 1
-			  @exammarkerrors2 <<'<b>'+@errors_qty.to_s+' errors '
+			  @exammarkerrors2 << '<b>'+@errors_qty.to_s+' errors '
 	  end
 	  @exammarkerrors2 << 'prohibited this record from being saved</b><br><br>'
 	  @exammarkerrors_full << @exammarkerrors2.to_s+@exammarkerrors.to_s
