@@ -141,7 +141,8 @@ class Leaveforstaff < ActiveRecord::Base
   
   def repl_staff
     sibpos = applicant.position.sibling_ids
-    sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
+    dept = applicant.position.unit
+    sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?) and unit=?", sibpos, dept]).map(&:staff_id)
     applicant = Array(staff_id)
     sibs - applicant
   end
