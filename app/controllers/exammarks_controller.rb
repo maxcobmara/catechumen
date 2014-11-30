@@ -105,31 +105,34 @@ class ExammarksController < ApplicationController
     ###--just amended
     @lecturer_programme = current_login.staff.position.unit
     common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+    valid_exams = Exammark.get_valid_exams
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end
     unless @programme.nil?
       @programme_id = @programme.id
       subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
-      @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
+      @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?) and id IN(?)',subject_of_programme, common_subject, valid_exams])
       @student_list = Student.find(:all,:conditions=>['course_id=?', @programme.id], :order=>'name ASC')
       @dept_unit_prog = @lecturer_programme   #form_multiple_intake, line 98
       @intake_list = @student_list.group_by{|l|l.intake}
     else
       if @lecturer_programme == 'Commonsubject'
-        @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?)', common_subject])
+        @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) and id IN(?)', common_subject, valid_exams])
         @student_list = Student.all 
       else
-        @exam_list = Exam.all
+        @exam_list = Exam.find(:all, :conditions=>['id IN(?)', valid_exams])
         @student_list = Student.all
       end
       #for administrator & Commonsubject lecturer : to assign programme, based on selected exampaper 
-      @dept_unit = Programme.find(Exam.find(@examid).subject_id).root
-      @dept_unit_prog = @dept_unit.name   #form_multiple_intake, line 98
-      @intake_list = Student.find(:all, :conditions=>['course_id=?',@dept_unit.id]).group_by{|l|l.intake}
+      if @examid
+        @dept_unit = Programme.find(Exam.find(@examid).subject_id).root
+        @dept_unit_prog = @dept_unit.name   #form_multiple_intake, line 98
+        @intake_list = Student.find(:all, :conditions=>['course_id=?',@dept_unit.id]).group_by{|l|l.intake}
+      end
     end
     arr = []
-    @intakes = @intake_list.each {|i,k| arr<< i}   #form_multiple_intake, line 128
+    @intakes = @intake_list.each {|i,k| arr<< i} if @intake_list  #form_multiple_intake, line 128
     ###--just amended
     
     respond_to do |format|
@@ -144,20 +147,21 @@ class ExammarksController < ApplicationController
     ###--just amended
     @lecturer_programme = current_login.staff.position.unit
     common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+    valid_exams = Exammark.get_valid_exams
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end
     unless @programme.nil?
       @programme_id = @programme.id
       subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
-      @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
+      @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?) and id IN(?)',subject_of_programme, common_subject, valid_exams])
       @student_list = Student.find(:all,:conditions=>['course_id=?', @programme.id], :order=>'name ASC')
     else
       if @lecturer_programme == 'Commonsubject'
-        @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?)', common_subject])
+        @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) and id IN(?)', common_subject, valid_exams])
         @student_list = Student.all  
       else
-        @exam_list = Exam.all
+        @exam_list = Exam.find(:all, :conditions=>['id IN(?)', valid_exams])
         @student_list = Student.all
       end
     end
