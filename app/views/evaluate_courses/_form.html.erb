@@ -1,5 +1,9 @@
 <%#=render :partial => 'exams/position_dept' %>
-
+<% if @evaluate_course.new_record? %>
+  <% default_programme = @preselect_prog %>
+<% else %>
+  <% default_programme = @evaluate_course.course_id %>
+<% end %>
 <div class="tform">
 	<H2>Feedback / Course Details</H2>
   <table width=100% >
@@ -14,7 +18,7 @@
 				<td class="leftcol"><label for="course_id">Course Name</label></td>
 				<td>:</td>
 				<td><%#=Programme.find(@preselect_prog).programme_list %><%#= f.hidden_field :course_id, :value=>@preselect_prog %>
-					<%= f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank => "Select a programme", :selected => @preselect_prog} %></td>
+					<%= f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank => "Select a programme", :selected => default_programme} %></td>
 			</tr>
 				
 			<tr>

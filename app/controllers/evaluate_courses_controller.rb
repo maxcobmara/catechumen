@@ -50,6 +50,7 @@ class EvaluateCoursesController < ApplicationController
       @staff_id_lecturer = Position.find(:all, :conditions=>['unit IN(?)',@programme_list.map(&:name)]).map(&:staff_id).compact
       @lecturer_list = Staff.find(:all, :conditions=>['id IN(?)',@staff_id_lecturer],:order=>'name ASC')
       @subjectlist_preselect_prog = Programme.find(@programme.id).descendants.at_depth(2)
+      @preselect_prog = @programme.id
     else
       if @lecturer_programme == 'Commonsubject'
       else
