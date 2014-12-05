@@ -263,6 +263,7 @@ authorization do
       if_attribute :tpa_id => is {Login.current_login.staff_id}
     end
     has_permission_on :timetables, :to => [:create]
+    has_permission_on :students, :to => [:menu, :index]
     has_permission_on :student_attendances, :to => :manage  #10July2013
     has_permission_on :weeklytimetables, :to => :personalize_index do
       if_attribute :staff_id => is {Login.current_login.staff_id}

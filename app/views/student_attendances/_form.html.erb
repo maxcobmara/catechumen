@@ -1,5 +1,10 @@
 <%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
-<% @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
+<%# @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
+<% if @preselect_prog==nil %>
+      <% @topics_ids_this_prog = Programme.at_depth(3).map(&:id) %>
+<% else %>
+      <% @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
+<% end %>
 <% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
 <div class="tform">
 	<H2>Student Attendance Details</H2>

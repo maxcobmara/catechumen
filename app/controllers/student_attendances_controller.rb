@@ -76,7 +76,7 @@ class StudentAttendancesController < ApplicationController
   def new
     #@student_attendance = StudentAttendance.new
     @new_type = params[:new_type]                                                       
-	  if @new_type && @new_type == "1"
+     if @new_type && @new_type == "1"
         @student_attendance = StudentAttendance.new(params[:student_attendance]) 
     elsif @new_type && @new_type == "2"
         @classid = params["classid"]

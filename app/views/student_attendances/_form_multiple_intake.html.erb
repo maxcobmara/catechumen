@@ -17,8 +17,15 @@
 						<table width=100%>
 							<tr>
 								<td class="leftcol"><label>Programme :</label></td>
-								<td>&nbsp;&nbsp;&nbsp;<%= Programme.find(@preselect_prog).programme_coursetype_name %>
-									<%#=@selected_class.weeklytimetable_topic.programme_coursetype_name %></td>
+								<td>&nbsp;&nbsp;&nbsp;
+									<% if @preselect_prog==nil %>
+										Not defined
+									<% else %>
+										<%= Programme.find(@preselect_prog).programme_coursetype_name%>
+									<% end %>
+									<%#= Programme.find(@preselect_prog).programme_coursetype_name %>
+									<%##=@selected_class.weeklytimetable_topic.programme_coursetype_name %>
+								</td>
 							</tr>
 							<!--
 							<tr>
