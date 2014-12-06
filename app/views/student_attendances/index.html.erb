@@ -26,22 +26,24 @@
 <%# end %>
 <!--17Jul2013-added-line 20,21,22,23&26-->
 
-<div class="left">
-	<% form_tag :action => 'new' do %>
-		<%= hidden_field_tag( "new_type","3" )%>
-		<b>Intake : </b><%#= select_tag('intake', options_for_select(@intake_list.sort)) %>
-		<!--17Jul2013-added-line 33,34,35&37-->
-		<%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
-		<% unless @programme.nil? %>
-			<%#= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn_prog)) %>
-			<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>	
-		<% else %>
-			<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>	
-		<% end %>
-		<!--17Jul2013-added-line 33,34,35&37-->
-		<%= submit_tag 'Multiple Attendance by Intake', :subject_id => nil %>
-	<% end %>
-</div>
+<% unless @preselect_prog.nil? %>
+	<div class="left">
+		 <% form_tag :action => 'new' do %>
+			<%= hidden_field_tag( "new_type","3" )%>
+			<b>Intake : </b><%#= select_tag('intake', options_for_select(@intake_list.sort)) %>
+			<!--17Jul2013-added-line 33,34,35&37-->
+			<%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
+			<% unless @programme.nil? %>
+				<%#= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn_prog)) %>
+				<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>	
+			<% else %>
+				<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>	
+			<% end %>
+			<!--17Jul2013-added-line 33,34,35&37-->
+			<%= submit_tag 'Multiple Attendance by Intake', :subject_id => nil %>
+	      <% end %>
+	</div>
+<% end %>
 
 <!--17Jul2013-added-line 44,45,46&48-->
 <%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
