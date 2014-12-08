@@ -31,6 +31,8 @@ class WeeklytimetableDetail < ActiveRecord::Base
      return (sdate+2).strftime('%d-%b-%Y') if day2 == 3
      return (sdate+3).strftime('%d-%b-%Y') if day2 == 4
      return (endate).strftime('%d-%b-%Y') if is_friday == true
+      return (sdate+5).strftime('%d-%b-%Y') if day2 == 6
+      return (sdate+6).strftime('%d-%b-%Y') if day2 == 7
    end   
    
    def get_date_day_of_schedule
@@ -41,6 +43,8 @@ class WeeklytimetableDetail < ActiveRecord::Base
       return (sdate+2).strftime('%d-%b-%Y') + " Wed" if day2 == 3
       return (sdate+3).strftime('%d-%b-%Y') + " Thu" if day2 == 4
       return (endate).strftime('%d-%b-%Y') + " Fri" if is_friday == true  
+      return (sdate+5).strftime('%d-%b-%Y') + " Sat" if day2 == 6
+      return (sdate+6).strftime('%d-%b-%Y') + " Sun" if day2 == 7
    end   
    
    def get_start_time
