@@ -19,21 +19,25 @@ class TravelClaim < ActiveRecord::Base
   
   validates_uniqueness_of :claim_month, :scope => :staff_id, :message => "You already have claims for this month"
   
+  attr_accessor :edittype
+  
   def set_to_nil_where_false
-  	#--4Jan2013
-  	#if is_checked == false
-  	#	self.is_returned = true
-  	#else
-  	#	self.is_returned = false
-  	#end
-  	#--4Jan2013
     if is_submitted == true
-      self.submitted_on	= Date.today
+      self.submitted_on= Date.today
+      #finance check
       if is_returned == true
-      		
+        self.is_checked == false
+      end
+      #check part?
+      if is_checked == false && staff_id != Login.current_login.staff_id  #2nd time return by finance
+        self.is_returned = true
+      end
+      if is_checked == true && staff_id != Login.current_login.staff_id
+        self.checked_on = Date.today
+        self.checked_by =  Login.current_login.staff_id 
       end
     else
-      self.submitted_on	= nil
+      self.submitted_on= nil
     end
   end
   
@@ -44,30 +48,24 @@ class TravelClaim < ActiveRecord::Base
   def my_claim_status
     if staff_id == Login.current_login.staff_id && is_submitted != true 
       "editing"
-    #----4Jan2012
     elsif staff_id != Login.current_login.staff_id && is_submitted != true	#add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
      "editing by staff"
-    #----4Jan2012
     elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == nil
       "submitted"
     elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == nil
       "for checking"
-    elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned != true
-      "returned"
     elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == true
+      "returned"
+    elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == false 
       "resubmitted to finance"
-    #----4Jan2013
-    elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == false	&& is_returned != true #&& is_returned != true	#for status viewing or "status not known" will appear if login as finance staff!
-      "returned to staff for amendment"
-    #----4Jan2013
+    elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == false	&& is_returned == false 
+      "for checking"
     elsif is_submitted == true && is_checked == true && is_approved != true
       "processed"
     elsif is_submitted == true && is_checked == true && is_approved == true
       "approved"
-    #----4Jan2012
-    elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked != true && is_returned == true 	#for status viewing only or "status not known" will appear if login as finance staff!
-      "amended and resubmit for finance check"
-    #----4Jan2012
+    elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked ==false && is_returned == true 
+      "return to staff for amendment"
     else
       "status not known"
     end    

@@ -79,11 +79,13 @@
 <H2>Meal Allowance / Daily Allowance / Lodging Allowance</H2>	
 <table width=90%>
 	<tr>
-		<th width=20%>Days</td>
+		<th width=10%>Days</td>
 		<th width=20%>Type</td>
-		<th width=20%>Value (RM)</td>
-		<th width=30% align="right">Receipt No</td>
-		<th width=10%></th>
+		<th width=15%>Value (RM)</td>
+		<th width=20% align="right">Receipt No</td>
+		<th width=5%></th>
+		<th width=10%>Query</th>
+		<th width=25%>Comment</th>
 	</tr>
 </table>
 	<% f.fields_for :travel_claim_allowances do |builder| %>
@@ -97,9 +99,11 @@
 <table width=90%>
 	<tr>
 		<th width=20%>Type</td>
-		<th width=30%>Receipt No</td>
-		<th align="right">Value (RM)</td>
-		<th width=30%></th>
+		<th width=20%>Receipt No</td>
+		<th align="right" width="20">Value (RM)</td>
+		<th width=5%></th>
+		<th width=10%>Query</th>
+		<th width=25%>Comment</th>
 	</tr>
 </table>
 	<% f.fields_for :travel_claim_receipts do |builder| %>
@@ -128,10 +132,16 @@
 	</tr>
 	<% else %>
 	<tr>
-	  <td class="leftcol"><label for="is_submitted">Resubmit</label></td>
-		<td><%= f.check_box :is_returned, :id => 'submit1' %>
-				<SPAN class="span_submit1" style="display: none;"> &nbsp; <%= tarikh (Date.today) %></SPAN></td>
-		<td class="pagenote">Clicking on submit notifies claims officer and disables your editing this record further</td>
+		<td class="leftcol"><label for="is_submitted">Resubmit</label></td>
+		<td>
+			  Clicking on UPDATE notifies claims officer and disables your editing this record further
+		         <% if @travel_claim.staff_id == Login.current_login.staff_id %>
+		                   <%=f.hidden_field :is_returned, :value=>'false'%>
+		         <% else %>
+		                   <%=f.hidden_field :is_returned, :value=>'true'%>
+		         <% end %>
+			</td>
+		<td class="pagenote">&nbsp;</td>
 	</tr>
 	<% end %>
 	<!--4Jan2013-view submit button differently-->

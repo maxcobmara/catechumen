@@ -2,13 +2,24 @@
 <div class="fields">
 	<table>
 		<tr>
-			<td width=20%> <%= f.text_field :quantity, :size => '5' %></td>
+			<td width=10%> <%= f.text_field :quantity, :size => '5' %></td>
 			<td width=20%> <%= f.select :expenditure_type,
 			                  TravelClaimReceipt::ALLOWANCETYPE,
 			                  :prompt => "Select" %></td>
-			<td align="right" width=20%> <%= f.text_field :amount, :size => '10' %></td>
-			<td width=30%> <%= f.text_field :receipt_code, :size => '9' %></td><%= f.hidden_field :_destroy %>
-			<td align="right" width=30%><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>   </td>
+			<td align="right" width=15%> <%= f.text_field :amount, :size => '10' %></td>
+			<td width=20%> <%= f.text_field :receipt_code, :size => '9' %></td><%= f.hidden_field :_destroy %>
+			<td align="right" width=5%><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>   </td>
+			<td width=10%>
+				<% if @travel_claim.my_claim_status == "returned" %>
+					<% if f.object.checker==true %>
+						Ok
+					<% else %>
+					       <font color="red">
+						Not Ok</font>
+					<% end %>
+				<% end %>
+			</td>
+			<td width=25%><font color="red"><%= f.object.checker_notes if f.object.checker==false%></font></td>
 		</tr>
 	</table>
 </div>
