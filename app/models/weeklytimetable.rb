@@ -16,6 +16,7 @@ class Weeklytimetable < ActiveRecord::Base
   
   has_many :weeklytimetable_details, :dependent => :destroy
   accepts_nested_attributes_for :weeklytimetable_details, :allow_destroy => true#, :reject_if => lambda { |a| a[:start_at].blank? }
+  validates_associated :weeklytimetable_details
   
   validates_presence_of :programme_id, :semester, :intake_id, :format1, :format2
   validate :approved_or_rejected
