@@ -56,8 +56,13 @@
 
 			<tr>
 				<td class="leftcol">Mileage</td>
-		    <td>Mileage Allowance : 	<%=h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png") %> &nbsp; &nbsp;  
-						Mileage Replacement <%= t 'travel.train_plane_replacement'%> : <%=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+		    <td>Mileage Allowance : 
+				 <% if @travel_request.mileage_replace==nil %>
+					<%=h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png") %> &nbsp; &nbsp;  
+				<% else %>
+					<%=h @travel_request.mileage_replace? ? image_tag("cross.png") : image_tag("tick.png") %>
+				<% end %>
+			     Mileage Replacement <%= t 'travel.train_plane_replacement'%> : <%=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 				<td></td>
 			</tr>
 		</table>
