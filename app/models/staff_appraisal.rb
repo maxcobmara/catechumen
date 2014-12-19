@@ -20,7 +20,8 @@ class StaffAppraisal < ActiveRecord::Base
   
   
   validates_uniqueness_of :evaluation_year, :scope => :staff_id, :message => "Your evaluation for this year already exists"
-  
+  #validates_presence_of  :e1g1q1, :e1g1q2,:e1g1q3, :e1g1q4, :e1g1q5,:e1g1_total, :e1g1_percent,:e1g2q1, :e1g2q2, :e1g2q3, :e1g2q4, :e1g2_total, :e1g2_percent, :e1g3q1, :e1g3q2, :e1g3q3, :e1g3q4, :e1g3q5, :e1g3_total, :e1g3_percent,:e1g4,:e1g4_percent, :e1_total, :e1_years, :e1_months,  :e1_performance, :e1_progress, :if => :is_submit_e2? #pending - update page (when validation fails)
+  #validates_presence_of :e2g1q1, :e2g1q2, :e2g1q3,:e2g1q4, :e2g1q5,:e2g1_total, :e2g1_percent, :e2g2q1, :e2g2q2,:e2g2q3, :e2g2q4, :e2g2_total, :e2g2_percent, :e2g3q1, :e2g3q2, :e2g3q3,:e2g3q4,:e2g3q5, :e2g3_total,:e2g3_percent, :e2g4, :e2g4_percent,:e2_total, :e2_years, :e2_months, :e2_performance, :if => :is_complete? #pending - update page (when validation fails)
   
   #before logic
   def set_to_nil_where_false

@@ -242,6 +242,10 @@ class Staff < ActiveRecord::Base
     "#{name}  (#{position_for_staff})"
   end
   
+  def staff_name_with_position_grade_unit
+      "#{name}  (#{position_for_staff}-#{grade_for_staff}-#{unit_for_staff})"
+  end
+  
   def position_for_staff
     if position.blank?
       "-"
@@ -258,7 +262,22 @@ class Staff < ActiveRecord::Base
     end
   end
   
-  
+  def unit_for_staff
+    if position.blank?
+      "-"
+    else
+      "#{position.try(:unit)}"
+    end
+  end
+    
+  def grade_for_staff
+    if position.blank?
+       "-"
+    else
+       "#{position.staffgrade.try(:name)}"
+    end
+  end
+    
   def my_bank
     sid = id
     b = Bankaccount.find(:all, :select => "bank_id", :conditions => {:staff_id => sid}).map(&:bank_id)
