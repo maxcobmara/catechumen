@@ -1,8 +1,9 @@
 class TravelClaimsController < ApplicationController
+  filter_resource_access
   # GET /travel_claims
   # GET /travel_claims.xml
   def index
-    @travel_claims = TravelClaim.all
+    @travel_claims = TravelClaim.with_permissions_to(:index).all
 
     respond_to do |format|
       format.html # index.html.erb

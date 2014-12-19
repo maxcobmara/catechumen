@@ -31,9 +31,16 @@
 							<%= link_to image_tag("joystick_error.png", :border => 0), :action => 'check', :id => travel_claim %>
 					<% end %></td>
 			<td width=10px >
-					<% if travel_claim.my_claim_status ==  ("processed" || "approved") %>
-						<%= link_to image_tag("printer.png", :border => 0), :action => 'claimprint', :id => travel_claim %></td>
-					<% end %>		  
+					<%# if travel_claim.my_claim_status ==  ("processed" || "approved") %>
+						<%#= link_to image_tag("printer.png", :border => 0), :action => 'claimprint', :id => travel_claim %>
+					<%# else %>
+					        <% permitted_to? :claimprint, :travel_claims do %>
+					              <% if travel_claim.is_checked==true && travel_claim.checked_on !=nil%>
+							  <%= link_to image_tag("printer.png", :border => 0), :action => 'claimprint', :id => travel_claim %>
+						      <% end %>
+					        <% end %>
+						</td>
+					<%# end %>		  
 			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), travel_claim, :confirm => 'Are you sure?', :method => :delete %></td>
 	  </tr>
 	<% end %>

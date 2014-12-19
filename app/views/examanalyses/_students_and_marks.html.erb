@@ -92,17 +92,24 @@
 						<% if @examtemplates.map(&:questiontype).include?("ACQ") %> 
 							<th colspan='<%=@examtemplates.acqq[0].quantity%>'>ACQ</th>
 						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("OSCI") %> 
+							<th colspan='<%=@examtemplates.osceq[0].quantity%>'>OSCI</th>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("OSCII") %> 
+							<th colspan='<%=@examtemplates.osceq[0].quantity%>'>OSCII</th>
+						<% end %>
+						
 						<% if @examtemplates.map(&:questiontype).include?("OCSE") %> 
-							<th colspan='<%=@examtemplates.osce[0].quantity%>'>OSCE</th>
+							<th colspan='<%=@examtemplates.osceq[0].quantity%>'>OSCE</th>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("OSPE") %> 
-							<th colspan='<%=@examtemplates.ospe[0].quantity%>'>OSPE</th>
+							<th colspan='<%=@examtemplates.ospeq[0].quantity%>'>OSPE</th>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("VIVA") %> 
-							<th colspan='<%=@examtemplates.viva[0].quantity%>'>VIVA</th>
+							<th colspan='<%=@examtemplates.vivaq[0].quantity%>'>VIVA</th>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("TRUEFALSE") %> 
-							<th colspan='<%=@examtemplates.truefalse[0].quantity%>'>TRUE/FALSE</th>
+							<th colspan='<%=@examtemplates.truefalseq[0].quantity%>'>TRUE/FALSE</th>
 						<% end %>
 						<!--if exam template-->					
 					<% else %>
@@ -116,17 +123,23 @@
 						<% if @examquestions.acqq.count!=0 %>
 							<th colspan='<%=@examquestions.acqq.count%>'>ACQ</th>
 						<% end %>
-						<% if @examquestions.osce.count!=0 %>
-							<th colspan='<%=@examquestions.osce.count%>'>OSCE</th>
+						<% if @examquestions.osci2q.count!=0 %>
+							<th colspan='<%=@examquestions.osci2q.count%>'>OSCE</th>
 						<% end %>
-						<% if @examquestions.ospe.count!=0 %>
-							<th colspan='<%=@examquestions.ospe.count%>'>OSPE</th>
+						<% if @examquestions.osci3q.count!=0 %>
+							<th colspan='<%=@examquestions.osci3q.count%>'>OSCE</th>
 						<% end %>
-						<% if @examquestions.viva.count!=0 %>
-							<th colspan='<%=@examquestions.viva.count%>'>VIVA</th>
+						<% if @examquestions.osceq.count!=0 %>
+							<th colspan='<%=@examquestions.osceq.count%>'>OSCE</th>
 						<% end %>
-						<% if @examquestions.truefalse.count!=0 %>
-							<th colspan='<%=@examquestions.truefalse.count%>'>TRUE/FALSE</th>
+						<% if @examquestions.ospeq.count!=0 %>
+							<th colspan='<%=@examquestions.ospeq.count%>'>OSPE</th>
+						<% end %>
+						<% if @examquestions.vivaq.count!=0 %>
+							<th colspan='<%=@examquestions.vivaq.count%>'>VIVA</th>
+						<% end %>
+						<% if @examquestions.truefalseq.count!=0 %>
+							<th colspan='<%=@examquestions.truefalseq.count%>'>TRUE/FALSE</th>
 						<% end %>
 						<% if @examquestions.seqq.count!=0 %>
 							<th rowspan=2>Total(SEQ)</th>
@@ -157,23 +170,33 @@
 								<th>Q<%=count%></th>
 							<% end %>
 						<% end %>
-						<% if @examtemplates.map(&:questiontype).include?("OCSE") %> 
-							<% 1.upto(@examtemplates.osce[0].quantity) do |count| %>
+						<% if @examtemplates.map(&:questiontype).include?("OSCI") %> 
+							<% 1.upto(@examtemplates.osci2q[0].quantity) do |count| %>
+								<th>Q<%=count%></th>
+							<% end %>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("OSCII") %> 
+							<% 1.upto(@examtemplates.osci3q[0].quantity) do |count| %>
+								<th>Q<%=count%></th>
+							<% end %>
+						<% end %>
+						<% if @examtemplates.map(&:questiontype).include?("OSCE") %> 
+							<% 1.upto(@examtemplates.osceq[0].quantity) do |count| %>
 								<th>Q<%=count%></th>
 							<% end %>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("OSPE") %> 
-							<% 1.upto(@examtemplates.ospe[0].quantity) do |count| %>
+							<% 1.upto(@examtemplates.ospeq[0].quantity) do |count| %>
 								<th>Q<%=count%></th>
 							<% end %>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("VIVA") %> 
-							<% 1.upto(@examtemplates.viva[0].quantity) do |count| %>
+							<% 1.upto(@examtemplates.vivaq[0].quantity) do |count| %>
 								<th>Q<%=count%></th>
 							<% end %>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("TRUEFALSE") %> 
-							<% 1.upto(@examtemplates.truefalse[0].quantity) do |count| %>
+							<% 1.upto(@examtemplates.truefalseq[0].quantity) do |count| %>
 								<th>Q<%=count%></th>
 							<% end %>
 						<% end %>
@@ -189,16 +212,22 @@
 						<% 1.upto(@examquestions.acqq.count) do |count| %>
 							<th>Q<%=count%></th>
 						<% end %>
-						<% 1.upto(@examquestions.osce.count) do |count| %>
+						<% 1.upto(@examquestions.osci2q.count) do |count| %>
 							<th>Q<%=count%></th>
 						<% end %>
-						<% 1.upto(@examquestions.ospe.count) do |count| %>
+						<% 1.upto(@examquestions.osci3q.count) do |count| %>
 							<th>Q<%=count%></th>
 						<% end %>
-						<% 1.upto(@examquestions.viva.count) do |count| %>
+						<% 1.upto(@examquestions.osceq.count) do |count| %>
 							<th>Q<%=count%></th>
 						<% end %>
-						<% 1.upto(@examquestions.truefalse.count) do |count| %>
+						<% 1.upto(@examquestions.ospeq.count) do |count| %>
+							<th>Q<%=count%></th>
+						<% end %>
+						<% 1.upto(@examquestions.vivaq.count) do |count| %>
+							<th>Q<%=count%></th>
+						<% end %>
+						<% 1.upto(@examquestions.truefalseq.count) do |count| %>
 							<th>Q<%=count%></th>
 						<% end %>
 						<!--if complete exam paper-->
@@ -224,6 +253,8 @@
 					<% @arrayfirst5 = [] %>
 					<% @arrayfirst6 = [] %>
 					<% @arrayfirst7 = [] %>
+					<% @arrayfirst8 = [] %>
+					<% @arrayfirst9 = [] %>
 				
 					
 					<!--reference : MCQ, MEQ, SEQ, ACQ, OSCE, OSPE, VIVA, TRUEFALSE-->
@@ -249,26 +280,36 @@
 						<% else %>
 							<% @acq_qty = 0 %>
 						<% end %>
-						<% if @examtemplates.osce.count!=0 %>
-							<% @osce_qty = @examtemplates.osce[0].quantity  %>
+						<% if @examtemplates.osci2q.count!=0 %>
+							<% @osci2q_qty = @examtemplates.osci2q[0].quantity  %>
 						<% else %>
-							<% @osce_qty = 0 %>
+							<% @osci2q_qty = 0 %>
 						<% end %>
-						<% if @examtemplates.ospe.count!=0%>
-							<% @ospe_qty = @examtemplates.ospe[0].quantity %>
+						<% if @examtemplates.osci3q.count!=0 %>
+							<% @osci3q_qty = @examtemplates.osci3q[0].quantity  %>
 						<% else %>
-							<% @ospe_qty = 0 %>
+							<% @osi3qe_qty = 0 %>
 						<% end %>
-						<% if @examtemplates.viva.count!=0 %>
-							<% @viva_qty = @examtemplates.viva[0].quantity  %>
+						<% if @examtemplates.osceq.count!=0 %>
+							<% @osceq_qty = @examtemplates.osceq[0].quantity  %>
 						<% else %>
-							<% @viva_qty = 0 %>
+							<% @osceq_qty = 0 %>
 						<% end %>
-						<% if @examtemplates.truefalse.count !=0 %>
-							<% @truefalse_qty = @examtemplates.truefalse[0].quantity  %>
+						<% if @examtemplates.ospeq.count!=0%>
+							<% @ospeq_qty = @examtemplates.ospeq[0].quantity %>
+						<% else %>
+							<% @ospeq_qty = 0 %>
+						<% end %>
+						<% if @examtemplates.vivaq.count!=0 %>
+							<% @vivaq_qty = @examtemplates.vivaq[0].quantity  %>
+						<% else %>
+							<% @vivaq_qty = 0 %>
+						<% end %>
+						<% if @examtemplates.truefalseq.count !=0 %>
+							<% @truefalseq_qty = @examtemplates.truefalseq[0].quantity  %>
 						<% else %>
 							<% @truefalse_qty = 0 %>		
-						<% end %>
+						<% end %>q
 						<!--if exam template-->
 					<% else %>
 						<!--if complete exam paper-->
@@ -276,10 +317,12 @@
 						<% @meq_qty = @examquestions.meqq.count %>
 						<% @seq_qty = @examquestions.seqq.count %>
 						<% @acq_qty = @examquestions.acqq.count %>
-						<% @osce_qty = @examquestions.osce.count %>
-						<% @ospe_qty = @examquestions.ospe.count %>
-						<% @viva_qty = @examquestions.viva.count %>
-						<% @truefalse_qty = @examquestions.truefalse.count %>
+						<% @osci2q_qty = @examquestions.osci2q.count %>
+						<% @osci3q_qty = @examquestions.osci3q.count %>
+						<% @osceq_qty = @examquestions.osceq.count %>
+						<% @ospeq_qty = @examquestions.ospeq.count %>
+						<% @vivaq_qty = @examquestions.vivaq.count %>
+						<% @truefalseq_qty = @examquestions.truefalseq.count %>
 						<!--if complete exam paper-->
 					<% end %>
 					
@@ -331,46 +374,68 @@
 							<% end %>
 						<% elsif count == 4 %>	
 							<% if @istemplate == 0 %><!--if exam template-->
-								<% if @examtemplates.map(&:questiontype).include?("OSCE")%>
+								<% if @examtemplates.map(&:questiontype).include?("OSCI")%>
 									<% @index2 = @meq_qty+@seq_qty+@acq_qty %>
 								<% end %>
 							<% else %><!--if complete exam paper-->
-								<% if @osce_qty > 0 %>
-									<% @examquestions2 = @examquestions.osce %>
+								<% if @osci2q_qty > 0 %>
+									<% @examquestions2 = @examquestions.osci2q %>
 									<% @index2 = @meq_qty+@seq_qty+@acqq_qty %>
 								<% end %>
 							<% end %>
 						<% elsif count == 5 %>	
 							<% if @istemplate == 0 %><!--if exam template-->
-								<% if @examtemplates.map(&:questiontype).include?("OSPE")%>
-									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osce_qty%> 
+								<% if @examtemplates.map(&:questiontype).include?("OSCII")%>
+									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty%>
 								<% end %>
 							<% else %><!--if complete exam paper-->
-								<% if @ospe_qty > 0 %>
-									<% @examquestions2 = @examquestions.ospe %>
-									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osce_qty%> 
+								<% if @osci3q_qty > 0 %>
+									<% @examquestions2 = @examquestions.osci3q %>
+									<% @index2 = @meq_qty+@seq_qty+@acqq_qty+@osci2q_qty %>
 								<% end %>
 							<% end %>
 						<% elsif count == 6 %>	
 							<% if @istemplate == 0 %><!--if exam template-->
-								<% if @examtemplates.map(&:questiontype).include?("VIVA")%>
-									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty %>
+								<% if @examtemplates.map(&:questiontype).include?("OSCE")%>
+									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty %>
 								<% end %>
 							<% else %><!--if complete exam paper-->
-								<% if @viva_qty > 0 %>
-									<% @examquestions2 = @examquestions.viva %>
-									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty %>
+								<% if @osceq_qty > 0 %>
+									<% @examquestions2 = @examquestions.osce %>
+									<% @index2 = @meq_qty+@seq_qty+@acqq_qty+@osci2q_qty+@osci3q_qty %>
 								<% end %>
 							<% end %>
 						<% elsif count == 7 %>	
 							<% if @istemplate == 0 %><!--if exam template-->
+								<% if @examtemplates.map(&:questiontype).include?("OSPE")%>
+									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty%> 
+								<% end %>
+							<% else %><!--if complete exam paper-->
+								<% if @ospe_qty > 0 %>
+									<% @examquestions2 = @examquestions.ospe %>
+									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty%> 
+								<% end %>
+							<% end %>
+						<% elsif count == 8 %>	
+							<% if @istemplate == 0 %><!--if exam template-->
+								<% if @examtemplates.map(&:questiontype).include?("VIVA")%>
+									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty %>
+								<% end %>
+							<% else %><!--if complete exam paper-->
+								<% if @viva_qty > 0 %>
+									<% @examquestions2 = @examquestions.viva %>
+									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty %>
+								<% end %>
+							<% end %>
+						<% elsif count == 9 %>	
+							<% if @istemplate == 0 %><!--if exam template-->
 								<% if @examtemplates.map(&:questiontype).include?("TRUEFALSE")%>
-									<% @index2 = @meq_qty+@seq_qty+@acq_qty +@osce_qty+@ospe_qty+@viva_qty%>
+									<% @index2 = @meq_qty+@seq_qty+@acq_qty +@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty+@vivaq_qty%>
 								<% end %>
 							<% else %><!--if complete exam paper-->
 								<% if @truefalse_qty > 0 %>
 									<% @examquestions2 = @examquestions.truefalse %>
-									<% @index2 = @meq_qty+@seq_qty+@acq_qty +@osce_qty+@ospe_qty+@viva_qty%>
+									<% @index2 = @meq_qty+@seq_qty+@acq_qty +@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty+@vivaq_qty%>
 								<% end %>
 							<% end %>	
 						<% end %>
@@ -381,21 +446,31 @@
 							<% @first_B = @index2+@meq_qty+@seq_qty %>
 							<% @second_A = @index2+@meq_qty+@seq_qty-1 %>
 							<% @second_B = @index2+@meq_qty+@seq_qty+@acq_qty %>
+							
 							<% @third_A = @index2+@meq_qty+@seq_qty+@acq_qty-1 %>
-							<% @third_B = @index2+@meq_qty+@seq_qty+@acq_qty+@osce_qty %>
-							<% @fouth_A =  @index2+@meq_qty+@seq_qty+@acq_qty+@osce_qty-1 %>
-							<% @fouth_B =  @index2+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty %>
-							<% @fifth_A =  @index2+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty-1 %>
-							<% @fifth_B =  @index2+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty+@viva_qty %>
-							<% @sixth_A =  @index2+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty+@viva_qty-1 %>
-							<% @sixth_B = @index2+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty+@viva_qty+@truefalse_qty %>
+							<% @third_B = @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty %>
+							
+							<% @fouth_A = @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty-1 %>
+							<% @fouth_B = @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty%>
+							
+							<% @fifth_A = @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty-1 %>
+							<% @fifth_B = @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty %>
+							
+							<% @sixth_A =  @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty-1 %>
+							<% @sixth_B =  @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty %>
+							<% @seventh_A =  @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty-1 %>
+							<% @seventh_B =  @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty+@vivaq_qty %>
+							<% @eighth_A = @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty+@vivaq_qty-1 %>
+							<% @eighth_B = @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty+@vivaq_qty+@truefalseq_qty %>
 							<% @equal1 = @index2+@meq_qty-1 %>
 							<% @equal2 = @index2+@meq_qty+@seq_qty-1 %>
 							<% @equal3 = @index2+@meq_qty+@seq_qty+@acq_qty-1 %>
-							<% @equal4 =  @index2+@meq_qty+@seq_qty+@acq_qty+@osce_qty-1 %>
-							<% @equal5 =  @index2+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty-1 %>
-							<% @equal6 =  @index2+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty+@viva_qty-1  %>
-							<% @equal7 =  @index2+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty+@viva_qty+@truefalse_qty-1 %>					
+							<% @equal4 =  @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty-1 %>
+							<% @equal5 =  @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty-1 %>
+							<% @equal6 =  @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty-1 %>
+							<% @equal7 =  @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty-1 %>
+							<% @equal8 =  @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty+@vivaq_qty-1  %>
+							<% @equal9 =  @index2+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty+@vivaq_qty+@truefalseq_qty-1 %>					
 						<!--works for both-->
 						
 						<!--@examquestions2 - for complete exampaper - refers to each of questions available whereas-->
@@ -468,60 +543,88 @@
 													<!--end for acq marks-->
 												<% elsif index5 > @third_A  && index5 < @third_B %>
 													<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
-													<!--start for osce marks-->
-													<% if @examtemplates.map(&:questiontype).include?("OSCE") %>
+													<!--start for osci marks-->
+													<% if @examtemplates.map(&:questiontype).include?("OSCI") %>
 														<% @arrayfirst4<< @exammarks_mark[index][index5].student_mark  %>
 														<% if index5 == @equal4 %>
 															<% if index==0 %>
-																<% @hashosce = {index.to_i=>@arrayfirst4} %>
+																<% @hashosci2q = {index.to_i=>@arrayfirst4} %>
 															<% else %>
-																<% @hashosce = @hashosce.merge({index.to_i=>@arrayfirst4}) %>	
+																<% @hashosci2q = @hashosci2q.merge({index.to_i=>@arrayfirst4}) %>	
+															<% end %>
+														<% end %>
+													<% end %>
+													<!--end for osci marks-->
+												<% elsif index5 > @fouth_A && index5 < @fouth_B %>
+													<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
+													<!--start for oscii marks-->
+													<% if @examtemplates.map(&:questiontype).include?("OSCII") %>
+														<% @arrayfirst5<< @exammarks_mark[index][index5].student_mark  %>
+														<% if index5 == @equal5 %>
+															<% if index==0 %>
+																<% @hashosci3q = {index.to_i=>@arrayfirst5} %>
+															<% else %>
+																<% @hashosci3q = @hashosci3q.merge({index.to_i=>@arrayfirst5}) %>	
+															<% end %>
+														<% end %>
+													<% end %>
+													<!--end for oscii marks-->
+												<% elsif index5 > @fifth_A && index5 < @fifth_B %>
+													<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark, :precision=>2) %></td>
+													<!--start for osce marks-->
+													<% if @examtemplates.map(&:questiontype).include?("OSCE") %>
+														<% @arrayfirst6<< @exammarks_mark[index][index5].student_mark  %>
+														<% if index5 == @equal6 %>
+															<% if index==0 %>
+																<% @hashosceq = {index.to_i=>@arrayfirst6} %>
+															<% else %>
+																<% @hashosceq = @hashosceq.merge({index.to_i=>@arrayfirst6}) %>	
 															<% end %>
 														<% end %>
 													<% end %>
 													<!--end for osce marks-->
-												<% elsif index5 > @fouth_A && index5 < @fouth_B %>
+												<% elsif index5 > @sixth_A && index5 < @sixth_B  %>
 													<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
 													<!--start for ospe marks-->
 													<% if @examtemplates.map(&:questiontype).include?("OSPE") %>
-														<% @arrayfirst5<< @exammarks_mark[index][index5].student_mark  %>
-														<% if index5 == @equal5 %>
+														<% @arrayfirst7<< @exammarks_mark[index][index5].student_mark  %>
+														<% if index5 == @equal7 %>
 															<% if index==0 %>
-																<% @hashospe = {index.to_i=>@arrayfirst5} %>
+																<% @hashospeq = {index.to_i=>@arrayfirst7} %>
 															<% else %>
-																<% @hashospe = @hashospe.merge({index.to_i=>@arrayfirst5}) %>	
+																<% @hashospeq = @hashospeq.merge({index.to_i=>@arrayfirst7}) %>	
 															<% end %>
 														<% end %>
 													<% end %>
 													<!--end for ospe marks-->
-												<% elsif index5 > @fifth_A && index5 < @fifth_B %>
-													<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark, :precision=>2) %></td>
+												<% elsif index5 > @seventh_A && index5 < @seventh_B  %>
+													<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
 													<!--start for viva marks-->
 													<% if @examtemplates.map(&:questiontype).include?("VIVA") %>
-														<% @arrayfirst6<< @exammarks_mark[index][index5].student_mark  %>
-														<% if index5 == @equal6 %>
+														<% @arrayfirst8<< @exammarks_mark[index][index5].student_mark  %>
+														<% if index5 == @equal8 %>
 															<% if index==0 %>
-																<% @hashviva = {index.to_i=>@arrayfirst6} %>
+																<% @hashvivaq = {index.to_i=>@arrayfirst8} %>
 															<% else %>
-																<% @hashviva = @hashviva.merge({index.to_i=>@arrayfirst6}) %>	
+																<% @hashvivaq = @hashvivaq.merge({index.to_i=>@arrayfirst8}) %>	
 															<% end %>
 														<% end %>
 													<% end %>
 													<!--end for viva marks-->
-												<% elsif index5 > @sixth_A && index5 < @sixth_B  %>
+												<% elsif index5 > @eighth_A && index5 < @eighth_B  %>
 													<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
-													<!--start for truefalse marks-->
+													<!--start for ospe marks-->
 													<% if @examtemplates.map(&:questiontype).include?("TRUEFALSE") %>
-														<% @arrayfirst7<< @exammarks_mark[index][index5].student_mark  %>
-														<% if index5 == @equal7 %>
+														<% @arrayfirst9<< @exammarks_mark[index][index5].student_mark  %>
+														<% if index5 == @equal9 %>
 															<% if index==0 %>
-																<% @hashtruefalse = {index.to_i=>@arrayfirst7} %>
+																<% @hashtruefalseq = {index.to_i=>@arrayfirst9} %>
 															<% else %>
-																<% @hashtruefalse = @hashtruefalse.merge({index.to_i=>@arrayfirst7}) %>	
+																<% @hashtruefalseq = @hashtruefalseq.merge({index.to_i=>@arrayfirst9}) %>	
 															<% end %>
 														<% end %>
 													<% end %>
-													<!--end for truefalse marks-->
+													<!--end for ospe marks-->
 												<% end %>
 											<% end %>	<!--end for if count==1 && index3==0-->
 										<% end %> <!--end for @exammarks_mark[index].each_with_index do |eq,index5|-->
@@ -613,56 +716,84 @@
 												<!--end for acq marks-->
 											<% elsif index5 > @third_A  && index5 < @third_B %>
 												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
-												<!--start for osce marks-->
-												<% if @examquestions.osce.count != 0 %>
+												<!--start for osci marks-->
+												<% if @examquestions.osci.count != 0 %>
 													<% @arrayfirst4<< @exammarks_mark[index][index5].student_mark  %>
 													<% if index5 == @equal4 %>
 														<% if index==0 %>
-															<% @hashosce = {index.to_i=>@arrayfirst4} %>
+															<% @hashosci2q = {index.to_i=>@arrayfirst4} %>
 														<% else %>
-															<% @hashosce = @hashosce.merge({index.to_i=>@arrayfirst4}) %>	
+															<% @hashosci2q = @hashosci2q.merge({index.to_i=>@arrayfirst4}) %>	
 														<% end %>
 													<% end %>
 												<% end %>
-												<!--end for osce marks-->
+												<!--end for osci marks-->
 											<% elsif index5 > @fouth_A && index5 < @fouth_B %>
 												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
-												<!--start for ospe marks-->
-												<% if @examquestions.ospe.count != 0 %>
+												<!--start for oscii marks-->
+												<% if @examquestions.oscii.count != 0 %>
 													<% @arrayfirst5<< @exammarks_mark[index][index5].student_mark  %>
 													<% if index5 == @equal5 %>
 														<% if index==0 %>
-															<% @hashospe = {index.to_i=>@arrayfirst5} %>
+															<% @hashosci3q = {index.to_i=>@arrayfirst5} %>
 														<% else %>
-															<% @hashospe = @hashospe.merge({index.to_i=>@arrayfirst5}) %>	
+															<% @hashosci3q = @hashosci3q.merge({index.to_i=>@arrayfirst5}) %>	
+														<% end %>
+													<% end %>
+												<% end %>
+												<!--end for oscii marks-->
+											<% elsif index5 > @fifth_A && index5 < @fifth_B %>
+												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark, :precision=>2) %></td>
+												<!--start for osce marks-->
+												<% if @examquestions.osce.count != 0 %>
+													<% @arrayfirst6<< @exammarks_mark[index][index5].student_mark  %>
+													<% if index5 == @equal6 %>
+														<% if index==0 %>
+															<% @hashosceq = {index.to_i=>@arrayfirst6} %>
+														<% else %>
+															<% @hashosceq = @hashosceq.merge({index.to_i=>@arrayfirst6}) %>	
+														<% end %>
+													<% end %>
+												<!----><% end %>
+												<!--end for osce marks-->
+											<% elsif index5 > @sixth_A && index5 < @sixth_B  %>
+												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
+												<!--start for ospe marks-->
+												<% if @examquestions.ospe.count != 0 %>
+													<% @arrayfirst7<< @exammarks_mark[index][index5].student_mark  %>
+													<% if index5 == @equal7 %>
+														<% if index==0 %>
+															<% @hashospeq = {index.to_i=>@arrayfirst7} %>
+														<% else %>
+															<% @hashospeq = @hashospeq.merge({index.to_i=>@arrayfirst7}) %>	
 														<% end %>
 													<% end %>
 												<% end %>
 												<!--end for ospe marks-->
-											<% elsif index5 > @fifth_A && index5 < @fifth_B %>
-												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark, :precision=>2) %></td>
+											<% elsif index5 > @seventh_A && index5 < @seventh_B  %>
+												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
 												<!--start for viva marks-->
 												<% if @examquestions.viva.count != 0 %>
-													<% @arrayfirst6<< @exammarks_mark[index][index5].student_mark  %>
-													<% if index5 == @equal6 %>
-														<% if index==0 %>
-															<% @hashviva = {index.to_i=>@arrayfirst6} %>
-														<% else %>
-															<% @hashviva = @hashviva.merge({index.to_i=>@arrayfirst6}) %>	
-														<% end %>
-													<% end %>
-												<!----><% end %>
-												<!--end for viva marks-->
-											<% elsif index5 > @sixth_A && index5 < @sixth_B  %>
-												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
-												<!--start for truefalse marks-->
-												<% if @examquestions.truefalse.count != 0 %>
 													<% @arrayfirst7<< @exammarks_mark[index][index5].student_mark  %>
 													<% if index5 == @equal7 %>
 														<% if index==0 %>
-															<% @hashtruefalse = {index.to_i=>@arrayfirst7} %>
+															<% @hashvivaq = {index.to_i=>@arrayfirst7} %>
 														<% else %>
-															<% @hashtruefalse = @hashtruefalse.merge({index.to_i=>@arrayfirst7}) %>	
+															<% @hashvivaq = @hashvivaq.merge({index.to_i=>@arrayfirst7}) %>	
+														<% end %>
+													<% end %>
+												<% end %>
+												<!--end for viva marks-->
+											<% elsif index5 > @eighth_A && index5 < @eighth_B  %>
+												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
+												<!--start for truefalse marks-->
+												<% if @examquestions.truefalseq.count != 0 %>
+													<% @arrayfirst7<< @exammarks_mark[index][index5].student_mark  %>
+													<% if index5 == @equal7 %>
+														<% if index==0 %>
+															<% @hashtruefalseq = {index.to_i=>@arrayfirst7} %>
+														<% else %>
+															<% @hashtruefalseq = @hashtruefalseq.merge({index.to_i=>@arrayfirst7}) %>	
 														<% end %>
 													<% end %>
 												<% end %>
@@ -725,9 +856,9 @@
 				<tr>
 					<%# if (@istemplate==0 && @examtemplates.map(&:questiontype).include?("SEQ")) || (@istemplate!=0 &&@examquestions.seqq.count> 0)%>
 					<% if (@istemplate!=0 &&@examquestions.seqq.count> 0)%>					
-						<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty+@viva_qty+@truefalse_qty+6+2+1 %>'>&nbsp;</td>
+						<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osceq_qty+@ospeq_qty+@vivaq_qty+@truefalseq_qty+6+2+1 %>'>&nbsp;</td>
 					<% else %>
-						<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty+@viva_qty+@truefalse_qty+6+2 %>'>&nbsp;</td>
+						<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osceq_qty+@ospeq_qty+@vivaq_qty+@truefalseq_qty+6+2 %>'>&nbsp;</td>
 					<% end %>
 				</tr>
 				<%#=======================start-analysis part-PART I======================================================%>
@@ -747,7 +878,7 @@
 						<% if loop_column == 0 %>
 							<% @statistic_view = Examanalysis.statistic_item(@student_ca_mse,loop_column) %>
 						<% else %>
-							<% @statistic_view = Examanalysis.statistic_item(@total_MCQ_A,loop_column) %>
+							<%# @statistic_view = Examanalysis.statistic_item(@total_MCQ_A,loop_column) %>
 						<% end %>
 
 						<% if count_analyse_item ==3 || count_analyse_item ==6 %>
@@ -837,18 +968,18 @@
 								<%#-------------------------%>
 							<% elsif count == 4 %>
 							<%#-------------------------%>
-								<% if @istemplate != 0 && @examquestions.osce.count!= 0 %>
-								<%# if @examquestions.osce.count!= 0 && @checker == count %>
-									<% @hashitem = @hashosce %>
-									<% @examquestions_count = @osce_qty %>
-									<% @examquesting_list = @examquestions.osce %>
+								<% if @istemplate != 0 && @examquestions.osci2q.count!= 0 %>
+								<%# if @examquestions.osci2q.count!= 0 && @checker == count %>
+									<% @hashitem = @hashosci2q %>
+									<% @examquestions_count = @osci2q_qty %>
+									<% @examquesting_list = @examquestions.osci2q %>
 									<% @count_value = count %>
 									<% @checker = count+1 %>
 								<% end %>
-								<% if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSCE") %>
-								<%# if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSCE") && @checker == count%>
-									<% @hashitem = @hashosce %>
-									<% @examquestions_count = @osce_qty %><%# @meq_qty = @examtemplates.meqq[0].quantity  %>
+								<% if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSCI") %>
+								<%# if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSCI") && @checker == count%>
+									<% @hashitem = @hashosci2q %>
+									<% @examquestions_count = @osci2q_qty %><%# @meq_qty = @examtemplates.meqq[0].quantity  %>
 									
 									<% @count_value = count %>
 									<% @checker = count+1 %>
@@ -856,18 +987,18 @@
 							<%#-------------------------%>
 							<% elsif count == 5 %>
 							<%#-------------------------%>
-								<% if @istemplate != 0 && @examquestions.ospe.count!= 0  %>
-								<%# if @examquestions.ospe.count!= 0 && @checker == count %>
-									<% @hashitem = @hashospe %>
-									<% @examquestions_count = @ospe_qty %>
-									<% @examquesting_list = @examquestions.ospe %>
+								<% if @istemplate != 0 && @examquestions.osci3q.count!= 0  %>
+								<%# if @examquestions.osci3q.count!= 0 && @checker == count %>
+									<% @hashitem = @hashosci3q %>
+									<% @examquestions_count = @osci3q_qty %>
+									<% @examquesting_list = @examquestions.osci3q %>
 									<% @count_value = count %>
 									<% @checker = count+1 %>
 								<% end %>
-								<% if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSPE") %>
-								<%# if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSPE") && @checker == count%>
-									<% @hashitem = @hashospe %>
-									<% @examquestions_count = @ospe_qty %><%# @meq_qty = @examtemplates.meqq[0].quantity  %>
+								<% if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSCII") %>
+								<%# if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSCII") && @checker == count%>
+									<% @hashitem = @hashosci3q %>
+									<% @examquestions_count = @osci3q_qty %><%# @meq_qty = @examtemplates.meqq[0].quantity  %>
 									
 									<% @count_value = count %>
 									<% @checker = count+1 %>
@@ -875,18 +1006,18 @@
 							<%#-------------------------%>
 							<% elsif count == 6 %>
 							<%#-------------------------%>
-								<% if @istemplate != 0 && @examquestions.viva.count!= 0 %>
-								<%# if @examquestions.viva.count!= 0 && @checker == count %>
-									<% @hashitem = @hashviva %>
-									<% @examquestions_count = @viva_qty %>
-									<% @examquesting_list = @examquestions.viva %>
+								<% if @istemplate != 0 && @examquestions.osceq.count!= 0 %>
+								<%# if @examquestions.osceq.count!= 0 && @checker == count %>
+									<% @hashitem = @hashosceq %>
+									<% @examquestions_count = @osceq_qty %>
+									<% @examquesting_list = @examquestions.osceq %>
 									<% @count_value = count %>
 									<% @checker = count+1 %>
 								<% end %>
-								<% if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("VIVA") %>
-								<%# if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("VIVA") && @checker == count%>
-									<% @hashitem = @hashviva %>
-									<% @examquestions_count = @viva_qty %><%# @meq_qty = @examtemplates.meqq[0].quantity  %>
+								<% if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSCE") %>
+								<%# if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSCE") && @checker == count%>
+									<% @hashitem = @hashosceq %>
+									<% @examquestions_count = @osceq_qty %><%# @meq_qty = @examtemplates.meqq[0].quantity  %>
 									
 									<% @count_value = count %>
 									<% @checker = count+1 %>
@@ -894,18 +1025,56 @@
 							<%#-------------------------%>
 							<% elsif count == 7 %>
 							<%#-------------------------%>
-								<% if @istemplate != 0 && @examquestions.truefalse.count!= 0  %>
-								<%# if @examquestions.truefalse.count!= 0 && @checker == count %>
-									<% @hashitem = @hashtruefalse %>
-									<% @examquestions_count = @truefalse_qty %>
-									<% @examquesting_list = @examquestions.truefalse %>
+								<% if @istemplate != 0 && @examquestions.ospeq.count!= 0  %>
+								<%# if @examquestions.ospeq.count!= 0 && @checker == count %>
+									<% @hashitem = @hashospeq %>
+									<% @examquestions_count = @ospeq_qty %>
+									<% @examquesting_list = @examquestions.ospeq%>
+									<% @count_value = count %>
+									<% @checker = count+1 %>
+								<% end %>
+								<% if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSPE") %>
+								<%# if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("OSPE") && @checker == count%>
+									<% @hashitem = @hashospeq %>
+									<% @examquestions_count = @ospeq_qty %><%# @meq_qty = @examtemplates.meqq[0].quantity  %>
+									
+									<% @count_value = count %>
+									<% @checker = count+1 %>
+								<% end %>
+							<%#-------------------------%>
+							<% elsif count == 8 %>
+							<%#-------------------------%>
+								<% if @istemplate != 0 && @examquestions.vivaq.count!= 0  %>
+								<%# if @examquestions.vivaq.count!= 0 && @checker == count %>
+									<% @hashitem = @hashvivaq %>
+									<% @examquestions_count = @vivaq_qty %>
+									<% @examquesting_list = @examquestions.vivaq%>
+									<% @count_value = count %>
+									<% @checker = count+1 %>
+								<% end %>
+								<% if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("VIVA") %>
+								<%# if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("VIVA") && @checker == count%>
+									<% @hashitem = @hashvivaq %>
+									<% @examquestions_count = @vivaq_qty %><%# @meq_qty = @examtemplates.meqq[0].quantity  %>
+									
+									<% @count_value = count %>
+									<% @checker = count+1 %>
+								<% end %>
+							<%#-------------------------%>
+							<% elsif count == 9 %>
+							<%#-------------------------%>
+								<% if @istemplate != 0 && @examquestions.truefalseq.count!= 0  %>
+								<%# if @examquestions.truefalseq.count!= 0 && @checker == count %>
+									<% @hashitem = @hashtruefalseq %>
+									<% @examquestions_count = @truefalseq_qty %>
+									<% @examquesting_list = @examquestions.truefalseq%>
 									<% @count_value = count %>
 									<% @checker = count+1 %>
 								<% end %>
 								<% if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("TRUEFALSE") %>
 								<%# if @istemplate == 0 && @examtemplates.map(&:questiontype).include?("TRUEFALSE") && @checker == count%>
-									<% @hashitem = @hashtruefalse %>
-									<% @examquestions_count = @truefalse_qty %><%# @meq_qty = @examtemplates.meqq[0].quantity  %>
+									<% @hashitem = @hashtruefalseq %>
+									<% @examquestions_count = @truefalseq_qty %><%# @meq_qty = @examtemplates.meqq[0].quantity  %>
 									
 									<% @count_value = count %>
 									<% @checker = count+1 %>
@@ -920,16 +1089,16 @@
 							<%# 0.upto(0) do |index7| %><!--only 1 type of question available (other than mcq) exist-->
 							
 								<% @total_fr_hash = [] %>
-								<% @hashitem.each do |k,v|%><%# @hashseq.each do |k,v|%><%# @hashseq.each do |k,v|%>
-									<% v.each_with_index do |value, index6|%>
-										<% if index7 == index6 %>
-											<% @total_fr_hash << value %>
-										<% end %>
-									<% end %>
-								<% end %>
+								<%# @hashitem.each do |k,v|%><%# @hashseq.each do |k,v|%><%# @hashseq.each do |k,v|%>
+									<%# v.each_with_index do |value, index6|%>
+										<%# if index7 == index6 %>
+											<%# @total_fr_hash << value %>
+										<%# end %>
+									<%# end %>
+								<%# end %>
 <!--<%# if count == 1%>cek meq:<%#=@hashmeq%>-cek seq<%#=@hashseq%>-cek acq<%#=@hashacq%>==<%#= @examquestions_count%><br><%# end %>total fr hash<%#=@total_fr_hash%>-->
 
-								<% @statistic_view = Examanalysis.statistic_item(@total_fr_hash,count+1) %><!--count!=loop_column-->
+								<%# @statistic_view = Examanalysis.statistic_item(@total_fr_hash,count+1) %><!--count!=loop_column-->
 								<!--refer examanalysis.rb, loop_column=0, refers to CA+MSE & loop_column=1, refers to MCQ-->
 								<!--use 2 for MEQ, 3 for SEQ and so on.....-->
 
@@ -1088,9 +1257,9 @@
 				<%#=======================end-analysis part-PART I===================================================%>
 				<%# if (@istemplate==0 && @examtemplates.map(&:questiontype).include?("SEQ")) || (@istemplate!=0 &&@examquestions.seqq.count> 0)%>
 				<% if (@istemplate!=0 &&@examquestions.seqq.count> 0)%>			
-					<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty+@viva_qty+@truefalse_qty+6+2+1 %>'>&nbsp;</td>
+					<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty+@vivaq_qty+@truefalseq_qty+6+2+1 %>'>&nbsp;</td>
 				<% else %>
-					<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty+@viva_qty+@truefalse_qty+6+2 %>'>&nbsp;</td>
+					<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty+@vivaq_qty+@truefalseq_qty+6+2 %>'>&nbsp;</td>
 				<% end %>
 				<%#=======================start-analysis part-PART II================================================%>
 				<% @ca_mse_rate = []%>
@@ -1106,7 +1275,7 @@
 								<% @statistic_view = Examanalysis.statistic_item2(@student_ca_mse,loop_column) %>
 								<% @ca_mse_rate = @statistic_view %>
 							<% elsif loop_column == 1 %>
-								<% @statistic_view = Examanalysis.statistic_item2(@total_MCQ_A,loop_column) %>
+								<%# @statistic_view = Examanalysis.statistic_item2(@total_MCQ_A,loop_column) %>
 								<% @total_MCQ_rate = @statistic_view %>
 							<% end %>
 
@@ -1118,6 +1287,8 @@
 						<% @total_meq_rate=[] %>
 						<% @total_seq_rate=[] %>
 						<% @total_acq_rate=[] %>
+						<% @total_osci2q_rate=[] %>
+						<% @total_osci3q_rate=[] %>
 						<% @total_osce_rate=[] %>
 						<% @total_ospe_rate=[] %>
 						<% @total_viva_rate=[] %>
@@ -1174,50 +1345,62 @@
 								<% end %>
 							<% elsif count == 4 %>
 								<% if @istemplate == 0 %>
-									<% if @examtemplates.map(&:questiontype).include?("OSCE")%>
-										<% @hashitem = @hashosce %>
-										<% @examquestions_count = @osce_qty-1 %>
+									<% if @examtemplates.map(&:questiontype).include?("OSCI")%>
+										<% @hashitem = @hashosci2q %>
+										<% @examquestions_count = @osci2q_qty-1 %>
 									<% end %>
 								<% else %>
-									<% if @examquestions.osce.count > 0 %>
-										<% @hashitem = @hashosce %>
-										<% @examquestions_count = @osce_qty-1 %>
+									<% if @examquestions.osci2q.count > 0 %>
+										<% @hashitem = @hashosci2q %>
+										<% @examquestions_count = @osci2q_qty-1 %>
 									<% end %>
 								<% end %>
 							<% elsif count == 5 %>
 								<% if @istemplate == 0 %>
-									<% if @examtemplates.map(&:questiontype).include?("OSPE")%>
-										<% @hashitem = @hashospe %>
-										<% @examquestions_count = @ospe_qty-1 %>
+									<% if @examtemplates.map(&:questiontype).include?("OSCII")%>
+										<% @hashitem = @hashosci3q %>
+										<% @examquestions_count = @osci3q_qty-1 %>
 									<% end %>
 								<% else %>
-									<% if @examquestions.ospe.count > 0 %>
-										<% @hashitem = @hashospe %>
-										<% @examquestions_count = @ospe_qty-1 %>
+									<% if @examquestions.osci3q.count > 0 %>
+										<% @hashitem = @hashosci3q %>
+										<% @examquestions_count = @osci3q_qty-1 %>
 									<% end %>
 								<% end %>
 							<% elsif count == 6 %>
 								<% if @istemplate == 0 %>
-									<% if @examtemplates.map(&:questiontype).include?("VIVA")%>
-										<% @hashitem = @hashviva %>
-										<% @examquestions_count = @viva_qty-1 %>
+									<% if @examtemplates.map(&:questiontype).include?("OSCE")%>
+										<% @hashitem = @hashosceq %>
+										<% @examquestions_count = @osceq_qty-1 %>
 									<% end %>
 								<% else %>
-									<% if @examquestions.viva.count > 0 %>
-										<% @hashitem = @hashviva %>
-										<% @examquestions_count = @viva_qty-1 %>
+									<% if @examquestions.osceq.count > 0 %>
+										<% @hashitem = @hashosceq %>
+										<% @examquestions_count = @osceq_qty-1 %>
 									<% end %>
 								<% end %>
 							<% elsif count == 7 %>
 								<% if @istemplate == 0 %>
-									<% if @examtemplates.map(&:questiontype).include?("TRUEFALSE")%>
-										<% @hashitem = @hashtruefalse %>
-										<% @examquestions_count = @truefalse_qty-1 %>
+									<% if @examtemplates.map(&:questiontype).include?("OSPE")%>
+										<% @hashitem = @hashospeq %>
+										<% @examquestions_count = @ospeq_qty-1 %>
 									<% end %>
 								<% else %>
-									<% if @examquestions.truefalse.count > 0 %>
-										<% @hashitem = @hashtruefalse %>
-										<% @examquestions_count = @truefalse_qty-1 %>
+									<% if @examquestions.ospeq.count > 0 %>
+										<% @hashitem = @hashospeq %>
+										<% @examquestions_count = @ospeq_qty-1 %>
+									<% end %>
+								<% end %>
+							<% elsif count == 8 %>
+								<% if @istemplate == 0 %>
+									<% if @examtemplates.map(&:questiontype).include?("VIVA")%>
+										<% @hashitem = @hashvivaq %>
+										<% @examquestions_count = @vivaq_qty-1 %>
+									<% end %>
+								<% else %>
+									<% if @examquestions.vivaq.count > 0 %>
+										<% @hashitem = @hashvivaq %>
+										<% @examquestions_count = @vivaq_qty-1 %>
 									<% end %>
 								<% end %>
 							<% end %><!--jab hide first-->
@@ -1226,14 +1409,14 @@
 
 							<% 0.upto(@examquestions_count) do |index7| %><%# 0.upto(0) do |index7| %>
 								<% @total_fr_hash = [] %>
-								<% @hashitem.each do |k,v|%>
-									<% v.each_with_index do |value, index6|%>
-										<% if index7 == index6 %>
-											<% @total_fr_hash << value %>
-										<% end %>
-									<% end %>
-								<% end %>
-								<% @statistic_view = Examanalysis.statistic_item2(@total_fr_hash,count+1) %>
+								<%# @hashitem.each do |k,v|%>
+									<%# v.each_with_index do |value, index6|%>
+										<%# if index7 == index6 %>
+											<%# @total_fr_hash << value %>
+										<%# end %>
+									<%# end %>
+								<%# end %>
+								<%# @statistic_view = Examanalysis.statistic_item2(@total_fr_hash,count+1) %>
 									
 									<% if @istemplate == 0 %>
 										<!--if exam template-->
@@ -1298,30 +1481,44 @@
 									
 								<% elsif count == 4 %>
 									<% if @istemplate == 0 %>
-										<% @total_osce_rate<< @statistic_view if @examtemplates.map(&:questiontype).include?("OSCE")%>
+										<% @total_osce_rate<< @statistic_view if @examtemplates.map(&:questiontype).include?("OSCI")%>
 									<% else %>
-										<% @total_osce_rate<< @statistic_view if @examquestions.osce.count != 0 %>
+										<% @total_osce_rate<< @statistic_view if @examquestions.osci2q.count != 0 %>
 									<% end %>
 									
 								<% elsif count == 5 %>
 									<% if @istemplate == 0 %>
-										<% @total_seq_rate<< @statistic_view if @examtemplates.map(&:questiontype).include?("OSPE")%>
+										<% @total_seq_rate<< @statistic_view if @examtemplates.map(&:questiontype).include?("OSCII")%>
 									<% else %>
-										<% @total_seq_rate<< @statistic_view if @examquestions.ospe.count != 0 %>
+										<% @total_seq_rate<< @statistic_view if @examquestions.osci3q.count != 0 %>
 									<% end %>
 									
 								<% elsif count == 6 %>
 									<% if @istemplate == 0 %>
-										<% @total_viva_rate<< @statistic_view if @examtemplates.map(&:questiontype).include?("VIVA")%>
+										<% @total_viva_rate<< @statistic_view if @examtemplates.map(&:questiontype).include?("OSCE")%>
 									<% else %>
-										<% @total_viva_rate<< @statistic_view if @examquestions.viva.count != 0 %>
+										<% @total_viva_rate<< @statistic_view if @examquestions.osceq.count != 0 %>
 									<% end %>
 									
 								<% elsif count == 7 %>
 									<% if @istemplate == 0 %>
+										<% @total_truefalse_rate<< @statistic_view if @examtemplates.map(&:questiontype).include?("OSPE")%>
+									<% else %>
+										<% @total_truefalse_rate<< @statistic_view if @examquestions.ospeq.count != 0 %>
+									<% end %>
+									
+								<% elsif count == 8 %>
+									<% if @istemplate == 0 %>
+										<% @total_truefalse_rate<< @statistic_view if @examtemplates.map(&:questiontype).include?("VIVA")%>
+									<% else %>
+										<% @total_truefalse_rate<< @statistic_view if @examquestions.vivaq.count != 0 %>
+									<% end %>
+									
+								<% elsif count == 9 %>
+									<% if @istemplate == 0 %>
 										<% @total_truefalse_rate<< @statistic_view if @examtemplates.map(&:questiontype).include?("TRUEFALSE")%>
 									<% else %>
-										<% @total_truefalse_rate<< @statistic_view if @examquestions.truefalse.count != 0 %>
+										<% @total_truefalse_rate<< @statistic_view if @examquestions.truefalseq.count != 0 %>
 									<% end %>
 									
 								<% end %>
@@ -1349,9 +1546,9 @@
 				<%#=======================end-analysis part-PART II================================================%>
 				<%# if (@istemplate==0 && @examtemplates.map(&:questiontype).include?("SEQ")) || (@istemplate!=0 &&@examquestions.seqq.count> 0)%>
 				<% if (@istemplate!=0 &&@examquestions.seqq.count> 0)%>			
-					<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty+@viva_qty+@truefalse_qty+6+2+1 %>'>&nbsp;</td>
+					<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty+@vivaq_qty+@truefalseq_qty+6+2+1 %>'>&nbsp;</td>
 				<% else %>
-					<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osce_qty+@ospe_qty+@viva_qty+@truefalse_qty+6+2 %>'>&nbsp;</td>
+					<td colspan='<%=1+@meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty+@vivaq_qty+@truefalseq_qty+6+2 %>'>&nbsp;</td>
 				<% end %>
 				<%#=======================start-analysis part-PART III==============================================%>
 				<!--statistic title assignment-->
@@ -1423,27 +1620,39 @@
 								<% end %>
 							<% elsif loop_column == 3 %>
 								<% if @istemplate == 0 %>
-									<% @main_rate = @total_osce_rate if @examtemplates.map(&:questiontype).include?("OSCE") %>
+									<% @main_rate = @total_osce_rate if @examtemplates.map(&:questiontype).include?("OSCI") %>
 								<% else %>
-									<% @main_rate = @total_osce_rate if @examquestions.osce.count != 0 %>
+									<% @main_rate = @total_osce_rate if @examquestions.osci2q.count != 0 %>
 								<% end %>
 							<% elsif loop_column == 4 %>
 								<% if @istemplate == 0 %>
-									<% @main_rate = @total_ospe_rate if @examtemplates.map(&:questiontype).include?("OSPE") %>
+									<% @main_rate = @total_ospe_rate if @examtemplates.map(&:questiontype).include?("OSCII") %>
 								<% else %>
-									<% @main_rate = @total_ospe_rate if @examquestions.ospe.count != 0 %>
+									<% @main_rate = @total_ospe_rate if @examquestions.osci3q.count != 0 %>
 								<% end %>
 							<% elsif loop_column == 5 %>
 								<% if @istemplate == 0 %>
-									<% @main_rate = @total_viva_rate if @examtemplates.map(&:questiontype).include?("VIVA") %>
+									<% @main_rate = @total_viva_rate if @examtemplates.map(&:questiontype).include?("OSCE") %>
 								<% else %>
-									<% @main_rate = @total_viva_rate if @examquestions.viva.count != 0 %>
+									<% @main_rate = @total_viva_rate if @examquestions.osceq.count != 0 %>
 								<% end %>
 							<% elsif loop_column == 6 %>
 								<% if @istemplate == 0 %>
+									<% @main_rate = @total_truefalse_rate if @examtemplates.map(&:questiontype).include?("OSPE") %>
+								<% else %>
+									<% @main_rate = @total_truefalse_rate if @examquestions.ospeq.count != 0 %>
+								<% end %>
+							<% elsif loop_column == 7 %>
+								<% if @istemplate == 0 %>
+									<% @main_rate = @total_truefalse_rate if @examtemplates.map(&:questiontype).include?("VIVA") %>
+								<% else %>
+									<% @main_rate = @total_truefalse_rate if @examquestions.vivaq.count != 0 %>
+								<% end %>
+							<% elsif loop_column == 8 %>
+								<% if @istemplate == 0 %>
 									<% @main_rate = @total_truefalse_rate if @examtemplates.map(&:questiontype).include?("TRUEFALSE") %>
 								<% else %>
-									<% @main_rate = @total_truefalse_rate if @examquestions.truefalse.count != 0 %>
+									<% @main_rate = @total_truefalse_rate if @examquestions.truefalseq.count != 0 %>
 								<% end %>
 							<% end %>
 							
@@ -1475,17 +1684,23 @@
 										<% @total_qtyoftype = @acq_qty-1 %>
 										<% @hashitem = @hashacq %>
 									<% elsif loop_column == 3 %>
-										<% @total_qtyoftype = @osce_qty-1 %>
-										<% @hashitem = @hashosce %>
+										<% @total_qtyoftype = @osci2q_qty-1 %>
+										<% @hashitem = @hashosci2q %>
 									<% elsif loop_column == 4 %>
-										<% @total_qtyoftype = @ospe_qty-1 %>
-										<% @hashitem = @hashospe %>
+										<% @total_qtyoftype = @osci3q_qty-1 %>
+										<% @hashitem = @hashosci3q %>
 									<% elsif loop_column == 5 %>
-										<% @total_qtyoftype = @viva_qty-1 %>
-										<% @hashitem = @hashviva %>
+										<% @total_qtyoftype = @osceq_qty-1 %>
+										<% @hashitem = @hashosceq %>
 									<% elsif loop_column == 6 %>
-										<% @total_qtyoftype = @truefalse_qty-1 %>
-										<% @hashitem = @hashtruefalse %>
+										<% @total_qtyoftype = @ospeq_qty-1 %>
+										<% @hashitem = @hashospeq %>
+									<% elsif loop_column == 7 %>
+										<% @total_qtyoftype = @vivaq_qty-1 %>
+										<% @hashitem = @hashvivaq %>
+									<% elsif loop_column == 8 %>
+										<% @total_qtyoftype = @truefalseq_qty-1 %>
+										<% @hashitem = @hashtruefalseq %>
 									<% end %><!--if loop_column == 1 -->
 									
 									

@@ -103,6 +103,10 @@ authorization do
         if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     
+    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:index, :show, :create, :update, :claimprint]do 
+        if_attribute :staff_id => is {Login.current_login.staff_id}
+    end
+    
     has_permission_on :asset_defects, :to => :create
     has_permission_on :asset_defects, :to => [:read, :update]  do
         if_attribute :reported_by => is {Login.current_login.staff_id}
@@ -147,7 +151,7 @@ authorization do
   end
   
   role :finance_unit do
-    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve]
+    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve, :claimprint]
   end
   
   role :training_manager do
