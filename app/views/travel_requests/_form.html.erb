@@ -24,8 +24,13 @@
 		<td><%= f.check_box :own_car, 		:id => 'mycar',  :class => 'tt'%><label> Own Car </label>
 			<%= f.check_box :dept_car, 		:id => 'offcar', :class => 'tt'%><label> Office Car &nbsp; </label>
 			<%= f.check_box :others_car, 	:id => 'othcar', :class => 'tt'%><label> Other's Car &nbsp;</label>
+				<span id="tr_others_car">
+				        <%= f.label t 'travel.others_car_notes'%>
+					<%= f.text_field :others_car_notes, :placeholder=>t('travel.staff_and_place')%>
+				</span>
 				<span id="tr_my_car">
-					<%= f.text_field :own_car_notes, :size => '40', :placeholder => 'Reasons (for using own car)' %><br>
+				        <br>
+					<%= f.text_field :own_car_notes, :size => '40', :placeholder => 'Reasons (for using own car)' %>
 					<%= f.radio_button :mileage, true,	:id => 'mileage',  :class => 'radio_mileage' %>
 					<label>Mileage Allowance</label>
 					<%= f.radio_button :mileage, false,	:id => 'mileage',  :class => 'radio_mileage' %>
@@ -34,7 +39,6 @@
 				</td>   
 		<td></td>                                                            
 	</tr>
-	
 	
 	<tr> <!-- Show when public selected -->
 		<td class="leftcol">Public Transport</td>
@@ -166,11 +170,21 @@
 			 }	
 			});
 			
-			
-			
-			
-			
-			
+			$j("input[id='othcar']").change(function() {  
+			  if($j('#othcar').is(':checked')) { 
+			    $j("#tr_others_car").show("appear"); 
+			  }else{
+			    $j("#tr_others_car").hide(""); 
+			  }
+			 });
+	      
+			$j("input[id='othcar']").each(function() {  
+			  if($j('#othcar').is(':checked')) { 
+			    $j("#tr_others_car").show("highlight"); 
+			  }else{
+			    $j("#tr_others_car").hide(""); 
+			  }
+			});
 			
 	});
 </script>
