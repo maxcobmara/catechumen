@@ -3,7 +3,9 @@
 		<table width=100%>
 			<tr>
 				<td class="leftcol"><label for="staff_id"><b><%= t 'staffleave.staff_id' %></b></label></td>
-				<td><%=h @travel_request.applicant.staff_name_with_position unless @travel_request.applicant.blank? %></td>
+				<td><%#=h @travel_request.applicant.staff_name_with_position unless @travel_request.applicant.blank? %>
+				         <%=h @travel_request.applicant.staff_name_with_position_grade_unit unless @travel_request.applicant.blank?%>
+				</td>
 			</tr>
 			<tr>
 				<td class="leftcol"><label for="request_code"><%= t 'document.refno' %></label></td>
@@ -54,8 +56,13 @@
 
 			<tr>
 				<td class="leftcol">Mileage</td>
-		    <td>Mileage Allowance : 	<%=h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png") %> &nbsp; &nbsp;  
-						Mileage Replacement <%= t 'travel.train_plane_replacement'%> : <%=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+		    <td>Mileage Allowance : 
+				 <% if @travel_request.mileage_replace==nil %>
+					<%=h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png") %> &nbsp; &nbsp;  
+				<% else %>
+					<%=h @travel_request.mileage_replace? ? image_tag("cross.png") : image_tag("tick.png") %>
+				<% end %>
+			     Mileage Replacement <%= t 'travel.train_plane_replacement'%> : <%=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 				<td></td>
 			</tr>
 		</table>

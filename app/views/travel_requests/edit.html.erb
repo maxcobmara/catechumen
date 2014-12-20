@@ -32,7 +32,7 @@
 		<%# if @travel_request.is_submitted == true  %>
 		    <%=render :partial => 'show_main' %>
 				<%=render :partial => 'approval', :locals => {:f => f} %>
-		<% elsif @travel_request.is_submitted == true && @travel_request.staff_id == Login.current_login.staff_id %>
+		<% elsif @travel_request.is_submitted == true && @travel_request.staff_id == Login.current_login.staff_id && @travel_request.hod_id!=nil && @travel_request.replaced_by!=nil%>
 			<H2>Edit Travel Request</H2>
 			Travel request already submitted to HOD for approval and no longer editable.
 		<% end -%>
