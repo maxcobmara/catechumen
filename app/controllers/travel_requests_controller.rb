@@ -26,10 +26,16 @@ class TravelRequestsController < ApplicationController
   # GET /travel_requests/new.xml
   def new
     @travel_request = TravelRequest.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @travel_request }
+    unless Login.current_login.staff.position.nil?
+      respond_to do |format|
+        format.html # new.html.erb
+        format.xml  { render :xml => @travel_request }
+      end
+    else
+      respond_to do |format|
+        format.html {redirect_to travel_requests_url, :notice =>  t('position_required')}
+        format.xml  { render :xml => @travel_request }
+      end
     end
   end
 
