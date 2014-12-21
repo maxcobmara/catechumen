@@ -49,9 +49,9 @@
 		    <td><label>
 						<%=h @travel_request.taxi? ? 	image_tag("tick.png") : image_tag("cross.png") %>Taxi &nbsp; &nbsp; 
 						<%=h @travel_request.bus? ? 	image_tag("tick.png") : image_tag("cross.png") %> Bus &nbsp; &nbsp; 
-						<%=h @travel_request.train? ? image_tag("tick.png") : image_tag("cross.png") %> Other's Car &nbsp; &nbsp; 
+						<%=h @travel_request.train? ? image_tag("tick.png") : image_tag("cross.png") %> Train &nbsp; &nbsp; 
 						<%=h @travel_request.plane? ? image_tag("tick.png") : image_tag("cross.png") %> Plane &nbsp; &nbsp; 
-						<%=h @travel_request.other? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.other_desc %>Own Car &nbsp; &nbsp; </label></td>                                                        
+						<%=h @travel_request.other? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.other_desc %>Other Public Transport&nbsp; &nbsp; </label></td>                                                        
 			</tr>
 
 			<tr>
@@ -62,7 +62,14 @@
 				<% else %>
 					<%=h @travel_request.mileage_replace? ? image_tag("cross.png") : image_tag("tick.png") %>
 				<% end %>
-			     Mileage Replacement <%= t 'travel.train_plane_replacement'%> : <%=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+			     Mileage Replacement <%= t 'travel.train_plane_replacement'%> : 
+				<%#=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %>
+				<% if @travel_request.mileage_replace==nil %>
+					<%= image_tag("tick.png") if @travel_request.mileage==false%><!--as per requested by applicant-->
+				<% else %>
+				  <%=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png")  %>
+				<% end %>
+		    </td>
 				<td></td>
 			</tr>
 		</table>
