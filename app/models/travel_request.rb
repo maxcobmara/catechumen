@@ -14,7 +14,7 @@ class TravelRequest < ActiveRecord::Base
   validates_presence_of :own_car_notes, :if => :mycar?
   validate :validate_end_date_before_start_date
   validates_presence_of :replaced_by, :if => :check_submit?
-  validates_presence_of :hod_id,      :if => :check_submit?
+  validates_presence_of :hod_id, :if => :check_submit?
   
   has_many :travel_claim_logs, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
@@ -30,12 +30,12 @@ class TravelRequest < ActiveRecord::Base
         self.mileage_history = 2
       end
     end
-    
+
     if hod_accept == false
       self.hod_accept_on	= nil
     end
     
-    if !mycar?#own_car == false 
+    if !mycar? #own_car == false 
       self.own_car_notes =''
       self.mileage = nil
     end
@@ -43,7 +43,7 @@ class TravelRequest < ActiveRecord::Base
     #decision by hod - mileage_replace field only appear in approval page
     if mileage_replace == false 
       self.mileage = true
-    elsif mileage_replace == true && self.mileage!=false #after && - required - or error arise (repetive)
+    elsif mileage_replace == true && self.mileage!=false #after '&&' - required - or error will arise (repetive)
       self.mileage = false
     end
   end
@@ -60,8 +60,7 @@ class TravelRequest < ActiveRecord::Base
     self.log_mileage = total_mileage_request
     self.log_fare = total_km_money_request
   end
-  
-  
+
   #validation logic
   def validate_end_date_before_start_date
     if return_at && depart_at
@@ -88,7 +87,6 @@ class TravelRequest < ActiveRecord::Base
     end
   end
   
-  
   #controller searches
   def self.in_need_of_approval
     find(:all, :conditions => ['hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', Login.current_login.staff_id, true, nil, false])
@@ -97,8 +95,6 @@ class TravelRequest < ActiveRecord::Base
   def self.my_travel_requests
       find(:all, :conditions => ['staff_id = ?', Login.current_login.staff_id])
   end
-  
-  
   
   #lists
   def document_refno
@@ -119,23 +115,32 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def repl_staff
-      siblings = Login.current_login.staff.position.sibling_ids
-      children = Login.current_login.staff.position.child_ids
-      possibles = siblings + children
-      replacements = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", possibles]).map(&:staff_id)
-      replacements
+    unit_name = Login.current_login.staff.position.unit
+    siblings = Position.find(:all, :conditions=>['unit=?', unit_name]).map(&:id)
+    #children = Login.current_login.staff.position.child_ids
+    possibles = siblings #+ children #not suitable for Pn Nabilah, Pn Rokiah - Timbalan2 Pengarah
+    replacements = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", possibles]).map(&:staff_id)
+    replacements
   end
   
   def hods
-      if Login.current_login.staff.position.root_id == Login.current_login.staff.position.parent_id
-        hod = Login.current_login.staff.position.root_id
-        approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
+    unit_name = Login.current_login.staff.position.unit
+    applicant_post= Login.current_login.staff.position
+    prog_names = Programme.roots.map(&:name)
+    approver=[]
+    if prog_names.include?(unit_name) 
+      if applicant_post.tasks_main.include?("Ketua Program")
+        approver = Login.current_login.staff.position.parent.staff_id
       else
-        hod = Login.current_login.staff.position.root.child_ids
-        hod << Login.current_login.staff.position.root_id
-        approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
+        approver << Position.find(:all, :conditions=>['unit=? and staff_id is not null',unit_name], :order=>('combo_code ASC')).first.staff_id
       end
-      approver
+    else
+      approver << Position.find(:first, :conditions=>['unit=? and combo_code<? and ancestry_depth!=?', unit_name, applicant_post.combo_code,1]).staff_id 
+      #Above : ancestry_depth!= 1 to avoid Timbalan2 Pengarah - fr becoming each other's hod.
+      approver << Login.current_login.staff.position.parent.staff_id if approver.count==0
+      approver << Login.current_login.staff.position.ancestors.map(&:staff_id) if approver.count==0
+    end
+    approver
   end
   
   def total_mileage_request
