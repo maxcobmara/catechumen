@@ -70,7 +70,7 @@
 			<%#=h l(travel_request.depart_at) %></td>
 			<td><%=h travel_request.return_at.strftime("%l:%M %p")%>
 			<%#=h l(travel_request.return_at) %></td>
-			<td><%=h travel_request.document_id? ? truncate((travel_request.document.title), :length => 40, :separator => ' ') : "None" %></td>
+			<td><%=h travel_request.document_id? ? truncate((travel_request.document.try(:title)), :length => 40, :separator => ' ') : "None" %></td>
 			<td><%=h travel_request.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 			<td><%=h travel_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 			<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => travel_request %></td>

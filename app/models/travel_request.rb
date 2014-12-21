@@ -84,7 +84,7 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def self.my_travel_requests
-      find(:all, :conditions => ['staff_id = ?', Login.current_login.staff_id])
+      find(:all)#, :conditions => ['staff_id = ?', Login.current_login.staff_id])
   end
   
   
