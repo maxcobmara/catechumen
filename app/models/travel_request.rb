@@ -127,18 +127,30 @@ class TravelRequest < ActiveRecord::Base
     unit_name = Login.current_login.staff.position.unit
     applicant_post= Login.current_login.staff.position
     prog_names = Programme.roots.map(&:name)
+    #common_subjects = Programme.find(:all, :conditions=>['course_type=?', "Common Subject"]).map(&:name)  #no yet exist in programme & name format not sure 2
+    common_subjects=["Komunikasi & Sains Pengurusan", "Sains Tingkahlaku", "Anatomi & Fisiologi", "Sains Perubatan Asas"]
     approver=[]
-    if prog_names.include?(unit_name) 
-      if applicant_post.tasks_main.include?("Ketua Program")
+    if prog_names.include?(unit_name) || unit_name == "Pos Basik" || common_subjects.include?(unit_name)
+      if applicant_post.tasks_main.include?("Ketua Program") || applicant_post.tasks_main.include?("Ketua Subjek")
         approver = Login.current_login.staff.position.parent.staff_id
       else
-        approver << Position.find(:all, :conditions=>['unit=? and staff_id is not null',unit_name], :order=>('combo_code ASC')).first.staff_id
+        sib_pos = Position.find(:all, :conditions=>['unit=? and staff_id is not null',unit_name], :order=>('combo_code ASC'))
+        if sib_pos
+          sib_pos.each do |sp|
+            approver << sp.staff_id if sp.tasks_main.include?("Ketua Program") || sp.tasks_main.include?("Ketua Subjek")
+          end
+        end        
       end
     else
-      approver << Position.find(:first, :conditions=>['unit=? and combo_code<? and ancestry_depth!=?', unit_name, applicant_post.combo_code,1]).staff_id 
+      #kskb server - yg penuhi syarat di bawah - position kosong no staff being assigned
+      staffapprover = Position.find(:all, :conditions=>['unit=? and combo_code<? and ancestry_depth!=?', unit_name, applicant_post.combo_code,1]).map(&:staff_id)
       #Above : ancestry_depth!= 1 to avoid Timbalan2 Pengarah - fr becoming each other's hod.
-      approver << Login.current_login.staff.position.parent.staff_id if approver.count==0
-      approver << Login.current_login.staff.position.ancestors.map(&:staff_id) if approver.count==0
+      approvers= Staff.find(:all, :conditions=>['id IN(?)', staffapprover])
+      approvers.each_with_index do |ap,idx|
+        approver << ap.id if ap.staffgrade.name.scan(/\d+/).first.to_i > 26  #check if approver really qualified one 
+      end
+      approver << Login.current_login.staff.position.parent.staff_id if approver.compact.count==0          #just in case approver=[nil]
+      approver << Login.current_login.staff.position.ancestors.map(&:staff_id) if approver.compact.count==0
     end
     approver
   end
