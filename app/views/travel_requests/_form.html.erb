@@ -59,14 +59,14 @@
 	
 	
 	<tr>
-		<td class="leftcol"><%=t('travel.submitted')%></td>
+		<td class="leftcol"><%=t('travel.submitted')%><font color="grey"> * </font></td>
     <td><%= f.check_box :is_submitted, :id => 'check_submitted' %>
 				<SPAN  id="span_submitted" style="display: none;"><%= tarikh(Date.today) %></SPAN></td>
 		<td><strong>Note :</strong><em><%= t "travel.note" %></em></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><%=t('travel.replacement')%></td>
+		<td class="leftcol"><%=t('travel.replacement')%><font color="grey"> * </font></td>
     <td><%= f.collection_select :replaced_by, Staff.find(:all, :conditions => ["id IN (?)", @travel_request.repl_staff], :order=>'name ASC'), :id, :name, :include_blank => true %></td>
 		<td></td>
 	</tr>
@@ -76,6 +76,7 @@
     <td><%= f.collection_select :hod_id, Staff.find(:all, :conditions => ["id IN (?)", @travel_request.hods], :order=>'name ASC'), :id, :name, :include_blank => true %></td>
 		<td></td>
 	</tr>
+	<tr><td colspan=3><font color="grey">*</font>&nbsp;<%=t('travel.compulsory_when_submitted')%></td></tr>
 </table>
 
 
