@@ -59,7 +59,7 @@ class TravelRequestsController < ApplicationController
 
     respond_to do |format|
       if @travel_request.save
-        format.html { redirect_to(@travel_request, :notice => t('travel.title')+t('created')) }
+        format.html { redirect_to(@travel_request, :notice => t('travel.title')+" "+t('created')) }
         format.xml  { render :xml => @travel_request, :status => :created, :location => @travel_request }
       else
         format.html { render :action => "new" }
@@ -75,7 +75,7 @@ class TravelRequestsController < ApplicationController
 
     respond_to do |format|
       if @travel_request.update_attributes(params[:travel_request])
-        format.html { redirect_to(params[:redirect_location], :notice => t('travel.title')+t('updated')) }
+        format.html { redirect_to(params[:redirect_location], :notice => t('travel.title')+" "+t('updated')) }
         format.xml  { head :ok }
       
       else

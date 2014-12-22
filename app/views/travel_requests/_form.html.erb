@@ -20,59 +20,59 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="transport_type">Transport Choice</label></td>
-		<td><%= f.check_box :own_car, 		:id => 'mycar',  :class => 'tt'%><label> Own Car </label>
-			<%= f.check_box :dept_car, 		:id => 'offcar', :class => 'tt'%><label> Office Car &nbsp; </label>
-			<%= f.check_box :others_car, 	:id => 'othcar', :class => 'tt'%><label> Other's Car &nbsp;</label>
+		<td class="leftcol"><label for="transport_type"><%=t('travel.transport_choice')%></label></td>
+		<td><%= f.check_box :own_car, :id => 'mycar',  :class => 'tt'%><label><%=t('travel.own_car')%></label>
+			<%= f.check_box :dept_car, :id => 'offcar', :class => 'tt'%><label><%=t('travel.dept_car')%> &nbsp; </label>
+			<%= f.check_box :others_car, :id => 'othcar', :class => 'tt'%><label><%=t('travel.others_car')%> &nbsp;</label>
 				<span id="tr_others_car">
 				        <%= f.label t 'travel.others_car_notes'%>
 					<%= f.text_field :others_car_notes, :placeholder=>t('travel.staff_and_place')%>
 				</span>
 				<span id="tr_my_car">
 				        <br>
-					<%= f.text_field :own_car_notes, :size => '40', :placeholder => 'Reasons (for using own car)' %>
+					<%= f.text_field :own_car_notes, :size => '40', :placeholder => (t 'travel.reason')%>
 					<%= f.radio_button :mileage, true,	:id => 'mileage',  :class => 'radio_mileage' %>
-					<label>Mileage Allowance</label>
+					<label><%=t('travel.mileage_allowance')%></label>
 					<%= f.radio_button :mileage, false,	:id => 'mileage',  :class => 'radio_mileage' %>
-					<label>Mileage Replacement <font size=-2><%= t 'travel.train_plane_replacement'%></font></label>
+					<label><%=t('travel.mileage_replacement')%>&nbsp;&nbsp;<font size=-2><%= t 'travel.train_plane_replacement'%></font></label>
 				</span> &nbsp; 
 				</td>   
 		<td></td>                                                            
 	</tr>
 	
 	<tr> <!-- Show when public selected -->
-		<td class="leftcol">Public Transport</td>
-    <td><%= f.check_box :taxi %> <%= f.label :taxi %> &nbsp; &nbsp;
-	      <%= f.check_box :bus %> <%= f.label :bus %> &nbsp; &nbsp;
-				<%= f.check_box :train %> <%= f.label :train %> &nbsp; &nbsp;
-				<%= f.check_box :plane %> <%= f.label :plane %> &nbsp; &nbsp;
-				<label>Other Public Transport</label> <%= f.check_box :other, :id => 'other_transport' %> &nbsp; 
-				<span id="tr_public_others"><%= f.text_field :other_desc, :size => '40', :placeholder => 'Describe Others' %></span> &nbsp; </td>
+		<td class="leftcol"><%=t('travel.public_transport')%></td>
+    <td><%= f.check_box :taxi %> <%=t('travel.taxi')%>&nbsp; &nbsp;
+	      <%= f.check_box :bus %> <%=t('travel.bus')%> &nbsp; &nbsp;
+				<%= f.check_box :train %> <%=t('travel.train')%> &nbsp; &nbsp;
+				<%= f.check_box :plane %> <%=t('travel.plane')%>&nbsp; &nbsp;
+				<label><%=t('travel.other_public_tpt')%></label> <%= f.check_box :other, :id => 'other_transport' %> &nbsp; 
+				<span id="tr_public_others"><%= f.text_field :other_desc, :size => '40', :placeholder =>(t 'travel.describe_others')%></span> &nbsp; </td>
 		<td></td>
 	</tr>
 
 	
 </table>	
-<H2>Submission</H2>
+<H2><%=t('travel.submission')%></H2>
 	
 <table width=100% >
 	
 	
 	<tr>
-		<td class="leftcol">Submitted</td>
+		<td class="leftcol"><%=t('travel.submitted')%></td>
     <td><%= f.check_box :is_submitted, :id => 'check_submitted' %>
 				<SPAN  id="span_submitted" style="display: none;"><%= tarikh(Date.today) %></SPAN></td>
-		<td><strong>Note :</strong> :<em><%= t "travel.note" %></em></td>
+		<td><strong>Note :</strong><em><%= t "travel.note" %></em></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol">Replacement</td>
+		<td class="leftcol"><%=t('travel.replacement')%></td>
     <td><%= f.collection_select :replaced_by, Staff.find(:all, :conditions => ["id IN (?)", @travel_request.repl_staff], :order=>'name ASC'), :id, :name, :include_blank => true %></td>
 		<td></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol">Head of Dept</td>
+		<td class="leftcol"><%=t('travel.hod')%></td>
     <td><%= f.collection_select :hod_id, Staff.find(:all, :conditions => ["id IN (?)", @travel_request.hods], :order=>'name ASC'), :id, :name, :include_blank => true %></td>
 		<td></td>
 	</tr>
