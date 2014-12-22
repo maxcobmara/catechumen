@@ -67,13 +67,13 @@
 	
 	<tr>
 		<td class="leftcol">Replacement</td>
-    <td><%= f.collection_select :replaced_by, Staff.find(:all, :conditions => ["id IN (?)", @travel_request.repl_staff]), :id, :name, :include_blank => true %></td>
+    <td><%= f.collection_select :replaced_by, Staff.find(:all, :conditions => ["id IN (?)", @travel_request.repl_staff], :order=>'name ASC'), :id, :name, :include_blank => true %></td>
 		<td></td>
 	</tr>
 	
 	<tr>
 		<td class="leftcol">Head of Dept</td>
-    <td><%= f.collection_select :hod_id, Staff.find(:all, :conditions => ["id IN (?)", @travel_request.hods]), :id, :name, :include_blank => true %></td>
+    <td><%= f.collection_select :hod_id, Staff.find(:all, :conditions => ["id IN (?)", @travel_request.hods], :order=>'name ASC'), :id, :name, :include_blank => true %></td>
 		<td></td>
 	</tr>
 </table>
