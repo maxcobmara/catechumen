@@ -28,11 +28,11 @@ class TravelRequestsController < ApplicationController
     @travel_request = TravelRequest.new
    
     respond_to do |format|
-      unless Login.current_login.staff.position.nil?
+      if Login.current_login.staff.position!=nil && Login.current_login.staff.position.unit!=""
         format.html # new.html.erb
         format.xml  { render :xml => @travel_request }
       else
-        format.html {redirect_to travel_requests_url, :notice =>  t('position_required')+t('travel_request.title')}
+        format.html {redirect_to travel_requests_url, :notice =>  t('position_required')+t('travel.title')+t('inc_unitname')}
         format.xml  { render :xml => @travel_request }
       end
     end
@@ -42,11 +42,11 @@ class TravelRequestsController < ApplicationController
   def edit
     @travel_request = TravelRequest.find(params[:id])
     respond_to do |format|
-      unless Login.current_login.staff.position.nil?
+      if Login.current_login.staff.position!=nil && Login.current_login.staff.position.unit!=""
         format.html # new.html.erb
         format.xml  { render :xml => @travel_request }
       else
-        format.html {redirect_to travel_requests_url, :notice =>  t('position_required')+t('travel.title')}
+        format.html {redirect_to travel_requests_url, :notice =>  t('position_required')+t('travel.title')+t('inc_unitname')}
         format.xml  { render :xml => @travel_request }
       end
     end
