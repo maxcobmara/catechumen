@@ -73,7 +73,7 @@
 	
 	<tr>
 		<td class="leftcol"><%=t('travel.hod')%></td>
-    <td><%= f.collection_select :hod_id, Staff.find(:all, :conditions => ["id IN (?)", @travel_request.hods], :order=>'name ASC'), :id, :name, :include_blank => true %></td>
+    <td><%= f.collection_select :hod_id, Staff.find(:all, :joins=> :position, :conditions => ['staffs.id IN(?)', @travel_request.hods], :order=>'positions.id ASC').uniq, :id, :name, :include_blank => true %></td>
 		<td></td>
 	</tr>
 	<tr><td colspan=3><font color="grey">*</font>&nbsp;<%=t('travel.compulsory_when_submitted')%></td></tr>
