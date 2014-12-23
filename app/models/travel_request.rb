@@ -152,6 +152,12 @@ class TravelRequest < ActiveRecord::Base
       approver << Login.current_login.staff.position.parent.staff_id if approver.compact.count==0          #just in case approver=[nil]
       approver << Login.current_login.staff.position.ancestors.map(&:staff_id) if approver.compact.count==0
     end
+    #override all above approver - 23Dec2014 - do not remove above yet, may be useful for other submodules
+    hod_posts = Position.find(:all, :conditions=>[ 'ancestry_depth<?',2])
+    approver=[] 
+    hod_posts.each do |hod|
+      approver << hod.staff_id if (hod.name.include?("Pengarah")||(hod.name.include?("Timbalan Pengarah")) && hod.staff_id!=nil)
+    end
     approver
   end
   

@@ -86,7 +86,11 @@
 				<a href="http://<%= request.host  %>:3003/staff/travel_requests/<%=travel_request.id%>/status_movement.pdf?locale=en"><%=image_tag("printer.png", :border => 0)%></a>
 			<% end %>
 			</td>		
-			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), travel_request, :confirm => 'Are you sure?', :method => :delete %></td>
+			<td width=10px>
+			<% permitted_to? :manage, :travel_requests do %>
+			<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), travel_request, :confirm => 'Are you sure?', :method => :delete %>
+			<% end %>
+			</td>
 		</tr>
 		<% end %>
 	</table>
