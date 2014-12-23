@@ -10,8 +10,18 @@
 	
 	<div class="toolbar">
 		<table><tr>
-			<td width=10%><p><label> <!-- New from asset defects --></label></p></td>
-			<td></td>
+			<!--<td width=10%><p><label>--> <!-- New from asset defects --><!--</label></p></td>-->
+			<td> <% permitted_to? :manage, :assets do %>
+			<%= link_to "KEW.PA17 (Selection) ", :controller=>'assetsearches', :action=>'new', :searchtype=>'11' %>&nbsp;|
+			<%= link_to "KEW.PA20 (Selection) ", :controller=>'assetsearches', :action=>'new', :searchtype=>'14' %> <% end %></td>
+			<!--<td width="10%" align="right">
+				  <div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-17'),:controller=>'assetsearches', :action => 'new', :searchtype=>'11' %><div class="noti_bubble">17</div></div>
+			</td>
+			<td>(By Selection)</td>
+			<td width="10%" align="right">
+				  <div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-20'),:controller=>'assetsearches', :action => 'new', :searchtype=>'14' %><div class="noti_bubble">20</div></div>
+			</td>
+			<td>(By Selection)</td>-->
 			<td class="action">
 				<% permitted_to? :manage, :assets do %>
 				<!--<label><p>
