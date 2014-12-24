@@ -168,6 +168,7 @@ authorization do
     has_permission_on :assets, :to => :manage
     has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
     has_permission_on :assetsearches, :to => :read
+    has_permission_on :locations, :to => [:manage]
   end
 
   

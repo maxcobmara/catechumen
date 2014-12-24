@@ -42,7 +42,9 @@
 						<%=h @travel_request.own_car? ? image_tag("tick.png") : image_tag("cross.png")  %><%=t('travel.own_car')%> &nbsp; &nbsp;
 						<% if @travel_request.own_car %>(<%=t('travel.reason') %> : <%=@travel_request.own_car_notes%>) <%end %>&nbsp; &nbsp; 
 						<%=h @travel_request.dept_car? ? image_tag("tick.png") : image_tag("cross.png") %><%=t('travel.dept_car')%>&nbsp; &nbsp; 
-						<%=h @travel_request.others_car? ? image_tag("tick.png") : image_tag("cross.png") %><%=t('travel.others_car')%> &nbsp; &nbsp; </label></td>                                                        
+						<%=h @travel_request.others_car? ? image_tag("tick.png") : image_tag("cross.png") %><%=t('travel.others_car')%> &nbsp;
+						<%=h "("+@travel_request.others_car_notes+")" if @travel_request.others_car %>
+						</label></td>                                                        
 			</tr>
 
 			<tr>
