@@ -1,7 +1,7 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Listing Lesson Plan</h2>
+		<h2 class="left"><%=t('lesson_plan.list')%></h2>
 		<div class="right">
 	  </div>
 	</div>
@@ -10,7 +10,7 @@
 
 <div class="toolbar">
 	<table width=100%><tr>
-		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Lesson Plan') + "New Lesson Plan", new_lesson_plan_path %></p></td>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Lesson Plan') + t('lesson_plan.new'), new_lesson_plan_path %></p></td>
 	</tr></table>
 </div>
 
@@ -18,21 +18,20 @@
 <div class="indextable">
 
 <table>
-  <tr>
-    <th>Lecturer</th>
-    <th>Intake</th>
-    <th>Total of Student</th>
-    <th>Year</th>
-    <th>Semester</th>
-    <th>Topic</th>
-    <th>Lecture title</th>
-    <th>Lecture date</th>
-    <th>Start time</th>
-    <th>End time</th>
-	<th>Submitted?</th>
-	<th>Approved</th>
-	<th>Report Submitted?</th>
-    <th colspan="4">Control</th>
+  <tr>    
+    <th><%=t('lesson_plan.lecturer')%></th>
+    <th><%=t('lesson_plan.intake_id')%></th>
+    <th><%=t('lesson_plan.student_qty')%></th>
+    <th><%=t('lesson_plan.year')%></th>
+    <th><%=t('lesson_plan.semester')%></th>
+    <th><%=t('lesson_plan.topic')%></th>
+    <th><%=t('lesson_plan.lecture_title')%></th>
+    <th><%=t('lesson_plan.lecture_date')%></th>
+    <th><%=t('lesson_plan.start_time')%></th>
+    <th><%=t('lesson_plan.end_time')%></th>
+    <th><%=t('lesson_plan.is_submitted')%></th>
+    <th><%=t('lesson_plan.report_endorsed')%></th>
+    <th colspan="4"><%=t('control')%></th>
   </tr>
 <!--hack-21March2013-->
 <% current_roles=[]%><% Login.current_login.roles.each do |x| %><% current_roles << x.name %><% end %><%#=current_roles.include? 'Administration'%>
@@ -50,7 +49,7 @@
 			<%=h lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name %>
 			<%#=h lesson_plan.lessonplan_intake.name %>
 		<% else %><!--added 31st October2013-->
-			<font color=red>Schedule was not defined/removed.<br>Please select a schedule</font><!--added 31st October2013-->
+			<font color=red><%=t('lesson_plan.schedule_removed')%><!--added 31st October2013-->
 		<% end %><!--added 31st October2013-->
 	</td>
     <td><%=h lesson_plan.student_qty %></td>
@@ -84,14 +83,14 @@
 	</td>
 	<td><%=h lesson_plan.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %>
 		<% if lesson_plan.hod_rejected==true && lesson_plan.is_submitted==nil %>
-			- Returned
+			- <%=t('lesson_plan.returned')%>
 		<%elsif lesson_plan.hod_rejected==true && lesson_plan.is_submitted==true %>
-			- Resubmitted
+			- <%=t('lesson_plan.resubmitted')%>
 		<% end %>
 	</td>
 	<td>
 		<%=h lesson_plan.hod_approved? ? image_tag("tick.png") : image_tag("cross.png") %>
-		<%=h lesson_plan.hod_rejected? ? "- Rejected" : "" %>
+		<%=h lesson_plan.hod_rejected? ? "- "+t('lesson_plan.rejected') : "" %>
 	</td>
 	<td>
 		<%=h lesson_plan.report_submit? ? image_tag("tick.png") : image_tag("cross.png") %>
@@ -117,4 +116,4 @@
 <br />
 </div>
 
-<%= link_to 'New Lesson Plan', new_lesson_plan_path %>
+<%= link_to t('lesson_plan.new'), new_lesson_plan_path %>

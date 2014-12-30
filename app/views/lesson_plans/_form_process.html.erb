@@ -1,32 +1,32 @@
 <!--start-Repeated fields for weeklytimetable details (DAILY TIMETABLE)-->
-<H2>Methodology</H2>
+<H2><%=t('lesson_plan.methodology')%></H2>
 
 <% f.fields_for :lessonplan_methodologies do |builder| %>
 	<%= render 'lessonplan_methodology_fields',  :f => builder %><!--:locals=> { :f => builder, :index=>@satu} -->
 <% end -%>
-<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :lessonplan_methodologies  %> - Add More </p>
+<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :lessonplan_methodologies  %> - <%=t('addmore')%> </p>
 
 <!--end-Repeated fields for weeklytimetable details (DAILY TIMETABLE)-->
 
-<H2>Submission</H2>
+<H2><%=t('lesson_plan.submission')%></H2>
 	
 <table width=100% >
 	<tr>
-		<td class="leftcol">Submit</td>
+		<td class="leftcol"><%=t('submit')%></td>
     	<td>
-			<%= f.check_box :is_submitted, :id => 'check_submitted' %>
-			<SPAN  id="span_submitted" style="display: none;"><%= tarikh(Date.today) %><%=%></SPAN>
+		<%= f.check_box :is_submitted, :id => 'check_submitted' %>
+		<SPAN  id="span_submitted" style="display: none;"><%= tarikh(Date.today) %></SPAN>
 		</td>
 		<td><!--<strong>Note :</strong> :<em><%#= t "travel.note" %></em>--></td>
 	</tr>
 	<tr>
-		<td class="leftcol">Head of Dept</td>
+		<td class="leftcol"><%=t('lesson_plan.hod')%></td>
     	<td><%= f.collection_select :endorsed_by, Staff.find(:all, :conditions => ["id IN (?)", @lesson_plan.hods]), :id, :name, :include_blank => true %></td>
 		<td>&nbsp;</td>
 	</tr>
 	<% if @lesson_plan.hod_rejected == true %>
 	<tr>
-		<td class="leftcol"><font color="red">Reason for Rejection : </font></td>
+		<td class="leftcol"><font color="red"><%=t('lesson_plan.reason_reject')%> </font></td>
 		<td colspan="2"><%=h simple_format(@lesson_plan.reason) %></td>
 	</tr>
 	<% end %>
