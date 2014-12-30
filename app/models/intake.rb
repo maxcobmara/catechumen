@@ -8,7 +8,7 @@ class Intake < ActiveRecord::Base
   
   #20March2013
   def group_with_intake_name
-    "#{description}"+' (Intake '+"#{name}"+')'
+    "#{description}"+' ('+I18n.t('lesson_plan.intake_id')+" #{name}"+')'
   end  
   
   def programme_group_intake

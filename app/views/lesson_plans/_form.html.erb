@@ -1,21 +1,21 @@
 
-	<H2>Lesson Plan Details</H2>
+	<H2><%=t('lesson_plan.details')%></H2>
 	<table>
 		<tr>
-			<td class="leftcol"><%= f.label :lecturer %></td>
+			<td class="leftcol"><%= f.label t('lesson_plan.lecturer') %></td>
 			<td><%#= f.collection_select :lecturer, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar']), :id, :name, :include_blank=>"Select Lecturer", :selected => Login.current_login.staff_id %>
 				&nbsp;&nbsp;<%=h Login.current_login.staff.name %><%= f.hidden_field :lecturer, :value=>Login.current_login.staff_id %>
 			</td>
 		</tr>
 		<tr>
-			<td class="leftcol"><%= f.label :schedule %></td>
+			<td class="leftcol"><%= f.label t('lesson_plan.schedule') %></td>
 			<!--START-revised on 3Nov2013-->
 			<td>
 				<% if @lesson_plan && @lesson_plan.schedule.nil? == true %>
 					<% @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact %>
-					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id NOT IN (?)',Login.current_login.staff_id,@lessonplan_schedule]), :id, :day_time_slot, :include_blank=>"Select Schedule" %>
+					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id NOT IN (?)',Login.current_login.staff_id,@lessonplan_schedule]), :id, :day_time_slot, :include_blank=>t('select') %>
 				<% else %>
-					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?',Login.current_login.staff_id]), :id, :day_time_slot, :include_blank=>"Select Schedule" %>
+					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?',Login.current_login.staff_id]), :id, :day_time_slot, :include_blank=>t('select') %>
 				<% end %>
 			</td>
 			<!--START-revised on 3Nov2013-->
@@ -56,20 +56,20 @@
 	
 		<!--30March2013-Part B:Newly key-in data (start)-->
 		<tr>
-			<td class="leftcol"><%= f.label :prerequisites %></td>
+			<td class="leftcol"><%= f.label t('lesson_plan.prerequisites') %></td>
 			<td><%= f.text_field :prerequisites, :size =>51 %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label>Total Number of Student</label></td>
+			<td class="leftcol"><label><%=t('lesson_plan.student_qty')%></label></td>
 			<td><%= f.text_field :student_qty, :size=>11 %></td>
 		</tr>    
 		<tr>
-			<td class="leftcol"><%= f.label :year %></td>
-			<td><%= f.select :year, 1..3, :include_blank => 'Select Year'  %></td>
+			<td class="leftcol"><%= f.label t('lesson_plan.year')%></td>
+			<td><%= f.select :year, 1..3, :include_blank => t('select') %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><%= f.label :semester %></td>
-			<td><%= f.select :semester, 1..6, :include_blank => 'Select Semester' %></td>
+			<td class="leftcol"><%= f.label t('lesson_plan.semester') %></td>
+			<td><%= f.select :semester, 1..6, :include_blank => t('select') %></td>
 		</tr>
 		<!--
 		<tr>
@@ -79,38 +79,38 @@
 		<!--30March2013-Part B:Newly key-in data (end)-->
 
 		<tr>
-			<td class="leftcol"><%= f.label :reference %></td>
+			<td class="leftcol"><%= f.label t('lesson_plan.reference') %></td>
 			<td><%= f.text_area :reference, :size=> '50x5' %></td>
 		</tr>
 			<!--THIS ONE WILL SAVE TRAINING NOTES IN lesson_plans table instead of trainingnotes table.-->
 			<tr>
-				<td class="leftcol"><label for="data">Current Attachment:</label></td>
+				<td class="leftcol"><label for="data"><%=t('current_attachment')%></label></td>
 				<td><% if @lesson_plan.data.exists? then %>
 			    		<%= @lesson_plan.data_file_name %> &nbsp;&nbsp;&nbsp;
 			    	<%= link_to (t 'document.download'), @lesson_plan.data.url %> ||
 		        	<%= link_to "ALT", @lesson_plan.data.url %>
 					<% @title_fr_trainingnotes = Trainingnote.find_by_timetable_id(@lesson_plan.schedule).title %>
 			    <% else %>
-			    	No Attachment yet
+			    	<%=t('no_attachment')%>
 					<% @title_fr_trainingnotes ='' %>
 		    	<% end %>
 			</td>
 
 			<tr>
-				<td class="leftcol"><label for="data">Upload/Change File:</label></td>
+				<td class="leftcol"><label for="data"><%=t('upload_change_file')%></label></td>
 				<td><%= f.file_field :data %><BR>
-				<%= f.text_field :title, :placeholder => 'Title', :size => '50x1', :value=>@title_fr_trainingnotes %></td>
+				<%= f.text_field :title, :placeholder => t('lesson_plan.note_title'), :size => '50x1', :value=>@title_fr_trainingnotes %></td>
 			</tr>
 			<!--trial section : 20May2013-->
 				<table width=100%>
 					<tr>
-						<td class="leftcol">Add Existing Training Notes</td>
+						<td class="leftcol"><%=t('lesson_plan.add_exist_notes')%></td>
 						<td>
 							<div>
 							<% f.fields_for :lesson_plan_trainingnotes do |builder| %>
 								<%= render 'lesson_plan_trainingnote_fields', :f => builder %>
 							<% end %>
-							<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :lesson_plan_trainingnotes %> - Add More </p>
+							<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :lesson_plan_trainingnotes %> - <%=t('addmore')%> </p>
 							</div></td>
 					</tr>
 					<!--
@@ -128,8 +128,8 @@
 			<!--trial section : 20May2013-->
 			<!--start-added for clarification-3Nov2013-->
 			<tr>
-				<td class="leftcol"><label for="data">Remark :</label></td>
-				<td>For additional Training Notes, should you found there's no suitable EXISTING training notes available for selection, add ONE in topic details (menu : Training | Lesson Plan | Create Topic Details) accordingly.  </td>
+				<td class="leftcol">&nbsp;</td>
+				<td><%=t('lesson_plan.remark')%></td>
 			</tr>
 			<!--end-added for clarification-3Nov2013-->
 
