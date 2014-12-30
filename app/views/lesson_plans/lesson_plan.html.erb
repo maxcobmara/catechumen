@@ -24,7 +24,15 @@ document.write("<input type='button' " +
 			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i> </i>
 </p> -->
 
-<H4 align="center" class="heading">PELAN PENGAJARAN AMALI</H4>
+<H4 align="center" class="heading">PELAN PENGAJARAN 
+<% if @lesson_plan.schedule_item.lecture_method == 1 %>
+      KULIAH
+<% elsif @lesson_plan.schedule_item.lecture_method == 2 %>
+      TUTORIAL
+<% elsif @lesson_plan.schedule_item.lecture_method == 3 %>
+      AMALI
+<% end %>
+</H4>
 <table class="plong">	
 	<tr>
 		<td class="header7">Nama Pengajar</td>
