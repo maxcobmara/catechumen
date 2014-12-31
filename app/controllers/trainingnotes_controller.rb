@@ -1,8 +1,9 @@
 class TrainingnotesController < ApplicationController
+  filter_resource_access
   # GET /trainingnotes
   # GET /trainingnotes.xml
   def index
-    @trainingnotes = Trainingnote.find(:all, :order => 'topicdetail_id')#:order => 'topic_id')
+    @trainingnotes = Trainingnote.with_permissions_to(:edit).find(:all, :order => 'topicdetail_id')#:order => 'topic_id')
 
     respond_to do |format|
       format.html # index.html.erb
