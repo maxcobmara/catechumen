@@ -90,21 +90,25 @@ class Login < ActiveRecord::Base
   
   def topicdetails_of_programme
     unit_of_staff = staff.position.unit
-    programme_of_staff = Programme.find(:all, :conditions=>['name ILIKE(?) and ancestry_depth=?', "%#{unit_of_staff}%",0]).first
-    descednts = programme_of_staff.descendants.map(&:id)
-    topicids2 = Programme.find(:all, :conditions=>['(course_type=? or course_type=?) and id IN(?)', "Topic", "Subtopic", descednts]).map(&:id)
-    topicdetailsids = Topicdetail.find(:all, :conditions=>['topic_code IN(?)', topicids2]).map(&:id)
-    return topicdetailsids
+    if Programme.roots.map(&:name).include?(unit_of_staff)==true
+      programme_of_staff = Programme.find(:all, :conditions=>['name ILIKE(?) and ancestry_depth=?', "%#{unit_of_staff}%",0]).first
+      descednts = programme_of_staff.descendants.map(&:id)
+      topicids2 = Programme.find(:all, :conditions=>['(course_type=? or course_type=?) and id IN(?)', "Topic", "Subtopic", descednts]).map(&:id)
+      topicdetailsids = Topicdetail.find(:all, :conditions=>['topic_code IN(?)', topicids2]).map(&:id)
+      return topicdetailsids
+    end
   end
   
   def timetables_of_programme
     unit_of_staff = staff.position.unit
-    programme_of_staff = Programme.find(:all, :conditions=>['name ILIKE(?) and ancestry_depth=?', "%#{unit_of_staff}%",0]).first
-    descednts = programme_of_staff.descendants.map(&:id)
-    topicids2 = Programme.find(:all, :conditions=>['(course_type=? or course_type=?) and id IN(?)', "Topic", "Subtopic", descednts]).map(&:id)
-    timetable_in_trainingnote = Trainingnote.find(:all, :conditions => ['timetable_id IS NOT NULL']).map(&:timetable_id)
-    timetableids = WeeklytimetableDetail.find(:all, :conditions =>['topic IN(?) and id IN(?)',topicids2,timetable_in_trainingnote]).map(&:id)
-    return timetableids
+    if Programme.roots.map(&:name).include?(unit_of_staff)==true
+      programme_of_staff = Programme.find(:all, :conditions=>['name ILIKE(?) and ancestry_depth=?', "%#{unit_of_staff}%",0]).first
+      descednts = programme_of_staff.descendants.map(&:id)
+      topicids2 = Programme.find(:all, :conditions=>['(course_type=? or course_type=?) and id IN(?)', "Topic", "Subtopic", descednts]).map(&:id)
+      timetable_in_trainingnote = Trainingnote.find(:all, :conditions => ['timetable_id IS NOT NULL']).map(&:timetable_id)
+      timetableids = WeeklytimetableDetail.find(:all, :conditions =>['topic IN(?) and id IN(?)',topicids2,timetable_in_trainingnote]).map(&:id)
+      return timetableids
+    end
   end
   
   named_scope :all

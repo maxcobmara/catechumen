@@ -47,8 +47,14 @@
 	    <td><%=h trainingnote.reference %></td>
 	    <td><%=h trainingnote.version %></td>
 	    <td><%=h trainingnote.release %></td>
-			<td><%= link_to image_tag('attach.png'), trainingnote.document.url%> &nbsp; <%= link_to trainingnote.document_file_name, trainingnote.document.url %>
-			<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => trainingnote %></td>
+			<td><%= link_to image_tag('attach.png'), trainingnote.document.url%> &nbsp; 
+			      <% if trainingnote.document.exists? %>
+					<%= link_to trainingnote.document_file_name, trainingnote.document.url %>
+			      <% else %>
+					<%= link_to trainingnote.document_file_name, "http://#{request.host}:3003"+ trainingnote.document.url , :width => '57px'  %>
+			      <% end%>
+		
+			<td width=10px><% link_to image_tag("document.png", :border => 0), :action => 'show', :id => trainingnote %></td>
 			<td width=10px><% link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => trainingnote %></td>
 			<td width=10px ><% link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), trainingnote, :confirm => 'Are you sure?', :method => :delete %></td>
 

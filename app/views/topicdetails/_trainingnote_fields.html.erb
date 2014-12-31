@@ -7,18 +7,18 @@
 	<!--start-3Nov2013-view attachment if EXIST-->
 	<font color=#444 size=-2>
 		<%# if f.object.document.exists? then %><% if f.object.document!= nil %>
-			Current file is : <%= f.object.document_file_name %> &nbsp;&nbsp;&nbsp;
+			<%=t('current_file')%> : <%= f.object.document_file_name %> &nbsp;&nbsp;&nbsp;
     		<%= link_to (t 'document.download'), f.object.document.url %> ||
     		<%= link_to "ALT", f.object.document.url %>
-			<BR>Or 
+			<BR><%=t('or')%>
 		<% end %>
 	</font>
 	<!--end-3Nov2013-view attachment if EXIST-->
 			
 	<%= f.file_field :document %> &nbsp;   &nbsp;<BR>
-	<%= f.text_field :title, :placeholder => 'Title', :size => '50x1' %>
-	<%= f.text_field :version, :placeholder => 'Version', :size => '6x1' %>  &nbsp;   &nbsp; <BR>
-	<%= f.date_select :release %>Release Date<%= f.hidden_field :_destroy %>
+	<%= f.text_field :title, :placeholder => t('topicdetail.note_title'), :size => '50x1' %>
+	<%= f.text_field :version, :placeholder => t('topicdetail.version_no'), :size => '6x1' %>  &nbsp;   &nbsp; <BR>
+	<%= f.date_select :release %><%=t('topicdetail.release_date')%><%= f.hidden_field :_destroy %>
 	<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>
 	<BR><BR>
 </div>
