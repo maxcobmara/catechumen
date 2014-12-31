@@ -88,6 +88,25 @@ class Login < ActiveRecord::Base
     Login.find(:all, :select => "staff_id", :conditions => ["staff_id IS NOT ?", nil]).map(&:staff_id)
   end
   
+  def topicdetails_of_programme
+    unit_of_staff = staff.position.unit
+    programme_of_staff = Programme.find(:all, :conditions=>['name ILIKE(?) and ancestry_depth=?', "%#{unit_of_staff}%",0]).first
+    descednts = programme_of_staff.descendants.map(&:id)
+    topicids2 = Programme.find(:all, :conditions=>['(course_type=? or course_type=?) and id IN(?)', "Topic", "Subtopic", descednts]).map(&:id)
+    topicdetailsids = Topicdetail.find(:all, :conditions=>['topic_code IN(?)', topicids2]).map(&:id)
+    return topicdetailsids
+  end
+  
+  def timetables_of_programme
+    unit_of_staff = staff.position.unit
+    programme_of_staff = Programme.find(:all, :conditions=>['name ILIKE(?) and ancestry_depth=?', "%#{unit_of_staff}%",0]).first
+    descednts = programme_of_staff.descendants.map(&:id)
+    topicids2 = Programme.find(:all, :conditions=>['(course_type=? or course_type=?) and id IN(?)', "Topic", "Subtopic", descednts]).map(&:id)
+    timetable_in_trainingnote = Trainingnote.find(:all, :conditions => ['timetable_id IS NOT NULL']).map(&:timetable_id)
+    timetableids = WeeklytimetableDetail.find(:all, :conditions =>['topic IN(?) and id IN(?)',topicids2,timetable_in_trainingnote]).map(&:id)
+    return timetableids
+  end
+  
   named_scope :all
   named_scope :approval,  :conditions =>  ["student_id IS? AND staff_id IS ?", nil, nil]
   named_scope :staff,     :conditions =>  ["student_id IS? AND staff_id IS NOT ?", nil, nil]
