@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141016073418) do
+ActiveRecord::Schema.define(:version => 20140414171719) do
 
   create_table "academic_sessions", :force => true do |t|
     t.string   "semester"
@@ -33,21 +33,13 @@ ActiveRecord::Schema.define(:version => 20141016073418) do
   add_index "accessions", ["accession_no"], :name => "index_accessions_on_accession_no"
   add_index "accessions", ["id"], :name => "index_accessions_on_id"
 
-  create_table "address_book_items", :force => true do |t|
-    t.integer  "address_book_id"
-    t.string   "item"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "address_books", :force => true do |t|
-    t.string   "name"
-    t.string   "phone"
-    t.string   "address"
-    t.string   "mail"
-    t.string   "web"
-    t.string   "fax"
-    t.string   "shortname"
+  create_table "addsuppliers", :force => true do |t|
+    t.integer  "supplier_id"
+    t.string   "lpono"
+    t.string   "document"
+    t.decimal  "quantity"
+    t.decimal  "unitcost"
+    t.date     "received"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -360,7 +352,6 @@ ActiveRecord::Schema.define(:version => 20141016073418) do
     t.boolean  "is_maintainable"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "remark"
   end
 
   create_table "assetsearches", :force => true do |t|
@@ -499,7 +490,6 @@ ActiveRecord::Schema.define(:version => 20141016073418) do
     t.string   "backuproman"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "finance_source"
   end
 
   add_index "books", ["id"], :name => "index_books_on_id"
@@ -802,7 +792,6 @@ ActiveRecord::Schema.define(:version => 20141016073418) do
     t.integer  "programme_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "diagram_caption"
   end
 
   create_table "examquestions_exams", :id => false, :force => true do |t|
@@ -1121,7 +1110,7 @@ ActiveRecord::Schema.define(:version => 20141016073418) do
     t.date     "repaired_on"
     t.integer  "document_id"
     t.date     "inspection_on"
-    t.integer  "user_id"
+    t.integer  "login_id"
     t.integer  "college_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -1140,36 +1129,13 @@ ActiveRecord::Schema.define(:version => 20141016073418) do
     t.datetime "updated_at"
     t.string   "combo_code"
     t.integer  "ancestry_depth", :default => 0
+    t.boolean  "damaged"
     t.string   "status"
   end
 
   add_index "locations", ["ancestry"], :name => "index_locations_on_ancestry"
   add_index "locations", ["combo_code"], :name => "index_locations_on_combo_code"
   add_index "locations", ["id"], :name => "index_locations_on_id"
-
-  create_table "logins", :force => true do |t|
-    t.string   "login",                     :limit => 40
-    t.string   "name",                      :limit => 100, :default => ""
-    t.string   "email",                     :limit => 100
-    t.string   "crypted_password",          :limit => 40
-    t.string   "salt",                      :limit => 40
-    t.string   "remember_token",            :limit => 40
-    t.datetime "remember_token_expires_at"
-    t.integer  "staff_id"
-    t.integer  "student_id"
-    t.boolean  "isstaff"
-    t.string   "icno"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "logins", ["id"], :name => "index_logins_on_id"
-  add_index "logins", ["login"], :name => "index_logins_on_login", :unique => true
-
-  create_table "logins_roles", :id => false, :force => true do |t|
-    t.integer "role_id"
-    t.integer "login_id"
-  end
 
   create_table "maints", :force => true do |t|
     t.integer  "asset_id"
@@ -1270,18 +1236,12 @@ ActiveRecord::Schema.define(:version => 20141016073418) do
     t.string   "ancestry"
     t.integer  "ancestry_depth"
     t.text     "objective"
+    t.integer  "duration"
     t.integer  "duration_type"
     t.integer  "credits"
     t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "lecture"
-    t.integer  "tutorial"
-    t.integer  "practical"
-    t.integer  "lecture_time"
-    t.integer  "tutorial_time"
-    t.integer  "practical_time"
-    t.decimal  "duration"
   end
 
   create_table "programmes_subjects", :id => false, :force => true do |t|
@@ -1387,6 +1347,11 @@ ActiveRecord::Schema.define(:version => 20141016073418) do
     t.string   "authname"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "roles_logins", :id => false, :force => true do |t|
+    t.integer "role_id"
+    t.integer "login_id"
   end
 
   create_table "rxparts", :force => true do |t|
@@ -1697,27 +1662,6 @@ ActiveRecord::Schema.define(:version => 20141016073418) do
     t.string   "unittype"
     t.decimal  "maxquantity"
     t.decimal  "minquantity"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "stationery_adds", :force => true do |t|
-    t.integer  "stationery_id"
-    t.string   "lpono"
-    t.string   "document"
-    t.decimal  "quantity"
-    t.decimal  "unitcost"
-    t.date     "received"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "stationery_uses", :force => true do |t|
-    t.integer  "stationery_id"
-    t.integer  "issuedby"
-    t.integer  "receivedby"
-    t.decimal  "quantity"
-    t.date     "issuedate"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -2134,7 +2078,6 @@ ActiveRecord::Schema.define(:version => 20141016073418) do
     t.decimal  "log_fare"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "code"
   end
 
   create_table "traveldetailreceipts", :force => true do |t|
@@ -2171,26 +2114,33 @@ ActiveRecord::Schema.define(:version => 20141016073418) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "login",                                 :default => "", :null => false
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",                    :default => "", :null => false
-    t.integer  "userable_id"
-    t.string   "userable_type"
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         :default => 0,  :null => false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     :limit => nil
-    t.string   "last_sign_in_ip",        :limit => nil
+    t.string   "login",                     :limit => 40
+    t.string   "name",                      :limit => 100, :default => ""
+    t.string   "email",                     :limit => 100
+    t.string   "crypted_password",          :limit => 40
+    t.string   "salt",                      :limit => 40
+    t.string   "remember_token",            :limit => 40
+    t.datetime "remember_token_expires_at"
+    t.integer  "staff_id"
+    t.integer  "student_id"
+    t.boolean  "isstaff"
+    t.string   "icno"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
-  add_index "users", ["userable_id", "userable_type"], :name => "index_users_on_userable_id_and_userable_type"
+  add_index "users", ["id"], :name => "index_users_on_id"
+  add_index "users", ["login"], :name => "index_logins_on_login", :unique => true
+
+  create_table "usesupplies", :force => true do |t|
+    t.integer  "supplier_id"
+    t.integer  "issuedby"
+    t.integer  "receivedby"
+    t.decimal  "quantity"
+    t.date     "issuedate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "weeklytimetable_details", :force => true do |t|
     t.integer  "subject"
