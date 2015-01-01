@@ -20,4 +20,12 @@ class Topicdetail < ActiveRecord::Base
     end
   end
   
+  def semester_subject_topic
+    if subject_topic.course_type == "Topic"
+      "Sem #{subject_topic.parent.parent.code}"+"-"+"#{subject_topic.parent.code}"+" | "+"#{subject_topic.name}"
+    elsif subject_topic.course_type == "Subtopic"
+      ">>Sem #{subject_topic.parent.parent.parent.code}"+"-"+"#{subject_topic.parent.parent.code}"+" | "+"#{subject_topic.code} "+"#{subject_topic.name}"
+    end
+  end
+  
 end

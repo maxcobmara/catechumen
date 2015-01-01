@@ -2,11 +2,18 @@ class LessonPlansController < ApplicationController
   # GET /lesson_plans
   # GET /lesson_plans.xml
   def index
-    @lesson_plans = LessonPlan.all
-
+    @position_exist = Login.current_login.staff.position
+    if @position_exist 
+      @lesson_plans = LessonPlan.all
+    end
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @lesson_plans }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @lesson_plans }
+      else
+        format.html { redirect_to "/home", :notice =>t('position_required')+t('lesson_plan.title')}
+        format.xml
+      end
     end
   end
 
@@ -91,7 +98,12 @@ class LessonPlansController < ApplicationController
       
   end
   def index_report
+    @position_exist = Login.current_login.staff.position
+    if @position_exist 
       @lesson_plans = LessonPlan.find(:all, :conditions=> ['hod_approved=?', true])
+    else
+       redirect_to "/home", :notice =>t('position_required')+t('lesson_plan.title')
+    end
   end
   def lesson_plan_report
       @lesson_plan = LessonPlan.find(params[:id])
