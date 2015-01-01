@@ -51,4 +51,8 @@ class Trainingnote < ActiveRecord::Base
     end
   end
   
+  def self.valid_training_notes
+    find(:all, :conditions=>['(topicdetail_id IN(?) and timetable_id IN(?)) or (topicdetail_id is null and timetable_id is null)', Login.current_login.topicdetails_of_programme, Login.current_login.timetables_of_programme])
+  end
+  
 end

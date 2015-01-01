@@ -34,6 +34,8 @@ authorization do
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => :manage
     has_permission_on :weeklytimetables, :to => :manage
+    has_permission_on :trainingnotes, :to => :manage
+    
     #Library Menu Items
     has_permission_on [:librarytransactions, :books], :to => :manage
     
