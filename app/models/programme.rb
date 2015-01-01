@@ -120,7 +120,20 @@ class Programme < ActiveRecord::Base
          [ "Months",     30 ],
          [ "Years",      365 ]
     ]
+    
+      COURSE_TYPES_SUB = [
+      # Displayed	stored in db
+       [I18n.t('programme.semester'),'Semester'],
+       [I18n.t('programme.subject'),'Subject'],
+       [I18n.t('programme.commonsubject'),'Commonsubject'],
+       [I18n.t('programme.topic'),'Topic'],
+       [I18n.t('programme.subtopic'), 'Subtopic']
+      ]
 
+     LECTURE_TIME = [
+      [I18n.t('time.hours'), 1],
+      [I18n.t('time.minutes'), 2]
+      ]
     private
     
     def check_examquestion_of_subject_exist
