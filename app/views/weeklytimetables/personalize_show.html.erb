@@ -12,19 +12,19 @@
 
 	<!---->
 <fieldset>
-	<legend class='togvis'>Personalized Weekly Timetable</legend>
+	<legend class='togvis'><%=t('weeklytimetable.personalize')%></legend>
 		
 		<table width=85% >
 			<tr>
-				<td class="leftcol"><label>Name:</label></td>
+				<td class="leftcol"><label><%=t('weeklytimetable.name')%>:</label></td>
 				<td><%=h Login.current_login.staff.name %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Startdate:</label></td>
+				<td class="leftcol"><label><%=t('weeklytimetable.startdate')%>:</label></td>
 				<td><%=h item.startdate %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Enddate:</label></td>
+				<td class="leftcol"><label><%=t('weeklytimetable.enddate')%>:</label></td>
 				<td><%=h item.enddate %></td>				
 			</tr>
 		</table>
@@ -68,7 +68,7 @@
 <!--Start for Daily Timetable Details-->
 
 <fieldset>
-<legend class='togvis'>Personalized Daily Timetable Details</legend>
+<legend class='togvis'><%=t('weeklytimetable.personalize_details')%></legend>
 <BR>
 <table width=100% style="border:none">
 
@@ -104,10 +104,10 @@
 		<% detailing.each_with_index do |j,index|%>
 		<% if index==0%>
 		<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-			<% if count2==1 %>Monday<br> <%=j.weeklytimetable.startdate.strftime('%d-%b-%Y') %>
-			<% elsif count2==2 %>Tuesday<br><%=(j.weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
-			<% elsif count2==3 %>Wednesday<br><%=(j.weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
-			<% elsif count2==4 %>Thursday<br><%=(j.weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
+			<% if count2==1 %><%=t(:'date.day_names')[1]%><br> <%=j.weeklytimetable.startdate.strftime('%d-%b-%Y') %>
+			<% elsif count2==2 %><%=t(:'date.day_names')[2]%><br><%=(j.weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
+			<% elsif count2==3 %><%=t(:'date.day_names')[3]%><br><%=(j.weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
+			<% elsif count2==4 %><%=t(:'date.day_names')[4]%><br><%=(j.weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
 			<% end %>		
 		</td>
 		
@@ -120,7 +120,7 @@
 		
 		<% 1.upto(@column_count) do |count3| %>
 			<% if (count3==2 && count2==1) || (count3==5 && count2==1) %>
-				<td align=center rowspan="4" style="border:1px solid black; text-align:center; padding:4px;vertical-align:middle">BREAK<br> <!--column:<%#=count3%>row:<%#=count2%>-->
+				<td align=center rowspan="4" style="border:1px solid black; text-align:center; padding:4px;vertical-align:middle"><%=t('weeklytimetable.break').upcase%><br> <!--column:<%#=count3%>row:<%#=count2%>-->
 				</td>
 			<% elsif count3==5&&count2!=1%>
 				<!--should not have any field or value-->
@@ -199,7 +199,7 @@
 		<% detailing.each_with_index do |j,index|%>
 		<% if index==0%>
 		<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-			Friday<br><%=j.weeklytimetable.enddate.strftime('%d-%b-%Y') %>
+			<%=t(:'date.day_names')[5]%><br><%=j.weeklytimetable.enddate.strftime('%d-%b-%Y') %>
 		</td>
 		
 		<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
@@ -209,9 +209,9 @@
 		
 		<% 1.upto(@column_count_friday) do |count4| %>
 			<% if count4 == 4 %>
-				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">BREAK</td>
+				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 2 %>
-				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">BREAK</td>
+				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 5 %>
 				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
 	
@@ -273,4 +273,4 @@
 </div>
 <!---->
 
-<%= link_to 'Back', :controller=>"weeklytimetables", :action=>"personalize_index" %><!--:action=>"personalize_index"-->
+<%= link_to t('back'), :controller=>"weeklytimetables", :action=>"personalize_index" %><!--:action=>"personalize_index"-->

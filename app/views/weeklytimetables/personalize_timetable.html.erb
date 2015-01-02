@@ -147,10 +147,10 @@
 		<% detailing.each_with_index do |j,index|%>
 		<% if index==0%>
 		<td class="data1a">
-			<% if count2==1 %>Monday<br> <%=j.weeklytimetable.startdate.strftime('%d-%b-%Y') %>
-			<% elsif count2==2 %>Tuesday<br><%=(j.weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
-			<% elsif count2==3 %>Wednesday<br><%=(j.weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
-			<% elsif count2==4 %>Thursday<br><%=(j.weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
+			<% if count2==1 %><%=t(:'date.day_names')[1]%><br> <%=j.weeklytimetable.startdate.strftime('%d-%b-%Y') %>
+			<% elsif count2==2 %><%=t(:'date.day_names')[2]%><br><%=(j.weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
+			<% elsif count2==3 %><%=t(:'date.day_names')[3]%><br><%=(j.weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
+			<% elsif count2==4 %><%=t(:'date.day_names')[4]%><br><%=(j.weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
 			<% end %>	
 		</td>
 		<% @column_count=j.weeklytimetable.timetable_monthurs.timetable_periods.count%>
@@ -161,7 +161,7 @@
 
 		<% 1.upto(7) do |count3| %><%# 1.upto(@column_count) do |count3| %>
 			<% if (count3==2 && count2==1) || (count3==5 && count2==1) %>
-				<td rowspan="4" class="break1">BREAK<br> <!--column:<%#=count3%>row:<%#=count2%>-->
+				<td rowspan="4" class="break1"><%=t('weeklytimetable.break').upcase%><br> <!--column:<%#=count3%>row:<%#=count2%>-->
 				</td>
 			<% elsif count3==5&&count2!=1%>
 				<!--should not have any field or value-->
@@ -270,9 +270,9 @@
 		<% @column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count%><!--same as line 91-->
 		<% 1.upto(@column_count_friday) do |count4| %>
 			<% if count4 == 4 %>
-				<td colspan="2" class="break2">BREAK</td>
+				<td colspan="2" class="break2"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 2 %>
-				<td class="break2">BREAK</td>
+				<td class="break2"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 5 %>
 				<td colspan="2" class="data4">
 				
@@ -371,6 +371,6 @@
 <BR/><BR/>	
 
 <div id="hideLink">
-<%= link_to 'Back', weeklytimetables_path %>
+<%= link_to t('back'), weeklytimetables_path %>
 </div>
 

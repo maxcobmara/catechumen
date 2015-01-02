@@ -1,7 +1,7 @@
 <!--Start for Daily Timetable Details-->
 
 <fieldset>
-<legend class='togvis'>Daily Timetable Details</legend>
+<legend class='togvis'><%=t('weeklytimetable.daily_details')%></legend>
 <BR>
 <table width=100% style="border:none">
 
@@ -16,7 +16,7 @@
 					<td align=center style="border:1px solid black; text-align:center; padding:4px;background-color:#FEE;">
 						<strong><%= periods.sequence %></strong><BR>
 						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
-						<%#= periods.is_break? ? "Break" : "" %>
+						<%#= periods.is_break? ? t('weeklytimetable.break') : "" %>
 					</td>
 				<% else %>
 				<% end %>
@@ -30,10 +30,10 @@
 	<% 1.upto(4) do |count2|%>
 	<tr>
 		<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-			<% if count2==1 %>Monday<br><%=@weeklytimetable.startdate.strftime('%d-%b-%Y') %>
-			<% elsif count2==2 %>Tuesday<br><%=(@weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
-			<% elsif count2==3 %>Wednesday<br><%=(@weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
-			<% elsif count2==4 %>Thursday<br><%=(@weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
+			<% if count2==1 %><%=t(:'date.day_names')[1]%><br><%=@weeklytimetable.startdate.strftime('%d-%b-%Y') %>
+			<% elsif count2==2 %><%=t(:'date.day_names')[2]%><br><%=(@weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
+			<% elsif count2==3 %><%=t(:'date.day_names')[3]%><br><%=(@weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
+			<% elsif count2==4 %><%=t(:'date.day_names')[4]%><br><%=(@weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
 			<% end %>		
 		</td>
 		
@@ -41,7 +41,7 @@
 		<% @column_count=@weeklytimetable.timetable_monthurs.timetable_periods.count%>
 		<% 1.upto(@column_count) do |count3| %>
 			<% if (count3==2 && count2==1) || (count3==5 && count2==1) %>
-				<td align=center rowspan="4" style="border:1px solid black; text-align:center; padding:4px;vertical-align:middle">BREAK<br> <!--column:<%#=count3%>row:<%#=count2%>-->
+				<td align=center rowspan="4" style="border:1px solid black; text-align:center; padding:4px;vertical-align:middle"><%=t('weeklytimetable.break').upcase%><br> <!--column:<%#=count3%>row:<%#=count2%>-->
 				</td>
 			<% elsif count3==5&&count2!=1%>
 				<!--should not have any field or value-->
@@ -52,18 +52,24 @@
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
 								<% if xx.weeklytimetable_topic.ancestry_depth == 4 %>
-									<%= xx.weeklytimetable_topic.parent.parent.code %><br>
+									<div align="left">
+										  <%#= xx.weeklytimetable_topic.parent.parent.code %>
+										   <%= xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase %>
+									</div><br>
 									<%= xx.weeklytimetable_topic.parent.name %><br>
 								<% else %>
-									<%= xx.weeklytimetable_topic.parent.code %><br>
+									 <div align="left">
+										<%#= xx.weeklytimetable_topic.parent.code %>
+										<%= xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+									</div><br>
 									<%= xx.weeklytimetable_topic.name %><br>
 								<% end %>
-								<%= xx.weeklytimetable_lecturer.name %><br>
 								<%= xx.weeklytimetable_location.try(:name) %><br>
 								<%= "(K)" if xx.lecture_method == 1 %>
 								<%= "(T)" if xx.lecture_method == 2 %>
 								<%= "(A)" if xx.lecture_method == 3 %>
-							</strong><BR><!--column:<%#=count3%>row:<%#=count2%>-->
+								<div align="right"><br><%= xx.weeklytimetable_lecturer.name %></div>
+							</strong><!--column:<%#=count3%>row:<%#=count2%>-->
 						<% else %>
 							<!--column:<%#=count3%>row:<%#=count2%>-->
 						<% end %>
@@ -90,13 +96,13 @@
 					<td colspan="2" style="border:1px solid black; text-align:center; padding:4px;background-color:#FEE;">
 						<strong><%= periods.sequence %></strong><BR>
 						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
-						<%#= periods.is_break? ? "Break" : "" %>
+						<%#= periods.is_break? ? t('weeklytimetable.break') : "" %>
 					</td>
 				<% else %>
 					<td align=center style="border:1px solid black; text-align:center; padding:4px;background-color:#FEE;">
 						<strong><%= periods.sequence %></strong><BR>
 						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
-						<%#= periods.is_break? ? "Break" : "" %>
+						<%#= periods.is_break? ? t('weeklytimetable.break') : "" %>
 					</td>
 				<% end %>
 			<% else %><% end %>
@@ -109,15 +115,15 @@
 	<!--Content for Friday-(start)-->
 	<tr>
 		<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-			Friday<br><%=@weeklytimetable.enddate.strftime('%d-%b-%Y') %>
+			<%=t(:'date.day_names')[5]%><br><%=@weeklytimetable.enddate.strftime('%d-%b-%Y') %>
 		</td>
 		<% @column_count_friday=@weeklytimetable.timetable_friday.timetable_periods.count%>
 		<% @column_count_monthur=@weeklytimetable.timetable_monthurs.timetable_periods.count%><!--same as line 91-->
 		<% 1.upto(@column_count_friday) do |count4| %>
 			<% if count4 == 4 %>
-				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">BREAK</td>
+				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 2 %>
-				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">BREAK</td>
+				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 5 %>
 				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
 					<% @weeklytimetable.weeklytimetable_details.each do |xx| %>
@@ -125,18 +131,24 @@
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
 								<% if xx.weeklytimetable_topic.ancestry_depth == 4 %>
-									<%= xx.weeklytimetable_topic.parent.parent.code %><br>
+									<div align="left">
+										  <%#= xx.weeklytimetable_topic.parent.parent.code %>
+										   <%= xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase %>
+									</div><br>
 									<%= xx.weeklytimetable_topic.parent.name %><br>
 								<% else %>
-									<%= xx.weeklytimetable_topic.parent.code %><br>
+									<div align="left">
+										<%#= xx.weeklytimetable_topic.parent.code %>
+										<%= xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+									</div><br>
 									<%= xx.weeklytimetable_topic.name %><br>
 								<% end %>
-								<%= xx.weeklytimetable_lecturer.name %><br>
-								<%= xx.weeklytimetable_location.name %><br>
+								<%= xx.weeklytimetable_location.try(:name) %><br>
 								<%= "(K)" if xx.lecture_method == 1 %>
 								<%= "(T)" if xx.lecture_method == 2 %>
 								<%= "(A)" if xx.lecture_method == 3 %>
-							</strong><BR>
+								<div align="right"><br><%= xx.weeklytimetable_lecturer.name %></div>
+							</strong>
 						<% end %>
 					<% end %>
 				</td>
@@ -147,17 +159,23 @@
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
 								<% if xx.weeklytimetable_topic.ancestry_depth == 4 %>
-									<%= xx.weeklytimetable_topic.parent.parent.code %><br>
+									  <div align="left">
+										  <%#= xx.weeklytimetable_topic.parent.parent.code %>
+										   <%= xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase %>
+									</div><br>
 									<%= xx.weeklytimetable_topic.parent.name %><br>
 								<% else %>
-									<%= xx.weeklytimetable_topic.parent.code %><br>
+									 <div align="left">
+										<%#= xx.weeklytimetable_topic.parent.code %>
+										<%= xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+									</div><br>
 									<%= xx.weeklytimetable_topic.name %><br>
 								<% end %>
-								<%= xx.weeklytimetable_lecturer.name %><br>
 								<%= xx.weeklytimetable_location.name %><br>
 								<%= "(K)" if xx.lecture_method == 1 %>
 								<%= "(T)" if xx.lecture_method == 2 %>
 								<%= "(A)" if xx.lecture_method == 3 %>
+								<div align="right"><br><%= xx.weeklytimetable_lecturer.name %></div>
 							</strong><BR>
 						<% end %>
 					<% end %>		
