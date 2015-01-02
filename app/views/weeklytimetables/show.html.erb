@@ -106,18 +106,24 @@
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
 								<% if xx.weeklytimetable_topic.ancestry_depth == 4 %>
-									<%= xx.weeklytimetable_topic.parent.parent.code %><br>
+									<div align="left">
+										  <%#= xx.weeklytimetable_topic.parent.parent.code %>
+										   <%= xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase %>
+									</div><br>
 									<%= xx.weeklytimetable_topic.parent.name %><br>
 								<% else %>
-									<%= xx.weeklytimetable_topic.parent.code %><br>
+								        <div align="left">
+										<%#= xx.weeklytimetable_topic.parent.code %>
+										<%= xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+									</div><br>
 									<%= xx.weeklytimetable_topic.name %><br>
 								<% end %>
-								<%= xx.weeklytimetable_lecturer.name %><br>
 								<%= xx.weeklytimetable_location.try(:name) %><br>
 								<%= "(K)" if xx.lecture_method == 1 %>
 								<%= "(T)" if xx.lecture_method == 2 %>
 								<%= "(A)" if xx.lecture_method == 3 %>
-							</strong><BR><!--column:<%#=count3%>row:<%#=count2%>-->
+								<div align="right"><br><%= xx.weeklytimetable_lecturer.name %></div>
+							</strong><!--column:<%#=count3%>row:<%#=count2%>-->
 						<% else %>
 							<!--column:<%#=count3%>row:<%#=count2%>-->
 						<% end %>
@@ -179,18 +185,24 @@
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
 								<% if xx.weeklytimetable_topic.ancestry_depth == 4 %>
-									<%= xx.weeklytimetable_topic.parent.parent.code %><br>
+									 <div align="left">
+										<%#= xx.weeklytimetable_topic.parent.parent.code %>
+										<%= xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase %>
+									</div><br>
 									<%= xx.weeklytimetable_topic.parent.name %><br>
 								<% else %>
-									<%= xx.weeklytimetable_topic.parent.code %><br>
+									<div align="left">
+										<%#= xx.weeklytimetable_topic.parent.code %>
+										<%= xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+									</div><br>
 									<%= xx.weeklytimetable_topic.name %><br>
 								<% end %>
-								<%= xx.weeklytimetable_lecturer.name %><br>
-								<%= xx.weeklytimetable_location.name %><br>
+								<%= xx.weeklytimetable_location.try(:name) %><br>
 								<%= "(K)" if xx.lecture_method == 1 %>
 								<%= "(T)" if xx.lecture_method == 2 %>
 								<%= "(A)" if xx.lecture_method == 3 %>
-							</strong><BR>
+								<div align="right"><br><%= xx.weeklytimetable_lecturer.name %></div>
+							</strong>
 						<% end %>
 					<% end %>
 				</td>
@@ -201,18 +213,24 @@
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
 								<% if xx.weeklytimetable_topic.ancestry_depth == 4 %>
-									<%= xx.weeklytimetable_topic.parent.parent.code %><br>
+									<div align="left">
+									      <%= xx.weeklytimetable_topic.parent.parent.code %>
+									      <%= xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase %>
+									 </div><br>
 									<%= xx.weeklytimetable_topic.parent.name %><br>
 								<% else %>
-									<%= xx.weeklytimetable_topic.parent.code %><br>
+									<div align="left">
+										<%#= xx.weeklytimetable_topic.parent.code %>
+										<%= xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+									</div><br>
 									<%= xx.weeklytimetable_topic.name %><br>
 								<% end %>
-								<%= xx.weeklytimetable_lecturer.name %><br>
-								<%= xx.weeklytimetable_location.name %><br>
+								<%= xx.weeklytimetable_location.try(:name) %><br>
 								<%= "(K)" if xx.lecture_method  == 1 %>
 								<%= "(T)" if xx.lecture_method  == 2 %>
 								<%= "(A)" if xx.lecture_method  == 3 %>
-							</strong><BR>
+								<div align="right"><br><%= xx.weeklytimetable_lecturer.name %></div>
+							</strong>
 						<% end %>
 					<% end %>		
 				</td>

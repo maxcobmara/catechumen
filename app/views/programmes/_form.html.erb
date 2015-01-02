@@ -39,7 +39,12 @@
 		<td><%= f.label t('programme.name')%></td>
 		<td><%= f.text_field :name, :size => '50' %></td>
 	</tr>
-	
+	<% unless @programme.parent_id == nil %>
+		  <tr>
+			  <td><%= f.label t 'programme.subject_abbreviation'%></td>
+			  <td><%= f.text_field :subject_abbreviation, :size=>'10' %></td>
+		  </tr>
+	<% end %>	
 	<tr>
 		<td><%= f.label t('programme.duration')%></td>
 		<td><%= f.text_field :duration, :size => '5' %>

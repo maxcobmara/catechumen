@@ -37,9 +37,9 @@
 					<% if h.lecturer_id == Login.current_login.staff_id %>
 						<% detailing << h %>
 						<% if h.day2 != 0 %>
-							<% detailing_monthurs<<h %>
+							<% detailing_monthurs<< h %>
 						<% elsif h.is_friday == true %>
-							<% detailing_friday<<h %>
+							<% detailing_friday<< h %>
 						<% end %>
 					<% end %>
 				<% end %>
@@ -132,15 +132,20 @@
 						<% if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>
 						<!--26Jul2013--><% if nos==0%><% nos+=1%><!--26Jul2013-toavoid multiple display:5times of the same value in 1 field-->
 							<strong>
-								<%= j.weeklytimetable_topic.parent.code %><br>
+								<div align="left">
+									<%#= j.weeklytimetable_topic.parent.code %>
+									<%= j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+								</div><br>
 								<%= j.weeklytimetable_topic.name %>
 								<%= "(K)" if j.lecture_method == 1 %>
 								<%= "(T)" if j.lecture_method == 2 %>
 								<%= "(A)" if j.lecture_method == 3 %><br>
-								<%= j.weeklytimetable_location.name %><br>
-								<%= j.weeklytimetable.schedule_programme.programme_list %><br>
-								<%= j.weeklytimetable.schedule_intake.description %>
-								<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %><br>
+								<%= j.weeklytimetable_location.try(:name) %>
+								<div align="right"><br>
+									<%= j.weeklytimetable.schedule_programme.programme_list %><br>
+									<%= j.weeklytimetable.schedule_intake.description %>
+									<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
+								</div>
 							</strong>
 						<!--26Jul2013--><% end %>
 						<% end %>
@@ -213,15 +218,20 @@
 					<% detailing_friday.each do |j|%>
 						<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 && j.weeklytimetable.hod_approved == true%>
 							<strong>
-								<%= j.weeklytimetable_topic.parent.code %><br>
+								<div align="left">
+									<%#= j.weeklytimetable_topic.parent.code %>
+									<%= j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+								</div><br>
 								<%= j.weeklytimetable_topic.name %>
 								<%= "(K)" if j.method == 1 %>
 								<%= "(T)" if j.method == 2 %>
-								<%= "(A)" if j.method == 3 %><br>
-								<%= j.weeklytimetable_location.name %><br>
-								<%= j.weeklytimetable.schedule_programme.programme_list %><br>
-								<%= j.weeklytimetable.schedule_intake.description %>
-								<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %><br>
+								<%= "(A)" if j.method == 3 %>
+								<div align="right"><br>
+									<%= j.weeklytimetable_location.name %><br>
+									<%= j.weeklytimetable.schedule_programme.programme_list %><br>
+									<%= j.weeklytimetable.schedule_intake.description %>
+									<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
+								</div>
 							</strong>
 						<% end %>
 					<% end %>
@@ -232,15 +242,20 @@
 					<% detailing_friday.each do |j|%>
 						<% if j.is_friday == true  && j.time_slot2 == @column_count_monthur+count4 && j.weeklytimetable.hod_approved == true%>
 							<strong>
-								<%= j.weeklytimetable_topic.parent.code %><br>
+								<div align="left">
+									<%#= j.weeklytimetable_topic.parent.code %>
+									<%= j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+								</div><br>
 								<%= j.weeklytimetable_topic.name %>
 								<%= "(K)" if j.method == 1 %>
 								<%= "(T)" if j.method == 2 %>
-								<%= "(A)" if j.method == 3 %><br>
-								<%= j.weeklytimetable_location.name %><br>
-								<%= j.weeklytimetable.schedule_programme.programme_list %><br>
-								<%= j.weeklytimetable.schedule_intake.description %>
-								<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %><br>
+								<%= "(A)" if j.method == 3 %>
+								<div align="right"><br>
+									<%= j.weeklytimetable_location.name %><br>
+									<%= j.weeklytimetable.schedule_programme.programme_list %><br>
+									<%= j.weeklytimetable.schedule_intake.description %>
+									<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
+								</div>
 							</strong>
 						<% end %>
 					<% end %>	
