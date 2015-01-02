@@ -1,10 +1,10 @@
 <% javascript 'dynamic_subjects' %>
-<h2>Weekly Timetable Details</h2>
+<h2><%=t('weeklytimetable.details')%></h2>
 
 <table width=100%>
 	<tr>
-		<td class="leftcol"><%= f.label :programme_id %></td>
-		<td><%= f.collection_select :programme_id, Programme.roots, :id, :programme_list, :prompt=>"Select"  %>
+		<td class="leftcol"><%= f.label t('weeklytimetable.programme_id')%></td>
+		<td><%= f.collection_select :programme_id, Programme.roots, :id, :programme_list, :prompt=>t('select') %>
 			<%#= @weeklytimetable.schedule_programme.programme_list %>
 		</td>
 	</tr>
@@ -19,23 +19,23 @@
 			</select>-->
 			<!--this one also works-but include blank NOT working-->
 			<%#= select_tag "weeklytimetable[subject_id]", option_groups_from_collection_for_select(Programme::OPTIONS, :options, :type_name, :id, :name), {:include_blank => "Select subject"} %>
-			<%#= f.grouped_collection_select(:subject_id, Programme::OPTIONS, :options, :type_name, :id, :name, :include_blank=>"Select Subject")%>
+			<%#= f.grouped_collection_select(:subject_id, Programme::OPTIONS, :options, :type_name, :id, :name, :include_blank=>t('select'))%>
 		<!--</td>-->
 	</tr>
 	<!--24March2013-trial section-->
 	<tr>
-		<td class="leftcol"><!--20March2013--><%#= f.label :intake_id %><label>Group (Intake)</label></td>
+		<td class="leftcol"><!--20March2013--><%#= f.label :intake_id %><label><%=t('weeklytimetable.group_intake')%></label></td>
 		<td>
 			<%#= f.collection_select :intake_id, Intake.all, :id, :group_with_intake_name, :prompt=> "Select" %>
 			<%# if @weeklytimetable.id.nil? || @weeklytimetable.id.blank? %>
 				<%#= f.grouped_collection_select(:intake_id, Intake::OPTIONS, :options, :type_name, :id, :name, 5,:include_blank=> "Select Group (Intake)") %><%# else %>
 				<%#=h @weeklytimetable.intake_id %>
 				<!--YG OK-->
-				<%= f.collection_select :intake_id, Intake.all, :id, :programme_group_intake, :prompt=> "Select" %>
+				<%= f.collection_select :intake_id, Intake.all, :id, :programme_group_intake, :prompt=> t('select') %>
 				<!--YG OK-->
 				<%# options = option_groups_from_collection_for_select(Intake::OPTIONS, :options, :type_name, :id, :name, 0)%>
 				<%#= select_tag('weeklytimetable', :intake_id, :options=>options, :include_blank=>true )%>
-				<%#= select_tag "weeklytimetable[intake_id]", option_groups_from_collection_for_select(Intake::OPTIONS, :options, :type_name, :id, :name, 1), {:include_blank => "Select subject"} %>
+				<%#= select_tag "weeklytimetable[intake_id]", option_groups_from_collection_for_select(Intake::OPTIONS, :options, :type_name, :id, :name, 1), {:include_blank => t('select')} %>
 				<!--try<br>
 				<select name="weeklytimetable[intake_id]" id="weeklytimetable_subject_id">
 					<%#=option_groups_from_collection_for_select(Intake::OPTIONS, :options, :type_name, :id, :name, 'Perawatan Rapi')%>
@@ -49,33 +49,33 @@
 		<td><%#= f.text_field :group_id %></td>
 	</tr>-->
 	<tr>
-		<td class="leftcol"><%= f.label :semester %></td>
-		<td><%= f.collection_select :semester, AcademicSession.find(:all,:order=>'created_at DESC'), :id, :semester, :prompt => "Select" %></td>
+		<td class="leftcol"><%= f.label t('weeklytimetable.semester')%></td>
+		<td><%= f.collection_select :semester, AcademicSession.find(:all,:order=>'created_at DESC'), :id, :semester, :prompt => t('select') %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><%= f.label :week %></td>
+		<td class="leftcol"><%= f.label t('weeklytimetable.week') %></td>
 		<td><%= f.text_field :week %></td>
 	</tr>
 
 	<tr>
-		<td class="leftcol">Start Date</td>
+		<td class="leftcol"><%=t('weeklytimetable.startdate')%>
 		<td><%= f.date_select :startdate, :default => Date.today, :start_year => Date.today.year %></td>
 	</tr>	
 	<tr>
-		<td class="leftcol">End Date</td>
+		<td class="leftcol"><%=t('weeklytimetable.enddate')%></td>
 		<td><%= f.date_select :enddate, :default => 4.days.from_now, :start_year => Date.today.year %></td>
 	</tr>	
 
 	<tr>
-		<td class="leftcol"><%= f.label :prepared_by %></td>
+		<td class="leftcol"><%= f.label t('weeklytimetable.prepared_by') %></td>
 		<td><%= f.collection_select :prepared_by, Staff.find(:all, :conditions => ['id =?', Login.current_login.staff_id] ), :id, :name %></td>
 	</tr>	
 	<tr>
-		<td class="leftcol"><label>Timetable Format (Mon - Thurs)</label></td>
-		<td><%= f.collection_select :format1, Timetable.all, :id, :name, :prompt => "Select"  %></td>
+		<td class="leftcol"><label><%=t('weeklytimetable.format1')%></label></td>
+		<td><%= f.collection_select :format1, Timetable.all, :id, :name, :prompt => t('select')  %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label>Timetable Format (Friday)</label></td>
-		<td><%= f.collection_select :format2, Timetable.all, :id, :name, :prompt => "Select"  %></td>
+		<td class="leftcol"><label><%=t('weeklytimetable.format2')%></label></td>
+		<td><%= f.collection_select :format2, Timetable.all, :id, :name, :prompt =>t('select')  %></td>
 	</tr>
 </table>

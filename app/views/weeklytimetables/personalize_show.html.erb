@@ -12,19 +12,19 @@
 
 	<!---->
 <fieldset>
-	<legend class='togvis'>Personalized Weekly Timetable</legend>
+	<legend class='togvis'><%=t('weeklytimetable.personalize')%></legend>
 		
 		<table width=85% >
 			<tr>
-				<td class="leftcol"><label>Name:</label></td>
+				<td class="leftcol"><label><%=t('weeklytimetable.name')%>:</label></td>
 				<td><%=h Login.current_login.staff.name %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Startdate:</label></td>
+				<td class="leftcol"><label><%=t('weeklytimetable.startdate')%>:</label></td>
 				<td><%=h item.startdate %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Enddate:</label></td>
+				<td class="leftcol"><label><%=t('weeklytimetable.enddate')%>:</label></td>
 				<td><%=h item.enddate %></td>				
 			</tr>
 		</table>
@@ -37,9 +37,9 @@
 					<% if h.lecturer_id == Login.current_login.staff_id %>
 						<% detailing << h %>
 						<% if h.day2 != 0 %>
-							<% detailing_monthurs<<h %>
+							<% detailing_monthurs<< h %>
 						<% elsif h.is_friday == true %>
-							<% detailing_friday<<h %>
+							<% detailing_friday<< h %>
 						<% end %>
 					<% end %>
 				<% end %>
@@ -68,7 +68,7 @@
 <!--Start for Daily Timetable Details-->
 
 <fieldset>
-<legend class='togvis'>Personalized Daily Timetable Details</legend>
+<legend class='togvis'><%=t('weeklytimetable.personalize_details')%></legend>
 <BR>
 <table width=100% style="border:none">
 
@@ -104,10 +104,10 @@
 		<% detailing.each_with_index do |j,index|%>
 		<% if index==0%>
 		<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-			<% if count2==1 %>Monday<br> <%=j.weeklytimetable.startdate.strftime('%d-%b-%Y') %>
-			<% elsif count2==2 %>Tuesday<br><%=(j.weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
-			<% elsif count2==3 %>Wednesday<br><%=(j.weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
-			<% elsif count2==4 %>Thursday<br><%=(j.weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
+			<% if count2==1 %><%=t(:'date.day_names')[1]%><br> <%=j.weeklytimetable.startdate.strftime('%d-%b-%Y') %>
+			<% elsif count2==2 %><%=t(:'date.day_names')[2]%><br><%=(j.weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
+			<% elsif count2==3 %><%=t(:'date.day_names')[3]%><br><%=(j.weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
+			<% elsif count2==4 %><%=t(:'date.day_names')[4]%><br><%=(j.weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
 			<% end %>		
 		</td>
 		
@@ -120,7 +120,7 @@
 		
 		<% 1.upto(@column_count) do |count3| %>
 			<% if (count3==2 && count2==1) || (count3==5 && count2==1) %>
-				<td align=center rowspan="4" style="border:1px solid black; text-align:center; padding:4px;vertical-align:middle">BREAK<br> <!--column:<%#=count3%>row:<%#=count2%>-->
+				<td align=center rowspan="4" style="border:1px solid black; text-align:center; padding:4px;vertical-align:middle"><%=t('weeklytimetable.break').upcase%><br> <!--column:<%#=count3%>row:<%#=count2%>-->
 				</td>
 			<% elsif count3==5&&count2!=1%>
 				<!--should not have any field or value-->
@@ -132,15 +132,20 @@
 						<% if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>
 						<!--26Jul2013--><% if nos==0%><% nos+=1%><!--26Jul2013-toavoid multiple display:5times of the same value in 1 field-->
 							<strong>
-								<%= j.weeklytimetable_topic.parent.code %><br>
+								<div align="left">
+									<%#= j.weeklytimetable_topic.parent.code %>
+									<%= j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+								</div><br>
 								<%= j.weeklytimetable_topic.name %>
 								<%= "(K)" if j.lecture_method == 1 %>
 								<%= "(T)" if j.lecture_method == 2 %>
 								<%= "(A)" if j.lecture_method == 3 %><br>
-								<%= j.weeklytimetable_location.name %><br>
-								<%= j.weeklytimetable.schedule_programme.programme_list %><br>
-								<%= j.weeklytimetable.schedule_intake.description %>
-								<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %><br>
+								<%= j.weeklytimetable_location.try(:name) %>
+								<div align="right"><br>
+									<%= j.weeklytimetable.schedule_programme.programme_list %><br>
+									<%= j.weeklytimetable.schedule_intake.description %>
+									<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
+								</div>
 							</strong>
 						<!--26Jul2013--><% end %>
 						<% end %>
@@ -194,7 +199,7 @@
 		<% detailing.each_with_index do |j,index|%>
 		<% if index==0%>
 		<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-			Friday<br><%=j.weeklytimetable.enddate.strftime('%d-%b-%Y') %>
+			<%=t(:'date.day_names')[5]%><br><%=j.weeklytimetable.enddate.strftime('%d-%b-%Y') %>
 		</td>
 		
 		<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
@@ -204,24 +209,29 @@
 		
 		<% 1.upto(@column_count_friday) do |count4| %>
 			<% if count4 == 4 %>
-				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">BREAK</td>
+				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 2 %>
-				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">BREAK</td>
+				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 5 %>
 				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
 	
 					<% detailing_friday.each do |j|%>
 						<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 && j.weeklytimetable.hod_approved == true%>
 							<strong>
-								<%= j.weeklytimetable_topic.parent.code %><br>
+								<div align="left">
+									<%#= j.weeklytimetable_topic.parent.code %>
+									<%= j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+								</div><br>
 								<%= j.weeklytimetable_topic.name %>
 								<%= "(K)" if j.method == 1 %>
 								<%= "(T)" if j.method == 2 %>
-								<%= "(A)" if j.method == 3 %><br>
-								<%= j.weeklytimetable_location.name %><br>
-								<%= j.weeklytimetable.schedule_programme.programme_list %><br>
-								<%= j.weeklytimetable.schedule_intake.description %>
-								<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %><br>
+								<%= "(A)" if j.method == 3 %>
+								<div align="right"><br>
+									<%= j.weeklytimetable_location.name %><br>
+									<%= j.weeklytimetable.schedule_programme.programme_list %><br>
+									<%= j.weeklytimetable.schedule_intake.description %>
+									<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
+								</div>
 							</strong>
 						<% end %>
 					<% end %>
@@ -232,15 +242,20 @@
 					<% detailing_friday.each do |j|%>
 						<% if j.is_friday == true  && j.time_slot2 == @column_count_monthur+count4 && j.weeklytimetable.hod_approved == true%>
 							<strong>
-								<%= j.weeklytimetable_topic.parent.code %><br>
+								<div align="left">
+									<%#= j.weeklytimetable_topic.parent.code %>
+									<%= j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+								</div><br>
 								<%= j.weeklytimetable_topic.name %>
 								<%= "(K)" if j.method == 1 %>
 								<%= "(T)" if j.method == 2 %>
-								<%= "(A)" if j.method == 3 %><br>
-								<%= j.weeklytimetable_location.name %><br>
-								<%= j.weeklytimetable.schedule_programme.programme_list %><br>
-								<%= j.weeklytimetable.schedule_intake.description %>
-								<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %><br>
+								<%= "(A)" if j.method == 3 %>
+								<div align="right"><br>
+									<%= j.weeklytimetable_location.name %><br>
+									<%= j.weeklytimetable.schedule_programme.programme_list %><br>
+									<%= j.weeklytimetable.schedule_intake.description %>
+									<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
+								</div>
 							</strong>
 						<% end %>
 					<% end %>	
@@ -258,4 +273,4 @@
 </div>
 <!---->
 
-<%= link_to 'Back', :controller=>"weeklytimetables", :action=>"personalize_index" %><!--:action=>"personalize_index"-->
+<%= link_to t('back'), :controller=>"weeklytimetables", :action=>"personalize_index" %><!--:action=>"personalize_index"-->
