@@ -1,15 +1,15 @@
-<H2>Approve</H2>
+<H2><%= t 'claim.approve' %></H2>
 <table width=100%>
 	<tr>
-	  <td class="leftcol"><label for="is_approved">Approve</label></td>
+	  <td class="leftcol"><label for="is_approved"><%= t 'claim.approve' %></label></td>
 		<td><%= f.check_box :is_approved, :id => 'approve1' %>
 				<SPAN class="span_submit1" style="display: none;"><%= f.date_select :approved_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
 		<td class="pagenote">Clicking on Approves shall approve this claim</td>
 	</tr>
 	<tr class="span_submit1">
-	  <td class="leftcol"><label for="is_submitted">Approval By</label></td>
+	  <td class="leftcol"><label for="is_submitted"><%= t 'claim.to_approved' %></label></td>
 		<td><%= f.collection_select :approved_by, Staff.find(:all, :conditions => ['id = ?', Login.current_login.staff_id]), :id, :name %></td>
-		<td class="pagenote">Confirmation</td>
+		<td class="pagenote"><%= t 'claim.confirmation' %></td>
 	</tr>
 </table>
 
