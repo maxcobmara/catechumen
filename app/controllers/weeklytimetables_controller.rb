@@ -75,7 +75,7 @@ class WeeklytimetablesController < ApplicationController
 
     respond_to do |format|
       if @weeklytimetable.save
-        format.html { redirect_to(@weeklytimetable, :notice => 'Weeklytimetable was successfully created.') }
+        format.html { redirect_to(@weeklytimetable, :notice =>t('weeklytimetable.title')+t('created')) }
         format.xml  { render :xml => @weeklytimetable, :status => :created, :location => @weeklytimetable }
       else
         format.html { render :action => "new" }
@@ -93,7 +93,7 @@ class WeeklytimetablesController < ApplicationController
     
     respond_to do |format|
       if @weeklytimetable.update_attributes(params[:weeklytimetable])
-        format.html { redirect_to(@weeklytimetable, :notice => 'Weeklytimetable was successfully updated.') }
+        format.html { redirect_to(@weeklytimetable, :notice => t('weeklytimetable.title')+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

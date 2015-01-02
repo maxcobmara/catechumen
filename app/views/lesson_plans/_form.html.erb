@@ -10,12 +10,16 @@
 		<tr>
 			<td class="leftcol"><%= f.label t('lesson_plan.schedule') %></td>
 			<!--START-revised on 3Nov2013-->
-			<td>
+			<td><% role_name = Login.current_login.roles.map(&:name) %>
 				<% if @lesson_plan && @lesson_plan.schedule.nil? == true %>
 					<% @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact %>
 					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id NOT IN (?)',Login.current_login.staff_id,@lessonplan_schedule]), :id, :day_time_slot, :include_blank=>t('select') %>
 				<% else %>
-					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?',Login.current_login.staff_id]), :id, :day_time_slot, :include_blank=>t('select') %>
+					<% if role_name.include?("Administration")%>
+						<%= f.collection_select :schedule, WeeklytimetableDetail.all,:id, :day_time_slot, :include_blank=>t('select') %>
+					<% else%>
+						<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?',Login.current_login.staff_id]), :id, :day_time_slot, :include_blank=>t('select') %>
+					<% end%>
 				<% end %>
 			</td>
 			<!--START-revised on 3Nov2013-->
