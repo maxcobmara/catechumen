@@ -2,13 +2,21 @@ class TopicdetailsController < ApplicationController
   # GET /topicdetails
   # GET /topicdetails.xml
   def index
-    @topicdetails = Topicdetail.find(:all, :order => 'updated_at DESC')
-    #@topicdetails = Topicdetail.all            #use this semula #before30Oct2013
-    #@topicdetails = Topicdetail.find(:all,:conditions=>['topic_code IS NOT NULL'])    #31Oct2013
-    @topicdetails2 = Topicdetail.find(:all,:conditions=>['topic_code IS NULL'])    #31Oct2013
+    @position_exist = Login.current_login.staff.position
+    if @position_exist 
+      @topicdetails = Topicdetail.find(:all, :order => 'updated_at DESC')
+      #@topicdetails = Topicdetail.all            #use this semula #before30Oct2013
+      #@topicdetails = Topicdetail.find(:all,:conditions=>['topic_code IS NOT NULL'])    #31Oct2013
+      @topicdetails2 = Topicdetail.find(:all,:conditions=>['topic_code IS NULL'])    #31Oct2013
+    end
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @topicdetails }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @topicdetails }
+      else
+        format.html { redirect_to "/home", :notice =>t('position_required')+t('topicdetail.title2')}
+        format.xml
+      end
     end
   end
 

@@ -1,38 +1,52 @@
-<p>
+<div class="tform">
+    <fieldset>
+         <legend class='togvis'><%=t('training_note.details')%></legend>
+         <table width=85% >
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.programme')%>:</label></td>
+			<td><%=Programme.find(@trainingnote.topicdetail.topic_code).root.name if @trainingnote.topicdetail_id %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.subject')%>:</label></td>
+			<td><%=Programme.find(@trainingnote.topicdetail.topic_code).parent.subject_list if @trainingnote.topicdetail_id%></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.topic_subtopic')%>:</label></td>
+			<td><%#=h @trainingnote.topicdetail.subject_topic.subject_list %>
+				  <%= Programme.find(@trainingnote.topicdetail.topic_code).name if @trainingnote.topicdetail_id%>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.staff_id')%>:</label></td>
+			<td><%#=h @trainingnote.staff_id %><%=h @trainingnote.note_creator.try(:name)%></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.document')%>:</label></td>
+			<td></td>
+		</tr>
+				<tr>
+			<td class="leftcol"><label><%=t('training_note.title3')%>:</label></td>
+			<td><%=h @trainingnote.title %></td>
+		</tr>
+				<tr>
+			<td class="leftcol"><label><%=t('training_note.reference')%>:</label></td>
+			<td><%=h @trainingnote.reference %></td>
+		</tr>
+				<tr>
+			<td class="leftcol"><label><%=t('training_note.release')%>:</label></td>
+			<td><%=h @trainingnote.release.try(:strftime, '%d %b %Y') %></td>
+		</tr>
+				<tr>
+			<td class="leftcol"><label><%=t('training_note.version')%>:</label></td>
+			<td><%=h @trainingnote.version %></td>
+		</tr>
+	</table>
+<!--
   <b>Timetable:</b>
   <%=h @trainingnote.timetable_id %>
-</p>
+-->
+    </fieldset>
+</div>
 
-<p>
-  <b>Title:</b>
-  <%=h @trainingnote.title %>
-</p>
-
-<p>
-  <b>Reference:</b>
-  <%=h @trainingnote.reference %>
-</p>
-
-<p>
-  <b>Version:</b>
-  <%=h @trainingnote.version %>
-</p>
-
-<p>
-  <b>Staff:</b>
-  <%=h @trainingnote.staff_id %>
-</p>
-
-<p>
-  <b>Release:</b>
-  <%=h @trainingnote.release %>
-</p>
-
-<p>
-  <b>Topic:</b>
-  <%=h @trainingnote.topicdetail_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_trainingnote_path(@trainingnote) %> |
-<%= link_to 'Back', trainingnotes_path %>
+<%= link_to t('edit'), edit_trainingnote_path(@trainingnote) %> |
+<%= link_to t('back'), trainingnotes_path %>

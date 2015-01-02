@@ -6,7 +6,11 @@
 		<div class="right"></div>
 	</div>
 </div>
-
+<div class="toolbar">
+	<table width=100%><tr>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Training Note') + t('training_note.new'), new_trainingnote_path %></p></td>
+	</tr></table>
+</div>
 <div class="tlist">
 	<table width=100%>
 	  <tr>
@@ -54,9 +58,9 @@
 					<%= link_to trainingnote.document_file_name, "http://#{request.host}:3003"+ trainingnote.document.url , :width => '57px'  %>
 			      <% end%>
 		
-			<td width=10px><% link_to image_tag("document.png", :border => 0), :action => 'show', :id => trainingnote %></td>
-			<td width=10px><% link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => trainingnote %></td>
-			<td width=10px ><% link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), trainingnote, :confirm => 'Are you sure?', :method => :delete %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => trainingnote %></td>
+			<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => trainingnote %></td>
+			<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), trainingnote, :confirm => 'Are you sure?', :method => :delete %></td>
 
 	  </tr>
 	<% end %><% end %>
@@ -64,4 +68,4 @@
 </div>
 <br />
 
-<% link_to 'New trainingnote', new_trainingnote_path %>
+<%= link_to t('training_note.new'), new_trainingnote_path %>
