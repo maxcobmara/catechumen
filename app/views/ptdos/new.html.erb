@@ -1,4 +1,4 @@
-<h3>Apply For Training</h3>
+<h3><%= t ' ptdos.applytraining' %></h3>
 
 
 <% form_for(@ptdo) do |f| %>
@@ -6,16 +6,16 @@
  <%= f.hidden_field :ptschedule_id %>
 
 <div class="tform">
-<H2>Training Application</H2>
+<H2><%= t 'ptdos.trainingapp' %></H2>
 <table width=50% >
 
 	<tr>
-		<td class="leftcol"><label for="name">Course Name :</label></td>
+		<td class="leftcol"><label for="name"><%= t 'ptdos.coursename' %>:</label></td>
 		<td> <%=h @ptdo.ptschedule.ptcourse.name %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="name">Staff Name : </label></td>
+		<td class="leftcol"><label for="name"><%= t 'ptdos.staffname' %>:</label></td>
 		<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_login.staff_id]), :id, :staff_name_with_position %></td>
 	</tr>
  
@@ -23,8 +23,8 @@
 </table>
 </div>
   <p>
-    <%= f.submit 'Apply' %>
+    <%= f.submit (t 'apply') %>
   </p>
 <% end %>
 
-<%= link_to 'Back', ptdos_path %>
+<%= link_to (t 'back'), ptdos_path %>
