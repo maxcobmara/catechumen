@@ -76,11 +76,13 @@
 
 	<!--Header for Monday until Thursday-(start)-->
 	<%# @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(7, false) do |row_things| %>
+	<tr>
 	<% detailing.each_with_index do |j,index|%>
 	<% if index==0%>
-	<% j.weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(7, false) do |row_things| %>
-	<tr>
+	<%@column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count%>
+	
 		<td align=center style="border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;">&nbsp;</td>
+		<% j.weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@column_count_monthur, false) do |row_things| %>
 			<% for periods in row_things %>
 				<% if periods.day_name == 1 %>
 					<td align=center style="border:1px solid black; text-align:center; padding:4px;background-color:#FEE;">
@@ -89,10 +91,8 @@
 				<% else %>
 				<% end %>
 			<% end %>	
-		</td>
-	</tr>
-	<% end %>
-	<% end %>
+		<% end %>
+	<% end %></tr>
 	<% end %>
 	
 	<%# end %>
@@ -161,12 +161,17 @@
 	</tr>
 	<% end %>
 	<!--Content for Monday until Thursday-(end)-->
-
+	
 	<!--Header for Friday-(start)-->
+        <% if @count1==9 && @count2==7 %>
+		 <% classes_tospan=[5]%>
+        <% else %>
+		 <% classes_tospan=[5,7] %>
+	<% end %>
 	<%# @weeklytimetable.timetable_friday.timetable_periods.in_groups_of(7, false) do |row_things| %>
 	<% detailing.each_with_index do |j,index|%>
 	<% if index==0%>
-	<% j.weeklytimetable.timetable_friday.timetable_periods.in_groups_of(7, false) do |row_things| %>
+	<% j.weeklytimetable.timetable_friday.timetable_periods.in_groups_of(@column_count_monthur, false) do |row_things| %>
 	<tr>
 		<td align=center style="border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;">&nbsp;</td>
 	
@@ -174,7 +179,7 @@
 		<% for periods in row_things %>
 			<% if periods.day_name == 2 %>
 				
-				<% if colfriday == 4 || colfriday == 5 %>
+				<% if colfriday == 4 || colfriday == 5 || classes_tospan.include?(colfriday) %>
 					<td colspan="2" style="border:1px solid black; text-align:center; padding:4px;background-color:#FEE;">
 						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
 					</td>
@@ -212,7 +217,7 @@
 				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 2 %>
 				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"><%=t('weeklytimetable.break').upcase%></td>
-			<% elsif count4 == 5 %>
+			<% elsif count4 == 5 || classes_tospan.include?(count4)%>
 				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
 	
 					<% detailing_friday.each do |j|%>

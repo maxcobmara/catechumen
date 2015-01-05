@@ -107,14 +107,16 @@
 <center>
 <!--<table width=95% style="border:none;padding:0;border-spacing:0;">-->
 <table class="plong">	
-	
 	<!--Header for Monday until Thursday-(start)-->
 	<%# @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(7, false) do |row_things| %>
+	<tr><td class="header1">&nbsp;</td>
 	<% detailing.each_with_index do |j,index|%><!--<%=detailing.count%>~<%#=detailing_monthurs.count%>~<%#=detailing_friday.count%>-->
 	<% if index==0%>
-	<% j.weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(7, false) do |row_things| %>
-	<tr>
-		<td class="header1">&nbsp;</td>
+		<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
+		<% @column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count%>
+		<% j.weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@column_count_monthur, false) do |row_things| %>
+	
+		
 			<% counter = 1 %>
 			<% for periods in row_things %>
 				<% if periods.day_name == 1 %>
@@ -134,9 +136,9 @@
 				<% end %>
 			<% end %>	
 		</td>
-	</tr>
+	
 	<%# end %>
-	<% end %>
+	<% end %></tr>
 	<% end %>
 	<% end %>
 	<!--Header for Monday until Thursday-(end)-->
@@ -146,6 +148,8 @@
 	<tr>
 		<% detailing.each_with_index do |j,index|%>
 		<% if index==0%>
+			<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
+			<% @column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count%>
 		<td class="data1a">
 			<% if count2==1 %><%=t(:'date.day_names')[1]%><br> <%=j.weeklytimetable.startdate.strftime('%d-%b-%Y') %>
 			<% elsif count2==2 %><%=t(:'date.day_names')[2]%><br><%=(j.weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
@@ -159,7 +163,7 @@
 		
 		<!--span BREAK fields & display CLASSES fields accordingly-(start)-->
 
-		<% 1.upto(7) do |count3| %><%# 1.upto(@column_count) do |count3| %>
+		<% 1.upto(@column_count_monthur) do |count3| %><%# 1.upto(@column_count) do |count3| %>
 			<% if (count3==2 && count2==1) || (count3==5 && count2==1) %>
 				<td rowspan="4" class="break1"><%=t('weeklytimetable.break').upcase%><br> <!--column:<%#=count3%>row:<%#=count2%>-->
 				</td>
@@ -192,7 +196,7 @@
 					<% end%>
 				</td>						
 			<% elsif count3!=2%><!--PRINT BORDER : RIGHT-->
-				<td class="data2"><%#= detailing_monthurs.count%>
+				<td class="data1"><%#= detailing_monthurs.count%>
 			
 					<% detailing_monthurs.each do |j|%><%#= j.weeklytimetable.hod_approved %>
 						<% if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>				
@@ -226,9 +230,14 @@
 	<!--Content for Monday until Thursday-(end)-->
 
 	<!--Header for Friday-(start)-->
+	<% if @count1==9 && @count2==7 %>
+		 <% classes_tospan=[5]%>
+        <% else %>
+		 <% classes_tospan=[5,7] %>
+	<% end %>
 	<% detailing.each_with_index do |j,index|%>
 	<% if index==0%>
-	<% j.weeklytimetable.timetable_friday.timetable_periods.in_groups_of(7, false) do |row_things| %>
+	<% j.weeklytimetable.timetable_friday.timetable_periods.in_groups_of(@column_count_monthur, false) do |row_things| %>
 	<tr>
 		<td class="header1">&nbsp;</td>
 	
@@ -238,7 +247,7 @@
 				<!--print border accordingly-(start)-->
 				<% if colfriday == 4 %>
 					<td colspan="2" class="header5">
-				<% elsif colfriday == 5 %>
+				<% elsif colfriday == 5 || classes_tospan.include?(colfriday)%>
 					<td colspan="2" class="header3">
 				<% else %>
 					<td class="header5">	
@@ -273,7 +282,7 @@
 				<td colspan="2" class="break2"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 2 %>
 				<td class="break2"><%=t('weeklytimetable.break').upcase%></td>
-			<% elsif count4 == 5 %>
+			<% elsif count4 == 5 || classes_tospan.include?(count4)%>
 				<td colspan="2" class="data4">
 				
 						<% detailing_friday.each do |j|%>
