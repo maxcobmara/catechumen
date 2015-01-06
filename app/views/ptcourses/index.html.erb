@@ -23,7 +23,7 @@
     <td><%=h ptcourse.try(:provider).try(:name) %></td>
     <td><%=h ptcourse.duration %> Days</td>
 		<td><%=h ringgols(ptcourse.cost) %></td>
-    <td><%=  truncate(ptcourse.description, :length => 65, :omission => (link_to '... [more]', ptcourse)) %></td>
+    <td><%=  truncate(ptcourse.description, :length => 65, :omission => (link_to "... [#{t('more')}]", ptcourse)) %></td>
     <td><%=h ptcourse.approved? ? "Approved" : "" %></td>
     <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptcourse %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptcourse %></td>

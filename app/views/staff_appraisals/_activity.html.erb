@@ -4,8 +4,8 @@
 		<table width=90%>
 			<tr>
 				<!--<th width=30%>Date</th>-->
-				<th width=35%>Activity</th>
-				<th width=25%>Level</th>
+				<th width=35%><%= t 'evaluation.form.activity' %></th>
+				<th width=25%><%= t 'evaluation.form.level' %></th>
 				<th width=10%></th>
 			</tr>
 		</table>
@@ -13,7 +13,7 @@
 			<%= render 'evactivity_fields', :f => builder %>
 		<% end %>
 		
-		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :evactivities %> - Add More </p>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => t 'evaluation.form.add_more'), f, :evactivities %> - Add More </p>
 	
 		<p><font size=-2><%= t 'evaluation.form.label_002' %></font></p>
 	</div>
@@ -23,10 +23,10 @@
 	<p><font size=-2><%= t 'evaluation.form.label_003' %></font></p>
 		<table width=90%>
 			<tr>
-				<th>Name</th>
-				<th>Type</th>
-				<th>Date</th>
-				<th>Duration</th>
+				<th><%= t 'evaluation.form.nm' %></th>
+				<th><%= t 'evaluation.form.type' %></th>
+				<th><%= t 'evaluation.form.date' %></th>
+				<th><%= t 'evaluation.form.duration' %></th>
 			</tr>
 			<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', Login.current_login.staff_id]) %>
 				<% if ptdo.ptschedule.start.year==@staff_appraisal.evaluation_year.year%>
@@ -47,15 +47,15 @@
 		<p><font size=-2><%= t 'evaluation.form.label_004' %></font></p>
 		<table width=90%>
 			<tr>
-				<th width=45%>Name</th>
-				<th width=45%>Reason</th>
+				<th width=45%><%= t 'evaluation.form.nm' %></th>
+				<th width=45%><%= t 'evaluation.form.reason' %></th>
 				<th width=10%></th>
 			</tr>
 		</table>
 		<% f.fields_for :trainneeds do |builder| %>
 			<%= render 'trainneed_fields', :f => builder %>
 		<% end %>
-		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :trainneeds %> Add More </p>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => t 'evaluation.form.add_more'), f, :trainneeds %> Add More </p>
 	</div>
 	
 	
