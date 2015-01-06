@@ -5,22 +5,19 @@ class LessonPlan < ActiveRecord::Base
   belongs_to :lessonplan_owner,   :class_name => 'Staff',                 :foreign_key => 'lecturer'
   belongs_to :lessonplan_creator, :class_name => 'Staff',                 :foreign_key => 'prepared_by'
   belongs_to :lessonplan_intake,  :class_name => 'Intake',                :foreign_key => 'intake_id'
-  #belongs_to :lessonplan_topic,   :class_name => 'Programme',             :foreign_key => 'topic'
-  belongs_to :endorser,           :class_name => 'Staff',                 :foreign_key => 'endorsed_by'
-  belongs_to :schedule_item,      :class_name => 'WeeklytimetableDetail', :foreign_key => 'schedule'
+  belongs_to :endorser,                :class_name => 'Staff',                 :foreign_key => 'endorsed_by'
+  belongs_to :schedule_item,       :class_name => 'WeeklytimetableDetail', :foreign_key => 'schedule'
   
   has_many :lessonplan_methodologies, :dependent => :destroy
   accepts_nested_attributes_for :lessonplan_methodologies, :allow_destroy => true#, :reject_if => lambda { |a| a[:start_at].blank? }
   
   validate :approved_or_rejected, :satisfy_or_notsatisfy
-  #validates_presence_of :schedule    #hide on 31st October 2013
+  validates_presence_of :schedule #require re-selection if schedule no longer exist
   
-  #trial section------------
   has_many :lesson_plan_trainingnotes
   accepts_nested_attributes_for :lesson_plan_trainingnotes, :allow_destroy => true, :reject_if => lambda {|a| a[:trainingnote_id].blank?}
   has_many :trainingnotes, :through => :lesson_plan_trainingnotes
   accepts_nested_attributes_for :trainingnotes, :reject_if => lambda {|a| a[:topic_id].blank?}
-  #trial section-----------
   
   attr_accessor :title
   
@@ -73,7 +70,7 @@ class LessonPlan < ActiveRecord::Base
    end
   #---------------------------
    def copy_attached_doc_trainingnotes
-     if data != nil
+     if data != nil 
          notes_for_lessonplan = Trainingnote.new     
          notes_for_lessonplan.document_file_name = data_file_name
          notes_for_lessonplan.document_content_type = data_content_type
@@ -101,7 +98,9 @@ class LessonPlan < ActiveRecord::Base
          if Trainingnote.find_by_document_file_name(data_file_name)==nil && Trainingnote.find_by_timetable_id(schedule)==nil
            notes_for_lessonplan.save   
          else  
-           @trainingnote_lessonplan.update_attributes(:document_file_name=>data_file_name, :document_content_type=>data_content_type,:document_file_size=>data_file_size, :timetable_id=>schedule, :staff_id=>Login.current_login.staff_id, :title=>title,:topicdetail_id=>@topicdetail_id)
+           if @trainingnote_lessonplan
+             @trainingnote_lessonplan.update_attributes(:document_file_name=>data_file_name, :document_content_type=>data_content_type,:document_file_size=>data_file_size, :timetable_id=>schedule, :staff_id=>Login.current_login.staff_id, :title=>title,:topicdetail_id=>@topicdetail_id)
+           end
          end
      end 
    end
