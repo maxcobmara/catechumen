@@ -24,6 +24,10 @@
 				<td><%=h @lesson_plan.schedule_item.get_date_for_lesson_plan %><%#=h @lesson_plan.lecture_date %></td>				
 			</tr>
 			<tr>
+				<td class="leftcol"><label><%=t('lesson_plan.location')%>:</label></td>
+				<td><%=h @lesson_plan.schedule_item.location_desc %></td>				
+			</tr>
+			<tr>
 				<td class="leftcol"><label><%=t('lesson_plan.time')%>:</label></td>
 				<td>
 					<%=h @lesson_plan.schedule_item.get_start_time %> - <%=h @lesson_plan.schedule_item.get_end_time %>
@@ -46,7 +50,10 @@
 			</tr>	
 			<tr>
 				<td class="leftcol"><label><%=t('lesson_plan.location')%>:</label></td>
-				<td><%=h @lesson_plan.schedule_item.weeklytimetable_location.name %></td>				
+				<td><%#=h @lesson_plan.schedule_item.weeklytimetable_location.name %>
+				<%#=h @lesson_plan.schedule_item.location_desc%>
+				<%= text_field_tag :new_location, @lesson_plan.try(:schedule_item).try(:location_desc) , :size=>40%>
+				</td>				
 			</tr>
 		</table>
 </fieldset>
