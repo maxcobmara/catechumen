@@ -9,22 +9,46 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><%= f.label t('lesson_plan.schedule') %></td>
-			<!--START-revised on 3Nov2013-->
-			<td><% role_name = Login.current_login.roles.map(&:name) %>
-				<% if @lesson_plan && @lesson_plan.schedule.nil? == true %>
-					<% @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact %>
-					<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id NOT IN (?)',Login.current_login.staff_id,@lessonplan_schedule]), :id, :day_time_slot, :include_blank=>t('select') %>
-				<% else %>
-					<% if role_name.include?("Administration")%>
-						<%= f.collection_select :schedule, WeeklytimetableDetail.all,:id, :day_time_slot, :include_blank=>t('select') %>
-					<% else%>
-						<%= f.collection_select :schedule, WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?',Login.current_login.staff_id]), :id, :day_time_slot, :include_blank=>t('select') %>
-					<% end%>
+			<td>
+				 <%arr2=["<option value=0 data=''>#{t('select')}</option>"] %>
+				 <% unless @lesson_plan.schedule.nil? || @lesson_plan.schedule.blank? %>
+					<% if WeeklytimetableDetail.all.map(&:id).include?(@lesson_plan.schedule)%>
+						<%arr2 << "<option value='#{@lesson_plan.schedule}' data='#{@lesson_plan.schedule_item.location_desc}' selected='selected'>#{@lesson_plan.schedule_item.day_time_slot3}</option>" %>
+						
+					<% end %>
 				<% end %>
-			</td>
-			<!--START-revised on 3Nov2013-->
+				 <% @current_roles = Login.current_login.roles.map(&:name) %>
+				<% if @current_roles.include?('Administration') %>
+					 <!--admin-->
+					 <% @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact %>
+					 <% alltimetables = WeeklytimetableDetail.all.sort_by{|x|x.weeklytimetable_lecturer.name}%>
+				<% else %>
+					<!--lecturer-->
+					<% timetableids = Login.current_login.timetables_of_programme%>
+					<% if @lesson_plan && !@lesson_plan.schedule %><!--lesson_plan : schedule not exist-->
+						<% @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact %>
+						<%# alltimetables = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id NOT IN (?) AND id IN(?)',Login.current_login.staff_id,@lessonplan_schedule, timetableids]) %>
+						<% alltimetables = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id IN(?)',Login.current_login.staff_id, timetableids]) %>
+						<% unless @lesson_plan.new_record? %>
+							<% alltimetables << @lesson_plan.schedule if @lesson_plan.schedule %>
+					        <% end %>
+					<% else %>
+						<!--note : selected item remove fr this options to avoid redundant, as it already added at line 6-->
+						<% alltimetables = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? and id IN(?) AND id NOT IN (?)',Login.current_login.staff_id, timetableids, @lesson_plan.schedule]) %>
+					<% end %>
+				<% end %>
+				<% if alltimetables%>
+					 <% alltimetables.each do |c| %>
+						<% arr2 << "<option value='#{c.id}' data='#{c.location_desc}'>#{c.day_time_slot3}</option>" %>
+					<% end %>
+				<% end %>
+				<%= select_tag("lesson_plan[schedule]", arr2) %>
+			</td>		
 		</tr>
-		
+		<tr>
+			<td class="bong" style="display: none;"><strong><%= f.label t('lesson_plan.location') %></strong></td>
+			<td class="bong" style="display: none;"><%= text_field_tag :new_location, @lesson_plan.try(:schedule_item).try(:location_desc) %></td>
+		 </tr>
 		<!--30March2013-Part A:Pre-selected data upon selection of schedule (start)-->
 		<!--<tr>
 			<td class="leftcol"><%#= f.label :intake_id %></td>
@@ -140,3 +164,24 @@
 		</table>
 
 <BR>
+
+
+<script type="text/javascript">
+
+  if ($j('#lesson_plan_schedule option:selected').val()==0)
+    $j('.bong').hide();
+  else
+    $j('.bong').show("appear");
+
+  $j('#lesson_plan_schedule').change(function() {
+    if($j(this).val() == "0") {
+      $j('.bong').hide();
+    }else {
+      var yoyo = $j(this).find('option:selected').attr('data');
+      var ansP = document.getElementById("new_location");
+      ansP.value =yoyo;
+      $j('.bong').show("appear");
+    }
+  });
+  
+</script>
