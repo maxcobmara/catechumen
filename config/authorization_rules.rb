@@ -34,6 +34,8 @@ authorization do
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => :manage
     has_permission_on :weeklytimetables, :to => :manage
+    has_permission_on :trainingnotes, :to => :manage
+    
     #Library Menu Items
     has_permission_on [:librarytransactions, :books], :to => :manage
     
@@ -273,6 +275,18 @@ authorization do
     has_permission_on :weeklytimetables, :to => :personalize_index do
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
+    
+    #from Ogma
+    has_permission_on :trainingnotes, :to => :manage, :join_by => :or do
+     if_attribute :topicdetail_id => is_in {Login.current_login.topicdetails_of_programme}
+     if_attribute :timetable_id => is_in {Login.current_login.timetables_of_programme} 
+    end
+    
+    has_permission_on :trainingnotes, :to => :manage, :join_by => :and do
+      if_attribute :topicdetail_id => is {nil}
+      if_attribute :timetable_id => is {nil}
+    end
+   
     has_permission_on :studentattendancesearches, :to => :read
     has_permission_on :weeklytimetablesearches, :to => :read
     has_permission_on :curriculumsearches, :to => :read

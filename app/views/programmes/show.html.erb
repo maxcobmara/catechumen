@@ -1,22 +1,23 @@
 <div class="tform">
-
 <fieldset>
-	<legend class='togvis'>Programme Object</legend>
+	<legend class='togvis'><%=t('programme.title')%> : <%=@programme.course_type%></legend>
 		<table width=85% >
 			<tr>
-				<td class="leftcol"><label>Programme Object Code</label></td>
-				<td><%=h @programme.combo_code %></td>				
+				<td class="leftcol"><label><%=t('programme.combo_code')%></label></td>
+				<td><%=h @programme.combo_code %></td>
 			</tr>
-			
 			<tr>
-				<td class="leftcol"><label>Programme Object Name</label></td>
+				<td class="leftcol"><label><%=t('programme.name')%></label></td>
 				<td><%=h @programme.root.course_type %> <%=h @programme.root.name %> - <%=h @programme.course_type %> <%=h @programme.name %></td>				
 			</tr>
+			<% unless @programme.root==nil %>
+				<tr>
+					<td class="leftcol"><label><%=t('programme.subject_abbreviation')%></label></td>
+				<td><%=h @programme.subject_abbreviation %></td>
+			</tr>
+			<% end %>
 		</table>
 </fieldset>
-
 </div>
-
-
-<%= link_to 'Edit', edit_programme_path(@programme) %> |
-<%= link_to 'Back', programmes_path %>
+<%= link_to t('edit'), edit_programme_path(@programme) %> |
+<%= link_to t('back'), programmes_path %>

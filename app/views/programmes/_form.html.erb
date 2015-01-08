@@ -1,54 +1,74 @@
 <table width=100%>
 	<tr>
-		<td><%= f.label :code %></td>
+		<td><%= f.label t('programme.code')%></td>
 		<td><label><%=h @programme.is_root? ? "" : @programme.parent.combo_code + "-" %></label><%= f.text_field :code %></td>
 	</tr>
 	
 	<tr>
-		<td><%= f.label :course_type %></td>
+		<td><%= f.label t('programme.course_type') %></td>
 		<td>
 		<% if @programme.parent_id == nil %>
 			<!--<label>
 				<%#= f.radio_button :course_type, 'Diploma' %> Diploma <%= f.radio_button :course_type,'Pos Basik' %> Pos Basik 
 				<%#= f.radio_button :course_type,'Diploma Lanjutan ' %> Diploma Lanjutan </label>-->
-			<%= f.select :course_type, [['Diploma','Diploma'],['Pos Basik','Pos Basik'],['Diploma Lanjutan','Diploma Lanjutan']], :include_blank => 'Select Course Type' %>
+			<%= f.select :course_type, [['Diploma','Diploma'],['Pos Basik','Pos Basik'],['Diploma Lanjutan','Diploma Lanjutan']], :include_blank => t('select') %>        
 		<% else %>
 			<!--
 			<%= f.radio_button :course_type, 'Semester' %> Semester <%= f.radio_button :course_type, 'Subject' %> Subject  <%= f.radio_button :course_type, 'Commonsubject' %> Common Subject <%= f.radio_button :course_type,'Topic' %> Topic <%= f.radio_button :course_type,'Subtopic' %> Subtopic -->
-			<%= f.select :course_type, [['Semester', 'Semester'],['Subject', 'Subject'],['Common Subject','Commonsubject'],['Topic','Topic'],['Subtopic','Subtopic']], :include_blank => 'Select Course Type' %>
+			<%#= f.select :course_type, [['Semester', 'Semester'],['Subject', 'Subject'],['Common Subject','Commonsubject'],['Topic','Topic'],['Subtopic','Subtopic']], :include_blank => t('select') %>
+
+			<table width="40%">
+				<tr>
+					 <td><%= f.select :course_type, Programme::COURSE_TYPES_SUB,{:prompt => t('select')} %>
+					 <td class="bbb"><%= f.label t('programme.lecture')%></td>
+					 <td class="bbb"><%= f.text_field :lecture, :size=>'7'%></td>
+					 <td class="bbb"><%= f.select :lecture_time, Programme::LECTURE_TIME,{:prompt =>t('select')}%></td>
+					 <td class="bbb"><%=f.label t('programme.tutorial')%></td>
+					 <td class="bbb"><%= f.text_field :tutorial, :size=>'7'%></td>
+					 <td class="bbb"><%= f.select :tutorial_time, Programme::LECTURE_TIME,{:prompt =>t('select')}%></td>
+					 <td class="bbb"><%=f.label t('programme.practical')%></td>
+					 <td class="bbb"><%= f.text_field :practical, :size=>'7'%></td>
+					 <td class="bbb"><%= f.select :practical_time, Programme::LECTURE_TIME,{:prompt =>t('select')}%></td>
+				</tr>
+			 </table>
 		<% end %></label></td>
 	
 	</tr>
 	
 	<tr>
-		<td><%= f.label :name %></td>
+		<td><%= f.label t('programme.name')%></td>
 		<td><%= f.text_field :name, :size => '50' %></td>
 	</tr>
-	
+	<% unless @programme.parent_id == nil %>
+		  <tr>
+			  <td><%= f.label t 'programme.subject_abbreviation'%></td>
+			  <td><%= f.text_field :subject_abbreviation, :size=>'10' %></td>
+		  </tr>
+	<% end %>	
 	<tr>
-		<td><%= f.label :duration %></td>
+		<td><%= f.label t('programme.duration')%></td>
 		<td><%= f.text_field :duration, :size => '5' %>
 				<%= f.select :duration_type, 
 				           Programme::DURATION_TYPES,
-				           :prompt => "Select"  %>
+				           :prompt => t('select')  %>
 			
 			
 			</td>
 	</tr>
 	
 	<tr>
-		<td><%= f.label :credits %></td>
+		<td><%= f.label t('programme.credits') %></td>
 		<td><%= f.select :credits, 0..8  %></td>
 	</tr>
 	
 	<tr>
 		<td><%= f.label :status %></td>
 		<td><!--<label><%#= f.radio_button :status,'1' %> Major <%#= f.radio_button :status,'2' %> Minor <%#= f.radio_button :status,'3' %> Elective</label>-->
-			<%= f.select :status, [['Major','1'],['Minor','2'],['Elective','3']], :include_blank => 'Select Status' %>
+			<%= f.select :status, [['Major','1'],['Minor','2'],['Elective','3']], :include_blank => t('select') %>
 		</td>
 	</tr>
 	
-		<tr><td colspan=2><font size=-2>* <strong>TOPIC DETAILS</strong> will be automatically created upon creation/update of topic/subtopic.</font></td></tr>
+		<tr><td colspan=2><font size=-2>* <strong><%=t('topicdetail.title2')%></strong> <%=t('programme.auto_created')%></font></td></tr>
 </table>
 <!--status
 
@@ -60,3 +80,25 @@
   <%= f.label :duration %><br />
   <%= f.text_field :duration %>
 </p>-->
+
+
+<script type="text/javascript">
+  $j(document).ready(function(){
+      $j("#programme_course_type").change(function() {  
+          if (this.value=='Topic')
+             $j('.bbb').show(); 
+          else if (this.value=='Subtopic')
+            $j('.bbb').show();
+          else
+            $j('.bbb').hide();
+      });
+      $j("#programme_course_type").each(function() {  
+          if (this.value=='Topic')
+             $j('.bbb').show(); 
+          else if (this.value=='Subtopic')
+            $j('.bbb').show();
+          else
+            $j('.bbb').hide();
+      });
+   });
+</script>

@@ -1,5 +1,5 @@
 <div class="fields">
-	<span class="show_hide"><%= link_to_function "Click to <b>SELECT Day & Time Slot</b> accordingly", "$('"+form_tag_id(f.object_name, :reference)+"').toggle(); $('"+form_tag_id(f.object_name, :reference2)+"').toggle()" %></span>
+	<span class="show_hide"><%= link_to_function t('weeklytimetable.click_to')+"<b>"+t('weeklytimetable.select_day')+"</b>"+t('weeklytimetable.select_day2'), "$('"+form_tag_id(f.object_name, :reference)+"').toggle(); $('"+form_tag_id(f.object_name, :reference2)+"').toggle()" %></span>
 	<%#= link_to_function "[+/-] HIDE DETAILS...", "$('"+form_tag_id(f.object_name, :full_details)+"').toggle()" %>
 	<br>
 
@@ -19,7 +19,7 @@
 	<table>
 		<tr><td></td><td></td></tr>
 		<tr>
-			<td class="leftcol">Day/Time</td>
+			<td class="leftcol"><%=t('weeklytimetable_detail.day_time')%></td>
 			<td>
 				<!--find INDEX for THIS repeating fields-->
 				<% @object_full_id = f.object_name.gsub(/(\])?\[/,"_").chop %>
@@ -48,23 +48,23 @@
 				<% end %>
 				
 				<%= tag("span", :id => form_tag_id(f.object_name, :reference), :style=>"#{@bbb}") %>
-					<%= f.select :day2, WeeklytimetableDetail::DAY_LIST, :include_blank => "Select Day"  %>
-					- <%= f.collection_select :time_slot2, @timeslot, :id, :timing, :include_blank => "Select Time Slot (M-T)" %>
+					<%= f.select :day2, WeeklytimetableDetail::DAY_LIST, :include_blank => t('select') %>
+					- <%= f.collection_select :time_slot2, @timeslot, :id, :timing, :include_blank => t('select') %>
 					
 				</span>
 				<%= tag("span", :id => form_tag_id(f.object_name, :reference2), :style=>"#{@aaa}") %>
 					<%#= f.select :day, [["Friday",5]], :include_blank=>"UnSelect if NOT Friday" %>
-					<%= f.check_box :is_friday %>Tick if Friday
-					- <%= f.collection_select :time_slot, @timeslot2, :id, :timing, :include_blank => "Select Time Slot (F)" %>
+					<%= f.check_box :is_friday %><%=t('weeklytimetable.if_friday')%>
+					- <%= f.collection_select :time_slot, @timeslot2, :id, :timing, :include_blank => t('select') %>
 				</span>
 			
 			</td> 
 		</tr>
 		<!--start-Subject, Lecturer, Topic section, Location & Teaching method-->
 		<tr>
-			<td class="leftcol">Lecturer</td>
-			<td><%= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar'],:order=>'name ASC'), :id, :name, :prompt=>"Select Lecturer" %>
-			<%#= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=? AND positions.unit=?','Pengajar',Programme.find(@weeklytimetable.programme_id).name],:order=>'name ASC'), :id, :name, :prompt=>"Select Lecturer" %></td>
+			<td class="leftcol"><%=t('weeklytimetable_detail.lecturer')%></td>
+			<td><%= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar'],:order=>'name ASC'), :id, :name, :prompt=>t('select') %>
+			<%#= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=? AND positions.unit=?','Pengajar',Programme.find(@weeklytimetable.programme_id).name],:order=>'name ASC'), :id, :name, :prompt=>t('select')%></td>
 		</tr>
 		<!--25March2013-hide subject
 		<tr>
@@ -72,7 +72,7 @@
 			<td><%#= f.collection_select :subject, Programme.at_depth(2), :id, :subject_list, :include_blank =>"Select Subject" %></td>
 		</tr>-->
 		<tr>
-			<td class="leftcol">Semester-Subject : Topic<!--Topic--></td>
+			<td class="leftcol"><%=t('weeklytimetable_detail.semester_subject_topic')%><!--Topic--></td>
 			<td style="vertical-align:middle">
 				<!--25March2013-luar def subject_topic-(start)-->
 				<!--1st choice-->
@@ -88,26 +88,26 @@
 					Sem <%#=j.parent.parent.code%> - <%#=j.parent.code%> | <%#=j.name%><br>
 				<%# end %>-->
 				<% if @object_index_id.to_i > 23 %>
-				<%= select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@object_index_id.to_i}][topic]","<option>Select Semester-Subject | Topic / Subtopic</option>"+"<option selected='selected' value="+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].topic.to_s+">"+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].weeklytimetable_topic.semester_subject_topic+"</option>"+options_from_collection_for_select(@semester_subject_topic_list, :id, :semester_subject_topic ) %>
+				<%= select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@object_index_id.to_i}][topic]","<option>"+t('select')+"</option>"+"<option selected='selected' value="+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].topic.to_s+">"+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].weeklytimetable_topic.semester_subject_topic+"</option>"+options_from_collection_for_select(@semester_subject_topic_list, :id, :semester_subject_topic ) %>
 				<% else %>
-					<%= f.collection_select :topic, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> "Select Semester-Subject | Topic / Subtopic" %>
+					<%= f.collection_select :topic, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> t('select')%>
 				<% end %>
 
 				<!--2nd choice - BACKUP 
 				<%#= f.collection_select :topic, Programme.find(:all,:conditions=>['ancestry_depth=?',3], :order=>:name), :id, :semester_subject_topic, :include_blank=> "Select topic" %>-->				
-				<%#= f.collection_select :topic, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> "Select Semester-Subject | Topic" %>
+				<%#= f.collection_select :topic, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=>t('select')%>
 				
 				<!--3rd choice-->
-				<%#= f.collection_select :topic, Programme.find(:all,:conditions=>['ancestry_depth=?',3], :order=>:name), :id, :semester_subject_topic, :include_blank=> "Select topic" %>
+				<%#= f.collection_select :topic, Programme.find(:all,:conditions=>['ancestry_depth=?',3], :order=>:name), :id, :semester_subject_topic, :include_blank=> t('select') %>
 				
 				<!--4th choice--><%#= f.collection_select :topic, Programme.at_depth(3), :id, :subject_list, :prompt => "Select Topic" %>
-				<%#= f.grouped_collection_select(:topic, WeeklytimetableDetail::OPTIONS, :options, :type_name, :id, :name, :include_blank=>"Select Topic")%>		
+				<%#= f.grouped_collection_select(:topic, WeeklytimetableDetail::OPTIONS, :options, :type_name, :id, :name, :include_blank=>t('select')%>		
 				<!--25March2013-def subject_topic-(START)**********************************************************************-->
-				<%#= f.collection_select(:topic, WeeklytimetableDetail.subject_topic(@weeklytimetable.programme_id), :id, :name, :include_blank=>"Select Topic")%>
+				<%#= f.collection_select(:topic, WeeklytimetableDetail.subject_topic(@weeklytimetable.programme_id), :id, :name, :include_blank=>t('select'))%>
 				<%# if @weeklytimetable.weeklytimetable_details.id.nil? || @weeklytimetable.weeklytimetable_details.id.blank? %>
 				<!--chup<%#= @object_index_id%>===<%#=@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].topic%>-->
 				<%# if @object_index_id.to_i >=24 %>
-					<%#= f.grouped_collection_select(:topic, WeeklytimetableDetail.subject_topic(@weeklytimetable.programme_id), :options, :type_name, :id, :name, :include_blank=>"Select Topic")%>
+					<%#= f.grouped_collection_select(:topic, WeeklytimetableDetail.subject_topic(@weeklytimetable.programme_id), :options, :type_name, :id, :name, :include_blank=>t('select'))%>
 				<%# else %>
 					<%#= f.grouped_collection_select(:topic, WeeklytimetableDetail.subject_topic(@weeklytimetable.programme_id), :options, :type_name, :id, :name)%> <!--@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].topic-->				   
 				<%#end %>
@@ -115,12 +115,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="leftcol"><%= f.label :location %></td>
-			<td><%= f.collection_select :location, Weeklytimetable.location_list.sort_by{|x|x.name}, :id, :name, :include_blank => "Select" %></td>
+			<td class="leftcol"><%= f.label t('weeklytimetable_detail.location') %></td>
+			<td><%#= f.collection_select :location, Weeklytimetable.location_list.sort_by{|x|x.name}, :id, :name, :include_blank => t('select') %>
+			<%= f.text_field :location_desc%></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><%= f.label :method %></td>
-			<td><%= f.select :lecture_method, WeeklytimetableDetail::CLASS_METHOD, :include_blank => "Select" %></td>
+			<td class="leftcol"><%= f.label t('weeklytimetable_detail.method')%></td>
+			<td><%= f.select :lecture_method, WeeklytimetableDetail::CLASS_METHOD, :include_blank => t('select') %></td>
 		</tr>
 		<tr>
 			<td colspan="2">

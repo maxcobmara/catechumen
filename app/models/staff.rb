@@ -196,7 +196,7 @@ class Staff < ActiveRecord::Base
   has_many :student_counseling_sessions, :as => :created_by,  :foreign_key => 'created_by' 
   
 
-
+  has_many :trainingnotes,    :class_name => 'Trainingnote'
 
 #----------------------------code for repeating fields------------------------------------------  
  

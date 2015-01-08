@@ -51,20 +51,12 @@ class Weeklytimetable < ActiveRecord::Base
   end
   
   def hods  
-      hod = Login.current_login.staff.position.parent
+      #tpa = Login.current_login.staff.position.parent
+      lecturer_unit = Login.current_login.staff.position.unit
+      kp = Position.find(:all, :conditions=>['unit=? and ancestry_depth=?', lecturer_unit,1]).map(&:id)
+      #hod = [tpa]+kp
+      hod=kp
       approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-    
-      #Ketua Program - ancestry_depth.2
-      #hod = Position.find(:all, :conditions => ["ancestry=?","1/2"])
-      
-      #if Login.current_login.staff.position.root_id == Login.current_login.staff.position.parent_id
-        #hod = Login.current_login.staff.position.root_id
-        #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-      #else
-        #hod = Login.current_login.staff.position.root.child_ids
-        #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-      #end
-      #approver
   end
   
   def self.location_list
