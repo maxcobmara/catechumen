@@ -13,7 +13,7 @@
 			<%#=Time.now.year+1%><%#= Asset.find_last_by_assettype(2)[:assetcode].split("/")[4] %><%#= Asset.find_last_by_assettype(2)[:assetcode].split("/")[4] %>
 			</font></td>
 			<td><strong>KKM/BPL/010619/
-					<%= f.select :assettype, Asset::ASSETTYPE, :prompt => "Select" %>/
+					<%= f.select :assettype, Asset::ASSETTYPE, :prompt => (t 'select') %>/
 					<%= f.date_select :receiveddate,  :end_year => (Time.now.year+1), :order => [:year] %>/  
 					<SPAN class="bong", style="display: none;">
 						<%= f.text_field :cardno, :size => 6, :value => (Asset.find_last_by_assettype(1)[:assetcode].split("/")[5].to_i + 1) %>		
@@ -115,7 +115,7 @@
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="type">Type:</label></td>
+			<td class="leftcol"><label for="type"><%= t('type') %>:</label></td>
 			<td><%= f.text_field :typename %></td>
 		</tr>
 

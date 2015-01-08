@@ -1,0 +1,40 @@
+<h3><%=t('leaveforstudent.approval')%></h3>
+
+<% form_for(@leaveforstudent) do |f| %>
+  <%= f.error_messages %>
+
+<div class="tform">
+		<%= render :partial => 'applyshow' %>
+	<H2><%=t('leaveforstudent.approval')%></H2>
+	<table width=100% >
+		<tr>
+			<td class="leftcol"><label for="approved"><b><%=t('leaveforstudent.approval2')%>:</b></label></td>
+			<td><%= f.radio_button :approved,'false' %><%=t('not_approved')%>&nbsp;<%= f.radio_button :approved,'true' %><%=t('approved')%></td>
+		</tr>
+		<tr><!-- 07/10/2011 - Shaliza fixed Current Login logged in -->
+			<td class="leftcol"><label for="staff_id"><b><%=t('leaveforstudent.staff_id')%>:</b></label></td>
+			<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ['id =?', current_login.staff_id]), :id, :mykad_with_staff_name %></td>
+		</tr>
+		<tr>
+		   <td class="leftcol"><label for="approvedate"><b><%=t('leaveforstudent.approvedate.')%>:</b></label></td>
+			<td><%= f.date_select :approvedate, :order => [:day, :month, :year] %></td>
+		</tr>
+  </table>
+</div>
+  <p>
+<<<<<<< HEAD
+    <%= f.submit t('update') %>
+=======
+    <%= f.submit (t 'update') %>
+>>>>>>> 4d9d7c4fe17376d2bd084263e7655f6dee6d0463
+  </p>
+
+<% end %>
+
+<<<<<<< HEAD
+<%= link_to t('show'), @leaveforstudent %> |
+<%= link_to t('back'), leaveforstudents_path %>
+=======
+<%= link_to (t 'show'), @leaveforstudent %> |
+<%= link_to (t 'back'), leaveforstudents_path %>
+>>>>>>> 4d9d7c4fe17376d2bd084263e7655f6dee6d0463

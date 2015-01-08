@@ -1,13 +1,13 @@
 <% if @my_approved_unclaimed_requests != nil %>
 
-<H2>Include Travel Requests</H2>
+<H2><%= t 'travel.include_travel' %></H2>
 <table width=90%>
 	<tr>
-		<th width=10px>include</th>
+		<th width=10px><%= t 'travel.include' %></th>
 		<th><%= t('document.refno')%></th>
-		<th>Destination</th>
-		<th>Purpose</th>
-		<th>Travel Dates</th>
+		<th><%= t 'travel.destination' %></th>
+		<th><%= t 'travel.purpose' %></th>
+		<th><%= t 'travel.travel_date' %></th>
 	</tr>
 	
 	
@@ -24,16 +24,16 @@
 	<% else %>
 			<!--3Jan2012-view travel logs accordingly-->
 			<fieldset>
-				<legend class='togvis'>Travel Request & Logs</legend>
+				<legend class='togvis'><%= t 'claim.travel_requestlogs' %></legend>
 			
 			<% for travel_request in @travel_claim.travel_requests %>
 				<!--<fieldset>
 					<legend class='togvis'><%#= travel_request.destination %> (<%#= travel_request.depart_at.strftime("%d %b") %> - <%#= travel_request.return_at.strftime("%d %b %Y")%>)</legend>-->
 				<table width=90%>
 				<tr>
-					<th colspan=2>Document Ref No</th>
-					<th colspan=2>Purpose</th>
-					<th colspan=2>Travel Dates</th>
+					<th colspan=2><%= t 'claim.document_no' %></th>
+					<th colspan=2><%= t 'travel.purpose' %></th>
+					<th colspan=2><%= t 'travel.travel_date' %></th>
 				</tr>
 				<tr>
 			  		<td class="tlight" colspan=2><%= check_kin {travel_request.document.refno} %></td>
@@ -42,12 +42,12 @@
 				</tr>
 			
 				<tr>
-					<th class="level_2">Date</th>
-					<th class="level_2">Start</th>
-					<th class="level_2">Finish</th>
-					<th class="level_2">Destination</th>
-					<th class="level_2">Mileage</th>
-					<th class="level_2">Value</th>
+					<th class="level_2"><%= t 'travel.date' %></th>
+					<th class="level_2"><%= t 'travel.start' %></th>
+					<th class="level_2"><%= t 'travel.finish' %></th>
+					<th class="level_2"><%= t 'travel.destination' %></th>
+					<th class="level_2"><%= t 'travel.mileage' %></th>
+					<th class="level_2"><%= t 'travel.value' %></th>
 				</tr>	
 			
 				<% travel_request.travel_claim_logs.each do |travel_log| %>
@@ -76,16 +76,16 @@
 </table><BR/>
 
 <% @checkist = 0 %>
-<H2>Meal Allowance / Daily Allowance / Lodging Allowance</H2>	
+<H2><%= t 'claim.list_allowance' %></H2>	
 <table width=90%>
 	<tr>
-		<th width=10%>Days</td>
-		<th width=20%>Type</td>
-		<th width=15%>Value (RM)</td>
-		<th width=20% align="right">Receipt No</td>
+		<th width=10%><%= t 'claim.days' %></td>
+		<th width=20%><%= t 'claim.type' %></td>
+		<th width=15%><%= t 'claim.value' %></td>
+		<th width=20% align="right"><%= t 'claim.receipt_no' %></td>
 		<th width=5%></th>
-		<th width=10%>Query</th>
-		<th width=25%>Comment</th>
+		<th width=10%><%= t 'claim.query' %></th>
+		<th width=25%><%= t 'claim.comment' %></th>
 	</tr>
 </table>
 	<% f.fields_for :travel_claim_allowances do |builder| %>
@@ -95,15 +95,15 @@
 	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Receipt'), f, :travel_claim_allowances %> - <%= "Add Receipt" %></p>
 
 
-<H2>Receipts</H2>	
+<H2><%= t 'claim.receipt' %></H2>	
 <table width=90%>
 	<tr>
-		<th width=20%>Type</td>
-		<th width=20%>Receipt No</td>
-		<th align="right" width="20">Value (RM)</td>
+		<th width=20%><%= t 'claim.type' %></td>
+		<th width=20%><%= t 'claim.receipt_no' %></td>
+		<th align="right" width="20"><%= t 'claim.value' %></td>
 		<th width=5%></th>
-		<th width=10%>Query</th>
-		<th width=25%>Comment</th>
+		<th width=10%><%= t 'claim.query' %></th>
+		<th width=25%><%= t 'claim.comment' %></th>
 	</tr>
 </table>
 	<% f.fields_for :travel_claim_receipts do |builder| %>
@@ -112,27 +112,27 @@
 
 	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Receipt'), f, :travel_claim_receipts %> - <%= "Add Receipt" %></p>
 	
-<H2>Advances</H2>
+<H2><%= t 'claim.advance' %></H2>
 <table>
 	<tr>
-		<td class="leftcol">Advances</td>
+		<td class="leftcol"><%= t 'claim.advance' %></td>
 		<td><label>RM</label> <%= f.text_field :advance, :size => '10', :default => 1 %></td>
 	</tr>
 </table>
 
-<H2>Submission</H2>
+<H2><%= t 'claim.submission' %></H2>
 <table width=100%>
 	<!--4Jan2013-view submit button differently-->
 	<% if @travel_claim.my_claim_status != "returned" %>
 	<tr>
-	  <td class="leftcol"><label for="is_submitted">Submit</label></td>
+	  <td class="leftcol"><label for="is_submitted"><%= t 'submit' %></label></td>
 		<td><%= f.check_box :is_submitted, :id => 'submit1' %>
 				<SPAN class="span_submit1" style="display: none;"> &nbsp; <%= tarikh (Date.today) %></SPAN></td>
 		<td class="pagenote">Clicking on submit notifies claims officer and disables your editing this record further</td>
 	</tr>
 	<% else %>
 	<tr>
-		<td class="leftcol"><label for="is_submitted">Resubmit</label></td>
+		<td class="leftcol"><label for="is_submitted"><%= t 'claim.resubmit' %></label></td>
 		<td>
 			  Clicking on UPDATE notifies claims officer and disables your editing this record further
 		         <% if @travel_claim.staff_id == Login.current_login.staff_id %>

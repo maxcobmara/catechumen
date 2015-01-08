@@ -2,19 +2,19 @@
   <table width=100% >
 <!--Personal Info-->
 <tr>
-	<th colspan = 2>Staff Grades</th>
+	<th colspan = 2><%= t 'staff.staffgrades' %></th>
 </tr>  
 
 	<tr>
-		<td class="leftcol"><label for="sgname"><b>Classification:</b></label></td>
+		<td class="leftcol"><label for="sgname"><b><%= t 'staff.classification' %></b></label></td>
 	  <td><%=h (Staffgrade::CLASSIFICATION.find_all{|disp, value| value == @staffgrade.classification_id}).map {|disp, value| disp} %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="sgname"><b>Group:</b></label></td>
+		<td class="leftcol"><label for="sgname"><b><%= t 'staff.group' %>:</b></label></td>
 	  <td><%=h (Staffgrade::GROUP.find_all{|disp, value| value == @staffgrade.group_id}).map {|disp, value| disp} %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="sgshortname"><b>Grade:</b></label></td>
+		<td class="leftcol"><label for="sgshortname"><b><%= t 'staff.grades' %>:</b></label></td>
 		<td><%=h @staffgrade.grade %><%=h @staffgrade.classification_name %></td>
 	</tr>
 	
