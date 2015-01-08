@@ -1,25 +1,24 @@
 <div class="tform">
 
+<%= render :partial => 'applyshow' %>
 
-	<%= render :partial => 'applyshow' %>
-
-<H2>Approve Student Leave Request</H2>
+<H2><%=t('leaveforstudent.approval')%></H2>
 <table>
 	<tr>
-	    <td class="leftcol"><label for="approved"><b>Approve Student Leave:</b></label></td>
-		<td><%=h @leaveforstudent.approved? ? "Approved" : "Not Approved" %></td>
+	    <td class="leftcol"><label for="approved"><b><%=t('leaveforstudent.approved')%>:</b></label></td>
+		<td><%=h @leaveforstudent.approved? ? t('approved') : t('not_approved') %></td>
 	</tr>
 	<tr><!--18/10/2011 - Shaliza fixed for error when staff no longer exists -->
-		<td class="leftcol"><label for="staff_id"><b>Approved By:</b></label></td>
+		<td class="leftcol"><label for="staff_id"><b><%=t('leaveforstudent.staff_id')%>:</b></label></td>
 		<td><%=h @leaveforstudent.approver_details %></td>
 	</tr>
 	<tr>
-	    <td class="leftcol"><label for="approvedate"><b>Approved On:</b></label></td>
-		<td><%=h @leaveforstudent.approvedate %></td>
+	    <td class="leftcol"><label for="approvedate"><b><%=t('leaveforstudent.approvedate')%>:</b></label></td>
+		<td><%=h @leaveforstudent.approvedate.try(:strftime, "%d %b %Y") %></td>
 	</tr>
   </table>
 </div>
 
 
-<%= link_to 'Edit', edit_leaveforstudent_path(@leaveforstudent) %> |
-<%= link_to 'Back', leaveforstudents_path %>
+<%= link_to t('edit'), edit_leaveforstudent_path(@leaveforstudent) %> |
+<%= link_to t('back'), leaveforstudents_path %>

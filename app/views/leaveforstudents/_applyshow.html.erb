@@ -1,35 +1,56 @@
-<H2>Student Leave Request Details</H2>
+<H2><%=t('leaveforstudent.details')%></H2>
 	<table width=100% >
 		<tr>
-			<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
+			<td class="leftcol"><label for="student_id"><b><%=t('leaveforstudent.student_id')%>:</b></label></td>
 			<td><%=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name %></td>
 		</tr>
 		<tr>
-		<td class="leftcol"><label for="leavetype"><b>Leave Type:</b></label></td>
+		<td class="leftcol"><label for="leavetype"><b><%=t('leaveforstudent.leavetype')%>:</b></label></td>
 			<td><%=h @leaveforstudent.leavetype %></td>
 		</tr>
 		<tr>
-		    <td class="leftcol"><label for="requestdate"><b>Request Date:</b></label></td>
+		    <td class="leftcol"><label for="requestdate"><b><%=t('leaveforstudent.requestdate.')%>:</b></label></td>
 			<td><%=h @leaveforstudent.requestdate.strftime("%d - %b - %Y") %></td>
 		</tr>
 		<tr>
-		  <td class="leftcol"><label for="reason"><b>Reason:</b></label></td>
+		  <td class="leftcol"><label for="reason"><b><%=t('leaveforstudent.reason')%>:</b></label></td>
 			<td><%=h @leaveforstudent.reason %></td>
 		</tr>
 		<tr>
-		    <td class="leftcol"><label for="address"><b>Address:</b></label></td>
+		    <td class="leftcol"><label for="address"><b><%=t('leaveforstudent.address')%>:</b></label></td>
 			<td><%=h @leaveforstudent.address %></td>
 		</tr>
 		<tr>
-		    <td class="leftcol"><label for="telno"><b>Telephone No:</b></label></td>
+		    <td class="leftcol"><label for="telno"><b><%=t('leaveforstudent.telno')%>:</b></label></td>
 			<td><%=h @leaveforstudent.telno %></td>
 		</tr>
 		<tr>
-		    <td class="leftcol"><label for="leave_startdate"><b>Start Date:</b></label></td>
-			<td><%=h @leaveforstudent.leave_startdate.strftime("%a, %d %b") %> to <%=h @leaveforstudent.leave_enddate.strftime("%a, %d %b %Y") %></td>
+		    <td class="leftcol"><label for="leave_startdate"><b><%=t('leaveforstudent.leave_dates')%>:</b></label></td>
+			<td><%=h @leaveforstudent.leave_startdate.try(:strftime, "%a, %d %b") %> <%=t('to')%> <%=h @leaveforstudent.leave_enddate.try(:strftime, "%a, %d %b %Y") %></td>
 		</tr>
 		<tr>
-		    <td class="leftcol"><label for="studentsubmit"><b>Submit for Approval:</b></label></td>
-			<td><%=h @leaveforstudent.studentsubmit? ? "Submitted" : "Not Submitted" %></td>
+		    <td class="leftcol"><label for="studentsubmit"><b><%=t('leaveforstudent.studentsubmit')%>:</b></label></td>
+			<td><%=h @leaveforstudent.studentsubmit? ? t('submitted') : t('not_submitted') %></td>
 		</tr>
 	</table>
+	
+	<fieldset>
+	<legend class='togvis'><%= t 'staff.emergency' %></legend>
+	     <table width=100%>
+		<% for kin in @leaveforstudent.student.kins %>
+			<tr>
+				<td class="leftcol"><label for="kintype_id "> <%= t 'student.kintype_id' %> :</label></td>
+				<td><%=h (Kin::KTYPE.find_all{|disp, value| value == kin.kintype_id}).map {|disp, value| disp} %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="name "><%= t 'student.name' %> : </label></td>
+				<td><%=h kin.name.blank? ? "" : kin.name %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="phone "><%= t 'student.stelno' %> :</label></td>
+				<td><%=h kin.phone %></td>
+			</tr>
+			<tr><td colspan=2><hr></td></tr>
+		<% end %>
+	</table>
+	</fieldset>
