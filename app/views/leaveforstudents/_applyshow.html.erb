@@ -6,7 +6,7 @@
 		</tr>
 		<tr>
 		<td class="leftcol"><label for="leavetype"><b><%=t('leaveforstudent.leavetype')%>:</b></label></td>
-			<td><%=h @leaveforstudent.leavetype %></td>
+			<td><%=h (Leaveforstudent::STUDENTLEAVETYPE.find_all{|disp, value| value ==@leaveforstudent.leavetype }).map {|disp, value| disp}%></td>
 		</tr>
 		<tr>
 		    <td class="leftcol"><label for="requestdate"><b><%=t('leaveforstudent.requestdate.')%>:</b></label></td>
@@ -37,20 +37,27 @@
 	<fieldset>
 	<legend class='togvis'><%= t 'staff.emergency' %></legend>
 	     <table width=100%>
-		<% for kin in @leaveforstudent.student.kins %>
-			<tr>
-				<td class="leftcol"><label for="kintype_id "> <%= t 'student.kintype_id' %> :</label></td>
-				<td><%=h (Kin::KTYPE.find_all{|disp, value| value == kin.kintype_id}).map {|disp, value| disp} %></td>
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="name "><%= t 'student.name' %> : </label></td>
-				<td><%=h kin.name.blank? ? "" : kin.name %></td>
-			</tr>
-			<tr>
-				<td class="leftcol"><label for="phone "><%= t 'student.stelno' %> :</label></td>
-				<td><%=h kin.phone %></td>
-			</tr>
-			<tr><td colspan=2><hr></td></tr>
+	       <% if @leaveforstudent.student.kins.count > 0 %>
+			<% for kin in @leaveforstudent.student.kins %>
+				<tr>
+					 <td class="leftcol"><label for="kintype_id "> <%= t 'student.kintype_id' %> :</label></td>
+					 <td><%=h (Kin::KTYPE.find_all{|disp, value| value == kin.kintype_id}).map {|disp, value| disp} %></td>
+				</tr>
+				<tr>
+					<td class="leftcol"><label for="name "><%= t 'student.name' %> : </label></td>
+					<td><%=h kin.name.blank? ? "" : kin.name %></td>
+				</tr>
+				<tr>
+					<td class="leftcol"><label for="phone "><%= t 'student.stelno' %> :</label></td>
+					<td><%=h kin.phone %></td>
+				</tr>
+				<tr><td colspan=2><hr></td></tr>
+			<% end %>
+		<% else %>
+			<BR>
+			<%= t('leaveforstudent.has_no_kin')%>
+			&nbsp;
+			<b><%= link_to t('leaveforstudent.update_kin'), edit_student_path(@leaveforstudent.student_id) %></b>
 		<% end %>
 	</table>
 	</fieldset>

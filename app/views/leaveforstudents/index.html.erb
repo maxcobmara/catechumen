@@ -27,24 +27,24 @@
 <% @leaveforstudents.each do |leaveforstudent| %>
   <tr>
 	<td><%=h leaveforstudent.student_details %></td>
-	<td><%=h leaveforstudent.leavetype %></td>
-        <td><%=h leaveforstudent.requestdate %></td>
-        <td><%=h leaveforstudent.leave_startdate %></td>
-        <td><%=h leaveforstudent.studentsubmit? ? t('submitted') : "" %></td>
-        <td><%=h leaveforstudent.approved? ? t("approved") : "" %></td>
+	<td><%= (Leaveforstudent::STUDENTLEAVETYPE.find_all{|disp, value| value ==leaveforstudent.leavetype }).map {|disp, value| disp}%></td>
+        <td><%=h leaveforstudent.requestdate.try(:strftime, '%d %b %Y') %></td>
+        <td><%=h leaveforstudent.leave_startdate.try(:strftime, '%d %b %Y') %></td>
+        <td align="center"><%=h leaveforstudent.studentsubmit? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+        <td align="center"><%=h leaveforstudent.approved? ? image_tag("tick.png") : image_tag("cross.png") %></td>
         <td><%=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : "" %></td>
    	<td width=10px>
 		<% if permitted_to? :approve, leaveforstudent %>
-			 <% if leaveforstudent.approved != true %>
+			 <% if leaveforstudent.approved != true && leaveforstudent.studentsubmit==true %>
 				<%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => leaveforstudent %>
 	  		<% end %><% end %></td>
-	<td width=10px ><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), 	:action => 'show', :id => leaveforstudent %></td>
+	<td width=10px ><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => leaveforstudent %></td>
 	<% if permitted_to? :edit, leaveforstudent %>
 		<td width=10px><% if leaveforstudent.studentsubmit != true %><%= link_to image_tag("edit.png",:border => 0,  :title => 'Edit'), 	:action => 'edit', :id => leaveforstudent %>
 	<% end %></td>
 	<% end %>
   	<% if permitted_to? :destroy, leaveforstudent %>
-		<td width=10px><%= link_to image_tag("delete.png",   	:border => 0,  :title => 'Delete'), leaveforstudent, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td width=10px><%= link_to image_tag("delete.png", :border => 0,  :title => 'Delete'), leaveforstudent, :confirm => 'Are you sure?', :method => :delete %></td>
   	<% end %>
 	
 	</tr>
@@ -53,7 +53,6 @@
 
 <br />
 </div>
-
 
 <% if permitted_to? :create, Leaveforstudent.new %>
 <%= link_to t('leaveforstudent.apply'), new_leaveforstudent_path %>
