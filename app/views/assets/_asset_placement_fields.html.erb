@@ -1,23 +1,23 @@
 <div class="fields">
 	<table>	
 		<tr>
-			<th>Location </th>
-			<td><%= f.collection_select :location_id, Location.find(:all, :order => :combo_code), :id, :location_list, :include_blank => true, :prompt => 'Location' %></td>
+			<th><%= t('menu.locations') %> </th>
+			<td><%= f.collection_select :location_id, Location.find(:all, :order => :combo_code), :id, :location_list, :include_blank => true, :prompt => (t 'menu_locations') %></td>
 			<td rowspan=3><%= f.hidden_field :_destroy %>
 										<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %></td>
 		</tr>
 		<tr>
-			<th>Assigned To</th>
+			<th><%= t('asset.assigned_to') %></th>
 			<td><%= f.collection_select :staff_id, Staff.find(:all, :order => :name), :id, :name, :include_blank => true, :prompt => 'Staff' %></td>
 		</tr>
 		<tr>
-			<th>Date</th>
+			<th><%= t('travel.date') %></th>
 			<td><%= f.date_select :reg_on, :end_year => Date.today.year, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 		<!--to add-in quantity if asset is inventory-->
 		<% if @asset.assettype == 2%>
 		<tr>
-			<th>Quantity</th>
+			<th><%= t('asset.quantity') %></th>
 			<td><%= f.text_field :quantity, :size=>5 %> / <%= @asset.quantity%></td>
 		</tr>
 		<% elsif @asset.assettype==1 %>

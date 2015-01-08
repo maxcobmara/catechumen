@@ -2,20 +2,20 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Lists of Staff Grades</h2>
+		<h2 class="left"><%= t 'staff.liststaffgrade' %></h2>
 	</div>
 	<div class="tlist">
 	    <table width=90% border="0" cellpadding="0" cellspacing="0">
 		  <tr>
     <th>Classification (do a group_by here)</th>
-    <th>Group</th>
-    <th>Grade</th>
-   <th colspan=3 class="ac">Control</th>
+    <th><%= t 'staff.group' %></th>
+    <th><%= t 'staff.grades' %></th>
+   <th colspan=3 class="ac"><%= t 'control' %></th>
   </tr>
 
 <#% @staffgrades.each do |staffgrade| %>
 <% @staffgrades_gelas.each do |gelas_name, staffgrades| %>
-	<tr><td colspan=6><BR><b>Classification <%= gelas_name %></b></td></tr>
+	<tr><td colspan=6><BR><b><%= t 'staff.classification' %><%= gelas_name %></b></td></tr>
 		<% for staffgrade in staffgrades %>
   <tr>
     <td><%=h (Staffgrade::CLASSIFICATION.find_all{|disp, value| value == staffgrade.classification_id}).map {|disp, value| disp} %></td>
