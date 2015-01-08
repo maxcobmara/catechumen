@@ -64,10 +64,20 @@ class LessonPlansController < ApplicationController
   # PUT /lesson_plans/1.xml
   def update
     @lesson_plan = LessonPlan.find(params[:id])
+    newlocation = params[:new_location]
+    if newlocation!=nil
+      scheduleid = params[:lesson_plan][:schedule]
+      scheduleid = @lesson_plan.schedule if scheduleid==nil
+      if scheduleid!=nil
+        schedule = WeeklytimetableDetail.find(scheduleid) 
+        schedule.location_desc = newlocation
+        schedule.save!
+      end
+    end
 
     respond_to do |format|
       if @lesson_plan.update_attributes(params[:lesson_plan])
-        format.html { redirect_to(@lesson_plan, :notice => 'LessonPlan was successfully updated.') }
+        format.html { redirect_to(@lesson_plan, :notice => t('lesson_plan.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

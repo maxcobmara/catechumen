@@ -5,8 +5,10 @@
 		<%=render :partial => 'show_lessonplan_report'%>
 	<% end %>
 </div>
+<% current_roles=[]%><% Login.current_login.roles.each do |x| %><% current_roles << x.name %><% end %>
+<% if (@lesson_plan.is_submitted != true && (@lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) || ((@lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration')) && @lesson_plan.hod_rejected? == true && @lesson_plan.is_submitted==nil) || (@lesson_plan.is_submitted == false && (@lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) || (@lesson_plan.is_submitted == nil && (@lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) %>
 
-<% if (@lesson_plan.is_submitted == false && @lesson_plan.prepared_by == Login.current_login.staff_id) || (@lesson_plan.prepared_by == Login.current_login.staff_id && @lesson_plan.hod_rejected? == true && @lesson_plan.is_submitted != true) || (@lesson_plan.is_submitted == false) %>
+<%# if (@lesson_plan.is_submitted == false && @lesson_plan.prepared_by == Login.current_login.staff_id) || (@lesson_plan.prepared_by == Login.current_login.staff_id && @lesson_plan.hod_rejected? == true && @lesson_plan.is_submitted != true) || (@lesson_plan.is_submitted == false) %>
 	<%= link_to t('edit'), edit_lesson_plan_path(@lesson_plan) %> |
 <% end %>
 

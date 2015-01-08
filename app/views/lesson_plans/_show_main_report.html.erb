@@ -1,52 +1,59 @@
 <fieldset>
-	<legend class='togvis'>Lesson Plan Details</legend>
+	<legend class='togvis'><%=t('lesson_plan.details')%></legend>
 		<table width=85% >
 			<tr>
-				<td class="leftcol"><label>Lecturer:</label></td>
+				<td class="leftcol"><label><%=t('lesson_plan.lecturer')%>:</label></td>
 				<td><%=h @lesson_plan.lessonplan_owner.name %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Subject</label></td>
+				<td class="leftcol"><label><%=t('lesson_plan.subject')%></label></td>
 				<td>
 					<%=h @lesson_plan.schedule_item.weeklytimetable_topic.full_parent %>
 					<%#=h @lesson_plan.lessonplan_topic.parent.code %>
 				</td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Topic:</label></td>
+				<td class="leftcol"><label><%=t('lesson_plan.topic')%>:</label></td>
 				<td>
 					<%=h @lesson_plan.schedule_item.weeklytimetable_topic.name %>
 					<%#=h @lesson_plan.lessonplan_topic.name %>
 				</td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Lecture date:</label></td>
+				<td class="leftcol"><label><%=t('lesson_plan.lecture_date')%>:</label></td>
 				<td><%=h @lesson_plan.schedule_item.get_date_for_lesson_plan %><%#=h @lesson_plan.lecture_date %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Time:</label></td>
+				<td class="leftcol"><label><%=t('lesson_plan.location')%>:</label></td>
+				<td><%=h @lesson_plan.schedule_item.location_desc %></td>				
+			</tr>
+			<tr>
+				<td class="leftcol"><label><%=t('lesson_plan.time')%>:</label></td>
 				<td>
 					<%=h @lesson_plan.schedule_item.get_start_time %> - <%=h @lesson_plan.schedule_item.get_end_time %>
 					<%#=h @lesson_plan.start_time.strftime("%H:%M") %><!-- - --><%#=h @lesson_plan.end_time.strftime("%H:%M") %>
 				</td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Intake:</label></td>
+				<td class="leftcol"><label><%=t('lesson_plan.intake_id')%>:</label></td>
 				<td>Group <%=h @lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name %>
 					<%#=h @lesson_plan.lessonplan_intake.group_with_intake_name%>	
 				</td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Year/Semester:</label></td>
+				<td class="leftcol"><label><%=t('lesson_plan.year')%> / <%=t('lesson_plan.semester')%>:</label></td>
 				<td><%=h @lesson_plan.year %>/<%=h @lesson_plan.semester %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Student qty:</label></td>
+				<td class="leftcol"><label><%=t('lesson_plan.student_qty')%>:</label></td>
 				<td><%=h @lesson_plan.student_qty %></td>				
 			</tr>	
 			<tr>
-				<td class="leftcol"><label>Location:</label></td>
-				<td><%=h @lesson_plan.schedule_item.weeklytimetable_location.name %></td>				
+				<td class="leftcol"><label><%=t('lesson_plan.location')%>:</label></td>
+				<td><%#=h @lesson_plan.schedule_item.weeklytimetable_location.name %>
+				<%#=h @lesson_plan.schedule_item.location_desc%>
+				<%= text_field_tag :new_location, @lesson_plan.try(:schedule_item).try(:location_desc) , :size=>40%>
+				</td>				
 			</tr>
 		</table>
 </fieldset>

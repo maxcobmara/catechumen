@@ -1,3 +1,4 @@
+<!--shall display all Submitted AND Approved Lesson PLAN here-->
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
@@ -21,8 +22,8 @@
     <th><%=t('lesson_plan.lecture_date')%></th>
     <th><%=t('lesson_plan.start_time')%></th>
     <th><%=t('lesson_plan.end_time')%></th>
-	<th><%=t('lesson_plan.is_submitted')%></th>
-	<th><%=t('lesson_plan.report_endorsed')%></th>
+    <th><%=t('lesson_plan.report_submit')%></th>
+    <th><%=t('lesson_plan.report_endorsed')%></th>
     <th colspan="4"><%=t('control')%></th>
   </tr>
 <!--hack-21March2013-->
@@ -39,13 +40,13 @@
     <td><%=h lesson_plan.student_qty %></td>
     <td><%=h lesson_plan.year %></td>
     <td><%=h lesson_plan.semester %></td>
-    <td><%=h lesson_plan.schedule_item.weeklytimetable_topic.subject_with_topic %><%#=h lesson_plan.lessonplan_topic.subject_with_topic %></td>
+    <td><%=h lesson_plan.schedule_item.try(:weeklytimetable_topic).try(:subject_with_topic) %><%#=h lesson_plan.lessonplan_topic.subject_with_topic %></td>
     <td><%=h lesson_plan.lecture_title %></td>
     <td><%=h lesson_plan.lecture_date %></td>
-    <td><%=h lesson_plan.schedule_item.get_start_time %><%#=h lesson_plan.start_time.strftime("%H:%M") %></td>
-    <td><%=h lesson_plan.schedule_item.get_end_time %><%#=h lesson_plan.end_time.strftime("%H:%M") %></td>
+    <td><%=h lesson_plan.schedule_item.try(:get_start_time) %><%#=h lesson_plan.start_time.strftime("%H:%M") %></td>
+    <td><%=h lesson_plan.schedule_item.try(:get_end_time) %><%#=h lesson_plan.end_time.strftime("%H:%M") %></td>
 	
-	<td><%=h lesson_plan.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+	<td><%=h lesson_plan.report_submit? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 	<td><%=h lesson_plan.report_endorsed? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => lesson_plan %></td>
 	<td width=10px>
