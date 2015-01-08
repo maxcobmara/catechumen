@@ -2,7 +2,7 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Assets</h2>
+		<h2 class="left"><%= t('menu.assets') %></h2>
 		<div class="right">
 			<% form_tag assets_path, :method => 'get' do %>
 			<%= text_field_tag :search, params[:search], :placeholder => "Reg No, Name"  %>
@@ -14,7 +14,7 @@
 
 <div class="toolbar">
 	<table width=100%><tr>
-		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Register a new asset') + "New Asset", new_asset_path %></p></td>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Register a new asset') + (t 'menu.new_assets'), new_asset_path %></p></td>
 		<td></td><td></td><td></td><td></td>
 		<td width=10%></td>
 		<td><div class="pagination"><%= will_paginate @assets %></div>
@@ -35,7 +35,7 @@
       <th><%= t 'asset.purchasedate' %></th>
 	    <th align="right"><%= t 'asset.purchaseprice' %></th>
 		<th>Status</th>
-	    <th colspan=8 class="ac">Control</th>
+	    <th colspan=8 class="ac"><%= t('control') %></th>
     </tr>
 		<% @asset_gbtype.sort.each do |gbtype, assets| %>
   	<tr>
@@ -130,4 +130,4 @@
 </div>
 <br>
 
-<%= link_to image_tag("add.png", :border => 0, :title => 'Register a new asset') + "New Asset", new_asset_path %>
+<%= link_to image_tag("add.png", :border => 0, :title => 'Register a new asset') + t('menu.new_assets'), new_asset_path %>
