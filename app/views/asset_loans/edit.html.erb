@@ -4,7 +4,7 @@
 	<% @unit_members = @asset_loan.unit_members %>
 
 	<div class="tform">
-		<H2>Assets on Loan</H2>
+		<H2><%= t('menu.asset_on_loan') %></H2>
 		<% if @asset_loan.is_approved == nil %>
 			<%= render :partial => 'form', :locals => {:f => f} %>
 		<% elsif (@asset_loan.is_approved == true && @asset_loan.loaned_by == Login.current_login.staff_id) || (@asset_loan.is_approved == true && @unit_members.include?(current_login.staff_id)) %>
@@ -14,9 +14,9 @@
 		<% end %>
 	</div>
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit (t 'update') %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @asset_loan %> |
-<%= link_to 'Back', asset_loans_path %>
+<%= link_to (t 'show'), @asset_loan %> |
+<%= link_to (t 'back'), asset_loans_path %>

@@ -1,19 +1,19 @@
 <fieldset>
-	<legend class='togvis'>Approval</legend>
+	<legend class='togvis'><%= t 'assetdefects.approval' %></legend>
 		<table width=85% >
 				<% if @asset_loan.is_approved == true %>
 				<tr>
-					<td class="leftcolwide"><label>Approved?</td>
+					<td class="leftcolwide"><label><%= t 'claim.approved' %>?</td>
 					<td><%=h @asset_loan.is_approved? ? "Released on  " + (@asset_loan.approved_date.strftime("%d %B %Y")).to_s + " by " + "#{@asset_loan.loanofficer.name}" : "" %></td>
 				</tr>
 				<tr>
-					<td class="leftcolwide"><label>Notify HOD</label></td>
+					<td class="leftcolwide"><label><%= t 'assetloan.notify' %></label></td>
 					<td><%= Staff.find(@asset_loan.hod).name %></td>
 				</tr>
 				<% else %>
 				<tr>
 					<td class="leftcolwide"><label>Status</td>
-					<td>Rejected</td>
+					<td><%= t 'assetloan.reject' %></td>
 				</tr>
 				<% end %>
 		</table>

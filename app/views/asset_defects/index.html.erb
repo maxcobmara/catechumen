@@ -1,7 +1,7 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Defect Reports</h2>
+		<h2 class="left"><%= t('assetdefects.defects_reports') %></h2>
 		<div class="right">
 		</div>
   </div>
@@ -10,7 +10,7 @@
 	
 <div class="toolbar">
 	<table><tr>
-		<td width=10%><p><label><%= link_to image_tag("add.png", :border => 0, :title => 'Register Defect') + "New", new_asset_defect_path %></label></p></td>
+		<td width=10%><p><label><%= link_to image_tag("add.png", :border => 0, :title => 'Register Defect') + (t 'new'), new_asset_defect_path %></label></p></td>
 		<td></td>
 		<td width=10%>
 			<% permitted_to? :manage, :assets do %>
@@ -25,12 +25,12 @@
 
 <table>
   <tr>
-    <th>Asset Registration</th>
-    <th>Typename - Brand - Model</th>
-    <th>Serial No</th>
-    <th>Location</th>
-    <th>Notes</th>
-    <th class="ac" colspan=5>Action</th>
+    <th><%= t('assetdefects.asset_register') %></th>
+    <th><%= t('assetdefects.typename') %></th>
+    <th><%= t('asset.serial_no') %></th>
+    <th><%= t('assetdefects.location') %></th>
+    <th><%= t('book.notes') %></th>
+    <th class="ac" colspan=5><%= t('action') %></th>
   </tr>
 
 <% @asset_defects.each do |asset_defect| %>
@@ -67,4 +67,4 @@
 </div>
 <br />
 
-<%= link_to 'New asset_defect', new_asset_defect_path %>
+<%= link_to (t 'assetdefects.new_asset'), new_asset_defect_path %>
