@@ -1,12 +1,12 @@
 <H2>View & Close</H2>
 <table>
 	<tr>
-	  <td class="leftcol"><label for="is_verified">Name</label></td>
+	  <td class="leftcol"><label for="is_verified"><%= (t 'name') %></label></td>
 		<td><%= f.collection_select :disposed_by, Staff.find(:all, :conditions => ["id = ?", current_login.staff_id]), :id, :staff_name_with_position %></td>
 	</tr>
 	
 	<tr>
-	  <td class="leftcol"><label for="is_verified">Date</label></td>
+	  <td class="leftcol"><label for="is_verified"><%= (t 'datelabel') %></label></td>
 		<td><%= f.date_select :disposed_on, :order => [:day, :month, :year], :default => Date.today %></td>
 	</tr>
 </table>

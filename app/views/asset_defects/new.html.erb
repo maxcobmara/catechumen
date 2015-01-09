@@ -2,19 +2,19 @@
   <%= f.error_messages %>
 	
 	<div class="tform">
-		<H2>Report Defect</H2>
+		<H2><%= t('assetdefects.defects_reports') %></H2>
 		<%= f.hidden_field :reported_by, :value => Login.current_login.staff_id %>
 		<table width=85% >
 
 			<tr>
-				<td class="leftcol"><label for="asset_id">Asset</label></td>
+				<td class="leftcol"><label for="asset_id"><%= t('menu.assets') %></label></td>
 				<td><%= text_field_with_auto_complete :asset_defect, :asset_name, {:size => 60}, 
 								{ :url => '/asset_autocomplete', 
 									:method => :get, 
 									:with => "'search=' + element.value + '&asset_name='"} %></td> 
 			</tr>
 			<tr>
-				<td class="leftcol"><label for="asset_code">Defect Description</label></td>
+				<td class="leftcol"><label for="asset_code"><%= t('assetdefects.defect_description') %></label></td>
 				<td><%= f.text_area :description, :size => '60x5' %></td>
 			</tr>
 		</table>
@@ -86,6 +86,6 @@
   </p>-->
 
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit (t 'create') %>
   </p>
 <% end %>

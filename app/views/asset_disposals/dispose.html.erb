@@ -2,50 +2,50 @@
   <%= f.error_messages %>
 	<div class="tform">
 		<%= render :partial => 'show_process' %>
-		<H2>Disposal</H2>
+		<H2><%= t('disposal.disposal') %></H2>
 		<table width=85% >
 				<tr>
-					<td class="leftcol"><label for="document_id">Approval Document</label></td>
+					<td class="leftcol"><label for="document_id"><%= t('disposal.approval_doc') %></label></td>
 					<td><%= f.collection_select :document_id, Document.find(:all), :id, :refno %></td>
 				</tr>
 			
 				<tr>
-					<td class="leftcol"><label for="disposal_type">Disposal Type</label></td>
-					<td><%= f.radio_button :disposal_type, "transfer",:id => 'button_transfer',:class => 'radio_disposal_type' %><label> Transfer &nbsp; 
-							<%= f.radio_button :disposal_type, "sold", 		:id => 'button_sold',  	 :class => 'radio_disposal_type' %> Sold &nbsp; 
-							<%= f.radio_button :disposal_type, "discard", :id => 'button_discard', :class => 'radio_disposal_type' %> Dispose &nbsp; 
-							<%= f.radio_button :disposal_type, "stock", 	:id => 'button_stock',   :class => 'radio_disposal_type' %> Stock &nbsp; 
-							<%= f.radio_button :disposal_type, "others",  :id => 'button_others',  :class => 'radio_disposal_type' %> Others &nbsp; </label>
+					<td class="leftcol"><label for="disposal_type"><%= t('disposal.disposal_type') %></label></td>
+					<td><%= f.radio_button :disposal_type, "transfer",:id => 'button_transfer',:class => 'radio_disposal_type' %><label> <%= t('disposal.transfer') %> &nbsp; 
+							<%= f.radio_button :disposal_type, "sold", 		:id => 'button_sold',  	 :class => 'radio_disposal_type' %> <%= t('disposal.sold') %> &nbsp; 
+							<%= f.radio_button :disposal_type, "discard", :id => 'button_discard', :class => 'radio_disposal_type' %> <%= t('assetdefects.dispose') %> &nbsp; 
+							<%= f.radio_button :disposal_type, "stock", 	:id => 'button_stock',   :class => 'radio_disposal_type' %> <%= t('disposal.stock') %> &nbsp; 
+							<%= f.radio_button :disposal_type, "others",  :id => 'button_others',  :class => 'radio_disposal_type' %> <%= t('disposal.others') %> &nbsp; </label>
 							<SPAN class="others_item" style="display: none;"><%= f.text_field :type_others_desc, :placeholder => "Describe" %></td>
 				</tr>
 				
 				<tr class="transfer_item" style="display: none;">
-					<td class="leftcol"><label for="disposed_by">Transferred To</label></td>
+					<td class="leftcol"><label for="disposed_by"><%= t('disposal.transferto') %></label></td>
 					<td><%= f.text_field :receiver_name %></td>
 				</tr>
 				
 				<tr class="sold_item" style="display: none;">
-					<td class="leftcol"><label for="disposed_by">Receipt No</label></td>
+					<td class="leftcol"><label for="disposed_by"><%= t('disposal.receiptno') %></label></td>
 					<td><%= f.text_field :documentation_no %></td>
 				</tr>
 				
 				<tr class="discard_item" style="display: none;">
-					<td class="leftcol"><label for="disposed_by">Receipt No</label></td>
-					<td><%= f.radio_button :discard_options, "bury",	:id => 'button_bury',  :class => 'radio_discard_options' %><label> Bury &nbsp; 
-							<%= f.radio_button :discard_options, "burn", 	:id => 'button_burn',  :class => 'radio_discard_options' %> Burn &nbsp; 
-							<%= f.radio_button :discard_options, "throw", :id => 'button_throw', :class => 'radio_discard_options' %> Throw &nbsp; 
-							<%= f.radio_button :discard_options, "sink", 	:id => 'button_sink',  :class => 'radio_discard_options' %> Sink &nbsp;</label></td>
+					<td class="leftcol"><label for="disposed_by"><%= t('disposal.receiptno') %></label></td>
+					<td><%= f.radio_button :discard_options, "bury",	:id => 'button_bury',  :class => 'radio_discard_options' %><label> <%= t('disposal.bury') %> &nbsp; 
+							<%= f.radio_button :discard_options, "burn", 	:id => 'button_burn',  :class => 'radio_discard_options' %> <%= t('disposal.burn') %> &nbsp; 
+							<%= f.radio_button :discard_options, "throw", :id => 'button_throw', :class => 'radio_discard_options' %> <%= t('disposal.throw') %> &nbsp; 
+							<%= f.radio_button :discard_options, "sink", 	:id => 'button_sink',  :class => 'radio_discard_options' %> <%= t('disposal.sink') %> &nbsp;</label></td>
 				</tr>
 				<tr class="discard_item" style="display: none;">
-					<td class="leftcol"><label for="disposed_by">Location</label></td>
+					<td class="leftcol"><label for="disposed_by"><%= t('menu.locations') %></label></td>
 					<td><%= f.text_field :discard_location %></td>
 				</tr>
 				<tr class="discard_item" style="display: none;">
-					<td class="leftcol"><label for="disposed_by">Date</label></td>
+					<td class="leftcol"><label for="disposed_by"><%= t('datelabel') %></label></td>
 					<td><%= f.date_select :discarded_on, :order => [:day, :month, :year], :default => Date.today %></td>
 				</tr>
 				<tr class="discard_item" style="display: none;">
-					<td class="leftcol"><label for="disposed_by">Witness 1 (Tick & select if STAFF)</label></td>
+					<td class="leftcol"><label for="disposed_by"><%= t('disposal.witness_one') %></label></td>
 					<td>
 					<!--witness number 1 - 14 dec 2012-->		
 						<%= f.check_box :witness_is_staff1, :id => 'witness_is_staff1' %> 
@@ -67,7 +67,7 @@
 					</td>
 				</tr>
 				<tr class="discard_item" style="display: none;">
-					<td class="leftcol"><label for="disposed_by">Witness 2 (Tick & select if STAFF)</label></td>
+					<td class="leftcol"><label for="disposed_by"><%= t('disposal.witness_one') %></label></td>
 					<td>
 					<!--witness number 2 - 14 dec 2012-->
 						<%= f.check_box :witness_is_staff2, :id => 'witness_is_staff2' %> 
@@ -90,20 +90,20 @@
 				</tr>
 				
 				<tr>
-					<td class="leftcol"><label for="is_disposed">Send to HOD for viewing</label></td>
+					<td class="leftcol"><label for="is_disposed"><%= t('disposal.send_to') %></label></td>
 					<td><%= f.check_box :is_disposed, :id => 'is_disposed' %></td>
 				</tr>
 			</table>
 	</div>		
 	
 <p>
-  <%= f.submit 'Update' %>
+  <%= f.submit (t 'update') %>
 </p>
 <% end %>
 
 
-<%= link_to 'Show', @asset_disposal %> |
-<%= link_to 'Back', asset_disposals_path %>
+<%= link_to (t 'show'), @asset_disposal %> |
+<%= link_to (t 'back'), asset_disposals_path %>
 
 
 <script type="text/javascript">

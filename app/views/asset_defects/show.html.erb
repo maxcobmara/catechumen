@@ -1,32 +1,32 @@
 <div class="tform">
 
 <fieldset>
-	<legend class='togvis'>Defect Report</legend>
+	<legend class='togvis'><%= t('assetdefects.defects_reports') %></legend>
 		<table width=85% >
 				<tr>
-					<td class="leftcol"><label>Asset Registration No</label></td>
+					<td class="leftcol"><label><%= t('assetdefects.asset_register') %></label></td>
 					<td><%=h @asset_defect.asset.assetcode %></td>				
 				</tr>
 				
 				<tr>
-					<td class="leftcol"><label>Asset Details</label></td>
+					<td class="leftcol"><label><%= t('asset.asset_details') %></label></td>
 					<td>	<%=h @asset_defect.asset.typename %> -   
 								<%=h @asset_defect.asset.name %>  -  
 								<%=h @asset_defect.asset.modelname %></td>
 				</tr>
 				
 				<tr>
-					<td class="leftcol"><label>Serial No</label></td>
+					<td class="leftcol"><label><%= t('asset.serial_no') %></label></td>
 					<td><%=h @asset_defect.asset.serialno %></td>
 				</tr>
 				
 				<tr>
-					<td class="leftcol"><label>Defect</label></td>
+					<td class="leftcol"><label><%= t('menu.defects') %></label></td>
 					<td><%=h @asset_defect.description %></td>
 				</tr>
 				
 				<tr>
-					<td class="leftcol"><label>Reported By</label></td>
+					<td class="leftcol"><label><%= t('assetdefects.report_by') %></label></td>
 					<td><%=h @asset_defect.reporter.try(:staff_name_with_position) %></td>
 				</tr>			
 		</table>
@@ -35,20 +35,20 @@
 <% permitted_to? :manage, :assets do %>
 
 <fieldset>
-	<legend class='togvis'>Process</legend>
+	<legend class='togvis'><%= t('proses') %></legend>
 			<table width=85%>
 				<tr>
-					<td class="leftcol"><label for="process_type"><b>Action Type</b></label></td>
+					<td class="leftcol"><label for="process_type"><b><%= t('assetdefects.action_type') %></b></label></td>
 					<td><%=h @asset_defect.process_type.titleize unless @asset_defect.process_type.blank? %></label></td>
 				</tr>
 		
 				<tr>
-					<td class="leftcol"><label for="recommendation">Recommendation</label></td>
+					<td class="leftcol"><label for="recommendation"><%= t('disposal.recommendation') %></label></td>
 					<td><%=h @asset_defect.recommendation %></td>
 				</tr>
 		
 				<tr>
-				  <td class="leftcol"><label for="is_processed">Recommendation Submitted</label></td>
+				  <td class="leftcol"><label for="is_processed"><%= t('assetdefects.recommend_submit') %></label></td>
 					<td><%=h @asset_defect.is_processed? ? "Yes, by  " + @asset_defect.processor.name.to_s + " on  " + (l(@asset_defect.processed_on)).to_s : "No" %></td>
 				</tr>
 		
@@ -57,11 +57,11 @@
 
 <% if @asset_defect.decision != nil %>
 <fieldset>
-	<legend class='togvis'>Approval</legend>
+	<legend class='togvis'><%= t('assetdefects.approval') %></legend>
 			<table width=85%>
 		
 				<tr>
-				  <td class="leftcol"><label for="is_processed">Approved</label></td>
+				  <td class="leftcol"><label for="is_processed"><%= t('travel.approved') %></label></td>
 					<td><%=h @asset_defect.decision? ? "Yes, by  " + @asset_defect.decisioner.name.to_s + " on  " + (l(@asset_defect.decision_on)).to_s : "No" %></td>
 				</tr>
 		
@@ -92,4 +92,4 @@
 	<% end %>
 <% end %> 
 |
-<%= link_to 'Back', asset_defects_path %>
+<%= link_to (t 'back'), asset_defects_path %>
