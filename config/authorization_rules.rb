@@ -203,7 +203,7 @@ authorization do
   role :student do
     
       has_permission_on :locations, :to => :menu
-    
+      
       has_permission_on :tenants, :to => :read do
         if_attribute :student_id => is {Login.current_login.student_id}
       end
