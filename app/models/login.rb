@@ -113,6 +113,15 @@ class Login < ActiveRecord::Base
     end
   end
   
+  def classes_taughtby
+    classes_ids = WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',staff.id]).map(&:id)
+    if classes_ids.is_a? Array
+      return classes_ids
+    else
+      return []
+    end
+  end
+  
   named_scope :all
   named_scope :approval,  :conditions =>  ["student_id IS? AND staff_id IS ?", nil, nil]
   named_scope :staff,     :conditions =>  ["student_id IS? AND staff_id IS NOT ?", nil, nil]
