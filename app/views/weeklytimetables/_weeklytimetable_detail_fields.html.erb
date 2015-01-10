@@ -34,6 +34,7 @@
 					<!--Day2:--><%# @selected_day2= @weeklytimetable.weeklytimetable_details[@object_index_id.to_i].day2 %>
 					<% if @selected_timeslot.to_i !=0 %><%# if @selected_timeslot.to_i>7%><!--Sun - Wed-->
 						<% @bbb="display:none" %>
+						<% @aaa="display:block" %>
 					<% elsif @selected_timeslot.to_i ==0%><%# elsif @selected_timeslot2.to_i<8%>
 						<% @aaa="display:none" %>
 						<% @bbb="display:block" %>
@@ -70,8 +71,8 @@
 		<!--start-Subject, Lecturer, Topic section, Location & Teaching method-->
 		<tr>
 			<td class="leftcol"><%=t('weeklytimetable_detail.lecturer')%></td>
-			<td><%= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar'],:order=>'name ASC'), :id, :name, :prompt=>t('select') %>
-			<%#= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=? AND positions.unit=?','Pengajar',Programme.find(@weeklytimetable.programme_id).name],:order=>'name ASC'), :id, :name, :prompt=>t('select')%></td>
+			<td><%#= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar'],:order=>'name ASC'), :id, :name, :prompt=>t('select') %>
+			<%= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=? AND positions.unit=?','Pengajar',Programme.find(@weeklytimetable.programme_id).name],:order=>'name ASC'), :id, :name, :prompt=>t('select')%></td>
 		</tr>
 		<!--25March2013-hide subject
 		<tr>
