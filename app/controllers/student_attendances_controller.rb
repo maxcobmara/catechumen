@@ -1,4 +1,5 @@
 class StudentAttendancesController < ApplicationController
+   filter_resource_access
   # GET /student_attendances
   # GET /student_attendances.xml
   def index
@@ -13,21 +14,32 @@ class StudentAttendancesController < ApplicationController
     unless @lecturer_programme.nil?
       @programme2 = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end
+    #---------------------
+    classes_own_ids = Login.current_login.classes_taughtby     #ids of weeklytimetable_detail
+    w_timetable_match = WeeklytimetableDetail.find(:all, :conditions => ['id IN(?)', classes_own_ids]).map(&:weeklytimetable_id).uniq
+    relevant_intakes_ids = Weeklytimetable.find(:all, :conditions => ['id IN(?)', w_timetable_match]).map(&:intake_id)
+    relevant_intakes = Intake.find(:all, :conditions => ['id IN(?)', relevant_intakes_ids]).map(&:monthyear_intake) 
+    student_intakes = []
+    relevant_intakes.each do |ri|
+      student_intakes << ri.strftime("%Y-%m-%d")
+    end
+    #---------------------
     unless @programme2.nil?
       @preselect_prog= @programme2.id     #@preselect_prog (programme_id)
-      @intake_list2 = Student.find(:all, :conditions => ['course_id=?',@preselect_prog], :select=> "DISTINCT intake")
+      @intake_list2 = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes], :select=> "DISTINCT intake")
       @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id)
     else  #admin
-      @intake_list2 = Student.find(:all, :conditions => ['course_id IS NOT NULL and course_id IN(?)',@programme_list_ids], :select=> "DISTINCT intake, course_id",:order=>"course_id,intake") 
+      @intake_list2 = Student.find(:all, :conditions => ['course_id IS NOT NULL and course_id IN(?) and intake=?',@programme_list_ids, student_intakes], :select=> "DISTINCT intake, course_id",:order=>"course_id,intake") 
       @topics_ids_this_prog = Programme.at_depth(3) 
     end
-    @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])
+    @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and id IN(?)',@topics_ids_this_prog, Login.current_login.classes_taughtby])
+    #note : above - to display classes by current logged-in lecturer only
     ######==============
     if submit_val == 'Search Student Attendances'
-        @student_attendances = StudentAttendance.search2(classid)
+        @student_attendances = StudentAttendance.with_permissions_to(:edit).search2(classid)
     else
         #@student_attendances = StudentAttendance.search(@intake_student,@programme)
-        @student_attendances = StudentAttendance.search(@intake_student,@preselect_prog)
+        @student_attendances = StudentAttendance.with_permissions_to(:edit).search(@intake_student,@preselect_prog)
     end
     
     #listing of student attendance
@@ -46,9 +58,9 @@ class StudentAttendancesController < ApplicationController
 		@students = @student_attendances.map(&:student_id).uniq 
 		@courses = Student.find(@students).map(&:course_id).uniq 
 		unless @programme2.nil?                       
-	    @intatake2 = Student.find(:all, :conditions => ['course_id=? AND intake IN (?)',@preselect_prog, @intatake], :select=> "DISTINCT intake") 
-    else 
-      @intatake2 = Student.find(:all, :conditions => ['course_id IN (?) AND intake IN (?)',@courses, @intatake], :select=> "DISTINCT intake,course_id") 
+			@intatake2 = Student.find(:all, :conditions => ['course_id=? AND intake IN (?)',@preselect_prog, @intatake], :select=> "DISTINCT intake") 
+		else 
+			 @intatake2 = Student.find(:all, :conditions => ['course_id IN (?) AND intake IN (?)',@courses, @intatake], :select=> "DISTINCT intake,course_id") 
 		end 
     
     #yg asal---below this line---
