@@ -108,12 +108,16 @@
 <!--<table width=95% style="border:none;padding:0;border-spacing:0;">-->
 <table class="plong">	
 	<!--Header for Monday until Thursday-(start)-->
-	<%# @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(7, false) do |row_things| %>
 	<tr><td class="header1">&nbsp;</td>
 	<% detailing.each_with_index do |j,index|%><!--<%=detailing.count%>~<%#=detailing_monthurs.count%>~<%#=detailing_friday.count%>-->
 	<% if index==0%>
 		<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
 		<% @column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count%>
+		<% @weekdays_end = j.weeklytimetable.startdate.to_date+4.days %>
+		<% @daycount = @column_count_monthur %>
+		<% @daycount2 = (j.weeklytimetable.enddate.to_date - @weekdays_end).to_i %>
+		<% @break_format1 = j.weeklytimetable.timetable_monthurs.timetable_periods.map(&:is_break) %>
+		<% @break_format2 = j.weeklytimetable.timetable_friday.timetable_periods.map(&:is_break) %>
 		<% j.weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@column_count_monthur, false) do |row_things| %>
 	
 		
@@ -135,9 +139,7 @@
 				<% else %>
 				<% end %>
 			<% end %>	
-		</td>
-	
-	<%# end %>
+		</td>	
 	<% end %></tr>
 	<% end %>
 	<% end %>
@@ -151,10 +153,10 @@
 			<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
 			<% @column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count%>
 		<td class="data1a">
-			<% if count2==1 %><%=t(:'date.day_names')[1]%><br> <%=j.weeklytimetable.startdate.strftime('%d-%b-%Y') %>
-			<% elsif count2==2 %><%=t(:'date.day_names')[2]%><br><%=(j.weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
-			<% elsif count2==3 %><%=t(:'date.day_names')[3]%><br><%=(j.weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
-			<% elsif count2==4 %><%=t(:'date.day_names')[4]%><br><%=(j.weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
+			<% if count2==1 %><%=t(:'date.day_names')[0]%><br> <%=j.weeklytimetable.startdate.strftime('%d-%b-%Y') %>
+			<% elsif count2==2 %><%=t(:'date.day_names')[1]%><br><%=(j.weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
+			<% elsif count2==3 %><%=t(:'date.day_names')[2]%><br><%=(j.weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
+			<% elsif count2==4 %><%=t(:'date.day_names')[3]%><br><%=(j.weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
 			<% end %>	
 		</td>
 		<% @column_count=j.weeklytimetable.timetable_monthurs.timetable_periods.count%>
@@ -274,7 +276,7 @@
 		<% detailing.each_with_index do |j,index|%>
 		<% if index==0%>
 		<td class="data3">
-			JUMAAT<br><%=j.weeklytimetable.enddate.strftime('%d-%b-%Y') %>
+			<%=t(:'date.day_names')[4]%><br><%=j.weeklytimetable.enddate.strftime('%d-%b-%Y') %>
 		</td>
 		
 		<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
@@ -288,7 +290,12 @@
 				<td colspan="2" class="data4">
 				
 						<% detailing_friday.each do |j|%>
-							<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 && j.weeklytimetable.hod_approved == true%>
+							<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 %>
+							<% if j.weeklytimetable.hod_approved == true %>
+								    <font color="#000000">
+							<% else %>
+								    <font color="grey">
+							<% end %>
 							<strong>
 								<div align="left">
 									<%#= j.weeklytimetable_topic.parent.code %>
@@ -305,7 +312,7 @@
 									<%= j.weeklytimetable.schedule_intake.description %>
 									<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
 								</div>
-							</strong>
+							</strong></font>
 						<% end %>
 					<% end %>
 				</td>
@@ -313,10 +320,12 @@
 				<td class="data5"><!--kukku--> <%#=@column_count_monthur%><%#=count4%><%#=@column_count_monthur+count4%><!--revised : 26Jul2013-->
 					
 					<% detailing_friday.each do |j|%>
-						<!--26Jul2013--><!--ERROR : FOR FRIDAY : TIME_SLOT WHEREAS TIME_SLOT 2 FOR MON-THURS-->
-						<%# if j.is_friday == true  && j.time_slot2 == @column_count_monthur+count4 && j.weeklytimetable.hod_approved == true%>
-						<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 && j.weeklytimetable.hod_approved == true%>
-						<!--26Jul2013-->
+						<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 %>
+							<% if j.weeklytimetable.hod_approved == true %>
+								    <font color="#000000">
+							<% else %>
+								    <font color="grey">
+							<% end %>
 								<strong>
 									<div align="left">
 										<%#= j.weeklytimetable_topic.parent.code %>
@@ -333,7 +342,7 @@
 										<%= j.weeklytimetable.schedule_intake.description %>
 										<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
 									</div>
-								</strong>
+								</strong></font>
 						<% end %>
 					<% end %>		
 				</td>
@@ -345,45 +354,159 @@
 		<% end %>
 	</tr>
 	<!--Content for Friday-(end)-->
-	<tr><td colspan="8" style="height:10px;">&nbsp;</td><tr>
-	<tr>
-		<td></td>
-		<td colspan="2" class="sign_prepare1">
-			Disediakan oleh,
-			<br><br><br>
-		</td>
-		<td colspan="2"></td>
-		<td colspan="3" class="sign_prepare1">
-			Disemak oleh,
-			<br><br><br>
-		
-		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td colspan="2" class="sign_prepare2">
-			<span class="bold-cap"><%#=h @weeklytimetable.schedule_creator.name %></span><br>
-			Pengajar Penyelaras <%#=h @weeklytimetable.schedule_creator.position.name %><br>
-			Pelatih Ambilan <%#=h @weeklytimetable.schedule_intake.name %><br><br>
-			Tarikh : <%#=h  @weeklytimetable.submitted_on? ? @weeklytimetable.submitted_on.strftime('%d-%b-%Y') : "Not Submitted" %>
-		</td>
-		<td colspan="2">
-		
-		</td>
-		<td colspan="3" class="sign_prepare2">
-			<span class="bold-cap"><%#=h @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"  %></span><br>
-			<%=h Login.current_login.staff.position.parent.name %><br>
-			KSKB Johor Bahru<br><br>
-			Tarikh : <%#=h @weeklytimetable.hod_approved_on? ? @weeklytimetable.hod_approved_on.strftime('%d-%b-%Y') : "Not Approved" %>
-		</td>
-		
-	</tr>
-</table>		
-</center>		
-<!--<div>-->
-<BR/><BR/>	
+	
+	<!--SIGNatory part appear on 1st page, if schedule end here(5 days) - START-->
+	<% if @daycount2 == 0 %>
+		<tr><td colspan="8" style="height:10px;">&nbsp;</td><tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td colspan="2" class="sign_prepare1">Disediakan oleh,<br><br><br></td>
+			<td colspan="2"></td>
+			<td colspan="3" class="sign_prepare1">Disemak oleh,<br><br><br></td>
+		 </tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td colspan="2" class="sign_prepare2">
+				<span class="bold-cap"><%#=h @weeklytimetable.schedule_creator.name %></span><br>
+				Pengajar Penyelaras <%#=h @weeklytimetable.schedule_creator.position.name %><br>
+				Pelatih Ambilan <%#=h @weeklytimetable.schedule_intake.name %><br><br>
+				Tarikh : <%#=h  @weeklytimetable.submitted_on? ? @weeklytimetable.submitted_on.strftime('%d-%b-%Y') : "Not Submitted" %>
+			</td>
+			<td colspan="2">&nbsp;</td>
+			<td colspan="3" class="sign_prepare2">
+				<span class="bold-cap"><%#=h @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"  %></span><br>
+				<%=h Login.current_login.staff.position.parent.name %><br>
+				KSKB Johor Bahru<br><br>
+				Tarikh : <%#=h @weeklytimetable.hod_approved_on? ? @weeklytimetable.hod_approved_on.strftime('%d-%b-%Y') : "Not Approved" %>
+			</td>
+		</tr>	
+	<% end %>
+	<!--SIGNatory part appear on 1st page, if schedule end here(5 days) - END-->
+	
+	<!--1ST page should end here, although 2nd page exist-START-->
+	</table></center>
+	<BR/><BR/>
+	<% if @daycount2 == 0 %>
+	<div id="hideLink">
+		<%= link_to t('back'), weeklytimetables_path %>
+	</div>
+	<% end %>
+	<BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/>
+	<!--1ST page should end here, although 2nd page exist-END-->
+	
+<% if @daycount2 > 0 %>
+	<P CLASS="breakhere">
+	<div class="A4landscape" >
+		<BR><BR><center>
+		<table class="plong">
+			<!--Header(row) : sequence & time period (ADDITIONAL - Weekends classes)-->                              
+			<tr>
+			<% detailing.each_with_index do |j,index| %>
+				<% if index==0 %>
+					<% j.weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@column_count_monthur, false) do |row_things| %>
+						<td class="header1">&nbsp;</td>
+						<% for periods in row_things %>
+							<% if periods.day_name == 1%>
+								<td class="header3">
+									<%= periods.timing %>
+								</td>
+							<% end %>
+						<% end %>
+					<% end %>
+				<% end %>
+			<% end %>
+			</tr>
+			<!--Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header -->
+			<% 1.upto(@daycount2) do |row2| %>
+			<tr>
+				<td class="data3">
+					<%=(@weekdays_end+row2).try(:strftime, "%A") %>
+					<br><%=(@weekdays_end+row2).try(:strftime, "%d-%b-%Y") %>
+				</td>
+				<!--Content - (ADDITIONAL - Weekends classes)
+				span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column-->
+				<% 1.upto(@column_count_monthur) do |col2| %>
+					<% if @break_format1[col2-1]==true && row2==1 %>
+						<td class="break2" rowspan="<%=@daycount2+1%>"><%=t('weeklytimetable.break').upcase%></td>
+					<% elsif @break_format1[col2-1]==true && row2!=1%><!--<td>row<%=row2%>col<%=col2%></td>-->
+						 <!--do-not-remove : should not have any field or value-->
+					<% elsif @break_format1[col2-1]==false %>
+						<% if col2 == @column_count_monthur %>
+							<% if row2 == @daycount2%>
+								<td class="data4">
+							<% else %>
+								<td class="data1">
+							<% end %>
+						<% else %>
+							<td class="data3">
+						<% end %>
+							<% nos=0 %>
+							<% detailing_monthurs.each do |j2| %>
+								<% if j2.day2 == row2 && j2.time_slot2 == col2 %>
+									<% if nos==0 %>
+										<% nos+=1 %>
+										<% if j2.weeklytimetable.hod_approved == true %>
+											<font color="#000000">
+										<% else %>
+											 <font color="grey">
+										<% end %>
+										<strong>
+										<div align="left">
+											<%#= j2.weeklytimetable_topic.parent.code %>
+											<%= j2.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j2.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
+										</div><br>
+										<%= j2.weeklytimetable_topic.name %>
+										<%= "(K)" if j2.lecture_method == 1 %>
+										<%= "(T)" if j2.lecture_method == 2 %>
+										<%= "(A)" if j2.lecture_method == 3 %><br>
+										<%#= j2.weeklytimetable_location.try(:name) %>
+										<%= j2.location_desc %>
+										<div align="right"><br>
+										<%= j2.weeklytimetable.schedule_programme.programme_list %><br>
+										<%= j2.weeklytimetable.schedule_intake.description %>
+										<%= "Ambilan ("+ j2.weeklytimetable.schedule_intake.name+")" %>
+										</div>
+										</strong></font>
+									<% end %>
+								<% end %>
+							<% end %>
+						</td>
+					<% end %>
+				<% end %>
+			<tr>
+			<% end %>
+	
+			<!--SIGNatory part appear on 2nd page, if schedule end here(7 days) - START-->
+			<tr><td colspan="8" style="height:10px;">&nbsp;</td><tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td colspan="2" class="sign_prepare1">Disediakan oleh,<br><br><br></td>
+				<td colspan="2"></td>
+				<td colspan="3" class="sign_prepare1">Disemak oleh,<br><br><br></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td colspan="2" class="sign_prepare2">
+					<span class="bold-cap"><%#=h @weeklytimetable.schedule_creator.name %></span><br>
+					Pengajar Penyelaras <%#=h @weeklytimetable.schedule_creator.position.name %><br>
+					Pelatih Ambilan <%#=h @weeklytimetable.schedule_intake.name %><br><br>
+					Tarikh : <%#=h  @weeklytimetable.submitted_on? ? @weeklytimetable.submitted_on.strftime('%d-%b-%Y') : "Not Submitted" %>
+				</td>
+				<td colspan="2">&nbsp;</td>
+				<td colspan="3" class="sign_prepare2">
+					 <span class="bold-cap"><%#=h @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"  %></span><br>
+					 <%=h Login.current_login.staff.position.parent.name %><br>
+					 KSKB Johor Bahru<br><br>
+					Tarikh : <%#=h @weeklytimetable.hod_approved_on? ? @weeklytimetable.hod_approved_on.strftime('%d-%b-%Y') : "Not Approved" %>
+				</td>
+			</tr>	
+			<!--SIGNatory part appear on 2nd page, if schedule end here(7 days) - END-->
+		</table>	
+		</center>
+		<BR/><BR/>
 
-<div id="hideLink">
-<%= link_to t('back'), weeklytimetables_path %>
-</div>
-
+		<div id="hideLink">
+			<%= link_to t('back'), weeklytimetables_path %>
+		</div>
+        </div>
+<% end %>
