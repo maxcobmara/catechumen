@@ -32,10 +32,12 @@ class StudentAttendancesController < ApplicationController
       @intake_list2 = Student.find(:all, :conditions => ['course_id IS NOT NULL and course_id IN(?) and intake=?',@programme_list_ids, student_intakes], :select=> "DISTINCT intake, course_id",:order=>"course_id,intake") 
       @topics_ids_this_prog = Programme.at_depth(3) 
     end
-    @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and id IN(?)',@topics_ids_this_prog, Login.current_login.classes_taughtby])
+    #@schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and id IN(?)',@topics_ids_this_prog, Login.current_login.classes_taughtby])
+    @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and lecturer_id=?',@topics_ids_this_prog, Login.current_login.staff_id])
+
     #note : above - to display classes by current logged-in lecturer only
     ######==============
-    if submit_val == 'Search Student Attendances'
+    if submit_val == I18n.t("student_attendance.search")
         @student_attendances = StudentAttendance.with_permissions_to(:edit).search2(classid)
     else
         #@student_attendances = StudentAttendance.search(@intake_student,@programme)
@@ -118,7 +120,7 @@ class StudentAttendancesController < ApplicationController
         @student_attendance = StudentAttendance.new(params[:student_attendance])
         respond_to do |format|
           if @student_attendance.save
-            format.html { redirect_to(@student_attendance, :notice => 'Student attendance was successfully created.') }
+            format.html { redirect_to(@student_attendance, :notice => t('student_attendance.title')+t('created')) }
             format.xml  { render :xml => @student_attendance, :status => :created, :location => @student_attendance }
           else
             format.html { render :action => "new" }
@@ -135,7 +137,7 @@ class StudentAttendancesController < ApplicationController
 		    
         if @student_attendances.all?(&:valid?) 
           @student_attendances.each(&:save!)                                      # ref: to retrieve each value of @exammarks --> http://railsforum.com/viewtopic.php?id=11557 (Dazen2 007-10-07 05:27:42) 
-            flash[:notice] = 'Successfully saved all records'
+            flash[:notice] = I18n.t("saved_all_records")
             redirect_to :action => 'index'
         else                                                                      
 			    #@exammarkerrormsg = Exammark.set_error_messages(@exammarks) 
@@ -177,7 +179,7 @@ class StudentAttendancesController < ApplicationController
 
     respond_to do |format|
       if @student_attendance.update_attributes(params[:student_attendance])
-        format.html { redirect_to(@student_attendance, :notice => 'StudentAttendance was successfully updated.') }
+        format.html { redirect_to(@student_attendance, :notice => t('student_attendance.title')+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -201,7 +203,7 @@ class StudentAttendancesController < ApplicationController
 
   def edit_multiple_intake
       @edit_type = params[:student_attendance_intake]
-      if @edit_type == 'Edit multiple by intake'
+      if @edit_type == I18n.t("student_attendance.edit_multiple_intake")
           @intake = params[:intake_student]
           @student_attendances_intake = StudentAttendance.all.group_by{|x|x.student.intake.strftime("%Y-%m-%d")}
           @studentattendance_ids = []
@@ -222,7 +224,7 @@ class StudentAttendancesController < ApplicationController
   	          @student_count = @studentattendances.map(&:student_id).uniq.count
   	          @edit_type = params[:student_attendance_submit_button]  
           else    
-              flash[:notice] = "Please select an intake to edit."+@intake.to_s
+              flash[:notice] = I18n.t("student_attendance.select_intake_edit")+@intake.to_s
               redirect_to student_attendances_path
           end
       end

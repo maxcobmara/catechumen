@@ -25,8 +25,8 @@ class Ptcourse < ActiveRecord::Base
   
   DUR_TYPE = [
        #  Displayed       stored in db
-       [ "Days",  1 ],
-       [ "Months",2 ],
-       [ "Years", 3 ],
+       [ I18n.t("time.days"),  1 ],
+       [ I18n.t("time.months"),2 ],
+       [ I18n.t("time.years"), 3 ],
   ]
 end
