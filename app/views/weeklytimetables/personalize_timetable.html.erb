@@ -174,8 +174,13 @@
 			<% elsif count3==7%>
 				<td class="data1">
 					<% detailing_monthurs.each do |j|%><%#= j.weeklytimetable.hod_approved %>
-						<% if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>
-		<%#= j.day2 %><%#=count2%>
+						<%# if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>
+						<% if j.day2 == count2  && j.time_slot2 == count3 %>
+							<% if j.weeklytimetable.hod_approved == true %>
+								    <font color="#000000">
+							<% else %>
+								    <font color="grey">
+							<% end %>
 							<strong>
 								<div align="left">
 									<%#= j.weeklytimetable_topic.parent.code %>
@@ -202,7 +207,13 @@
 				<td class="data1"><%#= detailing_monthurs.count%>
 			
 					<% detailing_monthurs.each do |j|%><%#= j.weeklytimetable.hod_approved %>
-						<% if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>				
+						<%# if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>
+						<% if j.day2 == count2  && j.time_slot2 == count3 %>
+							<% if j.weeklytimetable.hod_approved == true %>
+								    <font color="#000000">
+							<% else %>
+								    <font color="grey">
+							<% end %>
 							<strong><!--DUA--><%#=j.topic%>
 								<div align="left">
 									<%#= j.weeklytimetable_topic.parent.code %>
@@ -289,8 +300,8 @@
 			<% elsif count4 == 5 || classes_tospan.include?(count4)%>
 				<td colspan="2" class="data4">
 				
-						<% detailing_friday.each do |j|%>
-							<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 %>
+					<% detailing_friday.each do |j|%>
+						<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 %>
 							<% if j.weeklytimetable.hod_approved == true %>
 								    <font color="#000000">
 							<% else %>
