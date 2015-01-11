@@ -11,28 +11,33 @@
 		</div>
   </div>
 </div>
-
+<% if permitted_to? :create, @staff %>
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title =>(t 'staff.create')) + t('staff.create'), new_staff_path %></p>
+</div>
+<% end %>
+<BR><BR>
 <div class="indextable">
 	<table>
   	<tr>
-			<th><%= sortable "icno", (t 'staff.icno') %></th>
-			<th><%= sortable "name", (t 'staff.name') %></th>
-      <th><%= t 'staff.position' %></th>
-      <th colspan=4 class="ac"><%= t 'control' %></th>
-  	</tr>
-		<% @staff_filtered.each do |staff| %>
-    <tr>
-    	<td><%=h staff.formatted_mykad %></td>
-      <td><%=h staff.name %></td>
-      <td><%=h staff.position.blank? ? "-" : staff.position.name %></td>
-      <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => staff %></td>
-      <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => staff %></td>
-      <% if permitted_to? :destroy, @staff%>
-      <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), staff, :confirm => 'Are you sure?', :method => :delete %></td>
-      <% end %>
-      <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Maklumat Staf'), :action => 'borang_maklumat_staff', :id => staff %></td>
-    </tr>
-    <% end %>
+		<th><%= sortable "icno", (t 'staff.icno') %></th>
+		<th><%= sortable "name", (t 'staff.name') %></th>
+		<th><%= t 'staff.position' %></th>
+		<th colspan=4 class="ac"><%= t 'control' %></th>
+	</tr>
+	<% @staff_filtered.each do |staff| %>
+       <tr>
+		<td><%=h staff.formatted_mykad %></td>
+		<td><%=h staff.name %></td>
+		<td><%=h staff.position.blank? ? "-" : staff.position.name %></td>
+		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => staff %></td>
+		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => staff %></td>
+		<% if permitted_to? :destroy, @staff%>
+			  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), staff, :confirm => 'Are you sure?', :method => :delete %></td>
+		<% end %>
+		<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Maklumat Staf'), :action => 'borang_maklumat_staff', :id => staff %></td>
+	</tr>
+	<% end %>
 	</table>
 </div>
 

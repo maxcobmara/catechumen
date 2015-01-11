@@ -5,25 +5,23 @@
 </div>
 
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Staff Grade') + (t 'new'), new_employgrade_path %></p>
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'staff.newemploygrade') + (t 'staff.newemploygrade'), new_employgrade_path %></p>
 </div>
-
+<BR><BR>
 <div class="indextable">
 	<table>
 	  <tr>
 	    <th><%= t 'name' %></th>
-			<th><%= t 'type' %></th>
-			<th colspan=2 class="ac"><%= t 'control' %></th>
+	    <th><%= t 'staff.group_grade' %></th>
+	    <th colspan=2 class="ac"><%= t 'control' %></th>
 	  </tr>
-
 	<% @employgrades.each do |employgrade| %>
 	  <tr>
 	    <td><%=h employgrade.name %></td>
-			<td><%=h employgrade.booboo %></td> 
-
+		<td><%=h employgrade.booboo %></td> 
   		<!--<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), employgrade %></td>-->
   		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), edit_employgrade_path(employgrade) %></td>
-			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), employgrade, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), employgrade, :confirm => 'Are you sure?', :method => :delete %></td>
 	  </tr>
 	<% end %>
 	</table>
