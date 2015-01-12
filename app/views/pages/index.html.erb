@@ -2,7 +2,7 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Pages</h2>
+		<h2 class="left"><%= t 'pages.pages' %></h2>
 		<div class="right">
 			<% form_tag pages_path, :method => 'get' do %>
 			<%= text_field_tag :search, params[:search] %>
@@ -15,12 +15,12 @@
   	<table width=100% border="0" cellpadding="0" cellspacing="0">
         <tr>
 	        
-	        <th>Position</th>
-	        <th>Nav Label</th>
-          <th>Name</th>
-          <th>Admin</th>
-          <th>Redirect</th>
-          <th colspan=3 class="ac">Control</th>
+	        <th><%= t 'pages.position' %></th>
+	        <th><%= t 'pages.nav_label' %></th>
+          <th><%= t 'name' %></th>
+          <th><%= t 'pages.admin' %></th>
+          <th><%= t 'pages.redirect' %></th>
+          <th colspan=3 class="ac"><%= t 'control' %></th>
         </tr>
 
         <% @pages.each do |page| %>
@@ -39,6 +39,6 @@
 
 <br />
 </div>
-<%= link_to 'New page', new_page_path %>
+<%= link_to (t 'pages.new'), new_page_path %>
 
 </div>
