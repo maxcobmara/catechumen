@@ -1,24 +1,24 @@
 <div class="tform">
-	<H2>Pages Details</H2>
+	<H2><%= t 'pages.page_details' %></H2>
 <table width=100% >
 
 	<tr>
-		<td class="leftcol"><label for="name">Name : </label></td>
+		<td class="leftcol"><label for="name"><%= t 'name' %> : </label></td>
 		<td><%=h @page.name %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="title">Title : </label></td>
+		<td class="leftcol"><label for="title"><%= t 'pages.title' %> : </label></td>
 		<td><%=h @page.title %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="body">Body : </label></td>
+		<td class="leftcol"><label for="body"><%= t 'pages.body' %> : </label></td>
 		<td><%=h simple_format(@page.body) %></td>
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="admin">Admin : </label></td>
+		<td class="leftcol"><label for="admin"><%= t 'pages.admin' %> : </label></td>
 		<td><%= @page.admin? ? "TRUE" : "FALSE" %></td>
 	</tr>
 		
@@ -29,12 +29,12 @@
 		<% @lib=true if role.id==5 %>
 		<% @admin=true if role.id == 2%>
 	<% end %>
-<%= link_to 'Edit', edit_page_path(@page) %> |
+<%= link_to (t 'edit'), edit_page_path(@page) %> |
 <% if @admin==true %>
-	<%= link_to 'Back', pages_path %>
+	<%= link_to (t 'back'), pages_path %>
 <% else %>
 	<% if @lib==true%>
-		<%#= link_to 'Back', librarytransactions_path %>
-		<%= link_to 'Back',    '/rules' %>
+		<%#= link_to (t 'back'), librarytransactions_path %>
+		<%= link_to (t 'back'),    '/rules' %>
 	<% end %>
 <% end %>

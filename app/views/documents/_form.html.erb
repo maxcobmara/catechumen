@@ -2,7 +2,7 @@
 	<H2><%= t 'document.doc_details' %></H2>
 	<table>
 		<tr>
-			<td class="leftcol"><label for="serialno">Serial No:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="serialno"><%= t 'document.serialno' %>:</label><font color="red"> * </font></td>
 			<td><%= f.text_field :serialno, :value => Document.set_serialno(@document.id), :readonly => true, :class => "compulsory" %>
 			<%#= f.text_field :serialno, :value => (Document.last.id)+1, :readonly => true, :class => "compulsory" %>
 			<%#= f.text_field :serialno, :readonly => true, :class => "compulsory" %>
@@ -10,51 +10,51 @@
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="refno">Ref No:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="refno"><%= t 'document.refno' %>:</label><font color="red"> * </font></td>
 			<td><%= f.text_field :refno, :class => "compulsory" %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="title">Title:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="title"><%= t 'document.title' %>:</label><font color="red"> * </font></td>
 			<td><%= f.text_field :title, :size => '60', :class => "compulsory" %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="category">Category:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="category"><%= t 'document.category' %>:</label><font color="red"> * </font></td>
 			<td><%= f.select :category, 
 			                 Document::CATEGORY, :class => "compulsory" ,
 			                 :prompt => "Select" %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="letterdt">Letter Date:</label></td>
+			<td class="leftcol"><label for="letterdt"><%= t 'document.letterdt' %>:</label></td>
 			<td><%= f.date_select :letterdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="letterxdt">Received Date:</label></td>
+			<td class="leftcol"><label for="letterxdt"><%= t 'document.letterxdt' %>:</label></td>
 			<td><%= f.date_select :letterxdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="from">From:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="from"><%= t 'document.from' %>:</label><font color="red"> * </font></td>
 			<td><%#= f.text_field :sender, :size => '60', :class => "compulsory" %><%= f.text_field :from, :size => '60', :class => "compulsory" %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="stafffiled_id">Filed By:</label></td>
+			<td class="leftcol"><label for="stafffiled_id"><%= t 'document.stafffiled_id' %>:</label></td>
 			<td><%= f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, { :selected => 61 }   %>
 				<%= f.hidden_field :prepared_by, :value=>@current_login.staff_id %>
 			</td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="file_id">File No:</label></td>
+			<td class="leftcol"><label for="file_id"><%= t 'document.fileno' %>:</label></td>
 			<td><%= f.collection_select :file_id, Cofile.find(:all, :order => :cofileno), :id, :file_no_and_name, :include_blank => true %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="data">Current Attachment:</label></td>
+			<td class="leftcol"><label for="data"><%= t 'document.current_attach' %>:</label></td>
 			<td><% if @document.data.exists? then %>
 			    	<%= @document.data_file_name %> &nbsp;&nbsp;&nbsp;
 			    	<%= link_to (t 'document.download'), @document.data.url %> ||
@@ -63,14 +63,14 @@
 			    No Attachment yet
 			    <% end %></td>
 		<tr>
-			<td class="leftcol"><label for="data">Upload/Change File:</label></td>
+			<td class="leftcol"><label for="data"><%= t 'document.upload_file' %>:</label></td>
 			<td><%= f.file_field :data %></td>
 		</tr>
 	</table>	
-		<h2>Circulation Details</h2>
+		<h2><%= t 'document.circulate_details' %></h2>
 	<table>	
 		<tr>
-			<td class="leftcol"><label for="closed"><!--Other Information-->Circulation/Minute Action: <br>(Minit Tindakan)</label></td>
+			<td class="leftcol"><label for="closed"><!--Other Information--><%= t 'document.minute_action' %>: <br>(Minit Tindakan)</label></td>
 			<td><%= f.text_area :otherinfo, :size => '40x3' %></td>
 		</tr>
 		
@@ -83,7 +83,7 @@
 		
 		<!--5April2013-multiple circulation-->
 		<tr>
-			<td class="leftcol"><label for="to_id">Circulate To:</label></td>
+			<td class="leftcol"><label for="to_id"><%= t 'document.circulateto' %>:</label></td>
 			<td><%= text_field_with_auto_complete :document, :to_name ,{ :size => 70 }, 
 											{ :tokens => ",",:url => formatted_staffs_path(:js), 
 											  :method => :get,
@@ -94,19 +94,19 @@
 		<!--5April2013-multiple circulation-->
 		
 		<tr>
-			<td class="leftcol"><label for="circulatedt">Circulation/Minute Date:</label></td>
+			<td class="leftcol"><label for="circulatedt"><%= t 'document.minute_date' %>:</label></td>
 			<td><%= f.date_select :cc1date, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="category">Action Type:</label><!--<font color="red"> * </font>--></td>
+			<td class="leftcol"><label for="category"><%= t 'document.actiontype' %>:</label><!--<font color="red"> * </font>--></td>
 			<td><%= f.select :cctype_id, 
 			                 Document::ACTION,
-			                 :prompt => "Select"  %></td>
+			                 :prompt => (t 'select')  %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="closed">Closed:</label></td>
+			<td class="leftcol"><label for="closed"><%= t 'document.closed' %>:</label></td>
 			<td><%= f.check_box :closed %></td>
 		</tr>
 

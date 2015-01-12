@@ -1,24 +1,24 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Listing Messages</h2>
+		<h2 class="left"><%= t 'events.list' %></h2>
 	</div>
 </div>
 
 
 <div class="indextable">
 	<div class="toolbar">
-		<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Message') + "New", new_message_path %></p>
+		<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Message') + (t 'new'), new_message_path %></p>
 	</div><br/>
 	
-	<h3>Messages For Me</h3>
+	<h3><%= t 'events.message_for_me' %></h3>
 	<table>
 		<tr>
-			<th>From</th>
-			<th>Received</th>
-			<th>Message</th>
+			<th><%= t 'document.from' %></th>
+			<th><%= t 'events.received' %></th>
+			<th><%= t 'events.message' %></th>
 			<th>CC</th>
-			<th colspan=1 class="ac">Control</th>
+			<th colspan=1 class="ac"><%= t 'control' %></th>
 		</tr>
 
 		<% @tome.each do |message| %>
@@ -41,13 +41,13 @@
 		<% end %>
 	</table>
 	<BR/><BR/><BR/>
-  <h3>Sent Messages</h3>
+  <h3><%= t 'events.sent_messages' %></h3>
 	<table>
 		<tr>
-			<th>To Whom</th>
+			<th><%= t 'events.to_whom' %></th>
 			<th>Sent</th>
-			<th>Message</th>
-			<th colspan=3 class="ac">Control</th>
+			<th><%= t 'events.message' %></th>
+			<th colspan=3 class="ac"><%= t 'control' %></th>
 		</tr>
 
 		<% @sentmessages.each do |message| %>
@@ -100,4 +100,4 @@
 </div>
 <BR />
 
-<%= link_to 'New Message', new_message_path %>
+<%= link_to (t 'events.new_message'), new_message_path %>

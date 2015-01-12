@@ -11,21 +11,21 @@ bkLib.onDomLoaded(function() {
 </script>
 
 <div class="tform">
-<H2>Page Details</H2>
+<H2><%= t 'pages.page_details' %></H2>
 <table width=100%>
  
 	<tr>
-		<td class="leftcol"><label for="name">Name :</label></td>
+		<td class="leftcol"><label for="name"><%= t 'name' %> :</label></td>
 	    <td><%= f.text_field :name %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="title">Title :</label></td>
+		<td class="leftcol"><label for="title"><%= t 'pages.title' %> :</label></td>
 	    <td><%= f.text_field :title %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="body">Body :</label></td>
+		<td class="leftcol"><label for="body"><%= t 'pages.body' %> :</label></td>
 	    <td><%= f.text_area :body, :size => '100x40', :id => 'myNicEditor' %></td>
 	</tr>
 	<!--hide this part for libriarian:17May2013--><%#=Login.current_login.roles.include?(5) %>
@@ -37,37 +37,37 @@ bkLib.onDomLoaded(function() {
 	<%# if @lib!=true && @admin==true %>
 	<% if @admin==true %>
 	<tr>
-		<td class="leftcol"><label for="admin">Admin :</label></td>
+		<td class="leftcol"><label for="admin"><%= t 'pages.admin' %> :</label></td>
 	    <td><%= f.check_box :admin %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="parent">Parent :</label></td>
+		<td class="leftcol"><label for="parent"><%= t 'pages.parent' %> :</label></td>
 	    <td><%= f.collection_select :parent_id, Page.find(:all), :id, :page_description, :include_blank => true %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="position">Position :</label></td>
+		<td class="leftcol"><label for="position"><%= t 'pages.position' %> :</label></td>
 	    <td><%= f.text_field :position, :size => '3' %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="navlabel">Nav Label :</label></td>
+		<td class="leftcol"><label for="navlabel"><%= t 'pages.nav_label' %> :</label></td>
 	    <td><%= f.text_field :navlabel %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="redirect">Redirect :</label></td>
+		<td class="leftcol"><label for="redirect"><%= t 'pages.redirect' %> :</label></td>
 	    <td><%= f.check_box :redirect %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="action">Action :</label></td>
+		<td class="leftcol"><label for="action"><%= t 'action' %> :</label></td>
 	    <td><%= f.text_field :action_name %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="controller">Controller :</label></td>
+		<td class="leftcol"><label for="controller"><%= t 'pages.controller' %> :</label></td>
 	    <td><%= f.text_field :controller_name %></td>
 	</tr>
 	<% end %>

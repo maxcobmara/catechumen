@@ -2,7 +2,7 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Lists of Bulletins</h2>
+		<h2 class="left"><%= t 'bulletin.list' %></h2>
 		<div class="right">
 			<% form_tag bulletins_path, :method => 'get' do %>
 			<%= text_field_tag :search, params[:search], :placeholder => "Headline, Content" %>
@@ -14,11 +14,11 @@
 <div class="indextable">
 	 <table>
 		<tr>
-    <th>Headline</th>
-    <th>Content</th>
-    <th>Posted By</th>
-    <th>Publish Date</th>
-    <th colspan=3 class="ac">Control</th>
+    <th><%= t 'bulletin.headline' %></th>
+    <th><%= t 'bulletin.content' %></th>
+    <th><%= t 'bulletin.postedby_id' %></th>
+    <th><%= t 'bulletin.publishdate' %></th>
+    <th colspan=3 class="ac"><%= t 'control' %></th>
   </tr>
 
 <% @bulletins.each do |bulletin| %>
@@ -37,4 +37,4 @@
 
 <br />
 
-<%= link_to 'New Bulletin', new_bulletin_path %>
+<%= link_to (t 'bulletin.new'), new_bulletin_path %>

@@ -1,14 +1,14 @@
 <div class="tform">
 <table id="form" width=80%>
 	<tr>
-		<th colspan = 2>New Message</th>
+		<th colspan = 2><%= t 'events.new' %></th>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="message">RECIPIENT(S):</label></td>
+		<td class="leftcol"><label for="message"><%= t 'events.recipient' %>:</label></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="to_id">To :</label></td>
+		<td class="leftcol"><label for="to_id"><%= t 'events.to' %> :</label></td>
 		<td><%= text_field_with_auto_complete :message, :to_name ,{ :size => 100 }, 
 										{ :tokens => ",",:url => formatted_staffs_path(:js), 
 										  :method => :get,
@@ -17,7 +17,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="message">Message:</label></td>
+		<td class="leftcol"><label for="message"><%= t 'events.message' %>:</label></td>
 		<td><%= f.text_area :message, :size => '60x6' %></td>
 	</tr>
 </table>
