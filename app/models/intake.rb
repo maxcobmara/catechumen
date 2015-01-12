@@ -1,10 +1,18 @@
 class Intake < ActiveRecord::Base
+  before_save :apply_month_year_if_nil
+  
   belongs_to :programme, :foreign_key => 'programme_id'
   has_many   :students
   has_many   :weeklytimetables  #20March2013
   has_many   :lessonplans, :class_name => 'LessonPlan', :foreign_key=>'intake_id' #26March2013
   
   validates_presence_of :programme_id, :name, :description, :register_on
+   
+  def apply_month_year_if_nil
+    if monthyear_intake==nil && register_on!=nil
+      self.monthyear_intake = register_on.to_date.year.to_s+"-"+register_on.to_date.month.to_s+"-01"
+    end
+  end
   
   #20March2013
   def group_with_intake_name

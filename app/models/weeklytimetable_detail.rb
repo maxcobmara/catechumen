@@ -97,10 +97,19 @@ class WeeklytimetableDetail < ActiveRecord::Base
 
    DAY_LIST = [
            #  Displayed       stored in db
-           ["Monday",     1],
-           ["Tuesday",    2],
-           ["Wednesday",  3],
-           ["Thursday",   4]
+           ["Sunday",     1],
+           ["Monday",    2],
+           ["Tuesday",  3],
+           ["Wednesday",   4]
+     ]
+    DAY_LIST2 = [
+           #  Displayed       stored in db
+           ["Sunday",     1],
+           ["Monday",    2],
+           ["Tuesday",  3],
+           ["Wednesday",   4],
+           ["Friday", 6],
+           ["Saturday", 7]
      ]
     CLASS_METHOD = [
            #  Displayed       stored in db

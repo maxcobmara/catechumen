@@ -29,7 +29,7 @@
     	<td><%=h start_date = @ptschedule.start %></td>
 		<td><%=h location = @ptschedule.location %></td>
 	  	<td><%=h duration_qty = @ptcourse.duration.to_f %></td>
-    	<td><%=h duration_type = @ptcourse.duration_type %></td>
+    	<td><% duration_type = @ptcourse.duration_type %><%=h @ptcourse.rendered_course_duration.first.titleize %></td>
 		<td>
 			<% if duration_type == 1 %>
 				<%=h total_days = duration_qty*1 %>

@@ -1,24 +1,17 @@
 <%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
-<%# @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
-<% if @preselect_prog==nil %>
-      <% @topics_ids_this_prog = Programme.at_depth(3).map(&:id) %>
-<% else %>
-      <% @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
-<% end %>
-<% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
 <div class="tform">
-	<H2>Student Attendance Details</H2>
+	<H2><%=t('student_attendance.details')%></H2>
 	<table width=100%>
 		<tr>
-			<td class="leftcol"><%= f.label :student_id %></td>
-			<td><%= f.collection_select :student_id, Student.all, :id, :matrix_name %></td>
+			<td class="leftcol"><%= f.label t('student_attendance.student_id')%></td>
+			<td><%= f.collection_select :student_id, @student_list, :id, :matrix_name %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><%#= f.label :weeklytimetable_details_id %><label>Schedule / Class </label></td>
-			<td><%= f.collection_select :weeklytimetable_details_id, @schedule_list, :id, :day_time_slot %><%#= f.text_field :weeklytimetable_details_id %></td>
+			<td class="leftcol"><%= f.label t('student_attendance.class_schedule')%></td>
+			<td><%= f.collection_select :weeklytimetable_details_id, @schedule_list, :id, :day_time_slot %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"> <%= f.label :attend %></td>
+			<td class="leftcol"> <%= f.label t('student_attendance.attend') %></td>
 			<td><%= f.check_box :attend %></td>
 		</tr>
 	</table>

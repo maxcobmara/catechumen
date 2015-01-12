@@ -83,10 +83,10 @@
 	<% 1.upto(4) do |count2|%>
 	<tr>
 		<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-			<% if count2==1 %><%=t(:'date.day_names')[1]%><br><%=@weeklytimetable.startdate.strftime('%d-%b-%Y') %>
-			<% elsif count2==2 %><%=t(:'date.day_names')[2]%><br><%=(@weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
-			<% elsif count2==3 %><%=t(:'date.day_names')[3]%><br><%=(@weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
-			<% elsif count2==4 %><%=t(:'date.day_names')[4]%><br><%=(@weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
+			<% if count2==1 %><%=t(:'date.day_names')[0]%><br><%=@weeklytimetable.startdate.strftime('%d-%b-%Y') %>
+			<% elsif count2==2 %><%=t(:'date.day_names')[1]%><br><%=(@weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
+			<% elsif count2==3 %><%=t(:'date.day_names')[2]%><br><%=(@weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
+			<% elsif count2==4 %><%=t(:'date.day_names')[3]%><br><%=(@weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
 			<% end %>		
 		</td>
 		
@@ -94,7 +94,7 @@
 		<% @column_count=@weeklytimetable.timetable_monthurs.timetable_periods.count%>
 		<% 1.upto(@column_count) do |count3| %>
 			<% if (count3==2 && count2==1) || (count3==5 && count2==1) || (count3==8 && count2==1)%>
-				<td align=center rowspan="4" style="border:1px solid black; text-align:center; padding:4px;vertical-align:middle"><%=t('weeklytimetable.break')%><br> <!--column:<%#=count3%>row:<%#=count2%>-->
+				<td align=center rowspan="4" style="border:1px solid black; text-align:center; padding:4px;vertical-align:middle"><%=t('weeklytimetable.break').upcase%><br> <!--column:<%#=count3%>row:<%#=count2%>-->
 				</td>
 			<% elsif (count3==5&&count2!=1) || (count3==8&&count2!=1)%>
 				<!--should not have any field or value-->
@@ -169,19 +169,20 @@
 	<!--Content for Friday-(start)-->
 	<tr>
 		<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-			Friday<br><%=@weeklytimetable.enddate.strftime('%d-%b-%Y') %>
+			<%=t(:'date.day_names')[4]%><%#=(@weeklytimetable.startdate+4).strftime('%A')  %><br><%=(@weeklytimetable.startdate+4).strftime('%d-%b-%Y')  %>
 		</td>
 		<% @column_count_friday=@weeklytimetable.timetable_friday.timetable_periods.count%>
 		<% @column_count_monthur=@weeklytimetable.timetable_monthurs.timetable_periods.count%><!--same as line 91-->
 		<% 1.upto(@column_count_friday) do |count4| %>
 			<% if count4 == 4 %>
 				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"><%=t('weeklytimetable.break').upcase%></td>
-			<% elsif count4 == 2 %>
+			<% elsif count4 == 2 || count4 == 6 %>
 				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 5  || count4 ==7%>
 				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
 					<% @weeklytimetable.weeklytimetable_details.each do |xx| %>
-						<% if xx.is_friday == true && xx.time_slot == @column_count_monthur+count4 %>
+						<%# if xx.is_friday == true && xx.time_slot == @column_count_monthur+count4 %>
+						<% if xx.is_friday == true && xx.time_slot == count4 %>
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
 								<% if xx.weeklytimetable_topic.ancestry_depth == 4 %>
@@ -210,7 +211,8 @@
 			<% else %>
 				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
 					<% @weeklytimetable.weeklytimetable_details.each do |xx| %>
-						<% if xx.is_friday == true && xx.time_slot == @column_count_monthur+count4 %>
+						<%# if xx.is_friday == true && xx.time_slot == @column_count_monthur+count4 %>
+						<% if xx.is_friday == true && xx.time_slot == count4 %>
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
 								<% if xx.weeklytimetable_topic.ancestry_depth == 4 %>
@@ -276,13 +278,13 @@
                         <% 1.upto(daycount2) do |row2|%>
 				<tr>
 					<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-						<%=(weekdays_end+row2).try(:strftime, "%A")%><br><%=(weekdays_end+row2).try(:strftime, "%d-%b-%Y")%>
+						<%=t(:'date.day_names')[daycount+row2]%><%#=(weekdays_end+row2).try(:strftime, "%A")%><br><%=(weekdays_end+row2).try(:strftime, "%d-%b-%Y")%>
 					 </td>
 					<!--Content - (ADDITIONAL - Weekends classes)-->
 					<!--span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column-->
 					<% 1.upto(@count1) do |col2| %>
 						<% if break_format1[col2-1]==true && row2==1%>
-							<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;" rowspan=<%="#{daycount2}"%>>REHAT
+							<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;" rowspan=<%="#{daycount2}"%>><%=t('weeklytimetable.break').upcase%>
 						 <% elsif break_format1[col2-1]==true && row2!=1%>
 							 <!--do-not-remove : should not have any field or value-->
 						 <% elsif break_format1[col2-1]==false%>

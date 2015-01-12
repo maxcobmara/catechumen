@@ -32,10 +32,10 @@
 					<!--Slot2:--><% @selected_timeslot2= @weeklytimetable.weeklytimetable_details[@object_index_id.to_i].time_slot2 %>
 					<!--Day:--><%# @selected_day= @weeklytimetable.weeklytimetable_details[@object_index_id.to_i].day %>
 					<!--Day2:--><%# @selected_day2= @weeklytimetable.weeklytimetable_details[@object_index_id.to_i].day2 %>
-					<% if @selected_timeslot.to_i>7%>
-						<% @aaa="display:block" %>
+					<% if @selected_timeslot.to_i !=0 %><%# if @selected_timeslot.to_i>7%><!--Sun - Wed-->
 						<% @bbb="display:none" %>
-					<% elsif @selected_timeslot2.to_i<8%>
+						<% @aaa="display:block" %>
+					<% elsif @selected_timeslot.to_i ==0%><%# elsif @selected_timeslot2.to_i<8%>
 						<% @aaa="display:none" %>
 						<% @bbb="display:block" %>
 					<% end %>
@@ -47,15 +47,23 @@
 				<!--Part B:New record (end)-->
 				<% end %>
 				
+				<% weekdays_end = @weeklytimetable.startdate.to_date+4.days%>
+				<% daycount2 = (@weeklytimetable.enddate.to_date - weekdays_end).to_i %>
+				<!--for checking : Jum<%#=@selected_timeslot%>|Lain<%#=@selected_timeslot2%> -->
+
 				<%= tag("span", :id => form_tag_id(f.object_name, :reference), :style=>"#{@bbb}") %>
-					<%= f.select :day2, WeeklytimetableDetail::DAY_LIST, :include_blank => t('select') %>
-					- <%= f.collection_select :time_slot2, @timeslot, :id, :timing, :include_blank => t('select') %>
-					
+					<% if daycount2 > 0 %>
+						<% daylist = WeeklytimetableDetail::DAY_LIST2 %>
+					<% else %>
+						<% daylist = WeeklytimetableDetail::DAY_LIST%>
+					<% end %>
+					<%= f.select :day2, daylist, :include_blank => t('select') %>
+					- <%= f.collection_select :time_slot2, @timeslot, :sequence, :timing, {:include_blank => t('select')}%>
 				</span>
 				<%= tag("span", :id => form_tag_id(f.object_name, :reference2), :style=>"#{@aaa}") %>
-					<%#= f.select :day, [["Friday",5]], :include_blank=>"UnSelect if NOT Friday" %>
+					<%#= f.select :day, [["Thursday",5]], :include_blank=>"UnSelect if NOT Thursday" %>
 					<%= f.check_box :is_friday %><%=t('weeklytimetable.if_friday')%>
-					- <%= f.collection_select :time_slot, @timeslot2, :id, :timing, :include_blank => t('select') %>
+					- <%= f.collection_select :time_slot, @timeslot2, :sequence, :timing, {:include_blank => t('select') }%>	
 				</span>
 			
 			</td> 
@@ -63,8 +71,8 @@
 		<!--start-Subject, Lecturer, Topic section, Location & Teaching method-->
 		<tr>
 			<td class="leftcol"><%=t('weeklytimetable_detail.lecturer')%></td>
-			<td><%= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar'],:order=>'name ASC'), :id, :name, :prompt=>t('select') %>
-			<%#= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=? AND positions.unit=?','Pengajar',Programme.find(@weeklytimetable.programme_id).name],:order=>'name ASC'), :id, :name, :prompt=>t('select')%></td>
+			<td><%#= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=?','Pengajar'],:order=>'name ASC'), :id, :name, :prompt=>t('select') %>
+			<%= f.collection_select :lecturer_id, Staff.find(:all, :joins=>:position, :conditions=>['positions.name=? AND positions.unit=?','Pengajar',Programme.find(@weeklytimetable.programme_id).name],:order=>'name ASC'), :id, :name, :prompt=>t('select')%></td>
 		</tr>
 		<!--25March2013-hide subject
 		<tr>

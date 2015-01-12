@@ -271,7 +271,10 @@ authorization do
     end
     has_permission_on :timetables, :to => [:create]
     has_permission_on :students, :to => [:menu, :index]
-    has_permission_on :student_attendances, :to => :manage  #10July2013
+    has_permission_on :student_attendances, :to => :create
+    has_permission_on :student_attendances, :to => :manage do
+      if_attribute :weeklytimetable_id => is_in {Login.current_login.classes_taughtby}
+    end
     has_permission_on :weeklytimetables, :to => :personalize_index do
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
