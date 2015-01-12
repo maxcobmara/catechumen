@@ -51,11 +51,11 @@
 <!--17Jul2013-added-line 44,45,46&48-->
 
 <!--<%# @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>-->
-<% if @schedule_list.count > 0 %>
+<% if @schedule_list2.count > 0 %>
 	<div class="right">
 		<% form_tag :action => 'new' do %>
 			<%= hidden_field_tag( "new_type","2" )%>
-			<b><%=t('student_attendance.class_schedule')%> : </b><%= select_tag('classid', options_from_collection_for_select(@schedule_list, :id, :subject_day_time)) %>
+			<b><%=t('student_attendance.class_schedule')%> : </b><%= select_tag('classid', options_from_collection_for_select(@schedule_list2, :id, :subject_day_time)) %>
 			<%= submit_tag (t 'student_attendance.multiple_by_schedule'), :subject_id => nil %>
 		<% end %>
 	</div>
@@ -80,7 +80,7 @@
 		<%@studentattendance_ids=student_attendances.map(&:id)%>
 
 		<tr>
- 			<td colspan=9 style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">STUDENT INTAKE : <%=intake.to_date.strftime("%b %Y").upcase %></td>
+ 			<td colspan=9 style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;"><%=t('student_attendance.intake').upcase%> : <%=intake.to_date.strftime("%b %Y").upcase %></td>
 		</tr>
 
 		<% student_attendances.group_by{|xx|xx.weeklytimetable_details_id}.each do |classes_schedule| %>
@@ -89,17 +89,17 @@
 				<tr>
 					<td colspan=9 style="background-color:#EFF1F1;">
 						<span style="font-weight:bold;">
-							Subject : <%= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.full_parent %> | 
-							Topic : <%= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.subject_list %>
+							<%=t('student_attendance.subject')%> : <%= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.full_parent %> | 
+							<%=t('student_attendance.topic')%> : <%= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.subject_list %>
 						</span><br>
-						Date : <%=h WeeklytimetableDetail.find(classes_schedule[0]).get_date_day_of_schedule %> |
-						Time : 
+						<%=t('student_attendance.date')%> : <%=h WeeklytimetableDetail.find(classes_schedule[0]).get_date_day_of_schedule %> |
+						<%=t('student_attendance.time')%> : 
 						<% if (WeeklytimetableDetail.find(classes_schedule[0])).time_slot==0 %>
 							<%=TimetablePeriod.find(WeeklytimetableDetail.find(classes_schedule[0]).time_slot2).timing %>				
 						<% else %>
 							<%=TimetablePeriod.find(WeeklytimetableDetail.find(classes_schedule[0]).time_slot).timing %>
 						<% end %> |
-						Lecturer : <%=h (WeeklytimetableDetail.find(classes_schedule[0])).weeklytimetable_lecturer.name %>
+						<%=t('student_attendance.lecturer')%> : <%=h (WeeklytimetableDetail.find(classes_schedule[0])).weeklytimetable_lecturer.name %>
 					</td>
 				</tr>
 			<% else %>
@@ -116,7 +116,7 @@
 						<% if student_attendance.attend == true %> 
 							&#10003;
 						<% else %>
-							Absent
+							<%=t('student_attendance.absent')%>
 						<% end %>
 					</td>
 					<td>	
@@ -206,10 +206,10 @@
 		<!-- ref: http://railsforum.com/viewtopic.php?id=2151 rleblic2007-10-25 08:43:07 -->
 		<!--http://www.ryboe.com/2008/07/10/select-all-checkboxes-with-prototype-js.html -->
 		<input id="check_all" name="check_all" type="checkbox" checked="checked" onclick="Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_all').checked})" />
-		<b>Check/Uncheck all</b>&nbsp;&nbsp;
+		<b><%=t('check_uncheck')%></b>&nbsp;&nbsp;
 	</div>
 
-	<%= submit_tag (t 'edit_checked'), :name => :student_attendance_submit_button %> <font size=-2px>(Edit by Schedule / Class)</font>
+	<%= submit_tag (t 'edit_checked'), :name => :student_attendance_submit_button %> <font size=-2px><%=t('student_attendance.edit_class_schedule')%></font>
 	<% end %><!--end for form-->
 	<% end %><!--appear only when record exist-end-->
 	<!--
@@ -218,8 +218,8 @@
 	<% if @exist_timetable_attendances.count > 0 %>
 		<div class="right">
 			<% form_tag '', :method => 'get' do %>
-				  <b><%=t('student_attendance.class_schedule')%></b><%= select_tag('classid', "<option value='0'>#{t('student_attendance.all_exist')}</option>" +options_from_collection_for_select(@exist_timetable_attendances, :id, :subject_day_time)) %><!--WeeklytimetableDetail.all, :id, :subject_day_time-->
-				  <%= submit_tag (t 'student_attendance.search'), :name => :attendance_search %>
+				  <b><%=t('student_attendance.class_schedule')%></b> : <%= select_tag('classid', "<option value='0'>#{t('student_attendance.all_exist')}</option>" +options_from_collection_for_select(@exist_timetable_attendances, :id, :subject_day_time)) %><!--WeeklytimetableDetail.all, :id, :subject_day_time-->
+				  <%= submit_tag (t 'student_attendance.search_class'), :name => :attendance_search %>
 			<% end %>
 		</div>
 	<% end %>
@@ -261,8 +261,8 @@
 		<div class="right">
 			<% form_tag '', :method => 'get' do %>
 				<%= hidden_field_tag( "programme",@preselect_prog)%>
-				<%= select_tag('intake_student', "<option value='0'>All Existing Intake</option>" +options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %><!--WeeklytimetableDetail.all, :id, :subject_day_time-->
-				<%= submit_tag 'Search by Intake', :name => :attendance_search %>
+				<%= select_tag('intake_student', "<option value='0'>#{t('student_attendance.all_exist_intake')}</option>" +options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %><!--WeeklytimetableDetail.all, :id, :subject_day_time-->
+				<%= submit_tag (t 'student_attendance.search_intake'), :name => :attendance_search %>
 			<% end %>
 		</div>
 	<% end %>

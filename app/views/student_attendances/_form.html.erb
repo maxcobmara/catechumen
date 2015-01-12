@@ -12,17 +12,44 @@
 		</tr>
 		<tr>
 			<td class="leftcol"> <%= f.label t('student_attendance.attend') %></td>
-			<td><%= f.check_box :attend %></td>
+			<td><%= f.check_box :attend, :id => 'check_attend'%>&nbsp;<%=t('student_attendance.tick_attend')%></td>
 		</tr>
 	</table>
+	<div id="absent_details" style="display: none;">
+		<table>
+			<tr>
+				<td class="leftcol"><%= f.label t 'student_attendance.reason'%></td>
+				<td><%= f.select :reason, StudentAttendance::REASON, :prompt=>t('select') %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label t 'student_attendance.action_taken'%></td>
+				<td><%= f.select :action, StudentAttendance::ACTION, :prompt=>t('select') %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label t 'student_attendance.action_close'%></td>
+				<td><%= f.select :status, [[t('student.attendance.complete'),'Yes'],[t('student.attendance.incomplete'),'No']], :prompt=>t('select')%></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label t 'student_attendance.remark'%></td>
+				<td><%= f.text_field :remark, :size =>50 %></td>
+			</tr>
+		</table>
+	</div>
 </div>
 
-
-
-
-
-  
-
-  
-  
-
+<script type="text/javascript">
+  $j("input[id='check_attend']").change(function() {  
+    if($j('#check_attend').is(':checked')) { 
+      $j("#absent_details").hide(""); 
+    }else{
+      $j("#absent_details").show("highlight"); 
+    }
+  });
+  $j("input[id='check_attend']").each(function() {  
+    if($j('#check_attend').is(':checked')) { 
+      $j("#absent_details").hide("");
+    }else{
+    $j("#absent_details").show("highlight"); 
+    }
+  });              
+</script>

@@ -132,7 +132,7 @@ render :action => "edit_multiple_intake"-->
 							<tr>
 								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;"><%=count+1 %>&nbsp;</td>
 								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;">
-									<%=studentattendance.student.matrixno%>
+									<%=studentattendance.student.matrixno%>&nbsp;
 									<%#= Student.find(student_id).matrixno %>
 								</td>
 								<td colspan=2 style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;">
@@ -144,7 +144,7 @@ render :action => "edit_multiple_intake"-->
 									<% if studentattendances[0].attend == true %> 
 										&#10003;
 									<% else %>
-										Absent
+										<%=t('student_attendance.absent')%>
 									<% end %>
 								</td>
 								<% if no==0 && count==0 || no==0 && count==24 || no==0 && count==48 %><%# if no==0 && count==0 %>
@@ -162,18 +162,23 @@ render :action => "edit_multiple_intake"-->
 									<% end %>
 									</td>
 								<% end%>
+								<!--/////////////////////////////////////////////////////////////////////-->
 								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px" width=7%>
+									<%if  studentattendances.count > 1 %>
 									&nbsp;<!--eeee-->
-									<% if studentattendances[1].attend == true %> 
-										&#10003;
+										<% if studentattendances[1].attend == true %> 
+											&#10003;
+										<% else %>
+											<%=t('student_attendance.absent')%>
+										<% end %>
 									<% else %>
-										Absent
+										&nbsp;
 									<% end %>
 								</td>
 								<% if no==0 && count==0 || no==0 && count==24 || no==0 && count==48 %><%# if no==0 && count==0 %>
 									<td rowspan=24 style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;" width=7%>
 									<!--<td rowspan="<%#=@exist_student%>" style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;" width=7%>-->
-									
+									<%if  studentattendances.count > 1 %>
 										<%# if @student_attendances && @student_attendances[1].weeklytimetable_details_id!= nil %>
 											<%#= @student_attendances[1].weeklytimetable_detail.weeklytimetable_topic.name %>
 											<!--/--> <%#= @student_attendances[1].weeklytimetable_detail.render_class_method %>
@@ -187,36 +192,46 @@ render :action => "edit_multiple_intake"-->
 										<% else %>
 											&nbsp;
 										<% end %>
-										
+									<% else %>
+										&nbsp;
+									<% end %>	
 									</td>
 								<% end %>
-								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px"width=7%>
-									&nbsp;<!--ggg-->
-									<% if studentattendances[2].attend == true %> 
-										&#10003;
+								<td style="font-size:13px;font-family: Arial, sans-serif;border-left:solid 1px;border-bottom:solid 1px;border-right:solid 1px" width=7%>
+									<%if  studentattendances.count > 2 %>
+										&nbsp;<!--ggg-->
+										<% if studentattendances[2].attend == true %> 
+											&#10003;
+										<% else %>
+											<%=t('student_attendance.absent')%>
+										<% end %>
 									<% else %>
-										Absent
+										&nbsp;
 									<% end %>
 								</td>
 								<% if no==0 && count==0 || no==0 && count==24 || no==0 && count==48 %><%# if no==0 && count==0 %>
-									<td rowspan=24 style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;border-right:solid 1px;"width=7%>
+									<td rowspan=24 style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;border-right:solid 1px;" width=7%>
 									<!--<td rowspan="<%#=@exist_student%>" style="font-size:10px;font-family: Arial, sans-serif;border-bottom:solid 1px;border-right:solid 1px;"width=7%>-->
-									
-										<%# if @student_attendances && @student_attendances[2].weeklytimetable_details_id!= nil %>
-											<%#= @student_attendances[2].weeklytimetable_detail.weeklytimetable_topic.name %>
-											<!--/--> <%#= @student_attendances[2].weeklytimetable_detail.render_class_method %>
-										<% if @one_student_atts[third] != nil %>
-											<% if @one_student_atts && @one_student_atts[third].weeklytimetable_details_id!= nil %>
-												<%= @one_student_atts[third].weeklytimetable_detail.weeklytimetable_topic.name %>
-												/<%= @one_student_atts[third].weeklytimetable_detail.render_class_method %>
+										<%if  studentattendances.count > 2 %>
+											<%# if @student_attendances && @student_attendances[2].weeklytimetable_details_id!= nil %>
+												  <%#= @student_attendances[2].weeklytimetable_detail.weeklytimetable_topic.name %>
+												  <!--/--> <%#= @student_attendances[2].weeklytimetable_detail.render_class_method %>
+											<% if @one_student_atts[third] != nil %>
+												<% if @one_student_atts && @one_student_atts[third].weeklytimetable_details_id!= nil %>
+													<%= @one_student_atts[third].weeklytimetable_detail.weeklytimetable_topic.name %>
+													/<%= @one_student_atts[third].weeklytimetable_detail.render_class_method %>
+												<% else %>
+													&nbsp;
+												<% end %>
 											<% else %>
 												&nbsp;
-											<% end %>
+											  <% end %>
 										<% else %>
 											&nbsp;
 										<% end %>
 									</td>
 								<% end %>
+								<!--//////////////////////////////////////-->
 							</tr>
 						<% end %>	<%# end for - if no==0 %>
 						

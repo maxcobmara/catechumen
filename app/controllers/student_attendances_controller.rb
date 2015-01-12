@@ -39,7 +39,7 @@ class StudentAttendancesController < ApplicationController
 
     #note : above - to display classes by current logged-in lecturer only
     ######==============
-    if submit_val == I18n.t("student_attendance.search")
+    if submit_val == I18n.t("student_attendance.search_class")
         @student_attendances = StudentAttendance.search2(classid)
     else
         ##@student_attendances = StudentAttendance.search(@intake_student,@programme)
@@ -75,6 +75,8 @@ class StudentAttendancesController < ApplicationController
     #yg asal---below this line---
     #@student_attendances = StudentAttendance.all
     #@student_attendances_class = @student_attendances.group_by{|x|x.weeklytimetable_details_id}
+		
+    @schedule_list2 = @schedule_list - @exist_timetable_attendances
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @student_attendances }
@@ -177,7 +179,7 @@ class StudentAttendancesController < ApplicationController
         @student_attendance = StudentAttendance.new(params[:student_attendance])
         respond_to do |format|
           if @student_attendance.save
-            format.html { redirect_to(@student_attendance, :notice => t('student_attendance.title')+t('created')) }
+            format.html { redirect_to(@student_attendance, :notice => t('student_attendance.title')+" "+t('created')) }
             format.xml  { render :xml => @student_attendance, :status => :created, :location => @student_attendance }
           else
             format.html { render :action => "new" }
@@ -236,7 +238,7 @@ class StudentAttendancesController < ApplicationController
 
     respond_to do |format|
       if @student_attendance.update_attributes(params[:student_attendance])
-        format.html { redirect_to(@student_attendance, :notice => t('student_attendance.title')+t('updated')) }
+        format.html { redirect_to(@student_attendance, :notice => t('student_attendance.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -339,7 +341,7 @@ class StudentAttendancesController < ApplicationController
       @studentattendances_group = @studentattendances.group_by{|x|x.student_id} 
       
       #####
-      if submit_val == 'Apply Schedule / Classes'
+      if submit_val == I18n.t('student_attendance.apply_class_schedule')
           if @weeklytimetable_details_ids != nil
      		      @studentattendances_group.each do |student_id, studentattendances|  
     	            studentattendances.each_with_index do |studentattendance, no|
@@ -352,7 +354,7 @@ class StudentAttendancesController < ApplicationController
   	      respond_to do |format|
   	          #flash[:notice] = "Updated changes for formative score details!"
   	          format.html {render :action => "edit_multiple_intake"}
-      	      flash[:notice] = "<b>Classes/Schedule</b> are selected/updated. You may view/print <b>Attendance Form </b>(c/w date & time slot). <br>To update <b>student attendance</b>, check/uncheck check boxes accordingly and click <b>submit</b>."
+      	      flash[:notice] = "<b>#{(t 'student_attendance.class_schedule')}</b> #{(t 'student_attendance.selected_may_print')} <b>#{(t 'student_attendance.attendance_form')}</b>#{t('student_attendance.cw_date_timeslot')}<br>#{t('student_attendance.to_update')}<b>#{t('student_attendance.title').downcase}</b>#{t('student_attendance.check_uncheck_click')}<b>#{t('submit')}</b>."
       	      format.xml  { head :ok }
       	      flash.discard
   	      end
