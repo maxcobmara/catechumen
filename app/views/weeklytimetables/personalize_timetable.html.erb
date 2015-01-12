@@ -114,7 +114,7 @@
 		<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
 		<% @column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count%>
 		<% @weekdays_end = j.weeklytimetable.startdate.to_date+4.days %>
-		<% @daycount = @column_count_monthur %>
+		<% @daycount = 4 %>
 		<% @daycount2 = (j.weeklytimetable.enddate.to_date - @weekdays_end).to_i %>
 		<% @break_format1 = j.weeklytimetable.timetable_monthurs.timetable_periods.map(&:is_break) %>
 		<% @break_format2 = j.weeklytimetable.timetable_friday.timetable_periods.map(&:is_break) %>
@@ -431,7 +431,8 @@
 			<% 1.upto(@daycount2) do |row2| %>
 			<tr>
 				<td class="data3">
-					<%=(@weekdays_end+row2).try(:strftime, "%A") %>
+					<%#=(@weekdays_end+row2).try(:strftime, "%A") %>
+					<%=t(:'date.day_names')[@daycount+row2]%><!--array start at 0, 4 shall include thurs-->
 					<br><%=(@weekdays_end+row2).try(:strftime, "%d-%b-%Y") %>
 				</td>
 				<!--Content - (ADDITIONAL - Weekends classes)
@@ -453,7 +454,7 @@
 						<% end %>
 							<% nos=0 %>
 							<% detailing_monthurs.each do |j2| %>
-								<% if j2.day2 == row2 && j2.time_slot2 == col2 %>
+								<% if j2.day2 == (@daycount+row2) && j2.time_slot2 == col2 %>
 									<% if nos==0 %>
 										<% nos+=1 %>
 										<% if j2.weeklytimetable.hod_approved == true %>
