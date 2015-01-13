@@ -51,24 +51,19 @@
 				<%= f.select :duration_type, 
 				           Programme::DURATION_TYPES,
 				           :prompt => t('select')  %>
-			
-			
-			</td>
+		</td>
 	</tr>
-	
 	<tr>
 		<td><%= f.label t('programme.credits') %></td>
 		<td><%= f.select :credits, 0..8  %></td>
 	</tr>
-	
 	<tr>
 		<td><%= f.label :status %></td>
 		<td><!--<label><%#= f.radio_button :status,'1' %> Major <%#= f.radio_button :status,'2' %> Minor <%#= f.radio_button :status,'3' %> Elective</label>-->
-			<%= f.select :status, [['Major','1'],['Minor','2'],['Elective','3']], :include_blank => t('select') %>
+			<%= f.select :status, Programme::COURSE_STATUS, :prompt => t('select') %>
 		</td>
 	</tr>
-	
-		<tr><td colspan=2><font size=-2>* <strong><%=t('topicdetail.title2')%></strong> <%=t('programme.auto_created')%></font></td></tr>
+	<tr><td colspan=2><font size=-2>* <strong><%=t('topicdetail.title2')%></strong> <%=t('programme.auto_created')%></font></td></tr>
 </table>
 <!--status
 

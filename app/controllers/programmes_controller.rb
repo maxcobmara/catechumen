@@ -44,7 +44,7 @@ class ProgrammesController < ApplicationController
 
     respond_to do |format|
       if @programme.save
-        format.html { redirect_to(@programme, :notice => 'Programme was successfully created.') }
+        format.html { redirect_to(@programme, :notice =>t('programme.title')+" "+t('created')) }
         format.xml  { render :xml => @programme, :status => :created, :location => @programme }
       else
         format.html { render :action => "new" }
@@ -60,7 +60,7 @@ class ProgrammesController < ApplicationController
 
     respond_to do |format|
       if @programme.update_attributes(params[:programme])
-        format.html { redirect_to(@programme, :notice => 'Programme was successfully updated.') }
+        format.html { redirect_to(@programme, :notice => t('programme.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
