@@ -3,7 +3,7 @@ class TravelClaimsController < ApplicationController
   # GET /travel_claims
   # GET /travel_claims.xml
   def index
-    @travel_claims = TravelClaim.with_permissions_to(:index).all
+    @travel_claims = TravelClaim.with_permissions_to(:index).find(:all, :order=>'claim_month asc')
 
     respond_to do |format|
       format.html # index.html.erb

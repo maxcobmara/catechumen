@@ -61,6 +61,9 @@
 	</td>
     <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => weeklytimetable %></td>
     <td width=10px>
+		<% common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"] %>
+		<% common_subject_lecturers = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)%>
+		
 		<% if (weeklytimetable.is_submitted != true && weeklytimetable.prepared_by == Login.current_login.staff_id) || (weeklytimetable.prepared_by == Login.current_login.staff_id && weeklytimetable.hod_rejected? == true && weeklytimetable.is_submitted==nil) %>
 			<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => weeklytimetable %>
 		<% elsif (weeklytimetable.is_submitted == true && weeklytimetable.endorsed_by == Login.current_login.staff_id && weeklytimetable.hod_approved!= true)  %>

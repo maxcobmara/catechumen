@@ -89,11 +89,11 @@ class TravelRequest < ActiveRecord::Base
   
   #controller searches
   def self.in_need_of_approval
-    find(:all, :conditions => ['hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', Login.current_login.staff_id, true, nil, false])
+    find(:all, :conditions => ['hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', Login.current_login.staff_id, true, nil, false],:order=> 'depart_at asc')
   end
   
   def self.my_travel_requests
-      find(:all, :conditions => ['staff_id = ?', Login.current_login.staff_id])
+      find(:all, :conditions => ['staff_id = ?', Login.current_login.staff_id], :order=> 'depart_at asc')
   end
   
   #lists
