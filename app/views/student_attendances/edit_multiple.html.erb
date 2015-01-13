@@ -2,8 +2,8 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<% if @edit_type == "Edit Checked" %>
-			<h2 class="left">Edit Multiple Student Attendance</h2>
+		<% if @edit_type == (t 'edit_checked')%>
+			<h2 class="left"><%=t('student_attendance.edit_multiple')%></h2>
 		<% end %>
 	</div>
 </div>
@@ -18,7 +18,7 @@
 		<% @studentattendances_group.each do |student, studentattendances| %>
 			<% if index2 == 0 %>
 				<tr>
-					<th colspan="<%=studentattendances.count*2%>" align="center">Schedule / Class Details</th>
+					<th colspan="<%=studentattendances.count*2%>" align="center"><%=t('student_attendance.class_schedule_details')%></th>
 				</tr>
 				<tr>
 					<% studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, index|%>
@@ -27,13 +27,13 @@
 						<td><font color=blue><b><%=index+1 %></b></font></td>
 						<td>
 							<span style="text-decoration:underline;font-weight:bold;padding-left:5px;">
-								Subject : <%=studentattendance.weeklytimetable_detail.weeklytimetable_topic.full_parent%>
+								<%=t('student_attendance.subject')%> : <%=studentattendance.weeklytimetable_detail.weeklytimetable_topic.full_parent%>
 							</span><br>
 							<span style="text-decoration:underline;font-weight:bold;padding-left:5px;">
-								Topic : <%=studentattendance.weeklytimetable_detail.weeklytimetable_topic.subject_list %>
+								<%=t('student_attendance.topic')%> : <%=studentattendance.weeklytimetable_detail.weeklytimetable_topic.subject_list %>
 							</span><br>
 							<span style="text-decoration:underline;font-weight:bold;padding-left:5px;">
-								Date : <%=h studentattendance.weeklytimetable_detail.get_date_day_of_schedule %>
+								<%=t('student_attendance.date')%> : <%=h studentattendance.weeklytimetable_detail.get_date_day_of_schedule %>
 								&nbsp;Time : 
 								<% if studentattendance.weeklytimetable_detail.time_slot==0 %>
 									<%=TimetablePeriod.find(studentattendance.weeklytimetable_detail.time_slot2).timing %>
@@ -42,10 +42,10 @@
 								<% end %>
 							</span><br>
 							<span style="text-decoration:underline;font-weight:bold;padding-left:5px;">
-								Lecturer : <%=h studentattendance.weeklytimetable_detail.weeklytimetable_lecturer.name %>
+								<%=t('student_attendance.lecturer')%> : <%=h studentattendance.weeklytimetable_detail.weeklytimetable_lecturer.name %>
 							</span><br>
 							<span style="text-decoration:underline;font-weight:bold;padding-left:5px;">
-								Intake : <%=h studentattendance.weeklytimetable_detail.weeklytimetable.schedule_intake.name %> 
+								<%=t('student_attendance.intake')%> : <%=h studentattendance.weeklytimetable_detail.weeklytimetable.schedule_intake.name %> 
 							</span>
 						</td>
 					<% end %><!--end for studentattendance.each_with_index do...-->
@@ -62,8 +62,8 @@
 			<table>
 				<tr>
 					<th>No</th>
-					<th>Student</th>
-					<th style="text-align:left;">Attendance<br>
+					<th><%=t('student_attendance.student_id')%></th>
+					<th style="text-align:left;"><%=t('student_attendance.attendance')%><br>
 						<% index3=0 %>&nbsp;&nbsp;
 						<% @studentattendances_group.each do |student, studentattendances| %>
 							<% if index3 == 0 %>
@@ -114,12 +114,12 @@
 								<%= check_box_tag "attends[#{no+@next}]", true, studentattendance.attend, :class => "check" %>
 								<% if studentattendance.attend == true %>
 								<% else %>
-									Select <b>Reason / Action Taken / Action Closed?</b>
-									<%#= select_tag("reasons[#{no+@next}]", "<option value='0'>Reason</option>" +options_for_select(['Cuti Sakit','Kecemasan','Tiada'])) %>
-									<%##= f.select :cctype_id, StudentAttendance::REASON, :prompt => "Select"  %>
-									<%= select_tag("reasons[#{no+@next}]", "<option value='0'>Reason</option>" +options_for_select(StudentAttendance::REASON, studentattendance.reason)) %>&nbsp;
-									<%= select_tag("actions[#{no+@next}]", "<option value='0'>Action taken</option>" +options_for_select(StudentAttendance::ACTION, studentattendance.action)) %>&nbsp;
-									<%= select_tag("statuss[#{no+@next}]", "<option value='0'>Action close?</option>" +options_for_select(['Yes','No'],studentattendance.status)) %>&nbsp;
+									<%=t('select')%>&nbsp;<b><%=t('student_attendance.reason_action')%></b>
+									<%#= select_tag("reasons[#{no+@next}]", "<option value='0'>#{t('student_attendance.reason')}</option>" +options_for_select(['Cuti Sakit','Kecemasan','Tiada'])) %>
+									<%##= f.select :cctype_id, StudentAttendance::REASON, :prompt => (t 'selectz') %>
+									<%= select_tag("reasons[#{no+@next}]", "<option value='0'>#{t('student_attendance.reason')}</option>" +options_for_select(StudentAttendance::REASON, studentattendance.reason)) %>&nbsp;
+									<%= select_tag("actions[#{no+@next}]", "<option value='0'>#{t('student_attendance.action_taken')}</option>" +options_for_select(StudentAttendance::ACTION, studentattendance.action)) %>&nbsp;
+									<%= select_tag("statuss[#{no+@next}]", "<option value='0'>#{t('student_attendance.action_close')}</option>" +options_for_select(['Yes','No'],studentattendance.status)) %>&nbsp;
 									<%= text_field_tag "remarks[#{no+@next}]", studentattendance.remark %>
 								<% end %>
 								<% if no == one_student_atts_count-1 %><%# if no == 2 %>
@@ -137,10 +137,10 @@
 	
 			<table border=0 cellspacing=0 cellpadding=0>
 				<tr>
-					<td style="padding-left:20px;"><%= f.submit "Submit" %></td>
+					<td style="padding-left:20px;"><%= f.submit (t 'submit')%></td>
 					<td style="padding-left:65px;"><!-- ref: http://railsforum.com/viewtopic.php?id=2151 rleblic2007-10-25 08:43:07 -->
 					<!--http://www.ryboe.com/2008/07/10/select-all-checkboxes-with-prototype-js.html -->
-					<b>Check/Uncheck all</b>&nbsp; <input id="check_all" name="check_all" type="checkbox" checked="checked" onclick="Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_all').checked})" />
+					<b><%=t('check_uncheck')%></b>&nbsp; <input id="check_all" name="check_all" type="checkbox" checked="checked" onclick="Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_all').checked})" />
 					</td>
 				</tr>
 			</table>
@@ -155,21 +155,23 @@
 <%# end %><br><br>
 <% count_form = 0 %>
 
-<%= link_to 'Back', student_attendances_path %> | <%#= link_to 'View Attendance Form', :action => 'borang_kehadiran',:iddd => @studentattendance_ids, :form_type => 1 %>
+<%= link_to (t 'back'), student_attendances_path %> | <%#= link_to 'View Attendance Form', :action => 'borang_kehadiran',:iddd => @studentattendance_ids, :form_type => 1 %>
 
-<% if @studentattendances && @studentattendances[0].weeklytimetable_details_id!= nil %><%=%>	
-
+<% if @studentattendances && @studentattendances[0].weeklytimetable_details_id!= nil %>
+	<% if @one_student_atts_count > 2 %>
 	<% 0.upto(@one_student_atts_count/3-1) do |count_link| %>
-		<%= link_to "Form #{count_link+1}", :action => 'borang_kehadiran',:iddd => @studentattendance_ids,:first => count_link %>
+		<%= link_to "#{(t 'student_attendance.form') } #{count_link+1}", :action => 'borang_kehadiran',:iddd => @studentattendance_ids,:first => count_link %>
 		<% count_form+=(2*count_link) %>
 		<% if @studentattendances && @one_student_atts[count_form] && @one_student_atts[count_form].weeklytimetable_details_id!= nil %>
 			<font color=blue>*</font>
 		<% end %>
 		<% if count_link < @one_student_atts_count/3-1 %> |<% end %>
 	<% end %>
-	
+	<% else%>
+		<%= link_to "#{(t 'student_attendance.form') } 1", :action => 'borang_kehadiran',:iddd => @studentattendance_ids,:first => 0 %>
+	<% end %>
 <% else %>
-	<%= link_to 'View Blank Attendance Form', :action => 'borang_kehadiran',:iddd => @studentattendance_ids %>
+	<%= link_to (t 'student_attendance.view_blank_form'), :action => 'borang_kehadiran',:iddd => @studentattendance_ids %>
 <% end %>
 <BR><BR>
-<font size=-2 color=blue>* Indicates attendance form completed with date & time slot.</font>
+<font size=-2 color=blue><%=t('student_attendance.indicate_completed_date_time')%></font>

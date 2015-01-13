@@ -1,19 +1,42 @@
 <div class="tform">
-	<H2>Student Attendance Details</H2>
+	<H2><%=t('student_attendance.details')%></H2>
 	  	<table width=100%>
 			<tr>
-				<td class="leftcol">Student :</td>
+				<td class="leftcol"><%=t('student_attendance.student_id')%> :</td>
 				<td><%=h @student_attendance.student.matrix_name %></td>
 			</tr>
 			<tr>
-				<td class="leftcol">Date | Time | Subject-Topic :</td>
+				<td class="leftcol"><%=t('student_attendance.date_time_subject_topic')%> :</td>
 				<td><%=h @student_attendance.weeklytimetable_detail.day_time_slot %></td>
 			</tr>
 			<tr>
-				<td class="leftcol">Attendance :</td>
-				<td><% if @student_attendance.attend==true %>Attended<% else %>Absent<% end %></td>
+				<td class="leftcol"><%=t('student_attendance.attendance')%> :</td>
+				<td><% if @student_attendance.attend==true %><%=t('student_attendance.attended')%><% else %><%=t('student_attendance.absent')%><% end %></td>
 			</tr>
 		</table>
+		<% if @student_attendance.attend == false %>
+		<table>
+			<tr>
+				<td class="leftcol"><%=t 'student_attendance.reason'%></td>
+				<td><%=h ((StudentAttendance::REASON.find_all{|disp, value| value == @student_attendance.reason}).map {|disp, value| disp}).first %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%=t 'student_attendance.action_taken'%></td>
+				<td><%=h ((StudentAttendance::ACTION.find_all{|disp, value| value == @student_attendance.action}).map {|disp, value| disp}).first%></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%=t 'student_attendance.action_close'%></td>
+				<td>
+				      <%=t 'student.attendance.incomplete' if @student_attendance.status == "No" %>
+				      <%=t 'student.attendance.complete' if @student_attendance.status == "Yes"%>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%=t 'student_attendance.remark'%></td>
+				<td><%=h @student_attendance.remark%></td>
+			</tr>
+		</table>
+		<% end %>
 </div>
 
-<%= link_to 'Back', student_attendances_path %> | <%= link_to 'Edit', edit_student_attendance_path(@student_attendance) %>
+<%= link_to (t 'back'), student_attendances_path %> | <%= link_to (t 'edit'), edit_student_attendance_path(@student_attendance) %>
