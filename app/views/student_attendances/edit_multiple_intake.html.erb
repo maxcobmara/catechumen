@@ -144,7 +144,7 @@
 
 	<!--</div>--><!--end for div tlist-->
 <br><br>
-<% count_form = 0 %>
+<% count_form = 0 %><!--count_form = 0, refers to 1st record-->
 <%= link_to (t 'back'), student_attendances_path %> | 
 <% if @studentattendances && @studentattendances[0].weeklytimetable_details_id!= nil %><%=%>	
 	<% if @one_student_atts_count > 2 %>
@@ -158,6 +158,10 @@
 		<% end %>
 	<% else %>
 		<%= link_to "#{(t 'student_attendance.form')} 1", :action => 'borang_kehadiran',:iddd => @studentattendance_ids,:first => 0 %>
+		<!--check existance, for the first item only, (1 form page - total item less than 3)-->
+		<% if @studentattendances && @one_student_atts[0] && @one_student_atts[0].weeklytimetable_details_id!= nil %>
+			<font color=blue>*</font>
+		<% end %>
 	<% end %>
 <% else %>
 	<%= link_to ('student_attendance.view_blank_form'), :action => 'borang_kehadiran',:iddd => @studentattendance_ids %>

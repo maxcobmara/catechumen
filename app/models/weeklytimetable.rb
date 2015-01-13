@@ -21,6 +21,9 @@ class Weeklytimetable < ActiveRecord::Base
   validates_presence_of :programme_id, :semester, :intake_id, :format1, :format2
   validate :approved_or_rejected
   
+  ##TO RESTRICT 1 Weeklytimetable for 1 programme, of 1 intake, of 1 startdate, of 1 semester
+  #validates_uniqueness_of :programe_id, :scope =>[:intake_id, :startdate, :semester] 
+  
   #attr_accessor :subject_id  #for testing grouped programme (subject)
   #before logic
   def set_to_nil_where_false

@@ -279,6 +279,13 @@ authorization do
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     
+    #ter 'OVERRIDE' - LECTURER BIASA BOLEH TENGOK SEMUA Weeklytimetable DLM PROGRAM DIA SEPATUTNYA CUMA YG DIE CREATE
+    #giving full access to Pengajar Subjek Asas on Weeklytimetable (of ALL programmes) - refer authorization rules under LECTURER role
+    #related to this comment (1) 2.1.2 Student Attendance, item no.3, (2) 2.3.1 Scheduling, comment no.11 (part B)
+    has_permission_on :weeklytimetables, :to => :manage do
+      if_attribute :programme_id => is_in {Login.current_login.staff.commonsubject_lecturer_programmeid_list}
+    end
+
     #from Ogma
     has_permission_on :trainingnotes, :to => :manage, :join_by => :or do
      if_attribute :topicdetail_id => is_in {Login.current_login.topicdetails_of_programme}

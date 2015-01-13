@@ -520,6 +520,20 @@ class Staff < ActiveRecord::Base
       "L"
     end
   end
+  
+  #giving full access to Pengajar Subjek Asas on Weeklytimetable (of ALL programmes) - refer authorization rules under LECTURER role
+  #related to this comment (1) 2.1.2 Student Attendance, item no.3, (2) 2.3.1 Scheduling, comment no.11 (part B)
+  def commonsubject_lecturer_programmeid_list
+    unit = Login.current_login.staff.position.unit
+    current_lecturer = Login.current_login.staff.id
+    common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
+    is_common_lecturer = Position.find(:all, :conditions=>['unit IN(?) and staff_id=?', common_subjects, current_lecturer])
+    if is_common_lecturer.count>0
+      return Programme.roots.map(&:id)      #shall return this [1, 3, 4, 5, 14, 13, 2, 67, 12, 6, 7, 9, 11, 10, 185, 1697, 1707, 1709, 8]
+    else
+      return []
+    end
+  end
  
 end
  

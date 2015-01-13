@@ -2,17 +2,17 @@ class WeeklytimetablesController < ApplicationController
   # GET /weeklytimetables
   # GET /weeklytimetables.xml
   def index
-    #@weeklytimetables = Weeklytimetable.all
     @position_exist = current_login.staff.position
     if @position_exist  
       @lecturer_programme = current_login.staff.position.unit
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
-      end
-      unless @programme.nil?
+      end 
+      unless @programme.nil?     #works for both Admin & Pengajar SUBJEK ASAS
         @programme_id = @programme.id 
       end
-      #common subject - not yet - no matching programme (although assign as coordinator)
+      #note - restriction : refer authorization rules
+      #note - Weeklytimetable listing : based on @programme_id value being sent to 'search' method in staff.rb
       @weeklytimetables = Weeklytimetable.with_permissions_to(:index).search(@programme_id) 
     end
     respond_to do |format|
