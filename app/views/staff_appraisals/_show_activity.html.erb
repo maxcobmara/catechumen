@@ -8,9 +8,9 @@
 		    <td colspan=2>
 							<table width=90%>
 								<tr>
-									<th>Date</th>
-									<th>Activity</th>
-									<th>Level</th>
+									<th><%= t 'evaluation.form.date' %></th>
+									<th><%= t 'evaluation.form.activity' %></th>
+									<th><%= t 'evaluation.form.level' %></th>
 								</tr>
 								<% for evactivity in @staff_appraisal.evactivities %>
 								<tr>
@@ -36,10 +36,10 @@
 		    <td colspan=2>
 							<table width=90%>
 								<tr>
-									<th>Name</th>
-									<th>Type</th>
-									<th>Date</th>
-									<th>Duration</th>
+									<th><%= t 'evaluation.form.nm' %></th>
+									<th><%= t 'evaluation.form.type' %></th>
+									<th><%= t 'evaluation.form.date' %></th>
+									<th><%= t 'evaluation.form.duration' %></th>
 								</tr>
 								<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', @staff_appraisal.appraised]) %>
 									<% if ptdo.ptschedule.start.year==@staff_appraisal.evaluation_year.year%>
@@ -62,8 +62,8 @@
 		    <td colspan=2>
 							<table width=90%>
 								<tr>
-									<th>Activity</th>
-									<th>Reason</th>
+									<th><%= t 'evaluation.form.activity' %></th>
+									<th><%= t 'evaluation.form.reason' %></th>
 								</tr>
 								<% for trainneed in @staff_appraisal.trainneeds %>
 								<tr>
@@ -77,10 +77,10 @@
 </fieldset>
 
 <fieldset>
-	<legend class='togvis'>Submission</legend>
+	<legend class='togvis'><%= t 'evaluation.skt.submission' %></legend>
 	<table  width=100%>
 		<tr>
-		  <td class="leftcol"><label for="submit_for_appraisal1_on">Submit for evaluation</label></td>
+		  <td class="leftcol"><label for="submit_for_appraisal1_on"><%= t 'evaluation.skt.submit_evaluation' %></label></td>
 			<td><%=h @staff_appraisal.is_submit_for_evaluation? ? "Yes, on " + l(@staff_appraisal.submit_for_evaluation_on)   : "No" %></td>
 		</tr>
 	</table>

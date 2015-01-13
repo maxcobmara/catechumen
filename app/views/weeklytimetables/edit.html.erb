@@ -3,7 +3,7 @@
 
 	
 		<% if (@weeklytimetable.prepared_by == Login.current_login.staff_id && @weeklytimetable.is_submitted != true)  || (@weeklytimetable.prepared_by == Login.current_login.staff_id && @weeklytimetable.hod_rejected? == true )%>
-			<h3>Editing Weekly Timetable</h3>
+			<h3><%=t('weeklytimetable.edit')%></h3>
 			<div class="tform">
 				<%=render :partial => 'show_first' %>
 				<%=render :partial => 'form_timetable2' %><!--newly added 28March2013-->
@@ -12,7 +12,7 @@
 			</div>
 		<% end -%>
 		<% if @weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == Login.current_login.staff_id %>
-			<h3>Weekly Timetable Approval</h3>
+			<h3><%=t('weeklytimetable.approval')%></h3>
 			<div class="tform">
 				<%=render :partial => 'show_main' %>
 				<%=render :partial => 'approval', :locals => {:f => f} %>
@@ -20,9 +20,9 @@
 		<% end -%>
 	</div>
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit t('update') %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @weeklytimetable %> |
-<%= link_to 'Back', weeklytimetables_path %>
+<%= link_to t('show'), @weeklytimetable %> |
+<%= link_to t('back'), weeklytimetables_path %>

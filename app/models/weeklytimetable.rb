@@ -16,9 +16,13 @@ class Weeklytimetable < ActiveRecord::Base
   
   has_many :weeklytimetable_details, :dependent => :destroy
   accepts_nested_attributes_for :weeklytimetable_details, :allow_destroy => true#, :reject_if => lambda { |a| a[:start_at].blank? }
+  validates_associated :weeklytimetable_details
   
   validates_presence_of :programme_id, :semester, :intake_id, :format1, :format2
   validate :approved_or_rejected
+  
+  ##TO RESTRICT 1 Weeklytimetable for 1 programme, of 1 intake, of 1 startdate, of 1 semester
+  #validates_uniqueness_of :programe_id, :scope =>[:intake_id, :startdate, :semester] 
   
   #attr_accessor :subject_id  #for testing grouped programme (subject)
   #before logic
@@ -50,20 +54,12 @@ class Weeklytimetable < ActiveRecord::Base
   end
   
   def hods  
-      hod = Login.current_login.staff.position.parent
+      #tpa = Login.current_login.staff.position.parent
+      lecturer_unit = Login.current_login.staff.position.unit
+      kp = Position.find(:all, :conditions=>['unit=? and ancestry_depth=?', lecturer_unit,1]).map(&:id)
+      #hod = [tpa]+kp
+      hod=kp
       approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-    
-      #Ketua Program - ancestry_depth.2
-      #hod = Position.find(:all, :conditions => ["ancestry=?","1/2"])
-      
-      #if Login.current_login.staff.position.root_id == Login.current_login.staff.position.parent_id
-        #hod = Login.current_login.staff.position.root_id
-        #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-      #else
-        #hod = Login.current_login.staff.position.root.child_ids
-        #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-      #end
-      #approver
   end
   
   def self.location_list

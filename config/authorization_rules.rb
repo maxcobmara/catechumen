@@ -34,6 +34,8 @@ authorization do
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => :manage
     has_permission_on :weeklytimetables, :to => :manage
+    has_permission_on :trainingnotes, :to => :manage
+    
     #Library Menu Items
     has_permission_on [:librarytransactions, :books], :to => :manage
     
@@ -103,6 +105,10 @@ authorization do
         if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     
+    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:index, :show, :create, :update, :claimprint]do 
+        if_attribute :staff_id => is {Login.current_login.staff_id}
+    end
+    
     has_permission_on :asset_defects, :to => :create
     has_permission_on :asset_defects, :to => [:read, :update]  do
         if_attribute :reported_by => is {Login.current_login.staff_id}
@@ -147,7 +153,7 @@ authorization do
   end
   
   role :finance_unit do
-    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve]
+    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve, :claimprint]
   end
   
   role :training_manager do
@@ -164,6 +170,7 @@ authorization do
     has_permission_on :assets, :to => :manage
     has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
     has_permission_on :assetsearches, :to => :read
+    has_permission_on :locations, :to => [:manage]
   end
 
   
@@ -196,7 +203,7 @@ authorization do
   role :student do
     
       has_permission_on :locations, :to => :menu
-    
+      
       has_permission_on :tenants, :to => :read do
         if_attribute :student_id => is {Login.current_login.student_id}
       end
@@ -263,10 +270,33 @@ authorization do
       if_attribute :tpa_id => is {Login.current_login.staff_id}
     end
     has_permission_on :timetables, :to => [:create]
-    has_permission_on :student_attendances, :to => :manage  #10July2013
+    has_permission_on :students, :to => [:menu, :index]
+    has_permission_on :student_attendances, :to => :create
+    has_permission_on :student_attendances, :to => :manage do
+      if_attribute :weeklytimetable_id => is_in {Login.current_login.classes_taughtby}
+    end
     has_permission_on :weeklytimetables, :to => :personalize_index do
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
+    
+    #ter 'OVERRIDE' - LECTURER BIASA BOLEH TENGOK SEMUA Weeklytimetable DLM PROGRAM DIA SEPATUTNYA CUMA YG DIE CREATE
+    #giving full access to Pengajar Subjek Asas on Weeklytimetable (of ALL programmes) - refer authorization rules under LECTURER role
+    #related to this comment (1) 2.1.2 Student Attendance, item no.3, (2) 2.3.1 Scheduling, comment no.11 (part B)
+    has_permission_on :weeklytimetables, :to => :manage do
+      if_attribute :programme_id => is_in {Login.current_login.staff.commonsubject_lecturer_programmeid_list}
+    end
+
+    #from Ogma
+    has_permission_on :trainingnotes, :to => :manage, :join_by => :or do
+     if_attribute :topicdetail_id => is_in {Login.current_login.topicdetails_of_programme}
+     if_attribute :timetable_id => is_in {Login.current_login.timetables_of_programme} 
+    end
+    
+    has_permission_on :trainingnotes, :to => :manage, :join_by => :and do
+      if_attribute :topicdetail_id => is {nil}
+      if_attribute :timetable_id => is {nil}
+    end
+   
     has_permission_on :studentattendancesearches, :to => :read
     has_permission_on :weeklytimetablesearches, :to => :read
     has_permission_on :curriculumsearches, :to => :read

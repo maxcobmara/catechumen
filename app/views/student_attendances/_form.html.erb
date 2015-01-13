@@ -1,30 +1,55 @@
 <%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
-<% @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
-<% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
 <div class="tform">
-	<H2>Student Attendance Details</H2>
+	<H2><%=t('student_attendance.details')%></H2>
 	<table width=100%>
 		<tr>
-			<td class="leftcol"><%= f.label :student_id %></td>
-			<td><%= f.collection_select :student_id, Student.all, :id, :matrix_name %></td>
+			<td class="leftcol"><%= f.label t('student_attendance.student_id')%></td>
+			<td><%= f.collection_select :student_id, @student_list, :id, :matrix_name %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><%#= f.label :weeklytimetable_details_id %><label>Schedule / Class </label></td>
-			<td><%= f.collection_select :weeklytimetable_details_id, @schedule_list, :id, :day_time_slot %><%#= f.text_field :weeklytimetable_details_id %></td>
+			<td class="leftcol"><%= f.label t('student_attendance.class_schedule')%></td>
+			<td><%= f.collection_select :weeklytimetable_details_id, @schedule_list, :id, :day_time_slot %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"> <%= f.label :attend %></td>
-			<td><%= f.check_box :attend %></td>
+			<td class="leftcol"> <%= f.label t('student_attendance.attend') %></td>
+			<td><%= f.check_box :attend, :id => 'check_attend'%>&nbsp;<%=t('student_attendance.tick_attend')%></td>
 		</tr>
 	</table>
+	<div id="absent_details" style="display: none;">
+		<table>
+			<tr>
+				<td class="leftcol"><%= f.label t 'student_attendance.reason'%></td>
+				<td><%= f.select :reason, StudentAttendance::REASON, :prompt=>t('select') %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label t 'student_attendance.action_taken'%></td>
+				<td><%= f.select :action, StudentAttendance::ACTION, :prompt=>t('select') %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label t 'student_attendance.action_close'%></td>
+				<td><%= f.select :status, [[t('student.attendance.complete'),'Yes'],[t('student.attendance.incomplete'),'No']], :prompt=>t('select')%></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label t 'student_attendance.remark'%></td>
+				<td><%= f.text_field :remark, :size =>50 %></td>
+			</tr>
+		</table>
+	</div>
 </div>
 
-
-
-
-
-  
-
-  
-  
-
+<script type="text/javascript">
+  $j("input[id='check_attend']").change(function() {  
+    if($j('#check_attend').is(':checked')) { 
+      $j("#absent_details").hide(""); 
+    }else{
+      $j("#absent_details").show("highlight"); 
+    }
+  });
+  $j("input[id='check_attend']").each(function() {  
+    if($j('#check_attend').is(':checked')) { 
+      $j("#absent_details").hide("");
+    }else{
+    $j("#absent_details").show("highlight"); 
+    }
+  });              
+</script>

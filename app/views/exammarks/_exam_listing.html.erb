@@ -28,7 +28,7 @@
 	<!--for INDEX use-->
 	<%# Exam.all.each do |x| %>
 	<% @complete_exampaper.each do |x| %>
-		<% if x.subject.root.name == @lecturer_programme %>
+		<% if x.subject.root.name == @lecturer_programme || x.subject.root.name == @dept_unit %>
 			<% @exam_list_index << x %>
 		<% end %>
 	<% end %>
@@ -50,7 +50,11 @@
 			<% @student_list << y %>
 		<% end %>
 	<% end %>
-	<% @subject_list = Programme.find_by_name(@lecturer_programme).descendants.at_depth(2)%>
+	<% if Programme.roots.map(&:name).include?(@lecturer_programme) %>
+	    <% @subject_list = Programme.find_by_name(@lecturer_programme).descendants.at_depth(2)%>
+	<% else %>
+	     <% @subject_list = Programme.find(:all, :conditions=>['course_type=?','Subject']) %>
+	<% end %>
 <%# end %>
 <!--11-12Apr2013-->
 <%###################################################%>

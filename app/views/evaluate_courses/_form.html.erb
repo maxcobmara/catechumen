@@ -13,14 +13,19 @@
 			<tr>
 				<td class="leftcol"><label for="course_id">Course Name</label></td>
 				<td>:</td>
-				<td><%#=Programme.find(@preselect_prog).programme_list %><%#= f.hidden_field :course_id, :value=>@preselect_prog %>
-					<%= f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank => "Select a programme", :selected => @preselect_prog} %></td>
+				<td>
+					<% if @evaluate_course.new_record? %>
+					    <%= f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank => "Select a programme", :selected =>@preselect_prog} %>
+					<% else %>
+					    <%= f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank => "Select a programme", :selected =>@evaluate_course.course_id} %>
+					<% end %>
+				</td>
 			</tr>
 				
 			<tr>
 				<td class="leftcol"><label for="subject_id">Subject Name</label></td>
 				<td>:</td>
-				<td><%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank => true %></td>
+				<td><%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank => "Select a subject" %></td>
 				
 			</tr>
 	
@@ -29,7 +34,7 @@
 				<td>:</td>
 					<%# @dept_position_staff_ids = Position.find_by_unit(@dept_unit).subtree.map(&:staff_id) %>
 					<%# @dept_staff = Staff.find(:all, :conditions => ['id IN(?)', @dept_position_staff_ids])%>
-				<td><%= f.collection_select :staff_id, @lecturer_list, :id, :name, :include_blank => true %>
+				<td><%= f.collection_select :staff_id, @lecturer_list, :id, :name, :include_blank => "Select Staff" %>
 					<%#= f.collection_select :staff_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
 			</tr>
 			

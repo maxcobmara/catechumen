@@ -1,0 +1,56 @@
+<div class="tform">
+	<h2><%=t('training_note.details')%></h2>
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.topic_subtopic')%></label></td>
+			<td><%= f.collection_select :topicdetail_id,@semester_subject_topic_list_bytopicdetail , :id, :semester_subject_topic, {:prompt=>t('select'), :selected=>@trainingnote.topicdetail_id}%></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.staff_id')%></label></td>
+			<td>
+				<% lecturer_admin_list = Staff.find(:all, :joins=>:position, :conditions=>['positions.name=? OR staffs.id IN(?)','Pengajar', @staff_w_adminrole], :order=>'name ASC') %>
+				<% unless @trainingnote.staff_id.nil? || @trainingnote.staff_id.blank? %>
+					<%= f.collection_select :staff_id, lecturer_admin_list, :id, :name, :include_blank =>t('select'), :selected=>@trainingnote.staff_id.to_i%>
+				<% else %>
+					<%= f.collection_select :staff_id, lecturer_admin_list, :id, :name, :include_blank =>t('select'), :selected=>Login.current_login.staff_id%>
+				<% end %>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.document')%></label></td>
+			<td>
+				<font color=#444 size=-2>
+					<% if @trainingnote.document!= nil %>
+						<%=t('current_file')%> : <%= @trainingnote.document_file_name %> &nbsp;&nbsp;&nbsp;
+						<%= link_to (t 'document.download'), @trainingnote.document.url %> ||
+						<%= link_to "ALT", @trainingnote.document.url %>
+						<BR><%=t('or')%>
+					<% end %>
+				</font>
+				<%= f.file_field :document %>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.title3')%></label></td>
+			<td><%= f.text_field :title %></td>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.reference')%></label></td>
+			<td><%= f.text_field :reference %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.release')%></label></td>
+			<td><%= f.date_select :release %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label><%=t('training_note.version')%></label></td>
+			<td><%= f.text_field :version %></td>
+		</tr>
+	</table>
+</div>
+
+ <!--
+    <%= f.label :timetable_id %><br />
+    <%= f.text_field :timetable_id %>-->
+

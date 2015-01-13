@@ -1,35 +1,34 @@
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Listing Weekly Timetables</h2>
+		<h2 class="left"><%=t('weeklytimetable.title')%></h2>
 	</div>
 </div>
 
 <% unless @position_exist %>	
-	You have no position assigned yet. <br>
-	Please contact administrator.
+	<%=t('position_required')%>
 <% else %>
 	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
 		Programme / Unit is not defined. <br>
 	<% else %>
 	
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Weekly Timetable') + "New", new_weeklytimetable_path %></p>
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Weekly Timetable') + t('weeklytimetable.new'), new_weeklytimetable_path %></p>
 </div>
-
+<BR><BR>
 <div class="indextable">
 	<table>
 	  <tr>
-	    <th>Programme</th>
-    	<!--20March2013<th>Intake</th>-->
-    	<th>Group</th>
-    	<th>Startdate</th>
-    	<th>Enddate</th>
-    	<th>Semester</th>
-    	<th>Prepared by</th>
-		<th>Submitted?</th>
-		<th>Approved</th>
-    	<!--<th>Endorsed by</th>-->
-		<th colspan=3 class="ac">Control</th>
+	    <th><%=t('weeklytimetable.programme_id')%></th>
+	    <!--20March2013<th>Intake</th>-->
+	    <th><%=t('weeklytimetable.group_id')%></th>
+	    <th><%=t('weeklytimetable.startdate')%></th>
+	    <th><%=t('weeklytimetable.enddate')%></th>
+	    <th><%=t('weeklytimetable.semester')%></th>
+	    <th><%=t('weeklytimetable.prepared_by')%></th>
+	    <th><%=t('weeklytimetable.is_submitted')%></th>
+	    <th><%=t('weeklytimetable.hod_approved')%></th>
+	    <!--<th>Endorsed by</th>-->
+	    <th colspan=3 class="ac"><%=t('control')%></th>
   	  </tr>
 <!--hack-21March2013-->
 <%# current_roles=[]%><%# Login.current_login.roles.each do |x| %><%# current_roles << x.name %><%# end %><%#=current_roles.include? 'Administration'%>
@@ -79,7 +78,7 @@
 <br />
 </div>
 
-<%= link_to 'New Weekly Timetable', new_weeklytimetable_path %>
+<%= link_to t('weeklytimetable.new'), new_weeklytimetable_path %>
 
 <% end %>
 <% end %>

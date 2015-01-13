@@ -1,13 +1,13 @@
 <div class="fields">
 	
 	<fieldset>
-		<legend>Select Travel Request : <%= f.collection_select :travelrequest_id, TravelRequest.find(:all, :conditions => ['id IN (?)', @travelclaim.unclaimed_travel_requests], :order => :id), :id, :request_code, :include_blank => true %>
+		<legend><%= t 'claim.select_travel_request' %> <%= f.collection_select :travelrequest_id, TravelRequest.find(:all, :conditions => ['id IN (?)', @travelclaim.unclaimed_travel_requests], :order => :id), :id, :request_code, :include_blank => true %>
 		<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %></legend>
 		
    <div style=" border:solid red;">
 	
 	
-		<b>Details</b>position: relative; left: 100px; 
+		<b><%= t 'claim.details' %></b>position: relative; left: 100px; 
 		<HR width=50% align=left>
 
 	 <% f.fields_for :traveldetails do |builder| %>

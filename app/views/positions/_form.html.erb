@@ -16,7 +16,7 @@
 	
 	<tr>
 		<td class="leftcol"><label for="staffgrade_id"><b><%= t 'positions.grade_id' %></b></label></td>
-		<td><%= f.collection_select :staffgrade_id, Employgrade.find(:all, :order => 'name'), :id, :name_and_group, :include_blank => true %></td>
+		<td><%= f.collection_select :staffgrade_id, Employgrade.find(:all, :order => 'name'), :id, :name_and_group, :include_blank => t ('select') %></td>
 	</tr>
 	
 	<tr>
@@ -30,12 +30,12 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="staff_id">Person Name:</label></td>
+		<td class="leftcol"><label for="staff_id"><b><%= t 'positions.person_name' %><b></label></td>
 		<td><SPAN id="person"><%= render :partial => 'staff_matched', :locals => {:f => f} %></SPAN></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="staff_id">Is Acting</label></td>
+		<td class="leftcol"><label for="staff_id"><b><%= t 'positions.is_acting' %><b></label></td>
 		<td><%= f.check_box :is_acting %></td>
 	</tr>
 	

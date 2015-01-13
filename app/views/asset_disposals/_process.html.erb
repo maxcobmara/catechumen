@@ -1,34 +1,34 @@
 <table width=85% >
 			<tr>
-				<td class="leftcol"><label for="asset_id">Asset Condition</label></td>
+				<td class="leftcol"><label for="asset_id"><%= t 'disposal.asset_condition' %></label></td>
 				<td><%= f.text_field :current_condition %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><label for="usage"><label>Usage</label></td>
+				<td class="leftcol"><label for="usage"><label><%= t 'disposal.usage' %></label></td>
 				<td><%= f.text_field :running_hours, :placeholder => 'Running Hours' %>   <BR/>   
 					  <%= f.text_field :mileage, :placeholder => 'Mileage (km)' %> </td>
 			</tr>
 			<tr>
-				<td class="leftcol"><label for="usage"><%= t 'asset.disposal.currentvalue' %></label></td>
+				<td class="leftcol"><label for="usage"><%= t 'disposal.currentvalue' %></label></td>
 				<td><label><%= f.text_field :current_value, :placeholder => 'RM'  %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><label for="usage">Estimated Repair Cost</label></td>
+				<td class="leftcol"><label for="usage"><%= t 'disposal.estimate_repair' %></label></td>
 				<td><label><%= f.text_field :est_repair_cost, :placeholder => 'RM'  %></td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="usage">Estimated Value After Repair</label></td>
+				<td class="leftcol"><label for="usage"><%= t 'disposal.estimate_value' %></label></td>
 				<td><label><%= f.text_field :est_value_post_repair, :placeholder => 'RM'  %></td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="usage">Estimated Time To Next Failure</label></td>
+				<td class="leftcol"><label for="usage"><%= t 'disposal.estimate_time' %></label></td>
 				<td><label><%= f.text_field :est_time_next_fail, :placeholder => 'months'  %></td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="usage">Repair Needed</label></td>
+				<td class="leftcol"><label for="usage"><%= t 'disposal.repair_need' %></label></td>
 				<td><label>	1. <%= f.text_field :repair1_needed %> <BR/>
 										2. <%= f.text_field :repair2_needed %> <BR/>
 										3. <%= f.text_field :repair3_needed %></label></td>
@@ -36,7 +36,7 @@
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="usage">Justification For Disposal</label></td>
+				<td class="leftcol"><label for="usage"><%= t 'disposal.justify_disposal' %></label></td>
 				<td><label>	1. <%= f.text_field :justify1_disposal %> <BR/>
 										2. <%= f.text_field :justify2_disposal %> <BR/>
 										3. <%= f.text_field :justify3_disposal %></label></td>
@@ -54,7 +54,7 @@
 				</td>
 			</tr>
 			<tr>
-			  <td class="leftcol"><label for="is_staff1">1. Name (Tick & select if STAFF)</label></td>
+			  <td class="leftcol"><label for="is_staff1"><%= t 'disposal.witness_one' %></label></td>
 				<td>
 					<%= f.check_box :is_staff1, :id => 'is_staff1' %> &nbsp;&nbsp;
 					
@@ -82,7 +82,7 @@
 			<%#= f.date_select :verified_on, :order => [:day, :month, :year], :default => Date.today %>
 			<%#= f.hidden_field :verified_on, :order => [:day, :month, :year], :default => Date.today %>
 			<tr>
-			  <td class="leftcol"><label for="is_staff2">2. Name (Tick & select if STAFF)</label></td>
+			  <td class="leftcol"><label for="is_staff2"><%= t 'disposal.witness_two' %></label></td>
 				<td>
 					<%= f.check_box :is_staff2, :id => 'is_staff2' %> &nbsp;&nbsp;
 
@@ -113,14 +113,14 @@
 			
 			
 			<tr>
-			  <td class="leftcol"><label for="is_checked">Checked By</label></td>
+			  <td class="leftcol"><label for="is_checked"><%= t 'disposal.checkedby' %></label></td>
 				<td><%= f.check_box :is_checked, :id => 'is_checked' %>
 						<SPAN class="span_is_checked" style="display: none;"><%= f.date_select :checked_on, :order => [:day, :month, :year], :default => Date.today %></SPAN>
 						</td>
 			</tr>
 			
 			<tr class="span_is_checked" style="display: none;">
-				<td class="leftcol"><label for="processed_by">Name</label></td>
+				<td class="leftcol"><label for="processed_by"><%= (t 'name') %></label></td>
 				<td><%= f.collection_select :checked_by, Staff.find(:all, :conditions => ["id = ?", current_login.staff_id]), :id, :staff_name_with_position %>
 				</td>
 			</tr>

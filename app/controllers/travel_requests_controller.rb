@@ -26,16 +26,30 @@ class TravelRequestsController < ApplicationController
   # GET /travel_requests/new.xml
   def new
     @travel_request = TravelRequest.new
-
+   
     respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @travel_request }
+      if Login.current_login.staff.position!=nil && Login.current_login.staff.position.unit!=""
+        format.html # new.html.erb
+        format.xml  { render :xml => @travel_request }
+      else
+        format.html {redirect_to travel_requests_url, :notice =>  t('position_required')+t('travel.title')+t('inc_unitname')}
+        format.xml  { render :xml => @travel_request }
+      end
     end
   end
 
   # GET /travel_requests/1/edit
   def edit
     @travel_request = TravelRequest.find(params[:id])
+    respond_to do |format|
+      if Login.current_login.staff.position!=nil && Login.current_login.staff.position.unit!=""
+        format.html # new.html.erb
+        format.xml  { render :xml => @travel_request }
+      else
+        format.html {redirect_to travel_requests_url, :notice =>  t('position_required')+t('travel.title')+t('inc_unitname')}
+        format.xml  { render :xml => @travel_request }
+      end
+    end
   end
 
   # POST /travel_requests
@@ -45,7 +59,7 @@ class TravelRequestsController < ApplicationController
 
     respond_to do |format|
       if @travel_request.save
-        format.html { redirect_to(@travel_request, :notice => 'TravelRequest was successfully created.') }
+        format.html { redirect_to(@travel_request, :notice => t('travel.title')+" "+t('created')) }
         format.xml  { render :xml => @travel_request, :status => :created, :location => @travel_request }
       else
         format.html { render :action => "new" }
@@ -61,7 +75,7 @@ class TravelRequestsController < ApplicationController
 
     respond_to do |format|
       if @travel_request.update_attributes(params[:travel_request])
-        format.html { redirect_to(params[:redirect_location], :notice => 'TravelRequest was successfully updated.') }
+        format.html { redirect_to(params[:redirect_location], :notice => t('travel.title')+" "+t('updated')) }
         format.xml  { head :ok }
       
       else

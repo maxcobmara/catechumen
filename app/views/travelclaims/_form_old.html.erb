@@ -8,10 +8,10 @@
 <div>
 <table>
 	<tr>
-		<th>Type</td>
-		<th>Receipt No</td>
-		<th>Value (RM)</td>
-		<th></th>
+		<th width=20%><%= t 'claim.type' %></td>
+		<th width=20%><%= t 'claim.receipt_no' %></td>
+		<th align="right" width="20"><%= t 'claim.value' %></td>
+		<th width=5%></th>
 	</tr>
 	<% f.fields_for :travelclaimreceipts do |builder| %>
 	  <%= render 'travelclaimreceipt_fields', :f => builder %>
@@ -21,19 +21,19 @@
 
 <table>
   <tr>
-	  <td class="leftcol"><label for="ptclaimsvalue"><b>Transport Claim Value:</b></label></td>
+	  <td class="leftcol"><label for="ptclaimsvalue"><b><%= t 'claim.transport_claim_value' %></b></label></td>
 		<td>RM <%= f.text_field :ptclaimsvalue, :size => 12  %></td>
 	</tr>
 	
 	
 	<tr>
-	   <td class="leftcol"><label for="allclaimsvalue"><b>Allowance Claim Value:</b></label></td>
+	   <td class="leftcol"><label for="allclaimsvalue"><b><%= t 'claim.allowance_claim_value' %></b></label></td>
 		<td>RM <%= f.text_field :allclaimsvalue, :size => 12  %></td>
 	</tr>
 	
 	
 	<tr>
-	   <td class="leftcol"><label for="othclaimsvalue"><b>Other Claim Value:</b></label></td>
+	   <td class="leftcol"><label for="othclaimsvalue"><b><%= t 'claim.other_claim_value' %></b></label></td>
 		<td>RM <%= f.text_field :othclaimsvalue, :size => 12  %></td>
 	</tr>
 	
@@ -62,30 +62,30 @@
 	
 	
 	<tr>
-	   <td class="leftcol"><label for="claimtype"><b>Claim Type:</b></label></td>
+	   <td class="leftcol"><label for="claimtype"><b><%= t 'claim.claim_type' %></b></label></td>
 		<td><%= f.radio_button :claimtype,'true' %>By KM<%= f.radio_button :claimtype,'false' %>Replaced</td>
 	</tr>
 	
 	<tr>
-		<th colspan=2>Submission</th>
+		<th colspan=2><%= t 'claim.submission' %></th>
 	</tr>
 	    <tr>
-			<td class="leftcol"><label for="submission"><b>Submission Date:</b></label></td>
+			<td class="leftcol"><label for="submission"><b><%= t 'claim.submission_date' %></b></label></td>
 			<td><%= f.date_select :submission, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 	
 
 	<tr>
-		<th colspan=2>HOD Confirmation</th>
+		<th colspan=2><%= t 'claim.hod_confrm' %></th>
 	</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="hod_id"><b>HOD Name:</b></label></td>
+			<td class="leftcol"><label for="hod_id"><b><%= t 'claim.hod_id' %></b></label></td>
 			<td><%= f.collection_select :hod_id, Staff.find(:all, :order => "icno"), :id, :mykad_with_staff_name, :include_blank => true %></td>
 		</tr>
 
 		<tr>
-		 <td class="leftcol"><label for="hodconfirmdt"><b>Confirmed Date:</b></label></td>
+		 <td class="leftcol"><label for="hodconfirmdt"><b><%= t 'claim.confirmed_date' %></b></label></td>
 		<td><%= f.date_select :hodconfirmdt, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 

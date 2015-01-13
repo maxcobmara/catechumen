@@ -1,18 +1,19 @@
 class WeeklytimetableDetail < ActiveRecord::Base
    
    before_save :set_day_time_slot_for_non_selected
-   before_destroy :check_student_attendance
+   before_destroy :check_student_attendance, :check_lesson_plan
    
    belongs_to :weeklytimetable,     :foreign_key => 'weeklytimetable_id'
    belongs_to :weeklytimetable_subject,   :class_name => 'Programme',   :foreign_key => 'subject' #starting 25March2013-no longer use
    belongs_to :weeklytimetable_topic,     :class_name => 'Programme',   :foreign_key => 'topic'
    belongs_to :weeklytimetable_lecturer,  :class_name => 'Staff',       :foreign_key => 'lecturer_id'
    belongs_to :weeklytimetable_location,  :class_name => 'Location',    :foreign_key => 'location'
-   has_one    :lessonplan,                :class_name => 'LessonPlan',  :foreign_key => 'schedule', :dependent => :nullify #31OCT2013 - :dependent => :destroy
+   has_one     :lessonplan, :class_name => 'LessonPlan',  :foreign_key => 'schedule', :dependent => :nullify #once removed, require re-selection of schedule in lesson_plan
    has_many   :student_attendances
    
    #validates_uniqueness_of :lecturer_id, :time_slot, :time_slot2, :day2, :is_friday, :scope => :weeklytimetable_id
-   validates_presence_of :location, :lecturer_id, :topic#,:time_slot, :time_slot2, :day2, :is_friday
+   validates_presence_of :lecturer_id, :topic#,:time_slot, :time_slot2, :day2, :is_friday, :location
+   
    def set_day_time_slot_for_non_selected
        if is_friday == true
          self.day2 = 0
@@ -31,6 +32,8 @@ class WeeklytimetableDetail < ActiveRecord::Base
      return (sdate+2).strftime('%d-%b-%Y') if day2 == 3
      return (sdate+3).strftime('%d-%b-%Y') if day2 == 4
      return (endate).strftime('%d-%b-%Y') if is_friday == true
+      return (sdate+5).strftime('%d-%b-%Y') if day2 == 6
+      return (sdate+6).strftime('%d-%b-%Y') if day2 == 7
    end   
    
    def get_date_day_of_schedule
@@ -41,6 +44,8 @@ class WeeklytimetableDetail < ActiveRecord::Base
       return (sdate+2).strftime('%d-%b-%Y') + " Wed" if day2 == 3
       return (sdate+3).strftime('%d-%b-%Y') + " Thu" if day2 == 4
       return (endate).strftime('%d-%b-%Y') + " Fri" if is_friday == true  
+      return (sdate+5).strftime('%d-%b-%Y') + " Sat" if day2 == 6
+      return (sdate+6).strftime('%d-%b-%Y') + " Sun" if day2 == 7
    end   
    
    def get_start_time
@@ -69,6 +74,10 @@ class WeeklytimetableDetail < ActiveRecord::Base
       "#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
    end
    
+   def day_time_slot3
+     "#{weeklytimetable_lecturer.name[0,10]}"+" | "+"#{day_time_slot}"
+   end
+   
    def subject_day_time
       "#{Programme.find(topic).parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
    end
@@ -88,10 +97,19 @@ class WeeklytimetableDetail < ActiveRecord::Base
 
    DAY_LIST = [
            #  Displayed       stored in db
-           ["Monday",     1],
-           ["Tuesday",    2],
-           ["Wednesday",  3],
-           ["Thursday",   4]
+           ["Sunday",     1],
+           ["Monday",    2],
+           ["Tuesday",  3],
+           ["Wednesday",   4]
+     ]
+    DAY_LIST2 = [
+           #  Displayed       stored in db
+           ["Sunday",     1],
+           ["Monday",    2],
+           ["Tuesday",  3],
+           ["Wednesday",   4],
+           ["Friday", 6],
+           ["Saturday", 7]
      ]
     CLASS_METHOD = [
            #  Displayed       stored in db
@@ -190,6 +208,19 @@ class WeeklytimetableDetail < ActiveRecord::Base
      def check_student_attendance
        student_attendance_exist = StudentAttendance.find(:all, :conditions=>['weeklytimetable_details_id=?',id])
        if student_attendance_exist.count>0
+         return false
+       end
+     end
+     
+     #this part will only restrict user from REMOVING current daily timetable detail (TIME SLOT)
+     #but pls note replacing content(topic, location etc) of current daily timetable detail (TIME SLOT) shall REFLECT schedule details(topic, timing, etc) in Lesson Plan
+     def check_lesson_plan
+       current_schedule = 
+       submitted_lesson_plan = LessonPlan.find(:all, :conditions => ['is_submitted=?', true]).map(&:schedule)
+       if submitted_lesson_plan.include?(self.id)
+         #lesson plan created, schedule editable? #issue arise during training : lesson plan first created by lecturer, schedule used to be last minute produce by Coordinator
+         #errors.add_to_base "tak bole la"
+         # raise I18n.t("weeklytimetable_detail.removal_not_allowed")
          return false
        end
      end

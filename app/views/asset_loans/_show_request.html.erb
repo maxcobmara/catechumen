@@ -1,8 +1,8 @@
 <fieldset>
-	<legend class='togvis'>Asset On Loan</legend>
+	<legend class='togvis'><%= t 'menu.asset_on_loan' %></legend>
 		<table width=85% >
 				<tr>
-					<td class="leftcolwide"><label for="asset_code"><b>Asset Code</b></label></td>
+					<td class="leftcolwide"><label for="asset_code"><b><%= t 'asset.assetcode' %></b></label></td>
 					<td><%= @asset_loan.asset.assetcode %> -  
 							<%= @asset_loan.asset.typename %> -   
 							<%= @asset_loan.asset.name %>  -  
@@ -11,32 +11,32 @@
 				</tr>
 
 				<tr>
-					<td class="leftcolwide"><label for="asset_code"><b>Staff Name</b></label></td>
+					<td class="leftcolwide"><label for="asset_code"><b><%= t 'claim.staff_name' %></b></label></td>
 					<td><%= @asset_loan.loaner %></td>
 				</tr>
 
 				<tr>
-					<td class="leftcolwide"><label for="asset_code"><b>Reasons</b></label></td>
+					<td class="leftcolwide"><label for="asset_code"><b><%= t 'travel.reason' %></b></label></td>
 					<td><%=h @asset_loan.reasons %></td>
 				</tr>
 				<% if @asset_loan.is_approved != false %>
 				<tr>
-					<td class="leftcolwide">Requested For</td>
+					<td class="leftcolwide"><%= t 'assetloan.requestfor' %></td>
 					<td><%=h @asset_loan.loaned_on %></td>
 				</tr>
 
 				<tr>
-					<td class="leftcolwide"><label>Expected Return Date	</td>
+					<td class="leftcolwide"><label><%= t 'assetloan.expect_returndate' %></td>
 					<td><%=h @asset_loan.expected_on %></td>
 				</tr>
 				
 				<tr>
-					<td class="leftcolwide"><label>Owner/Responsible Unit</td>
+					<td class="leftcolwide"><label><%= t 'asset.owner_repons' %></td>
 					<td><%=h @asset_loan.asset.assignedto.name unless @asset_loan.asset.assignedto.blank? %> /
 					<%=h @asset_loan.asset.assignedto.position.unit unless @asset_loan.asset.assignedto.position.blank? %></td>
 				</tr>
 				<tr>
-					<td class="leftcolwide"><label>Loan Type</td>
+					<td class="leftcolwide"><label><%= t 'book.loan_type' %></td>
 					<td><%=h "Internal" if @asset_loan.loantype == 1 %><%=h "External" if @asset_loan.loantype == 2 %></td>
 				</tr>
 				<% end %>

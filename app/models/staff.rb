@@ -196,7 +196,7 @@ class Staff < ActiveRecord::Base
   has_many :student_counseling_sessions, :as => :created_by,  :foreign_key => 'created_by' 
   
 
-
+  has_many :trainingnotes,    :class_name => 'Trainingnote'
 
 #----------------------------code for repeating fields------------------------------------------  
  
@@ -242,6 +242,10 @@ class Staff < ActiveRecord::Base
     "#{name}  (#{position_for_staff})"
   end
   
+  def staff_name_with_position_grade_unit
+      "#{name}  (#{position_for_staff}-#{grade_for_staff}-#{unit_for_staff})"
+  end
+  
   def position_for_staff
     if position.blank?
       "-"
@@ -258,7 +262,22 @@ class Staff < ActiveRecord::Base
     end
   end
   
-  
+  def unit_for_staff
+    if position.blank?
+      "-"
+    else
+      "#{position.try(:unit)}"
+    end
+  end
+    
+  def grade_for_staff
+    if position.blank?
+       "-"
+    else
+       "#{position.staffgrade.try(:name)}"
+    end
+  end
+    
   def my_bank
     sid = id
     b = Bankaccount.find(:all, :select => "bank_id", :conditions => {:staff_id => sid}).map(&:bank_id)
@@ -499,6 +518,20 @@ class Staff < ActiveRecord::Base
        "P"
     elsif gender==1
       "L"
+    end
+  end
+  
+  #giving full access to Pengajar Subjek Asas on Weeklytimetable (of ALL programmes) - refer authorization rules under LECTURER role
+  #related to this comment (1) 2.1.2 Student Attendance, item no.3, (2) 2.3.1 Scheduling, comment no.11 (part B)
+  def commonsubject_lecturer_programmeid_list
+    unit = Login.current_login.staff.position.unit
+    current_lecturer = Login.current_login.staff.id
+    common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
+    is_common_lecturer = Position.find(:all, :conditions=>['unit IN(?) and staff_id=?', common_subjects, current_lecturer])
+    if is_common_lecturer.count>0
+      return Programme.roots.map(&:id)      #shall return this [1, 3, 4, 5, 14, 13, 2, 67, 12, 6, 7, 9, 11, 10, 185, 1697, 1707, 1709, 8]
+    else
+      return []
     end
   end
  

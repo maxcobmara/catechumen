@@ -6,13 +6,17 @@
 	  	<div class="right">
 		 	<label>
             <% form_tag stationeries_path, :method => 'get' do %>
-	        <%= text_field_tag :search, params[:search], :placeholder => "Product Name" %>
+	        <%= text_field_tag :search, params[:search], :placeholder => (t 'supplier.category') %>
 	        <%= submit_tag I18n.t('search'), :category => nil %>      
 	        <% end %>
 	    </label>
 			</div>
 	</div>
 </div>
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'stationery.new')) + (t 'stationery.new'), new_stationery_path %></p>
+</div>
+<BR><BR>
 <!--Do a Show : items below minimum, items 10% from minimum, items over maximum, all-->
 <div class="indextable">
 	<table width=100%>
@@ -22,7 +26,7 @@
 			<th><%= t 'supplier.current' %></th>
 			<th><%= t 'supplier.maxquantity' %></th>
 			<th><%= t 'supplier.minquantity' %></th>
-			<th colspan=4 class="ac">Control</th>
+			<th colspan=4 class="ac"><%= t 'control' %></th>
 		</tr>
 
 
@@ -44,4 +48,4 @@
 
 <br />
 
-<%= link_to (t 'supplier.create'), new_stationery_path %>
+<%= link_to (t 'stationery.new'), new_stationery_path %>

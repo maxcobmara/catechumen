@@ -1,4 +1,4 @@
-<h3>Editing Page</h3>
+<h3><%= t 'pages.edit' %></h3>
 
 <%= error_messages_for :page %>
 
@@ -7,19 +7,19 @@
 <%= render :partial => 'form', :locals => {:f => f} %>
  
 <p>
-    <%= f.submit "Update" %>
+    <%= f.submit (t 'update') %>
   </p>
 <% end %>
 <% Login.current_login.roles.each do |role| %>
 	<% @lib=true if role.id==5 %>
 	<% @admin=true if role.id == 2%>
 <% end %>
-<%= link_to 'Show', @page %> |
+<%= link_to (t 'show'), @page %> |
 <% if @admin==true %>
-	<%= link_to 'Back', pages_path %>
+	<%= link_to (t 'back'), pages_path %>
 <% else %>
 	<% if @lib==true%>
-		<%#= link_to 'Back', librarytransactions_path %>
-		<%= link_to 'Back',    '/rules' %>
+		<%#= link_to (t 'back'), librarytransactions_path %>
+		<%= link_to (t 'back'),    '/rules' %>
 	<% end %>
 <% end %>

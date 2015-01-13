@@ -5,7 +5,7 @@
 		<!--2Jan2013-amend this part - to make sure it works with conditions at line 22-->
 		<% if @travel_request.is_submitted == false || @travel_request.hod_id == nil || @travel_request.replaced_by == nil %>
 		<%# if @travel_request.is_submitted == false %>
-		<H2>Edit Travel Request</H2>
+		<H2><%=t('travel.edit')%></H2>
 		<table width=100% >
 			<tr>
 				<td class="leftcol"><label for="staff_id"><b><%= t 'staffleave.staff_id' %></b></label></td>
@@ -32,7 +32,7 @@
 		<%# if @travel_request.is_submitted == true  %>
 		    <%=render :partial => 'show_main' %>
 				<%=render :partial => 'approval', :locals => {:f => f} %>
-		<% elsif @travel_request.is_submitted == true && @travel_request.staff_id == Login.current_login.staff_id %>
+		<% elsif @travel_request.is_submitted == true && @travel_request.staff_id == Login.current_login.staff_id && @travel_request.hod_id!=nil && @travel_request.replaced_by!=nil%>
 			<H2>Edit Travel Request</H2>
 			Travel request already submitted to HOD for approval and no longer editable.
 		<% end -%>
@@ -41,9 +41,9 @@
 	</div>
 
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit (t 'update') %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @travel_request %> |
-<%= link_to 'Back', travel_requests_path %>
+<%= link_to (t 'show'), @travel_request %> |
+<%= link_to (t 'back'), travel_requests_path %>

@@ -109,18 +109,31 @@ class Programme < ActiveRecord::Base
          #  Displayed       stored in db
          [ "Major",     1 ],
          [ "Minor",     2 ],
-         [ "Elective",  3 ]
+         [ I18n.t('programme.elective'),  3 ]
     ]
 
     DURATION_TYPES = [
          #  Displayed       stored in db
-         [ "Hours",      0 ],
-         [ "Days",       1 ],
-         [ "Weeks",      7 ],
-         [ "Months",     30 ],
-         [ "Years",      365 ]
+         [ I18n.t('time.hours'),      0 ],
+         [ I18n.t('time.days'),       1 ],
+         [ I18n.t('time.weeks'),      7 ],
+         [ I18n.t('time.months'),     30 ],
+         [ I18n.t('time.years'),      365 ]
     ]
+    
+      COURSE_TYPES_SUB = [
+      # Displayed	stored in db
+       [I18n.t('programme.semester'),'Semester'],
+       [I18n.t('programme.subject'),'Subject'],
+       [I18n.t('programme.commonsubject'),'Commonsubject'],
+       [I18n.t('programme.topic'),'Topic'],
+       [I18n.t('programme.subtopic'), 'Subtopic']
+      ]
 
+     LECTURE_TIME = [
+      [I18n.t('time.hours'), 1],
+      [I18n.t('time.minutes'), 2]
+      ]
     private
     
     def check_examquestion_of_subject_exist

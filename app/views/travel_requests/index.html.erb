@@ -1,27 +1,27 @@
 <% if @for_approvals.size > 0 %>
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Travel Requests For Approval</h2>
+		<h2 class="left"><%=t('travel.for_approval')%></h2>
 	</div>
 </div>
 
 <div class="indextable">
 	<table>
 		<tr>
-			<th>Code</th>
+			<th><%= t 'travel.code' %></th>
 			<th><%= t 'travel.sname' %></th>
 			<th><%= t 'travel.destination' %></th>
-			<th>Depart at</th>
+			<th><%=t('travel.depart_at')%></th>
 			<th><%= t 'travel.purpose' %></th>
-			<th>Submitted?</th>
-			<th>Approved</th>
-			<th colspan=2 class="ac">Control</th>
+			<th><%=t('travel.submitted')%></th>
+			<th><%=t('travel.approved')%></th>
+			<th colspan=2 class="ac"><%=t('control')%></th>
 		</tr>
 		
 		<% @for_approvals.each do |for_approval| %>
 		<tr>
 			<td><%=h check_kin {for_approval.document.refno} %></td>
-   		<td><%=h for_approval.applicant.staff_name_with_position unless for_approval.applicant.blank? %></td>
+   		<td><%=h for_approval.applicant.staff_name_with_position_grade_unit unless for_approval.applicant.blank? %></td>
       <td><%=h for_approval.destination %></td>
       <td><%=h l(for_approval.depart_at) %></td>
       <td><%=h for_approval.document.try(:title) %></td>
@@ -39,14 +39,14 @@
 
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">My Travel Requests</h2>
+		<h2 class="left"><%=t('travel.mytravel')%></h2>
 	</div>
 </div>
 
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Travel Request') + "New", new_travel_request_path %></p>
+	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'travel.new')) + (t 'travel.new'), new_travel_request_path %></p>
 </div>
-
+<BR><BR>
 <div class="indextable">
 	<table>
 		<tr>
@@ -56,40 +56,46 @@
 			<th><%= t 'travel.depart_at' %></th>
 			<th><%= t 'travel.return_at' %></th>
 			<th><%= t 'travel.purpose' %></th>
-			<th>Submitted?</th>
-			<th>Approved</th>
-			<th colspan=4 class="ac">Control</th>
+			<th><%=t('travel.submitted')%></th>
+			<th><%=t('travel.approved')%></th>
+			<th colspan=4 class="ac"><%=t('control')%></th>
 		</tr>
 		
 		<% @travel_requests.each do |travel_request| %>
 		<tr>
 			<td><%=h check_kin {travel_request.document.refno} %></td>
-   		<td><%=h travel_request.applicant.staff_name_with_position unless travel_request.applicant.blank? %></td>
-      <td><%=h travel_request.destination %></td>
-      <td><%=h travel_request.depart_at.strftime("%l:%M %p")%>
-		  <%#=h l(travel_request.depart_at) %></td>
-	  <td><%=h travel_request.return_at.strftime("%l:%M %p")%>
-		<%#=h l(travel_request.return_at) %></td>
-      <td><%=h travel_request.document_id? ? truncate((travel_request.document.title), :length => 40, :separator => ' ') : "None" %></td>
+			<td><%=h travel_request.applicant.staff_name_with_position unless travel_request.applicant.blank? %></td>
+			<td><%=h travel_request.destination %></td>
+			<td><%=h travel_request.depart_at.try(:strftime, "%d %b %Y")%> - 
+			<%=h l(travel_request.depart_at).downcase %></td>
+			<td><%=h travel_request.return_at.try(:strftime, "%d %b %Y")%> - 
+			<%=h l(travel_request.return_at).downcase %></td>
+			<td><%=h travel_request.document_id? ? truncate((travel_request.document.try(:title)), :length => 40, :separator => ' ') : "None" %></td>
 			<td><%=h travel_request.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 			<td><%=h travel_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png") %></td>
-      <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => travel_request %></td>
+			<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => travel_request %></td>
 			<td width=10px>
-					<% if travel_request.hod_accept == nil && travel_request.hod_id == Login.current_login.staff_id%>
-							<%= link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => travel_request  %>
-					<% elsif travel_request.is_submitted == true && travel_request.hod_accept == nil && travel_request.staff_id == Login.current_login.staff_id %>
-					<% elsif travel_request.is_submitted == false || travel_request.is_submitted == nil %>
-							<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => travel_request%>
-					<% end %>
-							
-					
-			<td width=>
-  		<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), travel_request, :confirm => 'Are you sure?', :method => :delete %></td>
-    </tr>
-    <% end %>
+				<% if travel_request.hod_accept == nil && travel_request.hod_id == Login.current_login.staff_id%>
+					<%= link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => travel_request  %>
+				<% elsif travel_request.is_submitted == true && travel_request.hod_accept == nil && travel_request.staff_id == Login.current_login.staff_id %>
+				<% elsif travel_request.is_submitted == false || travel_request.is_submitted == nil %>
+					<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => travel_request%>
+				<% end %>
+			<td width=10px>
+			<% if travel_request.is_submitted == true %>
+				<a href="http://<%= request.host  %>:3003/staff/travel_requests/<%=travel_request.id%>/status_movement.pdf?locale=en"><%=image_tag("printer.png", :border => 0)%></a>
+			<% end %>
+			</td>		
+			<td width=10px>
+			<% permitted_to? :manage, :travel_requests do %>
+			<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), travel_request, :confirm => 'Are you sure?', :method => :delete %>
+			<% end %>
+			</td>
+		</tr>
+		<% end %>
 	</table>
 </div>
 
 <BR/>
 
-<%= link_to 'New travel_request', new_travel_request_path %>
+<%= link_to t('travel.new'), new_travel_request_path %>

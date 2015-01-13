@@ -1,12 +1,12 @@
 <!-- Box -->
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Courses Available For Staff</h2>
+		<h2 class="left"><%= t 'ptschedule.course_available' %></h2>
 	</div>
 </div>
 
 <% permitted_to? :manage, :ptschedules do %>
-	<%= link_to 'Add New Course', new_ptschedule_path %>
+	<%= link_to ( t 'ptschedule.new'), new_ptschedule_path %>
 <% end %>
 
 
@@ -16,7 +16,7 @@
 		<div class="coursebox">
 			<div class="cb_name"><%= link_to ptschedule.ptcourse.name, new_ptdo_path(:ptschedule_id => ptschedule) %></div>
 			<div class="cb_description">
-				<%=h truncate(ptschedule.ptcourse.description, :length => 80, :omission => '...') %><%= link_to '(more)', ptschedule %><BR/><BR/>
+				<%=h truncate(ptschedule.ptcourse.description, :length => 80, :omission => '...') %><%= link_to (t 'ptschedule.more'), ptschedule %><BR/><BR/>
 				<%=h ptschedule.ptcourse.duration %> <%=h ptschedule.ptcourse.rendered_course_duration %> <%=h ptschedule.ptcourse.rendered_course_type %><BR/>
 				from <%=h ptschedule.start.strftime('%e %B %Y') %> at <%=h ptschedule.location %> <BR/> by <%=h ptschedule.ptcourse.provider.try(:name) %>
 			</div>

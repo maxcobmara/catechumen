@@ -2,20 +2,20 @@
 <%=render :partial => 'show_main' %>
 
 <fieldset>
-	<legend>Submission Details</legend>
+	<legend><%=t('travel.submission_details')%></legend>
 		<table width=100% >
 			<tr>
-				<td class="leftcol">Submitted</td>
+				<td class="leftcol"><%=t('travel.submitted')%></td>
 		    <td><%=h @travel_request.is_submitted? ? image_tag("tick.png") + "   " + l(@travel_request.submitted_on) : image_tag("cross.png") %></td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol">Replacement</td>
+				<td class="leftcol"><%=t('travel.replacement')%></td>
 			  <td>  <%=h @travel_request.replacement.staff_name_with_position unless @travel_request.replacement.blank? %></td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol">HOD Accepted</td>
+				<td class="leftcol"><%=t('travel.hod_accept')%></td>
 		    <td><%=h @travel_request.hod_accept? ? 
 						image_tag("tick.png") + " on   " + tarikh(@travel_request.hod_accept_on) + " by   "  + @travel_request.headofdept.staff_name_with_position : image_tag("cross.png") %></td>
 			</tr>
@@ -28,14 +28,14 @@
 <!--31Dec2012-testing for travel claim logs display (if any)-->
 <% if @travel_request.travel_claim_logs && @travel_request.staff_id == Login.current_login.staff_id && @travel_request.hod_accept == true%>
 	<fieldset>
-		<legend>Travel Log Details</legend>
+		<legend><%=t('travel.log_details')%></legend>
 			<table width=100% >	
 				<tr>
-					<td class="leftcol">Date</td>
-					<td class="leftcol">Start</td>
-					<td class="leftcol">Finish</td>
-					<td class="leftcol">Destination</td>
-					<td class="leftcol">Mileage</td>
+					<td class="leftcol"><%=t('travel.date')%></td>
+					<td class="leftcol"><%=t('travel.start')%></td>
+					<td class="leftcol"><%=t('travel.finish')%></td>
+					<td class="leftcol"><%=t('travel.destination')%></td>
+					<td class="leftcol"><%=t('travel.mileage')%></td>
 					<td class="leftcol">KM</td>
 				</tr>
 				<% @travel_request.travel_claim_logs.each do |travel_log| %>
@@ -59,10 +59,10 @@
 </div>
 <!--31dec2012-show EDIT link when 'hod_accept' NOT TRUE &/or show EDIT TRAVEL LOGS link when 'hod_accept' is TRUE & login as travel_request owner-->
 <% if @travel_request.hod_accept != true %>
-	<%= link_to 'Edit', edit_travel_request_path(@travel_request) %> |
+	<%= link_to t('edit'), edit_travel_request_path(@travel_request) %> |
 <% end %>
 <% if @travel_request.staff_id == Login.current_login.staff_id &&  @travel_request.hod_accept == true %>
-	<%= link_to 'Edit Travel Logs', :action => 'travel_log', :id => @travel_request  %> | 
+	<%= link_to t('travel.edit_travel_logs'), :action => 'travel_log', :id => @travel_request  %> | 
 <% end %>
 <!--31dec2012-show EDIT link when 'hod_accept' NOT TRUE &/or show EDIT TRAVEL LOGS link when 'hod_accept' is TRUE & login as travel_request owner-->
-<%= link_to 'Back', travel_requests_path %>
+<%= link_to t('back'), travel_requests_path %>

@@ -1,7 +1,7 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Assets on Loan</h2>
+		<h2 class="left"><%= t('menu.asset_on_loan') %></h2>
 		<div class="right">
 		</div>
   </div>
@@ -10,7 +10,7 @@
 	
   <% current_login_roles=[]%>
   <% Login.current_login.roles.each do |role|%>
-	<% current_login_roles<<role.id%>
+	<% current_login_roles << role.id%>
   <% end %>
   <b><%#=current_login_roles.include?(11) %></b><!--11 for asset administrator-->
 	
@@ -23,14 +23,14 @@
 	
 <table>
   <tr>
-    <th>Asset</th>
-    <th><!--Staff<BR/>-->Reasons</th>
-	<th>Owner/Responsible Unit</th>
+    <th><%= t('menu.assets') %></th>
+    <th><!--Staff<BR/>--><%= t('evaluation.form.reason') %></th>
+	<th><%= t('asset.owner_repons') %></th>
 	<!--<th>Loan Type</th>-->
-    <th>Requested For<BR/>To Be Returned On</th>
-	<th>Approved On</th>
+    <th><%= t('assetloan.requestfor') %>/<BR/><%= t('assetloan.to_be_return') %></th>
+	<th><%= t('assetloan.approved_on') %></th>
 	<th style="text-align:center;">Status</th>
-	<th colspan=4 class="ac">Control</th>
+	<th colspan=4 class="ac"><%= t('control') %></th>
   </tr>
 
 <% @asset_loans.each do |asset_loan| %>

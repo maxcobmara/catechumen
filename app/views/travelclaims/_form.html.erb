@@ -1,11 +1,11 @@
-<H2>Include Travel Requests</H2>
+<H2><%= t 'travel.include_travel' %></H2>
 <table width=85%>
 	<tr>
-		<th width=10px>include</th>
-		<th>Request Code</th>
-		<th>Destination</th>
-		<th>Purpose</th>
-		<th>Travel Dates</th>
+		<th width=10px><%= t 'travel.include' %></th>
+		<th><%= t 'travel.request_code' %></th>
+		<th><%= t 'travel.destination' %></th>
+		<th><%= t 'travel.purpose' %></th>
+		<th><%= t 'travel.travel_date' %></th>
 	</tr>
 	<% for travel_request in TravelRequest.find(:all, :conditions => ['staff_id =?', Login.current_login.staff_id]) %>
 	<tr>
@@ -18,13 +18,13 @@
 	<% end %>
 </table><BR/>
 
-<H2>Receipts</H2>	
+<H2><%= t 'claim.receipt' %></H2>	
 <table width=85%>
 	<tr>
-		<th width=20%>Type</td>
-		<th width=30%>Receipt No</td>
-		<th width=20% align="right">Value (RM)</td>
-		<th width=30%></th>
+		<th width=20%><%= t 'claim.type' %></td>
+		<th width=20%><%= t 'claim.receipt_no' %></td>
+		<th align="right" width="20"><%= t 'claim.value' %></td>
+		<th width=5%></th>
 	</tr>
 </table>
 	<% f.fields_for :travelclaimreceipts do |builder| %>

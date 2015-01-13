@@ -56,9 +56,9 @@ class Exammark < ActiveRecord::Base
 		  end 	# end of exammarksub.errors.each do |key,value|
 	  end		# end of exammark_list.each do |exammarksub|
     if @errors_qty == 1
-			  @exammarkerrors2 <<'<b>'+@errors_qty.to_s+' error '
+			  @exammarkerrors2 << '<b>'+@errors_qty.to_s+' error '
 	  elsif @errors_qty > 1
-			  @exammarkerrors2 <<'<b>'+@errors_qty.to_s+' errors '
+			  @exammarkerrors2 << '<b>'+@errors_qty.to_s+' errors '
 	  end
 	  @exammarkerrors2 << 'prohibited this record from being saved</b><br><br>'
 	  @exammarkerrors_full << @exammarkerrors2.to_s+@exammarkerrors.to_s
@@ -176,6 +176,14 @@ class Exammark < ActiveRecord::Base
       else
           @exammarks = Exammark.all
       end
+  end
+  
+  def self.get_valid_exams
+    e_full_ids=Exam.find(:all, :conditions=>['klass_id=?',1]).map(&:id)
+    e_w_exist_questions_ids = Exam.find(:all, :joins=>:examquestions, :conditions=>['exam_id IN(?)',e_full_ids]).map(&:id).uniq
+    e_template_ids=Exam.find(:all, :conditions=>['klass_id=?',0]).map(&:id)
+    e_w_exist_templates_ids = Examtemplate.find(:all, :conditions=>['exam_id IN(?)', e_template_ids]).map(&:id).uniq
+    return e_template_ids+e_w_exist_templates_ids 
   end
   
 end

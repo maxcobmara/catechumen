@@ -2,27 +2,31 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Course Notes</h2>
+		<h2 class="left"><%=t('training_note.title')%></h2>
 		<div class="right"></div>
 	</div>
 </div>
-
+<div class="toolbar">
+	<table width=100%><tr>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Training Note') + t('training_note.new'), new_trainingnote_path %></p></td>
+	</tr></table>
+</div>
 <div class="tlist">
 	<table width=100%>
 	  <tr>
-	    <th>Title</th>
-	    <th>Reference</th>
-	    <th>Version</th>
-	    <th>Release</th>
-	    <th>Download</th>
-			<th colspan=3>Control</th>
+	    <th><%=t('training_note.title2')%></th>
+	    <th><%=t('training_note.reference')%></th>
+	    <th><%=t('training_note.version')%></th>
+	    <th><%=t('training_note.release')%></th>
+	    <th><%=t('training_note.download')%></th>
+	    <th colspan=3><%#=t('control')%></th>
 	  </tr>
 	
 	<!--TOPIC ID:<%#=@trainingnotes[1].topic_id %>-->
 	
 	<% @trainingnotes.group_by(&:topicdetail_id).each do |topicdetail_id, trainingnotes | %>
 			<tr><td colspan=8><strong>
-				<%= check_kin {Programme.find(Topicdetail.find(topicdetail_id).topic_code).root.name} %>
+				<%= check_kin {Programme.find(Topicdetail.find(topicdetail_id).topic_code).root.name.upcase} %>
 			</strong></td></tr>
 			<tr><td colspan=8><strong> &nbsp; &nbsp; &nbsp;
 				<%= check_kin {Programme.find(Topicdetail.find(topicdetail_id).topic_code).parent.subject_list}  %>	
@@ -47,10 +51,16 @@
 	    <td><%=h trainingnote.reference %></td>
 	    <td><%=h trainingnote.version %></td>
 	    <td><%=h trainingnote.release %></td>
-			<td><%= link_to image_tag('attach.png'), trainingnote.document.url%> &nbsp; <%= link_to trainingnote.document_file_name, trainingnote.document.url %>
-			<td width=10px><% link_to image_tag("document.png", :border => 0), :action => 'show', :id => trainingnote %></td>
-			<td width=10px><% link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => trainingnote %></td>
-			<td width=10px ><% link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), trainingnote, :confirm => 'Are you sure?', :method => :delete %></td>
+			<td><%= link_to image_tag('attach.png'), trainingnote.document.url%> &nbsp; 
+			      <% if trainingnote.document.exists? %>
+					<%= link_to trainingnote.document_file_name, trainingnote.document.url %>
+			      <% else %>
+					<%= link_to trainingnote.document_file_name, "http://#{request.host}:3003"+ trainingnote.document.url , :width => '57px'  %>
+			      <% end%>
+		
+			<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => trainingnote %></td>
+			<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => trainingnote %></td>
+			<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), trainingnote, :confirm => 'Are you sure?', :method => :delete %></td>
 
 	  </tr>
 	<% end %><% end %>
@@ -58,4 +68,4 @@
 </div>
 <br />
 
-<% link_to 'New trainingnote', new_trainingnote_path %>
+<%= link_to t('training_note.new'), new_trainingnote_path %>

@@ -5,15 +5,15 @@
 	<% form_for(@travel_log) do |f| %>
 	  <%= f.error_messages %>
 	<%= hidden_field_tag :redirect_location, '/travel_requests/logs' %>
-	<H2>Edit Travel Log</H2>
+	<H2><%= t 'claim.edit_travel_log' %></H2>
 	<table width=90%>
 		<tr>
-			<td width=20%>Date</td>
-			<td width=12%>Depart</td>
-			<td width=12%>Arrive</td>
-			<td width=33%>Destination</td>
-			<td width=9%>Mileage</td>
-			<td width=9%>Value</td>
+			<td width=20%><%= t 'claim.date' %></td>
+			<td width=12%><%= t 'claim.depart' %></td>
+			<td width=12%><%= t 'claim.arrive' %></td>
+			<td width=33%><%= t 'claim.destination' %></td>
+			<td width=9%><%= t 'claim.mileage' %></td>
+			<td width=9%><%= t 'travel.value' %></td>
 			<td width=5%></td>
 		</tr>
 	</table>
@@ -21,31 +21,20 @@
 		  <%= render 'travel_claim_log_fields', :f => builder %>
 		<% end %>
 
-		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Log'), f, :travel_claim_logs %> - <%= "Add Log" %></p>
-		
-		
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => (t 'addlog')), f, :travel_claim_logs %> - <%=t('addlog')%></p>		
 		<table width=90%>
 			<tr>
-				<td colspan=3 width=77% align=right><strong>Total</strong></td>
+				<td colspan=3 width=77% align=right><strong><%= t 'claim.total' %></strong></td>
 				<td width=9% class="tright"><strong><%= @travel_log.total_mileage_request %>km</strong></td>
 				<td width=9% class="tright"><strong><%= ringgols(@travel_log.total_km_money_request) %></strong></td>
 				<td width=5%></td>
 			</tr>
 		</table>
-		
-		
-		
-
-	
-	
-	
-		
 	</div>
-
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit (t 'update') %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @travel_request %> |
-<%= link_to 'Back', '/travel_requests/logs' %>
+<%= link_to (t 'show'), @travel_request %> |
+<%= link_to (t 'back'), '/travel_requests/logs' %>

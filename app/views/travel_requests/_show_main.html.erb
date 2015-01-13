@@ -1,9 +1,11 @@
 <fieldset>
-	<legend class='togvis'>Travel Request </legend>
+	<legend class='togvis'><%=t('travel.title')%></legend>
 		<table width=100%>
 			<tr>
 				<td class="leftcol"><label for="staff_id"><b><%= t 'staffleave.staff_id' %></b></label></td>
-				<td><%=h @travel_request.applicant.staff_name_with_position unless @travel_request.applicant.blank? %></td>
+				<td><%#=h @travel_request.applicant.staff_name_with_position unless @travel_request.applicant.blank? %>
+				         <%=h @travel_request.applicant.staff_name_with_position_grade_unit unless @travel_request.applicant.blank?%>
+				</td>
 			</tr>
 			<tr>
 				<td class="leftcol"><label for="request_code"><%= t 'document.refno' %></label></td>
@@ -17,7 +19,7 @@
 </fieldset>
 
 <fieldset>
-	<legend class='togvis'>Travel Request Details</legend>
+	<legend class='togvis'><%=t('travel.travel_details')%></legend>
 		<table width=100% >
 			<tr>
 				<td class="leftcol"><label for="destination"><%= t 'travel.destination' %></label></td>
@@ -35,27 +37,42 @@
 			</tr>
 
 			<tr>
-				<td class="leftcol"><label for="transport_type">Transport Choice</label></td>
+				<td class="leftcol"><label for="transport_type"><%=t 'travel.transport_choice'%></label></td>
 				<td><label>
-						<%=h @travel_request.own_car? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.own_car_notes %>Own Car &nbsp; &nbsp; 
-						<%=h @travel_request.dept_car? ? image_tag("tick.png") : image_tag("cross.png") %> Dept Car &nbsp; &nbsp; 
-						<%=h @travel_request.dept_car? ? image_tag("tick.png") : image_tag("cross.png") %> Other's Car &nbsp; &nbsp; </label></td>                                                        
+						<%=h @travel_request.own_car? ? image_tag("tick.png") : image_tag("cross.png")  %><%=t('travel.own_car')%> &nbsp; &nbsp;
+						<% if @travel_request.own_car %>(<%=t('travel.reason') %> : <%=@travel_request.own_car_notes%>) <%end %>&nbsp; &nbsp; 
+						<%=h @travel_request.dept_car? ? image_tag("tick.png") : image_tag("cross.png") %><%=t('travel.dept_car')%>&nbsp; &nbsp; 
+						<%=h @travel_request.others_car? ? image_tag("tick.png") : image_tag("cross.png") %><%=t('travel.others_car')%> &nbsp;
+						<%=h "("+@travel_request.others_car_notes+")" if @travel_request.others_car %>
+						</label></td>                                                        
 			</tr>
 
 			<tr>
-				<td class="leftcol">Public Transport</td>
+				<td class="leftcol"><%=t('travel.public_transport')%></td>
 		    <td><label>
-						<%=h @travel_request.taxi? ? 	image_tag("tick.png") : image_tag("cross.png") %>Taxi &nbsp; &nbsp; 
-						<%=h @travel_request.bus? ? 	image_tag("tick.png") : image_tag("cross.png") %> Bus &nbsp; &nbsp; 
-						<%=h @travel_request.train? ? image_tag("tick.png") : image_tag("cross.png") %> Other's Car &nbsp; &nbsp; 
-						<%=h @travel_request.plane? ? image_tag("tick.png") : image_tag("cross.png") %> Plane &nbsp; &nbsp; 
-						<%=h @travel_request.other? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.other_desc %>Own Car &nbsp; &nbsp; </label></td>                                                        
+						<%=h @travel_request.taxi? ? image_tag("tick.png") : image_tag("cross.png") %><%=t('travel.taxi')%>&nbsp; &nbsp; 
+						<%=h @travel_request.bus? ? image_tag("tick.png") : image_tag("cross.png") %><%=t('travel.bus')%> &nbsp; &nbsp; 
+						<%=h @travel_request.train? ? image_tag("tick.png") : image_tag("cross.png") %><%=t('travel.train')%>&nbsp; &nbsp; 
+						<%=h @travel_request.plane? ? image_tag("tick.png") : image_tag("cross.png") %><%=t('travel.plane')%>&nbsp; &nbsp; 
+						<%=h @travel_request.other? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.other_desc %><%=t('travel.other_public_tpt')%>&nbsp; &nbsp; </label></td>                                                        
 			</tr>
 
 			<tr>
-				<td class="leftcol">Mileage</td>
-		    <td>Mileage Allowance : 	<%=h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png") %> &nbsp; &nbsp;  
-						Mileage Replacement <%= t 'travel.train_plane_replacement'%> : <%=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+				<td class="leftcol"><%=t('travel.mileage')%></td>
+		    <td><%=t('travel.mileage_allowance')%> : 
+				 <% if @travel_request.mileage_replace==nil %>
+					<%=h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png") %> &nbsp; &nbsp;  
+				<% else %>
+					<%=h @travel_request.mileage_replace? ? image_tag("cross.png") : image_tag("tick.png") %>
+				<% end %>
+			     <%=t('travel.mileage_replacement')%>&nbsp;&nbsp;<%= t 'travel.train_plane_replacement'%> : 
+				<%#=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %>
+				<% if @travel_request.mileage_replace==nil %>
+					<%= image_tag("tick.png") if @travel_request.mileage==false%><!--as per requested by applicant-->
+				<% else %>
+				  <%=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png")  %>
+				<% end %>
+		    </td>
 				<td></td>
 			</tr>
 		</table>

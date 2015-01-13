@@ -1,36 +1,33 @@
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">My Travel Logs</h2>
+		<h2 class="left"><%= t 'claim.travel_log' %></h2>
 	</div>
 </div>
-
 <div class="indextable">
 	<table>
 		<tr>
-			<th>Code</th>
+			<th><%= t 'travel.code' %></th>
 			<th><%= t 'travel.sname' %></th>
 			<th><%= t 'travel.destination' %></th>
-			<th>Depart at</th>
+			<th><%=t('travel.depart_at')%></th>
 			<th><%= t 'travel.purpose' %></th>
-			<th>Approved</th>
-			<th colspan=4 class="ac">Control</th>
+			<th><%=t('travel.approved')%></th>
+			<th colspan=4 class="ac"><%=t('control')%></th>
 		</tr>
-		
 		<% @my_approved_requests.each do |my_approved_request| %>
 		<tr>
-			<td><%=h my_approved_request.document.refno %></td>
-   		<td><%=h my_approved_request.applicant.staff_name_with_position unless my_approved_request.applicant.blank? %></td>
-      <td><%=h my_approved_request.destination %></td>
-      <td><%=h l(my_approved_request.depart_at) %></td>
-      <td><%=h my_approved_request.document.title %></td>
+			<td><%=h my_approved_request.try(:document).try(:refno) %></td>
+			<td><%=h my_approved_request.applicant.staff_name_with_position unless my_approved_request.applicant.blank? %></td>
+			<td><%=h my_approved_request.destination %></td>
+			<td><%=h my_approved_request.depart_at.try(:strftime, "%d %b %Y")%> - <%=h l(my_approved_request.depart_at).downcase %></td>
+			<td><%=h my_approved_request.try(:document).try(:title) %></td>
 			<td><%=h my_approved_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png") %></td>
-      <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => my_approved_request %></td>
+			<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => my_approved_request %></td>
 			<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'travel_log', :id => my_approved_request %></td>
-    </tr>
+		</tr>
     <% end %>
 	</table>
 </div>
-
 <BR/>
-
-<%= link_to 'New travel_request', new_travel_request_path %>
+<%#= link_to (t 'travel.new'), new_travel_request_path %>
+<!--to log travel logs - click 'Edit' link for APPROVED travel request in Travel Log Index page OR Show pg of APPROVED Travel Request-->
