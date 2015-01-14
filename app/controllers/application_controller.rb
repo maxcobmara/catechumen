@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
 
     protected
 
-      def current_login
+      def current_user
         Authorization.current_user = Login.current_login || nil
       end
 
