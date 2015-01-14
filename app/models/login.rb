@@ -34,7 +34,7 @@ class Login < ActiveRecord::Base
   #attr_accessible :login, :email, :name, :password, :password_confirmation, :isstaff, :staff_id,
                   #:student_id
 
-  attr_accessor :current_login
+  cattr_accessor :current_login
 
   def role_symbols
     roles.map do |role|
