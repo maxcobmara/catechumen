@@ -34,7 +34,7 @@ class Login < ActiveRecord::Base
   #attr_accessible :login, :email, :name, :password, :password_confirmation, :isstaff, :staff_id,
                   #:student_id
 
-  attr_accessor :current_login
+  #am I not used? attr_accessor :current_login
 
   def role_symbols
     roles.map do |role|
@@ -87,7 +87,7 @@ class Login < ActiveRecord::Base
   def assigned_staff
     Login.find(:all, :select => "staff_id", :conditions => ["staff_id IS NOT ?", nil]).map(&:staff_id)
   end
-  
+
   def topicdetails_of_programme
     unit_of_staff = staff.position.unit
     if Programme.roots.map(&:name).include?(unit_of_staff)==true
@@ -98,7 +98,7 @@ class Login < ActiveRecord::Base
       return topicdetailsids
     end
   end
-  
+
   def timetables_of_programme
     unit_of_staff = staff.position.unit
     if Programme.roots.map(&:name).include?(unit_of_staff)==true
@@ -108,11 +108,11 @@ class Login < ActiveRecord::Base
       timetable_in_trainingnote = Trainingnote.find(:all, :conditions => ['timetable_id IS NOT NULL']).map(&:timetable_id)
       #timetableids = WeeklytimetableDetail.find(:all, :conditions =>['topic IN(?) and id IN(?)',topicids2,timetable_in_trainingnote]).map(&:id)
       #Use below instead & ignore training note -> copy above accordingly 4 those notes selection related
-      timetableids = WeeklytimetableDetail.find(:all, :conditions =>['topic IN(?)',topicids2]).map(&:id) 
+      timetableids = WeeklytimetableDetail.find(:all, :conditions =>['topic IN(?)',topicids2]).map(&:id)
       return timetableids
     end
   end
-  
+
   def classes_taughtby
     classes_ids = WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',staff.id]).map(&:id)
     if classes_ids.is_a? Array
@@ -121,7 +121,7 @@ class Login < ActiveRecord::Base
       return []
     end
   end
-  
+
   named_scope :all
   named_scope :approval,  :conditions =>  ["student_id IS? AND staff_id IS ?", nil, nil]
   named_scope :staff,     :conditions =>  ["student_id IS? AND staff_id IS NOT ?", nil, nil]
@@ -134,7 +134,7 @@ class Login < ActiveRecord::Base
     {:scope => "staff",     :label => "Staff"},
     {:scope => "student",   :label => "Student"}
     ]
-  
+
 
 
 
