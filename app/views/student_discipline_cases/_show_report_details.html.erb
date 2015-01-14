@@ -1,49 +1,49 @@
 <fieldset>
-	<legend class='togvis'>Report Details</legend>
+	<legend class='togvis'><%= t 'lesson_plan.report_details' %></legend>
 		  <table width=100% >
 					<tr>
-						<td class="leftcol"><label for="reportedby_id"><b>Reported By:</b></label></td>
+						<td class="leftcol"><label for="reportedby_id"><b><%= t 'assetdefects.report_by' %>:</b></label></td>
 						<td><%=h @student_discipline_case.reporter_details %></td>
 					</tr>
 					<tr>
-						<td class="leftcol"><label for="reporteddt"><b>Date:</b></label></td>
+						<td class="leftcol"><label for="reporteddt"><b><%= t 'datelabel' %>:</b></label></td>
 						<td> <%=h l(@student_discipline_case.reported_on) %></td>
 					</tr>
 					<tr>
-						<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
+						<td class="leftcol"><label for="student_id"><b><%= t 'leaveforstudent.student_id' %>:</b></label></td>
 						<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.matrix_name %></td>
 					</tr>
 					<tr>
-						<td class="leftcol"><label for="student_id"><b>Matrix No:</b></label></td>
+						<td class="leftcol"><label for="student_id"><b><%= t 'student.matrixno' %>:</b></label></td>
 						<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.matrixno %></td>
 					</tr>
 					<tr>
-						<td class="leftcol"><label for="student_id"><b>Address:</b></label></td>
+						<td class="leftcol"><label for="student_id"><b><%= t 'student.address' %>:</b></label></td>
 						<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.address %></td>
 					</tr>
 					<tr>
-						<td class="leftcol"><label for="student_id"><b>Room No:</b></label></td>
+						<td class="leftcol"><label for="student_id"><b><%= t 'studentdiscipline.roomno' %>:</b></label></td>
 						<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.room_no %></td>
 					</tr>
 					<tr>
-						<td class="leftcol"><label for="student_id"><b>Programme:</b></label></td>
+						<td class="leftcol"><label for="student_id"><b><%= t 'student_attendance.programme' %>:</b></label></td>
 						<td> 
 							<%=h @student_discipline_case.student_id.blank? ? "" : check_kin {@student_discipline_case.student.course.name}  %>
 							<%#=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.course.name %></td>
 					</tr>
 					<tr>
-						<td class="leftcol"><label for="student_id"><b>Intake</b></label></td>
+						<td class="leftcol"><label for="student_id"><b><%= t 'student.intake' %></b></label></td>
 						<td> <%=h @student_discipline_case.student_id.blank? ? "" : @student_discipline_case.student.intake.strftime("%B %Y") %></td>
 					</tr>
 	
 					<tr>
-						<td class="leftcol"><label for="details"><b>Infraction:</b></label></td>
+						<td class="leftcol"><label for="details"><b><%= t 'studentdiscipline.infraction' %>:</b></label></td>
 						<td><%=h (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == @student_discipline_case.infraction_id}).map {|disp, value| disp} %></td>
 					</tr>		
   
 				  <% if @student_discipline_case.infraction_id == 4 %>
 					<tr>
-						<td class="leftcol"><label for="details"><b>Details:</b></label></td>
+						<td class="leftcol"><label for="details"><b><%= t 'asset.details' %>:</b></label></td>
 						<td><%=h @student_discipline_case.description %></td>
 					</tr>
 					<% end %>

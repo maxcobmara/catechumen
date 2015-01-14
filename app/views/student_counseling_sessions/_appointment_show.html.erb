@@ -1,44 +1,44 @@
 <fieldset>
-	<legend class="togvis">Appointment  </legend>
+	<legend class="togvis"><%= t 'studentcounseling.appointment' %>  </legend>
 	<table width=100%>
 
 		<tr>
-			<td class="leftcol"><label for="student_id">Student:</label></td>
+			<td class="leftcol"><label for="student_id"><%= t 'menu.students' %>:</label></td>
 			<td><%= @student_counseling_session.student.formatted_mykad_and_student_name %><font color="red"> * </font></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol">Requested at</td>
+			<td class="leftcol"><%= t 'studentcounseling.requested_at' %></td>
 			<td><%= @student_counseling_session.requested_at.strftime("%d %b %y, %l:%M %p") %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol">Confirmed at</td>
+			<td class="leftcol"><%= t 'studentcounseling.confirmed_at' %></td>
 			<td><b><%= @student_counseling_session.confirmed_at.strftime("%d %b %y, %l:%M %p")  if @student_counseling_session.confirmed_at %></b></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol">Duration</td>
+			<td class="leftcol"><%= t 'programme.duration' %></td>
 			<td><%= @student_counseling_session.duration %> Minutes</td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="student_id">Suggest Alternative Dates:</label></td>
+			<td class="leftcol"><label for="student_id"><%= t 'studentcounseling.suggest_alternative' %>:</label></td>
 			<td><%= @student_counseling_session.alt_dates %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="c_scope">Scope of session</label></td>
+			<td class="leftcol"><label for="c_scope"><%= t 'studentcounseling.scope_of_session' %></label></td>
 			<td><%= @student_counseling_session.c_scope %></td>                                                             
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="c_type">Type of session</label></td>
+			<td class="leftcol"><label for="c_type"><%= t 'studentcounseling.typesession' %></label></td>
 			<td><%= @student_counseling_session.c_type %></td>                                                             
 		</tr>
 
 		<tr>
-			<td class="leftcol">Confirmed?</td>
+			<td class="leftcol"><%= t 'studentcounseling.confirmed' %>?</td>
 			<td><%= @student_counseling_session.is_confirmed? ? "Confirmed" : "Not Confirmed" %></td>                                                             
 		</tr>
 	</table>

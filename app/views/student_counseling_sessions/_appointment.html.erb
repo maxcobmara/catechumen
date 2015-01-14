@@ -1,12 +1,12 @@
 <table width=100%>
 	<tr>
-		<td class="leftcol"><label for="student_id">Student:</label></td>
+		<td class="leftcol"><label for="student_id"><%= t 'menu.students' %>:</label></td>
 		<td>
 			<% if @case_id!= nil || @case_id!= nil %>
 				<%= f.hidden_field :case_id, :value => @case_id %>
 				<%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :selected=> StudentDisciplineCase.find(@case_id).student_id %><font color="red"> * </font>	
 			<% else %>
-				<%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank=>"Select student" %><font color="red"> * </font>	
+				<%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank=> (t 'studentdiscipline.select_student') %><font color="red"> * </font>	
 			<% end %>
 					
 		</td>
@@ -23,15 +23,15 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="student_id">Suggest Alternative Dates:</label></td>
+		<td class="leftcol"><label for="student_id"><%= t 'studentcounseling.suggest_alternative' %>:</label></td>
 		<td><%= f.text_area :alt_dates, :size => '50x4' %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="c_scope">Scope of session</label></td>
+		<td class="leftcol"><label for="c_scope"><%= t 'studentcounseling.scope_of_session' %></label></td>
 		<td>
-			<%= f.radio_button :c_scope, "personal", :id => 'c_case_personal', :class => 'radio_c_scope' %>Personal &nbsp; 
-			<%= f.radio_button :c_scope, "academic", :id => 'c_case_academic', :class => 'radio_c_scope' %>Academic &nbsp; 
+			<%= f.radio_button :c_scope, "personal", :id => 'c_case_personal', :class => 'radio_c_scope' %><%= t 'studentcounseling.personal' %> &nbsp; 
+			<%= f.radio_button :c_scope, "academic", :id => 'c_case_academic', :class => 'radio_c_scope' %><%= t 'studentcounseling.academic' %> &nbsp; 
 			<% if @case_id!= nil %>
 				<%= f.radio_button :c_scope, "case", :id => 'c_case_case', :class => 'radio_c_scope', :checked => "checked"%>Case &nbsp;	
 			<% else %>
@@ -42,7 +42,7 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="c_type">Type of session</label></td>
+		<td class="leftcol"><label for="c_type"><%= t 'studentcounseling.typesession' %></label></td>
 		<td><%= f.radio_button :c_type, "voluntary", :id => 'c_type_voluntary', :class => 'radio_c_type' %>Voluntary &nbsp; 
 			<% if @case_id!= nil || @case_id!= nil %>
 				<%= f.radio_button :c_type, "involuntary", :id => 'c_type_involuntary', :class => 'radio_c_type',:checked => "checked" %>Involuntary &nbsp;

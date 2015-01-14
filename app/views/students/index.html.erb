@@ -2,7 +2,7 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Students</h2>
+		<h2 class="left"><%= t 'menu.students' %></h2>
 		<div class="right">
 			<% form_tag students_path, :method => 'get' do %>
 			<%= text_field_tag :search, params[:search], :placeholder => "MykadNo, Name, MatricNo" %>
@@ -29,10 +29,10 @@
 	</div>
 	<table width=100%>
 		<tr>
-			<th>MyKad No</th>
-			<th>Name</th>
-			<th>Matrixno</th>
-			<th colspan=4 class="ac">Control</th>
+			<th><%= t 'student.icno' %></th>
+			<th><%= t 'name' %></th>
+			<th><%= t 'student.matrixno' %></th>
+			<th colspan=4 class="ac"><%= t 'control' %></th>
 			<th>&nbsp;</th>
 		</tr>
 		<%# for student in @students %><!--sort by intake only-->
@@ -99,5 +99,5 @@
 <BR>
 
 <% if permitted_to? :create, @student %>
-<%= link_to 'New Student', new_student_path %> | <%= link_to 'Download Excel', students_path(request.parameters.merge({:format => :xls}))%>
+<%= link_to (t 'student.new'), new_student_path %> | <%= link_to (t 'report.download'), students_path(request.parameters.merge({:format => :xls}))%>
 <% end %>
