@@ -1,26 +1,26 @@
-<h3>New Discipline Report</h3>
+<h3><%= t 'studentdiscipline.new_discipline_report' %></h3>
 
 <% form_for(@student_discipline_case) do |f| %>
   <%= f.error_messages %>
   <div class="tform">
-  <H2>Report Details</H2>
+  <H2><%= t 'lesson_plan.report_details' %></H2>
   <table width=100%>
 		<tr>
-			<td class="leftcol"><label for="reportedby_id"><b>Reported By:</b></label></td>
+			<td class="leftcol"><label for="reportedby_id"><b><%= t 'assetdefects.report_by' %>:</b></label></td>
 			<td><%= f.collection_select :reported_by, Staff.find(:all, :order => :name), :id, :name, { :selected => @current_login.staff_id } %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="student_id"><b>Student Name:</b></label></td>
+			<td class="leftcol"><label for="student_id"><b><%= t 'leaveforstudent.student_id' %>:</b></label></td>
 		<td><!--available student - not yet completed studies-->
-			<%= f.collection_select :student_id, Student.find(:all, :conditions=>['end_training>?',Date.today], :order => :icno), :id, :formatted_mykad_and_student_name, :prompt => 'Select Student' %></td>
+			<%= f.collection_select :student_id, Student.find(:all, :conditions=>['end_training>?',Date.today], :order => :icno), :id, :formatted_mykad_and_student_name, :prompt => (t 'studentdiscipline.select_student') %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="infraction"><b>Details</b></label></td>
+			<td class="leftcol"><label for="infraction"><b><%= t 'asset.details' %></b></label></td>
 			<td><%= f.select :infraction_id,
 			                 StudentDisciplineCase::INFRACTION,
-			                 :prompt => "Select" %></td>
+			                 :prompt => (t 'select') %></td>
 		</tr>
 		
 		<tr id="tr_description" style="display: none;">
@@ -29,17 +29,17 @@
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="location"><b>Location of Infraction:</b></label></td>
+			<td class="leftcol"><label for="location"><b><%= t 'studentdiscipline.location_infraction' %>:</b></label></td>
 			<td><%= f.collection_select :location_id, Location.find(:all, :order => :code), :id, :location_list %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="reporteddt"><b>Date:</b></label></td>
+			<td class="leftcol"><label for="reporteddt"><b><%= t 'datelabel' %>:</b></label></td>
 			<td><%= f.date_select :reported_on, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="programme_head">Assign to Programme Head</label></td>
-	    <td><%= f.collection_select :assigned_to, Staff.find(:all, :conditions => ['id IN (?)', @myhod]), :id, :name, :include_blank => "Select Head of Programme"%></td>
+			<td class="leftcol"><label for="programme_head"><%= t 'studentdiscipline.assign_programme_head' %></label></td>
+	    <td><%= f.collection_select :assigned_to, Staff.find(:all, :conditions => ['id IN (?)', @myhod]), :id, :name, :include_blank => (t 'studentdiscipline.select_headprogramme') %></td>
 		</tr>		
 	</table>
 	<%= f.hidden_field :assigned_on, :value => Date.today %>
@@ -53,11 +53,11 @@
  	<%=render :partial => 'status', :locals => {:f => f} %> 
 	</div>
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit (t 'create') %>
   </p>
 <% end %>
 
-<%= link_to 'Back', student_discipline_cases_path %>
+<%= link_to (t 'back'), student_discipline_cases_path %>
 
 
 

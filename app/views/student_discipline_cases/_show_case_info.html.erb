@@ -1,36 +1,36 @@
 <fieldset>
-	<legend class='togvis'>Case Information: (<%=h @student_discipline_case.status %>)</legend>
+	<legend class='togvis'><%= t 'studentdiscipline.case_info' %>: (<%=h @student_discipline_case.status %>)</legend>
 		<table width=100%>
 			<tr>
-				<td class="leftcol"><label for="casedt"><b>Date:</b></label></td>
+				<td class="leftcol"><label for="casedt"><b><%= t 'datelabel' %>:</b></label></td>
 				<td><%=h l(@student_discipline_case.case_created_on) unless @student_discipline_case.case_created_on.blank? %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="cofile_id"><b>File No:</b></label></td>
+				<td class="leftcol"><label for="cofile_id"><b><%= t 'document.fileno' %>:</b></label></td>
 				<td><%=h @student_discipline_case.file_id.blank? ? "No File" : @student_discipline_case.cofile.file_no_and_name %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="investigation"><b>Investigation Summary:</b></label></td>
+				<td class="leftcol"><label for="investigation"><b><%= t 'studentdiscipline.investigate_summary' %>:</b></label></td>
 				<td><%=h @student_discipline_case.investigation_notes %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="investigation">Action:</label></td>
+				<td class="leftcol"><label for="investigation"><%= t 'action' %>:</label></td>
 				<td><%=h @student_discipline_case.action_type.titleize unless @student_discipline_case.action_type.blank? %></td>
 			</tr>
 	
 			<% if @student_discipline_case.action_type == "no_case" %>
 			<tr>
-				<td class="leftcol"><label for="investigation">Date Closed (College)::</label></td>
+				<td class="leftcol"><label for="investigation"><%= t 'studentdiscipline.date_closed' %> (<%= t 'studentdiscipline.college' %>):</label></td>
 				<td><%=h l(@student_discipline_case.closed_at_college_on) unless @student_discipline_case.closed_at_college_on.blank? %></td>
 			</tr>
 			<% end -%>
 	
 			<% if @student_discipline_case.action_type == "advise" %>
 			<tr>
-				<td class="leftcol"><label for="investigation">Advice Given:</label></td>
+				<td class="leftcol"><label for="investigation"><%= t 'studentdiscipline.advice_given' %>:</label></td>
 				<td><%=h @student_discipline_case.other_info %></td>
 			</tr>
 			<% end -%>
@@ -38,16 +38,16 @@
 		
 			<% if @student_discipline_case.action_type == "counseling" %>
 			<tr>
-				<td class="leftcol">Counseling Session Details</td>
+				<td class="leftcol"><%= t 'studentdiscipline.session_details' %></td>
 				<td>
 					<!---->
 					<table>
 						<tr>
 							<th>No</th>
-							<th>Date Requested</th>	
-							<th>Date Confirmed</th>
-							<th>Counselor's Feedback</th>
-							<th>Session Notes</th>
+							<th><%= t 'studentdiscipline.dtrequest' %></th>	
+							<th><%= t 'claim.confirmed_date' %> </th>
+							<th><%= t 'studentdiscipline.counselor_feedback' %></th>
+							<th><%= t 'studentdiscipline.session_notes' %></th>
 						</tr>
 						<%count=0%>
 						<% for student_counseling_session in @student_discipline_case.student_counseling_sessions %>
@@ -64,14 +64,14 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="leftcol">Summary/Final Feedback from Counselor</td>
+				<td class="leftcol"><%= t 'studentdiscipline.summary_finalfeedback' %></td>
 				<td>&nbsp;&nbsp;&nbsp;<%= @student_discipline_case.counselor_feedback %></td>
 			</tr>
 			<% end -%>
 			
 			<% if @student_discipline_case.action_type == "Ref TPHEP" %>
 			<tr>
-				<td class="leftcol"><label for="investigation">Notified:</label></td>
+				<td class="leftcol"><label for="investigation"><%= t 'studentdiscipline.notified' %>:</label></td>
 				<td><%=h @student_discipline_case.tphep.name %> On <%=h l(@student_discipline_case.assigned2_on) %></td>
 			</tr>
 			<% end -%>

@@ -1,20 +1,20 @@
 
 
-<H2>Session Notes</H2>
+<H2><%= t 'studentdiscipline.session_notes' %></H2>
 <table width=100%>
 	
 	<tr>
-		<td class="leftcol"><label for="issue_desc">Description of Issues</label></td>
+		<td class="leftcol"><label for="issue_desc"><%= t 'studentcounseling.description_issues' %></label></td>
 		<td><%= f.text_area :issue_desc, :size => '50x4' %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="notes">Session Notes</label></td>
+		<td class="leftcol"><label for="notes"><%= t 'studentdiscipline.session_notes' %></label></td>
 		<td><%= f.text_area :notes, :size => '50x6' %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="suggestions">Suggestions made to student</label></td>
+		<td class="leftcol"><label for="suggestions"><%= t 'studentcounseling.suggest_made_student' %></label></td>
 		<td><%= f.text_area :suggestions, :size => '50x6' %></td>
 	</tr>
 	
@@ -29,19 +29,19 @@
 <!--this part onwards only applicable for counseling of referred discipline cases-->
 
 
-<H2>Action by TPHEP (Referrer) & Counselor</H2>
+<H2><%= t 'studentcounseling.action_refer' %> & <%= t 'studentcounseling.counselor' %></H2>
 	<table width=100%>
 	
 		<!--display action taken for referred case-->
 		<tr>
-			<td class="leftcol">Action by referrer (TPHEP) </td>
+			<td class="leftcol"><%= t 'studentcounseling.action_refer' %> </td>
 			<td><%=h @student_counseling_session.student_discipline_case.action if !@student_counseling_session.case_id.blank? %></td>
 		<tr>
 		<!--FEEDBACK/ACTION by counselor-->
 		
 		<!--START-add remark for feedback into student_counseling_session table (for each individual counseling session-1 student_discipline_case may have 1 or more counselling session)-->
 		<tr>
-			<td class="leftcol">Action by counselor</td>	
+			<td class="leftcol"><%= t 'studentcounseling.actionby_conselour' %></td>	
 			<td>
 				<% if @student_counseling_session.remark == nil %>
 					<%= f.check_box :feedback_this,	:id => 'ind_feedback' %>

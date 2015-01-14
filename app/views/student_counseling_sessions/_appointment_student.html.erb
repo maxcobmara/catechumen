@@ -1,7 +1,7 @@
 <table width=100%>
 	
 	<tr>
-		<td class="leftcol"><label for="student_id">Student:</label></td>
+		<td class="leftcol"><label for="student_id"><%= t 'menu.students' %>:</label></td>
 		<td><%= f.collection_select :student_id, Student.find(:all, :conditions => ['id = ?', Login.current_login.student_id]), :id, :formatted_mykad_and_student_name %><font color="red"> * </font></td>
 	</tr>
 	
@@ -16,7 +16,7 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="student_id">Suggest Alternative Dates:</label></td>
+		<td class="leftcol"><label for="student_id"><%= t 'studentcounseling.suggest_alternative' %>:</label></td>
 		<td><%= f.text_area :alt_dates, :size => '50x4' %></td>
 	</tr>
 </table>

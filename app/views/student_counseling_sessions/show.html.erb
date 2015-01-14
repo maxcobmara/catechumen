@@ -5,20 +5,20 @@
 <% if @student_counseling_session.is_confirmed?  %>
 
 <fieldset>
-	<legend class="togvis">Session Notes</legend>
+	<legend class="togvis"><%= t 'studentdiscipline.session_notes' %></legend>
 		<table width=100%>
 			<tr>
-				<td class="leftcol"><label for="issue_desc">Description of Issues</label></td>
+				<td class="leftcol"><label for="issue_desc"><%= t 'studentcounseling.description_issues' %></label></td>
 				<td><%= @student_counseling_session.issue_desc %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="notes">Session Notes</label></td>
+				<td class="leftcol"><label for="notes"><%= t 'studentdiscipline.session_notes' %></label></td>
 				<td><%= @student_counseling_session.notes %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="suggestions">Suggestions made to student</label></td>
+				<td class="leftcol"><label for="suggestions"><%= t 'studentcounseling.suggest_made_student' %></label></td>
 				<td><%= @student_counseling_session.suggestions %></td>
 			</tr>
 		</table>
@@ -27,15 +27,15 @@
 <!--START-applicable only to referred cases (case_id exist)-->
 <% if @student_counseling_session.c_scope == "case" && !@student_counseling_session.case_id.blank?%>
 <fieldset>
-	<legend class="togvis">Action by TPHEP (Referrer) & Counselor</legend>
+	<legend class="togvis"><%= t 'studentcounseling.action_refer' %> & <%= t 'studentcounseling.counselor' %></legend>
 		<table width=100%>		
 			<!--display action taken for referred case-->
 			<tr>
-				<td class="leftcol">Action by referrer (TPHEP) </td>
+				<td class="leftcol"><%= t 'studentcounseling.action_refer' %></td>
 				<td><%=h @student_counseling_session.student_discipline_case.action if !@student_counseling_session.case_id.blank? %></td>
 			<tr>
 			<tr>
-				<td class="leftcol"><label for="feedback">Action by Counselor <br>(Feedback for this session)</label></td>
+				<td class="leftcol"><label for="feedback"><%= t 'studentcounseling.actionby_conselour' %> <br><%= t 'studentcounseling.feedback_session' %></label></td>
 				<td><%= @student_counseling_session.remark %></td>
 			</tr>
 			
@@ -46,8 +46,8 @@
 		
 			<% if @session_count>1 %>
 				<tr>
-					<td class="leftcol"><label for="feedback">Other related counseling sessions</label></td>
-					<td><table><tr><th>No</th><th>Session</th></tr>
+					<td class="leftcol"><label for="feedback"><%= t 'studentcounseling.other_related' %></label></td>
+					<td><table><tr><th>No</th><th><%= t 'studentcounseling.sessions' %></th></tr>
 						
 						<% @other_sessions.each_with_index do |session,index| %>
 						<tr>
@@ -63,7 +63,7 @@
 			<% if @student_counseling_session.student_discipline_case.counselor_feedback== nil|| @student_counseling_session.student_discipline_case.counselor_feedback==''%>
 			<% else %>
 				<tr>
-					<td class="leftcol"><label for="feedback">Action by Counselor<br>Summary/Feedback (FINAL) to referrer/TPHEP</label></td>
+					<td class="leftcol"><label for="feedback"><%= t 'studentcounseling.actionby_conselour' %><br><%= t 'studentcounseling.summary' %></label></td>
 					<td><%=@student_counseling_session.student_discipline_case.counselor_feedback%></td>
 				</tr>
 			<% end %>
@@ -77,5 +77,5 @@
 <% end %>
 </div>
 
-<%= link_to 'Edit', edit_student_counseling_session_path(@student_counseling_session) %> |
-<%= link_to 'Back', student_counseling_sessions_path %>
+<%= link_to (t 'edit'), edit_student_counseling_session_path(@student_counseling_session) %> |
+<%= link_to (t 'back'), student_counseling_sessions_path %>

@@ -1,6 +1,6 @@
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Student Counseling Appointments & Sessions</h2>
+		<h2 class="left"><%= t 'studentcounseling.title' %></h2>
 		<div class="right">
 			<% form_tag student_counseling_sessions_path, :method => 'get' do %>
 			Appointment / Session : <%= text_field_tag :search, params[:search], :placeholder => "Name, Matric No"  %>
@@ -25,9 +25,9 @@
 <table align="center" cellpadding="7">
 	<tr>
 		<td><%= image_tag("flag_red.png") %> Involuntary &nbsp;&nbsp;&nbsp;</td> 
-		<td class="green" align='center'> Session is complete&nbsp;&nbsp;&nbsp;</td>
-		<td class="red"> Appointment is not confirmed&nbsp;&nbsp;&nbsp;</td>
-		<td class="blue"> Appointment is confirmed&nbsp;&nbsp;&nbsp;</td>
+		<td class="green" align='center'> <%= t 'studentcounseling.session_complete' %>&nbsp;&nbsp;&nbsp;</td>
+		<td class="red"> <%= t 'studentcounseling.appointment_notconfirm' %>&nbsp;&nbsp;&nbsp;</td>
+		<td class="blue"> <%= t 'studentcounseling.appointment_confirm' %>&nbsp;&nbsp;&nbsp;</td>
 </tr></table>
 </font>
 
@@ -35,21 +35,21 @@
 <!-- HACK : create float left divs for toolbar -->
 
 <div class="toolbar">
-  <p><%= link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + "New", new_student_counseling_session_path %></p>
+  <p><%= link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + (t 'new'), new_student_counseling_session_path %></p>
 </div>
 <br>
 
 <table>
   <tr>
-	<th>Matrix No</th>
-    <th>Student Name</th>
-	<th>Programme</th>
-	<th>Year/Semester</th>
-    <th>Appointment For</th>
-    <th>Duration<br>(Minutes)</th>
-    <th>Is confirmed</th>
-	<th>Feedback to<br>Referrer</th>
-	<th colspan=3>Control</th>
+	<th><%= t 'student.matrixno' %></th>
+    <th><%= t 'leaveforstudent.student_id' %></th>
+	<th><%= t 'student_attendance.programme' %></th>
+	<th><%= t 'studentdiscipline.year_sem' %></th>
+    <th><%= t 'studentcounseling.appointmentfor' %></th>
+    <th><%= t 'programme.duration' %><br>( <%= t 'time.minutes'%>)</th>
+    <th><%= t 'studentcounseling.is_confirm' %></th>
+	<th><%= t 'studentcounseling.feedback_to' %><br><%= t 'studentcounseling.refer' %></th>
+	<th colspan=3><%= t 'control' %></th>
   </tr>
 <% @appointments_by_case.each do |case_id, appointments|%>
 <%# @appointments.each do |appointment| %><% count=0 %>
@@ -94,7 +94,7 @@
 <% end -%>
 
 <% end -%><!--end for @appointments_by_case-->
-<tr><td colspan=11 align=center><b>Appointments <BR/><HR>Sessions</b></td></tr>
+<tr><td colspan=11 align=center><b><%= t 'studentcounseling.appointment' %> <BR/><HR><%= t 'studentcounseling.sessions' %></b></td></tr>
 <% @session_dones_by_case.each do |case_id,session_dones|%>
 <%# @session_dones.each do |session_done| %><% count2=0 %>
 <% session_dones.each do |session_done| %>
@@ -137,4 +137,4 @@
 <BR/><BR/>
 <br />
 
-<%= link_to 'New student_counseling_session', new_student_counseling_session_path %>
+<%= link_to (t 'studentcounseling.new'), new_student_counseling_session_path %>

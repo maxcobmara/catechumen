@@ -2,7 +2,7 @@
   <%= f.error_messages %>
 
 	<div class="tform">
-		<H2>New Counseling Appointment</H2>
+		<H2><%= t 'studentcounseling.new_appointment' %></H2>
 		
 		<% if Login.current_login.isstaff == false %>
 				<%=render :partial => 'appointment_student', :locals => {:f => f} %>
@@ -13,8 +13,8 @@
 
 	</div>
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit (t 'create') %>
   </p>
 <% end %>
 
-<%= link_to 'Back', student_counseling_sessions_path %>
+<%= link_to (t 'back'), student_counseling_sessions_path %>

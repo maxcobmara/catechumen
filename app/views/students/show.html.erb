@@ -164,7 +164,7 @@
 	
 
 		
-	<H2>Guarantor</H2>
+	<H2><%= t 'student.contact_guarantor' %></H2>
 	<% puid = @student.id %>
 	<% garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  98]) %>
 	<% garantor.each do |e| %>
@@ -211,7 +211,7 @@
 	<% end %>
 	</table>		
 		
-	<H2>Contact Information</H2>
+	<H2><%= t 'student.contact_info' %></H2>
 	<% thekins = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id != ? AND kintype_id != ? ", puid,  98, 99 ]) %>
 	<% thekins.each do |e| %>
 	<table>
@@ -248,7 +248,7 @@
 <BR>
 </div>
 
-<%= link_to 'Edit', edit_student_path(@student) %> |
+<%= link_to (t 'edit'), edit_student_path(@student) %> |
 <%#= link_to 'formforstudent', @student %>
-<%= link_to 'Form for student',:action => 'formforstudent', :id => @student %> |
-<%= link_to 'Back', students_path %>
+<%= link_to (t 'student.form_for_student'),:action => 'formforstudent', :id => @student %> |
+<%= link_to (t 'back'), students_path %>
