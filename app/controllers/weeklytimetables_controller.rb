@@ -14,10 +14,22 @@ class WeeklytimetablesController < ApplicationController
       #note - restriction : refer authorization rules
       #note - Weeklytimetable listing : based on @programme_id value being sent to 'search' method in staff.rb
       @weeklytimetables = Weeklytimetable.with_permissions_to(:index).search(@programme_id) 
+      
+      common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
+      @common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
+      current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+      @is_admin=true if current_roles.include?("Administration")
+      @is_common_lecturer=true if @common_subject_lecturers_ids.include?(Login.current_login.staff_id)
+
     end
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @weeklytimetables }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @weeklytimetables }
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('weeklytimetable.title2')}
+        format.xml  { render :xml => @weeklytimetable.errors, :status => :unprocessable_entity }
+      end
     end
   end
   
@@ -66,6 +78,17 @@ class WeeklytimetablesController < ApplicationController
   # GET /weeklytimetables/1/edit
   def edit
     @weeklytimetable = Weeklytimetable.find(params[:id])
+    
+    common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
+    common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    
+    @programme_lecturers = Staff.find(:all, :joins=>:position, :conditions=>['positions.name=? AND positions.unit=?','Pengajar',Programme.find(@weeklytimetable.programme_id).name],:order=>'name ASC')
+    @commonsubject_lecturers = Staff.find(:all, :conditions=>['id IN(?)', common_subject_lecturers_ids],:order=>'name ASC')
+    
+    @is_admin=true if current_roles.include?("Administration")
+    @is_common_lecturer=true if common_subject_lecturers_ids.include?(Login.current_login.staff_id)
+    @is_prog_lecturer=true if @programme_lecturers.map(&:id).include?(Login.current_login.staff_id)
   end
 
   # POST /weeklytimetables

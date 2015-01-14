@@ -9,13 +9,13 @@ class StudentAttendancesController < ApplicationController
     @intake_student = params[:intake_student] 
     @programme = params[:programme]
     ######==============
-    @programme_list_ids = Programme.at_depth(0).map(&:id)
+    @programme_list_ids = Programme.roots.map(&:id)     #Programme.at_depth(0).map(&:id)
     @lecturer_programme = current_login.staff.position.unit
     unless @lecturer_programme.nil?
       @programme2 = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end
     #---------------------
-    classes_own_ids = Login.current_login.classes_taughtby     #ids of weeklytimetable_detail
+    classes_own_ids = Login.current_login.classes_taughtby     #ids of weeklytimetable_detail   #Cathy Suhaila - [471, 472, 473, 440, 449]
     w_timetable_match = WeeklytimetableDetail.find(:all, :conditions => ['id IN(?)', classes_own_ids]).map(&:weeklytimetable_id).uniq
     relevant_intakes_ids = Weeklytimetable.find(:all, :conditions => ['id IN(?)', w_timetable_match]).map(&:intake_id)
     relevant_intakes = Intake.find(:all, :conditions => ['id IN(?)', relevant_intakes_ids]).map(&:monthyear_intake) 
@@ -30,9 +30,9 @@ class StudentAttendancesController < ApplicationController
       @student_list = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes])
       @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id)
     else  #admin
-      @intake_list2 = Student.find(:all, :conditions => ['course_id IS NOT NULL and course_id IN(?) and intake=?',@programme_list_ids, student_intakes], :select=> "DISTINCT intake, course_id",:order=>"course_id,intake") 
-      @student_list= Student.find(:all, :conditions => ['course_id IS NOT NULL and course_id IN(?) and intake=?',@programme_list_ids, student_intakes],:order=>"course_id,intake") 
-      @topics_ids_this_prog = Programme.at_depth(3) 
+      @intake_list2 = Student.find(:all, :conditions => ['course_id IN(?) and intake IN(?)',@programme_list_ids, student_intakes], :select=> "DISTINCT intake, course_id",:order=>"course_id,intake") 
+      @student_list= Student.find(:all, :conditions => ['course_id IN(?) and intake IN(?)',@programme_list_ids, student_intakes],:order=>"course_id,intake") 
+      @topics_ids_this_prog = Programme.at_depth(3)+Programme.at_depth(4)
     end
     @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and id IN(?)',@topics_ids_this_prog, Login.current_login.classes_taughtby])
     #@schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and lecturer_id=?',@topics_ids_this_prog, Login.current_login.staff_id])

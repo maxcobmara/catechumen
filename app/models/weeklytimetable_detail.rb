@@ -48,6 +48,18 @@ class WeeklytimetableDetail < ActiveRecord::Base
       return (sdate+6).strftime('%d-%b-%Y') + " Sun" if day2 == 7
    end   
    
+   def get_day_of_schedule
+      sdate = Weeklytimetable.find(weeklytimetable_id).startdate
+      endate = Weeklytimetable.find(weeklytimetable_id).enddate
+      return " Mon" if day2 == 1
+      return " Tue" if day2 == 2
+      return " Wed" if day2 == 3
+      return " Thu" if day2 == 4
+      return " Fri" if is_friday == true  
+      return " Sat" if day2 == 6
+      return " Sun" if day2 == 7
+   end
+   
    def get_start_time
      timeslot = time_slot2 if is_friday == false || is_friday == nil
      timeslot = time_slot if is_friday == true 

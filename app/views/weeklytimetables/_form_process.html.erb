@@ -1,12 +1,9 @@
 <!--start-Repeated fields for weeklytimetable details (DAILY TIMETABLE)-->
 <H2><%=t('weeklytimetable.daily_details')%></H2>
-
-<% f.fields_for :weeklytimetable_details do |builder| %>
-
-	<%= render 'weeklytimetable_detail_fields',  :f => builder %><!--:locals=> { :f => builder, :index=>@satu} -->
-<% end -%>
+	<% f.fields_for :weeklytimetable_details do |builder| %>
+		<%= render 'weeklytimetable_detail_fields',  :f => builder %><!--:locals=> { :f => builder, :index=>@satu} -->
+	<% end -%>
 <p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :weeklytimetable_details  %> - <%=t('addmore')%></p>
-
 <!--end-Repeated fields for weeklytimetable details (DAILY TIMETABLE)-->
 
 <H2><%=t('weeklytimetable.submission')%></H2>
@@ -14,7 +11,7 @@
 <table width=100% >
 	<tr>
 		<td class="leftcol"><%=t('weeklytimetable.submit')%></td>
-    	<td>
+		<td>
 			<%= f.check_box :is_submitted, :id => 'check_submitted' %>
 			<SPAN  id="span_submitted" style="display: none;"><%= tarikh(Date.today) %><%=%></SPAN>
 		</td>
