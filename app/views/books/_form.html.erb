@@ -17,12 +17,12 @@
 		
 		<!--1April2013-->
 		<tr>
-			<td class='leftcol2'>Accession No's</td>
+			<td class='leftcol2'><%= t('book.accessionno') %></td>
 			<td>
 				<% f.fields_for :accessions do |builder| %>
 					<%= render 'accession_fields', :f => builder %>
 				<% end %>
-				<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More No.'), f, :accessions %> - Add More </p>
+				<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More No.'), f, :accessions %> - <%= t('addmore') %> </p>
 			</td>
 		</tr>
 
@@ -64,13 +64,13 @@
 			</tr>-->
 	
 			<tr>
-				<td class="leftcol"><label for="catsource"><b>Catalouging Source To:</b></label></td>
+				<td class="leftcol"><label for="catsource"><b><%= t('book.catalog') %>:</b></label></td>
 		    <td><%= f.select :catsource, 
 			                  Book::CATSOURCE,
-			                 :prompt => "Select"  %></td>
+			                 :prompt => (t 'select')  %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><label for="classlcc"><b>Class No (NLM) / (LC):</b></label></td>
+				<td class="leftcol"><label for="classlcc"><b><%= t('book.classno') %>:</b></label></td>
 				<td><%= f.text_field :classlcc %><font color="red"> * </font></td>
 			</tr>
 			<!--
@@ -88,7 +88,7 @@
 				<td class="leftcol"><%= t 'book.language' %>:</td>
 			    	<td><%= f.select :language, 
 					                  Book::LANGUAGE,
-					                 :prompt => "Select"  %></td>
+					                 :prompt => (t 'select')  %></td>
 			</tr>
 	
 			<tr>
@@ -135,7 +135,7 @@
 			  <td><%= f.text_field :bibliography %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><label for="description">Index:</label></td>
+				<td class="leftcol"><label for="description"><%= t('book.index') %>:</label></td>
 			  <td><%= f.text_field :indice %></td>
 			</tr>
 			<tr>
@@ -144,10 +144,10 @@
 			</tr>
 
 			<tr>
-				<td class="leftcol"><label for="loantype">Loan Type:</label></td>
+				<td class="leftcol"><label for="loantype"><%= t('book.loan_type') %>:</label></td>
 			    	<td><%= f.select :loantype, 
 					                  Book::LOAN,
-					                 :prompt => "Select"  %><font color="red"> * </font></td>
+					                 :prompt => (t 'select')  %><font color="red"> * </font></td>
 			</tr>
 	
 			<!--<tr>
@@ -156,26 +156,26 @@
 			</tr>-->
 	
 			<tr>
-				<td class="leftcol"><label for="mediatype">Media Type:</label></td>
+				<td class="leftcol"><label for="mediatype"><%= t('book.mediatype') %>:</label></td>
 			    	<td><%= f.select :mediatype, 
 					                  Book::MEDIA,
-					                 :prompt => "Select"  %><font color="red"> * </font></td>
+					                 :prompt => (t 'select')  %><font color="red"> * </font></td>
 			</tr>
 	
 			<tr>
 				<td class="leftcol"><label for="status">Status:</label></td>
 			    	<td><%= f.select :status, 
 					                  Book::STATUS,
-					                 :prompt => "Select"  %></td>
+					                 :prompt => (t 'select')  %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="series">Series:</label></td>
+				<td class="leftcol"><label for="series"><%= t('book.series') %>:</label></td>
 			  <td><%= f.text_field :series %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="location">Location:</label></td>
+				<td class="leftcol"><label for="location"><%= t('menu.locations') %>:</label></td>
 			  <td><%= f.text_field :location %></td>
 			</tr>
 	
@@ -185,12 +185,12 @@
 			</tr>-->
 	
 			<tr>
-				<td class="leftcol"><label for="edition">Edition:</label></td>
+				<td class="leftcol"><label for="edition"><%= t('book.edition') %>:</label></td>
 			  <td><%= f.text_field :edition %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol">Upload Book Image:</td>
+				<td class="leftcol"><%= t('book.upload_image') %>:</td>
 				<td><%= f.file_field :photo %>
 						<span STYLE="font-size:0.9em; font-family: courier"><%=h @book.photo_file_name unless @book.photo_file_name.blank?  %> - 
 						<%=h (@book.photo_file_size/1024) unless @book.photo_file_name.blank? %> Kb</span></td>
@@ -205,36 +205,36 @@
 
 	
 	
-	<H2>Purchase Information</H2>
+	<H2><%= t('book.purchase_info') %></H2>
 	<table width=100%>
 		<tr>
-			<td class="leftcol"><label for="orderno">Order No:</label></td>
+			<td class="leftcol"><label for="orderno"><%= t('book.orderno') %>:</label></td>
 			<td><%= f.text_field :orderno %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="purchaseprice">Purchase Price:</label></td>
+			<td class="leftcol"><label for="purchaseprice"><%= t('book.purchaseprice') %>:</label></td>
 			<td><b>RM</b> <%= f.text_field :purchaseprice, :size => 12 %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="purchasedate">Purchase Date:</label></td>
+			<td class="leftcol"><label for="purchasedate"><%= t('book.purchasedate') %>:</label></td>
 			<td><%= f.date_select :purchasedate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 
 
 		<tr>
-		<td class="leftcol"><label for="receiveddate">Date Received:</label></td>
+		<td class="leftcol"><label for="receiveddate"><%= t('book.receiveddate') %>:</label></td>
 	      <td><%= f.date_select :receiveddate, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="receiver_id">Received By:</label></td>
+			<td class="leftcol"><label for="receiver_id"><%= t('book.receiver_id') %>:</label></td>
 			<td><%= f.collection_select :receiver_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="supplier_id">Supplier:</label></td>
+			<td class="leftcol"><label for="supplier_id"><%= t('book.supplier_id') %>:</label></td>
 		    <td><%= f.collection_select :supplier_id, AddressBook.find(:all), :id, :name, :include_blank => true %></td>
 		</tr>
 	</table>

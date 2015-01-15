@@ -1,17 +1,17 @@
-Quicklinks  : <a href="#oot">Borrowed Books</a> <a href="#LatestBooks">Latest Books</a>, <a href="#mastu">Most Active Students</a>, <a href="#masta">Most Active Staff</a>   
+Quicklinks  : <a href="#oot"><%= t 'librarystats.borrow_book' %></a> <a href="#LatestBooks"><%= t 'librarystats.latest_book' %></a>, <a href="#mastu"><%= t 'librarystats.most_activestudent' %></a>, <a href="#masta"><%= t 'librarystats.most_activestaff' %></a>   
 
 <div class="stats">
-	<p><%= Book.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0">Total Number of Titles in Library</p>
-	<p STYLE="font-size:72px; color: #ee842f"><%= Accession.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0">Total Number of Books In Library </p>
-  <p><%= Librarytransaction.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0">Total Library Transactions</p>
+	<p><%= Book.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0"><%= t 'librarystats.total_title' %></p>
+	<p STYLE="font-size:72px; color: #ee842f"><%= Accession.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0"><%= t 'librarystats.total_book' %></p>
+  <p><%= Librarytransaction.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0"><%= t 'librarystats.total_trans' %></p>
 	<p STYLE="font-size:72px; color: #ee842f">
 		<% lib_tran_today = Librarytransaction.count(:all, :conditions => ["created_at > ? ", 1.day.ago ]) %>
 		<% if lib_tran_today == 0 %>
 			0
 		<% else %>
 			<%= lib_tran_today %>
-		<% end %><SPAN STYLE="font-size:14px; color: #90C3C0">Books Borrowed Today</p>
-	<p><%= ringgols(Librarytransaction.sum(:fine)) %><SPAN STYLE="font-size:14px; color: #90C3C0">total of fines collected.</p>
+		<% end %><SPAN STYLE="font-size:14px; color: #90C3C0"><%= t 'librarystats.bookborrow' %></p>
+	<p><%= ringgols(Librarytransaction.sum(:fine)) %><SPAN STYLE="font-size:14px; color: #90C3C0"><%= t 'librarystats.total_collect' %></p>
 </div>
 <BR><BR><BR><BR>
 	
@@ -23,10 +23,10 @@ Quicklinks  : <a href="#oot">Borrowed Books</a> <a href="#LatestBooks">Latest Bo
 
 
 	<table id="easytable" align="center" >
-		<caption>Borrowed Books</caption>
+		<caption><%= t 'librarystats.borrow_book' %></caption>
 		<tr>
-			<th>Accession ID</th>
-			<th>Title</th>
+			<th><%= t 'librarystats.accession_id' %></th>
+			<th><%= t 'librarystats.title' %></th>
 		</tr>
 		<% for accession in Accession.find(:all, :conditions => ["id in (?)", oot_books ]) %>
 		<tr>
@@ -46,10 +46,10 @@ Quicklinks  : <a href="#oot">Borrowed Books</a> <a href="#LatestBooks">Latest Bo
 <% top_ten = b.to_a.each {|who, visits|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
 	
 	<table id="easytable" align="center" >
-		<caption>Most Active Students</caption>
+		<caption><%= t 'librarystats.most_activestudent' %></caption>
 		<tr>
-			<th>Transactions</th>
-			<th>Name</th>
+			<th><%= t 'librarystats.transaction' %></th>
+			<th><%= t 'librarystats.name' %></th>
 		</tr>
 		<% top_ten[(0..9)].each do |who, visits| %>
 		<tr>
@@ -67,10 +67,10 @@ Quicklinks  : <a href="#oot">Borrowed Books</a> <a href="#LatestBooks">Latest Bo
 <% top_ten = b.to_a.each {|who, visits|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
 
 	<table id="easytable" align="center" >
-		<caption>Most Active Staff</caption>
+		<caption><%= t 'librarystats.most_activestaff' %></caption>
 		<tr>
-			<th>Transactions</th>
-			<th>Name</th>
+			<th><%= t 'librarystats.transaction' %></th>
+			<th><%= t 'librarystats.name' %></th
 		</tr>
 		<% top_ten[(0..9)].each do |who, visits| %>
 		<tr>
@@ -85,11 +85,11 @@ Quicklinks  : <a href="#oot">Borrowed Books</a> <a href="#LatestBooks">Latest Bo
 <a name="LatestBooks"></a>
 <% latest_books = Book.find(:all, :order => 'updated_at desc', :limit => 10) %>
 <table id="easytable" align="center" >
-	<caption>Latest Titles In Library</caption>
+	<caption><%= t 'librarystats.total_title' %></caption>
 	<tr>
-		<th>Image</th>
-		<th>Title</th>
-		<th>Quantity</th>
+		<th><%= t 'librarystats.image' %></th>
+		<th><%= t 'librarystats.title' %></th>
+		<th><%= t 'librarystats.quantity' %></th>
 	</tr>
 	<% latest_books.each do |e| %>
 	<tr>
@@ -110,10 +110,10 @@ Quicklinks  : <a href="#oot">Borrowed Books</a> <a href="#LatestBooks">Latest Bo
 <% repeat = b.to_a.each {|book, repeats|} %> <!--  concat " <BR> #{visits} : #{who}"} -->
 	
 	<table id="easytable" align="center" >
-		<caption>Possibly Repeated Books</caption>
+		<caption><%= t 'librarystats.possibly' %></caption>
 		<tr>
-			<th>Repeats</th>
-			<th>Title</th>	
+			<th><%= t 'librarystats.repeat' %></th>
+			<th><%= t 'librarystats.title' %></th>	
 		</tr>
 		<% repeat.each do |book, repeats| %>
 			<% if ("#{repeats}").to_i > 1 %>
