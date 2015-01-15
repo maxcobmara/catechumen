@@ -1,27 +1,23 @@
 <% form_for(@weeklytimetable) do |f| %>
-  <%= f.error_messages %>
-
+	<%= f.error_messages %>
 	
-		<% if (@weeklytimetable.prepared_by == Login.current_login.staff_id && @weeklytimetable.is_submitted != true)  || (@weeklytimetable.prepared_by == Login.current_login.staff_id && @weeklytimetable.hod_rejected? == true )%>
-			<h3><%=t('weeklytimetable.edit')%></h3>
-			<div class="tform">
-				<%=render :partial => 'show_first' %>
-				<%=render :partial => 'form_timetable2' %><!--newly added 28March2013-->
-				<%=render :partial => 'form_process', :locals => {:f => f} %>
-
-			</div>
-		<% end -%>
-		<% if @weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == Login.current_login.staff_id %>
-			<h3><%=t('weeklytimetable.approval')%></h3>
-			<div class="tform">
-				<%=render :partial => 'show_main' %>
-				<%=render :partial => 'approval', :locals => {:f => f} %>
-			</div>
-		<% end -%>
-	</div>
-  <p>
-    <%= f.submit t('update') %>
-  </p>
+	<% if (@weeklytimetable.is_submitted != true && ((@weeklytimetable.prepared_by == Login.current_login.staff_id)|| (@is_admin)||(@is_common_lecturer) ))||(@weeklytimetable.is_submitted==nil && weeklytimetable.hod_rejected? == true && ((@weeklytimetable.prepared_by == Login.current_login.staff_id) || @is_admin|| @is_common_lecturer) ) %>
+		<h3><%=t('weeklytimetable.edit')%></h3>
+		<div class="tform">
+			<%=render :partial => 'show_first' %>
+			<%=render :partial => 'form_timetable2' %><!--newly added 28March2013-->
+			<%=render :partial => 'form_process', :locals => {:f => f} %>
+		</div>
+	<% end -%>
+	<% if (@weeklytimetable.is_submitted == true && @weeklytimetable.hod_approved!= true && ((@weeklytimetable.endorsed_by == Login.current_login.staff_id)|| @is_admin|| @is_common_lecturer)) %>
+		<h3><%=t('weeklytimetable.approval')%></h3>
+		<div class="tform">
+			<%=render :partial => 'show_main' %>
+			<%=render :partial => 'approval', :locals => {:f => f} %>
+		</div>
+	<% end -%>
+	<p><%= f.submit t('update') %></p>
+	
 <% end %>
 
 <%= link_to t('show'), @weeklytimetable %> |
