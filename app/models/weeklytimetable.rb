@@ -56,9 +56,13 @@ class Weeklytimetable < ActiveRecord::Base
   def hods  
       #tpa = Login.current_login.staff.position.parent
       lecturer_unit = Login.current_login.staff.position.unit
-      kp = Position.find(:all, :conditions=>['unit=? and ancestry_depth=?', lecturer_unit,1]).map(&:id)
-      #hod = [tpa]+kp
+      if lecturer_unit == "Pengkhususan" || lecturer_unit == "Diploma Lanjutan" ||  lecturer_unit == "Pos Basik"
+        kp = Position.find(:all, :conditions=>['(unit=? or unit=?)and tasks_main ILIKE(?)', "Pengkhususan", "Pos Basik","%Ketua Program%"])
+      else
+        kp = Position.find(:all, :conditions=>['unit=? and ancestry_depth=?', lecturer_unit,1]).map(&:id)
+      end
       hod=kp
+      #hod = [tpa]+kp
       approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
   end
   

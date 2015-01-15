@@ -126,7 +126,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
     CLASS_METHOD = [
            #  Displayed       stored in db
            ["Kuliah",     1],
-           ["Teori",    2],
+           ["Tutorial",    2],
            ["Amali",  3]
      ]
      

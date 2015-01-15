@@ -253,7 +253,7 @@ authorization do
   role :coordinator do
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => :manage
-    #below - manage or just edit, update (can approve?)
+    #below - manage or just edit, update (can approve?), Penyelaras Kumpulan (of each Intake, of each Programme)
     has_permission_on :weeklytimetables, :to => :manage do
       if_attribute :prepared_by => is {Login.current_login.staff_id}
     end

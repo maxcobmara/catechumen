@@ -131,7 +131,8 @@
 					
 					<% nos=0 %><!--26Jul2013-toavoid multiple display:5 times of the same value in 1 field-->
 					<% detailing_monthurs.each do |j|%><%#= j.weeklytimetable.hod_approved %>
-						<% if j.day2 == count2  && j.time_slot2 == count3 %>
+					
+						<% if j.day2 == count2  && j.time_slot2 == count3 %>(<%= detailing_monthurs.count%>)&nbsp;
 						<!--26Jul2013--><% if nos==0%><% nos+=1%><!--26Jul2013-toavoid multiple display:5times of the same value in 1 field-->
 							<% if j.weeklytimetable.hod_approved == true %>
 								    <font color="#000000">
@@ -212,7 +213,7 @@
 		<% detailing.each_with_index do |j,index|%>
 			<% if index==0%>
 				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-					<%=t(:'date.day_names')[4]%><br><%=j.weeklytimetable.enddate.strftime('%d-%b-%Y') %>
+					<%=t(:'date.day_names')[4]%><br><%=(j.weeklytimetable.startdate+4).strftime('%d-%b-%Y')  %>
 				</td>
 				<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
 				<% @column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count%><!--same as line 91-->
@@ -226,9 +227,8 @@
 				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 5 || classes_tospan.include?(count4)%>
 				<td colspan="2" align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-					
 					<% detailing_friday.each do |j|%>
-						<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 && count_once==0 %>
+						<% if j.is_friday == true  && j.time_slot ==count4 && count_once==0 %>
 							<% count_once+=1 %>
 							<% if j.weeklytimetable.hod_approved == true %>
 								    <font color="#000000">
@@ -259,7 +259,7 @@
 				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
 		
 					<% detailing_friday.each do |j|%>
-						<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4  && count_once==0 %>
+						<% if j.is_friday == true  && j.time_slot == count4  && count_once==0 %>
 							<% count_once+=1 %>
 							<% if j.weeklytimetable.hod_approved == true %>
 								    <font color="#000000">

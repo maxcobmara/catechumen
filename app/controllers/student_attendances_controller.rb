@@ -9,8 +9,8 @@ class StudentAttendancesController < ApplicationController
     @intake_student = params[:intake_student] 
     @programme = params[:programme]
     ######==============
-    @programme_list_ids = Programme.roots.map(&:id)     #Programme.at_depth(0).map(&:id)
-    @lecturer_programme = current_login.staff.position.unit
+    @programme_list_ids = Programme.roots.map(&:id)    
+    @lecturer_programme = current_login.staff.position.unit      #include programme, common subject, 
     unless @lecturer_programme.nil?
       @programme2 = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end

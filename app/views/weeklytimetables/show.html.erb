@@ -320,7 +320,8 @@
 </table>
 </fieldset>
 <!---->
-<% if (@weeklytimetable.is_submitted != true && @weeklytimetable.prepared_by == Login.current_login.staff_id) || (@weeklytimetable.prepared_by == Login.current_login.staff_id && @weeklytimetable.hod_rejected? == true && @weeklytimetable.is_submitted != true) %>
+<%# if (@weeklytimetable.is_submitted != true && @weeklytimetable.prepared_by == Login.current_login.staff_id) || (@weeklytimetable.prepared_by == Login.current_login.staff_id && @weeklytimetable.hod_rejected? == true && @weeklytimetable.is_submitted != true) %>
+<% if (@weeklytimetable.is_submitted != true && ((@weeklytimetable.prepared_by == Login.current_login.staff_id)|| (@is_admin)||(@is_common_lecturer) ))||(@weeklytimetable.is_submitted==nil &&@weeklytimetable.hod_rejected? == true && ((@weeklytimetable.prepared_by == Login.current_login.staff_id) || @is_admin|| @is_common_lecturer) ) %>
 	<%= link_to t('edit'), edit_weeklytimetable_path(@weeklytimetable) %> |
 <% end %>
 <%= link_to t('back'), weeklytimetables_path %>
