@@ -4,15 +4,15 @@
 <%= hidden_field_tag :id, @login.id %>
 <!-- Edit Login -->
 <div class="tform">
-	<H2>System Login Details</H2>
+	<H2><%= t 'login.system_login' %></H2>
   <table width=100% >
 	<tr>
-		<td class="leftcol"><label for="login">Login: </label></td>
+		<td class="leftcol"><label for="login"><%= t 'login.login' %>: </label></td>
 		<td><%= f.text_field :login, :size => 25 %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="login">Attach Login : </label></td>
+		<td class="leftcol"><label for="login"><%= t 'login.attach_login' %>: </label></td>
 		<td>
 		<% if @login.isstaff? == true %>
 				<%= (f.collection_select :staff_id, Staff.find(:all, :order => :name, :conditions => ["icno in (?)", @login.icno]), :id, :mykad_with_staff_name, :include_blank => true, :default => 0, :prompt => 'Select Staff') %>	
@@ -23,24 +23,24 @@
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="email">Email: </label></td>
+		<td class="leftcol"><label for="email"><%= t 'student.semail' %>: </label></td>
 		<td><%= f.text_field :email %></td>
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="password">Password: </label></td>
+		<td class="leftcol"><label for="password"><%= t 'login.password' %>: </label></td>
 		<td><%= f.text_field :password, :size => 12 %></td>
 	</tr>
 
 	<tr>
-		<td class="leftcol"><label for="password_confirmation">Confirm Password: </label></td>
+		<td class="leftcol"><label for="password_confirmation"><%= t 'login.cpassword' %>: </label></td>
 		<td><%= f.text_field :password_confirmation, :size => 12 %></td>
 	</tr>
 </table>
 
 
-	<H2>Login Roles</H2>
-	<P><strong>Select role to add to this user</strong></P>	
+	<H2><%= t 'login.login_roles' %></H2>
+	<P><strong><%= t 'login.select_role' %></strong></P>	
 	<table width=100% border=0>
 		<% Role.all.in_groups_of(5, false) do |row_roles| %>
 		<tr>
@@ -53,11 +53,11 @@
 
 	</table>
 
-<p><%= submit_tag 'Update' %></p>
+<p><%= submit_tag (t 'update') %></p>
 <% end -%>
 
-<%= link_to 'Show',  :action => 'show', :id => @login.id %>
-<%#= link_to 'Show', login_path(@login) %>|
-<%= link_to 'Back', logins_path %>
+<%= link_to (t 'show'),  :action => 'show', :id => @login.id %>
+<%#= link_to (t 'show'), login_path(@login) %>|
+<%= link_to (t 'back'), logins_path %>
 
 </div>

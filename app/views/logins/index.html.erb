@@ -2,11 +2,11 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Lists of Logins</h2>
+		<h2 class="left"><%= t 'login.list' %></h2>
 	</div>
 </div>
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Course')+ "New",  new_login_path  %></p>
+	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Course')+ (t 'new'),  new_login_path  %></p>
 </div>
 <BR><BR>
 <div class="indextable">
@@ -16,10 +16,10 @@
 			<th colspan=5><div class="right"><%= select_tag_for_filter("logins", @filters, params) %></th>
 		</tr>
 		<tr>
-			<th>Name</th>
-    	<th>Login</th>
-    	<th>Email</th>
-			<th colspan=4 class="ac">Control</th>
+			<th><%= t 'name' %></th>
+    	<th><%= t 'login.login' %></th>
+    	<th><%= t 'student.semail' %></th>
+			<th colspan=4 class="ac"> <%= t 'control' %></th>
   	</tr>
 		<% @logins.each do |login| %>
 	  <tr>
@@ -38,4 +38,4 @@
 	</table>
 </div>
 <br />
-<%= link_to 'New Login', new_login_path %>
+<%= link_to (t 'login.newlogin'), new_login_path %>
