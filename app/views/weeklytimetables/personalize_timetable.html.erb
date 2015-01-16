@@ -64,41 +64,21 @@
 				</tr>
 				
 	</thead>
-</table>	
+</table>				<% end %>
 					<% startdt = item.startdate %>
 					<% enddt = item.enddate %>
 					
-					<% item.weeklytimetable_details.each do |h| %><!--<%#=h.lecturer_id%>!!<%#=Login.current_login.staff_id%>-->
-						<!--added-26Jul2013-for e-query & report manager-->
-						<% if @hihi!= nil%>
-							<% @timetable_owner = @haha.to_i %>
-						<% else %>
-							<% @timetable_owner = Login.current_login.staff_id %>
-						<% end %>
-						<!--added-26Jul2013-for e-query & report manager-->
-						<% if h.lecturer_id == @timetable_owner %>
+					<% item.weeklytimetable_details.each do |h| %>
+						<% if h.lecturer_id == Login.current_login.staff_id %>
 							<% detailing << h %>
 							<% if h.day2 != 0 %>
 								<% detailing_monthurs<< h %>
 							<% elsif h.is_friday == true %>
 								<% detailing_friday<< h %>
-							<% end %>
+							 <% end %>
 						<% end %>
 					<% end %>
-					
-				<% end %>
-				<%#= item.weeklytimetable_details %>
-
-				<%# item.weeklytimetable_details.each do |h| %>
-					<%# if h.lecturer_id == Login.current_login.staff_id %>
-						<%# detailing << h %>
-						<%# if h.day2 != 0 %>
-							<%#detailing_monthurs<< h %>
-						<%#elsif h.is_friday == true %>
-							<%# detailing_friday<< h %>
-						<%# end %>
-					<%# end %>
-				<%# end %>
+				
 			<% end %>
 		<% end %>
 		<% end %>
@@ -165,17 +145,18 @@
 		
 		<!--span BREAK fields & display CLASSES fields accordingly-(start)-->
 
-		<% 1.upto(@column_count_monthur) do |count3| %><%# 1.upto(@column_count) do |count3| %>
+		<% 1.upto(@column_count_monthur) do |count3| %>
 			<% if (count3==2 && count2==1) || (count3==5 && count2==1) %>
 				<td rowspan="4" class="break1"><%=t('weeklytimetable.break').upcase%><br> <!--column:<%#=count3%>row:<%#=count2%>-->
 				</td>
 			<% elsif count3==5&&count2!=1%>
-				<!--should not have any field or value-->
-			<% elsif count3==7%>
+				<!--should not have any field or value-->	
+			<% elsif count3!=2%><!--PRINT BORDER : RIGHT-->
 				<td class="data1">
-					<% detailing_monthurs.each do |j|%><%#= j.weeklytimetable.hod_approved %>
-						<%# if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>
+					<% nos=0 %><!--26Jul2013-toavoid multiple display:5 times of the same value in 1 field-->
+					<% detailing_monthurs.each do |j|%>
 						<% if j.day2 == count2  && j.time_slot2 == count3 %>
+						<!--26Jul2013--><% if nos==0%><% nos+=1%><!--26Jul2013-toavoid multiple display:5times of the same value in 1 field-->
 							<% if j.weeklytimetable.hod_approved == true %>
 								    <font color="#000000">
 							<% else %>
@@ -197,44 +178,10 @@
 									<%= j.weeklytimetable.schedule_intake.description %>
 									<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
 								</div>
-							</strong><!--column:<%#=count3%>row:<%#=count2%>-->
-						<% else %>
-							<!--column:<%#=count3%>row:<%#=count2%>-->
+							</strong></font>
+						<!--26Jul2013--><% end %>
 						<% end %>
-					<% end%>
-				</td>						
-			<% elsif count3!=2%><!--PRINT BORDER : RIGHT-->
-				<td class="data1"><%#= detailing_monthurs.count%>
-			
-					<% detailing_monthurs.each do |j|%><%#= j.weeklytimetable.hod_approved %>
-						<%# if j.day2 == count2  && j.time_slot2 == count3 && j.weeklytimetable.hod_approved == true%>
-						<% if j.day2 == count2  && j.time_slot2 == count3 %>
-							<% if j.weeklytimetable.hod_approved == true %>
-								    <font color="#000000">
-							<% else %>
-								    <font color="grey">
-							<% end %>
-							<strong><!--DUA--><%#=j.topic%>
-								<div align="left">
-									<%#= j.weeklytimetable_topic.parent.code %>
-									<%= j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase %>
-								</div><br>
-								<%= j.weeklytimetable_topic.name %>
-								<%= "(K)" if j.lecture_method == 1 %>
-								<%= "(T)" if j.lecture_method == 2 %>
-								<%= "(A)" if j.lecture_method == 3 %><br>
-								<%#= j.weeklytimetable_location.try(:name) %>
-								<%= j.location_desc %>
-								<div align="right"><br>
-									<%= j.weeklytimetable.schedule_programme.programme_list %><br>
-									<%= j.weeklytimetable.schedule_intake.description %>
-									<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
-								</div>
-							</strong><!--column:<%#=count3%>row:<%#=count2%>-->
-						<% else %>
-							<!--column:<%#=count3%>row:<%#=count2%>-->
-						<% end %>
-					<% end%>
+					<% end %>
 				</td>	
 			<% end %>
 		<% end %>
@@ -287,7 +234,7 @@
 		<% detailing.each_with_index do |j,index|%>
 		<% if index==0%>
 		<td class="data3">
-			<%=t(:'date.day_names')[4]%><br><%=j.weeklytimetable.enddate.strftime('%d-%b-%Y') %>
+			<%=t(:'date.day_names')[4]%><br><%=(j.weeklytimetable.startdate+4).strftime('%d-%b-%Y') %>
 		</td>
 		
 		<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
@@ -299,9 +246,10 @@
 				<td class="break2"><%=t('weeklytimetable.break').upcase%></td>
 			<% elsif count4 == 5 || classes_tospan.include?(count4)%>
 				<td colspan="2" class="data4">
-				
+					<% nos=0 %>
 					<% detailing_friday.each do |j|%>
-						<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 %>
+						<% if j.is_friday == true  && j.time_slot == count4 %>
+							<% if nos==0%><% nos+=1%>
 							<% if j.weeklytimetable.hod_approved == true %>
 								    <font color="#000000">
 							<% else %>
@@ -324,6 +272,7 @@
 									<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
 								</div>
 							</strong></font>
+							<% end %>
 						<% end %>
 					<% end %>
 				</td>
@@ -331,7 +280,7 @@
 				<td class="data5"><!--kukku--> <%#=@column_count_monthur%><%#=count4%><%#=@column_count_monthur+count4%><!--revised : 26Jul2013-->
 					
 					<% detailing_friday.each do |j|%>
-						<% if j.is_friday == true  && j.time_slot == @column_count_monthur+count4 %>
+						<% if j.is_friday == true  && j.time_slot == count4 %>
 							<% if j.weeklytimetable.hod_approved == true %>
 								    <font color="#000000">
 							<% else %>

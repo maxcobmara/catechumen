@@ -21,7 +21,8 @@
 		
 		<% rec_is_prog_lect=true if @programme_lecturers.map(&:id).include?(f.object.lecturer_id) %>
 		<% rec_is_common_lect=true if @commonsubject_lecturers.map(&:id).include?(f.object.lecturer_id)%>
-		
+		<% rec_is_pengkhususan_lect=true if @pengkhususan_lecturers.map(&:id).include?(f.object.lecturer_id) %>
+
 		<tr>
 			<td class="leftcol"><%=t('weeklytimetable_detail.day_time')%></td>
 			<td>
@@ -67,8 +68,8 @@
 					<%#= f.select :day2, daylist, :include_blank => t('select') %>
 					- <%#= f.collection_select :time_slot2, @timeslot, :sequence, :timing, {:include_blank => t('select')}%>-->
 					<% if f.object.id %>
-						<% if @is_prog_lecturer %>
-							<% if rec_is_prog_lect%>
+						<% if @is_prog_lecturer || @is_pengkhususan_lecturer %>
+							<% if rec_is_prog_lect ||  rec_is_pengkhususan_lect %>
 								<%= f.select :day2, daylist, :include_blank => t('select') %>
 								- <%= f.collection_select :time_slot2, @timeslot, :sequence, :timing, {:include_blank => t('select')}%>
 							<% end %>
@@ -77,7 +78,7 @@
 							<% end %>
 						<% end %>
 						<% if @is_common_lecturer %>
-							<% if rec_is_prog_lect%>
+							<% if rec_is_prog_lect || rec_is_pengkhususan_lect%>
 								<%=f.object.get_day_of_schedule%> - <%=f.object.get_time_slot%>
 							<% end %>
 							<% if rec_is_common_lect %>
@@ -100,31 +101,31 @@
 					<%#= f.check_box :is_friday %><%=t('weeklytimetable.if_friday')%>
 					- <%#= f.collection_select :time_slot, @timeslot2, :sequence, :timing, {:include_blank => t('select') }%>-->
 					<% if f.object.id %>
-						<% if @is_prog_lecturer %>
-							<% if rec_is_prog_lect%>
+						<% if @is_prog_lecturer || @is_pengkhususan_lecturer %>
+							<% if rec_is_prog_lect || rec_is_pengkhususan_lect%>
 								<%= f.check_box :is_friday %><%=t('weeklytimetable.if_friday')%>
-								- <%= f.collection_select :time_slot, @timeslot, :sequence, :timing, {:include_blank => t('select')}%>
+								- <%= f.collection_select :time_slot, @timeslot2, :sequence, :timing, {:include_blank => t('select')}%>
 							<% end %>
 							<% if rec_is_common_lect %>
 								<%=f.object.get_day_of_schedule%> - <%=f.object.get_time_slot%>
 							<% end %>
 						<% end %>
 						<% if @is_common_lecturer %>
-							<% if rec_is_prog_lect%>
+							<% if rec_is_prog_lect || rec_is_pengkhususan_lect%>
 								<%=f.object.get_day_of_schedule%> - <%=f.object.get_time_slot%>
 							<% end %>
 							<% if rec_is_common_lect %>
 								  <%= f.check_box :is_friday %><%=t('weeklytimetable.if_friday')%>
-								  - <%= f.collection_select :time_slot, @timeslot, :sequence, :timing, {:include_blank => t('select')}%>
+								  - <%= f.collection_select :time_slot, @timeslot2, :sequence, :timing, {:include_blank => t('select')}%>
 							<% end %>
 						<% end %>
 						<% if @is_admin %>
 							<%= f.check_box :is_friday %><%=t('weeklytimetable.if_friday')%>
-							- <%= f.collection_select :time_slot, @timeslot, :sequence, :timing, {:include_blank => t('select')}%>
+							- <%= f.collection_select :time_slot, @timeslot2, :sequence, :timing, {:include_blank => t('select')}%>
 						<% end %>	
 					<% else %>
 						<%= f.check_box :is_friday %><%=t('weeklytimetable.if_friday')%>
-						- <%= f.collection_select :time_slot, @timeslot, :sequence, :timing, {:include_blank => t('select')}%>
+						- <%= f.collection_select :time_slot, @timeslot2, :sequence, :timing, {:include_blank => t('select')}%>
 					<% end %>
 				</span>
 			
@@ -139,20 +140,27 @@
 						<%= f.collection_select :lecturer_id, @programme_lecturers, :id, :name, :prompt=>t('select') if rec_is_prog_lect%>
 						<%=f.object.weeklytimetable_lecturer.name if rec_is_common_lect%>
 					<% end %>
+					<% if @is_pengkhususan_lecturer %>
+						<%= f.collection_select :lecturer_id, @pengkhususan_lecturers, :id, :name, :prompt=>t('select') if rec_is_pengkhususan_lect%>
+						<%=f.object.weeklytimetable_lecturer.name if rec_is_common_lect%>
+					<% end %>
 					<% if @is_common_lecturer %>
 						<%= f.collection_select :lecturer_id, @commonsubject_lecturers, :id, :name, :prompt=>t('select')  if rec_is_common_lect %>
-						<%=f.object.weeklytimetable_lecturer.name if rec_is_prog_lect%>
+						<%=f.object.weeklytimetable_lecturer.name if rec_is_prog_lect || rec_is_pengkhususan_lect %>
 					<% end %>
 				<% else %>
 					<% if @is_prog_lecturer %>
 						<%= f.collection_select :lecturer_id, @programme_lecturers, :id, :name, :prompt=>t('select')%>
+					<% end %>
+					<% if @is_pengkhususan_lecturer %>
+						<%= f.collection_select :lecturer_id, @pengkhususan_lecturers, :id, :name, :prompt=>t('select') %>
 					<% end %>
 					<% if @is_common_lecturer %>
 						<%= f.collection_select :lecturer_id, @commonsubject_lecturers, :id, :name, :prompt=>t('select') %>
 					<% end %>
 				<% end %>
 				<% if @is_admin %>
-					<%= f.collection_select :lecturer_id, @programme_lecturers+@commonsubject_lecturers, :id, :name, :prompt=>t('select') %>
+					<%= f.collection_select :lecturer_id, @programme_lecturers+@commonsubject_lecturers+@pengkhususan_lecturers, :id, :name, :prompt=>t('select') %>
 				<% end %>
 				<!--
 				<%# if f.object.id %>
@@ -188,7 +196,7 @@
 				<% @semester_subject_topic_list=[] %>
 				<% aa.each do |bb| %>
 					<% if bb.root_id == @weeklytimetable.programme_id %><%# if bb.root_id == 2 %><!--the most workable-->
-						<% if @is_prog_lecturer && ((bb.ancestry_depth==3 && bb.parent.course_type=="Subject") || (bb.ancestry_depth==4 && bb.parent.parent.course_type=="Subject")) %>
+						<% if (@is_prog_lecturer || @is_pengkhususan_lecturer)&& ((bb.ancestry_depth==3 && bb.parent.course_type=="Subject") || (bb.ancestry_depth==4 && bb.parent.parent.course_type=="Subject")) %>
 							<% @semester_subject_topic_list<< bb %>
 						<% end %>
 						<% if @is_common_lecturer && ((bb.ancestry_depth==3 && bb.parent.course_type=="Commonsubject") || (bb.ancestry_depth==4 && bb.parent.parent.course_type=="Commonsubject")) %>
@@ -204,14 +212,14 @@
 					Sem <%#=j.parent.parent.code%> - <%#=j.parent.code%> | <%#=j.name%><br>
 				<%# end %>-->
 				<% if f.object.id %>
-					<% if (@is_prog_lecturer && rec_is_prog_lect) || (@is_common_lecturer && rec_is_common_lect) || @is_admin %>
+					<% if (@is_prog_lecturer && rec_is_prog_lect) || (@is_pengkhususan_lecturer && rec_is_pengkhususan_lect) || (@is_common_lecturer && rec_is_common_lect) || @is_admin %>
 						<% if @object_index_id.to_i > 23 %>
 							<%= select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@object_index_id.to_i}][topic]","<option>"+t('select')+"</option>"+"<option selected='selected' value="+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].topic.to_s+">"+@weeklytimetable.weeklytimetable_details[@object_index_id.to_i].weeklytimetable_topic.semester_subject_topic+"</option>"+options_from_collection_for_select(@semester_subject_topic_list, :id, :semester_subject_topic ) %>
 						<% else %>
 							<%= f.collection_select :topic, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> t('select')%>
 						<% end %>
 					<% end %>
-					<% if (@is_prog_lecturer && rec_is_common_lect) || (@is_common_lecturer && rec_is_prog_lect) %>
+					<% if (@is_prog_lecturer && rec_is_common_lect) || (@is_pengkhususan_lecturer && rec_is_common_lect) || (@is_common_lecturer && rec_is_prog_lect) ||  (@is_common_lecturer && rec_is_pengkhususan_lect) %><!-- (@is_common_lecturer && rec_is_pengkhususan_lect) (@is_prog_lecturer && rec_is_pengkhususan_lect) (@is_pengkhususan_lecturer && rec_is_prog_lect) -->
 						<%=f.object.weeklytimetable_topic.semester_subject_topic %>
 					<% end %>
 				<% else%>
@@ -248,13 +256,13 @@
 				<%#= f.collection_select :location, Weeklytimetable.location_list.sort_by{|x|x.name}, :id, :name, :include_blank => t('select') %>
 				<%#= f.text_field :location_desc%>
 				<% if f.object.id %>
-					<% if @is_prog_lecturer %>
-						<%= f.text_field :location_desc if rec_is_prog_lect%>
+					<% if @is_prog_lecturer || @is_pengkhususan_lecturer %>
+						<%= f.text_field :location_desc if rec_is_prog_lect || rec_is_pengkhususan_lect %>
 						<%=f.object.location_desc if rec_is_common_lect%>
 					<% end %>
 					<% if @is_common_lecturer %>
 						<%= f.text_field :location_desc if rec_is_common_lect %>
-						<%=f.object.location_desc if rec_is_prog_lect%>
+						<%=f.object.location_desc if rec_is_prog_lect || rec_is_pengkhususan_lect %>
 					<% end %>
 					<% if @is_admin %>
 						<%= f.text_field :location_desc %>
@@ -270,13 +278,13 @@
 			<td>
 				<%#= f.select :lecture_method, WeeklytimetableDetail::CLASS_METHOD, :include_blank => t('select') %>
 				<% if f.object.id %>
-					<% if @is_prog_lecturer %>
-						<%= f.select :lecture_method, WeeklytimetableDetail::CLASS_METHOD, :include_blank => t('select')  if rec_is_prog_lect%>
+					<% if @is_prog_lecturer || @is_pengkhususan_lecturer %>
+						<%= f.select :lecture_method, WeeklytimetableDetail::CLASS_METHOD, :include_blank => t('select')  if rec_is_prog_lect || rec_is_pengkhususan_lect%>
 						<%=f.object.render_class_method if rec_is_common_lect%>
 					<% end %>
 					<% if @is_common_lecturer %>
 						<%= f.select :lecture_method, WeeklytimetableDetail::CLASS_METHOD, :include_blank => t('select') if rec_is_common_lect %>
-						<%=f.object.render_class_method if rec_is_prog_lect%>
+						<%=f.object.render_class_method if rec_is_prog_lect || rec_is_pengkhususan_lect%>
 					<% end %>
 					<% if @is_admin %>
 						<%= f.select :lecture_method, WeeklytimetableDetail::CLASS_METHOD, :include_blank => t('select') %>
