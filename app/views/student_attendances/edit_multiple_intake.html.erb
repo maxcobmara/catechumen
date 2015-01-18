@@ -1,9 +1,15 @@
-<%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
+<%#=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
 <!-- Box -->
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left"><%=t('student_attendance.edit_multiple_intake_title')%></h2>
+		<h2 class="left">
+			<%if @create_type == I18n.t('student_attendance.create_intake')%>
+				<%=t('student_attendance.multiple_intake_title')%>
+			<% else %>
+				<%=t('student_attendance.edit_multiple_intake_title')%>
+			<% end %>
+		</h2>
 	</div>
 </div>
 	
@@ -44,14 +50,25 @@
 			<%#= one_student_att3 = one_student_atts[2].weeklytimetable_details_id %>
 			
 			&nbsp;&nbsp;<b><%=t('student_attendance.intake')%> : <%= @studentattendances[0].student.intake.to_date.strftime("%b") %>&nbsp;<%= @studentattendances[0].student.intake.to_date.strftime("%Y") %> </b><br><br>
-			<!--17Jul2013-added for Administrator (not lecturer)-->
-			<% if @preselct_prog == nil && @dept_unit == "Teknologi Maklumat" %>
-				<% @preselect_prog = Student.find(one_student_id).course_id %>
+			
+			<!--17Jul2013-added for Administrator OR Common Subject lecturer--><!--SHOULD TAKE VALUES FROM CONTROLLER
+			<%# if @preselect_prog == nil %>
+				<%# @preselect_prog = Student.find(one_student_id).course_id %>
+				<%# topics_of_selected_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
+				<%# subtopics_of_selected_prog = Programme.find(@preselect_prog).descendants.at_depth(4).map(&:id) %>
+				<%# @topics_ids_this_prog = topics_of_selected_prog+subtopics_of_selected_prog %>
+				<%# @schedule_list=WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and lecturer_id=?', @topics_ids_this_prog, Login.current_login.staff_id]) %>
+			<%# end %>SHOULD TAKE VALUES FROM CONTROLLER-->
+			<% if @schedule_list.nil? %>
+				  <!--retrieve WD ids fr current student_attendances-->
+				
+				  <% schedule_ids = @studentattendances.map(&:weeklytimetable_details_id) %>
+				  <% @schedule_list = WeeklytimetableDetail.find(schedule_ids).sort_by{|u|u.get_date_for_lesson_plan} %>
 			<% end %>
 			<!--17Jul2013-added for Administrator (not lecturer)-->
 
-			<% @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
-			<% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
+			<%# @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
+			<%# @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
 			<table>
 				<tr><th><%=t('student_attendance.select_class_schedule')%> :</th></tr>
 				<tr>
@@ -69,7 +86,7 @@
 								<%= select_tag("weeklytimetable_details_ids[#{count}]", options_from_collection_for_select(@schedule_list, :id, :subject_day_time,@schedule_id)) %>&nbsp;&#10003;</font>
 							<% else %>
 								<%=count+1%>
-								<%= select_tag("weeklytimetable_details_ids[#{count}]", options_from_collection_for_select(@schedule_list, :id, :subject_day_time)) %>
+								<%#= select_tag("weeklytimetable_details_ids[#{count}]", options_from_collection_for_select(@schedule_list, :id, :subject_day_time)) %><%=@schedule_list.count%><%=@schedule_list[0].subject_day_time %>
 							<% end %><br>
 						<% end %>
 					</td>
@@ -164,7 +181,7 @@
 		<% end %>
 	<% end %>
 <% else %>
-	<%= link_to ('student_attendance.view_blank_form'), :action => 'borang_kehadiran',:iddd => @studentattendance_ids %>
+	<%= link_to t('student_attendance.view_blank_form'), :action => 'borang_kehadiran',:iddd => @studentattendance_ids %>
 <% end %>
 <BR><BR>
 <font size=-2 color=blue><%=t('student_attendance.indicate_completed_date_time')%></font>

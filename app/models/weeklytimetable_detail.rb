@@ -31,7 +31,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
      return (sdate+1).strftime('%d-%b-%Y') if day2 == 2
      return (sdate+2).strftime('%d-%b-%Y') if day2 == 3
      return (sdate+3).strftime('%d-%b-%Y') if day2 == 4
-     return (endate).strftime('%d-%b-%Y') if is_friday == true
+     return (sdate+4).strftime('%d-%b-%Y') if is_friday == true
       return (sdate+5).strftime('%d-%b-%Y') if day2 == 6
       return (sdate+6).strftime('%d-%b-%Y') if day2 == 7
    end   
@@ -43,7 +43,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
       return (sdate+1).strftime('%d-%b-%Y') + " Tue" if day2 == 2
       return (sdate+2).strftime('%d-%b-%Y') + " Wed" if day2 == 3
       return (sdate+3).strftime('%d-%b-%Y') + " Thu" if day2 == 4
-      return (endate).strftime('%d-%b-%Y') + " Fri" if is_friday == true  
+      return (sdate+4).strftime('%d-%b-%Y') + " Fri" if is_friday == true  
       return (sdate+5).strftime('%d-%b-%Y') + " Sat" if day2 == 6
       return (sdate+6).strftime('%d-%b-%Y') + " Sun" if day2 == 7
    end   
@@ -63,19 +63,25 @@ class WeeklytimetableDetail < ActiveRecord::Base
    def get_start_time
      timeslot = time_slot2 if is_friday == false || is_friday == nil
      timeslot = time_slot if is_friday == true 
-     "#{TimetablePeriod.find(timeslot).start_at.strftime("%H:%M %p")}"
+     itsformat = Weeklytimetable.find(weeklytimetable_id).format1 if is_friday == false || is_friday == nil
+     itsformat = Weeklytimetable.find(weeklytimetable_id).format2 if is_friday == true
+     "#{TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot]).start_at.strftime("%H:%M %p")}"
    end   
    
    def get_end_time
      timeslot = time_slot2 if is_friday == false || is_friday == nil
      timeslot = time_slot if is_friday == true 
-     "#{TimetablePeriod.find(timeslot).end_at.strftime("%H:%M %p")}"
+      itsformat = Weeklytimetable.find(weeklytimetable_id).format1 if is_friday == false || is_friday == nil
+     itsformat = Weeklytimetable.find(weeklytimetable_id).format2 if is_friday == true
+     "#{TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot]).end_at.strftime("%H:%M %p")}"
    end   
    
    def get_time_slot
       timeslot = time_slot2 if is_friday == false || is_friday == nil
       timeslot = time_slot if is_friday == true 
-      stime = "#{TimetablePeriod.find(timeslot).start_at.strftime("%H:%M %p")}"+"-"+"#{TimetablePeriod.find(timeslot).end_at.strftime("%H:%M %p")}"
+      itsformat = Weeklytimetable.find(weeklytimetable_id).format1 if is_friday == false || is_friday == nil
+      itsformat = Weeklytimetable.find(weeklytimetable_id).format2 if is_friday == true
+      stime = get_start_time+"-"+get_end_time
    end
    
    def day_time_slot
@@ -91,7 +97,12 @@ class WeeklytimetableDetail < ActiveRecord::Base
    end
    
    def subject_day_time
-      "#{Programme.find(topic).parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
+     ancestry_topic=Programme.find(topic).ancestry_depth
+     if ancestry_topic==3
+       "#{Programme.find(topic).parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
+     elsif ancestry_topic==4
+       "#{Programme.find(topic).parent.parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
+     end
    end
    
    def subject_topic

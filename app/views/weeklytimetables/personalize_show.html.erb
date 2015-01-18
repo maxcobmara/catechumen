@@ -132,7 +132,7 @@
 					<% nos=0 %><!--26Jul2013-toavoid multiple display:5 times of the same value in 1 field-->
 					<% detailing_monthurs.each do |j|%><%#= j.weeklytimetable.hod_approved %>
 					
-						<% if j.day2 == count2  && j.time_slot2 == count3 %>(<%= detailing_monthurs.count%>)&nbsp;
+						<% if j.day2 == count2  && j.time_slot2 == count3 %>
 						<!--26Jul2013--><% if nos==0%><% nos+=1%><!--26Jul2013-toavoid multiple display:5times of the same value in 1 field-->
 							<% if j.weeklytimetable.hod_approved == true %>
 								    <font color="#000000">
@@ -257,7 +257,6 @@
 				</td>
 			<% else %>
 				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-		
 					<% detailing_friday.each do |j|%>
 						<% if j.is_friday == true  && j.time_slot == count4  && count_once==0 %>
 							<% count_once+=1 %>
@@ -327,13 +326,13 @@
 				<% 1.upto(@column_count_monthur) do |col2| %>
 					<% if @break_format1[col2-1]==true && row2==1 %>
 						<td align=center rowspan="<%=@daycount2+1%>" style="border:1px solid black; text-align:center; padding:4px;vertical-align:middle"> <%=t('weeklytimetable.break').upcase%></td>
-					<% elsif @break_format1[col2-1]==true && row2!=1%><!--<td>row<%=row2%>col<%=col2%></td>-->
+					<% elsif @break_format1[col2-1]==true && row2!=1%>
 						 <!--do-not-remove : should not have any field or value-->
 					<% elsif @break_format1[col2-1]==false %>
 						<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
 							<% nos=0 %>
 							<% detailing_monthurs.each do |j2| %>
-								<% if j2.day2 == (@daycount+row2) && j2.time_slot2 == col2 %>
+								<% if j2.day2 == (@daycount+1+row2) && j2.time_slot2 == col2 %>
 									<% if nos==0 %>
 										<% nos+=1 %>
 										<% if j2.weeklytimetable.hod_approved == true %>

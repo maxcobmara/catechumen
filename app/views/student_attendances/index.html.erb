@@ -4,8 +4,6 @@
 		<h2 class="left"><%=t('student_attendance.title')%></h2>
 	</div>
 </div>
-<%=Login.current_login.classes_taughtby%>&nbsp;&nbsp;<%=@intake_list2.count%>&nbsp; &nbsp;
-<%=@student_attendances_intake.count%><%= @student_attendances_class.count%><%=@student_attendances.count%><BR>
 
 <!--TO HIDE THIS PART-user may wrongly select combination of student with classes-START--><!--
 <%# if @schedule_list.count > 0 && @student_list.count > 0%>
@@ -26,25 +24,33 @@
 <%# end %>-->
 <!--17Jul2013-added-line 20,21,22,23&26-->
 
-<!--to do for Subjek Asas : to PRESELECT prog from Index whichever selected when 'multiple attendance by intake'-  button is clicked! BUT can only create attendance for common subject classes only && in controller - @intake_list2 should be limited to intake of programmes which have Subjek Asas classes. whereas for admin should hv full access -->
-<% if @preselect_prog.nil? && @intake_list2.count!=0%>
+<!--This part will only APPEAR if student of ALL INTAKES (based on current logged-in user) EXIST - Start-->
+<% if (@intake_list2b && @intake_list2b.count!=0) || (@intake_course2 && @intake_course2.count!=0) %>
 	<div class="left">
 		 <% form_tag :action => 'new' do %>
 			<%= hidden_field_tag( "new_type","3" )%>
-			<b><!--Intake : --></b><%#= select_tag('intake', options_for_select(@intake_list.sort)) %>
 			<!--17Jul2013-added-line 33,34,35&37-->
-			<%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
-			<% unless @programme.nil? %>
-				<%#= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn_prog)) %>
-				<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn)) %>	
+			<% unless @programme2.nil? %>
+				<%= select_tag('intake', options_from_collection_for_select(@intake_list2b,:intake, :intake_acryn)) %>	
 			<% else %>
-				<%= select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn_prog)) %>	
+				<% if @is_common_lecturer%>
+					<%= select_tag(:intake_prog, options_for_select(@intake_course2.uniq)) %>
+				<% end%>
+				<% if @is_admin%>
+				<!--admin-->
+					<%= select_tag(:intake_prog, options_for_select(@intake_course2.uniq)) %>
+					<%#= select_tag('intake', options_from_collection_for_select(@intake_list2b,:intake, :intake_acryn_prog)) %>
+				<% end %>
+				<% if @is_pengkhususan_lecturer %>
+					<%= select_tag('intake', options_from_collection_for_select(@intake_list2b,:intake, :intake_acryn)) %><%=@preselect_prog%>
+				<% end %>
 			<% end %>
 			<!--17Jul2013-added-line 33,34,35&37-->
 			<%= submit_tag (t 'student_attendance.multiple_by_intake'), :subject_id => nil %>
 	      <% end %>
-	</div>
+	</div><BR><BR>
 <% end %>
+<!--This part will only APPEAR if student of ALL INTAKES (based on current logged-in user) EXIST - End-->
 
 <!--17Jul2013-added-line 44,45,46&48--><!--
 <%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>
@@ -90,7 +96,25 @@
 				<tr>
 					<td colspan=9 style="background-color:#EFF1F1;">
 						<span style="font-weight:bold;">
-							<%=t('student_attendance.subject')%> : <%= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.full_parent %> | 
+							<% cur_topic=WeeklytimetableDetail.find(classes_schedule[0]).topic %>
+							<% ancestry_topic=Programme.find(cur_topic).ancestry_depth %>
+							<% if ancestry_topic==3 %>
+								<% subject_full= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.full_parent %>
+								<% subjecttype = Programme.find(cur_topic).parent.course_type %>
+							<% elsif ancestry_topic==4 %>
+								<% subject_full= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.parent.full_parent %>
+								<% subjecttype = Programme.find(cur_topic).parent.parent.course_type %>
+							<% end %>
+							<% if @is_admin %>
+								<% if subjecttype=="Subject"%>
+									<%=t('student_attendance.programme_subject')%>
+								<% elsif subjecttype=="Commonsubject"%>
+									 <%=t('student_attendance.common_subject')%>
+								<% end %>
+							<% else %>
+								<%=t('student_attendance.subject')%>
+							<% end %>: 
+							<%= subject_full %> |
 							<%=t('student_attendance.topic')%> : <%= WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.subject_list %>
 						</span><br>
 						<%=t('student_attendance.date')%> : <%=h WeeklytimetableDetail.find(classes_schedule[0]).get_date_day_of_schedule %> |
@@ -241,19 +265,19 @@
 			<%# else %>
 				 <%# @intatake2 = Student.find(:all, :conditions => ['course_id=? AND intake IN (?)',@preselect_prog, @intatake], :select=> "DISTINCT intake") %>
 			<%# end %>-->
-			<!--17Jul2013-added-line 233,234,235&237-->
-			<% form_tag edit_multiple_intake_student_attendances_path do %>
-				<!--17July2013-added-line 242,243,244 & 246-->
-				<!--<%# if @preselect_prog == nil && @dept_unit == "Teknologi Maklumat" %>-->
+			<% form_tag edit_multiple_intake_student_attendances_path do %>	
 				<% unless @programme.nil? %>
-					  <!--<%#= select_tag('intake_student', options_for_select(@intatake)) %>-->
-					  <%= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %>	
+					<%= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %>	
+					<%= submit_tag t('student_attendance.edit_multiple_intake'), :name => :student_attendance_intake %>
 				<% else %>
-					  <%= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %>	
-					  <!--<%#= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn_prog)) %>-->
+					<% if @is_common_lecturer%>
+						<%= select_tag(:intake_prog, options_for_select(@exist_intake_course_attendances.uniq)) %>
+						<%= submit_tag t('student_attendance.edit_multiple_intake'), :name => :student_attendance_intake %>
+					<% else %><!--admin-->
+					        <%= select_tag(:intake_prog, options_for_select(@exist_intake_course_attendances.uniq)) %>
+						<%= submit_tag t('student_attendance.edit_multiple_intake'), :name => :student_attendance_intake %>
+					<% end %>
 				<% end %>
-				<!--17July2013-added-line 242,243,244 & 246-->			
-				<%= submit_tag t('student_attendance.edit_multiple_intake'), :name => :student_attendance_intake %>			
 			<% end %>
 		</div>
 	
@@ -263,6 +287,7 @@
 			<% form_tag '', :method => 'get' do %>
 				<%= hidden_field_tag( "programme",@preselect_prog)%>
 				<%= select_tag('intake_student', "<option value='0'>#{t('student_attendance.all_exist_intake')}</option>" +options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %><!--WeeklytimetableDetail.all, :id, :subject_day_time-->
+				<% if @preselect_prog==nil %><%#=@intatake2.count%><% end %>
 				<%= submit_tag (t 'student_attendance.search_intake'), :name => :attendance_search %>
 			<% end %>
 		</div>

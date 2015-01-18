@@ -28,32 +28,20 @@ class StudentAttendance < ActiveRecord::Base
   def self.search(search,programme)
       exist_wtd_ids = WeeklytimetableDetail.all.map(&:id)
       if search
-          if search == '0'
-              #@student_attendances = StudentAttendance.find(:all, :conditions=> ['weeklytimetable_details_id IN(?)', exist_wtd_ids])
-	       @student_attendances = StudentAttendance.find(:all, :conditions=> ['weeklytimetable_details_id IN(?) and weeklytimetable_details_id IN(?)', exist_wtd_ids, Login.current_login.classes_taughtby])
-          else
-              #@student_attendances = []
-             # @student_attendances_intake = StudentAttendance.all.group_by{|x|x.student.intake.strftime("%Y-%m-%d")}
-              #@student_attendances_intake.each do |intake,sa|
-                  #if intake.to_s == search.to_s#  "2011-01-01"
-                   # @studentattendance_ids = sa.map(&:id)#[4781,4782,4783,4784,4785,4786]
-                    #@student_attendances = StudentAttendance.find(:all,:conditions=>['id IN (?)',@studentattendance_ids])
-                    #@student_attendances = StudentAttendance.all
-                    
-                  #end
-              #end
-              #@student_attendances = StudentAttendance.all
-              #@student_attendances = StudentAttendance.find(:all, :joins=>:student, :conditions => ['intake>=? and intake<?',"2011-01-01","2011-01-02"])
-              #@student_attendances = StudentAttendance.find(:all, :joins=>:student, :conditions => ['course_id=? and intake>=? and intake<? and weeklytimetable_details_id IN(?)',programme, search,search.to_date+1.day, exist_wtd_ids])
-              @student_attendances = StudentAttendance.find(:all, :joins=>:student, :conditions => ['course_id=? and intake=? and weeklytimetable_details_id IN(?)',programme, search, exist_wtd_ids])
-              #@student_attendances = StudentAttendance.find(:all, :conditions=>['weeklytimetable_details_id=?',search])
+        if search == '0'
+          @student_attendances = StudentAttendance.find(:all, :conditions=> ['weeklytimetable_details_id IN(?) and weeklytimetable_details_id IN(?)', exist_wtd_ids, Login.current_login.classes_taughtby])
+        else
+          unless programme.nil?
+            @student_attendances = StudentAttendance.find(:all, :joins=>:student, :conditions => ['course_id=? and intake=? and weeklytimetable_details_id IN(?)',programme, search, exist_wtd_ids])
+          else #if common subject lecturer, no programme specified
+            @student_attendances = StudentAttendance.find(:all, :joins=>:student, :conditions => ['intake=? and weeklytimetable_details_id IN(?)', search, exist_wtd_ids])
           end
+        end
       else
         unless programme.nil?
           @student_attendances = StudentAttendance.find(:all, :joins=>:student, :conditions => ['course_id=? and weeklytimetable_details_id IN(?)',programme, exist_wtd_ids])
         else  #if admin
-	  @student_attendances = StudentAttendance.find(:all, :conditions=> ['weeklytimetable_details_id IN(?)',exist_wtd_ids])
-          
+          @student_attendances = StudentAttendance.find(:all, :conditions=> ['weeklytimetable_details_id IN(?)',exist_wtd_ids])
         end
       end
   end
