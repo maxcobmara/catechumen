@@ -47,15 +47,15 @@
 												</tr>
 												<%# @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
 												<%# @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])%>
-												<!--just 4 checking--><%=@schedule_list.count%><%=@schedule_list[0]%>
-												<!--<%#=text_field_tag "scheduleids", @schedule_list.map(&:id)%>-->
+												<!--just 4 checking-->
+												<!--<%#=@schedule_list.count%><%#=@schedule_list[0]%>-->
 												<% 0.upto(@schedule_list.count-1) do |count| %>
 													<%#= hidden_field "student_attendances[#{nos+count+@next}]",:student_id, :size=>2, :value=>student.id %>
-													<%# if count == 2 %>
+													<%= hidden_field "student_attendances[#{nos+count+@next}]",:student_id, :size=>2, :value=>student.id %>
+													<%= hidden_field "student_attendances[#{nos+count+@next}]",:weeklytimetable_details_id, :size=>2, :value=>@schedule_list[count].id %>
+													<% if count == (@schedule_list.count-1) %><%# if count == 2 %>
 														<% @next = @next+count %>
-													<%# end %>
-													<%= hidden_field "student_attendances[#{count}]",:student_id, :size=>2, :value=>student.id %>
-													<%= hidden_field "student_attendances[#{count}]",:weeklytimetable_details_id, :size=>2, :value=>@schedule_list[count].id %>
+													<% end %>
 												<% end %>
 											<% end %>
 											

@@ -22,7 +22,7 @@
 			<!--required for new multiple attendance by intake-->
 			
 			<% @studentattendances = StudentAttendance.find(@studentattendance_ids) %><!--includes new records(weeklytimetable_details_id NOT EXIST)-->
-			<% @studentattendances_group = @studentattendances.group_by{|x|x.student_id} %>
+			<% @studentattendances_group = @studentattendances.sort_by{|x|x.student.name}.group_by{|x|x.student_id} %>
 			
 			<% one_student_att_id = @studentattendance_ids.sort[0] %>
 			<% one_student_id = StudentAttendance.find(one_student_att_id).student_id%>

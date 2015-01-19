@@ -43,7 +43,7 @@
 												<th><%=t('student_attendance.student_id')%></th>
 												<th><%=t('student_attendance.attendance')%></th>
 											</tr>
-											<% @student_list.each_with_index do |student, nos| %>
+											<% @student_list.sort_by{|x|x.name}.each_with_index do |student, nos| %>
 												<%= hidden_field "student_attendances[#{nos}]",:student_id, :size=>2, :value=>student.id %>
 												<%= hidden_field "student_attendances[#{nos}]",:weeklytimetable_details_id, :size=>2, :value=> @classid %>
 												<tr>
