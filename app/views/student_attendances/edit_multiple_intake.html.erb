@@ -51,14 +51,7 @@
 			
 			&nbsp;&nbsp;<b><%=t('student_attendance.intake')%> : <%= @studentattendances[0].student.intake.to_date.strftime("%b") %>&nbsp;<%= @studentattendances[0].student.intake.to_date.strftime("%Y") %> </b><br><br>
 			
-			<!--17Jul2013-added for Administrator OR Common Subject lecturer--><!--SHOULD TAKE VALUES FROM CONTROLLER
-			<%# if @preselect_prog == nil %>
-				<%# @preselect_prog = Student.find(one_student_id).course_id %>
-				<%# topics_of_selected_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) %>
-				<%# subtopics_of_selected_prog = Programme.find(@preselect_prog).descendants.at_depth(4).map(&:id) %>
-				<%# @topics_ids_this_prog = topics_of_selected_prog+subtopics_of_selected_prog %>
-				<%# @schedule_list=WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and lecturer_id=?', @topics_ids_this_prog, Login.current_login.staff_id]) %>
-			<%# end %>SHOULD TAKE VALUES FROM CONTROLLER-->
+			<!--17Jul2013-added for Administrator OR Common Subject lecturer (REVISED)-->
 			<% if @schedule_list.nil? %>
 				  <!--retrieve WD ids fr current student_attendances-->
 				
@@ -86,7 +79,7 @@
 								<%= select_tag("weeklytimetable_details_ids[#{count}]", options_from_collection_for_select(@schedule_list, :id, :subject_day_time,@schedule_id)) %>&nbsp;&#10003;</font>
 							<% else %>
 								<%=count+1%>
-								<%#= select_tag("weeklytimetable_details_ids[#{count}]", options_from_collection_for_select(@schedule_list, :id, :subject_day_time)) %><%=@schedule_list.count%><%=@schedule_list[0].subject_day_time %>
+								<%= select_tag("weeklytimetable_details_ids[#{count}]", options_from_collection_for_select(@schedule_list, :id, :subject_day_time)) %><%#=@schedule_list.count%><%#=@schedule_list[0].subject_day_time %>
 							<% end %><br>
 						<% end %>
 					</td>
