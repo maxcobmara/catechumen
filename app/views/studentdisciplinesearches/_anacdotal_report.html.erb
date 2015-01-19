@@ -12,56 +12,75 @@ document.write("<input type='button' " +
 
 <div id="hideLink">
 	<% @searchstudentdisciplinetype=1 %>
-	<%= link_to 'Back', :controller=> "studentdisciplinesearches", :action=>"new", :searchstudentdisciplinetype=>@searchstudentdisciplinetype %>
+	<%= link_to (t 'back'), :controller=> "studentdisciplinesearches", :action=>"new", :searchstudentdisciplinetype=>@searchstudentdisciplinetype %>
 </div>
 <br><br>	
 <!-- Box Head -->
-<div style="padding-left:50px;font-family: Arial, Helvetica, sans-serif;font-size:14px;">
+<!--<%#= @studentdisciplinesearch.studentdisciplines[0].nil? %>~~<%#= @studentdisciplinesearch.studentdisciplines[1].nil? %>-->
+<%unless @studentdisciplinesearch.studentdisciplines[1].nil? %>
+	<%if @studentdisciplinesearch.studentdisciplines[0].student_id ==  @studentdisciplinesearch.studentdisciplines[1].student_id%>
+		<!--result : multiple records(comparison of the 1st & 2nd = same student)-->
+		<%valid_record=true%>
+	<% else %>
+		<!--result : multiple records(comparison of the 1st & 2nd = different student)-->
+		<%valid_record=false%>
+	<% end %>
+<% else %>
+	<!--result : 1 record-->
+	<%valid_record=true%>
+<% end %>
+
+<% if valid_record==false %>
+	<div style="padding-left:50px;font-family: Arial, Helvetica, sans-serif;font-size:14px;"><%=t('studentdiscipline.no_case')%></div>
+<% else %>
+	<div style="padding-left:50px;font-family: Arial, Helvetica, sans-serif;font-size:14px;">
 	
-	<span style="text-decoration:underline;">
-		'Anacdotal Report'<br><br>
+		<span style="text-decoration:underline;"><%=t('studentdiscipline.report_title')%></span>
+		<br><br>
 		<table style="font-family: Arial, Helvetica, sans-serif;font-size:14px;">
 			<tr>
-				<td>Name</td>
-				<td>:</td><%# @assets = @assetsearch.assets %><% @studentdisciplines = @studentdisciplinesearch.studentdisciplines %>
+				<td><%=t('studentdiscipline.student_id')%></td>
+				<td>:</td><% @studentdisciplines = @studentdisciplinesearch.studentdisciplines %>
 				<td><%=h @studentdisciplinesearch.studentdisciplines[0].student.name %></td>
 			</tr>
 			<tr>
-				<td>Programme</td>
+				<td><%=t('studentdiscipline.programme')%></td>
 				<td>:</td>
 				<td><%=h @studentdisciplinesearch.studentdisciplines[0].student.course.programme_list %></td>
 			</tr>
 			<tr>
-				<td>Intake</td>
+				<% course_id=@studentdisciplinesearch.studentdisciplines[0].student.course_id %>
+				<% s_intake=@studentdisciplinesearch.studentdisciplines[0].student.intake %>
+				<% i_intake=Intake.find(:first, :conditions=>['programme_id=? and monthyear_intake=?', course_id, s_intake]) %>
+				<td><%= i_intake.nil? ? t('studentdiscipline.intake') : t('studentdiscipline.group')%></td>
 				<td>:</td>
-				<td><%=h @studentdisciplinesearch.studentdisciplines[0].student.intake.strftime("%b %Y") %></td>
+				<td><%= i_intake.nil? ? @studentdisciplinesearch.studentdisciplines[0].student.intake.strftime("%b %Y") : i_intake.group_with_intake_name %></td>
 			</tr>
 		</table>
 		<br>
-	</span>
 	
-	<!--start:SEARCH BY MATRIXNO:one result-->
-	<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:14px;">
-		<tr>
-			<th>No</th>
-			<th>Reported on</th>
-			<th>Infraction</th>
-			<th>Location</th>
-			<th>Status</th>
-			<th>Action Taken</th>
-		</tr>
-		<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|x.student.name}.each_with_index do |student_discipline, index|%>
+		<!--start:SEARCH BY MATRIXNO:one result-->
+		<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:14px;">
+			<tr>
+				<th>No</th>
+				<th><%=t('studentdiscipline.reported_date')%></th>
+				<th><%=t('studentdiscipline.infraction')%></th>
+				<th><%=t('studentdiscipline.location')%></th>
+				<th>Status</th>
+				<th><%=t('studentdiscipline.action_taken')%></th>
+			</tr>
+			<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|x.student.name}.each_with_index do |student_discipline, index|%>
 			<tr>
 				<td><%=index+1%></td>
-				<td><%=student_discipline.reported_on%></td>
-				<td><%=h (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == student_discipline.infraction_id}).map {|disp, value| disp} %></td>
-				<td><%=student_discipline.location.name%></td>
-				<td><%=student_discipline.status%></td>
-				<td><%=student_discipline.action_type%></td>
+				<td><%=student_discipline.reported_on.try(:strftime,'%d %b %Y')%></td>
+				<td><%=h (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == student_discipline.infraction_id}).map {|disp, value| disp} %>&nbsp;</td>
+				<td><%=student_discipline.location.name%>&nbsp;</td>
+				<td><%=student_discipline.status%>&nbsp;</td>
+				<td><%=student_discipline.action_type%>&nbsp;</td>
 			</tr>
-		<% end %>
-	</table>
-	
-	<!--end:SEARCH BY MATRIXNO:one result-->
-
-</div></div>
+			<% end %>
+		</table>
+		<!--end:SEARCH BY MATRIXNO:one result-->
+	</div>
+<% end %>
+</div>
