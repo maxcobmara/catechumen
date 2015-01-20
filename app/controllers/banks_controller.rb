@@ -13,7 +13,7 @@ class BanksController < ApplicationController
   # GET /banks/1
   # GET /banks/1.xml
   def show
-    @bank = Bank.find(params[:id]).first
+    @bank = Bank.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb

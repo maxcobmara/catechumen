@@ -1,11 +1,11 @@
-<h3>New Book</h3>
+<h3><%= t('book.new') %></h3>
 
 <div class="tform">
 
 	<div id="new_form">
 		
 		<% if @book.isbn.nil? == true %>
-			<H2>Check ISBN availability</H2>
+			<H2><%= t('book.check_isbn') %></H2>
 			<table width=100%>
 				<tr>
 					<td class="leftcol">ISBN / ISSN No:</td>
@@ -22,7 +22,7 @@
 
 	</div>
 
-	<H2>Book Details</H2>
+	<H2><%= t('book.book_details') %></H2>
 
 	<% form_for(@book, :html => { :multipart => true}) do |f| %>
   		
@@ -51,7 +51,7 @@
 		</div><!--ISBN No -->
 		
 		<%=render :partial => 'form', :locals => {:f => f} %> 
-		<p><%= f.submit 'Create' %></p>
+		<p><%= f.submit (t 'create') %></p>
 
 	<% end %>
 
@@ -60,4 +60,4 @@
 
 </div>
 
-<%= link_to 'Back', books_path %>
+<%= link_to (t 'back'), books_path %>

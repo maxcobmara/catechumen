@@ -1,9 +1,9 @@
-<h3>Editing Book</h3>
+<h3><%= t('book.edit') %></h3>
 
 <% form_for(@book, :html => { :multipart => true}) do |f| %>
   	<%= f.error_messages %>
 	<div class="tform">
-		<H2>Book Details</H2>
+		<H2><%= t('book.book_details') %></H2>
 		<table width="100%">
 			<tr>
 				<td class="leftcol"><label for="issn">ISBN:</label></td>
@@ -13,10 +13,10 @@
 		<%=render :partial => 'form', :locals => {:f => f} %> 
 	</div>
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit (t 'update') %>
   </p>
 <% end %>
 </div>
 
-<%= link_to 'Show', @book %> |
-<%= link_to 'Back', books_path %>
+<%= link_to (t 'show'), @book %> |
+<%= link_to (t 'back'), books_path %>
