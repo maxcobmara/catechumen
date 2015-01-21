@@ -1,6 +1,7 @@
 class Leaveforstudent < ActiveRecord::Base
   belongs_to :student
   belongs_to :staff
+  belongs_to :second_approver, :class_name=>'Staff', :foreign_key=>"staff_id2"
 
   validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate
   validates_numericality_of :telno
@@ -17,9 +18,9 @@ class Leaveforstudent < ActiveRecord::Base
 
   def self.search(search)
      if search
-       @leaveforstudent = Leaveforstudent.find(:all, :conditions => ['leavetype LIKE ?' , "%#{search}%"])
+       @leaveforstudent = Leaveforstudent.find(:all, :conditions => ['leavetype LIKE ?' , "%#{search}%"], :order=>'leave_startdate DESC')
      else
-      @leaveforstudent = Leaveforstudent.find(:all)
+      @leaveforstudent = Leaveforstudent.find(:all, :order=>'leave_startdate DESC')
      end
   end
 
@@ -38,6 +39,20 @@ class Leaveforstudent < ActiveRecord::Base
       end
   end
 
+  def approver_details2
+      suid = staff_id2.to_a
+      exists = Staff.find(:all, :select => "id").map(&:id)
+      checker = suid & exists     
+  
+      if staff_id == nil
+         "" 
+       elsif checker == []
+         "Staff No Longer Exists" 
+      else
+        second_approver.name
+      end
+  end
+
   #<18/10/2011 - Shaliza fixed for error when student no longer exists>
   def student_details 
       suid = student_id.to_a
@@ -51,6 +66,31 @@ class Leaveforstudent < ActiveRecord::Base
       else
         student.formatted_mykad_and_student_name
       end
+  end
+    
+  def student_intake
+    Intake.find(:all, :conditions=>['monthyear_intake=? and programme_id=?', student.intake, student.course_id]).first
+  end
+  
+  def group_intake
+     if student_intake
+       student_intake.group_with_intake_name
+     else
+       " - ("+I18n.t('student.leaveforstudent.intake')+" : "+student.intake.strftime('%b %Y').to_s+")"
+     end
+  end
+  
+  def group_coordinator
+    if student_intake
+      group_no = student_intake.description
+      group_name = "Penyelaras Kumpulan "+group_no
+      coordinator = Staff.find(:all, :joins=>:position, :conditions=>['tasks_main ILIKE (?)', "%#{group_name}%"]).first
+    end
+    coordinator
+  end
+  
+  def warden_list
+    staff_ids = Login.find(:all, :joins=>:roles, :conditions=>['roles.name=?', "Warden"]).map(&:staff_id).compact.uniq
   end
     
   #validation logic

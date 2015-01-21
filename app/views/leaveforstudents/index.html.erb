@@ -19,9 +19,11 @@
     <th><%=t('leaveforstudent.requestdate')%></th>
     <th><%=t('leaveforstudent.leave_startdate2')%></th>
     <th><%=t('leaveforstudent.studentsubmit')%></th>
+        <th><%=t('leaveforstudent.staff_id')%></th>
     <th><%=t('leaveforstudent.approved')%></th>
-    <th><%=t('leaveforstudent.staff_id')%></th>
-    <th colspan=4 class="ac"><%=t('control')%></th>
+    <th><%=t('leaveforstudent.staff_id2')%></th>
+    <th><%=t('leaveforstudent.approved')%></th>
+    <th colspan=5 class="ac"><%=t('control')%></th>
   </tr>
 
 <% @leaveforstudents.each do |leaveforstudent| %>
@@ -31,22 +33,47 @@
         <td><%=h leaveforstudent.requestdate.try(:strftime, '%d %b %Y') %></td>
         <td><%=h leaveforstudent.leave_startdate.try(:strftime, '%d %b %Y') %></td>
         <td align="center"><%=h leaveforstudent.studentsubmit? ? image_tag("tick.png") : image_tag("cross.png") %></td>
-        <td align="center"><%=h leaveforstudent.approved? ? image_tag("tick.png") : image_tag("cross.png") %></td>
         <td><%=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : "" %></td>
-   	<td width=10px>
-		<% if permitted_to? :approve, leaveforstudent %>
-			 <% if leaveforstudent.approved != true && leaveforstudent.studentsubmit==true %>
-				<%= link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => leaveforstudent %>
-	  		<% end %><% end %></td>
-	<td width=10px ><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => leaveforstudent %></td>
-	<% if permitted_to? :edit, leaveforstudent %>
-		<td width=10px><% if leaveforstudent.studentsubmit != true %><%= link_to image_tag("edit.png",:border => 0,  :title => 'Edit'), 	:action => 'edit', :id => leaveforstudent %>
-	<% end %></td>
+        <td align="center">
+		<% unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved==nil && leaveforstudent.approved2==nil %>
+			<%=h leaveforstudent.approved? ? image_tag("tick.png") : image_tag("cross.png") %>
+		<%else%><font color="red"><%=t('leaveforstudent.expired')%></font>
+		<% end %>
+	</td>
+        <td><%=h leaveforstudent.staff_id2? ? leaveforstudent.approver_details2 : "" %></td>
+        <td align="center">
+		<% unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved==nil && leaveforstudent.approved2==nil %>
+			<%=h leaveforstudent.approved2? ? image_tag("tick.png") : image_tag("cross.png") %>
+		<%else%><font color="red"><%=t('leaveforstudent.expired')%></font>
+		<% end %>
+	</td>
+        <td width=10px ><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => leaveforstudent %></td>
+        <% if permitted_to? :edit, leaveforstudent %>
+		<td width=10px>
+			<% if leaveforstudent.studentsubmit != true %>
+				<%= link_to image_tag("edit.png",:border => 0,  :title => 'Edit'), 	:action => 'edit', :id => leaveforstudent %>
+			<% end %>
+		</td>
 	<% end %>
+   	
+	<% if permitted_to? :approve, leaveforstudent %><td width=10px>
+		<%unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved==nil && leaveforstudent.approved2==nil %>
+			<% if leaveforstudent.approved != true && leaveforstudent.studentsubmit==true %>
+				<%= link_to image_tag("approval.png", :border => 0, :title => (t 'leaveforstudent.coordinator_approval')), :action => 'approve', :id => leaveforstudent %>
+	  		<% end %>
+		<% end %></td>
+	<% end %>
+	<% if permitted_to? :approve_warden, leaveforstudent %><td width=10px>
+		<%unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved==nil && leaveforstudent.approved2==nil %>
+			<% if leaveforstudent.approved2 != true && leaveforstudent.studentsubmit==true %>
+				<%= link_to image_tag("approval.png", :border => 0, :title => (t 'leaveforstudent.warden_approval')), :action => 'approve_warden', :id => leaveforstudent %>
+	  		<% end %>
+	  	<% end %></td>
+	<% end %>
+	
   	<% if permitted_to? :destroy, leaveforstudent %>
 		<td width=10px><%= link_to image_tag("delete.png", :border => 0,  :title => 'Delete'), leaveforstudent, :confirm => 'Are you sure?', :method => :delete %></td>
-  	<% end %>
-	
+  	<% end %>	
 	</tr>
 <% end %>
 </table>

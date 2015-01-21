@@ -1,5 +1,6 @@
 class LeaveforstudentsController < ApplicationController
   filter_resource_access
+
   # GET /leaveforstudents
   # GET /leaveforstudents.xml
   def index

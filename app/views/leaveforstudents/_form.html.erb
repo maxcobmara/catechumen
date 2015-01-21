@@ -3,8 +3,12 @@
 	<table width=100% >
 		<tr>
 			<td class="leftcol"><label for="student_id"><b><%=t('leaveforstudent.student_id')%>:</b></label></td>
-			<td><%= f.collection_select :student_id, Student.find(:all), :id,:formatted_mykad_and_student_name %>
-			<%#= f.collection_select :student_id, Student.find(:all, :conditions => ["id = ?", current_login.student_id]), :id, :formatted_mykad_and_student_name %></td>
+			<td>
+			<% if current_login.student %>
+				<%= f.collection_select :student_id, Student.find(:all, :conditions => ["id = ?", current_login.student_id]), :id, :formatted_mykad_and_student_name %>
+			<% elsif current_login.staff %>
+				<%= f.collection_select :student_id, Student.all, :id, :formatted_mykad_and_student_name, :selected => @leaveforstudent.student_id%>
+			<% end%></td>
 		</tr>	
 		<tr>
 			<td class="leftcol"><label for="leavetype"><b><%=t('leaveforstudent.leavetype')%>:</b></label><font color="red"> * </font></td>
