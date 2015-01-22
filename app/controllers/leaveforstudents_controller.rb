@@ -46,7 +46,7 @@ class LeaveforstudentsController < ApplicationController
 
     respond_to do |format|
       if @leaveforstudent.save
-        flash[:notice] = 'Leaveforstudent was successfully created.'
+        flash[:notice] = t('leaveforstudent.title2')+" "+t('created')
         format.html { redirect_to(@leaveforstudent) }
         format.xml  { render :xml => @leaveforstudent, :status => :created, :location => @leaveforstudent }
       else
@@ -63,7 +63,7 @@ class LeaveforstudentsController < ApplicationController
 
     respond_to do |format|
       if @leaveforstudent.update_attributes(params[:leaveforstudent])
-        flash[:notice] = 'Leaveforstudent was successfully updated.'
+        flash[:notice] = t('leaveforstudent.title2')+" "+t('updated')
         format.html { redirect_to(@leaveforstudent) }
         format.xml  { head :ok }
       else

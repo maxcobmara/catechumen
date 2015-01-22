@@ -44,9 +44,9 @@ class Leaveforstudent < ActiveRecord::Base
       exists = Staff.find(:all, :select => "id").map(&:id)
       checker = suid & exists     
   
-      if staff_id == nil
+      if staff_id2 == nil
          "" 
-       elsif checker == []
+      elsif checker == []
          "Staff No Longer Exists" 
       else
         second_approver.name

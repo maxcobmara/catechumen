@@ -183,6 +183,7 @@ authorization do
   
   role :warden do
     has_permission_on :locations, :to => :core
+    has_permission_on :students, :to => :menu
     #has_permission_on :leaveforstudents, :to => :manage
     #all wardens have access - [relationship: second_approver, FK: staff_id2, page: approve_warden]
     has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve_warden] do

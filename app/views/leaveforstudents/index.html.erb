@@ -23,7 +23,7 @@
     <th><%=t('leaveforstudent.approved')%></th>
     <th><%=t('leaveforstudent.staff_id2')%></th>
     <th><%=t('leaveforstudent.approved')%></th>
-    <th colspan=5 class="ac"><%=t('control')%></th>
+    <th colspan=6 class="ac"><%=t('control')%></th>
   </tr>
 
 <% @leaveforstudents.each do |leaveforstudent| %>
@@ -70,7 +70,12 @@
 	  		<% end %>
 	  	<% end %></td>
 	<% end %>
-	
+	<td width=10px>
+		 <% if leaveforstudent.approved==true && leaveforstudent.approved2==true %>
+			<a href="http://<%= request.host  %>:3003/student/leaveforstudents/<%=leaveforstudent.id%>/slip_pengesahan_cuti_pelajar.pdf"><%=image_tag("printer.png", :border => 0, :title => (t 'leaveforstudent.leave_approval_slip'))%></a>
+			
+		<% end %> 
+	</td>
   	<% if permitted_to? :destroy, leaveforstudent %>
 		<td width=10px><%= link_to image_tag("delete.png", :border => 0,  :title => 'Delete'), leaveforstudent, :confirm => 'Are you sure?', :method => :delete %></td>
   	<% end %>	
