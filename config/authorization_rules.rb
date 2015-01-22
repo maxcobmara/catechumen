@@ -184,7 +184,6 @@ authorization do
   role :warden do
     has_permission_on :locations, :to => :core
     has_permission_on :students, :to => :menu
-    #has_permission_on :leaveforstudents, :to => :manage
     #all wardens have access - [relationship: second_approver, FK: staff_id2, page: approve_warden]
     has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve_warden] do
       if_attribute :studentsubmit => true
@@ -271,11 +270,6 @@ authorization do
     has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve], :join_by => :and do
       if_attribute :studentsubmit => true
       if_attribute :student_id => is_in {Login.current_login.staff.under_my_supervision}
-      #if_attribute :staff_id => is_in {Leaveforstudent.academic_authorisor}
-      #if_attribute :staff_id2 => is {Login.current_login.staff_id}  #try setkan coordinator - before save(ms creation student leave)-> defaultkn value 
-      #OR cari siap2 semua orang yg boleh masuk...
-      # in model just combine .....list of coordinator + other programme lecturer --> if coordinator exist, 1 rec only la, or else,.....list of other programme lecture...
-      # so, use IS_IN ....this combine list (put in model)...based on all leaveforstudent????
     end
     
     has_permission_on :examquestions, :to => :manage

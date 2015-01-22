@@ -1,23 +1,21 @@
 <div class="tform">
+<H2><%= t 'messages.message_details' %></H2>
 <table id="form" width=80%>
 	<tr>
-		<th colspan = 2><%= t 'events.new' %></th>
-	</tr>
-	<tr>
-		<td class="leftcol"><label for="message"><%= t 'events.recipient' %>:</label></td>
+		<td class="leftcol"><label for="message"><%= t 'messages.recipient' %>:</label></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="to_id"><%= t 'events.to' %> :</label></td>
+		<td class="leftcol"><label for="to_id"><%= t 'messages.to' %> :</label></td>
 		<td><%= text_field_with_auto_complete :message, :to_name ,{ :size => 100 }, 
 										{ :tokens => ",",:url => formatted_staffs_path(:js), 
 										  :method => :get,
 										  :param_name => 'search' } %>
-				<i>	Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma (','), followed by an alphabet and make your selection. </i>
+				<i><%=t('messages.remark')%></i>
 		</td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="message"><%= t 'events.message' %>:</label></td>
+		<td class="leftcol"><label for="message"><%= t 'messages.message' %>:</label></td>
 		<td><%= f.text_area :message, :size => '60x6' %></td>
 	</tr>
 </table>

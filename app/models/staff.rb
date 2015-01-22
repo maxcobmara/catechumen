@@ -550,7 +550,7 @@ class Staff < ActiveRecord::Base
       end
     
       supervised_student=[] if !supervised_student
-      sib_lect_maintask= Position.find(:all, :conditions=>['unit=? and id!=?', unit, Login.current_login.staff_id]).map(&:tasks_main)
+      sib_lect_maintask= Position.find(:all, :conditions=>['unit=? and staff_id!=?', unit, Login.current_login.staff_id]).map(&:tasks_main)
       sib_lect_coordinates_groups=[]
       sib_lect_maintask.each do |y|
         coordinator2 =  y[/Penyelaras Kumpulan \d{1,}/]
