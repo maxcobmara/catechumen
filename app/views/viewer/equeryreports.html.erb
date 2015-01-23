@@ -18,12 +18,12 @@
 			<%= t 'equery.module' %> : <%= t 'menu.staff' %></span></td></tr>
 		<tr>
 			<td>1</td>
-			<td><%= link_to 'Maklumat Perjawatan', {:controller => 'positions',:action => 'maklumat_perjawatan_LA'}  %></td>
+			<td><%= link_to (t 'menu.maklumat_perjawatan'), {:controller => 'positions',:action => 'maklumat_perjawatan_LA'}  %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'staffsearch2s',:action => 'new'}  %></td>
 		</tr>
 		<tr>
 			<td>2</td>
-			<td><%= link_to 'Staff Attendance - Status Punch Card', {:controller => 'staff_attendances', 	:action => 'status'} %></td>
+			<td><%= link_to (t 'menu.attend')+" - "+(t 'attendance.punchcard_status'), {:controller => 'staff_attendances', 	:action => 'status'} %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'staff_attendances', 	:action => 'report'} %></td>
 		</tr>
 		<% end %>
@@ -152,7 +152,7 @@
 			<%= t 'equery.module' %> : <%= t 'menu.e_filing' %></span></td></tr>
 		<tr>
 			<td>21</td><% @searchdoctype=1 %>
-			<td><%= link_to 'Document Registry', {:controller => 'documents', 	:action => 'index'} %></td>
+			<td><%= link_to  (t 'menu.document_registry'), {:controller => 'documents', 	:action => 'index'} %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'documentsearches', 	:action => 'new', :searchdoctype=>@searchdoctype} %></td>
 		</tr>
 		<% end %>
@@ -162,11 +162,11 @@
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.students' %></span></td></tr>
 		<% end %>
-		
-		<% permitted_to? :read, :studentattendancesearches do %>
+		<!--
+		<%# permitted_to? :read, :studentattendancesearches do %>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
-			<%= t 'equery.module' %> : <%= t 'menu.students' %></span></td></tr>
-		<% end %>
+			<%#= t 'equery.module' %> : <%= t 'menu.students' %></span></td></tr>
+		<%# end %>-->
 		<!--double title-->
 			
 		<% permitted_to? :read, :studentsearches do %>
@@ -188,7 +188,7 @@
 		<% permitted_to? :read, :studentdisciplinesearches do %>
 		<tr>
 			<td>24</td><%@searchstudentdisciplinetype=1%>
-			<td><%= link_to 'Student Discipline Cases (Feedback from Counselor)', {:controller => 'student_discipline_cases',:action => 'index'} %></td>
+			<td><%= link_to (t 'studentdiscipline.title')+" ("+(t 'studentdiscipline.feedback_counsellor')+")", {:controller => 'student_discipline_cases',:action => 'index'} %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'studentdisciplinesearches', 	:action => 'new', :searchstudentdisciplinetype=>@searchstudentdisciplinetype} %></td>
 		</tr>
 		<% end %>
@@ -196,7 +196,7 @@
 		<% permitted_to? :read, :studentcounselingsearches do %>
 		<tr>
 			<td>25</td><% @searchstudentcounselingtype=1%>
-			<td><%= link_to 'Student Counseling Session (Feedback to Referrer/TPHEP)', {:controller => 'student_counseling_sessions',:action => 'index'} %></td>
+			<td><%= link_to (t 'studentcounseling.title')+" ("+(t 'studentcounseling.feedback_to')+(t 'studentcounseling.refer')+")", {:controller => 'student_counseling_sessions',:action => 'index'} %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'studentcounselingsearches', 	:action => 'new', :searchstudentcounselingtype=>@searchstudentcounselingtype} %></td>
 		</tr>	
 		<% end %>
@@ -208,7 +208,7 @@
 		<%# permitted_to? :read, :weeklytimetablesearches do %>	
 		<tr>
 			<td>26</td><% @searchweeklytimetabletype=1%>
-			<td><%= link_to 'Weekly Timetables', {:controller => 'weeklytimetables',:action => 'index'}  %></td>
+			<td><%= link_to (t 'weeklytimetable.title2'), {:controller => 'weeklytimetables',:action => 'index'}  %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'weeklytimetablesearches', 	:action => 'new', :searchweeklytimetabletype=>@searchweeklytimetabletype} %></td>
 		</tr>
 		<% end %>
@@ -216,7 +216,7 @@
 		<% permitted_to? :read, :curriculumsearches do %>
 		<tr>
 			<td>27</td><% @searchcurriculumtype=1 %>
-			<td><%= link_to 'Curriculum Management', {:controller => 'programmes',:action => 'index'}  %></td>
+			<td><%= link_to (t 'programme.title'), {:controller => 'programmes',:action => 'index'}  %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'curriculumsearches', :action => 'new', :searchcurriculumtype =>@searchcurriculumtype } %></td>
 		</tr>
 		<% end %>
@@ -225,8 +225,8 @@
 		<tr>
 			<td>28</td><% @searchlessonplantype=1%>
 			<td>
-				<%= link_to 'Lesson Plans', {:controller => 'lesson_plans',:action => 'index'}  %> /
-				<%= link_to 'Lesson Plan Reporting', {:controller => 'lesson_plans',:action => 'index_report'}  %>
+				<%= link_to (t 'lesson_plan.title'), {:controller => 'lesson_plans',:action => 'index'}  %> /
+				<%= link_to (t 'lesson_plan.reporting'), {:controller => 'lesson_plans',:action => 'index_report'}  %>
 			</td>
 			<td><%= link_to 'Advance Search', {:controller => 'lessonplansearches', 	:action => 'new', :searchlessonplantype=>@searchlessonplantype} %></td>
 		</tr>
@@ -245,7 +245,7 @@
 		<% permitted_to? :read, :personalizetimetablesearches do %>
 		<tr>
 			<td>29</td><% @searchpersonalizetimetabletype=1%>
-			<td><%= link_to 'Personalize Weekly Timetables', {:controller => 'weeklytimetables',:action => 'personalize_index'}  %></td>
+			<td><%= link_to (t 'menu.personalised_timetable'), {:controller => 'weeklytimetables',:action => 'personalize_index'}  %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'personalizetimetablesearches', 	:action => 'new', :searchpersonalizetimetabletype=>@searchpersonalizetimetabletype} %></td>
 		</tr>
 		<% end %>
@@ -262,7 +262,7 @@
 		<%# permitted_to? :read, :examsearches do %>			
 		<tr>
 			<td>30</td><% @searchexamtype=1%>
-			<td><%= link_to 'Examination', {:controller => 'exams',:action => 'index'}  %></td>
+			<td><%= link_to (t 'menu.exam_maker'), {:controller => 'exams',:action => 'index'}  %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'examsearches', 	:action => 'new', :searchexamtype=>@searchexamtype} %></td>
 		</tr>
 		<% end %>
@@ -270,8 +270,8 @@
 		<% permitted_to? :read, :examresultsearches do %>		
 		<tr>
 			<td>31</td><% @searchexamresulttype=1%>
-			<td><%= link_to 'Examination Result by Programme ', {:controller => 'examresults',:action => 'index'}  %> |
-				<%= link_to 'Examination Slip by Programme ', {:controller => 'examresults',:action => 'index2'}  %></td>
+			<td><%= link_to (t 'examresult.by_programme'), {:controller => 'examresults',:action => 'index'}  %> |
+				<%= link_to (t 'examresult.exam_slip'), {:controller => 'examresults',:action => 'index2'}  %></td>
 			<td><%= link_to 'Advance Search', {:controller => 'examresultsearches', 	:action => 'new', :searchexamresulttype=>@searchexamresulttype} %></td>
 		</tr>
 		<% end %>
@@ -279,7 +279,7 @@
 		<% permitted_to? :read, :evaluatecoursesearches do %>		
 		<tr>
 			<td>32</td><% @searchevaluatecoursetype=1%>
-			<td><%= link_to 'Feedback / Course Evaluation', {:controller =>'evaluate_courses',:action => 'index'}  %> 
+			<td><%= link_to (t 'menu.feedback_courseevaluate'), {:controller =>'evaluate_courses',:action => 'index'}  %> 
 			<td><%= link_to 'Advance Search', {:controller => 'evaluatecoursesearches', 	:action => 'new', :searchevaluatecoursetype=>@searchevaluatecoursetype} %></td>
 		</tr>
 		<% end %>
@@ -287,7 +287,7 @@
 		<% permitted_to? :read, :examanalysissearches do %>
 		<tr>
 			<td>33</td><% @searchexamanalysistype=1%>
-			<td><%= link_to 'Examination Analysis by Examination Paper', {:controller =>'examanalyses',:action => 'index'}  %> 
+			<td><%= link_to (t 'examanalysis.title'), {:controller =>'examanalyses',:action => 'index'}  %> 
 			<td><%= link_to 'Advance Search', {:controller => 'examanalysissearches', 	:action => 'new', :searchexamanalysistype=>@searchexamanalysistype} %></td>
 		</tr>
 		<% end %>
@@ -298,17 +298,17 @@
 		<tr>
 			<td>35</td><% @searchbooktype=1%>
 			<td><%#= link_to 'Library Resources', {:controller =>'examanalyses',:action => 'index'}  %> 
-				<%= link_to 'All Books Listing (for stock verification)',{ :controller =>'books',:action => 'stock_verification', :locals => {:class_type => '1',:dodo =>"All"}} %>
+				<%= link_to (t 'book.listing'),{ :controller =>'books',:action => 'stock_verification', :locals => {:class_type => '1',:dodo =>"All"}} %>
 			<td><%= link_to 'Advance Search', {:controller => 'booksearches', :action => 'new', :searchbooktype=> @searchbooktype} %></td>
 		</tr>
 		<tr>
 			<td>36</td><% @searchbooktype=2%>
-			<td><%= link_to 'Stock Summary (by Class No / Accession No)', {:controller =>'books',:action => 'index'}  %> <!-- (end of the year : simple) [tertukar refer item 37]-->
+			<td><%= link_to (t 'book.stock_summary'), {:controller =>'books',:action => 'index'}  %> <!-- (end of the year : simple) [tertukar refer item 37]-->
 			<td><%= link_to 'Advance Search', {:controller => 'booksearches', :action => 'new', :searchbooktype=> @searchbooktype} %></td>
 		</tr>
 		<tr>
 			<td>37</td><% @searchbooktype=3%>
-			<td><%= link_to 'Stock Listing (by Class No / Accession No)', {:controller =>'books',:action => 'index'}  %> <!--(daily-detail) [tertukar refer item 36]-->
+			<td><%= link_to (t 'book.stock_listing'), {:controller =>'books',:action => 'index'}  %> <!--(daily-detail) [tertukar refer item 36]-->
 			<td><%= link_to 'Advance Search', {:controller => 'booksearches', :action => 'new', :searchbooktype=> @searchbooktype} %></td>
 		</tr>
 		<% end %>
@@ -316,7 +316,7 @@
 		<% permitted_to? :read, :librarytransactionsearches do %>
 		<tr>
 			<td>38</td><% @searchlibrarytransactiontype=1%>
-			<td><%= link_to 'Library Resources Statistics / Transaction Analysis', {:controller =>'librarystats',:action => 'index'}  %> 
+			<td><%= link_to (t 'book.statistics')+" / "+(t 'librarytransaction.analysis'), {:controller =>'librarystats',:action => 'index'}  %> 
 			<td><%= link_to 'Advance Search', {:controller => 'librarytransactionsearches', :action => 'new', :searchlibrarytransactiontype=> @searchlibrarytransactiontype} %></td>
 		</tr>
 		<% end %>

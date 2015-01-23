@@ -25,7 +25,7 @@ authorization do
     
     #Student Menu Items
     #has_permission_on :students,        :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
-    #has_permission_on [:leaveforstudents],  :to => :manage #
+    has_permission_on [:leaveforstudents],  :to => [:manage, :approve, :approve_warden]
     
     #Exam Menu Items
     has_permission_on :examquestions,   :to => :manage
@@ -183,10 +183,11 @@ authorization do
   
   role :warden do
     has_permission_on :locations, :to => :core
-    has_permission_on :leaveforstudents, :to => :manage
-    #has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve] do
-      #if_attribute :studentsubmit => true
-    #end
+    has_permission_on :students, :to => :menu
+    #all wardens have access - [relationship: second_approver, FK: staff_id2, page: approve_warden]
+    has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve_warden] do
+      if_attribute :studentsubmit => true
+    end
   end
   
   #Group E-Filing ------------------------------------------------------------------------------- 
@@ -218,7 +219,7 @@ authorization do
       has_permission_on :students, :to => [:read, :update, :menu] do
         if_attribute :student_id => is {Login.current_login.student_id}
       end
-      has_permission_on :leaveforstudents, :to => [:read, :update] do
+      has_permission_on :leaveforstudents, :to => [:read, :update, :menu] do
         if_attribute :student_id => is {Login.current_login.student_id}
       end
       has_permission_on :leaveforstudents, :to => [:create]
@@ -259,7 +260,18 @@ authorization do
     end
  end
 #--21march2013-new role added    
+#note for Coordinator : previously, this role is required for Penyelaras Kumpulan to manage :(1) programme, timetable, weeklytimetable.(just tick role),
+#but no exact group/restrict which group to manage.
+ 
+#but for 'leaveforstudents', need to specify the exact group to manage - use 'tasks_main' field in Positions table.
   role :lecturer do
+    
+    #restricted access for penyelaras - [relationship: approver, FK: staff_id, page: approve], in case of non-exist of penyelaras other lecturer fr the same programme
+    has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve], :join_by => :and do
+      if_attribute :studentsubmit => true
+      if_attribute :student_id => is_in {Login.current_login.staff.under_my_supervision}
+    end
+    
     has_permission_on :examquestions, :to => :manage
     has_permission_on :programmes, :to => [:core,:menu]
     has_permission_on :topics, :to => :manage

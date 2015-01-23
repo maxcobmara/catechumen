@@ -277,10 +277,12 @@
 					<% end %>
 				</td>
 			<% else %>
-				<td class="data5"><!--kukku--> <%#=@column_count_monthur%><%#=count4%><%#=@column_count_monthur+count4%><!--revised : 26Jul2013-->
-					
+				<td class="data5"><!--revised : 26Jul2013-->
+					<% nos2=0%>
 					<% detailing_friday.each do |j|%>
 						<% if j.is_friday == true  && j.time_slot == count4 %>
+						        <% if nos2==0 %>
+								<% nos2+=1%>
 							<% if j.weeklytimetable.hod_approved == true %>
 								    <font color="#000000">
 							<% else %>
@@ -303,6 +305,7 @@
 										<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
 									</div>
 								</strong></font>
+							<% end %>
 						<% end %>
 					<% end %>		
 				</td>
@@ -403,7 +406,7 @@
 						<% end %>
 							<% nos=0 %>
 							<% detailing_monthurs.each do |j2| %>
-								<% if j2.day2 == (@daycount+row2) && j2.time_slot2 == col2 %>
+								<% if j2.day2 == (@daycount+1+row2) && j2.time_slot2 == col2 %>
 									<% if nos==0 %>
 										<% nos+=1 %>
 										<% if j2.weeklytimetable.hod_approved == true %>

@@ -182,13 +182,14 @@
 
 	<!-- Student Menu -->
 	<% permitted_to? [:menu, :index], :students do %>
+	<%# permitted_to? :menu, :student_discipline_cases do %>
 	<li><a href="#"><%= t('menu.students') %></a>
 		<ul class="sub_menu">
 				<% permitted_to? :index, :students do %>
 				<li><%= link_to (t 'menu.student_info'), 			{:controller => 'students', 		:action => 'index'} %></li>
 				<% end %>
 
-				<% permitted_to? :manage, :leaveforstudents do %>
+				<% permitted_to? :index, :leaveforstudents do %>
 				<li><%= link_to (t 'menu.student_leave'), 			{:controller => 'leaveforstudents', 	:action => 'index'} %></li>
 				<% end %>
 

@@ -1,4 +1,7 @@
 <H2><%=t('leaveforstudent.details')%></H2>
+        <% if @leaveforstudent.leave_startdate < Date.tomorrow && @leaveforstudent.approved==nil && @leaveforstudent.approved2==nil %>
+		<font style="color: red;"><%=t('leaveforstudent.application_due')%></font>
+	<% end %><BR>
 	<table width=100% >
 		<tr>
 			<td class="leftcol"><label for="student_id"><b><%=t('leaveforstudent.student_id')%>:</b></label></td>

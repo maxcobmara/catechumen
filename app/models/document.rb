@@ -37,7 +37,7 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
 
   def filedocer
     suid = file_id
-    Cofile.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
+    Cofile.find(:all, :conditions => {:id => suid}).map(&:file_no_and_name)
   end
   
   #<% @admin = Login.current_login.roles.map(&:id).include?(2) %>

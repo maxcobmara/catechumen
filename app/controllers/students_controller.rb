@@ -28,7 +28,7 @@ class StudentsController < ApplicationController
 		@programme=[] 
 		@student_count=[] 
 		@student_programmes.each do |x,y| 
-			@programme<<x
+			@programme<< x
 			@student_count<< y.count 
 		end 
     
