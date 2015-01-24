@@ -7,20 +7,25 @@
 		<%=render :partial => 'form', :locals => {:f => f} %> 
 	<% end %>
 	
-	<!--5Apr2013-recepient is no longer edit able to edit..view only-->
-	<%# if current_login.staff_id == @document.cc1staff_id %><%#|| current_login.staff_id == @document.cc2staff_id %>
-   		<!--<div class="tform"><%#= render 'show' %></div>-->
-	<%# end %>
-	<!--5Apr2013-recepient is no longer edit able to edit..view only-->
+	<!--23Jan2015-REVISED-reopen this function-start-->
+	<% if (@document.staffs.map(&:id).include? current_login.staff_id) %>
+	<!--5Apr2013-recepient is no longer edit able to edit..view only
+	<%# if @document.staffs.map(&:staff_id).include?(current_login.staff_id )%><%#|| current_login.staff_id == @document.cc2staff_id %>-->
+   		<div class="tform"><%= render 'show' %></div>
+	<% end %>
+	<!--23Jan2015-REVISED-reopen this function-end--><!--5Apr2013-recepient is no longer edit able to edit..view only-->
 	
+	<!--23Jan2015-REVISED-reopen this function-start-->
 	<!--Upon UAT(retest) dated 5Apr2013-this part is taken out-not required-no need to reply any action, dacument circulated just for 'makluman'-->
+	<% if (@document.staffs.map(&:id).include? current_login.staff_id) %>
 	<%# if current_login.staff_id == @document.cc1staff_id %>
-   		<%#= render  :partial => 'action1', :locals => {:f => f} %>
-	<%# end %>
-	<%# if current_login.staff_id == @document.cc2staff_id %>
-   		<%#= render  :partial => 'action2', :locals => {:f => f} %>
-	<%# end %>
+   		<%= render  :partial => 'action1', :locals => {:f => f} %>
+	<% end %>
+	<% if current_login.staff_id == @document.cc2staff_id %>
+   		<%= render  :partial => 'action2', :locals => {:f => f} %>
+	<% end %>
 	<!--Upon UAT(retest) dated 5Apr2013-this part is taken out-not required-no need to reply any action, dacument circulated just for 'makluman'-->
+	<!--23Jan2015-REVISED-reopen this function-end-->
   <p>
     <%= f.submit (t 'update') %>
   </p>

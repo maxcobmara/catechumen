@@ -1,5 +1,5 @@
 <!--<div class="tform">-->
-	<!--<H2><%= t 'document.doc_details' %></H2>-->
+	<H2><%= t 'document.details' %></H2>
 	<fieldset><legend class="togvis"><%= t 'document.doc_details' %></legend>
 	
   <table width=100% >
@@ -65,7 +65,7 @@
    </fieldset>
 
    <fieldset>	
-	  	<legend class="togvis"><%= t 'document.action_details' %></legend>
+	  	<legend class="togvis"><%= t 'document.circulation_details' %></legend>
 	<table>
 		<tr>
 			<td class="leftcol"><label for="closed"><%= t 'document.minute_action' %> : <br>
@@ -74,7 +74,7 @@
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="circulate to"><b><%= t 'document.circulateto' %> :</b></label></td>
+			<td class="leftcol"><label for="circulate to"><b><%= t 'document.circulate_to' %> :</b></label></td>
 			<td><%#=h check_kin {document.cc1staff.name} %> <!--to move this line later-->
 				<% @document.staffs.each_with_index do |doc_recepient,ind| %>
 					<%if ind!=0 %><br><%end%>(<%=ind+=1%>) <%= doc_recepient.name %>
@@ -90,7 +90,7 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="closed"><b><%= t 'document.file_closed' %> :</b></label></td>
-			<td><%=h @document.closed? ? "Yes" : "No"  %></td>
+			<td><%=h @document.closed? ? (t 'yes2') : (t 'no2')  %></td>
 		</tr>
 		
 		

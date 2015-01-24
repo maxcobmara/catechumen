@@ -98,8 +98,11 @@ class Staff < ActiveRecord::Base
   has_and_belongs_to_many :messages
   has_many :from, :class_name => 'Staff', :foreign_key => 'from_id'
   
+  #24Jan2015
+  has_many :circulations
+  has_many :documents, :through => :circulations
   #5APR2013
-  has_and_belongs_to_many :documents
+  #has_and_belongs_to_many :documents
   #has_many :from, :class_name => 'Staff', :foreign_key => 'from_id'
   
   #links to Model Cofile

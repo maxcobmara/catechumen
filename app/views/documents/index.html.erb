@@ -15,7 +15,7 @@
 <table width=100%><tr><td>
 	<% permitted_to? :manage, :documents do %>
 	<div class="toolbar">
-		<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Document') + (t 'new'), new_document_path %></p>
+		<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'new')) + (t 'new'), new_document_path %></p>
 	</div>
 	<% end %>
 	</td>
@@ -54,7 +54,7 @@ tome = <%=@tome.count%>-->
 		  <th><%= t 'document.serialno' %></th>
 		  <th><%= t 'document.refno' %></th>
 		  <th><%= t 'document.category' %></th>
-		  <th>Title</th>
+		  <th><%= t 'document.title2'%></th>
 		  <th style="width:75px;"><%= t 'document.letterdt' %></th>
 		  <th style="width:75px;"><%= t 'document.letterxdt' %></th>
 		  <th><%= t 'document.from' %></th>
@@ -86,19 +86,27 @@ tome = <%=@tome.count%>-->
 						<td><%=h l(document.letterdt) %></td>
 						<td><%=h l(document.letterxdt) %></td>
 						<td><%#=h document.sender %><%=h document.from %></td>
+						<td><%=h l(document.cc1date)%> - <%=h document.otherinfo %></td>
 						<td>
-							<% document.staffs.each_with_index do |doc_recepient,ind|%>
-								<% if doc_recepient.id == Login.current_login.staff_id%>
-									<%if ind!=0 %><br><%end%><b>(<%=ind+=1%>) <%=h doc_recepient.name %><%#=h doc_recepient.name.upcase %></b>	
+							<% document.circulations.each_with_index do |circulation,ind|%>
+								<% if circulation.staff_id == Login.current_login.staff_id%>
+									<%if ind!=0 %><br><%end%><b>(<%=ind+=1%>) <%=h circulation.staff.name %> - <%=h circulation.action_taken%>
+									<%#=h circulation.staff.name.upcase %></b>	
 								<% else %>
-									<br>(<%=ind+=1%>) <%=h doc_recepient.name %>
+									<br>(<%=ind+=1%>) <%=h circulation.staff.name %> - <%=h circulation.action_taken%>
 								<% end %>	
 							<% end %>
 						</td>
-						<td><%=h document.otherinfo %></td>
+						<!--<td><%#=h document.otherinfo %></td>-->
 	    				<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
 						<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
-						<td width=10px></td>
+						<td width=10px>
+							 <% document.circulations.each_with_index do |circulation,ind|%>
+								<% if circulation.staff_id == Login.current_login.staff_id && circulation.action_closed!=true %>
+									<%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %>
+								<% end %>
+							<% end %>
+						</td>
 						<td width=10px></td>
 					</tr>
 				<% end %>
@@ -121,17 +129,18 @@ tome = <%=@tome.count%>-->
 					<td><%=h (Document::CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} %></td>
 					<td><%=h document.title %></td>
 					<td><%=h l(document.letterdt) %></td>
-					<td><%=h tarikh(document.letterxdt) %></td>
+					<td><%=h l(document.letterxdt) %></td>
 					<td><%=h document.from %></td>
+					<td><%=h l(document.cc1date)%>- <%=h document.otherinfo %></td>
 					<td><%#=h check_kin {document.cc1staff.name} %> <!--5Apr2013-to move this line later (single circulation)-->
-						<% document.staffs.each_with_index do |doc_recepient,ind| %>
+						<% document.circulations.each_with_index do |circulation,ind| %>
 							<%if ind!=0 %><br><%end%>
-							<% if doc_recepient.id == Login.current_login.staff_id %><b><% end %>
-							(<%=ind+=1%>) <%= doc_recepient.name %>
-							<% if doc_recepient.id == Login.current_login.staff_id %></b><% end %>
+							<% if circulation.staff_id == Login.current_login.staff_id %><b><% end %>
+							(<%=ind+=1%>) <%= circulation.staff.name %> - <%=h circulation.action_taken%>
+							<% if circulation.staff_id == Login.current_login.staff_id %></b><% end %>
 						<% end %>
 					</td>
-					<td><%=h document.otherinfo %></td>
+					<!--<td><%=h document.otherinfo %></td>-->
 					<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
 					<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
 					<td width=10px>
