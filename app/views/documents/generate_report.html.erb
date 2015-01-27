@@ -41,7 +41,14 @@
 				<td class="tdata"><%=h document.refno %></th>
 				<td class="tdata"><%=h l(document.letterdt) %></th>
 				<td class="tdata"><%=h document.title %></th>
-				<td class="tdata"><%=h document.otherinfo %></th>
+				<td class="tdata">
+					<% document.circulations.each_with_index do |circulation,ind| %>
+						<%if ind!=0 %><br><%end%>
+						<% if circulation.staff_id == Login.current_login.staff_id %><b><% end %>
+						<!--(<%#=ind+=1%>)--> <%= circulation.staff.name %> - <%=h circulation.action_taken%>
+						<% if circulation.staff_id == Login.current_login.staff_id %></b><% end %>
+					<% end %>
+				</th>
 			</tr>
 		<% end %>
 	</tbody>

@@ -6,11 +6,16 @@ before_destroy :check_asset_losses_exist
 
 validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id#,:letterdt, :letterxdt, :sender,
 
-has_and_belongs_to_many   :staffs, :join_table => :documents_staffs   #5Apr2013
+#has_and_belongs_to_many   :staffs, :join_table => :documents_staffs   #5Apr2013
+#24Jan2015
+has_many :circulations
+has_many :staffs, :through => :circulations
+accepts_nested_attributes_for :circulations
+
 
 belongs_to :stafffilled,  :class_name => 'Staff', :foreign_key => 'stafffiled_id'
 belongs_to :preparedby,   :class_name => 'Staff', :foreign_key => 'prepared_by'
-belongs_to :cc1staff,     :class_name => 'Staff', :foreign_key => 'cc1staff_id' 
+#belongs_to :cc1staff,     :class_name => 'Staff', :foreign_key => 'cc1staff_id' 
 belongs_to :cofile,       :foreign_key => 'file_id'
 
 has_many :asset_disposals
@@ -18,6 +23,8 @@ has_many :asset_losses
 has_many :travel_requests,   :dependent => :nullify #ref:gmail-sept15,2012-Checking for broken association - refer document.rb (line 17)
 
 before_save :set_actionstaff2_to_blank_if_close_is_selected
+
+attr_accessor :action_type
 
   #5Apr2013
   def self.set_serialno(id)

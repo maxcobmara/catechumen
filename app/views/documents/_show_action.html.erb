@@ -1,38 +1,39 @@
-<!--<div class="tform">-->
-	<fieldset><legend class="togvis">Action Details</legend>
+<fieldset><legend class="togvis"><%=t('document.action_details')%></legend>
 	<table width=100%>
-		<tr>
-			<td class="leftcol"><label for="closed"><b>Action :</b></label></td>
-			<td><%=h @document.cc1action %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="closed"><b>Remarks :</b></label></td>
-			<td><%=h @document.cc1remarks %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="Action By">Action By :</label></td>
-			<td><%= check_kin {@document.cc1staff.mykad_with_staff_name} %></td>
-		</tr>
-		<tr>
-			<td class="leftcol"><label for="data"><b><%= t 'document.uploaded' %> (Action) :</b></label></td>
-			<td><% if @document.dataaction.exists? then %>
-			    <%= @document.dataaction_file_name %>
-			    <%= link_to (t 'document.download'), @document.dataaction.url %> ||
-		        <%= link_to "ALT", @document.dataaction.url %>
-			    <% else %>
-			    No File Available
-			    <% end %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="letterxdt"><b>Action Date :</b></label></td>
-			<td><%=h check_kin{l(@document.cc1actiondate)} %></td>
-		</tr>
-		
-		<tr>
-			<td class="leftcol"><label for="closed"><b><%= t 'document.closed' %> (Action) :</b></label></td>
-			<td><%=h @document.cc1closed? ? "Yes" : "No"  %></td>
-		</tr>
-</table>
+		<% @document.circulations.each do |y| %>
+			<tr>
+				<td class="leftcol"><label for="closed"><b><%=t('document.cc1action')%> :</b></label></td>
+				<td><%=h y.action_taken %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="closed"><b><%=t('document.cc1remarks')%> :</b></label></td>
+				<td><%=h y.action_remarks %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="Action By"><%=t('document.action_by')%> :</label></td>
+				<td><%= check_kin {y.staff.staff_name_with_position} %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="data"><%=t('document.attachment_action')%> :</label></td>
+				<td>
+				<% if y.action.exists? then %>
+					<%= y.action_file_name %> &nbsp;&nbsp;&nbsp;
+					<%= link_to (t 'document.download'), y.action.url %> ||
+					<%= link_to "ALT", y.action.url %>
+				<% else %>
+					<%=t('document.no_attachment')%>
+				<% end %>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="letterxdt"><b><%=t('document.cc1actiondate') %> :</b></label></td>
+				<td><%=h check_kin{l(y.action_date)} %></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="closed"><b><%= t('document.cc1closed') %> :</b></label></td>
+				<td><%=h y.action_closed? ? (t 'yes2') : (t 'no2')  %></td>
+			</tr>
+			<tr><td colspan="2"><hr></td></tr>
+		<% end %>
+	</table>
 </fieldset>
-<!--</div>-->
