@@ -101,13 +101,13 @@
 		<tr>
 			<td class="leftcol"><label for="transportclass_id"><b><%= t 'staff.transportclass_id' %></b></td>
 			<td><%= f.select :transportclass_id, options_for_select(('A'..'F'), @staff.transportclass_id) %>
-				<font size=-2>(Salary|Vehicle cc - <strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)</font>
+				<font size=-2><%=t('staff.salary_vehicle')%><strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)</font>
 			</td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="upload"><b><%= t 'staff.upload' %></b></label></td>
 			<td>
-				<% if f.object.photo!=nil %>Current file is : <%= f.object.photo_file_name %>
+				<% if f.object.photo!=nil %><%=t('current_file')%> : <%= f.object.photo_file_name %>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<%= link_to (t 'document.download'), f.object.photo.url %>||
 				<%= link_to "ALT", f.object.photo.url %>
@@ -243,7 +243,7 @@
 					
 		<% f.fields_for :loans do |builder| %>
 			<p><%= render 'loan_fields', :f => builder %></p>
-		<% end %><BR>
+		<% end %><BR><br>
 		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :loans %> - <%= t 'addmore' %> </p>
 	</div>
 
@@ -270,10 +270,10 @@
 	  <H2><%= t 'staff.emergency' %></H2>
 		<p><strong>
 			 			<div style="width: 150px; float: left;">|  <%= t 'staff.kintype_id' %></div> 
-						<div style="width: 250px; float: left;">|  <%= t 'staff.name' %>   		</div>
-						<div style="width: 150px; float: left;">|  <%= t 'staff.icno' %>			</div>
-						<div style="width: 120px; float: left;">|  <%= t 'staff.phone' %>			</div>
-						 |  Profession</strong> <BR> | Address </p>
+						<div style="width: 250px; float: left;">|  <%= t 'staff.name' %></div>
+						<div style="width: 150px; float: left;">|  <%= t 'staff.icno' %></div>
+						<div style="width: 120px; float: left;">|  <%= t 'staff.phone' %></div>
+						 |  Profession</strong> <BR> | <%= t 'staff.address' %> </p>
 		<HR>
 		<% f.fields_for :kins do |builder| %>
 			<%= render 'kin_fields', :f => builder %>
