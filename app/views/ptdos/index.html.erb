@@ -20,9 +20,9 @@
     <td><%=h ptdo.ptschedule.ptcourse.name %></td>
     <td><%=h ptdo.applicant_details %></td>
     <td><%=h ptdo.apply_dept_status %></td>
-	  <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptdo %></td>
-	  <td width=10px><% if ptdo.dept_approve? && ptdo.final_approve? && ptdo.staff_id == current_login.staff_id %><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptdo %><% end %></td>
-	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), ptdo, :confirm => 'Are you sure?', :method => :delete %></td>
+	  <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptdo %></td>
+	  <td width=10px><% if ptdo.dept_approve? && ptdo.final_approve? && ptdo.staff_id == current_login.staff_id %><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptdo %><% end %></td>
+	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptdo, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   </tr>
 <% end %>
 </table>

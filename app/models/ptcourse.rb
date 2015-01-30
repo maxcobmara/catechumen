@@ -16,11 +16,11 @@ class Ptcourse < ActiveRecord::Base
   
   COURSE_TYPE = [
        #  Displayed       stored in db
-       [ "In-House",              5 ],
-       [ "External Short Course",10 ],
-       [ "Seminar",              15 ],
-       [ "Certificate",          20 ],
-       [ "Diploma/Others",       25 ],
+       [ I18n.t("ptcourse.in_house"),              5 ],
+       [ I18n.t("ptcourse.external_short_course"),10 ],
+       [ I18n.t("ptcourse.seminar"), "Seminar",              15 ],
+       [ I18n.t("ptcourse.certificate"),          20 ],
+       [ I18n.t("ptcourse.diploma_others") ,       25 ],
   ]
   
   DUR_TYPE = [

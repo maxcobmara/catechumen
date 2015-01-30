@@ -27,8 +27,8 @@
       <td><%=h for_approval.document.try(:title) %></td>
 			<td><%=h for_approval.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 			<td><%=h for_approval.hod_accept? ? image_tag("tick.png") : image_tag("login_go.png") %></td>
-      <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => for_approval %></td>
-			<td width=10px><%= link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => for_approval %></td>
+      <td width=10px><%= link_to image_tag("document.png", :border => 0, :title=>(t 'show')), :action => 'show', :id => for_approval %></td>
+			<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title=>(t 'approval')), :action => 'edit', :id => for_approval %></td>
     </tr>
     <% end %>
 	</table>
@@ -73,22 +73,22 @@
 			<td><%=h travel_request.document_id? ? truncate((travel_request.document.try(:title)), :length => 40, :separator => ' ') : "None" %></td>
 			<td><%=h travel_request.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 			<td><%=h travel_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png") %></td>
-			<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => travel_request %></td>
+			<td width=10px ><%= link_to image_tag("document.png", :border => 0, :title=>(t 'show')), :action => 'show', :id => travel_request %></td>
 			<td width=10px>
 				<% if travel_request.hod_accept == nil && travel_request.hod_id == Login.current_login.staff_id%>
-					<%= link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => travel_request  %>
+					<%= link_to image_tag("approval.png", :border => 0, :title=>(t 'approval')), :action => 'edit', :id => travel_request  %>
 				<% elsif travel_request.is_submitted == true && travel_request.hod_accept == nil && travel_request.staff_id == Login.current_login.staff_id %>
 				<% elsif travel_request.is_submitted == false || travel_request.is_submitted == nil %>
-					<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => travel_request%>
+					<%= link_to image_tag("edit.png", :border => 0, :title=>(t 'edit')), :action => 'edit', :id => travel_request%>
 				<% end %>
 			<td width=10px>
 			<% if travel_request.is_submitted == true %>
-				<a href="http://<%= request.host  %>:3003/staff/travel_requests/<%=travel_request.id%>/status_movement.pdf?locale=en"><%=image_tag("printer.png", :border => 0)%></a>
+				<a href="http://<%= request.host  %>:3003/staff/travel_requests/<%=travel_request.id%>/status_movement.pdf?locale=en"><%=image_tag("printer.png", :border => 0, :title=>(t 'print'))%></a>
 			<% end %>
 			</td>		
 			<td width=10px>
 			<% permitted_to? :manage, :travel_requests do %>
-			<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), travel_request, :confirm => 'Are you sure?', :method => :delete %>
+			<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), travel_request, :confirm => (t 'are_you_sure'), :method => :delete %>
 			<% end %>
 			</td>
 		</tr>

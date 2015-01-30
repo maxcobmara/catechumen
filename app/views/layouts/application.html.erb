@@ -19,10 +19,10 @@
   <div id="top-menu">
 		<div id="account">
 				<% if logged_in? %>
-			  	<%=t('welcome')%> <%=h  Login.current_login.login %> &nbsp
-					<%= link_to t('log_out'), logout_path %>
+			  	<%=t('login.welcome')%> <%=h  Login.current_login.login %> &nbsp
+					<%= link_to t('login.logout'), logout_path %>
 				<% else %>
-					<%= link_to t('log_in'), login_path %> or <%= link_to "Sign Up", "http://#{request.host}:3003/users/sign_up" %>
+					<%= link_to t('login.login'), login_path %><%=t('or')%>&nbsp;<%= link_to (t 'login.sign_up'), "http://#{request.host}:3003/users/sign_up" %>
 
 				<% end %>
 	  </div>
