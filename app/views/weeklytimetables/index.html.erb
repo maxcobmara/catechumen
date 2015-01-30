@@ -46,20 +46,20 @@
 					<%=h weeklytimetable.hod_approved? ? image_tag("tick.png") : image_tag("cross.png") %>
 					<%=h weeklytimetable.hod_rejected? ? (t 'weeklytimetable.rejected') : "" %>
 				</td>
-				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => weeklytimetable %></td>
+				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => weeklytimetable %></td>
 				<td width=10px>
 				<!--hack-->
 					<% if (weeklytimetable.is_submitted != true && ((weeklytimetable.prepared_by == Login.current_login.staff_id)|| (@is_admin)||(@is_common_lecturer) ))||(weeklytimetable.is_submitted==nil && weeklytimetable.hod_rejected? == true && 
 					((weeklytimetable.prepared_by == Login.current_login.staff_id) || @is_admin|| @is_common_lecturer) ) %>
-						<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => weeklytimetable %>
+						<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => weeklytimetable %>
 					<% elsif (weeklytimetable.is_submitted == true && weeklytimetable.hod_approved!= true && 
 					((weeklytimetable.endorsed_by == Login.current_login.staff_id)|| @is_admin || @is_common_lecturer))  %>
-						<%= link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => weeklytimetable %>
+						<%= link_to image_tag("approval.png", :border => 0, :title => (t 'approval')), :action => 'edit', :id => weeklytimetable %>
 					<% end %>
 				<!--hack-->	
 				</td>
-				<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'General Timetable'), :action => 'general_timetable', :id => weeklytimetable %></td>
-				<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), weeklytimetable, :confirm => 'Are you sure?', :method => :delete %></td>
+				<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => (t 'weeklytimetable.general_timetable')), :action => 'general_timetable', :id => weeklytimetable %></td>
+				<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title =>(t 'delete')), weeklytimetable, :confirm => 'Are you sure?', :method => :delete %></td>
 			</tr>
 			<% end %>
 		<% end %>

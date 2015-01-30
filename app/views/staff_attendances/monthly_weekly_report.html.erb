@@ -1,21 +1,22 @@
 <%= stylesheet_link_tag 'report' %>
 
-<form action="#">	
-<script>
-document.write("<input type='button' " +
-"onClick='window.print()' " +
-"class='printbutton' " +
-"value='Print This Page'/>");
-</script>
-</form>	
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
+<form>
+
 <div class="A4potrait">
 
 <!-- Box Head -->
 <div id="kewpa">
 <p class="marginright" style="font-size:13px;font-family:arial;" align="right">
-	<% if @find_type == "Monthly Report" %>
+	<% if @find_type == I18n.t('attendance.monthly_report')%>
 		Lampiran B.3
-	<% elsif @find_type == "Weekly Report" %>
+	<% elsif @find_type ==  I18n.t('attendance.weekly_report') %>
 		Lampiran B.2
 	<% else %>
 		Lampiran B.1
@@ -23,9 +24,9 @@ document.write("<input type='button' " +
 </p>
 <br><br>
 <H4 align="center" style="font-size:16px;font-weight:bold;font-family:arial;">
-	<% if @find_type == "Monthly Report" %>
+	<% if @find_type == I18n.t('attendance.monthly_report')%>
 		Laporan Bulanan
-	<% elsif @find_type == "Weekly Report" %>	
+	<% elsif @find_type ==  I18n.t('attendance.weekly_report') %>	
 		Laporan Mingguan 
 	<% else %>
 		Laporan Harian
@@ -77,16 +78,16 @@ document.write("<input type='button' " +
 			Nama Pegawai / Kakitangan Yang <br>Datang Lambat / Pulang Awal</td>
 		<td style="border-right:solid 1px;border-top:solid 1px;border-bottom:solid 1px;width:150px;text-align:center;vertical-align:top;padding-top:3px;font-weight:bold;font-size:14px;font-family:arial;">
 			
-			<% if @find_type == "Monthly Report" %>
+			<% if @find_type ==  I18n.t('attendance.monthly_report')%>
 				Jumlah Catitan Merah dalam tempoh sebulan
-			<% elsif @find_type == "Weekly Report" %>
+			<% elsif @find_type ==  I18n.t('attendance.weekly_report')%>
 				Jumlah Catitan Merah dalam tempoh seminggu
 			<% else %>
 				Sebab - Sebab
 			<% end %>
 		</td>
 		<td style="border-right:solid 1px;border-top:solid 1px;border-bottom:solid 1px;width:150px;text-align:center;vertical-align:top;padding-top:3px;font-weight:bold;font-size:14px;font-family:arial;">
-			<% if @find_type == "Monthly Report" || @find_type == "Weekly Report" %>
+			<% if @find_type ==  I18n.t('attendance.monthly_report') || @find_type ==  I18n.t('attendance.weekly_report')%>
 				Warna Kad Pegawai / Kakitangan akhir minggu
 			<% else %>
 				Masa Yang Dicatitkan
@@ -99,7 +100,7 @@ document.write("<input type='button' " +
 
 	<% count=0 %>
 	
-	<% if @find_type == "Monthly Report" || @find_type == "Weekly Report" %>
+	<% if @find_type ==  I18n.t('attendance.monthly_report') || @find_type ==  I18n.t('attendance.weekly_report') %>
 		<!--for WEEKLY & MONTHLY REPORT, use @notapproved_lateearly-->
 		<!--for REPORTING : supposed-take note ONLY for those ..['action' taken(index.html.erb)+submit reason(edit.html.erb)+REJECT(approve.html.erb)]-->
 		<!--which comply this statement - '...catitan merah dalam sebulan tanpa pengesahan pegawai atasan'-->
@@ -121,7 +122,7 @@ document.write("<input type='button' " +
 		<td style="border-left:solid 1px;border-right:solid 1px;text-align:left;font-size:14px;font-family:arial;"><%=Staff.find_by_thumb_id(thumb_id).name %></td>
 		<td style="border-right:solid 1px;text-align:center;font-size:14px;font-family:arial;">
 		
-		<% if @find_type == "Monthly Report" || @find_type == "Weekly Report" %>
+		<% if @find_type ==  I18n.t('attendance.monthly_report') || @find_type ==  I18n.t('attendance.weekly_report') %>
 			<%=items.count %>&nbsp;<!--count for not approve late.early of selected week ONLY-->
 			<!--just for checking-->
 			<% for item in items %>
@@ -150,7 +151,7 @@ document.write("<input type='button' " +
 			
 		</td>
 		<td style="border-right:solid 1px;text-align:center;font-size:14px;font-family:arial;">
-			<% if @find_type == "Weekly Report" || @find_type == "Monthly Report" %>
+			<% if @find_type ==  I18n.t('attendance.weekly_report') || @find_type ==  I18n.t('attendance.monthly_report') %>
 			
 				<!--1-start-CURRENT DATA-To check colour status for selected week-->
 				<% @start_date = @dadidu.to_date.beginning_of_month.to_s %>
@@ -166,10 +167,10 @@ document.write("<input type='button' " +
 					<!--start-previous status...data retrieved from staff attendance table all existing data-->
 					<% @previous_status_for_SA = 1 %><!--set default : previous status as 1; ie:yellow -->
 					<% @previous_colour = "Yellow" %><!--will be use if no changes on previous status-->
-					<% if @find_type == "Weekly Report" %>
+					<% if @find_type ==  I18n.t('attendance.weekly_report')%>
 						<!--retrieve all data until 1 day be4 selected week(EXCLUSIVE of selected week) & continue below:3(a)-[@start_date-1st day of the month]-->
 							<% @all_dates = StaffAttendance.find(:all, :conditions =>['thumb_id=? and logged_at>=? and logged_at<?',thumb_id,"2012-05-07",@start_date], :order => 'logged_at ASC').map(&:logged_at)%>   <%#=@all_dates.count%>
-					<% elsif @find_type == "Monthly Report" %>
+					<% elsif @find_type == I18n.t('attendance.monthly_report')%>
 						<!--retrieve all data until end of selected month(INCLUSIVE of selected month)-[@next_date-1day after end of selected month]-->
 						<% @all_dates = StaffAttendance.find(:all, :conditions =>['thumb_id=? and logged_at>=? and logged_at<?',thumb_id,"2012-05-07",@next_date], :order => 'logged_at ASC').map(&:logged_at)%>  <%#=@all_dates.count%>
 					<% end %>
@@ -187,7 +188,7 @@ document.write("<input type='button' " +
 				
 				<!--2-PREVIOUS DATA-To check colour status between - beginning of the (ALL) PREVIOUS month - until 1 day before selected week/month-->
 				
-				<% if @find_type == "Weekly Report" %>
+				<% if @find_type ==  I18n.t('attendance.weekly_report') %>
 					<!--3a-start-WEEKLY REPORT-check previous status & ASSIGN LATEST STATUS-for selected week-->
 					<% if @previous_status == 1 %><!--if yellow-->
 						<% if @count_non_approved>= 1  %><!--change to 1 for checking, original value:3-->
@@ -246,7 +247,7 @@ document.write("<input type='button' " +
 	
 	<!--third part-->
 	<!--display required only for weekly & monthly report-->
-	<% if @find_type == "Monthly Report" || @find_type == "Weekly Report" %>
+	<% if @find_type ==  I18n.t('attendance.monthly_report') || @find_type == I18n.t('attendance.weekly_report') %>
 		
 		<tr>
 			<td>&nbsp;</td>
