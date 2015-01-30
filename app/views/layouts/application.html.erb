@@ -19,10 +19,10 @@
   <div id="top-menu">
 		<div id="account">
 				<% if logged_in? %>
-			  	Welcome <%=h  Login.current_login.login %> &nbsp
-					<%= link_to "Log Out", logout_path %>
+			  	<%=t('login.welcome')%> <%=h  Login.current_login.login %> &nbsp
+					<%= link_to t('login.logout'), logout_path %>
 				<% else %>
-					<%= link_to "Log In", login_path %> or <%= link_to "Sign Up", "http://#{request.host}:3003/users/sign_up" %>
+					<%= link_to t('login.login'), login_path %><%=t('or')%>&nbsp;<%= link_to (t 'login.sign_up'), "http://#{request.host}:3003/users/sign_up" %>
 
 				<% end %>
 	  </div>
@@ -32,7 +32,7 @@
 	    <%= image_tag("kskb4.png") %>
 			<% form_tag '', :method => 'GET', :class => 'locale' do %>
 			 <%= select_tag 'locale', options_for_select(LANGUAGES, I18n.locale), :onchange => 'this.form.submit();' %>
-			 <%= submit_tag 'submit' %>
+			 <%= submit_tag (t 'submit') %>
 			 <%= javascript_tag "$('.locale input').each(Element.hide);" %>
 	    <% end %>
 			<% if logged_in? %>

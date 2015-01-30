@@ -1,16 +1,16 @@
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Staff Attendance - Report / Monthly Listing</h2>
+		<h2 class="left"><%=t('attendance.title')%> - <%=t('attendance.report_monthlylisting')%></h2>
 	</div>
 </div>
 
 <div class="indextable">
-	<h3>&nbsp;&nbsp;&nbsp;Daily / Weekly / Monthly Report</h3>
+	<h3>&nbsp;&nbsp;&nbsp;<%=t('attendance.daily_weekly_monthly_report')%></h3>
 	<table>
 		<tr>
-			<th width=220px>&nbsp;&nbsp;Department </th>
-			<th width=310px>&nbsp;&nbsp;Report Type</th>
-			<th width=400px>&nbsp;Month & Year / Week starting</th>
+			<th width=220px>&nbsp;&nbsp;<%=t('attendance.department')%></th>
+			<th width=310px>&nbsp;&nbsp;<%=t('attendance.report_type')%></th>
+			<th width=400px>&nbsp;<%=t('attendance.month_year_week_start')%></th>
 		</tr> 
 		
 		<%#@dept_superiors.each_with_index do |superior, index|%>
@@ -22,19 +22,19 @@
 			<td>
 				<!--name=superior's position NAME,id=superior's position ID, unit=superior's UNIT-->
 				<!--selection default to first item-->
-				<%= select_tag(:superior_position_id,"<option value='All'>Select Department</option>"+options_from_collection_for_select(@dept_superiors, :id, :unit)) %>
+				<%= select_tag(:superior_position_id,"<option value='All'>"+(t 'select')+"</option>"+options_from_collection_for_select(@dept_superiors, :id, :unit)) %>
 				<%#= select_tag(:superior_position_id,"<option>Select a department / unit</option>"+options_from_collection_for_select(@dept_superiors, :id, :unit)) %>
 			</td>
 			<td width=310px>
 			
 			<!--<div class="report_type" style="display:none;">-->	
 			<SPAN class="report_type", style="display: none;">
-				<%= radio_button_tag 'feedback', "day",false, :class => "radio_feedback" %><label>Daily Report</label> 
+				<%= radio_button_tag 'feedback', "day",false, :class => "radio_feedback" %><label><%=t('attendance.daily_report')%></label> 
 				<!--radio_button_tag 'color', "green", true, :class => "color_input"
 				# => <input checked="checked" class="color_input" id="color_green" name="color" type="radio" value="green" />-->
-				<%= radio_button_tag 'feedback', "cou",false, :class => "radio_feedback" %><label>Weekly Report</label> 
+				<%= radio_button_tag 'feedback', "cou",false, :class => "radio_feedback" %><label><%=t('attendance.weekly_report')%></label> 
 				<!--name=feedback,id=feedback_cou-->
-				<%= radio_button_tag 'feedback', "final",false, :class => "radio_feedback" %><label>Monthly Report</label>
+				<%= radio_button_tag 'feedback', "final",false, :class => "radio_feedback" %><label><%=t('attendance.monthly_report')%></label>
 				<!--name=feedback,id=feedback_final-->
 			<!--</div>--></span>
 				
@@ -42,22 +42,22 @@
 			<td>
 				<div class="daily" style="display:none;width:400px;">
 					<!--default to current date,-->
-					Date :<%= date_select :month_year3, params[:month_year3], :order => [:day, :month, :year], :start_year => Time.now.year - 2, :end_year => Time.now.year %>
+					<%=t('attendance.date')%> :<%= date_select :month_year3, params[:month_year3], :order => [:day, :month, :year], :start_year => Time.now.year - 2, :end_year => Time.now.year %>
 					<%#= date_select :month_year1, params[:month_year1], :order => [:day, :month, :year],:include_blank => true%>
-					<%= submit_tag "Daily Report", :name => :list_submit_button %>
+					<%= submit_tag (t 'attendance.daily_report'), :name => :list_submit_button %>
 				</div>
 				<div class="twoweek" style="display:none;width:400px;">
 					<!--default to first month,-->
-					Starting Date :<%= date_select :month_year1, params[:month_year1], :order => [:day, :month, :year], :start_year => Time.now.year - 2, :end_year => Time.now.year %>
+					<%=t('attendance.starting_date')%> :<%= date_select :month_year1, params[:month_year1], :order => [:day, :month, :year], :start_year => Time.now.year - 2, :end_year => Time.now.year %>
 					<%#= date_select :month_year1, params[:month_year1], :order => [:day, :month, :year],:include_blank => true%>
 					<%#= submit_tag "Report for 2 Week", :name => :list_submit_button %>
-					<%= submit_tag "Weekly Report", :name => :list_submit_button %>
+					<%= submit_tag  (t 'attendance.weekly_report'), :name => :list_submit_button %>
 				</div>
 				<div class="monthly" style="display:none;width:400px;">
 					<!--default to first month,-->
 					<%= date_select :month_year2, params[:month_year2], :order => [:month, :year], :start_year => Time.now.year - 2, :end_year => Time.now.year %>
 					<%#= date_select :month_year2, params[:month_year2], :order => [:month, :year],:include_blank => true%>
-					<%= submit_tag "Monthly Report", :name => :list_submit_button %>
+					<%= submit_tag  (t 'attendance.monthly_report'), :name => :list_submit_button %>
 				</div>
 				
 				<!--
@@ -85,18 +85,18 @@
 	<br><br>
 	
 	<!--start-2July2013-second section-->
-	<h3>&nbsp;&nbsp;&nbsp;Monthly Listing</h3>
+	<h3>&nbsp;&nbsp;&nbsp;<%=t('attendance.monthly_listing')%></h3>
 	<table>
 		<tr>
-			<th width=220px>&nbsp;&nbsp;Department</th>
+			<th width=220px>&nbsp;&nbsp;<%=t('attendance.department')%></th>
 			<th width=310px>&nbsp;&nbsp;</th>
-			<th width=400px>&nbsp;Month & Year </th>
+			<th width=400px>&nbsp;<%=t('attendance.month_year')%></th>
 		</tr>
 		
 		<!--open form-->
 		<% form_tag(:action => :monthly_listing) do %>
 		<tr>
-			<td><%= select_tag(:dept_select,"<option value='All'>Select Department</option>"+options_for_select(@dept_names)) %></td>
+			<td><%= select_tag(:dept_select,"<option value='All'>"+(t 'select')+"</option>"+options_for_select(@dept_names)) %></td>
 			<td>
 				<!--START : temporary solutions as of 15 August 2014-should match checking in JS part below-->
 				<%@dept_names.each_with_index do |name, nos|%>
@@ -221,7 +221,7 @@
 				<span class="monthly_listing", style="display:none;">	
 					<!--default to first month,-->
 					<%= date_select :month_year4, params[:month_year4], :order => [:month, :year], :start_year => Time.now.year - 2, :end_year => Time.now.year %>
-					<%= submit_tag "Monthly Listing", :name => :list_submit_button %>
+					<%= submit_tag  (t 'attendance.monthly_listing'), :name => :list_submit_button %>
 				</span>
 			</td>
 		</tr>

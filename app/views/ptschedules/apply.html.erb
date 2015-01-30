@@ -18,13 +18,13 @@
 			<div class="cb_description">
 				<%=h truncate(ptschedule.ptcourse.description, :length => 80, :omission => '...') %><%= link_to (t 'ptschedule.more'), ptschedule %><BR/><BR/>
 				<%=h ptschedule.ptcourse.duration %> <%=h ptschedule.ptcourse.rendered_course_duration %> <%=h ptschedule.ptcourse.rendered_course_type %><BR/>
-				from <%=h ptschedule.start.strftime('%e %B %Y') %> at <%=h ptschedule.location %> <BR/> by <%=h ptschedule.ptcourse.provider.try(:name) %>
+				<%=t('from')%> <%=h ptschedule.start.strftime('%e %B %Y') %> <%=t('at')%> <%=h ptschedule.location %> <BR/> <%=t('by')%>&nbsp;<%=h ptschedule.ptcourse.provider.try(:name) %>
 			</div>
 			<% permitted_to? :manage, :ptschedules do %>
 			<div class="admin_actions">
-					<%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptschedule %>
-	  			<%= link_to image_tag("edit.png", 		:border => 0, :title => 'Edit'), :action => 'edit', :id => ptschedule %>
-	  			<%= link_to image_tag("delete.png", 	:border => 0, :title => 'Delete'), ptschedule, :confirm => 'Are you sure?', :method => :delete %>
+					<%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptschedule %>
+	  			<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptschedule %>
+	  			<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptschedule, :confirm => 'Are you sure?', :method => :delete %>
 			</div>
 			<% end %>
 		</div>

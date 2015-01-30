@@ -26,10 +26,10 @@
     <td><%=h ptcourse.duration %> Days</td>
 		<td><%=h ringgols(ptcourse.cost) %></td>
     <td><%=  truncate(ptcourse.description, :length => 65, :omission => (link_to "... [#{t('more')}]", ptcourse)) %></td>
-    <td><%=h ptcourse.approved? ? "Approved" : "" %></td>
-    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptcourse %></td>
-    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptcourse %></td>
-    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), ptcourse, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%=h ptcourse.approved? ? (t 'approved') : "" %></td>
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptcourse %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptcourse %></td>
+    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptcourse, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   </tr>
 <% end %>
 </table>

@@ -4,7 +4,7 @@
 			<table width=90%>
 					<tr>
 						<td class="leftcol"><label for="claimsmonth"><%= t 'claim.claimsmonth' %></label></td>
-						<td><%=h @travel_claim.claim_month.strftime("%B %Y") %></td>
+						<td><%=h l(@travel_claim.claim_month, :format=>"%B %Y") %></td>
 					</tr>
 
 					<tr>
@@ -27,7 +27,7 @@
 				<tr>
 				  <td class="tlight"><%= check_kin {travel_request.document.refno} %></td>
 				  <td colspan=3><%= check_kin {travel_request.document.title} %></td>
-				  <td colspan=2><%= travel_request.depart_at.strftime("%d %b") %> - <%= travel_request.return_at.strftime("%d %b %Y") %></td>
+				  <td colspan=2><%= l(travel_request.depart_at, :format=>"%d %b") %> - <%= l(travel_request.return_at, :format=>"%d %b %Y") %></td>
 				</tr>
 				
 				<tr>

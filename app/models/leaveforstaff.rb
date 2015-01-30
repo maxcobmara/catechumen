@@ -25,15 +25,13 @@ class Leaveforstaff < ActiveRecord::Base
   named_scope :forsupport,  :conditions =>  ["approval1_id=? AND approval1 IS ?", Login.current_login.staff_id, nil]
   named_scope :forapprove,  :conditions =>  ["approval2_id=? AND approver2 IS ? AND approval1=?", Login.current_login.staff_id, nil, true]
 
-
   FILTERS = [
-    {:scope => "relevant",        :label => "All"},
-    {:scope => "mine",       :label => "My Leave"},
-    {:scope => "forsupport", :label => "For My Support"},
-    {:scope => "forapprove", :label => "For My Approval"}
+    {:scope => "relevant",        :label => I18n.t('staffleave.all')},
+    {:scope => "mine",       :label => I18n.t('staffleave.myleave')},
+    {:scope => "forsupport", :label => I18n.t('staffleave.formysupport')},
+    {:scope => "forapprove", :label => I18n.t('staffleave.formyapproval')}
     ]
 
-  
   def self.find_main
     Staff.find(:all, :condition => ["staff_id=? OR approval1_id=? OR approval2_id=?", Login.current_login.staff_id, Login.current_login.staff_id, Login.current_login.staff_id])
   end
@@ -80,7 +78,7 @@ class Leaveforstaff < ActiveRecord::Base
     if (leavenddate - leavestartdate) == 0
       ""
     else
-      " -- " + (leavenddate.strftime("%d %b %Y")).to_s
+      " -- " + I18n.l(leavenddate).to_s #(leavenddate.strftime("%d %b %Y")).to_s
     end
   end
   

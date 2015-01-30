@@ -47,32 +47,29 @@ class TravelClaim < ActiveRecord::Base
   
   def my_claim_status
     if staff_id == Login.current_login.staff_id && is_submitted != true 
-      "editing"
+      I18n.t('staffleave.editing')#"editing"
     elsif staff_id != Login.current_login.staff_id && is_submitted != true	#add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
-     "editing by staff"
+      I18n.t('staffleave.editing_by_staff')#"editing by staff"
     elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == nil
-      "submitted"
+      I18n.t('staffleave.submitted')#"submitted"
     elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == nil
-      "for checking"
+      I18n.t('staffleave.for_checking')#"for checking"
     elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == true
-      "returned"
+      I18n.t('staffleave.returned')#"returned"
     elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == false 
-      "resubmitted to finance"
+      I18n.t('staffleave.resubmitted_to_finance')#"resubmitted to finance"
     elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == false	&& is_returned == false 
-      "for checking"
+      I18n.t('staffleave.for_checking')#"for checking"
     elsif is_submitted == true && is_checked == true && is_approved != true
-      "processed"
+      I18n.t('staffleave.processed')# "processed"
     elsif is_submitted == true && is_checked == true && is_approved == true
-      "approved"
+      I18n.t('staffleave.approved')#"approved"
     elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked ==false && is_returned == true 
-      "return to staff for amendment"
+      I18n.t('staffleave.return_to_staff_for_amendment')#"return to staff for amendment"
     else
-      "status not known"
+      I18n.t('staffleave.status_not_known')#"status not known"
     end    
   end
-  
-  
-  
   
   def to_be_paid
     if advance == nil

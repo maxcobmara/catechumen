@@ -16,35 +16,30 @@
 	    <th><%= t 'staff.icno' %></th>
 	    <th><%= t 'staff.name' %></th>
 	    <th><%= t 'staff.position' %></th>
-	    <th><%= t 'evaluation.form.evaluationdate' %></th>
-			<th>Status</th>
+	    <th><center><%= t 'evaluation.form.evaluationdate' %></center></th>
+	    <th>Status</th>
 	    <th colspan=4 class="ac"><%= t 'action' %></th>
 	  </tr>
-	
-		<% @staff_appraisals.each do |appraised| %>
+	  <% @staff_appraisals.each do |appraised| %>
 	  <tr>
 			<td><%=h appraised.appraised.formatted_mykad %></td>
 			<td><%=h appraised.appraised.name %></td>
 			<td><%#=h appraised.appraised.position.blank? ? "-" : appraised.appraised.position.name %>
 				<%=h appraised.appraised.position_for_staff %></td>
-			<td><%=h appraised.evaluation_year.strftime('%Y') %></td>
+			<td align="center"><%=h appraised.evaluation_year.strftime('%Y') %></td>
 			<td><%=h appraised.evaluation_status %></td>
-			
-
-			<td width=10px><%= link_to image_tag("document.png",	:border => 0, :title => 'Show'), :action => 'show', :id => appraised %></td>
+			<td width=10px><%= link_to image_tag("document.png",:border => 0, :title => (t 'show')), :action => 'show', :id => appraised %></td>
 			<td width=10px>
 			<% if appraised.edit_icon != "noedit" %>
-				<%= link_to image_tag("#{appraised.edit_icon}", 		:border => 0, :title => "#{appraised.evaluation_status}"), :action => 'edit', :id => appraised %>
+				<%= link_to image_tag("#{appraised.edit_icon}", :border => 0, :title => "#{appraised.evaluation_status}"), :action => 'edit', :id => appraised %>
 			<% else %>
 			<% end %></td>
-
-
-	    <!--<td width=10px><%= link_to image_tag("edit.png", 			:border => 0, :title => 'Edit'), :action => 'edit', :id => appraised %></td>-->
+	    <!--<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => appraised %></td>-->
 			<td width=10px>
 				<% if appraised.is_complete == true %>
-				<%= link_to image_tag("printer.png", :border => 0, :title => 'Print'), :action => 'appraisal_form', :id => appraised %>
+				<%= link_to image_tag("printer.png", :border => 0, :title => (t 'print')), :action => 'appraisal_form', :id => appraised %>
 				<% end -%></td>
-	    <td width=10px><%= link_to image_tag("delete.png", 		:border => 0, :title => 'Delete'), appraised, :confirm => 'Are you sure?', :method => :delete %></td>
+	    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), appraised, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 	  </tr>
 		<% end %>
 	</table>

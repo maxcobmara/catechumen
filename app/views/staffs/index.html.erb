@@ -32,10 +32,10 @@
 		<td><%=h staff.position.blank? ? "-" : staff.position.name %></td>
 		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => staff %></td>
 		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => staff %></td>
-		<% if permitted_to? :destroy, @staff%>
-			  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), staff, :confirm => 'Are you sure?', :method => :delete %></td>
-		<% end %>
 		<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Maklumat Staf'), :action => 'borang_maklumat_staff', :id => staff %></td>
+		<% if permitted_to? :destroy, @staff%>
+			  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), staff, :confirm =>(t 'are_you_sure'), :method => :delete %></td>
+		<% end %>
 	</tr>
 	<% end %>
 	</table>
