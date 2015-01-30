@@ -58,26 +58,48 @@ class StaffAppraisal < ActiveRecord::Base
     self.evaluation_year = evaluation_year.at_beginning_of_year
   end
   
-  
-  
+  #logic to set editable
+  #def edit_icon
+    #if evaluation_status == "SKT awaiting PPP endorsement" && staff_id == Login.current_login.staff_id
+      #"noedit"
+    #elsif evaluation_status == "SKT awaiting PPP endorsement" && eval1_by == Login.current_login.staff_id
+      #"approval.png"
+    #elsif evaluation_status == "SKT Review" && eval1_by == Login.current_login.staff_id
+      #"noedit"
+    #elsif evaluation_status == "Ready for PPP SKT Report" && staff_id == Login.current_login.staff_id
+      #"noedit"
+    #elsif evaluation_status == "PPP Report complete" && eval1_by == Login.current_login.staff_id
+      #"noedit"
+    #elsif evaluation_status == "Submitted for Evaluation by PPP"&& staff_id == Login.current_login.staff_id
+      #"noedit"
+    #elsif evaluation_status == "Submitted for Evaluation by PPP to PPK" && staff_id == Login.current_login.staff_id
+      #"noedit"
+    #elsif evaluation_status == "Submitted by PPP for Evaluation  to PPK" && eval1_by == Login.current_login.staff_id
+      #"noedit"
+    #elsif is_complete == true
+      #"noedit"
+    #else
+      #"edit.png"
+    #end
+  #end
   
   #logic to set editable
   def edit_icon
-    if evaluation_status == "SKT awaiting PPP endorsement" && staff_id == Login.current_login.staff_id
+    if evaluation_status == I18n.t('evaluation.appraisal.skt_awaiting_ppp_endorsement') && staff_id == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "SKT awaiting PPP endorsement" && eval1_by == Login.current_login.staff_id
+    elsif evaluation_status == I18n.t('evaluation.appraisal.skt_awaiting_ppp_endorsement') && eval1_by == Login.current_login.staff_id
       "approval.png"
-    elsif evaluation_status == "SKT Review" && eval1_by == Login.current_login.staff_id
+    elsif evaluation_status == I18n.t('evaluation.appraisal.skt_review') && eval1_by == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "Ready for PPP SKT Report" && staff_id == Login.current_login.staff_id
+    elsif evaluation_status ==  I18n.t('evaluation.appraisal.ready_for_ppp_skt_report') && staff_id == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "PPP Report complete" && eval1_by == Login.current_login.staff_id
+    elsif evaluation_status == I18n.t('evaluation.appraisal.ppp_report_complete') && eval1_by == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "Submitted for Evaluation by PPP"&& staff_id == Login.current_login.staff_id
+    elsif evaluation_status == I18n.t('evaluation.appraisal.submitted_for_evaluation_by_ppp') && staff_id == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "Submitted for Evaluation by PPP to PPK" && staff_id == Login.current_login.staff_id
+    elsif evaluation_status == I18n.t('evaluation.appraisal.submitted_by_ppp_for_evaluation_to_PPK') && staff_id == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "Submitted by PPP for Evaluation  to PPK" && eval1_by == Login.current_login.staff_id
+    elsif evaluation_status == I18n.t('evaluation.appraisal.submitted_by_ppp_for_evaluation_to_PPK') && eval1_by == Login.current_login.staff_id
       "noedit"
     elsif is_complete == true
       "noedit"
@@ -87,24 +109,44 @@ class StaffAppraisal < ActiveRecord::Base
   end
   
   def evaluation_status
-    if is_skt_submit != true
-      "SKT being formulated"
-    elsif is_complete == true
-   		"Staff Appraisal complete"
-    elsif is_skt_submit == true && is_skt_endorsed != true
-      "SKT awaiting PPP endorsement"
-    elsif is_skt_submit == true && is_skt_endorsed == true && is_skt_pyd_report_done != true
-      "SKT Review"
-    elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done != true
-      "Ready for PPP SKT Report"
-    elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done == true && is_submit_for_evaluation != true
-      "PPP Report complete"
-    elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true
-      "Submitted for Evaluation by PPP"
-   	elsif is_submit_for_evaluation == true && is_submit_e2 == true
-   	   "Submitted by PPP for Evaluation  to PPK"
-    end
-  end
+     if is_skt_submit != true
+       I18n.t('evaluation.appraisal.skt_being_formulated')
+     elsif is_complete == true
+       I18n.t('evaluation.appraisal.staff_appraisal_complete')
+     elsif is_skt_submit == true && is_skt_endorsed != true
+       I18n.t('evaluation.appraisal.skt_awaiting_ppp_endorsement')
+     elsif is_skt_submit == true && is_skt_endorsed == true && is_skt_pyd_report_done != true
+       I18n.t('evaluation.appraisal.skt_review')
+     elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done != true
+       I18n.t('evaluation.appraisal.ready_for_ppp_skt_report')
+     elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done == true && is_submit_for_evaluation != true
+       I18n.t('evaluation.appraisal.ppp_report_complete')
+     elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true
+       I18n.t('evaluation.appraisal.submitted_for_evaluation_by_ppp')
+     elsif is_submit_for_evaluation == true && is_submit_e2 == true
+       I18n.t('evaluation.appraisal.submitted_by_ppp_for_evaluation_to_PPK')
+     end
+  end   
+   
+  #def evaluation_status
+    #if is_skt_submit != true
+      #"SKT being formulated"
+    #elsif is_complete == true
+     #"Staff Appraisal complete"
+    #elsif is_skt_submit == true && is_skt_endorsed != true
+      #"SKT awaiting PPP endorsement"
+    #elsif is_skt_submit == true && is_skt_endorsed == true && is_skt_pyd_report_done != true
+      #"SKT Review"
+    #elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done != true
+      #"Ready for PPP SKT Report"
+    #elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done == true && is_submit_for_evaluation != true
+      #"PPP Report complete"
+    #elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true
+      #"Submitted for Evaluation by PPP"
+    #elsif is_submit_for_evaluation == true && is_submit_e2 == true
+      #"Submitted by PPP for Evaluation  to PPK"
+    #end
+  #end
   
   def set_number_of_questions
     self.g1_questions = 5

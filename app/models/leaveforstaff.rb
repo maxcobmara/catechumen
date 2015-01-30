@@ -80,7 +80,7 @@ class Leaveforstaff < ActiveRecord::Base
     if (leavenddate - leavestartdate) == 0
       ""
     else
-      " -- " + (leavenddate.strftime("%d %b %Y")).to_s
+      " -- " + I18n.l(leavenddate).to_s #(leavenddate.strftime("%d %b %Y")).to_s
     end
   end
   
