@@ -1,21 +1,19 @@
 <%= stylesheet_link_tag 'report', :media => "print" %>
 <!--A4Potrait-->
 
-<form action="#">	
-<script>
-document.write("<input type='button' " +
-"onClick='window.print()' " +
-"class='printbutton' " +
-"value='Print This Page'/>");
-</script>
-</form>
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
+<form>
 <div id="hideLink">
-<%= link_to 'Edit', edit_asset_path(@asset) %> |
-<%= link_to 'Back', assets_path %>
-</div>
+<%= link_to (t 'edit'), edit_asset_path(@asset) %> |
+<%= link_to (t 'back'), assets_path %>
+</div><BR>
 <div class="A4potrait_paged">
-
-
 <!-- Box Head -->
 <div id="kewpa">
 <BR/>

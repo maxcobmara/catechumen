@@ -33,17 +33,17 @@ class AssetDisposal < ActiveRecord::Base
   
   def disposal_status
     if is_checked == false
-      "Processing"
+      I18n.t('disposal.processing') #"Processing"
     elsif is_checked == true && is_verified != true
-      "Processed"
+      I18n.t('disposal.processed') #"Processed"
     elsif is_verified == true && is_disposed != true
-      "Verified"
+      I18n.t('disposal.verified') #"Verified"
     elsif is_disposed == true && is_discarded != true
-      "Disposed"
+      I18n.t('disposal.disposed') #"Disposed"
     elsif is_discarded == true
-      "Discarded"
+      I18n.t('disposal.discarded') #"Discarded"
     else
-      "Unknown"
+       I18n.t('disposal.unknown') #"Unknown"
     end
   end
   

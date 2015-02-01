@@ -18,14 +18,14 @@
 		    	<th><%= t 'asset_losses.asset_id' %></th>
 		    	<th><%= t 'asset_losses.location_id' %></th>
 		    	<th><%= t 'asset_losses.lost_at' %></th>
-				<th>Treasury Approval Ref No</th>
-		    	<th colspan=5 class="ac">Control</th>
+			<th><%= t 'asset_losses.treasury_approval'%></th>
+		    	<th colspan=5 class="ac"><%=t('control')%></th>
   			</tr>
 			
 			<% @asset_losses_group_writeoff.each do |document_id, asset_losses|%>
 				<tr>
 					<td colspan=11 style="background-color:#EFF1F1;">
-						<%= asset_losses[0].document_id.blank? ? "<span style='color:red;'>Treasury Approval - Pending</span>" : "<span style='color:#218AFB;'>Approval Letter : "+Document.find(document_id).doc_details_date+"</span>" %>
+						<%= asset_losses[0].document_id.blank? ? "<span style='color:red;'>"+(t 'asset_losses.pending_approval')+"</span>" : "<span style='color:#218AFB;'>"+(t 'asset_losses.approval_letter')+" : "+Document.find(document_id).doc_details_date+"</span>" %>
 					</td>
 					<td style="background-color:#EFF1F1;">
 						<% if asset_losses[0].document_id.blank? %>
@@ -41,18 +41,18 @@
 			<% asset_losses.each do |asset_loss| %>
 			<tr>
 				<td><%= check_box_tag "asset_loss_ids[]", asset_loss.id, :class => "check" %></td>
-	    		<td><%=h asset_loss.loss_type.capitalize %></td>
+	    		<td><%=h (t("asset_losses."+asset_loss.loss_type)).capitalize %></td>
 	    		<td align='center'><%=h ringgols(asset_loss.est_value) %></td>
 	    		<td><%=h asset_loss.item_name %></td>
 	    		<td><%=h asset_loss.location_details %></td>
 	    		<td><%=h asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil? %></td>
 				<td><%=h asset_loss.is_writeoff? ? asset_loss.document.refno : ""%></td>
-	    		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => asset_loss %></td>
+	    		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => asset_loss %></td>
 				<td width=10px>
 					<% if asset_loss.is_submit_to_hod == false %>
-	    				<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => asset_loss %>
+	    				<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => asset_loss %>
 					<% elsif asset_loss.is_submit_to_hod == true && asset_loss.endorsed_on.blank? == true && Login.current_login.staff.position.code == "1" %>
-						<%= link_to image_tag("approval.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => asset_loss %>
+						<%= link_to image_tag("approval.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => asset_loss %>
 					<% end %>
 				</td>
 				<td class="action">
@@ -83,7 +83,7 @@
 				<!--add-in KEWPA31 link-->
 				
 				<td width=10px>
-					<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset_loss, :confirm => 'Are you sure?', :method => :delete %>
+					<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), asset_loss, :confirm => (t 'are_you_sure'), :method => :delete %>
 				</td>   
 	  		</tr>
 			<% end %>
@@ -98,11 +98,11 @@
 			<!--http://www.ryboe.com/2008/07/10/select-all-checkboxes-with-prototype-js.html -->
 			<input id="check_all" name="check_all" type="checkbox" checked="checked" onclick="
 			Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_all').checked})" />
-			<b>Check/Uncheck 				all</b>&nbsp;&nbsp;
+			<b><%=t('check_uncheck_all')%></b>&nbsp;&nbsp;
 		</div>
 
-		<%= submit_tag "Write Off Checked", :name => :grade_submit_button %>
-		<font size=-2>Select single / multiple records to update write-off certificate (according to Treasury Approval letter).</font>
+		<%= submit_tag t('asset_losses.writeoff_checked'), :name => :grade_submit_button %>
+		<font size=-2><%=t('asset_losses.select_records_writeoff_certificate')%></font>
 	
 	<% end %><!--end for-form_tag edit_multiple_asset_losses_path-->
 <br><br>

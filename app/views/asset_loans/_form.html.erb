@@ -1,6 +1,6 @@
 <table width=100% >
 	<tr>
-		<td class="leftcolwide"><label for="asset_code"><b><%= t 'assets.assetcode' %></b></label></td>
+		<td class="leftcolwide"><label for="asset_code"><b><%= t 'asset.assetcode' %></b></label></td>
 		<td><%= @asset_loan.asset.assetcode %> -  
 				<%= @asset_loan.asset.typename %> -   
 				<%= @asset_loan.asset.name %>  -  
@@ -9,7 +9,7 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcolwide"><label for="asset_code"><b><%= t 'menu.owner_repons' %></b></label></td>
+		<td class="leftcolwide"><label for="asset_code"><b><%= t 'asset.owner_respons' %></b></label></td>
 		<td>
 			<%= @asset_loan.asset.assignedto.name unless @asset_loan.asset.assignedto.blank?%> / 
 			<%= @asset_loan.asset.assignedto.position.unit unless @asset_loan.asset.assignedto.position.blank?%>
@@ -18,17 +18,17 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcolwide"><label for="asset_code"><b><%= t 'claims.staff_name' %></b></label></td>
+		<td class="leftcolwide"><label for="loaner"><b><%= t 'assetloan.loaner' %></b></label></td>
 		<td><%= @asset_loan.loaner %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcolwide"><label for="asset_code"><b><%= t 'travel.reasons' %></b></label></td>
+		<td class="leftcolwide"><label for="reasons"><b><%= t 'assetloan.reasons' %></b></label></td>
 		<td><%= f.text_area :reasons, :size => '60x5' %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcolwide"><%= f.label :loaned_on %></td>
+		<td class="leftcolwide"><%= f.label (t 'assetloan.loaned_on') %></td>
 		<td><%= f.date_select :loaned_on, :order => [:day, :month, :year] %></td>
 	</tr>
 	

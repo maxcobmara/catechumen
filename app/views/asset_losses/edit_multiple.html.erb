@@ -2,7 +2,7 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Asset Writeoff</h2>
+		<h2 class="left"><%=t('asset_losses.writeoff_title')%></h2>
 	</div>
 </div>
 
@@ -10,11 +10,11 @@
 <% form_for :asset_loss, :url => update_multiple_asset_losses_path, :html => {:method => :put} do |f| %>
 	<table>
 		<tr>
-			<th colspan=2>Treasury Approval</th>
+			<th colspan=2><%=t('asset_losses.treasury_approval')%></th>
 		</tr>	
 		<tr>
 			<td>
-				Reference No :
+				<%=t('asset_losses.approval_letter')%> :
 			</td>
 			<td>
 				<%= f.collection_select :document_id, Document.find(:all), :id, :refno %>
@@ -24,8 +24,8 @@
 	<br>
 	<table>
 		<tr>
-			<th>Asset</th>
-			<th>Name</th>
+			<th><%=t('asset_losses.asset_register')%></th>
+			<th><%=t('asset_losses.asset_id')%></th>
 		</tr>
 
 			
@@ -44,7 +44,7 @@
 	</table>
 	
 	<br>
-	<%= f.submit "Submit" %>
+	<%= f.submit (t 'submit') %>
 
 <% end %>
 <br>

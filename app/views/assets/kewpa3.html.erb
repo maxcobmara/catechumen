@@ -1,13 +1,17 @@
 <%= stylesheet_link_tag 'report' %>
 <div id="A4potrait">
 <form action="#">
-		<script>
-		document.write("<input type='button' " +
-		"onClick='window.print()' " +
-		"class='printbutton' " +
-		"value='Print This Page'/>");
-		</script>
-</form>	
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
+<form>
+<div id="hideLink">
+<%= link_to (t 'edit'), edit_asset_path(@asset) %> |
+<%= link_to (t 'back'), assets_path %>
+</div><br>
 <fieldset width=10px >	
 
 <!-- Box Head -->

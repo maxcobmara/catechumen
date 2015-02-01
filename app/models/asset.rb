@@ -191,8 +191,8 @@ class Asset < ActiveRecord::Base
     ]
     
     FILTERS_LOAN =[
-    {:scope => "allloanable", :label => "All"},
-    {:scope => "availableforloan_owndept", :label => "Reservable"},
+    {:scope => "allloanable", :label => I18n.t('all')},
+    {:scope => "availableforloan_owndept", :label => I18n.t('reservable')},
     {:scope => "itdept",    :label => "Teknologi Maklumat"},
     {:scope => "hotelunit",    :label => "Perhotelan"},
     {:scope => "libraryunit", :label => "Perpustakaan"},
