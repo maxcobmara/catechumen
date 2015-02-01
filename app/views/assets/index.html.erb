@@ -5,8 +5,8 @@
 		<h2 class="left"><%= t('menu.assets') %></h2>
 		<div class="right">
 			<% form_tag assets_path, :method => 'get' do %>
-			<%= text_field_tag :search, params[:search], :placeholder => "Reg No, Name"  %>
-			<%= submit_tag "Search", :name => nil %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'asset.reg_no_name')  %>
+			<%= submit_tag (t 'search'), :name => nil %>
 			<% end %>
 		</div>
   </div>
@@ -14,7 +14,7 @@
 
 <div class="toolbar">
 	<table width=100%><tr>
-		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Register a new asset') + (t 'menu.new_assets'), new_asset_path %></p></td>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => (t 'menu.new_assets')) + (t 'menu.new_assets'), new_asset_path %></p></td>
 		<td></td><td></td><td></td><td></td>
 		<td width=10%></td>
 		<td><div class="pagination"><%= will_paginate @assets %></div>
@@ -41,9 +41,9 @@
   	<tr>
     	<td colspan=13><b>
 				<% if gbtype.to_s == "I" %>
-				 <BR><BR>Harta Inventori
+				 <BR><BR><%=t('asset.inventory')%>
 				<% else %>
-				 Harta Modal
+				<%=t('asset.fixed_assets')%>
 				<% end %>
 				<% h gbtype %></b></td>
   	</tr>
@@ -62,12 +62,12 @@
 			<BR>
 			<% if @bookable.include?(asset.id) %>	
 				<% if @check_onloan == 0 %>
-					Available
+					<%=t('asset.available')%>
 				<% elsif @check_onloan > 0 %>
 					<% if @check_pending > 0 %>
-						Pending Loan
+						<%=t('asset.pending_loan')%>
 					<% else %>
-						On loan
+						<%=t('asset.on_loan')%>
 					<% end %>		
 				<% end %>
 			<% end %>		  
@@ -79,18 +79,18 @@
 						<#%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_disposal_path(:asset_id => asset) %>
 					<#% end %></td>-->
 				
-			<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => asset %></td>
+			<td width=10px ><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => asset %></td>
 			
 		  <td width=10px>
 			<% if asset.am_i_gone == false %>
-							<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => asset %>
+							<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => asset %>
 			<% end %></td>
 			
-			<td width=10px><%= link_to image_tag("building_go.png", :border => 0, :title => 'Location'), :action => 'asset_placement', :id => asset %></td>
+			<td width=10px><%= link_to image_tag("building_go.png", :border => 0, :title => (t 'asset.location')), :action => 'asset_placement', :id => asset %></td>
 			
 			<td width=10px>
 				<% if asset.is_maintainable == true && asset.am_i_gone == false %>
-					<%= link_to image_tag("bullet_wrench.png", :border => 0, :title => 'Maintenance'), :action => 'maintenance', :id => asset %>
+					<%= link_to image_tag("bullet_wrench.png", :border => 0, :title => (t 'asset.maintenance')), :action => 'maintenance', :id => asset %>
 				<% end %></td>
 						
 			<td class="action">
@@ -114,12 +114,8 @@
 					<% if asset.is_maintainable == true && asset.am_i_gone == false %>
 						<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA14'), :action => 'kewpa14', :id => asset %><div class="noti_bubble">14</div></div></td>
 					<% end %></td>
-		  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset, :confirm => 'Are you sure?', :method => :delete %></td>
+		  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), asset, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   	</tr>
-
-
-
-
 
 		<% end %>
 		<% end %>
