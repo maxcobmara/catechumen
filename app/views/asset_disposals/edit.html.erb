@@ -22,7 +22,7 @@
 		
 		<!--this part changed too-13dec2012-->
 		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified != true %>
-			Awaiting verification from <%=h @asset_disposal.verifier.name %>
+			<%=t('disposal.awaiting_verification')%>&nbsp;<%=h @asset_disposal.verifier.name %>
 		<% end %> 
 		
 		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by == Login.current_login.staff_id && @asset_disposal.is_verified != true %>
@@ -37,16 +37,16 @@
 			<%=render :partial => 'close', :locals => {:f => f} %>
 		<% end %>
 		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified == true && @asset_disposal.is_disposed != true %>
-			Asset disposal checked & verified. Please register Disposal Method (KEWPA-19 and/or KEWPA-18).
+			<%=t('disposal.checked_and_verified')%>
 		<% end %>
 		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified == true && @asset_disposal.is_disposed == true && @asset_disposal.disposed_by == nil%>
-			Require case to be closed by HOD.
+			<%=t('disposal.require_case_close_hod')%>
 		<% end %>
 		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by == Login.current_login.staff_id && @asset_disposal.is_verified == true && @asset_disposal.is_disposed != true %>
-			Awaiting Disposal Method registration. (KEWPA-19 and/or KEWPA-18).
+			<%=t('disposal.awaiting_disposal_registration')%>
 		<% end %>
 		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified == true && @asset_disposal.is_disposed == true && @asset_disposal.disposed_by != nil %>
-			Asset Disposal Completed.
+			<%=t('disposal.disposal_complete')%>
 		<% end %>
 		<!--this part changed too-13dec2012-->
 	</div>

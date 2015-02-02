@@ -176,23 +176,23 @@ class Asset < ActiveRecord::Base
   #-------------------------------------------------------------------------------------------------------------------
 
   FILTERS = [
-    {:scope => "all",       :label => "All"},
-    {:scope => "active",    :label => "Active"},
-    {:scope => "fixed",     :label => "Fixed Assets"},
-    {:scope => "maintainable", :label => "Maintainable"},
-    {:scope => "inventory", :label => "Inventory"},
-    {:scope => "disposal",  :label => "For Disposal"},
-    {:scope => "disposed",  :label => "Disposed"},
-    {:scope => "markaslost",:label => "Mark As Lost"},
-    {:scope => "lost",      :label => "Lost"},
-    {:scope => "onloan",    :label => "On Loan"},
-    {:scope => "pendingloan", :label => "Pending Loan"},
-    {:scope => "available", :label => "Available"}
+    {:scope => "all",       :label => I18n.t('asset.all')},
+    {:scope => "active",    :label => I18n.t('asset.active')},
+    {:scope => "fixed",     :label => I18n.t('asset.fixed_assets')},
+    {:scope => "maintainable", :label => I18n.t('asset.maintainable')},
+    {:scope => "inventory", :label => I18n.t('asset.inventory')},
+    {:scope => "disposal",  :label => I18n.t('asset.for_disposal')},
+    {:scope => "disposed",  :label => I18n.t('asset.disposed')},
+    {:scope => "markaslost",:label => I18n.t('asset.mark_as_lost')},
+    {:scope => "lost",      :label => I18n.t('asset.lost')},
+    {:scope => "onloan",    :label => I18n.t('asset.on_loan')},
+    {:scope => "pendingloan", :label =>  I18n.t('asset.pending_loan')},
+    {:scope => "available", :label => I18n.t('asset.available')}
     ]
     
     FILTERS_LOAN =[
-    {:scope => "allloanable", :label => "All"},
-    {:scope => "availableforloan_owndept", :label => "Reservable"},
+    {:scope => "allloanable", :label => I18n.t('all')},
+    {:scope => "availableforloan_owndept", :label => I18n.t('reservable')},
     {:scope => "itdept",    :label => "Teknologi Maklumat"},
     {:scope => "hotelunit",    :label => "Perhotelan"},
     {:scope => "libraryunit", :label => "Perpustakaan"},

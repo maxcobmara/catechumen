@@ -68,7 +68,7 @@ class AssetLoan < ActiveRecord::Base
   
   #---------
   named_scope :all 
-  #named_scope :myloan,        :conditions =>  ["staff_id=?", Login.current_login.staff_id]
+  named_scope :myloan,        :conditions =>  ["staff_id=?", Login.current_login.staff_id]
   named_scope :internal,      :conditions =>  ["loantype =? ", 1]
   named_scope :external,      :conditions =>  ["loantype =? ", 2]
   named_scope :onloan,        :conditions =>  ["is_approved IS TRUE AND is_returned IS NOT TRUE"]
@@ -76,14 +76,14 @@ class AssetLoan < ActiveRecord::Base
   named_scope :rejected,      :conditions =>  ["is_approved IS FALSE"]
   named_scope :overdue,       :conditions =>  ["is_approved IS TRUE AND is_returned IS NULL AND expected_on<=?",Date.today]
   FILTERS = [
-    {:scope => "all",       :label => "All"},
-    {:scope => "myloan",    :label => "My Loan"},
-    {:scope => "internal",  :label => "Internal"},
-    {:scope => "external",  :label => "External"},
-    {:scope => "onloan",    :label => "On Loan"},
-    {:scope => "pending",   :label => "Pending"},
-    {:scope => "rejected",  :label => "Rejected"},
-    {:scope => "overdue",   :label => "Due/Overdue"}
+    {:scope => "all",       :label => I18n.t('assetloan.all')},
+    {:scope => "myloan",    :label => I18n.t('assetloan.my_loan')},
+    {:scope => "internal",  :label => I18n.t('assetloan.internal')},
+    {:scope => "external",  :label => I18n.t('assetloan.external')},
+    {:scope => "onloan",    :label => I18n.t('assetloan.on_loan')},
+    {:scope => "pending",   :label => I18n.t('assetloan.pending')},
+    {:scope => "rejected",  :label => I18n.t('assetloan.rejected')},
+    {:scope => "overdue",   :label => I18n.t('assetloan.due_overdue')}
   ]
-  
+
 end

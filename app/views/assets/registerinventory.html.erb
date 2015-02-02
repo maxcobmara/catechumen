@@ -1,13 +1,17 @@
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
-	<form action="#">
-			<script>
-			document.write("<input type='button' " +
-			"onClick='window.print()' " +
-			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
-	</form>
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
+<form>
+
+<div id="hideLink">
+<%= link_to (t 'back'), assets_path %>
+</div><br>
 	
 <div class="A4potrait" style="border: none;">
 <BR/>
@@ -48,9 +52,4 @@
 			<% end %>
 	</tbody>
 </table>
-<div>	
-	
-
-<div id="hideLink">
-<%= link_to 'Back', assets_path %>
-</div>
+<div>

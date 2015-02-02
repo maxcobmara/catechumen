@@ -112,14 +112,14 @@ class AssetLossesController < ApplicationController
  	      @asset_losses_count = @asset_losses.count
  	      @asset_losses_docs_count = @asset_losses.map(&:endorsed_on).count
  	      @edit_type = params[:grade_submit_button]
-		    if @edit_type == "Write Off Checked" && (@asset_losses_count == @asset_losses_docs_count)
+		    if @edit_type == I18n.t('asset_losses.writeoff_checked') && (@asset_losses_count == @asset_losses_docs_count)
  	          ## continue multiple edit (including subject edit here) --> refer view
  	      else
- 	          flash[:error] = "HOD endorsement is compulsory before write off(Treasury Approval) is done!"
+ 	          flash[:error] = I18n.t('asset_losses.hod_endorsement_compulsory')
  	          redirect_to asset_losses_path
         end    # end for if @edit_type=="Edit Checked"
     else    
-        flash[:notice] = "Please select at least 1 record to edit."
+        flash[:notice] = I18n.t('select_one')
         redirect_to asset_losses_path
     end
   end
@@ -136,7 +136,7 @@ class AssetLossesController < ApplicationController
     		asset_loss.save
    	end			
 
-   	flash[:notice] = "Assets write off details updated!"
+   	flash[:notice] = I18n.t('asset_losses.writeoff_updated')
     redirect_to asset_losses_path
    
   end

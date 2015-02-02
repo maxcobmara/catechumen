@@ -43,8 +43,8 @@
     <td><%=h check_kin {asset_defect.asset.asset_placements.last.location.location_list} %></td>
     <td><%=h asset_defect.notes %></td>
 		<td width=10px><% permitted_to? :manage, :assets do %><% if asset_defect.process_type == "dispose" && asset_defect.decision == true %>
-				<%= link_to image_tag("bomb.png", :border => 0, :title => 'Dispose'), new_asset_disposal_path(:asset_id => asset_defect.asset) %><% end %><% end %></td>
-		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => asset_defect %></td>
+				<%= link_to image_tag("bomb.png", :border => 0, :title => (t 'asset.dispose')), new_asset_disposal_path(:asset_id => asset_defect.asset) %><% end %><% end %></td>
+		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => asset_defect %></td>
 	  <td class="printer">
 				<% if asset_defect.decision != nil %><% permitted_to? :manage, :assets do %>
 				<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-9'), :action => 'kewpa9', :id => asset_defect %><div class="noti_bubble">9</div></div><% end %>
@@ -55,12 +55,12 @@
 				<% end %></td>
 		<td width=10px>
 			<% if asset_defect.is_processed == true && asset_defect.decision_by == Login.current_login.staff_id && asset_defect.decision == nil %>
-					<%= link_to image_tag("approval.png", :border => 0, :title => 'Approve'), :action => 'approve', :id => asset_defect %>
+					<%= link_to image_tag("approval.png", :border => 0, :title => (t 'approval')), :action => 'approve', :id => asset_defect %>
 			<% elsif asset_defect.is_processed == true || asset_defect.decision != nil && asset_defect.processed_by == Login.current_login.staff_id %>
 			<% else %>
-				<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => asset_defect %>
+				<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => asset_defect %>
 			<% end %></td>
-  	<td width=10px><% permitted_to? :manage, :assets do %><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), asset_defect, :confirm => 'Are you sure?', :method => :delete %><% end %></td>
+  	<td width=10px><% permitted_to? :manage, :assets do %><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), asset_defect, :confirm => (t 'are_you_sure'), :method => :delete %><% end %></td>
   </tr>
 <% end %>
 </table>
