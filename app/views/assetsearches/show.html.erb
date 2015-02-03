@@ -44,50 +44,52 @@
 				<% end %>
 			<% else %>
 				<div style="padding-left:50px;padding-top:20px;padding-bottom:20px;border-top:solid 1px;border-bottom:solid 1px;border-left:solid 1px;border-right:solid 1px;">
-					<H4>Asset Search : 
+					<H4><%=t('equery.asset.search')%> : 
 						<%# if (@assetsearch.loandate || @assetsearch.returndate) %>
 						<% if (@assetsearch.loanedasset == 1) %>
-							KEW-PA 6 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 4 %>
+							KEW-PA 6 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 4 %>
 						<% elsif (@assetsearch.defect_reporter || @assetsearch.defect_processor || @assetsearch.defect_process) %>
-							KEW-PA 9 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 7 %>
+							KEW-PA 9 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 7 %>
 						<% elsif (@assetsearch.assignedto || @assetsearch.location) %>
 							<%# if @assetsearch.assignedto %>
 								<% if @assetsearch.category == 5 %><!--KEWPA 7 -->
-									KEW-PA 7 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 5 %>
+									KEW-PA 7 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 5 %>
 								<% else %>
-									KEW-PA 9 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 5 %>
+									KEW-PA 9 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 5 %>
 								<% end %>
 							<%# end %>
 						<% elsif (@assetsearch.category == 9 && @assetsearch.maintcode) || (@assetsearch.category == 9 && @assetsearch.maintname) %>
-							KEW-PA 14 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 9 %>
+							KEW-PA 14 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 9 %>
 						<% elsif (@assetsearch.disposal)%>
-							KEW-PA 16 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 10 %>
+							KEW-PA 16 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 10 %>
 						<% elsif (@assetsearch.discardoption)%>
-							KEW-PA 18 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 12 %>
+							KEW-PA 18 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 12 %>
 						<% elsif (@assetsearch.disposalcert)%>
-							KEW-PA 19 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 13 %>
+							KEW-PA 19 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 13 %>
 						<% elsif (@assetsearch.loss_start)%>
-							KEW-PA 28 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 15 %>
+							KEW-PA 28 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 15 %>
 						<% elsif (@assetsearch.loss_end)%>
-							KEW-PA 30 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 16 %>
+							KEW-PA 30 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 16 %>
 						<% elsif (@assetsearch.loss_cert)%>
-							KEW-PA 31 link | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 17 %>
+							KEW-PA 31 <%=t('equery.links')%>  | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 17 %>
 						<% elsif (@assetsearch.maintainable==false && @assetsearch.maintname=='' && @assetsearch.maintcode=='')%>
-							KEW-PA 13 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 8 %>
+							KEW-PA 13 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 8 %>
 						<% else %>	
-							KEW-PA 2 / KEW-PA 3 links | <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 1 %>
+							KEW-PA 2 / KEW-PA 3 <%=t('equery.links')%> | <%= link_to (t 'back'), :controller=>'assetsearches', :action => 'new', :searchtype => 1 %>
 						<% end %>
 					</H4>
 					<% if (@assetsearch.loandate && @assetsearch.assets.count == Asset.all.count && @assetsearch.loanedasset==0) || (@assetsearch.returndate && @assetsearch.assets.count == Asset.all.count&& @assetsearch.loanedasset==0) %><%#=@assetsearch.assets.count%>
-						<font color=red>No <b>asset on loan</b> for selected date.</font><br><br><br><br>
+						<font color=red><%=t('no3')%> <b><%=t('equery.asset.on_loan')%></b> <%=t('equery.for_selected_date')%></font><br><br><br><br>
 					<% elsif (@assetsearch.assignedto && @assetsearch.assets.count == Asset.all.count)||(@assetsearch.location && @assetsearch.assets.count == Asset.all.count) %>
-						<font color=red>No asset found. Select person in-charge or location first.</font><br><br><br><br>
+						<font color=red><%=t('equery.no_asset_select_person_location')%></font><br><br><br><br>
 					<% elsif (@assetsearch.discardoption && @assetsearch.assets.count == Asset.all.count)%>
-						<font color=red>No asset (destruction/discard) using <%=@assetsearch.discardoption.upcase %> method.</font><br><br><br><br>
+						<font color=red><%=t('equery.asset.no_asset_discard_using')%><%=@assetsearch.discardoption.upcase %>
+						<%#=(t('disposal.'+@assetsearch.discardoption)).upcase %>
+						</font><br><br><br><br>
 					<% elsif (@assetsearch.alldefectasset==0 && @assetsearch.defect_reporter==nil && @assetsearch.defect_processor==nil && @assetsearch.defect_asset==nil && @assetsearch.defect_process=='' && @assetsearch.assignedto==nil && @assetsearch.defect_type==nil && @assetsearch.assets.count == Asset.all.count)%>
-						<font color=red>No asset defect found. Select method for record search appropiately.</font><br><br><br><br>
+						<font color=red><%=t('equery.asset.no_asset_defect')%></font><br><br><br><br>
 					<% elsif (@assetsearch.maintainable==false && @assetsearch.maintname=='' && @assetsearch.maintcode==''&& @assetsearch.assets.count == Asset.all.count)%>
-						<font color=red>No asset for maintenance found. Select method for record search appropiately.</font><br><br><br><br><!--
+						<font color=red><%=t('equery.asset.no_asset_maintenance')%></font><br><br><br><br><!--
 					<%# elsif (@assetsearch.loanedasset==1 && @assetsearch.loandate==nil && @assetsearch.loandate2==nil)%>
 					<%# ||(@assetsearch.returndate==nil && @assetsearch.returndate2==nil)||(@assetsearch.expectedreturndate==nil && @assetsearch.expectedreturndate2==nil)%>
 						<font color=red>No asset on loan for selected date. </font><br><br><br><br>
@@ -95,7 +97,7 @@
 					<% else %>
 						<!--start-addditional heading for KEW-PA 6-->
 						<% if ((@assetsearch.loandate||@assetsearch.loandate2) && @assetsearch.loanedasset == 1) %>
-								SEARCH BY : Loan Date - 
+								<%=t('equery.search_by')%> : <%=t('equery.asset.loan_date') %> - 
 								(<% if @assetsearch.loandate!= nil %>
 									<%=tarikh(@assetsearch.loandate)%>
 								<% end %>
@@ -104,7 +106,7 @@
 									<%=tarikh(@assetsearch.loandate2)%>
 								<% end %>)
 						<% elsif ((@assetsearch.returndate||@assetsearch.returndate2) && @assetsearch.loanedasset == 1) %>
-								SEARCH BY : Return Date - 
+								<%=t('equery.search_by')%> : <%=t('equery.return_date')%> - 
 								(<% if @assetsearch.returndate!= nil %>
 									<%=tarikh(@assetsearch.returndate)%>
 								<% end %>
@@ -113,7 +115,7 @@
 									<%=tarikh(@assetsearch.returndate2)%>
 								<% end %>)
 						<% elsif((@assetsearch.expectedreturndate||@assetsearch.expectedreturndate2) && @assetsearch.loanedasset == 1) %>
-								SEARCH BY : Expected Return Date - 
+								<%=t('equery.search_by')%> : <%=t('equery.expected_return_date')%> - 
 								(<% if @assetsearch.expectedreturndate!= nil %>
 									<%=tarikh(@assetsearch.expectedreturndate)%>
 								<% end %>
@@ -126,48 +128,48 @@
 						<!--start-additional heading for KEW-PA 7-->
 						<% if @assetsearch.assignedto %>
 							<% if @assetsearch.category == 5%>
-								SEARCH BY : Person In-Charge :<%= Staff.find(@assetsearch.assignedto).name %>
+								<%=t('equery.search_by')%> : <%=t('equery.asset.person_in_charge')%> :<%= Staff.find(@assetsearch.assignedto).name %>
 							<% end %>
 						<% end %>
 						<% if @assetsearch.location %>
-							SEARCH BY : <%= Location.find(@assetsearch.location).name %>
+							<%=t('equery.search_by')%> : <%= Location.find(@assetsearch.location).name %>
 						<% end %>
 						<!--end-additional heading for KEW-PA 7-->
 						<!--start-additional heading for KEW-PA 9-->
 						<% if @assetsearch.defect_reporter %>
-							Asset Defect Reported by : <%=Staff.find(@assetsearch.defect_reporter).name %>
+							<%=t('equery.asset.defect_reported_by')%> : <%=Staff.find(@assetsearch.defect_reporter).name %>
 						<% end %>
 						<% if @assetsearch.defect_processor %>
-							Asset Defect Processed by : <%=Staff.find(@assetsearch.defect_processor).name %>
+							<%=t('equery.asset.defect_processed_by')%> : <%=Staff.find(@assetsearch.defect_processor).name %>
 						<% end %>
 						<% if @assetsearch.assignedto %>
 							<% if @assetsearch.category != 5%>
-								Asset Defect - Person In Charge of Asset : <%=Staff.find(@assetsearch.assignedto).name %>  <!--for checking:<%#=@assetsearch.assets.count%>-->
+								<%=t('equery.asset.defect_person_in_charge')%> : <%=Staff.find(@assetsearch.assignedto).name %>  <!--for checking:<%#=@assetsearch.assets.count%>-->
 							<% end %>
 						<% end %>
 						<% if @assetsearch.defect_process %>
 							<% unless(@assetsearch.defect_process == '0' || @assetsearch.defect_process == '') %>
-								Asset Defect - By Process : <%=@assetsearch.defect_process.capitalize %>
+								<%=t('equery.asset.defect_by_process')%> : <%=@assetsearch.defect_process.capitalize %>
 							<% end %>
 						<% end %>
 						<!--end-additional heading for KEWP-PA 9-->
 						<!--start-additional heading for KEW-PA 18-->
 						<% if @assetsearch.discardoption %>
-							Asset Disposal - Discard (<%=@assetsearch.discardoption%>)
+							<%=t('equery.asset.disposal_discard')%> (<%=t('disposal.'+@assetsearch.discardoption)%><%#=@assetsearch.discardoption%>)
 						<% end %>
 						<!--end-additional heading for KEW-PA 18-->
 						<!--start-additional heading for KEW-PA 31-->
 						<% if @assetsearch.loss_cert %>
-							Asset Loss & Write Off - <b>Treasury Reference No</b> : <%=Document.find(@assetsearch.loss_cert).refno%> dated <%=Document.find(@assetsearch.loss_cert).letterdt.strftime("%d %b %Y")%>
+							<%=t('equery.asset.loss_writeoff')%> - <b><%=t('equery.asset.treasury_no')%></b> : <%=Document.find(@assetsearch.loss_cert).refno%> <%=t('equery.dated')%> <%=l(Document.find(@assetsearch.loss_cert).letterdt, :format=>"%d %b %Y")%>
 						<% end %>
 						<!--end-additional heading for KEW-PA 31-->
 							<!--start-display data-kewpa 2 & 3-->
 							<table border=1 cellspacing=0 cellpadding=3>
 								<tr>
-									<th>Bil</th>
-									<th>Asset code</th>	
-									<th>Name</th>
-									<th>Asset Type</th>	
+									<th>No</th>
+									<th><%=t('asset.assetcode')%></th>	
+									<th><%=t('equery.asset.asset_name')%></th>
+									<th><%=t('equery.asset.asset_type')%></th>	
 									<%## if @assetsearch.loandate && @assetsearch.loanedasset == 0 %>
 									<%# if (@assetsearch.loandate && @assetsearch.loanedasset == 1) %>
 										<!--<th>Loan Date</th>-->
@@ -178,15 +180,15 @@
 									<%# end %>
 									<% if @assetsearch.assignedto %>
 										<% if @assetsearch.category == 5 %>
-											<th>Location</th>
+											<th><%=t('equery.asset.location')%></th>
 										<% end %>
 									<% end %>
 									<% if @assetsearch.location %>
-										<th>Person In-Charge</th>
+										<th><%=t('equery.asset.person_in_charge')%></th>
 									<% end %>
-									<th>Purchase Date</th>
-									<th>Purchase Price</th>
-									<th>KEW-PA link</th>
+									<th><%=t('asset.purchasedate')%></th>
+									<th><%=t('asset.purchaseprice')%></th>
+									<th>KEW-PA <%=t('equery.links')%></th>
 								</tr>
 								<!--continue from line 1-6-use this with method : assignedto_conditions in model : assetsearch.rb-->
 								<% if @assetsearch.assignedto && @assetsearch.category != 5 %>
@@ -204,9 +206,9 @@
 									<td><%=x.name %></td>
 									<td align=center>
 										<% if x.assettype==1%>
-									 		Harta Modal
+									 		<%=t('asset.fixed_assets')%>
 										<% elsif x.assettype==2%>
-											Inventori
+											<%=t('asset.inventory')%>
 										<% end %>
 									</td>
 									<%## if @assetsearch.loandate && @assetsearch.loanedasset == 0 %>
@@ -223,7 +225,7 @@
 												<% if x.location_id!= nil %>
 													<%=Location.find(x.location_id).name %>
 												<% else %>
-													Data not available
+													<%=t('equery.data_not_available')%>
 												<% end %>
 											</td>
 										<% end %>
@@ -233,7 +235,7 @@
 											<% if x.assignedto_id!= nil %>
 												<%=Staff.find(x.assignedto_id).name %>
 											<% else %>
-												Data not available
+												<%=t('equery.data_not_available')%>
 											<% end %>
 										</td>
 									<% end %>
@@ -306,7 +308,7 @@
 											<% @disposed_asset = AssetDisposal.find(@disposal_id) %>
 											<%= @disposed_asset.disposal_type.capitalize %>
 											<% if @disposed_asset.disposal_type == 'discard' %> 
-												 - <%=@disposed_asset.discard_options.capitalize%> 
+												 - <%#=(t('asset.'+@disposed_asset.discard_options)).capitalize%> <%=@disposed_asset.discard_options.capitalize%> 
 											<% end %>
 										<% elsif (@assetsearch.loss_start)%>
 											<% @loss_id = AssetLoss.find_by_asset_id(x.id).id %>
@@ -318,7 +320,7 @@
 											<% if index == 0 %>
 												<%= link_to "KEW-PA 31", :controller=>'asset_losses', :action => 'kewpa31', :id => @assetsearch.loss_cert %>
 											<% else %>
-												<font size=-2>Same as above</font>
+												<font size=-2><%=t('equery.same_as_above')%></font>
 											<% end %>
 										<% else %>
 											<% if x.assettype == 1 %>
@@ -340,8 +342,8 @@
 	<% end %><!--end:KEWPA 2 & 3-->
 <% else %>
 	<div style="padding-left:50px;padding-top:20px;">
-		<H4>Asset Search </H4>
-		Search return no result.
+		<H4><%=t('equery.asset.search')%> </H4>
+		<%=t('equery.no_result')%>
 	</div>
 <% end %>
 
