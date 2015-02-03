@@ -1,5 +1,5 @@
 <div class="tform">
-	<H2>Student Search</H2>
+	<H2><%=t('equery.student.search')%></H2>
 <% form_for @studentsearch do |f| %>
   <%= f.error_messages %>
 	<% if @searchstudenttype=='1' || @searchstudenttype==1 %>
@@ -8,11 +8,11 @@
 		<!--<fieldset><legend class="togvis"></legend></fieldset>-->
 		
 		<table width=100% >
-			<tr><td colspan=2>Search Students By :</td></tr>
+			<tr><td colspan=2><%=t('equery.student.search_by')%> :</td></tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :course_id %></td>
-				<td><%#= f.collection_select :course_id, Programme.roots.sort_by{|x|x.id}, :id, :programme_list, :include_blank => "Select" %>
-					<%= f.collection_select :course_id, Programme.find(:all, :conditions=>['ancestry_depth=? AND id IN(?)',0,Student.all.map(&:course_id)]).sort_by{|x|x.id}, :id, :programme_list, :include_blank => "Select" %>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.course_id') %></td>
+				<td><%#= f.collection_select :course_id, Programme.roots.sort_by{|x|x.id}, :id, :programme_list, :include_blank => (t 'select') %>
+					<%= f.collection_select :course_id, Programme.find(:all, :conditions=>['ancestry_depth=? AND id IN(?)',0,Student.all.map(&:course_id)]).sort_by{|x|x.id}, :id, :programme_list, :include_blank => (t 'select') %>
 				</td>
 			</tr>
 			<!--
@@ -21,41 +21,41 @@
 				<td><%#= f.select :name, [1,2,3,4,5,6], :include_blank => "Select" %></td>
 			</tr>-->
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :sponsorship %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.ssponsor') %></td>
 				<td><%= f.select :ssponsor,
 				           Student::SPONSOR,
-				           :prompt => "Select"  %>
+				           :prompt => (t 'select')  %>
 				</td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :intake %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.intake') %></td>
 				<td><%= date_select :intake, params[:intake], :order => [:month, :year],:start_year=>2007,:include_blank => true %></td>
 			</tr>
 			<tr >
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :end_training %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.end_training') %></td>
 				<td><%= date_select :end_training, params[:end_training], :include_blank => true %></td>
 			</tr>	
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :gender %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.gender')%></td>
 				<td><!--<%#= f.radio_button :gender,1 %>Male<%#= f.radio_button :gender,2 %>Female-->
 					<%= f.select :gender, 
 			           Student::GENDER,
-			           :prompt => "Select"  %>
+			           :prompt => (t 'select') %>
 				</td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :race %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.race') %></td>
 				<td><%= f.text_field :race %></td>
 			</tr>	
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :physical %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.physical') %></td>
 				<td><%= f.text_field :physical %></td>
 			</tr>	
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :blood_type %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.bloodtype') %></td>
 				<td><%= f.select :bloodtype,
 				           Student::BLOOD_TYPE,
-				           :prompt => "Select" %>
+				           :prompt => (t 'select') %>
 				</td>
 			</tr>	
 			<!--
@@ -86,7 +86,7 @@
 			</tr>-->
 		</table>	
 	<% end %>
-  <p><%= f.submit "Search" %>&nbsp;<font size=-2>Leaves all fields blank to display ALL records.</font></p>
+  <p><%= f.submit (t 'search') %>&nbsp;<font size=-2><%=t('equery.leaves_all_blank_all_records')%></font></p>
 <% end %>
 
 </div>
