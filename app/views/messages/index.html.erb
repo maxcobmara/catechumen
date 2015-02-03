@@ -8,7 +8,7 @@
 
 <div class="indextable">
 	<div class="toolbar">
-		<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Message') + (t 'messages.new'), new_message_path %></p>
+		<p><%= link_to image_tag("add.png", :border => 0, :title =>  (t 'messages.new')) + (t 'messages.new'), new_message_path %></p>
 	</div><br/>
 	
 	<h3><%= t 'messages.message_for_me' %></h3>
@@ -34,7 +34,7 @@
 						<% end %>
 				<% end %></td>
 	    
-			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => message %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => message %></td>
 			<!--<td width=10px><#%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => message %></td>
 			<td width=10px><#%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), message, :confirm => 'Are you sure?', :method => :delete %></td>-->
 		</tr>
@@ -58,9 +58,9 @@
 				<% end %></td>
 			<td><%=h l(message.created_at) %>
 	    <td><%=h message.message %></td>
-			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => message %></td>
-			<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => message %></td>
-			<td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), message, :confirm => 'Are you sure?', :method => :delete %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => message %></td>
+			<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => message %></td>
+			<td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), message, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 		</tr>
 		<% end %>
 	</table>

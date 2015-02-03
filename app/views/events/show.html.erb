@@ -1,43 +1,43 @@
 <div class="tform">
-	<H2>Campus Event Details</H2>
+	<H2><%=t('events.details')%></H2>
 	<table width=100%>
 		<tr>
-			<td class="leftcol"><label for="start_at">Event Start Date:</label></td>
-			<td> <%=h @event.start_at.strftime("%I:%M%p, %A,  %d %B %Y ") unless @event.start_at.nil? %></td>
+			<td class="leftcol"><label for="start_at"><%= t 'events.event_startdate' %>:</label></td>
+			<td> <%=h l(@event.start_at, :format=>"%I:%M%P, %A,  %d %B %Y ") unless @event.start_at.nil? %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="end_at">Event EndDate:</label></td>
-			<td> <%=h @event.end_at.strftime("%I:%M%p, %A,  %d %B %Y ") unless @event.end_at.nil? %></td>
+			<td class="leftcol"><label for="end_at"><%= t 'events.event_enddate' %>:</label></td>
+			<td> <%=h l(@event.end_at, :format=>"%I:%M%P, %A,  %d %B %Y ") unless @event.end_at.nil? %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="eventname">Event Name:</label></td>
+			<td class="leftcol"><label for="eventname"><%= t 'events.event_name' %>:</label></td>
 			<td><%=h @event.eventname %>
-				  (<%=h @event.event_is_publik? ? "Public" : "Private" %>)</td>
+				  (<%=h @event.event_is_publik? ? (t 'events.public') : (t 'events.private') %>)</td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="location">Location:</label></td>
+			<td class="leftcol"><label for="location"><%= t 'events.location' %>:</label></td>
 			<td><%=h @event.location %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="participants">Participants:</label></td>
+			<td class="leftcol"><label for="participants"><%= t 'events.participants' %>:</label></td>
 			<td> <%=h @event.participants %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="officiated ">Officiated By:</label></td>
+			<td class="leftcol"><label for="officiated "><%= t 'events.officiatedby' %>:</label></td>
 			<td><%=h @event.officiated %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="createdby ">Created By:</label></td>
+			<td class="leftcol"><label for="createdby "><%= t 'events.createdby' %>:</label></td>
 			<td><%=h @event.staff.blank? ? "-" : @event.staff.name %></td>
 		</tr>
 	</table>
 <BR>
 </div>
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
+<%= link_to (t 'edit'), edit_event_path(@event) %> |
+<%= link_to (t 'back'), events_path %>

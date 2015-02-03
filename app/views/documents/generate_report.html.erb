@@ -1,15 +1,18 @@
 <%#=@documents%>
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
-	<form action="#">
-			<script>
-			document.write("<input type='button' " +
-			"onClick='window.print()' " +
-			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
-	</form>
-	<!--for test only-<%#=@sd %>kiki<%#=@ed%>-->
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
+<form>
+<BR>
+<div id="hideLink">
+<%= link_to (t 'back'), documents_path %>
+</div>
 <div class="A4potrait" style="border: none;">
 <BR/>
 <table class="tlong">
@@ -57,5 +60,5 @@
 <BR/>	
 
 <div id="hideLink">
-<%= link_to 'Back', documents_path %>
+<%= link_to (t 'back'), documents_path %>
 </div>
