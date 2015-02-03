@@ -1,20 +1,20 @@
 <div>
-	<H3>STUDENT ATTENDANCES SEARCH :</h3> 
+	<H3><%=t('equery.student_attendance.search').upcase %> :</h3> 
 	
-	<%= link_to "Back", :controller=>'studentattendancesearches', :action => 'new', :searchstudentattendancetype => 1 %><br><br>
+	<%= link_to (t 'back'), :controller=>'studentattendancesearches', :action => 'new', :searchstudentattendancetype => 1 %><br><br>
 		
 		<!--additional heading-->
 		<% if @studentattendancesearch.schedule_id && @studentattendancesearch.schedule_id.blank? == false %>
 			<span style="text-decoration:underline;">
-				Search by Schedule / Class
+				<%=(t 'equery.search_by').titleize %> <%=t('equery.student_attendance.schedule_class')%>
 			</span>
 		<% elsif @studentattendancesearch.student_id && @studentattendancesearch.student_id.blank? == false %>
 			<span style="text-decoration:underline;">
-				Search by Student<br><br>
+				<%=(t 'equery.search_by').titleize %> <%=t('equery.student_attendance.student')%><br><br>
 			</span>
 		<% else %>
 			<span style="text-decoration:underline;">
-				Search by Intake : <%= @studentattendancesearch.studentattendances[0].weeklytimetable_detail.weeklytimetable.schedule_intake.name %>
+				<%=(t 'equery.search_by').titleize %> <%=t('student.intake')%> : <%= @studentattendancesearch.studentattendances[0].weeklytimetable_detail.weeklytimetable.schedule_intake.name %>
 			</span>
 		<% end %>
 		<!--additional heading-->
@@ -25,29 +25,29 @@
 				<!--start : SEARCH BY MATRIX NO-->
 				<table>
 					<tr>
-						<td>Name</td><td>:</td>
+						<td><%=t('student.name')%></td><td>:</td>
 						<td><%=@studentattendancesearch.studentattendances[0].student.name%></td>
 					</tr>
 					<tr>
-						<td>Programme</td><td>:</td>						<td><%=@studentattendancesearch.studentattendances[0].weeklytimetable_detail.weeklytimetable.schedule_programme.programme_list%></td>
+						<td><%=t('student.course_id')%></td><td>:</td>						<td><%=@studentattendancesearch.studentattendances[0].weeklytimetable_detail.weeklytimetable.schedule_programme.programme_list%></td>
 					</tr>
 					<tr>
-						<td>Intake</td><td>:</td>
+						<td><%=t('student.intake')%></td><td>:</td>
 						<td><%= @studentattendancesearch.studentattendances[0].weeklytimetable_detail.weeklytimetable.schedule_intake.name %></td>
 					</tr>
 					<tr>
-						<td>Matrix No </td><td>:</td><td><%=@studentattendancesearch.student_id%></td>
+						<td><%=t('student.matrixno')%> </td><td>:</td><td><%=@studentattendancesearch.student_id%></td>
 					</tr>
 				</table><br>
 				<table border=1 cellspacing=0 cellpadding=3>
 					<tr>
 						<th>No</th>
-						<th>Date</th>
-						<th>Time</th>
-						<th>Subject : Topic</th>
-						<th>Lecturer</th>
-						<th>Location</th>
-						<th>Attendance</th>
+						<th><%=t('equery.student_attendance.date')%></th>
+						<th><%=t('equery.student_attendance.time')%></th>
+						<th><%=t('equery.student_attendance.subject_topic')%></th>
+						<th><%=t('equery.student_attendance.lecturer')%></th>
+						<th><%=t('equery.student_attendance.location')%></th>
+						<th><%=t('equery.student_attendance.attendance')%></th>
 					</tr>
 					<% @sum_attend = 0 %>
 					<% @total_classes = @studentattendancesearch.studentattendances.count %>
@@ -70,17 +70,17 @@
 						</tr>
 					<% end %>
 					<tr>
-						<td colspan=6 align="right">Total Classes Attended :&nbsp;&nbsp;&nbsp;</td>
+						<td colspan=6 align="right"><%=t('equery.student_attendance.total_class_attended')%> :&nbsp;&nbsp;&nbsp;</td>
 						<td align="center"><%= @sum_attend %></td>
 					</tr>
 					<tr>
-						<td colspan=6 align="right">Attendance Percentage :&nbsp;&nbsp;&nbsp;</td>
+						<td colspan=6 align="right"><%=t('equery.student_attendance.attendance_percentage')%> :&nbsp;&nbsp;&nbsp;</td>
 						<td align="center"><%= number_with_precision((@sum_attend.to_f / @total_classes.to_f * 100).to_f,:precision=>2) %> %</td>
 					</tr>
 				</table>
 				<!--end : SEARCH BY MATRIX NO-->
 			<% else %>
-				Search by Matrix No requires complete & correct Matrix No.
+				<%=t('equery.student_attendance.matrixno_complete')%>
 			<% end %>
 		<% else %>
 		
@@ -89,21 +89,21 @@
 			<% @group_by_class_count= @group_by_class.count %>
 			<table>
 				<tr>
-					<td>Total Number of Student </td><td> : </td>
+					<td><%=t('equery.student.total_student')%> </td><td> : </td>
 					<td>
 						<%= @total_student = @studentattendancesearch.studentattendances.count%>
 						<% if @studentattendancesearch.schedule_id && @studentattendancesearch.schedule_id.blank? == false %>
 						<% else %>
-							(for <%=@group_by_class_count%> classes)
+							(<%=t('for')%> <%=@group_by_class_count%> <%=t('equery.student_attendance.class')%>)
 						<% end %>
 					</td>
 				</tr>
 				<tr>
-					<td>Programme </td><td> : </td>
+					<td><%=t('student.course_id')%> </td><td> : </td>
 					<td><%= @studentattendancesearch.studentattendances[0].weeklytimetable_detail.weeklytimetable.schedule_programme.programme_list %></td>
 				</tr>
 				<tr>
-					<td>Total Number of Classes</td><td> : </td><td><%=@group_by_class_count%></td>
+					<td><%=t('equery.student_attendance.total_classes')%></td><td> : </td><td><%=@group_by_class_count%></td>
 				</tr>
 			</table>
 			
@@ -125,7 +125,7 @@
 							<%#=WeeklytimetableDetail.find(klass).weeklytimetable_lecturer.name%> 
 							(<%#=WeeklytimetableDetail.find(klass).render_class_method%>)-->
 						</th>
-						<th style="border-right:none;">Attendance Percentage</th>
+						<th style="border-right:none;"><%=t('equery.student_attendance.attendance_percentage')%></th>
 						<th style="border-left:none;">
 							<%= number_with_precision(((@total_student.to_i-@absent.to_i) / @total_student.to_i* 100).to_f,:precision=>2) %> %
 						</th>
@@ -140,7 +140,7 @@
 								<% if sa.attend == true %> 
 									&#10003;
 								<% else %>
-									Absent
+									<%=t('equery.student_attendance.absent')%>
 								<% end %>
 							</td>
 						</tr>
