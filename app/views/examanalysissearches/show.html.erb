@@ -1,58 +1,58 @@
 <div>
-	<H3>EXAMINATION ANALYSIS BY PAPER SEARCH :</h3>
+	<H3><%=t('equery.examanalysis.search')%> :</h3>
 		
-		<%= link_to "Back", :controller=>'examanalysissearches', :action => 'new', :searchexamanalysistype => 1 %><br><br>
+		<%= link_to (t 'back'), :controller=>'examanalysissearches', :action => 'new', :searchexamanalysistype => 1 %><br><br>
 		
 		<!--additional heading-->
 		<% if @examanalysissearch.examtype &&  @examanalysissearch.examtype.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Examination Type : <b><%=  (Exam::EXAMTYPE.find_all{|disp, value| value == @examanalysissearch.examtype}).map {|disp, value| disp} %></b><br><br>
+				<%=t('equery.search_by')%> <%=t('examanalysis.examtype')%> : <b><%=  (Exam::EXAMTYPE.find_all{|disp, value| value == @examanalysissearch.examtype}).map {|disp, value| disp} %></b><br><br>
 			</span>
 		<% end %>
 		<% if @examanalysissearch.subject_id &&  @examanalysissearch.subject_id.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Subject : <b><%= Programme.find(@examanalysissearch.subject_id).subject_list %></b><br><br>
+				<%=t('equery.search_by')%> <%=t('examanalysis.subject_id')%> : <b><%= Programme.find(@examanalysissearch.subject_id).subject_list %></b><br><br>
 			</span>
 		<% end %>
 		<% if @examanalysissearch.programme_id &&  @examanalysissearch.programme_id.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Programme : <b><%= Programme.find(@examanalysissearch.programme_id).programme_list %></b><br><br>
+				<%=t('equery.search_by')%> <%=t('examanalysis.programme_id')%> : <b><%= Programme.find(@examanalysissearch.programme_id).programme_list %></b><br><br>
 			</span>
 		<% end %>
 		<% if @examanalysissearch.examon &&  @examanalysissearch.examon.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Examination Date : <b><%= @examanalysissearch.examon.strftime("%d-%m-%Y") %></b><br><br>
+				<%=t('equery.search_by')%> <%=t('examanalysis.examon')%> : <b><%= @examanalysissearch.examon.strftime("%d-%m-%Y") %></b><br><br>
 			</span>
 		<% end %>
 		<!--additional heading-->
 		
 		<!--use this condition as EXAM DATE NOT EXIST IN EXAMANALYSIS TABLE, has to rely on exam date in EXAM TABLE-->
 		<% if (@examanalysissearch.examon &&  @examanalysissearch.examon.blank? ==false) && (@examanalysissearch.examanalyses.count == Examanalysis.all.count) && (Exam.find_by_exam_on(@examanalysissearch.examon)==nil) %>
-			Search return no result.
+			<%=t('equery.no_result')%>
 		<% else %>
 	
-			Total of Examination Analysis : <%=@examanalysissearch.examanalyses.count %><br><br>
+			<%=t('equery.examanalysis.total')%> : <%=@examanalysissearch.examanalyses.count %><br><br>
 
 			<% if @examanalysissearch.examanalyses.count > 0 %>
 				<table border=1 cellspacing=0 cellpadding=3>
 					<tr>
 						<th>No</th>
-						<th>Examination Type</th>
-						<th>Programme</th>
-						<th>Subject</th>
-						<th>Examination Date</th>
-						<th>Grade A</th>
-						<th>Grade A-</th>
-						<th>Grade B+</th>
-						<th>Grade B</th>
-						<th>Grade B-</th>
-						<th>Grade C+</th>
-						<th>Grade C</th>
-						<th>Grade C-</th>
-						<th>Grade D+</th>
-						<th>Grade D</th>	
-						<th>Grade E</th>
-						<th>Links</th>
+						<th><%=t('examanalysis.examtype')%></th>
+						<th><%=t('examanalysis.programme_id')%></th>
+						<th><%=t('examanalysis.subject_id')%></th>
+						<th><%=t('examanalysis.examon')%></th>
+						<th><%=t('examanalysis.grade')%> A</th>
+						<th><%=t('examanalysis.grade')%> A-</th>
+						<th><%=t('examanalysis.grade')%> B+</th>
+						<th><%=t('examanalysis.grade')%> B</th>
+						<th><%=t('examanalysis.grade')%> B-</th>
+						<th><%=t('examanalysis.grade')%> C+</th>
+						<th><%=t('examanalysis.grade')%> C</th>
+						<th><%=t('examanalysis.grade')%> C-</th>
+						<th><%=t('examanalysis.grade')%> D+</th>
+						<th><%=t('examanalysis.grade')%> D</th>	
+						<th><%=t('examanalysis.grade')%> E</th>
+						<th><%=t('equery.links')%></th>
 					</tr>
 					<% @examanalysissearch.examanalyses.each_with_index do |examanalysis, index|%>
 						<tr>
@@ -72,7 +72,7 @@
 							<td align="center"><%=examanalysis.gradeDplus%></td>
 							<td align="center"><%=examanalysis.gradeD%></td>
 							<td align="center"><%=examanalysis.gradeE%></td>
-							<td><%= link_to "View",:controller=>'examanalyses', :action => 'show', :id => examanalysis.id %></td>
+							<td><%= link_to (t 'show'),:controller=>'examanalyses', :action => 'show', :id => examanalysis.id %></td>
 						</tr>
 					<% end %>
 				</table>	
