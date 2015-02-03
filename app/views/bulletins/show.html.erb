@@ -15,8 +15,8 @@
 			 <td><%=h check_kin {@bulletin.staff.mykad_with_staff_name} %></td>
 		</tr>	
 		<tr>
-			<td class="leftcol"><label for="publishdt"><b>Publish Date:</b></label></td>
-			<td> <%=h @bulletin.publishdt.strftime("%d-%m-%Y") %></td>
+			<td class="leftcol"><label for="publishdt"><b><%= t 'bulletin.publishdate' %>:</b></label></td>
+			<td> <%=h l(@bulletin.publishdt, :format=>"%d %b %Y") %></td>
 		</tr>	
 		<tr>
 			<td class="leftcol"><label for="data"><b><%= t 'bulletin.uploaded' %> :</b></label></td>
@@ -25,7 +25,7 @@
 			    <%= link_to (t 'bulletin.download'), @bulletin.data.url %> ||
 		        <%= link_to "ALT", @bulletin.data.url %>
 			    <% else %>
-			    No File Available
+			    <%=t('no_file_available')%>
 			    <% end %></td>
 		</tr>
 	</table>

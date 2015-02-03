@@ -5,12 +5,15 @@
 		<h2 class="left"><%= t 'bulletin.list' %></h2>
 		<div class="right">
 			<% form_tag bulletins_path, :method => 'get' do %>
-			<%= text_field_tag :search, params[:search], :placeholder => "Headline, Content" %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'bulletin.headline_content') %>
 			<%= submit_tag I18n.t('search'), :headline => nil %>
 			<% end %>
 		</div>
 	</div>
 </div>
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'bulletin.new')) + (t 'bulletin.new'), new_bulletin_path %></p>
+</div><BR><BR>
 <div class="indextable">
 	 <table>
 		<tr>
@@ -26,10 +29,10 @@
     <td><%=h bulletin.headline %></td>
     <td><%=h truncate(bulletin.content, :length => 60) %></td>
     <td><%=h check_kin {bulletin.staff.mykad_with_staff_name} %></td>
-    <td><%=h bulletin.publishdt %></td>
-    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => bulletin %></td>
-    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => bulletin %></td>
-	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), bulletin, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%=h l(bulletin.publishdt, :format=>"%d %b %Y") %></td>
+    <td width=10px ><%= link_to image_tag("document.png", :border => 0, :title=>(t 'show')), :action => 'show', :id => bulletin %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title=>(t 'edit')), :action => 'edit', :id => bulletin %></td>
+	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), bulletin, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   </tr>
 <% end %>
 </table>

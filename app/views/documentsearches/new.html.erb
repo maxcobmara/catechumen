@@ -1,61 +1,59 @@
 <div class="tform">
-	<H2>Document Search</H2>
+	<H2><%=t('equery.document.search')%></H2>
 <% form_for @documentsearch do |f| %>
 	<%= f.error_messages %>
 	<table width=100% >
 		<% if @searchdoctype=='1' || @searchdoctype==1 %>
 			<%= hidden_field_tag :method,  1 %>
-			<tr><td colspan=2>Search Documents By :</td></tr>
+			<tr><td colspan=2><%=t('equery.document.search_by')%> :</td></tr>
 			<tr>
-				<td class="leftcol"><%= f.label :document_reference_no %></td>
+				<td class="leftcol"><%= f.label (t 'document.refno') %></td>
 				<td><%= f.text_field :refno %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><%= f.label :title %></td>
+				<td class="leftcol"><%= f.label (t 'document.title2') %></td>
 				<td><%= f.text_field :title %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><%= f.label :from %></td>
+				<td class="leftcol"><%= f.label (t 'document.from') %></td>
 				<td><%= f.text_field :sender %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><%= f.label :file_reference %></td>
-				<td><%= f.collection_select :file_id, Cofile.find(:all, :conditions=>["id IN (?)",Document.all.map(&:file_id)],:order => :cofileno), :id, :file_no_and_name, :include_blank => "Select" %></td>
+				<td class="leftcol"><%= f.label (t 'equery.document.file_reference') %></td>
+				<td><%= f.collection_select :file_id, Cofile.find(:all, :conditions=>["id IN (?)",Document.all.map(&:file_id)],:order => :cofileno), :id, :file_no_and_name, :include_blank => (t 'select') %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><%= f.label :letter_date %></td>
+				<td class="leftcol"><%= f.label (t 'document.letterdt') %></td>
 				<td><%= date_select :letterdt, params[:letterdt], :include_blank => true %> 
 					<%= date_select :letterdtend, params[:letterdtend], :include_blank => true %>
 				</td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><%= f.label :received_date %></td>
+				<td class="leftcol"><%= f.label (t 'document.letterxdt') %></td>
 				<td><%= date_select :letterxdt, params[:letterxdt], :include_blank => true %> 
 					<%= date_select :letterxdtend, params[:letterxdtend], :include_blank => true %>
 				</td>
 			</tr>
 			<tr>
-				<td class="leftcol"><%= f.label :category %></td>
-				<td><%= f.select :category,Document::CATEGORY,:prompt => "Select"  %></td>
+				<td class="leftcol"><%= f.label (t 'document.category') %></td>
+				<td><%= f.select :category,Document::CATEGORY,:prompt => (t 'select') %></td>
 			</tr>
-
 			<tr>
-				<td class="leftcol"><%= f.label :list_all_documents %></td>
+				<td class="leftcol"><%= f.label (t 'equery.document.list_all_documents') %></td>
 				<td>
 					<%= f.check_box :from,:checked=>"checked",:class => 'all_records', :id=> 'all_checker' %>
-					&nbsp;<font size=-2><b>Tick</b> & leaves other fields 'blank' to display ALL record. 
-					<b>Untick</b> to select document by (closed) status.</font> 
+					&nbsp;<font size=-2><b><%=t('equery.tick')%></b><%=t('equery.leaves_other_blanks')%>
+					<b><%=t('equery.untick')%></b><%=t('equery.document.select_by_close')%></font> 
 				</td>
 			</tr>
 			<tr class="closed_item", style="display: none;">
-				<td class="leftcol">Closed</td>
-				<td><%=f.select :closed, ['Yes','No']%><%#=f.select :closed, ['True','False']%></td>	
+				<td class="leftcol"><%=t('equery.document.closed')%></td>
+				<td><%=f.select :closed, options_for_select([[(t 'yes2'), 'Yes'], [(t 'no2'), 'No']]) %><%#=f.select :closed, ['True','False']%></td>
 			</tr>
-		
 		<% end %>
 	</table>
 
-  <p><%= f.submit "Search"%></p>
+  <p><%= f.submit (t 'search') %></p>
 <% end %>
 </div>
 

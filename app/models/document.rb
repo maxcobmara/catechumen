@@ -113,18 +113,18 @@ attr_accessor :action_type
 #----------------Coded List----------------------------------- 
 CATEGORY = [
         #  Displayed       stored in db
-        [ "Surat",      "1" ],
-        [ "Memo",       "2" ],
-        [ "Pekeliling", "3" ],
-        [ "Lain-Lain",  "4" ],
-        [ "e-Mel",      "5" ]
+        [ I18n.t('document.letter'),      "1" ],
+        [ I18n.t('document.memo'),       "2" ],
+        [ I18n.t('document.circular'), "3" ],
+        [ I18n.t('document.others'),  "4" ],
+        [ I18n.t('document.email'),      "5" ]
  ]
  
  ACTION = [
          #  Displayed       stored in db
-         [ "Segera","1" ],
-         [ "Biasa","2" ],
-         [ "Makluman", "3" ]
+         [ I18n.t('document.immediate'),"1" ],
+         [ I18n.t('document.normal'),"2" ],
+         [ I18n.t('document.information'), "3" ]
   ]
   
   def stafffiled_details 
