@@ -1,9 +1,9 @@
 <% unless @programme_id.blank? %>
 		<%= select_tag "examquestion[subject_id]",
-						"<option>Select subject</option>"+options_from_collection_for_select(@subjects,:id,:subject_list),
+						"<option>"+t('examquestion.select_a_subject1')+"</option>"+options_from_collection_for_select(@subjects,:id,:subject_list),
 						{:onchange => remote_function(:update => "examquestion_topic_list", 
 						:url=>{:action =>'view_topic'},
 						:with => "'subjectid='+$('"+"examquestion_subject_id"+"').value ")}%> 
 <% else %>
-		&nbsp;&nbsp; Select a programme first
+		&nbsp;&nbsp; <%=t('examquestion.select_a_programme2')%>
 <% end%>

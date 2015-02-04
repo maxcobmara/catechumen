@@ -1,34 +1,34 @@
 <HR>
-<H2>Editor Details</H2>
+<H2><%=t('examquestion.editing_details')%></H2>
 	<table>
 		<tr>
-			<td class="leftcol"><label for="editor_id"><b>Editor:</b></label></td>
+			<td class="leftcol"><label for="editor_id"><b><%=t('examquestion.editor_id')%>:</b></label></td>
 			<td><%#=@examquestion.question_editor %><%= f.collection_select :editor_id, Staff.find(:all, :order => "staffgrade_id DESC", :conditions => ["id IN (?)", @examquestion.question_editor]), :id, :name, :include_blank => 'Please select editor', :selected => current_login.staff_id %></td>
 		</tr>
 	</table>
 
 <table>
 	<tr>
-		<td class="leftcol">Conformity</td>
-		<td><%= f.check_box :conform_curriculum %> Curriculum</td>
-		<td><%= f.check_box :conform_specification %> Specification</td>
-		<td><%= f.check_box :conform_opportunity %> Opportunity</td>
+		<td class="leftcol"><%=t('examquestion.conformity')%></td>
+		<td><%= f.check_box :conform_curriculum %> <%=t('examquestion.conform_curriculum')%></td>
+		<td><%= f.check_box :conform_specification %> <%=t('examquestion.conform_specification')%></td>
+		<td><%= f.check_box :conform_opportunity %> <%=t('examquestion.conform_opportunity')%></td>
 	</tr>
 	<tr>
-		<td class="leftcol">Accuracy</td>
-		<td><%= f.check_box :accuracy_construct %> Construct</td>
-		<td><%= f.check_box :accuracy_topic %> Topic</td>
-		<td><%= f.check_box :accuracy_component %> Component</td>
+		<td class="leftcol"><%=t('examquestion.accuracy')%></td>
+		<td><%= f.check_box :accuracy_construct %> <%=t('examquestion.accuracy_construct')%> </td>
+		<td><%= f.check_box :accuracy_topic %> <%=t('examquestion.accuracy_topic')%> </td>
+		<td><%= f.check_box :accuracy_component %> <%=t('examquestion.accuracy_component')%> </td>
 	</tr>
 	<tr>
-		<td class="leftcol">Fit</td>
-		<td><%= f.check_box :fit_difficulty %> Difficulty</td>
-		<td><%= f.check_box :fit_important %> Importance</td>
-		<td><%= f.check_box :fit_fairness %> Fairness</td>
+		<td class="leftcol"><%=t('examquestion.fit')%></td>
+		<td><%= f.check_box :fit_difficulty %> <%=t('examquestion.fit_difficulty')%></td>
+		<td><%= f.check_box :fit_important %> <%=t('examquestion.fit_important')%></td>
+		<td><%= f.check_box :fit_fairness %> <%=t('examquestion.fit_fairness')%></td>
 	</tr>
 	
 	<tr>
-	 	<td class="leftcol"><label for="editdt"><b>Editor Date:</b></label></td>
+	 	<td class="leftcol"><label for="editdt"><b><%=t('examquestion.editdt')%>:</b></label></td>
 		<td><%= f.date_select :editdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 	</tr>
 </table>
