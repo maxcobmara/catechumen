@@ -11,7 +11,7 @@ class TimetablePeriod < ActiveRecord::Base
   #[ "Friday",    2 ]
 
   def timing
-    "#{l(start_at, :format => "%l:%M %P")}"+" -"+"#{l(end_at, :format => "%l:%M %P")}"
+    "#{I18n.l(start_at, :format => "%l:%M %P")}"+" -"+"#{I18n.l(end_at, :format => "%l:%M %P")}"
   end 
   
 end

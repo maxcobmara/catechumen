@@ -67,11 +67,11 @@
 				</tr>
 				<tr>
 					<td colspan="1" class="aaab">Tahun dan Semester Pelatih</td>
-					<td colspan="5"class="aaa">: Tahun <%=h @lesson_plan.year %> Semester <%=h @lesson_plan.semester %></td>
+					<td colspan="5" class="aaa">: Tahun <%=h @lesson_plan.year %> Semester <%=h @lesson_plan.semester %></td>
 				</tr>
 				<tr>
 					<td colspan="1" class="aaab">Bilik / Kelas / Makmal</td>
-					<td colspan="5"class="aaa">: <%=h @lesson_plan.schedule_item.weeklytimetable_location.name %></td>
+					<td colspan="5" class="aaa">: <%=h @lesson_plan.schedule_item.weeklytimetable_location.name %></td>
 				</tr>
 				<tr>
 					<td colspan="2"> &nbsp;</th>
@@ -113,7 +113,7 @@
 				</tr>
 				<tr>
 					<td class="no">&nbsp; </td>
-					<td class="desc"colspan="5"><%=h @lesson_plan.training_aids %></th>
+					<td class="desc" colspan="5"><%=h @lesson_plan.training_aids %></th>
 				</tr>
 				<tr>
 					<td colspan="2"> &nbsp;</th>
@@ -134,7 +134,11 @@
 						<td colspan="4">&nbsp;</th>
 					</tr>
 					<tr>
-						<td class="aaab" colspan="6">Tandatangan Pengajar :</th>
+						<td class="aaab" colspan="6">Tandatangan Pengajar :
+							<% if @lesson_plan.report_submit != true %>
+								<font color="red"><%=t('lesson_plan.report_not_submitted')%></font>
+							<% end %>
+						</th>
 					</tr>
 					<tr style="height:50px;">
 						<td colspan="2"> &nbsp;</th>
@@ -142,7 +146,7 @@
 					</tr>
 					<tr>
 						<td class="aaab" >Nama Pengajar :</td>
-						<td class="desc"colspan="5"><%= @lesson_plan.lessonplan_owner.name%></td>
+						<td class="desc" colspan="5"><%= @lesson_plan.lessonplan_owner.name%></td>
 					</tr>
 					<tr>
 						<td colspan="2"> &nbsp;</th>

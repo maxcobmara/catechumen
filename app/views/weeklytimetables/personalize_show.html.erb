@@ -21,11 +21,11 @@
 			</tr>
 			<tr>
 				<td class="leftcol"><label><%=t('weeklytimetable.startdate')%>:</label></td>
-				<td><%=h item.startdate %></td>				
+				<td><%=h l(item.startdate) %></td>				
 			</tr>
 			<tr>
 				<td class="leftcol"><label><%=t('weeklytimetable.enddate')%>:</label></td>
-				<td><%=h item.enddate %></td>				
+				<td><%=h l(item.enddate) %></td>				
 			</tr>
 		</table>
 </fieldset>
@@ -89,7 +89,8 @@
 				<% for periods in row_things %>
 					<% if periods.day_name == 1 %>
 						<td align=center style="border:1px solid black; text-align:center; padding:4px;background-color:#FEE;">
-							<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
+<!-- 							<%= l(periods.start_at )%> - <%= l(periods.end_at) %> -->
+							<%= periods.timing %><BR>
 						</td>
 					<% else %>
 					<% end %>
@@ -106,10 +107,10 @@
 		<% detailing.each_with_index do |j,index|%>
 		<% if index==0%>
 		<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-			<% if count2==1 %><%=t(:'date.day_names')[0]%><br> <%=j.weeklytimetable.startdate.strftime('%d-%b-%Y') %>
-			<% elsif count2==2 %><%=t(:'date.day_names')[1]%><br><%=(j.weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
-			<% elsif count2==3 %><%=t(:'date.day_names')[2]%><br><%=(j.weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
-			<% elsif count2==4 %><%=t(:'date.day_names')[3]%><br><%=(j.weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
+			<% if count2==1 %><%=t(:'date.day_names')[0]%><br> <%=l(j.weeklytimetable.startdate, :format => '%d-%b-%Y') %>
+			<% elsif count2==2 %><%=t(:'date.day_names')[1]%><br><%=l((j.weeklytimetable.startdate+1), :format => '%d-%b-%Y')  %>
+			<% elsif count2==3 %><%=t(:'date.day_names')[2]%><br><%=l((j.weeklytimetable.startdate+2), :format => '%d-%b-%Y')  %>
+			<% elsif count2==4 %><%=t(:'date.day_names')[3]%><br><%=l((j.weeklytimetable.startdate+3), :format => '%d-%b-%Y')  %>
 			<% end %>		
 		</td>
 		
@@ -190,11 +191,13 @@
 				
 				<% if colfriday == 4 || colfriday == 5 || classes_tospan.include?(colfriday) %>
 					<td colspan="2" style="border:1px solid black; text-align:center; padding:4px;background-color:#FEE;">
-						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
+<!-- 						<%= l(periods.start_at )%> - <%= l(periods.end_at) %> -->
+						<%= periods.timing %><BR>
 					</td>
 				<% else %>
 					<td align=center style="border:1px solid black; text-align:center; padding:4px;background-color:#FEE;">
-						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
+<!-- 						<%= l(periods.start_at )%> - <%= l(periods.end_at) %> -->
+						<%= periods.timing %><BR>
 					</td>
 				<% end %>
 			<% else %><% end %>
@@ -213,7 +216,7 @@
 		<% detailing.each_with_index do |j,index|%>
 			<% if index==0%>
 				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
-					<%=t(:'date.day_names')[4]%><br><%=(j.weeklytimetable.startdate+4).strftime('%d-%b-%Y')  %>
+					<%=t(:'date.day_names')[4]%><br><%=l((j.weeklytimetable.startdate+4), :format => '%d-%b-%Y')  %>
 				</td>
 				<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
 				<% @column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count%><!--same as line 91-->
@@ -319,7 +322,7 @@
 				<td align=center style="border:1px solid black;text-align:center; padding:4px; vertical-align:middle;">
 					<%#=(@weekdays_end+row2).try(:strftime, "%A") %>
 					<%=t(:'date.day_names')[@daycount+row2]%><!--array start at 0, 4 shall include thurs-->
-					<br><%=(@weekdays_end+row2).try(:strftime, "%d-%b-%Y") %>
+					<br><%=l((@weekdays_end+row2), :format => "%d-%b-%Y") %><%#=(@weekdays_end+row2).try(:strftime, "%d-%b-%Y") %>
 				</td>
 				<!--Content - (ADDITIONAL - Weekends classes)
 				span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column-->

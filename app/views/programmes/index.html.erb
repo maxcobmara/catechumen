@@ -32,20 +32,16 @@
 			<td><%=h check_kin_blank {(Programme::COURSE_STATUS.find_all{|disp, value| value == programme.status}).map {|disp, value| disp} }%></td>
 			<td><%=h programme.duration %> <%=h check_kin_blank {(Programme::DURATION_TYPES.find_all{|disp, value| value == programme.duration_type}).map {|disp, value| disp} }%>
 			<td width=10%><%= link_to "(+)", new_programme_path(:parent_id => programme)%></td>
-      <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => programme %></td>
-      <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => programme %></td>
-      <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), programme, :confirm => 'Are you sure?', :method => :delete %></td>
+      <td width=10px><%= link_to image_tag("document.png", :border => 0, :title=>(t 'show')), :action => 'show', :id => programme %></td>
+      <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => programme %></td>
+      <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), programme, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 	  </tr>
 		<% end %>
 	</tbody>
 </table>
 <br /><br />
-
+<%= link_to t('programme.new_root'), new_programme_path %>
 <br /><br />
-
-<%= link_to t('programme.new'), new_programme_path %>
-
-
 </div>
 
 <script type="text/javascript">

@@ -5,7 +5,7 @@
 	<H2><%=t('lesson_plan.reporting')%></H2>
 	<%=render :partial => 'show_main_report' %>
 
-	<% if @lesson_plan.lecturer == Login.current_login.staff_id && @lesson_plan.report_submit != true %>
+	<% if @lesson_plan.report_submit != true && ((@lesson_plan.lecturer == Login.current_login.staff_id) || @is_admin)%>
 		<BR>
 		<H2><%=t('lesson_plan.report_details')%></H2>
 	

@@ -42,22 +42,22 @@
     <td><%=h lesson_plan.semester %></td>
     <td><%=h lesson_plan.schedule_item.try(:weeklytimetable_topic).try(:subject_with_topic) %><%#=h lesson_plan.lessonplan_topic.subject_with_topic %></td>
     <td><%=h lesson_plan.lecture_title %></td>
-    <td><%=h lesson_plan.lecture_date %></td>
+    <td><%=h l(lesson_plan.lecture_date, :format => '%d %B %Y') %></td>
     <td><%=h lesson_plan.schedule_item.try(:get_start_time) %><%#=h lesson_plan.start_time.strftime("%H:%M") %></td>
     <td><%=h lesson_plan.schedule_item.try(:get_end_time) %><%#=h lesson_plan.end_time.strftime("%H:%M") %></td>
 	
 	<td><%=h lesson_plan.report_submit? ? image_tag("tick.png") : image_tag("cross.png") %></td>
 	<td><%=h lesson_plan.report_endorsed? ? image_tag("tick.png") : image_tag("cross.png") %></td>
-	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => lesson_plan %></td>
+	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => lesson_plan %></td>
 	<td width=10px>
 	<% if (lesson_plan.report_submit != true && lesson_plan.prepared_by == Login.current_login.staff_id) || (lesson_plan.prepared_by == Login.current_login.staff_id && lesson_plan.hod_rejected? == true && lesson_plan.report_submit==nil) || (lesson_plan.report_submit == false&&Login.current_login.staff_id) || (lesson_plan.report_submit == nil && Login.current_login.staff_id) %>
-		<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'lessonplan_reporting', :id => lesson_plan %>
+		<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'lessonplan_reporting', :id => lesson_plan %>
 	<% elsif (lesson_plan.report_submit == true && lesson_plan.endorsed_by == Login.current_login.staff_id && (lesson_plan.report_endorsed != true||lesson_plan.report_endorsed==false))  %>
-		<%= link_to image_tag("approval.png", :border => 0), :action => 'lessonplan_reporting', :id => lesson_plan %>
+		<%= link_to image_tag("approval.png", :border => 0, :title => (t 'approval')), :action => 'lessonplan_reporting', :id => lesson_plan %>
 	<% end %>
 	</td>
-	    <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Lesson Plan'), :action => 'lesson_plan_report', :id => lesson_plan %></td>
-	<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), lesson_plan, :confirm => 'Are you sure?', :method => :delete %></td>
+	    <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => (t 'lesson_plan.lesson_report')), :action => 'lesson_plan_report', :id => lesson_plan %></td>
+	<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), lesson_plan, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   </tr>
   <% end %>
 <% end %>
