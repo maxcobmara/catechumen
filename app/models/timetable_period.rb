@@ -3,12 +3,15 @@ class TimetablePeriod < ActiveRecord::Base
   
   DAY_CHOICE = [
        #  Displayed       stored in db
-       [ "Mon-Thur",  1 ],
-       [ "Friday",    2 ]
+       [ I18n.t(:'date.abbr_day_names')[0]+"-"+I18n.t(:'date.abbr_day_names')[3] ,  1 ],
+       [ I18n.t(:'date.abbr_day_names')[4],    2 ]
   ]
-  
+
+  #[ "Mon-Thur",  1 ],
+  #[ "Friday",    2 ]
+
   def timing
-    "#{start_at.strftime("%l:%M %p")}"+" -"+"#{end_at.strftime("%l:%M %p")}"
+    "#{l(start_at, :format => "%l:%M %P")}"+" -"+"#{l(end_at, :format => "%l:%M %P")}"
   end 
   
 end

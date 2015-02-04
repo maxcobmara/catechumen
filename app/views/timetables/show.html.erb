@@ -1,30 +1,30 @@
 <div class="tform">
 
 <fieldset>
-	<legend class='togvis'>Timetable</legend>
+	<legend class='togvis'><%=t('timetable.title')%></legend>
 		<table width=85% >
 			<tr>
-				<td class="leftcol"><label>Code:</label></td>
+				<td class="leftcol"><label><%=t('timetable.code')%>:</label></td>
 				<td><%=h @timetable.code %></td>				
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label>Name:</label></td>
+				<td class="leftcol"><label><%=t('timetable.name')%>:</label></td>
 				<td><%=h @timetable.name %></td>				
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label>Description:</label></td>
+				<td class="leftcol"><label><%=t('timetable.description')%>:</label></td>
 				<td><%=h @timetable.description %></td>				
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label>Name:</label></td>
+				<td class="leftcol"><label><%=t('timetable.created_by')%>:</label></td>
 				<td><%=h @timetable.creator.name %></td>				
 			</tr>
 		</table>
 		<BR/><BR/>
-		<legend class='togvis'>Period Timings</legend>
+		<legend class='togvis'><%=t('timetable.period_timings')%></legend>
 		<BR>
 		<table width=100% style="border:none">
 		<!--<#% for timetable in @timetable.timetable_periods %>-->
@@ -39,7 +39,7 @@
 					<td align=center style="border:1px solid black; text-align:center; padding:4px;">
 						<strong><%= periods.sequence %></strong><BR>
 						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
-						<%= periods.is_break? ? "Break" : "" %></td>
+						<%= periods.is_break? ? (t 'timetable.is_break') : "" %></td>
 				<% else %><% end %>
 			<% end %>
 			<% for periods in row_things %>
@@ -47,7 +47,7 @@
 					<td align=center style="border:1px solid black; text-align:center; padding:4px;">
 						<strong><%= periods.sequence %></strong><BR>
 						<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
-						<%= periods.is_break? ? "Break" : "" %></td>
+						<%= periods.is_break? ? (t 'timetable.is_break')  : "" %></td>
 				<% else %><% end %>
 			<% end %>
 
@@ -61,5 +61,5 @@
 
 </div>
 
-<%= link_to 'Edit', edit_timetable_path(@timetable) %> |
-<%= link_to 'Back', timetables_path %>
+<%= link_to (t 'edit'), edit_timetable_path(@timetable) %> |
+<%= link_to (t 'back'), timetables_path %>
