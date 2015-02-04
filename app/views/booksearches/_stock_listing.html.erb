@@ -1,15 +1,15 @@
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
 	<form action="#">
-			<script>
-			document.write("<input type='button' " +
-			"onClick='window.print()' " +
-			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
+		<script>
+		  document.write("<input type='button' " +
+		  "onClick='window.print()' " +
+		  "class='printbutton' " +
+		  "value='<%=escape_javascript(t 'print')%>'/>");
+		</script>
 	</form>
 	
-	<%= link_to "Back", :controller=>'booksearches', :action => 'new', :searchbooktype => 2 %><br><br>
+	<%= link_to (t 'back'), :controller=>'booksearches', :action => 'new', :searchbooktype => 2 %><br><br>
 	
 <div class="A4potrait" style="border: none;">
 <BR/>
@@ -17,16 +17,16 @@
 	<thead>
 				<%@book_by_class2 = @booksearch.sbooks %>
 				<tr>
-					<th colspan=6><b>STOCK SUMMARY<!--BOOK LISTING--></b></th>
+					<th colspan=6><b><%=(t 'equery.book.stock_summary').upcase %><!--BOOK LISTING--></b></th>
 				</tr>
 				<tr>
 					<th colspan=6 style="text-align:left;">
-						Total Books  : <%=@book_by_class2.count%> &nbsp;&nbsp;&nbsp;
+						<%=t('equery.book.total')%>  : <%=@book_by_class2.count%> &nbsp;&nbsp;&nbsp;
 						<% if @booksearch.classno != '' %>
 							<%="Search by Class No (LC) / (NLM) : " + @booksearch.classno %> &nbsp;&nbsp;&nbsp;
 						<% end %>
 						<% if @booksearch.accessionno_start != '' %> 
-							Search by Accession No ( 
+							<%=t('equery.book.search_by_accessionno')%> ( 
 							<%= @booksearch.accessionno_start %> 
 							<% if @booksearch.accessionno_end %>-
 								<%= @booksearch.accessionno_end %>)
@@ -43,23 +43,23 @@
 		<tr><!--
 			<td class="book_title2"><%#= t 'book.tagno' %></td>
 			<td class="book_desc2">: <%#=h book_class2.tagno %></td>-->
-			<td class="book_title2"><label for="classlcc"><%= t 'book.classno' %> (LC) / (NLM)</label></td>
+			<td class="book_title2"><label for="classlcc"><%= t 'book.classno' %></label></td>
 			<td class="book_desc2">: <%=h book_class2.classlcc %></td>
 			<td class="book_title2">Accession No</td>
 			<td class="book_desc2">: <%= book_class2.accessionno %></td>
 		</tr> 
 
 		<tr>
-			<td class="book_title2"><label for="isbn">ISBN / ISSN No</label></td>
+			<td class="book_title2"><label for="isbn">ISBN / ISSN</label></td>
 			<td class="book_desc2">: <%=h book_class2.isbn %></td>
 
-			<td class="book_title2"><label for="roman">Physical Description<%#= t 'book.roman' %></label></td>
+			<td class="book_title2"><label for="roman"><%=t('book.description')%><%#= t 'book.roman' %></label></td>
 			  <td class="book_desc2">: <%=h book_class2.roman %></td>
 			<!--<td rowspan=8 align=left style="border:1px solid black;" colspan=2>-->
 			<td rowspan=3 align=left style="border:1px solid black;" colspan=2><% if book_class2.photo.exists? then %>
 			  <%= image_tag book_class2.photo.url, :class => 'show-image'%>
 			<% else %>
-			  No Photo<BR>Available
+			  <%=t('equery.book.no_photo')%><BR><%=t('equery.book.available')%>
 			<% end %></td>
 		</tr>
 
@@ -151,6 +151,6 @@
 	
 
 <div id="hideLink">
-<%= link_to 'Back', books_path %>
+<%= link_to (t 'equery.book.back_to_book'), books_path %>
 </div>
 

@@ -1,8 +1,8 @@
 <!--<div style="padding-left:50px;padding-top:20px;padding-bottom:20px;border-top:solid 1px;border-bottom:solid 1px;border-left:solid 1px;border-right:solid 1px;">-->
 <div>
-	<H3>STUDENT SEARCH :</h3>
+	<H3><%=t('equery.student.search').upcase %> :</h3>
 	
-	<%= link_to "Back", :controller=>'studentsearches', :action => 'new', :searchstudenttype => 1 %><br>
+	<%= link_to (t 'back'), :controller=>'studentsearches', :action => 'new', :searchstudenttype => 1 %><br>
 		
 	<%# if !@studentsearch.name.blank? && @studentsearch.course_id.blank? %>	<!--semester given but course_id - blank-->
 		<!--Search return no result. <br><b>Programme</b> is compulsory upon entry of <b>Semester</b>.-->
@@ -11,48 +11,48 @@
 	<%# if @studentsearch.sstatus!='' %>
 		Status : <%#= @studentsearch.sstatus %><br>
 	<%# end %>	-->
-	<span style="text-decoration:underline;">Filter By:</span><br>
+	<span style="text-decoration:underline;"><%=t('equery.filter_by')%>:</span><br>
 	<% if @studentsearch.ssponsor!=''  %>
-		Sponsorship : <%= @studentsearch.ssponsor%><br>
+		<%=t('student.ssponsor')%> : <%= @studentsearch.ssponsor%><br>
 	<% end %>
 	<% if !@studentsearch.mrtlstatuscd.blank?  %><!--integer : check using blank-->
-		Martal Status : <%= @studentsearch.mrtlstatuscd %><br>
+		<%=t('student.mrtlstatuscd')%> : <%= @studentsearch.mrtlstatuscd %><br>
 		<%=h (Student::MARITAL_STATUS.find_all{|disp, value| value == @studentsearch.mrtlstatuscd.to_s}).map {|disp, value| disp} %>
 	<% end %>
 	<% if !@studentsearch.course_id.blank? %><!--integer : check using blank-->
-		Programme : 
+		<%=t('student.course_id')%> : 
 		<%=Programme.find(@studentsearch.course_id).name%><br>
 	<% end %>
 	<% if @studentsearch.physical!=''  %>
-		Physical : <%= @studentsearch.physical%><br>
+		<%=t('student.physical')%> : <%= @studentsearch.physical%><br>
 	<% end %>
 	<% if @studentsearch.bloodtype!=''  %>
-		Blood Type : <%= @studentsearch.bloodtype%><br>
+		<%=t('student.bloodtype') %> : <%= @studentsearch.bloodtype%><br>
 	<% end %>
 	<% if !@studentsearch.intake.blank?   %>
-		Intake : <%=  @studentsearch.intake.to_date.strftime("%b %Y") %><br>
+		<%=t('student.intake')%> : <%=  @studentsearch.intake.to_date.strftime("%b %Y") %><br>
 	<% end %>
 	<% if !@studentsearch.end_training.blank?  %>
-		End of Training : <%= @studentsearch.end_training.to_date.strftime("%d-%m-%Y") %><br>
+		<%=t('student.end_training')%> : <%= @studentsearch.end_training.to_date.strftime("%d-%m-%Y") %><br>
 	<% end %>	
 	<br>
-	<b>Total of student : <%=@studentsearch.students.count%></b><br><br>
+	<b><%=t('equery.student.total_student')%> : <%=@studentsearch.students.count%></b><br><br>
 	<table border=1 cellspacing=0 cellpadding=3>
 		<tr>
 			<th>No</th>
-			<th>Mykad No</th>
-			<th>Matrix No</th>
-			<th>Student Name</th>
-			<th>Status</th>
-			<th>Sponsorship</th>
-			<th>Gender</th>
-			<th>Race</th>
-			<th>Marital Status</th>
-			<th>Course</th>
-			<th>End Training</th>
-			<th>Intake</th>
-			<th>Physical</th>
-			<th>Blood Type</th>	
+			<th><%=t('student.icno')%></th>
+			<th><%=t('student.matrixno')%></th>
+			<th><%=t('student.name')%></th>
+			<th><%=t('student.sstatus')%></th>
+			<th><%=t('student.ssponsor')%></th>
+			<th><%=t('student.gender')%></th>
+			<th><%=t('student.race')%></th>
+			<th><%=t('student.mrtlstatuscd')%></th>
+			<th><%=t('student.course_id')%></th>
+			<th><%=t('student.end_training')%></th>
+			<th><%=t('student.intake')%></th>
+			<th><%=t('student.physical')%></th>
+			<th><%=t('student.bloodtype')%></th>	
 			<th>'Borang Maklumat Pelatih'</th>
 		</tr>
 		<% @studentsearch.students.each_with_index do |student, index| %>
@@ -67,11 +67,11 @@
 			<td><%= student.race.capitalize %></td>
 			<td><%#= student.mrtlstatuscd %><%=h (Student::MARITAL_STATUS.find_all{|disp, value| value == student.mrtlstatuscd.to_s}).map {|disp, value| disp} %></td>
 			<td><%= student.course_id.blank? ? "" : Programme.find(student.course_id).programme_list %><%#=student.course_id%></td>
-			<td><%= student.end_training.strftime("%d-%m-%Y") %></td>
-			<td><%= student.intake.strftime("%b %Y") %></td>
+			<td><%= student.end_training.try(:strftime, "%d-%m-%Y") %></td>
+			<td><%= student.intake.try(:strftime, "%b %Y") %></td>
 			<td><%= student.physical.capitalize %></td>
 			<td align="center"><%#= student.bloodtype %><%=h (Student::BLOOD_TYPE.find_all{|disp, value| value == student.bloodtype}).map {|disp, value| disp} %></td>
-			<td align="center"><%= link_to "View", :controller=>'students', :action => 'formforstudent', :id => student.id %></td>
+			<td align="center"><%= link_to (t 'show'), :controller=>'students', :action => 'formforstudent', :id => student.id %></td>
 		</tr>	
 		<% end %>
 	</table>

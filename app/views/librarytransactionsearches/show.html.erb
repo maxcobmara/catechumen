@@ -1,9 +1,9 @@
 <div style="padding-top:20px;padding-left:20px;padding-bottom:20px;">
 	<span style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
-		<H3>LIBRARY RESOURCES & TRANSACTION ANALYSIS / STATISTIC SEARCH :</h3>
+		<H3><%=(t 'equery.library_transaction.search').upcase %> :</h3>
 			
-		Year : <%=h @librarytransactionsearch.yearstat.year %><br>
-		Total Transaction / Book Loan : <%=h @librarytransactionsearch.librarytransactions.count %><br><br>
+		<%=(t 'time.years').titleize%> : <%=h @librarytransactionsearch.yearstat.year %><br>
+		<%=t('equery.library_transaction.total')%> : <%=h @librarytransactionsearch.librarytransactions.count %><br><br>
 	
 		<!--FOR TRANSACTION DETAILS USE & MONTHLY ACCUMULATED BOOK ON LOAN-->
 		<% @bookmonth1 = []%><% @checkout1 = 0%><% @checkout1stu = 0%>
@@ -102,26 +102,26 @@
 			<% @accumulated10stu = @accumulated9stu+@checkout10stu %>
 			<% @accumulated11stu = @accumulated10stu+@checkout11stu %>
 			<% @accumulated12stu = @accumulated11stu+@checkout12stu %>
-			<b>Accumulated Book On Loan</b> 
+			<b><%=t('equery.library_transaction.accumulated_loan')%></b> 
 			<table border=1 cellspacing=0 cellpadding=3>
 				<tr style="background-color:#EFF1F1;">
-					<th width=6% align=center>MONTH</th>
-					<th width=6% align=center>January</th>
-					<th width=6% align=center>February</th>
-					<th width=6% align=center>March</th>
-					<th width=6% align=center>April</th>
-					<th width=6% align=center>May</th>
-					<th width=6% align=center>June</th>
-					<th width=6% align=center>July</th>
-					<th width=6% align=center>August</th>
-					<th width=6% align=center>September</th>
-					<th width=6% align=center>October</th>
-					<th width=6% align=center>November</th>
-					<th width=6% align=center>December</th>
-					<th width=6% align=center>TOTAL</th>
+					<th width=6% align=center><%=(t 'time.months').upcase%></th>
+					<th width=6% align=center><%= t(:'date.month_names')[1] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[2] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[3] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[4] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[5] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[6] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[7] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[8] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[9] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[10] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[11] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[12] %></th>
+					<th width=6% align=center><%=(t 'equery.total').upcase%></th>
 				</tr>
 				<tr>
-					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">Staff</th>
+					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;"><%=t('equery.library_transaction.staff')%></th>
 					<td align=center><%=@accumulated1%></td>
 					<td align=center><%=@accumulated2%></td>
 					<td align=center><%=@accumulated3%></td>
@@ -137,7 +137,7 @@
 					<td align=center style="background-color:#EFF1F1;font-weight:bold;"><%=@accumulated12%></td>
 				</tr>
 				<tr>
-					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">Student</th>
+					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;"><%=t('equery.library_transaction.student')%></th>
 					<td align=center><%=@accumulated1stu%></td>
 					<td align=center><%=@accumulated2stu%></td>
 					<td align=center><%=@accumulated3stu%></td>
@@ -160,7 +160,7 @@
 			<br><br>
 		<% end %>	
 		<% if @librarytransactionsearch.programme == 1 %>
-			<b>Borrower by Programme</b><br>
+			<b><%=t('equery.library_transaction.borrower_programme')%></b><br>
 			
 			<% @programme_list = Programme.roots %>
 			<% @count_prog1 = 0 %><%# @stu_count_prog1 = 0 %>
@@ -178,6 +178,7 @@
 			<% @count_prog13 = 0 %><%# @stu_count_prog13 = 0 %>
 			<% @count_prog14 = 0 %><%# @stu_count_prog14 = 0 %>
 			<% @count_prog15 = 0 %>
+			<% @count_prog16 = 0 %>
 			<% @librarytransactionsearch.librarytransactions.each do |t| %>
 				<% if t.ru_staff == false %>
 					<% @count_prog1+=1 if t.student.course_id == 1 %>
@@ -195,22 +196,23 @@
 					<% @count_prog13+=1 if t.student.course_id == 13 %>
 					<% @count_prog14+=1 if t.student.course_id == 14 %>
 					<% @count_prog15+=1 if t.student.course_id == 67 %>
+					<% @count_prog15+=1 if t.student.course_id == 1697 %>
 				<% end %>
 			<% end %>
 			
 			<table border=1 cellspacing=0 cellpadding=3>
 				<tr style="background-color:#EFF1F1;">
-					<th width=6% align=center>PROGRAMME</th>
+					<th width=6% align=center><%=(t 'equery.library_transaction.programme').upcase%></th>
 					<% @count_dip=0%>
 					<% @programme_list.sort_by{|s|s.id}.each do |y|%>
 						<% if y.course_type == 'Diploma' && @count_dip<5 %>
 							<th align=center><%=y.programme_coursetype_name%><br>(<%=y.id%>)</th><%@count_dip+=1%>
 						<% end %>
 					<% end %>
-					<th align=center>Total</th>
+					<th align=center><%=t('equery.total')%></th>
 				</tr>
 				<tr>
-					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">Student</th>
+					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;"><%=t('equery.library_transaction.student')%></th>
 					<td align=center><%=@count_prog1%></td>
 					<td align=center><%=@count_prog2%></td>
 					<td align=center><%=@count_prog3%></td>
@@ -221,17 +223,17 @@
 			</table><br>
 			<table border=1 cellspacing=0 cellpadding=3>
 				<tr style="background-color:#EFF1F1;">
-					<th width=6% align=center>PROGRAMME</th>
+					<th width=6% align=center><%=(t 'equery.library_transaction.programme').upcase%></th>
 					<% @count_dip2=0%>
 					<% @programme_list.sort_by{|s|s.id}.each do |y|%>
-						<% if y.course_type == 'Posbasik'%>
+						<% if y.course_type == 'Pos Basik' && y.name.include?('TEST')==false %>
 							<th align=center><%=y.programme_coursetype_name%> <br>(<%=y.id%>)</th><%@count_dip2+=1%>
 						<% end %>
 					<% end %>
-					<th align=center>Total</th>
+					<th align=center><%=t('equery.total')%></th>
 				</tr>
 				<tr>
-					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">Student</th>
+					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;"><%=t('equery.library_transaction.student')%></th>
 					<td align=center><%=@count_prog6%></td>
 					<td align=center><%=@count_prog7%></td>
 					<td align=center><%=@count_prog8%></td>
@@ -239,23 +241,24 @@
 					<td align=center><%=@count_prog10%></td>
 					<td align=center><%=@count_prog11%></td>
 					<td align=center><%=@count_prog12%></td>
-					<td align=center><%=@count_prog13%></td>
-					<td align=center style="background-color:#EFF1F1;font-weight:bold;"><%=@count_prog6+@count_prog7+@count_prog8+@count_prog9+@count_prog10+@count_prog11+@count_prog12%></td>
+					<td align=center><%=@count_prog15%></td>
+				        <td align=center><%=@count_prog16%></td>
+					<td align=center style="background-color:#EFF1F1;font-weight:bold;"><%=@count_prog6+@count_prog7+@count_prog8+@count_prog9+@count_prog10+@count_prog11+@count_prog12+@count_prog15+@count_prog16%></td>
 				</tr>
 			</table><br>
 			<table border=1 cellspacing=0 cellpadding=3>
 				<tr style="background-color:#EFF1F1;">
-					<th width=6% align=center>PROGRAMME</th>
+					<th width=6% align=center><%=(t 'equery.library_transaction.programme').upcase%></th>
 					<% @count_dip3=0%>
 					<% @programme_list.each do |y|%>
 						<% if y.course_type == 'Diploma Lanjutan'%>
 							<th align=center><%=y.programme_coursetype_name%><br>(<%=y.id%>)</th><%@count_dip3+=1%>
 						<% end %>
 					<% end %>
-					<th align=center>Total</th>
+					<th align=center><%=t('equery.total')%></th>
 				</tr>
 				<tr>
-					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">Student</th>
+					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;"><%=t('equery.library_transaction.student')%></th>
 					<td align=center><%=@count_prog13%></td>
 					<td align=center><%=@count_prog14%></td>
 					<td align=center style="background-color:#EFF1F1;font-weight:bold;"><%=@count_prog13+@count_prog14%></td>
@@ -287,26 +290,26 @@
 				<% @accufines11+=@fine if x.checkoutdate.month == 11%>
 				<% @accufines12+=@fine if x.checkoutdate.month == 12%>
 			<% end %>
-			<b>Accumulated Fines Collection</b>
+			<b><%=t('equery.library_transaction.accumulated_fine_collected')%></b>
 			<table border=1 cellspacing=0 cellpadding=3>
 				<tr style="background-color:#EFF1F1;">
-					<th width=6% align=center>MONTH</th>
-					<th width=6% align=center>January</th>
-					<th width=6% align=center>February</th>
-					<th width=6% align=center>March</th>
-					<th width=6% align=center>April</th>
-					<th width=6% align=center>May</th>
-					<th width=6% align=center>June</th>
-					<th width=6% align=center>July</th>
-					<th width=6% align=center>August</th>
-					<th width=6% align=center>September</th>
-					<th width=6% align=center>October</th>
-					<th width=6% align=center>November</th>
-					<th width=6% align=center>December</th>
-					<th width=6% align=center>TOTAL</th>
+					<th width=6% align=center><%=(t 'time.months').upcase%></th>
+					<th width=6% align=center><%= t(:'date.month_names')[1] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[2] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[3] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[4] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[5] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[6] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[7] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[8] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[9] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[10] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[11] %></th>
+					<th width=6% align=center><%= t(:'date.month_names')[12] %></th>
+					<th width=6% align=center><%=(t 'equery.total').upcase%></th>
 				</tr>
 				<tr>
-					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">Fines</th>
+					<th style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;"><%=t('equery.library_transaction.fines')%></th>
 					<td align=center><%=ringgols(@accufines1)%></td>
 					<td align=center><%=ringgols(@accufines2+=@accufines1)%></td>
 					<td align=center><%=ringgols(@accufines3+=@accufines2)%></td>
@@ -417,7 +420,7 @@
 				<% end %>
 			<% end %>
 			
-			<b>Total Books On Loan by NLM Classification</b>
+			<b><%=t('equery.library_transaction.total_loan')%> <%=t('equery.library_transaction.by_nlm')%></b>
 			<table border=1 cellspacing=0 cellpadding=3>
 				<tr style="background-color:#EFF1F1;">
 					<th width=6% align=center>W</th>
@@ -447,7 +450,7 @@
 					<th width=6% align=center>WX</th>
 					<th width=6% align=center>WY</th>
 					<th width=6% align=center>WZ</th>
-					<th width=6% align=center>TOTAL</th>
+					<th width=6% align=center><%=(t 'equery.total').upcase%></th>
 				</tr>
 				<tr>
 					<td align=center><%=@w_class%></td>
@@ -492,7 +495,7 @@
 					<th width=6% align=center>QY</th>
 					<th width=6% align=center>QZ</th>
 					<th width=6% align=center>Others</th>
-					<th width=6% align=center>TOTAL</th>
+					<th width=6% align=center><%=(t 'equery.total').upcase%></th>
 				</tr>
 				<tr>
 					<td align=center><%=@qs_class%></td>
@@ -512,15 +515,15 @@
 		
 
 	<% if @librarytransactionsearch.details == 1 %>
-		<b>Transaction Details</b>
+		<b><%=t('equery.library_transaction.details')%></b>
 		<table border=1 cellspacing=0 cellpadding=3>
 			<tr style="background-color:#EFF1F1;">
 				<th>No</th>
-				<th>Title</th>
-				<th>Accession No</th>
-				<th>Classfication</th>
-				<th>Checkout Date</th>
-				<th>Programme</th>
+				<th><%=t('book.title')%></th>
+				<th><%=t('book.accessionno')%></th>
+				<th><%=t('equery.library_transaction.classification')%></th>
+				<th><%=t('librarytransaction.checkoutdate')%></th>
+				<th><%=t('equery.library_transaction.programme')%></th>
 			</tr>
 			<%# @librarytransactionsearch.librarytransactions.each_with_index do |librarytransaction, index|%>
 			<% @sorted_bookloan_by_months.each_with_index do |x, index|%>
@@ -529,13 +532,13 @@
 					<td><%=x.accession.book.title%></td>
 					<td align=center><%=x.accession.accession_no%></td>
 					<td><%=x.accession.book.classlcc%></td>
-					<td align=center><%=x.checkoutdate.strftime("%d-%m-%Y") %></td>
+					<td align=center><%=l(x.checkoutdate, :format => "%d-%m-%Y") %></td>
 					<td align=center>
 						<% if x.ru_staff == false %>
 							<% if x.student.course_id != nil%>
 								(<%=x.student.course_id%>)
 							<% else %>
-								Not defined
+								<%=t('equery.not_defined')%>
 							<% end %>
 						<% end %>
 					</td>

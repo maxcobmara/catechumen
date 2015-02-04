@@ -6,61 +6,61 @@
 	<table width=100% >
 		<% if @searchbooktype=='1' || @searchbooktype==1 %>
 		
-			<H2>Library Resources (Book) Search</H2>
+			<H2><%=t('equery.book.search')%></H2>
 			
 			<%= hidden_field_tag :method,  1 %>
 			<%= f.hidden_field :stock_summary, :value=> 0%>
-			<tr><td colspan=2>Book Listing for Stock Verification :</td></tr>
+			<tr><td colspan=2><%=t('book.listing')%> :</td></tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :book_title %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'book.title') %></td>
 				<td><%= f.text_field :title %></td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :author %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'book.author') %></td>
 				<td><%= f.text_field :author %></td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label>ISBN no</label></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label>ISBN</label></td>
 				<td><%= f.text_field :isbn %></td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :accession_no %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'book.accessionno')%></td>
 				<td><%= f.text_field :accessionno %></td>
 			</tr>
 		<% elsif @searchbooktype=='2' || @searchbooktype==2  %>
 		
-			<H2>Library Resources (Book) Search</H2>
+			<H2><%=t('equery.book.search')%></H2>
 		
 				<%= hidden_field_tag :method,  2 %>
 				<%=f.hidden_field :stock_summary, :value=> 1 %>
-				<tr><td colspan=2>Stock Summary By :</td></tr>
+				<tr><td colspan=2><%=t('equery.book.stock_summary_by')%> :</td></tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;<label>Class No (LC) / (NLM)</label></td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('book.classno')%></label></td>
 					<td><%= f.text_field :classno %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :accession_no %></td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'book.accessionno') %></td>
 					<td style="vertical-align:bottom;">
-						<%= f.text_field :accessionno_start, :size=>10, :placeholder=> "from..." %> 
-						<%= f.text_field :accessionno_end, :size=>10, :placeholder=> "...until" %>
+						<%= f.text_field :accessionno_start, :size=>10, :placeholder=> (t 'from')+"..." %> 
+						<%= f.text_field :accessionno_end, :size=>10, :placeholder=> "..."+(t 'to') %>
 					</td>
 				</tr>
 		<% elsif @searchbooktype=='3' || @searchbooktype==3 %>
 		
-			<H2>Library Resources (Book) Search</H2>
+			<H2><%=t('equery.book.search')%></H2>
 			
 				<%= hidden_field_tag :method,  3 %>
 				<%=f.hidden_field :stock_summary, :value=> 2 %>
-				<tr><td colspan=2>Stock Listing By:</td></tr>
+				<tr><td colspan=2><%=t('equery.book.stock_listing_by')%> :</td></tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;<label>Class No (LC) / (NLM)</label></td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('book.classno')%></label></td>
 					<td><%= f.text_field :classno %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :accession_no %></td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'book.accessionno') %></td>
 					<td style="vertical-align:bottom;">
-						<%= f.text_field :accessionno_start, :size=>10, :placeholder=> "from..." %> 
-						<%= f.text_field :accessionno_end, :size=>10, :placeholder=> "...until" %>
+						<%= f.text_field :accessionno_start, :size=>10, :placeholder=> (t 'from')+"..." %> 
+						<%= f.text_field :accessionno_end, :size=>10, :placeholder=> "..."+(t 'to') %>
 					</td>
 				</tr>
 		
@@ -69,7 +69,7 @@
 		<% end %>
 	</table>
 
-  <p><%= f.submit "Search" %>&nbsp;<font size=-2>Leaves all fields 'blank' to display ALL record.</font></p>
+  <p><%= f.submit (t 'search') %>&nbsp;<font size=-2><%=t('equery.leaves_all_blank_all_records')%></font></p>
 <% end %>
 
 </div>

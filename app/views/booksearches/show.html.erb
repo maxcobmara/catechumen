@@ -3,33 +3,33 @@
 	
 	<% if @booksearch.stock_summary == 0 %>	
 	<span style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
-		<H3>LIBRARY RESOURCES (BOOK) SEARCH :</h3>
+		<H3><%=t('equery.book.search').upcase %> :</h3>
 		
-		<%= link_to "Back", :controller=>'booksearches', :action => 'new', :searchbooktype => 1 %><br><br>
+		<%= link_to (t 'back'), :controller=>'booksearches', :action => 'new', :searchbooktype => 1 %><br><br>
 			
 		<% @search_items = "Search By " %>
 		<!--additional heading-->
 		<% if @booksearch.title && @booksearch.title.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Title : <b><%=@booksearch.title.capitalize %></b><br><br>
+				<%=t('equery.search_by')%> <%=t('book.title')%> : <b><%=@booksearch.title.capitalize %></b><br><br>
 				<% @search_items=@search_items+"Title : '"+@booksearch.title+"' "%>
 			</span>
 		<% end %>
 		<% if @booksearch.author && @booksearch.author.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Author: <b><%=@booksearch.author.capitalize %></b><br><br>
+				<%=t('equery.search_by')%> <%=t('book.author')%>: <b><%=@booksearch.author.capitalize %></b><br><br>
 				<% @search_items=@search_items+"Author : '"+@booksearch.author+"' "%>
 			</span>
 		<% end %>
 		<% if @booksearch.isbn && @booksearch.isbn.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by ISBN No: <b><%=@booksearch.isbn %></b><br><br>
+				<%=t('equery.search_by')%> ISBN: <b><%=@booksearch.isbn %></b><br><br>
 				<% @search_items=@search_items+"ISBN : '"+@booksearch.isbn+"' "%>
 			</span>
 		<% end %>
 		<% if @booksearch.accessionno && @booksearch.accessionno.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Accession No: <b><%=@booksearch.accessionno.upcase %></b><br><br>
+				<%=t('equery.search_by')%> <%=t('book.accessionno')%>: <b><%=@booksearch.accessionno.upcase %></b><br><br>
 				<% @search_items=@search_items+"Accession No : '"+@booksearch.accessionno+"'" %>
 			</span>
 		<% end %>
@@ -39,28 +39,28 @@
 		<% if @booksearch.sbooks.count > 0 %>
 			<% if (@booksearch.accessionno.blank? && @booksearch.isbn.blank? && @booksearch.author.blank? && @booksearch.title.blank?) %>
 				<!--no search filter selected at all-->
-				<%= link_to "Book Listing For Stock Verification-All Books", :controller=>'books', :action => 'stock_verification', :locals => {:class_type => '1',:dodo =>"All"} %><br><br>
+				<%= link_to (t 'equery.book.listing_stock_verification_all') , :controller=>'books', :action => 'stock_verification', :locals => {:class_type => '1',:dodo =>"All"} %><br><br>
 			<% else %>
 				<!--any of above search type selected-->
 				<% @book_ids = @booksearch.sbooks.map(&:id)%>
-				<%= link_to "Book Listing For Stock Verification", :controller=>'books', :action => 'stock_verification', :locals => {:class_type => '4',:dodo => @book_ids, :searchby_items => @search_items} %><br><br>
+				<%= link_to (t 'equery.book.listing_stock_verification'), :controller=>'books', :action => 'stock_verification', :locals => {:class_type => '4',:dodo => @book_ids, :searchby_items => @search_items} %><br><br>
 			<% end %>
 		<% end %>
 		<!--links for stock verification-->
-		Total Books = <%=@booksearch.sbooks.count%> <br><br>
+		<%=t('equery.book.total')%> = <%=@booksearch.sbooks.count%> <br><br>
 		
 		<% if @booksearch.sbooks.count > 0%>
 			<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
 				<tr>
 					<th>No</th>	
-					<th>Title</th>
-					<th>Author</th>
-					<th>Quantity</th>
-					<th>Accession No</th>
+					<th><%=t('book.title')%></th>
+					<th><%=t('book.author')%></th>
+					<th><%=t('book.quantity')%></th>
+					<th><%=t('book.accessionno')%></th>
 					<th>ISBN</th>
-					<th>Class No (LC/NLM)</th>
+					<th><%=t('book.classno')%></th>
 					<th>Status</th>
-					<th>Publisher</th>
+					<th><%=t('book.publisher')%></th>
 				</tr>
 				<% count = 0 %>
 				<% @booksearch.sbooks.each_with_index do |sbook, index2| %>
@@ -76,10 +76,10 @@
 									<td align="center" style="background-color:grey;"></td>
 								<% end %>
 								<td><%=accession_item.accession_no %></td>
-								<td><%=h sbook.isbn %></td>
+								<td><%=h sbook.isbn %>&nbsp;</td>
 								<td><%=h sbook.classlcc %></td>
-								<td><%=h (Book::STATUS.find_all{|disp, value| value == sbook.status}).map {|disp, value| disp} %></td>
-								<td><%=h sbook.publisher %></td>
+								<td><%=h (Book::STATUS.find_all{|disp, value| value == sbook.status}).map {|disp, value| disp} %>&nbsp;</td>
+								<td><%=h sbook.publisher %>&nbsp;</td>
 							</tr>
 						<% end %>
 					<% else %>
@@ -89,10 +89,10 @@
 							<td><%=sbook.author%></td>
 							<td align="center">1</td>
 							<td><%=h sbook.accessionno %></td>
-							<td><%=h sbook.isbn %></td>
+							<td><%=h sbook.isbn %>&nbsp;</td>
 							<td><%=h sbook.classlcc %></td>
-							<td><%=h (Book::STATUS.find_all{|disp, value| value == sbook.status}).map {|disp, value| disp} %></td>
-							<td><%=h sbook.publisher %></td>
+							<td><%=h (Book::STATUS.find_all{|disp, value| value == sbook.status}).map {|disp, value| disp} %>&nbsp;</td>
+							<td><%=h sbook.publisher %>&nbsp;</td>
 						</tr>
 					<% end %>
 				<% end %>
@@ -100,10 +100,10 @@
 		<% end %>
 	</span>	
 	<% elsif @booksearch.stock_summary == 1 %>
-		<H3>LIBRARY RESOURCES (BOOK) SEARCH :</h3>
+		<H3><%=t('equery.book.search').upcase %> :</h3>
 		<%=render :partial => 'stock_listing', :locals => {:books => @booksearch.sbooks} %> 
 	<% elsif @booksearch.stock_summary == 2 %>
-		<H3>LIBRARY RESOURCES (BOOK) SEARCH :</h3>
+		<H3><%=t('equery.book.search').upcase %> :</h3>
 		<%=render :partial => 'stock_verification', :locals => {:books => @booksearch.sbooks} %>
 	<% elsif @booksearch.stock_summary == 3 %>
 		<!--removed-->

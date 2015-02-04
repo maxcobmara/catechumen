@@ -34,77 +34,341 @@
 	document.write("<input type='button' " +
 	"onClick='window.print()' " +
 	"class='printbutton' " +
-	"value='Print This Page'/>");
+	"value='<%=escape_javascript(t 'print')%>'/>");
 	</script>
 	
 	<br>
-	<%= link_to "Back", :controller=>'staffsearch2s', :action => 'new', :searchstafftype => 1 %><br><br>
-	
+	<%= link_to (t 'back'), :controller=>'staffsearch2s', :action => 'new', :searchstafftype => 1 %>
+	<br>
+	<%= link_to (t 'report.download'), 	{:controller => 'staffsearch2s', :action => 'show', :ppp =>'2'} %>
 	<fieldset width=10px >
 
-<div id="title" width=21cm>
+<div id="title" width=21cm>	
 <H2>LAMPIRAN A</H2> 
-
-
 <H3>MAKLUMAT PERJAWATAN DI KOLEJ-KOLEJ LATIHAN</H3>
 <H3>KEMENTERIAN KESIHATAN MALAYSIA</H3>
 <H3>SEHINGGA <%= Date.today.strftime('%d-%m-%Y') %></H3>
-
-<BR>
-
-<p>KOLEJ: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU </p>
-<BR>
-	
+<BR><p>KOLEJ: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU </p><BR>
+</div>
 <div id="tprintreport">
-<table class="plong" width=100% border=1px cellspacing=0 align="center" >
-	<thead>
-	<tr>
-		<th width=1cm valign="top" >BIL</th>
-		<th width=1cm valign="top" >KOD</th>
-		<th width=4cm valign="top">JAWATAN</th>
-		<th width=2cm valign="top">GRED JAWATAN</th>
-		<th width=5cm valign="top">NAMA</th>
-		<th width=4cm valign="top">NO K/P</th>
-		<th width=4cm valign="top">TARIKH LAHIR</th>
-		<th width=4cm valign="top">TARIKH LANTIKAN PERTAMA</th>
-		<th width=4cm valign="top">TARIKH KENAIKAN PANGKAT KE GRED SEKARANG</th>
-		<th  valign="top">CATATAN *</th>
-	</tr>
-	</thead>
-	<tbody>
-	 <% just_a_counter = 0 %>
-	 <% @staffsearch2.staffs.each do |staff| %><%# @positions.each do |position| %>
-	    <% just_a_counter += 1 %>
-    <tr align="center">
-	<td><%=h just_a_counter %> </td>
-	<td align="left"><%=h staff.position_code_for_staff %> </td>	
-	<td align="left"><%=h staff.position_for_staff %></td>	
-	<td><%=h staff.staffgrade.blank? ? "-" : staff.staffgrade.name %></td>
-	<td align="left"><%=h staff.blank? ? "-" : staff.name %></td>	
-	<td><%=h staff.blank? ? "-" : staff.formatted_mykad %></td>
-	<td><%=h staff.blank? ? "-" : staff.cobirthdt%>
-	<%#=h staff.blank? ? "-" : staff.cobirthdt.strftime('%d-%m-%Y') %></td>
-	<td><%=h staff.blank? ? "-" : staff.appointdt %></td>
-	<td><%=h staff.blank? ? "-" : staff.posconfirmdate %></td>
-	<td> </td>
-	</tr>
+	<table width=100% border=1px cellspacing=0 align="center" class="plong">	
+		<thead>
+		<tr>
+			<th width=5% valign="top" rowspan=2>BIL</th>
+			<!--<th width=5% valign="top" rowspan=2>KOD</th>-->
+			<th width=5% valign="top" rowspan=2>BUT.</th>
+			<th width=5% valign="top" rowspan=2>JAWATAN</th>
+			<th width=5% valign="top" rowspan=2>GRED</th>
+			<th width=5% valign="top" rowspan=2>JUM JWT</th>
+			<th width=5% valign="top" rowspan=2>ISI</th>
+			<th colspan=3>STATUS PENGISIAN</th>
+			<th width=5% valign="top" rowspan=2>KSG</th>
+			<th width=10% valign="top" rowspan=2>NAMA PENYANDANG</th>
+			<th width=5% valign="top" rowspan=2>NO. K/P / PASSPORT</th>
+			<th width=5% valign="top" rowspan=2>JANTINA (L/P)</th>
+			<th width=5% valign="top" rowspan=2>BIDANG KEPAKARAN / SUB-KEPAKARAN</th>
+			<th width=5% valign="top" rowspan=2>TARIKH WARTA PAKAR</th>
+			<th width=5% valign="top" rowspan=2>PENEMPATAN</th>
+			<th colspan=2>PINJAM KE</th>
+			<th colspan=2>PINJAM DARI</th>
+			<th width=10% valign="top" rowspan=2>CATATAN *</th>
+		</tr>
+		<tr>
+			<th width=5% valign="top">HAKIKI</th>
+			<th width=5% valign="top">KONTRAK</th>
+			<th width=5% valign="top">KUP</th>
+			<th width=5% valign="top">Akt.</th>
+			<th width=5% valign="top">Penempatan</th>
+			<th width=5% valign="top">Akt.</th>
+			<th width=5% valign="top">Penempatan</th>
+		</tr>
+
+		</thead>
+		
+		<tbody>
+			
+		<% positions_wo_grade=[] %> 
+		<% positions_w_grade=[]%>
+		<% @positions.each do |position| %>
+			<% unless position.staffgrade.blank? && position.postinfo_id.blank? %><!--hide display of position if both butiran & grade not exist-->
+				<% if position.staffgrade.blank? %>
+					<% positions_wo_grade<< position %> 
+				<% else %>
+					<% positions_w_grade<< position %> 
+				<% end %>
+			<% end %>
+		<% end %> 
 	
-	<% end %>
+		<!-- for checking only
+		<%#=positions_wo_grade.count%>
+		<%#=positions_w_grade.count%>
+		<br><br>-->
+
+		<% just_a_counter = 0 %>
+	
+		<!--START-part 1 (positions with staff grades)-->
+		<% positions_w_grade.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[1].to_i}.sort.reverse!.each do |staffgrade2, positions_of_grade_no|%>
+			<%# positions_of_grade_no.group_by(&:staffgrade_id).each do |staffgrade, positions_by_grade| %><!--use below instead, kesihatan 'U' staff grade higher?--> 
+			<% positions_of_grade_no.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[0]}.sort.reverse!.each do |staffgrade, positions_by_grade| %>
+			<!--above : .to_i not required coz : U41 - just U, S41 - just S-->
+				<!--<%#=Employgrade.find(staffgrade).name%> - (<%#= positions_by_grade.count%>) ==>>><%#=staffgrade%><br>-->
+			
+				<% positions_by_grade_w_butiran=[] %> 
+				<% positions_by_grade_wo_butiran=[] %> 
+				<% positions_by_grade.each do |position|%>
+					<% unless position.postinfo_id.blank? %>
+						<% positions_by_grade_w_butiran<< position %> 
+					<% else %>
+						<% positions_by_grade_wo_butiran<< position %> 
+					<% end %>
+				<% end %>
+			
+				<% positions_by_grade_w_butiran.group_by(&:postinfo_id).each do |butiran, positions|%><!--if no sort put here, both ABOVE sort.reverse! will be applied-->
+					<!--for above, if .reverse! 537 first, then 535--><!--insert later, appear first-->
+					<!--if just sort, 535 baru 537-->
+					<!--Butiran : <%#=butiran%>  | Position of Butiran (<%#=positions.count%>)<br>-->
+					<% positions.sort_by(&:name).each_with_index do |position, index| %>
+						<% just_a_counter += 1 %>
+				
+						<% total_position = position.postinfo.post_count %>
+						<% occupied_position = Position.find(:all, :conditions=> ['postinfo_id=? AND staff_id IS NOT NULL',position.postinfo_id]).count %>
+						<% available_position = total_position-occupied_position %>	
+						<% status_hakiki = Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',position.postinfo_id, 1]).count %>	
+						<% status_kontrak = Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',position.postinfo_id, 2]).count %>
+						<% status_kup = Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',position.postinfo_id, 3]).count %>
+					
+						<tr align="center">
+							<td align="center"><%=just_a_counter%></td>
+							<!--<td align="center"><%#=h position.code %></td>-->
+				
+							<% if index == 0 %>
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : Postinfo.find(butiran.to_i).details%></td>	
+								<td align="left"><%=h position.name %>
+								<td align="center" rowspan="<%=positions.count%>"><%=h position.staffgrade.blank? ? "-" : position.staffgrade.name%></td>
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : total_position%></td>
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : occupied_position %></td>		
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : status_hakiki %></td>	
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : status_kontrak %></td>	
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : status_kup %></td>	
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : available_position%></td>	
+							<% else %>
+								<td align="left"><%=h position.name %>
+							<% end %>
+			
+							<td align="left"><%=h position.staff.blank? ? "-" : position.staff.name %></td>	
+							<td align="center"><%=h position.staff.blank? ? "-" : position.staff.formatted_mykad %></td>
+							<td align="center">
+								<% unless position.staff.blank? %>
+									<% if position.staff.gender == 1%>L
+									<% else %>P
+									<% end %>
+								<% else%>&nbsp;<% end %>
+							</td>
+							<td align="center">-</td>
+							<td align="center">-</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+						</tr>	
+					<% end %>
+				<% end %>
+			
+				<!--$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ START force display of non-butiran items here, CANNOT SORT BLANK VALUE!-->
+				<% positions_by_grade_wo_butiran.group_by(&:postinfo_id).each do |butiran, positions|%>
+					<!--Butiran : <%#=butiran%>  | Position of Butiran (<%#=positions.count%>)<br>-->
+					<% positions.sort_by(&:name).each_with_index do |position, index| %>
+						<% just_a_counter += 1 %>
+						<tr>
+							<td align="center"><%=just_a_counter%></td>
+							<!--<td align="center"><%#=h position.code %></td>-->
+							<td align="center">-</td>	
+							<td align="left"><%=h position.name %></td>	
+							<td align="center"><%=h position.staffgrade.blank? ? "-" : position.staffgrade.name %></td>	
+							<td align="center">-</td>	
+							<td align="center">-</td>	
+							<td align="center">-</td>
+							<td align="center">-</td>
+							<td align="center">-</td>
+							<td align="center">-</td>	
+							<td align="left"><%=h position.staff.blank? ? "-" : position.staff.name %></td>	
+							<td align="center"><%=h position.staff.blank? ? "-" : position.staff.formatted_mykad %></td>
+							<td align="center">
+								<% unless position.staff.blank? %>
+									<% if position.staff.gender == 1%>L
+									<% else %>P
+									<% end %>
+								<% else%>&nbsp;
+								<% end %>
+							</td>
+							<td align="center">-</td>
+							<td align="center">-</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+						</tr>
+					<% end %>
+				<% end %>
+				<!--$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ END force of non-butiran items here-->	
+			<% end %>
+		<% end %>	
+		<!--END-part 1 (positions with staff grades)-->
+	
+		<!--START-part 2 (positions WITHOUT staff grades)-->
+		<% positions_wo_grade.group_by(&:staffgrade_id).each do |staffgrade2, positions_of_grade_no|%>
+			<!--all positions listed here has no staff grade (employgrade) at all-->
+			<% positions_of_grade_no.group_by(&:staffgrade_id).each do |staffgrade, positions_by_grade| %>
+				<!--No Grade - (<%#= positions_by_grade.count%>)<br>-->
+				<% positions_by_grade_w_butiran=[] %> 
+				<% positions_by_grade_wo_butiran=[] %> 
+				<% positions_by_grade.each do |position|%>
+					<% unless position.postinfo_id.blank? %>
+						<% positions_by_grade_w_butiran<< position %> 
+					<% else %>
+						<% positions_by_grade_wo_butiran<< position %> 
+					<% end %>
+				<% end %>
+			
+				<% positions_by_grade_w_butiran.group_by(&:postinfo_id).each do |butiran, positions|%>
+					<!--Butiran : <%#=butiran%>  | Position of Butiran (<%#=positions.count%>)<br>-->
+					<% positions.sort_by(&:name).each_with_index do |position, index| %>
+						<% just_a_counter += 1 %>
+				
+						<% total_position = position.postinfo.post_count %>
+						<% occupied_position = Position.find(:all, :conditions=> ['postinfo_id=? AND staff_id IS NOT NULL',position.postinfo_id]).count %>
+						<% available_position = total_position-occupied_position %>	
+						<% status_hakiki = Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',position.postinfo_id, 1]).count %>	
+						<% status_kontrak = Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',position.postinfo_id, 2]).count %>
+						<% status_kup = Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',position.postinfo_id, 3]).count %>
+					
+						<tr align="center">
+							<td align="center"><%=just_a_counter%></td>
+							<!--<td align="center"><%#=h position.code %></td>-->
+				
+							<% if index == 0 %>
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : Postinfo.find(butiran.to_i).details%></td>	
+								<td align="left"><%=h position.name %>
+								<td align="center" rowspan="<%=positions.count%>"><%=h position.staffgrade.blank? ? "-" : position.staffgrade.name%></td>
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : total_position%></td>
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : occupied_position %></td>		
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : status_hakiki %></td>	
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : status_kontrak %></td>	
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : status_kup %></td>	
+								<td align="center" rowspan="<%=positions.count%>"><%=butiran.blank? ? "-" : available_position%></td>	
+							<% else %>
+								<td align="left"><%=h position.name %>
+							<% end %>
+			
+							<td align="left"><%=h position.staff.blank? ? "-" : position.staff.name %></td>	
+							<td align="center"><%=h position.staff.blank? ? "-" : position.staff.formatted_mykad %></td>
+							<td align="center">
+								<% unless position.staff.blank? %>
+									<% if position.staff.gender == 1%>L
+									<% else %>P
+									<% end %>
+								<% else%>&nbsp;
+								<% end %>
+							</td>
+							<td align="center">-</td>
+							<td align="center">-</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+						</tr>	
+					<% end %>
+				<% end %>
+			
+				<!--$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ START force display of non-butiran items here, CANNOT SORT BLANK VALUE!-->
+				<% positions_by_grade_wo_butiran.group_by(&:postinfo_id).each do |butiran, positions|%>
+					<!--Butiran : <%#=butiran%>  | Position of Butiran (<%#=positions.count%>)<br>-->
+					<% positions.sort_by(&:name).each_with_index do |position, index| %>
+						<% just_a_counter += 1 %>
+						<tr>
+							<td align="center"><%=just_a_counter%></td>
+							<!--<td align="center"><%#=h position.code %></td>-->
+							<td align="center">-</td>	
+							<td align="left"><%=h position.name %></td>	
+							<td align="center"><%=h position.staffgrade.blank? ? "-" : position.staffgrade.name %></td>	
+							<td align="center">-</td>	
+							<td align="center">-</td>	
+							<td align="center">-</td>
+							<td align="center">-</td>
+							<td align="center">-</td>
+							<td align="center">-</td>	
+							<td align="left"><%=h position.staff.blank? ? "-" : position.staff.name %></td>	
+							<td align="center"><%=h position.staff.blank? ? "-" : position.staff.formatted_mykad %></td>
+							<td align="center">
+								<% unless position.staff.blank? %>
+									<% if position.staff.gender == 1%>L
+									<% else %>P
+									<% end %>
+								<% else%>&nbsp;
+								<% end %>
+							</td>
+							<td align="center">-</td>
+							<td align="center">-</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+							<td> &nbsp;</td>
+						</tr>
+					<% end %>
+				<% end %>
+				<!--$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ END force of non-butiran items here-->	
+			
+			<% end %>
+		<% end %>	
+		<!--END-part 2 (positions WITHOUT staff grades)-->
+	
+		<tr>
+			<td colspan=3>JUMLAH</td>
+			<td>&nbsp;</td>
+			<td align="center">
+				<% positions_group=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staff_id IN(?)', @staffsearch2.staffs.map(&:id)]).map(&:postinfo_id).uniq %>
+				<%=positions_count=Postinfo.find(:all, :conditions=>['id IN (?)',positions_group]).sum(&:post_count)%>
+			</td>
+			<td align="center"><%= positions_insert=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IN(?)', @staffsearch2.staffs.map(&:id)]).count %></td>
+			<td align="center"><%= positions_hakiki=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IN(?) AND status=?',@staffsearch2.staffs.map(&:id),1 ]).count %></td>
+			<td align="center"><%= positions_kontrak=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND staff_id IN(?) AND status=?', @staffsearch2.staffs.map(&:id), 2 ]).count %></td>
+			<td align="center"><%= positions_kup=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND staff_id IN(?) AND status=?',@staffsearch2.staffs.map(&:id), 3 ]).count %></td>
+			<td align="center"><%= positions_available=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staff_id IS NULL AND staff_id IN(?)', @staffsearch2.staffs.map(&:id) ]).count %></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		
 	</tbody>
 	
-</table>
+	</table>
 <br>
-<font size=-2>Tarikh Kemaskini Akhir: <%=Date.today.strftime('%d-%b-%Y')%></font>
+<font size=-2><%= t 'report.final_date' %>: <%=Date.today.strftime('%d-%b-%Y')%></font>
+
 </div>
-</fieldset>
-</form>
 
 <%#=============================%>
 <% else %>
 
 	<div style="padding-left:50px;padding-top:20px;">
-		<H4>Carian Staf : Maklumat Perjawatan</H4>
-		Search return no result.
+		<H4><%=t('equery.staff.search')%></H4>
+		<%=t('equery.no_result')%>
 	</div>	
 
 <% end %>
