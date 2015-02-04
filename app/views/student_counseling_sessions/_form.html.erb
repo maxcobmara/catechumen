@@ -19,7 +19,7 @@
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="suggestions">Session lasted</label></td>
+		<td class="leftcol"><label for="suggestions"><%=t('studentcounseling.session_lasted')%></label></td>
 		<td><%= f.text_field :duration, :placeholder => 'minutes', :size => 6 %> </td>
 	</tr>
 </table>
@@ -48,7 +48,7 @@
 				<% else %>
 					<%= f.check_box :feedback_this,	:id => 'ind_feedback',:checked=>"checked" %>
 				<% end %>
-				<label>Issue feedback for <b>this session</b> (to referrer/TPHEP)</label>
+				<label><%=t('studentcounseling.issue_feedback_for')%><b> <%=t('studentcounseling.this_session')%> </b><%=t('studentcounseling.to_referrer_tphep')%></label>
 			</td>
 		</tr>	
 		<tr class="feedback_item" style="display:none;">
@@ -65,25 +65,25 @@
 			<td>
 				<% if @student_counseling_session.student_discipline_case.counselor_feedback== nil || @student_counseling_session.student_discipline_case.counselor_feedback=='' %>
 					<%= f.radio_button :feedback, 1,	:id => 'final_feedback',  :class => 'radio_feedback' %>
-					<label>Complete sessions</label>
+					<label><%=t('studentcounseling.complete_session')%></label>
 					<% if @student_counseling_session.student_discipline_case.counselor_feedback== nil %>
 					      <%= f.radio_button :feedback, 2,	:id => 'cou',  :class => 'radio_feedback' %>
 					<% elsif @student_counseling_session.student_discipline_case.counselor_feedback== '' %>
 					       <%= f.radio_button :feedback, 2,	:id => 'cou',  :class => 'radio_feedback', :checked=>true %>
 					<% end %>
-					<label>To have another counseling session</label>
+					<label><%=t('studentcounseling.another_session')%></label>
 				<% else %>
 					<%= f.radio_button :feedback, 1,	:id => 'final_feedback',  :class => 'radio_feedback', :checked=>true %>
-					<label>Complete sessions</label>
+					<label><%=t('studentcounseling.complete_session')%></label>
 					<%= f.radio_button :feedback, 2,	:id => 'cou',  :class => 'radio_feedback' %>
-					<label>To have another counseling session</label>
+					<label><%=t('studentcounseling.another_session')%></label>
 				<% end %>	
 			</td>
 		</tr>	
 		<tr class="finalfeedback_item" style="display:none;">
 			<td class="leftcol"></td>
 			<td>
-				Issue <b>summary/feedback (FINAL)</b> to referrer/TPHEP<br>
+				<%=t('studentcounseling.issue')%><b> <%=t('studentcounseling.summary_feedback')%> </b><%=t('studentcounseling.to_referrer_tphep')%><br>
 				<%= f.text_area :feedback_final, :size => "50x6", :value => @student_counseling_session.student_discipline_case.counselor_feedback %>
 			</td>
 		</tr>

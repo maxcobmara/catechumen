@@ -35,7 +35,7 @@ class StudentsController < ApplicationController
         if submit_val == "Search" 
             @students = Student.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page])
             #17/11/2011 - Shaliza added pagination for student  
-        elsif submit_val == "Search by Intake/Programme"
+        elsif submit_val == I18n.t('student.search_by_intake_programme')
             @students = Student.with_permissions_to(:index).search2(params[:intake],params[:programme]).paginate(:per_page => 20, :page => params[:page])
             #17/11/2011 - Shaliza added pagination for student
         else
@@ -137,7 +137,7 @@ class StudentsController < ApplicationController
   def ethnic_listing
     if request.post?
       @find_type = params[:list_submit_button]
-  		  if @find_type == "Ethnic Listing by Programme"
+  		  if @find_type == I18n.t('student.ethnic_listing')
           @programme_id = params[:programme]
           @students_of_programme = Student.find(:all, :conditions => ['course_id=?',@programme_id ])  
         end

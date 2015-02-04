@@ -5,21 +5,25 @@
 		<h2 class="left"><%= t 'menu.students' %></h2>
 		<div class="right">
 			<% form_tag students_path, :method => 'get' do %>
-			<%= text_field_tag :search, params[:search], :placeholder => "MykadNo, Name, MatricNo" %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'student.mykad_name_matrixno') %>
 			<%= submit_tag "Search", :icno => nil, :name => :searchby %>
 			<% end %>
 		</div>
 	</div>
 </div>
-
+<% if permitted_to? :create, @student %>
+	<div class="toolbar">
+		<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'student.new')) + (t 'student.new'), new_document_path %></p>
+	</div><BR><BR>
+<% end %>
 <div class="indextable">
 	<div align="right">
 		<% @intake_list = Student.find(:all, :select=> "DISTINCT intake", :order=> "intake") %>
 		<% @programme_list = Programme.find(:all, :conditions => ['ancestry_depth=?',0])%>
 		<% form_tag students_path, :method => 'get' do %>
-			<%= select_tag('intake', "<option value='0'>All Intakes</option>" +options_from_collection_for_select(@intake_list,:intake, :intake_acryn)) %>
-			<%= select_tag('programme', "<option value='0'>All Programmes</option>" +options_from_collection_for_select(@programme_list,:id, :programme_list)) %>
-			<%= submit_tag 'Search by Intake/Programme', :name => :searchby %>
+			<%= select_tag('intake', "<option value='0'>"+(t 'student.all_intakes')+"</option>" +options_from_collection_for_select(@intake_list,:intake, :intake_acryn)) %>
+			<%= select_tag('programme', "<option value='0'>"+(t 'student.all_programmes')+"</option>" +options_from_collection_for_select(@programme_list,:id, :programme_list)) %>
+			<%= submit_tag (t 'student.search_by_intake_programme'), :name => :searchby %>
 		<% end %>
 	</div>
 	<% count=0 %>
@@ -45,7 +49,7 @@
 			<% if count==0 %>
 				<!--<tr><td colspan=8><BR><b>Intake <%# a=student.intake%><%#= student.intake.strftime('%B/%Y')%>
 				<%##=@intake[count].strftime('%B/%Y')%><%#= month.strftime('%B/%Y') unless month.blank? %></b></td></tr>-->
-				<tr><td colspan=8 style="background-color:#EFF1F1;"><BR><b>Program&nbsp;<% a=student.course_id%><%= Programme.find(student.course_id).programme_list %>
+				<tr><td colspan=8 style="background-color:#EFF1F1;"><BR><b><%=t('student.course_id')%>&nbsp;<% a=student.course_id%><%= Programme.find(student.course_id).programme_list %>
 				<%##=@intake[count].strftime('%B/%Y')%><%#= month.strftime('%B/%Y') unless month.blank? %></b></td></tr>
 				<% count+=1%>
 			<% else %>
@@ -64,13 +68,13 @@
 				<td><%=h student.name %></td>
 				<td><%=h student.matrixno %></td>
 				<td width=10px>
-					<%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => student %></td>
+					<%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => student %></td>
 				<td width=10px><%= link_to image_tag("printer.png",   :border => 0, :title => 'Borang Maklumat Pelajar'), :action => 'formforstudent', :id => student %></td>
-				<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => student %>
+				<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')),                    :action => 'edit', :id => student %>
 				</td>
 				<td width=10px >
 					<% if permitted_to? :destroy, @student %>
-						<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), student, :confirm => 'Are you sure?', :method => :delete %></td>
+						<%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), student, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 					<% end %>
 				</td>
 				<td>
@@ -92,7 +96,7 @@
 		<% @programme_diploma_only = Programme.find(:all, :conditions => ['ancestry_depth=? AND course_type=?',0,'Diploma'])%>
 		<% form_tag(:action => :ethnic_listing) do %>
 			<%= select_tag('programme', options_from_collection_for_select(@programme_diploma_only,:id, :programme_list)) %>
-			<%= submit_tag "Ethnic Listing by Programme", :name => :list_submit_button %>
+			<%= submit_tag (t 'student.ethnic_listing'), :name => :list_submit_button %>
 		<% end %>
 	</div>
 </div>

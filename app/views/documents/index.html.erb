@@ -5,8 +5,8 @@
     <h2 class="left"><%= t 'document.list' %></h2>
 		<div class="right">
       <% form_tag documents_path, :method => 'get' do %>
-	  		<%= text_field_tag :search, params[:search], :placeholder => "RefNo, Title" %>
-	  		<%= submit_tag "Search", :title => nil, :name => :submit_button1  %>
+	  		<%= text_field_tag :search, params[:search], :placeholder => (t 'document.refno_title') %>
+	  		<%= submit_tag (t 'search'), :title => nil, :name => :submit_button1  %>
 			<% end %>
 		</div>
   </div>
@@ -15,7 +15,7 @@
 <table width=100%><tr><td>
 	<% permitted_to? :manage, :documents do %>
 	<div class="toolbar">
-		<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'new')) + (t 'new'), new_document_path %></p>
+		<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'document.new')) + (t 'document.new'), new_document_path %></p>
 	</div>
 	<% end %>
 	</td>
@@ -26,8 +26,8 @@
 		<%#end %></div><br>-->
 		<div class="right">
 			<% form_tag '', :method => 'get' do %>
-			From: <%= date_select :search_from, params[:search_from], :include_blank => :true %>
-			&nbsp; &nbsp;To: <%= date_select :search_to, params[:search_to], :include_blank => :true %>
+			<%=(t 'from').titleize %>: <%= date_select :search_from, params[:search_from], :include_blank => :true %>
+			&nbsp; &nbsp;<%=(t 'to').titleize%>: <%= date_select :search_to, params[:search_to], :include_blank => :true %>
 			<%= submit_tag (t 'document.search'), :name => :submit_button1 %>
 			<% end %>
 		</div>
@@ -99,11 +99,11 @@ tome = <%=@tome.count%>-->
 						</td>
 						<!--<td><%#=h document.otherinfo %></td>-->
 	    				<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
-						<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
+						<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => document %></td>
 						<td width=10px>
 							 <% document.circulations.each_with_index do |circulation,ind|%>
 								<% if circulation.staff_id == Login.current_login.staff_id && circulation.action_closed!=true %>
-									<%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %>
+									<%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => document %>
 								<% end %>
 							<% end %>
 						</td>
@@ -142,15 +142,15 @@ tome = <%=@tome.count%>-->
 					</td>
 					<!--<td><%=h document.otherinfo %></td>-->
 					<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
-					<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document %></td>
+					<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => document %></td>
 					<td width=10px>
 						<% if (document.closed != true && document.stafffilled.try(:id) == current_login.staff_id) || (document.closed != true && document.preparedby.try(:id) == current_login.staff_id) %>
-							<%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => document %>
+							<%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => document %>
 						<% end %>
 					</td>
 					<td width=10px>
 						<% if document.stafffilled.try(:id) == current_login.staff_id || document.preparedby.try(:id) == current_login.staff_id %>
-				   			<%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), document, :confirm => 'Are you sure?', :method => :delete %>
+				   			<%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), document, :confirm => (t 'are_you_sure'), :method => :delete %>
 						<% end %>
 					</td>
 				</tr>
