@@ -2,22 +2,25 @@ class ExamanalysesController < ApplicationController
   # GET /examanalyses
   # GET /examanalyses.xml
   def index
-    @examanalyses = Examanalysis.all
-
-    #respond_to do |format|
-      #format.html # index.html.erb
-      #format.xml  { render :xml => @examanalyses }
-    #end
+    @position_exist = current_login.staff.position
+    if @position_exist  
+      @examanalyses = Examanalysis.all
+    end
     
     ##===
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @examanalyses }
-      format.xls {send_data @examanalyses.to_xls(:name=>"Exam Paper Analysis",:headers => Examanalysis.header_excel, 
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @examanalyses }
+        format.xls {send_data @examanalyses.to_xls(:name=>"Exam Paper Analysis",:headers => Examanalysis.header_excel, 
   		:columns => Examanalysis.column_excel ), :file_name => 'exammakeranalysis.xls' }
   		format.pdf do
   			  send_data ExamanalysisDrawer.draw(@examanalyses),:filename => 'examanalysis.pdf', :type=>'application/pdf',:disposition=>'inline'
   		end
+      else
+	format.html {redirect_to "/home", :notice =>t('position_required')+t('examanalysis.title2')}
+        format.xml  { render :xml => @examanalysis.errors, :status => :unprocessable_entity }
+      end
     end
     ##===
   end

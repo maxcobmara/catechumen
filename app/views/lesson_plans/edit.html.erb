@@ -8,7 +8,7 @@
 			<%=render :partial => 'form_process', :locals => {:f => f} %>
 		</div>
 	<% end -%>
-	<% if @lesson_plan.is_submitted == true && @lesson_plan.endorsed_by == Login.current_login.staff_id %>
+	<% if @lesson_plan.is_submitted == true && ((@lesson_plan.endorsed_by == Login.current_login.staff_id) || @is_admin)%>
 		<h3><%=t('lesson_plan.approval')%></h3>
 		<div class="tform">
 			<%=render :partial => 'show_main' %>

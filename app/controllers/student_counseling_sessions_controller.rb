@@ -6,7 +6,7 @@ class StudentCounselingSessionsController < ApplicationController
   # GET /student_counseling_sessions.xml
   def index
     #@student_counseling_sessions = StudentCounselingSession.find(:all, :order => 'confirmed_at DESC')
-    if params[:submit_button1]="Search by appointment/session date" && (params[:search_from] || params[:search_to])
+    if params[:submit_button1]==I18n.t('studentcounseling.search_by_date') && (params[:search_from] || params[:search_to])
       if params[:search_from]
 	startdate = StudentCounselingSession.get_start_date(params[:search_from][:"(1i)"],params[:search_from][:"(2i)"], params[:search_from][:"(3i)"])
       end

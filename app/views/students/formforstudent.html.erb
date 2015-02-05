@@ -6,10 +6,15 @@
 	document.write("<input type='button' " +
 	"onClick='window.print()' " +
 	"class='printbutton' " +
-	"value='Print This Page'/>");
+	"value='<%=escape_javascript(t 'print')%>'/>");
 	</script>
 	<form>
 
+
+<div id="hideLink">
+<%= link_to (t 'back'), students_path %>
+</div>
+	
 <div id="title" width=21cm>	
 <H3 text-indent: 70px>KOLEJ KEJURURAWATAN JOHOR BAHRU</H3>
 <H3>KUMPULAN: <%=h @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y") %></H3> <!-- 21/10/2011 - Shaliza changed for intake -->

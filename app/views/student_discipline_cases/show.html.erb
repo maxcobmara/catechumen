@@ -14,40 +14,39 @@
 	<% if ["Refer to BPL"].include? (@student_discipline_case.status)  %>
 	<%# if ["Closed","Refer to BPL"].include? (@student_discipline_case.status)  %>
 	<fieldset>
-		<legend class='togvis'>Refer to BPL</legend>
+		<legend class='togvis'><!--Refer to BPL--><%=t('studentdiscipline.refer_to_bpl')%></legend>
 			<table width=100%>
 				<tr>
-					<td class="leftcol"><label for="bplsenddt"><b>Date Sent To BPL:</b></label></td>
+					<td class="leftcol"><label for="bplsenddt"><b><%=t('studentdiscipine.sent_to_board_on')%>:</b></label></td>
 					<td><%=h tarikh(@student_discipline_case.sent_to_board_on) %></td>
 				</tr>
-
 					<tr>
-						<td class="leftcol"><label for="jtkpdt"><b>Date JTKP:</b></label></td>
+						<td class="leftcol"><label for="jtkpdt"><b><%=t('studentdiscipine.board_meeting_on')%>:</b></label></td>
 						<td> <%=h tarikh(@student_discipline_case.board_meeting_on) %></td>
 					</tr>
 
 					<tr>
-						<td class="leftcol"><label for="jtkpdecision"><b>JTKP Decision:</b></label></td>
+						<td class="leftcol"><label for="jtkpdecision"><b> <%=t('studentdiscipine.board_decision')%>:</b></label></td>
 						<td><%=h @student_discipline_case.board_decision %></td>
 					</tr>
 			
 					<tr>
-						<td class="leftcol"><label for="jtkpdescisionrxdt"><b>Date JTKP Decision:</b></label></td>
+						<td class="leftcol"><label for="jtkpdescisionrxdt"><b> <%=t('studentdiscipine.board_decision_on')%>:</b></label></td>
 						<td><%=h tarikh(@student_discipline_case.board_decision_on) %></td>
 					</tr>
 			
 					<tr>
-						<td class="leftcol"><label for="appealdt"><b>Appeal Date:</b></label></td>
+						<td class="leftcol"><label for="appealdt"><b><%=t('studentdiscipine.appeal_on')%>:</b></label></td>
 						<td><%=h tarikh(@student_discipline_case.appeal_on) %></td>
 					</tr>
 			
 					<tr>
-						<td class="leftcol"><label for="appealdecision"><b>Appeal Decision:</b></label></td>
+						<td class="leftcol"><label for="appealdecision"><b><%=t('studentdiscipine.appeal_decision')%>:</b></label></td>
 						<td> <%=h @student_discipline_case.appeal_decision %></td>
 					</tr>
 			
 					<tr>
-						<td class="leftcol"><label for="appealdecisionrxdt"><b>Appeal Decision Date:</b></label></td>
+						<td class="leftcol"><label for="appealdecisionrxdt"><b><%=t('studentdiscipine.appeal_decision_on')%>:</b></label></td>
 						<td><%=h tarikh(@student_discipline_case.appeal_decision_on) %></td>
 					</tr>
 			</table>
@@ -56,7 +55,7 @@
 			<table>	
 				<tr>
 					<td class="leftcol"><label for="status"><b>Status:</b></label></td>
-					<td><%=h @student_discipline_case.status %></td>
+					<td><%#=h @student_discipline_case.status %><%=h @student_discipline_case.render_status %></td>
 				</tr>
 			</table>
 

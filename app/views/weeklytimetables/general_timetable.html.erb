@@ -1,13 +1,17 @@
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
 	<form action="#">
-			<script>
+		<script>
 			document.write("<input type='button' " +
 			"onClick='window.print()' " +
 			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
+			"value='<%=escape_javascript(t 'print')%>'/>");
+		</script>
 	</form>
+
+<div id="hideLink">
+<%= link_to (t 'back'), weeklytimetables_path %>
+</div>
 
 <div class="A4landscape" >
 
@@ -38,7 +42,7 @@
 				</tr>
 				<tr>
 					<th class="htitle2a">TARIKH :</th>
-					<th class="htitle2a"><%=@weeklytimetable.startdate.strftime('%d-%b-%Y') %>&nbsp;HINGGA&nbsp;<%=@weeklytimetable.enddate.strftime('%d-%b-%Y') %></th>
+					<th class="htitle2a"><%=l(@weeklytimetable.startdate, :format => '%d-%b-%Y') %>&nbsp;HINGGA&nbsp;<%=l(@weeklytimetable.enddate, :format => '%d-%b-%Y') %></th>
 					<th class="htitle2r">SEMESTER</th>
 					<th class="htitle2a">:&nbsp;<%=h @weeklytimetable.academic_semester.semester %></th>
 					<th class="htitle2r">MINGGU</th>
@@ -54,6 +58,8 @@
 <table class="plong">	
 	<%@count1=@weeklytimetable.timetable_monthurs.timetable_periods.count%>
 	<%@count2=@weeklytimetable.timetable_friday.timetable_periods.count%>
+	<% @weekdays_end = @weeklytimetable.startdate.to_date+4.days %>
+	<% @daycount2 = (@weeklytimetable.enddate.to_date - @weekdays_end).to_i %>
 	<!--Header for Monday until Thursday-(start)-->
 	<% @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@count1, false) do |row_things| %>
 	<tr>
@@ -85,10 +91,10 @@
 	<% 1.upto(4) do |count2|%>
 	<tr>
 		<td class="data1a">
-			<% if count2==1 %>ISNIN<br><%=@weeklytimetable.startdate.strftime('%d-%b-%Y') %>
-			<% elsif count2==2 %>SELASA<br><%=(@weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
-			<% elsif count2==3 %>RABU<br><%=(@weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
-			<% elsif count2==4 %>KHAMIS<br><%=(@weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
+			<% if count2==1 %>AHAD<br><%=l(@weeklytimetable.startdate, :format => '%d-%b-%Y') %>
+			<% elsif count2==2 %>ISNIN<br><%=l((@weeklytimetable.startdate+1), :format => '%d-%b-%Y')  %>
+			<% elsif count2==3 %>SELASA<br><%=l((@weeklytimetable.startdate+2), :format => '%d-%b-%Y')  %>
+			<% elsif count2==4 %>RABU<br><%=l((@weeklytimetable.startdate+3), :format => '%d-%b-%Y')  %>
 			<% end %>		
 		</td>
 		
@@ -185,7 +191,7 @@
 	<!--Content for Friday-(start)-->
 	<tr>
 		<td class="data3">
-			JUMAAT<br><%=@weeklytimetable.enddate.strftime('%d-%b-%Y') %>
+			KHAMIS<br><%=l((@weeklytimetable.startdate+4), :format =>'%d-%b-%Y') %>
 		</td>
 		<% @column_count_friday=@weeklytimetable.timetable_friday.timetable_periods.count%>
 		<% @column_count_monthur=@weeklytimetable.timetable_monthurs.timetable_periods.count%><!--same as line 91-->
@@ -197,7 +203,8 @@
 			<% elsif count4 == 5 || count4 ==7%>
 				<td colspan="2" class="data4">
 					<% @weeklytimetable.weeklytimetable_details.each do |xx| %>
-						<% if xx.is_friday == true && xx.time_slot == @column_count_monthur+count4 %>
+						<%# if xx.is_friday == true && xx.time_slot == @column_count_monthur+count4 %>
+						<% if xx.is_friday == true && xx.time_slot == count4 %>
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
 								<div align="left">
@@ -218,7 +225,8 @@
 			<% else %>
 				<td class="data5">
 					<% @weeklytimetable.weeklytimetable_details.each do |xx| %>
-						<% if xx.is_friday == true && xx.time_slot == @column_count_monthur+count4 %>
+						<%# if xx.is_friday == true && xx.time_slot == @column_count_monthur+count4 %>
+						<% if xx.is_friday == true && xx.time_slot == count4 %>
 							<strong>
 								<%#= xx.weeklytimetable_subject.code %>
 								<div align="left">
@@ -240,6 +248,47 @@
 		<% end %>
 	</tr>
 	<!--Content for Friday-(end)-->
+	
+	<!--SIGNatory part appear on 1st page, if schedule end here(5 days) - START-->
+	<% if @daycount2 == 0 %>
+		<tr><td colspan="8" style="height:10px;">&nbsp;</td><tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td colspan="2" class="sign_prepare1">Disediakan oleh,<br><br><br></td>
+			<td colspan="2"></td>
+			<td colspan="3" class="sign_prepare1">Disemak oleh,<br><br><br></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td colspan="2" class="sign_prepare2">
+				<span class="bold-cap"><%=h @weeklytimetable.schedule_creator.name %></span><br>
+				Pengajar Penyelaras <%#=h @weeklytimetable.schedule_creator.position.name %><br>
+				Pelatih Ambilan <%=h @weeklytimetable.schedule_intake.name %><br><br>
+				Tarikh : <%=h  @weeklytimetable.submitted_on? ? l(@weeklytimetable.submitted_on, :format =>'%d-%B-%Y') : (t 'not_submitted') %>
+			</td>
+			<td colspan="2">&nbsp;</td>
+			<td colspan="3" class="sign_prepare2">
+				<span class="bold-cap"><%=h @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"  %></span><br>
+				<%=h  @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.position.name : "-" %>
+				<%#=h Login.current_login.staff.position.parent.name %><br>
+				KSKB Johor Bahru<br><br>
+				Tarikh : <%=h @weeklytimetable.hod_approved_on? ? l(@weeklytimetable.hod_approved_on, :format => '%d-%B-%Y') : (t 'not_approved') %>
+			</td>
+		</tr>
+	<% end %>
+	<!--SIGNatory part appear on 1st page, if schedule end here(5 days) - END-->
+	<!--1ST page should end here, although 2nd page exist-START-->
+	</table></center>
+	<BR/><BR/>
+	<BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/><BR/>
+	<!--1ST page should end here, although 2nd page exist-END-->
+	
+<% if @daycount2 > 0 %>
+	<P CLASS="breakhere">
+	<div class="A4landscape" >
+		<BR><BR><center>
+		<table class="plong">	
+	
 	<% break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.map(&:is_break) %>
 	<% break_format2 = @weeklytimetable.timetable_friday.timetable_periods.map(&:is_break) %>
 
@@ -275,7 +324,8 @@
                         <% 1.upto(daycount2) do |row2|%>
 				<tr>
 					<td class="data3">
-						<%=(weekdays_end+row2).try(:strftime, "%A")%><br><%=(weekdays_end+row2).try(:strftime, "%d-%b-%Y")%>
+<!-- 						<%#=(weekdays_end+row2).try(:strftime, "%A")%><br><%#=(weekdays_end+row2).try(:strftime, "%d-%b-%Y")%> -->
+						 <%=l((weekdays_end+row2), :format => '%A')%><br><%=l((weekdays_end+row2), :format => '%d-%b-%Y')%>
 					 </td>
 					<!--Content - (ADDITIONAL - Weekends classes)-->
 					<!--span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column-->
@@ -313,46 +363,35 @@
 	<%end %>
 	<!--Header & content for Weekend Classes-(end)-->
 	
-	<tr><td colspan="8" style="height:10px;">&nbsp;</td><tr>
-	<tr>
-		<td></td>
-		<td colspan="2" class="sign_prepare1">
-			Disediakan oleh,
-			<br><br><br>
-		</td>
-		<td colspan="2"></td>
-		<td colspan="3" class="sign_prepare1">
-			Disemak oleh,
-			<br><br><br>
-		
-		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td colspan="2" class="sign_prepare2">
-			<span class="bold-cap"><%=h @weeklytimetable.schedule_creator.name %></span><br>
-			Pengajar Penyelaras <%#=h @weeklytimetable.schedule_creator.position.name %><br>
-			Pelatih Ambilan <%=h @weeklytimetable.schedule_intake.name %><br><br>
-			Tarikh : <%=h  @weeklytimetable.submitted_on? ? @weeklytimetable.submitted_on.strftime('%d-%b-%Y') : "Not Submitted" %>
-		</td>
-		<td colspan="2">
-		
-		</td>
-		<td colspan="3" class="sign_prepare2">
-			<span class="bold-cap"><%=h @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"  %></span><br>
-			<%=h  @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.position.name : "-" %>
-			<%#=h Login.current_login.staff.position.parent.name %><br>
-			KSKB Johor Bahru<br><br>
-			Tarikh : <%=h @weeklytimetable.hod_approved_on? ? @weeklytimetable.hod_approved_on.strftime('%d-%b-%Y') : "Not Approved" %>
-		</td>
-		
-	</tr>
-</table>		
-</center>		
-<!--<div>-->
-<BR/><BR/>	
-
-<div id="hideLink">
-<%= link_to 'Back', weeklytimetables_path %>
-</div>
+		      <!--SIGNatory part appear on 2nd page, if schedule end here(7 days) - START-->
+			<tr><td colspan="8" style="height:10px;">&nbsp;</td><tr>
+			  <tr>
+				<td>&nbsp;</td>
+				<td colspan="2" class="sign_prepare1">Disediakan oleh,<br><br><br></td>
+				<td colspan="2"></td>
+				<td colspan="3" class="sign_prepare1">Disemak oleh,<br><br><br></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td colspan="2" class="sign_prepare2">
+					  <span class="bold-cap"><%=h @weeklytimetable.schedule_creator.name %></span><br>
+					  Pengajar Penyelaras <%#=h @weeklytimetable.schedule_creator.position.name %><br>
+					  Pelatih Ambilan <%=h @weeklytimetable.schedule_intake.name %><br><br>
+					  Tarikh : <%=h  @weeklytimetable.submitted_on? ? l(@weeklytimetable.submitted_on, :format =>'%d-%B-%Y') : (t 'not_submitted') %>
+				</td>
+				<td colspan="2">&nbsp;</td>
+				<td colspan="3" class="sign_prepare2">
+					  <span class="bold-cap"><%=h @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"  %></span><br>
+					  <%=h  @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.position.name : "-" %>
+					  <%#=h Login.current_login.staff.position.parent.name %><br>
+					  KSKB Johor Bahru<br><br>
+					  Tarikh : <%=h @weeklytimetable.hod_approved_on? ? l(@weeklytimetable.hod_approved_on, :format => '%d-%B-%Y') : (t 'not_approved') %>
+				 </td>
+			  </tr>
+			  <!--SIGNatory part appear on 2nd page, if schedule end here(7 days) - END-->
+		</table>	
+	</center>
+	<BR/><BR/>
+        </div>
+<% end %>
 

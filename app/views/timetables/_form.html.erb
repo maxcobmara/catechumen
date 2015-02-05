@@ -1,41 +1,41 @@
 <table width=100%>
 	<tr>
-		<td class="leftcol"><%= f.label :code %></td>
+		<td class="leftcol"><%= f.label (t 'timetable.code') %></td>
 		<td> <%= f.text_field :code, :size => '15' %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><%= f.label :name %></td>
+		<td class="leftcol"><%= f.label (t 'timetable.name')  %></td>
 		<td> <%= f.text_field :name, :size => '25' %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><%= f.label :description %></td>
+		<td class="leftcol"><%= f.label (t 'timetable.description')  %></td>
 		<td> <%= f.text_field :description, :size => '70' %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><%= f.label :created_by %></td>
+		<td class="leftcol"><%= f.label (t 'timetable.created_by') %></td>
 		<td><%= f.collection_select :created_by, Staff.find(:all, :conditions => ['id =?', Login.current_login.staff_id.to_i]), :id, :name %></td>
 	</tr>
 </table>
 
-<H2>Timetable Details</H2>
+<H2><%=t('timetable.details')%></H2>
 <table style="width:60%; margin-left:20%">	
 	<tr>
-		<th width=65px>Period</th>
-		<th width=100px>Day</th>
-		<th width=140px>Starts At</th>
-		<th width=140px>Ends At</th>
-		<th width=100px>Break</th>
-		<th>Delete</th>
+		<th width=65px><%=t('timetable.period')%></th>
+		<th width=100px><%=t('timetable.day')%></th>
+		<th width=140px><%=t('timetable.start_at')%></th>
+		<th width=140px><%=t('timetable.end_at')%></th>
+		<th width=100px><%=t('timetable.is_break')%></th>
+		<th><%=t('delete')%></th>
 	</tr>
 </table>
 <% f.fields_for :timetable_periods do |builder| %>
 	<%= render 'timetable_period_fields', :f => builder %>
 <% end %>
 
-<p style="margin-left:70%;"><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :timetable_periods %> - Add More</p>
+<p style="margin-left:70%;"><%= link_to_add_fields image_tag("add.png", :border => 0, :title => (t 'addmore')), f, :timetable_periods %> - <%=t('addmore')%></p>
 
 
 

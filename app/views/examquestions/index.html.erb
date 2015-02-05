@@ -1,19 +1,11 @@
 <%##=render :partial => 'exams/position_dept' %>
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Lists of Exam Questions</h2>
+		<h2 class="left"><%=t('examquestion.title')%></h2>
 	</div>
-</div>
-<% unless @position_exist %>	
-	You have no position assigned yet. <br>
-	Please contact administrator.
-<% else %>
-	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
-		Programme / Unit is not defined. <br>
-	<% else %>
-	
+</div>	
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Exam Question') + "New", new_examquestion_path %></p>
+	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'examquestion.new')) + (t 'examquestion.new'), new_examquestion_path %></p>
 </div>
 <div class="right">
 	<% form_tag examquestions_path, :method => 'get' do %>
@@ -34,39 +26,39 @@
 <div class="indextable">	
 	<table>
 		<tr>
-	    <th>Question</th>
-		<th width=4px style="text-align:center;">Answer</th>
-	    <th>Marks</th>
-	    <th>Category</th>
-	    <th>Difficulty</th>
+	    <th><%=t('examquestion.question')%></th>
+	    <th width=4px style="text-align:center;"><%=t('examquestion.answer')%></th>
+	    <th><%=t('examquestion.marks')%></th>
+	    <th><%=t('examquestion.category')%></th>
+	    <th><%=t('examquestion.difficulty')%></th>
 	    <th>Status</th>
-	    <th>Created By</th>
-		<th width=30px>Usage Frequency</th>
-	    <th colspan=3 class="ac">Control</th>
+	    <th><%=t('examquestion.creator_id')%></th>
+	    <th width=30px><%=t('examquestion.usage_frequency')%></th>
+	    <th colspan=3 class="ac"><%=t('control')%></th>
 		</tr>
 
 	<% @programme_exams.each do |prog, examquestions| %>
 		<tr><td colspan=11 style="background-color:#BCBEBF;">
 			<% unless prog.blank? %>
-				<b>	Programme: <%=Programme.find(prog.id).name %></b>
+				<b>	<%=t('examquestion.programme_id')%>: <%=Programme.find(prog.id).name %></b>
 			<% end %>
 		</td></tr>
 		<% examquestions.group_by{|t|t.subject_details}.sort.each do |subject_details, examquestions| %>		
 			<tr><td colspan=11 style="background-color:#EFF1F1;">
-				<b>Subject : <%=subject_details%></b>
+				<b><%=t('examquestion.subject_id')%> : <%=subject_details%></b>
 			</td></tr>
 			
 			<% @groupbytopic=examquestions.group_by{|x|x.topic_id} %>
 			<% @groupbytopic.sort.each do |topic, allquestions| %>
 				<tr>
 					<td colspan=6 style="color:blue; font-weight:bold;background-color:#ECFBFC;">
-						Topic : <%=Programme.find(topic).code%> <%=Programme.find(topic).name%>
+						<%=t('examquestion.topic_id')%> : <%=Programme.find(topic).code%> <%=Programme.find(topic).name%>
 					</td>
 					<td style="text-align:right;color:blue;background-color:#ECFBFC;">
 						<font size=-2>(<%=Programme.find(topic).parent.code%>|<%=topic%>|)
 					</td>
 					<td colspan=4 style="text-align:right;color:blue;background-color:#ECFBFC;">
-						Total questions : <%=allquestions.count%>
+						<%=t('examquestion.total')%> : <%=allquestions.count%>
 					</td>
 				</tr>
 				
@@ -75,10 +67,10 @@
 					
 					<tr>
 						<td colspan=6 style="padding-left:25px;text-decoration:underline;font-weight:bold;">
-							Question Type : <%=questiontype%>
+							<%=t('examquestion.questiontype')%> : <%=questiontype%>
 						</td>
 						<td colspan=7 style="text-align:right;">
-							Total questions : <%=questionbytype.count%>/<%=allquestions.count%>
+							<%=t('examquestion.total')%> : <%=questionbytype.count%>/<%=allquestions.count%>
 						</td>
 					</tr>
 					<% questionbytype.each_with_index do |question,no|%>
@@ -101,14 +93,14 @@
 						<td><%=h question.qstatus %></td>
 					    <td><%=h question.creator_id? ? question.creator_details : "" %></td>
 						<td style="text-align:center;"><%=h question.usage_frequency %></td>
-						<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => question %></td>
+						<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => question %></td>
 					<% permitted_to? :manage, :examquestions do %>
 				    	<td width=10px>
 					    <%unless question.qstatus=="Rejected"%>
-					      <%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => question %>
+					      <%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => question %>
 					    <% end %>
 					</td>
-				    	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), question, :confirm => 'Are you sure?', :method => :delete %></td>
+				    	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), question, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 					<% end %>
 					</tr>
 					<%# end %>
@@ -129,17 +121,14 @@
 
 <br />
 
-<%= link_to 'New Exam Question', new_examquestion_path %>
+<%= link_to (t 'examquestion.new'), new_examquestion_path %>
 <!--download excel-start-31May2013-->
 <!-- start-all links are working -->
 <%#= link_to image_tag("excel.png",:border=>0, :title=>'Export') , examquestions_path(request.parameters.merge({:format => :xls})) %>
- | <%= link_to 'Download Excel', examquestions_path(request.parameters.merge({:format => :xls}))%>
+ | <%= link_to (t 'examquestion.download_excel'), examquestions_path(request.parameters.merge({:format => :xls}))%>
 <%#= link_to 'Export XLS', url_for(:format => 'xls')%>
 <%#= link_to 'Export to Excel', url_for(:format=>'xls'), :popup=>true %>
 <!--<br>-->
 <!--download excel-end-31May2013-->
  <br>
 </div>
-
-<% end %>
-<% end %>	

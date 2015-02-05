@@ -41,8 +41,13 @@ class ExammarksController < ApplicationController
     end  
     
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @exammarks }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @exammarks }
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('exammark.title2')}
+        format.xml  { render :xml => @exammark.errors, :status => :unprocessable_entity }
+      end
     end
   end
 

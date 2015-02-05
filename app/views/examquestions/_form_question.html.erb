@@ -37,10 +37,10 @@
 	<div id="myNicPanel_0" style="width: 525px;"></div>
 	<div id="myInstance2"><%#= f.text_area :qkeyword, :size => "90x2", :id=>"ll" %></div>-->
 	
-<H2>Exam Question Details</H2>
+<H2><%=t('examquestion.details')%></H2>
 	<table width=100% >	
 		<tr>
-			<td class="leftcol"><label for="creator_id"><b>Creator:<%#=@dept_unit%></b></label></td>
+			<td class="leftcol"><label for="creator_id"><b><%=t('examquestion.creator_id')%>:<%#=@dept_unit%></b></label></td>
 			<!--13Apr2013-assign creator value-->
 			<% if @examquestion.id.nil? || @examquestion.id.blank? %>
 				<% @creator = Login.current_login.staff_id %>
@@ -52,14 +52,14 @@
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="curriculum_id"><b>Programme:</b></label></td>
+			<td class="leftcol"><label for="curriculum_id"><b><%=t('examquestion.programme_id')%>:</b></label></td>
 			<td>
 				<% if @examquestion.id.nil? || @examquestion.id.blank? %>
 					
 					<% if @examquestion.subject_id && @examquestion.subject_id != 0%>
 					<!--10Apr2013-for re-submission(of NEWLY entered data)-->
 						<%= f.collection_select :programme_id, @programme_listing, :id, :programme_list ,
-																	{:include_blank => "Select a programme", :selected =>@examquestion.subject.root.id},
+																	{:include_blank =>(t 'examquestion.select_a_programme1'), :selected =>@examquestion.subject.root.id},
 																	:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 																	:url => {:action => 'view_subject' }, 
 																	:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
@@ -67,7 +67,7 @@
 					<% elsif @examquestion.programme_id == nil %><!--new entry-->
 					<!--20Apr2013-NEW data entry-with pre-selected programme-based on logged-in account-->
 						<%= f.collection_select :programme_id, @programme_listing, :id, :programme_list ,
-																{:include_blank => "Select a programme", :selected => @preselect_prog},
+																{:include_blank => (t 'examquestion.select_a_programme1'), :selected => @preselect_prog},
 																:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 																:url => {:action => 'view_subject' }, 
 																:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
@@ -75,7 +75,7 @@
 					<% else %>
 						<!--22Apr2013-if no subject selected but programme selected-->
 						<%= f.collection_select :programme_id, @programme_listing, :id, :programme_list ,
-																{:include_blank => "Select a programme", :selected => @examquestion.programme_id.to_i},
+																{:include_blank => (t 'examquestion.select_a_programme1'), :selected => @examquestion.programme_id.to_i},
 																:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 																:url => {:action => 'view_subject' }, 
 																:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
@@ -83,7 +83,7 @@
 					<% end %>
 				<% else %>
 					<%= f.collection_select :programme_id, @programme_listing, :id, :programme_list ,
-																{:include_blank => "Select a programme", :selected =>@examquestion.subject.root.id},
+																{:include_blank => (t 'examquestion.select_a_programme1'), :selected =>@examquestion.subject.root.id},
 																:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 																:url => {:action => 'view_subject' }, 
 																:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
@@ -92,7 +92,7 @@
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="subject_id">Subject:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="subject_id"><%=t('examquestion.subject_id')%>:</label><font color="red"> * </font></td>
 			<td><%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
 				<% if @examquestion.id.nil? || @examquestion.id.blank? %>
 					<!--10Apr2013-for re-submission(of NEWLY entered data)-->
@@ -100,13 +100,13 @@
 					
 					 <% unless @examquestion.topic_id.nil?%>
 						<%= f.collection_select :subject_id, @subjects1, :id, :subject_list, 
-												{:include_blank=>'Select a subject', :selected =>@examquestion.topic.parent.id},
+												{:include_blank=>(t 'examquestion.select_a_subject1'), :selected =>@examquestion.topic.parent.id},
 												:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
 												:url => {:action => 'view_topic' }, 
 												:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
 					  <% else %>
 						<%= f.collection_select :subject_id, @subjects2, :id, :subject_list, 
-												{:include_blank=>'Select a subject', :selected =>@examquestion.subject_id},
+												{:include_blank=>(t 'examquestion.select_a_subject1'), :selected =>@examquestion.subject_id},
 												:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
 												:url => {:action => 'view_topic' }, 	
 												:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
@@ -120,19 +120,19 @@
 						<!--this part won't appear if NO programme populated at all-->
 						<% if @preselect_prog && @subjectlist_preselect_prog %>
 							<%= f.collection_select :subject_id, @subjectlist_preselect_prog , :id, :subject_list, 
-												{:include_blank=>'Select a subject'},
+												{:include_blank=>(t 'examquestion.select_a_subject1')},
 												:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
 												:url => {:action => 'view_topic' }, 	
 												:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
 						<% else %>
 							<!--if programme selected, but subject not selected-->
 							<% if @examquestion.subject_id==0%>
-								Please re-select a programme
+								<%=t('examquestion.reselect_a_programme')%>
 							<% else %>
 						<!--above part won't appear if NO programme populated BUT STILL display below part instead-->
 						<!--this part required for administrator:Maslinda & Ketua Unit Penilaian & Kualiti -->
 						<!--(as there's no programme populated for them)-->
-							&nbsp;&nbsp;Please select a programme first
+							&nbsp;&nbsp;<%=t('examquestion.select_a_programme')%>
 							<% end %>
 						<% end %>
 						<!--hv to add additional condition: @preselect_prog & @subjectlist_preselec_prog must EXIST-->
@@ -141,12 +141,12 @@
 				<% else %>
 					<!--@subjects = Programme.find(@programme_id).descendants.at_depth(2)-->
 					<%= f.collection_select :subject_id, @subjects1, :id, :subject_list, 
-											{:include_blank=>'Select a subject'},
+											{:include_blank=>(t 'examquestion.select_a_subject1')},
 											:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
 											:url => {:action => 'view_topic' }, 
 											:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
 					<%#= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, 
-											{:include_blank=>'Select a subject'},
+											{:include_blank=>(t 'examquestion.select_a_subject1')},
 											:onchange => remote_function(:update => form_tag_id(f.object_name, :topic_list), 
 											:url => {:action => 'view_topic' }, 
 											:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
@@ -158,31 +158,31 @@
 		
 		<!--18Apr2013-topic added-->
 		<tr>
-			<td class="leftcol"><label for="topic_id">Topic:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="topic_id"><%=t('examquestion.topic_id')%>:</label><font color="red"> * </font></td>
 			<td><%= tag("div", :id => form_tag_id(f.object_name, :topic_list)) %>
 				<% if @examquestion.id.nil? == true || @examquestion.id.blank? == true %>
 					<!--18Apr2013-for re-submission(of NEWLY entered data)-->
 					<% if @examquestion.topic_id.nil? == true || @examquestion.topic_id.blank? == true %>
 						<% if @examquestion.programme_id.nil? == true %>
 							<!--first time click NEW examquestion & NO SUBMISSION yet-->
-							&nbsp;&nbsp;Please select a subject first
+							&nbsp;&nbsp;<%=t('examquestion.select_a_subject')%>
 						<% elsif @examquestion.subject_id.nil? == true %>
 							<!--after SUBMISSION without subject selection-->	
-							&nbsp;&nbsp;Please select a SUBJECT first
+							&nbsp;&nbsp;<%=t('examquestion.select_a_subject_first')%>
 						<% elsif @examquestion.subject_id == 0 %><!--0 is value for 'Select a subject'-->
-						    &nbsp;&nbsp;Please SELECT a subject first
+						    &nbsp;&nbsp;<%=t('examquestion.select_a_subject_second')%>
 						<% else %>
 							<!--TOPIC NOT SELECTED, but programme & subject selected-->
-							<%= f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}, :id, :subject_list, :include_blank=>'Select a topic' %>
+							<%= f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}, :id, :subject_list, :include_blank=>(t 'examquestion.select_a_topic') %>
 						<% end %>
 					<% else %>
 					<!--topic EXIST, programme & subject EXIST-->
-						<%= f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}, :id, :subject_list, :include_blank=>'Select a topic', :selected => @examquestion.topic_id %>
+						<%= f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}, :id, :subject_list, :include_blank=>(t 'examquestion.select_a_topic'), :selected => @examquestion.topic_id %>
 					<!--topic EXIST, programme & subject EXIST-->
 					<% end %>
 				<% else %><!--else for existing examquestion-->
 					<!--existing examquestion, display topic accordingly-->
-					<%= f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}, :id, :subject_list, :include_blank=>'Select a topic', :selected => @examquestion.topic_id %>
+					<%= f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}, :id, :subject_list, :include_blank=>(t 'examquestion.select_a_topic'), :selected => @examquestion.topic_id %>
 				<% end %>
 				</div>
 			</td>
@@ -190,7 +190,7 @@
 		<!--18Apr2013-topic added-->
 		
 		<tr>
-			<td class="leftcol"><label for="createdt"><b>Create Date:</b></label></td>
+			<td class="leftcol"><label for="createdt"><b><%=t('examquestion.createdt')%>:</b></label></td>
 			<td><%= f.date_select :createdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 		</tr>
 		<!--
@@ -258,37 +258,37 @@
 
 <table>
 	<tr>
-		<td class="leftcol"><label for="questiontype"><b>Question Type:</b><font color="red"> * </font></label></td>
+		<td class="leftcol"><label for="questiontype"><b><%=t('examquestion.questiontype')%>:</b><font color="red"> * </font></label></td>
 		<td><%= f.select :questiontype, 
 			             Examquestion::QTYPE,
-			             :include_blank=> "Select" %>
+			             :include_blank=> (t 'select') %>
 		</td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="category"><b>Classification:</b></label></td>
+		<td class="leftcol"><label for="category"><b><%=t('examquestion.category')%>:</b></label></td>
 		<td><%= f.select :category, 
 		                  Examquestion::QCATEGORY,
-		                  :prompt => "Select"  %></td>
+		                  :prompt => (t 'select') %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="status"><b>Construction</b></label></td>
+		<td class="leftcol"><label for="status"><b><%=t('examquestion.construct')%>:</b></label></td>
 		<td><%= f.text_field :construct, :size => 50 %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol"><label for="status"><b>Difficulty:</b></label></td>
+		<td class="leftcol"><label for="status"><b><%=t('examquestion.difficulty')%>:</b></label></td>
 		<td><%= f.select :difficulty, 
 		                 Examquestion::QLEVEL,
-		                 :prompt => "Select"  %></td>
+		                 :prompt => (t 'select') %></td>
 	</tr>
 	
 	<tr>
-		<td class="leftcol">Add Graphic/Picture</td>
+		<td class="leftcol"><%=t('examquestion.add_graphic_image')%></td>
 		<td><%= f.file_field :diagram %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="question"><b>Question:</b></label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="question"><b><%=t('examquestion.question')%>:</b></label><font color="red"> * </font></td>
 		<td><%= f.text_area :question, :size => '90x10', :id => 'myNicEditor' %></td>
 	</tr>
 
@@ -356,14 +356,14 @@
 	<span id="span_activate", style ="display:block">
    		<%= render :partial => 'answerchoice_fields', :locals => {:f => f,:type=>@type} %>
 	</span>
-	<div style="width:770px;text-align:right;"><%= f.check_box :activate, :id => 'check_activate', :checked=> true %> Activate </div>
+	<div style="width:770px;text-align:right;"><%= f.check_box :activate, :id => 'check_activate', :checked=> true %> <%=t('examquestion.activate')%> </div>
 	<%= render :partial => 'examanswer_fields', :locals => {:f => f,:type=>@type} %>
 	<!--answer field, table : examquestions-->
 	<% ans = [["A", "A"],["B","B"],["C","C"],["D","D"]]%>
 	<table>
 	<tr>
-		<td class="leftcol3"><label for="answer"><b>Answer:</b></label><font color="red"> * </font></td>
-		<td colspan="2"><%= f.select :answermcq, ans, :include_blank=> 'Select' %></td>
+		<td class="leftcol3"><label for="answer"><b><%=t('examquestion.answer')%>:</b></label><font color="red"> * </font></td>
+		<td colspan="2"><%= f.select :answermcq, ans, :include_blank=> (t 'select') %></td>
 	</tr>
 	</table>
 	<!--answer field, table : examquestion-->
@@ -374,7 +374,7 @@
 <SPAN class="seq", style="<%=@disp_a%>">
 <!--<SPAN class="seq", style="display:block;">-->
 
-	<table><tr><td class="leftcol">Subquestion(s) & Answer(s)</td><td>
+	<table><tr><td class="leftcol"><%=t('examquestion.subquestions_answers')%></td><td>
 		<% @count=0%>
 		<% f.fields_for :shortessays do |builder| %>
 			<%= render 'shortessay_fields', :f => builder,:locals=> { :index => @count} %>
@@ -397,7 +397,7 @@
 	<%#=render :partial => 'form_question_main', :locals => {:f => f} %> 
 	<table>
 	<tr>
-		<td class="leftcol"><label for="answer"><b>Answer:</b></label><font color="red"> * </font></td>
+		<td class="leftcol"><label for="answer"><b><%=t('examquestion.answer')%>:</b></label><font color="red"> * </font></td>
 		<td><%= f.text_field :answer, :size => "12" %></td>
 	</tr>
 	</table>
@@ -412,11 +412,11 @@
 	<td><%#= f.text_field :answer, :size => "12" %></td>
 </tr>-->
 <tr>
-	<td class="leftcol"><label for="marks"><b>Marks:</b></label><font color="red"> * </font></td>
+	<td class="leftcol"><label for="marks"><b><%=t('examquestion.marks')%>:</b></label><font color="red"> * </font></td>
 	<td><%= f.text_field :marks, :size => 12 %></td>
 </tr>
 <tr>
-	<td class="leftcol"><label for="qkeyword"><b>Keywords:</b></label></td>
+	<td class="leftcol"><label for="qkeyword"><b><%=t('examquestion.keywords')%>:</b></label></td>
 	<td><%= f.text_area :qkeyword, :size => "90x2" %></td>
 </tr>
 

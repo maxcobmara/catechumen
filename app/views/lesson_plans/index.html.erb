@@ -10,7 +10,7 @@
 
 <div class="toolbar">
 	<table width=100%><tr>
-		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Lesson Plan') + t('lesson_plan.new'), new_lesson_plan_path %></p></td>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => (t 'lesson_plan.new')) + t('lesson_plan.new'), new_lesson_plan_path %></p></td>
 	</tr></table>
 </div>
 
@@ -76,18 +76,26 @@
 			<%= link_to t('lesson_plan.create_report'), :action => 'lessonplan_reporting', :id => lesson_plan %>
 		<% end %>
 	</td>
-	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => lesson_plan %></td>
+	<td width=10px>
+		<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %>
+			<%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => lesson_plan %>
+		<% end %>
+	</td>
 	<td width=10px>
 	<!--edit : display owner or admin only-->
 	<% if (lesson_plan.is_submitted != true && (lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) || ((lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration')) && lesson_plan.hod_rejected? == true && lesson_plan.is_submitted==nil) || (lesson_plan.is_submitted == false && (lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) || (lesson_plan.is_submitted == nil && (lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) %>
-		<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => lesson_plan %>
+		<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => lesson_plan %>
 	<% elsif (lesson_plan.is_submitted == true && lesson_plan.hod_approved != true) && (lesson_plan.endorsed_by == Login.current_login.staff_id || current_roles.include?('Administration'))  %>
 	<!--approval (LP) : display HOD or admin only-->
-		<%= link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => lesson_plan %>
+		<%= link_to image_tag("approval.png", :border => 0, :title => (t 'approval')), :action => 'edit', :id => lesson_plan %>
 	<% end %>
 	</td>
-	    <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Lesson Plan'), :action => 'lesson_plan', :id => lesson_plan %></td>
-	<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), lesson_plan, :confirm => 'Are you sure?', :method => :delete %></td>
+	<td width=10px>
+		<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %>
+			<%= link_to image_tag("printer.png", :border => 0, :title => (t 'print')), :action => 'lesson_plan', :id => lesson_plan %>
+		<% end %>
+	</td>
+	<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), lesson_plan, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   </tr>
   <% end %>
 <% end %>

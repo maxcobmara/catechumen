@@ -42,6 +42,9 @@ class LessonPlansController < ApplicationController
   # GET /lesson_plans/1/edit
   def edit
     @lesson_plan = LessonPlan.find(params[:id])
+    #admin
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    @is_admin=true if current_roles.include?("Administration")
   end
 
   # POST /lesson_plans
@@ -104,8 +107,10 @@ class LessonPlansController < ApplicationController
   end
   
   def lessonplan_reporting
-      @lesson_plan = LessonPlan.find(params[:id])  
-      
+    @lesson_plan = LessonPlan.find(params[:id])  
+    #admin
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    @is_admin=true if current_roles.include?("Administration")
   end
   def index_report
     @position_exist = Login.current_login.staff.position

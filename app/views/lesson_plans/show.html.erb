@@ -3,6 +3,9 @@
 
 	<% if @lesson_plan.report_submit == true %><!--will only appear when lesson plan report already submited-30March2013-->
 		<%=render :partial => 'show_lessonplan_report'%>
+	<% else %>
+		<BR>
+		<font color="red"><%=t('lesson_plan.report_not_submitted')%></font>
 	<% end %>
 </div>
 <% current_roles=[]%><% Login.current_login.roles.each do |x| %><% current_roles << x.name %><% end %>
@@ -18,6 +21,6 @@
 
 <%= link_to t('lesson_plan.back_to_lesson_plan'), lesson_plans_path %>
 
-<% if @lesson_plan.report_submit == true %>
+<%# if @lesson_plan.report_submit == true %>
  	| <%= link_to t('lesson_plan.back_to_lesson_plan_report'), 	{:controller => 'lesson_plans',	:action => 'index_report'} %>
-<% end %>
+<%# end %>

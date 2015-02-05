@@ -8,7 +8,7 @@
 </div>
 <div class="toolbar">
 	<table width=100%><tr>
-		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Training Note') + t('training_note.new'), new_trainingnote_path %></p></td>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => (t 'training_note.new')) + t('training_note.new'), new_trainingnote_path %></p></td>
 	</tr></table>
 </div>
 <div class="tlist">
@@ -42,15 +42,15 @@
 			<br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 			<% if trainingnote.topicdetail_id==nil && trainingnote.timetable_id!=nil %>
 				<font color=blue>
-					<b>Topic Detail</b> not exist, <%= link_to "CREATE ONE", new_topicdetail_path %> to match.
+					<b><%=('topicdetail.title2')%></b> <%=t('not_exist')%>, <%= link_to (t 'topicdetail.create_one').upcase, new_topicdetail_path %> <%=t('topicdetail.to_match')%>.
 					<% @topic=WeeklytimetableDetail.find(trainingnote.timetable_id).topic %>
-					(Topic : <%=Programme.find(@topic).semester_subject_topic %>)
+					(<%=t('topicdetail.topic')%> : <%=Programme.find(@topic).semester_subject_topic %>)
 				</font>
 			<% end %>	
 		</td>
 	    <td><%=h trainingnote.reference %></td>
 	    <td><%=h trainingnote.version %></td>
-	    <td><%=h trainingnote.release %></td>
+	    <td><%=h trainingnote.release.nil? ? "" : l(trainingnote.release, :format => '%d %b %Y') %></td>
 			<td><%= link_to image_tag('attach.png'), trainingnote.document.url%> &nbsp; 
 			      <% if trainingnote.document.exists? %>
 					<%= link_to trainingnote.document_file_name, trainingnote.document.url %>
@@ -58,9 +58,9 @@
 					<%= link_to trainingnote.document_file_name, "http://#{request.host}:3003"+ trainingnote.document.url , :width => '57px'  %>
 			      <% end%>
 		
-			<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => trainingnote %></td>
-			<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => trainingnote %></td>
-			<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), trainingnote, :confirm => 'Are you sure?', :method => :delete %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => trainingnote %></td>
+			<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title=> (t 'edit')), :action => 'edit', :id => trainingnote %></td>
+			<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), trainingnote, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 
 	  </tr>
 	<% end %><% end %>

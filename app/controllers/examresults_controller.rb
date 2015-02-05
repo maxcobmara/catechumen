@@ -21,17 +21,29 @@ class ExamresultsController < ApplicationController
     end 
     ###--just added
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @examresults }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @examresults }
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('examresult.examinationresult')}
+        format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+      end
     end
   end
   
   def index2
-    @examresults = Examresult.all
-
+    @position_exist = current_login.staff.position
+    if @position_exist     
+      @examresults = Examresult.all
+    end
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @examresults }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @examresults }
+      else
+	 format.html {redirect_to "/home", :notice =>t('position_required')+t('menu.exam_slip')}
+         format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+      end
     end
   end
 

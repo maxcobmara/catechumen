@@ -11,6 +11,9 @@
 		</div>
 	</div>
 </div>
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'leaveforstudent.apply')) + (t 'leaveforstudent.apply'), new_document_path %></p>
+</div><BR><BR>
 <div class="tlist">
 <table width=100%>
   <tr>
@@ -47,11 +50,11 @@
 		<%else%><font color="red"><%=t('leaveforstudent.expired')%></font>
 		<% end %>
 	</td>
-        <td width=10px ><%= link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => leaveforstudent %></td>
+        <td width=10px ><%= link_to image_tag("document.png", :border => 0,  :title => (t 'show')), :action => 'show', :id => leaveforstudent %></td>
         <% if permitted_to? :edit, leaveforstudent %>
 		<td width=10px>
 			<% if leaveforstudent.studentsubmit != true %>
-				<%= link_to image_tag("edit.png",:border => 0,  :title => 'Edit'), 	:action => 'edit', :id => leaveforstudent %>
+				<%= link_to image_tag("edit.png",:border => 0,  :title => (t 'edit')), 	:action => 'edit', :id => leaveforstudent %>
 			<% end %>
 		</td>
 	<% end %>
@@ -77,7 +80,7 @@
 		<% end %> 
 	</td>
   	<% if permitted_to? :destroy, leaveforstudent %>
-		<td width=10px><%= link_to image_tag("delete.png", :border => 0,  :title => 'Delete'), leaveforstudent, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td width=10px><%= link_to image_tag("delete.png", :border => 0,  :title => (t 'delete')), leaveforstudent, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   	<% end %>	
 	</tr>
 <% end %>

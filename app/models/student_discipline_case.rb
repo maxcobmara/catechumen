@@ -26,6 +26,7 @@ class StudentDisciplineCase < ActiveRecord::Base
     #end
   #end
   
+  named_scope :all, :conditions => ["status is not null"]
   named_scope :new2,       :conditions => [ "status =?", "New"           ]      #named_scope :new
   named_scope :opencase,  :conditions => [ "status =?", "Open"          ]
   named_scope :tphep,     :conditions => [ "status =?", "Refer to TPHEP"]
@@ -33,12 +34,13 @@ class StudentDisciplineCase < ActiveRecord::Base
   named_scope :closed,    :conditions => [ "status =?", "Closed"        ]
   
   FILTERS = [
-    {:scope => "new2",   :label => "New"},                                      #:scope => "new"
-    {:scope => "opencase",  :label => "Open"},
-    {:scope => "tphep", :label => "Refer to TPHEP"},
-    {:scope => "bpl",   :label => "Refer to BPL"},
-    {:scope => "closed",:label => "Closed"}
-  ]
+    {:scope => "all", :label => I18n.t('studentdiscipline.all')},
+    {:scope => "new2",   :label => I18n.t('studentdiscipline.new2')},                                      #:scope => "new"
+    {:scope => "opencase",  :label =>  I18n.t('studentdiscipline.open')},
+    {:scope => "tphep", :label =>  I18n.t('studentdiscipline.refer_tphep')},
+    {:scope => "bpl",   :label =>  I18n.t('studentdiscipline.refer_bpl')},
+    {:scope => "closed",:label => I18n.t('studentdiscipline.closed')}
+  ]  
   
   def close_if_no_case
     if action_type == "no_case" || action_type == "advise" #|| action_type == "counseling"
@@ -59,19 +61,16 @@ class StudentDisciplineCase < ActiveRecord::Base
     if Student.find(student_id).course_id == 4
     	self.assigned_to = Position.find_by_positioncode('1.1.04').staff_id  #self.assigned_to = 69
     else
-    	
-  	end
+    end
   end
   
-
-    
   # Data Stuff-----------------------------------------------
   INFRACTION = [
          #  Displayed       stored in db
-         [ "Merokok", 1  ],
-         [ "Ponteng Kelas", 2 ],
-         [ "Bergaduh", 3 ],
-         [ "Lain Lain", 4 ]
+         [ I18n.t('studentdiscipline.smooking'), 1  ],
+         [ I18n.t('studentdiscipline.skip_class'), 2 ],
+         [ I18n.t('studentdiscipline.quarrel'), 3 ],
+         [ I18n.t('studentdiscipline.others'), 4 ]
       ]
     
     def status_workflow
@@ -102,29 +101,32 @@ class StudentDisciplineCase < ActiveRecord::Base
     end
     flow
     end
-
     
    STATUS = [
          #  Displayed       stored in db
-         [ "New","New" ],
-         [ "Open","Open" ],
-         [ "No Case","No Case" ],
-         [ "Closed", "Closed" ],
-         [ "Refer to BPL", "Refer to BPL" ]
-    ]
+         [ I18n.t('studentdiscipline.new2'),"New" ],
+         [ I18n.t('studentdiscipline.open'),"Open" ],
+         [ I18n.t('studentdiscipline.no_case'),"No Case" ],
+         [ I18n.t('studentdiscipline.closed'), "Closed" ],
+         [ I18n.t('studentdiscipline.refer_bpl'), "Refer to BPL" ]
+    ] 
+   
+    def render_status
+      (StudentDisciplineCase::STATUS.find_all{|disp, value| value == status }).map {|disp, value| disp}
+    end
     
     def reporter_details 
-          suid = Array(reported_by)
-          exists = Staff.find(:all, :select => "id").map(&:id)
-          checker = suid & exists     
+      suid = Array(reported_by)
+      exists = Staff.find(:all, :select => "id").map(&:id)
+      checker = suid & exists     
 
-          if reported_by == nil
-             "" 
-           elsif checker == []
-             "Staff No Longer Exists" 
-          else
-            staff.mykad_with_staff_name
-          end
+      if reported_by == nil
+        "" 
+      elsif checker == []
+        "Staff No Longer Exists" 
+      else
+        staff.mykad_with_staff_name
+      end
     end
     
     def student_name
@@ -132,10 +134,10 @@ class StudentDisciplineCase < ActiveRecord::Base
     end
     
     def file_name
-      cofile.blank? ? "Not Assigned" : " #{cofile.name}"  
+      cofile.blank? ? I18n.t('not_assigned') : " #{cofile.name}"  
     end
     
     def room_no
-      location.blank? ? "Not Assigned" : " #{location.location_list}"  
+      location.blank? ?  I18n.t('not_assigned') : " #{location.location_list}"  
     end
 end

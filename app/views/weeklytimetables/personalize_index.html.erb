@@ -35,13 +35,13 @@
   <tr>
     <td><%= item.schedule_programme.programme_list%>&nbsp;<!--(ID weekly timetable bila index=0, <%=item.id %>)--></td>
     <td><%= item.schedule_intake.group_with_intake_name %></td>
-    <td><%=sdate%></td>
-    <td><%= item.enddate %></td>
+    <td><%=l(sdate)%></td>
+    <td><%= l(item.enddate) %></td>
     <td><%= item.academic_semester.semester %></td>
-    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'personalize_show', :id => sdate %></td>
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'personalize_show', :id => sdate %></td>
    
-    <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Personalize Timetable'), :action => 'personalize_timetable', :id => sdate %></td>
- 	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), item, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => (t 'weeklytimetable.personalize')), :action => 'personalize_timetable', :id => sdate %></td>
+ 	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), item, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   </tr>
 
 		<% end %>

@@ -34,7 +34,7 @@
 		</tr>
 				<tr>
 			<td class="leftcol"><label><%=t('training_note.release')%>:</label></td>
-			<td><%=h @trainingnote.release.try(:strftime, '%d %b %Y') %></td>
+			<td><%=h @trainingnote.release.nil? ? @trainingnote.release.try(:strftime, '%d %B %Y') : l(@trainingnote.release, :format => '%d %B %Y') %></td>
 		</tr>
 				<tr>
 			<td class="leftcol"><label><%=t('training_note.version')%>:</label></td>

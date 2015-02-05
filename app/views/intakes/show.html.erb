@@ -1,30 +1,30 @@
 <div class="tform">
 <fieldset>
-	<legend class='togvis'>Intakes Details</legend>
+	<legend class='togvis'><%=t('intake.details')%></legend>
 		<table width=85% >
 			<tr>
-				<td class="leftcol"><label>Intakes Name:</label></td>
+				<td class="leftcol"><label><%=t('intake.name')%>:</label></td>
 				<td><%=h @intake.name %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Description:</label></td>
+				<td class="leftcol"><label><%=t('intake.description')%>:</label></td>
 				<td><%=h @intake.description %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Register on:</label></td>
+				<td class="leftcol"><label><%=t('intake.register_on')%>:</label></td>
 				<td><%=h @intake.register_on %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Programme:</label></td>
+				<td class="leftcol"><label><%=t('intake.programme_id')%>:</label></td>
 				<td><%=h @intake.programme.programme_list %></td>				
 			</tr>
 			<tr>
-				<td class="leftcol"><label>Is active:</label></td>
-				<td><%=h @intake.is_active %></td>				
+				<td class="leftcol"><label><%=t('intake.is_active')%>:</label></td>
+				<td><%=h @intake.is_active? ? (t 'yes2') : (t 'no2') %></td>				
 			</tr>
 		</table>
 </fieldset>
 </div>
 
-<%= link_to 'Edit', edit_intake_path(@intake) %> |
-<%= link_to 'Back', intakes_path %>
+<%= link_to (t 'edit'), edit_intake_path(@intake) %> |
+<%= link_to (t 'back'), intakes_path %>

@@ -4,11 +4,11 @@
   <%= f.error_messages %>
 
   <div class="tform">
-  <H2>Examination Paper Details</H2>
+  <H2><%=t('exam.new')%></H2>
 	<table width=100% >
 		<tr>
-			<td class="leftcol"><%= f.label :name %></td>
-			<td><!--<%#= f.text_field :name %>&nbsp;<font size=-2><i>(eg. Peperiksaan Pertengahan Semester)</i></font>--><%= f.select :name, Exam::EXAMTYPE, :include_blank => 'Select Exam Type' %></td>
+			<td class="leftcol"><%= f.label (t 'exam.name') %></td>
+			<td><!--<%#= f.text_field :name %>&nbsp;<font size=-2><i>(eg. Peperiksaan Pertengahan Semester)</i></font>--><%= f.select :name, Exam::EXAMTYPE, :include_blank => (t 'select') %></td>
 		</tr>
 		<!--22Apr2013-this field no longer required
 		<tr>
@@ -17,17 +17,17 @@
 		</tr>-->
 
 		<tr>
-			<td class="leftcol">Creator Name</td>
-			<td><%= f.collection_select :created_by, Staff.find(:all, :order => :name), :id, :staff_name_with_position, :include_blank => 'Select a creator', :selected => current_login.staff_id %></td>
+			<td class="leftcol"><%=t('exam.created_by')%></td>
+			<td><%= f.collection_select :created_by, Staff.find(:all, :order => :name), :id, :staff_name_with_position, :include_blank =>(t 'select'), :selected => current_login.staff_id %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol">Programme</td>
+			<td class="leftcol"><%=t('exam.course_id')%></td>
 			<td>
 				<% if @exam.programme_id %>
 				<!--resubmission(NEW entry)-->
 					<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
-											{:include_blank => "Select a programme", :selected => @exam.programme_id.to_i},
+											{:include_blank => (t 'select'), :selected => @exam.programme_id.to_i},
 											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 											:url => {:action => 'view_subject_main' }, 
 											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
@@ -35,7 +35,7 @@
 				<% else %>
 				<!--default upon new entry-preselected programme-base on logged-in user-->
 					<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
-											{:include_blank => "Select a programme", :selected => @preselect_prog},
+											{:include_blank => (t 'select'), :selected => @preselect_prog},
 											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 											:url => {:action => 'view_subject_main' }, 
 											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
@@ -45,24 +45,24 @@
 		</tr>
 		
 		<tr>
-			<td class="leftcol">Subject<font color="red"> * </font></td>
+			<td class="leftcol"><%=t('exam.subject_id')%><font color="red"> * </font></td>
 			<td>
 				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
 					<% if @exam.programme_id %>
 						<% if @exam.programme_id == 0 || @exam.programme_id.blank? || @exam.programme_id.nil? %>
 							<!--resubmission(NEW entry)-create but change to 'Please Select'-->
-							Please select a PROGRAMME first
+							<%=t('exam.select_programme_first')%>
 							<!--resubmission(NEW entry)-create but change to 'Please Select'-->
 						<% else %>
 							<!--resubmission(NEW entry)-regardless value of programme_id (except for-'Please select')-->
-							<%= f.collection_select :subject_id, Programme.find(@exam.programme_id).descendants.at_depth(2), :id, :subject_list, :include_blank=>'Select a subject'%>
+							<%= f.collection_select :subject_id, Programme.find(@exam.programme_id).descendants.at_depth(2), :id, :subject_list, :include_blank=>(t 'select')%>
 							<!--resubmission(NEW entry)-regardless value of programme_id (except for-'Please select')-->
 						<% end %>
 					<% else %>
 					<!--default upon new entry-populated subject list based on - preselected programme-base on logged-in user-->
 				<!--fff-->
 					<%# if @kupk!= "yes"%>
-						<%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank=>'Select a subject'%>
+						<%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank=>(t 'select')%>
 					<%# end %>
 					<!--default upon new entry-populated subject list based on - preselected programme-base on logged-in user-->	
 					<% end %>	
@@ -74,7 +74,7 @@
 
 
 		<tr>
-			<td class="leftcol">Date</td>
+			<td class="leftcol"><%=t('exam.exam_on')%></td>
 			<td><%= f.date_select :exam_on, :order => [:day, :month, :year] %></td>
 		</tr>
 		
@@ -85,12 +85,12 @@
 		</tr>-->
 		
 		<tr>
-			<td class="leftcol">Start Time</td>
-			<td><%= f.time_select :starttime %> (Hours : Minutes)</td>
+			<td class="leftcol"><%=t('exam.starttime')%></td>
+			<td><%= f.time_select :starttime %> (<%=t('time.hours')%> : <%=t('time.minutes')%>)</td>
 		</tr>
 		<tr>
-			<td class="leftcol">End Time</td>
-			<td><%= f.time_select :endtime %> (Hours : Minutes)</td>
+			<td class="leftcol"><%=t('exam.endtime')%></td>
+			<td><%= f.time_select :endtime %> (<%=t('time.hours')%> : <%=t('time.minutes')%>)</td>
 		</tr>
 		<!--  Will calculate this
 
@@ -102,11 +102,11 @@
 </table>
 </div>
 	<p>
-	  <%= f.submit 'Create Exam', :name=> :submit_button %>
-	  <%= f.submit 'Create Template', :name=> :submit_button %>
+	  <%= f.submit t('exam.create_exam'), :name=> :submit_button %>
+	  <%= f.submit t('exam.create_template'), :name=> :submit_button %>
 		<%#= submit_tag "Single New Grade", :name => :submit_button1 %> 
 		<%#= submit_tag "Multiple New Grades", :name => :submit_button1 %>
 	</p>
 <% end %>
 
-<%= link_to 'Back', exams_path %>
+<%= link_to (t 'back'), exams_path %>
