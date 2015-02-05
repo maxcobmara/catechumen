@@ -9,36 +9,25 @@
 
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Exam Maker<%#=@dept_unit%></h2>
+		<h2 class="left"><%=t('exam.title')%><%#=@dept_unit%></h2>
 	</div>
 </div>
-
-<% unless @position_exist %>	
-	You have no position assigned yet. <br>
-	Please contact administrator.
-<% else %>
-	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
-		Programme / Unit is not defined. <br>
-	<% else %>
-
-
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Exam Question') + "New", new_exam_path %></p>
-</div>
-
+	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'exam.new')) + (t 'exam.new'), new_exam_path %></p>
+</div><BR><BR>
 <div class="indextable">
 	<table>
 	  <tr>
-	    <th>Name</th>
-		<th width=40px>Year/ Semester</th>
-	    <th>Programme</th>
-		<th>Subject</th>
-		<th width=80px>Exam Date</th>
-		<th width=70px>Time</th>
-	    <th>Creator</th>
-		<th>Duration</th>
-		<th>Marks</th>
-		<th colspan=4 class="ac">Control</th>
+		<th><%=t('exam.name')%></th>
+		<th width=40px><%=t('exam.year_semester')%></th>
+		<th><%=t('exam.course_id')%></th>
+		<th><%=t('exam.subject_id')%></th>
+		<th width=80px><%=t('exam.exam_on')%></th>
+		<th width=70px><%=t('exam.time')%></th>
+		<th><%=t('exam.created_by')%></th>
+		<th><%=t('exam.duration')%></th>
+		<th><%=t('exam.full_marks')%></th>
+		<th colspan=4 class="ac"><%=t('control')%></th>
 	  </tr>
 	
 		<% @exams.group_by{|x|x.subject.root}.each do |programme, exams| %>
@@ -61,14 +50,14 @@
 			<td><%=h exam.subject_id? ? @year + exam.subject.parent.code.to_s : "" %></td>
 		    <td><%=h exam.subject_id? ? exam.subject.root.course_type+" "+exam.subject.root.name : "" %></td>
 			<td><%=h exam.subject_id? ? exam.subject.subject_list : "" %></td>
-			<td><%=h (exam.exam_on.blank? ? "-" : exam.exam_on.strftime("%d-%b-%Y")) %></td>
-			<td><%=h exam.starttime.strftime('%H:%M %p') %> -<br> <%=h exam.endtime.strftime('%H:%M %p') %></td>
+			<td><%=h (exam.exam_on.blank? ? "-" : l(exam.exam_on, :format=>"%d-%b-%Y")) %></td>
+			<td><%=h l(exam.starttime, :format => '%H:%M %P') %> -<br> <%=h l(exam.endtime, :format =>'%H:%M %P') %></td>
 		    <td><%=h exam.creator_details %></td>
 			<td>
 				<% if exam.duration!=nil %>
-				    <%=h (exam.duration/60).to_i.to_s+" hours "+(exam.duration%60).to_i.to_s+" mins"%>
+				    <%=h (exam.duration/60).to_i.to_s+" "+(t 'time.hours')+" "+(exam.duration%60).to_i.to_s+" "+(t 'time.minutes')%>
 				<% else %>                    
-				    <%=h (((exam.endtime - exam.starttime)/60) / 60).to_i.to_s+" hours "+ (((exam.endtime - exam.starttime)/60) % 60).to_i.to_s+" mins"%>
+				    <%=h (((exam.endtime - exam.starttime)/60) / 60).to_i.to_s+" "+(t 'time.hours')+" "+ (((exam.endtime - exam.starttime)/60) % 60).to_i.to_s+" "+(t 'time.minutes')%>
 				<% end %>
 			</td>
 			<td><%#=h exam.full_marks %>
@@ -82,32 +71,35 @@
 				<!--11June2013-TEMPLATE-->
 			</td>
 		
-		    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => exam %></td>
-		    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => exam %></td>
-			<td width=10px><%#= link_to image_tag("printer.png",   :border => 0, :title => 'Exam Paper'), :action => 'exampaper', :id => exam %><%#=exam.subject.root.id%>
+		    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => exam %></td>
+		    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => exam %></td>
+			<td width=10px><%#= link_to image_tag("printer.png",   :border => 0, :title => (t 'exam.exampaper')), :action => 'exampaper', :id => exam %><%#=exam.subject.root.id%>
 				<% if exam.sequ!=nil %>
 					<% sequ = exam.sequ.split(",")%>
 				<% end %>
-				<% if sequ!=nil && sequ.uniq.length == sequ.length &&  (exam.subject.root.id == 3 || exam.subject.root.id == 5 || exam.subject.root.id == 6 || exam.subject.root.id == 7 || exam.subject.root.id == 8 || exam.subject.root.id == 9 || exam.subject.root.id == 10 || exam.subject.root.id == 11 || exam.subject.root.id == 12 || exam.subject.root.id == 13 || exam.subject.root.id == 14)%>
-					<div class="noti_Container"><%= link_to image_tag("printer.png",   :border => 0, :title => 'Separate Exam Paper'), :action => 'exampaper_separate', :id => exam %><div class="noti_bubble">S</div></div>
+				<% if sequ!=nil && sequ.uniq.length == sequ.length &&  (exam.subject.root.id == 3 || exam.subject.root.id == 5 || exam.subject.root.id == 6 || exam.subject.root.id == 7 || exam.subject.root.id == 8 || exam.subject.root.id == 9 || exam.subject.root.id == 10 || exam.subject.root.id == 11 || exam.subject.root.id == 12 || exam.subject.root.id == 13 || exam.subject.root.id == 14) && (sequ.size == exam.examquestions.count) %>
+					<div class="noti_Container"><%= link_to image_tag("printer.png",   :border => 0, :title => (t 'exam.separate')), :action => 'exampaper_separate', :id => exam %><div class="noti_bubble">S</div></div>
 				<% end %>
-				<% if sequ!=nil && sequ.uniq.length == sequ.length && (exam.subject.root.id == 1 || exam.subject.root.id == 2 || exam.subject.root.id == 4) %>
-					<div class="noti_Container"><%= link_to image_tag("printer.png",   :border => 0, :title => 'Combine Exam Paper'), :action => 'exampaper_combine', :id => exam %><div class="noti_bubble">C</div></div>
+				<% if sequ!=nil && sequ.uniq.length == sequ.length && (exam.subject.root.id == 1 || exam.subject.root.id == 2 || exam.subject.root.id == 4) && (sequ.size == exam.examquestions.count) %>
+					<div class="noti_Container"><%= link_to image_tag("printer.png",   :border => 0, :title => (t 'exam.combine')), :action => 'exampaper_combine', :id => exam %><div class="noti_bubble">C</div></div>
+				<% end %>
+				<% if exam.klass_id==1 && sequ %>
+					<% if sequ.size != exam.examquestions.count%><font color="blue">**</font><%end%>
 				<% end %>
 			</td>
 
-		    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), exam, :confirm => 'Are you sure?', :method => :delete %></td>
+		    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), exam, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 		  </tr>
 		  <%# end %><!--STAND BY:HIDE THIS LINE & LINE 37 to view ALL EXAM paper-->
 			<% end %>
 		<% end %>
 
 		</table>
-		<div class="right"><font color="red">*</font> indicates incomplete examination paper. Add question/question template accordingly.</div>
+		<div class="right">
+			<font color="red">*</font> <%=t('exam.indicates_incomplete')%><br>
+			<font color="blue">**</font> <%=t('exam.indicates_sequence_incomplete')%>
+		</div>
 
 <br />
 </div>
-<%= link_to 'New Exam', new_exam_path %>
-
-<% end %>
-<% end %>
+<%= link_to (t 'exam.new'), new_exam_path %>

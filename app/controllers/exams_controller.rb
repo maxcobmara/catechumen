@@ -2,8 +2,6 @@ class ExamsController < ApplicationController
   # GET /exams
   # GET /exams.xml
   def index
-    #@exams = Exam.all
-    ##----------
     @position_exist = current_login.staff.position
     if @position_exist  
       @lecturer_programme = current_login.staff.position.unit
@@ -21,10 +19,15 @@ class ExamsController < ApplicationController
       end
       @exams = Exam.search(@programme_id) 
     end
-    ##----------
+
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @exams }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @exams }
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('exam.title2')}
+        format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
@@ -115,14 +118,14 @@ class ExamsController < ApplicationController
         #end
     #10June2013-----  
     #end  
-    if @create_type == "Create"
+    if @create_type == t('exam.create_exam') #"Create"
         @exam.klass_id = 1  #added for use in E-Query & Report Manager (27Jul2013)
-    elsif @create_type == "Create Template"
+    elsif @create_type == t('exam.create_template') #"Create Template"
         @exam.klass_id = 0
     end   
     respond_to do |format|
       if @exam.save
-        flash[:notice] = 'Exam was successfully created.'
+        flash[:notice] = t('exam.title2')+" "+t('created')
         format.html { redirect_to (@exam) }
         format.xml  { render :xml => @exam, :status => :created, :location => @exam }
       else
@@ -154,7 +157,7 @@ class ExamsController < ApplicationController
     #----for template
       respond_to do |format|
         if @exam.update_attributes(params[:exam]) 
-          format.html { redirect_to(@exam, :notice => 'Exam template was successfully updated.') }
+          format.html { redirect_to(@exam, :notice => t('exam.title2')+" "+t('updated')) }
           format.xml  { head :ok }
           #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
         else
@@ -167,7 +170,7 @@ class ExamsController < ApplicationController
       respond_to do |format|
         if @exam.update_attributes(params[:exam]) 
             if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count ==  (params[:exam][:examquestion_ids]).count) 
-                format.html { redirect_to(@exam, :notice => 'Exam was successfully updated.') }
+                format.html { redirect_to(@exam, :notice =>  t('exam.title2')+" "+t('created')) }
                 format.xml  { head :ok }
                 #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
             else
@@ -176,7 +179,7 @@ class ExamsController < ApplicationController
                 #-------for both situation--sequence fields are not available during questions addition
                 #-------sequence can only be set once after question is saved into exam----------------
         	      format.html {render :action => "edit"}
-        	      flash[:notice] = 'Exam was successfully updated. <b>Please set sequence for each question.</b>'
+        	      flash[:notice] = t('exam.title2')+" "+t('created')+ ' <b>'+t('exam.set_sequence')+'</b>'
         	      format.xml  { head :ok }
         	      flash.discard        
                 #format.html { render :action => "edit" }

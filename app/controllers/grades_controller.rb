@@ -43,11 +43,16 @@ class GradesController < ApplicationController
       @grades_group = @grades.group_by{|x|x.subject_id}
     end 
     ###--just added
-    
+
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @grades }
-    end
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @grades }
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('grade.title2')}
+        format.xml  { render :xml => @grade.errors, :status => :unprocessable_entity }
+      end
+    end  
   end
 
   # GET /grades/1
@@ -144,7 +149,7 @@ class GradesController < ApplicationController
       @intake_list = Student.find(:all, :conditions=>['course_id=?',@dept_unit.id]).group_by{|l|l.intake}
     end
     arr = []
-    @intakes = @intake_list.each {|i,k| arr<<i} 
+    @intakes = @intake_list.each {|i,k| arr << i} 
     #---just added
     
     respond_to do |format|

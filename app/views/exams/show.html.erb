@@ -1,16 +1,18 @@
-<div class="showform">
+<!-- <div class="showform"> -->
+<div class="tform">
+<H2><%=t('exam.title2')%></H2>
 <br>
   <%=render :partial => 'show_exam' %>
 
 <% if @exam.klass_id == 0 %>
 	<fieldset>
-		<legend class='togvis'>Exam Template</legend>
+		<legend class='togvis'><%=t('exam.questions_template')%></legend>
 			<table border=0>
 				<tr>
-					<td class="leftcol">Questions</td>
-					<td class="leftcol">Question Type:</td>
-					<td class="leftcol">Quantity:</td>
-					<td class="leftcol">Total Marks:</td>
+					<td class="leftcol"><%=t('examquestion.question')%>:</td>
+					<td class="leftcol"><%=t('examquestion.questiontype')%>:</td>
+					<td class="leftcol"><%=t('exam.quantity')%>:</td>
+					<td class="leftcol"><%=t('examquestion.total_marks')%>:</td>
 				<tr>
 				<% for examtemplate in @exam.examtemplates %>
 				<tr>
@@ -30,7 +32,7 @@
 <% else %>
 <!---->	
 <fieldset>
-	<legend class='togvis'>Questions</legend>
+	<legend class='togvis'><%=t('examquestion.question')%></legend>
 	<table border=0>
 	
 		<% @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype} %>
@@ -86,9 +88,9 @@
 					<!--display header-question type-->
 					<!--display quention-answer-mark set-->
 					<tr>
-						<td><center>Sequence : <%=count+1 %></center></td>
-						<td>Question : <%#=current_question.id%><%=current_question.question %><br>Answer   :<%=current_question.answer %></td>
-						<td>Marks   : <%=current_question.marks %></td>
+						<td><center><%=t('exam.sequence')%> : <%=count+1 %></center></td>
+						<td><%=t('examquestion.question')%> : <%#=current_question.id%><%=current_question.question %><br><%=t('examquestion.answer')%> :<%=current_question.answer %></td>
+						<td><%=t('exam.full_marks')%>   : <%=current_question.marks %></td>
 					</tr>
 					<!--display quention-answer-mark set-->				
 				<% end %>
@@ -109,9 +111,9 @@
 						<% current_qtype2 = current_question.questiontype %>
 					<% end %>
 					<tr>
-						<td><center>Sequence : not selected </center></td>
-						<td>Question : <%=current_question.question %><br>Answer  :<%=current_question.answer %></td>
-						<td>Marks   : <%=current_question.marks %></td>
+						<td><center><%=t('exam.sequence')%> : <%=t('exam.not_selected')%> </center></td>
+						<td><%=t('examquestion.question')%> : <%=current_question.question %><br>Answer  :<%=current_question.answer %></td>
+						<td><%=t('exam.full_marks')%>   : <%=current_question.marks %></td>
 					</tr>
 				<% end %>
 				<!--END-WORKABLE ONE-FOR EXAMQUESTION-WITHOUT SEQUENCE NO-->
@@ -155,11 +157,11 @@
 						</b></td>
 					</tr>
 					<% end %>
-					<tr><td><center>Sequence : Not set</center></td>
+					<tr><td><center><%=t('exam.sequence')%> : <%=t('exam.not_set')%></center></td>
 					<td>
-						Question : <%= examquestion.question %>
+						<%=t('examquestion.question')%> : <%= examquestion.question %>
 						<%##=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) %> <BR> 
-						Answer : <%= examquestion.answer %>
+						<%=t('examquestion.answer')%> : <%= examquestion.answer %>
 						<%#=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) ) %> 
 					</td>
 				</tr>
@@ -175,5 +177,5 @@
 </div>
 <BR>
 
-<%= link_to 'Edit', edit_exam_path(@exam) %> |
-<%= link_to 'Back', exams_path %>
+<%= link_to (t 'edit'), edit_exam_path(@exam) %> |
+<%= link_to (t 'back'), exams_path %>

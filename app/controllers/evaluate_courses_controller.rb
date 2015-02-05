@@ -20,9 +20,15 @@ class EvaluateCoursesController < ApplicationController
       end
     end 
     ###--just added
+
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @evaluate_courses }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @evaluate_courses}
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('evaluate_course.title2')}
+        format.xml  { render :xml => @evaluate_course.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
