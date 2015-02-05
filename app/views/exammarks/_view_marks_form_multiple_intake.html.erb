@@ -28,11 +28,11 @@
 	<% else %>
 		<% if (@examquestions.count==0 && @examtemplates.count==0) %>
 			<% if @selected_exam.klass_id == 0 %>
-				Question type, quantity and marks
+				<%=t('exammark.type_quantity_marks')%>
 			<% else %>
-				Questions details
+				<%=t('exammark.question_details')%>
 			<% end %>
-			must exist in selected examination paper.
+			<%=t('exammark.must_exist_selected_paper')%>
 		<% else %>
 			<b>Intake : </b><%=@intake_id %>
 			<b>Total students : </b><%= @students.count %>
@@ -292,7 +292,7 @@
 	<% end %><!--2June2013-end for if @exammark_exist_for_exam==0-->
 
 <% elsif !@students %>
-	Please select an intake.
+	<%=t('exammark.select_intake')%>
 	
 <!--else-13June2013-if EXAMQUESTIONS(+students) OR EXAMTEMPLATES(+students) exist-->
 	<!--Questions/question details (quantity, type, marks) must exist in selected examination paper.-->

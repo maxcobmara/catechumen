@@ -182,8 +182,8 @@ class Exammark < ActiveRecord::Base
     e_full_ids=Exam.find(:all, :conditions=>['klass_id=?',1]).map(&:id)
     e_w_exist_questions_ids = Exam.find(:all, :joins=>:examquestions, :conditions=>['exam_id IN(?)',e_full_ids]).map(&:id).uniq
     e_template_ids=Exam.find(:all, :conditions=>['klass_id=?',0]).map(&:id)
-    e_w_exist_templates_ids = Examtemplate.find(:all, :conditions=>['exam_id IN(?)', e_template_ids]).map(&:id).uniq
-    return e_template_ids+e_w_exist_templates_ids 
+    e_w_exist_templates_ids = Examtemplate.find(:all, :conditions=>['exam_id IN(?)', e_template_ids]).map(&:exam_id).uniq
+    return e_w_exist_questions_ids+e_w_exist_templates_ids 
   end
   
 end
