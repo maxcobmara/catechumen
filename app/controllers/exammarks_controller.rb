@@ -48,16 +48,14 @@ class ExammarksController < ApplicationController
         subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
         @exam_list_index_raw = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?) and id IN(?)',subject_of_programme, common_subject, valid_exams])
         #@exam_list_exist_mark = Exammark.find(:all, :conditions=>['exam_id IN(?)', @exam_list_index.map(&:id)])                        #exammarks
-        @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index_raw.map(&:id)]).uniq  #exam
       else
         if @lecturer_programme == 'Commonsubject'
           @exam_list_index_raw = Exam.find(:all, :conditions=>['subject_id IN(?) and id IN(?)', common_subject, valid_exams])
-          @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index_raw.map(&:id)]).uniq    
         else
           @exam_list_index_raw = Exam.find(:all, :conditions=>['id IN(?)', valid_exams])
-          @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index_raw.map(&:id)]).uniq
         end
       end
+      @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index_raw.map(&:id)]).uniq  #exam
       @exam_list_index = Exam.find(:all, :conditions=>['id IN(?) and id NOT IN(?)', valid_exams, @exam_list_exist_mark.map(&:id)])
       if submit_val == t('exammark.search_exammarks') #'Search Exam Marks'
         search_item = params[:exam_id]

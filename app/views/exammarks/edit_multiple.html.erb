@@ -2,8 +2,8 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<% if @edit_type == "Edit Checked" %>
-			<h2 class="left">Edit Multiple Exam Marks</h2>
+		<% if @edit_type == t('edit_checked') %>
+			<h2 class="left"><%=t('exammark.edit_multiple')%></h2>
 		<% elsif @edit_type == "Edit by Subject" %>
 			<h2 class="left">Edit Multiple Exam Mark By Examination - <%=@subject_name%></h2>
 		<% end %>
@@ -15,7 +15,7 @@
 <!--start-8June2013-MULTIPLE EDIT only allowed for same(1) examination paper-->
 
 	&nbsp;<span style="text-decoration:underline;font-weight:bold;">
-	Examination Paper : <%=@exammarks[0].exampaper.full_exam_name%></span>
+	<%=t('exam.exampaper')%> : <%=@exammarks[0].exampaper.full_exam_name%></span>
 	<!--11June2013-TEMPLATE-->
 	<% @istemplate = @exammarks[0].exampaper.klass_id %>
 	<% if @istemplate == 0 %>
@@ -30,13 +30,13 @@
 		<table>
 			<tr>
 				<th>No</th>
-				<th>Student</th>
-				<th>Mykad No</th>
+				<th><%=t('exammark.student_id')%></th>
+				<th><%=t('student.icno')%></th>
 				<% if @exampaper_of_exammarks==1 %>
 					<% else %>
-					<th>Examination<th>
+					<th><%=t('exam.title3')%><th>
 				<% end %>
-				<th>Total MCQ</th>
+				<th><%=t('exammark.total_mcq')%></th>
 				
 				<% @examid = @exammarks[0].exam_id %>
 				<% @istemplate = Exam.find(@examid).klass_id %>
@@ -73,51 +73,51 @@
 				
 				<% if @meqcount %>
 					<% 1.upto(@meqcount) do |count|%>
-						<th>MEQ-Q <%=count%></th>
+						<th>MEQ-<%=t('exammark.question')%> <%=count%></th>
 					<% end %>
 				<% end %>
 				<% if @seqcount %>
 					<% 1.upto(@seqcount) do |count|%>
-						<th>SEQ-Q <%=count%></th>
+						<th>SEQ-<%=t('exammark.question')%> <%=count%></th>
 					<% end %>
 				<% end %>
 				<% if @acqcount %>
 					<% 1.upto(@acqcount) do |count| %>
-						<th>ACQ-Q <%=count%></th>
+						<th>ACQ-<%=t('exammark.question')%> <%=count%></th>
 					<% end %>
 				<% end %>
 				<% if @oscicount %>
 					<% 1.upto(@oscicount) do |count|%>
-						<th>OSCI-Q <%=count%></th>
+						<th>OSCI-<%=t('exammark.question')%> <%=count%></th>
 					<% end %>
 				<% end %>
 				<% if @osciicount %>
 					<% 1.upto(@osciicount) do |count|%>
-						<th>OSCII-Q <%=count%></th>
+						<th>OSCII-<%=t('exammark.question')%> <%=count%></th>
 					<% end %>
 				<% end %>
 				<% if @oscecount %>
 					<% 1.upto(@oscecount) do |count|%>
-						<th>OSCE-Q <%=count%></th>
+						<th>OSCE-<%=t('exammark.question')%> <%=count%></th>
 					<% end %>
 				<% end %>
 				<% if @ospecount %>
 					<% 1.upto(@ospecount) do |count|%>
-						<th>OSPE-Q <%=count%></th>
+						<th>OSPE-<%=t('exammark.question')%> <%=count%></th>
 					<% end %>
 				<% end %>
 				<% if @vivacount %>
 					<% 1.upto(@vivacount) do |count|%>
-						<th>VIVA-Q <%=count%></th>
+						<th>VIVA-<%=t('exammark.question')%> <%=count%></th>
 					<% end %>
 				<% end %>
 				<% if @truefalsecount %>
 					<% 1.upto(@truefalsecount) do |count|%>
-						<th>TRUE/FALSE-Q <%=count%></th>
+						<th>TRUE/FALSE-<%=t('exammark.question')%> <%=count%></th>
 					<% end %>
 				<% end %>
-				<th>Total <font size=-2>(<%=@fullmarks%>)</font></th>
-				<th>Summative</th>
+				<th><%=t('exammark.total')%> <font size=-2>(<%=@fullmarks%>)</font></th>
+				<th><%=t('exammark.summative')%></th>
 			</tr>
 		
 			<% @b_count=0 %><% @diff_total_mcq=0%>
@@ -211,7 +211,7 @@
 
 		<% end%>
 	</table>
-<%= f.submit "Submit" %>
+<%= f.submit (t 'submit') %>
 <%#= submit_tag "Edit Checked", :name => :grade_submit_button %>
 <%#= link_to 'New Grade', new_grade_path(:new_type => "0")%>
 
@@ -220,10 +220,10 @@
 </div><!--end for div tlist-->
 <!--end-8June2013-MULTIPLE EDIT only allowed for same(1) examination paper-->
 <% else %>
-	Please select students with the same <b>Examimation Paper</b> for multiple edit. 
+	<%=t('exammark.same_students')%> <b><%=t('exam.exampaper')%></b> <%=t('exammark.for_multiple_edit')%>
 <% end %><br><br>
 
-<%= link_to 'Back', exammarks_path %>
+<%= link_to (t 'back'), exammarks_path %>
 
 
 <!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-->
@@ -279,8 +279,3 @@
 	});
 </script>
 <!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-->
-
-
-
-
-

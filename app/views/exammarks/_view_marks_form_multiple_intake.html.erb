@@ -34,14 +34,14 @@
 			<% end %>
 			<%=t('exammark.must_exist_selected_paper')%>
 		<% else %>
-			<b>Intake : </b><%=@intake_id %>
-			<b>Total students : </b><%= @students.count %>
+			<b><%=t('student.intake')%> : </b><%=l(@intake_id.to_date, :format =>'%b %Y') %>
+			<b><%=t('exammark.total_students')%> : </b><%= @students.count %>
 
 			<table border=1 cellspacing=0 cellpadding=0>
 				<tr>
-					<th rowspan=2>Name</th>
-					<th rowspan=2 width=150px>Matric No</th>
-					<th rowspan=2>MyKad No</th>
+					<th rowspan=2><%=t('student.name')%></th>
+					<th rowspan=2 width=150px><%=t('student.matrixno')%></th>
+					<th rowspan=2><%=t('student.icno')%></th>
 
 					<!--display heading for ALL types of questions-->
 					<!--MCQ-only 1 column required-->
@@ -111,7 +111,7 @@
 						<!--if full exam paper-->
 					<% end %>
 
-					<th rowspan=2>Total marks</th>
+					<th rowspan=2><%=t('exammark.total_marks')%></th>
 				</tr>
 				<tr>
 					<!--display SUBheading for ALL types of questions-->
