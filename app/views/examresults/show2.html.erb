@@ -1,38 +1,38 @@
 <div class="tform">
-<h2>Examination Result</h2>
+<h2><%=t('examresult.examinationresult')%></h2>
 
 <table width=100% border=0>
-	<tr><td>Examination Centre : Kolej Kejururawatan Johor Bahru</td></tr>
-	<tr><td>Final Exam Result <%=h @resultline.examresult.render_semester %></td></tr>
-	<tr><td>Intake : <%=h @resultline.student.intake %></td></tr>
-	<tr><td>Examination Date : <%=h @resultline.examresult.examdts.strftime("%d %b %Y") %> - <%=h @resultline.examresult.examdte.strftime("%d %b %Y") %></td></tr>	
+	<tr><td><%=t('examresult.exam_centre')%> : Kolej Kejururawatan Johor Bahru</td></tr>
+	<tr><td><%=t('examresult.final_exam_result')%> <%=h @resultline.examresult.render_semester %></td></tr>
+	<tr><td><%=t('student.intake')%> : <%=h @resultline.student.intake %></td></tr>
+	<tr><td><%=t('examresult.exam_date')%> : <%=h l(@resultline.examresult.examdts) %> - <%=h l(@resultline.examresult.examdte) %></td></tr>	
 </table>	
 
 <br>
-<fieldset><legend class="togvis">Students Details</legend>
+<fieldset><legend class="togvis"><%=t('examresult.student_details')%></legend>
 	<table width=100%>
 		<tr>
-			<td class="leftcol">Name</td>
+			<td class="leftcol"><%=t('student.name.')%></td>
 			<td><%=h @resultline.student.name %></td>
 		</tr>
 		<tr>
-			<td class="leftcol">MyKad No</td><td><%=h @resultline.student.icno %></td>
+			<td class="leftcol"><%=t('student.icno')%></td><td><%=h @resultline.student.icno %></td>
 		</tr>
 		<tr>
-			<td class="leftcol">Matric No </td><td><%=h @resultline.student.matrixno %></td>
+			<td class="leftcol"><%=t('student.matrixno.')%> </td><td><%=h @resultline.student.matrixno %></td>
 		</tr>
 	</table>
 </fieldset>	
 
 <br>	
-<fieldset><legend class="togvis">Final Examination Result <%=h @resultline.examresult.render_semester %></legend>
+<fieldset><legend class="togvis"><%=t('examresult.final_exam_result')%> <%=h @resultline.examresult.render_semester %></legend>
 <table>
 	<tr>
 		<th>No</th>
-		<th>Course Code</th>
-		<th>Grade</th>
-		<th>Grade Value</th>
-		<th>Remark</th>
+		<th><%=t('examresult.course_code')%></th>
+		<th><%=t('grade.grade')%></th>
+		<th><%=t('examresult.grade_value')%></th>
+		<th><%=t('examresult.remark')%></th>
 	</tr>
 	<% @programme_id = @resultline.examresult.programmestudent.id %>
 	<% @semester = @resultline.examresult.semester %>
@@ -52,14 +52,14 @@
 		</td>
 		<td>
 			<% unless @student_finale.nil? || @student_finale.blank? %>
-				<%=number_with_precision(@student_finale.set_NG.to_f,:precision=>2)%>
+				<%=sprintf('%.2f', @student_finale.set_NG.to_f)%>
 			<% else %>
-				<%= number_with_precision(0.00,:precision=>2) %>
+				<%= sprintf('%.2f', 0.00) %>
 			<% end %>
 		</td>
 		<td><% if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C" %>
-			Passed
-			<% else %>Failed<% end %>
+			<%=t('examresult.passed')%>
+			<% else %><%=t('examresult.failed')%><% end %>
 		</td>
 	 </tr>		
 		<% end %>
@@ -68,19 +68,19 @@
 	<table>
 		<tr>
 			<th><%=h @resultline.examresult.render_semester %></th>
-			<th>Total</th>
+			<th><%=t('examresult.total')%></th>
 		</tr>
 		<tr>
-			<td class="leftcol">Total NGK</td>
-			<td><%=h number_with_precision(@resultline.total,:precision=>2) %></td>
+			<td class="leftcol"><%=t('examresult.total')%> NGK</td>
+			<td><%=h @resultline.total.nil? ? "" : sprintf('%.2f',@resultline.total) %></td>
 		</tr>
 		<tr>
 			<td class="leftcol">PNGS</td>
-			<td><%=h number_with_precision(@resultline.pngs17,:precision=>2) %></td>
+			<td><%=h @resultline.pngs17.nil? ? "" : sprintf('%.2f',@resultline.pngs17) %></td>
 		</tr>
 		<tr>
 			<td class="leftcol">PNGK</td>
-			<td><%=h number_with_precision(@resultline.pngk,:precision=>2) %></td>
+			<td><%=h @resultline.pngk.nil? ? "" : sprintf('%.2f',@resultline.pngk) %></td>
 		</tr>
 		<tr>
 			<td class="leftcol">STATUS</td>
@@ -94,5 +94,5 @@
 
 <br>
 
-<%= link_to 'Back to Examresult by Programme', examresults_path %> | 
-<%= link_to 'Back to Examination Slip', :controller => :examresults, :action=> :index2 %>
+<%= link_to (t 'examresult.back_examresult'), examresults_path %> | 
+<%= link_to (t 'examresult.back_examslip'), :controller => :examresults, :action=> :index2 %>

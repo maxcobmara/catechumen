@@ -2,31 +2,21 @@
 
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Examination Result by Programme</h2>
+		<h2 class="left"><%=t('examresult.title')%></h2>
 	</div>
 </div>
-
-<% unless @position_exist %>	
-	You have no position assigned yet. <br>
-	Please contact administrator.
-<% else %>
-	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
-		Programme / Unit is not defined. <br>
-	<% elsif @lecturer_programme == 'Commonsubject'%>
-		This feature only accessible to Programme lecturers.
-	<% else %>
 	
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Exam Question') + "New", new_examresult_path %></p>
-</div><br><br>
+	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'examresult.new')) + (t 'examresult.new'), new_examresult_path %></p>
+</div><BR><BR>
 <div class="tlist">
 	<table width=90% border="0" cellpadding="0" cellspacing="0">
 	  <tr>
-		<th>Examination Start Date</th>
-		<th>Examination End Date</th>
-		<th>Semester</th>
-    	<th>Programme</th>
-    	<th colspan=3>Control</th>
+		<th><%=t('examresult.examdate1')%></th>
+		<th><%=t('examresult.examdate2')%></th>
+		<th><%=t('examresult.semester')%></th>
+    	<th><%=t('examresult.programme_id')%></th>
+    	<th colspan=3><%=t('control')%></th>
   	</tr>
 
 <% @examresults.each do |examresult| %>
@@ -36,9 +26,9 @@
 			<td><%=h examresult.examdte %></td>
     		<td><%=h examresult.render_semester %></td>
     		<td><%=h examresult.programmestudent.name %></td>
-			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => examresult %></td>
-    		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => examresult %></td>
-    		<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), examresult, :confirm => 'Are you sure?', :method => :delete %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => examresult %></td>
+    		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => examresult %></td>
+    		<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), examresult, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   		</tr>
 	<%# end %>
 <% end %>
@@ -46,7 +36,4 @@
 
 <br />
 </div>
-<%= link_to 'New Exam Result', new_examresult_path %>
-
-<% end %>
-<% end %>
+<%= link_to (t 'examresult.new'), new_examresult_path %>

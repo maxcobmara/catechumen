@@ -12,7 +12,7 @@
 		<tr>
 			<td class="leftcol"><%= t 'examresult.semester' %><font color="red"> * </font></td>
 			<td>
-				<%= select_tag "examresult[semester]", "<option></option>" + options_for_select(Examresult::SEMESTER,@examresult.semester),
+				<%= select_tag "examresult[semester]", "<option>"+(t 'select')+"</option>" + options_for_select(Examresult::SEMESTER,@examresult.semester),
 				 		:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 						:url => {:action => 'view_subject' }, 
 						:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value 
@@ -61,7 +61,7 @@
 											") %>
 					<!--end for first time data entry-->
 					<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list ,
-											{:include_blank => "Select a programme"},
+											{:include_blank => (t 'select')},
 											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 											:url => {:action => 'view_subject' }, 
 											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value 
