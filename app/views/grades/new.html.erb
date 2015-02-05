@@ -1,6 +1,6 @@
 <% if @new_type && @new_type == "1" %>
 	<%= @aa=params[:programme_id]%>--<%= @bb=params[:subject_id]%>
-	<h3>Multiple New Grades</h3>	
+	<h3><%=t('grade.new_multiple')%></h3>	
 	<% form_tag :action => 'create' do |f|%>	
 		<% @grades.each_with_index do |grade, index| %>
 			<% fields_for "grades[#{index}]", grade do |f| %>		
@@ -13,11 +13,11 @@
 	
 <% elsif @new_type && @new_type == "0" %>
 
-	<h3>New Grade</h3>
+	<h3><%=t('grade.new')%></h3>
 	<% form_for(@grade) do |f| %>
   		<%= f.error_messages %>
 		<%=render :partial => 'form', :locals => {:f => f} %> 
-		<p><%= f.submit 'Create', :name =>:new_submit %></p>
+		<p><%= f.submit t('create'), :name =>:new_submit %></p>
 	<% end %>
 
 <% elsif @new_type && @new_type == "2" %>
@@ -61,7 +61,7 @@
 <% elsif @new_type == "3" %>
 
 	<!--start-trial new exammark by intake & paper-12Sept2012-->
-	<h3>Multiple New Grades (by Subject)</h3>
+	<h3><%=t('grade.new_multiple_by_subject')%></h3>
 	
 		<!---->
 		<%=render :partial => 'form_multiple_subject'%>
@@ -70,4 +70,4 @@
 <!--3June2013-->
 	
 <% end %>
-<%= link_to 'Back', grades_path %>
+<%= link_to (t 'back'), grades_path %>

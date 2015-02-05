@@ -1,110 +1,110 @@
 <div class="tform">
-	<H2>Grade Details</H2>
+	<H2><%=t('grade.details')%></H2>
   <table width=100% >
 		<tr>
-			<td class="leftcol"><label for="student_id">Student Name:</label></td>
+			<td class="leftcol"><label for="student_id"><%=t('grade.student_id')%>:</label></td>
 			<td><%=h @grade.student_id.blank? ? "" : @grade.studentgrade.matrix_name %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="subject_id">Subject Name:</label></td>
+			<td class="leftcol"><label for="subject_id"><%=t('grade.subject_id')%>:</label></td>
 			<td><%=h @grade.subject_id.blank? ? "" : @grade.subjectgrade.subject_list %></td>
 		</tr>
 		<tr>
-			<td class="leftcol">Formative</td>
+			<td class="leftcol"><%=t('grade.formative')%></td>
 			<td>
 	
 					<table width=80% ><!-- style="position: relative; left: 5px;" -->
 						<tr>
-							<th>Formative</th>
-							<th>Description</th>
-							<th>Marks</th>
-							<th>Weightage</th>
-							<th>Marks</th>
+							<th><%=t('grade.formative')%></th>
+							<th><%=t('grade.description')%></th>
+							<th><%=t('grade.marks')%></th>
+							<th><%=t('grade.weightage')%></th>
+							<th><%=t('grade.marks')%></th>
 						</tr>	
 						<% for score in @grade.scores.all(:order => "type_id") %>		
 					  <tr>
 						  <td><%=h (Score::E_TYPES.find_all{|disp, value| value == score.type_id}).map {|disp, value| disp} %></td>
 				      <td><%=h score.description %></td>
-				      <td><%=h number_with_precision(score.marks,:precision=>2) %><!--%--></td>
-							<td><%=h number_with_precision(score.weightage,:precision=>2) %><!--% of total--></td>
-							<td><%=h number_with_precision(score.type_marks, :precision=>2) %></td>
+				      <td><%=h sprintf('%.2f', score.marks) %><!--%--></td>
+							<td><%=h sprintf('%.2f', score.weightage) %><!--% of total--></td>
+							<td><%=h sprintf('%.2f', score.type_marks) %></td>
 						</tr>
 						<% end %>
 						<tr>
 						  <td></td>
 				      <td></td>
-				      <td><b><%= number_with_precision(@grade.total_formative2,:precision=>2) %></b></td>
-							<td><%= number_with_precision(@grade.total_per,:precision=>2) %>%</td>
-							<td><b><%= number_with_precision(@grade.total_formative,:precision=>2) %>%</b></td> 
+				      <td><b><%=h sprintf('%.2f', @grade.total_formative2) %></b></td>
+							<td><%=h sprintf('%.2f', @grade.total_per) %>%</td>
+							<td><b><%=h sprintf('%.2f',@grade.total_formative) %>%</b></td> 
 						</tr>
 					</table></td>
 		</tr>
 	</table>
 					
-	<H2>Send to BPL</H2>				
+	<H2><%=t('grade.sent_to_bpl')%></H2>				
 	<table width=100%>
 		<tr>
-			<td class="leftcol"><label for="total_formative">Total Formative:</label></td>
-			<td><%=h number_with_precision(@grade.total_formative2, :precision=>2) %> | <%=h number_with_precision(@grade.total_formative,:precision=>2) %>%</td>
+			<td class="leftcol"><label for="total_formative"><%=t('grade.total_formative')%>:</label></td>
+			<td><%=h sprintf('%.2f', @grade.total_formative2) %> | <%=h sprintf('%.2f', @grade.total_formative) %>%</td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="sent_to_BPL">Sent To BPL?:</label></td>
+			<td class="leftcol"><label for="sent_to_BPL"><%=t('grade.sent_to_bpl')%>?:</label></td>
 			<td><%#=h @grade.sent_to_BPL? ? "Yes on " + (@grade.sent_date.strftime("%d %b %Y")).to_s : "Not Sent" %></td>
 		</tr>
 		<tr>
-			<td class="leftcol"><label for="eligible_for_exam">Eligible For Exam?:</label></td>
-			<td><%=h @grade.eligible_for_exam? ? "Yes" : "No" %> </td>
+			<td class="leftcol"><label for="eligible_for_exam"><%=t('grade.eligible_for_exam')%>?:</label></td>
+			<td><%=h @grade.eligible_for_exam? ? (t 'yes2') : (t 'no2') %> </td>
 		</tr>
 	</table>
 	
-	<H2>Summative</H2>
+	<H2><%=t('grade.summative')%></H2>
 	<table width=100%>
 		<tr>
-			<td class="leftcol">Exam</td>
+			<td class="leftcol"><%=t('exammark.exam_id')%></td>
 			<td>
 						<table width=80%>
 							<tr>
-								<th>Exam Name</th>
-								<th>Description</th>
-								<th>Marks</th>
-								<th>Weightage</th>
-								<th>Marks</th>
+								<th><%=t('grade.exam1name')%></th>
+								<th><%=t('grade.description')%></th>
+								<th><%=t('grade.marks')%></th>
+								<th><%=t('grade.weightage')%></th>
+								<th><%=t('grade.marks')%></th>
 							</tr>	
 							<tr>
 								<td><%=h @grade.exam1name %></td>
 								<td><%=h @grade.exam1desc %></td>
-								<td><%=h number_with_precision(@grade.exam1marks,:precision=>2) %>%</td>
-								<td><%=h number_with_precision(@grade.examweight,:precision=>2) %>%</td>
-								<td><%=h check_kin {number_with_precision(@grade.total_summative,:precision=>2)} %>%</td><!--TODO : Fix This-->
+								<td><%=h sprintf('%.2f', @grade.exam1marks) %>%</td>
+								<td><%=h sprintf('%.2f', @grade.examweight) %>%</td>
+								<td><%=h check_kin {sprintf('%.2f', @grade.total_summative)} %>%</td><!--TODO : Fix This-->
 							</tr>
 						</table></td>
 		</tr>
 	</table>
 	
-	<H2>Final Details</H2>			
+	<H2><%=t('grade.final_details')%></H2>			
 	<table width=100%>
 		<tr>
-			<td class="leftcol"><label for="total_marks ">Final Score:</label></td>
+			<td class="leftcol"><label for="total_marks "><%=t('grade.finalscore')%>:</label></td>
 			<td>
 				<% if (@grade.exam1marks!= nil && @grade.examweight !=nil && @grade.total_formative != nil)%>
-					<%=h number_with_precision(@grade.finale,:precision=>2) %> -- <b>
+					<%=h sprintf('%.2f', @grade.finale) %> -- <b>
 					<%=@grade.set_gred %></b>
 				<% end %>
 				  <font color=#AAA size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					Formative x <%= number_with_precision((100 - @grade.examweight),:precision=>2)%>% + Summative x <%= number_with_precision(@grade.examweight,:precision=>2) %>%</font></td>
+					<%=t('grade.formative')%> x <%=h sprintf('%.2f', (100 - @grade.examweight))%>% + <%=t('grade.summative')%> x <%=h sprintf('%.2f', @grade.examweight) %>%</font></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="carry_paper">Carry Paper?:</label></td>
-			<td><%=h @grade.carry_paper? ? "Required" : "Not Required" %></td>
+			<td class="leftcol"><label for="carry_paper"><%=t('grade.carry_paper')%>?:</label></td>
+			<td><%=h @grade.carry_paper? ? (t 'required') : (t 'not_required') %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="resit">Resit?:</label></td>
-			<td><%=h @grade.resit? ? "Required" : "Not Required" %></td>
+			<td class="leftcol"><label for="resit"><%=t('grade.resit')%>?:</label></td>
+			<td><%=h @grade.resit? ? (t 'required') : (t 'not_required') %></td>
 		</tr>
 	</table>
 <BR>
 </div>
-<%= link_to 'Edit', edit_grade_path(@grade) %> |
-<%= link_to 'Back', grades_path %>
+<%= link_to (t 'edit'), edit_grade_path(@grade) %> |
+<%= link_to (t 'back'), grades_path %>

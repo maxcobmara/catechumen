@@ -28,7 +28,7 @@ class GradesController < ApplicationController
         @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.all.map(&:subject_id)] )
       end
       @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?) and id IN(?)', @existing_grade_subject_ids, @subjectlist_preselec_prog])
-      if submit_val == 'Search Existing Grades'
+      if submit_val == t('grade.search_existing_grades') #'Search Existing Grades'
         search_item = params[:subject_id]
         if search_item == '0' 
           grade_ids = @grade_list_exist_subject.map(&:id)  
@@ -71,8 +71,8 @@ class GradesController < ApplicationController
   def new
     #@new_type = params[:new_type]                                                       # retrieve - parameter sent via link_to
     submit_val = params[:submit_button1]      
-    @new_type = "0" if submit_val == "Single New Grade"    
-    @new_type = "3" if submit_val == "Multiple New Grades"                              # retrieve - parameter sent via link_to
+    @new_type = "0" if submit_val == t('grade.new_single')#"Single New Grade"    
+    @new_type = "3" if submit_val == t('grade.new_multiple')#"Multiple New Grades"                              # retrieve - parameter sent via link_to
 	  if @new_type && @new_type == "1"                                                    # multiple new records
 		  @grades = Array.new(1) { Grade.new } 	#(params[:grades])
 		  @grades.each do |grade|                                                           # have to build nested attribute, score(formative) inside of each item of grade array
@@ -390,7 +390,7 @@ class GradesController < ApplicationController
     unless @gradeids.blank? 
  	    @grades = Grade.find(@gradeids).sort_by{|x|x.studentgrade.name} #@grades = Grade.find(@gradeids)
  	    @edit_type = params[:grade_submit_button]
-		    if @edit_type == "Edit Checked"
+		    if @edit_type == t('edit_checked') #"Edit Checked"
  	        ## continue multiple edit (including subject edit here) --> refer view
        end    # end for if @edit_type=="Edit Checked"
     else    # else for unless @gradeids.blank?
