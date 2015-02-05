@@ -2,14 +2,16 @@
 <div id="A4potrait">
 
 <form action="#">
- <script>
+<script>
 	document.write("<input type='button' " +
-			"onClick='window.print()' " +
-			"class='printbutton' " +
-			"value='Print This Page'/>");
-
-</script>
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
 </form>	
+<div id="hideLink">
+<%= link_to (t 'back'), evaluate_courses_path %>
+</div><BR>
 <fieldset width=10px height=10px >
 	
  
@@ -48,7 +50,7 @@
 	        </tr>
 	        <tr>
 		    <td>Modul/Matapelajaran : <%= @evaluate_course.subject_id.blank? ? "No Subject" : @evaluate_course.subjectevaluate.name %> </td>
-		    <td>Tarikh: <%= @evaluate_course.evaluate_date.blank? ? "-" : @evaluate_course.evaluate_date.strftime("%d-%b-%Y")  %></td>
+		    <td>Tarikh: <%= @evaluate_course.evaluate_date.blank? ? "-" : l(@evaluate_course.evaluate_date, :format=>"%d-%b-%Y")  %></td>
             </tr>
             <tr>
             <td>Nama Pensyarah : <%= @evaluate_course.staff_id.blank? ? "No Staff" : @evaluate_course.staffevaluate.name %> </td>
@@ -194,12 +196,12 @@
 	</tr>
 	
 	<tr>
-		<td colspan=2>&nbsp;<!--<b>Nama Penuh : </b>--><%#= @evaluate_course.student_id.blank? ? "No Student" : @evaluate_course.studentevaluate.name %></td>
+		<td colspan=2>&nbsp;<!--<b>Nama Penuh : </b>--><%#= @evaluate_course.student_id.blank? ? (t 'evaluate_course.no_student') : @evaluate_course.studentevaluate.name %></td>
 	</tr>
 	
 	<tr>
 		<td>&nbsp;<!--<b>No. K/Pengenalan : <%#= @evaluate_course.student_id.blank? ? "No Student" : @evaluate_course.studentevaluate.icno %></b>--></td>
-		<td align="right"><b>Tarikh:</b> <%= @evaluate_course.evaluate_date.blank? ? "-" : @evaluate_course.evaluate_date.strftime("%d-%b-%Y")  %></td>
+		<td align="right"><b>Tarikh:</b> <%= @evaluate_course.evaluate_date.blank? ? "-" : l(@evaluate_course.evaluate_date, :format => "%d-%b-%Y")  %></td>
 	</tr>
 
 </table>
@@ -211,10 +213,8 @@
 	</table>
 </div>
 </div>
-</fieldset>
 <p align="center"><i>Dokumen ini adalah cetakan komputer dan tidak memerlukan tandatangan.</i></p>
+</fieldset>
+
 <BR>
-<div id="hideLink">
-<%= link_to (t 'icms.back'), evaluate_courses_path %>
-</div>
 </div>
