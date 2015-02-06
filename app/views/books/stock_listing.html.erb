@@ -24,27 +24,30 @@ SEARCH BY - CLASS NO (LC) / (NLM) STARTING WITH LETTER : <b><%#=@class_no%> OR <
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
 	<form action="#">
-			<script>
-			document.write("<input type='button' " +
-			"onClick='window.print()' " +
-			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
+		<script>
+		document.write("<input type='button' " +
+		"onClick='window.print()' " +
+		"class='printbutton' " +
+		"value='<%=escape_javascript(t 'print')%>'/>");
+		</script>
 	</form>
-	
+<div id="hideLink">
+<%= link_to (t 'back'), books_path %>
+</div><BR>
+
 <div class="A4potrait" style="border: none;">
 <BR/>
 <table class="tlong">
 	<thead>
 				<tr>
-					<th colspan=6><b>BOOK LISTING</b></th>
+					<th colspan=6><b><%=t('book.listing_books')%></b></th>
 				</tr>
 				<tr>
 					<th colspan=6 style="text-align:left;">
-						Total Books / Titles : <%=@book_by_class2.count%> / <%= Book.count('title', :distinct => true)%>&nbsp;-&nbsp;
-						<%="Search by Class No (LC) / (NLM) starting with letter : " + @class_no if @class_no != nil%> 
+						<%=t('book.total_books')%> / <%=t('book.titles')%> : <%=@book_by_class2.count%> / <%= Book.count('title', :distinct => true)%>&nbsp;-&nbsp;
+						<%=(t 'book.search_by_classno')+(t 'book.start_w_letter')+" : " + @class_no if @class_no != nil%> 
 						<% if @accs_no != nil %> 
-							Search by Accession No (Range : 
+							<%=t('book.search_by_accessionno')%>
 							<%= @accs_no if @accs_no != nil %> -
 							<%= @accs_no_end if @accs_no_end != nil %>)
 						<% end %>
@@ -66,16 +69,16 @@ SEARCH BY - CLASS NO (LC) / (NLM) STARTING WITH LETTER : <b><%#=@class_no%> OR <
 		</tr> 
 
 		<tr>
-			<td class="book_title2"><label for="isbn">ISBN / ISSN No</label></td>
+			<td class="book_title2"><label for="isbn">ISBN / ISSN</label></td>
 			<td class="book_desc2">: <%=h book_class2.isbn %></td>
 
-			<td class="book_title2"><label for="roman">Physical Description<%#= t 'book.roman' %></label></td>
+			<td class="book_title2"><label for="roman"><%=t('book.description')%><%#= t 'book.roman' %></label></td>
 			  <td class="book_desc2">: <%=h book_class2.roman %></td>
 			<!--<td rowspan=8 align=left style="border:1px solid black;" colspan=2>-->
 			<td rowspan=3 align=left style="border:1px solid black;" colspan=2><% if book_class2.photo.exists? then %>
 			  <%= image_tag book_class2.photo.url, :class => 'show-image'%>
 			<% else %>
-			  No Photo<BR>Available
+			<%=t('book.no_photo')%><BR><%=t('book.available')%>
 			<% end %></td>
 		</tr>
 
@@ -165,8 +168,7 @@ SEARCH BY - CLASS NO (LC) / (NLM) STARTING WITH LETTER : <b><%#=@class_no%> OR <
 </table>
 <div>	
 	
-
 <div id="hideLink">
-<%= link_to 'Back', books_path %>
+<%= link_to (t 'back'), books_path %>
 </div>
 

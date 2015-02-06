@@ -1,13 +1,16 @@
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
 	<form action="#">
-			<script>
-			document.write("<input type='button' " +
-			"onClick='window.print()' " +
-			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
+		<script>
+		document.write("<input type='button' " +
+		"onClick='window.print()' " +
+		"class='printbutton' " +
+		"value='<%=escape_javascript(t 'print')%>'/>");
+		</script>
 	</form>
+<div id="hideLink">
+<%= link_to (t 'back'), books_path %>
+</div><BR>
 	
 <div class="A4potrait" style="border: none;">
 <BR/>
@@ -17,28 +20,28 @@
 					<th class="tright" colspan=6><b></b></th>
 				</tr>
 				<tr>
-					<th  colspan=6><b>BOOK LISTING</b></th>
+					<th  colspan=6><b><%=(t 'book.listing').upcase%></b></th>
 				</tr>
 				<tr>
 					<th colspan=6 style="text-align:left;">
-						Total Books / Titles : <%#= @bob %><%=@books.count%>/<%= Book.count('title', :distinct => true)%>
+						<%=t('book.total_books')%> / <%=t('book.titles')%> : <%#= @bob %><%=@books.count%>/<%= Book.count('title', :distinct => true)%>
 						<%if @bb==''||@bb=='2'||@bb=='3'%>
 							 / <%= Book.count('title', :distinct => true)%>
 						<% end%>
-						<% if @bb == '1' %> - Listing All Books
-						<% elsif @bb == '2' %> - Listing by Class No (NLM)
-						<% elsif @bb == '3' %> - Listing by Class No (LC)
-						<% elsif @bb == '4' %> - Listing Books <br>(<%=@searchby_items%>)
+						<% if @bb == '1' %> - <%=t('book.listing_all_books')%>
+						<% elsif @bb == '2' %> - <%=t('book.listing_by_class_nlm')%>
+						<% elsif @bb == '3' %> - <%=t('book.listing_by_class_lc')%>
+						<% elsif @bb == '4' %> - <%=t('book.listing_books')%> <br>(<%=@searchby_items%>)
 						<% end %>
 					</th>
 				</tr>
 				<tr>
 					<th class="tcol"><b>NO</b></th>
-					<th class="tcol"><b>ACC NO</b></th>
-					<th class="tcol"><b>NLM/LC NO</b></th>
-					<th class="tcol"><b>AUTHOR</b></th>
-					<th class="tcol"><b>TITLE</b></th>
-					<th class="tcol"><b>ISBN NO</b></th>
+					<th class="tcol"><b><%=t('book.accno')%></b></th>
+					<th class="tcol"><b><%=t('book.nlm_lc')%></b></th>
+					<th class="tcol"><b><%=(t 'book.author').upcase%></b></th>
+					<th class="tcol"><b><%=(t 'book.title').upcase%></b></th>
+					<th class="tcol"><b>ISBN</b></th>
 				</tr>
 	</thead>
 	

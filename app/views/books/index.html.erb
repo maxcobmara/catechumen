@@ -3,8 +3,8 @@
 		<h2 class="left"><%= t 'book.list' %></h2>
 			<div class="right">
 	    	<% form_tag books_path, :method => 'get' do %>
-				<%= text_field_tag :search, params[:search], :placeholder => "ISBN, Title, Author, Location" %>
-				<%= submit_tag "Search", :title => nil %>
+				<%= text_field_tag :search, params[:search], :placeholder => (t 'book.isbn_title_author_location')%>
+				<%= submit_tag (t 'search'), :title => nil %>
 				<% end %>
 			</div>
 	</div>
@@ -19,30 +19,30 @@
 		<tr>
 			<th colspan=3>
 				<% permitted_to? :manage, :books do %>
-					<%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Book') + (t 'book.new'), new_book_path %>
+					<%= link_to image_tag("add.png", :border => 0, :title =>(t 'book.new')) + (t 'book.new'), new_book_path %>
 				<% end %>
 			</th>
 			<th style="text-align:right;">
 				<% permitted_to? :manage, :books do %>
-					<%= link_to_function "Stock Listing by...", "$('byclass').toggle(); $('byaccessno').toggle();" %>
+					<%= link_to_function (t 'book.stock_listing_by'), "$('byclass').toggle(); $('byaccessno').toggle();" %>
 				<% end %>
 			</th>
 			<th colspan=3 style="text-align:left;">
 				<% permitted_to? :manage, :books do %>
 					<div id="byclass" style="display:block;">
 					<% form_tag(:action => :stock_listing) do %>
-						Class No
-						<%= text_field_tag(:isbn_search, params[:isbn_search], :size=>14, :placeholder=> "..starting with") %>
-						<%= submit_tag "List by class no", :name => :list_submit_button %>
+						<%=t('book.classno')%>
+						<%= text_field_tag(:isbn_search, params[:isbn_search], :size=>14, :placeholder=> ".."+(t 'starting_with')) %>
+						<%= submit_tag t('book.list_by_classno'), :name => :list_submit_button %>
 					<% end %>
 					</div>
 				
 					<div id="byaccessno" style="display:none;">
 					<% form_tag(:action => :stock_listing) do %>
-						Accession No
-						<%= text_field_tag(:isbn_search, params[:isbn_search], :size=>5, :placeholder=> "from") %>
-						<%= text_field_tag(:isbn_search2, params[:isbn_search2], :size=>5, :placeholder=> "until") %>
-						<%= submit_tag "List by accession no", :name => :list_submit_button %>
+						<%=t('book.accessionno')%>
+						<%= text_field_tag(:isbn_search, params[:isbn_search], :size=>5, :placeholder=> (t 'from')) %>
+						<%= text_field_tag(:isbn_search2, params[:isbn_search2], :size=>5, :placeholder=> (t 'to')) %>
+						<%= submit_tag t('book.list_by_accessionno'), :name => :list_submit_button %>
 					<% end %>
 					</div>
 				<% end %>
@@ -119,26 +119,26 @@
 				<!--1April2013-->
 			 	<!--<td width=10px>-->
 					<%#if index==0 %><!--HIDE first print function required for all records-->
-						<%#= link_to image_tag("printer.png", :border => 0, :title => 'Book Detail'), :action => 'book_detail', :id => book, :locals =>{:a=>index} %>
+						<%#= link_to image_tag("printer.png", :border => 0, :title => (t 'book.book_details')), :action => 'book_detail', :id => book, :locals =>{:a=>index} %>
 					<%# end %>
 				<!--</td>-->
 				<!--1April2013-->
 				<td width=10px>
 					<% if index==0 %>
-						<%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => book %>
+						<%= link_to image_tag("document.png", :border => 0, :title=> (t 'show')), :action => 'show', :id => book %>
 					<% end %>
 				</td>
 				<td width=10px>
 					<% permitted_to? :manage, :books do %>
 						<% if index==0 %>
-							<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => book %>
+							<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => book %>
 						<% end %>
 					<% end %>
 				</td>
 				<td width=10px>
 					<% permitted_to? :manage, :books do %>
 						<% if index==0 %>
-							<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), book, :confirm => 'Are you sure?', :method => :delete %>
+							<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), book, :confirm => (t 'are_you_sure'), :method => :delete %>
 						<% end %>
 					<% end %>
 				</td>
@@ -178,16 +178,16 @@
 						<!--
 						<td width=10px><%#= link_to image_tag("printer.png", :border => 0, :title => 'Book Detail'), :action => 'book_detail', :id => book %></td>-->
 					<% end%>
-					<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => book %></td>
+					<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => book %></td>
 					<td width=10px>
 						<% permitted_to? :manage, :books do %>
-							<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => book %>
+							<%= link_to image_tag("edit.png", :border => 0, :title=>(t 'edit')), :action => 'edit', :id => book %>
 						<% end %>
 					</td>
 				 
 					<td width=10px>
 						<% permitted_to? :manage, :books do %>
-							<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), book, :confirm => 'Are you sure?', :method => :delete %>
+							<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), book, :confirm => (t 'are_you_sure'), :method => :delete %>
 						<% end %>
 					</td>
 				</tr>
@@ -203,8 +203,8 @@
 <br />
 
 <% permitted_to? :manage, :books do %>
-	<%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Book') + (t 'book.new'), new_book_path %> |
-	<%= link_to (t 'book.all_booklist'), :action => 'stock_verification', :locals => {:class_type => '1',:dodo =>params[:search]} %>
+	<%= link_to image_tag("add.png", :border => 0, :title => (t 'book.new')) + (t 'book.new'), new_book_path %> |
+	<%= link_to (t 'book.listing'), :action => 'stock_verification', :locals => {:class_type => '1',:dodo =>params[:search]} %>
 	<!--HIDE ON 16JULY2013- |
 	<%= link_to 'Books of class NLM', :action => 'stock_verification', :locals => {:class_type => '2'} %> | 
 	<%= link_to 'Books of class LC', :action => 'stock_verification', :locals => {:class_type => '3'} %>  -->
