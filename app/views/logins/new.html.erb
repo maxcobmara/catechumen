@@ -1,24 +1,37 @@
-<h1><%=t('login.new')%></h1>
+<div class="tform">
+	<H2><%=t('login.new')%></H2>
 <% @login.password = @login.password_confirmation = nil %>
 
 <%= error_messages_for :login %>
 <% form_for :login, :url => logins_path do |f| -%>
-<p><%= f.label (t 'login.login') %><br/>
-<%= f.text_field :login %></p>
 
-<p><%= f.label (t 'login.email') %><br/>
-<%= f.text_field :email %></p>
+<table>
+	<tr>
+		<td class="leftcol"><%= f.label (t 'login.login') %></td>
+		<td><%= f.text_field :login %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><label for="email"><%= t 'student.semail' %>: </label></td>
+		<td><%= f.text_field :email %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><%= f.label (t 'login.icno') %></td>
+		<td><%= f.text_field :icno, :placeholder => 'xxxxxxxxxxxx', :size => '12' %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="password"><%= t 'login.password' %>: </label></td>
+		<td><%= f.text_field :password, :size => 12 %></td>
+	</tr>
 
-<p><%= f.label (t 'login.icno') %><br/>
-<%= f.text_field :icno, :placeholder => 'xxxxxxxxxxxx', :size => '12' %></p>
-
-<p><%= f.label (t 'login.password') %><br/>
-<%= f.password_field :password %></p>
-
-<p><%= f.label (t 'login.cpassword') %><br/>
-<%= f.password_field :password_confirmation %></p>
-
-<p><%= f.radio_button :isstaff,'true' %><%= t 'menu.staff' %> &nbsp<%= f.radio_button :isstaff,'false' %><%= t 'menu.students' %></p>
-
+	<tr>
+		<td class="leftcol"><label for="password_confirmation"><%= t 'login.cpassword' %>: </label></td>
+		<td><%= f.text_field :password_confirmation, :size => 12 %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><%=t('login.account_type')%></td>
+		<td><%= f.radio_button :isstaff,'true' %><%= t 'menu.staff' %> &nbsp<%= f.radio_button :isstaff,'false' %><%= t 'menu.students' %></td>
+	</tr>
+</table>
 <p><%= submit_tag (t 'login.signup') %></p>
 <% end -%>
