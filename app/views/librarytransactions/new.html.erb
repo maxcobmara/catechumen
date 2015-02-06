@@ -1,5 +1,5 @@
-<h3><%= t 'librarytransaction.newrec' %></h3>
-<h3>Library Transaction Details</h3> 
+<h3><%= t 'librarytransaction.new' %></h3>
+<!-- <h3><%=t('librarytransaction.transaction_details')%></h3>  -->
 
 <% if @librarytransaction %>
 
@@ -36,9 +36,9 @@
 <div class="tform">
 	<div id="new_form">
 		<div align=right>
-			<%= link_to image_tag("book_go.png",:border => 0,:title =>'Edit Library Transaction')+" Return Page",:action=> :multiple_edit %>
+			<%= link_to image_tag("book_go.png",:border => 0,:title =>(t 'librarytransaction.returnpage'))+" "+(t 'librarytransaction.returnpage'),:action=> :multiple_edit %>
 		</div>
-		<H2>Library Transaction - Loan Page </H2>
+		<H2><%=t('librarytransaction.loanpage_title')%></H2>
 			<table width=100%>
 				<tr>
 					<td class="leftcol"><%= t 'librarytransaction.loanedtotype' %></td>
@@ -56,7 +56,7 @@
 																		:value=>Staff.find(@current_staff).name }, 
 																		{ :url => formatted_staffs_path(:js), 
 																		:method => :get,:param_name => 'search' } %>
-									<%= submit_tag "Check Loan Details" %>
+									<%= submit_tag t('librarytransaction.check_loan_details') %>
 								</span>
 								<span id="bstudent" style="display:none;">
 									<%#= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
@@ -64,7 +64,7 @@
 																		{ :url => formatted_students_path(:js), 
 													  					  :method => :get,
 																		  :param_name => 'search3' } %>
-									<%= submit_tag "Check Loan Details" %>
+									<%= submit_tag t('librarytransaction.check_loan_details') %>
 								</span>	
 								<!--END-AFTER UPDATE-multiple edit screen:loan screen-->
 
@@ -79,7 +79,7 @@
 																		{ :url => formatted_staffs_path(:js), 
 													  					  :method => :get,
 																		  :param_name => 'search' } %>
-									<%= submit_tag "Check Loan Details" %>
+									<%= submit_tag t('librarytransaction.check_loan_details') %>
 								</span>
 		
 								<% if @current_student %>
@@ -92,7 +92,7 @@
 																			{ :url => formatted_students_path(:js), 
 														  					  :method => :get,
 																			  :param_name => 'search3' } %>
-										<%= submit_tag "Check Loan Details" %>
+										<%= submit_tag t('librarytransaction.check_loan_details')  %>
 									</span>
 									<!--END-AFTER UPDATE:STUDENT-->
 								
@@ -104,7 +104,7 @@
 																			{ :url => formatted_students_path(:js), 
 														  					  :method => :get,
 																			  :param_name => 'search3' } %>
-										<%= submit_tag "Check Loan Details" %>
+										<%= submit_tag t('librarytransaction.check_loan_details')  %>
 									</span>
 
 								<% end %>
