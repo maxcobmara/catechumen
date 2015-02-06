@@ -39,7 +39,7 @@
 
 <%# current_login_roles=[]%>
 <%# Login.current_login.roles.each do |role|%>
-	<%# current_login_roles<<role.id%>
+	<%# current_login_roles << role.id%>
 <%# end %>
 <%#= current_login_roles.include?(2)%>
 <!--13/20Apr2013-DEPT UNIT for current user-->
@@ -91,15 +91,15 @@
 			<% if index==0 %>
 			<div class="tform">
 
-			  <H2>Examination Mark Details</H2>
+			  <H2><%=t('exammark.details')%></H2>
 
 
 						<table width=100%>
 							<% if @dept_unit_prog %>
-								<tr><td class="leftcol">Programme</td><td><%=@dept_unit_prog %></td></tr>
+								<tr><td class="leftcol"><%=t('exam.course_id')%></td><td><%=@dept_unit_prog %></td></tr>
 							<% end %>
 							<tr>
-								<td class="leftcol"><label>Examination Paper</label></td>
+								<td class="leftcol"><label><%=t('exam.exampaper')%></label></td>
 								<td><% @selected_exam = Exam.find(@examid)%>
 								<!--DISPLAY EXAM DETAILS AT THIS LINE--><%=@selected_exam.exam_name_subject_date %>
 								<% if @selected_exam.klass_id == 0 %><font color="blue">(Template)</font><% end %><br>
@@ -112,7 +112,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="leftcol"><label>Student Intake</label></td>
+								<td class="leftcol"><label><%=t('student.intake')%></label></td>
 								<td>
 									<!--
 									<%#=@student_list.count %>
@@ -122,7 +122,7 @@
 									<%# @intake_list = Student.find(:all,:conditions=> ['course_id=?',@programmeid]).group_by{|l|l.intake}%>
 									<%# @counter = 0 %>
 									<%# @intake_list.each do |m,n| %>
-										<%# @intakes<<m %>
+										<%# @intakes << m %>
 									<%# end %>
 									<%# @i4='2010-07-01'%>
 									<%@intakes.each_with_index do |n,index|%>
@@ -130,28 +130,28 @@
 										<%if n.to_s == @iii %><!--yes--><%@aa=index%><%else %><!--no--><% end %>
 									<% end %>
 									
-									<%#= f.select :intake_id, @intakes, :selected=>@intakes[1], :include_blank=> 'Select Intake' %>
+									<%#= f.select :intake_id, @intakes, :selected=>@intakes[1], :include_blank=> (t 'select') %>
 									<% if @aa.nil? %>
-										<%= f.select :intake_id, @intakes, { :include_blank=> 'Select Intake'}, 
+										<%= f.select :intake_id, @intakes, { :include_blank=> (t 'select')}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :marks_multiple), 
 										:url => {:action=>'view_marks_form_multiple_intake'}, 
 										:with => "'intakeid='+$('"+"exammarks_0_intake_id"+"').value+'&examid='+'#{@examid}'+'&programmeid='+'#{@programmeid}'  ") %>
 									<% else %>
-										<%= f.select :intake_id, @intakes, {:selected=>@intakes[@aa], :include_blank=> 'Select Intake'}, 
+										<%= f.select :intake_id, @intakes, {:selected=>@intakes[@aa], :include_blank=> (t 'select')}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :marks_multiple), 
 										:url => {:action=>'view_marks_form_multiple_intake'}, 
 										:with => "'intakeid='+$('"+"exammarks_0_intake_id"+"').value+'&examid='+'#{@examid}'+'&programmeid='+'#{@programmeid}'  ") %>
 									<% end %>
 									
 									<%#= f.collection_select :exam_id, @exam_list, :id, :exam_name_subject_date, 
-															{:include_blank=>'Select Examination Paper'},
+															{:include_blank=> (t 'select') },
 															:onchange => remote_function(:update => form_tag_id(f.object_name, :marks_multiple), :url => {:action=>'view_marks_form_multiple'}, 
 															:with => "'examid='+$('"+"exammarks_0_exam_id"+"').value ")%>
 								</td>
 							</tr>
 							<% if @selected_exam.klass_id == 0 && @selected_exam.examtemplates.count>0 %>
 								<tr>
-									<td class="leftcol"><label>Questions Template - (Type/Quantity/Total Marks)</label></td>
+									<td class="leftcol"><label><%=t('exammark.template')%></label></td>
 									<td><% @q_qty=0 %>
 										<% @selected_exam.examtemplates.each_with_index do |examtemplate, index| %>
 											<%= examtemplate.questiontype.to_s+" / "+examtemplate.quantity.to_s+" / " +examtemplate.total_marks.to_s%>
@@ -188,7 +188,7 @@
 			
 		<% end %>	<!-- end of - @exammarks.each_with_index -->
 	<% end %>	<!-- end of - fields_for "exammarks[#{index}]"-->
-	<p><%= f.submit 'Create By Paper',:name => :new_submit %></p>
+	<p><%= f.submit t('exammark.create_by_paper') ,:name => :new_submit %></p>
 <% end %>	<!-- end of - form_tag :action => 'create' do |f| %>-->
 <!--end-trial new exammark by exampaper (filtered by programme)-12Sept2012-->
 

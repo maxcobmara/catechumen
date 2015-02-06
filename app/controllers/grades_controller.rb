@@ -28,7 +28,7 @@ class GradesController < ApplicationController
         @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.all.map(&:subject_id)] )
       end
       @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?) and id IN(?)', @existing_grade_subject_ids, @subjectlist_preselec_prog])
-      if submit_val == 'Search Existing Grades'
+      if submit_val == t('grade.search_existing_grades') #'Search Existing Grades'
         search_item = params[:subject_id]
         if search_item == '0' 
           grade_ids = @grade_list_exist_subject.map(&:id)  
@@ -71,8 +71,8 @@ class GradesController < ApplicationController
   def new
     #@new_type = params[:new_type]                                                       # retrieve - parameter sent via link_to
     submit_val = params[:submit_button1]      
-    @new_type = "0" if submit_val == "Single New Grade"    
-    @new_type = "3" if submit_val == "Multiple New Grades"                              # retrieve - parameter sent via link_to
+    @new_type = "0" if submit_val == t('grade.new_single')#"Single New Grade"    
+    @new_type = "3" if submit_val == t('grade.new_multiple')#"Multiple New Grades"                              # retrieve - parameter sent via link_to
 	  if @new_type && @new_type == "1"                                                    # multiple new records
 		  @grades = Array.new(1) { Grade.new } 	#(params[:grades])
 		  @grades.each do |grade|                                                           # have to build nested attribute, score(formative) inside of each item of grade array
@@ -202,7 +202,7 @@ class GradesController < ApplicationController
             end
         end   # end of respond_to do block
     
-    elsif @create_type == "Create By Subject"
+    elsif @create_type == t('grade.create_by_subject') #"Create By Subject"
         #raise params.inspect
         @new_type = "2"
         @subjectid = params[:subjectid]  
@@ -228,7 +228,7 @@ class GradesController < ApplicationController
       
         if @grades.all?(&:valid?) 
             @grades.each(&:save!)                                      # ref: to retrieve each value of @exammarks --> http://railsforum.com/viewtopic.php?id=11557 (Dazen2 007-10-07 05:27:42) 
-            flash[:notice] = 'Grades are successfully created'
+            flash[:notice] = t('grade.successfully_created')
             redirect_to :action => 'index' 
             #flash.discard
             
@@ -241,7 +241,7 @@ class GradesController < ApplicationController
 		        @new_type = "3"
 		        #flash[:error] = @exammarkerrormsg	#red box  
 		        flash[:error] = @gradeerrormsg	#red box      
-		        flash[:notice] = 'Data supplied was invalid.'                        
+		        flash[:notice] = t('data_invalid')                      
             #flash[:notice] = 'Data supplied was invalid. Please insert all data accordingly. All fields are compulsory.'
             render :action => 'new'
             
@@ -278,7 +278,7 @@ class GradesController < ApplicationController
     #---just added
     respond_to do |format|
       if @grade.update_attributes(params[:grade])
-        flash[:notice] = 'Grade was successfully updated.'
+        flash[:notice] = t('grade.successfully_updated')
         format.html { redirect_to(@grade) }
         format.xml  { head :ok }
       else
@@ -390,11 +390,11 @@ class GradesController < ApplicationController
     unless @gradeids.blank? 
  	    @grades = Grade.find(@gradeids).sort_by{|x|x.studentgrade.name} #@grades = Grade.find(@gradeids)
  	    @edit_type = params[:grade_submit_button]
-		    if @edit_type == "Edit Checked"
+		    if @edit_type == t('edit_checked') #"Edit Checked"
  	        ## continue multiple edit (including subject edit here) --> refer view
        end    # end for if @edit_type=="Edit Checked"
     else    # else for unless @gradeids.blank?
-        flash[:notice] = "Please select at least 1 record to edit."
+        flash[:notice] = (t 'select_one')
         redirect_to exammarks_path
     end			# end for unless @gradeids.blank?
   end
@@ -410,7 +410,7 @@ class GradesController < ApplicationController
      @formatives = params[:formatives]  
      @caplusmse = params[:scores]
      @examweights = params[:examweights]  
-     if @subjects_of_grades==1 || submit_val == 'Apply Changes'
+     if @subjects_of_grades==1 || submit_val == t('apply_changes') #'Apply Changes'
         @summative_weightage = params[:grade][:summative_weightage]    
         @scores = params[:scores_attributes]
         @scores_new_count = @scores.count 
@@ -425,7 +425,7 @@ class GradesController < ApplicationController
  	   @resits = params[:resits]
  	   @grades = Grade.find(@gradesid)	             											 
      
-     if submit_val == 'Apply Changes'
+     if submit_val == t('apply_changes') #'Apply Changes'
         @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, index| 
             0.upto(grade.scores.count-1) do |score_count|
                 #Please note : use this : params[:scores_attributes][score_count.to_s][:type_id] INSTEAD OF this:params[:scores_attributes][score_count.to_s][:type_id][index]
@@ -453,7 +453,7 @@ class GradesController < ApplicationController
 	      respond_to do |format|
 	          #flash[:notice] = "Updated changes for formative score details!"
 	          format.html {render :action => "edit_multiple"}
-    	      flash[:notice] = "<b>Formative Score variables</b> and <b>Summative Weightage</b> are updated. <b>Please EDIT marks accordingly</b>."
+    	      flash[:notice] = "<b>"+t('grade.formative_scores_var')+"</b> "+t('and')+" <b>"+(t 'grade.summative_weightage').titleize+"</b> "+t('grade.are_updated')+" <b>"+t('grade.edit_marks')+"</b>."
     	      format.xml  { head :ok }
     	      flash.discard
 	      end
@@ -527,7 +527,7 @@ class GradesController < ApplicationController
  			      grade.save
  		    end			#--end of @grades.each_with_index do |grade,index|--
  		  
- 		    flash[:notice] = "Updated grades!"
+ 		    flash[:notice] = t('grade.successfully_updated')
   	    #redirect_to exammarks_path
   	    redirect_to grades_path
   	  end

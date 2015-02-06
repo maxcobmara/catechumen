@@ -1,5 +1,5 @@
 <div class="tform">
-	<H2>Appraisal Information</H2>
+	<H2><%=t('evaluate_course.info')%></H2>
   <table width=100% >
 			<!--
 			<tr>
@@ -9,57 +9,57 @@
 			</tr>-->
 			
 			<tr>
-				<td class="leftcol"><label for="course_id">Course Name</label></td>
+				<td class="leftcol"><label for="course_id"><%=t('evaluate_course.course_id')%></label></td>
 				<td>:</td>
-				<td><%= @evaluate_course.course_id.blank? ? "No Course" : @evaluate_course.stucourse.programme_coursetype_name %></td>
+				<td><%= @evaluate_course.course_id.blank? ? (t 'evaluate_course.no_course') : @evaluate_course.stucourse.programme_coursetype_name %></td>
 			</tr>
 				
 			<tr>
-				<td class="leftcol"><label for="subject_id">Subject Name</label></td>
+				<td class="leftcol"><label for="subject_id"><%=t('evaluate_course.subject_id')%></label></td>
 				<td>:</td>
-				<td><%= @evaluate_course.subject_id.blank? ? "No Subject" : @evaluate_course.subjectevaluate.subject_list %></td>
+				<td><%= @evaluate_course.subject_id.blank? ? (t 'evaluate_course.no_subject') : @evaluate_course.subjectevaluate.subject_list %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="staff_id">Lecturer Name</label></td>
+				<td class="leftcol"><label for="staff_id"><%=t('evaluate_course.staff_id')%></label></td>
 				<td>:</td>
 				<td><%= @evaluate_course.staff_id.blank? ? "-" : @evaluate_course.staffevaluate.name %></td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="staff_id">Invitation Lecturer</label></td>
+				<td class="leftcol"><label for="staff_id"><%=t('evaluate_course.invite_lec')%></label></td>
 				<td>:</td>
 				<td><%= @evaluate_course.invite_lec %></td>
 			</tr>
 			
 			
 			<tr>
-				<td class="leftcol"><label for="comment">Comment</label></td>
+				<td class="leftcol"><label for="comment"><%=t('evaluate_course.comment')%></label></td>
 				<td>:</td>
 				<td ><%= @evaluate_course.comment %></td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="evaluate_date">Evaluate Date</label></td>
+				<td class="leftcol"><label for="evaluate_date"><%=t('evaluate_course.evaldate')%></label></td>
 				<td>:</td>
-				<td ><%= @evaluate_course.evaluate_date.blank? ? "-" : @evaluate_course.evaluate_date.strftime("%d-%b-%Y")  %></td>
+				<td ><%= @evaluate_course.evaluate_date.blank? ? "-" : l(@evaluate_course.evaluate_date) %></td>
 			</tr>
 
 </table>
 
-<H2>Appraisal Details</H2>
+<H2><%=t('evaluate_course.details')%></H2>
 <table width=80% border=1 cellspacing=0 cellpadding=7 BORDERCOLOR="#E8E8E8 ">	
 			
 			<tr>
-				<td width="10" ><font size=2><b>BIL</b></font></td>
-				<td align="center" width=35%><font size=2 ><b>PERKARA</b></font></th>
-				<td width="10" colspan=9 align="center"><font size=2><b>SKOR</b></font></td>
+				<td width="10" ><font size=2><b>No</b></font></td>
+				<td align="center" width=35%><font size=2 ><b><%=t('evaluate_course.description')%></b></font></th>
+				<td width="10" colspan=9 align="center"><font size=2><b><%=(t 'evaluate_course.score').upcase%></b></font></td>
 			</tr>
 		
 				
 <tr>
 	<td>1.</td>
-	<td>Pencapaian objektif pelajaran</td>
+	<td><%=t('evaluate_course.objective_achieved')%></td>
 	<td align="center"><% if @evaluate_course.ev_obj == 1  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#A0A0A0">1</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_obj == 2  %><b><%= @evaluate_course.ev_obj %></b<% else %><font color="#A0A0A0">2</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_obj == 3  %><b><%= @evaluate_course.ev_obj %></b<% else %><font color="#A0A0A0">3</font><% end %></td>
@@ -73,7 +73,7 @@
 
 <tr>
 	<td>2.</td>
-	<td>Pengetahuan pensyarah tentang pelajaran yang diajar</td>
+	<td><%=t('evaluate_course.lecturer_knowledge')%></td>
 	<td align="center"><% if @evaluate_course.ev_knowledge == 1  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#A0A0A0">1</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_knowledge == 2  %><b><%= @evaluate_course.ev_knowledge %></b<% else %><font color="#A0A0A0">2</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_knowledge == 3  %><b><%= @evaluate_course.ev_knowledge %></b<% else %><font color="#A0A0A0">3</font><% end %></td>
@@ -87,7 +87,7 @@
 
 <tr>
 	<td>3.</td>
-	<td>Mutu pencapaian pensyarah</td>
+	<td><%=t('evaluate_course.lecturer_q_achievement')%></td>
 	<td align="center"><% if @evaluate_course.ev_deliver == 1  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#A0A0A0">1</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_deliver == 2  %><b><%= @evaluate_course.ev_deliver %></b<% else %><font color="#A0A0A0">2</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_deliver == 3  %><b><%= @evaluate_course.ev_deliver %></b<% else %><font color="#A0A0A0">3</font><% end %></td>
@@ -101,7 +101,7 @@
 
 <tr>
 	<td>4.</td>
-	<td>Isi kandungan pelajaran</td>
+	<td><%=t('evaluate_course.content')%></td>
 	<td align="center"><% if @evaluate_course.ev_content == 1  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#A0A0A0">1</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_content == 2  %><b><%= @evaluate_course.ev_content %></b<% else %><font color="#A0A0A0">2</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_content == 3  %><b><%= @evaluate_course.ev_content %></b<% else %><font color="#A0A0A0">3</font><% end %></td>
@@ -115,7 +115,7 @@
 
 <tr>
 	<td>5.</td>
-	<td>Mutu alat pandang dengar yang digunakan</td>
+	<td><%=t('evaluate_course.training_aids_quality')%></td>
 	<td align="center"><% if @evaluate_course.ev_tool == 1  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#A0A0A0">1</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_tool == 2  %><b><%= @evaluate_course.ev_tool %></b<% else %><font color="#A0A0A0">2</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_tool == 3  %><b><%= @evaluate_course.ev_tool %></b<% else %><font color="#A0A0A0">3</font><% end %></td>
@@ -129,7 +129,7 @@
 
 <tr>
 	<td>6.</td>
-	<td>Kesesuaian turutan topik dalam jadual</td>
+	<td><%=t('evaluate_course.suitability_topic_sequence')%></td>
 	<td align="center"><% if @evaluate_course.ev_topic == 1  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#A0A0A0">1</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_topic == 2  %><b><%= @evaluate_course.ev_topic %></b<% else %><font color="#A0A0A0">2</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_topic == 3  %><b><%= @evaluate_course.ev_topic %></b<% else %><font color="#A0A0A0">3</font><% end %></td>
@@ -143,7 +143,7 @@
 
 <tr>
 	<td>7.</td>
-	<td>Keberkesanan pengajaran dan pembelajaran (interaksi antara pensyarah dan pelajar).</td>
+	<td><%=t('evaluate_course.effectiveness_teaching_learning')%></td>
 	<td align="center"><% if @evaluate_course.ev_work == 1  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#A0A0A0">1</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_work == 2  %><b><%= @evaluate_course.ev_work %></b<% else %><font color="#A0A0A0">2</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_work == 3  %><b><%= @evaluate_course.ev_work %></b<% else %><font color="#A0A0A0">3</font><% end %></td>
@@ -157,7 +157,7 @@
 
 <tr>
 	<td>8.</td>
-	<td>Faedah bahan/nota yang diedarkan</td>
+	<td><%=t('evaluate_course.benefit_notes')%></td>
 	<td align="center"><% if @evaluate_course.ev_note == 1  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#A0A0A0">1</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_note == 2  %><b><%= @evaluate_course.ev_note %></b<% else %><font color="#A0A0A0">2</font><% end %></td>
 	<td align="center"><% if @evaluate_course.ev_note == 3  %><b><%= @evaluate_course.ev_note %></b<% else %><font color="#A0A0A0">3</font><% end %></td>
@@ -172,5 +172,5 @@
 </div>
 
 <BR>
-<%= link_to 'Edit', edit_evaluate_course_path(@evaluate_course) %> |
-<%= link_to 'Back', evaluate_courses_path %>
+<%= link_to (t 'edit'), edit_evaluate_course_path(@evaluate_course) %> |
+<%= link_to (t 'back'), evaluate_courses_path %>

@@ -75,12 +75,12 @@
 		<!--11June2013-check for student, if exammark exist for selected exampaper(subject) and students-->
 		
 			<br>
-			&nbsp;<b>Intake : </b><%=@intake_id %><%#=@exam_id %>
-			&nbsp;<b>Total students : </b><%= @students2.count %><%#= @examquestions%>
+			&nbsp;<b><%=t('student.intake')%> : </b><%=@intake_id %><%#=@exam_id %>
+			&nbsp;<b><%=t('grade.total_students')%> : </b><%= @students2.count %><%#= @examquestions%>
 
 			<div class="right" style="text-align:right;">
-				&nbsp;&nbsp;<font size=-2 color=blue> <b>Total Formative</b> = Sum of scores, <b>CA+MSE</b> = Total Formative*(100-summative weightage)/100
-				<br><b>Total Summative</b> = (Final Exam * summative weightage) / 100, <b>Total Marks</b> = CA+MSE + Total Summative</font>
+				&nbsp;&nbsp;<font size=-2 color=blue> <b><%=t('grade.total_formative')%></b> = <%=t('grade.sum_of_scores')%>, <b>CA+MSE</b> = <%=t('grade.total_formative')%>*(100-<%=t('grade.summative_weightage')%>)/100
+				<br><b><%=t('grade.total_summative')%></b> = (<%=t('grade.final_exam')%> * <%=t('grade.summative_weightage')%>) / 100, <b><%=t('grade.total_marks')%></b> = CA+MSE + <%=t('grade.total_summative')%></font>
 			</div>
 			<!--FINALE = ((exam1marks * examweight)/100) + ((total_formative * (100 - examweight)/100))-->
 			<!--FINALE = TOTAL SUMMATIVE + CA+MSE-->
@@ -88,15 +88,15 @@
 			<table border=1 cellspacing=0 cellpadding=0 width=100%>
 				<tr>
 					<th rowspan=2 width=6px>No</th>
-					<th rowspan=2 width=230px>Name</th>
-					<th rowspan=2 width=130px>Matric No</th>
-					<th rowspan=2>MyKad No</th>
+					<th rowspan=2 width=230px><%=t('student.name')%></th>
+					<th rowspan=2 width=130px><%=t('student.matrixno')%></th>
+					<th rowspan=2><%=t('student.icno')%></th>
 					<!--<th colspan=4>--><!--23JUNE2013-HIDE TOTAL FORMATIVE COLUMN<th rowspan=2 width=60px>--><!--MCQ--><!--Total Formative </th>-->
 					<th rowspan=2>CA+MSE</th>
 					<!--<th rowspan=2 width=75px>Summative Weightage</th>-->
-					<th rowspan=2>Final Exam<br>(Written Paper)</th>
-					<th rowspan=2 width=60px>Total Summative</th>
-					<th rowspan=2>Total Marks</th>
+					<th rowspan=2><%=t('grade.final_exam')%><br>(<%=t('grade.written_paper')%>)</th>
+					<th rowspan=2 width=60px><%=t('grade.total_summative')%></th>
+					<th rowspan=2><%=t('grade.total_marks')%></th>
 				</tr>
 	
 				<!--16June2013 - add HIDDEN ONE-IF ERRORS ARISE - RENDER NEW ACTION WITH VALUE @new_type="3"(controller-line 3) & @subject_id value...-->
@@ -155,7 +155,7 @@
 						<!---->
 				
 						<!--<td style="padding-left:4px;padding-right:4px;text-align:center;">SUMMATIVE WEIGHTAGE-->
-						<%#= select_tag "grades[#{index}][examweight]","<option value='0'>Select</option>"+options_for_select(Grade::WEIGHTAGE) %>	
+						<%#= select_tag "grades[#{index}][examweight]","<option value='0'>"+(t 'select')+"</option>"+options_for_select(Grade::WEIGHTAGE) %>	
 		
 						<!--this part for EDIT-->
 						<!--@@--><%#= text_field "exammarks[#{index}][marks_attributes][#{@index2}]",:student_mark , :size=>4,:value=>@marks_exist[@index2]   %> 
@@ -246,7 +246,7 @@
 
 		<!--11JUNE2013--><!--11June2013-check for student, if exammark exist for selected exampaper(subject) and students-->
 		<% else %>
-			Selected student(intake) has no examination marks for selected examination paper(subject).
+			<%=t('grade.selected_intake_no_exammark')%>
 		<% end %><!--end for - if @curr_exammark -->
 		<!--11JUNE2013--><!--11June2013-check for student, if exammark exist for selected exampaper(subject) and students-->
 
@@ -259,6 +259,6 @@
 
 <!--revised on 24th Sept 2012-->
 <% else %>
-	Please select an intake.
+	<%=t('grade.select_an_intake')%>
 <% end %><!--end for if @students -->
 <!--revised on 24th Sept 2012-->

@@ -1,13 +1,16 @@
 <%= stylesheet_link_tag 'report' %>
 
 <form action="#">	
-<script>
-document.write("<input type='button' " +
-"onClick='window.print()' " +
-"class='printbutton' " +
-"value='Print This Page'/>");
-</script>
-</form>	
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
+</form>
+<div id="hideLink">
+<%= link_to (t 'back'), :controller => :examresults, :action=> :index2 %>
+</div><BR>
 <div class="A4potrait">
 
 <!-- Box Head -->
@@ -65,9 +68,9 @@ document.write("<input type='button' " +
 		</td>
 		<td>
 			<% unless @student_finale.nil? || @student_finale.blank? %>
-				<%=number_with_precision(@student_finale.set_NG.to_f,:precision=>2)%>
+				<%=sprintf('%.2f',@student_finale.set_NG.to_f)%>
 			<% else %>
-				<%= number_with_precision(0.00,:precision=>2) %>
+				<%= sprintf('%.2f',0.00) %>
 			<% end %>
 		</td>
 		<td>
@@ -88,15 +91,15 @@ document.write("<input type='button' " +
 		</tr>
 		<tr>
 			<td class="leftcol">Jumlah NGK (Nilai Gred Kumulatif)</td>
-			<td style="text-align:center;"><%=h number_with_precision(@resultline.total, :precision=>2)%></td>
+			<td style="text-align:center;"><%=h @resultline.total.nil? ? "" : sprintf('%.2f', @resultline.total)%></td>
 		</tr>
 		<tr>
 			<td class="leftcol">Purata Nilai Gred Semester (PNGS)</td>
-			<td style="text-align:center;"><%=h number_with_precision(@resultline.pngs17, :precision=>2) %></td>
+			<td style="text-align:center;"><%=h @resultline.pngs17.nil? ? "" : sprintf('%.2f', @resultline.pngs17) %></td>
 		</tr>
 		<tr>
 			<td class="leftcol">Purata Nilai Gred Kumulatif (PNGK)</td>
-			<td style="text-align:center;"><%=h number_with_precision(@resultline.pngk, :precision=>2)%></td>
+			<td style="text-align:center;"><%=h @resultline.pngk.nil? ? "" : sprintf('%.2f', @resultline.pngk)%>&nbsp;</td>
 		</tr>
 		<tr>
 			<td style="font-weight:bold;">STATUS</td>

@@ -2,22 +2,22 @@
 <div class="box">
 <!-- Box Head -->
   <div class="box-head">
-    <h2 class="left">Lists of Feedback / Course Evaluation</h2>
+    <h2 class="left"><%=t('evaluate_course.title')%></h2>
 		<div class="right">
 		</div>
 	</div>
 </div>	
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Feedback/Course Evaluation') + "New", new_evaluate_course_path %></p>
+	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'evaluate_course.new')) + (t 'evaluate_course.new'), new_evaluate_course_path %></p>
 </div>
-
+<BR><BR>
 <div class="indextable">
 <table>
   <tr class="toprow">
     <!--<th>Student Name</th>-->
-    <th>Programme - Subject Name</th>
-    <th>Evaluate Date</th>
-    <th>Lecturer's Name</th>
+    <th><%=t('evaluate_course.programme_subjectname')%></th>
+    <th><%=t('evaluate_course.evaldate')%></th>
+    <th><%=t('evaluate_course.staff_id')%></th>
     <th colspan=4 class="ac"><%= t 'action' %></th>
     
   </tr>
@@ -26,29 +26,29 @@
   <tr>
 	<!--<td><%#= evaluate_course.student_id.blank? ? "No Student" : evaluate_course.studentevaluate.name %></td>-->
 	<!--20Feb2013-subject added-->
-	<td><%= evaluate_course.course_id.blank? ? "No Course" : evaluate_course.stucourse.programme_coursetype_name+" - "+evaluate_course.subjectevaluate.subject_list %></td>
+	<td><%= evaluate_course.course_id.blank? ? (t 'evaluate_course.no_course') : evaluate_course.stucourse.programme_coursetype_name+" - "+evaluate_course.subjectevaluate.subject_list %></td>
 	<!--20Feb2013-subject added-->
-	<td ><%= evaluate_course.evaluate_date.blank? ? "-" : evaluate_course.evaluate_date.strftime("%d %b %Y") %></td>
-	<td><%= evaluate_course.staff_id.blank? ? "No Staff" : evaluate_course.staffevaluate.name %></td>
+	<td ><%= evaluate_course.evaluate_date.blank? ? "-" : l(evaluate_course.evaluate_date) %></td>
+	<td><%= evaluate_course.staff_id.blank? ? (t 'evaluate_course.no_staff') : evaluate_course.staffevaluate.name %></td>
 	
 	<td width=10px >
 	<%# if permitted_to? :show, evaluate_course %>
-	<%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => evaluate_course %><%# end %></td>
+	<%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => evaluate_course %><%# end %></td>
 	
 	
     <td width=10px>
 	<%# if permitted_to? :update, evaluate_course %>
-	<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => evaluate_course %><%# end %></td>
+	<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => evaluate_course %><%# end %></td>
    
   	<%# if permitted_to? :penilaipensyarah, evaluate_lecturer %>
 	<td width=10px>
-	<%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Penilaian Pensyarah'), :action => 'courseevaluation', :id => evaluate_course %>
+	<%= link_to image_tag("printer.png", :border => 0, :title =>(t 'evaluate_course.eval_form')), :action => 'courseevaluation', :id => evaluate_course %>
 	</td><%# end %>
 	
 	
 	<%# if permitted_to? :destroy, evaluate_course %>
     <td width=10px>
-	<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), evaluate_course, :confirm => 'Are you sure?', :method => :delete %></td><%# end %>
+	<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), evaluate_course, :confirm => (t 'are_you_sure'), :method => :delete %></td><%# end %>
 
   
 
@@ -58,7 +58,7 @@
 </div>
 <br />
 <%# if permitted_to? :create, @evaluate_lecturer %>
-<%= link_to 'New Feedback/Course Evaluation', new_evaluate_course_path %>
+<%= link_to (t 'evaluate_course.new'), new_evaluate_course_path %>
 <%# end %>
 
 

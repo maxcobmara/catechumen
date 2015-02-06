@@ -2,8 +2,8 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<% if @edit_type == "Edit Checked" %>
-			<h2 class="left">Edit Multiple Student Grades</h2>
+		<% if @edit_type == (t 'edit_checked') %>
+			<h2 class="left"><%=t('grade.edit_multiple')%></h2>
 		<%# elsif @edit_type == "Edit by Subject" %>
 			<!--<h2 class="left">Edit Multiple Exam Mark By Examination - <%#=@subject_name%></h2>-->
 		<% end %>
@@ -11,8 +11,8 @@
 </div>
 
 <div class="right" style="text-align:right;">
-&nbsp;&nbsp;<font size=-2 color=blue> <b>Total Formative</b> = Sum of scores(%), <b>CA+MSE</b> = Total Formative*(100-summative weightage)/100
-	<br><b>Total Summative</b> = (Final Exam * summative weightage) / 100, <b>Total Marks</b> = CA+MSE + Total Summative</font>
+&nbsp;&nbsp;<font size=-2 color=blue> <b><%=t('grade.total_formative')%></b> = <%=t('grade.sum_of_scores')%>(%), <b>CA+MSE</b> = <%=t('grade.total_formative')%>*(100-<%=t('grade.summative_weightage')%>)/100
+	<br><b><%=t('grade.total_summative')%></b> = (<%=t('grade.final_exam')%> * <%=t('grade.summative_weightage')%>) / 100, <b><%=t('grade.total_marks')%></b> = CA+MSE + <%=t('grade.total_summative')%></font>
 </div>
 <br>
 
@@ -21,7 +21,7 @@
 	
 	<% @subjects_of_grades = @grades.map(&:subject_id).uniq.count %><!--check if subject for all selected grades are same-->
 	<% if @subjects_of_grades==1 %>
-		&nbsp;<span style="text-decoration:underline;font-weight:bold;">Subject : <%=@grades[0].subjectgrade.subject_list%></span><br><br>
+		&nbsp;<span style="text-decoration:underline;font-weight:bold;"><%=t('grade.subject_id')%> : <%=@grades[0].subjectgrade.subject_list%></span><br><br>
 	<% end %>
 	
 	
@@ -80,7 +80,7 @@
 		<% @modify = "yes" %>
 		
 		<!--&nbsp;<b>Subject : <%#=@grades[0].subjectgrade.subject_list%></b><br>-->
-		&nbsp;<b>Summative Weightage :</b> 
+		&nbsp;<b><%=(t 'grade.summative_weightage').titleize%> :</b> 
 		
 
 		<%= f.select :summative_weightage, Grade::WEIGHTAGE, {:selected=> @grades[0].examweight}, :onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), :url => {:action=>'update_summative_weightage'}, :with => "'weightage='+$('"+"grade_summative_weightage"+"').value+'&intakeid='+'#{@intake_val}'+'&programmeid='+'#{@programmeid}'+'&modify='+'#{@modify}' ") %>
@@ -88,15 +88,15 @@
 		
 		<% if @sum_weight>1 %><span style="color:red;">*</span><% end %>
 				
-		<br>&nbsp;<b>Formative Scores :</b><br>
+		<br>&nbsp;<b><%=t('grade.formative_scores')%> :</b><br>
 		<table cellpadding=0 cellspacing=0>
 			<!--Please note : use this : scores_attributes[#{score_count}][type_id] INSTEAD OF this:scores_attributes[#{score_count}][type_id][]-->
 			<tr>
-				<th>Score type&nbsp;<% if @grade_score_type_comp.include?(false)%><span style="color:red;">*</span><% end %></th>
-				<th>Description&nbsp;<% if @grade_score_desc_comp.include?(false)%><span style="color:red;">*</span><% end %></th>
-				<th>Weightage&nbsp;<% if @grade_score_weight_comp.include?(false)%><span style="color:red;">*</span><% end %></th>
+				<th><%=t('grade.score_type')%>&nbsp;<% if @grade_score_type_comp.include?(false)%><span style="color:red;">*</span><% end %></th>
+				<th><%=t('grade.description')%>&nbsp;<% if @grade_score_desc_comp.include?(false)%><span style="color:red;">*</span><% end %></th>
+				<th><%=t('grade.weightage')%>&nbsp;<% if @grade_score_weight_comp.include?(false)%><span style="color:red;">*</span><% end %></th>
 				<% if @grade_score_type_comp.include?(false) || @grade_score_desc_comp.include?(false) || @grade_score_weight_comp.include?(false) %>   
-					<th>Differences</th>
+					<th><%=t('grade.differences')%></th>
 				<% end %>	
 			</tr>
 			<!--<tr><td rowspan=7>gg</td></tr>-->
@@ -127,7 +127,7 @@
 						<span style="color:red;">
 						<% @grade_sum_weight_comp.each_with_index do |x,y| %>
 							<% if y==0 && @grade_sum_weight_comp.include?(false)%>
-								<span style="text-decoration:underline;font-weight:bold;">Summative Weightage</span><br>
+								<span style="text-decoration:underline;font-weight:bold;"><%=(t 'grade.summative_weightage').titleize %></span><br>
 							<% end %>
 							<% if x==false %>
 								<%=y+2%>&nbsp;
@@ -153,7 +153,7 @@
 						<span style="color:red;">
 						<% @grade_score_type_comp.each_with_index do |x,y| %>
 							<% if y==0 && @grade_score_type_comp.include?(false)%>
-								<span style="text-decoration:underline;font-weight:bold;">Score Type</span><br>
+								<span style="text-decoration:underline;font-weight:bold;"><%=t('grade.score_type')%></span><br>
 							<% end %>
 							<% if x==false %>
 								<%=y+2%>&nbsp;
@@ -194,7 +194,7 @@
 						<span style="color:red;">
 						<% @grade_score_desc_comp.each_with_index do |x,y| %>
 							<% if y==0 && @grade_score_desc_comp.include?(false) %>
-								<span style="text-decoration:underline;font-weight:bold;">Description</span><br>
+								<span style="text-decoration:underline;font-weight:bold;"><%=t('grade.description')%></span><br>
 							<% end %>
 							<% if x==false %>
 								<%=y+2%>&nbsp;
@@ -226,7 +226,7 @@
 						<span style="color:red;">
 						<% @grade_score_weight_comp.each_with_index do |x,y| %>
 							<% if y==0 && @grade_score_weight_comp.include?(false)%>
-								<span style="text-decoration:underline;font-weight:bold;">Weightage</span><br>
+								<span style="text-decoration:underline;font-weight:bold;"><%=t('grade.weightage')%></span><br>
 							<% end %>
 							<% if x==false %>
 								<%=y+2%>&nbsp;										
@@ -274,8 +274,8 @@
 				<%# count = 0 %><% count = @grades[0].scores.count %>
 				<div id="barunyediv">
 				<%@current_subject = @grades[0].subjectgrade.id %>
-				<%= link_to_remote image_tag("add.png", :border => 0, :title => 'Add More'), :url => {:action => 'form_try', :index => count,:subject=>@current_subject}, :update => 'barunyediv' %> - Add More 
-				<%#= link_to_remote image_tag("add.png", :border => 0, :title => 'Add More'), :url => {:action => 'form_try', :index => count,:student=>@studentsearch, :staff=>@staffsearch, :rustaff=>@rustaff, :quota_bal=>@quota_bal }, :update => 'barunyediv' %>
+				<%= link_to_remote image_tag("add.png", :border => 0, :title => (t 'addmore')), :url => {:action => 'form_try', :index => count,:subject=>@current_subject}, :update => 'barunyediv' %> - <%=t('addmore')%>
+				<%#= link_to_remote image_tag("add.png", :border => 0, :title => (t 'addmore')), :url => {:action => 'form_try', :index => count,:student=>@studentsearch, :staff=>@staffsearch, :rustaff=>@rustaff, :quota_bal=>@quota_bal }, :update => 'barunyediv' %>
 				</div>
 				
 				</td></tr>
@@ -287,17 +287,17 @@
 		</table>
 		<!--<br>-->
 		<% if (@grade_score_type_comp.include?(false) || @grade_score_desc_comp.include?(false) || @grade_score_weight_comp.include?(false)) %>
-			<div align=right><span style="color:red;">*</span><font size=-2>&nbsp; indicates different values found for <b>Summative Weightage</b> OR <b>formative score items</b> of each/some student grades. Edit each grade record <span style="color:red;">separately</span> OR modify & click 'Apply Changes' to <b>standardize</b> summative weightage and/or formative score items for subject <b><%=@grades[0].subjectgrade.code%></b>.</font></div>
+			<div align=right><span style="color:red;">*</span><font size=-2>&nbsp; <%=t('grade.indicate_different_values')%> <b><%=(t 'grade.summative_weightage').titleize %></b> <%=t('or')%> <b><%=t('grade.formative_score_items')%></b> <%=t('grade.of_each_grade')%> <span style="color:red;"><%=t('grade.separately')%></span> <%=t('grade.modify_changes')%> <b><%=t('grade.standardize')%></b> <%=t('grade.summative_and_or_formative')%> <b><%=@grades[0].subjectgrade.code%></b>.</font></div>
 		<% end %><br>
-		<div align=left%><%= submit_tag 'Apply Changes', :name =>:applychange %></div>
+		<div align=left%><%= submit_tag (t 'apply_changes'), :name =>:applychange %></div>
 		
 	</fieldset>
 	
-	<SPAN style="text-decoration:underline;">Please CONFIRM or MODIFY & 'Apply Changes' for above <b>Summative Weightage</b> and <b>Formative Scores</b> items before proceeding with data entry. </span><br><br>
+	<SPAN style="text-decoration:underline;"><%=t('grade.confirm_modify_changes')%> <b><%=(t 'grade.summative_weightage').titleize%></b> <%=t('and')%> <b><%=t('grade.formative_scores')%></b> <%=t('grade.before_data_entry')%></span><br><br>
 	
 <% else %>
 	<fieldset style="width:300px;">
-		Student grades of <b>different</b> subject were selected. Formative score details are not available for modification.
+		<%=t('grade.student_grades_of')%> <b><%=t('grade.different')%></b> <%=t('grade.subject_modification')%>
 	</fieldset>
 <% end %>
 <%#====================================%>
@@ -305,10 +305,10 @@
 	<table cellspacing=0 cellpadding=0>
 		<tr>
 			<th>No</th>
-			<th>Student</th>
-			<th>Mykad No</th>
+			<th><%=t('grade.student_id')%></th>
+			<th><%=t('student.icno')%></th>
 			<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different-->
-				<th>Subject</th>
+				<th><%=t('grade.subject_id')%></th>
 			<% end %>
 			<% if @subjects_of_grades > 1 %>
 			<% else %>
@@ -330,16 +330,16 @@
 			<!--#D7EFD7-->
 			<th style="background-color:#E5ECE5;text-align:center;">CA+MSE</th><!--#C3E9BF-->
 			<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different-->
-				<th style="background-color:#EEF9F9;text-align:center;">Summative Weightage</th>
+				<th style="background-color:#EEF9F9;text-align:center;"><%=(t 'grade.summative_weightage').titleize %></th>
 			<% end %>
 			<th style="background-color:#FEE;text-align:center;">
-				Final Exam<br><font size=-2>(Written Paper)</font></th>
-			<th style="background-color:#FEE;text-align:center;">Total Summative</th>
-			<th style="background-color:#EEF;text-align:center;">Total Marks</th>
+				<%=t('grade.final_exam')%><br><font size=-2>(<%=t('grade.written_paper')%>)</font></th>
+			<th style="background-color:#FEE;text-align:center;"><%=t('grade.total_summative')%></th>
+			<th style="background-color:#EEF;text-align:center;"><%=t('grade.total_marks')%></th>
 			<th>BPL</th>
-			<th>Exam?</th>
-			<th>Carry Paper</th>
-			<th>Resit</th>
+			<th><%=t('exammark.exam_id.')%>?</th>
+			<th><%=t('grade.carry_paper')%></th>
+			<th><%=t('grade.resit')%></th>
 			<!--
 			<th>Total MCQ</th>
 				<%# @examid = @exammarks[0].exam_id %>
@@ -396,7 +396,7 @@
 					<%# 0.upto(grade.scores.count-1) do |score_count|%>
 						<td style="text-align:center;background-color:#EDFDEB;">
 							<%##=h grade.scores[score_count].marks%>
-							<%= text_field_tag "scores_attributes[#{score_count}][marks][]", number_with_precision(score_1.marks,:precision=>2), :size=> 4,:class=>'i1',:id=>"score_"+"#{no}"+"_"+score_count.to_s %>
+							<%= text_field_tag "scores_attributes[#{score_count}][marks][]", sprintf('%.2f', score_1.marks), :size=> 4,:class=>'i1',:id=>"score_"+"#{no}"+"_"+score_count.to_s %>
 							<%#= text_field_tag "scores_attributes[#{score_count}][marks][]", grade.scores[score_count].marks, :size=> 4,:class=>'i1',:id=>"score_"+"#{no}"+"_"+score_count.to_s %>
 							<%= hidden_field_tag "formweight", score_1.weightage, :id=>"formweight_"+"#{no}"+"_"+score_count.to_s,:size=>2,:class=>'i1' %>
 							<%#= hidden_field_tag "formweight", grade.scores[score_count].weightage, :id=>"formweight_"+"#{no}"+"_"+score_count.to_s,:size=>2,:class=>'i1' %>
@@ -410,23 +410,36 @@
 					<%##= hidden_field_tag "total_mcqs[]", exammark.total_mcq, :size=> 4 %><%#=exammark.total_mcq%>
 					<%##= text_field_tag "marks_attributes[#{index}][student_marks][]", aa.student_mark, :size=> 4 %>
 					<%##= text_field "grades[#{index}]",:subject_id, :value=> @subject_id %>-->
-					<%= hidden_field_tag "formatives[]", number_with_precision(grade.formative,:precision=>2), :size=> 4,:id=>"totalformative"+no.to_s,:class=>'j1'  %><%##=exammark.total_mcq%>
+					<%#= hidden_field_tag "formatives[]", sprintf('%.2f', grade.formative), :size=> 4,:id=>"totalformative"+no.to_s,:class=>'j1'  %><%#= hidden_field_tag "formatives[]", number_with_precision(grade.formative,:precision=>2), :size=> 4,:id=>"totalformative"+no.to_s,:class=>'j1'  %>
+					<%= hidden_field_tag "formatives[]", grade.formative, :size=> 4,:id=>"totalformative"+no.to_s,:class=>'j1'  %><%##=exammark.total_mcq%>
 				<!--</td>-->
 				
 				<!--23June2013-no changes here but pls refer js part-->
-				<td style="background-color:#E5ECE5;text-align:center;"><%= text_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s %></td>
+				<td style="background-color:#E5ECE5;text-align:center;"><%= text_field_tag "scores[]", sprintf('%.2f', grade.score), :size=> 4,:id=>"caplusmse"+no.to_s %></td>
 				<!--23June2013-->
 				
 				<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different-->
 					<td style="background-color:#EEF9F9;text-align:center;">
-						<%= text_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :size=> 4, :id=>"examweight"+no.to_s %>
+						<%= text_field_tag "examweights[]", sprintf('%.2f', grade.examweight), :size=> 4, :id=>"examweight"+no.to_s %>
 					</td>
 				<% else %>
-						<%= hidden_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :id=>"examweight"+no.to_s %>
+						<%= hidden_field_tag "examweights[]", sprintf('%.2f', grade.examweight), :id=>"examweight"+no.to_s %>
 				<% end %>
-				<td style="background-color:#FEE;text-align:center;"><%= text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1' %></th>
-				<td style="background-color:#FEE;text-align:center;"><%= text_field_tag "summatives[]", number_with_precision(grade.summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s %></td>
-				<td style="background-color:#EEF;text-align:center;"><%= text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s %></td>
+				<td style="background-color:#FEE;text-align:center;"><%= text_field_tag "exam1markss[]", sprintf('%.2f', grade.exam1marks), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1' %></th>
+				<td style="background-color:#FEE;text-align:center;">
+					<% if grade.summative.nil? %>
+						<%= text_field_tag "summatives[]", grade.summative, :size=> 4,:id=>"summative"+no.to_s %>
+					<% else %>
+						<%= text_field_tag "summatives[]", sprintf('%.2f', grade.summative), :size=> 4,:id=>"summative"+no.to_s %>
+					<% end %>
+				</td>
+				<td style="background-color:#EEF;text-align:center;">
+					<% if grade.finalscore.nil? %>
+						<%= text_field_tag "finalscores[]", grade.finalscore, :size=> 4,:id=>"finalscore"+no.to_s %>
+					<% else %>
+						<%= text_field_tag "finalscores[]", sprintf('%.2f', grade.finalscore), :size=> 4,:id=>"finalscore"+no.to_s %>
+					<% end %>
+				</td>
 				<td>
 					<!--asal-http://apidock.com/rails/ActionView/Helpers/FormTagHelper/check_box_tag-->
 					<%#= check_box_tag "sent_to_BPLs[#{no}]", true, :name => "sent_to_BPLs[]" %>
@@ -441,14 +454,14 @@
 			</tr>	
 		<% end%>
 	</table>
-<%= f.submit "Submit" %>
+<%= f.submit (t 'submit') %>
 <%#= submit_tag "Edit Checked", :name => :grade_submit_button %>
 <%#= link_to 'New Grade', new_grade_path(:new_type => "0")%>
 
 
 <% end %>
 </div>
-<br><%= link_to 'Back', grades_path %>
+<br><%= link_to (t 'back'), grades_path %>
 <!--TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL-->
 <% @score_count=@grades[0].scores.count%>
 <% @student_count = @grades.map(&:student_id).uniq.count %>

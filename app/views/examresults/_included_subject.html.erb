@@ -23,7 +23,7 @@
 		<% @students = Examresult.get_students(@programme_id,@examyear2,@exammonth2,@semester) %><%#=@programme_id%>
 		<%# @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)%>
 	<% end %>
-	Total records : <%= @resultlines = @examresult.resultlines.count %>
+	<%=t('examresult.total_records')%> : <%= @resultlines = @examresult.resultlines.count %>
 <% end %>
 
 <% unless @programme_id.blank? || @programme_id.nil? %>
@@ -43,9 +43,9 @@
 			<% if @students.count != 0 %>
 			<table width=100% border=1 cellpadding=0 cellspacing=0>
 				<tr>
-					<th rowspan=2 width=10%>Name</th>
-					<th rowspan=2>Matric<br> No</th>
-					<th rowspan=2>MyKad No</th>
+					<th rowspan=2 width=10%><%=t('student.name')%></th>
+					<th rowspan=2><%=t('student.matrixno')%></th>
+					<th rowspan=2><%=t('student.icno')%></th>
 					<% @subject_ids=[] %>
 					<% @subject_credits=[] %>
 					<% unless @subjects.nil? || @subjects.blank? %>
@@ -68,10 +68,10 @@
 				<tr>
 				<% unless @subjects.nil? || @subjects.blank? %>
 					<% 0.upto(@subjects.count-1) do |count|%>
-						<th>Grade</th><th>NG</th>
+						<th><%=t('grade.grade')%></th><th>NG</th>
 					<% end %>
 				<% else %>
-					&nbsp;&nbsp;Selected programme have no subject at the moment.<br><br>
+					&nbsp;&nbsp;<%=t('examresult.no_subject')%><br><br>
 				<% end %>
 				</tr>
 				<%# @grade_student_ids = Grade.students_to_array(Grade.all)%>		
@@ -165,21 +165,21 @@
 			</table>
 				
 			<% else %>
-				<br>No students have taken this programme
+				<br><%=t('examresult.no_students')%>
 			<% end %>
 			<!--end-listing of student if exist-->
 		
 
 		<% else %> <!--else for unless @exammonth2.blank? || @exammonth2.nil? || @examyear2.blank? || @examyear2.nil? -->
-			Please select examination start date and reselect semester or/and programme
+			<%=t('examresult.select_reselect')%>
 		<% end %>
 		
 		
 	<% else %><!--else for unless @semester.blank? || @semester.nil?-->
-		Please select semester
+		<%=t('examresult.select_semester')%>
 	<% end%>
 
 
 <% else %><!--else for unless @programme_id.blank? || @programme_id.nil?-->
-	Please select programme
+	<%=t('examresult.select_programme')%>
 <% end %>

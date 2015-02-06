@@ -40,9 +40,9 @@ tara dlm included_subject2 tau!
 			<% if @students.count != 0 %>
 			<table width=85% border=1>
 				<tr>
-					<th rowspan=2>Name</th>
-					<th rowspan=2>Matric No</th>
-					<th rowspan=2>MyKad No</th>
+					<th rowspan=2><%=t('student.name')%></th>
+					<th rowspan=2><%=t('student.matrixno')%></th>
+					<th rowspan=2><%=t('student.icno')%></th>
 					<% @subject_ids=[] %>
 					<% @subject_credits=[] %>
 					<% unless @subjects.nil? || @subjects.blank? %>
@@ -62,10 +62,10 @@ tara dlm included_subject2 tau!
 				<tr>
 				<% unless @subjects.nil? || @subjects.blank? %>
 					<% 0.upto(@subjects.count-1) do |count|%>
-						<th>Grade</th><th>NG</th>
+						<th><%=t('grade.grade')%></th><th>NG</th>
 					<% end %>
 				<% else %>
-					&nbsp;&nbsp;Selected programme have no subject at the moment.<br><br>
+					&nbsp;&nbsp;<%=t('examresult.no_subject')%>.<br><br>
 				<% end %>
 				</tr>
 				<% @grade_student_ids = Grade.students_to_array(Grade.all)%>		<!--DRY up codes! replacing @grade_student_ids = Examresult.grade_student_ids-->
@@ -118,21 +118,21 @@ tara dlm included_subject2 tau!
 			</table>
 				
 			<% else %>
-				<br>No students have taken this programme
+				<br><%=t('examresult.no_students')%>
 			<% end %>
 			<!--end-listing of student if exist-->
 		
 
 		<% else %> <!--else for unless @exammonth2.blank? || @exammonth2.nil? || @examyear2.blank? || @examyear2.nil? -->
-			Please select examination start date and reselect semester or/and programme
+			<%=t('examresult.select_reselect')%>
 		<% end %>
 		
 		
 	<% else %><!--else for unless @semester.blank? || @semester.nil?-->
-		Please select semester
+		<%=t('examresult.select_semester')%>
 	<% end%>
 
 
 <% else %><!--else for unless @programme_id.blank? || @programme_id.nil?-->
-	Please select programme
+	<%=t('examresult.select_programme')%>
 <% end %>

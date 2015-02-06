@@ -6,7 +6,7 @@
 <!--default first-display all six score types-->
 <%#=@formative_qty%>
 <% 0.upto(@formative_qty.to_i-1) do |count| %>
-	<% if count == 0 %>&nbsp;Score Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Weightage <% end %> <br>
+	<% if count == 0 %>&nbsp;<%=t('grade.score_type')%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <%=t('grade.description')%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <%=t('grade.weightage')%> <% end %> <br>
 	<%=select_tag "grades[0][scores_attributes][#{count}][type_id]", options_for_select(Score::E_TYPES,@ft[count])%>	
 	<%= text_field "grades[0][scores_attributes][#{count}]",:description, :size=>10 %>
 	<%=select_tag "grades[0][scores_attributes][#{count}][weightage]", options_for_select(Grade::WEIGHTAGE)%>	

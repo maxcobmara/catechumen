@@ -1,7 +1,7 @@
 <%#=render :partial => 'exams/position_dept' %>
 
 <div class="tform">
-	<H2>Feedback / Course Details</H2>
+	<H2><%=t('evaluate_course.info')%></H2>
   <table width=100% >
 			<!--
 			<tr>
@@ -11,56 +11,56 @@
 			</tr>-->
 			
 			<tr>
-				<td class="leftcol"><label for="course_id">Course Name</label></td>
+				<td class="leftcol"><label for="course_id"><%=t('evaluate_course.course_id')%></label></td>
 				<td>:</td>
 				<td>
 					<% if @evaluate_course.new_record? %>
-					    <%= f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank => "Select a programme", :selected =>@preselect_prog} %>
+					    <%= f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank => (t 'select'), :selected =>@preselect_prog} %>
 					<% else %>
-					    <%= f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank => "Select a programme", :selected =>@evaluate_course.course_id} %>
+					    <%= f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank => (t 'select'), :selected =>@evaluate_course.course_id} %>
 					<% end %>
 				</td>
 			</tr>
 				
 			<tr>
-				<td class="leftcol"><label for="subject_id">Subject Name</label></td>
+				<td class="leftcol"><label for="subject_id"><%=t('evaluate_course.subject_id')%></label></td>
 				<td>:</td>
-				<td><%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank => "Select a subject" %></td>
+				<td><%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank =>(t 'select') %></td>
 				
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="staff_id">Lecturer Name</label></td>
+				<td class="leftcol"><label for="staff_id"><%=t('evaluate_course.staff_id')%></label></td>
 				<td>:</td>
 					<%# @dept_position_staff_ids = Position.find_by_unit(@dept_unit).subtree.map(&:staff_id) %>
 					<%# @dept_staff = Staff.find(:all, :conditions => ['id IN(?)', @dept_position_staff_ids])%>
-				<td><%= f.collection_select :staff_id, @lecturer_list, :id, :name, :include_blank => "Select Staff" %>
+				<td><%= f.collection_select :staff_id, @lecturer_list, :id, :name, :include_blank => (t 'select') %>
 					<%#= f.collection_select :staff_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="staff_id">Invitation Lecturer</label></td>
+				<td class="leftcol"><label for="staff_id"><%=t('evaluate_course.invite_lec')%></label></td>
 				<td>:</td>
 				<td><%= f.text_field :invite_lec %></td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="comment">Comment</label></td>
+				<td class="leftcol"><label for="comment"><%=t('evaluate_course.comment')%></label></td>
 				<td>:</td>
 				<td ><%= f.text_area :comment, :size => "30x7" %></td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="evaluate_date">Evaluate Date</label><font color="red"> * </font></td>
+				<td class="leftcol"><label for="evaluate_date"><%=t('evaluate_course.evaldate')%></label><font color="red"> * </font></td>
 				<td>:</td>
 				<td ><%= f.date_select :evaluate_date, :order => [:day, :month, :year] %></td>
 			</tr>
 
 </table>
-<H2>Appraisal Details</H2>
+<H2><%=t('evaluate_course.details')%></H2>
 <table width=80% border=0 >
 		<tr>
-			<td colspan=4 ><font size=2><b> <i>Skala Penilaian : </i></b></font></td>	
+			<td colspan=4 ><font size=2><b> <i><%=t('evaluate_course.evaluation_scale')%> : </i></b></font></td>	
 		</tr>
 		<tr>
 			<td align="center"><font size=2><b> 0 &#x2194;  1 </b></font></td>
@@ -70,11 +70,11 @@
 			<td align="center"><font size=2><b> 8 &#x2194;  9 </b></font></td>	
 		</tr>
 		<tr>
-			<td align="center"><font size=2><b> Tidak Memuaskan </b></font></td>
-			<td align="center"><font size=2><b> Sederhana </b></font></td>	
-			<td align="center"><font size=2><b> Memuaskan </b></font></td>	
-			<td align="center"><font size=2><b> Baik </b></font></td>	
-			<td align="center"><font size=2><b> Sangat Baik </b></font></td>	
+			<td align="center"><font size=2><b> <%=t('evaluate_course.unsatisfactory')%> </b></font></td>
+			<td align="center"><font size=2><b> <%=t('evaluate_course.average')%> </b></font></td>	
+			<td align="center"><font size=2><b> <%=t('evaluate_course.satisfactory')%> </b></font></td>	
+			<td align="center"><font size=2><b> <%=t('evaluate_course.good')%> </b></font></td>	
+			<td align="center"><font size=2><b> <%=t('evaluate_course.excellent')%> </b></font></td>	
 		</tr>
 </table>
 <BR>
@@ -82,8 +82,8 @@
 			
 			<tr>
 				<td width="10" ><font size=2><b>BIL</b></font></td>
-				<td align="center" width=35%><font size=2 ><b>PERKARA</b></font></th>
-				<td width="10" colspan=9 align="center"><font size=2><b>SKOR</b></font></td>
+				<td align="center" width=35%><font size=2 ><b><%=t('evaluate_course.description')%></b></font></th>
+				<td width="10" colspan=9 align="center"><font size=2><b><%=(t 'evaluate_course.score').upcase %></b></font></td>
 			</tr>
 			<tr>
 				<td align="center" colspan=2></td>
@@ -100,7 +100,7 @@
 				
 			<tr>
 				<td>1.</td>
-				<td>Pencapaian objektif pelajaran</td>
+				<td><%=t('evaluate_course.objective_achieved')%></td>
 					<td align="center"><%= f.radio_button :ev_obj,'1' %></td>
 					<td align="center"><%= f.radio_button :ev_obj,'2' %></td>
 					<td align="center"><%= f.radio_button :ev_obj,'3' %></td>
@@ -114,7 +114,7 @@
 			
 			<tr>
 				<td>2.</td>
-				<td>Pengetahuan pensyarah tentang pelajaran yang diajar</td>
+				<td><%=t('evaluate_course.lecturer_knowledge')%></td>
 				<td align="center"><%= f.radio_button :ev_knowledge,'1' %></td>
 				<td align="center"><%= f.radio_button :ev_knowledge,'2' %></td>
 				<td align="center"><%= f.radio_button :ev_knowledge,'3' %></td>
@@ -128,7 +128,7 @@
 			
 			<tr>
 				<td>3.</td>
-				<td>Mutu pencapaian pensyarah</td>
+				<td><%=t('evaluate_course.lecturer_q_achievement')%></td>
 				<td align="center"><%= f.radio_button :ev_deliver,'1' %></td>
 				<td align="center"><%= f.radio_button :ev_deliver,'2' %></td>
 				<td align="center"><%= f.radio_button :ev_deliver,'3' %></td>
@@ -142,7 +142,7 @@
 			
 			<tr>
 				<td>4.</td>
-				<td>Isi kandungan pelajaran</td>
+				<td><%=t('evaluate_course.content')%></td>
 				<td align="center"><%= f.radio_button :ev_content,'1' %></td>
 				<td align="center"><%= f.radio_button :ev_content,'2' %></td>
 				<td align="center"><%= f.radio_button :ev_content,'3' %></td>
@@ -156,7 +156,7 @@
 			
 			<tr>
 				<td>5.</td>
-				<td>Mutu alat pandang dengar yang digunakan</td>
+				<td><%=t('evaluate_course.training_aids_quality')%></td>
 				<td align="center"><%= f.radio_button :ev_tool,'1' %></td>
 				<td align="center"><%= f.radio_button :ev_tool,'2' %></td>
 				<td align="center"><%= f.radio_button :ev_tool,'3' %></td>
@@ -170,7 +170,7 @@
 			
 			<tr>
 				<td>6.</td>
-				<td>Kesesuaian turutan topik dalam jadual</td>
+				<td><%=t('evaluate_course.suitability_topic_sequence')%></td>
 				<td align="center"><%= f.radio_button :ev_topic,'1' %></td>
 				<td align="center"><%= f.radio_button :ev_topic,'2' %></td>
 				<td align="center"><%= f.radio_button :ev_topic,'3' %></td>
@@ -184,7 +184,7 @@
 			
 			<tr>
 				<td>7.</td>
-				<td>Keberkesanan pengajaran dan pembelajaran (interaksi antara pensyarah dan pelajar).</td>
+				<td><%=t('evaluate_course.effectiveness_teaching_learning')%></td>
 				<td align="center"><%= f.radio_button :ev_work,'1' %></td>
 				<td align="center"><%= f.radio_button :ev_work,'2' %></td>
 				<td align="center"><%= f.radio_button :ev_work,'3' %></td>
@@ -198,7 +198,7 @@
 			
 			<tr>
 				<td>8.</td>
-				<td>Faedah bahan/nota yang diedarkan</td>
+				<td><%=t('evaluate_course.benefit_notes')%></td>
 				<td align="center"><%= f.radio_button :ev_note,'1' %></td>
 				<td align="center"><%= f.radio_button :ev_note,'2' %></td>
 				<td align="center"><%= f.radio_button :ev_note,'3' %></td>
