@@ -15,9 +15,9 @@
 		<td class="leftcol"><label for="login"><%= t 'login.attach_login' %>: </label></td>
 		<td>
 		<% if @login.isstaff? == true %>
-				<%= (f.collection_select :staff_id, Staff.find(:all, :order => :name, :conditions => ["icno in (?)", @login.icno]), :id, :mykad_with_staff_name, :include_blank => true, :default => 0, :prompt => 'Select Staff') %>	
+				<%= (f.collection_select :staff_id, Staff.find(:all, :order => :name, :conditions => ["icno in (?)", @login.icno]), :id, :mykad_with_staff_name, :include_blank => true, :default => 0, :prompt => (t 'select')) %>	
 		<% else %>  <!-- , :conditions => ["id not in (?)", @login.assigned_staff]-->
-				<%= 	(f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true, :default => 0, :prompt => 'Select Student') %>
+				<%= 	(f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true, :default => 0, :prompt => (t 'select')) %>
 		<% end %>
 		</td>
 	</tr>
@@ -45,7 +45,7 @@
 		<% Role.all.in_groups_of(5, false) do |row_roles| %>
 		<tr>
 			<% for role in row_roles %>
-			<td><%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role) %> <%= role.name %>
+			<td><%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role) %> <%#= role.name %><%=h t('login.'+role.authname) %>
 			</td>
 		  <% end %>
 		</tr>

@@ -8,14 +8,14 @@
 
 <div class="toolbar">
 	<table style="width:60%;"><tr>
-		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Item') + (t 'new'), new_travel_claim_mileage_rate_path %></p></td>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => (t 'mileagerates.new')) + (t 'mileagerates.new'), new_travel_claim_mileage_rate_path %></p></td>
 	</tr></table>
 </div>
-	
+<BR>
 <div class="indextable">
 	<table style="width:60%;">
   <tr>
-    <th>Kms</th>
+    <th>Km</th>
     <th style="text-align:right;">A</th>
     <th style="text-align:right;">B</th>
     <th style="text-align:right;">C</th>
@@ -26,19 +26,19 @@
 
 	<% @travel_claim_mileage_rates.each do |travel_claim_mileage_rate| %>
   <tr>
-    <td><label><%=h travel_claim_mileage_rate.km_low %> kms to <%=h travel_claim_mileage_rate.km_high %> kms</td>
+    <td><label><%=h travel_claim_mileage_rate.km_low %> km <%=t('to')%> <%=h travel_claim_mileage_rate.km_high %> km</td>
     <td style="text-align:right;"><%=h ringgols (travel_claim_mileage_rate.a_group) %></td>
     <td style="text-align:right;"><%=h ringgols (travel_claim_mileage_rate.b_group) %></td>
     <td style="text-align:right;"><%=h ringgols (travel_claim_mileage_rate.c_group) %></td>
     <td style="text-align:right;"><%=h ringgols (travel_claim_mileage_rate.d_group) %></td>
     <td style="text-align:right;"><%=h ringgols (travel_claim_mileage_rate.e_group) %></td>
     <!--<td width=10px><%= link_to image_tag("document.png",:border => 0), :action => 'show', :id => travel_claim_mileage_rate %></td>-->
-		<td width=10px><%= link_to image_tag("edit.png", 		:border => 0), :action => 'edit', :id => travel_claim_mileage_rate %></td>
-	  <td width=10px><%= link_to image_tag("delete.png", 	:border => 0, :title => 'Delete'), travel_claim_mileage_rate, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title =>(t 'edit')), :action => 'edit', :id => travel_claim_mileage_rate %></td>
+	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), travel_claim_mileage_rate, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 </div>
-<%= link_to (t 'mileagerates.new_mileagerate'), new_travel_claim_mileage_rate_path %>
+<%= link_to (t 'mileagerates.new'), new_travel_claim_mileage_rate_path %>

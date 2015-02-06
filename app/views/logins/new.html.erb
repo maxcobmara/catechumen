@@ -1,21 +1,21 @@
-<h1>Sign up as a new user</h1>
+<h1><%=t('login.new')%></h1>
 <% @login.password = @login.password_confirmation = nil %>
 
 <%= error_messages_for :login %>
 <% form_for :login, :url => logins_path do |f| -%>
-<p><%= f.label :login %><br/>
+<p><%= f.label (t 'login.login') %><br/>
 <%= f.text_field :login %></p>
 
-<p><%= f.label :email %><br/>
+<p><%= f.label (t 'login.email') %><br/>
 <%= f.text_field :email %></p>
 
-<p><%= f.label :icno, 'MyKad No' %><br/>
+<p><%= f.label (t 'login.icno') %><br/>
 <%= f.text_field :icno, :placeholder => 'xxxxxxxxxxxx', :size => '12' %></p>
 
-<p><%= f.label :password %><br/>
+<p><%= f.label (t 'login.password') %><br/>
 <%= f.password_field :password %></p>
 
-<p><%= f.label :password_confirmation, 'Confirm Password' %><br/>
+<p><%= f.label (t 'login.cpassword') %><br/>
 <%= f.password_field :password_confirmation %></p>
 
 <p><%= f.radio_button :isstaff,'true' %><%= t 'menu.staff' %> &nbsp<%= f.radio_button :isstaff,'false' %><%= t 'menu.students' %></p>
