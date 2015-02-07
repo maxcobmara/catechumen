@@ -40,14 +40,14 @@
 	<br>
 	<%= link_to (t 'back'), :controller=>'staffsearch2s', :action => 'new', :searchstafftype => 1 %>
 	<br>
-	<%= link_to (t 'report.download'), 	{:controller => 'staffsearch2s', :action => 'show', :ppp =>'2'} %>
+	<%= link_to (t 'report.download'), {:controller => 'staffsearch2s', :action => 'show', :ppp =>'2'} %>
 	<fieldset width=10px >
 
 <div id="title" width=21cm>	
 <H2>LAMPIRAN A</H2> 
 <H3>MAKLUMAT PERJAWATAN DI KOLEJ-KOLEJ LATIHAN</H3>
 <H3>KEMENTERIAN KESIHATAN MALAYSIA</H3>
-<H3>SEHINGGA <%= Date.today.strftime('%d-%m-%Y') %></H3>
+<H3>SEHINGGA <%#= Date.today.strftime('%d-%m-%Y') %><%=l((Position.find(:all, :order =>"updated_at DESC", :select=>:updated_at).map(&:updated_at).first), :format =>'%d-%m-%Y')%></H3>
 <BR><p>KOLEJ: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU </p><BR>
 </div>
 <div id="tprintreport">
@@ -359,7 +359,7 @@
 	
 	</table>
 <br>
-<font size=-2><%= t 'report.final_date' %>: <%=Date.today.strftime('%d-%b-%Y')%></font>
+<font size=-2><%= t 'report.final_date' %>: <%#=Date.today.strftime('%d-%b-%Y')%><%=l((Position.find(:all, :order =>"updated_at DESC", :select=>:updated_at).map(&:updated_at).first), :format =>'%d-%b-%Y')%></font>
 
 </div>
 

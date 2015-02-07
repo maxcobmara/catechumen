@@ -3,193 +3,200 @@ class StudentAttendancesController < ApplicationController
   # GET /student_attendances
   # GET /student_attendances.xml
   def index
-  
-    submit_val = params[:attendance_search]
-    classid = params[:classid]
-    @intake_student = params[:intake_student] 
-    @programme = params[:programme]
+    @position_exist = current_login.staff.position
+    if @position_exist  
+      submit_val = params[:attendance_search]
+      classid = params[:classid]
+      @intake_student = params[:intake_student] 
+      @programme = params[:programme]
 
-    ######==============display classes by current logged-in user only - START
-    @programme_list_ids = Programme.roots.map(&:id)    
-    @lecturer_programme = current_login.staff.position.unit      #include programme, common subject, 
-    unless @lecturer_programme.nil?
-      @programme2 = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
-    end
-    
-    #admin
-    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
-    @is_admin=true if current_roles.include?("Administration")
-    
-    #common subject lecturers
-    common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
-    @common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
-    @is_common_lecturer=true if @common_subject_lecturers_ids.include?(Login.current_login.staff_id)
-    
-    #pengkhususan lecturers
-    pengkhususan_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit=? or unit=? or unit=?', "Diploma Lanjutan","Pos Basik", "Pengkhususan"]).map(&:id)
-    pengkhususan_lecturers = Staff.find(:all, :conditions=>['id IN(?)', pengkhususan_lecturers_ids],:order=>'name ASC')
-    pengkhususan_names = Programme.find(:all, :conditions=> ['course_type=? or course_type=? or course_type=?', "Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).map(&:name)
-    if pengkhususan_lecturers_ids.include?(Login.current_login.staff_id)
-      @is_pengkhususan_lecturer=true 
-      pengkhususan_names.each do |nm|  
-        lecturer_tasks_main=Login.current_login.staff.position.tasks_main
-        @pengkhususan_name=nm if lecturer_tasks_main.include?(nm)
+      ######==============display classes by current logged-in user only - START
+      @programme_list_ids = Programme.roots.map(&:id)    
+      @lecturer_programme = current_login.staff.position.unit      #include programme, common subject, 
+      unless @lecturer_programme.nil?
+        @programme2 = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end
-    end
     
-    #retrieve student INTAKES of current logged-in lecturer (not applicable to system admin)
-    classes_own_ids = Login.current_login.classes_taughtby     #ids of weeklytimetable_detail   #Cathy Suhaila - [471, 472, 473, 440, 449]
-    w_timetable_match = WeeklytimetableDetail.find(:all, :conditions => ['id IN(?)', classes_own_ids]).map(&:weeklytimetable_id).uniq
-    ## - w_timetable_match = WeeklytimetableDetail.find(:all, :conditions =>['lecturer_id=?', Login.current_login.staff_id]).map(&:weeklytimetable_id).uniq
-    relevant_intakes_ids = Weeklytimetable.find(:all, :conditions => ['id IN(?)', w_timetable_match]).map(&:intake_id)
-    relevant_intakes = Intake.find(:all, :conditions => ['id IN(?)', relevant_intakes_ids]).map(&:monthyear_intake) 
-    student_intakes = []
-    relevant_intakes.each do |ri|
-      student_intakes << ri.strftime("%Y-%m-%d")
-    end
+      #admin
+      current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+      @is_admin=true if current_roles.include?("Administration")
     
-    #set values according to logged-in user
-    unless @programme2.nil?
-      @preselect_prog= @programme2.id   
-      @intake_list2 = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes], :select=> "DISTINCT intake")
-      @student_list = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes])
-      @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) + Programme.find(@preselect_prog).descendants.at_depth(4).map(&:id)
-    else 
-      if @is_pengkhususan_lecturer
-        @preselect_prog=Programme.find_by_name(@pengkhususan_name).id
+      #common subject lecturers
+      common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
+      @common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
+      @is_common_lecturer=true if @common_subject_lecturers_ids.include?(Login.current_login.staff_id)
+    
+      #pengkhususan lecturers
+      pengkhususan_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit=? or unit=? or unit=?', "Diploma Lanjutan","Pos Basik", "Pengkhususan"]).map(&:id)
+      pengkhususan_lecturers = Staff.find(:all, :conditions=>['id IN(?)', pengkhususan_lecturers_ids],:order=>'name ASC')
+      pengkhususan_names = Programme.find(:all, :conditions=> ['course_type=? or course_type=? or course_type=?', "Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).map(&:name)
+      if pengkhususan_lecturers_ids.include?(Login.current_login.staff_id)
+        @is_pengkhususan_lecturer=true 
+        pengkhususan_names.each do |nm|  
+          lecturer_tasks_main=Login.current_login.staff.position.tasks_main
+          @pengkhususan_name=nm if lecturer_tasks_main.include?(nm)
+        end
+      end
+    
+      #retrieve student INTAKES of current logged-in lecturer (not applicable to system admin)
+      classes_own_ids = Login.current_login.classes_taughtby     #ids of weeklytimetable_detail   #Cathy Suhaila - [471, 472, 473, 440, 449]
+      w_timetable_match = WeeklytimetableDetail.find(:all, :conditions => ['id IN(?)', classes_own_ids]).map(&:weeklytimetable_id).uniq
+      ## - w_timetable_match = WeeklytimetableDetail.find(:all, :conditions =>['lecturer_id=?', Login.current_login.staff_id]).map(&:weeklytimetable_id).uniq
+      relevant_intakes_ids = Weeklytimetable.find(:all, :conditions => ['id IN(?)', w_timetable_match]).map(&:intake_id)
+      relevant_intakes = Intake.find(:all, :conditions => ['id IN(?)', relevant_intakes_ids]).map(&:monthyear_intake) 
+      student_intakes = []
+      relevant_intakes.each do |ri|
+        student_intakes << ri.strftime("%Y-%m-%d")
+      end
+    
+      #set values according to logged-in user
+      unless @programme2.nil?
+        @preselect_prog= @programme2.id   
         @intake_list2 = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes], :select=> "DISTINCT intake")
         @student_list = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes])
         @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) + Programme.find(@preselect_prog).descendants.at_depth(4).map(&:id)
-      end
-      
-      #arr for common lecturer & admin
-      if @is_common_lecturer || @is_admin
-        @intake_course=[]
-        @topics_ids_this_prog=[] #must inside here or new array declared with new values for programme lecturers & pengkhususan lecturer
-      end
-      
-      if @is_common_lecturer
-        @details2 = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?', Login.current_login.staff_id], :select =>"DISTINCT weeklytimetable_id, topic")
-        @details2.each do |d|
-          intake_id = Weeklytimetable.find(d.weeklytimetable_id).intake_id
-          ii=Intake.find(intake_id).monthyear_intake
-          p_id= Programme.find(d.topic).root_id
-          p_name=Programme.find(d.topic).root.programme_list
-          @intake_course << ["#{ii.to_date.strftime('%b %Y')} | #{p_name}","#{ii}&#{p_id}"]
-          @topics_ids_this_prog << d.topic      #all topics & subtopics (common subjects) for all programmes
+      else 
+        if @is_pengkhususan_lecturer
+          @preselect_prog=Programme.find_by_name(@pengkhususan_name).id
+          @intake_list2 = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes], :select=> "DISTINCT intake")
+          @student_list = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes])
+          @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) + Programme.find(@preselect_prog).descendants.at_depth(4).map(&:id)
         end
-      end
-      if @is_admin
-        programme_ids_admin=[]
-        @details2 = WeeklytimetableDetail.find(:all, :select =>"DISTINCT weeklytimetable_id, topic")
-        @details2.each do |d|
-          intake_id = Weeklytimetable.find(d.weeklytimetable_id).intake_id
-          ii=Intake.find(intake_id).monthyear_intake
-          p_id= Programme.find(d.topic).root_id
-          p_name=Programme.find(d.topic).root.programme_list
-          @intake_course << ["#{ii.to_date.strftime('%b %Y')} | #{p_name}","#{ii}&#{p_id}"]
-          @topics_ids_this_prog << d.topic    #all topics & subtopics (programme subjects+common subjects) for all programmes
-          programme_ids_admin << p_id
+      
+        #arr for common lecturer & admin
+        if @is_common_lecturer || @is_admin
+          @intake_course=[]
+          @topics_ids_this_prog=[] #must inside here or new array declared with new values for programme lecturers & pengkhususan lecturer
         end
-        student_intakes_admin = Intake.find(Weeklytimetable.find(WeeklytimetableDetail.all.map(&:weeklytimetable_id)).map(&:intake_id)) .map(&:monthyear_intake)
-        @intake_list2 = Student.find(:all, :conditions => ['course_id IN(?) and intake IN(?)', programme_ids_admin, student_intakes_admin], :select=> "DISTINCT intake, course_id",:order=>"course_id,intake") 
-        @student_list= Student.find(:all, :conditions => ['course_id IN(?) and intake IN(?)',programme_ids_admin, student_intakes_admin],:order=>"course_id,intake") 
-      end
-    end
-    @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and lecturer_id=?',@topics_ids_this_prog, Login.current_login.staff_id]).sort_by{|x|x.get_date_day_of_schedule}
-    ######==============display classes by current logged-in user only - END
-    
-    #assign student attendances values accordingly
-    if submit_val == I18n.t("student_attendance.search_class")
-        @student_attendances = StudentAttendance.search2(classid)
-    else
-      unless @intake_student.nil?
-        @student_attendances = StudentAttendance.search(@intake_student,@preselect_prog)
-      else
+      
+        if @is_common_lecturer
+          @details2 = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?', Login.current_login.staff_id], :select =>"DISTINCT weeklytimetable_id, topic")
+          @details2.each do |d|
+            intake_id = Weeklytimetable.find(d.weeklytimetable_id).intake_id
+            ii=Intake.find(intake_id).monthyear_intake
+            p_id= Programme.find(d.topic).root_id
+            p_name=Programme.find(d.topic).root.programme_list
+            @intake_course << ["#{ii.to_date.strftime('%b %Y')} | #{p_name}","#{ii}&#{p_id}"]
+            @topics_ids_this_prog << d.topic      #all topics & subtopics (common subjects) for all programmes
+          end
+        end
         if @is_admin
-          @student_attendances = StudentAttendance.all
-        else
-          @student_attendances = StudentAttendance.find(:all, :conditions=>['weeklytimetable_details_id IN(?)',@schedule_list])
+          programme_ids_admin=[]
+          @details2 = WeeklytimetableDetail.find(:all, :select =>"DISTINCT weeklytimetable_id, topic")
+          @details2.each do |d|
+            intake_id = Weeklytimetable.find(d.weeklytimetable_id).intake_id
+            ii=Intake.find(intake_id).monthyear_intake
+            p_id= Programme.find(d.topic).root_id
+            p_name=Programme.find(d.topic).root.programme_list
+            @intake_course << ["#{ii.to_date.strftime('%b %Y')} | #{p_name}","#{ii}&#{p_id}"]
+            @topics_ids_this_prog << d.topic    #all topics & subtopics (programme subjects+common subjects) for all programmes
+            programme_ids_admin << p_id
+          end
+          student_intakes_admin = Intake.find(Weeklytimetable.find(WeeklytimetableDetail.all.map(&:weeklytimetable_id)).map(&:intake_id)) .map(&:monthyear_intake)
+          @intake_list2 = Student.find(:all, :conditions => ['course_id IN(?) and intake IN(?)', programme_ids_admin, student_intakes_admin], :select=> "DISTINCT intake, course_id",:order=>"course_id,intake") 
+          @student_list= Student.find(:all, :conditions => ['course_id IN(?) and intake IN(?)',programme_ids_admin, student_intakes_admin],:order=>"course_id,intake") 
         end
       end
-    end
-
-    #group student attendance for listing
-    @student_attendances_class = @student_attendances.group_by{|x|x.weeklytimetable_details_id}
-    @student_attendances_intake = @student_attendances.group_by{|x|x.student.intake}
+      @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and lecturer_id=?',@topics_ids_this_prog, Login.current_login.staff_id]).sort_by{|x|x.get_date_day_of_schedule}
+      ######==============display classes by current logged-in user only - END
     
-    #=====retrieve existing student attendance related values for (3) multiple edit by intake(select) - START =====
-    #(common subject lecturer, admin & pengkhususan lecturer - @exist_intake_course_attendances)
-    
-    @exist_attendances = @student_attendances.map(&:weeklytimetable_details_id).uniq 
-    @exist_timetable_attendances = WeeklytimetableDetail.find(:all, :conditions=>['id IN (?)', @exist_attendances]).sort_by{|u|u.day_time_slot}
-
-    exist_student = @student_attendances.map(&:student_id)    #must check student intakes as well, or for admin, only programme is checked
-    intake_fr_student = Student.find(exist_student).map(&:intake)
-    
-    unless @programme2.nil?
-      @details2b = WeeklytimetableDetail.find(:all, :conditions=>['id IN(?)', @exist_attendances], :select =>"DISTINCT weeklytimetable_id, topic")
-    else
-      if @is_common_lecturer
-        @details2b = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? and id IN(?)', Login.current_login.staff_id, @exist_attendances], :select =>"DISTINCT weeklytimetable_id, topic")
+      #assign student attendances values accordingly
+      if submit_val == I18n.t("student_attendance.search_class")
+        @student_attendances = StudentAttendance.search2(classid)
+      else
+        unless @intake_student.nil?
+          @student_attendances = StudentAttendance.search(@intake_student,@preselect_prog)
+        else
+          if @is_admin
+            @student_attendances = StudentAttendance.all
+          else
+            @student_attendances = StudentAttendance.find(:all, :conditions=>['weeklytimetable_details_id IN(?)',@schedule_list])
+          end
+        end
       end
-      if @is_admin 
+
+      #group student attendance for listing
+      @student_attendances_class = @student_attendances.group_by{|x|x.weeklytimetable_details_id}
+      @student_attendances_intake = @student_attendances.group_by{|x|x.student.intake}
+    
+      #=====retrieve existing student attendance related values for (3) multiple edit by intake(select) - START =====
+      #(common subject lecturer, admin & pengkhususan lecturer - @exist_intake_course_attendances)
+    
+      @exist_attendances = @student_attendances.map(&:weeklytimetable_details_id).uniq 
+      @exist_timetable_attendances = WeeklytimetableDetail.find(:all, :conditions=>['id IN (?)', @exist_attendances]).sort_by{|u|u.day_time_slot}
+
+      exist_student = @student_attendances.map(&:student_id)    #must check student intakes as well, or for admin, only programme is checked
+      intake_fr_student = Student.find(exist_student).map(&:intake)
+    
+      unless @programme2.nil?
         @details2b = WeeklytimetableDetail.find(:all, :conditions=>['id IN(?)', @exist_attendances], :select =>"DISTINCT weeklytimetable_id, topic")
+      else
+        if @is_common_lecturer
+          @details2b = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? and id IN(?)', Login.current_login.staff_id, @exist_attendances], :select =>"DISTINCT weeklytimetable_id, topic")
+        end
+        if @is_admin 
+          @details2b = WeeklytimetableDetail.find(:all, :conditions=>['id IN(?)', @exist_attendances], :select =>"DISTINCT weeklytimetable_id, topic")
+        end
+        if @is_pengkhususan_lecturer
+          @details2b = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? and id IN(?)', Login.current_login.staff_id, @exist_attendances], :select =>"DISTINCT weeklytimetable_id, topic")
+        end
       end
-      if @is_pengkhususan_lecturer
-        @details2b = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? and id IN(?)', Login.current_login.staff_id, @exist_attendances], :select =>"DISTINCT weeklytimetable_id, topic")
-      end
-    end
     
-    @exist_intake_course_attendances=[]
-    course_ids=[]
-    intakess=[]
-    @details2b.each do |d|
-      intake_id = Weeklytimetable.find(d.weeklytimetable_id).intake_id
-      ii=Intake.find(intake_id).monthyear_intake
-      if intake_fr_student.include?(ii)
-        p_id= Programme.find(d.topic).root_id
-        p_name=Programme.find(d.topic).root.programme_list
-        course_ids << p_id
-        intakess << ii
-        @exist_intake_course_attendances << ["#{ii.to_date.strftime('%b %Y')} | #{p_name}","#{ii}&#{p_id}"]
+      @exist_intake_course_attendances=[]
+      course_ids=[]
+      intakess=[]
+      @details2b.each do |d|
+        intake_id = Weeklytimetable.find(d.weeklytimetable_id).intake_id
+        ii=Intake.find(intake_id).monthyear_intake
+        if intake_fr_student.include?(ii)
+          p_id= Programme.find(d.topic).root_id
+          p_name=Programme.find(d.topic).root.programme_list
+          course_ids << p_id
+          intakess << ii
+          @exist_intake_course_attendances << ["#{ii.to_date.strftime('%b %Y')} | #{p_name}","#{ii}&#{p_id}"]
+        end
       end
-    end
-    @exist_intake = Student.find(:all, :conditions => ['course_id IN(?) and intake IN(?)', course_ids, intakess], :select=> "DISTINCT intake")
-    #=====retrieve existing student attendance related values for (3) multiple edit by intake(select) - END =====
+      @exist_intake = Student.find(:all, :conditions => ['course_id IN(?) and intake IN(?)', course_ids, intakess], :select=> "DISTINCT intake")
+      #=====retrieve existing student attendance related values for (3) multiple edit by intake(select) - END =====
     
-    #===(3) multiple edit by intake  (programme lecturer - @intatake2)  & (4) SEARCH by intake (for all logged-in user)===START
-    @intatake = [] 
-    @student_attendances_intake.each do |intake, student_attendances|
-      @intatake << intake 
-    end 
-    @students = @student_attendances.map(&:student_id).uniq 
-    @courses = Student.find(@students).map(&:course_id).uniq 
-    unless @programme2.nil?                       
-      @intatake2 = Student.find(:all, :conditions => ['course_id=? AND intake IN (?)',@preselect_prog, @intatake], :select=> "DISTINCT intake") 
-    else
-      #differentiate SEARCH by intake (item) accordingly
-      #for Common Subject's lecturer, whenever same intake exist for multiple programmes, just display Intake once
-      if @is_common_lecturer 
-        @intatake2 = Student.find(:all, :conditions => ['intake IN(?)', @intatake], :select => "DISTINCT intake")
-      else #admin & pengkhususan lecturers
-        @intatake2 = Student.find(:all, :conditions => ['course_id IN (?) AND intake IN (?)',@courses, @intatake], :select=> "DISTINCT intake,course_id") 
-      end
-    end 
-    #===(3) multiple edit by intake  (programme lecturer - @intatake2)  & (4) SEARCH by intake (for all logged-in user)===END
+      #===(3) multiple edit by intake  (programme lecturer - @intatake2)  & (4) SEARCH by intake (for all logged-in user)===START
+      @intatake = [] 
+      @student_attendances_intake.each do |intake, student_attendances|
+        @intatake << intake 
+      end 
+      @students = @student_attendances.map(&:student_id).uniq 
+      @courses = Student.find(@students).map(&:course_id).uniq 
+      unless @programme2.nil?                       
+        @intatake2 = Student.find(:all, :conditions => ['course_id=? AND intake IN (?)',@preselect_prog, @intatake], :select=> "DISTINCT intake") 
+      else
+        #differentiate SEARCH by intake (item) accordingly
+        #for Common Subject's lecturer, whenever same intake exist for multiple programmes, just display Intake once
+        if @is_common_lecturer 
+          @intatake2 = Student.find(:all, :conditions => ['intake IN(?)', @intatake], :select => "DISTINCT intake")
+        else #admin & pengkhususan lecturers
+          @intatake2 = Student.find(:all, :conditions => ['course_id IN (?) AND intake IN (?)',@courses, @intatake], :select=> "DISTINCT intake,course_id") 
+        end
+      end 
+      #===(3) multiple edit by intake  (programme lecturer - @intatake2)  & (4) SEARCH by intake (for all logged-in user)===END
 
-    #for (2) multiple new by class
-    @schedule_list2 = @schedule_list - @exist_timetable_attendances
+      #for (2) multiple new by class
+      @schedule_list2 = @schedule_list - @exist_timetable_attendances
     
-    #for (1) multiple new by intake+programme for common lecturer & admin
-    @intake_course2 = @intake_course - @exist_intake_course_attendances if @programme2.nil? && !@is_pengkhususan_lecturer 
+      #for (1) multiple new by intake+programme for common lecturer & admin
+      @intake_course2 = @intake_course - @exist_intake_course_attendances if @programme2.nil? && !@is_pengkhususan_lecturer 
     
-    #for (1) multiple new by intake for programme lecturers(diploma, pengkhususan) 
-    @intake_list2b = @intake_list2 - @exist_intake if !@is_common_lecturer 
+      #for (1) multiple new by intake for programme lecturers(diploma, pengkhususan) 
+      @intake_list2b = @intake_list2 - @exist_intake if !@is_common_lecturer 
     
+    end  
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @student_attendances }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @student_attendances }
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('student_attendance.title')}
+        format.xml  { render :xml => @student_attendance.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
