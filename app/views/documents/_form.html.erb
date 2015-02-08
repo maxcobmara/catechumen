@@ -43,7 +43,13 @@
 	
 		<tr>
 			<td class="leftcol"><label for="stafffiled_id"><%= t 'document.stafffiled_id' %>:</label></td>
-			<td><%= f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, { :selected => 61 }   %>
+			<td><% if @document.new_record? %>
+					<% filedby = 164 %>
+				<% else %>
+					<% filedby = @document.stafffiled_id %>
+				<% end %>
+				<%= f.collection_select :stafffiled_id, Staff.find(:all, :conditions => ['id IN(?)', @document.staffiled_list], :order => :name), :id, :name, { :selected => filedby }   %>
+				<%#= f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, { :selected => 61 }   %>
 				<%= f.hidden_field :prepared_by, :value=>@current_login.staff_id %>
 			</td>
 		</tr>

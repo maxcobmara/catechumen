@@ -280,12 +280,16 @@
 
 	<!--Notification for Document Registry-->
 
-	<% tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =?', Login.current_login.staff_id], :order => "created_at DESC").count %>
+	<%# tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =?', Login.current_login.staff_id," "], :order => "created_at DESC").count %>
+	<%# tome = Document.find(:all, :joins => :circulations, :conditions => ['circulations.staff_id =? and circulations.action_taken=?', Login.current_login.staff_id," "], :order => "created_at DESC").count %>
+	
+	<% tomedoc = Document.find(:all, :joins => :staffs, :conditions => ['staffs.id=?',Login.current_login.staff_id]).map(&:id)%>
+	<% tome = Circulation.find(:all, :conditions=>['document_id IN(?) and staff_id=? and (action_taken=? or action_taken is null)', tomedoc, Login.current_login.staff_id,""]).count%>
 	<% if tome > 0 %>
-		<%= link_to "#{tome} "+(t 'notifications.document_require_attention'), {:controller => "documents", :action => "index"} %>
+		<%= link_to "#{tome} "+(t 'notifications.document_require_attention'), {:controller => "documents", :action => "index"} %><br>
 	<% else %>
 	<% end %>
-	<br>
+<!-- 	<br> -->
 
 	<%# @documents=Document.all%>
 	<%# @a_creator=[]%>
@@ -300,9 +304,9 @@
 			<%# documents = Document.count(:all, :conditions => ["closed !=?",true]) %>
 			<% @admin = Login.current_login.roles.map(&:id).include?(2) %>
 			<% documents = Document.count(:all, :conditions => ["closed!=? AND (stafffiled_id=? or prepared_by=? )",true, Login.current_login.staff_id,Login.current_login.staff_id]) %>
-			<% if @admin==true%>
-					<% documents = Document.count(:all, :conditions => ["closed!=?",true]) %>
-			<% end %>
+			<%# if @admin==true%><!---to rev:ogma-->
+					<%# documents = Document.count(:all, :conditions => ["closed!=?",true]) %>
+			<%# end %>
 			<% if documents == 0 %>
 			<% else %>
 				<%= link_to "#{documents} "+(t 'notifications.document_require_attention'), documents_path %><br/>

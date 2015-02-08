@@ -103,7 +103,7 @@ tome = <%=@tome.count%>-->
 						<td width=10px>
 							 <% document.circulations.each_with_index do |circulation,ind|%>
 								<% if circulation.staff_id == Login.current_login.staff_id && circulation.action_closed!=true %>
-									<%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => document %>
+									<%= link_to image_tag("approval.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => document ,  :acc =>"1"%>
 								<% end %>
 							<% end %>
 						</td>
@@ -144,12 +144,23 @@ tome = <%=@tome.count%>-->
 					<td><%=h document.closed? ? image_tag("tick.png") : "" %></td>
 					<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => document %></td>
 					<td width=10px>
-						<% if (document.closed != true && document.stafffilled.try(:id) == current_login.staff_id) || (document.closed != true && document.preparedby.try(:id) == current_login.staff_id) %>
+						<!--if document administrator (note: E-FIlling), to EDIT document & circulation details-->
+						<% if (document.closed != true && (document.stafffiled_id == current_login.staff_id || document.prepared_by == current_login.staff_id)) %>
 							<%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => document %>
+						<% end %>
+						<!--if administrator (System administrator), to log ACTION taken-->
+						<% document.circulations.each_with_index do |circulation,ind|%>
+							<% if (circulation.staff_id == current_login.staff_id && circulation.action_closed!=true) %>
+								<% if !(document.stafffiled_id == current_login.staff_id || document.prepared_by == current_login.staff_id)%>
+									<%= link_to image_tag("approval.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => document, :acc =>"1" %>
+								<% elsif (document.stafffiled_id == current_login.staff_id || document.prepared_by == current_login.staff_id)%>
+									<%= link_to image_tag("approval.png", :border => 0, :title => (t 'action')), :action => 'edit', :id => document, :acc =>"1" %>
+								<% end %>
+							<% end %>
 						<% end %>
 					</td>
 					<td width=10px>
-						<% if document.stafffilled.try(:id) == current_login.staff_id || document.preparedby.try(:id) == current_login.staff_id %>
+						<% if (document.stafffiled_id == current_login.staff_id || document.prepared_by == current_login.staff_id)%>
 				   			<%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), document, :confirm => (t 'are_you_sure'), :method => :delete %>
 						<% end %>
 					</td>

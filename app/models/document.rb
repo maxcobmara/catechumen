@@ -10,7 +10,7 @@ validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_i
 #24Jan2015
 has_many :circulations
 has_many :staffs, :through => :circulations
-accepts_nested_attributes_for :circulations
+accepts_nested_attributes_for :circulations,  :update_only => true
 
 
 belongs_to :stafffilled,  :class_name => 'Staff', :foreign_key => 'stafffiled_id'
@@ -126,6 +126,10 @@ CATEGORY = [
          [ I18n.t('document.normal'),"2" ],
          [ I18n.t('document.information'), "3" ]
   ]
+ 
+  def staffiled_list
+    (Login.find(:all, :joins => :roles, :conditions=>['authname=?',"e_filing"]).map(&:staff_id)+Array(stafffiled_id)).compact.uniq
+  end
   
   def stafffiled_details 
     stafffilled.mykad_with_staff_name
