@@ -8,7 +8,7 @@ class Assetcategory < ActiveRecord::Base
   
   ASSETTYPE = [
              #  Displayed       stored in db
-             ["Harta",1],
-             ["Inventory",2]
+             [I18n.t('assetcategories.fixed'),1],
+             [I18n.t('assetcategories.inventory'),2]
   ]
 end

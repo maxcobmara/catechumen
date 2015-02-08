@@ -1,5 +1,5 @@
 <!--<h3><%#= t 'librarytransaction.returnrec' %></h3>-->
-<h3>Library Transaction Details</h3> <%#=@librarytransactions.count%><%#=@aaa%>
+<h3><%=t('librarytransaction.transaction_details')%></h3> <%#=@librarytransactions.count%><%#=@aaa%>
 
 <!--START-this part only works when 'Update All records' was clicked (AFTER multiple_update -> render :action => 'multiple_edit') -->
 <% if @librarytransactions %>
@@ -15,8 +15,8 @@
 
 	<div id="new_form"><%#=@librarytransactions[0]%><%#=@librarytransaction.staff_id%><%#=@librarytransaction.student_id%><%#=@librarytransaction.ru_staff%>
 		<%#if @book.isbn.nil? == true %>
-		<div align=right><%= link_to image_tag("book_go.png", :border => 0, :title => 'New Library Transaction') + " Loan Page", new_librarytransaction_path %> </div>
-			<H2>Library Transaction - Return Page</H2>
+		<div align=right><%= link_to image_tag("book_go.png", :border => 0, :title => (t 'librarytransaction.loanpage_title')) + " "+(t 'librarytransaction.loanpage_title'), new_librarytransaction_path %> </div>
+			<H2><%=t('librarytransaction.returnpage_title')%></H2>
 				<table width=100%>
 					<tr>
 						<td class="leftcol"><%= t 'librarytransaction.loanedtotype' %></td>
@@ -37,7 +37,7 @@
 													  					  :method => :get,
 																		  :param_name => 'search' } %>
 										
-										<%= submit_tag "Check Loan Details" %>
+										<%= submit_tag (t 'librarytransaction.check_loan_details') %>
 									</span>
 									<span id="bstudent" style="display:none;">
 										<%#= select_tag(:student_search, "<option>Select Student</option>"+options_from_collection_for_select(Student.find(:all, :order => :matrixno), :id, :matrix_name)) %>
@@ -45,7 +45,7 @@
 																		{ :url => formatted_students_path(:js), 
 													  					  :method => :get,
 																		  :param_name => 'search3' } %>
-										<%= submit_tag "Check Loan Details" %>
+										<%= submit_tag (t 'librarytransaction.check_loan_details') %>
 									</span>	
 								<!--END-AFTER UPDATE-multiple edit screen:loan screen-->
 									
@@ -62,7 +62,8 @@
 													  					  :method => :get,
 																		  :param_name => 'search' } %>
 
-										<%= submit_tag "Check Loan Details" %>
+										<%= submit_tag (t 'librarytransaction.check_loan_details') %>
+										<BR><font color="grey"><%=t('librarytransaction.search_select_staff')%></font>
 									</span>
 									<% if @current_student %>
 									
@@ -76,7 +77,7 @@
 																			{ :url => formatted_students_path(:js), 
 														  					  :method => :get,
 																			  :param_name => 'search3' } %>
-											<%= submit_tag "Check Loan Details" %>
+											<%= submit_tag (t 'librarytransaction.check_loan_details') %>
 										</span>
 									<!--END-AFTER UPDATE:STUDENT-->
 									
@@ -90,7 +91,8 @@
 																			{ :url => formatted_students_path(:js), 
 														  					  :method => :get,
 																			  :param_name => 'search3' } %>
-											<%= submit_tag "Check Loan Details" %>
+											<%= submit_tag (t 'librarytransaction.check_loan_details') %>
+											<BR><font color="grey"><%=t('librarytransaction.search_select_student')%></font>
 										</span>
 
 									<% end %>
@@ -120,7 +122,7 @@
 			<td id="extend_return" style="border:0px solid blue; width:20%;"></td>
 		</tr>
 	</table>
-	<br><p><%= submit_tag 'Update All Records',:name => :new_submit %><!--baru tambah--></p>
+	<br><p><%= submit_tag t('librarytransaction.update_all_records'),:name => :new_submit %><!--baru tambah--></p>
 	<% end %><!--baru tambah-->
 	
 </div>

@@ -1,23 +1,20 @@
 <div class="tform">
-	<fieldset>
-		<legend><%= t 'banks.bankdetails' %></legend>
-			<table width=100%>
-					<tr>
-						<td class="leftcol"><label for="short_name"><%= t 'banks.sname' %> :</label></td>
-						<td><%=h @bank.short_name %></td>
-					</tr>
+	<H2><%= t 'bank.details' %></h2>
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><label for="short_name"><%= t 'bank.sname' %> :</label></td>
+			<td><%=h @bank.short_name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="long_name"><%= t 'bank.lname' %> :</label></td>
+			<td><%=h @bank.long_name %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="active"><%= t 'bank.active' %></label></td>
+			<td><%=h @bank.active? ? (t 'yes2') : (t 'no2') %></td>
+		</tr>
+	</table>
 
-					<tr>
-						<td class="leftcol"><label for="long_name"><%= t 'banks.lname' %> :</label></td>
-						<td><%=h @bank.long_name %></td>
-					</tr>
-
-					<tr>
-						<td class="leftcol"><label for="active"><%= t 'banks.active' %></label></td>
-						<td><%=h @bank.active? ? "Yes" : "No" %></td>
-					</tr>
-			</table>
-	</fieldset>
 </div>
 <BR/>
 <%= link_to (t 'edit'), edit_bank_path(@bank) %> |

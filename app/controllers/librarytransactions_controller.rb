@@ -51,7 +51,7 @@ class LibrarytransactionsController < ApplicationController
   def multiple_update
     #raise params.inspect
     @update_type=params[:new_submit]
-    if @update_type == "Update All Records" && params[:librarytransaction_ids] #&& params[:librarytransactions] #!= nil
+    if @update_type == (t 'librarytransaction.update_all_records') && params[:librarytransaction_ids] #&& params[:librarytransactions] #!= nil
         @librarytransactionsid = params[:librarytransaction_ids]	
         @returneds =params[:returneds]
         @finepays=params[:finepays]
@@ -82,12 +82,12 @@ class LibrarytransactionsController < ApplicationController
   		      end 
     		    librarytransaction.save
         end	
-        flash[:notice] = "Updated multiple return of loans"
+        flash[:notice] = t('librarytransaction.update_multiple_return')
         render(:action => 'multiple_edit',:librarytransactions => @librarytransactions)
         flash.discard
         #**********
     else
-        flash[:notice] = 'No record updated. Select a Staff / Student & Check for Loan Details first.'
+        flash[:notice] = t('librarytransaction.select_staff_student_check_loan2')
         redirect_to :action => 'multiple_edit'
     end
   end
@@ -98,7 +98,7 @@ class LibrarytransactionsController < ApplicationController
     #raise params.inspect
     @create_type = params[:new_submit]   
     
-    if (@create_type == "Add Book" && params[:librarytransactions] != nil)  #if (@create_type == "Create All Records" && params[:librarytransactions] != nil)
+    if (@create_type == t('librarytransaction.addbook') && params[:librarytransactions] != nil)  #if (@create_type == "Create All Records" && params[:librarytransactions] != nil)
         @librarytransactions = params[:librarytransactions].values.collect { |librarytransaction| Librarytransaction.new(librarytransaction) } 
         @librarytransactions_all = params[:librarytransactions]  
         
@@ -106,13 +106,13 @@ class LibrarytransactionsController < ApplicationController
         
         if @librarytransactions.all?(&:valid?) #&& @subject_id_4_all != '0' && @examweight_4_all != '0' && @student_dup_count == 0                                    
 			      @librarytransactions.each(&:save!) # ref: to retrieve each value of @grades --> http://railsforum.com/viewtopic.php?id=11557 (Dazen2 007-10-07 05:27:42) 
-            flash[:notice] = 'Successfully saved new book loan.' #'Successfully saved all records' - SAVE ONLY ONE BOOK
+            flash[:notice] = t('librarytransaction.successfully_save_loan')#'Successfully saved all records' - SAVE ONLY ONE BOOK
             flash.discard
             render(:action => 'new',:librarytransactions => @librarytransactions)
         else                                                                      
             #@gradeerrorsmsg = Grade.set_error_messages(@grades,@subject_id_4_all,@examweight_4_all,@student_dup_count)
 			      flash[:error] = @gradeerrorsmsg  #red box                                  
-            flash[:notice] = 'Data supplied was invalid. Please insert all data accordingly. All fields are compulsory.'
+            flash[:notice] = t('librarytransaction.invalid_data_compulsory')
             render(:action => 'new',:librarytransactions => @librarytransactions)
 	          flash.discard
 	      end
@@ -133,11 +133,11 @@ class LibrarytransactionsController < ApplicationController
     else
         respond_to do |format|
           if params[:no_quota_bal] == '0' #hidden value assign if checked borrower - quota balance of loan exceed MAXIMUM value (check_availability.html.erb-line 144)
-            flash[:notice] = 'Exceed book loan quota.(Student : maximum = 2 unit, Staff: maximum = 5 unit)'
+            flash[:notice] = t('librarytransaction.exceed_book_quota')
             format.html{render(:action => 'new',:stafffirst => params[:staff_first], :studentfirst => params[:student_first])}
             flash.discard
           else params[:no_quota_bal] == nil
-            flash[:notice] = 'No record added. Select a Staff / Student & Check for Loan Details first.'
+            flash[:notice] = t('librarytransaction.select_staff_student_check_loan')
             format.html {redirect_to :action => 'new' }
           end
         end 

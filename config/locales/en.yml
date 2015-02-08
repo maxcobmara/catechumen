@@ -48,6 +48,7 @@ en:
   not_assigned: Not assigned
   max_size: Maximum size
   or: Or
+  on2: on
   approved: Approved
   not_approved: Not Approved
   date_on: on
@@ -89,6 +90,7 @@ en:
   apply_changes: Apply Changes
   data_invalid: 'Data supplied was invalid.'
   view_pdf: View PDF
+  starting_with: starting with
   
   will_paginate:
     previous_label: "&#0171; Previous"
@@ -210,11 +212,12 @@ en:
     sign_up: Sign Up
     new: Sign up as a new user
     newlogin: New Login
-    list: Lists of Logins
+    list: Lists of Login Accounts
     login_details: Login Details
     login: Login
     logout: Log Out
     person: Person
+    account_type: Account Type
     role_name: Role Name
     system_login: System Login Details
     attach_login: Attach Login
@@ -223,25 +226,33 @@ en:
     login_roles: Login Roles
     select_role: Select role to add to this user
     signup: Sign Up
-    
+    all: All 
+    verify: Verify 
+    staff: Staff 
+    student: Student
+    are_you_sure: Are you sure you want to delete
+    icno: Mykad No
+    email: Email
     user: User
-    adminstaff: Administration Staff
-    admin: Administration
-    library: Librarian
+    administration_staff: Administration Staff
+    administration: Administration
+    librarian: Librarian
     warden: Warden
-    trainadmin: Training Administration
-    trainmanager: Training Manager
-    assetadmin: Asset Administrator
-    studentcounsellor: Student Counsellor
-    faciadmin: Facilities Administrator
+    training_administration: Training Administration
+    training_manager: Training Manager
+    asset_administrator: Asset Administrator
+    student_counsellor: Student Counsellor
+    facilities_administrator: Facilities Administrator
     lecturer: Lecturer
-    financeunit: Finance Unit
+    finance_unit: Finance Unit
     studentadmin: Student Administrator
-    staffadmin: Staff Administrator
+    staff_administrator: Staff Administrator
     guest: Guest
-    programmanager: Programme Manager
-    disciplinaryoff: Disciplinary Officer
-    cooCoordinator: Coordinator
+    programme_manager: Programme Manager
+    disciplinary_officer: Disciplinary Officer
+    coordinator: Coordinator
+    testing_role: Testing Role
+    e_filing: "E-Filing"
     
   role:
     list: Lists of Roles
@@ -249,6 +260,7 @@ en:
     new_role: New Role
     edit: Editing Role
     role_details: Role Details
+    authname: "manage / acting as : "
     
   session:
     login_success: Logged in successfully
@@ -291,10 +303,13 @@ en:
   
   addressbook:
     new_contact: New Contact
+    edit: Edit Contact
+    details: Contact Details
     contact: Contact
     mail: Mail
     email: "E-Mail"
     website: Website
+    fax: Fax No
     phonefax: "Phone (Fax)"
     
   title:
@@ -307,44 +322,51 @@ en:
     
   staffshift:
     title: Staff Shifts
+    details: Staff Shift Details
     new: New Shift
     new_staffshift: New Staff Shifts
     edit: Edit Staff Shifts
     
   transportgroups:
-    transportgroups: Transport Groups
-    new_transportgroup: New Transport Groups
+    title: Transport Groups
+    new: New Transport Groups
     new_group: New Group
     edit: Edit Transport Group
-    groupname: Group Name
     salary: Salary
-    salarylimits: Salary Limits
-    limits: Limits
-    salarylow: Salary low
-    salaryhight: Salary high
-    low: low
-    high: high
+    salary_limits: Salary Limits
+    cc_limits: Cubic Centimeters Limits
+    group_name: Group Name
+    salary_low: Salary Low
+    salary_high: Salary High
+    cc_low: CC Low
+    cc_high: CC High
   
   mileagerates:
     title: Mileage Rates for Transport Groups
-    new_mileagerate: New travel claim mileage rate
-    new_rateentry: New Mileage Rate Entry
-    edit: Edit Mileage Rate Entry
+    new: New travel claim mileage rate
+    edit: Edit Mileage Rate
+    transport_group: Transport Group
+    details: Mileage Rate Details
    
-  Banks:
+  bank:
+    title: Lists of Banks
     new: Cipta Bank Baru
-    new_bank: Bank Baru
-    bankdetails: Butiran Bank
-    list: Lists of Banks
+    details: Butiran Bank
     edit: Edit Bank
     sname: Short Name
     lname: Long Name
     active: Active
     
   assetcategories:
-    new_assetcategory: New Asset Categories
-    list: Listing Asset Categories
-    edit: Editing Asset Categories
+    title: Listing Asset Categories
+    new: New Asset Category
+    edit: Edit Asset Category
+    parent: Parent
+    details: Asset Category Details
+    description: Description
+    category: Category
+    fixed: Fixed Asset
+    inventory: Inventory
     
   menu:
     home: Home
@@ -1400,7 +1422,7 @@ en:
     location: Location
     participants: Participants
     event_calender: Event Calendar
-    todays_event: Todays Events
+    todays_events: Todays Events
     no_events_today: No Events Today
     recent_events: Recent Events
     no_event_since_last_week: No events since last week
@@ -1867,6 +1889,7 @@ en:
     normal: Normal
     information: Information
     refno_title: "Ref No, Title"
+    all_updated_except_circulation_listing: "Semua medan telah dikemaskini, kecuali medan 'Penerima Edaran' memandangkan terdapat penerima edaran yang telah mengambil tindakan."
       
   cofile:
      new: New File
@@ -2182,10 +2205,21 @@ en:
     edit: Editing Book
     list: Lists Of Book
     listing: "Book Listing (for stock verification)"
+    listing_all_books: Listing All Books
+    listing_books: Listing Books
+    listing_by_class_nlm: "Listing by Class No (NLM)"
+    listing_by_class_lc: "Listing by Class No (LC)"
+    search_by_classno: "Search by Class No (LC / NLM) "
+    search_by_accessionno: "Search by Accession No (Range : "
+    isbn_title_author_location: "ISBN, Title, Author, Location"
+    list_by_classno: List by Class No
+    list_by_accessionno: List by Accession No
+    stock_listing_by: "Stock Listing by..."
+    titles: Titles
+    title: Title
     book_details: Book Details
     tagno: Tag No
     classddc: Class No (DDC/LC)
-    title: Title
     language: Language
     author: Author
     subject: Subject
@@ -2220,19 +2254,25 @@ en:
     stock_listing: "Stock Listing (by Class No / Accession No)"
     stock_summary: "Stock Summary (by Class No / Accession No)"
     statistics: Library Resources Statistics
-     
     media: Media 
     image: Image
-    classno: "Class No (LC) / (NLM)"
+    classno: "Class No (LC / NLM)"
     physical_desc: Physical Description
     amendment: Amendment
-    
     check_isbn: Check ISBN availability
-    catalog: Catalouging Source To
+    catalog: Catalouging Source
     index: Index
+    total_books: Total Books
+    nlm_lc: "NLM/LC NO"
+    accno: ACC NO
+    start_w_letter: starting_with_letter
+    no_photo: No photo
+    available: available
+    bibliography: Bibliography
+    check_availability: Check Availability
       
   librarytransaction:
-    new: Create New Transaction
+    new: New Library Transaction
     list: Library Transaction List
     book_id: Book ID
     borrower: Borrowed By
@@ -2247,11 +2287,13 @@ en:
     studentname: Borrowed By
     duedate: Due Date
     extend: Extend
-    extended: Returned
+    extended: Extended
+    return: Return
     returneddate: Returned On
     newrec: Create New Transaction
     returnrec: Return Transaction
     edit: Edit Library Transaction
+    transaction_details: Library Transaction Details
     details: Loaned Book Details
     loanedtotype: Member is Staff?
     fine: Fine to be Paid
@@ -2268,7 +2310,35 @@ en:
     librarytrans: Library Transaction 
     returnpage: Return Page
     loanpage: Loan Page
-   
+    loanpage_title: "Library Transaction - Loan Page"
+    returnpage_title: "Library Transaction - Return Page"
+    book_not_available: Book no longer available
+    extend_borrowing: Extend Borrowing
+    extend_days: will extend borrowing for another 14 days
+    no_extension: No Extension Taken
+    day: day
+    late_by: late by
+    check_loan_details: Check Loan Details
+    student_details: Student Details
+    staff_details: Staff Details
+    insert_student_name: Please insert student name
+    insert_staff_name: Please insert staff name
+    total_loan: Total books on loan
+    quota_balance: Available book loan quota balance
+    out_of: out of
+    books: books
+    addbook: Add Book
+    successfully_save_loan: Successfully saved new book loan
+    invalid_data_compulsory: 'Data supplied was invalid. Please insert all data accordingly. All fields are compulsory.'
+    exceed_book_quota:  'Exceed book loan quota.(Student : maximum = 2 unit, Staff: maximum = 5 unit)'
+    select_staff_student_check_loan: 'No record added. Select a Staff / Student & Check for Loan Details first.'
+    select_staff_student_check_loan2: 'No record updated. Select a Staff / Student & Check for Loan Details first.'
+    update_all_records: Update All Records
+    search_select_staff: Search & Select Staff Name
+    search_select_student: Search & Select Student Name
+    update_multiple_return: Updated multiple return of loans
+    paid: paid
+    
   librarystats:
     quicklinks: Quicklinks
     borrow_book: Borrowed Books
@@ -2281,7 +2351,7 @@ en:
     bookborrow: Books Borrowed Today
     total_collect: total of fines collected.
     
-    accession_id: ACCESSION ID
+    accession_id: NO ACCESSION
     title: TITLE
     name: NAME
     image: IMAGE

@@ -1,4 +1,4 @@
-<h3>Extend Borrowing</h3>
+<h3><%=t('librarytransaction.extend_borrowing')%></h3>
 
 <% form_for(@librarytransaction) do |f| %>
   <%= f.error_messages %>
@@ -8,8 +8,8 @@
 		<table>
   	<tr>
 			<td class="leftcol" ><label for="extended"><b><%= t 'librarytransaction.extend' %></b></label></td>
-		  <td><%= f.check_box :extended %><font color=#AAA size=-2> - will extend borrowing for another 14 days</font></td>
-			  <%#= f.hidden_field :libextended_by, :value => Login.current_login.staff_id %>
+		  <td><%= f.check_box :extended %><font color=#AAA size=-2> - <%=t('librarytransaction.extend_days')%></font></td>
+			  <%= f.hidden_field :libextended_by, :value => Login.current_login.staff_id %>
 		</tr>
 		</table>
 	</div>

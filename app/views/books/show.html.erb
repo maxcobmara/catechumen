@@ -10,12 +10,12 @@
 			<td rowspan=12 align=right><% if @book.photo.exists? then %>
 			  <%= image_tag @book.photo.url, :class => 'show-image'%>
 			<% else %>
-			  No Photo<BR>Available
+			<%=(t 'book.no_photo').titleize%><BR><%=(t 'book.available').titleize%>
 			<% end %></td>
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="isbn">ISBN / ISSN No:</label></td>
+			<td class="leftcol"><label for="isbn">ISBN / ISSN:</label></td>
 			<td><%=h @book.isbn %></td>
 		</tr>
 		<!--
@@ -141,10 +141,10 @@
 		</tr>
 	</table>
 	
-	<H2>Accessions</H2>
+	<H2><%=t('book.accessionno')%></H2>
 		<table>
 			<tr>
-				<td class="leftcol">Accession Nos :</label></td>
+				<td class="leftcol"><%=t('book.accessionno')%> :</label></td>
 				<td>
 						<table width=100% border=0 padding=0>
 							<% @book.accessions.find(:all, :order => :accession_no).in_groups_of(10, false) do |row_accessions| %>
@@ -193,6 +193,6 @@
 </div>
 
 <% permitted_to? :manage, :books do %>
-<%= link_to (t 'icms.update'), edit_book_path(@book) %> |
+<%= link_to (t 'edit'), edit_book_path(@book) %> |
 <% end %>
 <%= link_to (t 'icms.back'), books_path %>

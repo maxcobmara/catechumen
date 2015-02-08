@@ -1,23 +1,30 @@
 <h3><%= t 'document.edit' %></h3>
-
+<%#= @acc%>
 <% form_for(@document, :html => { :multipart => true }) do |f| %>
   <%= f.error_messages %>
-
-	<% if (current_login.staff_id == @document.prepared_by) || (current_login.staff_id == @document.stafffiled_id) %>
-		<%=render :partial => 'form', :locals => {:f => f} %> 
+	<!--EDIT part : start-->
+	<% unless @acc %>
+		<% if (current_login.staff_id == @document.prepared_by) || (current_login.staff_id == @document.stafffiled_id) %>
+			<%=render :partial => 'form', :locals => {:f => f} %> 
+		<% end %>
 	<% end %>
+	<!---EDIT part : end-->
 	
 	<!--23Jan2015-REVISED-reopen this function-start-->
-	<% if (@document.staffs.map(&:id).include? current_login.staff_id) %>
+	<% if (@document.staffs.map(&:id).include? current_login.staff_id) && @acc=="1" %>
 	<!--5Apr2013-recepient is no longer edit able to edit..view only
 	<%# if @document.staffs.map(&:staff_id).include?(current_login.staff_id )%><%#|| current_login.staff_id == @document.cc2staff_id %>-->
-   		<div class="tform"><%= render 'show' %></div>
+		
+		<!--to avoid double display of 'show part' when doc circulate herself?-->
+			<div class="tform"><%= render 'show' %></div>
+
 	<% end %>
 	<!--23Jan2015-REVISED-reopen this function-end--><!--5Apr2013-recepient is no longer edit able to edit..view only-->
 	
+	<!--ACTION part : start-->
 	<!--23Jan2015-REVISED-reopen this function-start-->
 	<!--Upon UAT(retest) dated 5Apr2013-this part is taken out-not required-no need to reply any action, dacument circulated just for 'makluman'-->
-	<% if (@document.staffs.map(&:id).include? current_login.staff_id) %>
+	<% if (@document.staffs.map(&:id).include? current_login.staff_id) && @acc=="1" %>
 	<%# if current_login.staff_id == @document.cc1staff_id %>
    		<%= render  :partial => 'action1', :locals => {:f => f} %>
 	<% end %>
@@ -26,6 +33,8 @@
 	<% end %>
 	<!--Upon UAT(retest) dated 5Apr2013-this part is taken out-not required-no need to reply any action, dacument circulated just for 'makluman'-->
 	<!--23Jan2015-REVISED-reopen this function-end-->
+	<!--ACTION part : end-->
+	
   <p>
     <%= f.submit (t 'update') %>
   </p>

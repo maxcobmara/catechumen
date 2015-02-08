@@ -1,18 +1,20 @@
-<p>
-  <b><%= t 'name' %>:</b>
-  <%=h @staff_shift.name %>
-</p>
-
-<p>
-  <b><%= t 'lesson_plan.start_time' %>:</b>
-  <%=h @staff_shift.start_at %>
-</p>
-
-<p>
-  <b><%= t 'lesson_plan.end_time' %>:</b>
-  <%=h @staff_shift.end_at %>
-</p>
-
+<div class="tform">
+    <H2><%=t('staffshift.details')%></h2>
+    <table width=100% >
+	<tr>
+		<td class="leftcol"><%= t 'name' %></td>
+		<td><%=h @staff_shift.name %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'lesson_plan.start_time' %></td>
+		<td><%=h l(@staff_shift.start_at) %></td>
+	</tr>
+	<tr>
+		<td class="leftcol"><%= t 'lesson_plan.end_time' %></td>
+		<td><%=h l(@staff_shift.end_at) %></td>
+	</tr>
+     </table>
+</div>
 
 <%= link_to (t 'edit'), edit_staff_shift_path(@staff_shift) %> |
 <%= link_to (t 'back'), staff_shifts_path %>

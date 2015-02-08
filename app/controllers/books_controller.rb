@@ -111,18 +111,21 @@ class BooksController < ApplicationController
   def stock_listing
     if request.post?
         @find_type = params[:list_submit_button]
-    		  if @find_type == "List by class no"
+    		  if @find_type == t('book.list_by_classno') #"List by class no"
     		      @class_no = params[:isbn_search].to_s.upcase   
               #@book_by_class = Book.find(:all, :conditions => ["classlcc ILIKE ?", "%#{@class_no}%"])  #pg 328 - use this for classlcc containing of string...
               @book_by_class2 = Book.find(:all, :conditions => ["classlcc LIKE ?", "#{@class_no}%"])  #use this for classlcc STARTING WITH.. #http://stackoverflow.com/questions/251345/activerecord-find-starts-with
-    		  elsif @find_type == "List by accession no"
-              @accs_no = params[:isbn_search].to_s#.upcase   
-              @accs_no_end = params[:isbn_search2].to_s
+    		  elsif @find_type == t('book.list_by_accessionno') #"List by accession no"
+              @accs_no = params[:isbn_search].to_s.strip#.upcase   
+              @accs_no_end = params[:isbn_search2].to_s.strip
               #@book_by_class = Book.find(:all, :conditions => ["classlcc ILIKE ?", "%#{@class_no}%"])  #pg 328 - use this for classlcc containing of string...
               #temporary - use accessionno in books table (later - TO DO : use accession_no in accessions table)
               #@book_by_class2 = Book.find(:all, :conditions => ["accessionno LIKE ?", "#{@accs_no}%"])  #use this for classlcc STARTING WITH.. #http://stackoverflow.com/questions/251345/activerecord-find-starts-with
-              @book_by_class2 = Book.find(:all, :conditions => {:accessionno => @accs_no..@accs_no_end}, :order => :accessionno) 
+              #@book_by_class2 = Book.find(:all, :conditions => {:accessionno => @accs_no..@accs_no_end}, :order => :accession_no) 
               
+	      #@book_ids_in_accessions = Accession.find(:all, :conditions => {:accession_no => '0000001694'..'0000001694'}).map(&:book_id) 
+	      @book_ids_in_accessions = Accession.find(:all, :conditions => {:accession_no => @accs_no..@accs_no_end}).map(&:book_id) 
+	      @book_by_class2 = Book.find(:all, :conditions => ['id IN (?)', @book_ids_in_accessions])
               #:row_date => start_date..end_date
           end
         
