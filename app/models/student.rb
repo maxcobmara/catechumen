@@ -106,7 +106,7 @@ class Student < ActiveRecord::Base
 			  end
 		  end 
 	
-		  I18n.t('time.years').titleize+" #{@year}, <br> Semester #{@semester}"
+		  I18n.t('time.years').singularize.titleize+" #{@year}, <br> Semester #{@semester}"
   
   end
   

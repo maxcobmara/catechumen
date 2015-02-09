@@ -7,30 +7,38 @@
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="cofile_id"><b><%= t 'document.fileno' %>:</b></label></td>
-				<td><%=h @student_discipline_case.file_id.blank? ? "No File" : @student_discipline_case.cofile.file_no_and_name %></td>
+				<td class="leftcol"><label for="cofile_id"><b><%= t 'studentdiscipline.file_id' %>:</b></label></td>
+				<td><%=h @student_discipline_case.file_id.blank? ? t('not_assigned') : @student_discipline_case.cofile.file_no_and_name %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="investigation"><b><%= t 'studentdiscipline.investigate_summary' %>:</b></label></td>
+				<td class="leftcol"><label for="investigation"><b><%= t 'studentdiscipline.investigation_notes' %>:</b></label></td>
 				<td><%=h @student_discipline_case.investigation_notes %></td>
 			</tr>
 	
 			<tr>
-				<td class="leftcol"><label for="investigation"><%= t 'action' %>:</label></td>
-				<td><%=h @student_discipline_case.action_type.titleize unless @student_discipline_case.action_type.blank? %></td>
+				<td class="leftcol"><label for="investigation"><%= t 'studentdiscipline.action_type' %>:</label></td>
+				<td>
+					<% unless @student_discipline_case.action_type.blank? %>
+						<%=h t('studentdiscipline.refer_bpl') if @student_discipline_case.action_type=="Ref to BPL" %>
+						<%=h t('studentdiscipline.refer_tphep') if @student_discipline_case.action_type=="Ref TPHEP" %>
+						<%=h t('studentdiscipline.no_case') if @student_discipline_case.action_type=="no_case" %>
+						<%=h t('studentdiscipline.advise') if @student_discipline_case.action_type=="advise" %>
+					<%end %>
+					<%#=h @student_discipline_case.action_type.titleize unless @student_discipline_case.action_type.blank? %>
+				</td>
 			</tr>
 	
 			<% if @student_discipline_case.action_type == "no_case" %>
 			<tr>
-				<td class="leftcol"><label for="investigation"><%= t 'studentdiscipline.date_closed' %> (<%= t 'studentdiscipline.college' %>):</label></td>
+				<td class="leftcol"><label for="investigation"><%= t 'studentdiscipline.closed_at_college_on' %>:</label></td>
 				<td><%=h l(@student_discipline_case.closed_at_college_on) unless @student_discipline_case.closed_at_college_on.blank? %></td>
 			</tr>
 			<% end -%>
 	
 			<% if @student_discipline_case.action_type == "advise" %>
 			<tr>
-				<td class="leftcol"><label for="investigation"><%= t 'studentdiscipline.advice_given' %>:</label></td>
+				<td class="leftcol"><label for="investigation"><%= t 'studentdiscipline.other_info' %>:</label></td>
 				<td><%=h @student_discipline_case.other_info %></td>
 			</tr>
 			<% end -%>
@@ -71,8 +79,8 @@
 			
 			<% if @student_discipline_case.action_type == "Ref TPHEP" %>
 			<tr>
-				<td class="leftcol"><label for="investigation"><%= t 'studentdiscipline.notified' %>:</label></td>
-				<td><%=h @student_discipline_case.tphep.name %> On <%=h l(@student_discipline_case.assigned2_on) %></td>
+				<td class="leftcol"><label for="investigation"><%= t 'studentdiscipline.assigned2_to' %>:</label></td>
+				<td><%=h @student_discipline_case.tphep.name %> <%=t('on2')%> <%=h l(@student_discipline_case.assigned2_on) %></td>
 			</tr>
 			<% end -%>
 		</table>

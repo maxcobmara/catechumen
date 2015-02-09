@@ -13,39 +13,39 @@
 	<% if ["Refer to BPL"].include? (@student_discipline_case.status)  %>
 	<%# if ["Closed","Refer to BPL"].include? (@student_discipline_case.status)  %>
 	<fieldset>
-		<legend class='togvis'><!--Refer to BPL--><%=t('studentdiscipline.refer_to_bpl')%></legend>
+		<legend class='togvis'><!--Refer to BPL--><%=t('studentdiscipline.refer_bpl')%></legend>
 			<table width=100%>
 				<tr>
-					<td class="leftcol"><label for="bplsenddt"><b><%=t('studentdiscipine.sent_to_board_on')%>:</b></label></td>
+					<td class="leftcol"><label for="bplsenddt"><b><%=t('studentdiscipline.sent_to_board_on')%>:</b></label></td>
 					<td><%=h tarikh(@student_discipline_case.sent_to_board_on) %></td>
 				</tr>
 					<tr>
-						<td class="leftcol"><label for="jtkpdt"><b><%=t('studentdiscipine.board_meeting_on')%>:</b></label></td>
+						<td class="leftcol"><label for="jtkpdt"><b><%=t('studentdiscipline.board_meeting_on')%>:</b></label></td>
 						<td> <%=h tarikh(@student_discipline_case.board_meeting_on) %></td>
 					</tr>
 
 					<tr>
-						<td class="leftcol"><label for="jtkpdecision"><b> <%=t('studentdiscipine.board_decision')%>:</b></label></td>
+						<td class="leftcol"><label for="jtkpdecision"><b> <%=t('studentdiscipline.board_decision')%>:</b></label></td>
 						<td><%=h @student_discipline_case.board_decision %></td>
 					</tr>
 			
 					<tr>
-						<td class="leftcol"><label for="jtkpdescisionrxdt"><b> <%=t('studentdiscipine.board_decision_on')%>:</b></label></td>
+						<td class="leftcol"><label for="jtkpdescisionrxdt"><b> <%=t('studentdiscipline.board_decision_on')%>:</b></label></td>
 						<td><%=h tarikh(@student_discipline_case.board_decision_on) %></td>
 					</tr>
 			
 					<tr>
-						<td class="leftcol"><label for="appealdt"><b><%=t('studentdiscipine.appeal_on')%>:</b></label></td>
+						<td class="leftcol"><label for="appealdt"><b><%=t('studentdiscipline.appeal_on')%>:</b></label></td>
 						<td><%=h tarikh(@student_discipline_case.appeal_on) %></td>
 					</tr>
 			
 					<tr>
-						<td class="leftcol"><label for="appealdecision"><b><%=t('studentdiscipine.appeal_decision')%>:</b></label></td>
+						<td class="leftcol"><label for="appealdecision"><b><%=t('studentdiscipline.appeal_decision')%>:</b></label></td>
 						<td> <%=h @student_discipline_case.appeal_decision %></td>
 					</tr>
 			
 					<tr>
-						<td class="leftcol"><label for="appealdecisionrxdt"><b><%=t('studentdiscipine.appeal_decision_on')%>:</b></label></td>
+						<td class="leftcol"><label for="appealdecisionrxdt"><b><%=t('studentdiscipline.appeal_decision_on')%>:</b></label></td>
 						<td><%=h tarikh(@student_discipline_case.appeal_decision_on) %></td>
 					</tr>
 			</table>
@@ -66,7 +66,7 @@
 
 <% if permitted_to? :manage, :student_discipline_cases %>
 	<%# if @student_discipline_case.status !="Closed" %>
-	<% if (@student_discipline_case.status==t('studentdiscipline.new2') && @student_discipline_case.assigned_to == current_login.staff_id) || (@student_discipline_case.status == t('studentdiscipine.refer_tphep') && @student_discipline_case.assigned2_to == current_login.staff_id)%>
+	<% if (@student_discipline_case.status=="New" && @student_discipline_case.assigned_to == current_login.staff_id) || (@student_discipline_case.status == "Refer to TPHEP" && @student_discipline_case.assigned2_to == current_login.staff_id) || @student_discipline_case.status=="Refer to BPL" %>
 		<%= link_to (t 'edit'), edit_student_discipline_case_path(@student_discipline_case) %> |
 	<% end %>
 <% end %>

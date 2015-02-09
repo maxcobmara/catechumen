@@ -70,7 +70,7 @@ class StudentDisciplineCasesController < ApplicationController
 
     respond_to do |format|
       if @student_discipline_case.update_attributes(params[:student_discipline_case])
-        format.html { redirect_to(@student_discipline_case, :notice => 'The case was successfully updated') }
+        format.html { redirect_to(@student_discipline_case, :notice => t('studentdiscipline.title2')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

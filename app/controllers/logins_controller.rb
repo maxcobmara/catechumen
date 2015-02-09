@@ -38,7 +38,7 @@ class LoginsController < ApplicationController
      @login = Login.find(params[:id])
 
      if @login.update_attributes(params[:login])
-       flash[:notice] = 'Login was successfully updated.'
+       flash[:notice] = t('login.account')+" "+t('updated')
        #redirect_to(login_path(@login))
        render :action => 'show'
        flash.discard
@@ -64,10 +64,10 @@ class LoginsController < ApplicationController
       # reset session
       self.current_login = @login # !! now logged in
       redirect_back_or_default('/')
-      flash[:notice] = "Thanks for signing up!  The IT team will process your application as soon as possible"
+      flash[:notice] = t('login.registered')
     else
       #flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
-      flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin."
+      flash[:error]  = t('login.registration_failed')
       render :action => 'new'
     end
   end

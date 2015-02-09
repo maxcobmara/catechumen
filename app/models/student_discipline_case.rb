@@ -50,6 +50,7 @@ class StudentDisciplineCase < ActiveRecord::Base
       #self.assigned2_to = nil
     elsif action_type == "Ref TPHEP"
       self.status = "Refer to TPHEP"
+      self.closed_at_college_on = nil
     end
     #if action_type != "Refer to BPL"	#asal
     if action_type != "Ref to BPL"
@@ -109,11 +110,16 @@ class StudentDisciplineCase < ActiveRecord::Base
          [ I18n.t('studentdiscipline.open'),"Open" ],
          [ I18n.t('studentdiscipline.no_case'),"No Case" ],
          [ I18n.t('studentdiscipline.closed'), "Closed" ],
-         [ I18n.t('studentdiscipline.refer_bpl'), "Refer to BPL" ]
+         [ I18n.t('studentdiscipline.refer_bpl'), "Refer to BPL" ],   
+         [ I18n.t('studentdiscipline.refer_tphep'), "Refer to TPHEP"]
     ] 
    
     def render_status
       (StudentDisciplineCase::STATUS.find_all{|disp, value| value == status }).map {|disp, value| disp}
+    end
+    
+    def render_infraction
+      (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == infraction_id }).map {|disp, value| disp}
     end
     
     def reporter_details 

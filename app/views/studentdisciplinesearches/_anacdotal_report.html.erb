@@ -1,12 +1,12 @@
 <%= stylesheet_link_tag 'report' %>
 
 <form action="#">	
-<script>
-document.write("<input type='button' " +
-"onClick='window.print()' " +
-"class='printbutton' " +
-"value='Print This Page'/>");
-</script>
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
 </form>	
 <div class="A4potrait">
 
@@ -67,7 +67,7 @@ document.write("<input type='button' " +
 				<th><%=t('studentdiscipline.infraction')%></th>
 				<th><%=t('studentdiscipline.location')%></th>
 				<th>Status</th>
-				<th><%=t('studentdiscipline.action_taken')%></th>
+				<th><%=t('studentdiscipline.action')%></th>
 			</tr>
 			<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|x.student.name}.each_with_index do |student_discipline, index|%>
 			<tr>

@@ -14,7 +14,7 @@ class StudentCounselingSession < ActiveRecord::Base
   #before logic
   def set_to_nil_where_false
     if is_confirmed == false
-      self.confirmed_at	= nil
+      self.confirmed_at= nil
     end
   end
   
