@@ -1,8 +1,7 @@
 <div class="tform">
-
+	<H2><%=t('studentdiscipline.title2')%></H2>
 	<%= render :partial => 'show_report_details' %>
 
-	
 	<% if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) %>
 		<%= render :partial => 'show_case_info' %>
 	<% end %>
@@ -51,21 +50,23 @@
 					</tr>
 			</table>
 			<% end %>
-		</fieldset>
+	</fieldset>
+	<fieldset>
+		<legend class='togvis'>Status</legend>
+			<table width=100%>
 			<table>	
 				<tr>
 					<td class="leftcol"><label for="status"><b>Status:</b></label></td>
 					<td><%#=h @student_discipline_case.status %><%=h @student_discipline_case.render_status %></td>
 				</tr>
 			</table>
-
+	</fieldset>
 <BR/>
 </div>
 
 <% if permitted_to? :manage, :student_discipline_cases %>
 	<%# if @student_discipline_case.status !="Closed" %>
-	<% if (@student_discipline_case.status=="New" && @student_discipline_case.assigned_to == current_login.staff_id) || (@student_discipline_case.status == "Refer to TPHEP" && @student_discipline_case.assigned2_to == current_login.staff_id)%>
-
+	<% if (@student_discipline_case.status==t('studentdiscipline.new2') && @student_discipline_case.assigned_to == current_login.staff_id) || (@student_discipline_case.status == t('studentdiscipine.refer_tphep') && @student_discipline_case.assigned2_to == current_login.staff_id)%>
 		<%= link_to (t 'edit'), edit_student_discipline_case_path(@student_discipline_case) %> |
 	<% end %>
 <% end %>

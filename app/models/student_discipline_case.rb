@@ -73,16 +73,17 @@ class StudentDisciplineCase < ActiveRecord::Base
          [ I18n.t('studentdiscipline.others'), 4 ]
       ]
     
+    #note : status - in English all the time
     def status_workflow
     flow = Array.new
       if status == nil
-        flow << "New"
+        flow << [ I18n.t('studentdiscipline.new2'),"New"]
       #------------
-      elsif status =="New" 
+      elsif status == "New"  
         if reported_by == nil || student_id == nil || status == nil || infraction_id == nil || assigned_to == nil
-        	flow << "New"	#special case for 1st time data entry (upon validation-if any of the above field is nil --> stay with 'New' status)
+        	flow << [ I18n.t('studentdiscipline.new2'),"New"]	#special case for 1st time data entry (upon validation-if any of the above field is nil --> stay with 'New' status)
         else
-        	flow << "Open" << "Refer to TPHEP" << "Closed" 
+        	flow << [ I18n.t('studentdiscipline.open'),"Open"]<< [ I18n.t('studentdiscipline.refer_tphep'), "Refer to TPHEP"] << [ I18n.t('studentdiscipline.closed'),"Closed"]
         end
       #------------
       #elsif status == "New"	#asal
@@ -94,9 +95,9 @@ class StudentDisciplineCase < ActiveRecord::Base
       elsif status == "Refer to TPHEP"
         #flow << "Refer to TPHEP" << "Refer to BPL" << "Closed"		#asal
         #flow << "Refer to TPHEP" << "Refer to BPL" << "Closed" << "Open"		#baru-24Dec2012
-        flow << "Refer to BPL" << "Closed"		#baru
+        flow << [ I18n.t('studentdiscipline.refer_bpl'), "Refer to BPL"] << [ I18n.t('studentdiscipline.closed'), "Closed"]		#baru
       elsif status == "Refer to BPL"
-        flow << "Refer to BPL" << "Closed"
+        flow << [ I18n.t('studentdiscipline.refer_bpl'), "Refer to BPL"] << [ I18n.t('studentdiscipline.new2'),"New"]
       else
     end
     flow

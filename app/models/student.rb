@@ -296,10 +296,10 @@ class Student < ActiveRecord::Base
   
 STATUS = [
            #  Displayed       stored in db
-           [ "Current","Current" ],
-           [ "Graduated","Graduated" ],
-           [ "Repeat", "Repeat" ],
-           [ "On Leave", "On Leave" ]
+           [ I18n.t('student.current'),"Current" ],
+           [ I18n.t('student.graduated'),"Graduated" ],
+           [ I18n.t('student.repeat'), "Repeat" ],
+           [ I18n.t('student.on_leave'), "On Leave" ]
            
 ] 
   
@@ -313,8 +313,8 @@ SPONSOR = [
   
 GENDER = [
         #  Displayed       stored in db
-        [ "Male","1" ],
-        [ "Female","2" ]
+        [ I18n.t('student.male'),"1" ],
+        [ I18n.t('student.female'),"2" ]
 ]
 
 #Pls note 'race2' field is for race whereas 'race' field is for etnic

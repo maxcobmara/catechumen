@@ -3,12 +3,12 @@
 		<td class="leftcol"><label for="status"><b>Status:</b></label></td>
 		<td>
 			<!--21Dec2012-move select tag into conditions as follows-->
-			<% if @student_discipline_case.status != nil && @student_discipline_case.status == "Closed" %>
+			<% if @student_discipline_case.status != nil && @student_discipline_case.status == I18n.t('studentdiscipline.closed') %>
 				<%=t('studentdiscipline.closed')%><!-- Closed -->
-			<%# elsif @student_discipline_case.status != nil && @student_discipline_case.status == "Refer to TPHEP" %>
+			<%# elsif @student_discipline_case.status != nil && @student_discipline_case.status == I18n.t('studentdiscipline.refer_tphep') %>
 				<!--Refer to TPHEP-->
 			<% else %>	
-				<%= f.select :status, options_for_select(@student_discipline_case.status_workflow.collect {|v,i| [v] }, @student_discipline_case.status) %>
+				<%= f.select :status, options_for_select(@student_discipline_case.status_workflow.collect {|v,i| [v,i] }, @student_discipline_case.status) %>
 			<% end %>
 			<%#= f.select :status, options_for_select(@student_discipline_case.status_workflow.collect {|v,i| [v] }, @student_discipline_case.status) %>
 		<!--21Dec2012-move select tag into conditions-->
