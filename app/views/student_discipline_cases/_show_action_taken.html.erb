@@ -2,12 +2,12 @@
 	<legend class='togvis'><%= t 'document.action_details' %></legend>
 		<table>
 			<tr>
-				<td class="leftcol"><label for="action"><b><%= t 'student_attendance.action_taken' %>:</b></label></td>
+				<td class="leftcol"><label for="action"><b><%= t 'studentdiscipline.action' %>:</b></label></td>
 				<td> <%=h @student_discipline_case.action %></td>
 			</tr>
 
 			<tr>
-				<td class="leftcol"><label for="closedtcollege"><b><%= t 'studentdiscipline.date_closed' %> (<%= t 'studentdiscipline.college' %>):</b></label></td>
+				<td class="leftcol"><label for="closedtcollege"><b><%= t 'studentdiscipline.closed_at_college_on' %>:</b></label></td>
 				<td> <%=h tarikh(@student_discipline_case.closed_at_college_on) %></td>
 			</tr>
 
@@ -15,10 +15,11 @@
 				<td class="leftcol"><label for="location"><b><%= t 'menu.locations' %>:</b></label></td>
 				<td> <%=h @student_discipline_case.room_no %></td>
 			</tr>
-
+			<% if @student_discipline_case.action_type == "advise" %>
 			<tr>
-				<td class="leftcol"><label for="otherinfo"><b><%= t 'asset.other_info' %>:</b></label></td>
+				<td class="leftcol"><label for="otherinfo"><b><%= t 'studentdiscipline.other_info' %>:</b></label></td>
 				<td><%=h @student_discipline_case.other_info %></td>
 			</tr>
+			<% end %>
 		</table>
 </fieldset>

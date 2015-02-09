@@ -58,7 +58,7 @@
 <% if appointment.is_confirmed? == true %>
 <tr class="blue">
 <% else %>	
-<tr class="red">appeal_on
+<tr class="red">
 <% end -%>
 	
 	<td><%=h appointment.student.matrixno %></td>
@@ -67,7 +67,7 @@
   	<td><%=h appointment.student.programme_for_student2 if appointment.student.course_id <15 %></td>
   	<td><%=h strip_tags(Student.year_and_sem(appointment.student.intake)) %></td>
   	<td><%#=h appointment.is_confirmed? ?  appointment.confirmed_at :  appointment.requested_at %>
-<%=h appointment.is_confirmed? ?  appointment.confirmed_at.strftime("%d %b %y, %l:%M %p") :  appointment.requested_at.strftime("%d %b %y, %l:%M %p") %></td>
+<%=h appointment.is_confirmed? ?  l(appointment.confirmed_at, :format=>"%d %b %y, %l:%M %P") :  l(appointment.requested_at, :format =>"%d %b %y, %l:%M %P") %></td>
   	<td><%=h appointment.duration %></td>
   	<td><%=h appointment.is_confirmed? ? image_tag("tick.png") : ""  %></td>
 	
@@ -75,7 +75,7 @@
 			<% if count==0 %>
 				<td rowspan="<%= appointments.count%>" style="text-align:center">
 					<font size=-2>
-					<%=h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + "Add", new_student_counseling_session_path(:caseid => appointment.case_id)) : image_tag("tick.png")  %>
+					<%=h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + (t 'icms.add'), new_student_counseling_session_path(:caseid => appointment.case_id)) : image_tag("tick.png")  %>
 					</font>
 					<!--test link for report-->
 					<%= link_to image_tag("printer.png", :border => 0, :title => 'Feedback Referrer'), :action => 'feedback_referrer', :id => appointment.case_id if !appointment.student_discipline_case.counselor_feedback.blank? %>
@@ -109,11 +109,11 @@
     <td><%=h session_done.is_confirmed? ? image_tag("tick.png") : ""  %></td>
 	
 		
-		<% if session_done.c_scope == "case" && !session_done.case_id.blank? %><!--check if referred case first-->	
+		<% if session_done.c_scope == "case" && !session_done.case_id.blank? && !session_done.student_discipline_case.nil?%><!--check if referred case first & STILL EXIST in student discipline case table/module-->	
 			<% if count2==0 %>
 				<td rowspan="<%= session_dones.count%>" style="text-align:center">
 					<font size=-2>
-					<%=h session_done.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => (t 'studentcounseling.new_appointment')) + "Add", new_student_counseling_session_path(:caseid => session_done.case_id)) : image_tag("tick.png")  %>
+					<%=h session_done.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => (t 'studentcounseling.new_appointment')) + (t 'icms.add'), new_student_counseling_session_path(:caseid => session_done.case_id)) : image_tag("tick.png")  %>
 					</font>
 					<!--test link for report-->
 					<%= link_to image_tag("printer.png", :border => 0, :title => (t 'studentdiscipline.feedback_referrer')), :action => 'feedback_referrer', :id => session_done.case_id if !session_done.student_discipline_case.counselor_feedback.blank? %>

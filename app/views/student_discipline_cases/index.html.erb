@@ -44,7 +44,7 @@
 	</td>
 	<td><%=h student_discipline_case.student.matrixno %></td>
     <td><%=h student_discipline_case.student.name %></td>
-    <td><%=h student_discipline_case.description %></td>
+    <td><%=h student_discipline_case.render_infraction %></td>
     <td><%=h l(student_discipline_case.reported_on, :format=>"%d %b %Y") %></td>
     <td><%=h student_discipline_case.file_name %></td>
     <td><%=h student_discipline_case.room_no %></td>
@@ -63,17 +63,21 @@
 	</td>	
     <td width=10px ><%= link_to image_tag("document.png", :border => 0, :title=>(t 'show')), :action => 'show', :id => student_discipline_case %></td>
     <td width=10px>
-	
+    
+	<% if permitted_to? :manage, :student_discipline_cases %>
+		<% if (student_discipline_case.status=="Refer to BPL")%>
+			<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => student_discipline_case %>
+		<% end %>
+	<% end %>
 
-
-<% if (student_discipline_case.status=="New" && student_discipline_case.assigned_to == current_login.staff_id) || (student_discipline_case.status == "Refer to TPHEP" && student_discipline_case.assigned2_to == current_login.staff_id)%>
-		
-				<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => student_discipline_case %>
-			<% end %>
-		</td>
-<% if permitted_to? :manage, :student_discipline_cases %>
-    <td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete', :title =>(t 'delete')), student_discipline_case, :confirm => (t 'are_you_sure'), :method => :delete %></td>
-  	<% end %>
+	<% if (student_discipline_case.status=="New" && student_discipline_case.assigned_to == current_login.staff_id) || (student_discipline_case.status == "Refer to TPHEP" && student_discipline_case.assigned2_to == current_login.staff_id)%>
+		<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => student_discipline_case %>
+	<% end %>
+      </td>
+  
+      <% if permitted_to? :manage, :student_discipline_cases %>
+	      <td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete', :title =>(t 'delete')), student_discipline_case, :confirm => (t 'are_you_sure'), :method => :delete %></td>
+      <% end %>
 </tr>
 <% end %>
 </table>

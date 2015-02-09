@@ -2,12 +2,12 @@
 <!--A4Potrait-->
 
 <form action="#">	
-<script>
-document.write("<input type='button' " +
-"onClick='window.print()' " +
-"class='printbutton' " +
-"value='Print This Page'/>");
-</script>
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
 </form>
 <div id="hideLink">
 <%#= link_to (t 'edit'), edit_asset_path(@asset) %> <!--|-->
@@ -37,7 +37,7 @@ document.write("<input type='button' " +
 	<% @intake=@case_details.student.intake%>
 	<tr>
 		<td style="background-color:silver;font-weight:bold;width:170px;">No Matrik</td>
-		<td><%=h @case_details.student.matrixno%></td>
+		<td><%=h @case_details.student.matrixno%>&nbsp;</td>
 		</td>
 			<td style="background-color:silver;font-weight:bold;">Ambilan</td>
 			<td><%=h @case_details.student_id.blank? ? "" : @case_details.student.intake.strftime("%B %Y") %></td>

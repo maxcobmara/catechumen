@@ -2,45 +2,45 @@
   <%= render :partial => 'show_report_details' %>
 
   <% if ["New", "Open"].include? (@student_discipline_case.status) %>
-		<H2>Case Details : (<%=h @student_discipline_case.status %>)</H2>
+		<H2><%=t('studentdiscipline.details')%> : (<%=h @student_discipline_case.render_status %>)</H2>
 		<table width=100%>
 			<tr>
-				<td class="leftcol"><label for="casedt"><b>Date:</b></label></td>
+				<td class="leftcol"><label for="casedt"><b><%=t('studentdiscipline.case_created_on')%>:</b></label></td>
 				<td><%= f.date_select :case_created_on, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 			</tr>
-			
+<!-- 			<%=t('studentdiscipline.')%> -->
 			<tr>
-				<td class="leftcol"><label for="cofile_id"><b>File No:</b></label></td>
+				<td class="leftcol"><label for="cofile_id"><b><%=t('studentdiscipline.file_id')%>:</b></label></td>
 				<td><%= f.collection_select :file_id, Cofile.find(:all), :id, :file_no_and_name, :include_blank => true %></td>
 			</tr>
 					
 			<tr>
-				<td class="leftcol"><label for="investigation"><b>Investigation Summary:</b></label></td>
+				<td class="leftcol"><label for="investigation"><b><%=t('studentdiscipline.investigation_notes')%>:</b></label></td>
 				<td><%= f.text_area :investigation_notes, :size => "60x5" %></td>
 			</tr>
 			<tr>
-				<td class="leftcol"><label for="losstype"><b>Action Type</b></label></td>
-				<td><%= f.radio_button :action_type, "no_case", 	:id => 'nc', :class => 'radio_action_type' %><label>No Case &nbsp; 
-						<%= f.radio_button :action_type, "advise", 		:id => 'ja', :class => 'radio_action_type' %>Advise &nbsp; 
+				<td class="leftcol"><label for="action_type"><b><%=t('studentdiscipline.action_type')%>:</b></label></td>
+				<td><%= f.radio_button :action_type, "no_case", 	:id => 'nc', :class => 'radio_action_type' %><label><%=t('studentdiscipline.no_case')%> &nbsp; 
+						<%= f.radio_button :action_type, "advise", 		:id => 'ja', :class => 'radio_action_type' %><%=t('studentdiscipline.advise')%> &nbsp; 
 						<%#= f.radio_button :action_type, "counseling",:id => 'co', :class => 'radio_action_type' %><!--Counseling &nbsp; -->
-						<%= f.radio_button :action_type, "Ref TPHEP", 	:id => 'au', :class => 'radio_action_type' %>Refer to TPHEP &nbsp; </label>
+						<%= f.radio_button :action_type, "Ref TPHEP", 	:id => 'au', :class => 'radio_action_type' %><%=t('studentdiscipline.refer_tphep')%> &nbsp; </label>
 						</td>
 			</tr>
 
 			
 			<tr id="nc_item" style="display: none;">
-				<td class="leftcol"><label for="closedtcollege"><b>Date Closed (College):</b></label></td>
+				<td class="leftcol"><label for="closedtcollege"><b><%=t('studentdiscipline.closed_at_college_on')%>:</b></label></td>
 				<td><%= f.date_select :closed_at_college_on, :order => [:day, :month, :year]  %></td>
 			</tr>
 			
 			<tr id="ja_item" style="display: none;">
-				<td class="leftcol"><label for="otherinfo"><b>Advice Given:</b></label></td>
+				<td class="leftcol"><label for="otherinfo"><b><%=t('studentdiscipline.other_info')%>:</b></label></td>
 				<td><%= f.text_area :other_info, :size => "40x5" %></td>
 			</tr>
 			<!--Position for TPHEP-->
 			<% myhod = Position.find(:all, :conditions => ['id=?', 3], :select => :staff_id).map(&:staff_id)  %>
 			<tr class="au_item" style="display: none;">
-				<td class="leftcol"><label for="approved_date">Notify HOD</label></td>
+				<td class="leftcol"><label for="approved_date"><%=t('studentdiscipline.assigned2_to')%></label></td>
 				<td>
 				  <%= f.collection_select :assigned2_to, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %>
 				  <!-- replace this with - model/student_discipline_case.rb - line 46- self.assigned2_to = nil-->
@@ -49,7 +49,7 @@
 			</tr>
 			
 			<tr  class="au_item" style="display: none;">
-				<td class="leftcol"><label for="casedt"><b>Date:</b></label></td>
+				<td class="leftcol"><label for="casedt"><b><%=t('studentdiscipline.assigned2_on')%>:</b></label></td>
 				<td><%= f.date_select :assigned2_on  %></td>
 			</tr>
 
@@ -62,24 +62,24 @@
 	<%# if (["Refer to TPHEP"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == Login.current_login.staff_id) ||
 	(["Open"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == Login.current_login.staff_id) 	%>
 	<%= render :partial => 'show_case_info' %>	
-	<H2>Action Details</H2>
+	<H2><%=t('studentdiscipline.action_details')%></H2>
 		<table width=100%>	
 			
 			<tr>
-				<td class="leftcol"><label for="losstype"><b>Action Type</b></label></td>
-				<td><%= f.radio_button :action_type, "counseling",	:id => 'co', 	:class => 'radio_action_type' %><label>Counseling &nbsp; 
-						<%= f.radio_button :action_type, "Ref to BPL", 	:id => 'bpl', :class => 'radio_action_type' %>Refer to BPL &nbsp; </label>
+				<td class="leftcol"><label for="losstype"><b><%=t('studentdiscipline.action_type')%></b></label></td>
+				<td><%= f.radio_button :action_type, "counseling", :id => 'co', 	:class => 'radio_action_type' %><label><%=t('studentdiscipline.counseling')%> &nbsp; 
+						<%= f.radio_button :action_type, "Ref to BPL", :id => 'bpl', :class => 'radio_action_type' %><%=t('studentdiscipline.refer_bpl')%> &nbsp; </label>
 						</td>
 			</tr>
 			
 			<tr class="co_item" style="display: none;">
-				<td class="leftcol"><label for="action"><b>Action Taken:</b></label></td>
+				<td class="leftcol"><label for="action"><b><%=t('studentdiscipline.action')%>:</b></label></td>
 				<td><%= f.text_area :action, :size => "40x5" %></td>
 			</tr>
 			
 			<% f.fields_for :student_counseling_sessions do |builder| %>
 			<tr class="co_item" style="display: none;">
-				<td class="leftcol"><label for="otherinfo"><b>Couselling Request</b></label></td>
+				<td class="leftcol"><label for="otherinfo"><b><%=t('studentdiscipline.counseling_request')%></b></label></td>
 				<td><%= builder.datetime_select :requested_at, :minute_step => 30,  :order => [:day, :month, :year], :use_short_month => true, :default => Date.today + 3.days %></td>
 				<%= builder.hidden_field :student_id, :value => @student_discipline_case.student_id %>
 		
@@ -88,12 +88,12 @@
 			
 		
 			<tr class="co_item" style="display: none;" > <!--used above-->
-				<td class="leftcol"><label for="closedtcollege"><b>Date Closed (College):</b></label></td>
+				<td class="leftcol"><label for="closedtcollege"><b><%=t('studentdiscipline.closed_at_college_on')%>:</b></label></td>
 				<td><%= f.date_select :closed_at_college_on, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 			</tr>
 			
 			<tr class="bpl_item" style="display: none;">
-				<td class="leftcol"><label for="bplsenddt"><b>Date Sent To BPL:</b></label></td>
+				<td class="leftcol"><label for="bplsenddt"><b><%=t('studentdiscipline.sent_to_board_on')%>:</b></label></td>
 				<td><%= f.date_select :sent_to_board_on, :order => [:day, :month, :year] %></td>
 			</tr>
 		</table>
@@ -106,47 +106,47 @@
 	<% if @student_discipline_case.status == "Refer to BPL" %>		
 	<%= render :partial => 'show_case_info' %>
 	<%= render :partial => 'show_action_taken' %>
-	<H2>Refer To BPL</H2>
+	<H2><%=t('studentdiscipline.refer_bpl')%></H2>
 	<table width=100%>
 		
 
 		<tr>
-			<td class="leftcol"><label for="jtkpdt"><b>Date JTKP:</b></label></td>
+			<td class="leftcol"><label for="jtkpdt"><b><%=t('studentdiscipline.board_meeting_on')%>:</b></label></td>
 			<td><%= f.date_select :board_meeting_on, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="jtkpdecision"><b>JTKP Decision:</b></label></td>
+			<td class="leftcol"><label for="jtkpdecision"><b><%=t('studentdiscipline.board_decision')%>:</b></label></td>
 			<td><%= f.text_area :board_decision, :size => "40x5" %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="jtkpdescisionrxdt"><b>Date JTKP Decision:</b></label></td>
+			<td class="leftcol"><label for="jtkpdescisionrxdt"><b><%=t('studentdiscipline.board_decision_on')%>:</b></label></td>
 			<td><%= f.date_select :board_decision_on, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="appealdt"><b>Appeal Date:</b></label></td>
+			<td class="leftcol"><label for="appealdt"><b><%=t('studentdiscipline.appeal_on')%>:</b></label></td>
 			<td><%= f.date_select :appeal_on, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="appealdecision"><b>Appeal Decision:</b></label></td>
+			<td class="leftcol"><label for="appealdecision"><b><%=t('studentdiscipline.appeal_decision')%>:</b></label></td>
 			<td><%= f.text_area :appeal_decision, :size => "40x5" %></td>
 		</tr>
 
 		<tr>
-			<td class="leftcol"><label for="appealdecisionrxdt"><b>Appeal Decision Date:</b></label></td>
+			<td class="leftcol"><label for="appealdecisionrxdt"><b><%=t('studentdiscipline.appeal_decision_on')%>:</b></label></td>
 			<td><%= f.date_select :appeal_decision_on, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 		</tr>
 		
 		<tr>
-			<td class="leftcol"><label for="action"><b>Action Taken:</b></label></td>
+			<td class="leftcol"><label for="action"><b><%=t('studentdiscipline.action')%>:</b></label></td>
 			<td><%= f.text_area :action, :size => "40x5" %></td>
 		</tr>
 		
 		<tr class="co_item" style="display: none;" > <!--used above-->
-			<td class="leftcol"><label for="closedtcollege"><b>Date Closed (College):</b></label></td>
+			<td class="leftcol"><label for="closedtcollege"><b><%=t('studentdiscipline.closed_at_college_on')%>:</b></label></td>
 			<td><%= f.date_select :closed_at_college_on, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year], :include_blank => true  %></td>
 		</tr>
 		
