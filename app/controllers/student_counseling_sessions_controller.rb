@@ -117,11 +117,16 @@ class StudentCounselingSessionsController < ApplicationController
   # DELETE /student_counseling_sessions/1.xml
   def destroy
     @student_counseling_session = StudentCounselingSession.find(params[:id])
-    @student_counseling_session.destroy
+    #@student_counseling_session.destroy
 
     respond_to do |format|
+      if @student_counseling_session.destroy 
       format.html { redirect_to(student_counseling_sessions_url) }
       format.xml  { head :ok }
+      else
+	format.html { redirect_to(student_counseling_sessions_url, :notice => StudentCounselingSession.display_msg(@student_counseling_session.errors))}
+        format.xml  { render :xml => @student_counseling_session.errors, :status => :unprocessable_entity }
+      end
     end
   end
   
