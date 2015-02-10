@@ -39,7 +39,7 @@
 					<th><%=t('studentdiscipline.reported_date')%></th>
 					<th><%=t('studentdiscipline.location')%></th>
 					<th>Status</th>
-					<th><%=t('studentdiscipline.action_taken')%></th>
+					<th><%=t('studentdiscipline.action')%></th>
 					<th><%=t('studentdiscipline.feedback_counsellor')%></th>
 				</tr>
 				<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|x.student.name}.each_with_index do |student_discipline, index|%>
@@ -57,7 +57,14 @@
 						<td><%=student_discipline.reported_on.try(:strftime, '%d %b %Y')%>&nbsp;</td>
 						<td><%=student_discipline.location.name%>&nbsp;</td>
 						<td><%=student_discipline.status%>&nbsp;</td>
-						<td><%=student_discipline.action_type%>&nbsp;</td>
+						<td><%#=student_discipline.action_type%>
+							<% unless student_discipline.action_type.blank? %>
+								<%=h t('studentdiscipline.refer_bpl') if student_discipline.action_type=="Ref to BPL" %>
+								<%=h t('studentdiscipline.refer_tphep') if student_discipline.action_type=="Ref TPHEP" %>
+								<%=h t('studentdiscipline.no_case') if student_discipline.action_type=="no_case" %>
+								<%=h t('studentdiscipline.advise') if student_discipline.action_type=="advise" %>
+							<%end %>&nbsp;
+						</td>
 						<td><%= link_to (t 'studentdiscipline.feedback_counsellor'),:controller=>'student_counseling_sessions', :action => 'feedback_referrer', :id => student_discipline.id if !student_discipline.counselor_feedback.blank? %>&nbsp;</td>
 					</tr>
 				<% end %>
