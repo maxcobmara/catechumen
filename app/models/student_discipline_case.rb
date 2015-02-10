@@ -3,6 +3,7 @@ class StudentDisciplineCase < ActiveRecord::Base
   #controller searches, variables, lists, relationship checking
   
   before_save :close_if_no_case
+  before_destroy :check_case_referred_for_counseling
   
   belongs_to :staff, :foreign_key => 'reported_by'
   belongs_to :ketua, :class_name => 'Staff', :foreign_key => 'assigned_to'
@@ -147,4 +148,25 @@ class StudentDisciplineCase < ActiveRecord::Base
     def room_no
       location.blank? ?  I18n.t('not_assigned') : " #{location.location_list}"  
     end
+    
+    def self.display_msg(err)
+      full_msg=[]
+      err.each do |k,v|
+        full_msg << v
+      end
+      full_msg
+    end
+    
+    private
+    
+    def check_case_referred_for_counseling
+      counseling_sessions=StudentCounselingSession.find(:all, :conditions=>['case_id=?',id])
+      if counseling_sessions && counseling_sessions.count > 0
+        errors.add(:base, I18n.t('studentdiscipline.removal_prohibited_for_referred_case'))
+        return false
+      else
+        return true
+      end
+    end
+    
 end

@@ -83,11 +83,16 @@ class StudentDisciplineCasesController < ApplicationController
   # DELETE /student_discipline_cases/1.xml
   def destroy
     @student_discipline_case = StudentDisciplineCase.find(params[:id])
-    @student_discipline_case.destroy
+   
 
     respond_to do |format|
-      format.html { redirect_to(student_discipline_cases_url) }
-      format.xml  { head :ok }
+      if @student_discipline_case.destroy
+        format.html { redirect_to(student_discipline_cases_url) }
+        format.xml  { head :ok }
+      else
+	format.html { redirect_to(student_discipline_cases_url, :notice => StudentDisciplineCase.display_msg(@student_discipline_case.errors))}
+        format.xml  { render :xml => @student_discipline_case.errors, :status => :unprocessable_entity }
+      end
     end
   end
 end
