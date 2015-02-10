@@ -265,7 +265,7 @@ class StaffAttendancesController < ApplicationController
 
     respond_to do |format|
       if @staff_attendance.save
-        format.html { redirect_to(@staff_attendance, :notice => 'StaffAttendance was successfully created.') }
+        format.html { redirect_to(@staff_attendance, :notice => t('attendance.title')+" "+t('created')) }
         format.xml  { render :xml => @staff_attendance, :status => :created, :location => @staff_attendance }
       else
         format.html { render :action => "new" }
@@ -281,7 +281,7 @@ class StaffAttendancesController < ApplicationController
 
     respond_to do |format|
       if @staff_attendance.update_attributes(params[:staff_attendance])
-        format.html { redirect_to(@staff_attendance, :notice => 'StaffAttendance was successfully updated.') }
+        format.html { redirect_to(@staff_attendance, :notice => t('attendance.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

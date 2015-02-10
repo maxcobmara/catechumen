@@ -44,7 +44,7 @@ class AssetcategoriesController < ApplicationController
 
     respond_to do |format|
       if @assetcategory.save
-        flash[:notice] = 'Assetcategory was successfully created.'
+        flash[:notice] =  t('assetcategories.title2')+" "+t('created')
         format.html { redirect_to(@assetcategory) }
         format.xml  { render :xml => @assetcategory, :status => :created, :location => @assetcategory }
       else
@@ -61,7 +61,7 @@ class AssetcategoriesController < ApplicationController
 
     respond_to do |format|
       if @assetcategory.update_attributes(params[:assetcategory])
-        flash[:notice] = 'Assetcategory was successfully updated.'
+        flash[:notice] = t('assetcategories.title2')+" "+t('updated')
         format.html { redirect_to(@assetcategory) }
         format.xml  { head :ok }
       else

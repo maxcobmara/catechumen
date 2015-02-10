@@ -45,7 +45,7 @@ class TravelClaimsController < ApplicationController
 
     respond_to do |format|
       if @travel_claim.save
-        format.html { redirect_to(@travel_claim, :notice => 'TravelClaim was successfully created.') }
+        format.html { redirect_to(@travel_claim, :notice =>  t('claim.title')+" "+t('created')) }
         format.xml  { render :xml => @travel_claim, :status => :created, :location => @travel_claim }
       else
         format.html { render :action => "new" }
@@ -61,7 +61,7 @@ class TravelClaimsController < ApplicationController
 
     respond_to do |format|
       if @travel_claim.update_attributes(params[:travel_claim])
-        format.html { redirect_to(@travel_claim, :notice => 'TravelClaim was successfully updated.') }
+        format.html { redirect_to(@travel_claim, :notice =>  t('claim.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

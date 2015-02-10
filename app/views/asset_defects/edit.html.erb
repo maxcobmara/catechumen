@@ -26,7 +26,7 @@
 				</tr>
 			</table>
 <% permitted_to? :manage, :assets do %>			
-	<H2><%= t('proses') %></H2>
+	<H2><%= (t 'proses').titleize %></H2>
 			<table width=85%>
 				<tr>
 					<td class="leftcol"><label for="process_type"><b><%= t('assetdefects.action_type') %></b></label></td>
@@ -53,7 +53,7 @@
 				<% bosses = Login.current_login.staff.try(:position).try(:ancestor_ids) %>
 				<% myhod = Position.find(:all, :conditions => ['id IN (?)', bosses ], :select => :staff_id).map(&:staff_id) %>
 				<tr class="span_is_processed" style="display: none;">
-					<td class="leftcol"><label for="approved_date">Notify HOD</label></td>
+					<td class="leftcol"><label for="approved_date"><%=t('assetdefects.notify_hod')%></label></td>
 			    	<td>
             <!-->  
             <%# if Login.current_login.staff.position == true %>

@@ -79,7 +79,7 @@ class StudentCounselingSessionsController < ApplicationController
 
     respond_to do |format|
       if @student_counseling_session.save
-        format.html { redirect_to(@student_counseling_session, :notice => 'StudentCounselingSession was successfully created.') }
+        format.html { redirect_to(@student_counseling_session, :notice =>  t('studentcounseling.title')+" "+t('created')) }
         format.xml  { render :xml => @student_counseling_session, :status => :created, :location => @student_counseling_session }
       else
         format.html { render :action => "new" }
@@ -104,7 +104,7 @@ class StudentCounselingSessionsController < ApplicationController
     end
     respond_to do |format|
       if @student_counseling_session.update_attributes(params[:student_counseling_session])
-        format.html { redirect_to(@student_counseling_session, :notice => 'StudentCounselingSession was successfully updated.') }
+        format.html { redirect_to(@student_counseling_session, :notice =>  t('studentcounseling.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

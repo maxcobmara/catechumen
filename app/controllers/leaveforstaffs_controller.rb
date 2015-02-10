@@ -51,7 +51,7 @@ class LeaveforstaffsController < ApplicationController
 
     respond_to do |format|
       if @leaveforstaff.save
-        flash[:notice] = 'Leaveforstaff was successfully created.'
+        flash[:notice] =  t('staffleave.title')+" "+t('created')
         format.html { redirect_to(@leaveforstaff) }
         format.xml  { render :xml => @leaveforstaff, :status => :created, :location => @leaveforstaff }
       else
@@ -68,7 +68,7 @@ class LeaveforstaffsController < ApplicationController
 
     respond_to do |format|
       if @leaveforstaff.update_attributes(params[:leaveforstaff])
-        flash[:notice] = 'Leaveforstaff was successfully updated.'
+        flash[:notice] =  t('staffleave.title')+" "+t('updated')
         format.html { redirect_to(@leaveforstaff) }
         format.xml  { head :ok }
       else

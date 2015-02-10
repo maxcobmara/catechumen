@@ -46,7 +46,7 @@ class AssetDefectsController < ApplicationController
 
     respond_to do |format|
       if @asset_defect.save
-        format.html { redirect_to(@asset_defect, :notice => 'AssetDefect was successfully created.') }
+        format.html { redirect_to(@asset_defect, :notice =>  t('assetdefects.title')+" "+t('registered')) }
         format.xml  { render :xml => @asset_defect, :status => :created, :location => @asset_defect }
       else
         format.html { render :action => "new" }
@@ -62,7 +62,7 @@ class AssetDefectsController < ApplicationController
 
     respond_to do |format|
       if @asset_defect.update_attributes(params[:asset_defect])
-        format.html { redirect_to(@asset_defect, :notice => 'AssetDefect was successfully updated.') }
+        format.html { redirect_to(@asset_defect, :notice =>  t('assetdefects.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

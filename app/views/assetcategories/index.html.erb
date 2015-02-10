@@ -21,7 +21,7 @@
   <tr>
     <td><%=h assetcategory.parent.description unless assetcategory.parent_id.nil? %></td>
     <td><%=h assetcategory.description %></td>
-    <td><%=h (Assetcategory::ASSETTYPE.find_all{|disp, value| value == assetcategory.cattype_id}).map {|disp, value| disp} %></td>
+    <td><%=h assetcategory.render_type %></td>
     <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), assetcategory %></td>
     <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), edit_assetcategory_path(assetcategory) %></td>
     <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), assetcategory, :confirm => (t 'are_you_sure'), :method => :delete %></td>

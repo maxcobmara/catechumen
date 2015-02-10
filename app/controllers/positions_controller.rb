@@ -46,7 +46,7 @@ class PositionsController < ApplicationController
 
     respond_to do |format|
       if @position.save
-        flash[:notice] = 'Position was successfully created.'
+        flash[:notice] = t('positions.title')+" "+t('created')
         format.html { redirect_to(@position) }
         format.xml  { render :xml => @position, :status => :created, :location => @position }
       else
@@ -63,7 +63,7 @@ class PositionsController < ApplicationController
 
     respond_to do |format|
       if @position.update_attributes(params[:position])
-        flash[:notice] = 'Position was successfully updated.'
+        flash[:notice] = t('positions.title')+" "+t('updated')
         format.html { redirect_to(@position) }
         format.xml  { head :ok }
       else

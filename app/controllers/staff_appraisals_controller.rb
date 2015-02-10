@@ -52,7 +52,7 @@ class StaffAppraisalsController < ApplicationController
 
     respond_to do |format|
       if @staff_appraisal.save
-        format.html { redirect_to(@staff_appraisal, :notice => 'StaffAppraisal was successfully created.') }
+        format.html { redirect_to(@staff_appraisal, :notice => t('evaluation.appraisal.title')+" "+t('updated')) }
         format.xml  { render :xml => @staff_appraisal, :status => :created, :location => @staff_appraisal }
       else
         format.html { render :action => "new" }
@@ -67,7 +67,7 @@ class StaffAppraisalsController < ApplicationController
     @staff_appraisal = StaffAppraisal.find(params[:id])
     respond_to do |format|
       if @staff_appraisal.update_attributes(params[:staff_appraisal])
-        format.html { redirect_to(@staff_appraisal, :notice => 'StaffAppraisal was successfully updated.') }
+        format.html { redirect_to(@staff_appraisal, :notice => t('evaluation.appraisal.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

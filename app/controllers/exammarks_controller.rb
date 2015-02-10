@@ -223,7 +223,7 @@ class ExammarksController < ApplicationController
         
         respond_to do |format|
           if @exammark.save
-            format.html { redirect_to(@exammark, :notice => 'Exammark was successfully created.') }
+            format.html { redirect_to(@exammark, :notice =>  t('exammark.title3')+" "+t('created')) }
             format.xml  { render :xml => @exammark, :status => :created, :location => @exammark }
           else
             format.html { render :action => "new" }
@@ -253,13 +253,13 @@ class ExammarksController < ApplicationController
         
         if @exammarks.all?(&:valid?) 
           @exammarks.each(&:save!)                                      # ref: to retrieve each value of @exammarks --> http://railsforum.com/viewtopic.php?id=11557 (Dazen2 007-10-07 05:27:42) 
-            flash[:notice] = 'Successfully saved all records'
+            flash[:notice] = t('exammark.created')
             redirect_to :action => 'index'
             flash.discard
         else                                                                      
 			    @exammarkerrormsg = Exammark.set_error_messages(@exammarks) 
 			    flash[:error] = @exammarkerrormsg	#red box                              
-          flash[:notice] = 'Data supplied was invalid. Please insert all data accordingly. All fields are compulsory.'
+          flash[:notice] = t('exammark.data_invalid')
           render :action => 'new'
           flash.discard
         end
@@ -305,7 +305,7 @@ class ExammarksController < ApplicationController
     #---
     respond_to do |format|
       if @exammark.update_attributes(params[:exammark])
-        format.html { redirect_to(@exammark, :notice => 'Exammark was successfully updated.') }
+        format.html { redirect_to(@exammark, :notice =>  t('exammark.title3')+" "+t('created')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

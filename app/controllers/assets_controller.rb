@@ -81,7 +81,7 @@ class AssetsController < ApplicationController
 
     respond_to do |format|
       if @asset.save
-        flash[:notice] = 'Asset was successfully registered.'
+        flash[:notice] =  t('asset.title')+" "+t('registered')
         format.html { redirect_to (@asset) }
         format.xml  { render :xml => @asset, :status => :created, :location => @asset }
       else
@@ -98,7 +98,7 @@ class AssetsController < ApplicationController
 
     respond_to do |format|
       if @asset.update_attributes(params[:asset])
-        flash[:notice] = 'Asset was successfully updated.'
+        flash[:notice] =  t('asset.title')+" "+t('updated')
         format.html { redirect_to(@asset) }
         format.xml  { head :ok }
       else

@@ -52,7 +52,7 @@ class AssetLoansController < ApplicationController
 
     respond_to do |format|
       if @asset_loan.save
-        format.html { redirect_to(@asset_loan, :notice => 'AssetLoan was successfully created.') }
+        format.html { redirect_to(@asset_loan, :notice => t('assetloan.title')+" "+t('created')) }
         format.xml  { render :xml => @asset_loan, :status => :created, :location => @asset_loan }
       else
         format.html { render :action => "new" }
@@ -68,7 +68,7 @@ class AssetLoansController < ApplicationController
 
     respond_to do |format|
       if @asset_loan.update_attributes(params[:asset_loan])
-        format.html { redirect_to(@asset_loan, :notice => 'AssetLoan was successfully updated.') }
+        format.html { redirect_to(@asset_loan, :notice => t('assetloan.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

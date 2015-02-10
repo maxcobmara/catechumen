@@ -44,7 +44,7 @@ class PtschedulesController < ApplicationController
 
     respond_to do |format|
       if @ptschedule.save
-        flash[:notice] = 'Ptschedule was successfully created.'
+        flash[:notice] = t('ptschedule.title')+" "+t('created')
         format.html { redirect_to(@ptschedule) }
         format.xml  { render :xml => @ptschedule, :status => :created, :location => @ptschedule }
       else
@@ -61,7 +61,7 @@ class PtschedulesController < ApplicationController
 
     respond_to do |format|
       if @ptschedule.update_attributes(params[:ptschedule])
-        flash[:notice] = 'Ptschedule was successfully updated.'
+        flash[:notice] =  t('ptschedule.title')+" "+t('updated')
         format.html { redirect_to(@ptschedule) }
         format.xml  { head :ok }
       else
