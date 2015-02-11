@@ -186,8 +186,8 @@
 		<!--Multiple EDIT by intake(+prog)-->
 		<div class="left">
 			<% form_tag edit_multiple_intake_student_attendances_path do %>	
-				<% unless @programme.nil? %>
-					<%= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %>	
+				<% if @programme2 %><%# unless @lecturer_programme.nil? %><%# unless @programme.nil? %><!--12 February 2015-->
+					<%= select_tag('intake_student', options_from_collection_for_select(@intatake2,:intake, :intake_acryn)) %>
 					<%= submit_tag t('student_attendance.edit_multiple_intake'), :name => :student_attendance_intake %>
 				<% else %>
 					<% if @is_common_lecturer%>
