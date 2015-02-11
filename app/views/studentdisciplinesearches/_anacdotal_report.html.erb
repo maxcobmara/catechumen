@@ -75,8 +75,15 @@
 				<td><%=student_discipline.reported_on.try(:strftime,'%d %b %Y')%></td>
 				<td><%=h (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == student_discipline.infraction_id}).map {|disp, value| disp} %>&nbsp;</td>
 				<td><%=student_discipline.location.name%>&nbsp;</td>
-				<td><%=student_discipline.status%>&nbsp;</td>
-				<td><%=student_discipline.action_type%>&nbsp;</td>
+				<td><%=student_discipline.render_status%>&nbsp;</td>
+				<td><%#=student_discipline.action_type%>
+					 <% unless student_discipline.action_type.blank? %>
+						<%=h t('studentdiscipline.refer_bpl') if student_discipline.action_type=="Ref to BPL" %>
+						<%=h t('studentdiscipline.refer_tphep') if student_discipline.action_type=="Ref TPHEP" %>
+						<%=h t('studentdiscipline.no_case') if student_discipline.action_type=="no_case" %>
+						<%=h t('studentdiscipline.advise') if student_discipline.action_type=="advise" %>
+					<%end %>&nbsp;
+				</td>
 			</tr>
 			<% end %>
 		</table>

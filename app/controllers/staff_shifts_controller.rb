@@ -44,7 +44,7 @@ class StaffShiftsController < ApplicationController
 
     respond_to do |format|
       if @staff_shift.save
-        format.html { redirect_to(staff_shifts_url, :notice => 'StaffShift was successfully created.') }
+        format.html { redirect_to(staff_shifts_url, :notice => t('staffshift.title2')+" "+t('created')) }
         format.xml  { render :xml => @staff_shift, :status => :created, :location => @staff_shift }
       else
         format.html { render :action => "new" }
@@ -60,7 +60,7 @@ class StaffShiftsController < ApplicationController
 
     respond_to do |format|
       if @staff_shift.update_attributes(params[:staff_shift])
-        format.html { redirect_to(staff_shifts_url, :notice => 'StaffShift was successfully updated.') }
+        format.html { redirect_to(staff_shifts_url, :notice =>  t('staffshift.title2')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

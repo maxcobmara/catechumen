@@ -59,7 +59,7 @@ class ExamanalysesController < ApplicationController
 
     respond_to do |format|
       if @examanalysis.save
-        format.html { redirect_to(@examanalysis, :notice => 'Examanalysis was successfully created.') }
+        format.html { redirect_to(@examanalysis, :notice =>  t('examanalysis.title2')+" "+t('created')) }
         format.xml  { render :xml => @examanalysis, :status => :created, :location => @examanalysis }
       else
         format.html { render :action => "new" }
@@ -75,7 +75,7 @@ class ExamanalysesController < ApplicationController
 
     respond_to do |format|
       if @examanalysis.update_attributes(params[:examanalysis])
-        format.html { redirect_to(@examanalysis, :notice => 'Examanalysis was successfully updated.') }
+        format.html { redirect_to(@examanalysis, :notice =>  t('examanalysis.title2')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

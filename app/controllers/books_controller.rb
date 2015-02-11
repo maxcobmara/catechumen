@@ -46,7 +46,7 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       if @book.save
-        flash[:notice] = 'Book was successfully created.'
+        flash[:notice] = t('book.title2')+" "+t('created')
         format.html { redirect_to(@book) }
         format.xml  { render :xml => @book, :status => :created, :location => @book }
       else
@@ -63,7 +63,7 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       if @book.update_attributes(params[:book])
-        flash[:notice] = 'Book was successfully updated.'
+        flash[:notice] =  t('book.title2')+" "+t('updated')
         format.html { redirect_to(@book) }
         format.xml  { head :ok }
       else

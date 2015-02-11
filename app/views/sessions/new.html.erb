@@ -1,16 +1,32 @@
-<h1><%=t 'login.login'%></h1>
-
+<!-- <h1><%=t 'login.login'%></h1> -->
+<h3><center>INTEGRATED CAMPUS MANAGEMENT SYSTEM (ICMS)</center></h3>
+<BR>
+<p align="center"><font color="grey", size="-2" > <%=t('login.provide_login_password')%> </font></p>
 <% form_tag session_path do -%>
-<p><%= label_tag t('login.login') %><br />
-<%= text_field_tag 'login', @login %></p>
+<table width=30% border=0 align="center" cellspacing=0 cellpadding=7>
+<tr>
+	<td class="leftcol"><%= label_tag t('login.login') %></td>
+	<td></td>
+	<td><%= text_field_tag 'login', @login %></td>
+</tr>
+<tr>
+		<td class="leftcol"><%= label_tag t('login.password') %></td>
+		<td></td>
+		<td><%= password_field_tag 'password', nil %></p></td>
+</tr>
+<tr>
+		<td class="leftcol"></td>
+		<td></td>
+		<td align="right"><%= submit_tag (t 'login.login') %></td>
+	</tr>
+</table>
+<p align="center"><font color="grey", size="-2" ><i> <%=t('login.problem_signing')%> </i></font></p>
 
-<p><%= label_tag t('login.password') %><br/>
-<%= password_field_tag 'password', nil %></p>
 
 <!-- Uncomment this if you want this functionality
 <p><%= label_tag 'remember_me', 'Remember me' %>
 <%= check_box_tag 'remember_me', '1', @remember_me %></p>
 -->
 
-<p><%= submit_tag (t 'login.login') %></p>
+
 <% end -%>

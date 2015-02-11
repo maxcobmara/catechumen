@@ -79,7 +79,7 @@ class TopicdetailsController < ApplicationController
 
     respond_to do |format|
       if @topicdetail.save
-        format.html { redirect_to(@topicdetail, :notice => 'Topicdetail was successfully created.') }
+        format.html { redirect_to(@topicdetail, :notice =>  t('topicdetail.title2')+" "+t('created')) }
         format.xml  { render :xml => @topicdetail, :status => :created, :location => @topicdetail }
       else
         format.html { render :action => "new" }
@@ -95,7 +95,7 @@ class TopicdetailsController < ApplicationController
 
     respond_to do |format|
       if @topicdetail.update_attributes(params[:topicdetail])
-        format.html { redirect_to(@topicdetail, :notice => 'Topicdetail was successfully updated.') }
+        format.html { redirect_to(@topicdetail, :notice =>  t('topicdetail.title2')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

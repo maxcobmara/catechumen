@@ -119,7 +119,7 @@ class ExamresultsController < ApplicationController
     @examresult = Examresult.new(params[:examresult])
     respond_to do |format|
       if @examresult.save
-        format.html { redirect_to(@examresult, :notice => 'Examresult was successfully created.') }
+        format.html { redirect_to(@examresult, :notice => t('examresult.title2')+" "+t('created')) }
         format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
       else
         format.html { render :action => "new" }
@@ -134,7 +134,7 @@ class ExamresultsController < ApplicationController
     @examresult = Examresult.find(params[:id])  
     respond_to do |format|
       if @examresult.update_attributes(params[:examresult])
-        format.html { redirect_to(@examresult, :notice => 'Examresult was successfully updated.') }
+        format.html { redirect_to(@examresult, :notice => t('examresult.title2')+" "+t('created')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

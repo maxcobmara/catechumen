@@ -22,22 +22,22 @@
 				<% if @asset_loan.is_approved != false %>
 				<tr>
 					<td class="leftcolwide"><%= t 'assetloan.requestfor' %></td>
-					<td><%=h @asset_loan.loaned_on %></td>
+					<td><%=h l(@asset_loan.loaned_on) %></td>
 				</tr>
 
 				<tr>
 					<td class="leftcolwide"><label><%= t 'assetloan.expect_returndate' %></td>
-					<td><%=h @asset_loan.expected_on %></td>
+					<td><%=h l(@asset_loan.expected_on) %></td>
 				</tr>
 				
 				<tr>
-					<td class="leftcolwide"><label><%= t 'asset.owner_repons' %></td>
+					<td class="leftcolwide"><label><%= t 'asset.assigned_to' %></td>
 					<td><%=h @asset_loan.asset.assignedto.name unless @asset_loan.asset.assignedto.blank? %> /
 					<%=h @asset_loan.asset.assignedto.position.unit unless @asset_loan.asset.assignedto.position.blank? %></td>
 				</tr>
 				<tr>
 					<td class="leftcolwide"><label><%= t 'book.loan_type' %></td>
-					<td><%=h "Internal" if @asset_loan.loantype == 1 %><%=h "External" if @asset_loan.loantype == 2 %></td>
+					<td><%=h t('assetloan.internal') if @asset_loan.loantype == 1 %><%=h t('assetloan.external') if @asset_loan.loantype == 2 %></td>
 				</tr>
 				<% end %>
 

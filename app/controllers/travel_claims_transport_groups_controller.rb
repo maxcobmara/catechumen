@@ -44,7 +44,7 @@ class TravelClaimsTransportGroupsController < ApplicationController
 
     respond_to do |format|
       if @travel_claims_transport_group.save
-        format.html { redirect_to(@travel_claims_transport_group, :notice => 'TravelClaimsTransportGroup was successfully created.') }
+        format.html { redirect_to(@travel_claims_transport_group, :notice =>  t('transportgroups.title2')+" "+t('created')) }
         format.xml  { render :xml => @travel_claims_transport_group, :status => :created, :location => @travel_claims_transport_group }
       else
         format.html { render :action => "new" }
@@ -60,7 +60,7 @@ class TravelClaimsTransportGroupsController < ApplicationController
 
     respond_to do |format|
       if @travel_claims_transport_group.update_attributes(params[:travel_claims_transport_group])
-        format.html { redirect_to(@travel_claims_transport_group, :notice => 'TravelClaimsTransportGroup was successfully updated.') }
+        format.html { redirect_to(@travel_claims_transport_group, :notice =>  t('transportgroups.title2')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
