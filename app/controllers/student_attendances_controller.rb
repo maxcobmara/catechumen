@@ -55,6 +55,9 @@ class StudentAttendancesController < ApplicationController
         @intake_list2 = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes], :select=> "DISTINCT intake")
         @student_list = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes])
         @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id) + Programme.find(@preselect_prog).descendants.at_depth(4).map(&:id)
+	#below - 2 lines - 12 February 2015
+	exist_att_student_ids=StudentAttendance.all.map(&:student_id)
+	@intake_list2b=Student.find(:all, :conditions => ['course_id=? and intake IN(?) and id NOT IN(?)',@preselect_prog, student_intakes, exist_att_student_ids], :select=> "DISTINCT intake")
       else 
         if @is_pengkhususan_lecturer
           @preselect_prog=Programme.find_by_name(@pengkhususan_name).id
@@ -185,8 +188,9 @@ class StudentAttendancesController < ApplicationController
       #for (1) multiple new by intake+programme for common lecturer & admin
       @intake_course2 = @intake_course - @exist_intake_course_attendances if @programme2.nil? && !@is_pengkhususan_lecturer 
     
+      #####DEFAULT - REQUIRED - 12 February 2015
       #for (1) multiple new by intake for programme lecturers(diploma, pengkhususan) 
-      @intake_list2b = @intake_list2 - @exist_intake if !@is_common_lecturer 
+      @intake_list2b = @intake_list2 - @exist_intake if !@is_common_lecturer && @exist_intake.count == 0
     
     end  
     respond_to do |format|
@@ -300,6 +304,18 @@ class StudentAttendancesController < ApplicationController
         end
 
       end
+      #working sample : nurussaadah(radiografi) & halimah(kebidanan), single/multiple classes of multiple intakes-Start
+      wtimetable_ids=@schedule_list.map(&:weeklytimetable_id) 
+      intakes_count = Weeklytimetable.find(:all, :conditions => ['id IN(?)', wtimetable_ids]).map(&:intake_id).uniq.count
+      if intakes_count > 1
+        class_ids =@schedule_list.map(&:id) 
+        intake_id=Intake.find(:first, :conditions => ['monthyear_intake=? and programme_id=?', @intake,@preselect_prog]).id
+        wtimetable_of_intake = Weeklytimetable.find(:all, :conditions => ['id IN(?) and intake_id=?',wtimetable_ids, intake_id]).map(&:id) 
+        classes_of_intake = WeeklytimetableDetail.find(:all, :conditions => ['weeklytimetable_id in(?) AND id IN(?)', wtimetable_of_intake, class_ids])
+        @schedule_list = classes_of_intake
+      end
+      #working sample : nurussaadah(radiografi) & halimah(kebidanan), single/multiple classes of multiple intakes-End
+      
       @student_attendances = Array.new(5) { StudentAttendance.new }                 
     end
     
@@ -497,7 +513,7 @@ class StudentAttendancesController < ApplicationController
       end
       
       #common subject lecturers / admin / pengkhususan lectures
-      if params["intake_prog"]
+      if params["intake_prog"] && (@is_admin || @is_common_lecturer || @is_pengkhususan_lecturer)
         intake_prog = params["intake_prog"]
         @intake = intake_prog.split("&")[0]
         @preselect_prog = intake_prog.split("&")[1]
