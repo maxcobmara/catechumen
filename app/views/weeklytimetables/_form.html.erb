@@ -31,7 +31,7 @@
 				<%#= f.grouped_collection_select(:intake_id, Intake::OPTIONS, :options, :type_name, :id, :name, 5,:include_blank=> "Select Group (Intake)") %><%# else %>
 				<%#=h @weeklytimetable.intake_id %>
 				<!--YG OK-->
-				<%= f.collection_select :intake_id, Intake.all, :id, :programme_group_intake, :prompt=> t('select') %>
+				<%= f.collection_select :intake_id, Intake.find(:all, :order => "programme_id ASC"), :id, :programme_group_intake, :prompt=> t('select') %>
 				<!--YG OK-->
 				<%# options = option_groups_from_collection_for_select(Intake::OPTIONS, :options, :type_name, :id, :name, 0)%>
 				<%#= select_tag('weeklytimetable', :intake_id, :options=>options, :include_blank=>true )%>
