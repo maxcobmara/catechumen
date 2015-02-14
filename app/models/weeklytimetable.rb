@@ -3,7 +3,7 @@ class Weeklytimetable < ActiveRecord::Base
   #controller searches, variables, lists, relationship checking
   
   #before_save :set_semester
-  before_save :set_to_nil_where_false
+  before_save :set_to_nil_where_false, :intake_must_match_with_programme
   
   belongs_to :schedule_programme, :class_name => 'Programme',       :foreign_key => 'programme_id'
   belongs_to :schedule_semester,  :class_name => 'Programme',       :foreign_key => 'semester'
@@ -84,5 +84,16 @@ class Weeklytimetable < ActiveRecord::Base
         errors.add_to_base("Please choose either to approve or reject this weekly timetable")
     end
   end
+  
+  private 
+    def intake_must_match_with_programme
+      valid_intakes = Intake.find(:all, :conditions => ['programme_id=?', programme_id]).map(&:id)
+      if valid_intakes.include?(intake_id)
+        return true
+      else
+        errors.add(:base, I18n.t('weeklytimetable.intake_programme_must_match'))
+        return false
+      end
+    end
   
 end
