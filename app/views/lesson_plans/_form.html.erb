@@ -129,38 +129,7 @@
 				<td><%= f.file_field :data %><BR>
 				<%= f.text_field :title, :placeholder => t('lesson_plan.note_title'), :size => '50x1', :value=>@title_fr_trainingnotes %></td>
 			</tr>
-			<!--trial section : 20May2013-->
-				<table width=100%>
-					<tr>
-						<td class="leftcol"><%=t('lesson_plan.add_exist_notes')%></td>
-						<td>
-							<div>
-							<% f.fields_for :lesson_plan_trainingnotes do |builder| %>
-								<%= render 'lesson_plan_trainingnote_fields', :f => builder %>
-							<% end %>
-							<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :lesson_plan_trainingnotes %> - <%=t('addmore')%> </p>
-							</div></td>
-					</tr>
-					<!--
-					<tr>
-						<td class="leftcol">Add New Training Notes</td>
-						<td>
-							<div>Current file is : LUAR<%#=@lesson_plan.trainingnotes%>
-							<%# f.fields_for :trainingnotes do |builder| %>
-								<%#= render 'trainingnote_fields', :f => builder %>
-							<%# end %>
-							<p><%#= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :trainingnotes %> - Add More </p>
-							</div></td>
-					</tr>-->
-				</table>
-			<!--trial section : 20May2013-->
-			<!--start-added for clarification-3Nov2013-->
-			<tr>
-				<td class="leftcol">&nbsp;</td>
-				<td><%=t('lesson_plan.remark')%></td>
-			</tr>
-			<!--end-added for clarification-3Nov2013-->
-
+			<%= render :partial => 'additional_notes', :locals => {:f => f}%>
 		</table>
 
 <BR>

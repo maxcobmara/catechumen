@@ -65,6 +65,9 @@
 		<%elsif lesson_plan.hod_rejected==true && lesson_plan.is_submitted==true %>
 			- <%=t('lesson_plan.resubmitted')%>
 		<% end %>
+		<% if (lesson_plan.prepared_by == Login.current_login.staff_id || @is_admin) && lesson_plan.is_submitted == true && !lesson_plan.report_submit %>
+			<%= link_to (t 'lesson_plan.add_notes'), :action => 'edit', :id => lesson_plan %>
+		<% end %>
 	</td>
 	<td><!--LessonP approval, display rejected when exist-->
 		<%=h lesson_plan.hod_approved? ? image_tag("tick.png") : image_tag("cross.png") %>
