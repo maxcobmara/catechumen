@@ -54,7 +54,7 @@
     <td><%=h lesson_plan.student_qty %></td>
     <td><%=h lesson_plan.year %></td>
     <td><%=h lesson_plan.semester %></td>
-    <td><%=h lesson_plan.schedule_item.try(:weeklytimetable_topic).try(:subject_with_topic) %>  <%#=h lesson_plan.lecture_title %></td>
+    <td><%=h lesson_plan.schedule_item.try(:weeklytimetable_topic).try(:subject_with_topic) %> - <%=h lesson_plan.schedule_item.try(:render_class_method) %> <%#=h lesson_plan.lecture_title %></td>
     <td><%=h lesson_plan.lecture_date.blank? ?  lesson_plan.schedule_item.try(:get_date_for_lesson_plan)  : lesson_plan.lecture_date.try(:strftime, '%d %b %Y') %></td>
     <td><%=h lesson_plan.schedule_item.try(:get_start_time) %></td>
     <td><%=h lesson_plan.schedule_item.try(:get_end_time) %></td>
