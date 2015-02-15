@@ -40,25 +40,25 @@ class WeeklytimetableDetail < ActiveRecord::Base
       sdate = Weeklytimetable.find(weeklytimetable_id).startdate
       endate = Weeklytimetable.find(weeklytimetable_id).enddate
       #return (sdate).strftime('%d-%b-%Y') + " Mon" if day2 == 1  t('date.abbr_day_names')
-      return I18n.l((sdate), :format => '%d-%b-%Y') + " "+ I18n.t(:'date.abbr_day_names')[1] if day2 == 1
-      return I18n.l((sdate+1), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[2] if day2 == 2
-      return I18n.l((sdate+2), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[3] if day2 == 3
-      return I18n.l((sdate+3), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[4] if day2 == 4
-      return I18n.l((sdate+4), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[5] if is_friday == true  
-      return I18n.l((sdate+5), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[6] if day2 == 6
-      return I18n.l((sdate+6), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[0] if day2 == 7
+      return I18n.l((sdate), :format => '%d-%b-%Y') + " "+ I18n.t(:'date.abbr_day_names')[0] if day2 == 1
+      return I18n.l((sdate+1), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[1] if day2 == 2
+      return I18n.l((sdate+2), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[2] if day2 == 3
+      return I18n.l((sdate+3), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[3] if day2 == 4
+      return I18n.l((sdate+4), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[4] if is_friday == true  
+      return I18n.l((sdate+5), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[5] if day2 == 6
+      return I18n.l((sdate+6), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[6] if day2 == 7
    end   
    
    def get_day_of_schedule
       sdate = Weeklytimetable.find(weeklytimetable_id).startdate
       endate = Weeklytimetable.find(weeklytimetable_id).enddate
-      return I18n.t(:'date.abbr_day_names')[1] if day2 == 1
-      return I18n.t(:'date.abbr_day_names')[2] if day2 == 2
-      return I18n.t(:'date.abbr_day_names')[3] if day2 == 3
-      return I18n.t(:'date.abbr_day_names')[4] if day2 == 4
-      return I18n.t(:'date.abbr_day_names')[5] if is_friday == true  
-      return I18n.t(:'date.abbr_day_names')[6] if day2 == 6
-      return I18n.t(:'date.abbr_day_names')[0] if day2 == 7
+      return I18n.t(:'date.abbr_day_names')[0] if day2 == 1
+      return I18n.t(:'date.abbr_day_names')[1] if day2 == 2
+      return I18n.t(:'date.abbr_day_names')[2] if day2 == 3
+      return I18n.t(:'date.abbr_day_names')[3] if day2 == 4
+      return I18n.t(:'date.abbr_day_names')[4] if is_friday == true  
+      return I18n.t(:'date.abbr_day_names')[5] if day2 == 6
+      return I18n.t(:'date.abbr_day_names')[6] if day2 == 7
    end
    
    def get_start_time
@@ -133,25 +133,25 @@ class WeeklytimetableDetail < ActiveRecord::Base
 
    DAY_LIST = [
            #  Displayed       stored in db
-           ["Sunday",     1],
-           ["Monday",    2],
-           ["Tuesday",  3],
-           ["Wednesday",   4]
+           [I18n.t(:'date.day_names')[0],     1],
+           [I18n.t(:'date.day_names')[1],    2],
+           [I18n.t(:'date.day_names')[2],  3],
+           [I18n.t(:'date.day_names')[3],   4]
      ]
     DAY_LIST2 = [
            #  Displayed       stored in db
-           ["Sunday",     1],
-           ["Monday",    2],
-           ["Tuesday",  3],
-           ["Wednesday",   4],
-           ["Friday", 6],
-           ["Saturday", 7]
+           [I18n.t(:'date.day_names')[0],     1],
+           [I18n.t(:'date.day_names')[1],    2],
+           [I18n.t(:'date.day_names')[2],  3],
+           [I18n.t(:'date.day_names')[3],   4],
+           [I18n.t(:'date.day_names')[4], 6],
+           [I18n.t(:'date.day_names')[5], 7]
      ]
     CLASS_METHOD = [
            #  Displayed       stored in db
-           ["Kuliah",     1],
-           ["Tutorial",    2],
-           ["Amali",  3]
+           [I18n.t('weeklytimetable_detail.lecture.'), 1],
+           [I18n.t('weeklytimetable_detail.tutorial'), 2],
+           [I18n.t('weeklytimetable_detail.practical'), 3]
      ]
      
      #24March2013==========

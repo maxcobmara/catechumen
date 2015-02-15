@@ -66,10 +66,10 @@
 		<% end %>
 		</td>
 		<td><%=h topicdetail.version_no %></td>
-		<td><%=h topicdetail.duration.try(:strftime, "%HH %MMin") %></td>
-		<td><%=h topicdetail.theory.try(:strftime, "%HH %MMin") %></td>
-		<td><%=h topicdetail.tutorial.try(:strftime, "%HH%MMin") %></td>
-		<td><%=h topicdetail.practical.try(:strftime, "%HH %MMin") %></td>
+		<td><%=h topicdetail.duration.try(:strftime, "%H") %> <%=t('time.hours')%> <%=h topicdetail.duration.try(:strftime, "%M") %> <%=t('time.minutes')%></td>
+		<td><%=h topicdetail.theory.try(:strftime, "%H") %> <%=t('time.hours')%> <%=h topicdetail.theory.try(:strftime, "%M") %>  <%=t('time.minutes')%> </td>
+		<td><%=h topicdetail.tutorial.try(:strftime, "%H") %> <%=t('time.hours')%> <%=h topicdetail.tutorial.try(:strftime, "%M") %> <%=t('time.minutes')%> </td>
+		<td><%=h topicdetail.practical.try(:strftime, "%H") %> <%=t('time.hours')%> <%=h topicdetail.practical.try(:strftime, "%M") %> <%=t('time.minutes')%> </td>
 		<td><%=h topicdetail.topic_creator.try(:name) %></td>
 		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => topicdetail %></td>
 		<td width=10px>

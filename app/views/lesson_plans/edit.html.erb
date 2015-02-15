@@ -15,6 +15,17 @@
 			<%=render :partial => 'approval', :locals => {:f => f} %>
 		</div>
 	<% end -%>
+	<% if (@lesson_plan.prepared_by == Login.current_login.staff_id || @is_admin) && @lesson_plan.is_submitted == true && !@lesson_plan.report_submit %>
+		<h3><%=t('lesson_plan.adding_notes')%></h3>
+		<div class="tform">
+		        <%=render :partial => 'show_main' %>
+		        <br>
+		        <H2><%=t('lesson_plan.add_notes')%></H2>
+			<table>
+				<%= render :partial => 'additional_notes', :locals => {:f => f}%>
+			</table>
+		</div>
+	<% end %>
   <p>
     <%= f.submit t('update') %>
   </p>
