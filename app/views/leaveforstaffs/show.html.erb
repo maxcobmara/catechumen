@@ -26,7 +26,7 @@
 	<table>
 		<tr>
 		  <td class="leftcol"><label for="approval1"><b><%= t 'staffleave.approval1' %> :</b></label></td>
-			<td><%=h @leaveforstaff.approval1? ? (t 'yes2') : (t 'no2') %></td>
+			<td><%=h @leaveforstaff.approval1? ? (t 'staffleave.supported') : (t 'staffleave.not_supported') %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="approval1_id"><b><%= t 'staffleave.approval1_id' %> :</b></label></td>
@@ -41,12 +41,12 @@
 
 		<tr>
 		  <td class="leftcol"><label for="approval1date"><b><%= t 'staffleave.approval1date' %> :</b></label></td>
-			<td><%=h @leaveforstaff.approval1date %></td>
+			<td><%=h l(@leaveforstaff.approval1date) %></td>
 		</tr>
 	
 		<tr>
 		  <td class="leftcol"><label for="approver2"><b><%= t 'staffleave.approver2' %> :</b></label></td>
-			<td><%=h @leaveforstaff.approver2? ? (t 'yes2') : (t 'no2') %></td>
+			<td><%=h @leaveforstaff.approver2? ? (t 'staffleave.approved') : (t 'staffleave.not_approved') %></td>
 		</tr>
 	
 		<tr>
@@ -56,10 +56,11 @@
 	
 		<tr>
 		  <td class="leftcol"><label for="approval2date"><b><%= t 'staffleave.approval2date' %> :</b></label></td>
-			<td><%=h @leaveforstaff.approval2date %></td>
+			<td><%=h l(@leaveforstaff.approval2date) %></td>
 		</tr>
   </table>
 </div>
 <BR>
-<%= link_to (t 'edit'), edit_leaveforstaff_path(@leaveforstaff) %> |
+<% if @leaveforstaff.staff_id == Login.current_login.staff_id %>
+<%= link_to (t 'edit'), edit_leaveforstaff_path(@leaveforstaff) %> |<% end %>
 <%= link_to (t 'icms.back'), leaveforstaffs_path %>

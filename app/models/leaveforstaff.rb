@@ -41,7 +41,7 @@ class Leaveforstaff < ActiveRecord::Base
       end
     end
     duplicates = (e_leavedates & c_leavedates).count
-    if duplicates > 0 
+    if duplicates > 0 && (id.nil? || id.blank?)
       errors.add(:base, I18n.t('staffleave.leave_already_taken'))
       return false
     else
@@ -317,7 +317,7 @@ class Leaveforstaff < ActiveRecord::Base
   
   def endorser
     if approval2_id == 0
-      "Note Required"
+      I18n.t('not_required')
     else
       approver.name
     end
