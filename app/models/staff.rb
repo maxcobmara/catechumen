@@ -6,6 +6,9 @@ class Staff < ActiveRecord::Base
     self.name = name.titleize
   end
   
+  has_many :vehicles, :dependent => :destroy
+  accepts_nested_attributes_for :vehicles, :allow_destroy => true, :reject_if => lambda {|a| a[:cylinder_capacity].blank? }#|| a[:reg_no].blank?}
+    
   has_attached_file :photo,
                     :url => "/assets/staffs/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
