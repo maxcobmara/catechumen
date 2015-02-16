@@ -22,7 +22,13 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="approval1_id"><b><%= t 'staffleave.approval1_id' %> :</b></label></td>
-			<td><%=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.name %></td>
+			<td><%#=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.name %>
+			         <% if @leaveforstaff.approval1_id.blank? %>
+					<%= @leaveforstaff.applicant.position.unit.blank? ? (t 'staffleave.unit_not_defined') : "" %>
+				<% else %>
+					<%=@leaveforstaff.seconder.name%>
+				<% end %>
+			</td>
 		</tr>
 
 		<tr>
@@ -47,5 +53,5 @@
   </table>
 </div>
 <BR>
-<%= link_to (t 'icms.update'), edit_leaveforstaff_path(@leaveforstaff) %> |
+<%= link_to (t 'edit'), edit_leaveforstaff_path(@leaveforstaff) %> |
 <%= link_to (t 'icms.back'), leaveforstaffs_path %>
