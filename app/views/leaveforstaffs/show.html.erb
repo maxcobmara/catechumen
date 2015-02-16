@@ -9,11 +9,11 @@
 		</tr>
 		<tr>
 		  <td class="leftcol"><label for="balance_before"><%= t 'staffleave.leave_balance'%> :<br><%= t 'staffleave.balance_before' %><b></label></td>
-		  <td><%=@leaveforstaff.balance_before%></td>
+		  <td><%= @leaveforstaff.applicant.appointdt.nil? ? (t 'staffleave.appointdt_not_exist') : @leaveforstaff.balance_before %></td>
 		</tr>
 		<tr>
 		  <td class="leftcol"><label for="balance_after"><%= t 'staffleave.leave_balance'%> :<br><%= t 'staffleave.balance_after' %><b></label></td>
-		  <td><%=@leaveforstaff.balance_after%></td>
+		  <td><%= @leaveforstaff.applicant.appointdt.nil? ? (t 'staffleave.appointdt_not_exist') : @leaveforstaff.balance_after%></td>
 		</tr>
 		<tr>
 		  <td class="leftcol"><label for="replacement_id"><b><%= t 'staffleave.entitlement' %> :</b></label></td>
