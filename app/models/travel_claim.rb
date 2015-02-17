@@ -18,15 +18,16 @@ class TravelClaim < ActiveRecord::Base
   accepts_nested_attributes_for :travel_claim_allowances, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
   
   validates_uniqueness_of :claim_month, :scope => :staff_id, :message => "You already have claims for this month"
+  validate :accommodations_must_exist_for_lodging_hotel_claims
   
   attr_accessor :edittype
   
   def set_to_nil_where_false
     if is_submitted == true
       self.submitted_on= Date.today
-      #finance check
-      if is_returned == true
-        self.is_checked == false
+      #owner resubmit amended form
+      if is_checked == false && staff_id == Login.current_login.staff_id  #during resubmission of amended form by owner
+        self.is_returned = false 
       end
       #check part?
       if is_checked == false && staff_id != Login.current_login.staff_id  #2nd time return by finance
@@ -45,20 +46,29 @@ class TravelClaim < ActiveRecord::Base
     self.total = total_claims
   end
   
+  def accommodations_must_exist_for_lodging_hotel_claims
+     duplicates = (travel_claim_allowances.map(&:expenditure_type) & [31,32]).count
+     if duplicates > 0 && (accommodations.nil? || accommodations.blank?)
+      errors.add(:base, I18n.t('claim.address_required'))
+    end
+  end
+  
   def my_claim_status
-    if staff_id == Login.current_login.staff_id && is_submitted != true 
+    if staff_id == Login.current_login.staff_id && is_submitted != true && is_checked == nil
       I18n.t('staffleave.editing')#"editing"
-    elsif staff_id != Login.current_login.staff_id && is_submitted != true	#add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
+    elsif staff_id != Login.current_login.staff_id && is_submitted != true && is_checked == nil #add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
       I18n.t('staffleave.editing_by_staff')#"editing by staff"
     elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == nil
       I18n.t('staffleave.submitted')#"submitted"
     elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == nil
       I18n.t('staffleave.for_checking')#"for checking"
-    elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == true
+    elsif staff_id == Login.current_login.staff_id && is_submitted == false && is_checked == false && is_returned == true #owner amend returned document but did not submit
+      I18n.t('staffleave.returned')#"returned"
+    elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == true #owner amend returned document & re-SUBMIT
       I18n.t('staffleave.returned')#"returned"
     elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == false 
       I18n.t('staffleave.resubmitted_to_finance')#"resubmitted to finance"
-    elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == false	&& is_returned == false 
+    elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == false 
       I18n.t('staffleave.for_checking')#"for checking"
     elsif is_submitted == true && is_checked == true && is_approved != true
       I18n.t('staffleave.processed')# "processed"

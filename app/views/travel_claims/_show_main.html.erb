@@ -123,7 +123,12 @@
 				  <td colspan=4 align='right'><b><%= t 'claim.quick_total' %></b></td>
 				  <td align='right'><b><%= ringgols(@travel_claim.allowas) %></b></td>
 				</tr>
-				
+				<% if (@travel_claim.travel_claim_allowances.map(&:expenditure_type) & [31,32]).count > 0 %>
+				<tr>
+				  <td><b><%= t 'claim.accommodations' %><br><%=t('claim.hotel_lodging')%></b></td>
+				  <td colspan=4><%=simple_format(@travel_claim.accommodations)%></td>
+				</tr>
+				<% end %>
 			</table>
 				<BR/>
 	</fieldset>

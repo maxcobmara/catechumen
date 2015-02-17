@@ -9,7 +9,7 @@
 			<td align="right" width=20%> <%= f.text_field :amount, :size => '10' %></td><%= f.hidden_field :_destroy %>
 			<td align="right" width=5%><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>   </td>
 			<td width=10%>
-				<% if @travel_claim.my_claim_status == "returned" %>
+				<% if @travel_claim.my_claim_status == t('staffleave.returned') %>
 					<% if f.object.checker==true %>
 						Ok
 					<% else %>
@@ -29,8 +29,8 @@
 			<td width=20%> <%=h (TravelClaimReceipt::RECEIPTTYPE.find_all{|disp, value| value == f.object.expenditure_type}).map {|disp, value| disp} %></td>
 			<td width=30%> <%= f.object.receipt_code %></td>
 			<td align="right"><%= ringgols(f.object.amount) %></td>
-			<td width=27% style="padding-left:15px;"%>
-				<label><%= f.radio_button :checker, 'true' %> OK <%= f.radio_button :checker, 'false' %> Query : <%= f.text_field :checker_notes, :size => '15' %></td>
+			<td width=27% style="padding-left:15px;">
+				<%= f.radio_button :checker, 'true' %><label> OK </label><%= f.radio_button :checker, 'false' %><label> Query</label> : <%= f.text_field :checker_notes, :size => '15' %></td>
 		</tr>
 	</table>
 </div>
