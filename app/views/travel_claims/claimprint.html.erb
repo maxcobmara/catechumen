@@ -4,9 +4,11 @@
 	document.write("<input type='button' " +
 	"onClick='window.print()' " +
 	"class='printbutton' " +
-	"value='Print This Page'/>");
+	"value='<%=escape_javascript(t 'print')%>'/>");
 	</script>
-
+<div id="hideLink">
+<%= link_to (t 'back'), travel_claims_path %>
+</div><BR>
 <div class="A4potrait_paged">
 	<BR/>
 	<p class="marginright" align="right"><b>Lampiran A</b></p>
@@ -43,37 +45,37 @@
 			<tr>
 				<td rowspan=3>PENDAPATAN (RM)</td>
 				<td>GAJI</td>
-				<td class="filler"><%= @travel_claim.staff.starting_salary? ? @travel_claim.staff.starting_salary : "&nbsp;" %><%#=h ringgols(@travel_claim.staff.starting_salary) %></td>
+				<td class="filler"><%= @travel_claim.staff.current_salary? ? ringgols(@travel_claim.staff.current_salary) : "&nbsp;" %><%#=h ringgols(@travel_claim.staff.starting_salary) %></td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>ELAUN-ELAUN</td>
-				<td class="filler">&nbsp;</td>
+				<td class="filler"><%= @travel_claim.staff.allowance? ? ringgols(@travel_claim.staff.allowance) : "&nbsp;" %></td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>JUMLAH</td>
-				<td class="filler">&nbsp;</td>
+				<td class="filler"><%= @travel_claim.staff.current_salary? ? ringgols(@travel_claim.staff.starting_salary+@travel_claim.staff.allowance) : "&nbsp;" %></td>
 			</tr>
 			
 			<tr>
 				<td rowspan=4>KENDERAAN</td>
 				<td>JENIS MODEL</td>
-				<td class="filler">&nbsp;</td>
+				<td class="filler"><%= @travel_claim.staff.vehicles.try(:first).try(:type_model) %>&nbsp;</td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>NO PENDAFTARAN</td>
-				<td class="filler">&nbsp;</td>
+				<td class="filler"><%= @travel_claim.staff.vehicles.try(:first).try(:reg_no) %>&nbsp;</td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>KUASA (C.C)</td>
-				<td class="filler">&nbsp;</td>
+				<td class="filler"><%= @travel_claim.staff.vehicles.try(:first).try(:cylinder_capacity) %>&nbsp;</td>
 			</tr>
 			
 			<tr>
@@ -106,12 +108,12 @@
 			
 			<tr>
 				<td>ALAMAT PENGINAPAN</td>
-				<td colspan=2 class="filler">&nbsp;</td>
+				<td colspan=2 class="filler">&nbsp;</td><!--to do ; alamat lodging-->
 			</tr>
 			
 			<tr>
 				<td>NO GAJI</td>
-				<td colspan=2 class="filler">[ Update with Staff Information ]</td> <!--TODO : DO THIS-->
+				<td colspan=2 class="filler"><%=h @travel_claim.staff.try(:salary_no)%></td>
 			</tr>
 			
 			<tr>
@@ -189,22 +191,22 @@
 						<td align='center'><%= travel_claim_log.start_at.strftime("%l:%M%p") %></td>
 						<td align='center'><%= travel_claim_log.finish_at.strftime("%l:%M%p") %></td>
 						<td align='center'><%= travel_claim_log.destination %></td>
-						<td align='right'><%= travel_claim_log.mileage %></td>
-						<td align='right'><%= ringgols(travel_claim_log.km_money) %></td>
+						<td align='right'><%= travel_claim_log.mileage %>&nbsp;</td>
+						<td align='right'><%= ringgols(travel_claim_log.km_money) %>&nbsp;</td>
 					</tr>
 
 				<% end %>
 		<tr>
 			<td colspan=4>Totals</td>
-			<td align='right'><%= travel_request.log_mileage %></td>
-			<td align='right'><%= ringgols(travel_request.log_fare) %></td>
+			<td align='right'><%= travel_request.log_mileage %>&nbsp;</td>
+			<td align='right'><%= ringgols(travel_request.log_fare) %>&nbsp;</td>
 		</tr>
 		
 		
 		<tr>
 			<td colspan=4>Total KM</td>
 			<td align='right'><%= @travel_claim.total_mileage %></td>
-			<td align='right'><%= ringgols(@travel_claim.total_km_money) %></td>
+			<td align='right'><%= ringgols(@travel_claim.total_km_money) %>&nbsp;</td>
 		</tr>
 	</table>
 	

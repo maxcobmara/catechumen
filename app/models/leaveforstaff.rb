@@ -8,11 +8,44 @@ class Leaveforstaff < ActiveRecord::Base
   belongs_to :approver,     :class_name => 'Staff', :foreign_key => 'approval2_id'
   
   validates_presence_of :staff_id, :leavetype
-  validate :validate_end_date_before_start_date
+  validate :validate_end_date_before_start_date, :validate_leave_application_is_unique
   
   def validate_end_date_before_start_date
     if leavenddate && leavestartdate && leavetype!=2
-      errors.add(:leavenddate, "Your leave must begin before it ends") if leavenddate < leavestartdate || leavestartdate < DateTime.now
+      errors.add(:base, I18n.t('staffleave.begin_before_ends')) if leavenddate < leavestartdate || leavestartdate < DateTime.now
+    end
+  end
+  
+  def validate_leave_application_is_unique
+    #existing leave
+    leavedays = Leaveforstaff.find(:all, :conditions=>['staff_id=?',applicant])
+    e_leavedates = []
+    leavedays.each do |leave|
+      currdate = leave.leavestartdate
+      daycount= leave.leavenddate+1-leave.leavestartdate
+      0.upto(daycount-1) do |t|
+        if currdate <= leave.leavenddate 
+          e_leavedates << currdate
+          currdate+=1.days
+        end
+      end
+    end
+    #current application 
+    c_leavedates = []
+    c_currdate = leavestartdate
+    c_daycount=leavenddate+1-leavestartdate
+    0.upto(c_daycount-1) do |u|
+      if c_currdate  <= leavenddate
+        c_leavedates << c_currdate
+        c_currdate+=1.days
+      end
+    end
+    duplicates = (e_leavedates & c_leavedates).count
+    if duplicates > 0 && (id.nil? || id.blank?)
+      errors.add(:base, I18n.t('staffleave.leave_already_taken'))
+      return false
+    else
+      return true
     end
   end
   
@@ -122,6 +155,7 @@ class Leaveforstaff < ActiveRecord::Base
         approver1 = applicant.position.parent.staff.id   #if pentadbiran OK - applicant.position.unit=="Pentadbiran"
       end
       #Administration2--end---
+      #-----------------------------------
     end
  
   end
@@ -197,7 +231,7 @@ class Leaveforstaff < ActiveRecord::Base
       end
       #Administration2--end--
     end
-   
+    #---------------------
   end
   
   def leave_for
@@ -249,6 +283,24 @@ class Leaveforstaff < ActiveRecord::Base
     cuti_rehat_entitlement - accumulated_leave if cuti_rehat_entitlement!=nil
   end
   
+  def balance_before
+    bal_bef = 0
+    leavedays = Leaveforstaff.find(:all, :conditions=>['staff_id=? AND leavetype=? and leavestartdate <?',applicant, 1, leavestartdate])
+    leavedays.each do |leave|
+      bal_bef+=leave.leavenddate+1-leave.leavestartdate
+    end
+    cuti_rehat_entitlement - bal_bef if cuti_rehat_entitlement!=nil
+  end
+  
+  def balance_after
+    bal_aft = 0
+    leavedays = Leaveforstaff.find(:all, :conditions=>['staff_id=? AND leavetype=? and leavestartdate <=?',applicant, 1, leavestartdate])
+    leavedays.each do |leave|
+      bal_aft+=leave.leavenddate+1-leave.leavestartdate
+    end
+    cuti_rehat_entitlement - bal_aft if cuti_rehat_entitlement!=nil
+  end
+  
   def applicant_details 
        suid = staff_id.to_a
        exists = Staff.find(:all, :select => "id").map(&:id)
@@ -265,7 +317,7 @@ class Leaveforstaff < ActiveRecord::Base
   
   def endorser
     if approval2_id == 0
-      "Note Required"
+      I18n.t('not_required')
     else
       approver.name
     end

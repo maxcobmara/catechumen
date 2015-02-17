@@ -6,9 +6,9 @@ class LeaveforstaffsController < ApplicationController
     #@leaveforstaffs = Leaveforstaff.with_permissions_to(:index).find(:all)
     @filters = Leaveforstaff::FILTERS
       if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index).send(params[:show])
+        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index, :order => "staff_id ASC, leavestartdate ASC").send(params[:show])
       else
-        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index).relevant
+        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index, :order => "staff_id ASC, leavestartdate ASC").relevant
       end
 
     respond_to do |format|
