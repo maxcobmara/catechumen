@@ -27,15 +27,16 @@
 		<td width=10px><%= link_to image_tag("document.png", :border => 0,:title=>(t 'show')), :action => 'show', :id => travel_claim %></td>
 			<!--HACK : Refactor status code into model, use status to determine show or actions-->
 		<td width=10px>
-			<% if travel_claim.my_claim_status == "editing" || travel_claim.my_claim_status == "returned" %>
+			<% if travel_claim.my_claim_status == t('staffleave.editing') || travel_claim.my_claim_status == t('staffleave.returned') %>
 				<%= link_to image_tag("edit.png", :border => 0, :title=>(t 'edit')), :action => 'edit', :id => travel_claim %>
 			<% end %></td>
 		<td width=10px><!--4Jan2013 - add in condition :|| travel_claim.my_claim_status == "amended and resubmit for finance check" -->
-			<% if travel_claim.my_claim_status == "for checking" || travel_claim.my_claim_status == "amended and resubmit for finance check" %>
+			<%# if travel_claim.my_claim_status == "for checking" || travel_claim.my_claim_status == "amended and resubmit for finance check" %>
+			<% if travel_claim.my_claim_status == t('staffleave.for_checking') || travel_claim.my_claim_status == t('staffleave.resubmitted_to_finance') %>
 				<%= link_to image_tag("joystick_error.png", :border => 0,:title=>(t 'staffleave.finance_check')), :action => 'check', :id => travel_claim %>
 			<% end %></td>
 		<td width=10px >
-			<%# if travel_claim.my_claim_status ==  ("processed" || "approved") %>
+			<%# if travel_claim.my_claim_status ==  (t('staffleave.processed') || t('staffleave.approved')) %>
 				<%#= link_to image_tag("printer.png", :border => 0,:title=>(t 'print')), :action => 'claimprint', :id => travel_claim %>
 			<%# else %>
 			<% permitted_to? :claimprint, :travel_claims do %>
