@@ -188,8 +188,8 @@
 
 					<tr>
 						<td><%= travel_claim_log.travel_on.strftime("%d/%m/%Y")%><BR><%= l(travel_claim_log.travel_on, :format =>"(%A)")%></td>
-						<td align='center'><%= l(travel_claim_log.start_at, :format => "%l:%M%p") %></td>
-						<td align='center'><%= l(travel_claim_log.finish_at, :format => "%l:%M%p") %></td>
+						<td align='center'><%= l(travel_claim_log.start_at, :format => "%l:%M %p") %></td>
+						<td align='center'><%= l(travel_claim_log.finish_at, :format => "%l:%M %p") %></td>
 						<td align='center'><%= travel_claim_log.destination %></td>
 						<td align='right'><%= travel_claim_log.mileage %>&nbsp;</td>
 						<td align='right'><%= ringgols(travel_claim_log.km_money) %>&nbsp;</td>
@@ -477,6 +477,12 @@
 	</table>
   <BR>
 	
+	</div></div></P>
+	<P CLASS="breakhere">
+		
+	<div class="A4potrait_paged">
+		<div id="tprintreport">
+	<BR>	
 	<!-- Pengakuan -->
 	<table width=100% border=1px cellspacing=0 align="center" >
 		<tr>
@@ -520,6 +526,29 @@
 	</table>
 	<BR>
 		
+	<!-- Pengesahan Kewangan -->
+	<table  width=100% border=1px cellspacing=0 align="center" >
+		<tr>
+			<th>PENGESAHAN KEWANGAN</th>
+		</tr>
+		<tr>
+			<td>
+				<table>
+						<tr>
+							<td>Tarikh: <%=h tarikh(@travel_claim.checked_on) %></td>
+						</tr>
+						<tr>
+							<td>Nama: <%=h check_kin {@travel_claim.checker.name} %></td>
+						</tr>
+						<tr>
+							<td>Jawatan: <%=h check_kin {@travel_claim.checker.position.name} %></td>
+						</tr>
+			  </table>
+	    </td>
+	  </tr>
+	</table>
+	<BR>
+	
 	<!-- Pengesahan -->
 	<table  width=100% border=1px cellspacing=0 align="center" >
 		<tr>
@@ -571,7 +600,7 @@
 	  </tr>
 	</table>
 	<BR><BR>
-	
+	</div></div></P></form>
 </div>
 </fieldset>
 </div>
