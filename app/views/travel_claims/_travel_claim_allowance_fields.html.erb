@@ -10,12 +10,12 @@
 			<td width=20%> <%= f.text_field :receipt_code, :size => '9' %></td><%= f.hidden_field :_destroy %>
 			<td align="right" width=5%><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>   </td>
 			<td width=10%>
-				<% if @travel_claim.my_claim_status == t('staffleave.returned') %>
+				<% if @travel_claim.my_claim_status == t('claim.returned') %>
 					<% if f.object.checker==true %>
 						Ok
-					<% else %>
+					<% elsif f.object.checker==false %>
 					       <font color="red">
-						Not Ok</font>
+						<%=t('claim.query')%></font>
 					<% end %>
 				<% end %>
 			</td>

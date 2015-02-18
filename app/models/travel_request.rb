@@ -64,7 +64,7 @@ class TravelRequest < ActiveRecord::Base
   #validation logic
   def validate_end_date_before_start_date
     if return_at && depart_at
-      errors.add(:depart_at, "Your must leave before you return") if return_at < depart_at
+      errors.add(:depart_at, "You must leave before you return") if return_at < depart_at
     end
   end
   
@@ -170,4 +170,25 @@ class TravelRequest < ActiveRecord::Base
     #other_claims_total + public_transport_totals
     travel_claim_logs.sum(:km_money)
   end
+  
+  def transport_class
+    abc = TravelClaimsTransportGroup.abcrate
+    de = TravelClaimsTransportGroup.derate
+    mid = 1820.75
+    if applicant.nil? || applicant.blank?
+      app2 = Staff.find(:first, :conditions => ['id=?',applicant])
+      if app2.vehicles && app2.vehicles.count>0
+        TravelClaimsTransportGroup.transport_class(app2.vehicles.first.id, app2.current_salary, abc, de, mid)
+      else
+        'Z'
+      end
+    else
+      if applicant.vehicles && applicant.vehicles.count>0
+        TravelClaimsTransportGroup.transport_class(applicant.vehicles.first.id, applicant.current_salary, abc, de, mid)
+      else
+        'Z'
+      end
+    end
+  end
+  
 end

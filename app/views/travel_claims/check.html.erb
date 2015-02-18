@@ -2,14 +2,13 @@
   <%= f.error_messages %>
   
 	<div class="tform">
-	<H2><%= t 'travel.finance_check' %><%=h @travel_claim.staff.name %> <%=t('for')%> <%=h l(@travel_claim.claim_month, :format => "%B %Y") %></H2>
+	<H2><%= t 'claim.finance_check' %><%=h @travel_claim.staff.name %> <%=t('for')%> <%=h l(@travel_claim.claim_month, :format => "%B %Y") %></H2>
 
 		<fieldset>
 			<legend><%= t 'claim.travel_requestlogs' %></legend>
 				<% f.fields_for :travel_requests do |builder| %>
 				  <%= render 'travel_request_fields', :f => builder %>
 				<% end %>
-
 				<table width=90%>
 					<tr>
 					  <td width=54% align='right'><b><%= t 'claim.total' %></b></td>
@@ -17,6 +16,12 @@
 						<td width=10% class="tright"><b><%= ringgols(@travel_claim.total_km_money) %></b></td>
 						<td ></td>
 					</tr>
+					<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 %>
+						<tr>
+							<td colspan=4><b><label for="transport_class"><%= t('staff.transportclass_id')%></label> : 
+							<%= @travel_claim.travel_requests.first.transport_class%></b>&nbsp;&nbsp;(<%=@travel_claim.staff.vehicles[0].reg_no %>, <%=@travel_claim.staff.vehicles[0].type_model%>&nbsp;cc)</td>
+						</tr>
+					<% end %>
 				</table>
 					<BR/>
 		</fieldset>
@@ -37,6 +42,14 @@
 					  <%= render 'travel_claim_allowance_fields', :f => builder %>
 					<% end %>
 					<BR/>
+				<table width=90%>
+					 <% if (@travel_claim.travel_claim_allowances.map(&:expenditure_type) & [31,32]).count > 0 %>
+					 <tr>
+						<td width=15%><b><%= t 'claim.accommodations' %> : </b> <br><%=t('claim.hotel_lodging') %></td>
+						<td width=75%><%=simple_format(@travel_claim.accommodations)%></td>
+					</tr>
+					<% end %>
+				</table>
 		</fieldset>
 		<% @checkist = 1 %>
 		<fieldset>
@@ -83,12 +96,12 @@
 				<table width=90%>
 					<tr>
 						<td><%= t 'claim.submitted' %></td>
-						<td><%=h @travel_claim.is_submitted? ? "Yes" + " on   " + l(@travel_claim.submitted_on).to_s : "No" %></td>
+						<td><%=h @travel_claim.is_submitted? ? (t 'claim.submitted_on')+" " + l(@travel_claim.submitted_on).to_s : (t 'not_submitted') %></td>
 					</tr>
 					<tr>
 						<td><%= t 'claim.verification' %></td><!-- refer model for is_returned assignment -->
-						<td><%= f.radio_button :is_checked, 'false' %>  Return to Staff &nbsp; &nbsp; 
-							  <%= f.radio_button :is_checked, 'true'  %>  Verified OK &nbsp; &nbsp; </td>
+						<td><%= f.radio_button :is_checked, 'false' %>  <%=t('claim.return_to_staff')%> &nbsp; &nbsp;
+							  <%= f.radio_button :is_checked, 'true'  %>  <%=t('claim.verified_ok')%> &nbsp; &nbsp; </td>
 					</tr>
 					<tr>
 						<td><%= t 'claim.note_for_finance' %></td>

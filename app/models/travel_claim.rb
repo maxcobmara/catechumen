@@ -18,7 +18,7 @@ class TravelClaim < ActiveRecord::Base
   has_many :travel_claim_allowances, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_allowances, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
   
-  validates_uniqueness_of :claim_month, :scope => :staff_id, :message => "You already have claims for this month"
+  validates_uniqueness_of :claim_month, :scope => :staff_id, :message => I18n.t('claim.claim_exist')
   validate :accommodations_must_exist_for_lodging_hotel_claims
   
   attr_accessor :edittype
@@ -56,29 +56,29 @@ class TravelClaim < ActiveRecord::Base
   
   def my_claim_status
     if staff_id == Login.current_login.staff_id && is_submitted != true && is_checked == nil
-      I18n.t('staffleave.editing')#"editing"
+      I18n.t('claim.editing')#"editing"
     elsif staff_id != Login.current_login.staff_id && is_submitted != true && is_checked == nil #add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
-      I18n.t('staffleave.editing_by_staff')#"editing by staff"
+      I18n.t('claim.editing_by_staff')#"editing by staff"
     elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == nil
-      I18n.t('staffleave.submitted')#"submitted"
+      I18n.t('claim.submitted')#"submitted"
     elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == nil
-      I18n.t('staffleave.for_checking')#"for checking"
+      I18n.t('claim.for_checking')#"for checking"
     elsif staff_id == Login.current_login.staff_id && is_submitted == false && is_checked == false && is_returned == true #owner amend returned document but did not submit
-      I18n.t('staffleave.returned')#"returned"
+      I18n.t('claim.returned')#"returned"
     elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == true #owner amend returned document & re-SUBMIT
-      I18n.t('staffleave.returned')#"returned"
+      I18n.t('claim.returned')#"returned"
     elsif staff_id == Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == false 
-      I18n.t('staffleave.resubmitted_to_finance')#"resubmitted to finance"
+      I18n.t('claim.resubmitted_to_finance')#"resubmitted to finance"
     elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked == false && is_returned == false 
-      I18n.t('staffleave.for_checking')#"for checking"
+      I18n.t('claim.for_checking')#"for checking"
     elsif is_submitted == true && is_checked == true && is_approved != true
-      I18n.t('staffleave.processed')# "processed"
+      I18n.t('claim.processed')# "processed"
     elsif is_submitted == true && is_checked == true && is_approved == true
-      I18n.t('staffleave.approved')#"approved"
+      I18n.t('claim.approved')#"approved"
     elsif staff_id != Login.current_login.staff_id && is_submitted == true && is_checked ==false && is_returned == true 
-      I18n.t('staffleave.return_to_staff_for_amendment')#"return to staff for amendment"
+      I18n.t('claim.return_to_staff_for_amendment')#"return to staff for amendment"
     else
-      I18n.t('staffleave.status_not_known')#"status not known"
+      I18n.t('claim.status_not_known')#"status not known"
     end    
   end
   
@@ -145,68 +145,110 @@ class TravelClaim < ActiveRecord::Base
     end
   end
   
+  def transport_class
+    abc = TravelClaimsTransportGroup.abcrate
+    de = TravelClaimsTransportGroup.derate
+    mid = 1820.75
+    if staff.vehicles && staff.vehicles.count>0
+      TravelClaimsTransportGroup.transport_class(staff.vehicles.first.id, staff.current_salary, abc, de, mid)
+    else
+       'Z'
+    end
+  end  
+
+#   def sen_per_km500  #hack into a db
+#     if staff.transportclass_id == 'A'
+#       70
+#     elsif staff.transportclass_id == 'B'
+#       60
+#     elsif staff.transportclass_id == 'C'
+#       50
+#     elsif staff.transportclass_id == 'D'
+#       45
+#     elsif staff.transportclass_id == 'E'  
+#       40
+#     else 
+#       0
+#     end
+#   end
+#   
+#   def sen_per_km1000
+#     if staff.transportclass_id == 'A'
+#       65
+#     elsif staff.transportclass_id == 'B'
+#       55
+#     elsif staff.transportclass_id == 'C'
+#       45
+#     elsif staff.transportclass_id == 'D'
+#       40
+#     elsif staff.transportclass_id == 'E'  
+#       35
+#     else 
+#       0
+#     end
+#   end
+#   
+#   def sen_per_km1700
+#     if staff.transportclass_id == 'A'
+#       55
+#     elsif staff.transportclass_id == 'B'
+#       50
+#     elsif staff.transportclass_id == 'C'
+#       40
+#     elsif staff.transportclass_id == 'D'
+#       35
+#     elsif staff.transportclass_id == 'E'  
+#       30
+#     else 
+#       0
+#     end
+#   end
+#   
+#   def sen_per_kmmo
+#     if staff.transportclass_id == 'A'
+#       50
+#     elsif staff.transportclass_id == 'B'
+#       45
+#     elsif staff.transportclass_id == 'C'
+#       35
+#     elsif staff.transportclass_id == 'D'
+#       30
+#     elsif staff.transportclass_id == 'E'  
+#       25
+#     else 
+#       0
+#     end
+#   end
   
   def sen_per_km500  #hack into a db
-    if staff.transportclass_id == 'A'
-      70
-    elsif staff.transportclass_id == 'B'
-      60
-    elsif staff.transportclass_id == 'C'
-      50
-    elsif staff.transportclass_id == 'D'
-      45
-    elsif staff.transportclass_id == 'E'  
-      40
-    else 
+    if transport_class == 'Z'
       0
+    else
+      TravelClaimMileageRate.km_by_group(500, transport_class)*100
     end
   end
   
   def sen_per_km1000
-    if staff.transportclass_id == 'A'
-      65
-    elsif staff.transportclass_id == 'B'
-      55
-    elsif staff.transportclass_id == 'C'
-      45
-    elsif staff.transportclass_id == 'D'
-      40
-    elsif staff.transportclass_id == 'E'  
-      35
-    else 
+    if transport_class == 'Z'
       0
+    else
+      TravelClaimMileageRate.km_by_group(1000, transport_class)*100
     end
   end
-  
+
   def sen_per_km1700
-    if staff.transportclass_id == 'A'
-      55
-    elsif staff.transportclass_id == 'B'
-      50
-    elsif staff.transportclass_id == 'C'
-      40
-    elsif staff.transportclass_id == 'D'
-      35
-    elsif staff.transportclass_id == 'E'  
-      30
-    else 
+    if transport_class == 'Z'
       0
+    else
+      TravelClaimMileageRate.km_by_group(1700, transport_class)*100
     end
   end
   
   def sen_per_kmmo
-    if staff.transportclass_id == 'A'
-      50
-    elsif staff.transportclass_id == 'B'
-      45
-    elsif staff.transportclass_id == 'C'
-      35
-    elsif staff.transportclass_id == 'D'
-      30
-    elsif staff.transportclass_id == 'E'  
-      25
-    else 
+    if transport_class == 'Z'
       0
+    else
+      TravelClaimMileageRate.km_by_group(99999, transport_class)*100
     end
   end
   

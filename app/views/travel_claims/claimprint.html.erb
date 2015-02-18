@@ -175,9 +175,9 @@
 		<tr class="grey2">
 			<td colspan="6">
 					TUJUAN<br>
-					No. Rujukan : <%=h travel_request.document.refno %> bertarikh <%=h travel_request.document.letterdt %><br>
-					Tajuk       : <%=h travel_request.document.title %><br>
-					Tarikh      :<%=h travel_request.depart_at.strftime("%d/%m/%Y") %>-<%=h travel_request.return_at.strftime("%d/%m/%Y") %>
+					No. Rujukan : <%=h travel_request.document.try(:refno) %> <%unless  travel_request.document.nil? %>bertarikh<%end%> <%=h travel_request.document.try(:letterdt) %><br>
+					Tajuk       : <%=h travel_request.document.try(:title) %><br>
+					Tarikh      : <%=h l(travel_request.depart_at, :format => "%d/%m/%Y") %>-<%=h travel_request.return_at.strftime("%d/%m/%Y") %>
 					<%#=h travel_request.destination %>
 					
 			</td>
@@ -538,10 +538,10 @@
 							<td>Tarikh: <%=h tarikh(@travel_claim.checked_on) %></td>
 						</tr>
 						<tr>
-							<td>Nama: <%=h check_kin {@travel_claim.checker.name} %></td>
+							<td>Nama: <%=h @travel_claim.checker.try(:name) %></td>
 						</tr>
 						<tr>
-							<td>Jawatan: <%=h check_kin {@travel_claim.checker.position.name} %></td>
+							<td>Jawatan: <%=h @travel_claim.checker.try(:position).try(:name)%></td>
 						</tr>
 			  </table>
 	    </td>
@@ -564,10 +564,10 @@
 							<td>Tarikh: <%=h tarikh(@travel_claim.approved_on) %></td>
 						</tr>
 						<tr>
-							<td>Nama: <%=h check_kin {@travel_claim.approver.name} %></td>
+							<td>Nama: <%=h @travel_claim.approver.try(:name) %></td>
 						</tr>
 						<tr>
-							<td>Jawatan: <%=h check_kin {@travel_claim.approver.position.name} %></td>
+							<td>Jawatan: <%=h @travel_claim.approver.try(:position).try(:name) %></td>
 						</tr>
 			  </table>
 	    </td>

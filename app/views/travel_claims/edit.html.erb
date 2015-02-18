@@ -2,10 +2,10 @@
   <%= f.error_messages %>
 
 	<div class="tform">
-		<% if @travel_claim.my_claim_status == t('staffleave.editing') || @travel_claim.my_claim_status == t('staffleave.returned') %>
+		<% if @travel_claim.my_claim_status == t('claim.editing') || @travel_claim.my_claim_status == t('claim.returned') %>
 		<H2><%= t 'claim.edit_travel_claim' %> <%=h @travel_claim.claim_month.strftime("%B %Y") %> 
 			<!--4Jan2013-just for title-->
-			<% if @travel_claim.my_claim_status == t('staffleave.returned') %>- Returned for Amendment<% end %>
+			<% if @travel_claim.my_claim_status == t('claim.returned') %>- <%=t('claim.returned_for_amendment')%><% end %>
 			<!--4Jan2013-just for title-->
 			<div class="right"><%=h @travel_claim.staff.name %></div></H2> 
 			<%=render :partial => 'form', :locals => {:f => f} %> 
@@ -20,7 +20,7 @@
 		<% end %>
 		
 		<!--4Jan2013-just add-in fieldset-->
-		<% if @travel_claim.my_claim_status == t('staffleave.returned') %>
+		<% if @travel_claim.my_claim_status == t('claim.returned') %>
 		<fieldset><legend><%= t 'claim.note_from_finance' %></legend>
 		<p><%=h @travel_claim.notes %> </p>
 		</fieldset>
