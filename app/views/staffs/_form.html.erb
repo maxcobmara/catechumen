@@ -98,12 +98,13 @@
 			                 Staff::NATIONALITY,
 			                 :prompt => t ('select') %></td>
 		</tr>
-		<tr>
-			<td class="leftcol"><label for="transportclass_id"><b><%= t 'staff.transportclass_id' %></b></td>
-			<td><%= f.select :transportclass_id, options_for_select(('A'..'F'), @staff.transportclass_id) %>
-				<font size=-2><%=t('staff.salary_vehicle')%><strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)</font>
+		
+		<!--<tr>
+			<td class="leftcol"><label for="transportclass_id"><b><%#= t 'staff.transportclass_id' %></b></td>
+			<td><%#= f.select :transportclass_id, options_for_select(('A'..'F'), @staff.transportclass_id) %>
+				<font size=-2><%#=t('staff.salary_vehicle')%><strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)</font>
 			</td>
-		</tr>
+		</tr>-->
 		<tr>
 			<td class="leftcol"><label for="upload"><b><%= t 'staff.upload' %></b></label></td>
 			<td>
@@ -116,7 +117,7 @@
 			</td>
 		</tr>
 	</table>
-	
+ 	
 	<H2><%= t 'staff.employment_details' %></H2>
  	
 <!--Employment Details-->
@@ -293,6 +294,22 @@
 		<HR>
 		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins %> - <%= t 'addmore' %> </p>
 		
+	</div>
+	
+	          
+        <!--Vehicle Details-->
+        <div>
+        <H2><%= t 'vehicles.title' %></H2>
+		<p><strong>
+			<div style="width: 250px; float: left;">| <%= t 'vehicles.type_model' %> </div>
+			<div style="width: 250px; float: left;">| <%= t 'vehicles.reg_no'%> </div>
+			|  <%= t 'vehicles.cylinder_capacity'%><strong></p>
+		<% f.fields_for :vehicles do |builder| %>
+			<%=  render 'vehicle_fields', :f => builder -%>
+		<% end %>
+                <BR><BR>
+                <font size=-2><%=t('staff.salary_vehicle')%><strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)</font>
+<!--		<p><%#= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :vehicles %> - <%#= t 'addmore' %> </p>-->
 	</div>
 
 </div>	

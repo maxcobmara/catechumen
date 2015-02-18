@@ -119,10 +119,10 @@
 			<td><%=h (Staff::NATIONALITY.find_all{|disp, value| value == @staff.country_cd}).map {|disp, value| disp} %></td>
 		</tr>
 	
-		<tr>
-				<td class="leftcol"><label for="transportclass_id"><b><%= t 'staff.transportclass_id' %> :</b></td>
-				<td><%=h @staff.transportclass_id %></td>
-		</tr>
+		<!--<tr>
+				<td class="leftcol"><label for="transportclass_id"><b><%#= t 'staff.transportclass_id' %> :</b></td>
+				<td><%#=h @staff.transportclass_id %></td>
+		</tr>-->
 	</table>
 	
 	
@@ -367,10 +367,31 @@
 			<tr><td colspan=4><HR></td></tr>
 		<% end %>
 	</table>
-
+	
+	<H2><%=t('vehicles.title')%></H2>
+	<table>
+		<% for vehicle in @staff.vehicles %>
+		<tr>
+			<td class="leftcol"><label for="transportclass_id"><b><%= t 'vehicles.type_model' %> :</b></td>
+			<td><%=h vehicle.type_model %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="transportclass_id"><b><%= t 'vehicles.reg_no' %> :</b></td>
+			<td><%=h vehicle.reg_no %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="transportclass_id"><b><%= t 'vehicles.cylinder_capacity' %> :</b></td>
+			<td><%=h vehicle.cylinder_capacity %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="transportclass_id"><b><%= t 'staff.transportclass_id' %> :</b></td>
+			<td><%=h @staff.transportclass_id %> <font size=-2><%=t('staff.salary_vehicle')%><strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)</font></td>
+		</tr>
+		<% end %>
+	</table>
 <BR>
 </div>	
 	
-<%= link_to (t 'icms.update'), edit_staff_path(@staff) %> |
+<%= link_to (t 'edit'), edit_staff_path(@staff) %> |
 <%= link_to 'Borang Maklumat Staf',:action => 'borang_maklumat_staff', :id => @staff %> |
 <%= link_to (t 'icms.back'), staffs_path %>
