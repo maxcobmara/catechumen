@@ -12,6 +12,12 @@
 						<td class="leftcol"><label for="staff_id"><%= t 'claim.staff_name' %></label></td>
 						<td><%=h @travel_claim.staff.name %></td>
 					</tr>
+					<% if @travel_claim.travel_requests.count > 0 %>
+						<tr>
+							<td class="leftcol"><label for="transport_class"><%= t('staff.transportclass_id')%></label></td>
+							<td><%= @travel_claim.travel_requests.first.transport_class%>&nbsp;&nbsp;(<%=@travel_claim.staff.vehicles[0].reg_no %>, <%=@travel_claim.staff.vehicles[0].type_model%>&nbsp;cc)</td>
+						</tr>
+					<% end %>
 				</table><BR/>
 	</fieldset>
 	
@@ -190,11 +196,11 @@
 			<table width=85%>
 				<tr>
 					<td><%= t 'claim.submitted' %></td>
-					<td><%=h @travel_claim.is_submitted? ? "Yes" + " on   " + l(@travel_claim.submitted_on).to_s : "No" %></td>
+					<td><%=h @travel_claim.is_submitted? ? (t 'claim.submitted_on') + l(@travel_claim.submitted_on).to_s : (t 'not_submitted') %></td>
 				</tr>
 				<tr>
 					<td><%= t 'claim.approved' %></td>
-					<td><%=h @travel_claim.is_approved? ? "Yes" + " on   " + l(@travel_claim.approved_on).to_s : "No" %></td>
+					<td><%=h @travel_claim.is_approved? ? (t 'claim.approved_on') + l(@travel_claim.approved_on).to_s : (t 'not_approved') %></td>
 				</tr>
 				<tr>
 					<td><%= t 'claim.to_approved' %></td>

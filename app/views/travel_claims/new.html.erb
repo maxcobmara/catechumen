@@ -2,7 +2,8 @@
   <%= f.error_messages %>
 	<div class="tform">
 		<H2><%= t 'claim.new' %></H2>
-		<% @my_approved_unclaimed_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=?', Login.current_login.staff_id, true])%>
+		<%# @my_approved_unclaimed_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=? ', Login.current_login.staff_id, true])%>
+		<% @my_approved_unclaimed_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=? and travel_claim_id is null', Login.current_login.staff_id, true])%>
 		<% if @my_approved_unclaimed_requests.count < 1 %>
 			  <%=t('claim.no_approved_travel_request')%>
 			  </div>

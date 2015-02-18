@@ -2,7 +2,7 @@
   <%= f.error_messages %>
   
 	<div class="tform">
-	<H2><%= t 'travel.finance_check' %><%=h @travel_claim.staff.name %> <%=t('for')%> <%=h l(@travel_claim.claim_month, :format => "%B %Y") %></H2>
+	<H2><%= t 'claim.finance_check' %><%=h @travel_claim.staff.name %> <%=t('for')%> <%=h l(@travel_claim.claim_month, :format => "%B %Y") %></H2>
 
 		<fieldset>
 			<legend><%= t 'claim.travel_requestlogs' %></legend>
@@ -83,12 +83,12 @@
 				<table width=90%>
 					<tr>
 						<td><%= t 'claim.submitted' %></td>
-						<td><%=h @travel_claim.is_submitted? ? "Yes" + " on   " + l(@travel_claim.submitted_on).to_s : "No" %></td>
+						<td><%=h @travel_claim.is_submitted? ? (t 'claim.submitted_on')+" " + l(@travel_claim.submitted_on).to_s : (t 'not_submitted') %></td>
 					</tr>
 					<tr>
 						<td><%= t 'claim.verification' %></td><!-- refer model for is_returned assignment -->
-						<td><%= f.radio_button :is_checked, 'false' %>  Return to Staff &nbsp; &nbsp; 
-							  <%= f.radio_button :is_checked, 'true'  %>  Verified OK &nbsp; &nbsp; </td>
+						<td><%= f.radio_button :is_checked, 'false' %>  <%=t('claim.return_to_staff')%> &nbsp; &nbsp;
+							  <%= f.radio_button :is_checked, 'true'  %>  <%=t('claim.verified_ok')%> &nbsp; &nbsp; </td>
 					</tr>
 					<tr>
 						<td><%= t 'claim.note_for_finance' %></td>

@@ -64,7 +64,13 @@
 		</table>
 		<!--</fieldset>-->
 		<% end %>
-	</fieldset>
+	</fieldset><br>
+	<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 %>
+		<fieldset>
+			<b><%=  t('staff.transportclass_id')%> : <%= @travel_claim.travel_requests.first.transport_class %></b>&nbsp;&nbsp;&nbsp;
+			<%='('+(t 'vehicles.reg_no')+" : "+@travel_claim.staff.vehicles[0].reg_no%>&nbsp;&nbsp; | &nbsp;&nbsp;<%=(t 'vehicles.type_model')+" : "+@travel_claim.staff.vehicles[0].type_model%>&nbsp;&nbsp; | &nbsp;&nbsp;<%=(t 'vehicles.cylinder_capacity')+" : "+@travel_claim.staff.vehicles[0].cylinder_capacity.to_s%>
+		</fieldset>
+        <% end %>
 			
 	<!--3Jan2012-view travel logs accordingly-->
 <% end %>
@@ -126,14 +132,14 @@
 <H2><%= t 'claim.submission' %></H2>
 <table width=100%>
 	<!--4Jan2013-view submit button differently-->
-	<% if @travel_claim.my_claim_status != "returned" %>
+	<% if @travel_claim.my_claim_status != t('claim.returned') %>
 	<tr>
 	  <td class="leftcol"><label for="is_submitted"><%= t 'submit' %></label></td>
 		<td><%= f.check_box :is_submitted, :id => 'submit1' %>
 				<SPAN class="span_submit1" style="display: none;"> &nbsp; <%= tarikh (Date.today) %></SPAN></td>
 		<td class="pagenote"><%=t('claim.click_submit')%></td>
 	</tr>
-	<% else %>
+	<% else %><!--if below part is removed, '#owner amend returned document but did not submit' in travel_claim.rb must actiive -->
 	<tr>
 		<td class="leftcol"><label for="is_submitted"><%= t 'claim.resubmit' %></label></td>
 		<td>
