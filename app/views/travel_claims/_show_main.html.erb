@@ -12,7 +12,7 @@
 						<td class="leftcol"><label for="staff_id"><%= t 'claim.staff_name' %></label></td>
 						<td><%=h @travel_claim.staff.name %></td>
 					</tr>
-					<% if @travel_claim.travel_requests.count > 0 %>
+					<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 %>
 						<tr>
 							<td class="leftcol"><label for="transport_class"><%= t('staff.transportclass_id')%></label></td>
 							<td><%= @travel_claim.travel_requests.first.transport_class%>&nbsp;&nbsp;(<%=@travel_claim.staff.vehicles[0].reg_no %>, <%=@travel_claim.staff.vehicles[0].type_model%>&nbsp;cc)</td>

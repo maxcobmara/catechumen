@@ -9,7 +9,6 @@
 				<% f.fields_for :travel_requests do |builder| %>
 				  <%= render 'travel_request_fields', :f => builder %>
 				<% end %>
-
 				<table width=90%>
 					<tr>
 					  <td width=54% align='right'><b><%= t 'claim.total' %></b></td>
@@ -17,6 +16,12 @@
 						<td width=10% class="tright"><b><%= ringgols(@travel_claim.total_km_money) %></b></td>
 						<td ></td>
 					</tr>
+					<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 %>
+						<tr>
+							<td colspan=4><b><label for="transport_class"><%= t('staff.transportclass_id')%></label> : 
+							<%= @travel_claim.travel_requests.first.transport_class%></b>&nbsp;&nbsp;(<%=@travel_claim.staff.vehicles[0].reg_no %>, <%=@travel_claim.staff.vehicles[0].type_model%>&nbsp;cc)</td>
+						</tr>
+					<% end %>
 				</table>
 					<BR/>
 		</fieldset>
@@ -37,6 +42,14 @@
 					  <%= render 'travel_claim_allowance_fields', :f => builder %>
 					<% end %>
 					<BR/>
+				<table width=90%>
+					 <% if (@travel_claim.travel_claim_allowances.map(&:expenditure_type) & [31,32]).count > 0 %>
+					 <tr>
+						<td width=15%><b><%= t 'claim.accommodations' %> : </b> <br><%=t('claim.hotel_lodging') %></td>
+						<td width=75%><%=simple_format(@travel_claim.accommodations)%></td>
+					</tr>
+					<% end %>
+				</table>
 		</fieldset>
 		<% @checkist = 1 %>
 		<fieldset>
