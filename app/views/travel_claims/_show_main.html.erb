@@ -21,7 +21,11 @@
 							      <% else %>
 									<%=@travel_claim.travel_requests.first.transport_class%>
 							      <% end %>
-							      &nbsp;&nbsp;(<%=@travel_claim.staff.vehicles[0].reg_no %>, <%=@travel_claim.staff.vehicles[0].type_model%>&nbsp;cc)
+							      <% if @travel_claim.staff.vehicles.count > 0%>
+									&nbsp;&nbsp;(<%=@travel_claim.staff.vehicles[0].reg_no %>, <%=@travel_claim.staff.vehicles[0].type_model%>&nbsp;cc)
+							      <% else %>
+									<br><font color="red"><%=t('claim.insert_vehicle')%></font>
+							      <% end %>
 							</td>
 						</tr>
 					<% end %>
