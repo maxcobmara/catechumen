@@ -15,7 +15,14 @@
 					<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
 						<tr>
 							<td class="leftcol"><label for="transport_class"><%= t('staff.transportclass_id')%></label></td>
-							<td><%= @travel_claim.travel_requests.first.transport_class%>&nbsp;&nbsp;(<%=@travel_claim.staff.vehicles[0].reg_no %>, <%=@travel_claim.staff.vehicles[0].type_model%>&nbsp;cc)</td>
+							<td>
+							      <% if @travel_claim.staff.current_salary.nil? %>
+									<font color="red"><%=t('claim.insert_current_salary')%></font>
+							      <% else %>
+									<%=@travel_claim.travel_requests.first.transport_class%>
+							      <% end %>
+							      &nbsp;&nbsp;(<%=@travel_claim.staff.vehicles[0].reg_no %>, <%=@travel_claim.staff.vehicles[0].type_model%>&nbsp;cc)
+							</td>
 						</tr>
 					<% end %>
 				</table><BR/>
@@ -179,11 +186,23 @@
 				</tr>
 				<tr>
 					<td><%= t 'claim.current_total' %></td>
-					<td class="money"><%= ringgols(@travel_claim.total_claims) %></td>
+					<td class="money">
+						<% if @travel_claim.staff.current_salary.nil? %>
+							<font color="red"><%=t('claim.insert_current_salary')%></font>
+						<% else %>
+							<%= ringgols(@travel_claim.total_claims)%>
+						<% end %>
+					</td>
 				</tr>
 				<tr>
 					<td><%= t 'claim.claimable_total' %></td>
-					<td class="money"><%= ringgols(@travel_claim.to_be_paid) %></td>
+					<td class="money">
+						<% if @travel_claim.staff.current_salary.nil? %>
+							<font color="red"><%=t('claim.insert_current_salary')%></font>
+						<% else %>
+							<%=ringgols(@travel_claim.to_be_paid) %>
+						<% end %>
+					</td>
 				</tr>
 				
 			</table>
