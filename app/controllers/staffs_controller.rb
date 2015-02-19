@@ -44,6 +44,7 @@ class StaffsController < ApplicationController
     @staff.qualifications.build
     @staff.kins.build
     @staff.loans.build
+    @staff.vehicles.build
     
 
     respond_to do |format|
@@ -55,6 +56,7 @@ class StaffsController < ApplicationController
   # GET /staffs/1/edit
   def edit
     @staff = Staff.find(params[:id])
+    @staff.vehicles.build if (@staff.vehicles && @staff.vehicles.count==0) || @staff.vehicles[0].nil?
   end
   
   def borang_maklumat_staff
