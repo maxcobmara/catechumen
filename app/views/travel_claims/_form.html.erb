@@ -65,10 +65,12 @@
 		<!--</fieldset>-->
 		<% end %>
 	</fieldset><br>
-	<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 %>
+	<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
 		<fieldset>
 			<b><%=  t('staff.transportclass_id')%> : <%= @travel_claim.travel_requests.first.transport_class %></b>&nbsp;&nbsp;&nbsp;
-			<%='('+(t 'vehicles.reg_no')+" : "+@travel_claim.staff.vehicles[0].reg_no%>&nbsp;&nbsp; | &nbsp;&nbsp;<%=(t 'vehicles.type_model')+" : "+@travel_claim.staff.vehicles[0].type_model%>&nbsp;&nbsp; | &nbsp;&nbsp;<%=(t 'vehicles.cylinder_capacity')+" : "+@travel_claim.staff.vehicles[0].cylinder_capacity.to_s%>
+			<% if @travel_claim.staff.vehicles.count > 0%>
+				<%='('+(t 'vehicles.reg_no')+" : "+@travel_claim.staff.vehicles[0].reg_no%>&nbsp;&nbsp; | &nbsp;&nbsp;<%=(t 'vehicles.type_model')+" : "+@travel_claim.staff.vehicles[0].type_model%>&nbsp;&nbsp; | &nbsp;&nbsp;<%=(t 'vehicles.cylinder_capacity')+" : "+@travel_claim.staff.vehicles[0].cylinder_capacity.to_s%>
+			<% end %>
 		</fieldset>
         <% end %>
 			

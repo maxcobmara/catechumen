@@ -16,10 +16,14 @@
 						<td width=10% class="tright"><b><%= ringgols(@travel_claim.total_km_money) %></b></td>
 						<td ></td>
 					</tr>
-					<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 %>
+					<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
 						<tr>
 							<td colspan=4><b><label for="transport_class"><%= t('staff.transportclass_id')%></label> : 
-							<%= @travel_claim.travel_requests.first.transport_class%></b>&nbsp;&nbsp;(<%=@travel_claim.staff.vehicles[0].reg_no %>, <%=@travel_claim.staff.vehicles[0].type_model%>&nbsp;cc)</td>
+								<%= @travel_claim.travel_requests.first.transport_class%></b>
+								<% if @travel_claim.staff.vehicles.count > 0%>
+									&nbsp;&nbsp;(<%=@travel_claim.staff.vehicles[0].reg_no %>, <%=@travel_claim.staff.vehicles[0].type_model%>&nbsp;cc)
+								<% end %>
+							</td>
 						</tr>
 					<% end %>
 				</table>

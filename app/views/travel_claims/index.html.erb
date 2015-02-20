@@ -22,12 +22,18 @@
   	<tr>
 		<td><%=h l(travel_claim.claim_month, :format=>"%B %Y") unless travel_claim.claim_month.blank? %></td>
 		<td><%=h travel_claim.staff.name unless travel_claim.staff.blank? %></td>
-		<td ><%=h ringgols(travel_claim.total_claims) %></td>
+		<td >
+			<% if travel_claim.staff.current_salary.nil? %>
+				<font color="red"><%=t('claim.insert_current_salary')%></font>
+			<% else %>
+				<%=h ringgols(travel_claim.total_claims) %>
+			<% end %>
+		</td>
 		<td><%=h travel_claim.my_claim_status.titleize %></td>	    
 		<td width=10px><%= link_to image_tag("document.png", :border => 0,:title=>(t 'show')), :action => 'show', :id => travel_claim %></td>
 			<!--HACK : Refactor status code into model, use status to determine show or actions-->
 		<td width=10px>
-			<% if travel_claim.my_claim_status == t('claim.editing') || travel_claim.my_claim_status == t('claim.returned') %>
+			<% if (travel_claim.my_claim_status == t('claim.editing') || travel_claim.my_claim_status == t('claim.returned')) && !travel_claim.staff.current_salary.nil? %>
 				<%= link_to image_tag("edit.png", :border => 0, :title=>(t 'edit')), :action => 'edit', :id => travel_claim %>
 			<% end %></td>
 		<td width=10px><!--4Jan2013 - add in condition :|| travel_claim.my_claim_status == "amended and resubmit for finance check" -->

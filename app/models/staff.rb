@@ -7,7 +7,8 @@ class Staff < ActiveRecord::Base
   end
   
   has_many :vehicles, :dependent => :destroy
-  accepts_nested_attributes_for :vehicles, :allow_destroy => true, :reject_if => lambda {|a| a[:cylinder_capacity].blank? }#|| a[:reg_no].blank?}
+  accepts_nested_attributes_for :vehicles, :allow_destroy => true, :reject_if => lambda {|a| a[:cylinder_capacity].blank? }##|| a[:reg_no].blank?}
+  validates_associated :vehicles
     
   has_attached_file :photo,
                     :url => "/assets/staffs/:id/:style/:basename.:extension",
@@ -141,7 +142,7 @@ class Staff < ActiveRecord::Base
   
   
   #links to Model TravelRequest
-  has_many :staffs,             :class_name => 'TravelRequest', :foreign_key => 'staff_id', :dependent => :destroy #staff name
+  has_many :travelrequests,             :class_name => 'TravelRequest', :foreign_key => 'staff_id', :dependent => :destroy #staff name
   has_many :replacements,       :class_name => 'TravelRequest', :foreign_key => 'replaced_by' #replacement name
   has_many :headofdepts,        :class_name => 'TravelRequest', :foreign_key => 'hod_id' #hod
   
@@ -590,7 +591,7 @@ class Staff < ActiveRecord::Base
       return []
     end
   end
- 
+  
 end
  
                       
