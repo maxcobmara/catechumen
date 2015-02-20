@@ -12,13 +12,14 @@ class TravelRequest < ActiveRecord::Base
   
   validates_presence_of :staff_id, :destination, :depart_at, :return_at
   validates_presence_of :own_car_notes, :if => :mycar?
-  validate :validate_end_date_before_start_date
+  validate :validate_end_date_before_start_date, :staff_vehicle_must_exist_if_own_car
   validates_presence_of :replaced_by, :if => :check_submit?
   validates_presence_of :hod_id, :if => :check_submit?
   
   has_many :travel_claim_logs, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
   
+  attr_accessor :staff_own_car, :tpt_class
   
   #before logic
   def set_to_nil_where_false
@@ -65,6 +66,12 @@ class TravelRequest < ActiveRecord::Base
   def validate_end_date_before_start_date
     if return_at && depart_at
       errors.add(:depart_at, "You must leave before you return") if return_at < depart_at
+    end
+  end
+  
+  def staff_vehicle_must_exist_if_own_car
+    if own_car == true &&  Login.current_login.staff.vehicles.count==0
+      errors.add(I18n.t('vehicles.title'), I18n.t('travel.vehicle_must_exist'))
     end
   end
   
@@ -176,7 +183,7 @@ class TravelRequest < ActiveRecord::Base
     de = TravelClaimsTransportGroup.derate
     mid = 1820.75
     if applicant.nil? || applicant.blank?
-      app2 = Staff.find(:first, :conditions => ['id=?',applicant])
+      app2 = Staff.find(:first, :conditions => ['id=?',Login.current_login.staff.id])
       if app2.vehicles && app2.vehicles.count>0
         TravelClaimsTransportGroup.transport_class(app2.vehicles.first.id, app2.current_salary, abc, de, mid)
       else

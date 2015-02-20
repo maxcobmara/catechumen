@@ -30,7 +30,24 @@
 				</span>
 				<span id="tr_my_car">
 				        <br>
-					<%= f.text_field :own_car_notes, :size => '40', :placeholder => (t 'travel.reason')%>
+					<!--display own car notes & registered vehicle (if any + it's transport class)-->
+					<% if @travel_request.new_record? %>
+						<% staff_apply = @current_login.staff%>
+					<% else %>
+						<% staff_apply = @travel_request.applicant %>
+					<% end%>
+					<% unless staff_apply.vehicles.blank? %>
+						<%= f.text_field :own_car_notes, :placeholder => t('travel.own_car_notes'), :size => 50 %>
+						<br>
+						<label><%=t 'vehicles.reg_no' %></label> 
+						<% staffvehicle = staff_apply.vehicles[0].reg_no %>
+						<%= f.text_field :staff_own_car, :value => staffvehicle, :readonly => 'readonly' %>
+						<label><%=t 'staff.transportclass_id' %>
+						<%=f.text_field :tpt_class,:value=>@travel_request.transport_class, :readonly => 'readonly' %>
+					<% else %>
+						<br><font color="red"><%=t('travel.no_registered_vehicle') %>
+					<% end %>
+					<br>
 					<%= f.radio_button :mileage, true,	:id => 'mileage',  :class => 'radio_mileage' %>
 					<label><%=t('travel.mileage_allowance')%></label>
 					<%= f.radio_button :mileage, false,	:id => 'mileage',  :class => 'radio_mileage' %>
