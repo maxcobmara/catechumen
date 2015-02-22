@@ -14,7 +14,13 @@
 	</div>
 </div>
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'stationery.new')) + (t 'stationery.new'), new_stationery_path %></p>
+        <table width=100%>
+		<tr>
+		<td><%= link_to image_tag("add.png", :border => 0, :title => (t 'stationery.new')) + (t 'stationery.new'), new_stationery_path %></td>
+		<td align="right">KEWPS 13 &nbsp;&nbsp;<div class="noti_Container"><a href="http://<%= request.host  %>:3003/asset/stationeries/kewps13.pdf?locale=ms_MY"><%=image_tag("printer.png", :border => 0, :title=>(t 'print'))%></a><div class="noti_bubble">13</div></div>
+		</td>
+		</tr>
+	</table>
 </div>
 <BR><BR>
 <!--Do a Show : items below minimum, items 10% from minimum, items over maximum, all-->
@@ -39,7 +45,7 @@
 			<td><%=h stationery.minquantity.to_i %></td>
 			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => stationery %></td>
 			<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title=>(t 'edit')), :action => 'edit', :id => stationery %></td>
-			  <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => (t 'print')), :action => 'supplies', :id => stationery %></td>
+			<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => (t 'print')), :action => 'supplies', :id => stationery %></td>
 			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), stationery, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 		</tr>
 		<% end %>
