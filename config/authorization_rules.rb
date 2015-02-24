@@ -60,6 +60,7 @@ authorization do
     has_permission_on :examanalysissearches, :to => :read
     has_permission_on :booksearches, :to => :read
     has_permission_on :librarytransactionsearches, :to => :read
+    has_permission_on :stationerysearches, :to => :read
   end
   
   
@@ -171,6 +172,8 @@ authorization do
     has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
     has_permission_on :assetsearches, :to => :read
     has_permission_on :locations, :to => [:manage]
+    has_permission_on :stationeries, :to => [:manage, :supplies]
+    has_permission_on :stationerysearches, :to => :manage
   end
 
   

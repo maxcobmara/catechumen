@@ -76,7 +76,8 @@
 </div>
 
 
-
-<%= link_to (t 'edit'), edit_stationery_path(@stationery) %> |
+<% permitted_to? :update, :stationeries do %>
+	<%= link_to (t 'edit'), edit_stationery_path(@stationery) %>
+<% end %>|
 <%= link_to (t 'icms.back'), stationeries_path %>
 

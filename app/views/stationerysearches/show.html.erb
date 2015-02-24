@@ -57,10 +57,10 @@
 				(<%=@stationerysearch.received.blank? ? "-" : l(@stationerysearch.received, :format => "%d %b %Y") %> <%=t('to')%> <%=@stationerysearch.received2.blank? ? "-" : l(@stationerysearch.received2, :format => "%d %b %Y") %>)
 			<% end %>
 			<% if !@stationerysearch.issuedby.blank? %>
-				<br>(<%=num+=1%>)&nbsp;<%= t('supplier.issuedby')%>&nbsp;(<%=Staff.find(@stationerysearch.issuedby).staff_name_with_position %>)
+				<br>(<%=num+=1%>)&nbsp;<%= t('supplier.issuedby')%>&nbsp;(<%= st.issuedby.blank? ? "&nbsp;" : st.issuer.try(:staff_name_with_position) %>)
 			<% end %>
 			<% if !@stationerysearch.receivedby.blank? %>
-				<br>(<%=num+=1%>)&nbsp;<%= t('supplier.receivedby')%>&nbsp;(<%=Staff.find(@stationerysearch.receivedby).staff_name_with_position %>)
+				<br>(<%=num+=1%>)&nbsp;<%= t('supplier.receivedby')%>&nbsp;(<%= st.receivedby.blank? ? "&nbsp;" : st.receiver.try(:staff_name_with_position) %>)
 			<% end %>
 			<% if !@stationerysearch.issuedate.blank? || !@stationerysearch.issuedate2.blank?%>
 				<br>(<%=num+=1%>)&nbsp;<%=t('supplier.issuedate')%>&nbsp;
@@ -130,8 +130,8 @@
 								
 								<% if (@a && @b1_blank && @b2_blank) || (@a && @b1 && @b2_blank) || (@a && @b1_blank && @b2) || (@a && @b1_blank && @b2_blank) || (@a && @b1 && @b2)%>
 								<tr>
-									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.lpono %></td>
-									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.document %></td>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.lpono.blank? ? "&nbsp;" : st.lpono%></td>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.document.blank? ? "&nbsp;" : st.document %></td>
 									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.quantity %></td>
 									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= ringgols(st.unitcost) %></td>
 									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= ringgols(st.line_item_value) %></td>
@@ -181,9 +181,11 @@
 								
 								<tr>
 									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.issuedate? ? l(st.issuedate, :format => "%d %b %Y") : "-" %></td>
-									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= Staff.find(st.issuedby).staff_name_with_position %></td>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
+										<%= st.issuedby.blank? ? "&nbsp;" : st.issuer.try(:staff_name_with_position) %></td>
 									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.quantity %> <%=h stationery.unittype %></td>
-									<td colspan=2 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= Staff.find(st.receivedby).staff_name_with_position %></td>
+									<td colspan=2 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
+										<%= st.receivedby.blank? ? "&nbsp;" : st.receiver.try(:staff_name_with_position) %></td>
 									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">&nbsp;</td>
 								</tr>
 								<% end %>
@@ -212,8 +214,8 @@
 				</tr>
 				<% @stationerysearch.stationeries.each do |stationery| %>
 				<tr class="<%= (stationery.set_row_color) %>">
-					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.code %></td>
-					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.category %></td>
+					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.code.blank? ? "&nbsp;" : stationery.code %></td>
+					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.category.blank? ? "&nbsp;" : stationery.category %></td>
 					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.current_quantity.to_i %> &nbsp; <%=h stationery.unittype %></td>
 					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.maxquantity.to_i %></td>
 					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.minquantity.to_i %></td>
