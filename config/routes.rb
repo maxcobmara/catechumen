@@ -32,6 +32,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :documentsearches
 
   map.resources :assetsearches
+  
+  map.resources :stationerysearches
 
   map.resources :staffsearch2s
 

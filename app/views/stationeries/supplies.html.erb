@@ -10,7 +10,8 @@
 <form>
 
 <div id="hideLink">
-<%= link_to (t 'back'), stationeries_path %>
+<%= link_to (t 'stationery.back_to_list'), stationeries_path %> | 
+<%= link_to (t 'stationery.back_to_query')%>
 </div><br>
 
 <div class="A4potrait">
@@ -20,7 +21,7 @@
 	<p class="marginright" align="right"></p>
 	<br><br>
 	<H4 align="center" style="font-size:16px;font-weight:bold;font-family:arial;">
-		OFFICE SUPPLIES
+		<%=t('supplier.title').upcase%>
 	</H4>
 <BR>
 
@@ -47,23 +48,23 @@
 	<tr>
 		<td class="leftcol" style="font-size:14px;font-weight:bold;font-family:arial;">
 			<label for="maxquantity"><%= t 'supplier.maxquantity'%> :</label></td>
-		<td colspan=3 style="font-size:14px;font-family:arial;"><%=h @stationery.maxquantity %><%=h @stationery.unittype %></td>
+		<td colspan=3 style="font-size:14px;font-family:arial;"><%=h @stationery.maxquantity %>&nbsp;<%=h @stationery.unittype %></td>
 	</tr>
 
 	<tr>
 		<td class="leftcol" style="font-size:14px;font-weight:bold;font-family:arial;">
 			<label for="minquantity"><%= t 'supplier.minquantity' %> :</label></td>
-		<td colspan=3 style="font-size:14px;font-family:arial;"><%=h @stationery.minquantity %><%=h @stationery.unittype %></td>
+		<td colspan=3 style="font-size:14px;font-family:arial;"><%=h @stationery.minquantity %>&nbsp;<%=h @stationery.unittype %></td>
 	</tr>
 	<tr><td colspan=4 height=50px>&nbsp;</tr>
-	<tr><td colspan=4 style="font-size:14px;font-weight:bold;font-family:arial;">ADDITIONS</td></tr>
+	<tr><td colspan=4 style="font-size:14px;font-weight:bold;font-family:arial;"><%=t('stationery.additions').upcase%></td></tr>
 	<tr>
-		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">LPO No</td>
-		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Supplier Name</td>
-		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Quantity</td>
-		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Price per Unit</td>
-		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Total</td>
-		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Received Date</td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;"><%=t('supplier.lpono')%></td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;"><%=t('supplier.supplier_id')%></td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;"><%=t('supplier.quantity')%></td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;"><%=t('supplier.unitcost')%></td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;"><%=t('supplier.total')%></td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;"><%=t('supplier.received')%></td>
 	</tr>
 <% for stationery_add in @stationery.stationery_adds%>
   	<tr>
@@ -72,16 +73,16 @@
 		<td><%= stationery_add.quantity %></td>
 		<td><%= ringgols(stationery_add.unitcost) %></td>
 		<td><%= ringgols(stationery_add.line_item_value) %></td>
-		<td><%= stationery_add.received? ? stationery_add.received.strftime("%d %b %Y") : "-" %></td>
+		<td><%= stationery_add.received? ? l(stationery_add.received, :format => "%d %b %Y") : "-" %></td>
 	</tr>
 <% end %>
 	<tr><td colspan=4 height=100px></tr>
-	<tr><td colspan=4 style="font-size:14px;font-weight:bold;font-family:arial;">DEDUCTIONS</td></tr>
+	<tr><td colspan=4 style="font-size:14px;font-weight:bold;font-family:arial;"><%=t('stationery.deductions')%></td></tr>
 	<tr>
-		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Issues By</td>
-		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Received By</td>
-		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Quantity</td>
-		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;">Issue Date</td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;"><%=t('supplier.issuedby')%></td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;"><%=t('supplier.receivedby')%></td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;"><%=t('supplier.quantity')%></td>
+		<td style="font-size:14px;font-weight:bold;font-family:arial;border-bottom:solid 1px;border-top:solid 1px;"><%=t('supplier.issuedate')%></td>
 	</tr>
 
 	<% for stationery_use in @stationery.stationery_uses %>
@@ -89,7 +90,7 @@
 			<td><%= stationery_use.issuer.try(:name) %></td>
 			<td><%= stationery_use.receiver.try(:name) %></td>
 			<td><%= stationery_use.quantity %></td>
-			<td><%= stationery_use.issuedate? ? stationery_use.issuedate.strftime("%d %b %Y") : "-" %></td>
+			<td><%= stationery_use.issuedate? ? l(stationery_use.issuedate, :format => "%d %b %Y") : "-" %></td>
 		</tr>
 	<% end %>
 
