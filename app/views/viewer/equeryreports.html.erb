@@ -16,6 +16,7 @@
 		<% permitted_to? :read, :staffsearch2s do %>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.staff' %></span></td></tr>
+		
 		<tr>
 			<td>1</td>
 			<td><%= link_to (t 'menu.maklumat_perjawatan'), {:controller => 'positions',:action => 'maklumat_perjawatan_LA'}  %></td>
@@ -27,11 +28,16 @@
 			<td><%= link_to (t 'equery.advance_search'), {:controller => 'staff_attendances', 	:action => 'report'} %></td>
 		</tr>
 		<% end %>
-		
+				
 		<% permitted_to? :read, :assetsearches do %>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.assets' %></span></td></tr>
-		<tr>		
+		<tr>	
+		<tr>
+			<td>A</td>
+			<td><%= link_to (t 'supplier.title'), {:controller => 'stationeries',:action => 'index'}  %></td>
+			<td><%= link_to (t 'equery.advance_search'), {:controller => 'stationerysearches',:action => 'new'}  %></td>
+		</tr>
 		<tr>
 			<td>3</td><% @searchtype=1 %>
 			<td><%= link_to 'KEW.PA-2 (Daftar Harta Modal)', {:controller => 'assets', :action => 'index',:show => "fixed"} %></td>
