@@ -119,7 +119,7 @@
 									<%##= f.select :cctype_id, StudentAttendance::REASON, :prompt => (t 'selectz') %>
 									<%= select_tag("reasons[#{no+@next}]", "<option value='0'>#{t('student_attendance.reason')}</option>" +options_for_select(StudentAttendance::REASON, studentattendance.reason)) %>&nbsp;
 									<%= select_tag("actions[#{no+@next}]", "<option value='0'>#{t('student_attendance.action_taken')}</option>" +options_for_select(StudentAttendance::ACTION, studentattendance.action)) %>&nbsp;
-									<%= select_tag("statuss[#{no+@next}]", "<option value='0'>#{t('student_attendance.action_close')}</option>" +options_for_select(['Yes','No'],studentattendance.status)) %>&nbsp;
+									<%= select_tag("statuss[#{no+@next}]", "<option value='0'>#{t('student_attendance.action_close')}</option>" +options_for_select( [[t('student_attendance.complete'),'Yes'],[t('student_attendance.incomplete'),'No']],studentattendance.status)) %>&nbsp;
 									<%= text_field_tag "remarks[#{no+@next}]", studentattendance.remark %>
 								<% end %>
 								<% if no == one_student_atts_count-1 %><%# if no == 2 %>

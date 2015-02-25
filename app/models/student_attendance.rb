@@ -48,19 +48,19 @@ class StudentAttendance < ActiveRecord::Base
   
   REASON = [
           #  Displayed       stored in db
-          [ "Cuti Sakit","1" ],
-          [ "Kecemasan","2" ],
-          [ "Biasa", "3" ]
+          [ I18n.t('student_attendance.medical_leave'),"1" ],
+          [ I18n.t('student_attendance.emergency'),"2" ],
+          [ I18n.t('student_attendance.normal'), "3" ]
    ]
    
    ACTION = [
           #   Displayed     stored in db
-         ["Kaunseling","1"],
-         ["Ganti Cuti","2"],
-         ["Tunjuk Sebab","3"],
-         ["Amaran","4"],
-         ["Tatatertib","5"],
-         ["Hadir Kelas Gantian","6"]
+         [I18n.t('student_attendance.counseling'),"1"],
+         [I18n.t('student_attendance.replace_leave'),"2"],
+         [I18n.t('student_attendance.show_cause'),"3"],
+         [I18n.t('student_attendance.warning'),"4"],
+         [I18n.t('student_attendance.disciplinary'),"5"],
+         [I18n.t('student_attendance.attend_replacement_class'),"6"]
      ]
   
 end
