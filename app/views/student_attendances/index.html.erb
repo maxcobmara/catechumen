@@ -120,13 +120,13 @@
 						<% if student_attendance.attend == true %> 
 							&#10003;
 						<% else %>
-							<%=t('student_attendance.absent')%>
+							<font color=red><b>&#0215;</b></font><%#=t('student_attendance.absent')%>
 						<% end %>
 					</td>
 					<td>	
 						<% if student_attendance.attend == true %> 
 						<% else %>
-							<% if student_attendance.reason != 0 || student_attendance.reason != nil %>
+							<% unless student_attendance.status == "0" || student_attendance.status == nil %>
 								<%=h ((StudentAttendance::REASON.find_all{|disp, value| value == student_attendance.reason}).map {|disp, value| disp}) %>
 							<% end %>
 						<% end %>	
@@ -134,7 +134,7 @@
 					<td>	 
 						<% if student_attendance.attend == true %> 
 						<% else %>
-							<% if student_attendance.action != 0 || student_attendance.action != nil %>
+							<% unless student_attendance.status == "0" || student_attendance.status == nil %>
 								<%=h ((StudentAttendance::ACTION.find_all{|disp, value| value == student_attendance.action}).map {|disp, value| disp}) %>
 							<% end %>
 						<% end %>
@@ -142,7 +142,7 @@
 					<td>
 						<% if student_attendance.attend == true %> 
 						<% else %>
-							<% if student_attendance.status != 0 || student_attendance.status != nil %>
+							<% unless student_attendance.status == "0" || student_attendance.status == nil %>
 								<%=student_attendance.status %>
 							<% end %>
 						<% end %>
