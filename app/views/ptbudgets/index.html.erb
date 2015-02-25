@@ -4,7 +4,7 @@
 	</div>
 </div>
 <div class="toolbar">
-	<p><%= link_to image_tag("money_add.png", :border => 0, :title => (t 'ptbudget.newbudget')) + " "+(t 'ptbudget.newbudget'), new_ptbudget_path %></p>
+	<p><%= link_to image_tag("money_add.png", :border => 0, :title => (t 'ptbudget.newbudget')) + " "+(t 'ptbudget.newbudget'), :action =>'new', :newtype=> "1" %></p>
 </div>
 <div class="indextable">
 <BR><BR>
@@ -16,10 +16,12 @@
     <th><%= t 'ptbudget.balance' %></th>
     <th colspan=3 class="ac"><%= t 'control' %></th>
   </tr>
-
+<%=l(@ptbudgets.last.fiscalstart)%>
 <% @ptbudgets.each do |ptbudget| %>
   <tr>
-    <td><%=h l(ptbudget.fiscalstart) %> to <%=h l(ptbudget.fiscal_end) %></td><!--19/10/2011-Shaliza changed date format -->
+    <td><%=h l(ptbudget.fiscalstart) %> to <%=h l(ptbudget.fiscal_end) %>&nbsp;
+		<%= link_to "+ "+(t 'ptbudget.additional_budget'), :action => 'new', :newtype =>"2" %>
+    </td><!--19/10/2011-Shaliza changed date format -->
     <td><%=h ringgols(ptbudget.budget) %></td><!--19/10/2011-Shaliza remove word RM-->
 	<td><%=h ringgols(ptbudget.used_budget) %></td>
 	<td><%=h ringgols(ptbudget.budget_balance) %></td>

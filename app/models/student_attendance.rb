@@ -1,7 +1,7 @@
 class StudentAttendance < ActiveRecord::Base
   belongs_to :weeklytimetable_detail, :foreign_key => 'weeklytimetable_details_id'
   belongs_to :student
-  #validates_uniqueness_of :student_id, :scope => :weeklytimetable_details_id, :message => " - Attendance for this student was already created for selected schedule/class"
+  validates_uniqueness_of :student_id, :scope => :weeklytimetable_details_id, :message => " - Attendance for this student was already created for selected schedule/class"
   
   attr_accessor :lecturer_id
   
