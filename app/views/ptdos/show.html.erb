@@ -59,7 +59,8 @@
 
 </table>
 </div>
-
-<%= link_to (t 'edit'), edit_ptdo_path(@ptdo) %> |
+<% permitted_to? :approve, :ptdos do %>
+      <%= link_to (t 'edit'), edit_ptdo_path(@ptdo) %> |
+<% end %> 
 <%= link_to (t 'back'), ptdos_path %>
 

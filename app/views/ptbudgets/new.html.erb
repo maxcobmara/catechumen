@@ -10,12 +10,17 @@
 		<td class="leftcol"><label for="budget"><%= t 'ptbudget.budget' %> : </label></td>
 		<td><%= f.text_field :budget, :placeholder => 'RM', :size => 12 %></td>
 	</tr>
-
+	<% if @newtype=="1"%>
 	<tr>
 		<td class="leftcol"><label for="fiscalstart"><%= t 'ptbudget.fiscalstart' %> : </label></td>
 		<td><%= f.date_select :fiscalstart, :order => [:day, :month, :year], :default => @ptbudget.next_budget_date %></td>
-
 	</tr>
+	<% elsif @newtype =="2" %>
+	<tr>
+		<td class="leftcol"><label for="additional_start"><%= t 'ptbudget.additional_start' %> : </label></td>
+		<td><%= f.date_select :fiscalstart, :order => [:day, :month, :year], :default => Date.today %></td>
+	</tr>
+	<% end %>
 
 </table>		
 </div>

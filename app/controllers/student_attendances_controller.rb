@@ -184,6 +184,14 @@ class StudentAttendancesController < ApplicationController
 
       #for (2) multiple new by class
       @schedule_list2 = @schedule_list - @exist_timetable_attendances
+      #--------------------------------------------------
+      ###for above line NOTE : If search_class is used in INDEX (eg. multiple EMPTY class attendances exist, but SEARCH for only one class - searched result -> 1 of XXX EXIST class attendance, listing for NEW attendance (multiple EMPTY class attendance) shall INCLUDES Existing attendance (refer lines 106-119), revised @schedule_list2 to EXCLUDE existing one(if any).
+         @student_attendances_not_searched = StudentAttendance.find(:all, :conditions=>['weeklytimetable_details_id IN(?)',@schedule_list])
+         @exist_attendances_not_searched = @student_attendances_not_searched.map(&:weeklytimetable_details_id).uniq 
+         @exist_timetable_attendances_not_searched = WeeklytimetableDetail.find(:all, :conditions=>['id IN (?)', @exist_attendances_not_searched]).sort_by{|u|u.day_time_slot}
+         @schedule_list2 = @schedule_list2 - @exist_timetable_attendances_not_searched
+      ###for above line NOTE...end
+      #--------------------------------------------------
     
       #for (1) multiple new by intake+programme for common lecturer & admin
       @intake_course2 = @intake_course - @exist_intake_course_attendances if @programme2.nil? && !@is_pengkhususan_lecturer 
@@ -191,8 +199,8 @@ class StudentAttendancesController < ApplicationController
       #####DEFAULT - REQUIRED - 12 February 2015
       #for (1) multiple new by intake for programme lecturers(diploma, pengkhususan) 
       @intake_list2b = @intake_list2 - @exist_intake if !@is_common_lecturer && @exist_intake.count == 0
-    
-    end  
+      
+    end
     respond_to do |format|
       if @position_exist
         format.html # index.html.erb

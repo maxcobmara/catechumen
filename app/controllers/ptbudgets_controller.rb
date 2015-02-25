@@ -25,6 +25,7 @@ class PtbudgetsController < ApplicationController
   # GET /ptbudgets/new
   # GET /ptbudgets/new.xml
   def new
+    @newtype = params[:newtype]
     @ptbudget = Ptbudget.new
 
     respond_to do |format|
