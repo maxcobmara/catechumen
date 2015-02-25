@@ -9,14 +9,18 @@
 		"class='printbutton' " +
 		"value='<%=escape_javascript(t 'print')%>'/>");
 	</script>
-</form>	
-<%#= link_to 'Back to Index', student_attendances_path %>
-<div class="A4potrait" style="border: none;">
+</form>
 
-<!--params[:student_attendance_ids] = @student_attendances.map(&:id)
-render :action => "edit_multiple_intake"-->
-<%#= link_to 'Back',:action => 'edit_multiple_intake', :id => @studentattendance_ids %>
-<%#= @studentattendance_ids%><%#=params[:iddd]%>
+<div id="hideLink">
+	<!--Temporary solution - note : link_to_function is deprecated in Rails 4-->
+	<!--source : http://stackoverflow.com/questions/16213176/link-back-to-page-visited-before-form-rails-->
+	<%= link_to_function t('back'), "history.back()" %>
+	<%#= link_to 'Back to Index', student_attendances_path %>
+	<%#= link_to 'Back',:action => 'edit_multiple_intake', :id => @studentattendance_ids %>
+	<%#= @studentattendance_ids%><%#=params[:iddd]%>
+</div>
+
+<div class="A4potrait" style="border: none;">
 
 <!-- Box Head -->
 <div id="kewpa">
@@ -144,7 +148,7 @@ render :action => "edit_multiple_intake"-->
 									<% if studentattendances[0].attend == true %> 
 										&#10003;
 									<% else %>
-										<%=t('student_attendance.absent')%>
+										&#0215;<%#=t('student_attendance.absent')%>
 									<% end %>
 								</td>
 								<% if no==0 && count==0 || no==0 && count==24 || no==0 && count==48 %><%# if no==0 && count==0 %>
@@ -169,7 +173,7 @@ render :action => "edit_multiple_intake"-->
 										<% if studentattendances[1].attend == true %> 
 											&#10003;
 										<% else %>
-											<%=t('student_attendance.absent')%>
+											&#0215;<%#=t('student_attendance.absent')%>
 										<% end %>
 									<% else %>
 										&nbsp;
@@ -203,7 +207,7 @@ render :action => "edit_multiple_intake"-->
 										<% if studentattendances[2].attend == true %> 
 											&#10003;
 										<% else %>
-											<%=t('student_attendance.absent')%>
+											&#0215;<%#=t('student_attendance.absent')%>
 										<% end %>
 									<% else %>
 										&nbsp;

@@ -34,7 +34,11 @@ bkLib.onDomLoaded(function() {
 		<tr>
 			<td class="leftcol"><label><%=t('topicdetail.topic')%></label></td>
 			<td>
-				<%= f.collection_select :topic_code, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> "Select Semester-Subject | Topic" %>
+				<% if @job_type == "matchnotes" && @rec_select != "0" %>
+					<%= f.collection_select :topic_code, @semester_subject_topic_list, :id, :semester_subject_topic,:selected=> @rec_select.to_i %>
+				<% else %>
+					<%= f.collection_select :topic_code, @semester_subject_topic_list, :id, :semester_subject_topic,:include_blank=> "Select Semester-Subject | Topic" %>
+				<% end %>
 			</td>
 		</tr>
 		<tr>

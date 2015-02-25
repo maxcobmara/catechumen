@@ -42,6 +42,7 @@ class LessonPlansController < ApplicationController
   # GET /lesson_plans/1/edit
   def edit
     @lesson_plan = LessonPlan.find(params[:id])
+    @job_type = params[:job_type]
     #admin
     current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
     @is_admin=true if current_roles.include?("Administration")
@@ -69,8 +70,11 @@ class LessonPlansController < ApplicationController
     @lesson_plan = LessonPlan.find(params[:id])
     newlocation = params[:new_location]
     if newlocation!=nil
-      scheduleid = params[:lesson_plan][:schedule]
-      scheduleid = @lesson_plan.schedule if scheduleid==nil
+      if @lesson_plan.is_submitted == true        #after submission -> schedule confirm exist, even validation - schedule must exist upon save
+        scheduleid = @lesson_plan.schedule if scheduleid==nil
+      else
+        scheduleid = params[:lesson_plan][:schedule]
+      end
       if scheduleid!=nil
         schedule = WeeklytimetableDetail.find(scheduleid) 
         schedule.location_desc = newlocation

@@ -22,23 +22,27 @@
 	<tbody>
 		<% @programmes.each do |programme| %>
 	  <tr id="node-<%= (programme.id) %>" <%= programme.tree_nd %>>
-	    <td><%=h programme.code %> &nbsp; &nbsp; &nbsp;
+		<td><%=h programme.code %> &nbsp; &nbsp; &nbsp;
 			<% if programme.course_type == 'Subject' || programme.course_type == 'Topic' || programme.course_type == 'Subtopic' %>
-					<% else %>
-						<%=h programme.course_type %>  &nbsp; &nbsp; 
-					<% end %>
-					<%=h programme.name %></td>
-			<td><% if programme.credits == 0 %><%else%><%=h programme.credits %><%end%></td>
-			<td><%=h check_kin_blank {(Programme::COURSE_STATUS.find_all{|disp, value| value == programme.status}).map {|disp, value| disp} }%></td>
-			<td><%=h programme.duration %> <%=h check_kin_blank {(Programme::DURATION_TYPES.find_all{|disp, value| value == programme.duration_type}).map {|disp, value| disp} }%>
-			<td width=10%><%= link_to "(+)", new_programme_path(:parent_id => programme)%></td>
-      <td width=10px><%= link_to image_tag("document.png", :border => 0, :title=>(t 'show')), :action => 'show', :id => programme %></td>
-      <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => programme %></td>
-      <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), programme, :confirm => (t 'are_you_sure'), :method => :delete %></td>
+			<% elsif programme.course_type == 'Commonsubject'%>
+				<font color=red>*</font>
+			<% else %>
+				<%=h programme.course_type %>  &nbsp; &nbsp; 
+			<% end %>
+			<%=h programme.name %>
+		</td>
+		<td><% if programme.credits == 0 %><%else%><%=h programme.credits %><%end%></td>
+		<td><%=h check_kin_blank {(Programme::COURSE_STATUS.find_all{|disp, value| value == programme.status}).map {|disp, value| disp} }%></td>
+		<td><%=h programme.duration %> <%=h check_kin_blank {(Programme::DURATION_TYPES.find_all{|disp, value| value == programme.duration_type}).map {|disp, value| disp} }%>
+		<td width=10%><%= link_to "(+)", new_programme_path(:parent_id => programme)%></td>
+		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title=>(t 'show')), :action => 'show', :id => programme %></td>
+		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => programme %></td>
+		<td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), programme, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 	  </tr>
 		<% end %>
 	</tbody>
 </table>
+<font color=red size=-2>* <%=t('programme.indicates_common_subject')%></font>
 <br /><br />
 <%= link_to t('programme.new_root'), new_programme_path %>
 <br /><br />
