@@ -1,21 +1,21 @@
 <% form_for(@lesson_plan, :html => { :multipart => true }) do |f| %>
   <%= f.error_messages %>
 
-	<% if (@lesson_plan.prepared_by == Login.current_login.staff_id && @lesson_plan.is_submitted != true) || (@lesson_plan.prepared_by == Login.current_login.staff_id && @lesson_plan.is_submitted == false) || (@lesson_plan.prepared_by == Login.current_login.staff_id && @lesson_plan.hod_rejected? == true ) || @lesson_plan.is_submitted == false || @lesson_plan.is_submitted == nil %>
+	<% if ((@lesson_plan.prepared_by == Login.current_login.staff_id && @lesson_plan.is_submitted != true) || (@lesson_plan.prepared_by == Login.current_login.staff_id && @lesson_plan.is_submitted == false) || (@lesson_plan.prepared_by == Login.current_login.staff_id && @lesson_plan.hod_rejected? == true ) || @lesson_plan.is_submitted == false || @lesson_plan.is_submitted == nil) && @job_type == "editplan" %>
 		<h3><%=t('lesson_plan.edit')%></h3>
 		<div class="tform">
 			<%=render :partial => 'form', :locals => {:f => f} %>
 			<%=render :partial => 'form_process', :locals => {:f => f} %>
 		</div>
 	<% end -%>
-	<% if @lesson_plan.is_submitted == true && ((@lesson_plan.endorsed_by == Login.current_login.staff_id) || @is_admin)%>
+	<% if (@lesson_plan.is_submitted == true && ((@lesson_plan.endorsed_by == Login.current_login.staff_id) || @is_admin)) && @job_type == "approveplan"%>
 		<h3><%=t('lesson_plan.approval')%></h3>
 		<div class="tform">
 			<%=render :partial => 'show_main' %>
 			<%=render :partial => 'approval', :locals => {:f => f} %>
 		</div>
 	<% end -%>
-	<% if (@lesson_plan.prepared_by == Login.current_login.staff_id || @is_admin) && @lesson_plan.is_submitted == true && !@lesson_plan.report_submit %>
+	<% if ((@lesson_plan.prepared_by == Login.current_login.staff_id || @is_admin) && @lesson_plan.is_submitted == true && !@lesson_plan.report_submit) && @job_type == "addnotes" %>
 		<h3><%=t('lesson_plan.adding_notes')%></h3>
 		<div class="tform">
 		        <%=render :partial => 'show_main' %>

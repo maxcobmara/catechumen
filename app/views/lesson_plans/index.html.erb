@@ -66,7 +66,7 @@
 			- <%=t('lesson_plan.resubmitted')%>
 		<% end %>
 		<% if (lesson_plan.prepared_by == Login.current_login.staff_id || @is_admin) && lesson_plan.is_submitted == true && !lesson_plan.report_submit %>
-			<%= link_to (t 'lesson_plan.add_notes'), :action => 'edit', :id => lesson_plan %>
+			<%= link_to (t 'lesson_plan.add_notes'), :action => 'edit', :id => lesson_plan, :job_type => "addnotes" %>
 		<% end %>
 	</td>
 	<td><!--LessonP approval, display rejected when exist-->
@@ -87,10 +87,10 @@
 	<td width=10px>
 	<!--edit : display owner or admin only-->
 	<% if (lesson_plan.is_submitted != true && (lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) || ((lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration')) && lesson_plan.hod_rejected? == true && lesson_plan.is_submitted==nil) || (lesson_plan.is_submitted == false && (lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) || (lesson_plan.is_submitted == nil && (lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) %>
-		<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => lesson_plan %>
+		<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => lesson_plan, :job_type => "editplan" %>
 	<% elsif (lesson_plan.is_submitted == true && lesson_plan.hod_approved != true) && (lesson_plan.endorsed_by == Login.current_login.staff_id || current_roles.include?('Administration'))  %>
 	<!--approval (LP) : display HOD or admin only-->
-		<%= link_to image_tag("approval.png", :border => 0, :title => (t 'approval')), :action => 'edit', :id => lesson_plan %>
+		<%= link_to image_tag("approval.png", :border => 0, :title => (t 'approval')), :action => 'edit', :id => lesson_plan, :job_type => "approveplan" %>
 	<% end %>
 	</td>
 	<td width=10px>

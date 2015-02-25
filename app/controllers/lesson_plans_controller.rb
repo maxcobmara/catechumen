@@ -42,6 +42,7 @@ class LessonPlansController < ApplicationController
   # GET /lesson_plans/1/edit
   def edit
     @lesson_plan = LessonPlan.find(params[:id])
+    @job_type = params[:job_type]
     #admin
     current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
     @is_admin=true if current_roles.include?("Administration")

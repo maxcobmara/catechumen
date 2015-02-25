@@ -42,8 +42,9 @@
 			<br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 			<% if trainingnote.topicdetail_id==nil && trainingnote.timetable_id!=nil %>
 				<font color=blue>
-					<b><%=('topicdetail.title2')%></b> <%=t('not_exist')%>, <%= link_to (t 'topicdetail.create_one').upcase, new_topicdetail_path %> <%=t('topicdetail.to_match')%>.
 					<% @topic=WeeklytimetableDetail.find(trainingnote.timetable_id).topic %>
+					<b><%=('topicdetail.title2')%></b> <%=t('not_exist')%>, <%= link_to (t 'topicdetail.create_one').upcase, :controller => "topicdetails", :action => "new", :job_type => "matchnotes", :rec_select => @topic %> <%=t('topicdetail.to_match')%>.
+					<%# @topic=WeeklytimetableDetail.find(trainingnote.timetable_id).topic %>
 					(<%=t('topicdetail.topic')%> : <%=Programme.find(@topic).semester_subject_topic %>)
 				</font>
 			<% end %>	

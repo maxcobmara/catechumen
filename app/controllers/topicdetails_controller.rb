@@ -34,6 +34,8 @@ class TopicdetailsController < ApplicationController
   # GET /topicdetails/new
   # GET /topicdetails/new.xml
   def new
+    @job_type = params[:job_type]
+    @rec_select = params[:rec_select]
     @topicdetail = Topicdetail.new
     @lecturer_programme = current_login.staff.position.unit
     unless @lecturer_programme.nil?
@@ -41,8 +43,8 @@ class TopicdetailsController < ApplicationController
     end
     unless @programme.nil?
       @programme_id = @programme.id 
-      @topic_programme = Programme.find(@programme_id).descendants.at_depth(3)
-      @subtopic_programme = Programme.find(@programme_id).descendants.at_depth(4)
+      @topic_programme = Programme.find(@programme_id).descendants.at_depth(3).map(&:id)
+      @subtopic_programme = Programme.find(@programme_id).descendants.at_depth(4).map(&:id)
       @topic_subtopic = @topic_programme + @subtopic_programme
       @semester_subject_topic_list = Programme.find(:all,:conditions=>['id IN(?) AND id NOT IN(?)',@topic_subtopic, Topicdetail.all.map(&:topic_code).compact.uniq], :order=>:combo_code)
     else
