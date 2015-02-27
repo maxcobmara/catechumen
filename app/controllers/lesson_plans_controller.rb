@@ -4,7 +4,8 @@ class LessonPlansController < ApplicationController
   def index
     @position_exist = Login.current_login.staff.position
     if @position_exist 
-      @lesson_plans = LessonPlan.find(:all, :order => "lecturer ASC, lecture_date DESC")
+      #@lesson_plans = LessonPlan.find(:all, :order => "lecturer ASC, lecture_date DESC")
+      @lesson_plans = LessonPlan.search(params[:search])
     end
     current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
     @is_admin=true if current_roles.include?("Administration")

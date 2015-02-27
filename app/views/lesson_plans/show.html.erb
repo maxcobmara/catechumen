@@ -34,7 +34,7 @@
 
 
 <% if @lesson_plan.hod_approved == true && @lesson_plan.report_submit != true && @lesson_plan.lecturer == Login.current_login.staff_id%>
-	<!--EDIT REPORT-start--->
+	<!--EDIT REPORT-start-->
 	&nbsp;|&nbsp;<%= link_to t('lesson_plan.submit_report'), :action => 'lessonplan_reporting', :id => @lesson_plan %>
 	<!--EDIT REPORT-end-->
 <% elsif (@lesson_plan.report_submit == true && @lesson_plan.endorsed_by == Login.current_login.staff_id && (@lesson_plan.report_endorsed != true||@lesson_plan.report_endorsed==false))  %>

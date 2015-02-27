@@ -59,7 +59,6 @@ class LessonPlan < ActiveRecord::Base
        #self.topic = WeeklytimetableDetail.find(schedule).topic
     #end   
 
-
    end
 
    def assign_topic_intake_id
@@ -120,6 +119,23 @@ class LessonPlan < ActiveRecord::Base
   def tpa
     cur_tpa = Staff.find(:first, :joins => :position, :conditions => ['positions.name=?', "Timbalan Pengarah Akademik (Pengajar)"])
     return cur_tpa.id if cur_tpa
+  end
+  
+  def self.search(search)
+    if search
+      programme = Programme.roots.map(&:name)
+      common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
+      bylecturer = Staff.find(:all, :joins => :position, :conditions => ['(positions.unit IN(?) OR positions.unit IN(?)) and staffs.name ILIKE (?)', programme, common_subjects, "%#{search}%"])
+      lecturer_ids = bylecturer.map(&:id)
+      if lecturer_ids.count > 0
+        @lesson_plans = LessonPlan.find(:all, :conditions => ["lecturer IN (?) or semester=?", lecturer_ids, search.to_i], :order => "lecturer ASC, lecture_date DESC")
+      else
+	@lesson_plans = LessonPlan.find(:all, :conditions => ["semester=?", search.to_i], :order => "lecturer ASC, lecture_date DESC")
+      end
+    else
+       @lesson_plans = LessonPlan.find(:all, :order => "lecturer ASC, lecture_date DESC")
+    end
+    @lesson_plans
   end
   
   #---------------------AttachFile------------------------------------------------------------------------

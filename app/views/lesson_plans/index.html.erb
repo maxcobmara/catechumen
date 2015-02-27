@@ -3,7 +3,11 @@
 	<div class="box-head">
 		<h2 class="left"><%=t('lesson_plan.plan_report_list')%></h2>
 		<div class="right">
-	  </div>
+			<% form_tag lesson_plans_path, :method => 'get' do %>
+				<%= text_field_tag :search, params[:search], :placeholder => (t 'lesson_plan.lecturer_name_semester')  %>
+				<%= submit_tag (t 'search'), :name => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
 <div class="toolbar">
