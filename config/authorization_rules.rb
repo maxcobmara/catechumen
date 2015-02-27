@@ -106,7 +106,8 @@ authorization do
         if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     
-    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:index, :show, :create, :update, :claimprint]do 
+    has_permission_on :travel_claims, :to => :create
+    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:index, :show, :update, :claimprint]do 
         if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     

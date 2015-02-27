@@ -27,10 +27,10 @@ class LessonPlan < ActiveRecord::Base
     end
     
     if hod_approved == false
-      self.hod_approved_on	= nil
+      self.hod_approved_on = nil
     end
     
-    if hod_rejected == true && endorsed_by == Login.current_login.staff_id
+    if hod_rejected == true && endorsed_by == Login.current_login.staff_id && lecturer !=  Login.current_login.staff_id  #kp should not reject her own plan
       self.is_submitted = nil
    end
    
@@ -117,6 +117,10 @@ class LessonPlan < ActiveRecord::Base
       approver  
   end
   
+  def tpa
+    cur_tpa = Staff.find(:first, :joins => :position, :conditions => ['positions.name=?', "Timbalan Pengarah Akademik (Pengajar)"])
+    return cur_tpa.id if cur_tpa
+  end
   
   #---------------------AttachFile------------------------------------------------------------------------
    has_attached_file :data,
