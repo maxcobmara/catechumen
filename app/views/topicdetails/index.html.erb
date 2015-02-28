@@ -3,7 +3,11 @@
 	<div class="box-head">
 		<h2 class="left"><%=t('topicdetail.title')%></h2>
 		<div class="right">
-	  </div>
+			<% form_tag topicdetails_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'topicdetail.subject_topic') %>
+			<%= submit_tag I18n.t('search'), :headline => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
 

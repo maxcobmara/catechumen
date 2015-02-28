@@ -3,7 +3,12 @@
 	<!-- Box Head -->
 	<div class="box-head">
 		<h2 class="left"><%=t('training_note.title')%></h2>
-		<div class="right"></div>
+		<div class="right">
+			<% form_tag trainingnotes_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'training_note.subject_topic_title') %>
+			<%= submit_tag I18n.t('search'), :headline => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
 <div class="toolbar">
