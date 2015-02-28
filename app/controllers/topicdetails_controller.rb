@@ -4,7 +4,7 @@ class TopicdetailsController < ApplicationController
   def index
     @position_exist = Login.current_login.staff.position
     if @position_exist 
-      @topicdetails = Topicdetail.find(:all, :order => 'updated_at DESC')
+      @topicdetails = Topicdetail.search(params[:search])#find(:all, :order => 'updated_at DESC')
       #@topicdetails = Topicdetail.all            #use this semula #before30Oct2013
       #@topicdetails = Topicdetail.find(:all,:conditions=>['topic_code IS NOT NULL'])    #31Oct2013
       @topicdetails2 = Topicdetail.find(:all,:conditions=>['topic_code IS NULL'])    #31Oct2013
