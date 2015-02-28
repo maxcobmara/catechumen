@@ -10,5 +10,13 @@ class Timetable < ActiveRecord::Base
   has_many :timetable_for_monthurs,   :class_name => 'WeeklyTimetable', :foreign_key => 'format1'#, :dependent => :nullify
   has_many :timetable_for_friday,     :class_name => 'WeeklyTimetable', :foreign_key => 'format2'#, :dependent => :nullify
 
-
+  def self.search(search)
+    if search
+      @timetables = Timetable.find(:all, :conditions => ['code ILIKE(?) OR name ILIKE(?) OR description ILIKE(?)', "%#{search}%", "%#{search}%", "%#{search}%"])
+    else
+      @timetables = Timetable.all
+    end
+    @timetables
+  end
+  
 end

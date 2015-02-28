@@ -3,7 +3,11 @@
 	<div class="box-head">
 		<h2 class="left"><%=t('timetable.title')%></h2>
 		<div class="right">
-	  </div>
+			<% form_tag timetables_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'timetable.code_name_description') %>
+			<%= submit_tag I18n.t('search'), :headline => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
 

@@ -1,6 +1,12 @@
 <div class="box">
 	<div class="box-head">
 		<h2 class="left"><%=t('weeklytimetable.title')%></h2>
+		<div class="right">
+			<% form_tag weeklytimetables_path, :method => 'get' do %>
+				<%=t 'weeklytimetable.startdate' %>: <%= date_select :search, params[:search], :include_blank => :true %>
+				<%= submit_tag I18n.t('search'), :headline => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>	
 <div class="toolbar">

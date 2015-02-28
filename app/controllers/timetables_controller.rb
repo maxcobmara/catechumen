@@ -2,7 +2,7 @@ class TimetablesController < ApplicationController
   # GET /timetables
   # GET /timetables.xml
   def index
-    @timetables = Timetable.all
+    @timetables = Timetable.search(params[:search])
 
     respond_to do |format|
       format.html # index.html.erb
