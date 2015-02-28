@@ -13,7 +13,21 @@ class WeeklytimetablesController < ApplicationController
       end
       #note - restriction : refer authorization rules
       #note - Weeklytimetable listing : based on @programme_id value being sent to 'search' method in staff.rb
-      @weeklytimetables = Weeklytimetable.with_permissions_to(:index).search(@programme_id) 
+      if params[:search]
+	@aa=params[:search][:"(1i)"] 
+        @bb=params[:search][:"(2i)"]
+        @cc=params[:search][:"(3i)"]
+        if (@aa!='' && !@aa.nil?) && (@bb!='' && !@bb.nil?) && (@cc!='' && !@cc.nil?)
+	   @dadidu=''
+           @dadidu=@aa+'-'+@bb+'-'+@cc  
+        else
+          @dadidu=''
+        end
+      else
+	@dadidu=''
+      end
+      params[:search]=nil    #this line is required
+      @weeklytimetables = Weeklytimetable.with_permissions_to(:index).search(@programme_id, @dadidu) 
       
       common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
       @common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)

@@ -1,6 +1,12 @@
 <div class="box">
 	<div class="box-head">
 		<h2 class="left"><%=t('intake.list')%></h2>
+		<div class="right">
+			<% form_tag intakes_path, :method => 'get' do %>
+				<%= text_field_tag :search, params[:search], :placeholder => (t 'intake.description_programme') %>
+				<%= submit_tag I18n.t('search'), :headline => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
 

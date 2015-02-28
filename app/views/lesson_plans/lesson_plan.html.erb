@@ -10,7 +10,8 @@
 	</script>
 </form>
 <div id="hideLink">
-<%= link_to (t 'back'), lesson_plans_path %>
+	<%#= link_to (t 'back'), lesson_plans_path %>
+	<%= link_to_function t('back'), "history.back()" %>
 </div>
 <div class="A4lanscape2">
 
@@ -148,7 +149,7 @@
 				<span class="bold-cap"><%=h @lesson_plan.prepared_by? ? @lesson_plan.lessonplan_creator.name : '-' %></span><br>
 				<%=h @lesson_plan.prepared_by? ? @lesson_plan.lessonplan_creator.position.name : '-' %><br>
 				Kolej Sains Kesihatan Bersekutu Johor Bahru<br><br>
-				Tarikh : <%=h  @lesson_plan.submitted_on? ? @lesson_plan.submitted_on.strftime('%d-%b-%Y') : "Not Submitted" %>
+				Tarikh : <%=h  @lesson_plan.submitted_on? ? @lesson_plan.submitted_on.strftime('%d-%b-%Y') : t('not_submitted') %>
 			</td>
 			<td colspan="2">
 
@@ -157,7 +158,7 @@
 				<span class="bold-cap"><%=h @lesson_plan.endorsed_by? ? @lesson_plan.endorser.name : "-"  %></span><br>
 				<%=h @lesson_plan.endorsed_by? ? @lesson_plan.endorser.position.name : "-"  %><br>
 				Kolej Sains Kesihatan Bersekutu Johor Bahru<br><br>
-				Tarikh : <%=h @lesson_plan.hod_approved_on? ? @lesson_plan.hod_approved_on.strftime('%d-%b-%Y') : "Not Approved" %>
+				Tarikh : <%=h @lesson_plan.hod_approved_on? ? @lesson_plan.hod_approved_on.strftime('%d-%b-%Y') : t('not_approved') %>
 			</td>
 		</tr>
 		<tr><td colspan="6" style="height:30px;"></td></tr>

@@ -41,9 +41,13 @@ class Weeklytimetable < ActiveRecord::Base
     
   end
   
-  def self.search(search)
-    if search         
-      @weeklytimetables = Weeklytimetable.find(:all,:conditions => ['programme_id=?', search])
+  def self.search(programmeid, search)
+    if programmeid
+      if search!=''
+	@weeklytimetables = Weeklytimetable.find(:all,:conditions => ['programme_id=? and startdate=?', programmeid, search])
+      else 
+        @weeklytimetables = Weeklytimetable.find(:all,:conditions => ['programme_id=?', programmeid])
+      end
     else
       @weeklytimetables = Weeklytimetable.find(:all)
     end

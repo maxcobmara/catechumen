@@ -1,110 +1,121 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left"><%=t('lesson_plan.list')%></h2>
+		<h2 class="left"><%=t('lesson_plan.plan_report_list')%></h2>
 		<div class="right">
-	  </div>
+			<% form_tag lesson_plans_path, :method => 'get' do %>
+				<%= text_field_tag :search, params[:search], :placeholder => (t 'lesson_plan.lecturer_name_semester')  %>
+				<%= submit_tag (t 'search'), :name => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
-
-
 <div class="toolbar">
 	<table width=100%><tr>
 		<td><p><%= link_to image_tag("add.png", :border => 0, :title => (t 'lesson_plan.new')) + t('lesson_plan.new'), new_lesson_plan_path %></p></td>
 	</tr></table>
 </div>
 
-
 <div class="indextable">
-
 <table>
   <tr>    
     <th><%=t('lesson_plan.lecturer')%></th>
-    <th><%=t('lesson_plan.intake_id')%></th>
-    <th><%=t('lesson_plan.student_qty')%></th>
+    <th width=60px><%=t('lesson_plan.intake_id')%></th>
+    <th width=50px><%=t('lesson_plan.student_qty')%></th>
     <th><%=t('lesson_plan.year')%></th>
-    <th><%=t('lesson_plan.semester')%></th>
+    <th>Sem</th>
     <th><%=t('lesson_plan.topic')%>  <%#=t('lesson_plan.lecture_title')%></th>
-    <th><%=t('lesson_plan.lecture_date')%></th>
-    <th><%=t('lesson_plan.start_time')%></th>
-    <th><%=t('lesson_plan.end_time')%></th>
-    <th><%=t('lesson_plan.is_submitted')%></th>
-    <th><%=t('lesson_plan.hod_approved')%></th>
-    <th><%=t('lesson_plan.report_submit')%></th>
-    <th colspan="4"><%=t('control')%></th>
+    <th width=70px><%=t('lesson_plan.lecture_date')%></th>
+    <th width=95px><%=t('lesson_plan.timing')%></th>
+    <th width=70px><%=t('lesson_plan.is_submitted2')%></th>
+    <th width=70px><%=t('lesson_plan.hod_approved2')%></th>
+    <th width=70px><%=t('lesson_plan.report_submit2')%></th>
+    <th width=70px><%=t('lesson_plan.report_endorsed2')%></th>
+    <th colspan="5"><%=t('control')%></th>
   </tr>
-<!--hack-21March2013-->
-<% current_roles=[]%><% Login.current_login.roles.each do |x| %><% current_roles << x.name %><% end %><%#=current_roles.include? 'Administration'%>
-<!--hack-21March2013-->
-<% @lesson_plans.each do |lesson_plan| %>
-<!--hack-21March2013-->
-  <% if  (lesson_plan.lecturer == Login.current_login.staff_id) || (lesson_plan.endorsed_by == Login.current_login.staff_id) ||(current_roles.include? 'Administration')|| (lesson_plan.lecturer == Login.current_login.staff_id) %>
-<!--hack-21March2013-->
 
-  <tr>
-    <td><%=h lesson_plan.lessonplan_owner.name %></td>
-    <td>
-		<% @weeklytmetabledetails = WeeklytimetableDetail.all.map(&:id).uniq %><!--added 31st October2013-->
-		<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %><!--added 31st October2013-->
-			<%=h lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name %>
-		<% else %><!--added 31st October2013-->
-			<font color=red><%=t('lesson_plan.schedule_removed')%><!--added 31st October2013-->
-		<% end %><!--added 31st October2013-->
-	</td>
-    <td><%=h lesson_plan.student_qty %></td>
-    <td><%=h lesson_plan.year %></td>
-    <td><%=h lesson_plan.semester %></td>
-    <td><%=h lesson_plan.schedule_item.try(:weeklytimetable_topic).try(:subject_with_topic) %> - <%=h lesson_plan.schedule_item.try(:render_class_method) %> <%#=h lesson_plan.lecture_title %></td>
-    <td><%=h lesson_plan.lecture_date.blank? ?  lesson_plan.schedule_item.try(:get_date_for_lesson_plan)  : lesson_plan.lecture_date.try(:strftime, '%d %b %Y') %></td>
-    <td><%=h lesson_plan.schedule_item.try(:get_start_time) %></td>
-    <td><%=h lesson_plan.schedule_item.try(:get_end_time) %></td>
-	<td><!--LessonP submit:(1)new submission, (2)submitted, then rejected, (3)submitted, then rejected, later resubmitted-->
-		<%=h lesson_plan.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %>
-		<% if lesson_plan.hod_rejected==true && lesson_plan.is_submitted==nil %>
-			- <%=t('lesson_plan.returned')%>
-		<%elsif lesson_plan.hod_rejected==true && lesson_plan.is_submitted==true %>
-			- <%=t('lesson_plan.resubmitted')%>
+<% @lesson_plans.each do |lesson_plan| %>
+	<!--hack-21March2013-->
+	<% if  (lesson_plan.lecturer == Login.current_login.staff_id) || (lesson_plan.endorsed_by == Login.current_login.staff_id) ||(@is_admin)|| (lesson_plan.lecturer == Login.current_login.staff_id) %>
+	<!--hack-21March2013-->
+	<tr>
+		<td><%=h lesson_plan.lessonplan_owner.name %></td>
+		<td>
+			<% @weeklytmetabledetails = WeeklytimetableDetail.all.map(&:id).uniq %><!--added 31st October2013-->
+			<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %><!--added 31st October2013-->
+				<%=h lesson_plan.schedule_item.weeklytimetable.schedule_intake.name %>
+				<%#=h lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name %>
+			<% else %><!--added 31st October2013-->
+				<font color=red>*</font><!--added 31st October2013-->
+			<% end %><!--added 31st October2013-->
+		</td>
+		<td align="center"><%=h lesson_plan.student_qty %></td>
+		<td align="center"><%=h lesson_plan.year %></td>
+		<td align="center"><%=h lesson_plan.semester %></td>
+		<td><%=h lesson_plan.schedule_item.try(:weeklytimetable_topic).try(:subject_with_topic) %> - <b><%=h lesson_plan.schedule_item.try(:render_class_method) %></b> <%#=h lesson_plan.lecture_title %></td>
+		<td><%=h lesson_plan.lecture_date.blank? ?  lesson_plan.schedule_item.try(:get_date_for_lesson_plan)  : l(lesson_plan.lecture_date, :format => '%d %b %Y') %></td>
+		<td><%=h lesson_plan.schedule_item.try(:get_start_end_time) %></td>
+		<td><!--LessonP submit:(1)new submission, (2)submitted, then rejected, (3)submitted, then rejected, later resubmitted-->
+			<%=h lesson_plan.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %>
+			<% if (lesson_plan.prepared_by == Login.current_login.staff_id || @is_admin) && lesson_plan.is_submitted == true && !lesson_plan.report_submit %>
+				&nbsp;<%= link_to (t 'lesson_plan.add_notes2'), :action => 'edit', :id => lesson_plan, :job_type => "addnotes" %><br>
+			<% end %>
+			<% if lesson_plan.hod_rejected==true && lesson_plan.is_submitted==nil %>
+				<font size=-2>- <%=t('lesson_plan.returned')%></font>
+			<%elsif lesson_plan.hod_rejected==true && lesson_plan.is_submitted==true %>
+				<font size=-2>- <%=t('lesson_plan.resubmitted')%></font>
+			<% end %>
+		</td>
+		<td><!--LessonP approval, display rejected when exist-->
+			<%=h lesson_plan.hod_approved? ? image_tag("tick.png") : image_tag("cross.png") %><br>
+			<font size=-2><%=h lesson_plan.hod_rejected? ? "- "+t('lesson_plan.rejected') : "" %></font>
+		</td>
+		<td><%=h lesson_plan.report_submit? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+		<td><%=h lesson_plan.report_endorsed? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+		<td width=10px>
+			<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %>
+				 <%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => lesson_plan %>
+			<% end %>
+		</td>
+		<td width=10px>
+		<!--PLAN SECTION-start-->
+		<!--edit : display owner or admin only-->
+		<% if (lesson_plan.is_submitted != true && (lesson_plan.lecturer == Login.current_login.staff_id || @is_admin)) || ((lesson_plan.lecturer == Login.current_login.staff_id || @is_admin) && lesson_plan.hod_rejected? == true && lesson_plan.is_submitted==nil) || (lesson_plan.is_submitted == false && (lesson_plan.lecturer == Login.current_login.staff_id || @is_admin)) || (lesson_plan.is_submitted == nil && (lesson_plan.lecturer == Login.current_login.staff_id || @is_admin)) %>
+			<div class="noti_Container"><%= link_to image_tag("edit.png", :border => 0, :title => (t 'lesson_plan.edit_plan')), :action => 'edit', :id => lesson_plan, :job_type => "editplan" %><div class="noti_bubble">P</div></div>
+		<% elsif (lesson_plan.is_submitted == true && lesson_plan.hod_approved != true) && (lesson_plan.endorsed_by == Login.current_login.staff_id || @is_admin)  %>
+			<!--approval (LP) : display HOD or admin only-->
+			<div class="noti_Container"><%= link_to image_tag("approval.png", :border => 0, :title => (t 'lesson_plan.approve_plan')), :action => 'edit', :id => lesson_plan, :job_type => "approveplan" %><div class="noti_bubble">P</div></div>
 		<% end %>
-		<% if (lesson_plan.prepared_by == Login.current_login.staff_id || @is_admin) && lesson_plan.is_submitted == true && !lesson_plan.report_submit %>
-			<%= link_to (t 'lesson_plan.add_notes'), :action => 'edit', :id => lesson_plan, :job_type => "addnotes" %>
+		<!--PLAN SECTION-end-->
+	
+		<!--REPORT SECTION-start-->
+		<% if (lesson_plan.hod_approved ==true && lesson_plan.report_submit != true && lesson_plan.prepared_by == Login.current_login.staff_id) %>
+			<div class="noti_Container"><%= link_to image_tag("edit.png", :border => 0, :title => (t 'lesson_plan.submit_report')), :action => 'lessonplan_reporting', :id => lesson_plan %><div class="noti_bubble"><%=t('lesson_plan.report_bubble')%></div></div>
+		<% elsif (lesson_plan.report_submit == true && lesson_plan.endorsed_by == Login.current_login.staff_id && (lesson_plan.report_endorsed != true||lesson_plan.report_endorsed==false))  %>
+			<div class="noti_Container">
+			<%= link_to image_tag("approval.png", :border => 0, :title => (t 'lesson_plan.endorse_report')), :action => 'lessonplan_reporting', :id => lesson_plan %><div class="noti_bubble"><%=t('lesson_plan.report_bubble')%></div></div>
 		<% end %>
-	</td>
-	<td><!--LessonP approval, display rejected when exist-->
-		<%=h lesson_plan.hod_approved? ? image_tag("tick.png") : image_tag("cross.png") %>
-		<%=h lesson_plan.hod_rejected? ? "- "+t('lesson_plan.rejected') : "" %>
-	</td>
-	<td><!--LReport - display CREATE REPORT link if report no yet submitted-->
-		<%=h lesson_plan.report_submit? ? image_tag("tick.png") : image_tag("cross.png") %>
-		<% if lesson_plan.hod_approved == true && lesson_plan.report_submit != true && (lesson_plan.lecturer == Login.current_login.staff_id ||  current_roles.include?('Administration'))%><!--report_submit refers to submission of report-->
-			<%= link_to t('lesson_plan.create_report'), :action => 'lessonplan_reporting', :id => lesson_plan %>
-		<% end %>
-	</td>
-	<td width=10px>
-		<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %>
-			<%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => lesson_plan %>
-		<% end %>
-	</td>
-	<td width=10px>
-	<!--edit : display owner or admin only-->
-	<% if (lesson_plan.is_submitted != true && (lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) || ((lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration')) && lesson_plan.hod_rejected? == true && lesson_plan.is_submitted==nil) || (lesson_plan.is_submitted == false && (lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) || (lesson_plan.is_submitted == nil && (lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) %>
-		<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => lesson_plan, :job_type => "editplan" %>
-	<% elsif (lesson_plan.is_submitted == true && lesson_plan.hod_approved != true) && (lesson_plan.endorsed_by == Login.current_login.staff_id || current_roles.include?('Administration'))  %>
-	<!--approval (LP) : display HOD or admin only-->
-		<%= link_to image_tag("approval.png", :border => 0, :title => (t 'approval')), :action => 'edit', :id => lesson_plan, :job_type => "approveplan" %>
+		<!--REPORT SECTION-end-->
+		</td>
+		<td width=10px>
+			<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %>
+				<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => (t 'lesson_plan.title')), :action => 'lesson_plan', :id => lesson_plan %><div class="noti_bubble">P</div></div>
+			<% end %>
+		</td>    
+		<td width=10px>
+			<% if lesson_plan.report_submit==true %>
+				<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => (t 'lesson_plan.lesson_report')), :action => 'lesson_plan_report', :id => lesson_plan %><div class="noti_bubble"><%=t('lesson_plan.report_bubble')%></div></div>
+			<% end %>
+		</td>
+		<td width=10px >
+			<%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), lesson_plan, :confirm => (t 'are_you_sure'), :method => :delete %>
+		</td>
+	</tr>
 	<% end %>
-	</td>
-	<td width=10px>
-		<% if @weeklytmetabledetails.include?(lesson_plan.schedule) %>
-			<%= link_to image_tag("printer.png", :border => 0, :title => (t 'print')), :action => 'lesson_plan', :id => lesson_plan %>
-		<% end %>
-	</td>
-	<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), lesson_plan, :confirm => (t 'are_you_sure'), :method => :delete %></td>
-  </tr>
-  <% end %>
 <% end %>
 </table>
-
-<br />
+<font color="red" size=-2>* <%=t('lesson_plan.schedule_removed')%><!--added 31st October2013--></font>
+<br /><br>
 </div>
 
-<%= link_to t('lesson_plan.new'), new_lesson_plan_path %>
+<%= link_to t('lesson_plan.new'), new_lesson_plan_path %> 

@@ -9,7 +9,9 @@
 		</script>
 	</form>
 <div id="hideLink">
-	<%= link_to (t 'back'), index_report_lesson_plans_path %>
+	<%#= link_to (t 'back'), index_report_lesson_plans_path %>
+	<%#= link_to (t 'back'), lesson_plans_path %>
+	<%= link_to_function t('back'), "history.back()" %>
 </div>
 <div class="A4potrait" >
 
@@ -73,7 +75,7 @@
 				</tr>
 				<tr>
 					<td colspan="1" class="aaab">Bilik / Kelas / Makmal</td>
-					<td colspan="5" class="aaa">: <%=h @lesson_plan.schedule_item.weeklytimetable_location.name %></td>
+					<td colspan="5" class="aaa">: <%#=h @lesson_plan.schedule_item.weeklytimetable_location.name %><%=h @lesson_plan.schedule_item.try(:location_desc) %></td>
 				</tr>
 				<tr>
 					<td colspan="2"> &nbsp;</th>
@@ -92,7 +94,7 @@
 				<tr>
 					<td>&nbsp;</td>
 					<td>
-						<table><tr><td class="small_box"><%if @lesson_plan.condition_isgood == true %>&#10003;<% end %></td></tr></table>
+						<table><tr><td class="small_box"><%if @lesson_plan.condition_isgood == true %>&#10003;<% end %>&nbsp;</td></tr></table>
 					</td>
 					<td class="desc"> Memuaskan</td>
 					<td colspan="3"></td>
@@ -159,7 +161,11 @@
 						<td colspan="4">&nbsp;</td>
 					</tr>
 					<tr>
-						<td class="aaab" colspan="6">Ulasan TPA/KP :</th>
+						<td class="aaab" colspan="6">Ulasan TPA/KP :
+							<% if @lesson_plan.report_endorsed != true %>
+								<font color="red"><%=t('lesson_plan.report_not_endorsed')%></font>
+							<% end %>
+						</td>
 					</tr><!--
 					<tr>
 						<td colspan="2"> &nbsp;</td>

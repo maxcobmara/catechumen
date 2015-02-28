@@ -61,13 +61,26 @@ class WeeklytimetableDetail < ActiveRecord::Base
       return I18n.t(:'date.abbr_day_names')[6] if day2 == 7
    end
    
-   def get_start_time
+   def tperiod_val
      timeslot = time_slot2 if is_friday == false || is_friday == nil
      timeslot = time_slot if is_friday == true 
      itsformat = Weeklytimetable.find(weeklytimetable_id).format1 if is_friday == false || is_friday == nil
      itsformat = Weeklytimetable.find(weeklytimetable_id).format2 if is_friday == true
      #"#{TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot]).try(:start_at).try(:strftime,"%H:%M %p")}"
-     tperiod = TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot])
+     return TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot])
+   end
+   
+   def get_start_end_time
+     tperiod = tperiod_val
+     unless tperiod.nil?
+       "#{I18n.l(tperiod.start_at, :format => '%H:%M')} - #{I18n.l(tperiod.end_at, :format => '%H:%M %P')}"
+     else
+     "#{TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot]).try(:start_at).try(:strftime,"%H:%M")} - #{TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot]).try(:end_at).try(:strftime,"%H:%M %P")}"
+     end
+   end
+   
+   def get_start_time
+     tperiod = tperiod_val
      unless tperiod.nil?
        "#{I18n.l(tperiod.start_at, :format => '%H:%M %P')}"
      else
@@ -76,12 +89,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    end   
    
    def get_end_time
-     timeslot = time_slot2 if is_friday == false || is_friday == nil
-     timeslot = time_slot if is_friday == true 
-      itsformat = Weeklytimetable.find(weeklytimetable_id).format1 if is_friday == false || is_friday == nil
-     itsformat = Weeklytimetable.find(weeklytimetable_id).format2 if is_friday == true
-     #"#{TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot]).try(:end_at).try(:strftime,"%H:%M %p")}"
-     tperiod = TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot])
+    tperiod = tperiod_val
      unless tperiod.nil?
        "#{I18n.l(tperiod.end_at, :format => '%H:%M %P')}"
      else

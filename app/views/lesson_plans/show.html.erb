@@ -1,26 +1,66 @@
 <div class="tform">
 	<%=render :partial => 'show_main' %>
-
 	<% if @lesson_plan.report_submit == true %><!--will only appear when lesson plan report already submited-30March2013-->
 		<%=render :partial => 'show_lessonplan_report'%>
 	<% else %>
-		<BR>
-		<font color="red"><%=t('lesson_plan.report_not_submitted')%></font>
+		<% if @lesson_plan.is_submitted == true %>
+			<% if @lesson_plan.hod_approved == true %>
+				<BR><font color="red"><%=t('lesson_plan.report_not_submitted')%></font>
+			<% end %>
+		<% else %>
+			<BR><font color="red"><%=t('lesson_plan.plan_not_submitted')%></font>
+			<% if @lesson_plan.hod_rejected==true && @lesson_plan.is_submitted==nil %>
+				- <%=t('lesson_plan.returned')%> <%=@lesson_plan.reason.blank? ? "" : "(#{@lesson_plan.reason})" %>
+			<%elsif @lesson_plan.hod_rejected==true && @lesson_plan.is_submitted==true %>
+				<font size=-2>- <%=t('lesson_plan.resubmitted')%></font>
+			<% end %>
+		<% end %>
 	<% end %>
 </div>
-<% current_roles=[]%><% Login.current_login.roles.each do |x| %><% current_roles << x.name %><% end %>
-<% if (@lesson_plan.is_submitted != true && (@lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) || ((@lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration')) && @lesson_plan.hod_rejected? == true && @lesson_plan.is_submitted==nil) || (@lesson_plan.is_submitted == false && (@lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) || (@lesson_plan.is_submitted == nil && (@lesson_plan.lecturer == Login.current_login.staff_id || current_roles.include?('Administration'))) %>
 
-<%# if (@lesson_plan.is_submitted == false && @lesson_plan.prepared_by == Login.current_login.staff_id) || (@lesson_plan.prepared_by == Login.current_login.staff_id && @lesson_plan.hod_rejected? == true && @lesson_plan.is_submitted != true) || (@lesson_plan.is_submitted == false) %>
-	<%= link_to t('edit'), :id => @lesson_plan, :controller => "lesson_plans", :action => "edit" , :job_type => "editplan" %> |
+<%= link_to t('listing'), lesson_plans_path %>
+
+<!--EDIT PLAN-start-->
+<% if (@lesson_plan.is_submitted != true && (@lesson_plan.lecturer == Login.current_login.staff_id || @is_admin)) || ((@lesson_plan.lecturer == Login.current_login.staff_id || @is_admin) && @lesson_plan.hod_rejected? == true && @lesson_plan.is_submitted==nil) || (@lesson_plan.is_submitted == false && (@lesson_plan.lecturer == Login.current_login.staff_id || @is_admin)) || (@lesson_plan.is_submitted == nil && (@lesson_plan.lecturer == Login.current_login.staff_id || @is_admin)) %>
+	&nbsp;|&nbsp;<%= link_to t('lesson_plan.edit_plan'), :id => @lesson_plan, :controller => "lesson_plans", :action => "edit" , :job_type => "editplan" %>
+<% end %>
+<!--EDIT PLAN-end-->
+
+<!--APPROVE PLAN-start-->
+<% if (@lesson_plan.is_submitted == true && @lesson_plan.hod_approved != true) && (@lesson_plan.endorsed_by == Login.current_login.staff_id || @is_admin) %>
+	&nbsp;|&nbsp;<%= link_to (t 'lesson_plan.approve_plan'), :action => 'edit', :id => @lesson_plan.id, :job_type => "approveplan" %>
+<% end %>
+<!--APPROVE PLAN-end-->
+
+
+<% if @lesson_plan.hod_approved == true && @lesson_plan.report_submit != true && @lesson_plan.lecturer == Login.current_login.staff_id%>
+	<!--EDIT REPORT-start-->
+	&nbsp;|&nbsp;<%= link_to t('lesson_plan.submit_report'), :action => 'lessonplan_reporting', :id => @lesson_plan %>
+	<!--EDIT REPORT-end-->
+<% elsif (@lesson_plan.report_submit == true && @lesson_plan.endorsed_by == Login.current_login.staff_id && (@lesson_plan.report_endorsed != true||@lesson_plan.report_endorsed==false))  %>
+	<!--APPROVE REPORT-start-->
+	&nbsp;|&nbsp;<%= link_to (t 'lesson_plan.endorse_report'), :action => 'lessonplan_reporting', :id => @lesson_plan.id %>
+	<!--APPROVE REPORT-end-->
 <% end %>
 
-<% if @lesson_plan.hod_approved == true && @lesson_plan.report_submit != true && @lesson_plan.lecturer == Login.current_login.staff_id%><!--report_submit refers to submission of report-->
-	<%= link_to t('lesson_plan.lesson_report'), :action => 'lessonplan_reporting', :id => @lesson_plan %> |
+<!--Display links for plan & report accordingly-start-->
+<% @weeklytmetabledetails = WeeklytimetableDetail.all.map(&:id).uniq %>
+<% if @weeklytmetabledetails.include?(@lesson_plan.schedule) %>
+	&nbsp;||&nbsp;<%= link_to (t 'lesson_plan.title'), :action => 'lesson_plan', :id => @lesson_plan.id %>
+	<% if @lesson_plan.hod_approved==true %>
+		(<%=(t 'print')%>)
+	<% else %>
+		<% unless @lesson_plan.report_submit==true %>
+			<font color=red>(<%=(t 'draft_print') %>)</font>
+		<% end %>
+	<% end %>
 <% end %>
-
-<%= link_to t('lesson_plan.back_to_lesson_plan'), lesson_plans_path %>
-
-<%# if @lesson_plan.report_submit == true %>
- 	| <%= link_to t('lesson_plan.back_to_lesson_plan_report'), 	{:controller => 'lesson_plans',	:action => 'index_report'} %>
-<%# end %>
+<% if @lesson_plan.report_submit==true %>
+	&nbsp;|&nbsp;<%= link_to (t 'lesson_plan.lesson_report'), :action => 'lesson_plan_report', :id => @lesson_plan.id %>
+	<% if @lesson_plan.report_endorsed==true %>
+		(<%=(t 'print')%>)
+	<% else %>
+		<font color=red>(<%=(t 'draft_print') %>)</font>
+	<% end %>
+<% end %>
+<!--Display links for plan & report accordingly-end-->

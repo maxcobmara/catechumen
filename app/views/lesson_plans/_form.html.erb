@@ -10,9 +10,11 @@
 		<tr>
 			<td class="leftcol"><%= f.label t('lesson_plan.schedule') %></td>
 			<td>
-				 <%arr2=["<option value=0 data=''>#{t('select')}</option>"] %>
+				 <% schedule_approved_plan = LessonPlan.find(:all, :conditions => ['is_submitted=?', true]).map(&:schedule) %>
+				 <%#arr2=["<option value=''>#{t('select')}</option>"] %>
+				 <% arr2=[]%>
 				 <% unless @lesson_plan.schedule.nil? || @lesson_plan.schedule.blank? %>
-					<% if WeeklytimetableDetail.all.map(&:id).include?(@lesson_plan.schedule)%>
+					<% if WeeklytimetableDetail.find(:all, :conditions => ['id NOT IN(?)', schedule_approved_plan]).map(&:id).include?(@lesson_plan.schedule)%>
 						<%arr2 << "<option value='#{@lesson_plan.schedule}' data='#{@lesson_plan.schedule_item.location_desc}' selected='selected'>#{@lesson_plan.schedule_item.day_time_slot3}</option>" %>
 						
 					<% end %>
@@ -21,20 +23,20 @@
 				<% if @current_roles.include?('Administration') %>
 					 <!--admin-->
 					 <% @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact %>
-					 <% alltimetables = WeeklytimetableDetail.all.sort_by{|x|x.weeklytimetable_lecturer.name}%>
+					 <% alltimetables = WeeklytimetableDetail.find(:all, :conditions => ['id NOT IN(?)', schedule_approved_plan]).sort_by{|x|x.weeklytimetable_lecturer.name}%>
 				<% else %>
 					<!--lecturer-->
 					<% timetableids = Login.current_login.timetables_of_programme%>
 					<% if @lesson_plan && !@lesson_plan.schedule %><!--lesson_plan : schedule not exist-->
 						<% @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact %>
-						<%# alltimetables = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id NOT IN (?) AND id IN(?)',Login.current_login.staff_id,@lessonplan_schedule, timetableids]) %>
-						<% alltimetables = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id IN(?)',Login.current_login.staff_id, timetableids]) %>
+						<%# alltimetables = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id NOT IN (?) AND id IN(?) and id NOT IN(?)',Login.current_login.staff_id,@lessonplan_schedule, timetableids, schedule_approved_plan]) %>
+						<% alltimetables = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? AND id IN(?) AND id NOT IN(?)',Login.current_login.staff_id, timetableids, schedule_approved_plan]) %>
 						<% unless @lesson_plan.new_record? %>
 							<% alltimetables << @lesson_plan.schedule if @lesson_plan.schedule %>
 					        <% end %>
 					<% else %>
 						<!--note : selected item remove fr this options to avoid redundant, as it already added at line 6-->
-						<% alltimetables = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? and id IN(?) AND id NOT IN (?)',Login.current_login.staff_id, timetableids, @lesson_plan.schedule]) %>
+						<% alltimetables = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=? and id IN(?) AND id NOT IN (?) AND id NOT IN(?)',Login.current_login.staff_id, timetableids, @lesson_plan.schedule, schedule_approved_plan]) %>
 					<% end %>
 				<% end %>
 				<% if alltimetables%>

@@ -2,9 +2,8 @@ class IntakesController < ApplicationController
   # GET /intakes
   # GET /intakes.xml
   def index
-    @intakes = Intake.all.group_by{|t|t.name} #28Feb2013-changed view by intake name
+    @intakes = Intake.search(params[:search])
     
-
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @intakes }

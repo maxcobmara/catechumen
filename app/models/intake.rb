@@ -14,6 +14,21 @@ class Intake < ActiveRecord::Base
     end
   end
   
+  def self.search(search)
+    if search
+      programme = Programme.find(:all, :conditions => ['name ILIKE(?)', "%#{search}%"])
+      if programme.count > 0
+        programme_ids = programme.map(&:id)
+        @intakes = Intake.find(:all, :conditions => ['programme_id IN(?)', programme_ids]).group_by{|t|t.name} 
+      else
+        @intakes = Intake.find(:all, :conditions => ['description ILIKE(?)', "%#{search}%"]).group_by{|t|t.name} 
+      end
+    else
+      @intakes = Intake.all.group_by{|t|t.name} 
+    end
+    @intakes
+  end
+  
   #20March2013
   def group_with_intake_name
     "#{description}"+' ('+I18n.t('lesson_plan.intake_id')+" #{name}"+')'
