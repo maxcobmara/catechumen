@@ -109,12 +109,12 @@ class Trainingnote < ActiveRecord::Base
         @topicdetails = Topicdetail.find(:all,:conditions => ["topic_code IN(?)", topic_subtopic_ids])
         if @topicdetails.count > 0
           topicdetail_ids = @topicdetails.map(&:id)
-          @trainingnotes = Trainingnote.find(:all, :conditions => ["topicdetail_id IN(?)", topicdetail_ids], :order => 'topicdetail_id')
+          @trainingnotes = Trainingnote.find(:all, :conditions => ["topicdetail_id IN(?) or title ILIKE(?)", topicdetail_ids,"%#{search}%"], :order => 'topicdetail_id')
         else
-          @trainingnotes = Trainingnote.find(:all, :order => 'topicdetail_id')
+          @trainingnotes = Trainingnote.find(:all, :conditions => ["title ILIKE(?)", "%#{search}%"], :order => 'topicdetail_id')
         end
       else
-        #by title
+        #solely by title
         @trainingnotes = Trainingnote.find(:all, :conditions => ["title ILIKE(?)", "%#{search}%"], :order => 'topicdetail_id')
       end
 
