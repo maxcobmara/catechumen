@@ -48,6 +48,15 @@ class TravelClaim < ActiveRecord::Base
     self.total = total_claims
   end
   
+  def self.search(search)
+    if search!=''
+      @travel_claims = TravelClaim.find(:all, :conditions => ['claim_month=?', search])  
+    else
+      @travel_claims = TravelClaim.find(:all, :order=>'staff_id asc, claim_month asc')
+    end
+    @travel_claims
+  end
+  
   def accommodations_must_exist_for_lodging_hotel_claims
      duplicates = (travel_claim_allowances.map(&:expenditure_type) & [31,32]).count
      if duplicates > 0 && (accommodations.nil? || accommodations.blank?)

@@ -3,7 +3,22 @@ class TravelClaimsController < ApplicationController
   # GET /travel_claims
   # GET /travel_claims.xml
   def index
-    @travel_claims = TravelClaim.with_permissions_to(:index).find(:all, :order=>'staff_id asc, claim_month asc')
+    #raise params.inspect
+    if params[:search]
+      @aa=params[:search][:"(1i)"] 
+      @bb=params[:search][:"(2i)"]
+      #@cc=params[:search][:"(3i)"]
+      if (@aa!='' && !@aa.nil?) && (@bb!='' && !@bb.nil?) #&& (@cc!='' && !@cc.nil?)
+        @dadidu=''
+        @dadidu=@aa+'-'+@bb+'-'+'01' 
+      else
+        @dadidu=''
+      end
+    else
+      @dadidu=''
+    end
+    params[:search]=nil    #this line is required
+    @travel_claims = TravelClaim.with_permissions_to(:index).search(@dadidu)#find(:all, :order=>'staff_id asc, claim_month asc')
 
     respond_to do |format|
       format.html # index.html.erb

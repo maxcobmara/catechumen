@@ -3,6 +3,12 @@
 	<!-- Box Head -->
 	<div class="box-head">
 		<h2 class="left"><%= t 'claim.list' %></h2>
+		<div class="right">
+	    	<% form_tag travel_claims_path, :method => 'get' do %>
+			<%=t 'claim.claimsmonth' %>: <%= date_select :search, params[:search], :discard_day => true, :include_blank => :true %>
+			<%= submit_tag (t 'search'), :title => nil %>
+		<% end %>
+		</div>
 	</div>
 </div>
 <div class="toolbar">
