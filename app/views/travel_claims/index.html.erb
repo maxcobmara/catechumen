@@ -3,6 +3,12 @@
 	<!-- Box Head -->
 	<div class="box-head">
 		<h2 class="left"><%= t 'claim.list' %></h2>
+		<div class="right">
+	    	<% form_tag travel_claims_path, :method => 'get' do %>
+			<%=t 'claim.claimsmonth' %>: <%= date_select :search, params[:search], :discard_day => true, :include_blank => :true %>
+			<%= submit_tag (t 'search'), :title => nil %>
+		<% end %>
+		</div>
 	</div>
 </div>
 <div class="toolbar">
@@ -23,10 +29,42 @@
 		<td><%=h l(travel_claim.claim_month, :format=>"%B %Y") unless travel_claim.claim_month.blank? %></td>
 		<td><%=h travel_claim.staff.name unless travel_claim.staff.blank? %></td>
 		<td >
-			<% if travel_claim.staff.current_salary.nil? %>
-				<font color="red"><%=t('claim.insert_current_salary')%></font>
+			<!--<%# if travel_claim.staff.current_salary.nil? %>
+				<font color="red"><%#=t('claim.insert_current_salary')%></font>
+				<%# if travel_claim.travel_requests.count > 0 && travel_claim.travel_requests.map(&:own_car).uniq.include?(true) && travel_claim.staff.vehicles.count == 0%>
+					<br><font color="red"><%#=t('claim.insert_vehicle')%></font>
+				<%# else %>
+					<%#=h ringgols(travel_claim.total_claims) %>
+				<%# end %>
+			<%# else %>
+				<%#=h ringgols(travel_claim.total_claims) if travel_claim.travel_requests.count == 0 %>
+			<%# end %>-->
+			<% if travel_claim.travel_requests.count > 0 && travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
+				<!--<%# if travel_claim.staff.current_salary.nil? %>
+					<font color="red"><%=t('claim.insert_current_salary')%></font>
+				<%# else %>
+					<% if travel_claim.staff.vehicles.count > 0%>
+						<%=h ringgols(travel_claim.total_claims) %>
+					<%# else %>
+						<font color="red"><%#=t('claim.insert_vehicle')%></font>
+					<%# end %>
+				<% end %>-->
+				<% if travel_claim.staff.vehicles.count > 0 &&  travel_claim.staff.current_salary!=nil %>
+					<%=h ringgols(travel_claim.total_claims) %><!--own car-(mileage claim)-->
+				<% else %>
+					<% if travel_claim.staff.current_salary.nil? %>
+						<font color="red"><%=t('claim.insert_current_salary')%></font><br>
+					<% end %>
+					<% if travel_claim.staff.vehicles.count == 0%>
+						<font color="red"><%=t('claim.insert_vehicle')%></font>
+					<% end %>
+				<% end %>
 			<% else %>
-				<%=h ringgols(travel_claim.total_claims) %>
+				<% if travel_claim.staff.current_salary.nil? %>
+					<font color="red"><%=t('claim.insert_current_salary')%></font>
+				<% else %>
+					<%=h ringgols(travel_claim.total_claims) %>
+				<% end %>
 			<% end %>
 		</td>
 		<td><%=h travel_claim.my_claim_status.titleize %></td>	    
@@ -47,8 +85,11 @@
 				<%#= link_to image_tag("printer.png", :border => 0,:title=>(t 'print')), :action => 'claimprint', :id => travel_claim %>
 			<%# else %>
 			<% permitted_to? :claimprint, :travel_claims do %>
-				<% if travel_claim.is_checked==true && travel_claim.checked_on !=nil%>
-					<%= link_to image_tag("printer.png", :border => 0,:title=>(t 'print')), :action => 'claimprint', :id => travel_claim %>
+				<% if travel_claim.is_checked==true && travel_claim.checked_on !=nil && travel_claim.staff.current_salary!=nil %>
+					<% if travel_claim.travel_requests.count > 0 && travel_claim.travel_requests.map(&:own_car).uniq.include?(true) && travel_claim.staff.vehicles.count == 0%>
+					<% else %>
+						<%= link_to image_tag("printer.png", :border => 0,:title=>(t 'print')), :action => 'claimprint', :id => travel_claim %>
+					<% end %>
 				<% end %>
 			<% end %>
 			<%# end %>	

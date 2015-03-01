@@ -131,41 +131,114 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def hods
-    unit_name = Login.current_login.staff.position.unit
-    applicant_post= Login.current_login.staff.position
-    prog_names = Programme.roots.map(&:name)
-    #common_subjects = Programme.find(:all, :conditions=>['course_type=?', "Common Subject"]).map(&:name)  #no yet exist in programme & name format not sure 2
-    common_subjects=["Komunikasi & Sains Pengurusan", "Sains Tingkahlaku", "Anatomi & Fisiologi", "Sains Perubatan Asas"]
-    approver=[]
-    if prog_names.include?(unit_name) || unit_name == "Pos Basik" || common_subjects.include?(unit_name)
-      if applicant_post.tasks_main.include?("Ketua Program") || applicant_post.tasks_main.include?("Ketua Subjek")
-        approver = Login.current_login.staff.position.parent.staff_id
+#     previous one - BEFORE 1st March 2015 - start
+#     unit_name = Login.current_login.staff.position.unit
+#     applicant_post= Login.current_login.staff.position
+#     prog_names = Programme.roots.map(&:name)
+#     #common_subjects = Programme.find(:all, :conditions=>['course_type=?', "Common Subject"]).map(&:name)  #no yet exist in programme & name format not sure 2
+#     common_subjects=["Komunikasi & Sains Pengurusan", "Sains Tingkahlaku", "Anatomi & Fisiologi", "Sains Perubatan Asas"]
+#     approver=[]
+#     if prog_names.include?(unit_name) || unit_name == "Pos Basik" || common_subjects.include?(unit_name)
+#       if applicant_post.tasks_main.include?("Ketua Program") || applicant_post.tasks_main.include?("Ketua Subjek")
+#         approver = Login.current_login.staff.position.parent.staff_id
+#       else
+#         sib_pos = Position.find(:all, :conditions=>['unit=? and staff_id is not null',unit_name], :order=>('combo_code ASC'))
+#         if sib_pos
+#           sib_pos.each do |sp|
+#             approver << sp.staff_id if sp.tasks_main.include?("Ketua Program") || sp.tasks_main.include?("Ketua Subjek")
+#           end
+#         end        
+#       end
+#     else
+#       #kskb server - yg penuhi syarat di bawah - position kosong no staff being assigned
+#       staffapprover = Position.find(:all, :conditions=>['unit=? and combo_code<? and ancestry_depth!=?', unit_name, applicant_post.combo_code,1]).map(&:staff_id)
+#       #Above : ancestry_depth!= 1 to avoid Timbalan2 Pengarah - fr becoming each other's hod.
+#       approvers= Staff.find(:all, :conditions=>['id IN(?)', staffapprover])
+#       approvers.each_with_index do |ap,idx|
+#         approver << ap.id if ap.staffgrade.name.scan(/\d+/).first.to_i > 26  #check if approver really qualified one 
+#       end
+#       approver << Login.current_login.staff.position.parent.staff_id if approver.compact.count==0          #just in case approver=[nil]
+#       approver << Login.current_login.staff.position.ancestors.map(&:staff_id) if approver.compact.count==0
+#     end
+#     #override all above approver - 23Dec2014 - do not remove above yet, may be useful for other submodules
+#     hod_posts = Position.find(:all, :conditions=>[ 'ancestry_depth<?',2])
+#     approver=[] 
+#     hod_posts.each do |hod|
+#       approver << hod.staff_id if (hod.name.include?("Pengarah")||(hod.name.include?("Timbalan Pengarah")) && hod.staff_id!=nil)
+#     end
+#     approver
+#     previous one - BEFORE 1st March 2015 - end
+    
+    #from Travel Request (new format) - start**************************************************************************
+    applicant_unit = applicant.position.unit
+    applicant_grade = applicant.staffgrade.name[-2,2]
+    unit_members=Position.find(:all, :joins => :staff, :conditions =>['unit=? and positions.name!=?', applicant_unit, "ICMS Vendor Admin"], :order => "ancestry_depth ASC")
+    
+    if Programme.roots.map(&:name).include?(applicant_unit)
+      #Academician--start---
+      highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
+      highest_grade = highest_rank.staffgrade.name[-2,2]
+      maintasks = applicant.position.tasks_main  
+      if maintasks.include?("Ketua Program") 
+        approver1 =  Position.find(:first, :conditions => ['name=?', "Timbalan Pengarah Akademik (Pengajar)"]).staff_id
+      elsif maintasks.include?("Ketua Teras")
+	if highest_grade > applicant_grade #kp exist
+	  approver1 = highest_rank.staff_id 
+	else #kp not exist - die ketua prog (tanggung tugas)
+	  approver1 =  Position.find(:first, :conditions => ['name=?', "Timbalan Pengarah Akademik (Pengajar)"]).staff_id
+	end
+      else #pengajar
+        app=0
+	kt_id=[]
+	unit_members.each do |u|
+          if u.tasks_main.include?("Ketua Teras")
+	    app+=1
+	    kt_id<< u.id
+	  elsif u.tasks_main.include?("Ketua Program")
+	    app+=1
+	  end
+	end
+	if app==1
+	  approver1 = highest_rank.staff_id
+	elsif app==2
+	  approver1 = Position.find(kt_id[0]).staff_id
+	end
+      end
+      #Academician--end---
+      
+    elsif ["Teknologi Maklumat", "Perpustakaan", "Kewangan & Akaun", "Sumber Manusia"].include?(applicant_unit) || applicant_unit.include?("logistik") || applicant_unit.include?("perkhidmatan")
+      #Administration--start--
+      highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
+      highest_grade = highest_rank.staffgrade.name[-2,2]
+      if highest_grade > applicant_grade #staffs
+        approver1 = highest_rank.staff_id
+      elsif highest_grade == applicant_grade #Ketua Unit
+        approver1 =  applicant.position.parent.staff_id
+      end
+      #Administration--end---
+    
+    elsif ["Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor"].include?(applicant_unit)
+      approver1 = Position.find(:first, :conditions => ['unit=?', "Pentadbiran"]).staff_id
+
+    elsif applicant_unit == "Pengurusan Tertinggi"
+      if applicant.position.name=="Pengarah"
+        approver1=nil
       else
-        sib_pos = Position.find(:all, :conditions=>['unit=? and staff_id is not null',unit_name], :order=>('combo_code ASC'))
-        if sib_pos
-          sib_pos.each do |sp|
-            approver << sp.staff_id if sp.tasks_main.include?("Ketua Program") || sp.tasks_main.include?("Ketua Subjek")
-          end
-        end        
+        approver1=Position.find(:first, :conditions => ['name=?', "Pengarah"]).staff_id
       end
+      
     else
-      #kskb server - yg penuhi syarat di bawah - position kosong no staff being assigned
-      staffapprover = Position.find(:all, :conditions=>['unit=? and combo_code<? and ancestry_depth!=?', unit_name, applicant_post.combo_code,1]).map(&:staff_id)
-      #Above : ancestry_depth!= 1 to avoid Timbalan2 Pengarah - fr becoming each other's hod.
-      approvers= Staff.find(:all, :conditions=>['id IN(?)', staffapprover])
-      approvers.each_with_index do |ap,idx|
-        approver << ap.id if ap.staffgrade.name.scan(/\d+/).first.to_i > 26  #check if approver really qualified one 
+      #Administration2--start---
+      if applicant.position.parent.staff.id == []
+        approver1 = nil
+      else
+        approver1 = applicant.position.parent.staff.id   #if pentadbiran OK - applicant.position.unit=="Pentadbiran"
       end
-      approver << Login.current_login.staff.position.parent.staff_id if approver.compact.count==0          #just in case approver=[nil]
-      approver << Login.current_login.staff.position.ancestors.map(&:staff_id) if approver.compact.count==0
+      #Administration2--end---
+      #-----------------------------------
     end
-    #override all above approver - 23Dec2014 - do not remove above yet, may be useful for other submodules
-    hod_posts = Position.find(:all, :conditions=>[ 'ancestry_depth<?',2])
-    approver=[] 
-    hod_posts.each do |hod|
-      approver << hod.staff_id if (hod.name.include?("Pengarah")||(hod.name.include?("Timbalan Pengarah")) && hod.staff_id!=nil)
-    end
-    approver
+    #from Travel Request (new format) - end**************************************************************************
+    approver1
   end
   
   def total_mileage_request
