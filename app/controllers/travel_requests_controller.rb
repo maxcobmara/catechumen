@@ -2,9 +2,9 @@ class TravelRequestsController < ApplicationController
   # GET /travel_requests
   # GET /travel_requests.xml
   def index
-    @travel_requests = TravelRequest.my_travel_requests #.with_permissions_to(:edit).find(:all)
-    @for_approvals = TravelRequest.in_need_of_approval
-
+    @travel_requests = TravelRequest.my_travel_requests(params[:search]) #.with_permissions_to(:edit).find(:all)
+    @for_approvals = TravelRequest.in_need_of_approval(params[:search])
+    params[:search]=nil    #this line is required
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @travel_requests }
