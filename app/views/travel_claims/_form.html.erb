@@ -30,12 +30,18 @@
 				<th colspan=2><%= t 'claim.document_no' %></th>
 				<th colspan=2><%= t 'travel.purpose' %></th>
 				<th colspan=2><%= t 'claim.travel_date' %></th>
+				<th><%= t 'claim.query' %></th>
+				<th><%= t 'claim.comment' %></th>
 			</tr>
 			<tr>
 			  	<td class="tlight" colspan=2><%= check_kin {travel_request.document.refno} %></td>
 				<td colspan=2><%= check_kin {travel_request.document.title} %></td>
-				<td colspan=2><%= l(travel_request.depart_at, :format=>"%d %b") %> - <%= l(travel_request.return_at, :format=>"%d %b %Y") %></td>
+				<td colspan=2><%= l(travel_request.depart_at, :format=>"%d %b") %> - <%= l(travel_request.return_at, :format=>"%d %b %Y") %>
+					<%="("+(travel_request.destination).titleize+")"  if  travel_request.travel_claim_logs.count==0 %>
+				</td>
+				<td colspan=2>&nbsp;</td>
 			</tr>
+			<% if travel_request.travel_claim_logs.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
 			<tr>
 				<th class="level_2"><%= t 'travel.date' %></th>
 				<th class="level_2"><%= t 'travel.start' %></th>
@@ -43,8 +49,10 @@
 				<th class="level_2"><%= t 'travel.destination' %></th>
 				<th class="level_2"><%= t 'travel.mileage' %></th>
 				<th class="level_2"><%= t 'travel.value' %></th>
-			</tr>	
-			
+				<th class="level_2">&nbsp;</th>
+				<th class="level_2">&nbsp;</th>
+			</tr>
+			<% end %>
 			<% travel_request.travel_claim_logs.each do |travel_log| %>
 			<tr>
 				<td><%= l(travel_log.travel_on) %></td>
@@ -59,6 +67,17 @@
 					<!--2Jan2012-show KM when mileage exist-->
 				</td>
 				<td><%= ringgols(travel_log.km_money) %></td>
+				<td>
+				<% if @travel_claim.my_claim_status == t('claim.returned') %>
+					<% if travel_log.checker==true %>
+						Ok
+					<% elsif travel_log.checker==false %>
+					       <font color="red">
+						<%=t('claim.query')%></font>
+					<% end %>
+				<% end %>
+				</td>
+				<td><font color="red"><%= travel_log.checker_notes if travel_log.checker==false && @travel_claim.my_claim_status == t('claim.returned') %></font></td>
 			</tr>	
 			<% end %>
 		</table>

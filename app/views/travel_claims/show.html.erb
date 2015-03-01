@@ -1,8 +1,8 @@
 <%= render :partial => 'show_main' %>
-
-<!--2Jan2013-hide EDIT link in show page upon submission of travel claims-->
-<% if @travel_claim.is_submitted != true %>
+<% if (@travel_claim.my_claim_status == t('claim.editing') || @travel_claim.my_claim_status == t('claim.returned')) && !@travel_claim.staff.current_salary.nil? %>
 	<%= link_to (t 'edit'), edit_travel_claim_path(@travel_claim) %> |
 <% end %>
-<!--2Jan2013-hide EDIT link in show page upon submission of travel claims-->
+<% if @travel_claim.my_claim_status == t('claim.for_checking') %>
+	<%= link_to (t 'claim.finance_check2'), :controller => 'travel_claims', :action => 'check', :id => @travel_claim.id %> |
+<% end %>
 <%= link_to (t 'back'), travel_claims_path %>

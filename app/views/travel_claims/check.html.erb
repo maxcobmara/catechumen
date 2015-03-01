@@ -10,12 +10,18 @@
 				  <%= render 'travel_request_fields', :f => builder %>
 				<% end %>
 				<table width=90%>
+				        <% logs=0%>
+					<% for tr in @travel_claim.travel_requests %>
+						<% logs+= tr.travel_claim_logs.count %>
+					<% end %>
+					<% if logs > 0%>
 					<tr>
 					  <td width=54% align='right'><b><%= t 'claim.total' %></b></td>
 					  <td width=10% class="tright"><b><%= @travel_claim.total_mileage %> <label> km</label></b></td>
 						<td width=10% class="tright"><b><%= ringgols(@travel_claim.total_km_money) %></b></td>
 						<td ></td>
 					</tr>
+					<% end %>
 					<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
 						<tr>
 							<td colspan=4><b><label for="transport_class"><%= t('staff.transportclass_id')%></label> : 

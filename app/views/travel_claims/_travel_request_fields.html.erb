@@ -7,6 +7,7 @@
 		</tr>
 	</table>
 	<table>
+		<% if f.object.travel_claim_logs.count > 0 %>
 		<tr>
 			<th width=10% class="level_2"><%= t 'claim.date' %></th>
 			<th width=9%  class="level_2"><%= t 'claim.depart' %></th>
@@ -16,6 +17,7 @@
 			<th width=10% class="level_2"><%= t 'claim.value' %></th>
 			<th class="level_2"><%= t 'claim.check' %></th>
 		</tr>
+		<% end %>
 		<% f.fields_for :travel_claim_logs do |builder| %>
 		<tr>
 			<td class="tlight"><%= builder.object.travel_on.strftime('%d %b %Y') %></td>

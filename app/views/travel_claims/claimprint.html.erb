@@ -82,17 +82,24 @@
 				<!-- td is rowspanned-->
 				<td>KELAS TUNTUTAN</td>
 				<td class="filler"><!--A / B / C / D / E-->
-						<% if @travel_claim.staff.transportclass_id == 'A' %>
+					<%# (@travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true)) %>
+					<% if @travel_claim.staff.current_salary != nil && @travel_claim.staff.vehicles.count > 0 %>
+						<%# if @travel_claim.staff.transportclass_id == 'A' %>
+						<%# if @travel_claim.travel_requests.first.transport_class == 'A' %>
+						<% if @travel_claim.transport_class == 'A' %>
 							A <del>/ B / C / D / E</del>
-						<% elsif @travel_claim.staff.transportclass_id == 'B' %>
+						<% elsif @travel_claim.transport_class == 'B' %>
 							<del>A&nbsp;/</del>&nbsp;B&nbsp;<del>/&nbsp;C&nbsp;/&nbsp;D&nbsp;/&nbsp;E</del>
-						<% elsif @travel_claim.staff.transportclass_id == 'C' %>
+						<% elsif @travel_claim.transport_class == 'C' %>
 							<del>A&nbsp;/&nbsp;B&nbsp;/</del>&nbsp;C&nbsp;<del>/&nbsp;D&nbsp;/&nbsp;C</del>
-						<% elsif @travel_claim.staff.transportclass_id == 'D' %>
+						<% elsif @travel_claim.transport_class == 'D' %>
 							<del>A&nbsp;/&nbsp;B&nbsp;/&nbsp;C&nbsp;/</del>&nbsp;D&nbsp;<del>/&nbsp;E</del>
-						<% elsif @travel_claim.staff.transportclass_id == 'E' %>
+						<% elsif @travel_claim.transport_class == 'E' %>
 							<del>A&nbsp;/&nbsp;B&nbsp;/&nbsp;C&nbsp;/&nbsp;D&nbsp;/</del>&nbsp;E
 						<% end %> <!--"Diluluskan / <del> Tidak Diluluskan </del>  " : "<del> Diluluskan </del> /  Tidak Diluluskan" -->
+					<% else %>
+						A&nbsp;/&nbsp;B&nbsp;/&nbsp;C&nbsp;/&nbsp;D&nbsp;/&nbsp;E
+					<% end %>
 				</td>
 			</tr>
 			
@@ -113,7 +120,7 @@
 			
 			<tr>
 				<td>NO GAJI</td>
-				<td colspan=2 class="filler"><%=h @travel_claim.staff.try(:salary_no)%></td>
+				<td colspan=2 class="filler"><%=h @travel_claim.staff.try(:salary_no)%>&nbsp;</td>
 			</tr>
 			
 			<tr>
