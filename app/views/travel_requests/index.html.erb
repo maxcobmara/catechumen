@@ -2,6 +2,12 @@
 <div class="box">
 	<div class="box-head">
 		<h2 class="left"><%=t('travel.for_approval')%></h2>
+		<div class="right">
+			<% form_tag travel_requests_path, :method => 'get' do %>
+				<%= text_field_tag :search, params[:search], :placeholder => (t 'travel.destination')%>
+				<%= submit_tag (t 'search'), :title => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
 
@@ -17,20 +23,19 @@
 			<th><%=t('travel.approved')%></th>
 			<th colspan=2 class="ac"><%=t('control')%></th>
 		</tr>
-		
 		<% @for_approvals.each do |for_approval| %>
 		<tr>
 			<td><%=h check_kin {for_approval.document.refno} %></td>
-   		<td><%=h for_approval.applicant.staff_name_with_position_grade_unit unless for_approval.applicant.blank? %></td>
-      <td><%=h for_approval.destination %></td>
-      <td><%=h l(for_approval.depart_at) %></td>
-      <td><%=h for_approval.document.try(:title) %></td>
+			<td><%=h for_approval.applicant.staff_name_with_position_grade_unit unless for_approval.applicant.blank? %></td>
+			<td><%=h for_approval.destination %></td>
+			<td><%=h l(for_approval.depart_at) %></td>
+			<td><%=h for_approval.document.try(:title) %></td>
 			<td><%=h for_approval.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") %></td>
-			<td><%=h for_approval.hod_accept? ? image_tag("tick.png") : image_tag("login_go.png") %></td>
-      <td width=10px><%= link_to image_tag("document.png", :border => 0, :title=>(t 'show')), :action => 'show', :id => for_approval %></td>
+			<td><%=h for_approval.hod_accept? ? image_tag("tick.png") : image_tag("cross.png") %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title=>(t 'show')), :action => 'show', :id => for_approval %></td>
 			<td width=10px><%= link_to image_tag("approval.png", :border => 0, :title=>(t 'approval')), :action => 'edit', :id => for_approval %></td>
-    </tr>
-    <% end %>
+		</tr>
+		<% end %>
 	</table>
 </div><BR/><BR/><BR/>
 <% end -%>
@@ -40,6 +45,12 @@
 <div class="box">
 	<div class="box-head">
 		<h2 class="left"><%=t('travel.mytravel')%></h2>
+		<div class="right">
+			<% form_tag travel_requests_path, :method => 'get' do %>
+				<%= text_field_tag :search, params[:search], :placeholder => (t 'travel.destination')%>
+				<%= submit_tag (t 'search'), :title => nil %>
+				<% end %>
+		</div>
 	</div>
 </div>
 
