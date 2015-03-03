@@ -40,6 +40,10 @@
 					<% StationeryUse.all.each do |rr| %>
 						<% if rr.issuedby==@stationerysearch.issuedby && rr.receivedby==@stationerysearch.receivedby %>
 							<%bil+=1%>
+						<% elsif rr.issuedby==@stationerysearch.issuedby && @stationerysearch.receivedby.blank? %>
+							<%bil+=1%>
+						<% elsif rr.receivedby==@stationerysearch.receivedby && @stationerysearch.issuedby.blank? %>
+							<%bil+=1 %>
 						<% end %>
 					<% end %>
 					<%=bil%>
