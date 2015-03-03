@@ -4,10 +4,11 @@ class Stationery < ActiveRecord::Base
   
   has_many :stationery_adds, :foreign_key => 'stationery_id' , :dependent => :destroy
   accepts_nested_attributes_for :stationery_adds, :allow_destroy => true
+  validates_associated :stationery_adds
   
   has_many :stationery_uses, :foreign_key => 'stationery_id', :dependent => :destroy
   accepts_nested_attributes_for :stationery_uses, :allow_destroy => true
-  
+  validates_associated :stationery_uses
   
   def current_quantity
     a = StationeryAdd.sum(:quantity, :conditions => ["stationery_id = ?", id])

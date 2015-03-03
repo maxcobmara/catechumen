@@ -1,6 +1,8 @@
 class StationeryAdd < ActiveRecord::Base
   belongs_to :stationery
   
+  validates_presence_of :document, :unitcost, :received, :quantity #, :lpono
+  
   #attr_accessible :line_item_value
   attr_accessor :total
   
