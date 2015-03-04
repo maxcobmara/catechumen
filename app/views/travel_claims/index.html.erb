@@ -29,26 +29,7 @@
 		<td><%=h l(travel_claim.claim_month, :format=>"%B %Y") unless travel_claim.claim_month.blank? %></td>
 		<td><%=h travel_claim.staff.name unless travel_claim.staff.blank? %></td>
 		<td >
-			<!--<%# if travel_claim.staff.current_salary.nil? %>
-				<font color="red"><%#=t('claim.insert_current_salary')%></font>
-				<%# if travel_claim.travel_requests.count > 0 && travel_claim.travel_requests.map(&:own_car).uniq.include?(true) && travel_claim.staff.vehicles.count == 0%>
-					<br><font color="red"><%#=t('claim.insert_vehicle')%></font>
-				<%# else %>
-					<%#=h ringgols(travel_claim.total_claims) %>
-				<%# end %>
-			<%# else %>
-				<%#=h ringgols(travel_claim.total_claims) if travel_claim.travel_requests.count == 0 %>
-			<%# end %>-->
 			<% if travel_claim.travel_requests.count > 0 && travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
-				<!--<%# if travel_claim.staff.current_salary.nil? %>
-					<font color="red"><%=t('claim.insert_current_salary')%></font>
-				<%# else %>
-					<% if travel_claim.staff.vehicles.count > 0%>
-						<%=h ringgols(travel_claim.total_claims) %>
-					<%# else %>
-						<font color="red"><%#=t('claim.insert_vehicle')%></font>
-					<%# end %>
-				<% end %>-->
 				<% if travel_claim.staff.vehicles.count > 0 &&  travel_claim.staff.current_salary!=nil %>
 					<%=h ringgols(travel_claim.total_claims) %><!--own car-(mileage claim)-->
 				<% else %>

@@ -77,10 +77,16 @@ class TravelRequestsController < ApplicationController
       if @travel_request.update_attributes(params[:travel_request])
         format.html { redirect_to(params[:redirect_location], :notice => t('travel.title')+" "+t('updated')) }
         format.xml  { head :ok }
-      
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
+	jobtype = params[:jobtype] if params[:jobtype]
+        if jobtype == "editinglogs" 
+          format.html {redirect_to("/travel_requests/travel_log?id=#{params[:id]}", :notice => "<p><font color='red'>"+t('claim.mileage_xor_km_money')+"</font></p>")} 
+	  #format.html { redirect_to :back }
+          format.xml  { render :xml => @travel_log.errors, :status => :unprocessable_entity }
+        else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
+        end
       end
     end
   end
