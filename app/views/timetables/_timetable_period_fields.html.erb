@@ -4,12 +4,12 @@
 			<td width=65px><%= f.select :sequence, 1..12  %></td>
 			<td width=100px><%= f.select :day_name, 
 			           TimetablePeriod::DAY_CHOICE,
-			           :prompt => "Select"  %></td>
+			           :prompt => (t 'select')  %></td>
 			<td width=140px><%= f.time_select :start_at, :minute_step => 15 %></td>
 			<td width=140px><%= f.time_select :end_at, :minute_step => 15 %></td>
-			<td width=100px><%= f.check_box :is_break %> <label> Break</label></td>
+			<td width=100px><%= f.check_box :is_break %> <label> <%=t('timetable.is_break')%></label></td>
 			<td><%= f.hidden_field :_destroy %>
-			<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %></td>
+			<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => (t 'delete')), f %></td>
 		</tr>
 	</table>
 </div>

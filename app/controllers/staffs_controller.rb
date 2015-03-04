@@ -44,6 +44,7 @@ class StaffsController < ApplicationController
     @staff.qualifications.build
     @staff.kins.build
     @staff.loans.build
+    @staff.vehicles.build
     
 
     respond_to do |format|
@@ -55,6 +56,7 @@ class StaffsController < ApplicationController
   # GET /staffs/1/edit
   def edit
     @staff = Staff.find(params[:id])
+    @staff.vehicles.build if (@staff.vehicles && @staff.vehicles.count==0) || @staff.vehicles[0].nil?
   end
   
   def borang_maklumat_staff
@@ -106,8 +108,7 @@ def ruport
 
     respond_to do |format|
       if @staff.save
-        flash[:notice] = t(:thank)
-        #flash[:notice] = 'Staff was successfully creat ed.'
+        flash[:notice] = t('staff.title')+" "+t('created')
         format.html { redirect_to staffs_path }
         format.xml  { render :xml => @staff, :status => :created, :location => @staff }
       else
@@ -126,7 +127,7 @@ def ruport
 
     respond_to do |format|
       if @staff.update_attributes(params[:staff])
-        flash[:notice] = t(:update)
+        flash[:notice] = t('staff.title')+" "+t('updated')
         format.html { redirect_to staff_path(@staff) }
         format.xml  { head :ok }
       else

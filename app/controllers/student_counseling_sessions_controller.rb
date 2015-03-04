@@ -6,7 +6,7 @@ class StudentCounselingSessionsController < ApplicationController
   # GET /student_counseling_sessions.xml
   def index
     #@student_counseling_sessions = StudentCounselingSession.find(:all, :order => 'confirmed_at DESC')
-    if params[:submit_button1]="Search by appointment/session date" && (params[:search_from] || params[:search_to])
+    if params[:submit_button1]==I18n.t('studentcounseling.search_by_date') && (params[:search_from] || params[:search_to])
       if params[:search_from]
 	startdate = StudentCounselingSession.get_start_date(params[:search_from][:"(1i)"],params[:search_from][:"(2i)"], params[:search_from][:"(3i)"])
       end
@@ -79,7 +79,7 @@ class StudentCounselingSessionsController < ApplicationController
 
     respond_to do |format|
       if @student_counseling_session.save
-        format.html { redirect_to(@student_counseling_session, :notice => 'StudentCounselingSession was successfully created.') }
+        format.html { redirect_to(@student_counseling_session, :notice =>  t('studentcounseling.title')+" "+t('created')) }
         format.xml  { render :xml => @student_counseling_session, :status => :created, :location => @student_counseling_session }
       else
         format.html { render :action => "new" }
@@ -104,7 +104,7 @@ class StudentCounselingSessionsController < ApplicationController
     end
     respond_to do |format|
       if @student_counseling_session.update_attributes(params[:student_counseling_session])
-        format.html { redirect_to(@student_counseling_session, :notice => 'StudentCounselingSession was successfully updated.') }
+        format.html { redirect_to(@student_counseling_session, :notice =>  t('studentcounseling.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -117,11 +117,16 @@ class StudentCounselingSessionsController < ApplicationController
   # DELETE /student_counseling_sessions/1.xml
   def destroy
     @student_counseling_session = StudentCounselingSession.find(params[:id])
-    @student_counseling_session.destroy
+    #@student_counseling_session.destroy
 
     respond_to do |format|
+      if @student_counseling_session.destroy 
       format.html { redirect_to(student_counseling_sessions_url) }
       format.xml  { head :ok }
+      else
+	format.html { redirect_to(student_counseling_sessions_url, :notice => StudentCounselingSession.display_msg(@student_counseling_session.errors))}
+        format.xml  { render :xml => @student_counseling_session.errors, :status => :unprocessable_entity }
+      end
     end
   end
   

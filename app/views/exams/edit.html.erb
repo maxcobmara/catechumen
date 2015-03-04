@@ -3,6 +3,7 @@
 
 <!--<div class="showform">-->
 <div class="tform">
+	<h2><%=t('exam.edit')%></h2>
 	<%=render :partial => 'show_exam' %>
 	<!--22Apr2013-refer model:attr_accessor:programme_id-->
 		<%=hidden_field "exam[programme_id]", {},:value=>@exam.subject.root.id %>
@@ -13,44 +14,44 @@
 
 <% if @exam.klass_id == 0 %>
 <!--start-Make use of klass.id for exam TEMPLATE creation-->
-	<H2>Questions</H2>
+	<H2><%=t('exam.questions_template')%></H2>
 	<div id="template">
 		<table width=100% border=0>
 			  <tr>
-		      	<td width=18% ><label for="type_id"><b>Question Type:</b></label></td>
-		      	<td width=12% ><label for="quantity"><b>Quantity:</b></label></td>
-				<td width=15% ><label for="total_marks"><b>Total Marks:</b></label></td>
+		      	<td width=18% ><label for="type_id"><b><%=t('examquestion.questiontype')%>:</b></label></td>
+		      	<td width=12% ><label for="quantity"><b><%=t('exam.quantity')%>:</b></label></td>
+				<td width=15% ><label for="total_marks"><b><%=t('examquestion.total_marks')%>:</b></label></td>
 		      	<td width=40%></td>
 	      </tr>
 		 </table>
 		<% f.fields_for :examtemplates do |builder| %>
 			<%= render 'examtemplate_fields', :f => builder %>
 		<% end %>
-		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :examtemplates %> - Add More </p>
-		<p><font size=-2>MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each</font></p>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => (t 'addmore')), f, :examtemplates %> - <%=t('addmore') %></p>
+		<p><font size=-2><%=t('exam.marks_each')%></font></p>
 	</div>
 
 <!--else-Make use of klass.id for exam TEMPLATE creation-->
 <% else %>
 
 	
-	<H2>Filters</H2>
+	<H2><%=t('exam.filters')%></H2>
 		
 	<table>
 		<tr>
-			<td class="leftcol">Programme</td>
+			<td class="leftcol"><%=t('exam.course_id')%></td>
 			<td>
 				<!--18March2013-new database structure-->
 				<% if @exam.subject_id.nil? || @exam.subject_id.blank? %>
 					<%= f.collection_select :programme_filter, Programme.roots, :id, :programme_list ,
-											{:include_blank => "Select a programme"},
+											{:include_blank => (t 'select')},
 											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 											:url => {:action => 'view_subject' }, 
 											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_filter)+"').value
 											+ '&examid='+'#{@exam.id}' ") %>
 				<% else %>
 					<%= f.collection_select :programme_filter, Programme.roots, :id, :programme_list ,
-											{:include_blank => "Select a programme", :selected =>@exam.subject.root.id},
+											{:include_blank => (t 'select'), :selected =>@exam.subject.root.id},
 											:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
 											:url => {:action => 'view_subject' }, 
 											:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_filter)+"').value 
@@ -62,14 +63,14 @@
 		</tr>
 
 		<tr>
-			<td class="leftcol" >Subject<font color="red"> * </font></td>
+			<td class="leftcol" ><%=t('exam.subject_id')%><font color="red"> * </font></td>
 			<td>
 
 				<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
 					<% if @exam.subject_id.nil? || @exam.subject_id.blank? %>
 					<% else %>
 						<%= f.collection_select :subject_filter, @subjects, :id, :subject_list, 
-												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
+												{:include_blank=>(t 'select'), :selected => @exam.subject_id },
 												:onchange => remote_function(:update => "exam_topic_list", :url => {:action=>'view_topic'}, 
 												:with => "'subject='+$('"+"exam_subject_filter"+"').value + '&examid='+'#{@exam.id}' ") %>
 						<%#= f.collection_select :subject_filter, Programme.find(@exam.subject.root.id).descendants.at_depth(2), :id, :subject_list, 
@@ -96,18 +97,18 @@
 		
 		
 		<tr>
-			<td class="leftcol" >Topic<font color="red"> * </font></td>
+			<td class="leftcol" ><%=t('exam.topic')%><font color="red"> * </font></td>
 			<td>
 
 				<%= tag("div", :id => form_tag_id(f.object_name, :topic_list)) %>
 					<% if @exam.subject_id.nil? || @exam.subject_id.blank? %>
 					<% else %>
 						<%= f.collection_select :topic_filter, Programme.find(@exam.subject.id).descendants.at_depth(3), :id, :subject_list, 
-												{:include_blank=>'Select a topic', :selected => @exam.subject_id },
+												{:include_blank=>(t 'select'), :selected => @exam.subject_id },
 												:onchange => remote_function(:update => "exam_questions_list_available", :url => {:action=>'view_questions'}, 
 												:with => "'topicid='+$('"+"exam_topic_filter"+"').value + '&examid='+'#{@exam.id}' ") %>
 						<%#= f.collection_select :subject_filter, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, 
-												{:include_blank=>'Select a subject', :selected => @exam.subject_id },
+												{:include_blank=>(t 'select'), :selected => @exam.subject_id },
 												:onchange => remote_function(:update => "exam_questions_list", :url => {:action=>'view_questions'}, 
 												:with => "'subject='+$('"+"exam_subject_id"+"').value + '&exam_id='+'#{@exam.id}' ") %>
 					<% end %>	
@@ -119,7 +120,7 @@
 	</table>
 
 	
-	<H2>Questions</H2>
+	<H2><%=t('examquestion.question')%></H2>
 
 	<%= tag("div", :id => form_tag_id(f.object_name, :questions_list_available)) %>
 		<%# if @exam.subject_id%>
@@ -132,16 +133,16 @@
 	<%= tag("div", :id => form_tag_id(f.object_name, :questions_list)) %>
 	
 <% if @exam.examquestions.count>0  %>	
-		<h3>Existing Questions</h3>
+		<h3><%=t('exam.existing')%></h3>
 	
 		<table width=100% border=1 cellspacing=0>
 			<tr>
-				<th width=8px>Sequence</th>
-				<th width=10px>Question Type</th>
-				<th>Subject Code | Topic Code & Name</th>
-				<th>Question & Answer</th>
-				<th>Marks</th>
-				<th>Select</th>
+				<th width=8px><%=t('exam.sequence')%></th>
+				<th width=10px><%=t('examquestion.questiontype')%></th>
+				<th><%=t('exam.subject_topic_name')%></th>
+				<th><%=t('examquestion.question')%> & <%=t('examquestion.answer')%></th>
+				<th><%=t('exam.full_marks')%></th>
+				<th><%=t('select')%></th>
 			</tr>
 			<% if @exam.sequ!= nil %>
 				<% sequ = @exam.sequ.split(",")%>
@@ -155,10 +156,10 @@
 				<tr>
 					<td><%#=sequ[count]%>	
 					<% if @exam.sequ!= nil %>
-						<%= select_tag "exam[seq][]", "<option>Select</option>"+options_for_select(@sequence,sequ[count].to_i)%><%#=examquestion.id%>
+						<%= select_tag "exam[seq][]", "<option>"+(t 'select')+"</option>"+options_for_select(@sequence,sequ[count].to_i)%><%#=examquestion.id%>
 						<%#=hidden_field_tag "exam[seq_qid][]", examquestion.id %>
 					<% else %>
-						<%= select_tag "exam[seq][]", "<option>Select</option>"+options_for_select(@sequence)%>
+						<%= select_tag "exam[seq][]", "<option>"+(t 'select')+"</option>"+options_for_select(@sequence)%>
 						<%#=hidden_field_tag "exam[seq_qid][]", examquestion.id %>
 					<% end %>
 					</td>
@@ -222,10 +223,10 @@
 </div>
 
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit (t 'update') %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @exam %> |
-<%= link_to 'Back', exams_path %>
+<%= link_to (t 'show'), @exam %> |
+<%= link_to (t 'back'), exams_path %>
 

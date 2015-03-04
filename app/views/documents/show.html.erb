@@ -1,15 +1,22 @@
 <div class="tform">
 	<%= render 'show' %>
+	<!-- REVISED 23Jan2015-start-->
 	<!--5Apr2013 remove this part after UAT 5Apr2013-->
-	<%# if @document.cc1actiondate != nil %>
-		<%#= render 'show_action' %>
-	<%# end %>
+	<% if @document.circulations.count > 0 %><%# if @document.cc1actiondate != nil %><!--re-added for actions taken by receiver of circulations-->
+		<%= render 'show_action' %>
+	<% end %>
 	<!--5Apr2013 remove this part after UAT 5Apr2013-->
-	
-		<br>
+	<!-- REVISED 23Jan2015-end--->
+        <br>
 </div>
 
-<% if (@document.owner_ids.include? current_login.staff_id) && @document.closed != true %>
-	<%= link_to (t 'icms.update'), edit_document_path(@document) %> |
+<%# if (@document.owner_ids.include? current_login.staff_id) && @document.closed != true %>
+<%# if (@document.staffs.map(&:id).include? current_login.staff_id) %>
+<% @document.circulations.each_with_index do |circulation,ind|%>
+	<% if circulation.staff_id == Login.current_login.staff_id && circulation.action_closed!=true %>
+		<%#= link_to (t 'edit'), edit_document_path(@document) %> 
+		<%= link_to (t 'edit'), :action => 'edit', :id => @document ,  :acc =>"1"%>|
+	<% end %>
 <%end %> 
 <%= link_to (t 'icms.back'), documents_path %>	
+

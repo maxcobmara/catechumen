@@ -44,7 +44,7 @@ class PtcoursesController < ApplicationController
 
     respond_to do |format|
       if @ptcourse.save
-        flash[:notice] = 'Ptcourse was successfully created.'
+        flash[:notice] =  t('ptcourse.title')+" "+t('created')
         format.html { redirect_to(@ptcourse) }
         format.xml  { render :xml => @ptcourse, :status => :created, :location => @ptcourse }
       else
@@ -61,7 +61,7 @@ class PtcoursesController < ApplicationController
 
     respond_to do |format|
       if @ptcourse.update_attributes(params[:ptcourse])
-        flash[:notice] = 'Ptcourse was successfully updated.'
+        flash[:notice] =  t('ptcourse.title')+" "+t('updated')
         format.html { redirect_to(@ptcourse) }
         format.xml  { head :ok }
       else

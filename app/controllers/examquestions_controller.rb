@@ -15,7 +15,6 @@ class ExamquestionsController < ApplicationController
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end
-      #@programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       unless @programme.nil?
         @programme_id = @programme.id
       else
@@ -28,13 +27,20 @@ class ExamquestionsController < ApplicationController
       @examquestions = Examquestion.search2(@programme_id) 
       @programme_exams = @examquestions.group_by {|t| t.subject.root} 
     end  
+    
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @examquestions }
-      #to do - refer examanalysis.rb & examanalysis_controller.rb for sample
-      format.xls {send_data @examquestions.to_xls(:name=>"Examination Questions",:headers => Examquestion.header_excel, 
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @examquestions }
+       #to do - refer examanalysis.rb & examanalysis_controller.rb for sample
+        format.xls {send_data @examquestions.to_xls(:name=>"Examination Questions",:headers => Examquestion.header_excel, 
   		:columns => Examquestion.column_excel ), :file_name => 'examquestions.xls' }
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('examquestion.title2')}
+        format.xml  { render :xml => @examquestion.errors, :status => :unprocessable_entity }
+      end
     end
+    
   end
 
   # GET /examquestions/1
@@ -166,7 +172,7 @@ class ExamquestionsController < ApplicationController
     
     respond_to do |format|
       if @examquestion.save
-        flash[:notice] = 'Examquestion was successfully created.'
+        flash[:notice] = t('examquestion.title2')+" "+t('created')
         format.html { redirect_to(@examquestion) }
         format.xml  { render :xml => @examquestion, :status => :created, :location => @examquestion }
       else
@@ -185,7 +191,7 @@ class ExamquestionsController < ApplicationController
 
     respond_to do |format|
       if @examquestion.update_attributes(params[:examquestion])
-        flash[:notice] = 'Examquestion was successfully updated.'
+        flash[:notice] = t('examquestion.title2')+" "+t('updated')
         format.html { redirect_to(@examquestion) }
         format.xml  { head :ok }
       else

@@ -3,7 +3,22 @@ class TravelClaimsController < ApplicationController
   # GET /travel_claims
   # GET /travel_claims.xml
   def index
-    @travel_claims = TravelClaim.with_permissions_to(:index).find(:all, :order=>'claim_month asc')
+    #raise params.inspect
+    if params[:search]
+      @aa=params[:search][:"(1i)"] 
+      @bb=params[:search][:"(2i)"]
+      #@cc=params[:search][:"(3i)"]
+      if (@aa!='' && !@aa.nil?) && (@bb!='' && !@bb.nil?) #&& (@cc!='' && !@cc.nil?)
+        @dadidu=''
+        @dadidu=@aa+'-'+@bb+'-'+'01' 
+      else
+        @dadidu=''
+      end
+    else
+      @dadidu=''
+    end
+    params[:search]=nil    #this line is required
+    @travel_claims = TravelClaim.with_permissions_to(:index).search(@dadidu)#find(:all, :order=>'staff_id asc, claim_month asc')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -45,7 +60,7 @@ class TravelClaimsController < ApplicationController
 
     respond_to do |format|
       if @travel_claim.save
-        format.html { redirect_to(@travel_claim, :notice => 'TravelClaim was successfully created.') }
+        format.html { redirect_to(@travel_claim, :notice =>  t('claim.title')+" "+t('created')) }
         format.xml  { render :xml => @travel_claim, :status => :created, :location => @travel_claim }
       else
         format.html { render :action => "new" }
@@ -61,7 +76,7 @@ class TravelClaimsController < ApplicationController
 
     respond_to do |format|
       if @travel_claim.update_attributes(params[:travel_claim])
-        format.html { redirect_to(@travel_claim, :notice => 'TravelClaim was successfully updated.') }
+        format.html { redirect_to(@travel_claim, :notice =>  t('claim.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

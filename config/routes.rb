@@ -32,6 +32,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :documentsearches
 
   map.resources :assetsearches
+  
+  map.resources :stationerysearches
 
   map.resources :staffsearch2s
 
@@ -243,6 +245,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :staffgrades
 
   map.connect '/leaveforstudents/approve', :controller => 'leaveforstaffs', :action => 'approve'
+  map.connect '/leaveforstudents/approve_warden', :controller => 'leaveforstaffs', :action => 'approve_warden'
   map.resources :leaveforstudents
 
   map.resources :disposals

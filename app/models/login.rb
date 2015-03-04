@@ -129,10 +129,10 @@ class Login < ActiveRecord::Base
 
 
   FILTERS = [
-    {:scope => "all",       :label => "All"},
-    {:scope => "approval", :label => "Verify"},
-    {:scope => "staff",     :label => "Staff"},
-    {:scope => "student",   :label => "Student"}
+    {:scope => "all",       :label => I18n.t('login.all')},
+    {:scope => "approval", :label => I18n.t('login.verify')},
+    {:scope => "staff",     :label => I18n.t('login.staff')},
+    {:scope => "student",   :label => I18n.t('login.student')}
     ]
 
 

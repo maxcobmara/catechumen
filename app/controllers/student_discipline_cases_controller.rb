@@ -11,7 +11,6 @@ class StudentDisciplineCasesController < ApplicationController
       @student_discipline_cases = StudentDisciplineCase.with_permissions_to(:index).find(:all, :order => "reported_on DESC")
     end
     
-
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @student_discipline_cases }
@@ -53,7 +52,7 @@ class StudentDisciplineCasesController < ApplicationController
     @myhod = Position.find(:all, :conditions => ['tasks_main ILIKE (?)', "%Ketua Program%"], :select => :staff_id).map(&:staff_id)
     respond_to do |format|
       if @student_discipline_case.save
-        format.html { redirect_to(@student_discipline_case, :notice => 'Your new case was successfully registered') }
+        format.html { redirect_to(@student_discipline_case, :notice => t('studentdiscipline.registered')) }
         format.xml  { render :xml => @student_discipline_case, :status => :created, :location => @student_discipline_case }
       else
         format.html { render :action => "new" }
@@ -71,7 +70,7 @@ class StudentDisciplineCasesController < ApplicationController
 
     respond_to do |format|
       if @student_discipline_case.update_attributes(params[:student_discipline_case])
-        format.html { redirect_to(@student_discipline_case, :notice => 'The case was successfully updated') }
+        format.html { redirect_to(@student_discipline_case, :notice => t('studentdiscipline.title2')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -84,11 +83,16 @@ class StudentDisciplineCasesController < ApplicationController
   # DELETE /student_discipline_cases/1.xml
   def destroy
     @student_discipline_case = StudentDisciplineCase.find(params[:id])
-    @student_discipline_case.destroy
+   
 
     respond_to do |format|
-      format.html { redirect_to(student_discipline_cases_url) }
-      format.xml  { head :ok }
+      if @student_discipline_case.destroy
+        format.html { redirect_to(student_discipline_cases_url) }
+        format.xml  { head :ok }
+      else
+	format.html { redirect_to(student_discipline_cases_url, :notice => StudentDisciplineCase.display_msg(@student_discipline_case.errors))}
+        format.xml  { render :xml => @student_discipline_case.errors, :status => :unprocessable_entity }
+      end
     end
   end
 end

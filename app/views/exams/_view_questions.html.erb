@@ -1,21 +1,21 @@
 <% if @topic_id && @exam_id %>
 	<%# unless (@topic_id.blank? && @exam_id.blank?) || @topic_id =="" || @topic_id =='0'%>
 	<% if (@topic_id.blank? && @exam_id.blank?) || @topic_id =="" || @topic_id =='0'%>
-			Please select a topic first.
+		<%=t('exam.select_topic_first')%>
 	<% else %>
 	<!--for selected topic, view all available questions, (1)display message if exist in current exam OR (2)display checkbox if not exist-->
 
 		<!--exam_id:<%#=@exam_id %>-topic_id:<%#=@topic_id%>question??:<%#=@questions%>-->
 		<% @question_qty = @questions.count %>
-		Total : <%=@question_qty%> question(s) available for the above <b>SELECTED Programme, Subject & Topic.</b>.
+		<%=t('exam.total')%> : <%=@question_qty%><%=t('exam.questions_available')%>
 
 		<% if @question_qty > 0 %>
 			<table width=100% border=1 cellspacing=0>
 				<tr>
-					<th>Subject Name<%#=@questions2.count%></th>
-					<th>Question & Answer</th>
-					<th>Marks</th>
-					<th>Select</th>
+					<th><%=t('exam.subject_id')%><%#=@questions2.count%></th>
+					<th><%=t('examquestion.question')%> & <%=t('examquestion.answer')%></th>
+					<th><%=t('exam.full_marks')%></th>
+					<th><%=t('select')%></th>
 				</tr>
 			<% @questions_group.sort.each do |question_type, questions|%>	
 				<tr><td colspan=4><strong><%= question_type %></strong><BR></td></tr>
@@ -26,7 +26,7 @@
 					<td align="center"><%= question.marks %></td>
 					<td>
 						<% if Exam.find(@exam_id).examquestions.include?(question) %>
-							This question already selected for this examination.
+							<%=t('exam.questions_already_selected')%>
 						<% else %>
 							<%= check_box_tag "exam[examquestion_ids][]", question.id %>
 						<% end %>
@@ -51,10 +51,10 @@
 			<% if @question2_qty > 0 %>
 				<table width=100% border=1 cellspacing=0>
 					<tr>
-						<th>Programme / Subject Name LOLOLO</th>
-						<th>Question & Answer</th>
-						<th>Marks</th>
-						<th>Select</th>
+						<th><%=t('exam.course_id')%> / <%=t('exam.subject_id')%></th>
+						<th><%=t('examquestion.question')%> & <%=t('examquestion.answer')%></th>
+						<th><%=t('exam.full_marks')%></th>
+						<th><%=t('select')%></th>
 					</tr>
 
 				<% @questions_group2.sort.each do |question_type2, questions2|%>	
@@ -88,10 +88,10 @@
 
 <table width=100% border=1 cellspacing=0>
 	<tr>
-		<th>Subject Name</th>
-		<th>Question & Answer</th>
-		<th>Marks</th>
-		<th>Select</th>
+		<th><%=t('exam.subject_id')%></th>
+		<th><%=t('examquestion.question')%> & <%=t('examquestion.answer')%></th>
+		<th><%=t('exam.full_marks')%></th>
+		<th><%=t('select')%></th>
 	</tr>
 	
 	<tr>

@@ -45,7 +45,7 @@ class CofilesController < ApplicationController
 
     respond_to do |format|
       if @cofile.save
-        flash[:notice] = 'Cofile was successfully created.'
+        flash[:notice] =  t('cofile.title')+" "+t('created')
         format.html { redirect_to(@cofile) }
         format.xml  { render :xml => @cofile, :status => :created, :location => @cofile }
       else
@@ -62,7 +62,7 @@ class CofilesController < ApplicationController
 
     respond_to do |format|
       if @cofile.update_attributes(params[:cofile])
-        flash[:notice] = 'Cofile was successfully updated.'
+        flash[:notice] =  t('cofile.title')+" "+t('updated')
         format.html { redirect_to(@cofile) }
         format.xml  { head :ok }
       else

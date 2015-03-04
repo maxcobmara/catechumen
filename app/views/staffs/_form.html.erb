@@ -98,16 +98,17 @@
 			                 Staff::NATIONALITY,
 			                 :prompt => t ('select') %></td>
 		</tr>
-		<tr>
-			<td class="leftcol"><label for="transportclass_id"><b><%= t 'staff.transportclass_id' %></b></td>
-			<td><%= f.select :transportclass_id, options_for_select(('A'..'F'), @staff.transportclass_id) %>
-				<font size=-2>(Salary|Vehicle cc - <strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)</font>
+		
+		<!--<tr>
+			<td class="leftcol"><label for="transportclass_id"><b><%#= t 'staff.transportclass_id' %></b></td>
+			<td><%#= f.select :transportclass_id, options_for_select(('A'..'F'), @staff.transportclass_id) %>
+				<font size=-2><%#=t('staff.salary_vehicle')%><strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)</font>
 			</td>
-		</tr>
+		</tr>-->
 		<tr>
 			<td class="leftcol"><label for="upload"><b><%= t 'staff.upload' %></b></label></td>
 			<td>
-				<% if f.object.photo!=nil %>Current file is : <%= f.object.photo_file_name %>
+				<% if f.object.photo!=nil %><%=t('current_file')%> : <%= f.object.photo_file_name %>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<%= link_to (t 'document.download'), f.object.photo.url %>||
 				<%= link_to "ALT", f.object.photo.url %>
@@ -116,7 +117,7 @@
 			</td>
 		</tr>
 	</table>
-	
+ 	
 	<H2><%= t 'staff.employment_details' %></H2>
  	
 <!--Employment Details-->
@@ -187,8 +188,20 @@
 			<td><#%= f.date_select :to_current_grade_date, :start_year => 2000, :order => [:day, :month, :year], :include_blank => true %></td>
 		</tr>-->
 		<tr>
+			<td class="leftcol"><label for="salary_no"><b><%= t 'staff.salary_no' %></b></label></td>
+			<td><%= f.text_field :salary_no, :size => 18 %></td>
+		</tr>
+		<tr>
 			<td class="leftcol"><label for="starting_salary"><b><%= t 'staff.starting_salary' %></b></label></td>
 			<td>RM <%= f.text_field :starting_salary, :size => 14 %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="current_salary"><b><%= t 'staff.current_salary' %></b></label></td>
+			<td>RM <%= f.text_field :current_salary, :size => 14 %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="allowance"><b><%= t 'staff.allowance' %></b></label></td>
+			<td>RM <%= f.text_field :allowance, :size => 14 %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="appointby"><b><%= t 'staff.appointby' %></b></label></td>
@@ -243,7 +256,7 @@
 					
 		<% f.fields_for :loans do |builder| %>
 			<p><%= render 'loan_fields', :f => builder %></p>
-		<% end %><BR>
+		<% end %><BR><br>
 		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :loans %> - <%= t 'addmore' %> </p>
 	</div>
 
@@ -270,10 +283,10 @@
 	  <H2><%= t 'staff.emergency' %></H2>
 		<p><strong>
 			 			<div style="width: 150px; float: left;">|  <%= t 'staff.kintype_id' %></div> 
-						<div style="width: 250px; float: left;">|  <%= t 'staff.name' %>   		</div>
-						<div style="width: 150px; float: left;">|  <%= t 'staff.icno' %>			</div>
-						<div style="width: 120px; float: left;">|  <%= t 'staff.phone' %>			</div>
-						 |  Profession</strong> <BR> | Address </p>
+						<div style="width: 250px; float: left;">|  <%= t 'staff.name' %></div>
+						<div style="width: 150px; float: left;">|  <%= t 'staff.icno' %></div>
+						<div style="width: 120px; float: left;">|  <%= t 'staff.phone' %></div>
+						 |  Profession</strong> <BR> | <%= t 'staff.address' %> </p>
 		<HR>
 		<% f.fields_for :kins do |builder| %>
 			<%= render 'kin_fields', :f => builder %>
@@ -281,6 +294,22 @@
 		<HR>
 		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins %> - <%= t 'addmore' %> </p>
 		
+	</div>
+	
+	          
+        <!--Vehicle Details-->
+        <div>
+        <H2><%= t 'vehicles.title' %></H2>
+		<p><strong>
+			<div style="width: 250px; float: left;">| <%= t 'vehicles.type_model' %> </div>
+			<div style="width: 250px; float: left;">| <%= t 'vehicles.reg_no'%> </div>
+			|  <%= t 'vehicles.cylinder_capacity'%><strong></p>
+		<% f.fields_for :vehicles do |builder| %>
+			<%=  render 'vehicle_fields', :f => builder -%>
+		<% end %>
+                <BR><BR>
+                <font size=-2><%=t('staff.salary_vehicle')%><strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)</font>
+<!--		<p><%#= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :vehicles %> - <%#= t 'addmore' %> </p>-->
 	</div>
 
 </div>	

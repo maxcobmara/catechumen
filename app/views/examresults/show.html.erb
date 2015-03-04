@@ -1,14 +1,14 @@
 <div class="tform">
-<h2>Examination Result Details</h2>
+<h2><%=t('examresult.details')%></h2>
 
 <table width=100%>
 	<tr>
-		<td class="leftcol"><label for="examdts">Examination Start Date:</label></td>
-		<td><%=h @examresult.examdts.strftime("%d %B %Y") %></td>
+		<td class="leftcol"><label for="examdts"><%=t('examresult.examdate1')%>:</label></td>
+		<td><%=h l(@examresult.examdts) %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="examdte">Examination End Date:</label></td>
-		<td><%=h @examresult.examdte.nil? ? "" : @examresult.examdte.strftime("%d %B %Y") %>
+		<td class="leftcol"><label for="examdte"><%=t('examresult.examdate2')%>:</label></td>
+		<td><%=h @examresult.examdte.nil? ? "" : l(@examresult.examdte) %>
 			<%#=h @examresult.examdte.strftime("%d %B %Y") %></td>
 	</tr>
 	<tr>
@@ -16,10 +16,10 @@
 		<td><%=h @examresult.render_semester %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="programme_id">Programme:</label></td>
+		<td class="leftcol"><label for="programme_id"><%=t('examresult.programme_id')%>:</label></td>
 		<td><%=h @examresult.programmestudent.name %></td>
 	</tr>
-	<tr><td class="leftcol" colspan=2><label for="resultlines">Results</label></td></tr>
+	<tr><td class="leftcol" colspan=2><label for="resultlines"><%=t('examresult.results')%></label></td></tr>
 	<tr>
 		<td colspan=2>
 			<table border=1 cellpadding=0 cellspacing=0>
@@ -27,9 +27,9 @@
 					<%# @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester) %>
 					<% @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)%><%#,@examresult.examdts) %>
 					<%# @subject_count = @subjects.count %>
-					<th rowspan=2>Name</th>
-					<th rowspan=2>Matric No</th>
-					<th rowspan=2>Mykad No</th>
+					<th rowspan=2><%=t('student.name')%></th>
+					<th rowspan=2><%=t('student.matrixno')%></th>
+					<th rowspan=2><%=t('student.icno')%></th>
 					<% for subject in @subjects %>
 						<th colspan=2 style="text-align:center;"><%=h subject.code %><%#=h subject.subjectcode %></th>
 					<% end %>
@@ -40,7 +40,7 @@
 				</tr>
 				<tr>
 					<% 0.upto(@subjects.count-1) do |count|%>
-						<th>Grade</th><th>NG</th>
+						<th><%=t('grade.grade')%></th><th>NG</th>
 					<% end %>
 				</tr>
 				<% for examresultline in @examresult.resultlines %>
@@ -78,5 +78,5 @@
 </div>
 
 <br>
-<%= link_to 'Edit', edit_examresult_path(@examresult) %> |
-<%= link_to 'Back', examresults_path %>
+<%= link_to (t 'edit'), edit_examresult_path(@examresult) %> |
+<%= link_to (t 'back'), examresults_path %>

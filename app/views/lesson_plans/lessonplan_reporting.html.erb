@@ -5,7 +5,7 @@
 	<H2><%=t('lesson_plan.reporting')%></H2>
 	<%=render :partial => 'show_main_report' %>
 
-	<% if @lesson_plan.lecturer == Login.current_login.staff_id && @lesson_plan.report_submit != true %>
+	<% if @lesson_plan.report_submit != true && ((@lesson_plan.lecturer == Login.current_login.staff_id) || @is_admin)%>
 		<BR>
 		<H2><%=t('lesson_plan.report_details')%></H2>
 	
@@ -43,7 +43,7 @@
 		<table width=100% >
 			<tr>
 				<td class="leftcol"><%=t('lesson_plan.submit')%></td>
-		    	<td>
+				<td>
 					<%= f.check_box :report_submit , :id => 'check_submitted' %>
 					<SPAN  id="span_submitted" style="display: none;"><%= tarikh(Date.today) %><%=%></SPAN>
 				</td>
@@ -51,7 +51,7 @@
 			</tr>
 			<tr>
 				<td class="leftcol"><%=t('lesson_plan.hod')%></td>
-		    	<td><%= f.collection_select :endorsed_by, Staff.find(:all, :conditions => ["id IN (?)", @lesson_plan.hods]), :id, :name, :selected => @lesson_plan.endorsed_by %>
+				<td><%= f.collection_select :endorsed_by, Staff.find(:all, :conditions => ["id IN (?) OR id=?", @lesson_plan.hods, @lesson_plan.tpa]), :id, :name, :selected => @lesson_plan.endorsed_by %>
 				</td>
 				<td>&nbsp;</td>
 			</tr>

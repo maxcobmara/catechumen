@@ -1,10 +1,10 @@
 <% if (request.request_uri == "/" || request.request_uri == "/home") %>
-	<H3><%= link_to "Events ", { :controller => "events", :action => "index" } %></H3>
-	<H3>Todays Events</H3>
+	<H3><%= link_to (t 'events.title'), { :controller => "events", :action => "index" } %></H3>
+	<H3><%=t('events.todays_events')%></H3>
 			<% todays_events = Event.find(:all, :conditions => ["start_at <= ? AND end_at >= ? ", Time.now,  Time.now ], :order => 'end_at desc', :limit => 6) %>
 			<% if todays_events == [] %>
 				<div class="sidebar_event_item0">
-				<H5>No Events Today</H5>
+				<H5><%=t('events.no_events_today')%></H5>
 				</div>
 			<% else %>
 				<% todays_events.each do |e| %>
@@ -17,11 +17,11 @@
 	      <% end %>
 			<% end %>
 			
-			<H3>Recent Events</H3>
+			<H3><%=t('events.recent_events')%></H3>
 			<% dash_events = Event.find(:all, :conditions => ["end_at < ? AND end_at >= ? ", Time.now, 7.days.ago], :order => 'end_at desc', :limit => 6) %>
 			<% if dash_events == [] %>
 				<div class="sidebar_event_item0">
-					<H5>No events since last week</H5>
+					<H5><%=t('events.no_event_since_last_week')%></H5>
 				</div>
 			<% else %>
 				<% dash_events.each do |e| %>
@@ -34,11 +34,11 @@
 	      <% end %>
 		  <% end %>
 		
-			<H3>Upcoming Events</H3>
+			<H3><%=t('events.upcoming_events')%></H3>
 			<% future_events = Event.find(:all, :conditions => ["start_at > ? ", Time.now ], :order => 'start_at desc', :limit => 6) %>
 			<% if future_events == [] %>
 				<div class="sidebar_event_item0">
-					<H5>No future events</H5>
+					<H5><%=t('events.no_future_events')%></H5>
 				</div>
 			<% else %>
 				<% future_events.each do |e| %>

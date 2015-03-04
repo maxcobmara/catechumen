@@ -1,10 +1,14 @@
 <% javascript 'dynamic_subjects' %>
 <h2><%=t('weeklytimetable.details')%></h2>
-
 <table width=100%>
 	<tr>
 		<td class="leftcol"><%= f.label t('weeklytimetable.programme_id')%></td>
-		<td><%= f.collection_select :programme_id, Programme.roots, :id, :programme_list, :prompt=>t('select') %>
+		<td>
+			<% if @programmeid %>
+				<%= f.collection_select :programme_id, Programme.find(:all, :conditions => ['id=?',@programmeid]), :id, :programme_list, :prompt=>t('select'), :selected => @programmeid %>
+			<% else %>
+				<%= f.collection_select :programme_id, Programme.roots, :id, :programme_list, :prompt=>t('select'), :selected => @programmeid %>
+			<% end %>
 			<%#= @weeklytimetable.schedule_programme.programme_list %>
 		</td>
 	</tr>
@@ -31,7 +35,11 @@
 				<%#= f.grouped_collection_select(:intake_id, Intake::OPTIONS, :options, :type_name, :id, :name, 5,:include_blank=> "Select Group (Intake)") %><%# else %>
 				<%#=h @weeklytimetable.intake_id %>
 				<!--YG OK-->
-				<%= f.collection_select :intake_id, Intake.all, :id, :programme_group_intake, :prompt=> t('select') %>
+				<% if @intake_list %>
+					<%= f.collection_select :intake_id, Intake.find(:all, :conditions=>['programme_id IN(?)',@intake_list], :order => "programme_id ASC"), :id, :programme_group_intake, :prompt=> t('select') %>
+				<% else %>
+					<%= f.collection_select :intake_id, Intake.find(:all, :order => "programme_id ASC"), :id, :programme_group_intake, :prompt=> t('select') %>
+				<% end %>
 				<!--YG OK-->
 				<%# options = option_groups_from_collection_for_select(Intake::OPTIONS, :options, :type_name, :id, :name, 0)%>
 				<%#= select_tag('weeklytimetable', :intake_id, :options=>options, :include_blank=>true )%>

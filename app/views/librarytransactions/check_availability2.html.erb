@@ -5,22 +5,22 @@
 	<% student= Student.find(@studentsearch) %>
 	<% quota = 2 %>
 	<fieldset>
-		<legend class='togvis'><b>Student Details</b></legend>
+		<legend class='togvis'><b><%=t('librarytransaction.student_details')%></b></legend>
 			<table>
 				<tr>
-					<td class="leftcol">Name : </td>
+					<td class="leftcol"><%=t('student.name')%> : </td>
 					<td><%=h student.name %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">Matrix :</td>
+					<td class="leftcol"><%=t('student.matrixno')%> :</td>
 					<td><%=h student.matrixno %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">MyKad No :</td>
+					<td class="leftcol"><%=t('student.icno')%> :</td>
 					<td><%=h student.icno %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">Programme : </td>
+					<td class="leftcol"><%=t('student.course_id')%> : </td>
 					<td><%=h check_kin{student.course.programme_list} %></td>
 				</tr>
 			</table>
@@ -29,26 +29,26 @@
 	<% staff = Staff.find(@staffsearch) %>
 	<% quota = 5 %>
 	<fieldset>
-		<legend class='togvis'><b>Staff Details</b></legend>
+		<legend class='togvis'><b><%=t('librarytransaction.staff_details')%></b></legend>
 			<table>
 				<tr>
-					<td class="leftcol">MyKad No :</td>
+					<td class="leftcol"><%=t('staff.icno')%> :</td>
 					<td><%=h staff.icno %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">Name : </td>
+					<td class="leftcol"><%=t('staff.name')%> : </td>
 					<td><%=h staff.name %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">Position : </td>
+					<td class="leftcol"><%=t('staff.position')%> : </td>
 					<td><%#=h staff.position.name %><%=h staff.position_for_staff%></td>
 				</tr>
 		</table>
 		</fieldset>
 <% elsif @rustaff == '0' && @studentsearch == 0 %>
-	&nbsp;&nbsp;&nbsp;<span class="isbn_bg3">Please select a student name</span>
+	&nbsp;&nbsp;&nbsp;<span class="isbn_bg3"><%=t('librarytransaction.insert_student_name')%></span>
 <% elsif @rustaff != '0' && @staffsearch == 0 %>
-	&nbsp;&nbsp;&nbsp;<span class="isbn_bg1">Please select a staff name</span>
+	&nbsp;&nbsp;&nbsp;<span class="isbn_bg1"><%=t('librarytransaction.insert_staff_name')%></span>
 <% end %>
 <!--part for staff details & student details (end)-->
 
@@ -59,15 +59,15 @@
 	
 	<table border=0 cellspacing=0 cellpadding=0>
 		<tr>
-			<td colspan="6" class='tlight'><b>Total books on loan : <%= @loaned_books %></b></td>
+			<td colspan="6" class='tlight'><b><%=t('librarytransaction.total_loan')%> : <%= @loaned_books %></b></td>
 		</tr>
 		<% if @loaned_books > 0 %>
 		<tr>
 			<th>No</th>
-			<th colspan=2 width=400px>Accession No - Title</th>
-			<th width=100px>Due Date</th>
-			<th width=90px>Return</th>
-			<th width=180px>Fine</th>
+			<th colspan=2 width=400px><%=t('book.accessionno')%> - <%=t('book.title')%></th>
+			<th width=100px><%=t('librarytransaction.duedate')%></th>
+			<th width=90px><%=t('librarytransaction.return')%></th>
+			<th width=180px><%=t('librarytransaction.fine')%></th>
 		</tr>
 		<% end %>
 		<% bil=0 %>
@@ -95,7 +95,7 @@
 				
 					<%#= check_box_tag "returneds[]" %>
 					<%=   check_box_tag("returneds[]")%>
-					<%=   hidden_field_tag "returneds[]", "0" %> Return <br>on <b><%= Date.today.strftime("%d %b %y")  %></b>
+					<%=   hidden_field_tag "returneds[]", "0" %> <%=t('librarytransaction.return')%> <br><%=t('on2')%> <b><%= l(Date.today)  %></b>
 					<%#=  hidden_field_tag "libreturneds_by[]", Login.current_login.staff_id %><!--remove this to model-->
 				  
 					<!--<input type="hidden" name="returneds[]" value="0" />-->
@@ -120,10 +120,10 @@
 					<%#= book_on_loan.recommended_fine_value %>
 					<%# @fine_pay = (book_on_loan.returnduedate - Date.today).to_i * -0.2 %>
 					<% @fine_pay = book_on_loan.recommended_fine_value %>
-					<%= check_box_tag "finepays[]", 1 %> Paid :
+					<%= check_box_tag "finepays[]", 1 %> <%=(t 'librarytransaction.paid').titleize%> :
 					RM <%= text_field_tag "fines[]",nil, :placeholder => "#{@fine_pay.to_s}", :size=>10 %>
-					on <b><%= Date.today.strftime("%d %b %y")  %></b>
-					<br><font color=#AAA size=-2> late by <%= (Date.today-book_on_loan.returnduedate).to_i %> days x RM0.20/day</font><br>
+					<%=t('on2')%> <b><%= l(Date.today)  %></b>
+					<br><font color=#AAA size=-2> <%=t('librarytransaction.late_by')%> <%= (Date.today-book_on_loan.returnduedate).to_i %> <%=t('time.days')%> x RM0.20/<%=t('librarytransaction.day')%></font><br>
 				<% else %>			
 					<%#= check_box_tag "finepays[]", 0 %> 
 					<%= hidden_field_tag "finepays[]", 0 %>	

@@ -1,5 +1,5 @@
 <div class="tform">
-	<H2>Asset Search : KEW-PA 
+	<H2><%=t('equery.asset.search')%> : KEW-PA 
 		<% if @searchtype=='1'%> 2 & 3
 		<% elsif @searchtype=='2'%> 4 (Harta Modal / Fixed Asset)
 		<% elsif @searchtype=='3'%> 5 (Inventori / Inventory)
@@ -46,92 +46,92 @@
 			<% if @searchtype=='1' || @searchtype==1 %><!--KEWPA 2 & KEWPA 3-->
 				<%= hidden_field_tag :method,  1 %>
 				<tr>
-					<td class="leftcol"> Search by Asset Code :</td>
+					<td class="leftcol"> <%=t('asset.assetcode')%>:</td>
 					<td><%= f.text_field :assetcode %>&nbsp;&nbsp;
-						<font size=-2>Insert 'H' for listing of all 'Harta Modal / Fixed Asset' or 'I' for listing of all 'Inventori / Inventory'</font>
+						<font size=-2><%=t('equery.asset.type_select')%></font>
 							<br>&nbsp;<font size=-2 color=blue>(Format : KKM/BPL/010619/H/10/395)</font>
 						
 					</td>
 				</tr>
 				<tr>
-					<td class="leftcol">Search by Asset Name</td>
+					<td class="leftcol"><%=t('equery.asset.asset_name')%>:</td>
 					<td><%= f.text_field :name %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase price</td>
+					<td class="leftcol"><%=t('asset.purchaseprice')%>:</td>
 					<td>
-						<%= f.text_field :purchaseprice, :placeholder=> "from...", :size=>10 %> - 
-						<%= f.text_field :purchaseprice2, :placeholder=> "...until", :size=> 10%> <font size=-2>(in RM)</font>
+						<%= f.text_field :purchaseprice, :placeholder=> (t 'from')+"...", :size=>10 %> - 
+						<%= f.text_field :purchaseprice2, :placeholder=> "..."+(t 'to'), :size=> 10%> <font size=-2>(RM)</font>
 					</td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase / Local Order date</td>
+					<td class="leftcol"><%=t('asset.purchasedate')%>:</td>
 					<td>
 						<%= date_select :purchasedate, params[:purchasedate], :include_blank => :true %> - 
 						<%= date_select :purchasedate2, params[:purchasedate2], :include_blank => :true %>
 					</td>
 				</tr>
-				<tr><td colspan=2>&nbsp;<font size=-2>Leaves all fields 'blank' to display ALL record.</font></td></tr>
+				<tr><td colspan=2>&nbsp;<font size=-2><%=t('equery.leaves_all_blank_all_records')%></font></td></tr>
 				
 			<% elsif @searchtype=='2' || @searchtype==2 %><!--KEWPA 4-->
 				<%= hidden_field_tag :method, 2 %>
 				<%= f.hidden_field :assettype, :value => 1 %>
 				<tr>
-					<td class="leftcol">Purchase Price</td>
+					<td class="leftcol"><%=t('asset.purchaseprice')%>:</td>
 					<td>
-						<%= f.text_field :purchaseprice, :placeholder=> "from...", :size=>10 %> - 
-						<%= f.text_field :purchaseprice2, :placeholder=> "...until", :size=> 10%><font size=-2>(in RM)</font>
+						<%= f.text_field :purchaseprice, :placeholder=> (t 'from')+"...", :size=>10 %> - 
+						<%= f.text_field :purchaseprice2, :placeholder=> "..."+(t 'to'), :size=> 10%><font size=-2>(in RM)</font>
 					</td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase / Local Order Date </td>
+					<td class="leftcol"><%=t('asset.purchasedate')%>:</td>
 					<td>
 						<%= date_select :startdate, params[:startdate], :include_blank => :true %> -
 						<%= date_select :enddate, params[:enddate], :include_blank => :true %>
 					</td>
 				</tr>
 				<tr>
-					<td class="leftcol">Received Date </td>
+					<td class="leftcol"><%=t('asset.receiveddate')%>:</td>
 					<td>
 						<%= date_select :receiveddate, params[:receiveddate], :include_blank => :true %> -
 						<%= date_select :receiveddate2, params[:receiveddate2], :include_blank => :true %>
 					</td>
 				</tr>
-				<tr><td colspan=2>&nbsp;<font size=-2>Leaves all fields 'blank' to display ALL record.</font></td></tr>
+				<tr><td colspan=2>&nbsp;<font size=-2><%=t('equery.leaves_all_blank_all_records')%></font></td></tr>
 				
 			<% elsif @searchtype=='3' || @searchtype==3 %><!--KEWPA 5-->
 				<%= hidden_field_tag :method, 3 %>
 				<%= f.hidden_field :assettype, :value => 2 %>
 				<tr>
-					<td class="leftcol">Purchase Price</td>
+					<td class="leftcol"><%=t('asset.purchaseprice')%>:</td>
 					<td>
 						<%= f.text_field :purchaseprice, :placeholder=> "from...", :size=>10 %>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; 
 						<%= f.text_field :purchaseprice2, :placeholder=> "...until", :size=> 10%><font size=-2>(in RM)</font>
 					</td>
 				</tr>
 				<tr>
-					<td class="leftcol">Purchase / Local Order date</td>
+					<td class="leftcol"><%=t('asset.purchasedate')%>:</td>
 					<td>
 						<%= date_select :startdate, params[:startdate], :include_blank => :true %>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; 
 						<%= date_select :enddate, params[:enddate], :include_blank => :true %>
 					</td>
 				</tr>
 				<tr>
-					<td class="leftcol">Received Date </td>
+					<td class="leftcol"><%=t('asset.receiveddate')%></td>
 					<td>
 						<%= date_select :receiveddate, params[:receiveddate], :include_blank => :true %>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; 
 						<%= date_select :receiveddate2, params[:receiveddate2], :include_blank => :true %>
 					</td>
 				</tr>
-				<tr><td colspan=2>&nbsp;<font size=-2>Leaves all fields 'blank' to display ALL record.</font></td></tr>
+				<tr><td colspan=2>&nbsp;<font size=-2><%=t('equery.leaves_all_blank_all_records')%></font></td></tr>
 				
 			<% elsif @searchtype=='4' || @searchtype==4 %><!--Pergerakan Aset : Peminjaman-KEW-PA 6-->
 				<%= hidden_field_tag :method, 4 %>
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
 				<%= f.hidden_field :loanedasset, :value=> 1 %>
 				<tr>
-					<td class="leftcol">Select Record By : </td>
-					<td><%= f.select :datetype, ['Loan Date','Return Date','Expected Return Date'], :prompt => "Select method" %>
+					<td class="leftcol"><%=t('equery.select_record')%> : </td>
+					<td><%= f.select :datetype, options_for_select([[(t 'equery.asset.loan_date'),'Loan Date'],[(t 'equery.asset.return_date'),'Return Date'],[(t 'equery.asset.expected_return_date'), 'Expected Return Date']]), :prompt => (t 'select') %>
 						<SPAN class="bong", style="display: none;">
 							<%= date_select :loandate, params[:loandate], :include_blank => true %> - 
 							<%= date_select :loandate2, params[:loandate2], :include_blank => true %>
@@ -146,7 +146,7 @@
 						</SPAN>
 					</td>
 					<tr>
-						<td colspan=2><font size=-2>Leave all fields 'unselected' to display ALL existing asset loan (KEW-PA 6)</font></td>
+						<td colspan=2><font size=-2><%=t('equery.asset.leave_unselected_kewpa6')%></font></td>
 					</tr>
 				</tr>
 			<% elsif @searchtype=='5' || @searchtype==5 %><!--Senarai Aset Alih :Lokasi-KEW-PA 7-->
@@ -154,8 +154,8 @@
 				<%= f.hidden_field :category, :value=>5 %>
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
 				<tr>
-					<td class="leftcol">Select Record By : </td>
-					<td><%= f.select :locationtype, ['Person In-Charge','Asset Location'], :prompt => "Select method" %>
+					<td class="leftcol"><%=t('equery.select_record')%> : </td>
+					<td><%= f.select :locationtype, options_for_select ([[(t 'equery.asset.person_in_charge'),'Person In-Charge'],[(t 'equery.asset.asset_location'),'Asset Location']]), :prompt => (t 'select') %>
 						<SPAN class="bong2", style="display: none;">
 							<%= f.collection_select :assignedto, Staff.find(Location.incharge), :id, :name %>
 						</SPAN>
@@ -166,12 +166,12 @@
 						</SPAN>
 					</td>
 				</tr>
-				<tr><td colspan=2>Note : <b>Person in-charge</b> and <b>Asset location</b> data are based on existing records.</td></tr>
+				<tr><td colspan=2><%=t('note')%> : <b><%=t('equery.asset.person_in_charge')%></b> <%=t('and')%> <b><%=t('equery.asset.asset_location')%></b><%=t('equery.data_based_existing_records')%></td></tr>
 			<% elsif @searchtype=='6' || @searchtype==6 %><!--Laporan Tahunan (H & I) :Lokasi-KEW-PA 8-->
 				<%= hidden_field_tag :method, 6 %>
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
 				<tr>
-					<td class="leftcol">Select Year : </td>
+					<td class="leftcol"><%=t('equery.asset.select_year')%> : </td>
 					<td>
 						<% @start_year = Asset.find(:all, :order=>'purchasedate ASC').map(&:purchasedate).uniq[0].year %>
 						<%= date_select :curryear, params[:curryear],:start_year => @start_year ,:end_year => (Time.now.year), :order => [:year] %>
@@ -182,108 +182,108 @@
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
 				<!---->
 				<tr>
-					<td class="leftcol">Select Record By : </td>
-					<td><%= f.select :defect_type, ['Defected Asset','Person','Process Type'], :prompt => "Select search method" %>
+					<td class="leftcol"><%=t('equery.select_record')%> : </td>
+					<td><%= f.select :defect_type, options_for_select([[(t 'equery.asset.defected_asset'),'Defected Asset'],[(t 'equery.asset.person'),'Person'],[(t 'equery.asset.process_type'),'Process Type']]), :prompt => (t 'select')%>
 				</tr>
 				<tr>
 					<td class="leftcol">
-						<SPAN class="bong3", style="display: none;">Select an Asset : </SPAN>
-						<SPAN class="koik3", style="display: none;">Select a Person :</SPAN>
-						<SPAN class="chup3", style="display: none;">Select a Defect Process : </SPAN>	
+						<SPAN class="bong3", style="display: none;"><%=t('equery.asset.select_asset')%> : </SPAN>
+						<SPAN class="koik3", style="display: none;"><%=t('equery.asset.select_person')%> :</SPAN>
+						<SPAN class="chup3", style="display: none;"><%=t('equery.asset.select_defect_process')%> : </SPAN>	
 					</td>
 					<td>
 						<SPAN class="bong3", style="display: none;">
 							<%= f.collection_select :defect_asset, AssetDefect.find(:all,:order => "asset_id ASC"), :id, :asset_name, :include_blank=>true %><!--id refers to asset_defect ID-->
 						</SPAN>
 						<SPAN class="koik3", style="display: none;">							
-							<%= f.radio_button :persontype, 1,	:id => 'button_report',  :class => 'radio_defect_options' %><label>Reported by</label>
-							<%= f.radio_button :persontype, 2,	:id => 'button_incharge',  :class => 'radio_defect_options' %><label>Person In-Charge</label>
-							<%= f.radio_button :persontype, 3,	:id => 'button_process',  :class => 'radio_defect_options' %><label>Processed By</label>
+							<%= f.radio_button :persontype, 1,	:id => 'button_report',  :class => 'radio_defect_options' %><label><%=t('equery.asset.reported_by')%></label>
+							<%= f.radio_button :persontype, 2,	:id => 'button_incharge',  :class => 'radio_defect_options' %><label><%=t('equery.asset.person_in_charge')%></label>
+							<%= f.radio_button :persontype, 3,	:id => 'button_process',  :class => 'radio_defect_options' %><label><%=t('equery.asset.processed_by')%></label>
 						</SPAN>
 						<SPAN class="chup3", style="display: none;">
-							<%=f.select :defect_process, AssetDefect.find(:all,:select => "DISTINCT process_type").map(&:process_type).compact,:include_blank => "Select process type" %>	
+							<%=f.select :defect_process, AssetDefect.find(:all,:select => "DISTINCT process_type").map(&:process_type).compact,:include_blank => (t 'select')%>
 						</SPAN>
 					</td>
 				</tr>
 				<tr class="report_item" style="display: none;">
-					<td class="leftcol">Reported By : </td>
-					<td><%= f.collection_select :defect_reporter, AssetDefect.find(:all,:select => "DISTINCT reported_by"), :reported_by, :reported_name, :include_blank => "Select reported by" %></td>
+					<td class="leftcol"><%=t('equery.asset.reported_by')%> : </td>
+					<td><%= f.collection_select :defect_reporter, AssetDefect.find(:all,:select => "DISTINCT reported_by"), :reported_by, :reported_name, :include_blank => (t 'select') %></td>
 				</tr>
 				<tr class="incharge_item" style="display: none;">
-					<td class="leftcol">Person In-Charge : </td>
+					<td class="leftcol"><%=t('equery.asset.person_in_charge')%> : </td>
 					<td>
-						<%= f.collection_select :assignedto,  Staff.find(AssetDefect.incharge_staffs), :id, :name, :include_blank => "Select person in-charge" %>
+						<%= f.collection_select :assignedto,  Staff.find(AssetDefect.incharge_staffs), :id, :name, :include_blank => (t 'select') %>
 					</td>
 				</tr>
 				<tr class="process_item" style="display: none;">
-					<td class="leftcol">Processed By : </td>
-					<td><%= f.collection_select :defect_processor, AssetDefect.find(:all,:conditions => "processed_by is not null", :select => "DISTINCT processed_by"), :processed_by, :processor_name, :include_blank => "Select processed by" %></td>
+					<td class="leftcol"><%=t('equery.asset.processed_by')%> : </td>
+					<td><%= f.collection_select :defect_processor, AssetDefect.find(:all,:conditions => "processed_by is not null", :select => "DISTINCT processed_by"), :processed_by, :processor_name, :include_blank => (t 'select') %></td>
 				</tr>
 				<tr>
-					<td><b>Listing</b> ALL Asset Defect Records</td>
-					<td><%= f.check_box :alldefectasset %> &nbsp;&nbsp;<font size=-2>Tick and leave other fields 'unselected' to display ALL existing asset defect (KEW-PA 9)</font></td>
+					<td><b><%=t('equery.listing')%></b> <%=t('equery.asset.all_asset_defects')%></td>
+					<td><%= f.check_box :alldefectasset %> &nbsp;&nbsp;<font size=-2><%=t('equery.asset.leave_unselected_kewpa9')%></font></td>
 				</tr>
 				<!---->
 			<% elsif @searchtype=='8' || @searchtype==8 %><!--KEWPA 13-Senarai aset yg memerlukan penyelenggaraan (Edit Harta Modal)-->
 				<%= hidden_field_tag :method, 8 %>
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
 				<%= f.hidden_field :category, :value=>8 %>
-				<tr><td colspan=2><b>Listing</b> of Asset for Maintenance by</td></tr>
+				<tr><td colspan=2><b><%=t('equery.listing')%></b> <%=t('equery.asset.maintained_by')%></td></tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.assetcode')%> : </td>
 					<td><%= f.text_field :maintcode %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.name')%> / <%=t('asset.assettype')%> / Model : </td>
 					<td><%= f.text_field :maintname %></td>
 				</tr>
 				<tr>
-					<td><b>Listing</b> ALL Asset for Maintenance</td>
-					<td><%= f.check_box :maintainable %> &nbsp;&nbsp;<font size=-2>Tick and leave other fields blank to display ALL asset for maintenance (KEW-PA 13)</font></td>
+					<td><b><%=t('equery.listing')%></b> <%=t('equery.asset.all_asset_maintenance')%></td>
+					<td><%= f.check_box :maintainable %> &nbsp;&nbsp;<font size=-2><%=t('equery.asset.leave_blank_maintenance')%> (KEW-PA 13)</font></td>
 				</tr>
 			
 			<% elsif @searchtype=='9' || @searchtype==9 %><!--KEWPA 14-Daftar individu aset yg memerlukan penyelenggaraan-->
 				<%= hidden_field_tag :method, 9 %>
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
 				<%= f.hidden_field :category, :value=>9 %>
-				<tr><td colspan=2><b>Search</b> Asset Maintenance Record by</td></tr>
+				<tr><td colspan=2><b><%=t('equery.listing')%> </b><%=t('equery.asset.maintained_by')%></td></tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.assetcode')%> : </td>
 					<td><%= f.text_field :maintcode %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.name')%> / <%=t('asset.assettype')%> / Model : </td>
 					<td><%= f.text_field :maintname %></td>
 				</tr>
 				<tr>
-					<td><b>Listing</b> ALL Asset for Maintenance</td>
-					<td><%= f.check_box :maintainable %> &nbsp;&nbsp;<font size=-2>Tick and leave other fields blank to display ALL asset for maintenance (KEW-PA 14)</font></td>
+					<td><b><%=t('equery.listing')%></b> <%=t('equery.asset.all_asset_maintenance')%></td>
+					<td><%= f.check_box :maintainable %> &nbsp;&nbsp;<font size=-2><%=t('equery.asset.leave_blank_maintenance')%> (KEW-PA 14)</font></td>
 				</tr>
 			<% elsif @searchtype=='10' || @searchtype==10 %><!--KEW=PA 16-Perakuan Pelupusan-->
 				<%= hidden_field_tag :method, 10 %>
 				<%= f.hidden_field :disposal, :value => 1 %>
-				<tr><td colspan=2><b>Search</b> Disposed Asset Record by</td></tr>
+				<tr><td colspan=2><b><%=t('search')%></b> <%=t('equery.asset.disposed_asset_by')%></td></tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.assetcode')%> : </td>
 					<td><%= f.text_field :assetcode %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.name')%> / <%=t('asset.assettype')%> / Model : </td>
 					<td><%= f.text_field :name %></td>
 				</tr>
 				<tr>
-					<td colspan=2><font size=-2>Leave all fields 'blank' to view ALL disposed asset.</font></td>
+					<td colspan=2><font size=-2><%=t('equery.asset.leave_blank_disposed')%></font></td>
 				</tr>
 			<% elsif @searchtype=='11' || @searchtype==11 %><!--KEW-PA 17-Laporan Lembaga Pemeriksa-->
 				<!--disposalreport field is used to saved asset_disposal_ids of selected disposal record(s) for reporting-->
 				<%= hidden_field_tag :method, 11 %>
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
 				<%= f.hidden_field :disposal, :value => 1 %>
-				<tr><td colspan=2>Disposed Asset For Yearly Examiner Board Report</td></tr>
+				<tr><td colspan=2><%=t('equery.asset.disposed_asset_yearly_report_examiner')%></td></tr>
 				<tr>
 					<% @disposals_disposed = AssetDisposal.find(:all, :conditions=>['is_disposed is TRUE and disposed_on is not null'])%><!--for checking:AssetDisposal.all-->
 					
-					<td class="leftcol">Select Disposed Asset(s) : </td>
+					<td class="leftcol"><%=t('equery.asset.yearly_report')%> : </td>
 					<td>
 						<% 0.upto (@disposals_disposed.count-1) do |no| %>
 							<%= check_box_tag "disposal_for_reports[#{@disposals_disposed[no].id}]", true, @disposals_disposed[no].id %>
@@ -292,42 +292,42 @@
 						<% end %>
 					</td>
 				</tr>
-				<tr><td colspan=2><%= link_to 'Back to Asset Disposal', {:controller => 'asset_disposals', :action => 'index'} %></td></tr>
+				<tr><td colspan=2><%= link_to (t 'equery.asset.back_to_disposal'), {:controller => 'asset_disposals', :action => 'index'} %></td></tr>
 			<% elsif @searchtype=='12' || @searchtype==12 %><!--KEW-PA 18-Sijil Penyaksian Pemusnahan Aset-->
 				<%= hidden_field_tag :method, 12 %>
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
 				<%#= f.hidden_field :disposal, :value => 1 %>	
 				<%#= f.hidden_field :disposaltype, :value => 'discard' %><!--to compare must not blank-->
-				<tr><td colspan=2>Certificate of Witness for Asset Destruction (Discard)</td></tr>
+				<tr><td colspan=2><%=t('equery.asset.certificate_witness')%></td></tr>
 				<tr>
-					<td class="leftcol">Discard Option : </td>
-					<td><%= f.select :discardoption, ["bury", "burn", "throw", "sink"], :include_blank => "Select discard option"  %></td>
+					<td class="leftcol"><%=t('equery.asset.discard_option')%> : </td>
+					<td><%= f.select :discardoption, options_for_select([[(t 'disposal.bury'),"bury"],[(t 'disposal.burn') ,"burn"],[(t 'disposal.throw') , "throw"],[(t 'disposal.sink') ,"sink"]]), :include_blank => (t 'select') %></td>
 				</tr>
 			<% elsif @searchtype=='13' || @searchtype==13 %><!--KEW-PA 19-Pelupusan Aset-->
 				<%= hidden_field_tag :method, 13 %>
 				<%= f.hidden_field :disposalcert, :value => 1 %>
-				<tr><td colspan=2><strong>Search</strong> Certificate of Asset Disposal</td></tr>
+				<tr><td colspan=2><strong><%=t('search')%></strong> <%=t('equery.asset.certificate_disposal')%></td></tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.assetcode')%> : </td>
 					<td><%= f.text_field :assetcode %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.name')%> / <%=t('asset.assettype')%> / Model : </td>
 					<td><%= f.text_field :name %></td>
 				</tr>
 				<tr>
-					<td colspan=2><font size=-2>Leave all fields 'blank' to view ALL Certificate of Asset Disposal</font></td>
+					<td colspan=2><font size=-2><%=t('equery.asset.leave_blank_disposal_certificate')%>l</font></td>
 				</tr>
 			<% elsif @searchtype=='14' || @searchtype==14 %><!--KEW-PA 20-Laporan Tahunan Pelupusan Aset-->
 				<!--disposalreport field is used to saved asset_disposal_ids of selected disposal record(s) for reporting-->
 				<%= hidden_field_tag :method, 14 %>
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
 				<%= f.hidden_field :disposal, :value => 1 %>
-				<tr><td colspan=2>Disposed Asset For Yearly Report</td></tr>
+				<tr><td colspan=2><%=t('equery.asset.disposed_asset_yearly_report')%></td></tr>
 				<tr>
 					<% @disposals_disposed = AssetDisposal.find(:all, :conditions=>['is_disposed is TRUE and disposed_on is not null'])%><!--for checking:AssetDisposal.all-->
 
-					<td class="leftcol">Select Disposed Asset(s) : </td>
+					<td class="leftcol"><%=t('equery.asset.yearly_report')%>  : </td>
 					<td>
 						<% 0.upto (@disposals_disposed.count-1) do |no| %>
 							<%= check_box_tag "disposal_for_yearlyreports[#{@disposals_disposed[no].id}]", true, @disposals_disposed[no].id %>
@@ -336,43 +336,43 @@
 						<% end %>
 					</td>
 				</tr>
-				<tr><td colspan=2><%= link_to 'Back to Asset Disposal', {:controller => 'asset_disposals', :action => 'index'} %></td></tr>
+				<tr><td colspan=2><%= link_to (t 'equery.asset.back_to_disposal'), {:controller => 'asset_disposals', :action => 'index'} %></td></tr>
 			<% elsif @searchtype=='15' || @searchtype==15 %><!--KEW-PA 28-Laporan Awal Kehilangan Aset Alih Kerajaan-->
 				<%= hidden_field_tag :method, 15 %>
 				<%= f.hidden_field :loss_start, :value => 1 %><!--losses-->
-				<tr><td colspan=2><b>Search</b> Preliminary Report for Asset Losses by</td></tr>
+				<tr><td colspan=2><b><%=t('search')%></b> <%=t('equery.asset.preliminary_asset_losses')%></td></tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.assetcode')%> : </td>
 					<td><%= f.text_field :assetcode %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.name')%> / <%=t('asset.assettype')%> / Model : </td>
 					<td><%= f.text_field :name %></td>
 				</tr>	
 				<tr>
-					<td colspan=2><font size=-2>Leave all fields 'blank' to view ALL Preliminary Report for Asset Losses</font></td>
+					<td colspan=2><font size=-2><%=t('equery.asset.leave_blank_preliminary_losses')%></font></td>
 				</tr>
 			<% elsif @searchtype=='16' || @searchtype==16 %><!--KEW-PA 30-Laporan Akhir Kehilangan Aset Alih Kerajaant-->
 				<%= hidden_field_tag :method, 16 %>
 				<%= f.hidden_field :loss_end, :value => 1 %><!--losses-->
-				<tr><td colspan=2><strong>Search</strong> Final Report for Asset Loses by</td></tr>
+				<tr><td colspan=2><strong><%=t('search')%></strong> <%=t('equery.asset.final_asset_losses')%></td></tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asset Code : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.assetcode')%> : </td>
 					<td><%= f.text_field :assetcode %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name / Type / Model : </td>
+					<td class="leftcol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t('asset.name')%> / <%=t('asset.assettype')%> / Model : </td>
 					<td><%= f.text_field :name %></td>
 				</tr>
 				<tr>
-					<td colspan=2><font size=-2>Leave all fields 'blank' to view ALL Final Refor for Asset Losses</font></td>
+					<td colspan=2><font size=-2><%=t('equery.asset.leave_blank_final_losses')%></font></td>
 				</tr>
 			<% elsif @searchtype=='17' || @searchtype==17 %><!--KEW-PA 31-SIJIL HAPUS KIRA ASET ALIH KERAJAAN-->
 				<%= hidden_field_tag :method, 17 %>
 				<%= f.hidden_field :assetcode %><%= f.hidden_field :name %>
-				<tr><td colspan=2>Asset Write Off Certificate</td></tr>
+				<tr><td colspan=2><%=t('equery.asset.writeoff_certificate')%></td></tr>
 				<tr>
-					<td class="leftcol">Treasury Reference No : </td>
+					<td class="leftcol"><%=t('equery.asset.treasury_no')%> : </td>
 					<td>
 						<%= f.collection_select :loss_cert, Document.find(:all, :conditions => ['id IN(?)',AssetLoss.all.map(&:document_id)]), :id, :doc_details %>
 					</td>
@@ -380,7 +380,7 @@
 			<% end %>
 			
 		</table>
-		<p><%= f.submit 'Search' %></p>
+		<p><%= f.submit (t 'search') %></p>
 	<% end %>
 
 </div>

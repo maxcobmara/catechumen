@@ -1,22 +1,29 @@
 <%= stylesheet_link_tag 'report', :media => "print" %> 
 
-<form action="#"><!--to print(with header in subsequent pages), use modzila-->
+<!--to print(with header in subsequent pages), use modzila-->
+<form action="#">
 	<script>
 	document.write("<input type='button' " +
 	"onClick='window.print()' " +
 	"class='printbutton' " +
-	"value='Print This Page'/>");
+	"value='<%=escape_javascript(t 'print')%>'/>");
 	</script>
+<form>
 	<!--
 	<fieldset width=10px >	
 	</fieldset>-->
 	</form>
-<%= link_to (t 'report.download'), 	{:controller => 'positions', 	:action => 'maklumat_perjawatan_LA', :ppp =>'2'} %>
-<div id="title" width=21cm>	
+
+<div id="title" width=21cm>
+<div id="hideLink">
+<%= link_to (t 'report.download'), 	{:controller => 'positions', :action => 'maklumat_perjawatan_LA', :ppp =>'2'} %><br>
+<%= link_to (t 'positions.back_to_positions'), positions_path %><br>
+<%= link_to (t 'positions.back_to_staffs'), staffs_path %>
+</div><BR>
 <H2>LAMPIRAN A</H2> 
 <H3>MAKLUMAT PERJAWATAN DI KOLEJ-KOLEJ LATIHAN</H3>
 <H3>KEMENTERIAN KESIHATAN MALAYSIA</H3>
-<H3>SEHINGGA <%= Date.today.strftime('%d-%m-%Y') %></H3>
+<H3>SEHINGGA <%#= Date.today.strftime('%d-%m-%Y') %><%=l((Position.find(:all, :order =>"updated_at DESC", :select=>:updated_at).map(&:updated_at).first), :format =>'%d-%m-%Y')%></H3>
 <BR><p>KOLEJ: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU </p><BR>
 </div>
 <div id="tprintreport">
@@ -86,9 +93,9 @@
 				<% positions_by_grade_wo_butiran=[] %> 
 				<% positions_by_grade.each do |position|%>
 					<% unless position.postinfo_id.blank? %>
-						<% positions_by_grade_w_butiran<<position %> 
+						<% positions_by_grade_w_butiran<< position %> 
 					<% else %>
-						<% positions_by_grade_wo_butiran<<position %> 
+						<% positions_by_grade_wo_butiran<< position %> 
 					<% end %>
 				<% end %>
 			
@@ -197,9 +204,9 @@
 				<% positions_by_grade_wo_butiran=[] %> 
 				<% positions_by_grade.each do |position|%>
 					<% unless position.postinfo_id.blank? %>
-						<% positions_by_grade_w_butiran<<position %> 
+						<% positions_by_grade_w_butiran<< position %> 
 					<% else %>
-						<% positions_by_grade_wo_butiran<<position %> 
+						<% positions_by_grade_wo_butiran<< position %> 
 					<% end %>
 				<% end %>
 			
@@ -328,7 +335,7 @@
 	
 	</table>
 <br>
-<font size=-2><%= t 'report.final_date' %>: <%=Date.today.strftime('%d-%b-%Y')%></font>
+<font size=-2><%= t 'report.final_date' %>: <%#=Date.today.strftime('%d-%b-%Y')%><%=l((Position.find(:all, :order =>"updated_at DESC", :select=>:updated_at).map(&:updated_at).first), :format =>'%d-%b-%Y')%></font>
 
 </div><!--
 </fieldset>

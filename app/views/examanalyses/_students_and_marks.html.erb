@@ -57,17 +57,17 @@
 	<%#================================must work for both:complete exampaper & dummy exampaper==============================================%>
 	
 	<!--Existing marks(for how many students) : <%# @exammark_exist_for_currexam > 0 %> -->
-	Total students : <%= @exammark_exist_for_currexam = Exammark.find(:all, :conditions => ['exam_id IN (?)', @exam_id]).count %>
+	<%=t('examanalysis.total_students')%> : <%= @exammark_exist_for_currexam = Exammark.find(:all, :conditions => ['exam_id IN (?)', @exam_id]).count %>
 	
 	<!--Start-Viewing part works for both edit & reselection of subject during edit-->
 		
 	<% unless @ifexist1 || @ifexist2 %>
 
 		<% if @questionscount == 0 %>
-			No questions available in exam paper.
+			<%=t('examanalysis.no_question_paper')%>
 		<% else %>
 			<% if @exammark_exist_for_currexam == 0 %>
-				No marks available for analysis.
+				<%=t('examanalysis.no_marks_available')%>
 			<% else %>
 			
 			<%#************************************************************************************%>
@@ -75,9 +75,9 @@
 			<br>
 			<table border=1 cellspacing=0 cellpadding=1>
 				<tr>
-					<th rowspan=2>Name</th>
-					<th rowspan=2>Matric No</th>
-					<th rowspan=2>MyKad No</th>
+					<th rowspan=2><%=t('student.name')%></th>
+					<th rowspan=2><%=t('student.matrixno')%></th>
+					<th rowspan=2><%=t('student.icno')%></th>
 					<th rowspan=2>CA + <br>MSE</th>
 					<th rowspan=2>MCQ</th>
 					
@@ -99,7 +99,7 @@
 							<th colspan='<%=@examtemplates.osceq[0].quantity%>'>OSCII</th>
 						<% end %>
 						
-						<% if @examtemplates.map(&:questiontype).include?("OCSE") %> 
+						<% if @examtemplates.map(&:questiontype).include?("OSCE") %> 
 							<th colspan='<%=@examtemplates.osceq[0].quantity%>'>OSCE</th>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("OSPE") %> 
@@ -147,9 +147,9 @@
 						<!--if complete exam paper-->
 					<% end %>
 					
-					<th rowspan=2>Final Exam</th>
-					<th rowspan=2>Total Marks</th>
-					<th rowspan=2>Grade</th>
+					<th rowspan=2><%=t('grade.final_exam')%></th>
+					<th rowspan=2><%=t('examanalysis.total_marks')%></th>
+					<th rowspan=2><%=t('examanalysis.grade')%></th>
 					<th rowspan=2>NG</th>
 				</tr>
 				<tr>
@@ -157,78 +157,78 @@
 						<!--if exam template-->
 						<% if @examtemplates.map(&:questiontype).include?("MEQ")%>
 							<% 1.upto(@examtemplates.meqq[0].quantity) do |count| %>
-								<th>Q<%=count%></th>
+								<th><%=t('examanalysis.question')%><%=count%></th>
 							<% end %>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("SEQ") %>
 							<% 1.upto(@examtemplates.seqq[0].quantity) do |count| %>
-								<th>Q<%=count%></th>
+								<th><%=t('examanalysis.question')%><%=count%></th>
 							<% end %>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("ACQ") %> 
 							<% 1.upto(@examtemplates.acqq[0].quantity) do |count| %>
-								<th>Q<%=count%></th>
+								<th><%=t('examanalysis.question')%><%=count%></th>
 							<% end %>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("OSCI") %> 
 							<% 1.upto(@examtemplates.osci2q[0].quantity) do |count| %>
-								<th>Q<%=count%></th>
+								<th><%=t('examanalysis.question')%><%=count%></th>
 							<% end %>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("OSCII") %> 
 							<% 1.upto(@examtemplates.osci3q[0].quantity) do |count| %>
-								<th>Q<%=count%></th>
+								<th><%=t('examanalysis.question')%><%=count%></th>
 							<% end %>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("OSCE") %> 
 							<% 1.upto(@examtemplates.osceq[0].quantity) do |count| %>
-								<th>Q<%=count%></th>
+								<th><%=t('examanalysis.question')%><%=count%></th>
 							<% end %>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("OSPE") %> 
 							<% 1.upto(@examtemplates.ospeq[0].quantity) do |count| %>
-								<th>Q<%=count%></th>
+								<th><%=t('examanalysis.question')%><%=count%></th>
 							<% end %>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("VIVA") %> 
 							<% 1.upto(@examtemplates.vivaq[0].quantity) do |count| %>
-								<th>Q<%=count%></th>
+								<th><%=t('examanalysis.question')%><%=count%></th>
 							<% end %>
 						<% end %>
 						<% if @examtemplates.map(&:questiontype).include?("TRUEFALSE") %> 
 							<% 1.upto(@examtemplates.truefalseq[0].quantity) do |count| %>
-								<th>Q<%=count%></th>
+								<th><%=t('examanalysis.question')%><%=count%></th>
 							<% end %>
 						<% end %>
 						<!--if exam template-->					
 					<% else %>	
 						<!--if complete exam paper-->
 						<% 1.upto(@examquestions.meqq.count) do |count| %>
-							<th>Q<%=count%></th>
+							<th><%=t('examanalysis.question')%><%=count%></th>
 						<% end %>
 						<% 1.upto(@examquestions.seqq.count) do |count| %>
-							<th>Q<%=count%></th>
+							<th><%=t('examanalysis.question')%><%=count%></th>
 						<% end %>
 						<% 1.upto(@examquestions.acqq.count) do |count| %>
-							<th>Q<%=count%></th>
+							<th><%=t('examanalysis.question')%><%=count%></th>
 						<% end %>
 						<% 1.upto(@examquestions.osci2q.count) do |count| %>
-							<th>Q<%=count%></th>
+							<th><%=t('examanalysis.question')%><%=count%></th>
 						<% end %>
 						<% 1.upto(@examquestions.osci3q.count) do |count| %>
-							<th>Q<%=count%></th>
+							<th><%=t('examanalysis.question')%><%=count%></th>
 						<% end %>
 						<% 1.upto(@examquestions.osceq.count) do |count| %>
-							<th>Q<%=count%></th>
+							<th><%=t('examanalysis.question')%><%=count%></th>
 						<% end %>
 						<% 1.upto(@examquestions.ospeq.count) do |count| %>
-							<th>Q<%=count%></th>
+							<th><%=t('examanalysis.question')%><%=count%></th>
 						<% end %>
 						<% 1.upto(@examquestions.vivaq.count) do |count| %>
-							<th>Q<%=count%></th>
+							<th><%=t('examanalysis.question')%><%=count%></th>
 						<% end %>
 						<% 1.upto(@examquestions.truefalseq.count) do |count| %>
-							<th>Q<%=count%></th>
+							<th><%=t('examanalysis.question')%><%=count%></th>
 						<% end %>
 						<!--if complete exam paper-->
 					<% end %>
@@ -245,7 +245,7 @@
 					<td width=25%><%= student.name %></td>
 					<td><%= student.matrixno %></td>
 					<td><%= student.icno %></td>
-					<td><%= number_with_precision(@student_ca_mse[index],:precision => 2) %></td>
+					<td><%= @student_ca_mse[index].nil? ? "" : sprintf('%.2f',@student_ca_mse[index]) %></td>
 					<% @arrayfirst = [] %>
 					<% @arrayfirst2 = [] %>
 					<% @arrayfirst3 = [] %>
@@ -411,7 +411,7 @@
 									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty%> 
 								<% end %>
 							<% else %><!--if complete exam paper-->
-								<% if @ospe_qty > 0 %>
+								<% if @ospeq_qty > 0 %>
 									<% @examquestions2 = @examquestions.ospe %>
 									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty%> 
 								<% end %>
@@ -1894,5 +1894,5 @@
 	<!--End-Viewing part works for both edit & reselection of subject during edit-->
 	<%#***********************************************************************************************************************************************%>
 <% else %>
-	Please select a subject.
+	<%=t('evaluate_course.select_subject')%>
 <% end %>

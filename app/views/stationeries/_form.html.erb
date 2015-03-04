@@ -36,7 +36,7 @@
 		<% f.fields_for :stationery_adds do |builder| %><%# @index+=1 %>
 			<%= render 'stationery_add_fields', :f => builder, :index=>@index+=1 %><%# count+=1 %>
 		<% end %>
-		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :stationery_adds %> - <%= t('addmore') %> </p>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => (t 'addmore')), f, :stationery_adds %> - <%= t('addmore') %> </p>
 	</div>
 	
 <!--usesupply Details-->		
@@ -58,39 +58,19 @@
 </div>
 
 <script type="text/javascript">
-	//$j(document).ready(function(){
-		//	//show submit date
-		//	$j(".g1").keyup(function() {  
-			//  var e1g1q1 = $j("#stationery_maxquantity").val();
-			//  //var e1g1q2 = $j("#stationery_minquantity").val();
-			
-				
-			//	var ansP = document.getElementById("stationery_minquantity");
-			//	ansP.value = (e1g1q1*1)+10 //+e1g1q2 
-
-		//	});
-
-//	});
-	
-	$j(document).ready(function(){
-			//show submit date
-			$j(".g1").keyup(function() {  //for solution of retrieving UNIQUE id of fields for EACH item, refer skeleton (quotation project)	
-				//zero
-				var e1g1q1 = $j("#stationery_addsuppliers_attributes_0_quantity").val();
-				var e1g1q2 = $j("#stationery_addsuppliers_attributes_0_unitcost").val(); 
-
-				var ansP = document.getElementById("stationery_addsuppliers_attributes_0_total");
-				ansP.value = (e1g1q1*1)*(e1g1q2*1)
-				
-				//first
-				var qty = $j("#stationery_addsuppliers_attributes_1_quantity").val();
-				var unitcost = $j("#stationery_addsuppliers_attributes_1_unitcost").val(); 
-
-				var ansP1 = document.getElementById("stationery_addsuppliers_attributes_1_total");
-				ansP1.value = (qty*1)*(unitcost*1)
-				
-
-			});
-
-	});
+  
+  //required for first newly added (FIRST item only...) to works?
+  $j(document).ready(function(){
+    
+    //alert("hmmm?");
+    var theval1 = "<%=escape_javascript(@object_index_id) %>";
+      
+    var qty1 = $j("#stationery_stationery_adds_attributes_"+theval1+"_quantity").val();
+    var unitcost1 = $j("#stationery_stationery_adds_attributes_"+theval1+"_unitcost").val(); 
+    
+    var ansP1 = document.getElementById("stationery_stationery_adds_attributes_"+theval1+"_total");
+    ansP1.value = (unitcost1*1)*(qty1*1);
+    
+  });
+  
 </script>

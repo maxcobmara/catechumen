@@ -1,12 +1,12 @@
 <div>
-	<H3>PERSONALIZE TIMETABLE SEARCH :</h3>
+	<H3><%=t('equery.personalize_timetable.search').upcase %> :</h3>
 		
-		<%= link_to "Back", :controller=>'personalizetimetablesearches', :action => 'new', :searchpersonalizetimetabletype => 1 %><br><br>
+		<%= link_to (t 'back'), :controller=>'personalizetimetablesearches', :action => 'new', :searchpersonalizetimetabletype => 1 %><br><br>
 		
 		<!--additional heading-->
 		<% if @personalizetimetablesearch.lecturer && @personalizetimetablesearch.lecturer.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Lecturer : <b><%= Staff.find(@personalizetimetablesearch.lecturer).name %></b><br><br>
+				<%=t('equery.personalize_timetable.search_by_lecturer')%> : <b><%= Staff.find(@personalizetimetablesearch.lecturer).name %></b><br><br>
 			</span>
 		<% end %>
 
@@ -16,7 +16,7 @@
 		<% end %>
 		<% @personalize = @all_combine.group_by{|t|t.startdate} %>
 		
-		Total of Personalize Timetable : <%= @personalize.count %><br><br>
+		<%=t('equery.personalize_timetable.total_personalize_timetable')%> : <%= @personalize.count %><br><br>
 		
 		<!--backup--><!--
 		<%# @personalize.each do |startdate,personalize_timetables| %>
@@ -40,7 +40,7 @@
 			<% bb = 0 %>
 			<tr>
 				<th colspan=6 align="center" style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">
-					Start Date : <%=startdate.strftime("%d %b %Y")%>
+					<%=t('equery.personalize_timetable.start_date')%> : <%=l(startdate, :format =>"%d %b %Y")%>
 				</th>
 			</tr>
 			<% personalize_timetables.each do |personal_timetable| %>
@@ -56,16 +56,16 @@
 								<th colspan=4><%=Staff.find(lecturer).name.upcase%> - <%=personal_timetable.main_details_for_weekly_timetable%></th>
 								<th>
 									<% if personal_timetable.hod_approved == true %>
-										<%= link_to "View Personalize Timetable", :controller=>'weeklytimetables', :action => 'personalize_timetable', :locals=>{:id => startdate,:lecturer_id=>lecturer } %>
+										<%= link_to (t 'equery.personalize_timetable.view_timetable'), :controller=>'weeklytimetables', :action => 'personalize_timetable', :locals=>{:id => startdate,:lecturer_id=>lecturer } %>
 									<% else %>
 										<span style="color:red;">
 										<% if personal_timetable.hod_rejected == true %>
-											Rejected
+											<%=t('equery.personalize_timetable.rejected')%>
 										<% else %>
 											<% if personal_timetable.is_submitted == true %>
-												Submitted
+												<%=t('equery.personalize_timetable.submitted')%>
 											<% else %>
-												Not submission
+												<%=t('equery.personalize_timetable.not_submit')%>
 											<% end %>
 										<% end %>
 										</span>
@@ -75,10 +75,10 @@
 							<tr>
 								<td>&nbsp;</td>
 								<th>No</th>
-								<th>Date Day</th>
-								<th>Time</th>
-								<th>Topic</th>
-								<th>Location</th>
+								<th><%=t('equery.personalize_timetable.date_day')%></th>
+								<th><%=t('equery.personalize_timetable.time')%></th>
+								<th><%=t('equery.personalize_timetable.topic')%></th>
+								<th><%=t('equery.personalize_timetable.location')%></th>
 							</tr>
 							<% timetable.sort_by{|t|t.get_date_day_of_schedule}.each_with_index do |details, no| %>
 								<tr>
@@ -87,7 +87,7 @@
 									<td><%=details.get_date_day_of_schedule%></td>
 									<td><%=details.get_time_slot%></td>
 									<td><%=details.subject_topic %></td>
-									<td><%=details.weeklytimetable_location.name%></td>
+									<td><%#=details.weeklytimetable_location.try(:name)%><%=details.location_desc%></td>
 								</tr>
 							<% end %>
 						<% end %>

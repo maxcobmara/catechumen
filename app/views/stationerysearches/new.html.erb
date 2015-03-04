@@ -1,0 +1,76 @@
+<div class="tform">
+	<H2><%=t('equery.asset.search')%> : <%=t('supplier.title')%></H2>
+
+	<BR>
+	<div id="report_list">
+		<% received_stocks = StationeryAdd.find(:first, :conditions => ['received is not null'], :select => :received, :order => "received ASC")%>
+		<% if received_stocks!=nil %>
+			<% startyear=received_stocks.received.year%>
+			<% currentyear=StationeryAdd.find(:first, :conditions => ['received is not null'], :select => :received, :order => "received DESC").received.year%>
+			<% duration = currentyear-startyear%>
+			<table>
+				<tr>
+					<td><%=t('equery.stationery.report')%></td>
+					<td>
+					<% 0.upto(duration) do |count|%>
+						<% ayear=startyear+count%>
+						<a href="http://<%= request.host  %>:3003/asset/stationeries/kewps13.pdf?locale=ms_MY&yyear=<%=ayear.to_s%>"><%=ayear%></a>
+						<% if count < duration %>|<% end %>
+					<% end %>
+					</td>
+				</tr>
+		<% end %>
+	</div>
+	<div id="data_search">
+		
+		<% form_for @stationerysearch do |f| %>
+			  <%= f.error_messages %>
+			<table width=70% >
+				<tr>
+					<td class="leftcol"> <%= (t 'stationery.code')+" / "+(t 'supplier.category')%> :</td>
+					<td><%= f.text_field :product, :placeholder => (t 'stationery.code')+", "+(t 'supplier.category') %></td>
+				</tr>
+				<!--<tr><td align="center"><b><%=t('and').upcase%></b></td><td>&nbsp;</td></tr>-->
+				<tr><td colspan=2><hr></td></tr>
+				<tr>
+					<td class="leftcol"> <font color=red>*</font><%= (t 'supplier.supplier_id')+" / "+(t 'supplier.lpono')%>:</td>
+					<td><%= f.text_field :document, :placeholder => (t 'supplier.supplier_id')+", "+(t 'supplier.lpono') %></td>
+				</tr>
+				<tr>
+					<td class="leftcol"> <font color=red>*</font><%=t('supplier.received')%>:</td>
+					<td>
+						<%= date_select :received, params[:received], :include_blank => :true %> - 
+						<%= date_select :received2, params[:received2], :include_blank => :true %>
+					</td>
+				</tr>
+				<tr>
+					<td class="leftcol"> <font color=red>*</font><%= (t 'supplier.issuedby') %>:</td>
+					<td><%#= f.text_field :issuedby, :placeholder =>  (t 'supplier.issuedby') %>
+						<% @issuer=StationeryUse.find(:all, :conditions => ['issuedby is not null']).map(&:issuedby)%>
+						<%=f.collection_select :issuedby, Staff.find(:all, :conditions => ['id IN(?)', @issuer], :order => "name ASC"), :id, :staff_name_with_position, :include_blank => (t 'select') %>
+					</td>
+				</tr>
+				
+				<tr>
+					<td class="leftcol"> <font color=red>*</font><%= (t 'supplier.receivedby') %>:</td>
+					<td><%#= f.text_field :receivedby, :placeholder => (t 'supplier.receivedby') %>
+						<% @receiver=StationeryUse.find(:all, :conditions => ['receivedby is not null']).map(&:receivedby)%>
+						<%=f.collection_select :receivedby, Staff.find(:all, :conditions => ['id IN(?)', @receiver], :order => "name ASC"), :id, :staff_name_with_position, :include_blank => (t 'select') %>
+					</td>
+				</tr>
+				<tr>
+					<td class="leftcol"> <font color=red>*</font><%=t('supplier.issuedate')%>:</td>
+					<td>
+						<%= date_select :issuedate, params[:issuedate], :include_blank => :true %> - 
+						<%= date_select :issuedate2, params[:issuedate2], :include_blank => :true %>
+					</td>
+				</tr>
+				<tr><td colspan=2><font size=-2>
+					<%=t('equery.stationery.leaves_all_blank_all_records')%><br>
+					<%=t('equery.stationery.leaves_fields_blank_all_corresponding')%><font color=red>*</font><%=t('equery.stationery.leaves_fields_blank_all_corresponding2')%>
+				</font></td></tr>
+			</table>
+			<p><%= f.submit (t 'search') %></p>
+		<% end %>
+	</div>		
+</div>

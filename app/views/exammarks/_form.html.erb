@@ -48,28 +48,28 @@
 
 
 <div class="tform">
-<H2>Examination Mark Details</H2>
+<H2><%=t('exammark.details')%></H2>
 
 	<table width=100%>
 		<tr>
-			<td class="leftcol"><label>Examination Paper</label></td>
+			<td class="leftcol"><label><%=t('exam.exampaper')%></label></td>
 			<td>
 				<%= f.collection_select :exam_id, @exam_list, :id, :exam_name_subject_date, 
-										{:include_blank=>'Select Examination Paper'},
+										{:include_blank=>(t 'select')},
 					 					:onchange => remote_function(:update => "exammark_marks_form", :url => {:action=>'view_marks_form'}, 
-										:with => "'examid='+$('"+"exammark_exam_id"+"').value ")%><br><span style="font-size:11px;"> * Single entry of examination marks only allowed for complete set of exam paper.</span>
+										:with => "'examid='+$('"+"exammark_exam_id"+"').value ")%><br><span style="font-size:11px;"> * <%=t('exammark.single_entry_allowed')%></span>
 			</td>
 				<%#= f.collection_select :subject_id, Programme.find(:all, :conditions => ['ancestry_depth =?', 2 ]), :id, :subject_list, 
-										{:include_blank=>'Select a subject', :selected => @exam.subject_id },
+										{:include_blank=>(t 'select'), :selected => @exam.subject_id },
 										:onchange => remote_function(:update => "exam_questions_list", :url => {:action=>'view_questions'}, 
 										:with => "'subject='+$('"+"exam_subject_id"+"').value + '&exam_id='+'#{@exam.id}' ") %>
 		</tr>
 		<tr>
-			<td class="leftcol"><%= f.label :student_id %></td>
-			<td><%= f.collection_select :student_id, @student_list, :id, :matrix_name, :include_blank=>'Select student', :selected=>@exammark.student_id %></td>
+			<td class="leftcol"><%= f.label (t 'exammark.student_id')%></td>
+			<td><%= f.collection_select :student_id, @student_list, :id, :matrix_name, :include_blank=>(t 'select'), :selected=>@exammark.student_id %></td>
 		</tr>
 		<tr>
-			<td class="leftcol">Examquestions</td>
+			<td class="leftcol"><%=t('examquestion.question.')%></td>
 			<td>
 				<span id="exammark_marks_form">
 					<% if @exammark.id.nil? || @exammark.id.blank? %>

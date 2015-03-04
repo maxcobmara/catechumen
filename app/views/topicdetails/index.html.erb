@@ -3,13 +3,17 @@
 	<div class="box-head">
 		<h2 class="left"><%=t('topicdetail.title')%></h2>
 		<div class="right">
-	  </div>
+			<% form_tag topicdetails_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'topicdetail.subject_topic') %>
+			<%= submit_tag I18n.t('search'), :headline => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
 
 <div class="toolbar">
 	<table width=100%><tr>
-		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Topic Details') + t('topicdetail.new'), new_topicdetail_path %></p></td>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Topic Details') + t('topicdetail.new'), :controller => "topicdetails", :action => "new", :job_type => "newrecord", :rec_select => "0" %></p></td>
 	</tr></table>
 </div>
 
@@ -66,18 +70,18 @@
 		<% end %>
 		</td>
 		<td><%=h topicdetail.version_no %></td>
-		<td><%=h topicdetail.duration.try(:strftime, "%HH %MMin") %></td>
-		<td><%=h topicdetail.theory.try(:strftime, "%HH %MMin") %></td>
-		<td><%=h topicdetail.tutorial.try(:strftime, "%HH%MMin") %></td>
-		<td><%=h topicdetail.practical.try(:strftime, "%HH %MMin") %></td>
+		<td><%=h topicdetail.duration.try(:strftime, "%H") %> <%=t('time.hours')%> <%=h topicdetail.duration.try(:strftime, "%M") %> <%=t('time.minutes')%></td>
+		<td><%=h topicdetail.theory.try(:strftime, "%H") %> <%=t('time.hours')%> <%=h topicdetail.theory.try(:strftime, "%M") %>  <%=t('time.minutes')%> </td>
+		<td><%=h topicdetail.tutorial.try(:strftime, "%H") %> <%=t('time.hours')%> <%=h topicdetail.tutorial.try(:strftime, "%M") %> <%=t('time.minutes')%> </td>
+		<td><%=h topicdetail.practical.try(:strftime, "%H") %> <%=t('time.hours')%> <%=h topicdetail.practical.try(:strftime, "%M") %> <%=t('time.minutes')%> </td>
 		<td><%=h topicdetail.topic_creator.try(:name) %></td>
-		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => topicdetail %></td>
+		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => topicdetail %></td>
 		<td width=10px>
 			  <% unless topicdetail.topic_code.blank? %>
-				<%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => topicdetail %>
+				<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => topicdetail %>
 			  <%end%>
 		</td>
-		<td width=10px ><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), topicdetail, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td width=10px ><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), topicdetail, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 	</tr>
 	
 	

@@ -1,16 +1,34 @@
 <div class="tform">
+	<H2><%=t('claim.title')%></H2>
 	<fieldset>
-		<legend class='togvis'><%= t 'claim.travel_claim' %></legend>
+		<legend class='togvis'><%= t 'claim.details2' %></legend>
 			<table width=90%>
 					<tr>
 						<td class="leftcol"><label for="claimsmonth"><%= t 'claim.claimsmonth' %></label></td>
-						<td><%=h @travel_claim.claim_month.strftime("%B %Y") %></td>
+						<td><%=h l(@travel_claim.claim_month, :format=>"%B %Y") %></td>
 					</tr>
 
 					<tr>
 						<td class="leftcol"><label for="staff_id"><%= t 'claim.staff_name' %></label></td>
 						<td><%=h @travel_claim.staff.name %></td>
 					</tr>
+					<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
+						<tr>
+							<td class="leftcol"><label for="transport_class"><%= t('staff.transportclass_id')%></label></td>
+							<td>
+							      <% if @travel_claim.staff.current_salary.nil? %>
+									<font color="red"><%=t('claim.insert_current_salary')%></font>
+							      <% else %>
+									<% if @travel_claim.staff.vehicles.count > 0%>
+										<%=@travel_claim.travel_requests.first.transport_class%>&nbsp;&nbsp;(<%=@travel_claim.staff.vehicles[0].reg_no %>, <%=@travel_claim.staff.vehicles[0].type_model%>&nbsp;cc)
+									<% else %>
+										  <br><font color="red"><%=t('claim.insert_vehicle')%></font>
+									<% end %>
+							      <% end %>
+							      
+							</td>
+						</tr>
+					<% end %>
 				</table><BR/>
 	</fieldset>
 	
@@ -27,9 +45,11 @@
 				<tr>
 				  <td class="tlight"><%= check_kin {travel_request.document.refno} %></td>
 				  <td colspan=3><%= check_kin {travel_request.document.title} %></td>
-				  <td colspan=2><%= travel_request.depart_at.strftime("%d %b") %> - <%= travel_request.return_at.strftime("%d %b %Y") %></td>
+				  <td colspan=2><%= l(travel_request.depart_at, :format=>"%d %b") %> - <%= l(travel_request.return_at, :format=>"%d %b %Y") %>
+					 <%="("+(travel_request.destination).titleize+")" if travel_request.travel_claim_logs.count==0 %>
+				  </td>
 				</tr>
-				
+				<% if travel_request.travel_claim_logs.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
 				<tr>
 					<th width=10% class="level_2"><%= t 'claim.date' %></th>
 					<th width=9%  class="level_2"><%= t 'claim.depart' %></th>
@@ -38,6 +58,7 @@
 					<th width=10% class="level_2"><%= t 'claim.mileage' %></th>
 					<th width=10% class="level_2"><%= t 'claim.value' %></th>
 				</tr>
+				<% end %>
 				<% for travel_claim_log in TravelClaimLog.find(:all, :conditions => ['travel_request_id =?', travel_request.id ]) %>
 				<tr>
 					<td class="tlight"><%= travel_claim_log.travel_on.strftime('%d %b %Y') %></td>
@@ -58,11 +79,13 @@
 					<td colspan=6 style="height:30px; border-bottom: 2px solid #9AB;">
 				</td>
 				<% end %>
+				<% if travel_request.travel_claim_logs.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
 				<tr>
 				  <td colspan=4 align='right'><b><%= t 'claim.total' %></b></td>
 				  <td class="tright"><b><%= @travel_claim.total_mileage %> <label> km</label></b></td>
 					<td class="tright"><b><%= ringgols(@travel_claim.total_km_money) %></b></td>
 				</tr>
+				<% end %>
 			</table>
 				<BR/>
 	</fieldset>
@@ -122,7 +145,12 @@
 				  <td colspan=4 align='right'><b><%= t 'claim.quick_total' %></b></td>
 				  <td align='right'><b><%= ringgols(@travel_claim.allowas) %></b></td>
 				</tr>
-				
+				<% if (@travel_claim.travel_claim_allowances.map(&:expenditure_type) & [31,32]).count > 0 %>
+				<tr>
+				  <td><b><%= t 'claim.accommodations' %><br><%=t('claim.hotel_lodging')%></b></td>
+				  <td colspan=4><%=simple_format(@travel_claim.accommodations)%></td>
+				</tr>
+				<% end %>
 			</table>
 				<BR/>
 	</fieldset>
@@ -167,11 +195,23 @@
 				</tr>
 				<tr>
 					<td><%= t 'claim.current_total' %></td>
-					<td class="money"><%= ringgols(@travel_claim.total_claims) %></td>
+					<td class="money">
+						<% if @travel_claim.staff.current_salary.nil? %>
+							<font color="red"><%=t('claim.insert_current_salary')%></font>
+						<% else %>
+							<%= ringgols(@travel_claim.total_claims)%>
+						<% end %>
+					</td>
 				</tr>
 				<tr>
 					<td><%= t 'claim.claimable_total' %></td>
-					<td class="money"><%= ringgols(@travel_claim.to_be_paid) %></td>
+					<td class="money">
+						<% if @travel_claim.staff.current_salary.nil? %>
+							<font color="red"><%=t('claim.insert_current_salary')%></font>
+						<% else %>
+							<%=ringgols(@travel_claim.to_be_paid) %>
+						<% end %>
+					</td>
 				</tr>
 				
 			</table>
@@ -184,11 +224,25 @@
 			<table width=85%>
 				<tr>
 					<td><%= t 'claim.submitted' %></td>
-					<td><%=h @travel_claim.is_submitted? ? "Yes" + " on   " + l(@travel_claim.submitted_on).to_s : "No" %></td>
+					<td><%=h @travel_claim.is_submitted? ? (t 'claim.submitted_on') + l(@travel_claim.submitted_on).to_s : (t 'not_submitted') %></td>
+				</tr>
+				<tr>
+					<td><%= t 'claim.finance_check2' %></td>
+					<td>
+						<% if @travel_claim.is_checked? %>
+							<%=h (t 'claim.verified_ok') +" "+ (t 'by') +" "+@travel_claim.checker.try(:name)+" ("+l(@travel_claim.checked_on)+")" %>
+						<% else %>
+							<% if @travel_claim.is_returned? %>
+								<%= t('claim.return_to_staff_for_amendment') %>
+							<% elsif @travel_claim.is_returned == false %>
+								<%=h @travel_claim.my_claim_status.titleize %>
+							<% end %>
+						<% end %>
+					</td>
 				</tr>
 				<tr>
 					<td><%= t 'claim.approved' %></td>
-					<td><%=h @travel_claim.is_approved? ? "Yes" + " on   " + l(@travel_claim.approved_on).to_s : "No" %></td>
+					<td><%=h @travel_claim.is_approved? ? (t 'claim.approved_on') + l(@travel_claim.approved_on).to_s : (t 'not_approved') %></td>
 				</tr>
 				<tr>
 					<td><%= t 'claim.to_approved' %></td>

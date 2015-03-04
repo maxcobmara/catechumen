@@ -3,7 +3,7 @@ class Weeklytimetable < ActiveRecord::Base
   #controller searches, variables, lists, relationship checking
   
   #before_save :set_semester
-  before_save :set_to_nil_where_false
+  before_save :set_to_nil_where_false, :intake_must_match_with_programme
   
   belongs_to :schedule_programme, :class_name => 'Programme',       :foreign_key => 'programme_id'
   belongs_to :schedule_semester,  :class_name => 'Programme',       :foreign_key => 'semester'
@@ -41,16 +41,20 @@ class Weeklytimetable < ActiveRecord::Base
     
   end
   
-  def self.search(search)
-    if search         
-      @weeklytimetables = Weeklytimetable.find(:all,:conditions => ['programme_id=?', search])
+  def self.search(programmeid, search)
+    if programmeid
+      if search!=''
+	@weeklytimetables = Weeklytimetable.find(:all,:conditions => ['programme_id=? and startdate=?', programmeid, search])
+      else 
+        @weeklytimetables = Weeklytimetable.find(:all,:conditions => ['programme_id=?', programmeid])
+      end
     else
       @weeklytimetables = Weeklytimetable.find(:all)
     end
   end
 
   def main_details_for_weekly_timetable
-    "#{schedule_programme.programme_list}"+" Intake : "+"#{schedule_intake.name}" +" - (Week : "+"#{startdate.strftime('%d-%m-%Y')}"+" - "+"#{enddate.strftime('%d-%m-%Y')}"+")" 
+    "#{schedule_programme.programme_list}"+" "+I18n.t('student.intake')+" : "+"#{schedule_intake.name}" +" - ("+I18n.t('time.weeks').titleize+" : "+"#{I18n.l(startdate, :format =>'%d-%m-%Y')}"+" - "+"#{I18n.l(enddate, :format => '%d-%m-%Y')}"+")" 
   end
   
   def hods  
@@ -84,5 +88,16 @@ class Weeklytimetable < ActiveRecord::Base
         errors.add_to_base("Please choose either to approve or reject this weekly timetable")
     end
   end
+  
+  private 
+    def intake_must_match_with_programme
+      valid_intakes = Intake.find(:all, :conditions => ['programme_id=?', programme_id]).map(&:id)
+      if valid_intakes.include?(intake_id)
+        return true
+      else
+        errors.add(:base, I18n.t('weeklytimetable.intake_programme_must_match'))
+        return false
+      end
+    end
   
 end

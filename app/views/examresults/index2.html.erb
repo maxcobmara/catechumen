@@ -2,38 +2,38 @@
 
 <div class="box">
 	<div class="box-head">
-		<h2 class="left">Examination Slip by Programme</h2>
+		<h2 class="left"><%=t('examresult.by_programme')%></h2>
 	</div>
 </div>
 
 <div class="tlist">
 	<table width=90% border="0" cellpadding="0" cellspacing="0">
 	  <tr>
-		<th>Student</th>
+		<th><%=t('examresult.student')%></th>
 		<th>NGK</th>
 		<th>PNGS</th>
     	<th>PNGK</th>
 		<th>Status</th>
-    	<th colspan=3>Control</th>
+    	<th colspan=3><%=t('control')%></th>
   	</tr>
 
 <% @examresults.each do |examresult| %>
 	<% if (examresult.programmestudent.name == @dept_unit) ||(@current_login_roles.include?(2))||@kupk == "yes"%>
 		<tr>
-			<td colspan=7 style="background-color:#EFF1F1;font-weight:bold;">Programme : <%=h examresult.programmestudent.name %>, 
+			<td colspan=7 style="background-color:#EFF1F1;font-weight:bold;"><%=t('examresult.programme_id')%> : <%=h examresult.programmestudent.name %>, 
 				Semester: <%=h examresult.render_semester %>,&nbsp;
-				Exam Date : <%=h examresult.examdts.strftime("%d %b %Y") %> - <%=h examresult.examdte.strftime("%d %b %Y") %>
+				<%=t('examresult.exam_date')%> : <%=h l(examresult.examdts) %> - <%=h l(examresult.examdte) %>
 			</td>
 		</tr>
 		<% examresult.resultlines.sort_by{|x|x.student.name}.each do |resultline| %>
   		<tr>
 			<td><%=h resultline.student.name %></td>
-			<td><%=h number_with_precision(resultline.total,:precision=>2) %></td>
-			<td><%=h number_with_precision(resultline.pngs17, :precision=>2) %></td>
-    		<td><%=h number_with_precision(resultline.pngk, :precision=>2) %></td>
+			<td><%=h resultline.total.nil? ? "" : sprintf('%.2f', resultline.total) %></td>
+			<td><%=h resultline.pngs17.nil? ? "" : sprintf('%.2f', resultline.pngs17) %></td>
+    		<td><%=h resultline.pngk.nil? ? "" : sprintf('%.2f', resultline.pngk) %></td>
     		<td><%=h resultline.remark %></td>
-			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show2', :id => resultline %></td>
-			<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Examslip'), :action => 'examslip', :id => resultline %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show2', :id => resultline %></td>
+			<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => (t 'examresult.examslip')), :action => 'examslip', :id => resultline %></td>
 			<!--
     		<td width=10px><%#= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => resultline %></td>
     		<td width=10px><%#= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), resultline, :confirm => 'Are you sure?', :method => :delete %></td>-->

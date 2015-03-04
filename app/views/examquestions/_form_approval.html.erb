@@ -1,16 +1,16 @@
 <table>
 	<tr>
-		<td class="leftcol"><label for="statusremark"><b>Remarks:</b></label></td>
+		<td class="leftcol"><label for="statusremark"><b><%=t('examquestion.statusremark')%>:</b></label></td>
 		<td><%= f.text_area :statusremark, :size => "50x7" %></td>
 	</tr>
 	<tr>
-		<td class="leftcol"><label for="approver_id"><b>Approver:</b></label></td>
+		<td class="leftcol"><label for="approver_id"><b><%=t('examquestion.approver_id')%>:</b></label></td>
 		<td><%= f.collection_select :approver_id, Staff.find(:all, :order => :name, :conditions => ["id IN (?)", @examquestion.question_approver]), :id, :name, :include_blank => 'Please select approver', :selected => current_login.staff_id  %>
 			<%#= f.collection_select :approver_id, Staff.find(:all, :order => :name, :conditions => ["id IN (?)", @examquestion.question_approver]), :id, :name, :include_blank => true %>
 		<%#= f.collection_select :approver_id, Staff.find(:all, :order => :name), :id, :name, :include_blank => true %></td>
 	</tr>
 	<tr>
-	 	<td class="leftcol"><label for="editdt"><b>Approval Date:</b></label></td>
+	 	<td class="leftcol"><label for="editdt"><b><%=t('examquestion.approvedt')%>:</b></label></td>
 		<td><%= f.date_select :approvedt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year] %></td>
 	</tr>
 </table>

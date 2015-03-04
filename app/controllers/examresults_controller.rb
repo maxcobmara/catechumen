@@ -21,17 +21,29 @@ class ExamresultsController < ApplicationController
     end 
     ###--just added
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @examresults }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @examresults }
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('examresult.examinationresult')}
+        format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+      end
     end
   end
   
   def index2
-    @examresults = Examresult.all
-
+    @position_exist = current_login.staff.position
+    if @position_exist     
+      @examresults = Examresult.all
+    end
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @examresults }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @examresults }
+      else
+	 format.html {redirect_to "/home", :notice =>t('position_required')+t('menu.exam_slip')}
+         format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
@@ -107,7 +119,7 @@ class ExamresultsController < ApplicationController
     @examresult = Examresult.new(params[:examresult])
     respond_to do |format|
       if @examresult.save
-        format.html { redirect_to(@examresult, :notice => 'Examresult was successfully created.') }
+        format.html { redirect_to(@examresult, :notice => t('examresult.title2')+" "+t('created')) }
         format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
       else
         format.html { render :action => "new" }
@@ -122,7 +134,7 @@ class ExamresultsController < ApplicationController
     @examresult = Examresult.find(params[:id])  
     respond_to do |format|
       if @examresult.update_attributes(params[:examresult])
-        format.html { redirect_to(@examresult, :notice => 'Examresult was successfully updated.') }
+        format.html { redirect_to(@examresult, :notice => t('examresult.title2')+" "+t('created')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

@@ -27,55 +27,82 @@ class WeeklytimetableDetail < ActiveRecord::Base
    def get_date_for_lesson_plan
      sdate = Weeklytimetable.find(weeklytimetable_id).startdate
      endate = Weeklytimetable.find(weeklytimetable_id).enddate
-     return (sdate).strftime('%d-%b-%Y') if day2 == 1
-     return (sdate+1).strftime('%d-%b-%Y') if day2 == 2
-     return (sdate+2).strftime('%d-%b-%Y') if day2 == 3
-     return (sdate+3).strftime('%d-%b-%Y') if day2 == 4
-     return (endate).strftime('%d-%b-%Y') if is_friday == true
-      return (sdate+5).strftime('%d-%b-%Y') if day2 == 6
-      return (sdate+6).strftime('%d-%b-%Y') if day2 == 7
+     return I18n.l((sdate), :format => '%d-%b-%Y')  if day2 == 1
+     return I18n.l((sdate+1), :format => '%d-%b-%Y')  if day2 == 2
+     return I18n.l((sdate+2), :format => '%d-%b-%Y')  if day2 == 3
+     return I18n.l((sdate+3), :format => '%d-%b-%Y')  if day2 == 4
+     return I18n.l((sdate+4), :format => '%d-%b-%Y')  if is_friday == true
+      return I18n.l((sdate+5), :format => '%d-%b-%Y')  if day2 == 6
+      return I18n.l((sdate+6), :format => '%d-%b-%Y')  if day2 == 7
    end   
    
    def get_date_day_of_schedule
       sdate = Weeklytimetable.find(weeklytimetable_id).startdate
       endate = Weeklytimetable.find(weeklytimetable_id).enddate
-      return (sdate).strftime('%d-%b-%Y') + " Mon" if day2 == 1
-      return (sdate+1).strftime('%d-%b-%Y') + " Tue" if day2 == 2
-      return (sdate+2).strftime('%d-%b-%Y') + " Wed" if day2 == 3
-      return (sdate+3).strftime('%d-%b-%Y') + " Thu" if day2 == 4
-      return (endate).strftime('%d-%b-%Y') + " Fri" if is_friday == true  
-      return (sdate+5).strftime('%d-%b-%Y') + " Sat" if day2 == 6
-      return (sdate+6).strftime('%d-%b-%Y') + " Sun" if day2 == 7
+      #return (sdate).strftime('%d-%b-%Y') + " Mon" if day2 == 1  t('date.abbr_day_names')
+      return I18n.l((sdate), :format => '%d-%b-%Y') + " "+ I18n.t(:'date.abbr_day_names')[0] if day2 == 1
+      return I18n.l((sdate+1), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[1] if day2 == 2
+      return I18n.l((sdate+2), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[2] if day2 == 3
+      return I18n.l((sdate+3), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[3] if day2 == 4
+      return I18n.l((sdate+4), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[4] if is_friday == true  
+      return I18n.l((sdate+5), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[5] if day2 == 6
+      return I18n.l((sdate+6), :format => '%d-%b-%Y') +" "+ I18n.t(:'date.abbr_day_names')[6] if day2 == 7
    end   
    
    def get_day_of_schedule
       sdate = Weeklytimetable.find(weeklytimetable_id).startdate
       endate = Weeklytimetable.find(weeklytimetable_id).enddate
-      return " Mon" if day2 == 1
-      return " Tue" if day2 == 2
-      return " Wed" if day2 == 3
-      return " Thu" if day2 == 4
-      return " Fri" if is_friday == true  
-      return " Sat" if day2 == 6
-      return " Sun" if day2 == 7
+      return I18n.t(:'date.abbr_day_names')[0] if day2 == 1
+      return I18n.t(:'date.abbr_day_names')[1] if day2 == 2
+      return I18n.t(:'date.abbr_day_names')[2] if day2 == 3
+      return I18n.t(:'date.abbr_day_names')[3] if day2 == 4
+      return I18n.t(:'date.abbr_day_names')[4] if is_friday == true  
+      return I18n.t(:'date.abbr_day_names')[5] if day2 == 6
+      return I18n.t(:'date.abbr_day_names')[6] if day2 == 7
+   end
+   
+   def tperiod_val
+     timeslot = time_slot2 if is_friday == false || is_friday == nil
+     timeslot = time_slot if is_friday == true 
+     itsformat = Weeklytimetable.find(weeklytimetable_id).format1 if is_friday == false || is_friday == nil
+     itsformat = Weeklytimetable.find(weeklytimetable_id).format2 if is_friday == true
+     #"#{TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot]).try(:start_at).try(:strftime,"%H:%M %p")}"
+     return TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot])
+   end
+   
+   def get_start_end_time
+     tperiod = tperiod_val
+     unless tperiod.nil?
+       "#{I18n.l(tperiod.start_at, :format => '%H:%M')} - #{I18n.l(tperiod.end_at, :format => '%H:%M %P')}"
+     else
+     "#{TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot]).try(:start_at).try(:strftime,"%H:%M")} - #{TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot]).try(:end_at).try(:strftime,"%H:%M %P")}"
+     end
    end
    
    def get_start_time
-     timeslot = time_slot2 if is_friday == false || is_friday == nil
-     timeslot = time_slot if is_friday == true 
-     "#{TimetablePeriod.find(timeslot).start_at.strftime("%H:%M %p")}"
+     tperiod = tperiod_val
+     unless tperiod.nil?
+       "#{I18n.l(tperiod.start_at, :format => '%H:%M %P')}"
+     else
+     "#{TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot]).try(:start_at).try(:strftime,"%H:%M %P")}"
+     end
    end   
    
    def get_end_time
-     timeslot = time_slot2 if is_friday == false || is_friday == nil
-     timeslot = time_slot if is_friday == true 
-     "#{TimetablePeriod.find(timeslot).end_at.strftime("%H:%M %p")}"
+    tperiod = tperiod_val
+     unless tperiod.nil?
+       "#{I18n.l(tperiod.end_at, :format => '%H:%M %P')}"
+     else
+     "#{TimetablePeriod.find(:first, :conditions=>['timetable_id=? and sequence=?', itsformat, timeslot]).try(:end_at).try(:strftime,"%H:%M %P")}"
+     end
    end   
    
    def get_time_slot
       timeslot = time_slot2 if is_friday == false || is_friday == nil
       timeslot = time_slot if is_friday == true 
-      stime = "#{TimetablePeriod.find(timeslot).start_at.strftime("%H:%M %p")}"+"-"+"#{TimetablePeriod.find(timeslot).end_at.strftime("%H:%M %p")}"
+      itsformat = Weeklytimetable.find(weeklytimetable_id).format1 if is_friday == false || is_friday == nil
+      itsformat = Weeklytimetable.find(weeklytimetable_id).format2 if is_friday == true
+      stime = get_start_time+"-"+get_end_time
    end
    
    def day_time_slot
@@ -91,7 +118,12 @@ class WeeklytimetableDetail < ActiveRecord::Base
    end
    
    def subject_day_time
-      "#{Programme.find(topic).parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
+     ancestry_topic=Programme.find(topic).ancestry_depth
+     if ancestry_topic==3
+       "#{Programme.find(topic).parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
+     elsif ancestry_topic==4
+       "#{Programme.find(topic).parent.parent.code}"+" | "+"#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
+     end
    end
    
    def subject_topic
@@ -109,25 +141,25 @@ class WeeklytimetableDetail < ActiveRecord::Base
 
    DAY_LIST = [
            #  Displayed       stored in db
-           ["Sunday",     1],
-           ["Monday",    2],
-           ["Tuesday",  3],
-           ["Wednesday",   4]
+           [I18n.t(:'date.day_names')[0],     1],
+           [I18n.t(:'date.day_names')[1],    2],
+           [I18n.t(:'date.day_names')[2],  3],
+           [I18n.t(:'date.day_names')[3],   4]
      ]
     DAY_LIST2 = [
            #  Displayed       stored in db
-           ["Sunday",     1],
-           ["Monday",    2],
-           ["Tuesday",  3],
-           ["Wednesday",   4],
-           ["Friday", 6],
-           ["Saturday", 7]
+           [I18n.t(:'date.day_names')[0],     1],
+           [I18n.t(:'date.day_names')[1],    2],
+           [I18n.t(:'date.day_names')[2],  3],
+           [I18n.t(:'date.day_names')[3],   4],
+           [I18n.t(:'date.day_names')[4], 6],
+           [I18n.t(:'date.day_names')[5], 7]
      ]
     CLASS_METHOD = [
            #  Displayed       stored in db
-           ["Kuliah",     1],
-           ["Tutorial",    2],
-           ["Amali",  3]
+           [I18n.t('weeklytimetable_detail.lecture.'), 1],
+           [I18n.t('weeklytimetable_detail.tutorial'), 2],
+           [I18n.t('weeklytimetable_detail.practical'), 3]
      ]
      
      #24March2013==========

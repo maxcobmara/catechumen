@@ -3,7 +3,7 @@
 		<h2 class="left"><%= t 'studentcounseling.title' %></h2>
 		<div class="right">
 			<% form_tag student_counseling_sessions_path, :method => 'get' do %>
-			Appointment / Session : <%= text_field_tag :search, params[:search], :placeholder => "Name, Matric No"  %>
+			<%=t('studentcounseling.appointment')%> / <%=t('studentcounseling.sessions')%> : <%= text_field_tag :search, params[:search], :placeholder => (t 'studentcounseling.name_matrixno') %>
 			<%= submit_tag I18n.t('search'), :name => nil %>
 			<% end %>
 		</div>
@@ -12,9 +12,9 @@
 
 <div class="right">
     <% form_tag '', :method => 'get' do %>
-	From: <%= date_select :search_from, params[:search_from], :include_blank => :true %>
-	&nbsp; &nbsp;To: <%= date_select :search_to, params[:search_to], :include_blank => :true %>
-	<%= submit_tag "Search by appointment/session date", :name => :submit_button1 %>
+	<%=t('from')%>: <%= date_select :search_from, params[:search_from], :include_blank => :true %>
+	&nbsp; &nbsp;<%=t('to')%>: <%= date_select :search_to, params[:search_to], :include_blank => :true %>
+	<%= submit_tag (t 'studentcounseling.search_by_date'), :name => :submit_button1 %>
     <% end %>
 </div>
 <br><br>
@@ -24,7 +24,7 @@
 <font size="-2">
 <table align="center" cellpadding="7">
 	<tr>
-		<td><%= image_tag("flag_red.png") %> Involuntary &nbsp;&nbsp;&nbsp;</td> 
+		<td><%= image_tag("flag_red.png") %> <%=t('studentcounseling.involuntary')%> &nbsp;&nbsp;&nbsp;</td> 
 		<td class="green" align='center'> <%= t 'studentcounseling.session_complete' %>&nbsp;&nbsp;&nbsp;</td>
 		<td class="red"> <%= t 'studentcounseling.appointment_notconfirm' %>&nbsp;&nbsp;&nbsp;</td>
 		<td class="blue"> <%= t 'studentcounseling.appointment_confirm' %>&nbsp;&nbsp;&nbsp;</td>
@@ -35,7 +35,7 @@
 <!-- HACK : create float left divs for toolbar -->
 
 <div class="toolbar">
-  <p><%= link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + (t 'new'), new_student_counseling_session_path %></p>
+  <p><%= link_to image_tag("add.png", :border => 0, :title => (t 'studentcounseling.new_appointment')) + (t 'studentcounseling.new_appointment'), new_student_counseling_session_path %></p>
 </div>
 <br>
 
@@ -67,7 +67,7 @@
   	<td><%=h appointment.student.programme_for_student2 if appointment.student.course_id <15 %></td>
   	<td><%=h strip_tags(Student.year_and_sem(appointment.student.intake)) %></td>
   	<td><%#=h appointment.is_confirmed? ?  appointment.confirmed_at :  appointment.requested_at %>
-<%=h appointment.is_confirmed? ?  appointment.confirmed_at.strftime("%d %b %y, %l:%M %p") :  appointment.requested_at.strftime("%d %b %y, %l:%M %p") %></td>
+<%=h appointment.is_confirmed? ?  l(appointment.confirmed_at, :format=>"%d %b %y, %l:%M %P") :  l(appointment.requested_at, :format =>"%d %b %y, %l:%M %P") %></td>
   	<td><%=h appointment.duration %></td>
   	<td><%=h appointment.is_confirmed? ? image_tag("tick.png") : ""  %></td>
 	
@@ -75,7 +75,7 @@
 			<% if count==0 %>
 				<td rowspan="<%= appointments.count%>" style="text-align:center">
 					<font size=-2>
-					<%=h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + "Add", new_student_counseling_session_path(:caseid => appointment.case_id)) : image_tag("tick.png")  %>
+					<%=h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + (t 'icms.add'), new_student_counseling_session_path(:caseid => appointment.case_id)) : image_tag("tick.png")  %>
 					</font>
 					<!--test link for report-->
 					<%= link_to image_tag("printer.png", :border => 0, :title => 'Feedback Referrer'), :action => 'feedback_referrer', :id => appointment.case_id if !appointment.student_discipline_case.counselor_feedback.blank? %>
@@ -84,12 +84,12 @@
 			<% end %>
 			<%count+=1%>
 		<% else %>
-			<td style="text-align:center"><font size=-2>Not related</font></td>
+			<td style="text-align:center"><font size=-2><%=t('studentdiscipline.not_related')%></font></td>
 		<% end %>
 	
-  	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => appointment %></td>
-  	<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => appointment %></td>
-  	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), appointment, :confirm => 'Are you sure?', :method => :delete %></td>   
+  	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => appointment %></td>
+  	<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => appointment %></td>
+  	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), appointment, :confirm => (t 'are_you_sure'), :method => :delete %></td>   
 </tr>
 <% end -%>
 
@@ -104,31 +104,31 @@
 	<!--NEW DB-programme_id (1-14), OLD DB-programme_id-refer prev one-->
 	<td><%=h session_done.student.programme_for_student2 if session_done.student.course_id <15 %></td>
 	<td><%=h strip_tags(Student.year_and_sem(session_done.student.intake)) %></td>
-	<td><%=h session_done.confirmed_at.strftime("%d %b %Y, %l:%M%p") unless session_done.confirmed_at.blank? %></td>
+	<td><%=h l(session_done.confirmed_at, :format=> "%d %b %Y, %l:%M%P") unless session_done.confirmed_at.blank? %></td>
     <td><%=h session_done.duration %></td>
     <td><%=h session_done.is_confirmed? ? image_tag("tick.png") : ""  %></td>
 	
 		
-		<% if session_done.c_scope == "case" && !session_done.case_id.blank? %><!--check if referred case first-->	
+		<% if session_done.c_scope == "case" && !session_done.case_id.blank? && !session_done.student_discipline_case.nil?%><!--check if referred case first & STILL EXIST in student discipline case table/module-->	
 			<% if count2==0 %>
 				<td rowspan="<%= session_dones.count%>" style="text-align:center">
 					<font size=-2>
-					<%=h session_done.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + "Add", new_student_counseling_session_path(:caseid => session_done.case_id)) : image_tag("tick.png")  %>
+					<%=h session_done.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => (t 'studentcounseling.new_appointment')) + (t 'icms.add'), new_student_counseling_session_path(:caseid => session_done.case_id)) : image_tag("tick.png")  %>
 					</font>
 					<!--test link for report-->
-					<%= link_to image_tag("printer.png", :border => 0, :title => 'Feedback Referrer'), :action => 'feedback_referrer', :id => session_done.case_id if !session_done.student_discipline_case.counselor_feedback.blank? %>
+					<%= link_to image_tag("printer.png", :border => 0, :title => (t 'studentdiscipline.feedback_referrer')), :action => 'feedback_referrer', :id => session_done.case_id if !session_done.student_discipline_case.counselor_feedback.blank? %>
 					<!--test link for report-->
 				</td>
 			<% end %>
 			<%count2+=1%>
 		<% else %>
-			<td style="text-align:center"><font size=-2>Not related</font></td>
+			<td style="text-align:center"><font size=-2><%=t('studentdiscipline.not_related')%></font></td>
 		<% end %>
 		
 	
-    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => session_done %></td>
-    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => session_done %></td>
-    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), session_done, :confirm => 'Are you sure?', :method => :delete %></td>   
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => session_done %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => session_done %></td>
+    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), session_done, :confirm => (t 'are_you_sure'), :method => :delete %></td>   
   </tr>
 <% end %>
 <% end %><!--END for @session_dones_by_case-->
@@ -137,4 +137,4 @@
 <BR/><BR/>
 <br />
 
-<%= link_to (t 'studentcounseling.new'), new_student_counseling_session_path %>
+<%= link_to (t 'studentcounseling.new_appointment'), new_student_counseling_session_path %>

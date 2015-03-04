@@ -6,11 +6,16 @@ before_destroy :check_asset_losses_exist
 
 validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id#,:letterdt, :letterxdt, :sender,
 
-has_and_belongs_to_many   :staffs, :join_table => :documents_staffs   #5Apr2013
+#has_and_belongs_to_many   :staffs, :join_table => :documents_staffs   #5Apr2013
+#24Jan2015
+has_many :circulations
+has_many :staffs, :through => :circulations
+accepts_nested_attributes_for :circulations,  :update_only => true
+
 
 belongs_to :stafffilled,  :class_name => 'Staff', :foreign_key => 'stafffiled_id'
 belongs_to :preparedby,   :class_name => 'Staff', :foreign_key => 'prepared_by'
-belongs_to :cc1staff,     :class_name => 'Staff', :foreign_key => 'cc1staff_id' 
+#belongs_to :cc1staff,     :class_name => 'Staff', :foreign_key => 'cc1staff_id' 
 belongs_to :cofile,       :foreign_key => 'file_id'
 
 has_many :asset_disposals
@@ -18,6 +23,8 @@ has_many :asset_losses
 has_many :travel_requests,   :dependent => :nullify #ref:gmail-sept15,2012-Checking for broken association - refer document.rb (line 17)
 
 before_save :set_actionstaff2_to_blank_if_close_is_selected
+
+attr_accessor :action_type
 
   #5Apr2013
   def self.set_serialno(id)
@@ -37,7 +44,7 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
 
   def filedocer
     suid = file_id
-    Cofile.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
+    Cofile.find(:all, :conditions => {:id => suid}).map(&:file_no_and_name)
   end
   
   #<% @admin = Login.current_login.roles.map(&:id).include?(2) %>
@@ -106,19 +113,23 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
 #----------------Coded List----------------------------------- 
 CATEGORY = [
         #  Displayed       stored in db
-        [ "Surat",      "1" ],
-        [ "Memo",       "2" ],
-        [ "Pekeliling", "3" ],
-        [ "Lain-Lain",  "4" ],
-        [ "e-Mel",      "5" ]
+        [ I18n.t('document.letter'),      "1" ],
+        [ I18n.t('document.memo'),       "2" ],
+        [ I18n.t('document.circular'), "3" ],
+        [ I18n.t('document.others'),  "4" ],
+        [ I18n.t('document.email'),      "5" ]
  ]
  
  ACTION = [
          #  Displayed       stored in db
-         [ "Segera","1" ],
-         [ "Biasa","2" ],
-         [ "Makluman", "3" ]
+         [ I18n.t('document.immediate'),"1" ],
+         [ I18n.t('document.normal'),"2" ],
+         [ I18n.t('document.information'), "3" ]
   ]
+ 
+  def staffiled_list
+    (Login.find(:all, :joins => :roles, :conditions=>['authname=?',"e_filing"]).map(&:staff_id)+Array(stafffiled_id)).compact.uniq
+  end
   
   def stafffiled_details 
     stafffilled.mykad_with_staff_name

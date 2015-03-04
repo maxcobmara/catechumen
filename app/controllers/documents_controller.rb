@@ -98,6 +98,7 @@ class DocumentsController < ApplicationController
 
   # GET /documents/1/edit
   def edit
+    @acc=params[:acc]
     @document = Document.find(params[:id])
   end
   
@@ -109,10 +110,10 @@ class DocumentsController < ApplicationController
   # POST /documents
   # POST /documents.xml
   def create
-   	@document = Document.new
-   	@document.staff_ids = []
-   	@document.staff_ids = Document.set_recipient(params[:document][:to_name])
-   	@document.serialno= params[:document][:serialno]
+    @document = Document.new
+    @document.staff_ids = []
+    @document.staff_ids = Document.set_recipient(params[:document][:to_name])
+    @document.serialno= params[:document][:serialno]
     @document.refno = params[:document][:refno]
     @document.category = params[:document][:category]
     @document.title = params[:document][:title]
@@ -135,7 +136,7 @@ class DocumentsController < ApplicationController
     
     respond_to do |format|
       if @document.save
-        flash[:notice] = 'Document was successfully created.'
+        flash[:notice] = t('document.title')+" "+t('created')
         format.html { redirect_to(@document) }
         format.xml  { render :xml => @document, :status => :created, :location => @document}
       else
@@ -149,36 +150,14 @@ class DocumentsController < ApplicationController
   # PUT /documents/1
   # PUT /documents/1.xml
   def update
-    	@document = Document.find(params[:id])
-    	@document.staff_ids = []
-     	@document.staff_ids = Document.set_recipient(params[:document][:to_name])
-     	@document.serialno= params[:document][:serialno]
-      @document.refno = params[:document][:refno]
-      @document.category = params[:document][:category]
-      @document.title = params[:document][:title]
-      #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
-      @document.letterdt = Date.new(params[:document][:"letterdt(1i)"].to_i,params[:document][:"letterdt(2i)"].to_i,params[:document][:"letterdt(3i)"].to_i)
-      @document.letterxdt = Date.new(params[:document][:"letterxdt(1i)"].to_i,params[:document][:"letterxdt(2i)"].to_i,params[:document][:"letterxdt(3i)"].to_i)
-      @document.cc1date = Date.new(params[:document][:"cc1date(1i)"].to_i,params[:document][:"cc1date(2i)"].to_i,params[:document][:"cc1date(3i)"].to_i)
-      #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
-      @document.from = params[:document][:from]
-      @document.stafffiled_id = params[:document][:stafffiled_id]
-      @document.file_id = params[:document][:file_id]
-      @document.closed = params[:document][:closed]
-      @document.data_file_name = params[:document][:data_file_name]
-      @document.data_content_type = params[:document][:data_content_type]
-      @document.data_file_size = params[:document][:data_file_size]
-      @document.data_updated_at = params[:document][:data_updated_at]
-      @document.otherinfo = params[:document][:otherinfo]
-      @document.cctype_id= params[:document][:cctype_id]
-      @document.prepared_by = params[:document][:prepared_by]
-      
+    #raise params.inspect
+      @document = Document.find(params[:id])
+      @document2 = @document
+      actiontype= params[:document][:action_type]
+      if actiontype=="action1" 
         respond_to do |format|
-    	  if @document.update_attributes(:staff_ids => @document.staff_ids, :serialno => @document.serialno, :refno => @document.refno,:category => @document.category,
-:title => @document.title,:letterdt => @document.letterdt,:letterxdt => @document.letterxdt,:cc1date => @document.cc1date,:from => @document.from,:stafffiled_id => @document.stafffiled_id,
-:file_id => @document.file_id,:closed => @document.closed,:data_file_name => @document.data_file_name, :data_content_type => @document.data_content_type,:data_file_size => @document.data_file_size,
-:data_updated_at => @document.data_updated_at,:otherinfo => @document.otherinfo,:cctype_id => @document.cctype_id,:prepared_by => @document.prepared_by)	
-            flash[:notice] = 'Document was successfully updated.'
+          if @document.update_attributes(params[:document])
+            flash[:notice] = t('document.action_details')+" "+t('updated')
             format.html { redirect_to(@document) }
             format.xml  { head :ok }
           else
@@ -186,14 +165,68 @@ class DocumentsController < ApplicationController
             format.xml  { render :xml => @document.errors, :status => :unprocessable_entity }
           end
         end
-   
+
+      else
+        #####
+        circulations_taken = Circulation.find(:all, :conditions => ['document_id=? and action_taken !=?', @document.id, ""]).count
+        if circulations_taken==0 #new circulations record will be created
+          @document2.staff_ids = []
+          @document2.staff_ids = Document.set_recipient(params[:document][:to_name])
+          @document2.serialno= params[:document][:serialno]
+          @document2.refno = params[:document][:refno]
+          @document2.category = params[:document][:category]
+          @document2.title = params[:document][:title]
+          #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
+          @document2.letterdt = Date.new(params[:document][:"letterdt(1i)"].to_i,params[:document][:"letterdt(2i)"].to_i,params[:document][:"letterdt(3i)"].to_i)
+          @document2.letterxdt = Date.new(params[:document][:"letterxdt(1i)"].to_i,params[:document][:"letterxdt(2i)"].to_i,params[:document][:"letterxdt(3i)"].to_i)
+          @document2.cc1date = Date.new(params[:document][:"cc1date(1i)"].to_i,params[:document][:"cc1date(2i)"].to_i,params[:document][:"cc1date(3i)"].to_i)
+          #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
+          @document2.from = params[:document][:from]
+          @document2.stafffiled_id = params[:document][:stafffiled_id]
+          @document2.file_id = params[:document][:file_id]
+          @document2.closed = params[:document][:closed]
+          @document2.data_file_name = params[:document][:data_file_name]
+          @document2.data_content_type = params[:document][:data_content_type]
+          @document2.data_file_size = params[:document][:data_file_size]
+          @document2.data_updated_at = params[:document][:data_updated_at]
+          @document2.otherinfo = params[:document][:otherinfo]
+          @document2.cctype_id= params[:document][:cctype_id]
+          @document2.prepared_by = params[:document][:prepared_by]
+        end
+        #####
+  
+        respond_to do |format|  
+	  ### if ANY of recipient dah logged-in their action taken
+	  if circulations_taken != 0 ##or no changes for circulation (recipient listing)
+	    if @document.update_attributes(params[:document].except(:to_name)) 
+	      flash[:notice] = (t 'document.all_updated_except_circulation_listing')
+	       format.html { redirect_to(@document) }
+               format.xml  { head :ok }
+            else
+                format.html { render :action => "edit" }
+                format.xml  { render :xml => @document.errors, :status => :unprocessable_entity }
+	    end
+
+	  ### if NONE of recipient ever logged-in their action taken
+          elsif circulations_taken==0
+            if @document2.update_attributes(:staff_ids => @document2.staff_ids, :serialno => @document2.serialno, :refno => @document2.refno,:category => @document2.category,:title => @document2.title,:letterdt => @document2.letterdt,:letterxdt => @document2.letterxdt,:cc1date => @document2.cc1date,:from => @document2.from,:stafffiled_id => @document2.stafffiled_id,:file_id => @document2.file_id,:closed => @document2.closed,:data_file_name => @document2.data_file_name, :data_content_type => @document2.data_content_type,:data_file_size => @document2.data_file_size,:data_updated_at => @document2.data_updated_at,:otherinfo => @document2.otherinfo,:cctype_id => @document2.cctype_id,:prepared_by => @document2.prepared_by)	
+               flash[:notice] = t('document.title')+" "+t('updated')
+               format.html { redirect_to(@document) }
+               format.xml  { head :ok }
+             else
+               format.html { render :action => "edit" }
+               format.xml  { render :xml => @document.errors, :status => :unprocessable_entity }
+             end
+           end 
+ 
+        end ##end for respond_to
+      end ##end for if
   end
 
   # DELETE /documents/1
   # DELETE /documents/1.xml
   def destroy
     @document = Document.find(params[:id])
-    #@document.destroy
     
     if @document.destroy
       flash[:notice] = 'Document was successfully removed.'

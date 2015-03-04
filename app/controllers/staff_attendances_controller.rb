@@ -265,7 +265,7 @@ class StaffAttendancesController < ApplicationController
 
     respond_to do |format|
       if @staff_attendance.save
-        format.html { redirect_to(@staff_attendance, :notice => 'StaffAttendance was successfully created.') }
+        format.html { redirect_to(@staff_attendance, :notice => t('attendance.title')+" "+t('created')) }
         format.xml  { render :xml => @staff_attendance, :status => :created, :location => @staff_attendance }
       else
         format.html { render :action => "new" }
@@ -281,7 +281,7 @@ class StaffAttendancesController < ApplicationController
 
     respond_to do |format|
       if @staff_attendance.update_attributes(params[:staff_attendance])
-        format.html { redirect_to(@staff_attendance, :notice => 'StaffAttendance was successfully updated.') }
+        format.html { redirect_to(@staff_attendance, :notice => t('attendance.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -358,7 +358,7 @@ class StaffAttendancesController < ApplicationController
           @find_type = params[:list_submit_button]
           @superior_position_id = params[:superior_position_id]
           @dept_name = Position.find(:first, :conditions=>['id=?',@superior_position_id]).unit
-    		  if @find_type == "Monthly Report"
+    		  if @find_type ==  I18n.t('attendance.monthly_report') #"Monthly Report"
     		      @aa=params[:month_year2][:"(1i)"]  #year
               @bb=params[:month_year2][:"(2i)"]  #month
               @cc='01'                      #params[:month_year][:"(3i)"] #day
@@ -371,7 +371,7 @@ class StaffAttendancesController < ApplicationController
                   @dadidu=''
               end
     		      @next_date = @dadidu.to_date+1.month  #(next month)
-          elsif @find_type == "Weekly Report"    #  "Report for 2 Week" 
+          elsif @find_type ==  I18n.t('attendance.weekly_report') #"Weekly Report"    #  "Report for 2 Week" 
               @aa=params[:month_year1][:"(1i)"]  #year
               @bb=params[:month_year1][:"(2i)"]  #month
      		      @cc=params[:month_year1][:"(3i)"]      #day
@@ -387,7 +387,7 @@ class StaffAttendancesController < ApplicationController
                   @dadidu=''
               end
               @next_date = @dadidu.to_date+1.week  #(next week)
-           elsif @find_type == "Daily Report"    
+           elsif @find_type == I18n.t('attendance.daily_report') #"Daily Report"    
               @aa=params[:month_year3][:"(1i)"]  #year
               @bb=params[:month_year3][:"(2i)"]  #month
     		      @cc=params[:month_year3][:"(3i)"]      #day
@@ -431,7 +431,7 @@ class StaffAttendancesController < ApplicationController
   def monthly_listing
     if request.post?
           @find_type = params[:list_submit_button]
-    		  if @find_type == "Monthly Listing"
+    		  if @find_type ==  I18n.t('attendance.monthly_listing') #"Monthly Listing"
     		      #---------
     		      @dept_select = params[:dept_select]
               if @dept_select == "Teknologi Maklumat"

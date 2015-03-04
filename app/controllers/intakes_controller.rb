@@ -2,9 +2,8 @@ class IntakesController < ApplicationController
   # GET /intakes
   # GET /intakes.xml
   def index
-    @intakes = Intake.all.group_by{|t|t.name} #28Feb2013-changed view by intake name
+    @intakes = Intake.search(params[:search])
     
-
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @intakes }
@@ -46,7 +45,7 @@ class IntakesController < ApplicationController
 
     respond_to do |format|
       if @intake.save
-        format.html { redirect_to(@intake, :notice => 'Intake was successfully created.') }
+        format.html { redirect_to(@intake, :notice =>  t('intake.title2')+" "+t('created')) }
         format.xml  { render :xml => @intake, :status => :created, :location => @intake }
       else
         format.html { render :action => "new" }
@@ -62,7 +61,7 @@ class IntakesController < ApplicationController
 
     respond_to do |format|
       if @intake.update_attributes(params[:intake])
-        format.html { redirect_to(@intake, :notice => 'Intake was successfully updated.') }
+        format.html { redirect_to(@intake, :notice => t('intake.title2')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

@@ -14,9 +14,37 @@
 	</div>
 </div>
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'stationery.new')) + (t 'stationery.new'), new_stationery_path %></p>
+        <table width=100%>
+		<tr>
+		<% permitted_to? :create, :stationeries do %>
+			<td><p><%= link_to image_tag("add.png", :border => 0, :title => (t 'stationery.new')) + (t 'stationery.new'), new_stationery_path %></p></td>
+		<% end %>
+		<% permitted_to? :manage, :stationerysearches do %>
+			 <td align="right">
+				<div><%= link_to_function (t 'stationery.previous_kewps'), "$('hide_list').toggle(); $('show_list').toggle();" %></div>
+				<div id="hide_list" style="display:block;">&nbsp;&nbsp;</div>
+				<div id="show_list" style="display:none;">
+					<% received_stocks = StationeryAdd.find(:first, :conditions => ['received is not null'], :select => :received, :order => "received ASC")%>
+					<% if received_stocks!=nil %>
+						<% startyear=received_stocks.received.year%>
+						<% currentyear=StationeryAdd.find(:first, :conditions => ['received is not null'], :select => :received, :order => "received DESC").received.year%>
+						<% duration = currentyear-startyear-1%>
+						<% 0.upto(duration) do |count|%>
+							<% ayear=startyear+count%>
+							<a href="http://<%= request.host  %>:3003/asset/stationeries/kewps13.pdf?locale=ms_MY&yyear=<%=ayear.to_s%>"><%=ayear%></a>
+							<% if count < duration %>|<% end %>
+						<% end %>
+					<% end %>
+				</div>
+			</td>
+			<td align="right" width=5%>
+			      <div class="noti_Container"><a href="http://<%= request.host  %>:3003/asset/stationeries/kewps13.pdf?locale=ms_MY&yyear=<%=Date.today.year%>"><%=image_tag("printer.png", :border => 0, :title=>(t 'print'))%></a><div class="noti_bubble">13</div></div>
+			</td>
+		<% end %>
+		</tr>
+	</table>
 </div>
-<BR><BR>
+
 <!--Do a Show : items below minimum, items 10% from minimum, items over maximum, all-->
 <div class="indextable">
 	<table width=100%>
@@ -37,15 +65,24 @@
 			<td><%=h stationery.current_quantity.to_i %> &nbsp; <%=h stationery.unittype %></td>
 			<td><%=h stationery.maxquantity.to_i %></td>
 			<td><%=h stationery.minquantity.to_i %></td>
-			<td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => stationery %></td>
-			<td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => stationery %></td>
-			  <td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'supplies_list'), :action => 'supplies', :id => stationery %></td>
-			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), stationery, :confirm => 'Are you sure?', :method => :delete %></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => stationery %></td>
+			<td width=10px>
+				<% permitted_to? :update, :stationeries do %>
+					<%= link_to image_tag("edit.png", :border => 0, :title=>(t 'edit')), :action => 'edit', :id => stationery %>
+				<% end %>
+			</td>
+			<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => (t 'print')), :action => 'supplies', :id => stationery %></td>
+			<td width=10px>
+				<% permitted_to? :delete, :stationeries do %>
+					<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), stationery, :confirm => (t 'are_you_sure'), :method => :delete %>
+				<% end %>
+			</td>
 		</tr>
 		<% end %>
 	</table>
 </div>
 
 <br />
-
-<%= link_to (t 'stationery.new'), new_stationery_path %>
+<% permitted_to? :create, :stationeries do %>
+	<%= link_to (t 'stationery.new'), new_stationery_path %>
+<% end %>

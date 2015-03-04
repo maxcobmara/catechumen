@@ -28,25 +28,32 @@
 
 			<tr>
 			 	<td class="leftcol"><label for="depart_at"><%= t 'travel.depart_at' %></label></td>
-				<td><%#=h l(@travel_request.depart_at) %><%=h @travel_request.depart_at.strftime('%d %B %Y') %>,&nbsp;<%=h l(@travel_request.depart_at) %></td>
+				<td><%#=h l(@travel_request.depart_at) %><%=h l(@travel_request.depart_at, :format=>'%d %B %Y') %>,&nbsp;<%=h l(@travel_request.depart_at) %></td>
 			</tr>
 
 			<tr>
 			 	<td class="leftcol"><label for="return_at"><%= t 'travel.return_at' %></label></td>
-				<td><%#=h l(@travel_request.return_at) %><%=h @travel_request.return_at.strftime('%d %B %Y') %>,&nbsp;<%=h l(@travel_request.return_at)%></td>
+				<td><%#=h l(@travel_request.return_at) %><%=h l(@travel_request.return_at, :format =>'%d %B %Y') %>,&nbsp;<%=h l(@travel_request.return_at)%></td>
 			</tr>
 
 			<tr>
 				<td class="leftcol"><label for="transport_type"><%=t 'travel.transport_choice'%></label></td>
 				<td><label>
 						<%=h @travel_request.own_car? ? image_tag("tick.png") : image_tag("cross.png")  %><%=t('travel.own_car')%> &nbsp; &nbsp;
-						<% if @travel_request.own_car %>(<%=t('travel.reason') %> : <%=@travel_request.own_car_notes%>) <%end %>&nbsp; &nbsp; 
+                                                <% if !@travel_request.applicant.vehicles.blank? && @travel_request.own_car? %>
+							<%='('+@travel_request.applicant.vehicles[0].reg_no+' '+ t('staff.transportclass_id')+' : '+@travel_request.transport_class+') ' %>&nbsp;&nbsp;
+						<% end %>
 						<%=h @travel_request.dept_car? ? image_tag("tick.png") : image_tag("cross.png") %><%=t('travel.dept_car')%>&nbsp; &nbsp; 
 						<%=h @travel_request.others_car? ? image_tag("tick.png") : image_tag("cross.png") %><%=t('travel.others_car')%> &nbsp;
 						<%=h "("+@travel_request.others_car_notes+")" if @travel_request.others_car %>
 						</label></td>                                                        
 			</tr>
-
+			<% if !@travel_request.applicant.vehicles.blank? && @travel_request.own_car? %>
+			<tr>
+				<td class="leftcol"><label for="reason"><%=t('travel.reason') %></label></td>
+				<td><%=@travel_request.own_car_notes%></td>
+			</tr>
+			<%end %>
 			<tr>
 				<td class="leftcol"><%=t('travel.public_transport')%></td>
 		    <td><label>
@@ -69,6 +76,7 @@
 				<%#=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") %>
 				<% if @travel_request.mileage_replace==nil %>
 					<%= image_tag("tick.png") if @travel_request.mileage==false%><!--as per requested by applicant-->
+					<%= image_tag("cross.png") if @travel_request.mileage==nil%> 
 				<% else %>
 				  <%=h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png")  %>
 				<% end %>

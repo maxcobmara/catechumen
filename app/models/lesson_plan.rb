@@ -27,10 +27,10 @@ class LessonPlan < ActiveRecord::Base
     end
     
     if hod_approved == false
-      self.hod_approved_on	= nil
+      self.hod_approved_on = nil
     end
     
-    if hod_rejected == true && endorsed_by == Login.current_login.staff_id
+    if hod_rejected == true && endorsed_by == Login.current_login.staff_id && lecturer !=  Login.current_login.staff_id  #kp should not reject her own plan
       self.is_submitted = nil
    end
    
@@ -58,7 +58,6 @@ class LessonPlan < ActiveRecord::Base
      #if schedule != nil
        #self.topic = WeeklytimetableDetail.find(schedule).topic
     #end   
-
 
    end
 
@@ -117,6 +116,27 @@ class LessonPlan < ActiveRecord::Base
       approver  
   end
   
+  def tpa
+    cur_tpa = Staff.find(:first, :joins => :position, :conditions => ['positions.name=?', "Timbalan Pengarah Akademik (Pengajar)"])
+    return cur_tpa.id if cur_tpa
+  end
+  
+  def self.search(search)
+    if search
+      programme = Programme.roots.map(&:name)
+      common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
+      bylecturer = Staff.find(:all, :joins => :position, :conditions => ['(positions.unit IN(?) OR positions.unit IN(?)) and staffs.name ILIKE (?)', programme, common_subjects, "%#{search}%"])
+      lecturer_ids = bylecturer.map(&:id)
+      if lecturer_ids.count > 0
+        @lesson_plans = LessonPlan.find(:all, :conditions => ["lecturer IN (?) or semester=?", lecturer_ids, search.to_i], :order => "lecturer ASC, lecture_date DESC")
+      else
+	@lesson_plans = LessonPlan.find(:all, :conditions => ["semester=?", search.to_i], :order => "lecturer ASC, lecture_date DESC")
+      end
+    else
+       @lesson_plans = LessonPlan.find(:all, :order => "lecturer ASC, lecture_date DESC")
+    end
+    @lesson_plans
+  end
   
   #---------------------AttachFile------------------------------------------------------------------------
    has_attached_file :data,

@@ -6,9 +6,13 @@
 		document.write("<input type='button' " +
 		"onClick='window.print()' " +
 		"class='printbutton' " +
-		"value='Print This Page'/>");
+		"value='<%=escape_javascript(t 'print')%>'/>");
 		</script>
-		</form>
+	</form>
+	
+	<div id="hideLink">
+		<%= link_to (t 'icms.back'), exams_path %>
+	</div>
 <fieldset width=10px >
 
 	<% if @exam.subject_id!=nil && (@exam.subject.parent.code == '1' || @exam.subject.parent.code == '2') %>

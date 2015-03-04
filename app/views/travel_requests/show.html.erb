@@ -16,8 +16,7 @@
 			
 			<tr>
 				<td class="leftcol"><%=t('travel.hod_accept')%></td>
-		    <td><%=h @travel_request.hod_accept? ? 
-						image_tag("tick.png") + " on   " + tarikh(@travel_request.hod_accept_on) + " by   "  + @travel_request.headofdept.staff_name_with_position : image_tag("cross.png") %></td>
+		    <td><%=h @travel_request.hod_accept? ? image_tag("tick.png") + " on   " + tarikh(@travel_request.hod_accept_on) + " by   "  + @travel_request.headofdept.staff_name_with_position : image_tag("cross.png") %></td>
 			</tr>
 			
 			
@@ -44,7 +43,7 @@
 					<td><%= l(travel_log.travel_on) %></td>
 					<td><%= travel_log.start_at.strftime('%H:%M %p') %></td>
 					<td><%= travel_log.finish_at.strftime('%H:%M %p') %></td>
-								<td><%= travel_log.destination %></td>
+					<td><%= travel_log.destination %></td>
 					<td><%= travel_log.mileage %></td>
 					<td><%= travel_log.km_money %></td>
 				</tr>
@@ -65,4 +64,5 @@
 	<%= link_to t('travel.edit_travel_logs'), :action => 'travel_log', :id => @travel_request  %> | 
 <% end %>
 <!--31dec2012-show EDIT link when 'hod_accept' NOT TRUE &/or show EDIT TRAVEL LOGS link when 'hod_accept' is TRUE & login as travel_request owner-->
-<%= link_to t('back'), travel_requests_path %>
+<%= link_to t('travel.back_index'), travel_requests_path %> | 
+<%= link_to t('travel.back_log'), :controller => 'travel_requests', :action=>'travel_log_index' %>

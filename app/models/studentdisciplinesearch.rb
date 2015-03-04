@@ -47,7 +47,7 @@ class Studentdisciplinesearch < ActiveRecord::Base
   end
   
   def matrixno_conditions
-      [" ("+matrixno_details+")",Student.find(:all, :conditions=>['matrixno=?',matrixno]).map(&:id)] unless matrixno.blank?
+      [" ("+matrixno_details+")",Student.find(:all, :conditions=>['matrixno=?',matrixno]).map(&:id)] unless matrixno.blank? || Student.all.map(&:matrixno).include?(matrixno) == false || matrixno.length<9
   end
   
   def name_details

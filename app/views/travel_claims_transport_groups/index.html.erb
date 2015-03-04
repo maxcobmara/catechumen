@@ -2,20 +2,20 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left"><%= t 'transportgroups.transportgroups' %></h2>
+		<h2 class="left"><%= t 'transportgroups.title' %></h2>
 	</div>
 </div>
 
 <div class="toolbar">
 	<table style="width:60%;"><tr>
-		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Group') + (t 'transportgroups.new_group'), new_travel_claims_transport_group_path %></p></td>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => (t 'transportgroups.new')) + (t 'transportgroups.new'), new_travel_claims_transport_group_path %></p></td>
 	</tr></table>
 </div>
-	
+<BR>
 <div class="indextable">
 	<table style="width:60%;">
   <tr>
-    <th><%= t 'transportgroups.groupname' %></th>
+    <th><%= t 'transportgroups.group_name' %></th>
     <th><%= t 'transportgroups.salary' %>
     <th>Cc</th>
 		<th colspan=3 class="ac"><%= t 'control' %></th>
@@ -27,8 +27,8 @@
     <td><%=h ringgols (travel_claims_transport_group.salary_low) %> -- <%=h ringgols (travel_claims_transport_group.salary_high) %></td>
     <td><%=h travel_claims_transport_group.cc_low %> -- <%=h travel_claims_transport_group.cc_high %></td>
     <!--<td width=10px><%= link_to image_tag("document.png",:border => 0), :action => 'show', :id => travel_claims_transport_group %></td>-->
-		<td width=10px><%= link_to image_tag("edit.png", 		:border => 0), :action => 'edit', :id => travel_claims_transport_group %></td>
-	  <td width=10px><%= link_to image_tag("delete.png", 	:border => 0, :title => 'Delete'), travel_claims_transport_group, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => travel_claims_transport_group %></td>
+	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), travel_claims_transport_group, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   </tr>
 <% end %>
 </table>

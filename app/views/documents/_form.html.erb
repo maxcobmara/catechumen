@@ -15,7 +15,7 @@
 		</tr>
 	
 		<tr>
-			<td class="leftcol"><label for="title"><%= t 'document.title' %>:</label><font color="red"> * </font></td>
+			<td class="leftcol"><label for="title"><%= t 'document.title2' %>:</label><font color="red"> * </font></td>
 			<td><%= f.text_field :title, :size => '60', :class => "compulsory" %></td>
 		</tr>
 	
@@ -23,7 +23,7 @@
 			<td class="leftcol"><label for="category"><%= t 'document.category' %>:</label><font color="red"> * </font></td>
 			<td><%= f.select :category, 
 			                 Document::CATEGORY, :class => "compulsory" ,
-			                 :prompt => "Select" %></td>
+			                 :prompt => (t 'select') %></td>
 		</tr>
 	
 		<tr>
@@ -43,7 +43,13 @@
 	
 		<tr>
 			<td class="leftcol"><label for="stafffiled_id"><%= t 'document.stafffiled_id' %>:</label></td>
-			<td><%= f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, { :selected => 61 }   %>
+			<td><% if @document.new_record? %>
+					<% filedby = 164 %>
+				<% else %>
+					<% filedby = @document.stafffiled_id %>
+				<% end %>
+				<%= f.collection_select :stafffiled_id, Staff.find(:all, :conditions => ['id IN(?)', @document.staffiled_list], :order => :name), :id, :name, { :selected => filedby }   %>
+				<%#= f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, { :selected => 61 }   %>
 				<%= f.hidden_field :prepared_by, :value=>@current_login.staff_id %>
 			</td>
 		</tr>
@@ -67,7 +73,7 @@
 			<td><%= f.file_field :data %></td>
 		</tr>
 	</table>	
-		<h2><%= t 'document.circulate_details' %></h2>
+		<h2><%= t 'document.circulation_details' %></h2>
 	<table>	
 		<tr>
 			<td class="leftcol"><label for="closed"><!--Other Information--><%= t 'document.minute_action' %>: <br>(Minit Tindakan)</label></td>
@@ -83,12 +89,12 @@
 		
 		<!--5April2013-multiple circulation-->
 		<tr>
-			<td class="leftcol"><label for="to_id"><%= t 'document.circulateto' %>:</label></td>
+			<td class="leftcol"><label for="to_id"><%= t 'document.circulate_to' %>:</label></td>
 			<td><%= text_field_with_auto_complete :document, :to_name ,{ :size => 70 }, 
 											{ :tokens => ",",:url => formatted_staffs_path(:js), 
 											  :method => :get,
 											  :param_name => 'search' } %>
-				<br><i><font size="2">	Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma (,), without any spaces, followed by an alphabet and make your next selection. </font></i>
+				<br><i><font size="2"><%=t 'document.recipient_remark'%></font></i>
 			</td>
 		</tr>
 		<!--5April2013-multiple circulation-->

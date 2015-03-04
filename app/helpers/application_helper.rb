@@ -50,7 +50,7 @@ module ApplicationHelper
   def select_tag_for_filter(model, nvpairs, params)
     options = { :query => params[:query] }
     _url = url_for(eval("#{model}_url(options)"))
-    _html = %{<label for="show">Show:</label>}
+    _html = %{<label for="show">#{t('show')}:</label>}
     _html << %{<select name="show" id="show"}
     _html << %{onchange="window.location='#{_url}' + '?show=' + this.value">}
     nvpairs.each do |pair|

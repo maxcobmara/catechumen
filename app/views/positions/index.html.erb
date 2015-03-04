@@ -43,9 +43,9 @@ $j(document).ready(function()  {
        <td><%=h position.staff.blank? ? "-" : position.staff.name + "  (" + (check_kin {position.staff.staffgrade.name}) + ")" %></td>
        <td><%=h truncate(position.tasks_main, :length => 60) %> <%=h position.postinfo_id.blank? ? "-" : "Butiran : "+ position.postinfo.details %>
 	     <td width=10px><%= link_to "(+)", new_position_path(:parent_id => position)%></td>
-       <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => position %></td>
-       <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => position %></td>
-       <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), position, :confirm => 'Are you sure?', :method => :delete %></td>
+       <td width=10px><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => position, :title => (t 'show') %></td>
+       <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => position, :title => (t 'edit') %></td>
+       <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), position, :confirm => (t 'are_you_sure'), :method => :delete %></td>
     </tr>
     <% end %>
 	<tbody>

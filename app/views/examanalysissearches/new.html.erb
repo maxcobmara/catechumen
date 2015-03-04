@@ -1,12 +1,12 @@
 <div class="tform">
-	<H2>Examination Analysis by Paper Search</H2>
+	<H2><%=t('equery.examanalysis.search')%></H2>
 
 <% form_for @examanalysissearch do |f| %>
   <%= f.error_messages %>
 	<table width=100% >
 		<% if @searchexamanalysistype=='1' || @searchexamanalysistype==1 %>
 			<%= hidden_field_tag :method,  1 %>
-			<tr><td colspan=2>Search record by :</td></tr>
+			<tr><td colspan=2><%=t('equery.examanalysis.search_by')%> :</td></tr>
 			<!--
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%#=f.label :examination_paper %></td>
@@ -33,10 +33,10 @@
 			<%# Exam::EXAMTYPE&[["Peperiksaan Ulangan", "R"]]%>
 			<!--find examtype(F,M,R) for existing exam in examanalysis & assign into array accordingly-->
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :examination_type %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'examanalysis.examtype') %></td>
 				<td>
-					<%#= f.select :examtype, Exam::EXAMTYPE, :include_blank=>"Select" %>
-					<%= f.select :examtype, @examtype_array, :include_blank=>"Select" %>
+					<%#= f.select :examtype, Exam::EXAMTYPE, :include_blank=>(t 'select') %>
+					<%= f.select :examtype, @examtype_array, :include_blank=>(t 'select') %>
 				</td>
 			</tr>
 			
@@ -44,8 +44,8 @@
 			<% @subject_ids_in_examanalysis = Exam.find(:all,:conditions=>['id IN (?)', @exam_ids_in_examanalysis]).map(&:subject_id).uniq %>
 			<!--find subject_ids for existing exam in examanalysis-->
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :subject_id %></td>
-				<td><%= f.collection_select :subject_id, Programme.find(:all, :conditions=>['id IN (?)',@subject_ids_in_examanalysis]), :id, :subject_list, :include_blank => "Select" %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'examanalysis.subject_id') %></td>
+				<td><%= f.collection_select :subject_id, Programme.find(:all, :conditions=>['id IN (?)',@subject_ids_in_examanalysis]), :id, :subject_list, :include_blank => (t 'select') %></td>
 			</tr>
 			
 			<!--find programme_ids for existing exam in examanalysis-->
@@ -55,11 +55,11 @@
 			<% end %>
 			<!--find programme_ids for existing exam in examanalysis-->
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :programme_id %></td>
-				<td><%= f.collection_select :programme_id, Programme.find(:all, :conditions=>['id IN (?)', @program_ids_of_subject_ids_in_examanalysis]), :id, :programme_list, :include_blank => "Select" %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'examanalysis.programme_id') %></td>
+				<td><%= f.collection_select :programme_id, Programme.find(:all, :conditions=>['id IN (?)', @program_ids_of_subject_ids_in_examanalysis]), :id, :programme_list, :include_blank => (t 'select') %></td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%=f.label :examination_date %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%=f.label (t 'examanalysis.examon')%></td>
 				<td><%= date_select :examon, params[:examon], :include_blank=> true %></td>
 			</tr>
 		<% end %>
@@ -67,7 +67,7 @@
 	
 	
 
-  <p><%= f.submit "Search"%>&nbsp;<font size=-2>Leaves all fields 'unselected' to display ALL record.</font></p>
+  <p><%= f.submit (t 'search') %>&nbsp;<font size=-2><%=t('equery.leaves_all_blank_all_records')%></font></p>
 <% end %>
 
 </div>

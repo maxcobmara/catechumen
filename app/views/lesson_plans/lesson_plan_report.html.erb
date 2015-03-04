@@ -1,14 +1,18 @@
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
 	<form action="#">
-			<script>
-			document.write("<input type='button' " +
-			"onClick='window.print()' " +
-			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
+		<script>
+		document.write("<input type='button' " +
+		"onClick='window.print()' " +
+		"class='printbutton' " +
+		"value='<%=escape_javascript(t 'print')%>'/>");
+		</script>
 	</form>
-
+<div id="hideLink">
+	<%#= link_to (t 'back'), index_report_lesson_plans_path %>
+	<%#= link_to (t 'back'), lesson_plans_path %>
+	<%= link_to_function t('back'), "history.back()" %>
+</div>
 <div class="A4potrait" >
 
 
@@ -67,11 +71,11 @@
 				</tr>
 				<tr>
 					<td colspan="1" class="aaab">Tahun dan Semester Pelatih</td>
-					<td colspan="5"class="aaa">: Tahun <%=h @lesson_plan.year %> Semester <%=h @lesson_plan.semester %></td>
+					<td colspan="5" class="aaa">: Tahun <%=h @lesson_plan.year %> Semester <%=h @lesson_plan.semester %></td>
 				</tr>
 				<tr>
 					<td colspan="1" class="aaab">Bilik / Kelas / Makmal</td>
-					<td colspan="5"class="aaa">: <%=h @lesson_plan.schedule_item.weeklytimetable_location.name %></td>
+					<td colspan="5" class="aaa">: <%#=h @lesson_plan.schedule_item.weeklytimetable_location.name %><%=h @lesson_plan.schedule_item.try(:location_desc) %></td>
 				</tr>
 				<tr>
 					<td colspan="2"> &nbsp;</th>
@@ -90,7 +94,7 @@
 				<tr>
 					<td>&nbsp;</td>
 					<td>
-						<table><tr><td class="small_box"><%if @lesson_plan.condition_isgood == true %>&#10003;<% end %></td></tr></table>
+						<table><tr><td class="small_box"><%if @lesson_plan.condition_isgood == true %>&#10003;<% end %>&nbsp;</td></tr></table>
 					</td>
 					<td class="desc"> Memuaskan</td>
 					<td colspan="3"></td>
@@ -113,7 +117,7 @@
 				</tr>
 				<tr>
 					<td class="no">&nbsp; </td>
-					<td class="desc"colspan="5"><%=h @lesson_plan.training_aids %></th>
+					<td class="desc" colspan="5"><%=h @lesson_plan.training_aids %></th>
 				</tr>
 				<tr>
 					<td colspan="2"> &nbsp;</th>
@@ -134,7 +138,11 @@
 						<td colspan="4">&nbsp;</th>
 					</tr>
 					<tr>
-						<td class="aaab" colspan="6">Tandatangan Pengajar :</th>
+						<td class="aaab" colspan="6">Tandatangan Pengajar :
+							<% if @lesson_plan.report_submit != true %>
+								<font color="red"><%=t('lesson_plan.report_not_submitted')%></font>
+							<% end %>
+						</th>
 					</tr>
 					<tr style="height:50px;">
 						<td colspan="2"> &nbsp;</th>
@@ -142,7 +150,7 @@
 					</tr>
 					<tr>
 						<td class="aaab" >Nama Pengajar :</td>
-						<td class="desc"colspan="5"><%= @lesson_plan.lessonplan_owner.name%></td>
+						<td class="desc" colspan="5"><%= @lesson_plan.lessonplan_owner.name%></td>
 					</tr>
 					<tr>
 						<td colspan="2"> &nbsp;</th>
@@ -153,7 +161,11 @@
 						<td colspan="4">&nbsp;</td>
 					</tr>
 					<tr>
-						<td class="aaab" colspan="6">Ulasan TPA/KP :</th>
+						<td class="aaab" colspan="6">Ulasan TPA/KP :
+							<% if @lesson_plan.report_endorsed != true %>
+								<font color="red"><%=t('lesson_plan.report_not_endorsed')%></font>
+							<% end %>
+						</td>
 					</tr><!--
 					<tr>
 						<td colspan="2"> &nbsp;</td>

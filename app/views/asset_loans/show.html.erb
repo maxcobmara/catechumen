@@ -1,4 +1,5 @@
 <div class="tform">
+<H2><%=t('assetloan.title')%></h2>
 <%= render :partial => 'show_request' %>
 <% if @asset_loan.is_approved != nil %>
 <%= render :partial => 'show_approval' %>
@@ -7,12 +8,7 @@
 <%= render :partial => 'show_return' %>
 <% end %>
 
-
-
 </div>
-
-
-
 
 <% if @asset_loan.is_approved == nil && @asset_loan.loaned_by == Login.current_login.staff_id %>
 <%= link_to "Approve", :action => 'approve', :id => @asset_loan %>

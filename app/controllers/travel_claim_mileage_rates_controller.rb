@@ -44,7 +44,7 @@ class TravelClaimMileageRatesController < ApplicationController
 
     respond_to do |format|
       if @travel_claim_mileage_rate.save
-        format.html { redirect_to(travel_claim_mileage_rates_url, :notice => 'TravelClaimMileageRate was successfully created.') }
+        format.html { redirect_to(travel_claim_mileage_rates_url, :notice => t('mileagerates.title2')+" "+t('created')) }
         format.xml  { render :xml => @travel_claim_mileage_rate, :status => :created, :location => @travel_claim_mileage_rate }
       else
         format.html { render :action => "new" }
@@ -60,7 +60,7 @@ class TravelClaimMileageRatesController < ApplicationController
 
     respond_to do |format|
       if @travel_claim_mileage_rate.update_attributes(params[:travel_claim_mileage_rate])
-        format.html { redirect_to(travel_claim_mileage_rates_url, :notice => 'TravelClaimMileageRate was successfully updated.') }
+        format.html { redirect_to(travel_claim_mileage_rates_url, :notice =>  t('mileagerates.title2')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

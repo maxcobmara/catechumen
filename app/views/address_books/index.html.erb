@@ -7,8 +7,8 @@
 <div class="toolbar">
 	<table style="width:75%;">
 		<tr>
-			<td width=200px><p><%= link_to image_tag("add.png", :border => 0, :title => 'New Travel Request') + (t 'new'), new_address_book_path %></p></td>
-			<td><%= link_to 'ALL', address_books_path %></td>
+			<td width=200px><p><%= link_to image_tag("add.png", :border => 0, :title => (t 'addressbook.new_contact')) + (t 'addressbook.new_contact'), new_address_book_path %></p></td>
+			<td><%= link_to (t 'all').upcase, address_books_path %></td>
 			<% alphatab = Array('A' .. 'Z') %>
 			<% alphatab.each do |alphatab| %>
 			  <% add_exist = AddressBook.count(:all, :conditions => ['name ILIKE ?', "#{alphatab}%"]) %>
@@ -27,10 +27,10 @@
 		<tr>
 	    <th><%= t 'name' %></th>
 	    <th><%= t 'staff.phone' %></th>
-	    <th>Fax</th>
+	    <th><%=t('addressbook.fax')%></th>
 	    <th><%= t 'staff.address' %></th>
-	    <th><%= t 'addressbook.mail' %></th>
-	    <th>Web</th>
+	    <th><%= t 'addressbook.email' %></th>
+	    <th><%=t('addressbook.website')%></th>
 	    <th colspan=3 class="ac"><%= t 'control' %></th>
   </tr>
 	<% @address_books.each do |address_book| %>
@@ -42,9 +42,9 @@
     <td><%=h address_book.mail %></td>
     <td><%=h address_book.web %></td>
 
-    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => address_book %></td>
-    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => address_book %></td>
-    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), address_book, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => address_book %></td>
+    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => address_book %></td>
+    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), address_book, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 
   </tr>
 <% end %>

@@ -3,22 +3,22 @@
 	<% student= Student.find(@studentsearch) %>
 	<% quota = 2 %>
 	<fieldset>
-		<legend class='togvis'><b>Student Details</b></legend>
+		<legend class='togvis'><b><%=t('librarytransaction.student_details')%></b></legend>
 			<table>
 				<tr>
-					<td class="leftcol">Name : </td>
+					<td class="leftcol"><%=t('student.name')%> : </td>
 					<td><%=h student.name %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">Matrix :</td>
+					<td class="leftcol"><%=t('student.matrixno.')%> :</td>
 					<td><%=h student.matrixno %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">MyKad No :</td>
+					<td class="leftcol"><%=t('student.icno')%> :</td>
 					<td><%=h student.icno %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">Programme : </td>
+					<td class="leftcol"><%=t('librarytransaction.course_id')%> : </td>
 					<td><%=h check_kin{student.course.programme_list} %></td>
 				</tr>
 			</table>
@@ -27,26 +27,26 @@
 	<% staff = Staff.find(@staffsearch) %>
 	<% quota = 5 %>
 	<fieldset>
-		<legend class='togvis'><b>Staff Details</b></legend>
+		<legend class='togvis'><b><%=t('librarytransaction.staff_details')%></b></legend>
 			<table>
 				<tr>
-					<td class="leftcol">Name : </td>
+					<td class="leftcol"><%=t('staff.name')%> : </td>
 					<td><%=h staff.name %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">MyKad No :</td>
+					<td class="leftcol"><%=t('staff.icno')%> :</td>
 					<td><%=h staff.icno %></td>
 				</tr>
 				<tr>
-					<td class="leftcol">Position : </td>
+					<td class="leftcol"><%=t('staff.position')%> : </td>
 					<td><%#=h staff.position.name %><%=h staff.position_for_staff%></td>
 				</tr>
 		</table>
 		</fieldset>
 <% elsif @rustaff == '0' && @studentsearch == 0 %>
-	&nbsp;&nbsp;&nbsp;<span class="isbn_bg3">Please select a student name</span>
+	&nbsp;&nbsp;&nbsp;<span class="isbn_bg3"><%=t('librarytransaction.insert_student_name')%></span>
 <% elsif @rustaff != '0' && @staffsearch == 0 %>
-	&nbsp;&nbsp;&nbsp;<span class="isbn_bg1">Please select a staff name</span>
+	&nbsp;&nbsp;&nbsp;<span class="isbn_bg1"><%=t('librarytransaction.insert_staff_name')%></span>
 <% end %>
 <!--part for staff details & student details (end)-->
 
@@ -57,13 +57,13 @@
 	
 	<table>
 		<tr>
-			<td colspan="5" class="leftcol">Total books on loan : <%= @loaned_books %> </td>
+			<td colspan="5" class="leftcol"><%=t('librarytransaction.total_loan')%> : <%= @loaned_books %> </td>
 		</tr>
 		<tr>
 			<th>No</th>
-			<th width=500px>Accession No - Title</th>
-			<th width=120px>Due Date</th>
-			<th colspan=2 width=320px>Extend</th>
+			<th width=500px><%=t('book.accessionno')%> - <%=t('book.title')%></th>
+			<th width=120px><%=t('librarytransaction.duedate')%></th>
+			<th colspan=2 width=320px><%=t('librarytransaction.extend')%></th>
 		</tr>
 		<% bil=1 %>
 		<% for book_on_loan in @books_on_loan %>
@@ -77,7 +77,7 @@
 			<td class='tlight' style="vertical-align:middle;">
 				<% if book_on_loan.extended != true && book_on_loan.returned != true %>
 					<%#= link_to image_tag("clock_add.png", :border => 0, :title => 'Extend'), :action => 'extend', :id => book_on_loan %> 
-					<%= link_to_remote image_tag("clock_add.png", :border => 0, :title => 'Extend'), :url => {:action => 'extend2', :id => book_on_loan}, :update => 'extend_return' %> Extend
+					<%= link_to_remote image_tag("clock_add.png", :border => 0, :title => 'Extend'), :url => {:action => 'extend2', :id => book_on_loan}, :update => 'extend_return' %> <%=t('librarytransaction.extend')%>
     			<% end %>
 			</td>
 			<td><!--HIDE THIS PART-Temporary not required!
@@ -96,7 +96,7 @@
 	
 	<table width="60%">
 		<tr>
-			<td colspan="4" class="leftcol">Available book loan quota balance : <%= @quota_bal=quota-@loaned_books %> out of <%=quota%> books </td>
+			<td colspan="4" class="leftcol"><%=t('librarytransaction.quota_balance')%> : <%= @quota_bal=quota-@loaned_books %> <%=t('librarytransaction.out_of')%> <%=quota%> <%=t('librarytransaction.books')%> </td>
 		</tr>
 	</table>
 	
@@ -111,7 +111,7 @@
 			
 	<% if @quota_bal > 0 %>
 		<div id="barunyediv">
-			<p><%= link_to_remote image_tag("add.png", :border => 0, :title => 'Add More'), :url => {:action => 'form_try', :index => count,:student=>@studentsearch, :staff=>@staffsearch, :rustaff=>@rustaff, :quota_bal=>@quota_bal }, :update => 'barunyediv' %> - Add More 	
+			<p><%= link_to_remote image_tag("add.png", :border => 0, :title => (t 'addmore')), :url => {:action => 'form_try', :index => count,:student=>@studentsearch, :staff=>@staffsearch, :rustaff=>@rustaff, :quota_bal=>@quota_bal }, :update => 'barunyediv' %> - <%=t('addmore')%>	
 			</p>
 		</div>
 	<% else %>

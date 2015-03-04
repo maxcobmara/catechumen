@@ -1,4 +1,4 @@
-Quicklinks  : <a href="#oot"><%= t 'librarystats.borrow_book' %></a> <a href="#LatestBooks"><%= t 'librarystats.latest_book' %></a>, <a href="#mastu"><%= t 'librarystats.most_activestudent' %></a>, <a href="#masta"><%= t 'librarystats.most_activestaff' %></a>   
+<%=t('librarystats.quicklinks')%>  : <a href="#oot"><%= t 'librarystats.borrow_book' %></a> <a href="#LatestBooks"><%= t 'librarystats.latest_book' %></a>, <a href="#mastu"><%= t 'librarystats.most_activestudent' %></a>, <a href="#masta"><%= t 'librarystats.most_activestaff' %></a>   
 
 <div class="stats">
 	<p><%= Book.count(:all) %><SPAN STYLE="font-size:14px; color: #90C3C0"><%= t 'librarystats.total_title' %></p>
@@ -94,7 +94,7 @@ Quicklinks  : <a href="#oot"><%= t 'librarystats.borrow_book' %></a> <a href="#L
 	<% latest_books.each do |e| %>
 	<tr>
 		<td><% if e.photo_file_name == nil %>
-			no image
+			<%=t('no3')%> <%=t('book.image')%>
 		<% else %>
 			<%= image_tag e.photo.url, :class => 'list-image' %>
 		<% end %></td>

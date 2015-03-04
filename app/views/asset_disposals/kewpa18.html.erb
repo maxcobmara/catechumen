@@ -1,13 +1,16 @@
 <%= stylesheet_link_tag 'report' %>
 
-<form action="#">	
-<script>
-document.write("<input type='button' " +
-"onClick='window.print()' " +
-"class='printbutton' " +
-"value='Print This Page'/>");
-</script>
-</form>	
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
+<form>
+<div id="hideLink">
+<%= link_to (t 'back'), asset_disposals_path %>
+</div><BR>
 <div class="A4potrait">
 
 <!-- Box Head -->
@@ -83,11 +86,11 @@ document.write("<input type='button' " +
 		<tr>
 			<td class="leftcol">Jawatan</td>
 			<td class="dotts">:</td>
-			<td class="filler" style="border-bottom-style: dotted; text-align:center;"><%= @asset_disposal.discardw1tness.position.name %></td>
+			<td class="filler" style="border-bottom-style: dotted; text-align:center;"><%= @asset_disposal.discardw1tness.position.blank? ? "&nbsp;" : @asset_disposal.discardw1tness.position.name %></td>
 			<td width=20%></td>
 			<td class="leftcol">Jawatan</td>
 			<td class="dotts">:</td>
-			<td class="filler" style="border-bottom-style: dotted; text-align:center;"><%= @asset_disposal.discardw1tness.position.name %></td>
+			<td class="filler" style="border-bottom-style: dotted; text-align:center;"><%= @asset_disposal.discardw2tness.position.blank? ? "&nbsp;" : @asset_disposal.discardw2tness.position.name %></td>
 		</tr>
 
 		<tr>

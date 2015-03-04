@@ -3,8 +3,41 @@ class ExammarksController < ApplicationController
   # GET /exammarks.xml
   def index
     submit_val = params[:exammark_search]
+    valid_exams = Exammark.get_valid_exams
+    #@valid_exammm = valid_exams.count
     @position_exist = current_login.staff.position
-    if @position_exist     
+    if @position_exist  
+      ####################
+      #lecturer_programme = current_login.staff.position.unit
+      #unless lecturer_programme.nil?
+        #programme = Programme.find(:all, :conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0])  if !(lecturer_programme=="Pos Basik" || lecturer_programme=="Diploma Lanjutan")
+      #end
+      #unless programme.nil? || programme.count==0
+        #programme_id = programme.try(:first).try(:id)
+        #subjects_ids = Programme.find(programme_id).descendants.at_depth(2).pluck(:id)
+        #@exam_list_index  = Exam.find(:all, :conditions=>['subject_id IN(?) and id IN(?)', subjects_ids, valid_exams], :order=>"name asc, subject_id asc")#.order(name: :asc, subject_id: :asc)
+      #else
+        #tasks_main = current_login.staff.position.tasks_main
+        #if lecturer_programme == 'Commonsubject'
+          #programme_id ='1'
+          #@exam_list_index  = Exam.find(:all, :conditions=>['id IN(?)', valid_exams], :order=>"name asc, subject_id asc")#.order(name: :asc, subject_id: :asc)
+          #@exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index.map(&:id)]).uniq
+	#elsif (lecturer_programme == 'Pos Basik' || lecturer_programme == "Diploma Lanjutan") && tasks_main!=nil
+          #allposbasic_prog = Programme.find(:all, :conditions=>['course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan"]).map(&:name)#.pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+          #for basicprog in allposbasic_prog
+            #lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+          #end
+          #programme_id=Programme.find(:all, :conditions=>['name=? and ancestry_depth=?', lecturer_basicprog_name, 0]).first.id
+          #subject_ids = Programme.find(programme_id).descendants.at_depth(2).map(&:id)
+          #@exam_list_index  = Exam.find(:all, :conditions=>['subject_id IN(?) and id IN(?)', subject_ids, valid_exams], :order=>"name asc, subject_id asc")#.order(name: :asc, subject_id: :asc)
+	  #@exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index.map(&:id)]).uniq
+        #else
+          #programme_id='0'
+          #@exam_list_index  = Exam.find(:all, :conditions=>['id IN(?)', valid_exams], :order=>"name asc, subject_id asc")#.order(name: :asc, subject_id: :asc)
+	  #@exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index.map(&:id)]).uniq
+        #end
+      #end
+      ####################
       @lecturer_programme = current_login.staff.position.unit
       common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
       unless @lecturer_programme.nil?
@@ -13,19 +46,18 @@ class ExammarksController < ApplicationController
       unless @programme.nil?
         @programme_id = @programme.id
         subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
-        @exam_list_index = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
+        @exam_list_index_raw = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?) and id IN(?)',subject_of_programme, common_subject, valid_exams])
         #@exam_list_exist_mark = Exammark.find(:all, :conditions=>['exam_id IN(?)', @exam_list_index.map(&:id)])                        #exammarks
-        @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index.map(&:id)]).uniq  #exam
       else
         if @lecturer_programme == 'Commonsubject'
-          @exam_list_index = Exam.find(:all, :conditions=>['subject_id IN(?)', common_subject])
-          @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index.map(&:id)]).uniq    
+          @exam_list_index_raw = Exam.find(:all, :conditions=>['subject_id IN(?) and id IN(?)', common_subject, valid_exams])
         else
-          @exam_list_index = Exam.all
-          @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks).uniq
+          @exam_list_index_raw = Exam.find(:all, :conditions=>['id IN(?)', valid_exams])
         end
       end
-      if submit_val == 'Search Exam Marks'
+      @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index_raw.map(&:id)]).uniq  #exam
+      @exam_list_index = Exam.find(:all, :conditions=>['id IN(?) and id NOT IN(?)', valid_exams, @exam_list_exist_mark.map(&:id)])
+      if submit_val == t('exammark.search_exammarks') #'Search Exam Marks'
         search_item = params[:exam_id]
         if search_item == '0' 
           exam_ids = @exam_list_exist_mark.map(&:id)  
@@ -41,8 +73,13 @@ class ExammarksController < ApplicationController
     end  
     
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @exammarks }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @exammarks }
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('exammark.title2')}
+        format.xml  { render :xml => @exammark.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
@@ -172,7 +209,7 @@ class ExammarksController < ApplicationController
   # POST /exammarks.xml
   def create
      @create_type = params[:new_submit]                                            # retrieve - parameter sent via submit button
-     if @create_type == "Create"                                                   # create single record 
+     if @create_type == t('create') #"Create"                                                   # create single record 
         @new_type = "1"
         #========================
         @exammark = Exammark.new(params[:exammark])
@@ -186,7 +223,7 @@ class ExammarksController < ApplicationController
         
         respond_to do |format|
           if @exammark.save
-            format.html { redirect_to(@exammark, :notice => 'Exammark was successfully created.') }
+            format.html { redirect_to(@exammark, :notice =>  t('exammark.title3')+" "+t('created')) }
             format.xml  { render :xml => @exammark, :status => :created, :location => @exammark }
           else
             format.html { render :action => "new" }
@@ -194,7 +231,7 @@ class ExammarksController < ApplicationController
           end
         end
         
-      elsif @create_type == "Create By Paper"
+      elsif @create_type == t('exammark.create_by_paper') #"Create By Paper"
         #raise params.inspect
         @new_type = "2"
         #************************
@@ -216,13 +253,13 @@ class ExammarksController < ApplicationController
         
         if @exammarks.all?(&:valid?) 
           @exammarks.each(&:save!)                                      # ref: to retrieve each value of @exammarks --> http://railsforum.com/viewtopic.php?id=11557 (Dazen2 007-10-07 05:27:42) 
-            flash[:notice] = 'Successfully saved all records'
+            flash[:notice] = t('exammark.created')
             redirect_to :action => 'index'
             flash.discard
         else                                                                      
 			    @exammarkerrormsg = Exammark.set_error_messages(@exammarks) 
 			    flash[:error] = @exammarkerrormsg	#red box                              
-          flash[:notice] = 'Data supplied was invalid. Please insert all data accordingly. All fields are compulsory.'
+          flash[:notice] = t('exammark.data_invalid')
           render :action => 'new'
           flash.discard
         end
@@ -268,7 +305,7 @@ class ExammarksController < ApplicationController
     #---
     respond_to do |format|
       if @exammark.update_attributes(params[:exammark])
-        format.html { redirect_to(@exammark, :notice => 'Exammark was successfully updated.') }
+        format.html { redirect_to(@exammark, :notice =>  t('exammark.title3')+" "+t('created')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -355,11 +392,11 @@ class ExammarksController < ApplicationController
   	    @exammarks = Exammark.find(@exammarkids)
   	    @student_count = @exammarks.map(&:student_id).uniq.count
   	    @edit_type = params[:exammark_submit_button]
- 		    if @edit_type == "Edit Checked"
+ 		    if @edit_type == t('edit_checked') #"Edit Checked"
   	        ## continue multiple edit (including subject edit here) --> refer view
         end    # end for if @edit_type=="Edit Checked"
      else    # else for unless @gradeids.blank?
-         flash[:notice] = "Please select at least 1 record to edit."
+         flash[:notice] = t('select_one')
          redirect_to exammarks_path
      end			# end for unless @gradeids.blank?
    end
@@ -398,7 +435,7 @@ class ExammarksController < ApplicationController
  			 
  		  end			#--end of @grades.each_with_index do |grade,index|--
  		  
- 		  flash[:notice] = "Updated exam marks!"
+ 		  flash[:notice] = t('exammark.updated')
   	  redirect_to exammarks_path
    end   			#--end of def update_multiple
    #--end of multiple edit - 15-18 May 2012 ----------------------------

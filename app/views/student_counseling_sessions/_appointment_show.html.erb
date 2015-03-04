@@ -9,17 +9,17 @@
 
 		<tr>
 			<td class="leftcol"><%= t 'studentcounseling.requested_at' %></td>
-			<td><%= @student_counseling_session.requested_at.strftime("%d %b %y, %l:%M %p") %></td>
+			<td><%= l(@student_counseling_session.requested_at, :format=>"%d %b %y, %l:%M %P") %></td>
 		</tr>
 		
 		<tr>
 			<td class="leftcol"><%= t 'studentcounseling.confirmed_at' %></td>
-			<td><b><%= @student_counseling_session.confirmed_at.strftime("%d %b %y, %l:%M %p")  if @student_counseling_session.confirmed_at %></b></td>
+			<td><b><%= l(@student_counseling_session.confirmed_at, :format=>"%d %b %y, %l:%M %P")  if @student_counseling_session.confirmed_at %></b></td>
 		</tr>
 
 		<tr>
 			<td class="leftcol"><%= t 'programme.duration' %></td>
-			<td><%= @student_counseling_session.duration %> Minutes</td>
+			<td><%= @student_counseling_session.duration %> <%=t('time.minutes')%></td>
 		</tr>
 
 		<tr>
@@ -29,17 +29,17 @@
 
 		<tr>
 			<td class="leftcol"><label for="c_scope"><%= t 'studentcounseling.scope_of_session' %></label></td>
-			<td><%= @student_counseling_session.c_scope %></td>                                                             
+			<td><%= t('studentcounseling.'+@student_counseling_session.c_scope) %></td>                                                             
 		</tr>
 
 		<tr>
 			<td class="leftcol"><label for="c_type"><%= t 'studentcounseling.typesession' %></label></td>
-			<td><%= @student_counseling_session.c_type %></td>                                                             
+			<td><%=  t('studentcounseling.'+@student_counseling_session.c_type) %></td>                                                             
 		</tr>
 
 		<tr>
 			<td class="leftcol"><%= t 'studentcounseling.confirmed' %>?</td>
-			<td><%= @student_counseling_session.is_confirmed? ? "Confirmed" : "Not Confirmed" %></td>                                                             
+			<td><%= @student_counseling_session.is_confirmed? ? (t 'studentcounseling.confirmed') : (t 'studentcounseling.not_confirmed') %></td>                                                             
 		</tr>
 	</table>
 </fieldset>

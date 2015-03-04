@@ -1,12 +1,11 @@
 <div class="fields">
 	<table>
 		<tr>
-		  <td class="tlight"><%= check_kin {f.object.document.refno} %></td>
-		  <td colspan=3><%= check_kin {f.object.document.title} %></td>
-		  <td colspan=2><%= f.object.depart_at.strftime("%d %b") %> - <%= f.object.return_at.strftime("%d %b %Y") %></td>
+		  <td class="tlight" colspan=2><%= t 'claim.document_no' %>: <%= check_kin {f.object.document.refno} %></td>
+		  <td colspan=4><%= t 'claim.purpose' %>: <%= check_kin {f.object.document.title} %></td>
+		  <td colspan=1><%= t 'claim.travel_date' %>: <%= f.object.depart_at.strftime("%d %b") %> - <%= f.object.return_at.strftime("%d %b %Y") %></td>
 		</tr>
-	</table>
-	<table>
+		<% if f.object.travel_claim_logs.count > 0 %>
 		<tr>
 			<th width=10% class="level_2"><%= t 'claim.date' %></th>
 			<th width=9%  class="level_2"><%= t 'claim.depart' %></th>
@@ -16,6 +15,7 @@
 			<th width=10% class="level_2"><%= t 'claim.value' %></th>
 			<th class="level_2"><%= t 'claim.check' %></th>
 		</tr>
+		<% end %>
 		<% f.fields_for :travel_claim_logs do |builder| %>
 		<tr>
 			<td class="tlight"><%= builder.object.travel_on.strftime('%d %b %Y') %></td>
@@ -24,10 +24,10 @@
 			<td><%= builder.object.destination %></td>
 			<td class="tright"><%= builder.object.mileage %><label> km</label></td>
 			<td class="tright"><%= ringgols(builder.object.km_money) %></td>
-			<td width=27% style="padding-left:15px;"%>
-				<label><%= builder.radio_button :checker, 'true' %> OK <%= builder.radio_button :checker, 'false' %> Query : <%= builder.text_field :checker_notes, :size => '15' %></td>
+			<td width=27% style="padding-left:15px;">
+				<%= builder.radio_button :checker, 'true' %><label> OK </label><%= builder.radio_button :checker, 'false' %><label> <%=t('claim.query')%> </label>: <%= builder.text_field :checker_notes, :size => '15' %></td>
 		</tr>
-	<% end %>
+	        <% end %>
 	</table>
 	
 	

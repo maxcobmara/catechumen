@@ -1,17 +1,17 @@
 <% if @new_type == "1" %>
 	
-	<h3>New Examination Mark</h3>
+	<h3><%=t('exammark.new')%></h3>
 
 	<% form_for(@exammark) do |f| %>
   		<%= f.error_messages %>
 		<%=render :partial => 'form', :locals => {:f => f} %> 
-  		<p><%= f.submit 'Create', :name =>:new_submit %></p>
+  		<p><%= f.submit t('create'), :name =>:new_submit %></p>
 	<% end %>
 
 <% elsif @new_type == "2" %>
 
 	<!--start-trial new exammark by exampaper (filtered by exam paper)-12Sept2012-->
-	<h3>Multiple New Examination Marks</h3>
+	<h3><%=t('exammark.multiple_new_title')%></h3>
 	
 	<% form_tag :action => 'create' do |f|%>
 		<% @exammarks.each_with_index do |exammark, index| %>
@@ -20,7 +20,7 @@
 				<%#=render :partial => 'form_by_paper_by_programme', :locals => {:f => f,:index=>index} %>
 			<% end %>	<!-- end of - @exammarks.each_with_index -->
 		<% end %>	<!-- end of - fields_for "exammarks[#{index}]"-->
-		<p><%= f.submit 'Create By Paper',:name => :new_submit %></p>
+		<p><%= f.submit t('exammark.create_by_paper'),:name => :new_submit %></p>
 	<% end %>	<!-- end of - form_tag :action => 'create' do |f| %>-->
 	<!--end-trial new exammark by exampaper (filtered by programme)-12Sept2012-->
 	
@@ -28,7 +28,7 @@
 <% elsif @new_type == "3" %>
 
 	<!--start-trial new exammark by intake & paper-12Sept2012-->
-	<h3>Multiple New Examination Marks (by Intake)</h3>
+	<h3><%=t('exammark.multiple_new_intake_title')%></h3>
 	
 		<!---->
 		<%=render :partial => 'form_multiple_intake'%>
@@ -37,4 +37,4 @@
 
 <% end %>
 
-<%= link_to 'Back', exammarks_path %>
+<%= link_to (t 'back'), exammarks_path %>

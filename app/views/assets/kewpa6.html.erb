@@ -1,14 +1,18 @@
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
-	<form action="#">
-			<script>
-			document.write("<input type='button' " +
-			"onClick='window.print()' " +
-			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
-	</form>
-	
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
+<form>
+
+<div id="hideLink">
+<%= link_to (t 'edit'), edit_asset_path(@asset) %> |
+<%= link_to (t 'back'), assets_path %>
+</div><br>
 <div class="A4landscape" style="border: none;">
 <BR/>
 <table class="plong">
@@ -97,7 +101,7 @@
 				<td class="tdata"><%=h loanable.loanofficer.blank? ? "": loanable.loanofficer.name %></td>
 				<td class="tdata" style="width:70px;">
 					<%=h loanable.approved_date.blank? ? "" : loanable.approved_date.strftime("%d %b %Y")%></td>
-				<td class="tdata"><%=h loanable.receivedpfficer.blank? ? "": loanable.receivedpfficer.name %></td>
+				<td class="tdata"><%=h loanable.receivedofficer.blank? ? "": loanable.receivedofficer.name %></td>
 				<td class="tdata" style="width:70px;">
 					<%=h loanable.returned_on.blank? ? "" : loanable.returned_on.strftime("%d %b %Y")%></td>
 				<td class="tdata" style="width:80px;">&nbsp;</td>
@@ -108,8 +112,3 @@
 	</tbody>
 </table>
 <div>	
-	
-
-<div id="hideLink">
-<%= link_to 'Back', assets_path %>
-</div>

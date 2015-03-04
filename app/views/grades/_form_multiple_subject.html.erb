@@ -11,12 +11,12 @@
 			<% if index==0 %>
 			<div class="tform">
 
-			  <H2>Grade Details</H2>
+			  <H2><%=t('grade.details')%></H2>
 
 
 						<table width=100%>
 							<tr>
-								<td class="leftcol"><label>Subject</label></td>
+								<td class="leftcol"><label><%=t('grade.subject_id')%></label></td>
 								<td><%# @selected_exam = Exam.find(@examid)%>
 									<%# @selected_subject = Programme.find(@subjectid) %>
 									<% @selected_subject = Programme.find(:first,:conditions=>['id=?',@subjectid]) %>
@@ -47,20 +47,20 @@
 								</td>
 							</tr>		
 							<tr>
-								<td class="leftcol" style="vertical-align:middle;"><label>Student Intake</label></td>
+								<td class="leftcol" style="vertical-align:middle;"><label><%=t('student.intake')%></label></td>
 								<td>							
 									<%# @intakes=[] %>
 									<%# @intake_list = Student.find(:all,:conditions=> ['course_id=?',@programmeid]).group_by{|l|l.intake}%>
 									<%# @counter = 0 %>
 									<%# @intake_list.each do |m,n| %>
-										<%# @intakes<<m %>
+										<%# @intakes << m %>
 									<%# end %>
 									<%@intakes.each_with_index do |n,index|%>
 										<%if n.to_s == @iii %><!--yes--><%@aa=index%><%else %><!--no--><% end %>
 									<% end %>
 									
 									<% if @aa.nil? %>
-										<%= f.select :intake_id, @intakes, { :include_blank=> 'Select Intake'}, 
+										<%= f.select :intake_id, @intakes, { :include_blank=> (t 'select')}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :marks_multiple), 
 										:url => {:action=>'view_grades_form_multiple_subject'}, 
 										:with => "'intakeid='+$('"+"grades_0_intake_id"+"').value+'&subjectid='+'#{@subjectid}'+'&programmeid='+'#{@programmeid}'  ") %>
@@ -68,7 +68,7 @@
 										<!--use for default in partial:weightage_multiple-->
 										<%@intake_id = @intakes[@aa]%>
 										<!--use for default in partial:weightage_multiple-->
-										<%= f.select :intake_id, @intakes, {:selected=>@intakes[@aa], :include_blank=> 'Select Intake'}, 
+										<%= f.select :intake_id, @intakes, {:selected=>@intakes[@aa], :include_blank=> (t 'select')}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :marks_multiple), 
 										:url => {:action=>'view_grades_form_multiple_subject'}, 
 										:with => "'intakeid='+$('"+"grades_0_intake_id"+"').value+'&subjectid='+'#{@subjectid}'+'&programmeid='+'#{@programmeid}'  ") %>
@@ -78,7 +78,7 @@
 							</tr>
 							<!---->
 							<tr>
-								<td class="leftcol">Formative Score</td>
+								<td class="leftcol"><%=t('grade.formative_scores')%></td>
 								<td>	
 									<!---->
 									<%# if @grades[0].id.nil? %>
@@ -87,11 +87,11 @@
 										:url => {:action=>'update_formative_scores'}, 
 										:with => "'formativeqty='+$('"+"grades_0_formative_scores_var"+"').value ") %>
 									<%# else %>
-										<%= f.select :formative_scores_var, ['Modify',1,2,3,4,5,6], {:selected=>'Modify'}, 
+										<%= f.select :formative_scores_var, [(t 'modify'),1,2,3,4,5,6], {:selected=>(t 'modify')}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :formative_scores_div), 
 										:url => {:action=>'update_formative_scores'}, 
 										:with => "'formativeqty='+$('"+"grades_0_formative_scores_var"+"').value ") %>
-										<font size=-2>(Default value = 6 types)</font>
+										<font size=-2><%=t('grade.default_value')%></font>
 									<%# end %>
 										<%= tag("div", :id => form_tag_id(f.object_name, :formative_scores_div)) %>
 											<% @formative_qty = 6 %>
@@ -107,40 +107,40 @@
 
 							<!---->
 							<tr>
-								<td class="leftcol">Summative Weightage</td>
+								<td class="leftcol"><%=(t 'grade.summative_weightage').titleize %></td>
 								<td>	
 									<!---->
 									<!--if formative_scores_var==1-->
 									<SPAN class="bong", style="display:none;">
-										<!--1--><%= f.select :summative_weightage, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										<!--1--><%= f.select :summative_weightage, Grade::WEIGHTAGE, { :include_blank=> (t 'select')}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 										:url => {:action=>'update_summative_weightage'}, 
 										:with => "'weightage='+$('"+"grades_0_summative_weightage"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
 										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&subjectid='+'#{@subjectid}'") %>
 									</SPAN>
 									<SPAN class="koik", style="display:none;">
-										<!--2--><%= f.select :summative_weightage2, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										<!--2--><%= f.select :summative_weightage2, Grade::WEIGHTAGE, { :include_blank=> (t 'select')}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 										:url => {:action=>'update_summative_weightage'}, 
 										:with => "'weightage='+$('"+"grades_0_summative_weightage2"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
 										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&subjectid='+'#{@subjectid}' ") %>
 									</SPAN>
 									<SPAN class="three", style="display:none;">
-										<!--3--><%= f.select :summative_weightage3, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										<!--3--><%= f.select :summative_weightage3, Grade::WEIGHTAGE, { :include_blank=> (t 'select')}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 										:url => {:action=>'update_summative_weightage'}, 
 										:with => "'weightage='+$('"+"grades_0_summative_weightage3"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
 										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value+'&subjectid='+'#{@subjectid}' ") %>
 									</SPAN>
 									<SPAN class="four", style="display:none;">
-										<!--4--><%= f.select :summative_weightage4, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										<!--4--><%= f.select :summative_weightage4, Grade::WEIGHTAGE, { :include_blank=> (t 'select')}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 										:url => {:action=>'update_summative_weightage'}, 
 										:with => "'weightage='+$('"+"grades_0_summative_weightage4"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
 										+'&formativeqty='+$('"+"grades_0_formative_scores_var"+"').value	+'&formativetype0='+$('"+"grades_0_scores_attributes_0_type_id"+"').value+'&formativetype1='+$('"+"grades_0_scores_attributes_1_type_id"+"').value+'&formativetype2='+$('"+"grades_0_scores_attributes_2_type_id"+"').value+'&formativetype3='+$('"+"grades_0_scores_attributes_3_type_id"+"').value+'&formativeweight0='+$('"+"grades_0_scores_attributes_0_weightage"+"').value+'&formativedesc0='+$('"+"grades_0_scores_attributes_0_description"+"').value+'&formativeweight1='+$('"+"grades_0_scores_attributes_1_weightage"+"').value+'&formativedesc1='+$('"+"grades_0_scores_attributes_1_description"+"').value+'&formativeweight2='+$('"+"grades_0_scores_attributes_2_weightage"+"').value+'&formativedesc2='+$('"+"grades_0_scores_attributes_2_description"+"').value +'&formativeweight3='+$('"+"grades_0_scores_attributes_3_weightage"+"').value+'&formativedesc3='+$('"+"grades_0_scores_attributes_3_description"+"').value+'&subjectid='+'#{@subjectid}'  ") %>
 									</SPAN>
 									<SPAN class="five", style="display:none;">
-										<!--5--><%= f.select :summative_weightage5, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+										<!--5--><%= f.select :summative_weightage5, Grade::WEIGHTAGE, { :include_blank=> (t 'select')}, 
 										:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 										:url => {:action=>'update_summative_weightage'}, 
 										:with => "'weightage='+$('"+"grades_0_summative_weightage5"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
@@ -165,7 +165,7 @@
 						<%# else %>
 									<%#####################%>
 										<SPAN class="six", style="display:block;">
-											<!--5-->6b<%= f.select :summative_weightage6, Grade::WEIGHTAGE, { :include_blank=> 'Select'}, 
+											<!--5-->6b<%= f.select :summative_weightage6, Grade::WEIGHTAGE, { :include_blank=> (t 'select')}, 
 											:onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), 
 											:url => {:action=>'update_summative_weightage'}, 
 											:with => "'weightage='+$('"+"grades_0_summative_weightage6"+"').value+'&intakeid='+$('"+"grades_0_intake_id"+"').value+'&programmeid='+'#{@programmeid}'
@@ -274,6 +274,6 @@
 			
 		<% end %>	<!-- end of - @grades.each_with_index -->
 	<% end %>	<!-- end of - fields_for "grades[#{index}]"-->
-	<p><%= f.submit 'Create By Subject',:name => :new_submit %></p>
+	<p><%= f.submit t('grade.create_by_subject'), :name => :new_submit %></p>
 <% end %>	<!-- end of - form_tag :action => 'create' do |f| %>-->
 <!--end-trial new grades by subject 3June2013-->

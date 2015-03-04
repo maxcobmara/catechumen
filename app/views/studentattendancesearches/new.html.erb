@@ -1,5 +1,5 @@
 <div class="tform">
-	<H2>Student Attendances Search</H2>
+	<H2><%=t('equery.student_attendance.search')%></H2>
 
 <% form_for @studentattendancesearch do |f| %>
   <%= f.error_messages %>
@@ -7,15 +7,15 @@
 		<%= hidden_field_tag :method,  1 %>
 		
 		<table width=100% >
-			<tr><td colspan=2>Search Students Attendance By :</td></tr>
+			<tr><td colspan=2><%=t('equery.student_attendance.search_by')%> :</td></tr>
 			<!--retrieve data for weeklytimetable_details_ids-->
 			<% @exist_attendance_ids = StudentAttendance.all.map(&:weeklytimetable_details_id)%>
 			<% @topics_ids_this_prog = Programme.at_depth(3) %><!--select TOPICS for all programme-->
 			<% @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) AND id IN(?)',@topics_ids_this_prog,@exist_attendance_ids])%>
 			<!--retrieve data for weeklytimetable_details_ids-->
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;Schedule / Class</td>
-				<td><%= f.collection_select :schedule_id, @schedule_list, :id, :subject_day_time, :include_blank=>"Select" %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%=t('equery.student_attendance.schedule_class')%></td>
+				<td><%= f.collection_select :schedule_id, @schedule_list, :id, :subject_day_time, :include_blank=>(t 'select') %></td>
 			</tr>
 			<!--retrieve data for intake_ids-->
 			<% @intatake = [] %>
@@ -34,20 +34,20 @@
 			<%# end %>
 			<!--retrieve data for intake_ids-->
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :intake %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.intake') %></td>
 				<td><%#= f.text_field :intake_id %>
-					<%#= f.collection_select :intake_id, @intatake2, :intake, :intake_acryn_prog, :include_blank=>"Select" %><!--intake from STUDENT table-->
-					<%= f.collection_select :intake_id, @intake_fr_intaketable, :id, :intake_programme, :include_blank=>"Select" %><!--intake from INTAKE table-->	
+					<%#= f.collection_select :intake_id, @intatake2, :intake, :intake_acryn_prog, :include_blank=>(t 'select') %><!--intake from STUDENT table-->
+					<%= f.collection_select :intake_id, @intake_fr_intaketable, :id, :intake_programme, :include_blank=>(t 'select') %><!--intake from INTAKE table-->	
 				</td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :matrix_no %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.matrixno') %></td>
 				<td><%= f.text_field :student_id %></td>
 			</tr>
 		</table>
 		
 	<% end %>
-  <p><%= f.submit "Search" %>&nbsp;<font size=-2>Leaves all fields 'blank' / 'unselected' to display ALL records.</font></p>
+  <p><%= f.submit (t 'search') %>&nbsp;<font size=-2><%=t('equery.leaves_all_blank_all_records')%></font></p>
 <% end %>
 
 </div>

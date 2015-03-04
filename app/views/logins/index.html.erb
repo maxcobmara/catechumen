@@ -6,7 +6,7 @@
 	</div>
 </div>
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Course')+ (t 'new'),  new_login_path  %></p>
+	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'login.new'))+ (t 'login.new'),  new_login_path  %></p>
 </div>
 <BR><BR>
 <div class="indextable">
@@ -27,15 +27,15 @@
 	    <td><%=h login.login %></td>
 	    <td><%=h login.email %></td>
 	    <td width=10px>
-						<% if login.staff_id == nil && login.student_id == nil -%>
-							<%= link_to image_tag("accept.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => login %>
-						<% end -%></td>
-	    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => login %></td>
-	    <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'), :action => 'edit', :id => login %></td>
-	    <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), login_path, :confirm => "Are you sure you want to delete #{login.login_nama}?", :method => :delete %></td>
+	      <% if login.staff_id == nil && login.student_id == nil -%>
+			<%= link_to image_tag("accept.png",     :border => 0, :title => (t 'login.verify')), :action => 'edit', :id => login %>
+	      <% end -%></td>
+	    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => login %></td>
+	    <td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => login %></td>
+	    <td width=10px><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), login_path, :confirm => (t 'login.are_you_sure')+" #{login.login_nama}?", :method => :delete %></td>
 	  </tr>
 	<% end %>
 	</table>
 </div>
 <br />
-<%= link_to (t 'login.newlogin'), new_login_path %>
+<%= link_to (t 'login.new'), new_login_path %>

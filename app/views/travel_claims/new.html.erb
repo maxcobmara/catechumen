@@ -2,34 +2,26 @@
   <%= f.error_messages %>
 	<div class="tform">
 		<H2><%= t 'claim.new' %></H2>
-		<% @my_approved_unclaimed_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=?', Login.current_login.staff_id, true])%>
+		<%# @my_approved_unclaimed_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=? ', Login.current_login.staff_id, true])%>
+		<% @my_approved_unclaimed_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=? and travel_claim_id is null', Login.current_login.staff_id, true])%>
 		<% if @my_approved_unclaimed_requests.count < 1 %>
-		You have no approved travel requests for processing
-		</div>
+			  <%=t('claim.no_approved_travel_request')%>
+			  </div>
 		<% else %> 
 				<table>
 					<tr>
-						<td class="leftcol"><label for="claimsmonth"><b><%= t 'claim.claim_for' %></b></label></td>
+						<td class="leftcol"><label for="claimsmonth"><b><%= t('claim.claim_for') %></b></label></td>
 						<td><%= f.date_select :claim_month,  :order => [:month, :year], :default => 1.month.ago.beginning_of_month %> </td>
 					</tr>
-
 					<tr>
-						<td class="leftcol"><label for="staff_id"><b><%= 'claim.staff_name:' %></b></label></td>
+						<td class="leftcol"><label for="staff_id"><b><%= t('claim.staff_id')%></b></label></td>
 						<td><%= f.collection_select :staff_id, Staff.find(:all, :conditions => ["id = ?", current_login.staff_id]), :id, :name %></td>
 					</tr>
 				</table><BR/>
-				<%=render :partial => 'form', :locals => {:f => f} %> 
-		
-		</div><BR/>
-
-
-
-
-  <p>
-    <%= f.submit (t 'create') %>
-  </p>
-
-	<% end %>
+				<%=render :partial => 'form', :locals => {:f => f} %> 		
+			</div><BR/>
+			<p><%= f.submit (t 'create') %></p>
+		<% end %>
 <% end %>
 
 <%= link_to (t 'back'), travel_claims_path %>

@@ -4,14 +4,16 @@
 	document.write("<input type='button' " +
 	"onClick='window.print()' " +
 	"class='printbutton' " +
-	"value='Print This Page'/>");
+	"value='<%=escape_javascript(t 'print')%>'/>");
 	</script>
-
+<div id="hideLink">
+<%= link_to (t 'back'), travel_claims_path %>
+</div><BR>
 <div class="A4potrait_paged">
 	<BR/>
 	<p class="marginright" align="right"><b>Lampiran A</b></p>
 	<H4 align="center"><b>KENYATAAN TUNTUTAN PERJALANAN DALAM NEGERI</b><BR/>
-	BAGI BULAN : <SPAN CLASS="filler"><%=h check_kin_blank {@travel_claim.claim_month.strftime("%b").upcase} %></SPAN>
+	BAGI BULAN : <SPAN CLASS="filler"><%=h check_kin_blank {l(@travel_claim.claim_month, :format => "%b").upcase} %></SPAN>
 	TAHUN : <SPAN CLASS="filler"><%=h check_kin_blank {@travel_claim.claim_month.strftime("%Y")} %></SPAN></H4>
 	
 	<div id="tprintreport">
@@ -43,54 +45,61 @@
 			<tr>
 				<td rowspan=3>PENDAPATAN (RM)</td>
 				<td>GAJI</td>
-				<td class="filler"><%= @travel_claim.staff.starting_salary? ? @travel_claim.staff.starting_salary : "&nbsp;" %><%#=h ringgols(@travel_claim.staff.starting_salary) %></td>
+				<td class="filler"><%= @travel_claim.staff.current_salary? ? ringgols(@travel_claim.staff.current_salary) : "&nbsp;" %><%#=h ringgols(@travel_claim.staff.starting_salary) %></td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>ELAUN-ELAUN</td>
-				<td class="filler">&nbsp;</td>
+				<td class="filler"><%= @travel_claim.staff.allowance? ? ringgols(@travel_claim.staff.allowance) : "&nbsp;" %></td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>JUMLAH</td>
-				<td class="filler">&nbsp;</td>
+				<td class="filler"><%= @travel_claim.staff.current_salary? ? ringgols(@travel_claim.staff.current_salary+@travel_claim.staff.allowance) : "&nbsp;" %></td>
 			</tr>
 			
 			<tr>
 				<td rowspan=4>KENDERAAN</td>
 				<td>JENIS MODEL</td>
-				<td class="filler">&nbsp;</td>
+				<td class="filler"><%= @travel_claim.staff.vehicles.try(:first).try(:type_model) %>&nbsp;</td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>NO PENDAFTARAN</td>
-				<td class="filler">&nbsp;</td>
+				<td class="filler"><%= @travel_claim.staff.vehicles.try(:first).try(:reg_no) %>&nbsp;</td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>KUASA (C.C)</td>
-				<td class="filler">&nbsp;</td>
+				<td class="filler"><%= @travel_claim.staff.vehicles.try(:first).try(:cylinder_capacity) %>&nbsp;</td>
 			</tr>
 			
 			<tr>
 				<!-- td is rowspanned-->
 				<td>KELAS TUNTUTAN</td>
 				<td class="filler"><!--A / B / C / D / E-->
-						<% if @travel_claim.staff.transportclass_id == 'A' %>
+					<%# (@travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true)) %>
+					<% if @travel_claim.staff.current_salary != nil && @travel_claim.staff.vehicles.count > 0 %>
+						<%# if @travel_claim.staff.transportclass_id == 'A' %>
+						<%# if @travel_claim.travel_requests.first.transport_class == 'A' %>
+						<% if @travel_claim.transport_class == 'A' %>
 							A <del>/ B / C / D / E</del>
-						<% elsif @travel_claim.staff.transportclass_id == 'B' %>
+						<% elsif @travel_claim.transport_class == 'B' %>
 							<del>A&nbsp;/</del>&nbsp;B&nbsp;<del>/&nbsp;C&nbsp;/&nbsp;D&nbsp;/&nbsp;E</del>
-						<% elsif @travel_claim.staff.transportclass_id == 'C' %>
+						<% elsif @travel_claim.transport_class == 'C' %>
 							<del>A&nbsp;/&nbsp;B&nbsp;/</del>&nbsp;C&nbsp;<del>/&nbsp;D&nbsp;/&nbsp;C</del>
-						<% elsif @travel_claim.staff.transportclass_id == 'D' %>
+						<% elsif @travel_claim.transport_class == 'D' %>
 							<del>A&nbsp;/&nbsp;B&nbsp;/&nbsp;C&nbsp;/</del>&nbsp;D&nbsp;<del>/&nbsp;E</del>
-						<% elsif @travel_claim.staff.transportclass_id == 'E' %>
+						<% elsif @travel_claim.transport_class == 'E' %>
 							<del>A&nbsp;/&nbsp;B&nbsp;/&nbsp;C&nbsp;/&nbsp;D&nbsp;/</del>&nbsp;E
 						<% end %> <!--"Diluluskan / <del> Tidak Diluluskan </del>  " : "<del> Diluluskan </del> /  Tidak Diluluskan" -->
+					<% else %>
+						A&nbsp;/&nbsp;B&nbsp;/&nbsp;C&nbsp;/&nbsp;D&nbsp;/&nbsp;E
+					<% end %>
 				</td>
 			</tr>
 			
@@ -106,12 +115,12 @@
 			
 			<tr>
 				<td>ALAMAT PENGINAPAN</td>
-				<td colspan=2 class="filler">&nbsp;</td>
+				<td colspan=2 class="filler"><% if (@travel_claim.travel_claim_allowances.map(&:expenditure_type) & [31,32]).count > 0 %><%=simple_format(@travel_claim.accommodations)%><% end %>&nbsp;</td>
 			</tr>
 			
 			<tr>
 				<td>NO GAJI</td>
-				<td colspan=2 class="filler">[ Update with Staff Information ]</td> <!--TODO : DO THIS-->
+				<td colspan=2 class="filler"><%=h @travel_claim.staff.try(:salary_no)%>&nbsp;</td>
 			</tr>
 			
 			<tr>
@@ -173,9 +182,9 @@
 		<tr class="grey2">
 			<td colspan="6">
 					TUJUAN<br>
-					No. Rujukan : <%=h travel_request.document.refno %> bertarikh <%=h travel_request.document.letterdt %><br>
-					Tajuk       : <%=h travel_request.document.title %><br>
-					Tarikh      :<%=h travel_request.depart_at.strftime("%d/%m/%Y") %>-<%=h travel_request.return_at.strftime("%d/%m/%Y") %>
+					No. Rujukan : <%=h travel_request.document.try(:refno) %> <%unless  travel_request.document.nil? %>bertarikh<%end%> <%=h travel_request.document.try(:letterdt) %><br>
+					Tajuk       : <%=h travel_request.document.try(:title) %><br>
+					Tarikh      : <%=h l(travel_request.depart_at, :format => "%d/%m/%Y") %>-<%=h travel_request.return_at.strftime("%d/%m/%Y") %>
 					<%#=h travel_request.destination %>
 					
 			</td>
@@ -185,32 +194,32 @@
 				<% for travel_claim_log in TravelClaimLog.find(:all, :conditions => ['travel_request_id =?', travel_request.id ]) %>
 
 					<tr>
-						<td><%= travel_claim_log.travel_on.strftime("%d/%m/%Y")%><BR><%= travel_claim_log.travel_on.strftime("(%A)")%></td>
-						<td align='center'><%= travel_claim_log.start_at.strftime("%l:%M%p") %></td>
-						<td align='center'><%= travel_claim_log.finish_at.strftime("%l:%M%p") %></td>
+						<td><%= travel_claim_log.travel_on.strftime("%d/%m/%Y")%><BR><%= l(travel_claim_log.travel_on, :format =>"(%A)")%></td>
+						<td align='center'><%= l(travel_claim_log.start_at, :format => "%l:%M %p") %></td>
+						<td align='center'><%= l(travel_claim_log.finish_at, :format => "%l:%M %p") %></td>
 						<td align='center'><%= travel_claim_log.destination %></td>
-						<td align='right'><%= travel_claim_log.mileage %></td>
-						<td align='right'><%= ringgols(travel_claim_log.km_money) %></td>
+						<td align='right'><%= travel_claim_log.mileage %>&nbsp;</td>
+						<td align='right'><%= ringgols(travel_claim_log.km_money) %>&nbsp;</td>
 					</tr>
 
 				<% end %>
 		<tr>
-			<td colspan=4>Totals</td>
-			<td align='right'><%= travel_request.log_mileage %></td>
-			<td align='right'><%= ringgols(travel_request.log_fare) %></td>
+			<td colspan=4>Jumlah</td>
+			<td align='right'><%= travel_request.log_mileage %>&nbsp;</td>
+			<td align='right'><%= ringgols(travel_request.log_fare) %>&nbsp;</td>
 		</tr>
 		
 		
 		<tr>
-			<td colspan=4>Total KM</td>
+			<td colspan=4>Jumlah KM</td>
 			<td align='right'><%= @travel_claim.total_mileage %></td>
-			<td align='right'><%= ringgols(@travel_claim.total_km_money) %></td>
+			<td align='right'><%= ringgols(@travel_claim.total_km_money) %>&nbsp;</td>
 		</tr>
 	</table>
 	
 	<p>Nota : </p>
 	<p>Ruangan 'JARAK' : Nyatakan jarak km bagi membawa kenderan sendiri sahaja <BR/>
-		 Ruangan 'JUMLAH': Nyatakan jumlah tambang taksi sahaja
+		 Ruangan 'JUMLAH': Nyatakan jumlah tambang teksi sahaja
 	
 	</div>	</div></div></P></form>
 	<P CLASS="breakhere">
@@ -475,6 +484,12 @@
 	</table>
   <BR>
 	
+	</div></div></P>
+	<P CLASS="breakhere">
+		
+	<div class="A4potrait_paged">
+		<div id="tprintreport">
+	<BR>	
 	<!-- Pengakuan -->
 	<table width=100% border=1px cellspacing=0 align="center" >
 		<tr>
@@ -518,6 +533,29 @@
 	</table>
 	<BR>
 		
+	<!-- Pengesahan Kewangan -->
+	<table  width=100% border=1px cellspacing=0 align="center" >
+		<tr>
+			<th>PENGESAHAN KEWANGAN</th>
+		</tr>
+		<tr>
+			<td>
+				<table>
+						<tr>
+							<td>Tarikh: <%=h tarikh(@travel_claim.checked_on) %></td>
+						</tr>
+						<tr>
+							<td>Nama: <%=h @travel_claim.checker.try(:name) %></td>
+						</tr>
+						<tr>
+							<td>Jawatan: <%=h @travel_claim.checker.try(:position).try(:name)%></td>
+						</tr>
+			  </table>
+	    </td>
+	  </tr>
+	</table>
+	<BR>
+	
 	<!-- Pengesahan -->
 	<table  width=100% border=1px cellspacing=0 align="center" >
 		<tr>
@@ -533,10 +571,10 @@
 							<td>Tarikh: <%=h tarikh(@travel_claim.approved_on) %></td>
 						</tr>
 						<tr>
-							<td>Nama: <%=h check_kin {@travel_claim.approver.name} %></td>
+							<td>Nama: <%=h @travel_claim.approver.try(:name) %></td>
 						</tr>
 						<tr>
-							<td>Jawatan: <%=h check_kin {@travel_claim.approver.position.name} %></td>
+							<td>Jawatan: <%=h @travel_claim.approver.try(:position).try(:name) %></td>
 						</tr>
 			  </table>
 	    </td>
@@ -569,7 +607,7 @@
 	  </tr>
 	</table>
 	<BR><BR>
-	
+	</div></div></P></form>
 </div>
 </fieldset>
 </div>

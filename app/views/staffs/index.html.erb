@@ -5,7 +5,7 @@
 		<h2 class="left"><%= t 'staff.list' %></h2>
 		<div class="right">
 			<% form_tag staffs_path, :method => 'get' do %>
-			<%= text_field_tag :search, params[:search], :placeholder => "MyKadNo, Name"  %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'staff.mykadno_name')  %>
 			<%= submit_tag I18n.t('search'), :icno => nil %>
 			<% end %>
 		</div>
@@ -13,7 +13,7 @@
 </div>
 <% if permitted_to? :create, @staff %>
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title =>(t 'staff.create')) + t('staff.create'), new_staff_path %></p>
+	<p><%= link_to image_tag("add.png", :border => 0, :title =>(t 'staff.new')) + t('staff.new'), new_staff_path %></p>
 </div>
 <% end %>
 <BR><BR>
@@ -30,12 +30,12 @@
 		<td><%=h staff.formatted_mykad %></td>
 		<td><%=h staff.name %></td>
 		<td><%=h staff.position.blank? ? "-" : staff.position.name %></td>
-		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => staff %></td>
-		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => staff %></td>
-		<% if permitted_to? :destroy, @staff%>
-			  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), staff, :confirm => 'Are you sure?', :method => :delete %></td>
-		<% end %>
+		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => staff %></td>
+		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => staff %></td>
 		<td width=10px><%= link_to image_tag("printer.png", :border => 0, :title => 'Borang Maklumat Staf'), :action => 'borang_maklumat_staff', :id => staff %></td>
+		<% if permitted_to? :destroy, @staff%>
+			  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), staff, :confirm =>(t 'are_you_sure'), :method => :delete %></td>
+		<% end %>
 	</tr>
 	<% end %>
 	</table>
@@ -43,6 +43,6 @@
 
 <br />
 <% if permitted_to? :create, @staff%>
-<%= link_to (t 'staff.create'), new_staff_path %>
+<%= link_to (t 'staff.new'), new_staff_path %>
 <% end %>
 <br />

@@ -5,8 +5,8 @@
 		<h2 class="left"><%= t 'events.list' %></h2>
 		<div class="right">
 			<% form_tag events_path, :method => 'get' do %>
-			<%= text_field_tag :search, params[:search], :placeholder => "Event Name, Location" %>
-			<%= submit_tag "Search", :eventname => nil %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'events.event_name_location') %>
+			<%= submit_tag (t 'search'), :eventname => nil %>
 			<% end %>
 		</div>
   </div>
@@ -27,15 +27,15 @@
 
 		<% @events.each do |event| %>
 	  <tr>
-	    <td><%=h event.start_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.start_at.nil? %></td>
-	    <td><%=h event.end_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.end_at.nil? %></td>
+	    <td><%=h l(event.start_at, :format =>" %d %b %y, %a, %I:%M%P  ") unless event.start_at.nil? %></td>
+	    <td><%=h l(event.end_at, :format =>" %d %b %y, %a, %I:%M%P  ") unless event.end_at.nil? %></td>
 	    <td><%=h event.eventname %></td>
 	    <td><%=h event.location %></td>
 	    <td><%=h event.officiated %></td>
 	    <td><%=h event.staff.blank? ? "-" : event.staff.name %></td>
-			<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => event %></td>
-			<td width=10px ><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => event %></td>
-			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), event, :confirm => 'Are you sure?', :method => :delete %></td>
+			<td width=10px ><%= link_to image_tag("document.png", :border => 0, :title=>(t 'show')), :action => 'show', :id => event %></td>
+			<td width=10px ><%= link_to image_tag("edit.png", :border => 0, :title=>(t 'edit')), :action => 'edit', :id => event %></td>
+			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title =>(t 'delete')), event, :confirm => (t 'are_you_sure'), :method => :delete %></td>
 		</tr>
 		<% end %>
 	</table>

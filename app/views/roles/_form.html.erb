@@ -1,14 +1,15 @@
 <div class="tform">
+  <H2><%= t 'role.role_details' %></H2>
   <table width=100% >
-	
-	
 <!--Roles Info-->
 	<tr>
-		<th colspan = 2><%= t 'role.role_details' %></th>
-	</tr>
-	<tr>
 		<td class="leftcol"><label for="name"><%= t 'login.role_name' %>: </label></td>
-		<td><%= f.text_field :name %></td>
+		<td>
+			<%= f.text_field :name %>
+			<% unless @role.new_record? %>
+				&nbsp;<font color="grey"> (<%=t('role.authname')%> <%=h t('login.'+@role.authname) %>)</font>
+			<% end %>
+		</td>
 	</tr>
 
 </table>		

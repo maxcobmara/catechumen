@@ -1,16 +1,20 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Timetables</h2>
+		<h2 class="left"><%=t('timetable.title')%></h2>
 		<div class="right">
-	  </div>
+			<% form_tag timetables_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'timetable.code_name_description') %>
+			<%= submit_tag I18n.t('search'), :headline => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
 
 
 <div class="toolbar">
 	<table width=100%><tr>
-		<td><p><%= link_to image_tag("add.png", :border => 0, :title => 'Create a new Timetable') + "New Timetable", new_timetable_path %></p></td>
+		<td><p><%= link_to image_tag("add.png", :border => 0, :title => (t 'timetable.new')) + (t 'timetable.new'), new_timetable_path %></p></td>
 	</tr></table>
 </div>
 
@@ -19,11 +23,11 @@
 
 <table>
   <tr>
-    <th>Code</th>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Created by</th>
-		<th colspan=3 class="ac">Control</th>
+    <th><%=t('timetable.code')%></th>
+    <th><%=t('timetable.name')%></th>
+    <th><%=t('timetable.description')%></th>
+    <th><%=t('timetable.created_by')%></th>
+    <th colspan=3 class="ac"><%=t('control')%></th>
   </tr>
 
 <% @timetables.each do |timetable| %>
@@ -32,9 +36,9 @@
     <td><%=h timetable.name %></td>
     <td><%=h timetable.description %></td>
     <td><%=h check_kin{timetable.creator.name} %></td>
-		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'),                    :action => 'show', :id => timetable %></td>
-		<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => 'Edit'),                    :action => 'edit', :id => timetable %></td>
-		<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), timetable, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => timetable %></td>
+		<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => timetable %></td>
+		<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), timetable, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   </tr>
 <% end %>
 </table>
@@ -42,4 +46,4 @@
 <br />
 </div>
 
-<%= link_to 'New timetable', new_timetable_path %>
+<%= link_to (t 'timetable.new'), new_timetable_path %>

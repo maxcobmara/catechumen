@@ -4,8 +4,11 @@ class LessonPlansController < ApplicationController
   def index
     @position_exist = Login.current_login.staff.position
     if @position_exist 
-      @lesson_plans = LessonPlan.all
+      #@lesson_plans = LessonPlan.find(:all, :order => "lecturer ASC, lecture_date DESC")
+      @lesson_plans = LessonPlan.search(params[:search])
     end
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    @is_admin=true if current_roles.include?("Administration")
     respond_to do |format|
       if @position_exist
         format.html # index.html.erb
@@ -21,7 +24,8 @@ class LessonPlansController < ApplicationController
   # GET /lesson_plans/1.xml
   def show
     @lesson_plan = LessonPlan.find(params[:id])
-
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    @is_admin=true if current_roles.include?("Administration")
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @lesson_plan }
@@ -42,6 +46,10 @@ class LessonPlansController < ApplicationController
   # GET /lesson_plans/1/edit
   def edit
     @lesson_plan = LessonPlan.find(params[:id])
+    @job_type = params[:job_type]
+    #admin
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    @is_admin=true if current_roles.include?("Administration")
   end
 
   # POST /lesson_plans
@@ -66,8 +74,11 @@ class LessonPlansController < ApplicationController
     @lesson_plan = LessonPlan.find(params[:id])
     newlocation = params[:new_location]
     if newlocation!=nil
-      scheduleid = params[:lesson_plan][:schedule]
-      scheduleid = @lesson_plan.schedule if scheduleid==nil
+      if @lesson_plan.is_submitted == true        #after submission -> schedule confirm exist, even validation - schedule must exist upon save
+        scheduleid = @lesson_plan.schedule if scheduleid==nil
+      else
+        scheduleid = params[:lesson_plan][:schedule]
+      end
       if scheduleid!=nil
         schedule = WeeklytimetableDetail.find(scheduleid) 
         schedule.location_desc = newlocation
@@ -104,8 +115,10 @@ class LessonPlansController < ApplicationController
   end
   
   def lessonplan_reporting
-      @lesson_plan = LessonPlan.find(params[:id])  
-      
+    @lesson_plan = LessonPlan.find(params[:id])  
+    #admin
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    @is_admin=true if current_roles.include?("Administration")
   end
   def index_report
     @position_exist = Login.current_login.staff.position

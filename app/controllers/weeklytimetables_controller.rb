@@ -13,7 +13,21 @@ class WeeklytimetablesController < ApplicationController
       end
       #note - restriction : refer authorization rules
       #note - Weeklytimetable listing : based on @programme_id value being sent to 'search' method in staff.rb
-      @weeklytimetables = Weeklytimetable.with_permissions_to(:index).search(@programme_id) 
+      if params[:search]
+	@aa=params[:search][:"(1i)"] 
+        @bb=params[:search][:"(2i)"]
+        @cc=params[:search][:"(3i)"]
+        if (@aa!='' && !@aa.nil?) && (@bb!='' && !@bb.nil?) && (@cc!='' && !@cc.nil?)
+	   @dadidu=''
+           @dadidu=@aa+'-'+@bb+'-'+@cc  
+        else
+          @dadidu=''
+        end
+      else
+	@dadidu=''
+      end
+      params[:search]=nil    #this line is required
+      @weeklytimetables = Weeklytimetable.with_permissions_to(:index).search(@programme_id, @dadidu) 
       
       common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
       @common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
@@ -74,7 +88,35 @@ class WeeklytimetablesController < ApplicationController
   def new
     @weeklytimetable = Weeklytimetable.new
     #@weeklytimetable.weeklytimetable_details.build
-
+    
+    #to restrict - programme & intake listing based on logged-in user --- but ALL for common lecturer subject & administrator
+    @intake_list=[]
+    @lecturer_programme = current_login.staff.position.unit
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
+    programme_list = Programme.find(:all, :conditions =>['course_type=?',"Diploma"]).map(&:name)
+    pengkhususan_list = Programme.find(:all, :conditions =>['course_type=? OR course_type=? OR course_type=?',"Diploma Lanjutan","Pos Basik", "Pengkhususan"]).map(&:name)
+    @is_admin=true if current_roles.include?("Administration")
+    @is_common_lecturer=true if common_subjects.include?(@lecturer_programme)
+    if @is_admin || @is_common_lecturer
+      @intake_list += Programme.roots.map(&:id)
+    end
+    if programme_list.include?(@lecturer_programme)
+      @is_prog_lecturer=true 
+      @programmeid = Programme.find(:first, :conditions => ['name=?', @lecturer_programme]).id 
+      @intake_list << @programmeid
+    end 
+    if ["Diploma Lanjutan","Pos Basik", "Pengkhususan"].include?(@lecturer_programme)
+      pengkhususan_list.each do |khusus|
+        if Position.find(:first, :conditions => ['staff_id=? and tasks_main ILIKE(?)', current_login.staff_id, "%#{khusus}%"])
+          @is_pengkhususan_lecturer=true
+          @programmeid = Programme.find(:first, :conditions => ['name=?', khusus]).id 
+          @intake_list << @programmeid
+        end
+      end
+    end
+    #to restrict - programme & intake listing - END
+      
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @weeklytimetable }

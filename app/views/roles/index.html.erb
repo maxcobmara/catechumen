@@ -5,14 +5,16 @@
 </div>
 <div class="tlist">
 	<table width=90% border="0" cellpadding="0" cellspacing="0">
-		<tr>
-    	<th><%= t 'name' %></th>
-			<th colspan=1 class="ac"><%= t 'control' %></th>
+        <tr>
+        <th><%= t 'name' %></th>
+    	<th><%= (t 'role.authname').titleize %></th>
+	<th colspan=1 class="ac"><%= t 'control' %></th>
   	</tr>
 
 		<% @roles.each do |role| %>
   	<tr>
-    	<td><%=h role.name %></td>
+        <td><%=h role.name %> </td> 
+    	<td><font color="grey"><%=h t('login.'+role.authname) %></font></td>
     	<td width=10px ><%= link_to (t 'icms.show'), role %></td>
     	<!--<td width=10px ><%= link_to 'Edit', edit_role_path(role) %></td>
     	<td width=10px ><%= link_to 'Destroy', role, :confirm => 'Are you sure?', :method => :delete %></td>-->

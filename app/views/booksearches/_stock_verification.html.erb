@@ -1,15 +1,15 @@
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
 	<form action="#">
-			<script>
-			document.write("<input type='button' " +
-			"onClick='window.print()' " +
-			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
+		<script>
+		  document.write("<input type='button' " +
+		  "onClick='window.print()' " +
+		  "class='printbutton' " +
+		  "value='<%=escape_javascript(t 'print')%>'/>");
+		</script>
 	</form>
 	
-	<%= link_to "Back", :controller=>'booksearches', :action => 'new', :searchbooktype => 3 %><br><br>
+	<%= link_to (t 'back'), :controller=>'booksearches', :action => 'new', :searchbooktype => 3 %><br><br>
 	
 <div class="A4potrait" style="border: none;">
 <BR/>
@@ -20,16 +20,16 @@
 					<th class="tright" colspan=6><b></b></th>
 				</tr>
 				<tr>
-					<th  colspan=6><b>BOOK LISTING</b></th>
+					<th  colspan=6><b><%=t('equery.book.book_listing')%></b></th>
 				</tr>
 				<tr>
 					<th colspan=6 style="text-align:left;">
-						Total Books : <%#= @bob %><%=@books.count%> &nbsp;&nbsp;&nbsp;
+						<%=t('equery.book.total') %> : <%#= @bob %><%=@books.count%> &nbsp;&nbsp;&nbsp;
 						<% if @booksearch.classno != '' %>
 							<%="Search by Class No (LC) / (NLM) : " + @booksearch.classno %> &nbsp;&nbsp;&nbsp;
 						<% end %>
 						<% if @booksearch.accessionno_start != '' %> 
-							Search by Accession No ( 
+							<%=t('equery.book.search_by_accessionno')%> ( 
 							<%= @booksearch.accessionno_start %> 
 							<% if @booksearch.accessionno_end %>-
 								<%= @booksearch.accessionno_end %>)
@@ -39,11 +39,11 @@
 				</tr>
 				<tr>
 					<th class="tcol"><b>NO</b></th>
-					<th class="tcol"><b>ACC NO</b></th>
-					<th class="tcol"><b>NLM/LC NO</b></th>
-					<th class="tcol"><b>AUTHOR</b></th>
-					<th class="tcol"><b>TITLE</b></th>
-					<th class="tcol"><b>ISBN NO</b></th>
+					<th class="tcol"><b><%=(t 'book.accessionno').upcase %></b></th>
+					<th class="tcol"><b><%=t('equery.book.nlm_lc') %></b></th>
+					<th class="tcol"><b><%=(t 'book.author').upcase %></b></th>
+					<th class="tcol"><b><%=(t 'book.title').upcase %></b></th>
+					<th class="tcol"><b>ISBN</b></th>
 				</tr>
 	</thead>
 	
@@ -102,5 +102,5 @@
 	
 
 <div id="hideLink">
-<%= link_to 'Back', books_path %>
+<%= link_to (t 'equery.book.back_to_book'), books_path %>
 </div>

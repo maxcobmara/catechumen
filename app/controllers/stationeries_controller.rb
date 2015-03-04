@@ -45,7 +45,7 @@ class StationeriesController < ApplicationController
 
     respond_to do |format|
       if @stationery.save
-        flash[:notice] = 'Stationery was successfully created.'
+        flash[:notice] = t('supplier.title')+" "+t('created')
         format.html { redirect_to(@stationery) }
         format.xml  { render :xml => @stationery, :status => :created, :location => @stationery }
       else
@@ -62,7 +62,7 @@ class StationeriesController < ApplicationController
 
     respond_to do |format|
       if @stationery.update_attributes(params[:stationery])
-        flash[:notice] = 'Stationery was successfully updated.'
+        flash[:notice] =  t('supplier.title')+" "+t('updated')
         format.html { redirect_to(@stationery) }
         format.xml  { head :ok }
       else

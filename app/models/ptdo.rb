@@ -18,19 +18,19 @@ class Ptdo < ActiveRecord::Base
   
   def apply_dept_status
     if (unit_approve == false || dept_approve == false || final_approve == false)
-      "Application Rejected"
+      I18n.t("ptdos.application_rejected")#"Application Rejected"
     elsif unit_approve.nil? == true
-      "Awaiting Unit Approval"
+      I18n.t("ptdos.awaiting_unit_approval")#"Awaiting Unit Approval"
     elsif unit_approve == true && dept_approve.nil? == true
-      "Approved by Unit head, awaiting Dept approval"
+      I18n.t("ptdos.approved_unit_head_await_dept_approval")#"Approved by Unit head, awaiting Dept approval"
     elsif dept_approve == true && dept_approve == true && final_approve.nil? == true
-      "Approved by Dept head, awaiting Pengarah approval"
+      I18n.t("ptdos.approved_dept_head_await_pengarah_approval")#"Approved by Dept head, awaiting Pengarah approval"
     elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == true
-      "All approvals complete"
+      I18n.t("ptdos.all_approvals_complete")#"All approvals complete"
     elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == false
-      "Report Submitted"
+      I18n.t("ptdos.report_submitted")#"Report Submitted"
     else
-      "Status Not Available"
+      I18n.t("ptdos.status_not_available")#"Status Not Available"
     end
   end
   

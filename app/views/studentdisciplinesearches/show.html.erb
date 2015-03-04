@@ -3,22 +3,22 @@
 <% else %>
 
 	<div style="padding-left:20px;padding-top:20px;padding-right:20px;font-family: Arial, Helvetica, sans-serif;font-size:12px;">
-		<H4>STUDENT DISCIPLINE CASES SEARCH :</h4>
+		<H4><%=t('studentdiscipline.search').upcase%> :</h4>
 
-			<%= link_to "Back", :controller=>'studentdisciplinesearches', :action => 'new', :searchstudentdisciplinetype => 1 %><br><br>
+			<%= link_to (t 'back'), :controller=>'studentdisciplinesearches', :action => 'new', :searchstudentdisciplinetype => 1 %><br><br>
 			
 		<!--additional heading-->
 		<% if @studentdisciplinesearch.programme %>
 			<span style="text-decoration:underline;">
-				Search By Programme : <%=h Programme.find(@studentdisciplinesearch.programme).programme_list %><br><br>
+				<%=t('studentdiscipline.search_by_programme')%> : <%=h Programme.find(@studentdisciplinesearch.programme).programme_list %><br><br>
 			</span>
 		<% end %>
 		<% if @studentdisciplinesearch.intake && @studentdisciplinesearch.intake.blank? == false %>
 			<span style="text-decoration:underline;">
-				Search By Intake : <%=@studentdisciplinesearch.intake.strftime("%b %Y")%><br><br>
+				<%=t('studentdiscipline.search_by_intake')%> : <%=@studentdisciplinesearch.intake.strftime("%b %Y")%><br><br>
 			</span>
 		<% end %>
-		&nbsp;Total Student Discipline Cases : <%=h @studentdisciplinesearch.studentdisciplines.count %><br><br>
+		&nbsp;<%=t('studentdiscipline.total_cases')%> : <%=h @studentdisciplinesearch.studentdisciplines.count %><br><br>
 		<!--additional heading-->
 		
 		<% if @studentdisciplinesearch.studentdisciplines.count > 0 %>
@@ -27,38 +27,45 @@
 			<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
 				<tr>
 					<th>No</th>
-					<th>Matrix No</th>
-					<th>Name</th>
+					<th><%=t('studentdiscipline.matrixno')%></th>
+					<th><%=t('studentdiscipline.student_id')%></th>
 					<% if @studentdisciplinesearch.programme.blank? %>
-						<th>Programme</th>
+						<th><%=t('studentdiscipline.programme')%></th>
 					<% end %>
 					<% if @studentdisciplinesearch.intake.blank? %>
-						<th>Intake</th>
+						<th><%=t('studentdiscipline.intake')%></th>
 					<% end %>
-					<th>Infraction</th>
-					<th>Reported on</th>
-					<th>Location</th>
+					<th><%=t('studentdiscipline.infraction')%></th>
+					<th><%=t('studentdiscipline.reported_date')%></th>
+					<th><%=t('studentdiscipline.location')%></th>
 					<th>Status</th>
-					<th>Action Taken</th>
-					<th>Feedback from Counselor</th>
+					<th><%=t('studentdiscipline.action')%></th>
+					<th><%=t('studentdiscipline.feedback_counsellor')%></th>
 				</tr>
 				<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|x.student.name}.each_with_index do |student_discipline, index|%>
 					<tr>
 						<td><%=index+1%></td>
-						<td><%=student_discipline.student.matrixno%></td>
-						<td><%=student_discipline.student.name%></td>
+						<td><%=student_discipline.student.matrixno%>&nbsp;</td>
+						<td><%=student_discipline.student.name%>&nbsp;</td>
 						<% if @studentdisciplinesearch.programme.blank? %>
 							<td><%=student_discipline.student.course.programme_list%></td>
 						<% end %>
 						<% if @studentdisciplinesearch.intake.blank? %>
 							<td><%=student_discipline.student.intake.strftime("%b %Y")%></td>
 						<% end %>
-						<td><%=h (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == student_discipline.infraction_id}).map {|disp, value| disp} %></td>
-						<td><%=student_discipline.reported_on%></td>
-						<td><%=student_discipline.location.name%></td>
-						<td><%=student_discipline.status%></td>
-						<td><%=student_discipline.action_type%></td>
-						<td><%= link_to "Feedback from Counselor",:controller=>'student_counseling_sessions', :action => 'feedback_referrer', :id => student_discipline.id if !student_discipline.counselor_feedback.blank? %></td>
+						<td><%=h (StudentDisciplineCase::INFRACTION.find_all{|disp, value| value == student_discipline.infraction_id}).map {|disp, value| disp} %>&nbsp;</td>
+						<td><%=student_discipline.reported_on.try(:strftime, '%d %b %Y')%>&nbsp;</td>
+						<td><%=student_discipline.location.name%>&nbsp;</td>
+						<td><%=student_discipline.status%>&nbsp;</td>
+						<td><%#=student_discipline.action_type%>
+							<% unless student_discipline.action_type.blank? %>
+								<%=h t('studentdiscipline.refer_bpl') if student_discipline.action_type=="Ref to BPL" %>
+								<%=h t('studentdiscipline.refer_tphep') if student_discipline.action_type=="Ref TPHEP" %>
+								<%=h t('studentdiscipline.no_case') if student_discipline.action_type=="no_case" %>
+								<%=h t('studentdiscipline.advise') if student_discipline.action_type=="advise" %>
+							<%end %>&nbsp;
+						</td>
+						<td><%= link_to (t 'studentdiscipline.feedback_counsellor'),:controller=>'student_counseling_sessions', :action => 'feedback_referrer', :id => student_discipline.id if !student_discipline.counselor_feedback.blank? %>&nbsp;</td>
 					</tr>
 				<% end %>
 			</table>

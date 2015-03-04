@@ -21,7 +21,7 @@
 	</tr>
 	<tr>
 		<td class="leftcol"><%=t('lesson_plan.hod')%></td>
-    	<td><%= f.collection_select :endorsed_by, Staff.find(:all, :conditions => ["id IN (?)", @lesson_plan.hods]), :id, :name, :include_blank => true %></td>
+    	<td><%= f.collection_select :endorsed_by, Staff.find(:all, :conditions => ["id IN (?) OR id=?", @lesson_plan.hods, @lesson_plan.tpa]), :id, :name %></td>
 		<td>&nbsp;</td>
 	</tr>
 	<% if @lesson_plan.hod_rejected == true %>

@@ -6,9 +6,9 @@ class LeaveforstaffsController < ApplicationController
     #@leaveforstaffs = Leaveforstaff.with_permissions_to(:index).find(:all)
     @filters = Leaveforstaff::FILTERS
       if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index).send(params[:show])
+        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index, :order => "staff_id ASC, leavestartdate ASC").send(params[:show])
       else
-        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index).relevant
+        @leaveforstaffs = Leaveforstaff.with_permissions_to(:index, :order => "staff_id ASC, leavestartdate ASC").relevant
       end
 
     respond_to do |format|
@@ -51,7 +51,7 @@ class LeaveforstaffsController < ApplicationController
 
     respond_to do |format|
       if @leaveforstaff.save
-        flash[:notice] = 'Leaveforstaff was successfully created.'
+        flash[:notice] =  t('staffleave.title')+" "+t('created')
         format.html { redirect_to(@leaveforstaff) }
         format.xml  { render :xml => @leaveforstaff, :status => :created, :location => @leaveforstaff }
       else
@@ -68,7 +68,7 @@ class LeaveforstaffsController < ApplicationController
 
     respond_to do |format|
       if @leaveforstaff.update_attributes(params[:leaveforstaff])
-        flash[:notice] = 'Leaveforstaff was successfully updated.'
+        flash[:notice] =  t('staffleave.title')+" "+t('updated')
         format.html { redirect_to(@leaveforstaff) }
         format.xml  { head :ok }
       else

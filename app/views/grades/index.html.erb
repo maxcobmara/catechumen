@@ -39,7 +39,7 @@
 
 <%# current_login_roles=[]%>
 <%# Login.current_login.roles.each do |role|%>
-	<%# current_login_roles<<role.id%>
+	<%# current_login_roles << role.id%>
 <%# end %>
 <%##= current_login_roles.include?(2)%>
 <!--13/20Apr2013-DEPT UNIT for current user-->
@@ -107,7 +107,7 @@
 <div class="box">
 	<!-- Box Head -->
 	<div class="box-head">
-		<h2 class="left">Lists of Grades</h2>
+		<h2 class="left"><%=t('grade.title')%></h2>
 	</div>
 </div>
 
@@ -120,21 +120,14 @@
 <!--2-Subject_ids : <%#=@subjectlist_preselec_prog.map(&:id)%><br>-->							<!--subject_id in Programmes table-->
 <!--3-Exam_ids :--><%#=@subjectlist_preselec_prog2.map(&:id)%>									<!--subject_id EXIST in Exams table & Programmes table-->
 <!--for testing-->
-<% unless @position_exist %>	
-	You have no position assigned yet. <br>
-	Please contact administrator.
-<% else %>
-	<% if @lecturer_programme.nil? || @lecturer_programme.blank? %>
-		Programme / Unit is not defined. <br>
-	<% else %>
-	
+
 <table width=100%>
 	<tr>
 		<td align=left>
 			<!---->
 			<div class="left" style="text-align:left;">
-				<font size=-2 color=blue> <b>Total Formative</b> = Sum of scores <br><b>CA+MSE</b> = Total Formative*(100-summative weightage) / 100
-				<br><b>Total Summative</b> = (Final Exam * summative weightage) / 100 <br><b>Total Marks</b> = CA+MSE + Total Summative</font>
+				<font size=-2 color=blue> <b><%=t('grade.total_formative')%></b> = <%=t('grade.sum_of_scores')%> <br><b>CA+MSE</b> = <%=t('grade.total_formative')%>*(100-<%=t('grade.summative_weightage')%>) / 100
+				<br><b><%=t('grade.total_summative')%></b> = (<%=t('grade.final_exam')%> * <%=t('grade.summative_weightage')%>) / 100 <br><b><%=t('grade.total_marks')%></b> = CA+MSE + <%=t('grade.total_summative')%></font>
 			</div>
 			<!---->
 		</td>
@@ -143,9 +136,9 @@
 			<div class="right">
 				<% form_tag :action => 'new' do %>
 					<%#= hidden_field_tag( "new_type","3" )%>
-					<b>Subject : </b><%= select_tag('subjectid', options_from_collection_for_select(@subjectlist_preselec_prog2.sort_by{|x|x.code}, :id, :subject_list)) %>
-					<%= submit_tag "Single New Grade", :name => :submit_button1 %> <font size=3>/</font> <%#=image_submit_tag("add.png")+"New"%>
-					<%= submit_tag "Multiple New Grades", :name => :submit_button1 %><%#= submit_tag 'New Multiple Grades', :subject_id => nil %>
+					<b><%=t('grade.subject_id')%> : </b><%= select_tag('subjectid', options_from_collection_for_select(@subjectlist_preselec_prog2.sort_by{|x|x.code}, :id, :subject_list)) %>
+					<%= submit_tag (t 'grade.new_single'), :name => :submit_button1 %> <font size=3>/</font> <%#=image_submit_tag("add.png")+"New"%>
+					<%= submit_tag (t 'grade.new_multiple'), :name => :submit_button1 %><%#= submit_tag 'New Multiple Grades', :subject_id => nil %>
 				<% end %>
 			</div>
 			<!--9June2013-->
@@ -162,81 +155,84 @@
 	<!-- 3June2013 -->
 	
 	 <table width=100% border="0" cellpadding="0" cellspacing="0">
-<tr>
-	<th>&nbsp;</th><!--3June2013-->
-    <th>Student</th>
-    <th>Subject</th>
-    <!--16June2013-HIDE THIS TO AVOID CONFUSION..<th style="text-align:center;">Total Formative</th>-->
-	<th>CA+MSE</th>
-	<th colspan=2 style="text-align:center;">Sent to BPL (date sent)</th>
-    <!--<th>Sent date</th>-->
-	<th style="text-align:center;width:55px;padding:0;">Eligible for Exam</th>
-    <th style="text-align:center;">Carry Paper</th>
-	<th style="text-align:center;width:70px;">Summative Weightage</th>
-    <!--<th>Score</th>-->
-	<th style="text-align:center;">Final Exam</th>
-    <th style="text-align:center;"width=70px>Total Summative</th>
-    <th style="text-align:center;">Resit</th>
-    <th style="text-align:center;">Total Marks</th>
-    <th style="text-align:center;">Grade</th>
-    <th colspan=3 class="ac">Control</th>
-</tr>
+	    <tr>
+		<th>&nbsp;</th><!--3June2013-->
+		<th><%=t('grade.student_id')%></th>
+		<th><%=t('grade.subject_id')%></th>
+		<!--16June2013-HIDE THIS TO AVOID CONFUSION..<th style="text-align:center;">Total Formative</th>-->
+		<th>CA+MSE</th>
+		<th colspan=2 style="text-align:center;"><%=t('grade.sent_date')%></th>
+		<!--<th>Sent date</th>-->
+		<th style="text-align:center;width:55px;padding:0;"><%=t('grade.eligible_for_exam')%></th>
+		<th style="text-align:center;"><%=t('grade.carry_paper')%></th>
+		<th style="text-align:center;width:70px;"><%=(t 'grade.summative_weightage').titleize%></th>
+		<!--<th>Score</th>-->
+		<th style="text-align:center;"><%=t('grade.final_exam')%></th>
+		<th style="text-align:center;"width=70px><%=t('grade.total_summative')%></th>
+		<th style="text-align:center;"><%=t('grade.resit')%></th>
+		<th style="text-align:center;"><%=t('grade.total_marks')%></th>
+		<th style="text-align:center;"><%=t('grade.grade')%></th>
+		<th colspan=3 class="ac"><%=t('control')%></th>
+	     </tr>
 <% @grades_group.sort.each do |grades_group, grades| %>
 <%# grades.each do |grade| %><!--@grades.sort_by{|x|x.studentgrade.name}-->
 
 <% grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade,index|%>
  <%# if (@dept_unit==grade.subjectgrade.root.name) ||(current_login_roles.include?(2))||@kupk == "yes" %><!--STAND BY:HIDE THIS LINE & LINE 67 to view ALL GRADES-->
 	<% if index == 0%>
-		<tr><td colspan=18 style="background-color:#EFF1F1;"><b>Subject : <%=h Programme.find(grades_group).subject_list %></b></td></tr>
+		<tr><td colspan=18 style="background-color:#EFF1F1;"><b><%=t('grade.subject_id')%>  : <%=h Programme.find(grades_group).subject_list %></b></td></tr>
 	<% end %>
-  <tr>
-	<td><%= check_box_tag "grade_ids[]", grade.id, :class => "check" %></td><!-- 3June2013-->
-    <td><%=h grade.student_id.blank? ? "" : grade.studentgrade.matrix_name %></td>
-    <td><%=h grade.subject_id.blank? ? "" : grade.subjectgrade.subject_list %></td>
-	<!--16June2013-HIDE THIS TO AVOID CONFUSION
-    <td style="text-align:center;">
+	<tr>
+		<td><%= check_box_tag "grade_ids[]", grade.id, :class => "check" %></td><!-- 3June2013-->
+		<td><%=h grade.student_id.blank? ? "" : grade.studentgrade.matrix_name %></td>
+		<td><%=h grade.subject_id.blank? ? "" : grade.subjectgrade.subject_list %></td>
+		<!--16June2013-HIDE THIS TO AVOID CONFUSION
+		<td style="text-align:center;">
 		<%#=h grade.formative.blank? ? grade.total_formative : number_with_precision(grade.formative,:precision=>2) %>
 		<%# totalformative = number_with_precision(grade.total_formative,:precision=>2) %>
 		<%# gradeformative = number_with_precision(grade.formative,:precision=>2) %>
 		<%# if totalformative != gradeformative %> 
 			*<font size=-3><%##=grade.total_formative%></font>
 		<%# end %>
-	</td>-->
-	<td style="text-align:center;">
-		<% if grade.scores.count>0 %>
-			<%#= grade.ca_plus_mse %>
-			<!--16June2013-use this instead-->
-			<%=h number_with_precision(grade.score,:precision=>2) %><!--use score field to save CA+MSE value, from model exammark-->
-		<% end %>
-	</td>
-	<td><%#=h grade.sent_to_BPL %><% if grade.sent_to_BPL == true %> &#10003;<% end %></td>
-    <td  style="padding-right:0;width:60px;"><%=h grade.sent_date %></td>
-	<td style="text-align:center;padding:0px;"><%#=h grade.eligible_for_exam %><% if grade.eligible_for_exam == true %> &#10003;<% end %></td>
-	<td style="text-align:center;"><% if grade.carry_paper ==true %> &#10003;<% end %></td>
-	<td style="text-align:center;">
-		<%=h grade.examweight.blank? ? "" : number_with_precision(grade.examweight,:precision=>2).to_s+" %" %></td> 
-	<td style="text-align:center;">
-		<%=h grade.exam1marks.blank? ? "" : number_with_precision(grade.exam1marks,:precision=>2) %></td>
-    <!--<td><%##=h grade.score %></td>-->
+		</td>-->
+		<td style="text-align:center;">
+			<% if grade.scores.count>0 %>
+				<%#= grade.ca_plus_mse %>
+				<!--16June2013-use this instead-->
+				<%#=h number_with_precision(grade.score,:precision=>2) %><!--use score field to save CA+MSE value, from model exammark-->
+				<%=sprintf('%.2f', grade.score)%>
+			<% end %>
+		</td>
+		<td><%#=h grade.sent_to_BPL %><% if grade.sent_to_BPL == true %> &#10003;<% end %></td>
+		<td  style="padding-right:0;width:60px;"><%=h grade.sent_date %></td>
+		<td style="text-align:center;padding:0px;"><%#=h grade.eligible_for_exam %><% if grade.eligible_for_exam == true %> &#10003;<% end %></td>
+		<td style="text-align:center;"><% if grade.carry_paper ==true %> &#10003;<% end %></td>
+		<td style="text-align:center;">
+			<%=h grade.examweight.blank? ? "" : sprintf('%.2f', grade.examweight)+" %" %>
+		</td> 
+		<td style="text-align:center;">
+			<%=h grade.exam1marks.blank? ? "" : sprintf('%.2f', grade.exam1marks) %>
+		</td>
+		<!--<td><%##=h grade.score %></td>-->
 
-    <td style="text-align:center;"><%##=h grade.summative %>
+		<td style="text-align:center;"><%##=h grade.summative %>
 		<% if grade.examweight.blank? == false && grade.exam1marks.blank? == false %> 
-			<%=h number_with_precision(grade.total_summative,:precision=>2) %>
+			<%=h sprintf('%.2f', grade.total_summative)%>
 		<% end %>
-	</td>
-    <td style="text-align:center;"><% if grade.resit==true%> &#10003;<% end %></td>
-    <td style="text-align:center;"><%##=h grade.finalscore %><!--column in grades table, once updated-data will be same as grade.finale--> 
+		</td>
+		<td style="text-align:center;"><% if grade.resit==true%> &#10003;<% end %></td>
+		<td style="text-align:center;"><%##=h grade.finalscore %><!--column in grades table, once updated-data will be same as grade.finale--> 
 		<% if grade.examweight.blank? == false && grade.exam1marks.blank? == false %> 
-			<%=h number_with_precision(grade.finale,:precision=>2) %>
+			<%=h sprintf('%.2f', grade.finale)%>
 		<% end %>
-	</td>
-    <td style="text-align:center;"><%##=h (Grade::GRADE.find_all{|disp, value| value == grade.grading_id.to_s}).map {|disp, value| disp} %>
-		<%=h grade.finale.blank? ? "" : grade.set_gred %>
-	</td>
-    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => grade %></td>
-    <td width=10px><%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => grade %></td>
-    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), grade, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+		</td>
+		<td style="text-align:center;"><%##=h (Grade::GRADE.find_all{|disp, value| value == grade.grading_id.to_s}).map {|disp, value| disp} %>
+			<%=h grade.finale.blank? ? "" : grade.set_gred %>
+		</td>
+		<td width=10px ><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => grade %></td>
+		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => grade %></td>
+		<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), grade, :confirm => (t 'are_you_sure'), :method => :delete %></td>
+	</tr>
 	<%# end %> <!--HIDE THIS LINE & LINE 49 to view ALL GRADES-->
 <% end %>
 <% end %><!--end for @grades_group.each do |grades_group, grades| -->
@@ -250,11 +246,11 @@
 <!--http://www.ryboe.com/2008/07/10/select-all-checkboxes-with-prototype-js.html -->
 <input id="check_all" name="check_all" type="checkbox" checked="checked" onclick="
 Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_all').checked})" />
-<b>Check/Uncheck 				all</b>&nbsp;&nbsp;
+<b><%=t('check_uncheck')%></b>&nbsp;&nbsp;
 </div>
 
 <!-- 15 -22 May 2012 -->
-<%= submit_tag "Edit Checked", :name => :grade_submit_button %>
+<%= submit_tag (t 'edit_checked'), :name => :grade_submit_button %>
 <%#= submit_tag "Edit by Exam", :name => :exammark_submit_button %>
 <% end %>
 <!-- 15 - 22May 2012 -->	
@@ -262,14 +258,12 @@ Form.getInputs('form1', 'checkbox').each(function(box){box.checked = $('check_al
 
 <div class="right">
 	<% form_tag '', :method => 'get' do %>
-		<b>Subject : </b><%= select_tag('subject_id', "<option value='0'>All Existing Grades</option>" +options_from_collection_for_select(@grade_list_exist_subject.sort_by{|x|x.code}, :id, :subject_list)) %>
-		<%= submit_tag 'Search Existing Grades', :name => :grade_search %>
+		<b><%=t('grade.subject_id')%> : </b><%= select_tag('subject_id', "<option value='0'>"+(t 'grade.all_existing_grades')+"</option>" +options_from_collection_for_select(@grade_list_exist_subject.sort_by{|x|x.code}, :id, :subject_list)) %>
+		<%= submit_tag (t 'grade.search_existing_grades'), :name => :grade_search %>
 	<% end %>
-</div>
+</div><BR><BR>
 
 <%#= link_to 'New Grade', new_grade_path %> <!--10Apr2013-->
 <%#= link_to 'New Grade', new_grade_path(:new_type => "0")%>
 <%#= link_to 'Multiple New Grades', new_grade_path(:new_type => "2") %>
 
-<% end %>
-<% end %>

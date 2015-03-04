@@ -44,7 +44,7 @@ class PostinfosController < ApplicationController
 
     respond_to do |format|
       if @postinfo.save
-        format.html { redirect_to(@postinfo, :notice => 'Postinfo was successfully created.') }
+        format.html { redirect_to(@postinfo, :notice => t('postinfos.title')+" "+t('created')) }
         format.xml  { render :xml => @postinfo, :status => :created, :location => @postinfo }
       else
         format.html { render :action => "new" }
@@ -60,7 +60,7 @@ class PostinfosController < ApplicationController
 
     respond_to do |format|
       if @postinfo.update_attributes(params[:postinfo])
-        format.html { redirect_to(@postinfo, :notice => 'Postinfo was successfully updated.') }
+        format.html { redirect_to(@postinfo, :notice => t('postinfos.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

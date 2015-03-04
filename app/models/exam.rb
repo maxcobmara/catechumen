@@ -123,19 +123,19 @@ class Exam < ActiveRecord::Base
   end  
   
   def exam_name_date
-    "#{render_full_name}"+" - "+"#{exam_on.strftime("%d-%B-%Y")}"
+    "#{render_full_name}"+" - "+"#{I18n.l(exam_on, :format => "%d-%B-%Y")}"
   end
   #10Apr2013
   
   def exam_name_subject_date
-     "#{render_full_name}"+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"# +"#{subject.parent.course_type}"
+     "#{render_full_name}"+" - "+"#{subject.subject_list}"+" - "+"#{I18n.l(exam_on, :format => "%d %B %Y")}"# +"#{subject.parent.course_type}"
   end
   
   def exam_code_date_type
     if klass_id == 0
-      "#{subject.code}"+" | "+"#{exam_on.strftime("%d %b %y")}"+" (#{name}-T)"
+      "#{subject.code}"+" | "+"#{I18n.l(exam_on, :format => "%d %b %y")}"+" (#{name}-T)"
     else
-      "#{subject.code}"+" | "+"#{exam_on.strftime("%d %b %y")}"+" (#{name})"
+      "#{subject.code}"+" | "+"#{I18n.l(exam_on, :format => "%d %b %y")}"+" (#{name})"
     end
   end
   
@@ -155,7 +155,7 @@ class Exam < ActiveRecord::Base
   end
   
   def full_exam_name
-    "#{render_full_name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+set_semester.to_s+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"
+    "#{render_full_name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+set_semester.to_s+" - "+"#{subject.subject_list}"+" - "+"#{I18n.l(exam_on, :format=> "%d %B %Y")}"
      #  "#{name}"+" - Tahun "+set_year.to_s+", "+"#{subject.parent.course_type}"+" "+"#{subject.parent.code}"+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"
   end
   

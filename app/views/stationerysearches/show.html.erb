@@ -1,0 +1,232 @@
+<div style="padding-top:20px;padding-left:20px;padding-bottom:20px;">
+	<span style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
+		<H3><%=t('equery.asset.search')%> : <%=t('supplier.title')%> </h3>
+		
+		<%=t('back')%>&nbsp;:&nbsp; 
+		<%= link_to (t 'stationery.back_to_query'), :controller=>'stationerysearches', :action => 'new' %>&nbsp;|
+		<%= link_to (t 'stationery.back_to_list'), :controller=>'stationeries', :action => 'index' %>
+		<br>
+
+		<% if (@stationerysearch.stationeries.count != Stationery.all.count) && ((!@stationerysearch.product.nil? && !@stationerysearch.product.blank?) || (!@stationerysearch.document.nil? && !@stationerysearch.document.blank? ) || !@stationerysearch.issuedby.blank? || !@stationerysearch.receivedby.blank? ||  !@stationerysearch.received.blank? || !@stationerysearch.received2.blank? || !@stationerysearch.issuedate.blank? || !@stationerysearch.issuedate2.blank?) %>
+			
+			<%=t('equery.total')%> : 
+			
+			<% if (!@stationerysearch.received.blank? || !@stationerysearch.received2.blank? || !@stationerysearch.issuedate.blank? || !@stationerysearch.issuedate2.blank?) && !@stationerysearch.document.blank?%>
+			        <!--when search NOT by : both supplier/lpono & received-->
+				<%=@stationerysearch.stationeries.count%>
+			<% else %>
+				<!--when search by : both supplier/lpono & received-->
+				<%bil=0%>
+				<% if !@stationerysearch.received.blank? || !@stationerysearch.received2.blank? %>
+				<% @stationerysearch.stationeries.each do |stationery|%>
+					<%cont_received=0%>
+					<% stationery.stationery_adds.each do |ss| %>
+						<% cont_received+=1 if (@stationerysearch.received && ss.received >= @stationerysearch.received) || (@stationerysearch.received2 && ss.received <= @stationerysearch.received2) %>
+					<% end %>
+					<%bil+=1 if cont_received>0%>
+				<% end %>
+				<% end %>
+				
+				<% if !@stationerysearch.issuedate.blank? || !@stationerysearch.issuedate2.blank? %>
+					<% @stationerysearch.stationeries.each do |stationery|%>
+						<%cont_issuedate=0%>
+						<% stationery.stationery_uses.each do |ss| %>
+							<% cont_issuedate+=1 if (@stationerysearch.issuedate && ss.issuedate >= @stationerysearch.issuedate) || (@stationerysearch.issuedate2 && ss.issuedate <= @stationerysearch.issuedate2) %>
+						<% end %>
+						<%bil+=1 if cont_issuedate>0%>
+					<% end %>
+					<%=bil%>
+				<% else %>
+				      <!--@c && @d1_blank && @d2_blank-->
+				      <%=@stationerysearch.stationeries.count%>
+				<% end %>
+				
+				
+			<% end %>
+			
+			<BR><BR><% num=0%>
+			<b><%=t('equery.stationery.search_by')%>&nbsp;:&nbsp;</b>
+			<% if !@stationerysearch.product.nil? && !@stationerysearch.product.blank? %>
+				<br>(<%=num+=1%>)&nbsp;<%= (t 'stationery.code')+" / "+(t 'supplier.category')%>&nbsp;(<%=@stationerysearch.product %>)
+			<% end %>
+			<% if !@stationerysearch.document.nil? && !@stationerysearch.document.blank? %>
+				<br>(<%=num+=1%>)&nbsp;<%=t('supplier.supplier_id')%>&nbsp;(<%=@stationerysearch.document %>)
+			<% end %>
+			<% if !@stationerysearch.received.blank? ||  !@stationerysearch.received2.blank?%>
+				<br>(<%=num+=1%>)&nbsp;<%=t('supplier.received')%>&nbsp;
+				(<%=@stationerysearch.received.blank? ? "-" : l(@stationerysearch.received, :format => "%d %b %Y") %> <%=t('to')%> <%=@stationerysearch.received2.blank? ? "-" : l(@stationerysearch.received2, :format => "%d %b %Y") %>)
+			<% end %>
+			<% if !@stationerysearch.issuedby.blank? %>
+				<br>(<%=num+=1%>)&nbsp;<%= t('supplier.issuedby')%>&nbsp;(<%= st.issuedby.blank? ? "&nbsp;" : st.issuer.try(:staff_name_with_position) %>)
+			<% end %>
+			<% if !@stationerysearch.receivedby.blank? %>
+				<br>(<%=num+=1%>)&nbsp;<%= t('supplier.receivedby')%>&nbsp;(<%= st.receivedby.blank? ? "&nbsp;" : st.receiver.try(:staff_name_with_position) %>)
+			<% end %>
+			<% if !@stationerysearch.issuedate.blank? || !@stationerysearch.issuedate2.blank?%>
+				<br>(<%=num+=1%>)&nbsp;<%=t('supplier.issuedate')%>&nbsp;
+				(<%=@stationerysearch.issuedate.blank? ? "-" : l(@stationerysearch.issuedate, :format => "%d %b %Y") %> <%=t('to')%> <%=@stationerysearch.issuedate2.blank? ? "-" : l(@stationerysearch.issuedate2, :format => "%d %b %Y") %>)
+			<% end %>
+			<BR><BR>
+			
+			<% @stationerysearch.stationeries.each do |stationery| %>
+				<!--try HACK date here!-->
+				<%@bb1=0%>
+				<%@bb2=0%>
+				<% stationery.stationery_adds.map(&:received).each do |rr| %>
+					<% @bb1+=1 if @stationerysearch.received && rr >= @stationerysearch.received  %>
+					<% @bb2+=1 if @stationerysearch.received2 && rr <= @stationerysearch.received2  %>
+				<% end %>
+				
+				<%@bb3=0%>
+				<%@bb4=0%>
+				<% stationery.stationery_uses.map(&:issuedate).each do |rr| %>
+					<% @bb3+=1 if @stationerysearch.issuedate && rr >= @stationerysearch.issuedate  %>
+					<% @bb4+=1 if @stationerysearch.issuedate2 && rr <= @stationerysearch.issuedate2  %>
+				<% end %>
+				
+				<% if @stationerysearch.product.blank? || (!@stationerysearch.product.blank? && @bb1 > 0) || (!@stationerysearch.product.blank? && @bb2 > 0) || (!@stationerysearch.product.blank? && (@stationerysearch.received.blank? || @stationerysearch.received2.blank?) ) || 
+				(!@stationerysearch.product.blank? && @bb3 > 0) || (!@stationerysearch.product.blank? && @bb4 > 0) || (!@stationerysearch.product.blank? && (@stationerysearch.issuedate.blank? || @stationerysearch.issuedate2.blank?) ) %>
+					<table border=1 cellspacing=0 cellpadding=2 width=70%>
+						<tr>
+							<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=10%; color: #ffffff; background-color:#000000; "><%= t 'stationery.code' %></th>
+							<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=30%; color: #ffffff; background-color:#000000;"><%= t 'supplier.category' %></th>
+							<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=10%; color: #ffffff; background-color:#000000;"><%= t 'supplier.current' %></th>
+							<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=15%; color: #ffffff; background-color:#000000;"><%= t 'supplier.maxquantity' %></th>
+							<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=15%; color: #ffffff; background-color:#000000;"><%= t 'supplier.minquantity' %></th>
+							<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=20%; color: #ffffff; background-color:#000000;"><%= t 'equery.stationery.by_stock' %></th>
+						</tr>
+						<tr class="<%= (stationery.set_row_color) %>">
+							<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.code %></td>
+							<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.category %></td>
+							<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.current_quantity.to_i %> &nbsp; <%=h stationery.unittype %></td>
+							<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.maxquantity.to_i %></td>
+							<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.minquantity.to_i %></td>
+							<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= link_to (t 'print'), :controller=>'stationeries', :action => 'supplies', :id => stationery %></td>
+						</tr>
+						<!--additions related details-START-->
+						<% if (!@stationerysearch.document.nil? && !@stationerysearch.document.blank?) || (!@stationerysearch.received.blank?) || ((!@stationerysearch.product.nil? && !@stationerysearch.product.blank?) && ((@stationerysearch.document.nil? || @stationerysearch.document.blank?)) || !@stationerysearch.received.blank? || !@stationerysearch.received2.blank? || !@stationerysearch.issuedate.blank? || !@stationerysearch.issuedate2.blank?) %>
+							<tr><th colspan=6 style="font-family: Arial, Helvetica, sans-serif;font-size:12px; background-color:#C3C0C0;"><%=t('stationery.additions')%></tr></tr>
+							<tr>
+								<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=10%"><%=t('supplier.lpono')%></td>
+								<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=30%;"><%=t('supplier.supplier_id')%></td>
+								<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=10%"><%=t('supplier.quantity')%></td>
+								<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=15%"><%=t('supplier.unitcost')%></td>
+								<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=15%"><%=t('supplier.total')%></td>
+								<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=20%"><%=t('supplier.received')%></td>
+							</tr>
+							<% stationery.stationery_adds.each do |st| %>
+				
+								<% @p = (!@stationerysearch.product.nil? && !@stationerysearch.product.blank?)%>
+								<!--search by supplier/lpo no--><!--works for both with/without @stationerysearch.document-->
+								<% @a = (st.document.downcase.include?(@stationerysearch.document.downcase) || st.lpono.downcase.include?(@stationerysearch.document.downcase)) %>
+								<!--search by received-->
+								<% @b1 = st.received >= @stationerysearch.received if @stationerysearch.received %>
+								<% @b2 = st.received <= @stationerysearch.received2 if @stationerysearch.received2 %>
+								<% @b1_blank = @stationerysearch.received.blank? %>
+								<% @b2_blank = @stationerysearch.received2.blank? %>
+								
+					
+								<%# if (@a && @b1 && @b2_blank) ||  (@a && @b2 && @b1_blank) || (@a && @b1_blank && @b2_blank)|| (@a && @b1_blank && @b2_blank) ||(@a && @b1 && @b2) || (@b1_blank && @b2_blank && (!@stationerysearch.issuedate.blank? || !@stationerysearch.issuedate2.blank?))%>
+								
+								<% if (@a && @b1_blank && @b2_blank) || (@a && @b1 && @b2_blank) || (@a && @b1_blank && @b2) || (@a && @b1_blank && @b2_blank) || (@a && @b1 && @b2)%>
+								<tr>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.lpono.blank? ? "&nbsp;" : st.lpono%></td>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.document.blank? ? "&nbsp;" : st.document %></td>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.quantity %></td>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= ringgols(st.unitcost) %></td>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= ringgols(st.line_item_value) %></td>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.received? ? l(st.received, :format => "%d %b %Y") : "-" %></td>
+								</tr>
+								<% end %>
+					
+							<% end %>
+						<% end %>
+						<!--additions related details-END-->
+						<!--deductions related details-START--><!--note: use blank coz SELECT-->
+						<% if !@stationerysearch.issuedby.blank? || !@stationerysearch.receivedby.blank? || ((!@stationerysearch.product.nil? && !@stationerysearch.product.blank?) && (@stationerysearch.issuedby.blank? || @stationerysearch.receivedby.blank?)) || !@stationerysearch.issuedate.blank? || !@stationerysearch.issuedate2.blank? || ((!@stationerysearch.product.nil? && !@stationerysearch.product.blank?) && (@stationerysearch.issuedate.blank? || @stationerysearch.issuedate2.blank?))%>
+							<tr><th colspan=6 style="font-family: Arial, Helvetica, sans-serif;font-size:12px; background-color:#C3C0C0;"><%=t('stationery.deductions')%></tr></tr>
+							<tr>
+								<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=10%"><%=t('supplier.issuedate')%></td>
+								<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=30%;"><%=t('supplier.issuedby')%></td> 
+								<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=10%"><%=t('supplier.quantity')%></td>
+								<th colspan=2 style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=30%"><%=t('supplier.receivedby')%></td>
+								<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=20%">&nbsp;</td>
+							</tr>
+							<% stationery.stationery_uses.each do |st| %>
+							
+								<!--search by issuedby/receivedby-->
+								<%# @c = (st.issuedby == @stationerysearch.issuedby || st.receivedby == @stationerysearch.receivedby) || ((!@stationerysearch.product.nil? && !@stationerysearch.product.blank?) && (@stationerysearch.issuedby.blank? && @stationerysearch.receivedby.blank?)) %>
+								
+								<%# @c = (st.issuedby == @stationerysearch.issuedby || st.receivedby == @stationerysearch.receivedby) %>
+								<% @c = (st.issuedby == @stationerysearch.issuedby) %>
+								<% @e = (st.receivedby == @stationerysearch.receivedby) %>
+								<% @c_blank = @stationerysearch.issuedby.blank? %>
+								<% @e_blank = @stationerysearch.receivedby.blank? %>
+								
+								<!--search by received-->
+								<% @d1 = st.issuedate >= @stationerysearch.issuedate if @stationerysearch.issuedate %>
+								<% @d2 = st.issuedate <= @stationerysearch.issuedate2 if @stationerysearch.issuedate2 %>
+								<% @d1_blank = @stationerysearch.issuedate.blank? %>
+								<% @d2_blank = @stationerysearch.issuedate2.blank? %>
+								 
+								<% if (@c && @e && @d1 && @d2_blank) ||(@c_blank && @e && @d1 && @d2_blank)||
+								(@c && @e_blank && @d1 && @d2_blank) ||
+								(@c && @e && @d2 && @d1_blank) || (@c_blank && @e && @d2 && @d1_blank)||
+								(@c && @e_blank && @d2 && @d1_blank) || 
+								(@c && @e && @d1 && @d2) ||(@c_blank && @e && @d1 && @d2) ||
+								(@c && @e_blank && @d1 && @d2) ||
+								(@c && @e && @d1_blank && @d2_blank) ||(@c_blank && @e && @d1_blank && @d2_blank)|| (@c && @e_blank && @d1_blank && @d2_blank) ||
+								(@d1_blank && @d2_blank && (!@stationerysearch.issuedate.blank? || !@stationerysearch.issuedate2.blank?)) ||
+								( @c_blank && @e_blank && @d1_blank && @d2_blank) %>
+								
+								<tr>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.issuedate? ? l(st.issuedate, :format => "%d %b %Y") : "-" %></td>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
+										<%= st.issuedby.blank? ? "&nbsp;" : st.issuer.try(:staff_name_with_position) %></td>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= st.quantity %> <%=h stationery.unittype %></td>
+									<td colspan=2 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
+										<%= st.receivedby.blank? ? "&nbsp;" : st.receiver.try(:staff_name_with_position) %></td>
+									<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">&nbsp;</td>
+								</tr>
+								<% end %>
+							<% end %>
+						<% end %>
+						<!--deductions related details-END-->
+					</table>
+					<BR>
+				<% end %><!--end for  if @stationerysearch.product.blank? || ... -->
+			<% end %><!--end for : @stationerysearch.stationeries.each -->
+		 
+		<% elsif (@stationerysearch.stationeries.count == Stationery.all.count && ((@stationerysearch.product.nil? && @stationerysearch.product.blank?) || (@stationerysearch.document.nil? && @stationerysearch.document.blank? ) || (@stationerysearch.issuedby.blank?) || (@stationerysearch.receivedby.blank?) )) %>
+		
+			<%=t('equery.stationery.total')%> : 
+			<%=@stationerysearch.stationeries.count%>
+			<BR><BR>
+
+			<table border=1 cellspacing=0 cellpadding=2 width=70%>
+				<tr>
+					<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=10%; color: #ffffff; background-color:#000000; "><%= t 'stationery.code' %></th>
+					<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=30%; color: #ffffff; background-color:#000000;"><%= t 'supplier.category' %></th>
+					<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=10%; color: #ffffff; background-color:#000000;"><%= t 'supplier.current' %></th>
+					<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=15%; color: #ffffff; background-color:#000000;"><%= t 'supplier.maxquantity' %></th>
+					<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=15%; color: #ffffff; background-color:#000000;"><%= t 'supplier.minquantity' %></th>
+					<th style="font-family: Arial, Helvetica, sans-serif;font-size:12px; width=20%; color: #ffffff; background-color:#000000;"><%= t 'equery.stationery.by_stock' %></th>
+				</tr>
+				<% @stationerysearch.stationeries.each do |stationery| %>
+				<tr class="<%= (stationery.set_row_color) %>">
+					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.code.blank? ? "&nbsp;" : stationery.code %></td>
+					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.category.blank? ? "&nbsp;" : stationery.category %></td>
+					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.current_quantity.to_i %> &nbsp; <%=h stationery.unittype %></td>
+					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.maxquantity.to_i %></td>
+					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%=h stationery.minquantity.to_i %></td>
+					<td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;"><%= link_to (t 'print'), :controller=>'stationeries', :action => 'supplies', :id => stationery %></td>
+				</tr>
+				<%end%>
+			</table>
+			
+		<% else %>
+		        <BR><BR><font color=red>
+		        <%=t('equery.no_result')%></font>
+		<% end %>
+	</span>
+</div>

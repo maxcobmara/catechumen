@@ -1,23 +1,24 @@
 <%= stylesheet_link_tag 'report' %>
 
-<form action="#">	
-<script>
-document.write("<input type='button' " +
-"onClick='window.print()' " +
-"class='printbutton' " +
-"value='Print This Page'/>");
-</script>
-</form>	
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
+<form>
+
 <div class="A4potrait">
 	<p style="font-size:13px;font-family:arial;padding-right:20px;" align="right">
-		<%=@dadidu_ori.to_date.strftime("%d-%m-%Y")%> to <%=(@next_date_ori.to_date-1.day).strftime("%d-%m-%Y")%>
+		<%=@dadidu_ori.to_date.strftime("%d-%m-%Y")%> <%=t('to')%> <%=(@next_date_ori.to_date-1.day).strftime("%d-%m-%Y")%>
 	</p>
 	
-	<H4 align="left" style="font-size:16px;font-weight:bold;font-family:arial;padding-left:50px;">Monthly Attendance Listing</h4>
+	<H4 align="left" style="font-size:16px;font-weight:bold;font-family:arial;padding-left:50px;"><%=t('attendance.monthly_attendance_listing')%></h4>
 	
 	<div style="padding-left:50px;" align="left">
 		<p style="font-size:13px;font-family:arial;">
-			Dept : <%=@dept_select%><br>
+			<%=t('attendance.department') %> : <%=@dept_select%><br>
 			<% @exist_SA = StaffAttendance.find_by_thumb_id(@staffthumb.to_i) %>
 			<% unless @exist_SA==nil %>
 			    <%=StaffAttendance.find_by_thumb_id(@staffthumb.to_i).attended.name.upcase %>
@@ -29,9 +30,9 @@ document.write("<input type='button' " +
 		<% if @monthly_list.count <= 0 %>
 			<p style="font-size:13px;font-family:arial;color:red;">
 			    <% unless @exist_SA==nil %>
-				Record not exist (for selected month).
+				<%=t('attendance.record_not_exist')%>
 			    <% else %>
-				Selected staff has NO attendance record at all.
+				<%=t('attendance.no_attendance_record')%>
 			    <% end %>
 			</p>
 		<% else %>

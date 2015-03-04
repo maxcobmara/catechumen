@@ -1,12 +1,12 @@
 <div class="tform">
-	<h2>Examination Marks Details</h2>
+	<h2><%=t('exammark.details')%></h2>
 	<table>
 		<tr>
-			<td class="leftcol">Student:</td>
+			<td class="leftcol"><%=t('exammark.student_id')%>:</td>
 			<td> <%=h @exammark.studentmark.matrix_name  %></td>
 		</tr>
 		<tr>
-			<td class="leftcol">Exam:</td>
+			<td class="leftcol"><%=t('exammark.exam_id')%>:</td>
 			<td> <%=h @exammark.exampaper.exam_name_subject_date %>
 				<!--11June2013-TEMPLATE-->
 				<% @istemplate = @exammark.exampaper.klass_id %>
@@ -17,7 +17,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="leftcol">Examinations Marks:</td>
+			<td class="leftcol"><%=t('exammark.title3')%>:</td>
 			<td>
 				<% if @exammark.exampaper.klass_id == 0 %>
 					<%= number_with_precision(@exammark.total_marks,2) %> / <%=number_with_precision(@exammark.exampaper.examtemplates.map(&:total_marks).inject{|sum, x|sum+x},2)%>
@@ -27,10 +27,10 @@
 					<% @examquestions = @exammark.exampaper.examquestions%>
 					<table>
 						<tr>
-							<th>Type</th>
+							<th><%=t('examquestion.questiontype')%></th>
 							<th>No</th>
-							<th>Question</th>
-							<th>Mark</th>
+							<th><%=t('examquestion.question')%></th>
+							<th><%=t('exammark.mark')%></th>
 						</tr>
 						<!--retrieve existing marks first-->
 						<% if @exammark %><!--@exammark refers to @exammark.id-->
@@ -56,7 +56,10 @@
 								<td style="vertical-align:middle;text-align:right;">
 									<% marks_ary = @examquestions.mcqq.map(&:marks) %>
 									<% @mcq_totalmarks = marks_ary.inject{|sum,x|sum+x}%>
-									<%=number_with_precision(@exammark.total_mcq,2) %> / <%=number_with_precision(@mcq_totalmarks,2) %>	
+									<%#=number_with_precision(@exammark.total_mcq,2) %>
+									<%=sprintf('%.2f', @exammark.total_mcq)%>/ 
+									<%#=number_with_precision(@mcq_totalmarks,2) %>
+									<%=sprintf('%.2f', @mcq_totalmarks)%>
 								</td>
 							<% end %>	
 						</tr>	
@@ -71,7 +74,8 @@
 									<% end %>
 									<td><%=count+1%></td>
 									<td><%=@examquestions.meqq[count2].question %></td>
-									<td style="text-align:right;"><%=@marks_for_questions[count2].student_mark %> / <%=number_with_precision(@examquestions.meqq[count2].marks,2) %></td>
+									<td style="text-align:right;"><%=@marks_for_questions[count2].student_mark %> / <%#=number_with_precision(@examquestions.meqq[count2].marks,2) %>
+									<%=sprintf('%.2f', @examquestions.meqq[count2].marks)%></td>
 									<% count2+=1 %>
 								<% end %>
 							</tr>
@@ -87,7 +91,8 @@
 									<td><%=count+1%></td>
 									<td><%=@examquestions.seqq[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
-										<%=@marks_for_questions[count2].student_mark %> / <%=number_with_precision(@examquestions.seqq[count].marks,2) %>
+										<%=@marks_for_questions[count2].student_mark %> / <%#=number_with_precision(@examquestions.seqq[count].marks,2) %>
+										<%=sprintf('%.2f', @examquestions.seqq[count].marks)%>
 									</td>
 									<% count2+=1 %>
 								<% end %>
@@ -104,7 +109,8 @@
 									<td><%=count+1%></td>
 									<td><%=@examquestions.acqq[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
-										<%=@marks_for_questions[count2].student_mark %> / <%=number_with_precision(@examquestions.acqq[count].marks,2) %>
+										<%=@marks_for_questions[count2].student_mark %> / <%#=number_with_precision(@examquestions.acqq[count].marks,2) %>
+										<%=sprintf('%.2f', @examquestions.acqq[count].marks)%>
 									</td>
 									<% count2+=1 %>
 								<% end %>
@@ -121,7 +127,8 @@
 									<td><%=count+1%></td>
 									<td><%=@examquestions.osci2q[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
-										<%=@marks_for_questions[count2].student_mark %> / <%=number_with_precision(@examquestions.osci2q[count].marks,2) %>
+										<%=@marks_for_questions[count2].student_mark %> / <%#=number_with_precision(@examquestions.osci2q[count].marks,2) %>
+										<%=sprintf('%.2f', @examquestions.osci2q[count].marks)%>
 									</td>
 									<% count2+=1 %>
 								<% end %>
@@ -138,7 +145,8 @@
 									<td><%=count+1%></td>
 									<td><%=@examquestions.osci3q[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
-										<%=@marks_for_questions[count2].student_mark %> / <%=number_with_precision(@examquestions.osci3q[count].marks,2) %>
+										<%=@marks_for_questions[count2].student_mark %> / <%#=number_with_precision(@examquestions.osci3q[count].marks,2) %>
+										<%=sprintf('%.2f', @examquestions.osci3q[count].marks)%>
 									</td>
 									<% count2+=1 %>
 								<% end %>
@@ -155,7 +163,8 @@
 									<td><%=count+1%></td>
 									<td><%=@examquestions.osceq[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
-										<%=@marks_for_questions[count2].student_mark %> / <%=number_with_precision(@examquestions.osceq[count].marks,2) %>
+										<%=@marks_for_questions[count2].student_mark %> / <%#=number_with_precision(@examquestions.osceq[count].marks,2) %>
+										<%=sprintf('%.2f', @examquestions.osceq[count].marks)%>
 									</td>
 									<% count2+=1 %>
 								<% end %>
@@ -172,7 +181,8 @@
 									<td><%=count+1%></td>
 									<td><%=@examquestions.ospeq[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
-										<%=@marks_for_questions[count2].student_mark %> / <%=number_with_precision(@examquestions.ospeq[count].marks,2) %>
+										<%=@marks_for_questions[count2].student_mark %> / <%#=number_with_precision(@examquestions.ospeq[count].marks,2) %>
+										<%=sprintf('%.2f', @examquestions.ospeq[count].marks)%>
 									</td>
 									<% count2+=1 %>
 								<% end %>
@@ -189,7 +199,8 @@
 									<td><%=count+1%></td>
 									<td><%=@examquestions.vivaq[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %> 
-									<%=@marks_for_questions[count2].student_mark %> / <%=number_with_precision(@examquestions.vivaq[count].marks,2) %>
+									<%=@marks_for_questions[count2].student_mark %> / <%#=number_with_precision(@examquestions.vivaq[count].marks,2) %>
+									<%=sprintf('%.2f', @examquestions.vivaq[count].marks)%>
 									</td>
 									<% count2+=1 %>
 								<% end %>
@@ -206,7 +217,9 @@
 									<td><%=count+1%></td>
 									<td><%=@examquestions.truefalseq[count].question %></td>
 									<td style="text-align:right;"><%#= text_field "exammark[marks_attributes][#{count2}]",:student_mark , :size=>4, :class=>'h1' %>
-										<%=@marks_for_questions[count2].student_mark %> / <%=number_with_precision(@examquestions.truefalseq[count].marks,2) %>
+										<%=@marks_for_questions[count2].student_mark %> /
+										<%=sprintf('%.2f', @examquestions.truefalseq[count].marks)%>
+										<%#=number_with_precision(@examquestions.truefalseq[count].marks,2) %>
 									</td>
 									<% count2+=1 %>
 								<% end %>
@@ -215,9 +228,12 @@
 						<tr>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
-							<td style="font-weight:bold;">Total Marks</td>
+							<td style="font-weight:bold;"><%=t('exammark.total_marks')%></td>
 							<td style="text-align:right;font-weight:bold;">
-								<%= number_with_precision(@exammark.total_marks,2) %> / <%=number_with_precision(@examquestions.all.map(&:marks).inject{|sum, x|sum+x},2)%>
+								<%=sprintf('%.2f', @exammark.total_marks)%>
+								<%#= number_with_precision(@exammark.total_marks,2) %> /
+								<%=sprintf('%.2f', @examquestions.all.map(&:marks).inject{|sum, x|sum+x})%>
+								<%#=number_with_precision(@examquestions.all.map(&:marks).inject{|sum, x|sum+x},2)%>
 							</td>
 						</tr>
 					</table>
@@ -234,6 +250,6 @@
 	
 </div>
 <% if @exammark.exampaper.klass_id != 0 %>
-	<%= link_to 'Edit', edit_exammark_path(@exammark) %> |
+	<%= link_to (t 'edit'), edit_exammark_path(@exammark) %> |
 <% end %>
-<%= link_to 'Back', exammarks_path %>
+<%= link_to (t 'back'), exammarks_path %>

@@ -4,13 +4,16 @@
 <div class="box-head">
 <h2 class="left"><%= t 'cofile.list' %></h2>
 <div class="right">
-<% form_tag cofiles_path, :method => 'get' do %>
-	  		<%= text_field_tag :search, params[:search], :placeholder => "FileName" %>
-	  		<%= submit_tag I18n.t('search'), :name => nil %>
-			<% end %>
+	<% form_tag cofiles_path, :method => 'get' do %>
+		<%= text_field_tag :search, params[:search], :placeholder => (t 'cofile.name') %>
+	  	<%= submit_tag I18n.t('search'), :name => nil %>
+	<% end %>
 </div>
 </div>
 </div>
+<div class="toolbar">
+	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'cofile.new')) + (t 'cofile.new'), new_document_path %></p>
+</div><BR><BR>
 <div class="tlist">
 <table width=100%>
 <tr>
@@ -33,15 +36,15 @@
 		<%=h cofile.staffloan_id? ? check_kin {cofile.borrower.mykad_with_staff_name} : "" %>
 	</td>
 	<td><%=h cofile.onloan? ? cofile.onloandt : "" %></td>
-    <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => cofile %></td>
+    <td width=10px ><%= link_to image_tag("document.png", :border => 0, :title =>(t 'show')), :action => 'show', :id => cofile %></td>
     <td width=10px>
 		<% permitted_to? :manage, :cofiles do %>
-			<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => cofile %>
+			<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => cofile %>
 		<% end %>
 	</td>
     <td width=10px>
 		<% permitted_to? :manage, :cofiles do %>
-			<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), cofile, :confirm => 'Are you sure?', :method => :delete %>
+			<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), cofile, :confirm => (t 'are_you_sure'), :method => :delete %>
 		<% end %>
 	</td>
   </tr>
@@ -50,4 +53,4 @@
 <br />
 </div>
 
-<%= link_to (t 'create'), new_cofile_path %>
+<%= link_to (t 'cofile.new'), new_cofile_path %>

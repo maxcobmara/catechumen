@@ -86,8 +86,42 @@ class Trainingnote < ActiveRecord::Base
     else
       @topicids_of_programme = Programme.find(:all, :conditions=>['id=?', @programme_id]).first.descendants.map(&:id)
     end
-    
     @topicids_of_programme
+  end
+  
+  def self.search(search)
+    if search!=nil && search!=""
+      #by subject
+      subject_commonsubject = Programme.find(:all, :conditions => ["(name ILIKE(?) or code ILIKE(?)) AND (course_type=? OR course_type=?)","%#{search}%", "%#{search}%", "Subject", "Commonsubject"])
+      topic_subtopic_ids = []
+      if subject_commonsubject.count > 0
+        subject_commonsubject .each do |x|
+          topic_subtopic_ids += x.descendants.at_depth(3).map(&:id)
+          topic_subtopic_ids += x.descendants.at_depth(4).map(&:id)
+        end
+      end
+      
+      #by topic
+      topic_subtopic_search = Programme.find(:all, :conditions => ["(name ILIKE(?) or code ILIKE(?)) AND (course_type=? OR course_type=?)","%#{search}%", "%#{search}%", "Topic", "Subtopic"])
+      topic_subtopic_ids += topic_subtopic_search.map(&:id) if topic_subtopic_search.count > 0
+      
+      if topic_subtopic_ids.count > 0
+        @topicdetails = Topicdetail.find(:all,:conditions => ["topic_code IN(?)", topic_subtopic_ids])
+        if @topicdetails.count > 0
+          topicdetail_ids = @topicdetails.map(&:id)
+          @trainingnotes = Trainingnote.find(:all, :conditions => ["topicdetail_id IN(?) or title ILIKE(?)", topicdetail_ids,"%#{search}%"], :order => 'topicdetail_id')
+        else
+          @trainingnotes = Trainingnote.find(:all, :conditions => ["title ILIKE(?)", "%#{search}%"], :order => 'topicdetail_id')
+        end
+      else
+        #solely by title
+        @trainingnotes = Trainingnote.find(:all, :conditions => ["title ILIKE(?)", "%#{search}%"], :order => 'topicdetail_id')
+      end
+
+    else   
+      @trainingnotes = Trainingnote.find(:all, :order => 'topicdetail_id')
+    end
+    @trainingnotes
   end
   
 end

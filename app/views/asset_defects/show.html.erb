@@ -1,5 +1,5 @@
 <div class="tform">
-
+<H2><%=t('assetdefects.title')%></H2>
 <fieldset>
 	<legend class='togvis'><%= t('assetdefects.defects_reports') %></legend>
 		<table width=85% >
@@ -35,7 +35,7 @@
 <% permitted_to? :manage, :assets do %>
 
 <fieldset>
-	<legend class='togvis'><%= t('proses') %></legend>
+	<legend class='togvis'><%= (t 'proses').titleize %></legend>
 			<table width=85%>
 				<tr>
 					<td class="leftcol"><label for="process_type"><b><%= t('assetdefects.action_type') %></b></label></td>
@@ -75,11 +75,11 @@
 <% unless @asset_defect.is_processed == true %>
 	<!--if not PROCESSED yet-->
 	<% if @asset_defect.reported_by == Login.current_login.staff.try(:id) %>
-		<%= link_to 'Edit', edit_asset_defect_path(@asset_defect) %>
+		<%= link_to (t 'edit'), edit_asset_defect_path(@asset_defect) %>
 	<% else %>
 		<!--access for other than kewpa9 creator, but must have authority to manage!-->
 		<% permitted_to? :manage, :asset_defects do %>
-			<%= link_to 'Edit', edit_asset_defect_path(@asset_defect) %>
+			<%= link_to (t 'edit'), edit_asset_defect_path(@asset_defect) %>
 		<% end %>
 	<% end %>
 	
@@ -87,7 +87,7 @@
 	<!--if PROCESSED, give access to ONLY those who have authority ie. ASSET ADMIN-->
 	<% if @asset_defect.reported_by != Login.current_login.staff.try(:id) %>
 		<% permitted_to? :manage, :asset_defects do %>
-			<%= link_to 'Edit', edit_asset_defect_path(@asset_defect) %>
+			<%= link_to (t 'edit'), edit_asset_defect_path(@asset_defect) %>
 		<% end %>
 	<% end %>
 <% end %> 

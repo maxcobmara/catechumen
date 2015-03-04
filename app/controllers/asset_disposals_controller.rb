@@ -44,7 +44,7 @@ class AssetDisposalsController < ApplicationController
 
     respond_to do |format|
       if @asset_disposal.save
-        format.html { redirect_to(@asset_disposal, :notice => 'Disposal was succesfully registered.') }
+        format.html { redirect_to(@asset_disposal, :notice => t('disposal.title2')+" "+t('registered')) }
         format.xml  { render :xml => @asset_disposal, :status => :created, :location => @asset_disposal }
       else
         format.html { render :action => "new" }
@@ -60,7 +60,7 @@ class AssetDisposalsController < ApplicationController
 
     respond_to do |format|
       if @asset_disposal.update_attributes(params[:asset_disposal])
-        format.html { redirect_to(@asset_disposal, :notice => 'Disposal was successfully updated.') }
+        format.html { redirect_to(@asset_disposal, :notice => t('disposal.title2')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

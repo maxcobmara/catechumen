@@ -25,6 +25,7 @@ class PtbudgetsController < ApplicationController
   # GET /ptbudgets/new
   # GET /ptbudgets/new.xml
   def new
+    @newtype = params[:newtype]
     @ptbudget = Ptbudget.new
 
     respond_to do |format|
@@ -45,7 +46,7 @@ class PtbudgetsController < ApplicationController
 
     respond_to do |format|
       if @ptbudget.save
-        flash[:notice] = 'A new budget was successfully created.'
+        flash[:notice] =  t('ptbudget.new')+" "+t('created')
         format.html { redirect_to(@ptbudget) }
         format.xml  { render :xml => @ptbudget, :status => :created, :location => @ptbudget }
       else
@@ -62,7 +63,7 @@ class PtbudgetsController < ApplicationController
 
     respond_to do |format|
       if @ptbudget.update_attributes(params[:ptbudget])
-        flash[:notice] = 'Your training budget was successfully updated.'
+        flash[:notice] =  t('ptbudget.title')+" "+t('updated')
         format.html { redirect_to(@ptbudget) }
         format.xml  { head :ok }
       else

@@ -2,7 +2,7 @@ class AcademicSessionsController < ApplicationController
   # GET /academic_sessions
   # GET /academic_sessions.xml
   def index
-    @academic_sessions = AcademicSession.all
+    @academic_sessions = AcademicSession.find(:all, :order => "created_at DESC")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,7 +44,7 @@ class AcademicSessionsController < ApplicationController
 
     respond_to do |format|
       if @academic_session.save
-        format.html { redirect_to(@academic_session, :notice => 'AcademicSession was successfully created.') }
+        format.html { redirect_to(@academic_session, :notice => t('academic_session.title2')+" "+t('created')) }
         format.xml  { render :xml => @academic_session, :status => :created, :location => @academic_session }
       else
         format.html { render :action => "new" }
@@ -60,7 +60,7 @@ class AcademicSessionsController < ApplicationController
 
     respond_to do |format|
       if @academic_session.update_attributes(params[:academic_session])
-        format.html { redirect_to(@academic_session, :notice => 'AcademicSession was successfully updated.') }
+        format.html { redirect_to(@academic_session, :notice => t('academic_session.title2')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

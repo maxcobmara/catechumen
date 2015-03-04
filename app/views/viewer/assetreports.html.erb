@@ -1,18 +1,24 @@
 <div class="box">
 <!-- Box Head -->
   <div class="box-head">
-    <h2 class="left">KEW PA Download / Link List</h2>
+    <h2 class="left"><%=t('asset.kewpa_download_link_list')%></h2>
   </div>
 </div>
 
 <div class="indextable">
 	<table width=100% border="0" cellpadding="0" cellspacing="0">
 		<tr>
-		  <th>Name</th>
-		  <th>Description</th>
-		  <th>Type</th>
+		  <th><%=t('asset.kewpa_name')%></th>
+		  <th><%=t('asset.kewpa_description')%></th>
+		  <th><%=t('asset.kewpa_type')%></th>
 		</tr>
 		
+		<tr>
+			<td>KEW.PS-13</td>
+			<td>Laporan Kedudukan Stok Tahun ...</td>
+			<td><% permitted_to? :manage, :stationerysearches do %><%=link_to (t 'link'), {:controller => 'stationerysearches', :action => 'new'}%>
+			<% end %></td>
+		</tr>
 		<tr>
 			<td>KEW.PA-1</td>
 			<td>Borang Laporan Penerimaan Aset Alih Kerajaan</td>
@@ -22,14 +28,14 @@
 		<tr>
 			<td>KEW.PA-2</td>
 			<td>Daftar Harta Modal</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 			{:controller => 'assets', 			:action => 'index'} %> |<% end %> 			
-				 	<a href='assets/kewpas/kewpa2.pdf'>PDF-page 1</a> <a href='assets/kewpas/kewpa2b.pdf'>PDF-page 2</a></td>
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 			{:controller => 'assets', 			:action => 'index'} %> |<% end %> 			
+				 	<a href='assets/kewpas/kewpa2.pdf'>PDF-<%=t('page')%> 1</a> <a href='assets/kewpas/kewpa2b.pdf'>PDF-<%=t('page')%> 2</a></td>
 		</tr>
 		
 		<tr>
 			<td>KEW.PA-3</td>
 			<td>Daftar Inventori</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 			{:controller => 'assets', 			:action => 'index'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 			{:controller => 'assets', 			:action => 'index'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa3.pdf'>PDF</a>
 				</td>
 		</tr>
@@ -39,7 +45,7 @@
 			<td>Senarai Daftar Harta Modal</td>
 			<td>
 				<% permitted_to? :manage, :assets do %>
-					<%= link_to 'ALL', {:controller => 'assets', 	:action => 'kewpa4'}  %>, 
+					<%= link_to (t 'all').upcase, {:controller => 'assets', 	:action => 'kewpa4'}  %>, 
 					<% yeartab = Asset.find(:all, :select => :assetcode).map(&:assetcode).map{|d| d.split("/")[4]}.uniq %>
 					<% yeartab.each do |yeartab| %>
 					    <%= link_to "20#{yeartab}", :controller => 'assets', :action => "kewpa4", :search => "#{yeartab}" %>, 
@@ -55,7 +61,7 @@
 			<td>Senarai Daftar Inventori</td>
 			<td>
 				<% permitted_to? :manage, :assets do %>
-					<%= link_to 'ALL', {:controller => 'assets', 	:action => 'registerinventory'}  %>, 
+					<%= link_to (t 'all').upcase, {:controller => 'assets', 	:action => 'registerinventory'}  %>, 
 					<% yeartab = Asset.find(:all, :select => :assetcode).map(&:assetcode).map{|d| d.split("/")[4]}.uniq %>
 					<% yeartab.each do |yeartab| %>
 						 <%= link_to "20#{yeartab}", :controller => 'assets', :action => "registerinventory", :search => "#{yeartab}" %>, 
@@ -75,7 +81,7 @@
 		<tr>
 			<td>KEW.PA-7</td>
 			<td>Senarai Aset Alih Kerajaan (mengikut lokasi)</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'locations', 	:action => 'index'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'locations', 	:action => 'index'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa7.pdf'>PDF</a>
 				</td>
 		</tr>
@@ -83,14 +89,14 @@
 		<tr>
 			<td>KEW.PA-8</td>
 			<td>Laporan Tahunan Harta Modal Dan Inventori Bagi Tahun .........</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'assets', 	:action => 'kewpa8'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'assets', 	:action => 'kewpa8'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa8.pdf'>PDF</a></td>
 		</tr>
 		
 		<tr>
 			<td>KEW.PA-9</td>
 			<td>Borang Aduan Kerosakan Aset Alih Kerajaan</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'asset_defects', 	:action => 'index'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'asset_defects', 	:action => 'index'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa9.pdf'>PDF</a></td>
 		</tr>
 		
@@ -115,14 +121,14 @@
 		<tr>
 			<td>KEW.PA-13</td>
 			<td>Senarai Aset Alih Kerajaan yang Memerlukan Penyelenggaraan</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'assets', 	:action => 'kewpa13'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'assets', 	:action => 'kewpa13'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa13.pdf'>PDF</a></td>
 		</tr>
 		
 		<tr>
 			<td>KEW.PA-14</td>
 			<td>Daftar Penyelenggaraan Harta Modal</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'assets', 	:action => 'index', :show => 'maintainable'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'assets', 	:action => 'index', :show => 'maintainable'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa14.pdf'>PDF</a></td>
 		</tr>
 		
@@ -136,35 +142,35 @@
 		<tr>
 			<td>KEW.PA-16</td>
 			<td>Daftar Penyelenggaraan Harta Modal</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'asset_defects', 	:action => 'index'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'asset_defects', 	:action => 'index'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa16.pdf'>PDF</a></td>
 		</tr>
 		
 		<tr>
 			<td>KEW.PA-17</td>
 			<td>Laporan Lembaga Pemeriksa Aset Alih Kerajaan</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'asset_disposals', 	:action => 'kewpa17'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'asset_disposals', 	:action => 'kewpa17'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa17.pdf'>PDF</a></td>
 		</tr>
 		
 		<tr>
 			<td>KEW.PA-18</td>
 			<td>Sijil Penyaksian Pemusnahan Aset Alih Kerajaan </td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'asset_disposals', 	:action => 'index'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'asset_disposals', 	:action => 'index'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa18.pdf'>PDF</a></td>
 		</tr>
 		
 		<tr>
 			<td>KEW.PA-19</td>
 			<td>Sijil Pelupusan Pemusnahan Aset Alih Kerajaan </td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'asset_disposals', 	:action => 'index'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'asset_disposals', 	:action => 'index'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa18.pdf'>PDF</a></td>
 		</tr>
 		
 		<tr>
 			<td>KEW.PA-20</td>
 			<td>Laporan Tahunan Pemusnahan Aset Alih Kerajaan </td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'asset_disposals', 	:action => 'kewpa20'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'asset_disposals', 	:action => 'kewpa20'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa20.pdf'>PDF</a></td>
 		</tr>
 		
@@ -219,26 +225,26 @@
 		<tr>
 			<td>KEW.PA-28</td>
 			<td>Laporan Awal Kehilangan Aset Alih Kerajaan</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'asset_losses', 	:action => 'index'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'asset_losses', 	:action => 'index'} %> |<% end %> 			
 				 	<a href='assets/kewpas/kewpa28.pdf'>PDF</a></td>
 		</tr>
 		
 		<tr>
 			<td>KEW.PA-29</td>
 			<td>Perlantikan Jawatankuasa Penyiasat Kehilangan Aset Alih Kerajaan</td>
-			<td><% permitted_to? :manage, :assets do %><% link_to 'Link', 		{:controller => 'asset_loses', 	:action => 'kewpa29'} %>TODO KEWPA 29 |<% end %><a href='assets/kewpas/kewpa29.pdf'>PDF</a></td>
+			<td><% permitted_to? :manage, :assets do %><% link_to (t 'link'), 		{:controller => 'asset_loses', 	:action => 'kewpa29'} %>TODO KEWPA 29 |<% end %><a href='assets/kewpas/kewpa29.pdf'>PDF</a></td>
 		</tr>
 		
 		<tr>
 			<td>KEW.PA-30</td>
 			<td>Laporan Akhir Kehilangan Aset Alih Kerajaan</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'asset_losses', 	:action => 'index'} %> |<% end%>	<a href='assets/kewpas/kewpa28.pdf'>PDF</a></td>
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'asset_losses', 	:action => 'index'} %> |<% end%>	<a href='assets/kewpas/kewpa28.pdf'>PDF</a></td>
 		</tr>
 		
 		<tr>
 			<td>KEW.PA-31</td>
 			<td>Sijil Hapus Kira Aset Alih Kerajaan</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to 'Link', 		{:controller => 'asset_losses', 	:action => 'index'} %> |<% end%><a href='assets/kewpas/kewpa31.pdf'>PDF</a></td>
+			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'asset_losses', 	:action => 'index'} %> |<% end%><a href='assets/kewpas/kewpa31.pdf'>PDF</a></td>
 		</tr>
 		
 		<tr>

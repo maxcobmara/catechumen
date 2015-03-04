@@ -1,0 +1,31 @@
+<h3><%=t('leaveforstudent.approval_warden')%></h3>
+
+<% form_for(@leaveforstudent) do |f| %>
+  <%= f.error_messages %>
+
+<div class="tform">
+		<%= render :partial => 'applyshow' %>
+	<H2><%=t('leaveforstudent.approval_warden')%></H2>
+	<table width=100% >
+		<tr>
+			<td class="leftcol"><label for="approved"><b><%=t('leaveforstudent.approval2')%>:</b></label></td>
+			<td><%= f.radio_button :approved2,'false' %><%=t('not_approved')%>&nbsp;<%= f.radio_button :approved2,'true' %><%=t('approved')%></td>
+		</tr>
+		<tr><!-- 07/10/2011 - Shaliza fixed Current Login logged in -->
+			<td class="leftcol"><label for="staff_id"><b><%=t('leaveforstudent.staff_id2')%>:</b></label></td>
+			<td><%= f.collection_select :staff_id2, Staff.find(:all, :conditions => ['id IN (?)', @leaveforstudent.warden_list], :order=>'name ASC'), :id, :staff_name_with_position,{ :include_blank=>t('select'), :selected=>Login.current_login.staff_id} %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="approvedate"><b><%=t('leaveforstudent.approvedate.')%>:</b></label></td>
+			<td><%= f.date_select :approvedate2, :order => [:day, :month, :year] %></td>
+		</tr>
+  </table>
+</div>
+  <p>
+    <%= f.submit t('update') %>
+  </p>
+
+<% end %>
+
+<%= link_to t('show'), @leaveforstudent %> |
+<%= link_to t('back'), leaveforstudents_path %>

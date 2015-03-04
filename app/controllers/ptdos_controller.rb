@@ -44,7 +44,7 @@ class PtdosController < ApplicationController
 
     respond_to do |format|
       if @ptdo.save
-        flash[:notice] = 'Ptdo was successfully created.'
+        flash[:notice] = t('ptdos.title')+" "+t('created')
         format.html { redirect_to(@ptdo) }
         format.xml  { render :xml => @ptdo, :status => :created, :location => @ptdo }
       else
@@ -61,7 +61,7 @@ class PtdosController < ApplicationController
 
     respond_to do |format|
       if @ptdo.update_attributes(params[:ptdo])
-        flash[:notice] = 'Ptdo was successfully updated.'
+        flash[:notice] =  t('ptdos.title')+" "+t('updated')
         format.html { redirect_to(@ptdo) }
         format.xml  { head :ok }
       else

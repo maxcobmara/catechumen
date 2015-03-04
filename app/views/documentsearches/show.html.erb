@@ -18,15 +18,16 @@
 <%#=@documents%>
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
-	<form action="#">
-			<script>
-			document.write("<input type='button' " +
-			"onClick='window.print()' " +
-			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
-	</form>
-<%= link_to "Back", :controller=>'documentsearches', :action => 'new', :searchdoctype => 1 %>
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
+<form>
+<form><BR>
+<%= link_to (t 'back'), :controller=>'documentsearches', :action => 'new', :searchdoctype => 1 %>
 
 	<!--for test only-<%#=@sd %>kiki<%#=@ed%>-->
 <div class="A4potrait" style="border: none;">
@@ -60,7 +61,14 @@
 				<td class="tdata"><%=h document.refno %></th>
 				<td class="tdata"><%=h l(document.letterdt) %></th>
 				<td class="tdata"><%=h document.title %></th>
-				<td class="tdata"><%=h document.otherinfo %></th>
+				<td class="tdata">
+					<% document.circulations.each_with_index do |circulation,ind| %>
+						<%if ind!=0 %><br><%end%>
+						<% if circulation.staff_id == Login.current_login.staff_id %><% end %>
+						<!--(<%#=ind+=1%>)--> <%= circulation.staff.name %> - <%=h circulation.action_taken%>
+						<% if circulation.staff_id == Login.current_login.staff_id %><% end %>
+					<% end %>
+				</th>
 			</tr>
 		<% end %>
 	</tbody>
@@ -69,7 +77,7 @@
 <BR/>	
 
 <div id="hideLink">
-<%= link_to 'Back',{:controller => 'documentsearches', 	:action => 'new', :searchdoctype=>1} %>
+<%= link_to (t 'back'),{:controller => 'documentsearches', 	:action => 'new', :searchdoctype=>1} %>
 </div>
 
 

@@ -3,6 +3,7 @@
 
 en:
   #common
+  view_more: View More
   name: Name
   search:  Search
   datelabel: Date
@@ -13,8 +14,11 @@ en:
   new: New
   edit: Edit
   update: Update
+  delete: Delete
+  are_you_sure: "Are you sure?"
   control: Control
-  thank: "Staff was successfully created"
+  approval: Approval
+  return: Return
   addmore: "Add More"
   addlog: Add Log
   submit: Submit
@@ -23,7 +27,10 @@ en:
   create: Create
   created: was successfully created
   updated: was successfully updated
+  registered: was successfully registered
   show: Show
+  print: Print
+  draft_print: Draft print
   type: Type
   apply: Apply
   proses: Process
@@ -38,11 +45,24 @@ en:
   current_file: Current file is
   upload_change_file: "Upload/Change File"
   no_attachment: No attachment yet
+  no_file_available: No file available
+  not_assigned: Not assigned
+  max_size: Maximum size
   or: Or
+  on2: on
   approved: Approved
   not_approved: Not Approved
+  endorsed: Endorsed
+  not_endorsed: Not Endorsed
+  listing: Listing
+  date_on: on
+  date_by: by
   from: From
   to: To
+  at: at
+  by: by
+  and: and
+  for: for
   submitted: Submitted
   not_submitted: Not Submitted
   more: More
@@ -50,9 +70,37 @@ en:
   actions: Actions
   yes2: Yes
   no2: No
+  no3: No
   edit_checked: Edit Checked
   saved_all_records: Successfully saved all records
   check_uncheck: "Check/Uncheck all"
+  none: None
+  for: for
+  required: Required
+  not_required: Not Required
+  note: Note
+  check_uncheck_all: "Check / Unckeck All"
+  select_one: "Please select at least 1 record to edit."
+  all: All
+  reservable: Reservable
+  link: Link
+  page: Page
+  fields_marked_asterics: Fields marked with an asterisk
+  are_required: are required
+  eg: "Eg."
+  root: root
+  not_exist: not exist
+  modify: Modify
+  apply_changes: Apply Changes
+  data_invalid: 'Data supplied was invalid.'
+  view_pdf: View PDF
+  starting_with: starting with
+  others_specify: "If Others, Please Specify"
+  
+  will_paginate:
+    previous_label: "&#0171; Previous"
+    next_label: "Next &#0187;"
+    page_gap: "…"
   
   report:
     download: Download Excel
@@ -77,8 +125,11 @@ en:
           asset_loss: "Asset Loss"
           librarytransaction: "Library Transaction"
           grade: "Grade"
-          lesson_plan: Pelan Pengajaran
-          
+          lesson_plan: Lesson Plan
+          student_discipline_case: Student Discipline Case
+          leaveforstaff: Staff Leave
+          travel_claim: Travel Claim
+          travel_request: Travel Request
       attributes:
           staff:
               icno: "MyKad No"
@@ -109,11 +160,12 @@ en:
               code: "Position Code"
           leaveforstaff:
               staff_id: "Staff Name"
-          travelrequest:
+          travel_request:
               staff_id: "Staff Name"
               trcode: "Travel Code"
               destination: "Destination"
               purpose: "Purpose"
+              own_car_notes: Reasons
           asset:
              assettype: "Asset Type"
              cardno: "Card No"
@@ -138,7 +190,18 @@ en:
                  mark: "Mark"
           lesson_plan:
              schedule: Timetable
-             
+          student_discipline_case:
+              reported_by: Reported by
+              student_id: Student Name
+              status: Status
+              infraction_id: Infraction
+              assigned_to: Untuk tindakan Ketua Program
+          leaveforstaff:
+              staff_id: Staff Name
+              leavetype: Leave Type
+          travel_claim:
+              claim_month: "Claim For (month & year) "
+              travel_requests: "Travel Request(s) "
       errors:
           template:
             body: "There were problems with the following fields:"
@@ -146,7 +209,7 @@ en:
               one: "1 errors prohibited this {{model}} from being saved"
               other: "{{count}} prohibited this {{model}} from being saved"
           messages:
-              blank: "cant't be blank"
+              blank: "can't be blank"
               not_a_number: "is not number"
               too_short: "is too short (minimum is {{count}} characters)"
               taken: "has already been taken"
@@ -165,12 +228,17 @@ en:
     show: Show
     
   login:
+    welcome: Welcome
+    sign_up: Sign Up
     new: Sign up as a new user
     newlogin: New Login
-    list: Lists of Logins
+    list: Lists of Login Accounts
+    account: Login Account
     login_details: Login Details
     login: Login
+    logout: Log Out
     person: Person
+    account_type: Account Type
     role_name: Role Name
     system_login: System Login Details
     attach_login: Attach Login
@@ -179,25 +247,37 @@ en:
     login_roles: Login Roles
     select_role: Select role to add to this user
     signup: Sign Up
-    
+    all: All 
+    verify: Verify 
+    staff: Staff 
+    student: Student
+    are_you_sure: Are you sure you want to delete
+    icno: Mykad No
+    email: Email
     user: User
-    adminstaff: Administration Staff
-    admin: Administration
-    library: Librarian
+    administration_staff: Administration Staff
+    administration: Administration
+    librarian: Librarian
     warden: Warden
-    trainadmin: Training Administration
-    trainmanager: Training Manager
-    assetadmin: Asset Administrator
-    studentcounsellor: Student Counsellor
-    faciadmin: Facilities Administrator
+    training_administration: Training Administration
+    training_manager: Training Manager
+    asset_administrator: Asset Administrator
+    student_counsellor: Student Counsellor
+    facilities_administrator: Facilities Administrator
     lecturer: Lecturer
-    financeunit: Finance Unit
-    studentadmin: Student Administrator
-    staffadmin: Staff Administrator
+    finance_unit: Finance Unit
+    student_administrator: Student Administrator
+    staff_administrator: Staff Administrator
     guest: Guest
-    programmanager: Programme Manager
-    disciplinaryoff: Disciplinary Officer
-    cooCoordinator: Coordinator
+    programme_manager: Programme Manager
+    disciplinary_officer: Disciplinary Officer
+    coordinator: Coordinator
+    testing_role: Testing Role
+    e_filing: "E-Filing"
+    registered: "Thanks for signing up!  The IT team will process your application as soon as possible."
+    registration_failed: "We couldn't set up that account, sorry.  Please try again, or contact an admin."
+    provide_login_password: Please provide your 'Login' and 'Password' and click the LOGIN button 
+    problem_signing: "If you have problem signing in, please contact your system administration."
     
   role:
     list: Lists of Roles
@@ -205,13 +285,57 @@ en:
     new_role: New Role
     edit: Editing Role
     role_details: Role Details
+    authname: "manage / acting as : "
     
+  session:
+    login_success: Logged in successfully
+    login_failed: "Login Failed.Please Try Again."
+    logout_success: You have been logged out
+    could_not_log: "Couldn't log you in as "
+    failed_login_for: "Failed login for "
+    
+  notifications:
+    title: Notifications
+    skt_ready_endorse: Staff SKT ready for endorsement
+    skt_ready_annual_review: Staff SKT ready for Annual Review
+    staff_appraisal_for_processing: Staff appraisal for processing
+    leave_for_approval: Leave application for approval
+    leave_request_for: Your leave request for
+    has_been_approved: has been approved
+    late_early_for_approval: "Late/early attendance for approval"
+    late_early_require_reason: "Late/early attendance require reason submission"
+    travel_request_require_approval: Travel request that requires your approval
+    travel_request_approved: Travel request has been approved
+    defect_require_processing: Defect reports require processing
+    defect_for_decision: Defect reports for decision
+    asset_losses_require_verify: Asset Losses require verifying
+    asset_disposals_require_verify: Asset Disposals require verifying
+    asset_loan_due: "Asset on loan due/overdue"
+    asset_loan_for_approval: Asset loan request for approval
+    asset_loan_require_final_approval: Asset Loan requests require your final approval
+    asset_loan_approved_fyi: Asset Loan requests approved for your information
+    new_messages: New Messages
+    student_leave_for_approval: Student leave request for approval
+    documents_attention: New documents for your attention
+    counselling_appt_to_confirm: Student counseling appoinment to be confirmed
+    new_discipline_case: New student discipline cases
+    referred_cases: Referred student discipline cases
+    counsellor_feedback: Feedbacks received from counselor for referred cases
+    lesson_report_for_comment: Lesson Reports for your comment
+    new_users_authenticate: New users require authentication
+    late_books: Late Books at the library
+    document_require_attention: Documents require your attention
+    staf_appraisal_for_processing: Staff Appraisals for processing
+  
   addressbook:
     new_contact: New Contact
+    edit: Edit Contact
+    details: Contact Details
     contact: Contact
     mail: Mail
     email: "E-Mail"
     website: Website
+    fax: Fax No
     phonefax: "Phone (Fax)"
     
   title:
@@ -224,44 +348,56 @@ en:
     
   staffshift:
     title: Staff Shifts
+    title2: Staff Shift
+    details: Staff Shift Details
     new: New Shift
     new_staffshift: New Staff Shifts
     edit: Edit Staff Shifts
     
   transportgroups:
-    transportgroups: Transport Groups
-    new_transportgroup: New Transport Groups
+    title: Transport Groups
+    title2: Transport Group
+    new: New Transport Groups
     new_group: New Group
     edit: Edit Transport Group
-    groupname: Group Name
     salary: Salary
-    salarylimits: Salary Limits
-    limits: Limits
-    salarylow: Salary low
-    salaryhight: Salary high
-    low: low
-    high: high
+    salary_limits: Salary Limits
+    cc_limits: Cubic Centimeters Limits
+    group_name: Group Name
+    salary_low: Salary Low
+    salary_high: Salary High
+    cc_low: CC Low
+    cc_high: CC High
   
   mileagerates:
     title: Mileage Rates for Transport Groups
-    new_mileagerate: New travel claim mileage rate
-    new_rateentry: New Mileage Rate Entry
-    edit: Edit Mileage Rate Entry
+    title2: Mileage Rate
+    new: New travel claim mileage rate
+    edit: Edit Mileage Rate
+    transport_group: Transport Group
+    details: Mileage Rate Details
    
-  Banks:
-    new: Cipta Bank Baru
-    new_bank: Bank Baru
-    bankdetails: Butiran Bank
-    list: Lists of Banks
+  bank:
+    title: Bank Listing
+    title2: Bank
+    new: Bank Baru
+    details: Butiran Bank
     edit: Edit Bank
     sname: Short Name
     lname: Long Name
     active: Active
     
   assetcategories:
-    new_assetcategory: New Asset Categories
-    list: Listing Asset Categories
-    edit: Editing Asset Categories
+    title: Asset Category Listing
+    title2: Asset Category
+    new: New Asset Category
+    edit: Edit Asset Category
+    parent: Parent
+    details: Asset Category Details
+    description: Description
+    category: Category
+    fixed: Fixed Asset
+    inventory: Inventory
     
   menu:
     home: Home
@@ -270,11 +406,11 @@ en:
     staff_info: Staff Information
     attend: Attendance
     staff_appraisal: Staff Appraisal
-    tasks_respons: Task & responsibilities
+    tasks_respons: Task & Responsibilities
     
     leave: Leave
     apply: Apply
-    list_approve: "List/Approve"
+    list_approve: "List / Support / Approve"
     claims: Claims
     travel_claims: Travel Claims
     travel_request: Travel Request
@@ -294,7 +430,7 @@ en:
     assets: Assets
     fix_assets: Fixed Assets
     inventory: Inventory
-    off_supplies: Office Supplier
+    off_supplies: Office Supplies
     defects: Defects
     loss_write: Loss & Write Offs
     disposal: Disposal
@@ -338,8 +474,9 @@ en:
     timetable_entries: Time Table Entries
     curriculum_management: Curriculum Management
     teaching_and_learning: "Teaching & Learning"
+    plan_report: "Lesson Plan & Report"
     lesson_plan: Lesson Plan
-    create_topics_details: Create Topics Details
+    create_topics_details: Topic Details
     lesson_reporting: Lesson Report
     training_notes: Training Notes
     personalised_timetable: Personalised Time Table
@@ -351,10 +488,10 @@ en:
     exam_dev: Examination Development
     exam_maker: Examination Maker
     exam_manage: Examination Management
-    marks_exam_paper: Makrs Examination Paper
+    marks_exam_paper: Marks by Examination Paper
     student_grades: Student Grades
     exam_result: Examination Result
-    result_program: Result Program
+    result_program: Result by Programme
     exam_slip: Examination Slip
     feedback_courseevaluate: "Feedback / Course Evaluation"
     exam_analysis: Examination Analysis
@@ -384,14 +521,15 @@ en:
     release_notes: Release Notes
     
   staff: 
+    title: Staff
     new: New Staff
     edit: Edit Staff
     menu: Staff
     list: Staff List
     icno: MyKad No
     name: Name
-    create: Create New Staff
     position: Position  #move to position when ready
+    mykadno_name: "MyKadNo, Name"
 
     personal_details: Personal Details
     code: Staff Code
@@ -431,7 +569,10 @@ en:
     reconfirmation_date: 'Reconfirmation Date (Option)'
     current_grade_date: Date of Confirmation to Current Grade
     starting_salary: Starting Salary
-
+    current_salary: Current Salary
+    salary_no: Salary No
+    allowance: Total Fixed Allowance
+    salary_vehicle: "(Salary| Vehicle cc - "
     appointby: Appointed By
     svchead: Head Of Service
     svctype: Type Of Service
@@ -481,7 +622,7 @@ en:
     group_grade: Service Group
     
     loan:
-      loans: Loans
+      loans: Loan Listing
       ltype: Loan For
       accno: Loan Account No
       startdt: Approval Date
@@ -512,6 +653,8 @@ en:
     profession: Profession
     
   attendance:
+     attend: Attend
+     title: Staff Attendance
      new: New Attendance
      list: Lists of Attendances
      staff_details: Staff Details
@@ -521,7 +664,18 @@ en:
      time_in: Time In
      time_out: Time Out
      lateness_earlyreturn:  'Manage Lateness / Early Return '
-     report_monthlylisting: Report / Monthly Listing
+     report_monthlylisting: Report / Monthly Listing 
+     daily_weekly_monthly_report: "Daily / Weekly / Monthly Report"
+     monthly_listing: Monthly Listing
+     department: "Department / Unit"
+     report_type: Report Type
+     month_year_week_start: "Month & Year / Week starting"
+     daily_report: Daily Report
+     weekly_report: Weekly Report
+     monthly_report: Monthly Report
+     month_year: "Month & Year"
+     date: Date
+     starting_date: Starting Date
      fingerprint_statement: Fingerprint Statement
      reason: Reason If Late / Early
      status: Status
@@ -536,12 +690,16 @@ en:
      approvestatus: Approving Status
      create: Create New Attendance
      import_excel: "Import Staff Attendance (Excel)"
+     monthly_attendance_listing: Monthly Attendance Listing
+     record_not_exist: "Record not exist (for selected month)."
+     no_attendance_record: "Selected staff has NO attendance record at all."
     
   people:
     male: male
     female: female
   
   positions:
+     title: Position
      list: List of Positions
      new: New Position
      edit: Edit Postition
@@ -559,6 +717,8 @@ en:
      create: Create New Positions
      postinfo_id: Post Information
      status: Position Status
+     back_to_staffs: Back to Staff Information
+     back_to_positions: "Back to Task & Responsibilities"
   postinfos:
      list: Lists of Post Information 
      title: Post Information
@@ -569,9 +729,15 @@ en:
      position: Position
      post_count: Position Count
   staffleave:
+    title: Staff Leave
     new: New Leave For Staff
+    edit: Edit Staff Leave
     list: Lists of Leaves
-    leavereq: Staff Leave Request Details
+    approval_supporting_officer: Support Staff Leave Application
+    approval_approving_officer: Approve Staff Leave Application
+    supporting_leave: Supporting Leave Application
+    approving_leave: Approving Leave Application
+    leavereq: Staff Leave Application Details
     staff_id: Staff Name
     leavetype: Leave Type
     leavestartdate: Leave Start Date
@@ -588,20 +754,35 @@ en:
     required: are required
     applicant_details: Applicant Details
     replacement_id: Replacement Staff
-    forapproval: For Approval
+    forapproval: "Support/Approve?"
     stafflistrequest: Staff Leave Request Details
     editleave: Editing Leave For Staff
-    
     applyforleave: Apply For Leaves
-    
-    approve_leave: Approved?
-    approval1: Approval
-    approval1_id: Name of Approver
-    approval1date: Date Approved
-    approver2: Endorsed?
-    approval2_id: Endorsed By
-    approval2date: Date Endorsed
-     
+    approve_leave: "Leave Application - Supported & Approved?"
+    approval1: "Leave Application Supported?"
+    approval1_id: Name of Supporting Officer
+    approval1date: Date Leave Supported
+    supported: Supported
+    supported2: "Supported?"
+    not_supported: Not supported
+    approver2: "Leave Application Approved?"
+    approval2_id: Name of Endorsing Officer
+    approval2date: Date Leave Approved
+    all: All
+    myleave: My Leave
+    formysupport: For My Support
+    formyapproval: For My Approval
+    approved: Approved
+    approved2: "Approved?"
+    not_approved: Not approved
+    appointdt_not_exist: "Please update 'Appointment Date' in 'Staff Information' submodule"
+    unit_not_defined: "Please update 'Unit' in 'Task & Responsibilities' submodule and re-edit this record."
+    leave_balance: Leave Balance
+    balance_before: "(before this leave is taken)"
+    balance_after: "(after this leave is taken)"
+    leave_already_taken: "Leave already taken for current applied dates!"
+    begin_before_ends: "Your leave must begin before it ends"
+  
   travel:
     code: Code
     title: Travel Request
@@ -645,7 +826,7 @@ en:
     other_public_tpt: Other Public Transport
     mileage: Mileage
     mileage_allowance: Mileage Allowance
-    mileage_replacement: "Train / Plane Fares Replacement)"
+    mileage_replacement: Mileage Replacement
     submission: Submission
     submitted: "Submit?"
     approved: Approved
@@ -669,9 +850,14 @@ en:
     include_travel: Include Travel Requests
     include: Include
     request_code: Request Code
-    finance_check: Finance Check Travel Claims for verification
+    back_index: Travel Request List
+    back_log: Travel Log List
+    own_car_notes: "Reasos (for using own car)"
+    no_registered_vehicle: "You have NO registered vehicle in this system. Please register your vehicle in Staff submodule first."
+    vehicle_must_exist: " must exist if 'own car' is selected"
 
   claim:
+    title: Travel Claim
     new: New Travel Claim
     edit: Editiing Travel Claim
     list: Travel Claim List
@@ -680,6 +866,7 @@ en:
     staff_id: Staff Name
     travelrequest_id: Travel Request
     details: Details
+    details2: Details of Travel Claim
     travelday: Date
     departure: Departure
     arrival: Arrival
@@ -695,7 +882,7 @@ en:
     add_travelrequest: Add Travel Request
     type: Type
     receipt_no: Receipt No
-    value: Value(RM)
+    value: Va lue(RM)
     add_receipt: Add Receipt
     ptclaimsvalue: Transport Claim Value
     allclaimsvalue: Allowance Claim Value
@@ -743,7 +930,6 @@ en:
     approve: Approve
     confirmation: Confirmation
     list_allowance: Meal Allowance / Daily Allowance / Lodging Allowance
-    query: Query
     comment: Comment
     resubmit: Resubmit
     check: Check
@@ -752,7 +938,7 @@ en:
     new_travel_claim: New Travel Claim
     edit_travel_claim: Edit Travel Claim
     approving_travel_claim: Approving Travel Claims
-    note_from_finance: Note from Finance Units
+    note_from_finance: Note from Finance Unit
     edit_travel_log: Edit Travel Logs
     travel_log: My Travel Logs
     transport_claim_value: Transport Claim Value
@@ -761,8 +947,64 @@ en:
     claim_type: Claim Type
     confirmed_date: Confirmed Date
     select_travel_request: Select Travel Request
+    add_receipt: Add Receipt
+    click_submit: "Clicking on SUBMIT notifies claims officer and disables your editing this record further."
+    click_update: "Clicking on UPDATE notifies claims officer and disables your editing this record further."
+    no_approved_travel_request: You have no approved travel requests for processing
+    query: Query
+    accommodations: Accommodations 
+    hotel_lodging: "(Hotel / Lodging Address)"
+    address_compulsory: " Compulsory for lodging allowance / hotel rent"
+    address_required: "Please enter lodging / hotel address for claims of lodging allowance / hotel rent"
     
-   
+    transport: Transport
+    taxi: "- Taxi"
+    bus: "- Bus"
+    train: "- Train"
+    ferry: "- Ferry"
+    plane: "- Plane"
+    misc: Miscellaneous
+    toll: "-  Toll"
+    parking: "-  Parking"
+    laundry: "-  Laundry"
+    post: "-  Post"
+    phone_telex_fax: "-  Telephone/Telex/Fax"
+    exchanged: "-  Currency Exchanged"
+    meal_allowance: Meal Allowance
+    meal_allowance_ss: "Meal Allowance (S/S)"
+    daily_allowance: Daily Allowance
+    lodging_allowance: Lodging Allowance
+    hotel_rent: Hotel Rent
+    government_tax: Government Tax
+    finance_check2: Finance Check
+    editing: Editing
+    editing_by_staff: Editing By Staff
+    submitted: Submitted
+    returned: Returned
+    resubmitted_to_finance: Resubmitted to Finance
+    for_checking: For Checking
+    processed: Processed
+    approved: Approved
+    return_to_staff_for_amendment: Return to Staff for Amendment
+    status_not_known: Status Not Known
+    finance_check: "Finance Check (for verifications) of Travel Claims by "
+    returned_for_amendment: Returned for Amendment
+    return_to_staff: Return to Staff
+    verified_ok: Verified OK
+    submitted_on: "Submitted on "
+    approved_on: "Approved on "
+    claim_exist: "already exist"
+    travel_requests_must_exist: must be selected
+    insert_current_salary: "Please insert 'current salary' and 'total fixed allowance' in Staff Information submodule"
+    insert_vehicle: "Please insert vehicle details in Staff Information submodule"
+    
+  vehicles:
+    title: Vehicle Details
+    type_model: "Vehicle Type / Model"
+    reg_no: Registration No
+    cylinder_capacity: "Cc (Cylinder Capacity)"
+    is_not_removable: Vehicle details are required for travelling by own car
+    
   training:
      new: New Training Need
      list: Lists of Training Needs
@@ -774,6 +1016,7 @@ en:
      create: New Training
      
   ptbudget:
+    title: Annual Budget
     create: New Annual Budget
     list: Set Annual Training Budget
     new: New Annual Training Budget
@@ -785,8 +1028,11 @@ en:
     fiscalstart: Date
     newbudget: New Budget
     createnewbudget: Create New Budget
+    additional_budget: Additional
+    additional_date: Additional Budget Date
     
   ptcourse:
+     title: Training Course
      create: Add New Course
      new: New Training Course
      edit: Editing New Course
@@ -799,16 +1045,28 @@ en:
      description: Description
      approved: Approved
      course_type: Course Type
-     
      newcourse: New Training Course
      trainingcourse: Training Courses for Staff
+     in_house: "In-House"
+     external_short_course: "External Short-Term Course"
+     seminar: Seminar
+     certificate: Certificate
+     diploma_others: "Diploma/Others"
+     conference: Conference
+     scientific_meeting: Scientific Meeting 
+     scientific_congress: Scientific Congress 
+     workshop: Workshop
+     course: Course
+     scientific_conference: Scientific Conference
+     convention: Convention
      
   ptschedule:
-    create: New Schedule Training
+    title: Training Schedule
+    create: New Training Schedule
     new: New Training Schedule
     newcreate: Create Training Schedule
     edit: Edit Training Schedule
-    list: Training Schedule For Staff List
+    list: Training Schedule For Staff Listing
     schedule_details: Training Course Details
     start: Start
     ptcourse_id: Course Name
@@ -824,16 +1082,19 @@ en:
     course_available: Available Training Courses For Staff
     course: Add New Course
     more: More
+    schedule_training: Schedule A Training
+    overview: Overview
+    tick_to_approve: Tick to approve
   
   ptdos:
     title: Staff Training Courses Status Listing
+    title2: Staff Training
     ptschedule: Training Course Schedule
     cos_name: Course Name
     staff: Staff
     status: Status
     viewsummary: Summary of Training Attended
     staff_training: Staff Training
-    
     dos_detail: Staff Training Details
     course: Course
     date: Date
@@ -846,10 +1107,9 @@ en:
     replacementstaff: Replacement Staff
     finalapprove: Final Approve
     trainereport: Trainee Report
-    
-    applytraining: Apply Training
+    applytraining: Apply for Training
     trainingapp: Training Application
-    
+    coursename: Course Name
     cos_date: Course Date
     location: Location
     duration: Duration
@@ -857,13 +1117,22 @@ en:
     total_day: Total Days
     total_day_attended: Total days of training attended
     days: Days
+    application_rejected: Application Rejected
+    awaiting_unit_approval: Awaiting Unit Approval
+    approved_unit_head_await_dept_approval: "Approved by Unit head, awaiting Dept approval"
+    approved_dept_head_await_pengarah_approval: "Approved by Dept head, awaiting Director approval"
+    all_approvals_complete: All approvals completed
+    report_submitted: Report Submitted
+    status_not_available: Status Not Available
   
   supplier:
     list: List of Office Supplies
+    title: Office Supply
     new: New Office Supplies
     edit: Editing Offices Supplies
     create: Create Office Supplies
     supplier_details: Office Supplies
+    details: Details
     supplycode: Supplier Code
     category: Product Name
     supplier_id: Supplier Name
@@ -896,10 +1165,13 @@ en:
     quantity: Quantity
     price_per: Price Per Unit
     deductions: Deductions
-    
+    previous_kewps: Previous KEWPS 13
+    back_to_list: Stationery Listing
+    back_to_query: Stationery Search
     
   asset:
     new: Register New Asset
+    title: Asset
     list: Inventory
     create: Create New Asset
     assettype: Asset Type
@@ -918,7 +1190,7 @@ en:
     engineno: "Engine No.:"
     registration: "Registration No."
     otherinfo: "Components & Accessories"
-    administered_by: "Administered By"  
+    assigned_to: Assigned to
     
     asset_details: Asset Detail
     asset_description: Asset Description
@@ -931,7 +1203,6 @@ en:
     country: Country
     serial_no: Serial No
     located_at: Located at
-    assigned_to: Assigned to
     other_info: Other Information
     order_no: Order No
     price: Price
@@ -967,10 +1238,35 @@ en:
     
     loanable_assets: Loanable Assets
     model_no: Model No
-    owner_repons: "Owner/Responsible Unit"
+    owner_respons: "Owner/Responsible Unit"
+    
+    all: All
+    active: Active
+    fixed_assets: Fixed Assets
+    maintainable: Maintainable
+    inventory: Inventory
+    for_disposal: For Disposal
+    disposed: Disposed
+    mark_as_lost: Mark As Lost
+    lost: Lost
+    on_loan: On Loan
+    pending_loan: Pending Loan
+    available: Available
+    reg_no_name: "Reg No, Name"
+    location: Location
+    maintenace: Maintenance
+    dispose: Dispose
+    age: Age
+    kewpa_download_link_list: "KEWPA Download / Link List"
+    kewpa_name: Name
+    kewpa_description: Description
+    kewpa_type: Type
+    require_maintenance: This item require maintenance
+    is_bookable: This item can be booked
        
   disposal:
-    title: Asset Disposal
+    title: Asset Disposal Listing
+    title2: Asset Disposal
     list: Lists of Asset Disposals
     new: New Asset Disposal
     kewpa17_selection: "KEW.PA17 (Selection)" 
@@ -991,7 +1287,7 @@ en:
     quantity: Quantity
     purchaseprice: Purchase Price
     depreciation: Depreciation
-    disposed: Disposed
+    dispose: Dispose
     
     disposal_asset_detail: Disposal Asset Details
     usage: Usage
@@ -1016,35 +1312,67 @@ en:
     witness_two: "Witness 2 (Tick & select if STAFF)"
     send_to: Send to HOD for viewing
     
-    transfer: Transfer
+    transfer: "Transfer / Present"
     sold: Sold
+    discard: Discard
     stock: Stock
-    others: Other
+    others: Others
     bury: Bury
     burn: Burn
     throw: Throw
     sink: Sink
+    processing: Processing
+    processed: Processed
+    verified: Verified
+    disposed: Disposed
+    discarded: Discarded
+    unknown: Unknown
     
     revalue_asset: Revalue Asset
     new_value: New Value
     revalueby: Revalue By
     
+    asset_condition: Asset Condition
+    checkedby: Checked By
+    hours_and_or:  "Hrs AND/OR"
+    awaiting_verification: Awaiting verification from 
+    checked_and_verified: "Asset disposal checked & verified. Please register Disposal Method (KEWPA-19 and/or KEWPA-18)."
+    require_case_close_hod: "Require case to be closed by HOD."
+    awaiting_disposal_registration: "Awaiting Disposal Method registration. (KEWPA-19 and/or KEWPA-18)."
+    disposal_complete: "Asset Disposal Completed."
+    
   assetloan:
+    title: Asset Loan
+    new: New Asset Loan
+    reg_no_name: "Reg No, Name"
     requestfor: Request For To
     approved_on: Approved On
     to_be_return: To Be Returned On
-    
     reject: Reject
     approvaldate: Approval Date
     loan_approval: Loan Officer/Approval By
     notify: Notify HOD
-    expect_returndate: Expected Return Loan
-    
+    expect_returndate: Expected Return Loan   
     returnitem: Return Item 
     internal: Internal
     external: External
+    rejected: Rejected
+    pending: Pending
+    onloan: On Loan
+    returned: Returned
+    due_date: Due Date
+    overdue: Overdue
+    loaner: Loan Officer
+    reasons: Reasons
+    loaned_on: Loan Date
+    loan_type: Loan Type
+    all: All
+    my_loan: My Loan
+    on_loan: On Loan
+    due_overdue: "Due/Overdue"
       
   assetdefects:
+    title: Asset Defect
     defects_reports: Asset Defect Reports
     asset_register: Asset Registration
     typename: "Typename - Brand - Model"
@@ -1053,14 +1381,14 @@ en:
     asset_register_no: Asset Regitration No
     report_by: Reported By
     action_type: Action Type
-    Recommendation: Recommendation
+    recommendation: Recommendation
     recommend_submit: Recommendation Submitted
     approval: Approval
     defect_description: Defect Description
     repair: Repair
-    dispose: Dispose
-    
     approve_action: Approve Action
+    notify_hod: Notify HOD
+    dispose: Dispose
   
   asset_losses:
       list: "Lists of Asset Losses & Write-Offs"
@@ -1070,6 +1398,7 @@ en:
       report_code: Internal Loss Report Code
       loss_type: Lost Type
       asset_id: Asset Name
+      asset_register: Asset Registration No
       estvalue: Estimated Value
       est_value_long: Current valuation of missing items
       is_used:  New or Used
@@ -1152,8 +1481,21 @@ en:
       nrrecommend: What the recommended new rules or amendments to existing rules to be put in place
       surcharge: Recommendations for Surcharge
       sio_id: Investigating Officer
-      
       submit_to_hod: Submit to Head of Department
+      treasury_approval: Treasury Approval Ref No
+      approval_letter: Approval Reference
+      pending_approval: "Treasury Approval - Pending"
+      writeoff_checked: "Write Off Checked"
+      select_records_writeoff_certificate: "Select single / multiple records to update write-off certificate (according to Treasury Approval letter)."
+      writeoff_title: "Asset Write-Off"
+      hod_endorsement_compulsory: "HOD endorsement is compulsory before write off process (Treasury Approval Reference entry) is done!"
+      management_details: "Asset Loss Management - Details"
+      management_initial: "Asset Loss Management - Initial"
+      writeoff_updated: "Assets write off details updated!"
+      asset: Asset
+      cash: Cash
+      supplies: Office Supplies
+      
   pages:
     pages: Pages
     new: New Page
@@ -1163,39 +1505,52 @@ en:
     title: Title
     body: Body
     admin: Admin
-    Parent: Parent
-    POsition: Position
-    Nav_label: Nav label
-    Redirect: Redirect
+    parent: Parent
+    position: Position
+    nav_label: Nav label
+    redirect: Redirect
     controller: Controller
       
   events:
+    title: Events
     new: New Event
     edit: Editing Event
     list: Event List
-    edit: Editing Message
-    message_details: Message Detail
+    details: Campus Event Details
     event_name: Event Name
     officiatedby: Officiated By
     createdby: Created By
-    
     campus_event: Campus Event
     event_startdate: Event Start Date
     event_enddate: Event End Date
     public_private: "Public/Private"
+    public: Public
+    private: Private
+    location: Location
     participants: Participants
+    event_calender: Event Calendar
+    todays_events: Todays Events
+    no_events_today: No Events Today
+    recent_events: Recent Events
+    no_event_since_last_week: No events since last week
+    upcoming_events: Upcoming Events
+    no_future_events: No future events
+    event_name_location: "Event Name, Location"
     
-    event_calender: Event Calender
-    
+  messages:
+    title: Local Messaging
+    new: New Message
+    edit: Editing Message
+    message_details: Message Detail
     message_for_me: Messages For Me
     received: Received
+    sent: Sent
     message: Message
-    new_message: New Message
-    
     sent_messages: Sent Messages
     to_whom: To whom
     to: To
     recipient: RECIPENT
+    remark: "Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma (','), followed by an alphabet and make your selection."
       
   evaluation:
     common:
@@ -1373,12 +1728,18 @@ en:
         g3q2_text : "Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya."
         g3q3_title: "&nbsp;&nbsp;KEBERKESANAN KOMUNIKASI" 
         g3q3_text : "Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan"
-          
-        
 
-        
-        
-        
+    appraisal:      
+      title: Staff Appraisal
+      skt_being_formulated: SKT being formulated
+      staff_appraisal_complete: Staff Appraisal complete
+      skt_awaiting_ppp_endorsement: SKT awaiting PPP endorsement
+      skt_review: SKT Review
+      ready_for_ppp_skt_report: Ready for PPP SKT Report
+      ppp_report_complete: PPP Report complete
+      submitted_for_evaluation_by_ppp: Submitted for Evaluation by PPP
+      submitted_by_ppp_for_evaluation_to_PPK: Submitted by PPP for Evaluation to PPK
+
   bulletin:
      new: New Bulletin
      edit: Editing Bulletin
@@ -1393,20 +1754,213 @@ en:
      required: are required
      uploaded: Uploaded File
      download: Download
+     headline_content: "Headline, Content"
      
   equery:
     title: Electronic Query & Report Manager
     advance_search: Advance Search
     module: Module
-  
+    tick: Tick
+    untick: Untick
+    leaves_other_blanks: " & leaves other fields 'blank' to display ALL record."
+    no_result: Search return no result
+    leaves_all_blank_all_records: "Leaves all fields 'blank' and click 'Search' to display ALL record."
+    select_record: Select record by
+    data_based_existing_records: " data are based on existing records."
+    listing: Listing
+    links: links
+    for_selected_date: "for selected date."
+    search_by: SEARCH BY
+    data_not_available: Data not available
+    same_as_above: Same as above
+    dated: dated
+    filter_by: Filter by
+    to_includes: to includes
+    in_search_results: "in search results."
+    total: Total
+    not_defined: Not defined
+    document:
+      search: Document Search
+      search_by: Search document by
+      file_reference: File Reference
+      list_all_documents: List All Documents
+      select_by_close: " to select document by (closed) status."
+      closed: Closed
+    staff:
+      search: "Staff Search : Positions Information"
+    asset:
+      search: Asset Search
+      asset_name: Asset Name
+      asset_type: Asset Type
+      type_select: "Insert 'H' for listing of all 'Fixed Asset' or 'I' for listing of all 'Inventory'"
+      leave_unselected_kewpa6: "Leave all fields 'unselected' to display ALL existing asset loan (KEW-PA 6)"
+      leave_unselected_kewpa9: "Tick this checkbox and leave other fields 'unselected' to display ALL existing 'asset defect (KEW-PA 9)'"
+      leave_blank_maintenance: "Tick this checkbox and leave other fields blank to display ALL asset for maintenance "
+      leave_blank_disposed: "Leave all fields 'blank' to view ALL disposed asset."
+      leave_blank_disposal_certificate: "Leave all fields 'blank' to view ALL Certificate of Asset Disposal"
+      leave_blank_preliminary_losses: "Leave all fields 'blank' to view ALL Preliminary Report for Asset Losses"
+      leave_blank_final_losses: "Leave all fields 'blank' to view ALL Final Refor for Asset Losses"
+      loan_date: Loan date
+      return_date: Return Date
+      expected_return_date: Expected return date
+      person_in_charge: "Person in-charge "
+      asset_location: Asset Location
+      select_year: Select year
+      defected_asset: Defected Asset
+      person: Person
+      process_type: Process Type
+      select_asset: Select an Asset
+      select_person: Select a Person
+      select_defect_process: Select defect process
+      reported_by: Reported by 
+      processed_by: Processed By
+      all_asset_defects: ALL Asset Defect Records
+      all_asset_maintenance: ALL Asset for Maintenance
+      maintained_by:  of Asset for Maintenance by
+      disposed_asset_by: Disposed Asset Record by
+      disposed_asset_yearly_report_examiner: Disposed Asset For Yearly Examiner Board Report
+      disposed_asset_yearly_report: Disposed Asset For Yearly Report
+      yearly_report: "Select Disposed Asset(s)"
+      back_to_disposal: Back to Asset Disposal
+      certificate_witness: "Certificate of Witness for Asset Destruction (Discard)"
+      discard_option: Discard Option
+      certificate_disposal: Certificate of Asset Disposal
+      preliminary_asset_losses: Preliminary Report for Asset Losses by
+      final_asset_losses: Final Report for Asset Loses by
+      writeoff_certificate: Asset Write Off Certificate
+      treasury_no: Treasury Reference No
+      on_loan: asset on loan
+      no_asset_select_select_person_location: "No asset found. Select person in-charge or location first."
+      no_asset_discard_using: "No asset (destruction/discard) using (method) "
+      no_asset_defect: "No asset defect found. Select method for record search appropiately."
+      no_asset_maintenance: "No asset for maintenance found. Select method for record search appropiately."
+      loan_date: Loan Date
+      return_date: Return Date
+      expected_return_date: Expected Return Date
+      defect_reported_by: Asset Defect Reported by
+      defect_processed_by: Asset Defect Processed by
+      defect_person_in_charge: "Asset Defect - Person In Charge of Asset"
+      defect_by_process: "Asset Defect - By Process"
+      disposal_discard: "Asset Disposal - Discard"
+      loss_writeoff: "Asset Loss & Write Off"
+    student:
+      search: Student Search
+      search_by: Search Students By
+      total_student: Total number of student
+    student_attendance:
+      search: Student Attendance Search
+      search_by: Search Student Attendance By
+      schedule_class: "Schedule / Class "
+      student: Student
+      date: Date
+      time: Time
+      subject_topic: "Subject : Topic"
+      lecturer: Lecturer
+      location: Location
+      attendance: Attendance
+      total_class_attended: Total Classes Attended
+   
+      attend_replace   attendance_percentage: Attendance Percentage
+      matrixno_complete: "Search by Matrix No requires complete & correct Matrix No."
+      class: Class
+      total_classes: Total number of classes
+      absent: Absent
+    student_counseling:
+      search: "Student Counseling Session Search (Referred Cases & Counselor's Feedback)"
+      search_by: "Search Counseling Session (for Referred Case c/w Counselor's Feedback) By"
+      reported_on: reported on
+      session_duration: Session Duration
+      date_time: "Date & Time"
+      notes_feedback_links: "Session Notes & Counselor's Feedback Links"
+      infraction: Infraction
+      total: Total
+      counseling_for: "counseling appointment/sessions for"
+      discipline_cases: "student discipline cases."
+      session_notes: Session Notes
+      feedback_referrer: Feedback to Referrer
+    personalize_timetable:
+      search: Personalize Timetable Search
+      search_by: Search Personalize Timetable By
+      total_personalize_timetable: Total of Personalize Timetable
+      rejected: Rejected
+      submitted: Submitted
+      not_submit: Not Submit
+      start_date: Start Date
+      search_by_lecturer: Search by Lecturer
+      date_day: Date Day
+      time: Time
+      topic: Topic
+      location: Location
+      view_timetable: View Personalize Timetable
+    examresult:
+      search: "Examination Result & Slip Search"
+      search_by: Search Examination Result By
+      examslip: Student Examination Slip
+      total: Total of Examination Result
+      exam_result: Exam Result
+      exam_slip: Exam Slip
+    evaluate_course:
+      search: "Feedback / Course Evaluation Search"
+      search: "Feedback / Course Evaluation Search by"
+      total: "Total of Feedback / Course Evaluation (by student)"
+      question: Q
+      evaluation_form: Evaluation Form
+      total_scores: Total Scores 
+      average_scores: Average Scores
+    examanalysis:
+      search: Examination Analysis by Paper Search
+      search_by: Search record by
+      total: Total of Examination Analysis
+    book:
+      search: "Library Resources (Book) Search"
+      stock_listing_by: Stock Listing By
+      stock_summary_by: Stock Summary By
+      listing_stock_verification_all: "Book Listing For Stock Verification-All Books"
+      listing_stock_verification: Book Listing For Stock Verification
+      total: Total Books
+      stock_summary: Stock Summary
+      book_listing: Book Listing
+      search_by_accessionno: Search by Accession No
+      no_photo: No photo 
+      available: available
+      nlm_lc: "NLM/LC NO"
+      back_to_book: Back to Books
+    library_transaction:
+      search: "Library Resources & Transaction Analysis / Statistic Search"
+      search_data: "Search Statistic Data for Library Resources / Library Transactions"
+      select_year: Select Year
+      type_statistic_data: " to select type of statistic data accordingly."
+      accumulated_loan: Accumulated Books On Loan
+      borrower_programme: Borrower by Programme
+      accumulated_fine_collected: Accumulated Fines Collected
+      total_loan: Total Books on Loan
+      details: Transaction Details
+      tick_checkbox: Tick checkbox
+      total: "Total Transaction / Book Loan"
+      by_nlm: by NLM Classification
+      programme: Programme
+      student: Student
+      staff: Staff
+      classification: Classification
+      fines: Denda
+    stationery:
+      search_by: Search by
+      report: "Yearly Stock Report (KEWPS 13)"
+      by_stock: By stock
+      total: Total all office supplies
+      leaves_all_blank_all_records: "Leaves ALL fields 'blank'/unselected and click 'Search' to display ALL record of office supplies."
+      leaves_fields_blank_all_corresponding: "Leaves fields marked with "
+      leaves_fields_blank_all_corresponding2: " 'blank'/unselected and click 'Search' to display ALL corresponding additions/deductions records."
+      
   document:
+    title: Document
+    title2: Title
     new: New Document 
     edit: Editing Document
     list: Document List
     serialno: Serial No
     refno: Document Ref No
     category: Category
-    title: Title
     letterdt: Letter Date
     letterxdt: Received Date
     circulatedt: Circulation Date
@@ -1414,25 +1968,49 @@ en:
     action_noti: Action/Notifications
     stafffiled_id: Filled By
     closed: Closed
+    file_closed: File Closed
     doc_details: Document Details
     upload_file: Upload File
     uploaded: Uploaded File
     download: Download
 
+    details: "Document : Details, Circulations & Actions"
     action_details: Action Details
-    circulate_details: Circulation Details
+    circulation_details: Circulation Details
+    circulate_to: Circulate To
     minute_action: "Circulation/Minute Action"
-    circulateto: Circulate To
     minute_date: "Circulation/Minute Date"
     actiontype: Action Type
     
     current_attach: Current Attachment
+    current_attachment_action: "Current Attachment (for action taken)"
+    no_attachment: No attachment
+    attachment_action: "Attachment (Action)"
     search: Search by received date  
     fileno: File No
     generate_report: Generate Report
     file_closed: File Closed
+    recipient_remark: "Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma (,), without any spaces, followed by an alphabet and make your next selection."
+
+    circulation1_action: Action by Recipient
+    cc1action: Action Taken
+    cc1remarks: Remark
+    cc1closed: Close Action
+    cc1actiondate: Action Date
+    action_by: Action By
+    letter: Letter
+    memo: Memo
+    circular: Circular
+    others: Others
+    email: "E-Mail"
+    immediate: Immediate
+    normal: Normal
+    information: Information
+    refno_title: "Ref No, Title"
+    all_updated_except_circulation_listing: "Semua medan telah dikemaskini, kecuali medan 'Penerima Edaran' memandangkan terdapat penerima edaran yang telah mengambil tindakan."
       
   cofile:
+     title: File
      new: New File
      edit: Editing File
      list: File List
@@ -1447,6 +2025,7 @@ en:
      file_details: File Details
    
   student: 
+    title: Student
     new: New Student
     edit: Edit Student
     list: Student List
@@ -1499,6 +2078,18 @@ en:
     spm_results: SPM Results
     age: Age
     form_for_student: Form for Student
+    mykad_name_matrixno: "MykadNo, Name, MatricNo"
+    all_intakes: All Intakes
+    all_programmes: All Programmes
+    search_by_intake_programme: "Search by Intake/Programme"
+    ethnic_listing: "Ethnic Listing by Programme"
+    previous_race: Previous race entered
+    current: Current
+    graduated: Graduated
+    repeat: Repeat
+    on_leave: On leave
+    male: Male
+    female: Female
 
   student_attendance:
     title: Student Attendance
@@ -1516,11 +2107,11 @@ en:
     multiple_schedule_title: "Multiple New Student Attendance (by Class / Schedule)"
     edit_multiple: Edit Multiple Student Attendance
     multiple_intake_title: "Multiple New Student Attendance (by Intake)"
-    edit_multiple_intake_title: "Edit Multiple Student Attendance (by Intake)"
+    edit_multiple_intake_title: "Multiple Student Attendance (by Intake)"
     multiple_by_schedule: New Attendances
     multiple_by_intake: "New Attendances (Intake)"
     search_class: Search
-    search_intake: Search
+    search_intake: "Search (Intake)"
     class_schedule: "Class / Schedule"
     class_schedule_details: "Class / Schedule Details"
     select_class_schedule: "Select Schedule (Classes)"
@@ -1536,6 +2127,8 @@ en:
     create_class_schedule: "Create By Class/Schedule"
     edit_class_schedule: "(Edit by Schedule / Class)"
     subject: Subject
+    programme_subject: Programme Subject
+    common_subject: Common Subject
     topic: Topic
     date: Date
     time: Time
@@ -1554,9 +2147,30 @@ en:
     check_uncheck_click: ", check/uncheck check boxes accordingly and click "
     reason_action: "Reason / Action Taken / Action Closed?"
     form: Form
+    select_one: "Please select at least 1 record to edit."
+    student_must_identical: "Student in selected attendance of all classes / schedule must be identical."
+    same_class: "Please select student attendances of the same schedule / class."
+    max_time_slot: "Maximum schedules / classes selection of student attendances for 'Edit by Schedule / Class' is three(3)."
+    available_students: Available Students
+    no_student_of_intake: "No student available for this intake."
+    not_defined: Not defined
+    create_intake: Create By Intake
+    data_invalid: "Data supplied was invalid."
+    confirm_complete_attendance: "Select Schedule (class) and click 'Activate Timetable / Class' to set attendance records of selected classes accordingly. Next click 'submit' to COMPLETE attendance creation."
+    updated_attendance: "Updated student attendance!"
+    medical_leave: Medical leave
+    emergency: Emergency
+    normal: Normal
+    counseling: Counseling
+    replace_leave: Replace leave
+    show_cause: Show cause
+    warning: Warning 
+    disciplinary: Disciplinary
+    attend_replacement_class: Attend replacement class
     
   leaveforstudent:
     title: Student Leave Application List
+    title2: Student Leave Application
     new: New Student Leave Application
     edit: Edit Student Leave Application
     apply: Apply For Leave
@@ -1572,11 +2186,15 @@ en:
     leave_enddate: End Date
     leave_dates: Leave Dates
     studentsubmit: Submit for Approval
-    approval: Approve Student Leave Application
+    approval: "Student Leave Application Approval by Group Coordinator"
+    approval_warden: "Student Leave Application Approval by Warden"
     approval2: Approve Student Leave
-    approved: Approved
+    approved: Approval
     approvedate: Approve Date
-    staff_id: Approved By
+    staff_id: Group Coordinator
+    staff_id2: Warden 
+    coordinator_approval: Coordinator Approval
+    warden_approval: Warden Approval
     weekend_day: Weekend Day 
     weekend_overnight: Weekend Overnight 
     emergency: Emergency Leave
@@ -1586,17 +2204,26 @@ en:
     has_no_kin: "Student has no next of kin details (parents / guardian / guarantor)."
     update_kin: Update next of kin details
     update_student_kin: ". Please update next of kin details in Student submodule first."
+    coordinator_not_available: "Group Coordinator NOT available, please select other Programme lecturer."
+    application_due: "Leave application has expired and could not be processed."
+    expired: Expired
+    leave_approval_slip: Student Leave Approval Slip
     
   studentdiscipline:
+    title: Student Discipline Case Listing
+    title2: Student Discipline Case
     new: New Discipline Case
     edit: Edit Discipline Report
+    register: Register Case
     issues: Student Discipline Issues
     year_sem: "Year/Sem"
     discipline_details: Discipline Details
+    details: Case Details
+    action_details: Action Details
     reported_date: Reported Date
-    feedback: Maklum Balas
-    from_counselor: Dari Kaunselor
-    
+    feedback: Feedback
+    from_counselor: From Counsellor
+    not_related: Not related
     new_discipline_report: New Discipline Report
     location_infraction: Location of Infraction
     assign_programme_head: Assign to Programme Head
@@ -1606,19 +2233,66 @@ en:
     roomno: Room No
     infraction: Infraction
     case_info: Case Information
-    investigate_summary: Investigation Summary
-    date_closed: Date Closed
-    college: College
-    
-    advice_given: Advice Given
     session_details: Counseling Session Details
     dtrequest: Date Requested
     counselor_feedback: Counselor's Feedback
     session_notes: Session Notes
     summary_finalfeedback: Summary/Final Feedback from Counselor
-    notified: Notified
+    
+    report_title: "'Anacdotal' Report"
+    student_id: Student Name
+    programme: Programme
+    intake: Intake
+    group: "Group (Intake)"
+    location: Location
+    action: Action Taken
+    search: Student Discipline Cases Search
+    search_by: Search Students Discipline Cases By
+    search_by2: Search 'Anacdotal' Report
+    matrixno: Matrix No
+    leaves_all_blank: "Leaves all fields 'blank' to display ALL record. "
+    to_generate: "To generate "
+    insert_a: ", insert a "
+    click_search: " and click 'search'."
+    search_by_programme: Search by Programme
+    total_cases: Total Student Discipline Cases
+    feedback_counsellor: Feedback from Counsellor
+    feedback_referrer: Feedback to Referrer
+    no_case: "Student with supplied matrix no. has no discipline case."
+    new2: New 
+    open: Open
+    refer_tphep: Refer to TPHEP
+    refer_bpl: Refer to BPL
+    closed: Closed
+    all: All Case
+    smooking: Smooking
+    skip_class: Skip Class
+    quarrel: Quarrel
+    others: Others
+    sent_to_board_on: Date Sent To BPL
+    board_meeting_on: Date JTKP
+    board_decision: JTKP Decision
+    board_decision_on: Date JTKP Decision
+    appeal_on: Appeal Date
+    appeal_decision:  Appeal Decision
+    appeal_decision_on: Appeal Decision Date
+    registered: "New student discipline case successfully registered."
+    case_created_on: Case Creation Date
+    file_id: File Reference
+    investigation_notes: Investigation Summary
+    action_type: Action Type
+    no_case: No Case
+    advise: Advise
+    counseling: Counseling
+    counseling_request: Counseling Request
+    closed_at_college_on: "Date Closed (College)"
+    other_info: Advice Given
+    assigned2_to: Notify HOD
+    assigned2_on: Notification Date
+    removal_prohibited_for_referred_case: "Selected discipline case is NOT ALLOWED for removal, as case already referred to Counselor for action."
     
   studentcounseling:
+    title: Student Counseling Session
     counselor: Counselor 
     new: New student counseling session
     edit: "Edit Counseling Appointment / Session"
@@ -1637,12 +2311,15 @@ en:
     
     new_appointment: New Counseling Appointment
     requested_at:  Requested at
+    duration: Duration
     suggest_alternative: Suggest Alternative Dates
     scope_of_session: Scope of Session
     personal: Personal
     academic: Academic
     typesession: Type of session
+    is_confirmed: "Is confirmed?"
     confirmed: Confirmed
+    not_confirmed: Not Confirmed
     
     description_issues: Description of Issues
     suggest_made_student: Suggestions made to student
@@ -1655,16 +2332,46 @@ en:
     other_related: "Other Session Related"
     actionby_conselour: "Action by Counselour"
     summary: "Summary / Feedback (FINAL) for Referrer / TPHEP "
+    name_matrixno: "Name, Matrix No"
+    search_by_date: "Search by appointment/session date"
+    session_lasted: Session Lasted
+    issue_feedback_for: Issue feedback for 
+    this_session: this session
+    to_referrer_tphep: "(to referrer/TPHEP)"
+    issue: Issue
+    summary_feedback: "summary/feedback (FINAL)"
+    complete_session: Complete Sessions
+    another_session: To have another counseling session
+    case: Case
+    personal: Personal
+    academic: Academic
+    voluntary: Voluntary
+    involuntary: Involuntary
+    total_session_for_this_case: Total session for this case
+    add_session_discipline_case: "In Index page, under column 'Feedback to Referrer', click 'Add' for additional counseling session to current discipline case."
+    removal_prohibited_case_still_exist: "Removal of selected appoinment/session is NOT ALLOWED, referrred case (discipline case) still exist."
     
   book: 
     new: New Book
     edit: Editing Book
     list: Lists Of Book
-    all_booklist: All Books Listing
+    listing: "Book Listing (for stock verification)"
+    listing_all_books: Listing All Books
+    listing_books: Listing Books
+    listing_by_class_nlm: "Listing by Class No (NLM)"
+    listing_by_class_lc: "Listing by Class No (LC)"
+    search_by_classno: "Search by Class No (LC / NLM) "
+    search_by_accessionno: "Search by Accession No (Range : "
+    isbn_title_author_location: "ISBN, Title, Author, Location"
+    list_by_classno: List by Class No
+    list_by_accessionno: List by Accession No
+    stock_listing_by: "Stock Listing by..."
+    titles: Titles
+    title: Title
+    title2: "Book / Media"
     book_details: Book Details
     tagno: Tag No
     classddc: Class No (DDC/LC)
-    title: Title
     language: Language
     author: Author
     subject: Subject
@@ -1696,19 +2403,28 @@ en:
     receiveddate: Receive Date
     receiver_id: Received By
     supplier_id: Supplier
-     
+    stock_listing: "Stock Listing (by Class No / Accession No)"
+    stock_summary: "Stock Summary (by Class No / Accession No)"
+    statistics: Library Resources Statistics
     media: Media 
     image: Image
-    classno: "Class No (LC) / (NLM)"
+    classno: "Class No (LC / NLM)"
     physical_desc: Physical Description
     amendment: Amendment
-    
     check_isbn: Check ISBN availability
-    catalog: Catalouging Source To
+    catalog: Catalouging Source
     index: Index
+    total_books: Total Books
+    nlm_lc: "NLM/LC NO"
+    accno: ACC NO
+    start_w_letter: starting_with_letter
+    no_photo: No photo
+    available: available
+    bibliography: Bibliography
+    check_availability: Check Availability
       
   librarytransaction:
-    new: Create New Transaction
+    new: New Library Transaction
     list: Library Transaction List
     book_id: Book ID
     borrower: Borrowed By
@@ -1723,11 +2439,13 @@ en:
     studentname: Borrowed By
     duedate: Due Date
     extend: Extend
-    extended: Returned
+    extended: Extended
+    return: Return
     returneddate: Returned On
     newrec: Create New Transaction
     returnrec: Return Transaction
     edit: Edit Library Transaction
+    transaction_details: Library Transaction Details
     details: Loaned Book Details
     loanedtotype: Member is Staff?
     fine: Fine to be Paid
@@ -1740,10 +2458,39 @@ en:
     report: Report Lost 
     check: Library Transaction Details
     search_person: Search Person
+    analysis: Transaction Analysis
     librarytrans: Library Transaction 
     returnpage: Return Page
     loanpage: Loan Page
-   
+    loanpage_title: "Library Transaction - Loan Page"
+    returnpage_title: "Library Transaction - Return Page"
+    book_not_available: Book no longer available
+    extend_borrowing: Extend Borrowing
+    extend_days: will extend borrowing for another 14 days
+    no_extension: No Extension Taken
+    day: day
+    late_by: late by
+    check_loan_details: Check Loan Details
+    student_details: Student Details
+    staff_details: Staff Details
+    insert_student_name: Please insert student name
+    insert_staff_name: Please insert staff name
+    total_loan: Total books on loan
+    quota_balance: Available book loan quota balance
+    out_of: out of
+    books: books
+    addbook: Add Book
+    successfully_save_loan: Successfully saved new book loan
+    invalid_data_compulsory: 'Data supplied was invalid. Please insert all data accordingly. All fields are compulsory.'
+    exceed_book_quota:  'Exceed book loan quota.(Student : maximum = 2 unit, Staff: maximum = 5 unit)'
+    select_staff_student_check_loan: 'No record added. Select a Staff / Student & Check for Loan Details first.'
+    select_staff_student_check_loan2: 'No record updated. Select a Staff / Student & Check for Loan Details first.'
+    update_all_records: Update All Records
+    search_select_staff: Search & Select Staff Name
+    search_select_student: Search & Select Student Name
+    update_multiple_return: Updated multiple return of loans
+    paid: paid
+    
   librarystats:
     quicklinks: Quicklinks
     borrow_book: Borrowed Books
@@ -1756,7 +2503,7 @@ en:
     bookborrow: Books Borrowed Today
     total_collect: total of fines collected.
     
-    accession_id: ACCESSION ID
+    accession_id: NO ACCESSION
     title: TITLE
     name: NAME
     image: IMAGE
@@ -1765,47 +2512,52 @@ en:
     repeat: REPEATS
     possibly: Possibly Repeated Books
     
-  grade:
-    examweight: Summative Weightage
-    exam1marks: Summative Marks  
-      
-  examresult: 
-    examinationresult: "Examination Result"
-    semester: "Semester"
-    programme_id: "Programme"
-    total: "Total"
-    examdate1: "Examination Start Date"
-    examdate2: "Examination End Date"
-    pngs17: "PNGS"
-    pngk: "PNGK"
-    status: "Status"
-    remark: "Remark"
-
-  exammakeranalysis:
-    examtype: "Examination Type"
-    exampaper: "Examination Paper"
-    exammaker_id: "Subject"
-    gradea: "Grade A"
-    gradeaminus: "Grade A-"
-    gradebplus: "Grade B+"
-    gradeb: "Grade B"
-    gradebminus: "Grade B-"
-    gradecplus: "Grade C+"
-    gradec: "Grade C"
-    gradecminus: "Grade C-"
-    gradedplus: "Grade D+"
-    graded: "Grade D"
-    gradee: "Grade E"
-  
-  evaluate_course:
-    staff_id: Pengajar
-    staff_invitation_must_exist: " : samada Pengajar (staf) ATAU Pensyarah Jemputan mestilah diisi."
+  timetable:
+    title: Timetable Format
+    new: New Timetable Format
+    edit: Edit TImetable Format
+    code: Code
+    name: name
+    description: Description
+    created_by: Created By
+    details: Timetable Details
+    period: Period
+    day: Day
+    start_at: Start at
+    end_at: End at
+    is_break: Break
+    period_timings: Period Timings
+    code_name_description: "Code, Name, Description"
+    
+  intake:
+    list: Student Intake Listing
+    title: Student Intakes
+    title2: Intake
+    new: New Student Intake
+    edit: Edit Student Intake
+    name: Intake Name
+    description: Group
+    register_on: Registration date
+    programme_id: Programme
+    is_active: Active
+    sample: "(Eg.: Jan 2013, March 2013, July 2013)"
+    details: Intake Details
+    description_programme: "Group, Programme name"
+    
+  academic_session:
+    title: Academic Session Listing
+    title2: Academic Session
+    new: New Academic Session
+    edit: Edit Academic Session
+    total_week: Total Week
+    details: Academic Session Details
     
   weeklytimetable:
     title: Weekly Timetables Listing
     title2: Weekly Timetable
     new: New Weekly Timetable
     edit: Edit Weekly Timetable
+    general_timetable: General Timetable
     programme_id: Programme
     group_id: Group
     group_intake: "Group (Intake)"
@@ -1840,6 +2592,10 @@ en:
     returned: "- Returned"
     resubmitted: "- Resubmitted"
     rejected: "- Rejected"
+    hod_approval: Head of Department Approval
+    hod_approved: Head of Dept Approval
+    hod_rejected: Head of Dept Rejection
+    intake_programme_must_match: Selected Intake must match with selected Programme
 
   weeklytimetable_detail:
     day_time: "Day/Time"
@@ -1848,10 +2604,14 @@ en:
     location: Location
     method: Method
     removal_not_allowed: "Removal of selected daily timetable detail (time slot) is not allowed. Daily timetable detail (schedule) exist in Lesson Plan (submitted)."
+    lecture: Lecture
+    tutorial: Tutorial
+    practical: Practical
     
   programme:
     title: Curriculum Management
     new: New Curriculum Management
+    new_root: New ROOT Curriculum Management 
     edit: Edit Curriculum Management
     code: Code
     course_type: Course Type
@@ -1870,8 +2630,10 @@ en:
     practical: Practical
     subject_abbreviation: Abbreviation
     elective: Elective
+    indicates_common_subject: indicates Common Subjects
     
   lesson_plan:
+    plan_report_list: "Lesson Plan & Report Listing"
     title: Lesson Plan
     list: Lesson Plan Listing
     new: New Lesson Plan
@@ -1885,17 +2647,18 @@ en:
     lecturer: Lecturer
     intake_id: Intake
     schedule: Timetable
-    schedule_removed: "Schedule was not defined/removed. Please select a schedule."
+    schedule_removed: "Schedule is not defined/removed. Please select a schedule."
     student_qty: Total of Student 
     year: Year
     semester: Semester
     subject: Subject
     topic: Topic
-    lecture_title: Lecture Title
-    lecture_date: Lecture Date
+    lecture_title: Title
+    lecture_date: Date
     content: Content
     start_time: Start Time
     end_time: End Time
+    timing: Time
     prerequisites: Prerequisites
     objectives: Objectives
     reference: Reference
@@ -1908,6 +2671,8 @@ en:
     training_aids: Training Aids
     evaluation: Evaluation
     lesson_report: Lesson Report
+    edit_report: Edit Report
+    edit_plan: Edit Plan
     location: Location
     total_absent: Total of Student Absent
     class_condition: Class Condition
@@ -1916,17 +2681,22 @@ en:
     report_summary: "TPA / Head of Programme"
     satisfactory: Satisfactory
     not_satisfactory: Not Satisfactory
-    back_to_lesson_plan: Back to Lesson Plan
-    back_to_lesson_plan_report: Back to Lesson Plan Report 
     report_list: Lesson Report Listing
     is_submitted: Lesson Plan Submission
+    is_submitted2: Plan submitted?
     hod_approved: Lesson Plan Approval
+    hod_approved2: Plan approved?
     report_submit: Report Submission
+    report_submit2: Report submitted?
     report_endorsed: Report Endorsement
+    report_endorsed2: Report endorsed?
     reporting: Lesson Reporting
-    awaiting_reiew: "Awaiting review by TPA / Head of Programme"
+    awaiting_review: "Awaiting review by TPA / Head of Programme"
     add_exist_notes: Add Existing Training Notes
     note_title: Note title
+    add_notes: Add Notes
+    add_notes2: "+ Notes"
+    adding_notes: "Add Training Notes (after Lesson Plan submitted for approval)"
     remark: "Remark : For additional Training Notes, should you found there's no suitable EXISTING training notes available for selection, add ONE in topic details (menu : Training | Lesson Plan | Create Topic Details) accordingly. "
     reason_reject: Reason for Rejection
     returned: Returned
@@ -1934,12 +2704,21 @@ en:
     rejected: Rejected
     hod_approval: Head of Department Approval
     hod_rejection: Head of Department Rejection
-    create_report: Create Report
     submit: "Submit?"
     hod: "Head of Programme / TPA"
     review_tpa: "Review by TPA / Head of Programme"
     tpa_review: "TPA / Head of Programme Review"
     select_exist_notes: "Select Existing Training Note"
+    report_not_submitted: Report not submitted yet
+    report_not_endorsed: Report not endorsed yet
+    plan_not_submitted: Plan not submitted yet
+    report_bubble: R
+    edit_plan: Edit Plan
+    approve_plan: Approve Plan
+    submit_report: Submit Report
+    endorse_report: Endorse Report
+    lecturer_name_semester: "Semester, Lecturer's Name"
+    
   training_note:
     title: Training Note
     title2: "Programme | Subject | Topic | Title"
@@ -1956,6 +2735,8 @@ en:
     staff_id: Prepared By
     document: File
     title3: Title
+    subject_topic_title: "Subject, Topic, Title"
+    
   topicdetail:
     title: Topic Details Listing
     title2: Topic Detail
@@ -1978,7 +2759,340 @@ en:
     remove_topic_before: "Removed topic/subtopic (Curriculum Management) - before 31st October 2013"
     remove_topic_after: "Removed topic/subtopic (Curriculum Management) - 31st October 2013 onwards"
     remarks: "For reference only (item 1 & 2), remove when no longer required."
+    create_one: create one
+    to_match: to match
+    subject_topic: "Subject, Topic"
   
+  examquestion:
+    title: Examination Question Listing
+    title2: Examination Development
+    new: New Examination Question
+    edit: Edit Examination Question
+    details: Examination Question Details
+    details2: Details
+    approval_details: Approval Details
+    bpl_details: BPL Details
+    edit_details: Edit Details
+    editing_details: Editing Details
+    question: Question
+    answer: Answer
+    subquestions: "Subquestion(s)"
+    subquestion: Subquestion
+    marks: Marks
+    category: Classification
+    difficulty: Difficulty
+    construct: Construct
+    creator_id: Created by
+    usage_frequency: Usage frequency
+    programme_id: Programme
+    subject_id: Subject
+    topic_id: Topic
+    approver_id: Approver
+    statusremark: Remark
+    approvedt: Approval date
+    bplreserve: Reserve for BPL
+    bplsent: Sent to BPL
+    bplsentdt: Date sent to BPL
+    editor_id: Editor
+    checklist: Checklist
+    conformity: Conformity
+    conform_curriculum: Curriculum
+    conform_specification: Specification
+    conform_opportunity: Opportunity
+    accuracy: Accuracy
+    accuracy_construct: Construct
+    accuracy_topic: Topic
+    accuracy_component: Component
+    fit: Fit
+    fit_difficulty: Difficulty
+    fit_important: Importance
+    fit_fairness: Fairness
+    total: Total question
+    total_marks: Total Marks
+    editdt: Editing date
+    questiontype: Question type
+    download_excel: Download Excel
+    creation: Question Creation
+    created_at: Created on
+    updated_at: Last edited
+    diagram: Diagram
+    no_diagram_attached: No diagram attached
+    keywords: Keywords
+    reselect_a_programme: "Please re-select a programme"
+    select_a_programme: Please select a programme first
+    select_a_programme1: Select a programme
+    select_a_programme2: Select a programme first
+    select_a_subject: Please select a subject
+    select_a_subject1: Select a subject
+    select_a_subject2: Select a subject first
+    select_a_subject_first: Please select a SUBJECT first
+    select_a_subject_second: Please SELECT a subject first
+    select_a_topic: Please select a topic
+    select_a_topic1: Select a topic
+    createdt: Creation date
+    add_graphic_image: "Add graphic / image"
+    activate: Activate
+    subquestions_answers: "Subquestion(s) & Answer(s)"
+    
+  exam:
+    title: Examination Paper Listing
+    title2: Examination Maker
+    title3: Examination
+    exampaper: Exam Paper
+    separate: Separate Exam Paper
+    combine: Combine Exam Paper
+    new: New Examination Paper
+    edit: Edit Examination Paper
+    details: Examination Details
+    template: Examination Template
+    questions_template: Questions Template
+    name: Name
+    year_semester: "Year / Semester"
+    course_id: Program 
+    subject_id: Subject
+    topic: Topic
+    exam_on: Examination date
+    time: Time
+    created_by: Creator 
+    duration: Duration
+    full_marks: Marks
+    starttime: Start Time
+    endtime: End Time
+    indicates_incomplete: "indicates incomplete examination paper. Add question/question template accordingly."
+    indicates_sequence_incomplete: "indicates sequence for all questions are incomplete."
+    quantity: Quantity
+    sequence: Sequence
+    not_set: Not set
+    not_selected: Not selected
+    filters: Filters
+    existing: Existing Questions
+    subject_topic_name: "Subject Code | Topic Code & Name"
+    marks_each: MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each"
+    select_programme_first: Please select a PROGRAMME first
+    select_subject_first: Please select a subject first
+    select_topic_first: Please select a topic first
+    create_exam: Create Exam Paper
+    create_template: Create Exam Template
+    set_sequence: "Please set sequence for each question."
+    questions_available: " question(s) available for the above <b>SELECTED Programme, Subject & Topic."
+    total: Total
+    questions_already_selected: This question already selected for this examination
+    
+  exammark:
+    title: Examination Marks by Examination Paper
+    title2: Marks by Examination Paper
+    title3: Examination Marks
+    new: New Examination Marks
+    edit: Edit Examination Marks
+    new_multiple: New Multiple Marks
+    multiple_new_title: Multiple New Examination Marks
+    multiple_new_intake_title: "Multiple New Examination Marks (by Intake)"
+    edit_multiple: Edit Multiple Exam Marks
+    create_by_paper: Create By Paper
+    all_exist_exammark: All Existing Exam Marks
+    search_exammarks: Search Exam Marks
+    updated: "Updated exam marks!"
+    created: "Exam Marks Created!"
+    data_invalid: "Data supplied is invalid. Please insert all data accordingly. All fields are compulsory."
+    student_id: Student
+    exam_id: Exam
+    total_marks: Total Marks
+    details: Examination Marks Details
+    mark: Mark
+    single_entry_allowed: "Single entry of examination marks only allowed for complete set of exam paper."
+    select_exampaper_first: Please select an exam paper first
+    template: "Questions Template - (Type/Quantity/Total Marks)"
+    select_intake: Please select an intake
+    type_quantity_marks: "Question type, quantity and marks"
+    question_details: Questions details
+    must_exist_selected_paper: " must exist in selected examination paper."
+    total_students: Total Students
+    total_mcq: Total MCQ
+    question: Q
+    total: Total
+    summative: Summative
+    same_students: Please select students with the same
+    for_multiple_edit: "for multiple edit."
+    
+  grade:
+    title: Student Grades Listing
+    title2: Student Grades
+    new: New Student Grade
+    edit: Edit Student Grade
+    edit_multiple: Edit Multiple Student Grades
+    examweight: Summative Weightage
+    exam1marks: Summative Marks
+    total_formative: Total Formative
+    sum_of_scores: Sum of scores
+    summative_weightage: summative weightage 
+    total_summative: Total Summative
+    final_exam: Final Exam
+    resit: Resit
+    total_marks: Total Marks
+    grade: Grade
+    student_id: Student
+    subject_id: Subject
+    sent_to_bpl: Sent to BPL
+    sent_date: "Sent to BPL (date sent)"
+    sent_date2: Sent Date
+    formative: Formative
+    eligible_for_exam: Eligible for Exam
+    carry_paper: Carry Paper
+    summative: Summative
+    new_single: Single New Grade
+    new_multiple: Multiple New Grades
+    new_multiple_by_subject: "Multiple New Grades (by Subject)"
+    all_existing_grades: All Existing Grades
+    search_existing_grades: Search Existing Grades
+    details: Grade Details
+    formative_scores: Formative Scores
+    type_id: Type
+    score_type: Score Type
+    description: Description
+    weightage: Weightage
+    score: Score
+    marks: Marks
+    exam1name: Exam Name
+    need_other_inputs: "(need other inputs for automatic)"
+    details2: Details
+    final_details: Final Details
+    finalscore: Final Score
+    create_by_subject: Create by Subject
+    select_an_intake: "Please select an intake."
+    selected_intake_no_exammark: "Selected student(intake) has no examination marks for selected examination paper(subject)."
+    total_students: Total Students
+    written_paper: Written Paper
+    default_value: "(Default value = 6 types)"
+    differences: Differences
+    different: different
+    indicate_different_values: indicates different values found for
+    formative_score_items: formative score items
+    of_each_grade: "of each/some student grades. Edit each grade record"
+    separately: separately
+    modify_changes: "OR modify & click 'Apply Changes' to"
+    standardize: standardize
+    summative_and_or_formative: "summative weightage and/or formative score items for subject."
+    confirm_modify_changes: "Please CONFIRM or MODIFY & 'Apply Changes' for above"
+    before_data_entry: "items before proceeding with data entry."
+    student_grades_of: Student grades of
+    subject_modification: "subject were selected. Formative score details are not available for modification."
+    successfully_created: Grades are successfully created
+    successfully_updated: Grade was successfully updated
+    formative_scores_var: Formative scores variable
+    are_updated: are updated
+    edit_marks: Please EDIT marks accordingly
+      
+  examresult: 
+    title: Examination Result by Programme
+    title2: Examination Result
+    new: New Examination Result
+    edit: Edit Examination Result
+    examinationresult: "Examination Result"
+    semester: "Semester"
+    programme_id: "Programme"
+    total: "Total"
+    examdate1: "Examination Start Date"
+    examdate2: "Examination End Date"
+    pngs17: "PNGS"
+    pngk: "PNGK"
+    status: "Status"
+    remark: "Remark"
+    by_programme: Examination Result by Programme
+    exam_slip: Examination Result Slip by Programme
+    select_programme: Please select a programme
+    select_semester: Please select semester
+    select_reselect: "Please select examination start date and reselect semester or/and programme"
+    no_students: No students have taken this programme
+    no_subject: "Selected programme have no subject at the moment."
+    total_records: Total records
+    details: Examination Result Details
+    results: Results
+    student: Student
+    examslip: Examination Slip
+    exam_date: Examination Date
+    exam_centre: Examination Centre
+    final_exam_result: Final Examination Result
+    student_details: Student Details
+    course_code: Course Code
+    grade_value: Grade Value
+    remark: Remark
+    passed: Passed
+    failed: Failed
+    total : Total
+    back_examresult: Back to Examination Result by Programme
+    back_examslip: Back to Examination Slip
+   
+  evaluate_course:
+    title: "Feedback / Course Evaluation Listing"
+    title2: "Feedback / Course Evaluation"
+    new: "New Feedback / Course Evaluation"
+    edit: "Edit Feedback / Course Evaluation"
+    staff_id: Lecturer
+    course_id: Programme
+    invite_lec: Invitation Lecturer
+    staff_invitation_must_exist: " : either Lecturer (staff) Invitation Lecturer must exist."
+    evaldate: Evaluation Date
+    subject_id: Subject
+    comment: Comment
+    programme_subjectname: "Programme - Subject Name"
+    no_course: No course
+    no_staff: No lecturer
+    eval_form: Lecturer Evaluation Form
+    info: Appraisal Information
+    details: Appraisal Details
+    description: Description
+    score: Score
+    objective_achieved: "Achievement of lesson objectives."
+    lecturer_knowledge: "Lecturer's knowledge on lesson being taught."
+    lecturer_q_achievement: "Quality of lecturer's achievement."
+    content: "Content of lesson."
+    training_aids_quality: "Quality of training aids in use."
+    suitability_topic_sequence: "Suitability of topic sequence in schedule."
+    effectiveness_teaching_learning: "Effectiveness of teaching and learning (interaction between lecturer and student)."
+    benefit_notes: "Benefit of distributed material / notes."
+    evaluation_scale: Evaluation Scale
+    unsatisfactory: Unsatisfactory
+    average: Average
+    satisfactory: Satisfactory
+    good: Good
+    excellent: Excellent
+    
+  examanalysis:
+    title: Examination Analysis by Examination Paper
+    title2: Examination Analysis
+    new: New Examination Analysis
+    edit: Edit Examination Analysis
+    details: Examination Analysis Details
+    examtype: Examination Type
+    programme_id: Programme
+    subject_id: Subject
+    examon: Examination Date
+    grade: Grade
+    examtype: Examination Type
+    total_students: Total Students
+    no_question_paper: No questions available in Examination 
+    no_marks_available: No marks available for analysis
+    select_subject: Please select a subject
+    question: Q
+    exam_on: Examination Date
+    total_marks: Total Marks
+ 
+  exammakeranalysis:
+    examtype: "Examination Type"
+    exampaper: "Examination Paper"
+    exammaker_id: "Subject"
+    gradea: "Grade A"
+    gradeaminus: "Grade A-"
+    gradebplus: "Grade B+"
+    gradeb: "Grade B"
+    gradebminus: "Grade B-"
+    gradecplus: "Grade C+"
+    gradec: "Grade C"
+    gradecminus: "Grade C-"
+    gradedplus: "Grade D+"
+    graded: "Grade D"
+    gradee: "Grade E"
+    
   date:
     formats:
       default: "%d-%b-%Y"

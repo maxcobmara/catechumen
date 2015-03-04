@@ -1,16 +1,41 @@
-<div class="fields"><%=@index+=1%>
+<div class="fields"><%#=@index+=1%>
 <%= f.text_field :lpono, :size => 10, :placeholder => "LPO No" %>
-<%= f.text_field :document, :size => 15, :placeholder => "Supplier Name" %>
-<%= f.text_field :quantity,:class => "g1", :size => 9, :placeholder => "Quantity", :class=>'g1' %>
+<%= f.text_field :document, :size => 20, :placeholder => "Supplier Name" %>
 
-<%= f.text_field :unitcost, :class => "g1", :size => 12, :placeholder => "RM", :class=>'g1' %>
-<%= f.text_field :total, :size => 12, :class => "g1", :placeholder => "RM" %>
-<%#= f.text_field :total, :size => 12, :class => "g1", :placeholder => "RM", :id => form_tag_id(f.object_name, :total), :value=> @stationery.addsuppliers[0].quantity * @stationery.addsuppliers[0].unitcost %> 
-<%#= @stationery.addsuppliers[0].quantity %>
+<%= f.text_field :quantity, :size => 9, :placeholder => "Quantity", :class=>'g1' %>
+<%= f.text_field :unitcost, :size => 12, :placeholder => "RM", :class=>'g1' %>
+<%= f.text_field :total, :size => 12, :placeholder => "RM", :class => 'g1' %>
+
 <%= f.date_select :received, :size => 12, :order => [:day, :month, :year], :include_blank => true %>
 <%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>
+
+<% @object_full_id = f.object_name.gsub(/(\])?\[/,"_").chop %>
+<% @object_index_id = @object_full_id.to_s.split("attributes_").last %>
+<%#= f.options[:child_index]%>
 </div>
 
-
+<script type="text/javascript">
+  
+  //required for EXISTING saved items to works?
+  var theval2 = "<%=escape_javascript(@object_index_id) %>";
+      
+  var qty2 = $j("#stationery_stationery_adds_attributes_"+theval2+"_quantity").val();
+  var unitcost2 = $j("#stationery_stationery_adds_attributes_"+theval2+"_unitcost").val(); 
+    
+  var ansP2 = document.getElementById("stationery_stationery_adds_attributes_"+theval2+"_total");
+  ansP2.value = (unitcost2*1)*(qty2*1);
+  
+  
+  //required for newly added (second item and subsequent items to works)?
+  $j('.g1').keyup(function() {   	
+    var theval = "<%=escape_javascript(@object_index_id) %>";
+    var qty = $j("#stationery_stationery_adds_attributes_"+theval+"_quantity").val();
+    var unitcost = $j("#stationery_stationery_adds_attributes_"+theval+"_unitcost").val(); 
+    
+    var ansP1 = document.getElementById("stationery_stationery_adds_attributes_"+theval+"_total");
+    ansP1.value = (unitcost*1)*(qty*1);
+  });
+    
+</script>
 
 

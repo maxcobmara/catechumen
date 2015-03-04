@@ -2,7 +2,7 @@ class TimetablesController < ApplicationController
   # GET /timetables
   # GET /timetables.xml
   def index
-    @timetables = Timetable.all
+    @timetables = Timetable.search(params[:search])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -47,7 +47,7 @@ class TimetablesController < ApplicationController
 
     respond_to do |format|
       if @timetable.save
-        format.html { redirect_to(@timetable, :notice => 'Timetable was successfully created.') }
+        format.html { redirect_to(@timetable, :notice =>  t('timetable.title')+" "+t('created')) }
         format.xml  { render :xml => @timetable, :status => :created, :location => @timetable }
       else
         format.html { render :action => "new" }
@@ -63,7 +63,7 @@ class TimetablesController < ApplicationController
 
     respond_to do |format|
       if @timetable.update_attributes(params[:timetable])
-        format.html { redirect_to(@timetable, :notice => 'Timetable was successfully updated.') }
+        format.html { redirect_to(@timetable, :notice =>  t('timetable.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

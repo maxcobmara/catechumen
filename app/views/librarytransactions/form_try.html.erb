@@ -22,7 +22,7 @@
 	<% end %>
 
 	<table style="border-bottom:1px solid black;border-top:1px solid black;">
-		<tr><td style="vertical-align:middle;font-weight:bold;width:120px;height:10px;">Accession No</td>
+		<tr><td style="vertical-align:middle;font-weight:bold;width:120px;height:10px;"><%=t('book.accessionno')%></td>
 			<td>
 				<%#= select_tag("librarytransactions[#{count}][accession_id]", "<option>Accession No - Title</option>" + options_from_collection_for_select(Accession.find(:all, :order => :accession_no, :conditions => ['id not in (?)', @librarytransaction.books_that_are_out]), :id, :acc_book)) %> 			
 				<%= text_field_with_auto_complete :librarytransaction, :accessionbook ,{ :size => 70 }, 
@@ -47,6 +47,6 @@
 	<%= hidden_field_tag("librarytransactions[#{count}][libcheckout_by]", Login.current_login.staff_id ) %>
 
 	<br>
-	<%= submit_tag 'Add Book',:name => :new_submit %> <!--moved from new.html.erb-->
+	<%= submit_tag t('librarytransaction.addbook'),:name => :new_submit %> <!--moved from new.html.erb-->
 
 <% end %> <!--moved from new.html.erb-->

@@ -1,13 +1,16 @@
 <%= stylesheet_link_tag 'report' %>
 
-<form action="#">	
-<script>
-document.write("<input type='button' " +
-"onClick='window.print()' " +
-"class='printbutton' " +
-"value='Print This Page'/>");
-</script>
-</form>	
+<form action="#">
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
+<form>
+<div id="hideLink">
+<%= link_to (t 'back'), asset_disposals_path %>
+</div><BR>
 <div class="A4potrait">
 
 <!-- Box Head -->
@@ -86,7 +89,7 @@ document.write("<input type='button' " +
 						<td class="leftcol">Jawatan</td>
 						<td class="dotts">:</td>
 						<td class="filler" style="border-bottom-style: dotted; text-align:center;">
-								<SPAN class="fff"><%= @asset_disposal.disposer.position.name unless @asset_disposal.is_disposed == false %></SPAN></td>
+								<SPAN class="fff"><%= @asset_disposal.disposer.position.try(:name) unless @asset_disposal.is_disposed == false %></SPAN></td>
 						<td></td>
 					</tr>
 					<tr>

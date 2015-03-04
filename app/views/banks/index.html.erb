@@ -1,35 +1,33 @@
 <div class="box">
 	<div class="box-head">
-		<h2 class="left"><%= t 'banks.list' %></h2>
+		<h2 class="left"><%= t 'bank.title' %></h2>
 	</div>
 </div>
 
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Banks') + (t 'new'), new_bank_path %></p>
+	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'bank.new')) + (t 'bank.new'), new_bank_path %></p>
 </div>
-
+<BR><BR>
 <div class="indextable">
 	<table>
 		  <tr>
-    		<th><%= t 'banks.sname' %></th>
-		    <th><%= t 'banks.lname' %></th>
-		    <th class="ac"><%= t 'banks.active' %></th>
+    		<th><%= t 'bank.sname' %></th>
+		    <th><%= t 'bank.lname' %></th>
+		    <th class="ac"><%= t 'bank.active' %></th>
     		<th colspan=3 class="ac"><%= t 'control' %></th>
   		</tr>
-
-
-			<% @banks.each do |bank| %>
+		<% @banks.each do |bank| %>
   		<tr>
     		<td><%=h bank.short_name %></td>
     		<td><%=h bank.long_name %></td>
     		<td align="center"><%=h bank.active? ? image_tag("tick.png") : image_tag("cross.png") %></td>
-    		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => bank %></td>
-	  		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => bank %></td>
-				<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), bank, :confirm => 'Are you sure?', :method => :delete %></td>
+    		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => bank %></td>
+	  		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => bank %></td>
+				<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), bank, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   		</tr>
-			<% end %>
+		<% end %>
 		</table>
 </div>
 <br />
 
-<%= link_to (t 'banks.new_bank'), new_bank_path %>
+<%= link_to (t 'bank.new'), new_bank_path %>

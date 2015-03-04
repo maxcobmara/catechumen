@@ -1,7 +1,13 @@
 <% form_for(@programme) do |f| %>
   <%= f.error_messages %>
 	<div class="tform">
-		<H2><%=t('programme.new')%></H2>
+		<H2>
+	        <% if params[:parent_id].nil? %>
+			<%=t('programme.new_root')%>
+		<% else %>
+			<%=t('programme.new')%>
+		<% end %>
+		</H2>
 		<%= f.hidden_field :parent_id %>
 		<%=render :partial => 'form', :locals => {:f => f} %>
 	</div>

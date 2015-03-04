@@ -7,71 +7,93 @@
 		<th><%= t('document.refno')%></th>
 		<th><%= t 'travel.destination' %></th>
 		<th><%= t 'travel.purpose' %></th>
-		<th><%= t 'travel.travel_date' %></th>
+		<th><%= t 'claim.travel_date' %></th>
 	</tr>
-	
-	
-	
-			<% for travel_request in @my_approved_unclaimed_requests %>
+	<% for travel_request in @my_approved_unclaimed_requests %>
+		<tr>
+			<td width=10px><%= check_box_tag "travel_claim[travel_request_ids][]", travel_request.id, @travel_claim.travel_requests.include?(travel_request) %>
+			<td><%= check_kin {travel_request.document.refno} %></td>
+			<td><%= travel_request.destination %></td>
+			<td><%= check_kin {travel_request.document.title} %></td>
+			<td class="tright"><%=l(travel_request.depart_at, :format=>"%d %b") %> - <%= l(travel_request.return_at, :format =>"%d %b %Y") %></td>
+		</tr>
+	<% end %>
+<% else %>
+	<!--3Jan2012-view travel logs accordingly-->
+	<fieldset>
+		<legend class='togvis'><%= t 'claim.travel_requestlogs' %></legend>
+		<% for travel_request in @travel_claim.travel_requests %>
+		<!--<fieldset>
+		<legend class='togvis'><%#= travel_request.destination %> (<%#= travel_request.depart_at.strftime("%d %b") %> - <%#= travel_request.return_at.strftime("%d %b %Y")%>)</legend>-->
+		<table width=90%>
 			<tr>
-				<td width=10px><%= check_box_tag "travel_claim[travel_request_ids][]", travel_request.id, @travel_claim.travel_requests.include?(travel_request) %>
-			  <td><%= check_kin {travel_request.document.refno} %></td>
-			  <td><%= travel_request.destination %></td>
-			  <td><%= check_kin {travel_request.document.title} %></td>
-			  <td class="tright"><%= travel_request.depart_at.strftime("%d %b") %> - <%= travel_request.return_at.strftime("%d %b %Y") %></td>
+				<th colspan=2><%= t 'claim.document_no' %></th>
+				<th colspan=2><%= t 'travel.purpose' %></th>
+				<th colspan=2><%= t 'claim.travel_date' %></th>
+				<th><%= t 'claim.query' %></th>
+				<th><%= t 'claim.comment' %></th>
+			</tr>
+			<tr>
+			  	<td class="tlight" colspan=2><%= check_kin {travel_request.document.refno} %></td>
+				<td colspan=2><%= check_kin {travel_request.document.title} %></td>
+				<td colspan=2><%= l(travel_request.depart_at, :format=>"%d %b") %> - <%= l(travel_request.return_at, :format=>"%d %b %Y") %>
+					<%="("+(travel_request.destination).titleize+")"  if  travel_request.travel_claim_logs.count==0 %>
+				</td>
+				<td colspan=2>&nbsp;</td>
+			</tr>
+			<% if travel_request.travel_claim_logs.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
+			<tr>
+				<th class="level_2"><%= t 'travel.date' %></th>
+				<th class="level_2"><%= t 'travel.start' %></th>
+				<th class="level_2"><%= t 'travel.finish' %></th>
+				<th class="level_2"><%= t 'travel.destination' %></th>
+				<th class="level_2"><%= t 'travel.mileage' %></th>
+				<th class="level_2"><%= t 'travel.value' %></th>
+				<th class="level_2">&nbsp;</th>
+				<th class="level_2">&nbsp;</th>
 			</tr>
 			<% end %>
-	<% else %>
-			<!--3Jan2012-view travel logs accordingly-->
-			<fieldset>
-				<legend class='togvis'><%= t 'claim.travel_requestlogs' %></legend>
-			
-			<% for travel_request in @travel_claim.travel_requests %>
-				<!--<fieldset>
-					<legend class='togvis'><%#= travel_request.destination %> (<%#= travel_request.depart_at.strftime("%d %b") %> - <%#= travel_request.return_at.strftime("%d %b %Y")%>)</legend>-->
-				<table width=90%>
-				<tr>
-					<th colspan=2><%= t 'claim.document_no' %></th>
-					<th colspan=2><%= t 'travel.purpose' %></th>
-					<th colspan=2><%= t 'travel.travel_date' %></th>
-				</tr>
-				<tr>
-			  		<td class="tlight" colspan=2><%= check_kin {travel_request.document.refno} %></td>
-			  		<td colspan=2><%= check_kin {travel_request.document.title} %></td>
-			  		<td colspan=2><%= travel_request.depart_at.strftime("%d %b") %> - <%= travel_request.return_at.strftime("%d %b %Y") %></td>
-				</tr>
-			
-				<tr>
-					<th class="level_2"><%= t 'travel.date' %></th>
-					<th class="level_2"><%= t 'travel.start' %></th>
-					<th class="level_2"><%= t 'travel.finish' %></th>
-					<th class="level_2"><%= t 'travel.destination' %></th>
-					<th class="level_2"><%= t 'travel.mileage' %></th>
-					<th class="level_2"><%= t 'travel.value' %></th>
-				</tr>	
-			
-				<% travel_request.travel_claim_logs.each do |travel_log| %>
-				<tr>
-					<td><%= l(travel_log.travel_on) %></td>
-					<td><%= travel_log.start_at.strftime('%H:%M %p') %></td>
-					<td><%= travel_log.finish_at.strftime('%H:%M %p') %></td>
-					<td><%= travel_log.destination %></td>
-					<td><%= travel_log.mileage %>
-						<!--2Jan2013-show KM when mileage exist-->
-						<% if travel_log.mileage.nil? != true || travel_log.mileage.blank? != true %>
-							<label> km</label>
-						<% end %>
-						<!--2Jan2012-show KM when mileage exist-->
-					</td>
-					<td><%= ringgols(travel_log.km_money) %></td>
-				</tr>	
+			<% travel_request.travel_claim_logs.each do |travel_log| %>
+			<tr>
+				<td><%= l(travel_log.travel_on) %></td>
+				<td><%= travel_log.start_at.strftime('%H:%M %p') %></td>
+				<td><%= travel_log.finish_at.strftime('%H:%M %p') %></td>
+				<td><%= travel_log.destination %></td>
+				<td><%= travel_log.mileage %>
+					<!--2Jan2013-show KM when mileage exist-->
+					<% if travel_log.mileage.nil? != true || travel_log.mileage.blank? != true %>
+						<label> km</label>
+					<% end %>
+					<!--2Jan2012-show KM when mileage exist-->
+				</td>
+				<td><%= ringgols(travel_log.km_money) %></td>
+				<td>
+				<% if @travel_claim.my_claim_status == t('claim.returned') %>
+					<% if travel_log.checker==true %>
+						Ok
+					<% elsif travel_log.checker==false %>
+					       <font color="red">
+						<%=t('claim.query')%></font>
+					<% end %>
 				<% end %>
-				</table>
-				<!--</fieldset>-->
+				</td>
+				<td><font color="red"><%= travel_log.checker_notes if travel_log.checker==false && @travel_claim.my_claim_status == t('claim.returned') %></font></td>
+			</tr>	
 			<% end %>
-			</fieldset>
+		</table>
+		<!--</fieldset>-->
+		<% end %>
+	</fieldset><br>
+	<% if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) %>
+		<fieldset>
+			<b><%=  t('staff.transportclass_id')%> : <%= @travel_claim.travel_requests.first.transport_class %></b>&nbsp;&nbsp;&nbsp;
+			<% if @travel_claim.staff.vehicles.count > 0%>
+				<%='('+(t 'vehicles.reg_no')+" : "+@travel_claim.staff.vehicles[0].reg_no%>&nbsp;&nbsp; | &nbsp;&nbsp;<%=(t 'vehicles.type_model')+" : "+@travel_claim.staff.vehicles[0].type_model%>&nbsp;&nbsp; | &nbsp;&nbsp;<%=(t 'vehicles.cylinder_capacity')+" : "+@travel_claim.staff.vehicles[0].cylinder_capacity.to_s%>
+			<% end %>
+		</fieldset>
+        <% end %>
 			
-			<!--3Jan2012-view travel logs accordingly-->
+	<!--3Jan2012-view travel logs accordingly-->
 <% end %>
 </table><BR/>
 
@@ -92,9 +114,17 @@
 	  <%= render 'travel_claim_allowance_fields', :f => builder %>
 	<% end %>
 
-	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Receipt'), f, :travel_claim_allowances %> - <%= "Add Receipt" %></p>
-
-
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => (t 'claim.add_receipt')), f, :travel_claim_allowances %> - <%=t('claim.add_receipt')%></p>
+	
+<table>
+	<tr>
+		<td width=35%><b><%= t 'claim.accommodations' %><br><%=t('claim.hotel_lodging')%></b><br>
+		<font color="red">*</font><font size="-2"><%=t('claim.address_compulsory')%></font></td>
+		<td><%=f.text_area :accommodations, :size => "70x2"%></td>
+	</tr>
+</table>
+	
+	
 <H2><%= t 'claim.receipt' %></H2>	
 <table width=90%>
 	<tr>
@@ -110,7 +140,7 @@
 	  <%= render 'travel_claim_receipt_fields', :f => builder %>
 	<% end %>
 
-	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Receipt'), f, :travel_claim_receipts %> - <%= "Add Receipt" %></p>
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title =>(t 'claim.add_receipt')), f, :travel_claim_receipts %> - <%=t('claim.add_receipt')%></p>
 	
 <H2><%= t 'claim.advance' %></H2>
 <table>
@@ -123,27 +153,27 @@
 <H2><%= t 'claim.submission' %></H2>
 <table width=100%>
 	<!--4Jan2013-view submit button differently-->
-	<% if @travel_claim.my_claim_status != "returned" %>
+	<%# if @travel_claim.my_claim_status != t('claim.returned') %>
 	<tr>
 	  <td class="leftcol"><label for="is_submitted"><%= t 'submit' %></label></td>
 		<td><%= f.check_box :is_submitted, :id => 'submit1' %>
 				<SPAN class="span_submit1" style="display: none;"> &nbsp; <%= tarikh (Date.today) %></SPAN></td>
-		<td class="pagenote">Clicking on submit notifies claims officer and disables your editing this record further</td>
+		<td class="pagenote"><%=t('claim.click_submit')%></td>
 	</tr>
-	<% else %>
-	<tr>
+	<%# else %><!--if below part is removed, '#owner amend returned document but did not submit' in travel_claim.rb must actiive -->
+	<!--<tr>
 		<td class="leftcol"><label for="is_submitted"><%= t 'claim.resubmit' %></label></td>
 		<td>
-			  Clicking on UPDATE notifies claims officer and disables your editing this record further
-		         <% if @travel_claim.staff_id == Login.current_login.staff_id %>
-		                   <%=f.hidden_field :is_returned, :value=>'false'%>
-		         <% else %>
-		                   <%=f.hidden_field :is_returned, :value=>'true'%>
-		         <% end %>
+			 <%#=t('claim.click_update')%>
+		         <%# if @travel_claim.staff_id == Login.current_login.staff_id %>
+		                   <%#=f.hidden_field :is_returned, :value=>'false'%>
+		         <%# else %>
+		                   <%#=f.hidden_field :is_returned, :value=>'true'%>
+		         <%# end %>
 			</td>
 		<td class="pagenote">&nbsp;</td>
-	</tr>
-	<% end %>
+	</tr>-->
+	<%# end %>
 	<!--4Jan2013-view submit button differently-->
 </table>
 
@@ -159,5 +189,3 @@
 			});
 	});
 </script>
-
-

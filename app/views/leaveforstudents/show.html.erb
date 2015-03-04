@@ -1,5 +1,4 @@
 <div class="tform">
-
 <%= render :partial => 'applyshow' %>
 
 <H2><%=t('leaveforstudent.approval')%></H2>
@@ -16,9 +15,28 @@
 	    <td class="leftcol"><label for="approvedate"><b><%=t('leaveforstudent.approvedate')%>:</b></label></td>
 		<td><%=h @leaveforstudent.approvedate.try(:strftime, "%d %b %Y") %></td>
 	</tr>
+</table>
+
+<H2><%=t('leaveforstudent.approval_warden')%></H2>
+<table>
+	<tr>
+	    <td class="leftcol"><label for="approved"><b><%=t('leaveforstudent.approved')%>:</b></label></td>
+		<td><%=h @leaveforstudent.approved2? ? t('approved') : t('not_approved') %></td>
+	</tr>
+	<tr><!--18/10/2011 - Shaliza fixed for error when staff no longer exists -->
+		<td class="leftcol"><label for="staff_id"><b><%=t('leaveforstudent.staff_id2')%>:</b></label></td>
+		<td><%=h @leaveforstudent.approver_details2 %></td>
+	</tr>
+	<tr>
+	    <td class="leftcol"><label for="approvedate"><b><%=t('leaveforstudent.approvedate')%>:</b></label></td>
+		<td><%=h @leaveforstudent.approvedate2.try(:strftime, "%d %b %Y") %></td>
+	</tr>
   </table>
+  
 </div>
-
-
-<%= link_to t('edit'), edit_leaveforstudent_path(@leaveforstudent) %> |
+<% if permitted_to? :edit, @leaveforstudent %>
+	<% if @leaveforstudent.leave_startdate < Date.tomorrow && @leaveforstudent.approved==nil && @leaveforstudent.approved2==nil && @leaveforstudent.studentsubmit!=true%>
+		<%= link_to t('edit'), edit_leaveforstudent_path(@leaveforstudent) %>|
+	<% end %>
+<% end %>
 <%= link_to t('back'), leaveforstudents_path %>

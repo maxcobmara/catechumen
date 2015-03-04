@@ -1,17 +1,19 @@
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
 	<form action="#">
-			<script>
+		<script>
 			document.write("<input type='button' " +
 			"onClick='window.print()' " +
 			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
+			"value='<%=escape_javascript(t 'print')%>'/>");
+		</script>
 	</form>
 <!--check params value from controller--><!--
 <%#=@selected_date%>**<%#=@hihi%>@@<%#=@haha%>-->
 <!--check params value from controller-->
-
+<div id="hideLink">
+	<%= link_to t('back'), :controller=>"weeklytimetables", :action=>"personalize_index" %>
+</div>
 <div class="A4landscape" >
 		<% detailing=[] %>
 		<% detailing_monthurs=[]%>
@@ -112,7 +114,8 @@
 					<%# end %>
 					<!--print border accordingly-(end)-->	
 					<!--print data-->
-					<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
+<!-- 					<%= l(periods.start_at )%> - <%= l(periods.end_at) %> -->
+					<%= periods.timing %><BR>
 					</td>
 					<% counter=+1 %>
 					<!--print data-->
@@ -133,10 +136,10 @@
 			<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
 			<% @column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count%>
 		<td class="data1a">
-			<% if count2==1 %><%=t(:'date.day_names')[0]%><br> <%=j.weeklytimetable.startdate.strftime('%d-%b-%Y') %>
-			<% elsif count2==2 %><%=t(:'date.day_names')[1]%><br><%=(j.weeklytimetable.startdate+1).strftime('%d-%b-%Y')  %>
-			<% elsif count2==3 %><%=t(:'date.day_names')[2]%><br><%=(j.weeklytimetable.startdate+2).strftime('%d-%b-%Y')  %>
-			<% elsif count2==4 %><%=t(:'date.day_names')[3]%><br><%=(j.weeklytimetable.startdate+3).strftime('%d-%b-%Y')  %>
+			<% if count2==1 %><%=t(:'date.day_names')[0]%><br> <%=l(j.weeklytimetable.startdate, :format => '%d-%b-%Y') %>
+			<% elsif count2==2 %><%=t(:'date.day_names')[1]%><br><%=l((j.weeklytimetable.startdate+1), :format => '%d-%b-%Y')  %>
+			<% elsif count2==3 %><%=t(:'date.day_names')[2]%><br><%=l((j.weeklytimetable.startdate+2), :format => '%d-%b-%Y')  %>
+			<% elsif count2==4 %><%=t(:'date.day_names')[3]%><br><%=l((j.weeklytimetable.startdate+3), :format => '%d-%b-%Y')  %>
 			<% end %>	
 		</td>
 		<% @column_count=j.weeklytimetable.timetable_monthurs.timetable_periods.count%>
@@ -216,7 +219,8 @@
 				<% end %>
 				<!--print border accordingly-(end)-->
 				<!--print data-->
-				<%= l(periods.start_at )%> - <%= l(periods.end_at) %><BR>
+<!-- 				<%= l(periods.start_at )%> - <%= l(periods.end_at) %> -->
+				<%= periods.timing %><BR>
 				</td>
 				<!--print data-->
 			<% else %><% end %>
@@ -234,7 +238,7 @@
 		<% detailing.each_with_index do |j,index|%>
 		<% if index==0%>
 		<td class="data3">
-			<%=t(:'date.day_names')[4]%><br><%=(j.weeklytimetable.startdate+4).strftime('%d-%b-%Y') %>
+			<%=t(:'date.day_names')[4]%><br><%=l((j.weeklytimetable.startdate+4), :format => '%d-%b-%Y') %>
 		</td>
 		
 		<% @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count%>
@@ -277,10 +281,12 @@
 					<% end %>
 				</td>
 			<% else %>
-				<td class="data5"><!--kukku--> <%#=@column_count_monthur%><%#=count4%><%#=@column_count_monthur+count4%><!--revised : 26Jul2013-->
-					
+				<td class="data5"><!--revised : 26Jul2013-->
+					<% nos2=0%>
 					<% detailing_friday.each do |j|%>
 						<% if j.is_friday == true  && j.time_slot == count4 %>
+						        <% if nos2==0 %>
+								<% nos2+=1%>
 							<% if j.weeklytimetable.hod_approved == true %>
 								    <font color="#000000">
 							<% else %>
@@ -303,6 +309,7 @@
 										<%= "Ambilan ("+ j.weeklytimetable.schedule_intake.name+")" %>
 									</div>
 								</strong></font>
+							<% end %>
 						<% end %>
 					<% end %>		
 				</td>
@@ -382,7 +389,7 @@
 				<td class="data3">
 					<%#=(@weekdays_end+row2).try(:strftime, "%A") %>
 					<%=t(:'date.day_names')[@daycount+row2]%><!--array start at 0, 4 shall include thurs-->
-					<br><%=(@weekdays_end+row2).try(:strftime, "%d-%b-%Y") %>
+					<br><%=l((@weekdays_end+row2), :format =>"%d-%b-%Y") %><%#=(@weekdays_end+row2).try(:strftime, "%d-%b-%Y") %>
 				</td>
 				<!--Content - (ADDITIONAL - Weekends classes)
 				span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column-->
@@ -403,7 +410,7 @@
 						<% end %>
 							<% nos=0 %>
 							<% detailing_monthurs.each do |j2| %>
-								<% if j2.day2 == (@daycount+row2) && j2.time_slot2 == col2 %>
+								<% if j2.day2 == (@daycount+1+row2) && j2.time_slot2 == col2 %>
 									<% if nos==0 %>
 										<% nos+=1 %>
 										<% if j2.weeklytimetable.hod_approved == true %>
@@ -466,8 +473,5 @@
 		</center>
 		<BR/><BR/>
 
-		<div id="hideLink">
-			<%= link_to t('back'), weeklytimetables_path %>
-		</div>
         </div>
 <% end %>
