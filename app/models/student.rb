@@ -299,7 +299,9 @@ STATUS = [
            [ I18n.t('student.current'),"Current" ],
            [ I18n.t('student.graduated'),"Graduated" ],
            [ I18n.t('student.repeat'), "Repeat" ],
-           [ I18n.t('student.on_leave'), "On Leave" ]
+           [ I18n.t('student.on_leave'), "On Leave" ],
+           [ I18n.t('student.transfer_college'), "Transfer College"],
+           [ I18n.t('student.expelled'), "Expelled"]
            
 ] 
   

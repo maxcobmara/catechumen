@@ -17,7 +17,12 @@
 					<td class="leftcol"><%= t 'student.sstatus' %><font color="red"> * </font></td>
 					<td><%= f.select :sstatus, 
 					           Student::STATUS,
-					           :prompt => t ('select') %></td>
+					           :prompt => t ('select') %>
+					</td>
+			</tr>
+			<tr class="bong2" style="display: none;">
+					<td class="leftcol"><%=t 'student.sstatus_remark'%></td>
+					<td><%= f.text_field :sstatus_remark %></td>
 			</tr>
 			<tr>
 					<td class="leftcol"><%= t 'student.stelno' %><font color="red"> * </font></td>
@@ -207,8 +212,8 @@
 </div>
 
 <script type="text/javascript">
-		$j(document).ready(function(){
-		  $j('#student_race2').change(function() {
+	$j(document).ready(function(){
+		$j('#student_race2').change(function() {
 		    if($j(this).val() == 21) {
 		      $j('.bong').show();
 					//$j('.koik').hide();
@@ -216,8 +221,25 @@
 		     	 $j('.bong').hide();
 					 //$j('.koik').show();
 		    }
-			});
+		});
+		
+		$j('#student_sstatus').change(function() {
+		    if($j(this).val() == "Transfer College") {
+		      $j('.bong2').show();
+		    }else {
+		      $j('.bong2').hide();
+		    }
+		});
+		$j('#student_sstatus').each(function() {
+		    if($j(this).val() == "Transfer College") {
+		      $j('.bong2').show();
+		    }else {
+		      $j('.bong2').hide();
+		    }
+		});
 	});
+	
+		
 </script>
 
 
