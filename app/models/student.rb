@@ -270,7 +270,7 @@ class Student < ActiveRecord::Base
      if !(main_semester==1 && main_year==1)
        intake_repeat_start = Student.get_intake_repeat(main_semester, main_year, programme)
        intake_repeat_end = intake_repeat_start.end_of_month
-       repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND gender=? and sstatus=?', intake_repeat_start, intake_repeat_end, programme, gender, 'Repeat'])
+       repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND gender=? and race2 IS NOT NULL and sstatus=?', intake_repeat_start, intake_repeat_end, programme, gender, 'Repeat'])
        #repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND gender=? and sstatus=?', "2014-01-01", "2014-01-31", 1, 1, 'Repeat']) 
        #for checking - 950423-12-6289, Idzham, Jurupulih Cara Kerja(1), Male, Kedayan(11), Intake Jan 2014, SWITCH between sstatus='Current' & 'Repeat'
      end
