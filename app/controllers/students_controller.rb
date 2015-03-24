@@ -40,7 +40,8 @@ class StudentsController < ApplicationController
             #17/11/2011 - Shaliza added pagination for student
         else
             #@students = @inta2.paginate(:per_page => 20, :page => params[:page])   #before 18Feb2014
-            @students = @inta3.paginate(:per_page => 20, :page => params[:page])    #paginate(after sorted by intake) & TO BE group by course(in index) 
+            #@students = @inta3.paginate(:per_page => 20, :page => params[:page])    #paginate(after sorted by intake) & TO BE group by course(in index) 
+	  @students = Student.with_permissions_to(:index).find(:all, :order => 'intake ASC, course_id ASC').paginate(:per_page => 20, :page => params[:page])
         end
 
     #@students_list = Student.with_permissions_to(:index).all

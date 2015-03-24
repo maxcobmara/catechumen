@@ -131,13 +131,12 @@
 	<!-- Locations Menu -->
 	<% permitted_to? :menu, :locations do %>
 	<li><a href="#"><%= t('menu.locations') %></a>
-			<ul class="sub_menu">
-				<% permitted_to? :read, :locations do %>
-				<!--
-				<li><%#= link_to 'Residences', 	{:controller => 'locations', 		:action => 'index'} %></li>-->
+	<ul class="sub_menu">
+	<% permitted_to? :read, :locations do %>
+	<!--<li><%#= link_to 'Residences', 	{:controller => 'locations', 		:action => 'index'} %></li>-->
         <li><a href="http://<%= request.host  %>:3003/campus/locations"><%= t('menu.new_location') %></a></li>
-				<li><a href="#"><%= t('menu.student_residence') %> ></a>
-					<ul class="sub_menu">
+	<li><a href="#"><%= t('menu.student_residence') %> ></a>
+	<ul class="sub_menu">
             <li><a href="http://<%= request.host  %>:3003/student/tenants/room_map"><%= t('menu.room_map') %></a></li>
             <li><a href="http://<%= request.host  %>:3003/student/tenants"><%= t('menu.new_student_tenants') %></a></li>
             <li><a href="http://<%= request.host  %>:3003/student/tenants/return_key"><%= t('menu.return_key') %></a></li>
@@ -145,8 +144,14 @@
             <li><a href="http://<%= request.host  %>:3003/student/tenants/reports"><%= t('menu.report_census') %></a></li>             
             <li><a href="http://<%= request.host  %>:3003/student/tenants/statistics"><%= t('menu.room_statistics') %></a></li>
           </ul>
-
-			  <% end %>
+        <li><a href="#"><%= t('menu.staff_residence') %> ></a>
+	<ul class="sub_menu">
+            <li><a href="http://<%= request.host  %>:3003/student/tenants/room_map2"><%= t('menu.room_map2') %></a></li>
+            <li><a href="http://<%= request.host  %>:3003/student/tenants/index_staff?locale=en"><%= t('menu.new_staff_tenants') %></a></li>
+            <li><a href="http://<%= request.host  %>:3003/student/tenants/return_key2"><%= t('menu.return_key') %></a></li>
+            <li><a href="http://<%= request.host  %>:3003/campus/location_damages/index_staff?locale=en"><%= t('menu.damage_list') %></a></li>
+        </ul>
+	<% end %>
 			  <!--
 				<li><%#= link_to 'Tenants', {:controller => 'tenants', 		:action => 'index'} %></li>-->
 				<!--<li><%#= link_to 'Student Leave', 			{:controller => 'leaveforstudents', 	:action => 'index'} %></li>-->
