@@ -24,6 +24,10 @@
 					<td class="leftcol"><%=t 'student.sstatus_remark'%></td>
 					<td><%= f.text_field :sstatus_remark %></td>
 			</tr>
+			<tr class="bong3" style="display: none;">
+					<td class="leftcol"><%=t 'student.semester_repeated'%></td>
+					<td><%= f.text_field :sstatus_remark %>&nbsp;<font size="-2" color= "grey"><%=t'student.repeated_notes'%></font></td>
+			</tr>
 			<tr>
 					<td class="leftcol"><%= t 'student.stelno' %><font color="red"> * </font></td>
 					<td><%= f.text_field :stelno %></td>
@@ -235,6 +239,21 @@
 		      $j('.bong2').show();
 		    }else {
 		      $j('.bong2').hide();
+		    }
+		});
+		
+		$j('#student_sstatus').change(function() {
+		    if($j(this).val() == "Repeat") {
+		      $j('.bong3').show();
+		    }else {
+		      $j('.bong3').hide();
+		    }
+		});
+		$j('#student_sstatus').each(function() {
+		    if($j(this).val() == "Repeat") {
+		      $j('.bong3').show();
+		    }else {
+		      $j('.bong3').hide();
 		    }
 		});
 	});
