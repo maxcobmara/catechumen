@@ -243,6 +243,18 @@ class Student < ActiveRecord::Base
      return Date.new(intake_year, intake_month,1) 
    end
    
+   def self.get_intake_repeat2(main_semester, main_year, programme) #Sem 1, Year 3 (1/1/2012)
+     current_year = Date.today.year
+     current_month = Date.today.month     
+     if current_month < 7 
+       intake_month = 1              #Sem January
+     else 
+       intake_month = 7              #Sem July
+     end      
+     intake_year = current_year-main_year
+     return Date.new(intake_year, intake_month,1) 
+   end
+   
    def self.get_student_by_intake_gender_race(main_semester, main_year, gender, programme, race)
      intake_start = Student.get_intake(main_semester, main_year, programme)
      intake_end = intake_start.end_of_month
@@ -251,14 +263,25 @@ class Student < ActiveRecord::Base
      if !(main_semester==1 && main_year==1)
        intake_repeat_start = Student.get_intake_repeat(main_semester, main_year, programme)
        intake_repeat_end = intake_repeat_start.end_of_month
-       repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=? and sstatus=?', intake_repeat_start, intake_repeat_end, programme, race, gender, 'Repeat'])
+       repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=? and sstatus=? AND sstatus_remark not ILIKE(?)', intake_repeat_start, intake_repeat_end, programme, race, gender, 'Repeat', '%,%'])
        #repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=? and sstatus=?', "2014-01-01", "2014-01-31", 1, 11, 1, 'Repeat']) 
        #for checking - 950423-12-6289, Idzham, Jurupulih Cara Kerja(1), Male, Kedayan(11), Intake Jan 2014, SWITCH between sstatus='Current' & 'Repeat'
+       
+       #downgrade by another 1 sem  (repeat 2 semesters)
+       if !(main_semester==2 && main_year==1)  #&& main_semester==2 #1
+         intake_repeat2_start = Student.get_intake_repeat2(main_semester, main_year, programme)
+         intake_repeat2_end = intake_repeat2_start.end_of_month
+         intakemonth=intake_repeat2_start.month
+         if intakemonth == main_semester || intakemonth-5 == main_semester
+           repeat_students2 = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND race2=? and gender=? and sstatus=? AND sstatus_remark ILIKE(?)', intake_repeat2_start, intake_repeat2_end, programme, race, gender, 'Repeat', '%,%'])
+         end
+       end 
        
      end
      all_students = []
      all_students += current_students if current_students
-     all_students+=repeat_students if repeat_students
+     all_students+=repeat_students if repeat_students 
+     all_students+=repeat_students2 if repeat_students2
      return all_students
    end
    
@@ -270,14 +293,26 @@ class Student < ActiveRecord::Base
      if !(main_semester==1 && main_year==1)
        intake_repeat_start = Student.get_intake_repeat(main_semester, main_year, programme)
        intake_repeat_end = intake_repeat_start.end_of_month
-       repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND gender=? and race2 IS NOT NULL and sstatus=?', intake_repeat_start, intake_repeat_end, programme, gender, 'Repeat'])
+       repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND gender=? and race2 IS NOT NULL and sstatus=? AND sstatus_remark not ILIKE(?)', intake_repeat_start, intake_repeat_end, programme, gender, 'Repeat', '%,%'])
        #repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND gender=? and sstatus=?', "2014-01-01", "2014-01-31", 1, 1, 'Repeat']) 
        #for checking - 950423-12-6289, Idzham, Jurupulih Cara Kerja(1), Male, Kedayan(11), Intake Jan 2014, SWITCH between sstatus='Current' & 'Repeat'
+       
+       #downgrade by another 1 sem  (repeat 2 semesters)
+       if !(main_semester==2 && main_year==1)  #&& main_semester==2 #1
+         intake_repeat2_start = Student.get_intake_repeat2(main_semester, main_year, programme)
+         intake_repeat2_end = intake_repeat2_start.end_of_month
+         intakemonth=intake_repeat2_start.month
+         if intakemonth == main_semester || intakemonth-5 == main_semester
+           repeat_students2 = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND race2 IS NOT NULL and gender=? and sstatus=? AND sstatus_remark ILIKE(?)', intake_repeat2_start, intake_repeat2_end, programme, gender, 'Repeat', '%,%'])
+         end
+       end 
+       
      end
      
      all_students = []
      all_students += current_students if current_students
      all_students+=repeat_students if repeat_students
+     all_students+=repeat_students2 if repeat_students2
      return all_students
      
    end
@@ -307,11 +342,22 @@ class Student < ActiveRecord::Base
      intake_repeat_end5 = intake_repeat_start5.end_of_month
      intake_repeat_start6 = Student.get_intake_repeat(2, 3, programme)
      intake_repeat_end6 = intake_repeat_start6.end_of_month
-     repeat_students= Student.find(:all, :conditions => ['( (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? AND sstatus=?',intake_repeat_start2, intake_repeat_end2, intake_repeat_start3, intake_repeat_end3, intake_repeat_start4, intake_repeat_end4,intake_repeat_start5, intake_repeat_end5,intake_repeat_start6, intake_repeat_end6,programme, 'Repeat'])
+     repeat_students= Student.find(:all, :conditions => ['( (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? AND sstatus=? AND sstatus_remark not ILIKE(?)',intake_repeat_start2, intake_repeat_end2, intake_repeat_start3, intake_repeat_end3, intake_repeat_start4, intake_repeat_end4,intake_repeat_start5, intake_repeat_end5,intake_repeat_start6, intake_repeat_end6,programme, 'Repeat', '%,%'])
+     
+     intake_repeat2_start3 = Student.get_intake_repeat2(1, 2, programme)
+     intake_repeat2_end3 = intake_repeat2_start3.end_of_month
+     intake_repeat2_start4 = Student.get_intake_repeat2(2, 2, programme)
+     intake_repeat2_end4 = intake_repeat2_start4.end_of_month
+     intake_repeat2_start5 = Student.get_intake_repeat2(1, 3, programme)
+     intake_repeat2_end5 = intake_repeat2_start5.end_of_month
+     intake_repeat2_start6 = Student.get_intake_repeat2(2, 3, programme)
+     intake_repeat2_end6 = intake_repeat2_start6.end_of_month
+     repeat2_students= Student.find(:all, :conditions => ['( (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? AND sstatus=? AND sstatus_remark ILIKE(?)', intake_repeat2_start3, intake_repeat2_end3, intake_repeat2_start4, intake_repeat2_end4,intake_repeat2_start5, intake_repeat2_end5,intake_repeat2_start6, intake_repeat2_end6,programme, 'Repeat', '%,%'])
      
      all_students = []
      all_students += current_students if current_students
      all_students+=repeat_students if repeat_students
+     all_students+=repeat2_students if repeat2_students
      return all_students
    end
    

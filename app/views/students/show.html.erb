@@ -20,7 +20,8 @@
 		</tr>	
 		<tr>
 			<td class="leftcol"><%= t 'student.sstatus' %> :</td>
-		    <td><%=h @student.sstatus %><%= " ("+@student.sstatus_remark+")" if @student.sstatus=="Transfer College" && @student.sstatus_remark!="" %></td>
+		    <td><%=h (t('student.'+@student.sstatus.downcase)).titleize %><%= " ("+@student.sstatus_remark+")" if @student.sstatus=="Transfer College" && @student.sstatus_remark!="" %>
+		    <%="("+(t 'student.semester_repeated')+": "+@student.sstatus_remark+")" if @student.sstatus=="Repeat" && @student.sstatus_remark!="" %></td>
 		</tr>	
 		<tr>
 			<td class="leftcol"><%= t 'student.stelno' %> :</td>

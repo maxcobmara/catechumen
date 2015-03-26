@@ -138,10 +138,10 @@ class StudentsController < ApplicationController
   def ethnic_listing
     if request.post?
       @find_type = params[:list_submit_button]
-  		  if @find_type == I18n.t('student.ethnic_listing')
-          @programme_id = params[:programme]
-          @students_of_programme = Student.find(:all, :conditions => ['course_id=?',@programme_id ])  
-        end
+      if @find_type == I18n.t('student.ethnic_listing')
+        @programme_id = params[:programme]
+        @students_of_programme = Student.find(:all, :conditions => ['course_id=?',@programme_id ])  
+      end
       render :layout => 'report'
     end
   end
