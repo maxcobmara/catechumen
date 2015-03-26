@@ -382,14 +382,26 @@ class Student < ActiveRecord::Base
  end
  
  def display_regdate
-   "#{regdate.to_date.strftime("%d-%b-%Y")}"
+   "#{regdate.to_date.strftime("%d-%b-%Y") unless regdate.nil?}"
  end
  def display_gender
   "#{(Student::GENDER.find_all{|disp, value| value == gender.to_s}).map {|disp, value| disp}}"
  end   
- 
+ def display_marital
+   "#{(Student::MARITAL_STATUS.find_all{|disp, value| value == mrtlstatuscd.to_s}).map {|disp, value| disp}}"
+ end
+ def display_status
+   "#{(Student::STATUS.find_all{|disp, value| value==sstatus}).map {|disp, value| disp}}"
+ end
+ def display_sstatus_remark
+   if sstatus == "Repeat"
+     "#{I18n.t('student.semester_repeated')+": "+ sstatus_remark unless sstatus_remark.nil?}"
+   elsif sstatus == "Transfer College"
+     "#{sstatus_remark}"
+   end
+ end
  def display_enddate
-   "#{end_training.to_date.strftime("%d-%b-%Y")}"
+   "#{end_training.to_date.strftime("%d-%b-%Y") unless end_training.nil?}"
  end
  
  def display_bloodtype
@@ -402,17 +414,15 @@ class Student < ActiveRecord::Base
  #export excel section ---
  
  def self.header_excel
-  ["Mykad No", "Student Name", "Matrix No", "Programme", "Intake", "Registration Date","End Training Date","Remarks", "Offer Letter","Race","Status","Gender","Tel No.", "Email","Physical","Allergy","Disease","Blood Type", "Medication", "Remarks"]
-  #, "Address" - to add in later
+  [I18n.t('student.icno'), I18n.t('student.name'), I18n.t('student.matrixno'), I18n.t('student.course_id'), I18n.t('student.intake'), I18n.t('student.regdate'),I18n.t('student.end_training'),I18n.t('student.offer_letter_serial'),I18n.t('student.ssponsor'),"Status",I18n.t('student.status_remark'), I18n.t('student.gender'), I18n.t('student.race'), I18n.t('student.mrtlstatuscd'),I18n.t('student.stelno'), I18n.t('student.semail'), I18n.t('student.dob'), I18n.t('student.physical'), I18n.t('student.allergy'), I18n.t('student.disease'),I18n.t('student.bloodtype'), I18n.t('student.medication'),I18n.t('student.remark')+" ("+I18n.t('student.medical')+")", I18n.t('student.address'), I18n.t('student.remark')]
  end
  
  def self.column_excel
    #[{:exampaper=>[:examtypename,{:subject => :subject_list}]},:gradeA, :gradeAminus, :gradeBplus,:gradeB, :gradeBminus, :gradeCplus,:gradeC, :gradeCminus,:gradeDplus,:gradeD,:gradeE ]
 
-   [:formatted_mykad, :name, :matrixno, {:course => :programme_list}, :display_intake, :display_regdate,:display_enddate,:course_remarks, :offer_letter_serial,:display_race,:sstatus,:display_gender,:stelno,:semail, :physical,:allergy,:disease,:display_bloodtype,:medication, :remarks]  #  , :display_address --> to add in later
+   [:formatted_mykad, :name, :matrixno, {:course => :programme_list}, :display_intake, :regdate,:end_training, :offer_letter_serial,:ssponsor,:display_status,:display_sstatus_remark, :display_gender, :display_race, :display_marital, :stelno,:semail, :sbirthdt, :physical,:allergy,:disease,:display_bloodtype,:medication, :remarks, :display_address, :course_remarks] 
  end
-  
-  
+
 STATUS = [
            #  Displayed       stored in db
            [ I18n.t('student.current'),"Current" ],
@@ -421,7 +431,6 @@ STATUS = [
            [ I18n.t('student.on_leave'), "On Leave" ],
            [ I18n.t('student.transfer_college'), "Transfer College"],
            [ I18n.t('student.expelled'), "Expelled"]
-           
 ] 
   
 SPONSOR = [
@@ -499,8 +508,5 @@ BLOOD_TYPE = [
              [ "AB-", "7" ],
              [ "AB+", "8" ]
     ]
-    
 
-    
-   
 end
