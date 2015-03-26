@@ -1,54 +1,54 @@
 class Asset < ActiveRecord::Base
-  # befores, relationships, validations, before logic, validation logic, 
+  # befores, relationships, validations, before logic, validation logic,
   #controller searches, variables, lists, relationship checking
-  
+
   before_save :save_my_vars, :set_location
-  
+
   validates_presence_of :assignedto_id, :if => :must_assign_if_loanable?
   #validates_presence_of  :category_id, :typename
   #validates_uniqueness_of :cardno, :scope => :assettype, :message => "This combination code has already been used"
-  
+
   belongs_to :manufacturedby, :class_name => 'AddressBook', :foreign_key => 'manufacturer_id'
   belongs_to :suppliedby,     :class_name => 'AddressBook', :foreign_key => 'supplier_id'
   belongs_to :assignedto,   :class_name => 'Staff', :foreign_key => 'assignedto_id'
   belongs_to :receivedby,   :class_name => 'Staff', :foreign_key => 'receiver_id'
   belongs_to :category,     :class_name => 'Assetcategory', :foreign_key => 'category_id'
   #belongs_to :subcategory,  :class_name => 'Assetcategory', :foreign_key => 'subcategory_id'
-  attr_accessor :cardno2    #added - 4 Oct 2013 
-  
+  attr_accessor :cardno2    #added - 4 Oct 2013
+
   has_many :asset_defects
   has_one :asset_disposal       #Link to Model asset_disposals
-  has_one :asset_loss        #Link to Model AssetLoss  
+  has_one :asset_loss        #Link to Model AssetLoss
   has_many :asset_loans
 
   has_many :maints, :dependent => :destroy
   accepts_nested_attributes_for :maints, :allow_destroy => true , :reject_if => lambda { |a| a[:details].blank? }
-  
+
   has_many :asset_placements, :dependent => :destroy
   accepts_nested_attributes_for :asset_placements, :allow_destroy => true , :reject_if => lambda { |a| a[:location_id].blank? }
   has_many  :locations, :through => :asset_placements
-  
-  
+
+
   def must_assign_if_loanable?
     bookable?
   end
-  
- 
+
+
   def save_my_vars
     if assetcode == nil
       self.assetcode = (suggested_serial_no).to_s
       if assettype == 2
           self.cardno = cardno2 + '-'+ quantity.to_s              #added - 4 Oct 2013 - quantity(form value)
-          self.quantity = quantity.to_i - cardno2.to_i + 1        #added - 4 Oct 2013    
+          self.quantity = quantity.to_i - cardno2.to_i + 1        #added - 4 Oct 2013
       end
     end
   end
-  
+
   def code_asset
     "#{assetcode} - #{name}"
   end
-  
-  
+
+
   def set_location
     if asset_placements.blank?
     else
@@ -56,12 +56,12 @@ class Asset < ActiveRecord::Base
      self.assignedto_id = asset_placements.last[:staff_id]
     end
   end
-  
 
-  
-  
+
+
+
   #------------------------Filters------------------------------------------------------------
- 
+
   def self.search(search)
      if search
       find(:all, :conditions => ['name ILIKE ? OR typename ILIKE ? OR assetcode ILIKE?', "%#{search}%", "%#{search}%", "%#{search}%"])
@@ -69,36 +69,36 @@ class Asset < ActiveRecord::Base
       find(:all)
     end
   end
-  
+
   def monotone
     [:assetcode].split("/")[4]
   end
-  
+
   def self.search(search)
     if search
       #find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', "#{search}", 2])
-      find(:all,:conditions => ['assetcode ILIKE ? or name ILIKE ?', "#{search}%", "#{search}%"])      
+      find(:all,:conditions => ['assetcode ILIKE ? or name ILIKE ?', "#{search}%", "#{search}%"])
     else
       find(:all, :conditions => ['assettype =?',  2])
     end
   end
-  
-  
-  
+
+
+
   def non_active_assets
     lost = AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)
     disposed = AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)
     lost + disposed
   end
-  
+
   def assets_that_are_lost
     AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)
   end
-  
+
   def assets_that_are_disposed
     disposed = AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)
   end
-  
+
   def am_i_gone
     asset = Array(self.id)
     disposed = AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id)
@@ -111,20 +111,12 @@ class Asset < ActiveRecord::Base
       true
     end
   end
-  
+
   def self.on_loan      #loanables
-    #loaned = AssetLoan.find(:all, :conditions => ['is_returned !=?', true], :select => :asset_id).map(&:asset_id)
-    loaned = AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id) #23Apr2013
-    if loaned == []
-      loaned = [0]
-    end
-    #16Jul2013-reset bookable during asset registration
-    find(:all, :conditions => ['bookable = ? AND id NOT IN (?)', true, loaned])   
-    #23Apr2013-all asset are bookable
-    #find(:all, :conditions => ['id NOT IN (?)', loaned])
+    find(:all, :conditions => ['bookable = ? AND id NOT IN (?)', true, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id)])
   end
- 
-  named_scope :all 
+
+  named_scope :all
   named_scope :active,        :conditions =>  ["id not in (?) OR id not in (?)", AssetDisposal.find(:all, :select => :asset_id).map(&:asset_id), AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :fixed,         :conditions =>  ["assettype =? ", 1]
   named_scope :maintainable,   :conditions =>  ["is_maintainable =? ", true]
@@ -135,18 +127,18 @@ class Asset < ActiveRecord::Base
   named_scope :markaslost,    :conditions =>  ["mark_as_lost =? AND id not in (?)", true, AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
   named_scope :lost,          :conditions =>  ["id in (?)", AssetLoss.find(:all, :select => :asset_id).map(&:asset_id)]
   #pending asset requested for loan should not available for reservation
-  named_scope :onloan,        :conditions =>  ["id in (?) and id in (?)", Asset.on_loan, AssetLoan.find(:all, :conditions=>['is_approved is true AND is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
-  #named_scope :pendingloan,   :conditions =>  ["id in (?) and id in (?)", Asset.on_loan, AssetLoan.find(:all, :conditions=>['is_approved is not true AND is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
+  named_scope :onloan,        :conditions =>  ["id in (?)", Asset.on_loan, AssetLoan.find(:all, :conditions=>['is_approved IS true AND is_returned IS NOT true'],:select => :asset_id).map(&:asset_id) ]
+  named_scope :pendingloan,   :conditions =>  ["id in (?) and id in (?)", Asset.on_loan, AssetLoan.find(:all, :conditions=>['is_approved is not true AND is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
   named_scope :pendingloan,   :conditions =>  ["id in (?)", AssetLoan.find(:all, :conditions=>['is_approved is not true AND is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
   named_scope :available,     :conditions =>  ["id in (?) and id not in (?)", Asset.on_loan, AssetLoan.find(:all, :conditions=>['is_returned is not true'],:select => :asset_id).map(&:asset_id) ]
   #named_scope :itdept,        :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)]
-  
+
   named_scope :itdept,        :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:all, :conditions=>['unit=?',"Teknologi Maklumat"]).map(&:staff_id)]
   named_scope :hotelunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:all, :conditions=>['unit=?',"Perhotelan"]).map(&:staff_id)]
   named_scope :libraryunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:all, :conditions=>['unit=?',"Perpustakaan"]).map(&:staff_id)]
-  
+
   named_scope :sumbermanusiaunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:all, :conditions=>['unit=?',"Sumber Manusia"]).map(&:staff_id)]
-  
+
   #named_scope :counterunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:all, :conditions=>['unit=?',"Kaunter"]).map(&:staff_id)]
   named_scope :engineeringunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:all, :conditions=>['unit=?',"Kejuruteraan"]).map(&:staff_id)]
   #named_scope :financestoreunit,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:all, :conditions=>['unit=?',"Kewangan & Stor"]).map(&:staff_id)]
@@ -168,14 +160,14 @@ class Asset < ActiveRecord::Base
   named_scope :spelatih,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:all, :conditions=>['unit=?',"Khidmat Sokongan Pelatih"]).map(&:staff_id)]
   named_scope :kokurikulum,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:all, :conditions=>['unit=?',"Kokurikulum"]).map(&:staff_id)]
   named_scope :kupk,     :conditions =>  ['id in (?) and id NOT IN (?) and assignedto_id in (?) ', Asset.on_loan, AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:all, :conditions=>['unit=?',"Ketua Unit Penilaian & Kualiti"]).map(&:staff_id)]
-  
-  named_scope :allloanable,   :conditions =>  ['id in (?)', Asset.on_loan]  
+
+  named_scope :allloanable,   :conditions =>  ['id in (?)', Asset.on_loan]
   #----------although all asset available for reservation, HIDE user from link to reserve for asset without owner(& dept)----
   #---------so, in order to retrieve only those available asset with owner & dept.....use below named_scope.....
   #special-Asset.find(:all, :conditions=>['assignedto_id is not null and id not in (?)',AssetLoan.find(:all,:conditions=>['is_returned is not true'])])
   named_scope :availableforloan_owndept, :conditions => ['id in (?) and assignedto_id is not null and id not in (?)',Asset.on_loan, AssetLoan.find(:all,:conditions=>['is_returned is not true'])]
   #named_scope :availableforloan_owndept, :conditions => ['assignedto_id is not null and id not in (?) and assignedto_id in (?) ',AssetLoan.find(:all,:conditions=>['is_returned is not true']), Position.find(:all, :conditions=>['unit is not null']) ]
-  
+
   #named_scope :internal,     :conditions =>  ["id in (?)", AssetLoan.find(:all, :conditions=>["loantype =?",1])]
   #named_scope :external,       :conditions =>  ["loantype =?",2]
   #-------------------------------------------------------------------------------------------------------------------
@@ -194,7 +186,7 @@ class Asset < ActiveRecord::Base
     {:scope => "pendingloan", :label =>  I18n.t('asset.pending_loan')},
     {:scope => "available", :label => I18n.t('asset.available')}
     ]
-    
+
     FILTERS_LOAN =[
     {:scope => "allloanable", :label => I18n.t('all')},
     {:scope => "availableforloan_owndept", :label => I18n.t('reservable')},
@@ -224,53 +216,53 @@ class Asset < ActiveRecord::Base
     {:scope => "kokurikulum", :label => "Unit Kokurikulum"},
     {:scope => "kupk", :label => "Penilaian & Kualiti"}
     ]
-   
+
     #loaned = AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id)
     #dept = Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)
-    #@loanables_with_assignedto_dept2= Asset.find(:all,:conditions => ['id NOT IN (?) and assignedto_id in (?) or assetcode ILIKE ? or name ILIKE ? ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id), "#{search2}%", "#{search2}%"]) 
-    
+    #@loanables_with_assignedto_dept2= Asset.find(:all,:conditions => ['id NOT IN (?) and assignedto_id in (?) or assetcode ILIKE ? or name ILIKE ? ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id), "#{search2}%", "#{search2}%"])
+
     #['id NOT IN (?) and assignedto_id in (?) ', AssetLoan.find(:all, :conditions => ['is_returned IS NOT true'], :select => :asset_id).map(&:asset_id), Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)]
-    
+
   #  ,
   #  {:scope => "onloan",    :label => "On Loan"}
 
     #def self.find_main
       #3Staff.find(:all, :condition => ['staff_id IS NULL'])
     #3end
-    
+
     #3def self.find_main
        #3AddressBook.find(:all, :condition => ['address_book_id IS NULL'])
     #end
-    
+
      #def self.find_main
         #Location.find(:all, :condition => ['location_id IS NULL'])
       #end
 
 #---------------------------------Search-------------------------------------------------------------
-    
 
-    
+
+
 #----------------------- stuff for category
-  
+
   #def subcategory_name
  #   subcategory.description if subcategory
   #end
-  
+
  # def subcategory_name=(name)
  #   self.subcategory = Subcategory.find_by_description(description) unless description.blank?
  # end
 
 
 
-#------------------------Declaration----------------------------------------------------    
+#------------------------Declaration----------------------------------------------------
     def bil
        v=1
     end
-    
+
     def gbtype
       (Asset::ASSETTYPE.find_all{|disp, value| value == assettype}).map {|disp, value| disp}
     end
-    
+
     def syear
       receiveddate.year.to_s.last(2)
     end
@@ -279,23 +271,23 @@ class Asset < ActiveRecord::Base
     def sv
       Asset.last.id + 1
     end
-    
-    
+
+
     def suggested_serial_no
       st = "KKM/BPL/010619/"
       if assettype == 1
        md = "H/"
-       st + md + syear + '/' + cardno                           #added - 4 Oct 2013 
+       st + md + syear + '/' + cardno                           #added - 4 Oct 2013
       else
        md = "I/"
-       st + md + syear + '/' + cardno2 + '-' + quantity.to_s    #added - 4 Oct 2013 
+       st + md + syear + '/' + cardno2 + '-' + quantity.to_s    #added - 4 Oct 2013
       end
       #st + md + syear + '/' + cardno
     end
-      
-      
 
-#-----------------------Coded List-------------------------------------------------------- -  
+
+
+#-----------------------Coded List-------------------------------------------------------- -
 
 ASSETTYPE = [
            #  Displayed       stored in db
@@ -320,35 +312,35 @@ ETI = [
            ["Hybrid",   4]
 ]
 
-def assigned_details 
+def assigned_details
    suid = Array(assignedto_id)
    exists = Staff.find(:all, :select => "id").map(&:id)
-   checker = suid & exists     
-  
+   checker = suid & exists
+
    if assignedto_id == nil
-      "" 
+      ""
    elsif checker == []
-     "Staff No Longer Exists" 
+     "Staff No Longer Exists"
    else
      assignedto.name #21/11/2011 - shaliza changed 'staff_name_with_position' to name only
    end
  end
- 
+
  def position_details #21/11/2011 - Shaliza added code for position if no longer exist.(avoid in kewpa2 error)
     suid = Array(assignedto_id)
     exists = Staff.find(:all, :select => "id").map(&:id)
-    checker = suid & exists     
+    checker = suid & exists
 
     if assignedto_id == nil
-       "" 
+       ""
     elsif checker == []
-      "Position No Longer Exists" 
+      "Position No Longer Exists"
     else
       assignedto.position_for_staff
     end
   end
-    
-    
+
+
   COUNTRYLIST = [
              #  Displayed       stored in db
              ["AF|Afghanistan",     93],
@@ -380,11 +372,11 @@ def assigned_details
              ["TR|Turkey",          90],
              ["GB|United Kingdom",  44],
              ["US|United States",   1]
-  ]  
-    
-    
+  ]
+
+
     def extralist
-    
+
     "
     AS|American Samoa, 1684
     AD|Andorra, 376
@@ -394,7 +386,7 @@ def assigned_details
     AG|Antigua And Barbuda, 1268
     AM|Armenia, 374
     AW|Aruba, 297
-    
+
     AT|Austria,43
     AZ|Azerbaijan,994
     BS|Bahamas,1242
@@ -410,14 +402,14 @@ def assigned_details
     BO|Bolivia, 591
     BA|Bosnia And Herzegovina, 387
     BW|Botswana, 267
-    BV|Bouvet Island, 
-    IO|British Indian Ocean Territory, 
+    BV|Bouvet Island,
+    IO|British Indian Ocean Territory,
     BN|Brunei Darussalam, 673
     BG|Bulgaria, 359
     BF|Burkina Faso, 226
     BI|Burundi, 257
     KH|Cambodia, 855
-    CM|Cameroon, 237 
+    CM|Cameroon, 237
     CV|Cape Verde, 238
     KY|Cayman Islands, 1345
     CF|Central African Republic, 236
@@ -450,8 +442,8 @@ def assigned_details
     ET|Ethiopia, 251
     FK|Falkland Islands (malvinas), 500
     FO|Faroe Islands, 298
-    FJ|Fiji, 679    
-    GF|French Guiana, 
+    FJ|Fiji, 679
+    GF|French Guiana,
     PF|French Polynesia, 689
     TF|French Southern Territories
     GA|Gabon, 241
@@ -462,7 +454,7 @@ def assigned_details
     GR|Greece, 30
     GL|Greenland, 299
     GD|Grenada, 1473
-    GP|Guadeloupe, 
+    GP|Guadeloupe,
     GU|Guam, 1671
     GT|Guatemala, 502
     GN|Guinea, 224
@@ -476,8 +468,8 @@ def assigned_details
     IS|Iceland, 354
     IR|Iran, Islamic Republic Of, 98
     IQ|Iraq, 964
-    IL|Israel, 972   
-    JM|Jamaica, 1876   
+    IL|Israel, 972
+    JM|Jamaica, 1876
     JO|Jordan, 672
     KZ|Kazakstan, 7
     KE|Kenya, 254
@@ -504,7 +496,7 @@ def assigned_details
     ML|Mali, 223
     MT|Malta, 354
     MH|Marshall Islands, 692
-    MQ|Martinique, 
+    MQ|Martinique,
     MR|Mauritania, 222
     MU|Mauritius, 231
     YT|Mayotte, 262
@@ -534,7 +526,7 @@ def assigned_details
     OM|Oman, 968
     PK|Pakistan, 92
     PW|Palau, 680
-    PS|Palestinian Territory, Occupied, 
+    PS|Palestinian Territory, Occupied,
     PA|Panama, 507
     PG|Papua New Guinea, 675
     PY|Paraguay, 595
@@ -545,7 +537,7 @@ def assigned_details
     PT|Portugal, 351
     PR|Puerto Rico, 1012
     QA|Qatar, 974
-    RE|Reunion, 
+    RE|Reunion,
     RO|Romania, 40
     RU|Russian Federation, 7
     RW|Rwanda, 250
@@ -568,7 +560,7 @@ def assigned_details
     SB|Solomon Islands, 677
     SO|Somalia, 252
     ZA|South Africa, 27
-    SS|South Sudan, 
+    SS|South Sudan,
     GS|South Georgia And The South Sandwich Islands
     ES|Spain, 34
     LK|Sri Lanka, 94

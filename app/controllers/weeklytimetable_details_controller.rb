@@ -73,18 +73,17 @@ class WeeklytimetableDetailsController < ApplicationController
   # DELETE /weeklytimetable_details/1.xml
   def destroy
     @weeklytimetable_detail = WeeklytimetableDetail.find(params[:id])
-    #@weeklytimetable_detail.destroy
-    if @weeklytimetable_detail.destroy
-      flash[:notice] => 'WeeklytimetableDetail was succesfully removed'
-    else
-      flash[:error] => 'Removal of Weeklytimetable Details is forbidden, due to existance in Student Attendance module.'
-    end
+    @weeklytimetable_detail.destroy
     respond_to do |format|
-      format.html { redirect_to(weeklytimetable_details_url) }
-      format.xml  { head :ok }
+      if @weeklytimetable_detail.destroy
+        format.html { redirect_to(weeklytimetable_details_url, :notice => 'WeeklytimetableDetail was succesfully removed') }
+        format.xml  { head :ok }
+      else
+        format.html { redirect_to(@weeklytimetable_detail, :error => 'Removal of Weeklytimetable Details is forbidden, due to existance in Student Attendance module.') }
+      end
     end
   end
-  
+
   def quickfill
     @weeklytimetable_detail = WeeklytimetableDetail.new
     render :layout => 'popup'
