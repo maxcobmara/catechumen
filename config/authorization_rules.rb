@@ -187,7 +187,7 @@ authorization do
   
   role :warden do
     has_permission_on :locations, :to => :core
-    has_permission_on :students, :to => :menu
+    has_permission_on :students, :to => [:menu, :show, :formforstudent]
     #all wardens have access - [relationship: second_approver, FK: staff_id2, page: approve_warden]
     has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve_warden] do
       if_attribute :studentsubmit => true
@@ -220,7 +220,7 @@ authorization do
     
       has_permission_on :programmes, :to => :menu
       has_permission_on :books, :to => :core
-      has_permission_on :students, :to => [:read, :update, :menu] do
+      has_permission_on :students, :to => [:read, :update, :menu, :show, :formforstudent] do
         if_attribute :student_id => is {Login.current_login.student_id}
       end
       has_permission_on :leaveforstudents, :to => [:read, :update, :menu] do
@@ -287,7 +287,7 @@ authorization do
       if_attribute :tpa_id => is {Login.current_login.staff_id}
     end
     has_permission_on :timetables, :to => [:create]
-    has_permission_on :students, :to => [:menu, :index]
+    has_permission_on :students, :to => [:menu, :index, :show, :formforstudent]
     has_permission_on :student_attendances, :to => :create
     has_permission_on :student_attendances, :to => :manage do
       if_attribute :weeklytimetable_id => is_in {Login.current_login.classes_taughtby}
@@ -332,7 +332,7 @@ authorization do
   role :librarian do
     has_permission_on :books, :to => [:manage, :extend, :return]
     has_permission_on :librarytransactions , :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try, :multiple_edit,:check_availability2,:multiple_update]#,:accession_list]  
-    has_permission_on :students, :to => :index
+    has_permission_on :students, :to => [:index, :show, :formforstudent]
     has_permission_on :booksearches, :to => :read
     has_permission_on :librarytransactionsearches, :to => :read
   end 
