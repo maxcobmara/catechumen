@@ -36,9 +36,9 @@
 <% @asset_defects.each do |asset_defect| %>
   <tr>
     <td><%=h asset_defect.asset.try(:assetcode) %></td>
-    <td><%=h asset_defect.asset.typename %> -   
-				<%=h asset_defect.asset.name %>  -  
-				<%=h asset_defect.asset.modelname %></td>
+    <td><%=h asset_defect.asset.try(:typename) %> -   
+             <%=h asset_defect.asset.try(:name) %>  -  
+             <%=h asset_defect.asset.try(:modelname) %></td>
     <td><%=h asset_defect.asset.serialno %></td>
     <td><%=h check_kin {asset_defect.asset.asset_placements.last.location.location_list} %></td>
     <td><%=h asset_defect.notes %></td>
