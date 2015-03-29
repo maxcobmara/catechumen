@@ -68,9 +68,19 @@
 				<td><%=h student.name %></td>
 				<td><%=h student.matrixno %></td>
 				<td width=10px>
-					<%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => student %></td>
-				<td width=10px><%= link_to image_tag("printer.png",   :border => 0, :title => 'Borang Maklumat Pelajar'), :action => 'formforstudent', :id => student %></td>
-				<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')),                    :action => 'edit', :id => student %>
+					<% permitted_to? :show, :students do %>
+						<%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => student %>
+					<% end %>
+				</td>
+				<td width=10px>
+					<% permitted_to? :formforstudent, :students do %>
+						<%= link_to image_tag("printer.png",   :border => 0, :title => 'Borang Maklumat Pelajar'), :action => 'formforstudent', :id => student %>
+					<% end %>
+				</td>
+				<td width=10px>
+					<% permitted_to? :update, :students do %>
+						<%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => student %>
+					<% end %>
 				</td>
 				<td width=10px >
 					<% if permitted_to? :destroy, @student %>
@@ -92,13 +102,15 @@
 	<div class="pagination">
 		<%= will_paginate @students %>  
 	</div><br>
-	<div align="right">
-		<% @programme_diploma_only = Programme.find(:all, :conditions => ['ancestry_depth=? AND course_type=?',0,'Diploma'])%>
-		<% form_tag(:action => :ethnic_listing) do %>
-			<%= select_tag('programme', options_from_collection_for_select(@programme_diploma_only,:id, :programme_list)) %>
-			<%= submit_tag (t 'student.ethnic_listing'), :name => :list_submit_button %>
-		<% end %>
-	</div>
+	<% if permitted_to? :ethnic_listing, @student %>
+		<div align="right">
+			<% @programme_diploma_only = Programme.find(:all, :conditions => ['ancestry_depth=? AND course_type=?',0,'Diploma'])%>
+			<% form_tag(:action => :ethnic_listing) do %>
+				<%= select_tag('programme', options_from_collection_for_select(@programme_diploma_only,:id, :programme_list)) %>
+				<%= submit_tag (t 'student.ethnic_listing'), :name => :list_submit_button %>
+			<% end %>
+		</div>
+	<% end %>
 </div>
 <BR>
 

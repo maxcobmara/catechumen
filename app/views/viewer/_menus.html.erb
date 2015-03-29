@@ -196,8 +196,10 @@
 					<li><a href="#"><%= t('menu.student_info') %></a>
 						<ul class="sub_menu">
 							<li><%= link_to (t 'student.list'), {:controller => 'students', :action => 'index'} %></li>
-							<li><a href="http://<%= request.host  %>:3003/students/import_excel?locale=ms_MY"><%=t('student.import_excel')%></a></li>
-							<li><a href="http://<%= request.host  %>:3003/students/reports?locale=en"><%= t('menu.new_ethnic_group') %></a></li>
+							<% permitted_to? :manage, :students do %>
+								 <li><a href="http://<%= request.host  %>:3003/students/import_excel?locale=ms_MY"><%=t('student.import_excel')%></a></li>
+								  <li><a href="http://<%= request.host  %>:3003/students/reports?locale=en"><%= t('menu.new_ethnic_group') %></a></li>
+							<% end %>
 						</ul>
 					</li>
 				<% end %>
