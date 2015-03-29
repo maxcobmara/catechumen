@@ -1,3 +1,4 @@
+<% if logged_in? %>
 <ul class="dropdown">
 	<!-- Home -->
 	<li><%= link_to (t 'menu.home'),  root_url %>
@@ -141,7 +142,7 @@
             <li><a href="http://<%= request.host  %>:3003/student/tenants"><%= t('menu.new_student_tenants') %></a></li>
             <li><a href="http://<%= request.host  %>:3003/student/tenants/return_key"><%= t('menu.return_key') %></a></li>
             <li><a href="http://<%= request.host  %>:3003/campus/location_damages"><%= t('menu.damage_list') %></a></li>
-            <li><a href="http://<%= request.host  %>:3003/student/tenants/reports"><%= t('menu.report_census') %></a></li>             
+            <li><a href="http://<%= request.host  %>:3003/student/tenants/reports"><%= t('menu.report_census') %></a></li>
             <li><a href="http://<%= request.host  %>:3003/student/tenants/statistics"><%= t('menu.room_statistics') %></a></li>
           </ul>
         <li><a href="#"><%= t('menu.staff_residence') %> ></a>
@@ -265,7 +266,7 @@
 				</li>
 				<% end %>
 				<li><%= link_to (t 'menu.training_notes'),  {:controller => 'trainingnotes',	:action => 'index'} %></li>
-				
+
 				<li><%#= link_to (t 'menu.personalised_timetable'),  {:controller => 'timetables', :action => 'calendar'} %>
 					<%= link_to (t 'menu.personalised_timetable'),  {:controller => 'weeklytimetables', :action => 'personalize_index'} %>
 				</li>
@@ -345,10 +346,8 @@
 			</ul>
 	</li>
 	<% end %>
-
-
 </ul>
-
+<% end %>
 
 <!-- old code>
 <ul>
