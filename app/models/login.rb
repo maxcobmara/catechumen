@@ -23,7 +23,7 @@ class Login < ActiveRecord::Base
   validates_length_of       :icno,     :is => 12, :message => "MyKad no is 12 characters"
   validates_uniqueness_of   :icno,     :message => "Your MyKad no already has a registered account"
 
-  validates_presence_of     :isstaff, :message => "Please select staff or student"    #added 15July2013
+  #validates_presence_of     :isstaff, :message => "Please select staff or student"    #added 15July2013
   has_and_belongs_to_many :roles
   belongs_to :staff
   belongs_to :student
