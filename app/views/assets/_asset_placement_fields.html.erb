@@ -2,13 +2,13 @@
 	<table>	
 		<tr>
 			<th><%= t('menu.locations') %> </th>
-			<td><%= f.collection_select :location_id, Location.find(:all, :order => :combo_code), :id, :location_list, :include_blank => true, :prompt => (t 'menu_locations') %></td>
+			<td><%= f.collection_select :location_id, Location.find(:all, :order => :combo_code), :id, :location_list, :include_blank => true, :prompt => (t 'select') %></td>
 			<td rowspan=3><%= f.hidden_field :_destroy %>
 										<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %></td>
 		</tr>
 		<tr>
 			<th><%= t('asset.assigned_to') %></th>
-			<td><%= f.collection_select :staff_id, Staff.find(:all, :order => :name), :id, :name, :include_blank => true, :prompt => 'Staff' %></td>
+			<td><%= f.collection_select :staff_id, Staff.find(:all, :order => :name), :id, :name, :include_blank => true, :prompt => (t 'select') %></td>
 		</tr>
 		<tr>
 			<th><%= t('travel.date') %></th>

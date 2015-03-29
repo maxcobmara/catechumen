@@ -5,52 +5,33 @@ class StudentsController < ApplicationController
   # GET /students.xml
   def index
     submit_val = params[:searchby]
-    ## start-critical updates
-    #@students3 = Student.find(:all, :conditions => ['icno ILIKE ?', "%#{params[:search3]}%"],:order=>"name ASC")
     @students3 = Student.search3(params[:search3])
-    ## end-critical updates
-    
-    #@inta2 = Student.with_permissions_to(:index).sort_by{|t|t.intake} #group by program, then sort by intake (first)
-    #@inta2 = Student.with_permissions_to(:index).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
     @inta3 = Student.with_permissions_to(:index).sort_by{|t|t.intake} #sort by intake (before split into pages)
-    #@student_intakes = @inta2.group_by { |t| t.intake } #group by program, then sort by intake (first)
     @student_programmes = @inta3.group_by { |t| t.course_id } #group by intake, then sort by programme (first)
-		
-    #BELOW - group by program, then sort by intake (first)
-    #@intake=[] 
-		#@student_count=[] 
-		#@student_intakes.each do |x,y| 
-			#@intake<<x
-			#@student_count<< y.count 
-      #end 
     
     #BELOW - #group by intake, then sort by programme (first)
-		@programme=[] 
-		@student_count=[] 
-		@student_programmes.each do |x,y| 
-			@programme<< x
-			@student_count<< y.count 
-		end 
+    @programme=[] 
+    @student_count=[] 
+    @student_programmes.each do |x,y| 
+      @programme<< x
+      @student_count<< y.count 
+    end 
     
-        if submit_val == "Search" 
-            @students = Student.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page])
-            #17/11/2011 - Shaliza added pagination for student  
-        elsif submit_val == I18n.t('student.search_by_intake_programme')
-            @students = Student.with_permissions_to(:index).search2(params[:intake],params[:programme]).paginate(:per_page => 20, :page => params[:page])
-            #17/11/2011 - Shaliza added pagination for student
-        else
-            #@students = @inta2.paginate(:per_page => 20, :page => params[:page])   #before 18Feb2014
-            #@students = @inta3.paginate(:per_page => 20, :page => params[:page])    #paginate(after sorted by intake) & TO BE group by course(in index) 
-	  @students = Student.with_permissions_to(:index).find(:all, :order => 'intake ASC, course_id ASC').paginate(:per_page => 20, :page => params[:page])
-        end
-
-    #@students_list = Student.with_permissions_to(:index).all
+    if submit_val == (t 'search')
+      @searched_students = Student.with_permissions_to(:index).search(params[:search])
+      @students = @searched_students.paginate(:per_page => 20, :page => params[:page])
+    elsif submit_val == I18n.t('student.search_by_intake_programme')
+      @searched_students = Student.with_permissions_to(:index).search2(params[:intake],params[:programme])
+      @students = @searched_students.paginate(:per_page => 20, :page => params[:page]) #17/11/2011 - Shaliza added pagination for student
+    else
+      @searched_students = Student.with_permissions_to(:index).find(:all, :order => 'intake ASC, course_id ASC')
+      @students = @searched_students.paginate(:per_page => 20, :page => params[:page])
+    end
     
     respond_to do |format|
-     # flash[:notice] = "Sorry, your search didn't return any results."
       format.html # index.html.erb
       format.xml  { render :xml => @students }
-      format.xls {send_data @students.to_xls(:name=>"Student Information",:headers => Student.header_excel, :columns => Student.column_excel ), :file_name => 'students.xls' }
+      format.xls {send_data @searched_students.to_xls(:name=>"Student Information",:headers => Student.header_excel, :columns => Student.column_excel ), :file_name => 'students.xls' }
       format.js
     end
   end

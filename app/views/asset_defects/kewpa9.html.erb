@@ -58,7 +58,7 @@
 		<td class="leftcol">6.</td>
 		<td class="leftcol">Tarikh Kerosakan</td>
 		<td>:</td>
-		<td class="filler"><%=h  l(@asset_defect.created_at) %></td>
+		<td class="filler"><%=h  @asset_defect.created_at.try(:strftime, "%d-%b-%Y") %></td>
 	</tr>
 	<tr>
 		<td class="leftcol">7.</td>
@@ -84,7 +84,7 @@
 <table class="lampiran_kewpa">
 	<tr>
 		<td>Nama :</td>
-		<td class="filler"><%=h @asset_defect.processor.name %></td>
+		<td class="filler"><%=h @asset_defect.processor.try(:name) %></td>
 	</tr>
 	<tr>
 		<td>Jawatan :</td>
@@ -92,7 +92,7 @@
 	</tr>
 	<tr>
 		<td>Tarikh :<BR/><BR/></td>
-		<td class="filler"><%=h l(@asset_defect.processed_on) %><BR/><BR/></td>
+		<td class="filler"><%=h @asset_defect.processed_on.try(:strftime, "%d-%b%Y")%><BR/><BR/></td>
 	</tr>
 	<tr>
 		<td colspan=2>Bahagian II (Keputusan Ketua Jabatan)<BR/><BR/></td>
@@ -102,26 +102,21 @@
 		<%= @asset_defect.decision? ? "Diluluskan / <del> Tidak Diluluskan </del>  " : "<del> Diluluskan </del> /  Tidak Diluluskan" %></td>
 	</tr>
 	<tr>
-		<td>Signature :</td>
-		<td class="filler"><%=h @asset_defect.decisioner.name %> via ICMS</td>
+		<td>Tandatangan :</td>
+		<td class="filler"><%=h @asset_defect.decisioner.try(:name) %> melalui ICMS</td>
 	</tr>
 	<tr>
 		<td>Nama :</td>
-		<td class="filler"><%=h @asset_defect.decisioner.name %></td>
+		<td class="filler"><%=h @asset_defect.decisioner.try(:name) %></td>
 	</tr>
 	<tr>
 		<td>Jawatan :</td>
-		<td class="filler"><%=h @asset_defect.decisioner.position.name %></td>
+		<td class="filler"><%=h @asset_defect.decisioner.try(:position).try(:name) %></td>
 	</tr>
 	<tr>
 		<td>Tarikh :<BR/><BR/></td>
-		<td class="filler"><%=h l(@asset_defect.decision_on) %><BR/><BR/></td>
+		<td class="filler"><%=h @asset_defect.decision_on.try(:strftime, "%d-%b-%Y") %><BR/><BR/></td>
 	</tr>
 </table>
-
-
-
-
-
 
 </div></div>
