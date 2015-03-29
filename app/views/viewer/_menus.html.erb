@@ -129,7 +129,7 @@
 
 
 	<!-- Locations Menu -->
-	<% permitted_to? :menu, :locations do %>
+	<% permitted_to? :read, :locations do %><%# permitted_to? :menu, :locations do %>
 	<li><a href="#"><%= t('menu.locations') %></a>
 	<ul class="sub_menu">
 	<% permitted_to? :read, :locations do %>
@@ -235,7 +235,8 @@
 	<% end %>
 
 	<!-- Training Menu -->
-	<% permitted_to? :menu, :programmes do %>
+	<%# permitted_to? :menu, :programmes do %>
+	<% permitted_to? :read, :trainingnotes do %>
 	<li><a href="#"><%= t('menu.training') %></a>
 			<ul class="sub_menu">
 				<!--21March2013-have to give programme manager access to these menu without giving :manage -->
@@ -264,14 +265,19 @@
 					</ul>
 				</li>
 				<% end %>
+				<%# permitted_to? :read, :trainingnotes do %>
 				<li><%= link_to (t 'menu.training_notes'),  {:controller => 'trainingnotes',	:action => 'index'} %></li>
-				
+				<%# end %>
+				<% permitted_to? :personalize_index, :weeklytimetables do %>
 				<li><%#= link_to (t 'menu.personalised_timetable'),  {:controller => 'timetables', :action => 'calendar'} %>
 					<%= link_to (t 'menu.personalised_timetable'),  {:controller => 'weeklytimetables', :action => 'personalize_index'} %>
 				</li>
+				<% end %>
+				<% permitted_to? :manage, :topics do %>
 				<li><a href="http://<%= request.host  %>:3003/training/lesson_plans"><%= t('menu.new_lesson_plan') %></a></li>
 				<li><a href="http://<%= request.host  %>:3003/training/lesson_plans/index_report"><%= t('menu.new_lesson_report') %></a></li>
 				<li><a href="http://<%= request.host  %>:3003/training/trainingnotes"><%= t('menu.new_training_notes') %></a></li>
+				<% end %>
 			</ul>
 	</li>
 	<% end %>

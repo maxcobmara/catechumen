@@ -17,7 +17,7 @@
 		<% if @login.isstaff? == true %>
 				<%= (f.collection_select :staff_id, Staff.find(:all, :order => :name, :conditions => ["icno in (?)", @login.icno]), :id, :mykad_with_staff_name, :include_blank => true, :default => 0, :prompt => (t 'select')) %>	
 		<% else %>  <!-- , :conditions => ["id not in (?)", @login.assigned_staff]-->
-				<%= 	(f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank => true, :default => 0, :prompt => (t 'select')) %>
+				<%= 	(f.collection_select :student_id, Student.find(:all, :order => :name, :conditions => ["icno in (?)", @login.icno]), :id, :formatted_mykad_and_student_name, :include_blank => true, :default => 0, :prompt => (t 'select')) %>
 		<% end %>
 		</td>
 	</tr>
