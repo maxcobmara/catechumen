@@ -13,17 +13,17 @@ class Studentsearch < ActiveRecord::Base
     Student.find(:all, :conditions => conditions,  :order => orders)   
   end
 
-  #def icno_conditions 
-    #["icno ILIKE ?","%#{icno}%" ] unless icno.blank? 
-  #end
+  def icno_conditions 
+    ["icno ILIKE ?","%#{icno}%" ] unless icno.blank? 
+  end
   
-  #def name_conditions 
-    #["name ILIKE ?","%#{name}%" ] unless name.blank? 
-  #end
+  def name_conditions 
+    ["name ILIKE ?","%#{name}%" ] unless name.blank? 
+  end
   
-  #def matrixno_conditions 
-    #["matrixno ILIKE ?","%#{matrixno}%" ] unless matrixno.blank? 
-  #end
+  def matrixno_conditions 
+    ["matrixno ILIKE ?","%#{matrixno}%" ] unless matrixno.blank? 
+  end
   
   #def sstatus_conditions 
     #["sstatus =?",sstatus] unless sstatus.blank? 
@@ -31,6 +31,10 @@ class Studentsearch < ActiveRecord::Base
   
   def gender_conditions 
      ["gender=?",gender] unless gender.blank? 
+  end
+  
+  def race_conditions 
+     ["race2=?",race] unless race.blank? 
   end
 
   def ssponsor_conditions 
@@ -61,11 +65,10 @@ class Studentsearch < ActiveRecord::Base
   def bloodtype_conditions 
     ["bloodtype =?",bloodtype] unless bloodtype.blank? 
   end  
- 
-  
-  def race_conditions 
-    ["race ILIKE ?","%#{race}%"] unless race.blank? 
-  end
+
+#   def race_conditions 
+#     ["race ILIKE ?","%#{race}%"] unless race.blank? 
+#   end
 
  def intake_conditions
    ["intake=?", intake] unless intake.blank?
