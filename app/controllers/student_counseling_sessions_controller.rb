@@ -70,6 +70,7 @@ class StudentCounselingSessionsController < ApplicationController
   # GET /student_counseling_sessions/1/edit
   def edit
     @student_counseling_session = StudentCounselingSession.find(params[:id])
+    @pagetype='editing'
   end
 
   # POST /student_counseling_sessions

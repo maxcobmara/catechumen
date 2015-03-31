@@ -1,5 +1,5 @@
 class Studentcounselingsearch < ActiveRecord::Base
-  attr_accessible :matrixno, :case_id
+  attr_accessible :matrixno, :case_id, :confirmed_at_start, :confirmed_at_end, :is_confirmed, :name
   attr_accessor :method
   
   def studentcounselings
@@ -13,15 +13,27 @@ class Studentcounselingsearch < ActiveRecord::Base
   end
   
   def matrixno_details
-      a='student_id=? ' if  Student.find(:all, :conditions=>['matrixno=?',matrixno]).map(&:id).uniq.count!=0
-      0.upto( Student.find(:all, :conditions=>['matrixno=?',matrixno]).map(&:id).uniq.count-2) do |l|  
+      a='student_id=? ' if  Student.find(:all, :conditions=>['matrixno ILIKE(?)',"%#{matrixno}%"]).map(&:id).uniq.count!=0
+      0.upto( Student.find(:all, :conditions=>['matrixno ILIKE(?)',"%#{matrixno}%"]).map(&:id).uniq.count-2) do |l|  
         a=a+'OR student_id=? '
       end 
       return a unless matrixno.blank?
   end
   
   def matrixno_conditions
-      [" ("+matrixno_details+")",Student.find(:all, :conditions=>['matrixno=?',matrixno]).map(&:id)] unless matrixno.blank?
+      [" ("+matrixno_details+")",Student.find(:all, :conditions=>['matrixno ILIKE(?)',"%#{matrixno}%"]).map(&:id)] unless matrixno.blank?
+  end
+  
+  def name_details
+     a='student_id=? ' if  Student.find(:all, :conditions=>['name ILIKE(?)',"%#{name}%"]).map(&:id).uniq.count!=0
+      0.upto( Student.find(:all, :conditions=>['name ILIKE(?)',"%#{name}%"]).map(&:id).uniq.count-2) do |l|  
+        a=a+'OR student_id=? '
+      end 
+      return a unless name.blank?
+  end
+  
+  def name_conditions
+    [" ("+name_details+")",Student.find(:all, :conditions=>['name ILIKE(?)',"%#{name}%"]).map(&:id)] unless name.blank?
   end
   
   def case_id_details
@@ -35,6 +47,18 @@ class Studentcounselingsearch < ActiveRecord::Base
   def case_id_conditions
       ["case_id is NOT NULL AND ("+case_id_details+")",StudentDisciplineCase.all.map(&:id)] 
   end  
+  
+  def is_confirmed_conditions
+    ["is_confirmed=?", is_confirmed] unless is_confirmed.blank?
+  end
+  
+  def confirmed_at_start_conditions
+    ["confirmed_at>=?", confirmed_at_start] unless confirmed_at_start.blank?
+  end  
+  
+  def confirmed_at_end_conditions
+    ["confirmed_at<=?", confirmed_at_end] unless confirmed_at_end.blank?
+  end 
   
   def orders
     "id ASC"

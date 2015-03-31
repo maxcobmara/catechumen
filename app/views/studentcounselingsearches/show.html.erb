@@ -1,8 +1,37 @@
 <div>
 	<H4><%=t('equery.student_counseling.search')%> :</h4>
 	
-		<%= link_to (t 'back'), :controller=>'studentcounselingsearches', :action => 'new', :searchstudentcounselingtype => 1 %><br><br>
+	<%= link_to (t 'back'), :controller=>'studentcounselingsearches', :action => 'new', :searchstudentcounselingtype => 1 %><br><br>
 	
+	<% if !@studentcounselingsearch.matrixno.blank? || !@studentcounselingsearch.name.blank? || !@studentcounselingsearch.confirmed_at_start.blank? || !@studentcounselingsearch.confirmed_at_end.blank? %>
+		<%=t('equery.search_by') %> :<br>
+	<% end %>
+	
+	<% unless @studentcounselingsearch.matrixno.blank? %>
+		<b><%=t('student.matrixno') %></b> : <%=@studentcounselingsearch.matrixno%><br>
+	<% end %>
+	<% unless @studentcounselingsearch.name.blank? %>
+		<b><%=t('student.name') %></b> : <%=@studentcounselingsearch.name%><br>
+	<% end %>
+	<% if !@studentcounselingsearch.confirmed_at_start.blank? || !@studentcounselingsearch.confirmed_at_end.blank? %>
+		<b><%=t('studentcounseling.confirmed_at') %></b> : 
+	<% end %>
+	<% unless @studentcounselingsearch.confirmed_at_start.blank? %>
+		<%=@studentcounselingsearch.confirmed_at_start.strftime("%d %b %Y")%>
+	<% end %>
+	<% if !@studentcounselingsearch.confirmed_at_start.blank? && @studentcounselingsearch.confirmed_at_end.blank? %>
+		&nbsp;<%=t('to')%>...<br>
+	<% end %>
+	<% if @studentcounselingsearch.confirmed_at_start.blank? && !@studentcounselingsearch.confirmed_at_end.blank? %>
+		...<%=t('to')%>&nbsp;
+	<% end %>
+	<% if !@studentcounselingsearch.confirmed_at_start.blank? && !@studentcounselingsearch.confirmed_at_end.blank?%>
+		  &nbsp;<%=t('to')%>&nbsp;
+	<% end %>
+	<% unless @studentcounselingsearch.confirmed_at_end.blank? %>
+		<%=@studentcounselingsearch.confirmed_at_end.strftime("%d %b %Y")%><br>
+	<% end %>
+	<br>
 	<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
 		<%@count=0%>
 		<% @studentcounselingsearch.studentcounselings.group_by{|x|x.case_id}.each do |caseid,sessions|%>
