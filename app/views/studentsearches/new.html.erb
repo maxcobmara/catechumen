@@ -45,7 +45,10 @@
 			</tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.race') %></td>
-				<td><%= f.text_field :race %></td>
+				<td><%#= f.text_field :race %>
+				<%= f.select :race, 
+			           Student::RACE,
+			           :prompt => (t 'select') %></td>
 			</tr>	
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.physical') %></td>
@@ -58,19 +61,20 @@
 				           :prompt => (t 'select') %>
 				</td>
 			</tr>	
-			<!--
-			<tr>
-				<td class="leftcol"><%#= f.label :mykad_no %></td>
-				<td><%#= f.text_field :icno %></td>
-			</tr>
-			<tr>
-				<td class="leftcol"><%#= f.label :name %></td>
-				<td><%#= f.text_field :name %></td>
 			
 			<tr>
-				<td class="leftcol"><%#= f.label :matrixno %></td>
-				<td><%#= f.text_field :matrixno %></td>
+				<td class="leftcol"><%= f.label :mykad_no %></td>
+				<td><%= f.text_field :icno %></td>
 			</tr>
+			<tr>
+				<td class="leftcol"><%= f.label :name %></td>
+				<td><%= f.text_field :name %></td>
+			
+			<tr>
+				<td class="leftcol"><%= f.label :matrixno %></td>
+				<td><%= f.text_field :matrixno %></td>
+			</tr>
+			<!--
 			<tr>
 				<td class="leftcol"><%#= f.label :student_status %></td>
 				<td><%#= f.select :sstatus, 

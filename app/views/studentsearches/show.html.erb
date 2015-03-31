@@ -23,12 +23,29 @@
 		<%=t('student.course_id')%> : 
 		<%=Programme.find(@studentsearch.course_id).name%><br>
 	<% end %>
+	<% if @studentsearch.gender!=''  %>
+		<%=t('student.gender')%> : <%=h (Student::GENDER.find_all{|disp, value| value == @studentsearch.gender.to_s}).map {|disp, value| disp} %><br>
+	<% end %>
+	<% if @studentsearch.race!=''  %>
+		<%=t('student.race')%> : <%=h (Student::RACE.find_all{|disp, value| value == @studentsearch.race.to_i}).map {|disp, value| disp} %><br>
+	<% end %>
 	<% if @studentsearch.physical!=''  %>
 		<%=t('student.physical')%> : <%= @studentsearch.physical%><br>
 	<% end %>
 	<% if @studentsearch.bloodtype!=''  %>
 		<%=t('student.bloodtype') %> : <%= @studentsearch.bloodtype%><br>
 	<% end %>
+	
+	<% if @studentsearch.icno!=''  %>
+		<%=t('student.icno')%> : <%=h @studentsearch.icno %><br>
+	<% end %>
+	<% if @studentsearch.name!=''  %>
+		<%=t('student.name')%> : <%=h @studentsearch.name %><br>
+	<% end %>
+	<% if @studentsearch.matrixno!=''  %>
+		<%=t('student.matrixno')%> : <%=h @studentsearch.matrixno %><br>
+	<% end %>
+	
 	<% if !@studentsearch.intake.blank?   %>
 		<%=t('student.intake')%> : <%=  @studentsearch.intake.to_date.strftime("%b %Y") %><br>
 	<% end %>
@@ -64,12 +81,12 @@
 			<td><%= student.sstatus %></td>
 			<td><%=student.ssponsor%></td>
 			<td><%#= student.gender %><%=h (Student::GENDER.find_all{|disp, value| value == student.gender.to_s}).map {|disp, value| disp} %></td>
-			<td><%= student.race.capitalize %></td>
+			<td><%#= student.race.capitalize %><%=h (Student::RACE.find_all{|disp, value| value == student.race2}).map {|disp, value| disp} %></td>
 			<td><%#= student.mrtlstatuscd %><%=h (Student::MARITAL_STATUS.find_all{|disp, value| value == student.mrtlstatuscd.to_s}).map {|disp, value| disp} %></td>
 			<td><%= student.course_id.blank? ? "" : Programme.find(student.course_id).programme_list %><%#=student.course_id%></td>
 			<td><%= student.end_training.try(:strftime, "%d-%m-%Y") %></td>
 			<td><%= student.intake.try(:strftime, "%b %Y") %></td>
-			<td><%= student.physical.capitalize %></td>
+			<td><%= student.physical.try(:capitalize) %></td>
 			<td align="center"><%#= student.bloodtype %><%=h (Student::BLOOD_TYPE.find_all{|disp, value| value == student.bloodtype}).map {|disp, value| disp} %></td>
 			<td align="center"><%= link_to (t 'show'), :controller=>'students', :action => 'formforstudent', :id => student.id %></td>
 		</tr>	
