@@ -4,9 +4,9 @@
 		<td>
 			<% if @case_id!= nil || @case_id!= nil %>
 				<%= f.hidden_field :case_id, :value => @case_id %>
-				<%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :selected=> StudentDisciplineCase.find(@case_id).student_id %><font color="red"> * </font>	
+				<%= f.collection_select :student_id, Student.find(:all, :conditions=>['sstatus=? or sstatus=?', 'Current', 'Repeat']), :id, :formatted_mykad_and_student_name, :selected=> StudentDisciplineCase.find(@case_id).student_id %><font color="red"> * </font>	
 			<% else %>
-				<%= f.collection_select :student_id, Student.find(:all), :id, :formatted_mykad_and_student_name, :include_blank=> (t 'studentdiscipline.select_student') %><font color="red"> * </font>	
+				<%= f.collection_select :student_id, Student.find(:all,:conditions=>['sstatus=? or sstatus=?', 'Current', 'Repeat']), :id, :formatted_mykad_and_student_name, :include_blank=> (t 'studentdiscipline.select_student') %><font color="red"> * </font>	
 			<% end %>
 					
 		</td>

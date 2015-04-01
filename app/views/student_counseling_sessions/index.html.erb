@@ -48,7 +48,7 @@
     <th><%= t 'studentcounseling.appointmentfor' %></th>
     <th><%= t 'programme.duration' %><br>( <%= t 'time.minutes'%>)</th>
     <th><%= t 'studentcounseling.is_confirm' %></th>
-	<th><%= t 'studentcounseling.feedback_to' %><br><%= t 'studentcounseling.refer' %></th>
+	<th width="130px"><%= t 'studentcounseling.feedback_to' %><br><%= t 'studentcounseling.refer' %></th>
 	<th colspan=3><%= t 'control' %></th>
   </tr>
 <% @appointments_by_case.each do |case_id, appointments|%>
@@ -95,9 +95,9 @@
 
 <% end -%><!--end for @appointments_by_case-->
 <tr><td colspan=11 align=center><b><%= t 'studentcounseling.appointment' %> <BR/><HR><%= t 'studentcounseling.sessions' %></b></td></tr>
-<% @session_dones_by_case.each do |case_id,session_dones|%>
-<%# @session_dones.each do |session_done| %><% count2=0 %>
-<% session_dones.each do |session_done| %>
+<%# @session_dones_by_case.each do |case_id,session_dones|%><% @count2=0 %>
+<% @session_dones.each do |session_done| %><%# count2=0 %>
+<%# session_dones.each do |session_done| %>
   <tr class="green">
 	<td><%=h session_done.student.matrixno %></td>
 	<td><%=h session_done.student.name %> &nbsp; <%=h session_done.c_type == 'involuntary' ? image_tag("flag_red.png") : ""  %></td>
@@ -109,18 +109,23 @@
     <td><%=h session_done.is_confirmed? ? image_tag("tick.png") : ""  %></td>
 	
 		
-		<% if session_done.c_scope == "case" && !session_done.case_id.blank? && !session_done.student_discipline_case.nil?%><!--check if referred case first & STILL EXIST in student discipline case table/module-->	
-			<% if count2==0 %>
-				<td rowspan="<%= session_dones.count%>" style="text-align:center">
+		<% if session_done.c_scope == "case" && !session_done.case_id.blank? && !session_done.student_discipline_case.nil?%><!--check if referred case first & STILL EXIST in student discipline case table/module-->
+			<% all_sessions_in_case = StudentCounselingSession.find(:all, :conditions=>['case_id=?', session_done.case_id]) %>
+			<% sessions_of_case_in_currentpage= StudentCounselingSession.find(:all, :conditions=>['case_id=? and id IN(?)', session_done.case_id, @session_dones.map(&:id)], :order=>'confirmed_at DESC') %>
+			<% aa=sessions_of_case_in_currentpage.count%>
+			<% if @count2==0 %>
+				<td rowspan="<%=aa%><%#= session_dones.count%>" style="text-align:center">
 					<font size=-2>
 					<%=h session_done.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => (t 'studentcounseling.new_appointment')) + (t 'icms.add'), new_student_counseling_session_path(:caseid => session_done.case_id)) : image_tag("tick.png")  %>
 					</font>
 					<!--test link for report-->
 					<%= link_to image_tag("printer.png", :border => 0, :title => (t 'studentdiscipline.feedback_referrer')), :action => 'feedback_referrer', :id => session_done.case_id if !session_done.student_discipline_case.counselor_feedback.blank? %>
+					<font size=-2><%=t('studentcounseling.refer_otherpage') if all_sessions_in_case.count != sessions_of_case_in_currentpage.count%></font>
 					<!--test link for report-->
 				</td>
 			<% end %>
-			<%count2+=1%>
+			<% @count2+=1%>
+			<% @count2=0 if @count2==aa%>
 		<% else %>
 			<td style="text-align:center"><font size=-2><%=t('studentdiscipline.not_related')%></font></td>
 		<% end %>
@@ -130,11 +135,16 @@
     <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => session_done %></td>
     <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), session_done, :confirm => (t 'are_you_sure'), :method => :delete %></td>   
   </tr>
+<%# end %>
 <% end %>
-<% end %><!--END for @session_dones_by_case-->
+<%# end %><!--END for @session_dones_by_case-->
 </table>
 </div>
 <BR/><BR/>
 <br />
 
-<%= link_to (t 'studentcounseling.new_appointment'), new_student_counseling_session_path %>
+	<div class="pagination">
+		<%= will_paginate @session_dones %>  <%#= will_paginate @session_dones_by_case %>  
+	</div>
+
+<%#= link_to (t 'studentcounseling.new_appointment'), new_student_counseling_session_path %>

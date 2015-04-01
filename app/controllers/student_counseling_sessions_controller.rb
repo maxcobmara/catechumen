@@ -38,6 +38,8 @@ class StudentCounselingSessionsController < ApplicationController
     
     @appointments_by_case = @appointments.group_by{|item|item.case_id}
     @session_dones_by_case = @session_dones.group_by{|item|item.case_id}
+    #@session_dones_by_case =  Kaminari.paginate_array(@session_dones).page(params[:page]||1) 
+    @session_dones = @session_dones.paginate(:per_page => 20, :page => params[:page]) 
     
     respond_to do |format|
       format.html # index.html.erb
@@ -70,6 +72,7 @@ class StudentCounselingSessionsController < ApplicationController
   # GET /student_counseling_sessions/1/edit
   def edit
     @student_counseling_session = StudentCounselingSession.find(params[:id])
+    @pagetype='editing'
   end
 
   # POST /student_counseling_sessions
