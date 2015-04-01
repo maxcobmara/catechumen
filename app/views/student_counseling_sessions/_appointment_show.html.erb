@@ -4,18 +4,39 @@
 
 		<tr>
 			<td class="leftcol"><label for="student_id"><%= t 'menu.students' %>:</label></td>
-			<td><%= @student_counseling_session.student.formatted_mykad_and_student_name %><font color="red"> * </font></td>
+			<td><%= @student_counseling_session.student.try(:formatted_mykad_and_student_name) %><font color="red"> * </font></td>
 		</tr>
 
 		<tr>
 			<td class="leftcol"><%= t 'studentcounseling.requested_at' %></td>
-			<td><%= l(@student_counseling_session.requested_at, :format=>"%d %b %y, %l:%M %P") %></td>
+			<td><%= @student_counseling_session.requested_at.try(:strftime, "%d %b %y, %l:%M %P") %></td>
 		</tr>
 		
 		<tr>
 			<td class="leftcol"><%= t 'studentcounseling.confirmed_at' %></td>
-			<td><b><%= l(@student_counseling_session.confirmed_at, :format=>"%d %b %y, %l:%M %P")  if @student_counseling_session.confirmed_at %></b></td>
+			<td><b><%= @student_counseling_session.confirmed_at.try(:strftime, "%d %b %y, %l:%M %P")  if @student_counseling_session.confirmed_at %></b></td>
 		</tr>
+		<!--
+		<tr>
+			<td class="leftcol"><%#= t 'studentcounseling.confirmed' %>?</td>
+			<td>
+				<%# if @pagetype=='editing' && @student_counseling_session.confirmed_at > Date.today && @student_counseling_session.issue_desc.blank? && @student_counseling_session.notes.blank? && @student_counseling_session.suggestions.blank? && @student_counseling_session.duration.blank? %>
+					<%#= f.check_box :is_confirmed, :id => 'box_confirm' %>
+				<%# else %>
+					<%#= @student_counseling_session.is_confirmed? ? (t 'studentcounseling.confirmed') : (t 'studentcounseling.not_confirmed') %>
+				<%# end %>
+			</td>                                                             
+		</tr>
+		<tr>
+			<td class="leftcol"><%= t 'studentcounseling.confirmed_at' %></td>        
+			<td>
+				<%# if @pagetype=='editing' && @student_counseling_session.confirmed_at > Date.today && @student_counseling_session.issue_desc.blank? && @student_counseling_session.notes.blank? && @student_counseling_session.suggestions.blank? && @student_counseling_session.duration.blank?%>
+					<%#= f.datetime_select :confirmed_at, :minute_step => 15, :default => @student_counseling_session.requested_at %>
+				<%# else %>
+					<b><%#= @student_counseling_session.confirmed_at.try(:strftime, "%d %b %y, %l:%M %P")  if @student_counseling_session.confirmed_at %></b>
+				<%# end %>
+			</td>
+		</tr>-->
 
 		<tr>
 			<td class="leftcol"><%= t 'programme.duration' %></td>
@@ -29,12 +50,12 @@
 
 		<tr>
 			<td class="leftcol"><label for="c_scope"><%= t 'studentcounseling.scope_of_session' %></label></td>
-			<td><%= t('studentcounseling.'+@student_counseling_session.c_scope) %></td>                                                             
+			<td><%=@student_counseling_session.c_scope.nil? ? "" :  t('studentcounseling.'+@student_counseling_session.c_scope) %></td>                                                             
 		</tr>
 
 		<tr>
 			<td class="leftcol"><label for="c_type"><%= t 'studentcounseling.typesession' %></label></td>
-			<td><%=  t('studentcounseling.'+@student_counseling_session.c_type) %></td>                                                             
+			<td><%=@student_counseling_session.c_type.nil? ? "" :  t('studentcounseling.'+@student_counseling_session.c_type) %></td>                                                             
 		</tr>
 
 		<tr>
