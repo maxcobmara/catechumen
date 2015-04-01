@@ -29,9 +29,9 @@ class StudentCounselingSession < ActiveRecord::Base
   
   def self.find_session_done(search)
     if search
-      find(:all, :include => :student, :conditions => ['confirmed_at < ? AND (students.name ILIKE ? OR students.matrixno ILIKE ?)', Time.now.in_time_zone('UTC'), "%#{search}%", "%#{search}%" ], :order => 'confirmed_at DESC')
+      find(:all, :include => :student, :conditions => ['confirmed_at < ? AND (students.name ILIKE ? OR students.matrixno ILIKE ?)', Time.now.in_time_zone('UTC'), "%#{search}%", "%#{search}%" ], :order => 'case_id DESC, confirmed_at DESC')
     else
-      find(:all, :include => :student, :conditions => ['confirmed_at < ?', Time.now.in_time_zone('UTC') ], :order => 'confirmed_at DESC')
+      find(:all, :include => :student, :conditions => ['confirmed_at < ?', Time.now.in_time_zone('UTC') ], :order => 'case_id DESC, confirmed_at DESC')
     end
   end
   
@@ -66,12 +66,14 @@ class StudentCounselingSession < ActiveRecord::Base
   private
   
   def check_referred_case
-    aaa=StudentDisciplineCase.find(case_id)
-    if aaa
-       errors.add(:base, I18n.t('studentcounseling.removal_prohibited_case_still_exist'))
-       return false
-    else
-      return true
+    unless case_id.nil? || case_id.blank?
+      aaa=StudentDisciplineCase.find(case_id)
+      if aaa
+         errors.add(:base, I18n.t('studentcounseling.removal_prohibited_case_still_exist'))
+         return false
+      else
+        return true
+      end
     end
   end
   
