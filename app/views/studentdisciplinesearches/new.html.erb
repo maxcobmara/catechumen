@@ -9,8 +9,10 @@
 		<table width=100% >
 			<tr><td colspan=2><%=t('studentdiscipline.search_by')%>:</td></tr>
 			<tr>
+				<%a=StudentDisciplineCase.all.map(&:student_id)%>
+				<% course_ids=Student.find(a).map(&:course_id).uniq%>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label t('studentdiscipline.programme')%></td>
-				<td> <%= f.collection_select :programme, Programme.roots, :id, :programme_list, :include_blank=> true %></td>
+				<td> <%= f.collection_select :programme, Programme.find(:all, :conditions => ['ancestry_depth=? and id IN(?)', 0, course_ids], :order=>'course_type ASC'), :id, :programme_list, :include_blank=> true %></td>
 			</tr>		
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label t('studentdiscipline.intake') %></td>
@@ -18,17 +20,21 @@
 			</tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label t('studentdiscipline.matrixno') %></td>
-				<td><%= f.text_field :matrixno %></td>
+				<td><%#= f.text_field :matrixno %><%= f.collection_select :matrixno, Student.find(:all, :conditions => ['id IN (?) and matrixno!=?', a, ""]), :matrixno, :matrixno, :include_blank => true %></td>
 			</tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label t('studentdiscipline.student_id') %></td>
 				<td><%= f.text_field :name %></td>
 			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label t('student.icno') %></td>
+				<td><%= f.text_field :icno %></td>
+			</tr>
 		</table>	
 	<% end %>
 	
   <p><%= f.submit t('search') %>&nbsp;<font size=-2><%=t('studentdiscipline.leaves_all_blank')%>
-	<%=t('studentdiscipline.to_generate')%><b><%=t('studentdiscipline.report_title')%></b><%=t('studentdiscipline.insert_a')%><b><%=t('studentdiscipline.matrixno')%><b><%=t('studentdiscipline.click_search')%></font></p>
+	<%=t('studentdiscipline.to_generate')%><b><%=t('studentdiscipline.report_title')%></b><%=t('studentdiscipline.select_a')%><b><%=t('studentdiscipline.matrixno')%><b><%=t('studentdiscipline.click_search')%></font></p>
 <br><br>
 <% end %>
 </div>

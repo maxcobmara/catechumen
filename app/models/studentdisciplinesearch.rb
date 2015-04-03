@@ -1,5 +1,5 @@
 class Studentdisciplinesearch < ActiveRecord::Base
-  attr_accessible :name, :programme, :intake, :matrixno
+  attr_accessible :name, :programme, :intake, :matrixno, :icno
   
   attr_accessor :method
   
@@ -61,6 +61,18 @@ class Studentdisciplinesearch < ActiveRecord::Base
   def name_conditions
       [" ("+name_details+")",Student.find(:all, :conditions=>['name ILIKE ?',"%#{name}%"]).map(&:id)] unless name.blank?
       #["sender ILIKE ?","%#{sender}%" ] unless sender.blank? 
+  end
+  
+  def icno_details
+      a='student_id=? ' if Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).uniq.count!=0
+      0.upto( Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).uniq.count-2) do |l|  
+        a=a+'OR student_id=? '
+      end 
+      return a unless icno.blank?
+  end
+  
+  def icno_conditions
+      [" ("+icno_details+")",Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id)] unless icno.blank?
   end
   
   
