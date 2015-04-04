@@ -18,25 +18,36 @@ class Studentdisciplinesearch < ActiveRecord::Base
       0.upto( Student.find(:all, :conditions=>['course_id=?',programme]).map(&:id).uniq.count-2) do |l|  
         a=a+'OR student_id=? '
       end 
-      return a unless programme.blank?    
+      return a unless programme.blank? 
   end
 
   def programme_conditions
     [" ("+programme_details+")", Student.find(:all, :conditions=>['course_id=?',programme]).map(&:id)] unless programme.blank?      
   end
   
-  def intake_details
-     a='student_id=? ' if  Student.find(:all, :conditions=>['intake=?',intake]).map(&:id).uniq.count!=0
-     0.upto( Student.find(:all, :conditions=>['intake=?',intake]).map(&:id).uniq.count-2) do |l|  
-       a=a+'OR student_id=? '
-     end 
-     return a unless intake.blank?
-  end
-  
-  def intake_conditions
-      [" ("+intake_details+")",Student.find(:all, :conditions=>['intake=?',intake]).map(&:id)] unless intake.blank?
-      #[" ("+intake_details+")",Student.find(:all, :conditions=>['intake=?',"2011-09-01"]).map(&:id)] unless intake.blank?
-  end
+   def intake_details
+      a='student_id=? ' if  Student.find(:all, :conditions=>['intake=?',intake]).map(&:id).uniq.count!=0
+      0.upto( Student.find(:all, :conditions=>['intake=?',intake]).map(&:id).uniq.count-2) do |l|  
+        a=a+'OR student_id=? '
+      end 
+      return a unless intake.blank?
+   end
+   
+   def intake_conditions
+       [" ("+intake_details+")",Student.find(:all, :conditions=>['intake=?',intake]).map(&:id)] unless intake.blank?
+       #[" ("+intake_details+")",Student.find(:all, :conditions=>['intake=?',"2011-09-01"]).map(&:id)] unless intake.blank?
+   end
+#   def intake_details
+#      a='student_id=? ' if  Student.find(:all, :conditions=>['intake=? and course_id=?', intake, programme]).map(&:id).uniq.count!=0
+#      0.upto( Student.find(:all, :conditions=>['intake=? and course_id=?', intake, programme]).map(&:id).uniq.count-2) do |l|  
+#        a=a+'OR student_id=? '
+#      end 
+#      return a unless intake.blank? 
+#   end
+#   
+#   def intake_conditions
+#       [" ("+intake_details+")",Student.find(:all, :conditions=>['intake=? and course_id=?', intake, programme]).map(&:id)] unless intake.blank? 
+#   end
   
   def matrixno_details
       a='student_id=? ' if  Student.find(:all, :conditions=>['matrixno=?',matrixno]).map(&:id).uniq.count!=0
