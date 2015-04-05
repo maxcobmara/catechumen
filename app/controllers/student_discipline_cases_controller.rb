@@ -67,7 +67,6 @@ class StudentDisciplineCasesController < ApplicationController
     @student_discipline_case = StudentDisciplineCase.find(params[:id])
     #@student_counseling_session = StudentDisciplineCase.student_counseling_session.new(params[:student_counseling_session])
     
-
     respond_to do |format|
       if @student_discipline_case.update_attributes(params[:student_discipline_case])
         format.html { redirect_to(@student_discipline_case, :notice => t('studentdiscipline.title2')+" "+t('updated')) }
