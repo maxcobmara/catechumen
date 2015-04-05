@@ -1,4 +1,4 @@
-<% if @studentdisciplinesearch.matrixno && @studentdisciplinesearch.matrixno.blank? == false %>
+<% if @studentdisciplinesearch.matrixno && @studentdisciplinesearch.matrixno.blank? == false && @studentdisciplinesearch.programme.blank? && @studentdisciplinesearch.intake.blank? && @studentdisciplinesearch.icno.blank? && @studentdisciplinesearch.name.blank? %>
 	<%=render :partial => 'anacdotal_report', :locals => {:studentdisciplines=> @studentdisciplinessearch} %> 
 <% else %>
 
@@ -28,6 +28,7 @@
 				<tr>
 					<th>No</th>
 					<th><%=t('studentdiscipline.matrixno')%></th>
+					<th><%=t('student.icno')%></th>
 					<th><%=t('studentdiscipline.student_id')%></th>
 					<% if @studentdisciplinesearch.programme.blank? %>
 						<th><%=t('studentdiscipline.programme')%></th>
@@ -46,6 +47,7 @@
 					<tr>
 						<td><%=index+1%></td>
 						<td><%=student_discipline.student.matrixno%>&nbsp;</td>
+						<td><%=student_discipline.student.icno%>&nbsp;</td>
 						<td><%=student_discipline.student.name%>&nbsp;</td>
 						<% if @studentdisciplinesearch.programme.blank? %>
 							<td><%=student_discipline.student.course.programme_list%></td>
