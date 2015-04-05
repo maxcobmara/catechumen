@@ -20,11 +20,14 @@
 			</tr>
 			<tr>
 				<td class="leftcol"><label for="action_type"><b><%=t('studentdiscipline.action_type')%>:</b></label></td>
-				<td><%= f.radio_button :action_type, "no_case", 	:id => 'nc', :class => 'radio_action_type' %><label><%=t('studentdiscipline.no_case')%> &nbsp; 
-						<%= f.radio_button :action_type, "advise", 		:id => 'ja', :class => 'radio_action_type' %><%=t('studentdiscipline.advise')%> &nbsp; 
-						<%#= f.radio_button :action_type, "counseling",:id => 'co', :class => 'radio_action_type' %><!--Counseling &nbsp; -->
-						<%= f.radio_button :action_type, "Ref TPHEP", 	:id => 'au', :class => 'radio_action_type' %><%=t('studentdiscipline.refer_tphep')%> &nbsp; </label>
-						</td>
+				<td><%= f.radio_button :action_type, "no_case", 	:id => 'nc', :class => 'radio_action_type' %>
+					<label><%=t('studentdiscipline.no_case')%> &nbsp; </label>
+					<%= f.radio_button :action_type, "advise", :id => 'ja', :class => 'radio_action_type' %>
+					<label><%=t('studentdiscipline.advise')%> &nbsp; </label>
+					<%#= f.radio_button :action_type, "counseling",:id => 'co', :class => 'radio_action_type' %><!--Counseling &nbsp; -->
+					<%= f.radio_button :action_type, "Ref TPHEP", 	:id => 'au', :class => 'radio_action_type' %>
+					<label><%=t('studentdiscipline.refer_tphep')%> &nbsp; </label>
+				</td>
 			</tr>
 
 			
@@ -77,14 +80,20 @@
 				<td><%= f.text_area :action, :size => "40x5" %></td>
 			</tr>
 			
-			<% f.fields_for :student_counseling_sessions do |builder| %>
+			<%# f.fields_for :student_counseling_sessions do |builder| %>
 			<tr class="co_item" style="display: none;">
 				<td class="leftcol"><label for="otherinfo"><b><%=t('studentdiscipline.counseling_request')%></b></label></td>
-				<td><%= builder.datetime_select :requested_at, :minute_step => 30,  :order => [:day, :month, :year], :use_short_month => true, :default => Date.today + 3.days %></td>
-				<%= builder.hidden_field :student_id, :value => @student_discipline_case.student_id %>
+				<td><%#= builder.datetime_select :requested_at, :minute_step => 30,  :order => [:day, :month, :year], :use_short_month => true, :default => Date.today + 3.days %>
+				
+					<%=datetime_select "student_discipline_case[student_counseling_sessions_attributes][0]","requested_at"%>
+					<%=hidden_field_tag "student_discipline_case[student_counseling_sessions_attributes][0][student_id]", @student_discipline_case.student_id %>
+				
+				
+				</td>
+				<%#= builder.hidden_field :student_id, :value => @student_discipline_case.student_id %>
 		
 			</tr>
-			<% end -%>
+			<%# end -%>
 			
 		
 			<tr class="co_item" style="display: none;" > <!--used above-->
