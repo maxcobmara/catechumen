@@ -32,7 +32,7 @@ class StudentDisciplineCasesController < ApplicationController
   # GET /student_discipline_cases/new.xml
   def new
     @student_discipline_case = StudentDisciplineCase.new
-    @student_discipline_case.student_counseling_sessions.build
+    #@student_discipline_case.student_counseling_sessions.build
     @myhod = Position.find(:all, :conditions => ['tasks_main ILIKE (?)', "%Ketua Program%"], :select => :staff_id).map(&:staff_id)
     respond_to do |format|
       format.html # new.html.erb
