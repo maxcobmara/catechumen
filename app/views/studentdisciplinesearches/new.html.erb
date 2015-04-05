@@ -7,28 +7,60 @@
 		<%= hidden_field_tag :method,  1 %>
 		
 		<table width=100% >
-			<tr><td colspan=2><%=t('studentdiscipline.search_by')%>:</td></tr>
+			<tr><td colspan=2><u><%=t('studentdiscipline.search_by')%>:</u></td></tr>
 			<tr>
+				<%a=StudentDisciplineCase.all.map(&:student_id)%>
+				<% course_ids=Student.find(a).map(&:course_id).uniq%>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label t('studentdiscipline.programme')%></td>
-				<td> <%= f.collection_select :programme, Programme.roots, :id, :programme_list, :include_blank=> true %></td>
+				<td>
+					<%#= f.collection_select :programme, Programme.find(:all, :conditions => ['ancestry_depth=? and id IN(?)', 0, course_ids], :order=>'course_type ASC'), :id, :programme_list, :include_blank=> true %>
+					
+					<%= f.collection_select :programme,  Programme.find(:all, :conditions => ['ancestry_depth=? and id IN(?)', 0, course_ids], :order=>'course_type ASC'), :id, :programme_list , {:include_blank => (t 'select'), :selected => @preselect_prog},
+										:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+										:url => {:action => 'view_intake' }, 
+										:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme)+"').value ") %>
+				</td>
 			</tr>		
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label t('studentdiscipline.intake') %></td>
-				<td><%= date_select :intake, params[:intake], :order => [:month, :year], :include_blank => true %></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+					</div>
+				<%#= date_select :intake, params[:intake], :order => [:month, :year], :include_blank => true %>
+				</td>
 			</tr>
-			<tr>
+			<!--<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label t('studentdiscipline.matrixno') %></td>
-				<td><%= f.text_field :matrixno %></td>
-			</tr>
+				<td><%#= f.text_field :matrixno %><%#= f.collection_select :matrixno, Student.find(:all, :conditions => ['id IN (?) and matrixno!=?', a, ""]), :matrixno, :matrixno, :include_blank => true %></td>
+			</tr>-->
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label t('studentdiscipline.student_id') %></td>
 				<td><%= f.text_field :name %></td>
 			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label t('student.icno') %></td>
+				<td><%= f.text_field :icno %></td>
+			</tr>
 		</table>	
+		
+		<table width=100%>
+			<tr><td colspan=2><u><%=t('studentdiscipline.report_title')%></u></td></tr>
+			<tr>
+				<td colspan=2>
+					<font size=-2>
+						<%=t('studentdiscipline.to_generate')%><b><%=t('studentdiscipline.anacdotal_report')%></b> <%=t('studentdiscipline.leaves_blank')%> <%=t('studentdiscipline.select_a')%> <b><%=t('studentdiscipline.matrixno')%><b><%=t('studentdiscipline.click_search')%>
+					</font>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label t('studentdiscipline.matrixno') %></td>
+				<td><%= f.collection_select :matrixno, Student.find(:all, :conditions => ['id IN (?) and matrixno!=?', a, ""]), :matrixno, :matrixno, :include_blank => (t 'select') %></td>
+			</tr>
+		</table>
 	<% end %>
 	
   <p><%= f.submit t('search') %>&nbsp;<font size=-2><%=t('studentdiscipline.leaves_all_blank')%>
-	<%=t('studentdiscipline.to_generate')%><b><%=t('studentdiscipline.report_title')%></b><%=t('studentdiscipline.insert_a')%><b><%=t('studentdiscipline.matrixno')%><b><%=t('studentdiscipline.click_search')%></font></p>
+	<!--<%=t('studentdiscipline.to_generate')%><b><%=t('studentdiscipline.anacdotal_report')%></b> <%=t('studentdiscipline.leaves_blank')%><%=t('studentdiscipline.select_a')%><b><%=t('studentdiscipline.matrixno')%><b><%=t('studentdiscipline.click_search')%> --></font></p>
 <br><br>
 <% end %>
 </div>
