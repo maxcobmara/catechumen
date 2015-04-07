@@ -47,7 +47,7 @@
 						<th><%=t('studentdiscipline.action')%></th>
 						<th><%=t('studentdiscipline.feedback_counsellor')%></th>
 					</tr>
-					<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|x.student.name}.each_with_index do |student_discipline, index|%>
+					<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|[x.student.course_id, x.student.intake, x.student.name]}.each_with_index do |student_discipline, index|%>
 					<tr>
 						<td><%=index+1%></td>
 						<td><%=student_discipline.student.matrixno%>&nbsp;</td>
