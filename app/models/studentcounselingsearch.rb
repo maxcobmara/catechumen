@@ -21,7 +21,7 @@ class Studentcounselingsearch < ActiveRecord::Base
   end
   
   def matrixno_conditions
-      [" ("+matrixno_details+")",Student.find(:all, :conditions=>['matrixno ILIKE(?)',"%#{matrixno}%"]).map(&:id)] unless matrixno.blank?
+      [" ("+matrixno_details+")",Student.find(:all, :conditions=>['matrixno ILIKE(?)',"%#{matrixno}%"]).map(&:id)] unless matrixno.blank? || Student.find(:all, :conditions=>['matrixno ILIKE ?',"%#{matrixno}%"]).count==0
   end
   
   def name_details
@@ -33,7 +33,7 @@ class Studentcounselingsearch < ActiveRecord::Base
   end
   
   def name_conditions
-    [" ("+name_details+")",Student.find(:all, :conditions=>['name ILIKE(?)',"%#{name}%"]).map(&:id)] unless name.blank?
+    [" ("+name_details+")",Student.find(:all, :conditions=>['name ILIKE(?)',"%#{name}%"]).map(&:id)] unless name.blank? || Student.find(:all, :conditions=>['name ILIKE ?',"%#{name}%"]).count==0
   end
   
   def case_id_details
