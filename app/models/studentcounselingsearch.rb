@@ -57,7 +57,7 @@ class Studentcounselingsearch < ActiveRecord::Base
   end  
   
   def confirmed_at_end_conditions
-    ["confirmed_at<=?", confirmed_at_end] unless confirmed_at_end.blank?
+    ["confirmed_at<=?", confirmed_at_end+16.hours] unless confirmed_at_end.blank?  #dd-mm-yy 00:00 - to add 24 hours (1 day) but deduct 8.hours (time zone?)
   end 
   
   def orders
