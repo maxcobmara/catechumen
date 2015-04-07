@@ -87,13 +87,13 @@ class PositionsController < ApplicationController
   
   def maklumat_perjawatan_LA
     @ppp = params[:ppp]
-    @positions = Position.find(:all, :order => :ancestry_depth)
+    @positions = Position.find(:all, :conditions => ['name!=?', 'ICMS Vendor Admin'], :order => :ancestry_depth)
     if @ppp=='1'
       render :layout => 'report'
     elsif @ppp=='2'
       @positions2=[]
       #BELOW SAME AS : unless position.staffgrade.blank? && position.postinfo_id.blank? 
-      @positions_raw = Position.find(:all, :conditions=> ['staffgrade_id IS NOT NULL AND postinfo_id IS NOT NULL']) 
+      @positions_raw = Position.find(:all, :conditions=> ['staffgrade_id IS NOT NULL AND postinfo_id IS NOT NULL AND name!=?', 'ICMS Vendor Admin']) 
       @positions_raw.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[1].to_i}.sort.reverse!.each do |staffgrade2, positions_of_grade_no|
          positions_of_grade_no.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[0]}.sort.reverse!.each do |staffgrade, positions_by_grade|
            @positions2.concat(positions_by_grade)
