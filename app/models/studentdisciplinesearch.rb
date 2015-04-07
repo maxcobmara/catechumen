@@ -61,6 +61,18 @@ class Studentdisciplinesearch < ActiveRecord::Base
       [" ("+matrixno_details+")",Student.find(:all, :conditions=>['matrixno=?',matrixno]).map(&:id)] unless matrixno.blank? || Student.all.map(&:matrixno).include?(matrixno) == false || matrixno.length<9
   end
   
+  def icno_details
+      a='student_id=? ' if  Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).uniq.count!=0
+      0.upto( Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).uniq.count-2) do |l|  
+        a=a+'OR student_id=? '
+      end 
+      return a unless icno.blank?
+  end
+  
+  def icno_conditions
+      [" ("+icno_details+")",Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id)] unless icno.blank? || Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).count==0
+  end
+  
   def name_details
       a='student_id=? ' if  Student.find(:all, :conditions=>['name ILIKE ?',"%#{name}%"]).map(&:id).uniq.count!=0
       0.upto( Student.find(:all, :conditions=>['name ILIKE ?',"%#{name}%"]).map(&:id).uniq.count-2) do |l|  
@@ -70,21 +82,21 @@ class Studentdisciplinesearch < ActiveRecord::Base
   end
   
   def name_conditions
-      [" ("+name_details+")",Student.find(:all, :conditions=>['name ILIKE ?',"%#{name}%"]).map(&:id)] unless name.blank?
+      [" ("+name_details+")",Student.find(:all, :conditions=>['name ILIKE ?',"%#{name}%"]).map(&:id)] unless name.blank? || Student.find(:all, :conditions=>['name ILIKE ?',"%#{name}%"]).count==0
       #["sender ILIKE ?","%#{sender}%" ] unless sender.blank? 
   end
   
-  def icno_details
-      a='student_id=? ' if Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).uniq.count!=0
-      0.upto( Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).uniq.count-2) do |l|  
-        a=a+'OR student_id=? '
-      end 
-      return a unless icno.blank?
-  end
-  
-  def icno_conditions
-      [" ("+icno_details+")",Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id)] unless icno.blank?
-  end
+#   def icno_details
+#       a='student_id=? ' if Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).uniq.count!=0
+#       0.upto( Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).uniq.count-2) do |l|  
+#         a=a+'OR student_id=? '
+#       end 
+#       return a unless (icno.blank? && Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).count==0)
+#   end
+#   
+#   def icno_conditions
+#       [" ("+icno_details+")",Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id)] unless (icno.blank? && Student.find(:all, :conditions=>['icno ILIKE ?',"%#{icno}%"]).map(&:id).count==0)
+#   end
   
   
   def orders
