@@ -78,7 +78,6 @@ class StudentCounselingSessionsController < ApplicationController
   # POST /student_counseling_sessions
   # POST /student_counseling_sessions.xml
   def create
-    raise params.inspect
     @student_counseling_session = StudentCounselingSession.new(params[:student_counseling_session])
 
     respond_to do |format|
