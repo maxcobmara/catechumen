@@ -8,30 +8,42 @@
 					<td class="leftcol"><%= f.label (t 'staff.name') %></td>
 					<td><%= f.text_field :keywords %></td>
 				</tr>
+				<!--<tr>
+					<td class="leftcol"><%#= f.label (t 'staff.group_grade') %></td>
+					<td>
+						<%#= f.select :position,Employgrade::GROUP,:prompt => (t 'select') %>
+					</td>
+				</tr>-->
+				<!---->
 				<tr>
 					<td class="leftcol"><%= f.label (t 'staff.group_grade') %></td>
-					<td>
-						<%#= f.text_field :position %>
-						<%= f.select :position,Employgrade::GROUP,:prompt => (t 'select') %>
-					</td>
+					<td><%= f.check_box :position,:checked=>"checked", :id=> 'bersepadu' %>&nbsp;<%=Employgrade::GROUP[2][0]%></td>
 				</tr>
 				<tr>
+					<td class="leftcol">&nbsp;</td>
+					<td><%= f.check_box :position2,:checked=>"checked", :id=> 'sokongan' %>&nbsp;<%=Employgrade::GROUP[1][0]%></td>
+				</tr>
+				<tr>
+					<td class="leftcol">&nbsp;</td>
+					<td><%= f.check_box :position3,:checked=>"checked", :id=> 'pengurusan_profesional' %>&nbsp;<%=Employgrade::GROUP[0][0]%></td>
+				</tr>
+				<!---->
+				<tr>
 					<td class="leftcol"><%= f.label (t 'staff.staffgrade_id') %></td>
-					<td>
-						<%#= f.text_field :staff_grade %>
+					<td id="span_all" style="display: block;">
 						<%= f.collection_select :staff_grade, Employgrade.find(:all,:order=>"name ASC"), :id, :name_and_group, :include_blank=>(t 'select')%>
 					</td>
-				</tr>	<!--
-				<tr>
-					<td class="leftcol"><%#= f.label :jantina %></td>
-					<td>
-						<%#= f.text_field :position %>
-						<%#= f.select :gender,Staff::GENDER,:prompt => "Pilih jantina" %>
-					</td>
-				</tr>	-->
+				</tr>
+				
 			</table>
-  		<p><%#= f.submit %>    <%= f.submit (t 'search') %></p>
+  		<p><%#= f.submit %>    <%= f.submit (t 'search') %>&nbsp;&nbsp;<%=t('equery.staff.search_note')%></p>
 	<% end %>
 </div>
 
+<!--
+#Bersepadu (4)
+#Sokongan (2)
+#Pengurusan & Profesional (1)
+ id="span_hod_endorse2" style="display: none;"
+-->
 
