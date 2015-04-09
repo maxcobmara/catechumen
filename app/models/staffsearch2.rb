@@ -1,5 +1,5 @@
 class Staffsearch2 < ActiveRecord::Base
-  attr_accessible :keywords, :position, :staff_grade, :position2, :position3
+  attr_accessible :keywords, :position, :staff_grade, :position2, :position3, :blank_post
 
   
   def staffs
