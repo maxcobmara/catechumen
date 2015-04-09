@@ -67,27 +67,63 @@ class Position < ActiveRecord::Base
   
   #export excel section ---
   def totalpost
-	  "#{postinfo.post_count}"
+    unless postinfo_id.blank?
+      abc=Position.find(:all,:joins=>:staff, :conditions => ['postinfo_id=?', postinfo_id], :order=>'staffs.name ASC ')
+      a=abc[0].id
+      if self.id==a
+        aa="#{postinfo.post_count}"
+      else
+        aa=""
+      end
+      return aa
+    else
+      return "-"
+    end
   end
   
   def occupied_post
-    "#{Position.find(:all, :conditions=> ['postinfo_id=? AND staff_id IS NOT NULL',postinfo_id]).count}"
+    unless totalpost=="-" 
+      b="#{Position.find(:all, :conditions=> ['postinfo_id=? AND staff_id IS NOT NULL',postinfo_id]).count}" if totalpost!=""
+    else
+      b="-"
+    end
+    b
   end
   
   def available_post
-    "#{totalpost.to_i-occupied_post.to_i}"
+    unless totalpost=="-" 
+      b="#{totalpost.to_i-occupied_post.to_i}" if totalpost!=""
+    else
+      b="-" 
+    end
+    b
   end
   
   def hakiki
-    "#{Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 1]).count }"
+    unless totalpost=="-" 
+      b="#{Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 1]).count }" if totalpost!=""
+    else
+      b="-"
+    end
+    b
   end
   
   def kontrak
-    "#{Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 2]).count}"
+    unless totalpost=="-" 
+      b="#{Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 2]).count}" if totalpost!=""
+    else
+      b="-" 
+    end
+    b
   end
   
   def kup
-    "#{Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 3]).count}"
+    unless totalpost=="-" 
+      b="#{Position.find(:all, :conditions=> ['postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 3]).count}" if totalpost!=""
+    else
+      b="-" 
+    end
+    b
   end
   
   STATUS = [
