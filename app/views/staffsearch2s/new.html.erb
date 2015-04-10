@@ -14,7 +14,6 @@
 						<%#= f.select :position,Employgrade::GROUP,:prompt => (t 'select') %>
 					</td>
 				</tr>-->
-				<!---->
 				<tr>
 					<td class="leftcol"><%= f.label (t 'staff.group_grade') %></td>
 					<td><%= f.check_box :position,:checked=>"checked", :id=> 'bersepadu' %>&nbsp;<%=Employgrade::GROUP[2][0]%></td>
@@ -27,16 +26,20 @@
 					<td class="leftcol">&nbsp;</td>
 					<td><%= f.check_box :position3,:checked=>"checked", :id=> 'pengurusan_profesional' %>&nbsp;<%=Employgrade::GROUP[0][0]%></td>
 				</tr>
-				<!---->
 				<tr>
 					<td class="leftcol"><%= f.label (t 'staff.staffgrade_id') %></td>
 					<td id="span_all" style="display: block;">
 						<%= f.collection_select :staff_grade, Employgrade.find(:all,:order=>"name ASC"), :id, :name_and_group, :include_blank=>(t 'select')%>
 					</td>
 				</tr>
+				<tr>
+					<td class="leftcol">&nbsp;</td>
+					<td id="all_blank_post" style="display: block;"><font size=-2><%= f.check_box :blank_post,:checked=>"unchecked", :id=> 'pengurusan_profesional' %>&nbsp;<%=t('equery.staff.blank_post')%></font></td>
+				</tr>
 				
 			</table>
-  		<p><%#= f.submit %>    <%= f.submit (t 'search') %>&nbsp;&nbsp;<%=t('equery.staff.search_note')%></p>
+		
+  		<p><%= f.submit (t 'search') %>&nbsp;&nbsp;<%=t('equery.staff.search_note')%></p>
 	<% end %>
 </div>
 
@@ -44,6 +47,5 @@
 #Bersepadu (4)
 #Sokongan (2)
 #Pengurusan & Profesional (1)
- id="span_hod_endorse2" style="display: none;"
 -->
 

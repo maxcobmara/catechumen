@@ -68,8 +68,12 @@ class Position < ActiveRecord::Base
   #export excel section ---
   def totalpost
     unless postinfo_id.blank?
-      abc=Position.find(:all,:joins=>:staff, :conditions => ['postinfo_id=?', postinfo_id], :order=>'staffs.name ASC ')
-      a=abc[0].id
+#       abc=Position.find(:all,:joins=>:staff, :conditions => ['postinfo_id=?', postinfo_id], :order=>'staffs.name ASC ')
+#       if abc.count>0
+#         a=abc[0].id
+#       else
+        a=Position.find(:all, :conditions => ['postinfo_id=?', postinfo_id], :order=>'combo_code ASC')[0].id
+      #end
       if self.id==a
         aa="#{postinfo.post_count}"
       else
