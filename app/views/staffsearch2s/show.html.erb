@@ -96,6 +96,7 @@
 			
 		<% positions_wo_grade=[] %> 
 		<% positions_w_grade=[]%>
+		<!--either staffgrade_id/postinfo_id must exist (if butiran exist, grade definitely exist!) -->
 		<% @positions.each do |position| %>
 			<% unless position.staffgrade.blank? && position.postinfo_id.blank? %><!--hide display of position if both butiran & grade not exist-->
 				<% if position.staffgrade.blank? %>
@@ -226,7 +227,7 @@
 		<% end %>	
 		<!--END-part 1 (positions with staff grades)-->
 	
-		<!--START-part 2 (positions WITHOUT staff grades)-->
+		<!--START-part 2 (positions WITHOUT staff grades)--><!--just in case-->
 		<% positions_wo_grade.group_by(&:staffgrade_id).each do |staffgrade2, positions_of_grade_no|%>
 			<!--all positions listed here has no staff grade (employgrade) at all-->
 			<% positions_of_grade_no.group_by(&:staffgrade_id).each do |staffgrade, positions_by_grade| %>
@@ -292,7 +293,7 @@
 						</tr>	
 					<% end %>
 				<% end %>
-			Young Lih Jen
+
 				<!--$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ START force display of non-butiran items here, CANNOT SORT BLANK VALUE!-->
 				<% positions_by_grade_wo_butiran.group_by(&:postinfo_id).each do |butiran, positions|%>
 					<!--Butiran : <%#=butiran%>  | Position of Butiran (<%#=positions.count%>)<br>-->
