@@ -1,10 +1,10 @@
 <form action="#">
-		<script>
-		document.write("<input type='button' " +
-		"onClick='window.print()' " +
-		"class='printbutton' " +
-		"value='Print This Page'/>");
-		</script>
+	<script>
+	document.write("<input type='button' " +
+	"onClick='window.print()' " +
+	"class='printbutton' " +
+	"value='<%=escape_javascript(t 'print')%>'/>");
+	</script>
 </form>
 <div id="hideLink" style="float:left;">
 <%= link_to 'Back', locations_path %>
@@ -14,38 +14,39 @@
 <div id="kewpa">
 <p class="marginright" align="right"><b>KEW. PA-7</b></p>
 <H4 align="center"><b>SENARAI ASET ALIH KERAJAAN</b></H4>
-<BR><BR>
+
 <p class="marginleft" style="margin-left:150px">BAHAGIAN	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : <SPAN class="filler">KSKB Johor</SPAN></p>
 <p class="marginleft" style="margin-left:150px">LOKASI    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : <SPAN class="filler"><%=h @location.code  %> - <%=h @location.name  %></SPAN></p>
-	</p>
 
 <div id="tprintreport">
 <table border=1px cellspacing=0 style="margin:0 7mm; width: 180mm">
 
-<tr>
-	<th style="height:6mm">BIL</th>
-	<th>KETERANGAN ASET</th>
-	<th>KUANTITI</th>
-</tr>
-
+	<tr>
+		<th style="height:6mm">BIL</th>
+		<th>KETERANGAN ASET</th>
+		<th>KUANTITI</th>
+	</tr>
 	<% bil = 0 %>
 	<% for @asset in @location.assets %>
 	<% bil += 1 %>
- 
-<tr>
-	<td align="center" class="filler"><%=h bil %></td>	
-	<td class="filler"><%=h @asset.assetcode %> - 
-		&nbsp;<%=h @asset.typename %>  <%=h @asset.name %>  <%=h @asset.modelname %></td>	
-	<td align="center" class="filler">
-		<% if @asset.assettype == 2 %>
-			<%= (@asset.assetcode.split(/[\/\-]/)[6].to_i) - (@asset.assetcode.split(/[\/\-]/)[5].to_i) + 1 %>
-		<% else %>1<% end %></td>
-			
-	</td>
-</tr>
-<% end %>
+	<tr>
+		<td align="center" class="filler"><%=h bil %></td>	
+		<td class="filler"><%=h @asset.assetcode %> - 
+			&nbsp;<%=h @asset.typename %>  <%=h @asset.name %>  <%=h @asset.modelname %></td>	
+		<td align="center" class="filler">
+			<% if @asset.assettype == 2 %>
+				<%= (@asset.assetcode.split(/[\/\-]/)[6].to_i) - (@asset.assetcode.split(/[\/\-]/)[5].to_i) + 1 %>
+			 <% else %>1<% end %></td>
+		</td>
+	</tr>
+	<% end %>
+	<% if bil < 16%>
+		<% bil.upto(15) do |count| %>
+			<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+		<% end %>
+	<% end %>
 </table>
-<BR><BR><BR><BR>
+<BR>
 <font size=0.6em>
 <table id="sigs" style="margin:0 7mm; width: 180mm" >
 		<tr>
@@ -76,6 +77,35 @@
 			<td>Tarikh : <SPAN class="filler"><%= l(Date.today()) %></SPAN></td>
 			<td>Tarikh : <SPAN class="filler"><%= l(Date.today()) %></SPAN></td>
 		</tr>
+		<tr><td colspan=2><hr></td></tr>
+</table>
+</font>
+<font size=-2>
+<table style="margin:0 7mm; width: 180mm" >
+	<tr>
+	      <td class="filler">Nota:</td><td>a)</td>
+	      <td class="filler">Disediakan oleh Pegawai Aset</td>
+	</tr>
+	<tr>
+	      <td class="filler">&nbsp;</td><td>b)</td>
+	      <td class="filler">Pegawai yang mengesahkan ialah pegawai yang bertanggujawab</td>
+	</tr>
+	<tr>
+	      <td class="filler">&nbsp;</td><td>&nbsp;</td>
+	      <td class="filler">ke atas aset berkenaan contohnya :</td>
+	</tr>
+	<tr>
+	      <td class="filler">&nbsp;</td><td>&nbsp;</td>
+	      <td class="filler">i) Lokasi bilik Setiausaha Bahagian - disahkan oleh Setiausaha Bahagian</td>
+	</tr>
+	<tr>
+	      <td class="filler">&nbsp;</td><td>&nbsp;</td>
+	      <td class="filler">ii) Lokasi bilik mesyuarat - disahkan oleh pegawai yang menguruskan bilik mesyuarat</td>
+	</tr>
+	<tr>
+	      <td class="filler">&nbsp;</td><td>c)</td>
+	      <td class="filler">Dikemaskini apabila terdapat perubahan kuantiti, lokasi atau pegawai bertanggujawab</td>
+	</tr>
 </table>
 </font>
 <BR>

@@ -179,7 +179,7 @@ authorization do
     has_permission_on :assets, :to => :manage
     has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
     has_permission_on :assetsearches, :to => :read
-    has_permission_on :locations, :to => [:manage]
+    has_permission_on :locations, :to => [:manage, :kewpa7]
     has_permission_on :stationeries, :to => [:manage, :supplies]
     has_permission_on :stationerysearches, :to => :manage
     has_permission_on :asset_loans, :to=>[:manage, :approve, :lampiran]
