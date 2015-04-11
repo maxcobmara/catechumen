@@ -7,7 +7,7 @@ class Staffsearch2sController < ApplicationController
    #raise params.inspect
     @staffsearch2 = Staffsearch2.new(params[:staffsearch2])
     if @staffsearch2.keywords=='' && @staffsearch2.position==0 && @staffsearch2.position2==0 && @staffsearch2.position3==0 && @staffsearch2.staff_grade.blank? && @staffsearch2.blank_post==0
-      flash[:notice] = 'Please select at least one method of searching'
+      flash[:notice] = t('equery.select_method')
       render :action => 'new'
     else
       if @staffsearch2.save
