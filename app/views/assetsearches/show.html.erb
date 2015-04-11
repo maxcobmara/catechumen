@@ -7,7 +7,7 @@
 <%#=@assetsearch.defect_type%><%#=@assetsearch.nil? %>
 
 
-<% if @assetsearch.assets.count > 0 %><font size=-2><%=@assetsearch.assets.count%></font><%#=@assetsearch.defect_type%>
+<% if @assetsearch.assets.count > 0 %><font size=-2><!--FOR checking 11Apr2015<%#=@assetsearch.assets.count%>--></font><%#=@assetsearch.defect_type%>
 	<!--for checking		
 	/<%#=@assetsearch.assets[0].id%>-<%#=@assetsearch.assets[1].id%>-<%#=@assetsearch.assets[2].id%>-<%#=@assetsearch.assets[3].id%>-<%#=@assetsearch.assets[4].id%>
 	-<%#=@assetsearch.assets[5].id%>-<%#=@assetsearch.assets[6].id%>-->
@@ -198,7 +198,7 @@
 								<% end %>
 								<!--end-use this with method : assignedto_conditions in model : assetsearch.rb-->
 								
-								<% @aaaa.each_with_index do |x,index| %>
+								<% @aaaa.sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}.each_with_index do |x,index| %>
 								<%# @assetsearch.assets.each_with_index do |x,index| %><!--asal-->
 								<tr>	
 									<td><%=index+1 %></td>
