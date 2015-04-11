@@ -151,6 +151,7 @@ authorization do
       if_attribute :loaned_by => is_in {AssetLoan.find(asset_id).unit_members}
     end
     
+    has_permission_on :asset_loans, :to => :create
   end
   
   role :staff_administrator do
