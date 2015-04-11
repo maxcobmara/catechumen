@@ -16,6 +16,7 @@ authorization do
     
     #Asset Menu Items
     has_permission_on :assets,      :to => :manage                              #asset items
+    has_permission_on :asset_loans, :to => [:manage, :approve, :lampiran]
     
     #Location Menu Items
     has_permission_on :locations,   :to => :manage                              #location items
@@ -145,6 +146,11 @@ authorization do
     has_permission_on :librarytransactions, :to => :read do
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
+    
+    has_permission_on :asset_loans, :to => [:read, :update, :approve, :lampiran] do
+      if_attribute :loaned_by => is_in {AssetLoan.find(asset_id).unit_members}
+    end
+    
   end
   
   role :staff_administrator do
@@ -175,6 +181,7 @@ authorization do
     has_permission_on :locations, :to => [:manage]
     has_permission_on :stationeries, :to => [:manage, :supplies]
     has_permission_on :stationerysearches, :to => :manage
+    has_permission_on :asset_loans, :to=>[:manage, :approve, :lampiran]
   end
 
   
