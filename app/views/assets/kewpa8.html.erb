@@ -8,10 +8,8 @@
 	"value='<%=escape_javascript(t 'print')%>'/>");
 	</script>
 <form>
-<div id="hideLink">
+<BR><BR>
 <%= link_to (t 'back'), {:controller => 'viewer', :action => 'assetreports'}  %>
-</div><BR>
-
 <div id="A4landscape">
 <fieldset width=10px >
 
@@ -40,11 +38,11 @@
 		<tr>
 			<td align="center"><%=h bil+1 %></td>
 			<td>Kolej Sains Kesihatan Bersekutu Johor Bahru</td>
-			<td align="right"><%=@fa << Asset.find(:all, :conditions=>['assettype=?',1]).count%></td>
-			<td align="right"><% @fa_p << Asset.find(:all, :conditions=>['assettype=?',1]).map(&:purchaseprice).compact.sum %>
+			<td align="right"><%=@fa << Asset.find(:all, :conditions=>['assettype=? AND purchasedate <=?',1, Date.today]).count%></td>
+			<td align="right"><% @fa_p << Asset.find(:all, :conditions=>['assettype=? AND purchasedate <=?',1, Date.today]).map(&:purchaseprice).compact.sum %>
 						    <%=ringgols(@fa_p[bil])%></td>
-			<td align="right"><%=@inv << Asset.find(:all, :conditions=>['assettype=?',2]).count%></td>
-			<td align="right"><% @inv_p << Asset.find(:all, :conditions=>['assettype=?',2]).map(&:purchaseprice).compact.sum %>					
+			<td align="right"><%=@inv << Asset.find(:all, :conditions=>['assettype=? AND purchasedate <=?',2, Date.today]).count%></td>
+			<td align="right"><% @inv_p << Asset.find(:all, :conditions=>['assettype=? AND purchasedate <=?',2, Date.today]).map(&:purchaseprice).compact.sum %>					
 						      <%=ringgols(@inv_p[bil])%></td>
 			<% bil += 1 %>
 		</tr>

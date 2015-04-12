@@ -47,7 +47,7 @@ class Assetsearch < ActiveRecord::Base
   end
   
   def enddate_conditions  #between 2 dates
-    ["purchasedate<=?", enddate] unless enddate.blank?
+    ["purchasedate<?", enddate] unless enddate.blank?
   end
 
   def receiveddate_conditions
