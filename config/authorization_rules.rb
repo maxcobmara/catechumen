@@ -17,6 +17,7 @@ authorization do
     #Asset Menu Items
     has_permission_on :assets,      :to => :manage                              #asset items
     has_permission_on :asset_loans, :to => [:manage, :approve, :lampiran]
+    has_permission_on :asset_disposals, :to =>[ :manage, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :revalue, :dispose]
     
     #Location Menu Items
     has_permission_on :locations,   :to => :manage                              #location items
@@ -152,6 +153,9 @@ authorization do
     end
     
     has_permission_on :asset_loans, :to => :create
+    has_permission_on :asset_disposals, :to =>[ :read, :update, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19] do
+      if_attribute :verified_by => is {Login.current_login.staff_id}
+    end
   end
   
   role :staff_administrator do
@@ -183,6 +187,7 @@ authorization do
     has_permission_on :stationeries, :to => [:manage, :supplies]
     has_permission_on :stationerysearches, :to => :manage
     has_permission_on :asset_loans, :to=>[:manage, :approve, :lampiran]
+    has_permission_on :asset_disposals, :to =>[ :manage, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :revalue, :dispose]
   end
 
   
@@ -196,7 +201,7 @@ authorization do
   role :warden do
     has_permission_on :locations, :to => :core
     has_permission_on :students, :to => [:menu, :show, :formforstudent]
-    #all wardens have access - [relationship: second_approver, FK: staff_id2, page: approve_warden]
+    #all wardens have access - [relationship: second_approver, FK: staff_id2, page: aptdprove_warden]
     has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve_warden] do
       if_attribute :studentsubmit => true
     end

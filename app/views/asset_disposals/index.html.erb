@@ -33,7 +33,9 @@
 				<% end %>
 			</td>
 			<td class="action">
+				<% permitted_to? :manage, :assets do %>
 				<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-20'), :action => 'kewpa20' %><div class="noti_bubble">20</div></div>
+				<% end %>
 			</td>
 		</tr></table>
 	</div>
@@ -64,43 +66,65 @@
 					<td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => asset_disposal %></td>
 				  <td width=10px>
 						<% if asset_disposal.is_verified == true && asset_disposal.is_disposed != true %>
-							<%= link_to image_tag("approval.png", :border => 0), :action => 'dispose', :id => asset_disposal %>
+							<% permitted_to? :dispose, :asset_disposals do%>
+								<%= link_to image_tag("approval.png", :border => 0), :action => 'dispose', :id => asset_disposal %>
+							<% end %>
 						<% else %>
-							<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => asset_disposal %>
+							<% if asset_disposal.disposed_by==nil%>
+								<% permitted_to? :update, :asset_disposals do %>
+									<%= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => asset_disposal %>
+								<% end %>
+							<% end %>
 						<% end %></td>
 				  <td class="action">
-					<!--hide REVALUE part iF all processes already completed-->
-					<% if asset_disposal.is_disposed == true && asset_disposal.disposed_by != nil%>
-					<% else %>
-					<!----><% if asset_disposal.checked_on %>
-							<% if Date.today - asset_disposal.checked_on > -1 %><% Date.today - asset_disposal.checked_on %>
-								<%= link_to image_tag("money_delete.png", :border => 0), :action => 'revalue', :id => asset_disposal %>
-							<% end %>
-					<!----><% end %>
+					<% permitted_to? :revalue, :asset_disposals do %>
+						<!--hide REVALUE part iF all processes already completed-->
+						<% if asset_disposal.is_disposed == true %><!--&& asset_disposal.disposed_by != nil-->
+						<% else %>
+						<!----><% if asset_disposal.checked_on %>
+								<% if Date.today - asset_disposal.checked_on > -1 %><% Date.today - asset_disposal.checked_on %>
+									<%= link_to image_tag("money_delete.png", :border => 0), :action => 'revalue', :id => asset_disposal %>
+								<% end %>
+						<!----><% end %>
+						<% end %>
+						<!--hide REVALUE part iF all processes already completed-->	
 					<% end %>
-					<!--hide REVALUE part iF all processes already completed-->	
-					</td>
+				</td>
 			    	<td class="action">
 							<% if asset_disposal.is_checked == true %>
 								<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-16'), :action => 'kewpa16', :id => asset_disposal %><div class="noti_bubble">16</div></div>
 							<% end %></td>
 					<td class="action">
-							<% if asset_disposal.disposal_type == "discard" && asset_disposal.disposed_by != nil %><!--hide this if KEWPA19 NOT READY-->
-								<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-18'), :action => 'kewpa18', :id => asset_disposal %><div class="noti_bubble">18</div></div>
-							<% end %></td>
+						<%# if asset_disposal.disposal_type == "discard" && asset_disposal.disposed_by != nil %><!--hide this if KEWPA19 NOT READY-->
+						<% if asset_disposal.disposal_type == "discard" && asset_disposal.is_disposed==true %>
+							<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-18'), :action => 'kewpa18', :id => asset_disposal %><div class="noti_bubble">18<% if asset_disposal.disposed_by==nil%>
+							    <font color="red">*</font>
+							<% end %></div></div>
+						<% end %>
+					</td>
 					<td class="action">
-							<% if asset_disposal.is_disposed == true && asset_disposal.disposed_by != nil%>
-							
-							<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-19'), :action => 'kewpa19', :id => asset_disposal %><div class="noti_bubble">19</div></div>
-							<% end %></td>
-
-					
-				  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), asset_disposal, :confirm => (t 'are_you_sure'), :method => :delete %></td>
+						<%# if asset_disposal.is_disposed == true && asset_disposal.disposed_by != nil%>
+						<% if asset_disposal.is_disposed == true %>
+							<div class="noti_Container"><%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-19'), :action => 'kewpa19', :id => asset_disposal %><div class="noti_bubble">19
+							<% if asset_disposal.disposed_by==nil%>
+							    <font color="red">*</font>
+							<% end %></div></div>
+						<% end %>
+					</td>
+				<% permitted_to? :delete, :asset_disposals do %>
+					<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), asset_disposal, :confirm => (t 'are_you_sure'), :method => :delete %></td>
+				<% end %>
 				</tr>
 		<% end %>
 		</table>
 		<BR>
 		</div>
+<br>
+<table>
+	<tr><td width=20><div class="noti_Container"><%= image_tag("printer.png", :border => 0, :title => 'KEW.PA-18')%><div class="noti_bubble">18<font color="red">*</font></div></div></td>
+	<td width=15><div class="noti_Container"><%= image_tag("printer.png", :border => 0, :title => 'KEW.PA-19')%><div class="noti_bubble">19<font color="red">*</font></div></div></td>
+	<td>&nbsp;<font size=-2><%=t('disposal.remark')%></font></td></tr>
+</table>
 <!--
 
 		<br />
