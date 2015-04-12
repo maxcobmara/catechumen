@@ -9,7 +9,7 @@
 	</script>
 <form>
 <div id="hideLink">
-<%#= link_to (t 'back'), assettracks_path %>
+<%= link_to (t 'back'), {:controller => 'viewer', :action => 'assetreports'}  %>
 </div><BR>
 
 <div id="A4landscape">
@@ -19,7 +19,7 @@
 <p class="marginright" align="right"><b>KEW. PA-8</b></p><BR>
 
 <BR>
-<H3>LAPORAN TAHUNAN HARTA MODAL DAN INVENTORI BAGI TAHUN 2011 <BR><BR> KEMENTERIAN: KESIHATAN MALAYSIA</H3>
+<H3>LAPORAN TAHUNAN HARTA MODAL DAN INVENTORI BAGI TAHUN <%=Date.today.year%> <BR><BR> KEMENTERIAN: KESIHATAN MALAYSIA</H3>
 
 <BR>
 <div id="tprintreport">	
@@ -51,10 +51,10 @@
 		<tr>
 			<td BGCOLOR="#FEFE56">&nbsp;</td>
 			<td align="right" BGCOLOR="#FEFE56"><b>Jumlah</b></td>
-			<td align="right" BGCOLOR="#FEFE56"><%=@fa.sum%></td>
-			<td align="right" BGCOLOR="#FEFE56"><%=ringgols(@fa_p.sum)%></td>
-			<td align="right" BGCOLOR="#FEFE56"><%=@inv.sum%></td>
-			<td align="right" BGCOLOR="#FEFE56"><%=ringgols(@inv_p.sum)%></td>
+			<td align="right" BGCOLOR="#FEFE56"><b><%=@fa.sum%></b></td>
+			<td align="right" BGCOLOR="#FEFE56"><b><%=ringgols(@fa_p.sum)%></b></td>
+			<td align="right" BGCOLOR="#FEFE56"><b><%=@inv.sum%></b></td>
+			<td align="right" BGCOLOR="#FEFE56"><b><%=ringgols(@inv_p.sum)%></b></td>
 		</tr>
 	
 	</table>
