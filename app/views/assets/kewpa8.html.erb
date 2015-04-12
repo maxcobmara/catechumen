@@ -19,13 +19,11 @@
 <p class="marginright" align="right"><b>KEW. PA-8</b></p><BR>
 
 <BR>
-<H3>LAPORAN TAHUNAN HARTA MODAL DAN INVENTORI BAGI TAHUN 2011 <BR><BR> KEMENTERIAN: </H3>
+<H3>LAPORAN TAHUNAN HARTA MODAL DAN INVENTORI BAGI TAHUN 2011 <BR><BR> KEMENTERIAN: KESIHATAN MALAYSIA</H3>
 
 <BR>
 <div id="tprintreport">	
 	<table width=80% border=1px cellspacing=0 align="center">
-		
-	
 		<tr>
 			<td align="center" BGCOLOR="#FEFE56"><b>BIL<b></td>
 			<td align="center" BGCOLOR="#FEFE56"><b>KEMENTERIAN/JABATAN <BR> DI BAWAHNYA</b></td>
@@ -34,26 +32,29 @@
 			<td align="center" BGCOLOR="#FEFE56"><b>BILANGAN <BR> KEW.PA-3</b></td>
 			<td align="center" BGCOLOR="#FEFE56"><b>JUMLAH NILAI <BR> INVENTORI (RM)</b></td>
 		</tr>
-	
-		
-			 <% bil = 0 %>
-             <% bil += 1 %>
+		<% bil = 0 %>
+		<% @fa=[] %>
+		<% @fa_p=[] %>
+		<% @inv=[] %>
+		<% @inv_p=[] %>
 		<tr>
-			<td align="center"><%=h bil %></td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		
+			<td align="center"><%=h bil+1 %></td>
+			<td>Kolej Sains Kesihatan Bersekutu Johor Bahru</td>
+			<td align="right"><%=@fa << Asset.find(:all, :conditions=>['assettype=?',1]).count%></td>
+			<td align="right"><% @fa_p << Asset.find(:all, :conditions=>['assettype=?',1]).map(&:purchaseprice).compact.sum %>
+						    <%=ringgols(@fa_p[bil])%></td>
+			<td align="right"><%=@inv << Asset.find(:all, :conditions=>['assettype=?',2]).count%></td>
+			<td align="right"><% @inv_p << Asset.find(:all, :conditions=>['assettype=?',2]).map(&:purchaseprice).compact.sum %>					
+						      <%=ringgols(@inv_p[bil])%></td>
+			<% bil += 1 %>
 		</tr>
 		<tr>
 			<td BGCOLOR="#FEFE56">&nbsp;</td>
 			<td align="right" BGCOLOR="#FEFE56"><b>Jumlah</b></td>
-			<td BGCOLOR="#FEFE56">&nbsp;</td>
-			<td BGCOLOR="#FEFE56">&nbsp;</td>
-			<td BGCOLOR="#FEFE56">&nbsp;</td>
-			<td BGCOLOR="#FEFE56">&nbsp;</td>
+			<td align="right" BGCOLOR="#FEFE56"><%=@fa.sum%></td>
+			<td align="right" BGCOLOR="#FEFE56"><%=ringgols(@fa_p.sum)%></td>
+			<td align="right" BGCOLOR="#FEFE56"><%=@inv.sum%></td>
+			<td align="right" BGCOLOR="#FEFE56"><%=ringgols(@inv_p.sum)%></td>
 		</tr>
 	
 	</table>
