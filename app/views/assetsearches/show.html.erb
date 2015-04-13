@@ -241,7 +241,15 @@
 									<% end %>
 									<td align=center><%= x.purchasedate.blank? ? "" : x.purchasedate.strftime("%d-%m-%Y") %></td>
 									<td align=right><%= ringgols(x.purchaseprice) %>&nbsp;</td>
-									<td align=center>
+									
+									<% if @assetsearch.loss_cert %>
+										<% if index==0%>
+											<td align=center rowspan="<%=@assetsearch.assets.count %>">
+										<% end %>
+									<% else %>
+										<td align=center>
+									<% end %>
+									
 										<%# if (@assetsearch.loandate || @assetsearch.returndate) %>
 										<% if (@assetsearch.loanedasset == 1) %>
 											<%= link_to "KEW-PA 6", :controller=>'assets', :action => 'kewpa6', :id => x.id %>
@@ -319,8 +327,7 @@
 										<% elsif @assetsearch.loss_cert %>
 											<% if index == 0 %>
 												<%= link_to "KEW-PA 31", :controller=>'asset_losses', :action => 'kewpa31', :id => @assetsearch.loss_cert %>
-											<% else %>
-												<font size=-2><%=t('equery.same_as_above')%></font>
+												</td>
 											<% end %>
 										<% else %>
 											<% if x.assettype == 1 %>
@@ -329,7 +336,13 @@
 												<%= link_to "KEW-PA 3", :controller=>'assets', :action => 'kewpa3', :id => x.id %>
 											<% end %>
 										<% end %>
-									</td>
+										
+									<% if @assetsearch.loss_cert %>
+										<% if index==0%>
+											</td>
+										<% end %>
+									<% end %>
+									
 								</tr>
 								<% end %>
 							</table>
