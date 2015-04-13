@@ -3,9 +3,11 @@
 		<h2 class="left"><%= t 'asset_losses.list' %></h2>
 	</div>
 </div>
-<div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'asset_losses.new')) + (t 'asset_losses.new'), new_asset_loss_path %></p>
-</div>
+<% permitted_to? :create, :asset_losses do %>
+	<div class="toolbar">
+		<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'asset_losses.new')) + (t 'asset_losses.new'), new_asset_loss_path %></p>
+	</div>
+<% end %>
 <BR><BR>
 <div class="indextable">
 	<% form_tag edit_multiple_asset_losses_path, :id => "form1" do %>
@@ -13,13 +15,13 @@
 		<table>
 			<tr>
 				<th>&nbsp;</th>
-		    	<th><%= t 'asset_losses.loss_type' %></th>
-		    	<th><%= t 'asset_losses.estvalue' %></th>
-		    	<th><%= t 'asset_losses.asset_id' %></th>
-		    	<th><%= t 'asset_losses.location_id' %></th>
-		    	<th><%= t 'asset_losses.lost_at' %></th>
-			<th><%= t 'asset_losses.treasury_approval'%></th>
-		    	<th colspan=5 class="ac"><%=t('control')%></th>
+				<th><%= t 'asset_losses.loss_type' %></th>
+				<th><%= t 'asset_losses.estvalue' %></th>
+				<th><%= t 'asset_losses.asset_id' %></th>
+				<th><%= t 'asset_losses.location_id' %></th>
+				<th><%= t 'asset_losses.lost_at' %></th>
+				<th><%= t 'asset_losses.treasury_approval'%></th>
+				<th colspan=5 class="ac"><%=t('control')%></th>
   			</tr>
 			
 			<% @asset_losses_group_writeoff.each do |document_id, asset_losses|%>
@@ -40,19 +42,25 @@
 			<%# @asset_losses.each do |asset_loss| %>
 			<% asset_losses.each do |asset_loss| %>
 			<tr>
-				<td><%= check_box_tag "asset_loss_ids[]", asset_loss.id, :class => "check" %></td>
-	    		<td><%=h (t("asset_losses."+asset_loss.loss_type)).capitalize %></td>
-	    		<td align='center'><%=h ringgols(asset_loss.est_value) %></td>
-	    		<td><%=h asset_loss.item_name %></td>
-	    		<td><%=h asset_loss.location_details %></td>
-	    		<td><%=h asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil? %></td>
+				<td>
+					<% permitted_to? :edit_multiple, :asset_losses do %>
+						<%= check_box_tag "asset_loss_ids[]", asset_loss.id, :class => "check" %>
+					<% end %>
+				</td>
+				<td><%=h (t("asset_losses."+asset_loss.loss_type)).capitalize %></td>
+				<td align='center'><%=h ringgols(asset_loss.est_value) %></td>
+				<td><%=h asset_loss.item_name %></td>
+				<td><%=h asset_loss.location_details %></td>
+				<td><%=h asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil? %></td>
 				<td><%=h asset_loss.is_writeoff? ? asset_loss.document.refno : ""%></td>
-	    		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => asset_loss %></td>
+				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => asset_loss %></td>
 				<td width=10px>
-					<% if asset_loss.is_submit_to_hod == false %>
-	    				<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => asset_loss %>
-					<% elsif asset_loss.is_submit_to_hod == true && asset_loss.endorsed_on.blank? == true && Login.current_login.staff.position.code == "1" %>
-						<%= link_to image_tag("approval.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => asset_loss %>
+					<% if asset_loss.is_submit_to_hod != true %>
+						<% permitted_to? :update, :asset_losses do %>
+							<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => asset_loss %>
+						<% end %>
+					<%# elsif asset_loss.is_submit_to_hod == true && asset_loss.endorsed_on.blank? == true && Login.current_login.staff.position.code == "1" %>
+						<%#= link_to image_tag("approval.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => asset_loss %>
 					<% end %>
 				</td>
 				<td class="action">
@@ -62,7 +70,8 @@
 					</div>
 				</td>	
 				<td class="action">
-					<% if asset_loss.is_submit_to_hod == true && asset_loss.endorsed_on.blank? == false %>
+					<%# if asset_loss.is_submit_to_hod == true && asset_loss.endorsed_on.blank? == false %>
+					<% if asset_loss.is_submit_to_hod == true %>
 						<div class="noti_Container">
 							<%= link_to image_tag("printer.png", :border => 0, :title => 'KEW.PA-30'), :action => 'kewpa30', :id => asset_loss %>
 							<div class="noti_bubble">30</div>
@@ -83,7 +92,9 @@
 				<!--add-in KEWPA31 link-->
 				
 				<td width=10px>
-					<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), asset_loss, :confirm => (t 'are_you_sure'), :method => :delete %>
+					<% permitted_to? :delete, :asset_losses do %>
+						<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), asset_loss, :confirm => (t 'are_you_sure'), :method => :delete %>
+					<% end %>
 				</td>   
 	  		</tr>
 			<% end %>
@@ -92,7 +103,10 @@
 		</table>
 
 </div>
+
 <br>
+	
+	<% permitted_to? :edit_multiple, :asset_losses do %>
 		<div class="left">
 			<!-- ref: http://railsforum.com/viewtopic.php?id=2151 rleblic2007-10-25 08:43:07 -->
 			<!--http://www.ryboe.com/2008/07/10/select-all-checkboxes-with-prototype-js.html -->
@@ -103,7 +117,11 @@
 
 		<%= submit_tag t('asset_losses.writeoff_checked'), :name => :grade_submit_button %>
 		<font size=-2><%=t('asset_losses.select_records_writeoff_certificate')%></font>
+	<% end %>
 	
-	<% end %><!--end for-form_tag edit_multiple_asset_losses_path-->
+<% end %><!--end for-form_tag edit_multiple_asset_losses_path-->
 <br><br>
-<%= link_to  (t 'asset_losses.new'), new_asset_loss_path %>
+	
+<% permitted_to? :create, :asset_losses do %>
+	<%= link_to  (t 'asset_losses.new'), new_asset_loss_path %>
+<% end %>

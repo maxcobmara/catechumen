@@ -95,8 +95,10 @@
 				<li><%= link_to (t 'menu.off_supplies'), 		{:controller => 'stationeries', :action => 'index'} %></li>
 				<% end %>
 				<li><%= link_to (t 'menu.defects'), 						{:controller => 'asset_defects', :action => 'index'} %></li>
-				<% permitted_to? :manage, :assets do %>
+				<% permitted_to? :manage, :asset_losses do %><!--kewpa28-->
 				<li><%= link_to (t 'menu.loss_write'), 	{:controller => 'asset_losses', 	:action => 'index'} %></li>
+				<% end %>
+				<% permitted_to? :manage, :asset_disposals do %><!--edit-->
 				<li><%= link_to (t 'menu.disposal'), {:controller => 'asset_disposals', :action => 'index'} %></li>
 				<% end %>
 				<li><a href="#"><%= (t 'menu.asset_loan') %> ></a>

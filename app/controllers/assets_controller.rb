@@ -7,10 +7,10 @@ class AssetsController < ApplicationController
     #@asset_gbtype = @assets.group_by { |t| t.gbtype }
     @filters = Asset::FILTERS
       if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-        @assets = Asset.send(params[:show]).paginate(:order => :assetcode, :per_page => 30, :page => params[:page])
+        @assets = Asset.send(params[:show]).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}.paginate(:order => :assetcode, :per_page => 30, :page => params[:page])
         @asset_gbtype = @assets.group_by { |t| t.gbtype }
       else
-        @assets = Asset.search(params[:search]).paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])
+        @assets = Asset.search(params[:search]).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}.paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])
         @asset_gbtype = @assets.group_by { |t| t.gbtype }
       end
       

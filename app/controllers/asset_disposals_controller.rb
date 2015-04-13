@@ -1,8 +1,9 @@
 class AssetDisposalsController < ApplicationController
+  filter_access_to :all
   # GET /asset_disposals
   # GET /asset_disposals.xml
   def index
-    @asset_disposals = AssetDisposal.all
+    @asset_disposals = AssetDisposal.with_permissions_to(:edit).all
 
     respond_to do |format|
       format.html # index.html.erb

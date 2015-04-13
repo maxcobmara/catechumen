@@ -126,6 +126,8 @@
 			</tr>
 			
 			<% bosses = Login.current_login.staff.position.ancestor_ids %>
+			<% newbosses = Position.find(:all, :conditions=>['ancestry_depth=? OR name ILIKE(?)', 0, "Timbalan%"]).map(&:id).compact%>
+			<% bosses+=newbosses.uniq%>
 			<% myhod = Position.find(:all, :conditions => ['id IN (?)', bosses ], :select => :staff_id).map(&:staff_id) %>
 			<tr class="span_is_checked" style="display: none;">
 				<td class="leftcol"><label for="approved_date">To be verified by</label></td>

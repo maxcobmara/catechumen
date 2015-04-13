@@ -22,8 +22,8 @@
 		<table class="lampiran_kewpa">
 			<tr>
 				<TD COLSPAN=2>
-											Merujuk surat kelulusan No Rujukan <SPAN class="fff"><%=h @asset_disposal.document.refno %></SPAN> 
-											bertarikh <SPAN class="fff"><%=h l(@asset_disposal.document.letterdt) %></SPAN>, 
+											Merujuk surat kelulusan No Rujukan <SPAN class="fff"><%=h @asset_disposal.document.try(:refno) %></SPAN> 
+											bertarikh <SPAN class="fff"><%=h @asset_disposal.document.try(:letterdt).try(:strftime, "%d-%b-%Y") %></SPAN>, 
 											saya mengesahkan tindakan pelupusan telah dilaksanakan seperti berikut :-<BR/></TD>
 			</tr>
 			<tr>
@@ -75,28 +75,28 @@
 						<td class="leftcol">Tandatangan Ketua Jabatan</td>
 						<td class="dotts">:</td>
 						<td class="filler" style="border-bottom-style: dotted; text-align:center;">
-								<SPAN class="fff"><%= @asset_disposal.disposer.name.to_s + " via ICMS" unless @asset_disposal.is_disposed == false %></SPAN></td>
+								<SPAN class="fff"><%= @asset_disposal.disposer.try(:name).to_s + " via ICMS" unless @asset_disposal.is_disposed == false %></SPAN></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td class="leftcol">Nama</td>
 						<td class="dotts">:</td>
 						<td class="filler" style="border-bottom-style: dotted; text-align:center;">
-								<SPAN class="fff"><%= @asset_disposal.disposer.name unless @asset_disposal.is_disposed == false %></SPAN></td>
+								<SPAN class="fff"><%= @asset_disposal.disposer.try(:name) unless @asset_disposal.is_disposed == false %></SPAN></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td class="leftcol">Jawatan</td>
 						<td class="dotts">:</td>
 						<td class="filler" style="border-bottom-style: dotted; text-align:center;">
-								<SPAN class="fff"><%= @asset_disposal.disposer.position.try(:name) unless @asset_disposal.is_disposed == false %></SPAN></td>
+								<SPAN class="fff"><%= @asset_disposal.disposer.try(:position).try(:name) unless @asset_disposal.is_disposed == false %></SPAN></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td class="leftcol">Tarikh</td>
 						<td class="dotts">:</td>
 						<td class="filler" style="border-bottom-style: dotted; text-align:center;">
-								<SPAN class="fff"><%= l(@asset_disposal.disposed_on) unless @asset_disposal.is_disposed == false %></SPAN></td>
+								<SPAN class="fff"><%= @asset_disposal.disposed_on.try(:strftime, "%d %b %Y") unless @asset_disposal.is_disposed == false %></SPAN></td>
 						<td></td>
 					</tr>
 					<tr>
