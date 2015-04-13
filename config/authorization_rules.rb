@@ -175,7 +175,7 @@ authorization do
   end
   
   role :finance_unit do
-    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travelclaim_logs], :to => [:manage, :check, :approve, :claimprint]
+    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve, :claimprint]
   end
   
   role :training_manager do

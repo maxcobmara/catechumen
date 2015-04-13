@@ -268,7 +268,7 @@ class Assetsearch < ActiveRecord::Base
   end
   
   def disposal_conditions
-      [" ("+disposal_details+")", AssetDisposal.all.map(&:asset_id)] unless disposal.blank?
+      [" ("+disposal_details+")", AssetDisposal.all.map(&:asset_id).uniq] unless disposal.blank?
   end
   
   def disposalcert_details
@@ -280,7 +280,7 @@ class Assetsearch < ActiveRecord::Base
   end
   
   def disposalcert_conditions
-    [" ("+disposalcert_details+")", AssetDisposal.find(:all,:conditions=>['is_disposed is TRUE']).map(&:asset_id)] unless disposalcert.blank?
+    [" ("+disposalcert_details+")", AssetDisposal.find(:all,:conditions=>['is_disposed is TRUE']).map(&:asset_id).uniq] unless disposalcert.blank?
   end
   
   def disposalreport_details
@@ -293,7 +293,7 @@ class Assetsearch < ActiveRecord::Base
   
   def disposalreport_conditions
     #['id=? OR id=?',AssetDisposal.find(discardoption.to_s.split(",")).map(&:asset_id)] unless discardoption.blank?
-    [disposalreport_details,AssetDisposal.find(disposalreport.to_s.split(",")).map(&:asset_id)] unless disposalreport.blank?
+    [disposalreport_details,AssetDisposal.find(disposalreport.to_s.split(",")).map(&:asset_id).uniq] unless disposalreport.blank?
   end
   
   def disposalreport2_details
@@ -305,7 +305,7 @@ class Assetsearch < ActiveRecord::Base
   end  
   
   def disposalreport2_conditions
-    [disposalreport2_details,AssetDisposal.find(disposalreport2.to_s.split(",")).map(&:asset_id)] unless disposalreport2.blank?
+    [disposalreport2_details,AssetDisposal.find(disposalreport2.to_s.split(",")).map(&:asset_id).uniq] unless disposalreport2.blank?
   end
   
   def discardoption_details
@@ -317,15 +317,15 @@ class Assetsearch < ActiveRecord::Base
   end
   
   def discardoption_conditions
-    [discardoption_details, AssetDisposal.find(:all, :conditions=>['discard_options=?',discardoption]).map(&:asset_id)] unless discardoption.blank?
+    [discardoption_details, AssetDisposal.find(:all, :conditions=>['discard_options=?',discardoption]).map(&:asset_id).uniq] unless discardoption.blank?
   end
   
   def loss_start_details
-    a='id=? ' if AssetLoss.find(:all).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoss.find(:all).map(&:asset_id).uniq.count-2) do |l|  
+    a='id=? ' if AssetLoss.find(:all).map(&:asset_id).count!=0
+    0.upto(AssetLoss.find(:all).map(&:asset_id).count-2) do |l|  
       a=a+'OR id=? '
     end 
-    return a unless loss_start.blank?
+    return a if loss_start== 1 #unless loss_start.blank? 
   end  
   
   def loss_start_conditions
@@ -333,8 +333,8 @@ class Assetsearch < ActiveRecord::Base
   end
   
   def loss_end_details
-    a='id=? ' if AssetLoss.find(:all, :conditions=>['endorsed_on IS NOT NULL']).map(&:asset_id).uniq.count!=0
-    0.upto(AssetLoss.find(:all, :conditions=>['endorsed_on IS NOT NULL']).map(&:asset_id).uniq.count-2) do |l|  
+    a='id=? ' if AssetLoss.find(:all, :conditions=>['endorsed_on IS NOT NULL']).map(&:asset_id).count!=0
+    0.upto(AssetLoss.find(:all, :conditions=>['endorsed_on IS NOT NULL']).map(&:asset_id).count-2) do |l|  
       a=a+'OR id=? '
     end 
     return a unless loss_end.blank?
