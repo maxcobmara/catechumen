@@ -9,10 +9,14 @@
 	
 	<tr>
 		<td class="leftcol"><label for="asset_id"><b><%= t 'asset_losses.asset_id' %></b></label><font color="red"> * </font></td>
-		<td><% if Asset.count(:all, :conditions => ['mark_as_lost is true AND id NOT IN (?)', AssetLoss.all.map(&:asset_id).uniq]) == 0 %>
+		<td><% if Asset.count(:all, :conditions => ['mark_as_lost is true']) == 0 %>
 			<%=t('asset_losses.no_assets_lost')%>
 		<% else %>
-	     		<%= f.collection_select :asset_id, Asset.find(:all, :conditions => ['mark_as_lost is true AND id NOT IN (?)', AssetLoss.all.map(&:asset_id).uniq], :order => :assetcode), :id, :code_asset, :include_blank => true %>
+			<% if @asset_loss.new_record? %>
+				<%= f.collection_select :asset_id, Asset.find(:all, :conditions => ['mark_as_lost is true AND id NOT IN (?)', AssetLoss.all.map(&:asset_id).uniq], :order => :assetcode), :id, :code_asset, :include_blank => true %>
+	     		<% else %>
+				<%= f.collection_select :asset_id, Asset.find(:all, :conditions => ['mark_as_lost is true AND id NOT IN (?)', AssetLoss.all.map(&:asset_id).uniq-@asset_loss.asset_id.to_a], :order => :assetcode), :id, :code_asset, :include_blank => true %>
+	     		<% end %>
 		<% end -%></td>
 		<td></td>
 	</tr>
