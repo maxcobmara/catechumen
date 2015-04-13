@@ -33,7 +33,7 @@
 		<% if @assetsearch.name != nil %>
 			<% if (@assetsearch.assets.count==1 && @assetsearch.defect_asset)|| (@assetsearch.assets.count==1 && @assetsearch.defect_reporter) %>
 				<%=render :partial => 'kewpa9', :locals => {:assets => @assetsearch.assets[0]} %>
-			<% elsif @assetsearch.assets.count == 1 && !@assetsearch.assignedto && !@assetsearch.maintcode && !@assetsearch.disposal && !@assetsearch.discardoption && !@assetsearch.disposalcert && !@assetsearch.loss_start && !@assetsearch.loss_end && !@assetsearch.loss_cert %>
+			<% elsif @assetsearch.assets.count == 1 && !@assetsearch.assignedto && !@assetsearch.maintcode && !@assetsearch.disposal && !@assetsearch.discardoption && !@assetsearch.disposalcert && !@assetsearch.loss_start && !@assetsearch.loss_end && !@assetsearch.loss_cert && @assetsearch.category != 5  %>
 			<!--!@assetsearch.assignedto : to avoid KEWPA2/3 display if query 4 KEWPA7-->
 			<!--!@assetsearch.maintcode : to avoid KEWPA2/3 display if query for KEWPA14-->
 			<!--!@assetsearch.discardoption : to avoid KEWPA2/3 display if query 4 KEWPA18-->
