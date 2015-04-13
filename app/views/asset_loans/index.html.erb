@@ -98,14 +98,15 @@
 	
 			<td class="action">
 				<%# if (asset_loan.is_approved == true && asset_loan.loaned_by == Login.current_login.staff_id) %>
-			
-				<% if (asset_loan.is_approved == true) %>
-					<div class="noti_Container">
-						<% if asset_loan.loantype == 2 %>
-							<%= link_to image_tag("printer.png", :border => 0, :title => 'Lampiran A'), :action => 'lampiran', :id => asset_loan %>
-							<div class="noti_bubble">A</div>
-						<% end %>
-					</div>
+				<% permitted_to? :lampiran, :asset_loans do%>
+					<% if (asset_loan.is_approved == true) %>
+						<div class="noti_Container">
+							<% if asset_loan.loantype == 2 %>
+								<%= link_to image_tag("printer.png", :border => 0, :title => 'Lampiran A'), :action => 'lampiran', :id => asset_loan %>
+								<div class="noti_bubble">A</div>
+							<% end %>
+						</div>
+					<% end %>
 				<% end %>
 			</td>
 			
@@ -133,7 +134,8 @@
 				<%#= link_to image_tag("printer.png", :border => 0, :title => 'Lampiran A'), :action => 'lampiran', :id => asset_loan %>
 			<%# end %>
 		</td>-->
-		<% if @unit_members.include?(current_login.staff_id) || current_login_roles.include?(11) %>
+		<%# if @unit_members.include?(current_login.staff_id) || current_login_roles.include?(11) %>
+		<%# if current_login_roles.include?([11, 2]) %><% permitted_to? :delete, :asset_loans do%><!--deletion restricted to administrator & asset administrator-->
    			<td width=10px>
 				<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), asset_loan, :confirm => 'Are you sure?', :method => :delete %>
 			</td>

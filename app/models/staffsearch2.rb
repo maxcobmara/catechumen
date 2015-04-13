@@ -1,5 +1,5 @@
 class Staffsearch2 < ActiveRecord::Base
-  attr_accessible :keywords, :position, :staff_grade
+  attr_accessible :keywords, :position, :staff_grade, :position2, :position3, :blank_post
 
   
   def staffs
@@ -16,28 +16,95 @@ class Staffsearch2 < ActiveRecord::Base
     ["staffs.name ILIKE ?", "%#{keywords}%"] unless keywords.blank?   #["staffgrade.name ILIKE ?", "%#{keywords}%"] unless keywords.blank?#
   end
   
-  def gra
-    #Bersepadu (4)
-    return "staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=?" if position == 4 
-    #Sokongan (2)
-    return "staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=?" if position == 2
-    #Pengurusan & Profesional (1)
-    return "staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=?" if position == 1
+  #Bersepadu (4)
+  #Sokongan (2)
+  #Pengurusan & Profesional (1)
+ 
+  #when ONE group selected
+  def bersepadu
+    a='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=?', 4]).map(&:id).uniq.count!=0
+    0.upto(Employgrade.find(:all, :conditions=>['group_id=?', 4]).map(&:id).uniq.count-2) do |l|  
+      a=a+'OR staffgrade_id=? '
+    end
+    a=a+')'
+    return a if position==1 && position2==0 && position3==0
+    
+    b='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=?', 2]).map(&:id).uniq.count!=0
+    0.upto(Employgrade.find(:all, :conditions=>['group_id=?', 2]).map(&:id).uniq.count-2) do |l|  
+      b=b+'OR staffgrade_id=? '
+    end
+    b=b+')'
+    return b if position==0 && position2==1 && position3==0
+      
+    c='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=?', 1]).map(&:id).uniq.count!=0
+    0.upto(Employgrade.find(:all, :conditions=>['group_id=?', 1]).map(&:id).uniq.count-2) do |l|  
+      c=c+'OR staffgrade_id=? '
+    end
+    c=c+')'
+    return c if position==0 && position2==0 && position3==1
   end 
   
   def position_conditions 
-      [gra,Employgrade.find(:all,:conditions=>['group_id=?',position]).map(&:id) ] unless position.blank?
+    if position==1 && position2==0 && position3==0
+      return [bersepadu, Employgrade.find(:all,:conditions=>['group_id=?', 4]).map(&:id) ]#unless position.blank? 
+    elsif position==0 && position2==1 && position3==0
+      return [bersepadu, Employgrade.find(:all,:conditions=>['group_id=?', 2]).map(&:id) ]
+    elsif position==0 && position2==0 && position3==1
+      return [bersepadu, Employgrade.find(:all,:conditions=>['group_id=?', 1]).map(&:id) ]
+    end
+  end 
+ 
+  #when TWO groups selected
+  def sokongan
+    a='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,2]).map(&:id).uniq.count!=0
+    0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,2]).map(&:id).uniq.count-2) do |l|  
+      a=a+'OR staffgrade_id=? '
+    end
+    a=a+')'
+    return a if position==1 && position2==1 && position3==0
       
-      #yg OK2----
-      #[gra,[1, 2, 3, 4, 5, 19, 20, 21, 22, 23, 24, 25, 26, 27, 48, 49, 50, 51, 52, 59, 60, 61, 62, 63] ] unless position.blank?
+    b='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,1]).map(&:id).uniq.count!=0
+    0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 4,1]).map(&:id).uniq.count-2) do |l|  
+      b=b+'OR staffgrade_id=? '
+    end
+    b=b+')'
+    return b if position==1 && position2=0 && position3==1
       
-      #yg OK---
-      #["staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=? OR staffgrade_id=?",1, 2, 3, 4, 5, 19, 20, 21, 22, 23, 24, 25, 26, 27, 48, 49, 50, 51, 52, 59, 60, 61, 62, 63 ] unless position.blank?
-      
-  end
+    c='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 2,1]).map(&:id).uniq.count!=0
+    0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=?', 2,1]).map(&:id).uniq.count-2) do |l|  
+      c=c+'OR staffgrade_id=? '
+    end
+    c=c+')'
+    return c if position==0 && position2=1 && position3==1
+  end 
+   
+  def position2_conditions 
+    if position==1 && position2==1 && position3==0
+       [sokongan, Employgrade.find(:all,:conditions=>['group_id=? or group_id=?', 4,2]).map(&:id) ] 
+    elsif position==1 && position2==0 && position3==1
+       [sokongan, Employgrade.find(:all,:conditions=>['group_id=? or group_id=?', 4,1]).map(&:id) ] 
+    elsif position==0 && position2==1 && position3==1
+       [sokongan, Employgrade.find(:all,:conditions=>['group_id=? or group_id=?', 2,1]).map(&:id) ] 
+    end 
+  end 
+  
+  #when THREE groups selected
+  def pengurusan_profesional
+    a='(staffgrade_id=? ' if  Employgrade.find(:all, :conditions=>['group_id=? or group_id=? or group_id=?', 4,2,1]).map(&:id).uniq.count!=0
+    0.upto(Employgrade.find(:all, :conditions=>['group_id=? or group_id=? or group_id=?', 4,2,1]).map(&:id).uniq.count-2) do |l|  
+      a=a+'OR staffgrade_id=? '
+    end
+    a=a+')'
+    return a if position==1 && position2==1 && position3==1
+  end 
+   
+  def position3_conditions 
+    [pengurusan_profesional, Employgrade.find(:all,:conditions=>['group_id=? or group_id=? or group_id=?', 4,2,1]).map(&:id) ] if position==1 && position2==1 && position3==1
+  end 
+
 
   def staffgrade_conditions
-    ["staffgrade_id =?", staff_grade] unless staff_grade.blank?
+    [" (staffgrade_id =?)" , staff_grade] unless staff_grade.blank?
   end
   
   #def category_conditions

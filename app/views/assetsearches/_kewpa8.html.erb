@@ -5,7 +5,7 @@
 	document.write("<input type='button' " +
 	"onClick='window.print()' " +
 	"class='printbutton' " +
-	"value='Print This Page'/>");
+	"value='<%=escape_javascript(t 'print')%>'/>");
 	</script>
 </form>
 <%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 6 %>
@@ -16,12 +16,12 @@
 <% @inv = Asset.find(:all, :conditions=>['id IN (?) AND assettype=?',@ids,2]).count  %>
 <% @total_hm = Asset.sum(:purchaseprice, :conditions => ['id IN (?) AND assettype=?',@ids,1] )%>
 <% @total_inv = Asset.sum(:purchaseprice, :conditions => ['id IN (?) AND assettype=?',@ids,2] )%>
-<% @endingyear = @assetsearch.startdate.year-1 %>
+<% @endingyear = @assetsearch.enddate.year-1 %>
 <div id="title">
 <p class="marginright" align="right"><b>KEW. PA-8</b></p><BR>
 
 <BR>
-<H3>LAPORAN TAHUNAN HARTA MODAL DAN INVENTORI BAGI TAHUN <%=@endingyear %><BR><BR> KEMENTERIAN: </H3>
+<H3>LAPORAN TAHUNAN HARTA MODAL DAN INVENTORI BAGI TAHUN <%=@endingyear %><BR><BR> KEMENTERIAN: KESIHATAN MALAYSIA</H3>
 
 <BR>
 <div id="tprintreport">	
@@ -43,18 +43,18 @@
 		<tr>
 			<td align="center"><%=h bil %></td>
 			<td>Kolej Sains Kesihatan Bersekutu Johor Bahru</td>
-			<td align="center"><%=@hm %></td>
-			<td align="center"><%= ringgols(@total_hm) %></td>
-			<td align="center"><%=@inv %></td>
-			<td align="center"><%= ringgols(@total_inv) %></td>
+			<td align="right"><%=@hm %></td>
+			<td align="right"><%= ringgols(@total_hm) %></td>
+			<td align="right"><%=@inv %></td>
+			<td align="right"><%= ringgols(@total_inv) %></td>
 		</tr>
 		<tr>
 			<td BGCOLOR="#FEFE56">&nbsp;</td>
 			<td align="right" BGCOLOR="#FEFE56"><b>Jumlah</b></td>
-			<td BGCOLOR="#FEFE56">&nbsp;</td>
-			<td BGCOLOR="#FEFE56">&nbsp;</td>
-			<td BGCOLOR="#FEFE56">&nbsp;</td>
-			<td BGCOLOR="#FEFE56">&nbsp;</td>
+			<td align="right" BGCOLOR="#FEFE56"><b><%=@hm %></b></td>
+			<td align="right" BGCOLOR="#FEFE56"><b><%= ringgols(@total_hm) %></b></td>
+			<td align="right" BGCOLOR="#FEFE56"><b><%=@inv %></b></td>
+			<td align="right" BGCOLOR="#FEFE56"><b><%= ringgols(@total_inv) %></b></td>
 		</tr>
 	
 	</table>
@@ -68,19 +68,13 @@
 				    Tandatangan Pegawai Pengawal <BR>
 			    <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
 				<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Jawatan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
-				<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tarikh &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%= l(Date.today()) %>
+				<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tarikh &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%= l(Date.today()) if @endingyear==Date.today.year%>
 				<BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cop &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
 			</td><BR><Br>* laporan merangkumi semua aset alih yang dipegang sehingga tahun semasa.<BR>
 		</tr>
 	<BR>
-	
-
 </div>
 </fieldset>
-
-
 <BR>
-<div id="hideLink">
-<%= link_to 'Back', assettracks_path %>
-</div>
+
 

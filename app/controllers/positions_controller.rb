@@ -87,16 +87,38 @@ class PositionsController < ApplicationController
   
   def maklumat_perjawatan_LA
     @ppp = params[:ppp]
-    @positions = Position.find(:all, :order => :ancestry_depth)
+    #either staffgrade_id/postinfo_id must exist (if butiran exist, grade definitely exist!)
+    @positions = Position.find(:all, :conditions => ['name!=?', 'ICMS Vendor Admin'], :order => :ancestry_depth) 
     if @ppp=='1'
       render :layout => 'report'
     elsif @ppp=='2'
+#       @positions2=[]
+#       #BELOW SAME AS : unless position.staffgrade.blank? && position.postinfo_id.blank? 
+#       @positions_raw = Position.find(:all, :conditions=> ['staffgrade_id IS NOT NULL AND postinfo_id IS NOT NULL AND name!=?', 'ICMS Vendor Admin']) 
+#       @positions_raw.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[1].to_i}.sort.reverse!.each do |staffgrade2, positions_of_grade_no|
+#          positions_of_grade_no.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[0]}.sort.reverse!.each do |staffgrade, positions_by_grade|
+#            @positions2.concat(positions_by_grade)
+#          end
+#       end
       @positions2=[]
-      #BELOW SAME AS : unless position.staffgrade.blank? && position.postinfo_id.blank? 
-      @positions_raw = Position.find(:all, :conditions=> ['staffgrade_id IS NOT NULL AND postinfo_id IS NOT NULL']) 
+      #BELOW SAME AS : unless position.staffgrade.blank? && position.postinfo_id.blank?    #must include those w/o butiran - to match with Maklumat Perjawatan
+      @positions_raw = Position.find(:all, :conditions=> ['staffgrade_id IS NOT NULL AND staff_id IN(?) AND name!=?', Staff.all.map(&:id), 'ICMS Vendor Admin']) 
       @positions_raw.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[1].to_i}.sort.reverse!.each do |staffgrade2, positions_of_grade_no|
          positions_of_grade_no.group_by{|x|x.staffgrade.name.scan(/[a-zA-Z]+|[0-9]+/)[0]}.sort.reverse!.each do |staffgrade, positions_by_grade|
-           @positions2.concat(positions_by_grade)
+           positions_by_grade_w_butiran=[]
+           positions_by_grade_wo_butiran=[]
+           positions_by_grade.each do |position|
+             unless position.postinfo_id.blank? 
+               positions_by_grade_w_butiran<< position
+             else 
+               positions_by_grade_wo_butiran<< position 
+             end
+           end 
+	   @positions2.concat(positions_by_grade_w_butiran.sort_by{|x|[x.staffgrade_id, -(x.postinfo.details[0,3].to_i), x.combo_code]})
+           #@positions2.concat(positions_by_grade_w_butiran.sort_by{|x|[x.staffgrade_id, x.postinfo_id, x.combo_code]})
+           #@positions2.concat(positions_by_grade_w_butiran.sort_by{|x|[x.staffgrade_id, x.postinfo_id, x.staff.name]})
+           @positions2.concat(positions_by_grade_wo_butiran.sort_by{|x|[x.staffgrade_id, x.combo_code]})
+           #@positions2.concat(positions_by_grade_wo_butiran.sort_by{|x|[x.staffgrade_id, x.staff.name]})
          end
       end
       

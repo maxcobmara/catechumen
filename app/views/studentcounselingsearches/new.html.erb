@@ -19,8 +19,12 @@
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%=f.label (t 'studentcounseling.confirmed_at')%>:</td>
 				<td>
-					<%= date_select :confirmed_at_start, params[:confirmed_at_start], :include_blank => :true %> - 
-					<%= date_select :confirmed_at_end, params[:confirmed_at_end], :include_blank => :true %>
+					<!--<%#= date_select :confirmed_at_start, params[: :include_blank => :true confirmed_at_start], :include_blank => :true %> - 
+					<%#= date_select :confirmed_at_end, params[:confirmed_at_end],%>-->
+					<%= f.date_select :confirmed_at_start,  :include_blank => :true %> - 
+					<%= f.date_select :confirmed_at_end,  :include_blank => :true  %>
+					<!--by default - confirmed_at_start & confirmed_at_end value are : dd-mm-yyyy 00:00, refer model - add 24hours 
+					if user select [from :30 dec2012 to :30dec2012] - then search result will be within 30dec12 00:00 upto 31dec12 00:00-->
 				</td>
 			</tr>
 			<%=f.hidden_field :is_confirmed, :value=>true%>

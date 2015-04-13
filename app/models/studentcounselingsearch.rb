@@ -21,7 +21,7 @@ class Studentcounselingsearch < ActiveRecord::Base
   end
   
   def matrixno_conditions
-      [" ("+matrixno_details+")",Student.find(:all, :conditions=>['matrixno ILIKE(?)',"%#{matrixno}%"]).map(&:id)] unless matrixno.blank?
+      [" ("+matrixno_details+")",Student.find(:all, :conditions=>['matrixno ILIKE(?)',"%#{matrixno}%"]).map(&:id)] unless matrixno.blank? || Student.find(:all, :conditions=>['matrixno ILIKE ?',"%#{matrixno}%"]).count==0
   end
   
   def name_details
@@ -33,7 +33,7 @@ class Studentcounselingsearch < ActiveRecord::Base
   end
   
   def name_conditions
-    [" ("+name_details+")",Student.find(:all, :conditions=>['name ILIKE(?)',"%#{name}%"]).map(&:id)] unless name.blank?
+    [" ("+name_details+")",Student.find(:all, :conditions=>['name ILIKE(?)',"%#{name}%"]).map(&:id)] unless name.blank? || Student.find(:all, :conditions=>['name ILIKE ?',"%#{name}%"]).count==0
   end
   
   def case_id_details
@@ -57,7 +57,7 @@ class Studentcounselingsearch < ActiveRecord::Base
   end  
   
   def confirmed_at_end_conditions
-    ["confirmed_at<=?", confirmed_at_end] unless confirmed_at_end.blank?
+    ["confirmed_at<=?", confirmed_at_end+24.hours] unless confirmed_at_end.blank?  #dd-mm-yy 00:00 - to add 24 hours (1 day) <--- data entered by user
   end 
   
   def orders

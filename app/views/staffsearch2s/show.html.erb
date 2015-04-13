@@ -38,12 +38,19 @@
 	</script>
 	
 	<br>
-	<%= link_to (t 'back'), :controller=>'staffsearch2s', :action => 'new', :searchstafftype => 1 %>
+	<%#= link_to (t 'back'), :controller=>'staffsearch2s', :action => 'new', :searchstafftype => 1 %>
 	<br>
-	<%= link_to (t 'report.download'), {:controller => 'staffsearch2s', :action => 'show', :ppp =>'2'} %>
+	<%#= link_to (t 'report.download'), {:controller => 'staffsearch2s', :action => 'show', :ppp =>'2'} %>
 	<fieldset width=10px >
 
-<div id="title" width=21cm>	
+<div id="title" width=21cm>
+<div id="hideLink">
+<%#= link_to (t 'report.download'), 	{:controller => 'positions', :action => 'maklumat_perjawatan_LA', :ppp =>'2'} %>
+<%= link_to (t 'report.download'), {:controller => 'staffsearch2s', :action => 'show', :ppp =>'2'} %><br>
+<%= link_to (t 'back'), :controller=>'staffsearch2s', :action => 'new', :searchstafftype => 1 %><br>
+<%= link_to (t 'positions.back_to_positions'), positions_path %><br>
+<%= link_to (t 'positions.back_to_staffs'), staffs_path %>
+</div><BR>
 <H2>LAMPIRAN A</H2> 
 <H3>MAKLUMAT PERJAWATAN DI KOLEJ-KOLEJ LATIHAN</H3>
 <H3>KEMENTERIAN KESIHATAN MALAYSIA</H3>
@@ -89,6 +96,7 @@
 			
 		<% positions_wo_grade=[] %> 
 		<% positions_w_grade=[]%>
+		<!--either staffgrade_id/postinfo_id must exist (if butiran exist, grade definitely exist!) -->
 		<% @positions.each do |position| %>
 			<% unless position.staffgrade.blank? && position.postinfo_id.blank? %><!--hide display of position if both butiran & grade not exist-->
 				<% if position.staffgrade.blank? %>
@@ -219,7 +227,7 @@
 		<% end %>	
 		<!--END-part 1 (positions with staff grades)-->
 	
-		<!--START-part 2 (positions WITHOUT staff grades)-->
+		<!--START-part 2 (positions WITHOUT staff grades)--><!--just in case-->
 		<% positions_wo_grade.group_by(&:staffgrade_id).each do |staffgrade2, positions_of_grade_no|%>
 			<!--all positions listed here has no staff grade (employgrade) at all-->
 			<% positions_of_grade_no.group_by(&:staffgrade_id).each do |staffgrade, positions_by_grade| %>
@@ -285,7 +293,7 @@
 						</tr>	
 					<% end %>
 				<% end %>
-			
+
 				<!--$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ START force display of non-butiran items here, CANNOT SORT BLANK VALUE!-->
 				<% positions_by_grade_wo_butiran.group_by(&:postinfo_id).each do |butiran, positions|%>
 					<!--Butiran : <%#=butiran%>  | Position of Butiran (<%#=positions.count%>)<br>-->
@@ -334,14 +342,14 @@
 			<td colspan=3>JUMLAH</td>
 			<td>&nbsp;</td>
 			<td align="center">
-				<% positions_group=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staff_id IN(?)', @staffsearch2.staffs.map(&:id)]).map(&:postinfo_id).uniq %>
+				<% positions_group=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL and id IN(?)', @positions.map(&:id)]).map(&:postinfo_id).uniq %>
 				<%=positions_count=Postinfo.find(:all, :conditions=>['id IN (?)',positions_group]).sum(&:post_count)%>
 			</td>
-			<td align="center"><%= positions_insert=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IN(?)', @staffsearch2.staffs.map(&:id)]).count %></td>
-			<td align="center"><%= positions_hakiki=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IN(?) AND status=?',@staffsearch2.staffs.map(&:id),1 ]).count %></td>
-			<td align="center"><%= positions_kontrak=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND staff_id IN(?) AND status=?', @staffsearch2.staffs.map(&:id), 2 ]).count %></td>
-			<td align="center"><%= positions_kup=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND staff_id IN(?) AND status=?',@staffsearch2.staffs.map(&:id), 3 ]).count %></td>
-			<td align="center"><%= positions_available=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staff_id IS NULL AND staff_id IN(?)', @staffsearch2.staffs.map(&:id) ]).count %></td>
+			<td align="center"><%= positions_insert=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND id IN(?)', @positions.map(&:id) ]).count %></td>
+			<td align="center"><%= positions_hakiki=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND status=? AND id IN(?)',1,@positions.map(&:id) ]).count %></td>
+			<td align="center"><%= positions_kontrak=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND status=? AND id IN(?)',2, @positions.map(&:id) ]).count %></td>
+			<td align="center"><%= positions_kup=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staffgrade_id IS NOT NULL AND staff_id IS NOT NULL AND status=? AND id IN(?)',3, @positions.map(&:id) ]).count %></td>
+			<td align="center"><%=positions_available =  positions_count-positions_insert %><%#= positions_available=Position.find(:all, :conditions => ['postinfo_id IS NOT NULL AND staff_id IS NULL AND id IN(?)', @positions.map(&:id) ]).count %></td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>

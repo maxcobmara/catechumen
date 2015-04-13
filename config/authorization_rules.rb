@@ -16,6 +16,8 @@ authorization do
     
     #Asset Menu Items
     has_permission_on :assets,      :to => :manage                              #asset items
+    has_permission_on :asset_loans, :to => [:manage, :approve, :lampiran]
+    has_permission_on :asset_disposals, :to =>[ :manage, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :revalue, :dispose]
     
     #Location Menu Items
     has_permission_on :locations,   :to => :manage                              #location items
@@ -145,6 +147,24 @@ authorization do
     has_permission_on :librarytransactions, :to => :read do
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
+    
+    has_permission_on :asset_loans, :to => [:read, :update, :approve, :lampiran] do
+      if_attribute :loaned_by => is_in {AssetLoan.find(asset_id).unit_members}
+    end
+    has_permission_on :asset_loans, :to => :create
+    has_permission_on :asset_disposals, :to =>[ :read, :update, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19] do
+      if_attribute :verified_by => is {Login.current_login.staff_id}
+    end
+
+    #TODO : Set permissions on HOD, Set Notifications and only enable HOD to view when done (as in asset_losses/_endorse_hod)
+    has_permission_on :asset_losses, :to => [:read, :kewpa28] do  #  :edit,:update, 
+      if_attribute :endorsed_hod_by => is {Login.current_login.staff_id}
+    end
+    
+    has_permission_on :asset_losses, :to => [:kewpa30, :kewpa31], :join_by => :and do  
+      if_attribute :endorsed_hod_by => is {Login.current_login.staff_id}
+      if_attribute :is_submit_to_hod => true
+    end
   end
   
   role :staff_administrator do
@@ -172,9 +192,12 @@ authorization do
     has_permission_on :assets, :to => :manage
     has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
     has_permission_on :assetsearches, :to => :read
-    has_permission_on :locations, :to => [:manage]
+    has_permission_on :locations, :to => [:manage, :kewpa7]
     has_permission_on :stationeries, :to => [:manage, :supplies]
     has_permission_on :stationerysearches, :to => :manage
+    has_permission_on :asset_loans, :to=>[:manage, :approve, :lampiran]
+    has_permission_on :asset_disposals, :to =>[ :manage, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :revalue, :dispose]
+    has_permission_on :asset_losses, :to => [:manage, :kewpa28, :kewpa30, :kewpa31, :edit_multiple, :update_multiple] 
   end
 
   
@@ -188,7 +211,7 @@ authorization do
   role :warden do
     has_permission_on :locations, :to => :core
     has_permission_on :students, :to => [:menu, :show, :formforstudent]
-    #all wardens have access - [relationship: second_approver, FK: staff_id2, page: approve_warden]
+    #all wardens have access - [relationship: second_approver, FK: staff_id2, page: aptdprove_warden]
     has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve_warden] do
       if_attribute :studentsubmit => true
     end

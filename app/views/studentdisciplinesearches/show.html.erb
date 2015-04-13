@@ -18,32 +18,36 @@
 				<%=t('studentdiscipline.search_by_intake')%> : <%=@studentdisciplinesearch.intake.strftime("%b %Y")%><br><br>
 			</span>
 		<% end %>
-		&nbsp;<%=t('studentdiscipline.total_cases')%> : <%=h @studentdisciplinesearch.studentdisciplines.count %><br><br>
-		<!--additional heading-->
+		&nbsp;<%=t('studentdiscipline.total_cases')%> : 
+		<% if (!@studentdisciplinesearch.name.blank? || !@studentdisciplinesearch.icno.blank?) && @studentdisciplinesearch.studentdisciplines.count==StudentDisciplineCase.all.count %>
+			0 <!--note : show default NO RESULT only for search by name & icno, if no result found for searched values-->
+		<% else %>
+			 <%=h @studentdisciplinesearch.studentdisciplines.count %><br><br><!--will never display 0-->
+			 <!--additional heading-->
 		
-		<% if @studentdisciplinesearch.studentdisciplines.count > 0 %>
-		<!--student discipline cases display-->
-			<!--start:SEARCH BY INTAKE/PROGRAMME (multiple records)-->
-			<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
-				<tr>
-					<th>No</th>
-					<th><%=t('studentdiscipline.matrixno')%></th>
-					<th><%=t('student.icno')%></th>
-					<th><%=t('studentdiscipline.student_id')%></th>
-					<% if @studentdisciplinesearch.programme.blank? %>
-						<th><%=t('studentdiscipline.programme')%></th>
-					<% end %>
-					<% if @studentdisciplinesearch.intake.blank? %>
-						<th><%=t('studentdiscipline.intake')%></th>
-					<% end %>
-					<th><%=t('studentdiscipline.infraction')%></th>
-					<th><%=t('studentdiscipline.reported_date')%></th>
-					<th><%=t('studentdiscipline.location')%></th>
-					<th>Status</th>
-					<th><%=t('studentdiscipline.action')%></th>
-					<th><%=t('studentdiscipline.feedback_counsellor')%></th>
-				</tr>
-				<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|x.student.name}.each_with_index do |student_discipline, index|%>
+			<% if @studentdisciplinesearch.studentdisciplines.count > 0 %>
+			<!--student discipline cases display-->
+				<!--start:SEARCH BY INTAKE/PROGRAMME (multiple records)-->
+				<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
+					<tr>
+						<th>No</th>
+						<th><%=t('studentdiscipline.matrixno')%></th>
+						<th><%=t('student.icno')%></th>
+						<th><%=t('studentdiscipline.student_id')%></th>
+						<% if @studentdisciplinesearch.programme.blank? %>
+							<th><%=t('studentdiscipline.programme')%></th>
+						<% end %>
+						<% if @studentdisciplinesearch.intake.blank? %>
+							<th><%=t('studentdiscipline.intake')%></th>
+						<% end %>
+						<th><%=t('studentdiscipline.infraction')%></th>
+						<th><%=t('studentdiscipline.reported_date')%></th>
+						<th><%=t('studentdiscipline.location')%></th>
+						<th>Status</th>
+						<th><%=t('studentdiscipline.action')%></th>
+						<th><%=t('studentdiscipline.feedback_counsellor')%></th>
+					</tr>
+					<% @studentdisciplinesearch.studentdisciplines.sort_by{|x|[x.student.course_id, x.student.intake, x.student.name]}.each_with_index do |student_discipline, index|%>
 					<tr>
 						<td><%=index+1%></td>
 						<td><%=student_discipline.student.matrixno%>&nbsp;</td>
@@ -69,11 +73,11 @@
 						</td>
 						<td><%= link_to (t 'studentdiscipline.feedback_counsellor'),:controller=>'student_counseling_sessions', :action => 'feedback_referrer', :id => student_discipline.id if !student_discipline.counselor_feedback.blank? %>&nbsp;</td>
 					</tr>
-				<% end %>
-			</table>
-			<!--start:SEARCH BY INTAKE/PROGRAMME (multiple records)-->
-	
-		<!--student discipline cases display-->
+					<% end %>
+				</table>
+				<!--end:SEARCH BY INTAKE/PROGRAMME (multiple records)-->
+			<!--student discipline cases display-->
+			<% end %>
 		<% end %>
 	<br>
 </div>

@@ -12,7 +12,7 @@ class AssetLoss < ActiveRecord::Base
   
   belongs_to :document
   
-  validates_presence_of :report_code, :loss_type
+  validates_presence_of :report_code, :loss_type, :asset_id
   
   def item_name
     if loss_type == 'asset'

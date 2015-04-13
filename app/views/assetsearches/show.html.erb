@@ -7,7 +7,7 @@
 <%#=@assetsearch.defect_type%><%#=@assetsearch.nil? %>
 
 
-<% if @assetsearch.assets.count > 0 %><font size=-2><%=@assetsearch.assets.count%></font><%#=@assetsearch.defect_type%>
+<% if @assetsearch.assets.count > 0 %><font size=-2><!--FOR checking 11Apr2015<%#=@assetsearch.assets.count%>--></font><%#=@assetsearch.defect_type%>
 	<!--for checking		
 	/<%#=@assetsearch.assets[0].id%>-<%#=@assetsearch.assets[1].id%>-<%#=@assetsearch.assets[2].id%>-<%#=@assetsearch.assets[3].id%>-<%#=@assetsearch.assets[4].id%>
 	-<%#=@assetsearch.assets[5].id%>-<%#=@assetsearch.assets[6].id%>-->
@@ -33,7 +33,7 @@
 		<% if @assetsearch.name != nil %>
 			<% if (@assetsearch.assets.count==1 && @assetsearch.defect_asset)|| (@assetsearch.assets.count==1 && @assetsearch.defect_reporter) %>
 				<%=render :partial => 'kewpa9', :locals => {:assets => @assetsearch.assets[0]} %>
-			<% elsif @assetsearch.assets.count == 1 && !@assetsearch.assignedto && !@assetsearch.maintcode && !@assetsearch.disposal && !@assetsearch.discardoption && !@assetsearch.disposalcert && !@assetsearch.loss_start && !@assetsearch.loss_end && !@assetsearch.loss_cert %>
+			<% elsif @assetsearch.assets.count == 1 && !@assetsearch.assignedto && !@assetsearch.maintcode && !@assetsearch.disposal && !@assetsearch.discardoption && !@assetsearch.disposalcert && !@assetsearch.loss_start && !@assetsearch.loss_end && !@assetsearch.loss_cert && @assetsearch.category != 5  %>
 			<!--!@assetsearch.assignedto : to avoid KEWPA2/3 display if query 4 KEWPA7-->
 			<!--!@assetsearch.maintcode : to avoid KEWPA2/3 display if query for KEWPA14-->
 			<!--!@assetsearch.discardoption : to avoid KEWPA2/3 display if query 4 KEWPA18-->
@@ -198,7 +198,7 @@
 								<% end %>
 								<!--end-use this with method : assignedto_conditions in model : assetsearch.rb-->
 								
-								<% @aaaa.each_with_index do |x,index| %>
+								<% @aaaa.sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}.each_with_index do |x,index| %>
 								<%# @assetsearch.assets.each_with_index do |x,index| %><!--asal-->
 								<tr>	
 									<td><%=index+1 %></td>
@@ -241,7 +241,15 @@
 									<% end %>
 									<td align=center><%= x.purchasedate.blank? ? "" : x.purchasedate.strftime("%d-%m-%Y") %></td>
 									<td align=right><%= ringgols(x.purchaseprice) %>&nbsp;</td>
-									<td align=center>
+									
+									<% if @assetsearch.loss_cert %>
+										<% if index==0%>
+											<td align=center rowspan="<%=@assetsearch.assets.count %>">
+										<% end %>
+									<% else %>
+										<td align=center>
+									<% end %>
+									
 										<%# if (@assetsearch.loandate || @assetsearch.returndate) %>
 										<% if (@assetsearch.loanedasset == 1) %>
 											<%= link_to "KEW-PA 6", :controller=>'assets', :action => 'kewpa6', :id => x.id %>
@@ -319,8 +327,7 @@
 										<% elsif @assetsearch.loss_cert %>
 											<% if index == 0 %>
 												<%= link_to "KEW-PA 31", :controller=>'asset_losses', :action => 'kewpa31', :id => @assetsearch.loss_cert %>
-											<% else %>
-												<font size=-2><%=t('equery.same_as_above')%></font>
+												</td>
 											<% end %>
 										<% else %>
 											<% if x.assettype == 1 %>
@@ -329,7 +336,13 @@
 												<%= link_to "KEW-PA 3", :controller=>'assets', :action => 'kewpa3', :id => x.id %>
 											<% end %>
 										<% end %>
-									</td>
+										
+									<% if @assetsearch.loss_cert %>
+										<% if index==0%>
+											</td>
+										<% end %>
+									<% end %>
+									
 								</tr>
 								<% end %>
 							</table>

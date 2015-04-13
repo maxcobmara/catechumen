@@ -142,6 +142,9 @@
 
 </div>
 <BR/><BR/>
-
-<%= link_to (t 'edit'), edit_asset_loss_path(@asset_loss) %> |
+<% if @asset_loss.is_submit_to_hod != true %>
+	<% permitted_to? :update, :asset_losses do %>
+		<%= link_to (t 'edit'), edit_asset_loss_path(@asset_loss) %> |
+	<% end %>
+<% end %>
 <%= link_to (t 'back'), asset_losses_path %>

@@ -1,8 +1,10 @@
 class AssetLossesController < ApplicationController
+  filter_access_to :all
+  #filter_resource_access
   # GET /asset_losses
   # GET /asset_losses.xml
   def index
-    @asset_losses = AssetLoss.find(:all, :order => 'lost_at DESC')
+    @asset_losses = AssetLoss.with_permissions_to(:kewpa28).all #find(:all)#, :order => 'lost_at DESC')
     @asset_losses_group_writeoff = @asset_losses.group_by{|x|x.document_id}
     respond_to do |format|
       format.html # index.html.erb
