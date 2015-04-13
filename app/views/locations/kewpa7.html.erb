@@ -67,11 +67,12 @@
 			<td><BR></td>
 		</tr>
 		<tr>
-			<td>Nama : <SPAN class="filler"><%= Login.current_login.try(:staff).try(:name) %></SPAN></td>
+			<% asset_officer_post=Position.find(:first, :conditions=>['name ILIKE(?) OR tasks_main ILIKE(?) OR tasks_other ILIKE(?)', "%pegawai aset%", "%pegawai aset%", "%pegawai aset%"])%>
+			<td>Nama : <SPAN class="filler"><%=asset_officer_post.staff.try(:name)%></SPAN></td>
 			<td>Nama :  <SPAN class="filler"><%=h check_kin {@location.administrator.name} %></SPAN></td>
 		</tr>
 		<tr>
-			<td>Jawatan : <SPAN class="filler"><%= check_kin {Login.current_login.staff.position.name} %></SPAN></td>
+			<td>Jawatan : <SPAN class="filler"><%= asset_officer_post.try(:name) %></SPAN></td>
 			<td>Jawatan :  <SPAN class="filler"><%=h check_kin {@location.administrator.position.name} %></SPAN></td>
 		</tr>
 		<tr>
