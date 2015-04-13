@@ -2,12 +2,13 @@
   <%= f.error_messages %>
   <div class="tform">
 	
-		<% if @asset_loss.is_submit_to_hod == false %>
+		<% if @asset_loss.is_submit_to_hod != true %>
 		<H2><%=t('edit')%> <%= t 'asset_losses.assetloses_details' %></H2>
 				<%=render :partial => 'form', :locals => {:f => f} %> 
 
 		
-		<% elsif @asset_loss.is_submit_to_hod == true && @asset_loss.endorsed_on.blank? == true && Login.current_login.staff.position.code == "1" %>
+		<%# elsif @asset_loss.is_submit_to_hod == true && @asset_loss.endorsed_on.blank? == true && Login.current_login.staff.position.name == "1" %>
+		<% elsif @asset_loss.is_submit_to_hod == true && @asset_loss.endorsed_on.blank? == true &&AssetLoss.all.map(&:endorsed_hod_by).include?(Login.current_login.staff_id) %>
 		<%= render :partial => 'show_asset_details' %>
 		<%= render :partial => 'show_loss_initial' %>
 		<%= render :partial => 'endorse_hod', :locals => {:f => f} %>

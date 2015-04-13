@@ -151,10 +151,19 @@ authorization do
     has_permission_on :asset_loans, :to => [:read, :update, :approve, :lampiran] do
       if_attribute :loaned_by => is_in {AssetLoan.find(asset_id).unit_members}
     end
-    
     has_permission_on :asset_loans, :to => :create
     has_permission_on :asset_disposals, :to =>[ :read, :update, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19] do
       if_attribute :verified_by => is {Login.current_login.staff_id}
+    end
+
+    #TODO : Set permissions on HOD, Set Notifications and only enable HOD to view when done (as in asset_losses/_endorse_hod)
+    has_permission_on :asset_losses, :to => [:read, :kewpa28] do  #  :edit,:update, 
+      if_attribute :endorsed_hod_by => is {Login.current_login.staff_id}
+    end
+    
+    has_permission_on :asset_losses, :to => [:kewpa30, :kewpa31], :join_by => :and do  
+      if_attribute :endorsed_hod_by => is {Login.current_login.staff_id}
+      if_attribute :is_submit_to_hod => true
     end
   end
   
@@ -166,7 +175,7 @@ authorization do
   end
   
   role :finance_unit do
-    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve, :claimprint]
+    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travelclaim_logs], :to => [:manage, :check, :approve, :claimprint]
   end
   
   role :training_manager do
@@ -188,6 +197,7 @@ authorization do
     has_permission_on :stationerysearches, :to => :manage
     has_permission_on :asset_loans, :to=>[:manage, :approve, :lampiran]
     has_permission_on :asset_disposals, :to =>[ :manage, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :revalue, :dispose]
+    has_permission_on :asset_losses, :to => [:manage, :kewpa28, :kewpa30, :kewpa31, :edit_multiple, :update_multiple] 
   end
 
   

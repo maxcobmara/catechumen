@@ -8,7 +8,7 @@
 	<%= f.hidden_field :loss_type, :value=> 'asset'  %>
 	
 	<tr>
-		<td class="leftcol"><label for="asset_id"><b><%= t 'asset_losses.asset_id' %></b></label></td>
+		<td class="leftcol"><label for="asset_id"><b><%= t 'asset_losses.asset_id' %></b></label><font color="red"> * </font></td>
     <td>	<% if Asset.count(:all, :conditions => ['mark_as_lost is true']) == 0 %>
 						No assets marked for loss
 					<% else %>
@@ -28,7 +28,7 @@
 	
 	<tr>
 		<td class="leftcolwide"><label for="location_id"><%= t 'asset_losses.location_id' %></label></td>
-		<td><%= f.collection_select :location_id, Location.find(:all, :order => :code), :id, :location_list, :include_blank => true %></td>
+		<td><%= f.collection_select :location_id, Location.find(:all, :order => :combo_code), :id, :location_list, :include_blank => true %></td>
 		<td class="pagenote"><%= t 'asset_losses.location_id_long' %></td>
 	</tr>
 	
@@ -115,7 +115,13 @@
 	</tr>
 	<tr>
 	  <td class="leftcol"><label for="submit_for_appraisal1_on"><%=t('asset_losses.submit_to_hod')%></label></td>
-		<td><%= f.check_box :is_submit_to_hod %></td>
+		<td><%= f.check_box :is_submit_to_hod, :id => "submit_hod"%></td>
+	</tr>
+	<tr class="endorsement" style="display: none">
+		<td class="leftcol"><label for="endorsed_hod_by"><b><%= t 'asset_losses.endorsed_hod_by' %></b></label></td>
+		<td>
+			<%= f.collection_select :endorsed_hod_by, Staff.find(:all, :conditions => ['id =?', Position.find(:first, :conditions=>['name=?', "Pengarah"]).staff_id]), :id, :name %>
+		</td>
 	</tr>
 	
 </table>
@@ -223,6 +229,24 @@
 			      $j(".tr_rules_broken_desc").hide("highlight");
 			 			$j(".tr_preventive_action_dept").show("highlight");
 				  }
+			});
+			
+			//submit to HOD - ready for viewing
+			$j("input[id='submit_hod']").each(function(){
+			      if($j('#submit_hod').is(':checked')){
+				    $j('.endorsement').show();
+			      }
+			      else {
+				    $j('.endorsement').hide();
+			      }
+			});
+			$j("input[id='submit_hod']").change(function(){
+			      if($j('#submit_hod').is(':checked')){
+				    $j('.endorsement').show();
+			      }
+			      else {
+				    $j('.endorsement').hide();
+			      }
 			});
 	});
 </script>
