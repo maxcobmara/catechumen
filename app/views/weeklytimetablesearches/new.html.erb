@@ -1,53 +1,83 @@
 <div class="tform">
-	<H2>Weekly Timetable Search</H2>
+	<H2><%=t('equery.weeklytimetable.search')%></H2>
 
 <% form_for @weeklytimetablesearch do |f| %>
   <%= f.error_messages %>
 	<% if @searchweeklytimetabletype=='1' || @searchweeklytimetabletype==1 %>
-		<%= hidden_field_tag :method,  1 %>
+		<%= hidden_field_tag :method,  1 %><%= f.hidden_field :validintake, :value=> 1 %>
 		
 		<table width=100% >
-			<tr><td colspan=2>Search Weekly Timetable By :</td></tr>
+			<tr><td colspan=2><%=t('equery.weeklytimetable.search_by')%> :</td></tr>
+			
+			<% course_ids=Weeklytimetable.all.map(&:programme_id).uniq%>
 			
 			<tr class="programme_item" style="display:none;">
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :programme %></td>
-				<td> <%= f.collection_select :programme_id, Programme.roots, :id, :programme_list, :include_blank=> "Select" %></td>
-			</tr>
-			<!--retrieve data for intake_ids-->
-			<% @weeklytimetables_intake_ids = Weeklytimetable.all.map(&:intake_id) %>
-			<% @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN (?)',@weeklytimetables_intake_ids ]).sort_by{|x|x.programme.course_type}%>
-			<!--retrieve data for intake_ids-->
-			<tr class="intake_item">
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;Intake - Programme</td>
-				<td>
-					<%#= date_select :intake, params[:intake], :order => [:month, :year], :include_blank => true %>
-					<%= f.collection_select :intake_id, @intake_fr_intaketable, :id, :intake_programme, :include_blank=>"Select" %><!--intake from INTAKE table-->	
-					
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.weeklytimetable.programme')%></label></td>
+				<td> 
+					<%#= f.collection_select :programme_id, Programme.roots, :id, :programme_list, :include_blank=> (t 'select') %>
+					<!---->
+					<%= f.collection_select :programme_id,  Programme.find(:all, :conditions => ['ancestry_depth=? and id IN(?)', 0, course_ids], :order=>'course_type ASC'), :id, :programme_list , {:include_blank => (t 'select')},
+					:onchange => remote_function(:update => form_tag_id(f.object_name, :preparedby_list), 
+					:url => {:action => 'view_preparedby'}, 
+					:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+					<%#=f.text_field :intake_id %>
+					<!---->
 				</td>
 			</tr>
+			<!--retrieve data for intake_ids-->
+			<%# @weeklytimetables_intake_ids = Weeklytimetable.all.map(&:intake_id) %>
+			<%# @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN (?)',@weeklytimetables_intake_ids ]).sort_by{|x|x.programme.course_type}%>
+			<!--ref : controller-->
+			<% @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN (?)', @valid_intakes ]).sort_by{|x|[x.programme.course_type, x.programme_id, x.monthyear_intake]}%>
+			<!--retrieve data for intake_ids-->
+			<tr class="intake_item">
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.weeklytimetable.intake_programme')%></label></td>
+				<td>
+					<%#= date_select :intake, params[:intake], :order => [:month, :year], :include_blank => true %>
+					<%#= f.collection_select :intake_id, @intake_fr_intaketable, :id, :intake_programme, :include_blank=>(t 'select') %>
+					<!--intake from INTAKE table-->	
+					<!---->
+					<%= f.collection_select :intake_id, @intake_fr_intaketable, :id, :intake_programme, {:include_blank => (t 'select')},
+					:onchange => remote_function(:update => form_tag_id(f.object_name, :preparedby_list), 
+					:url => {:action => 'view_preparedby' }, 
+					:with => "'intakeid='+$('"+form_tag_id(f.object_name, :intake_id)+"').value ") %>
+					<%#=f.text_field :programme_id %>
+					<!---->
+				</td>
+			</tr>
+			<!--%%%%%%%%%%%%%-->
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.weeklytimetable.preparedby')%></label></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :preparedby_list)) %>
+					</div>
+				</td>
+			</tr>
+			<!--%%%%%%%%%%%%%-->
 			<tr>
 				<td colspan=2 style="text-valign:top;">
 					&nbsp;&nbsp;&nbsp;<%= f.check_box :intake,:checked=>"checked",:class => 'intake_programme', :id=> 'intake_checker' %>&nbsp;
-					<font size=-2><b>Untick</b> to select by Programme. <b>Tick</b> to select by Intake-Programme.</font>
+					<font size=-2><b><%=t('untick')%></b>&nbsp;<%=t('equery.weeklytimetable.select_by_programme')%>
+					<b><%=t('tick')%></b>&nbsp;<%=t('equery.weeklytimetable.select_by_intake_programme')%></font>
 				</td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :start_date %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.weeklytimetable.startdate')%></label></td>
 				<td><%= date_select :startdate, params[:startdate], :include_blank => true %></td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :end_date %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.weeklytimetable.enddate')%></label></td>
 				<td><%= date_select :enddate, params[:enddate], :include_blank => true %></td>
 			</tr>
-			<tr>
-				<% @positions_staff_ids_of_trainer = Position.find(2).descendants.map(&:staff_id).compact %>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :prepared_by %></td>
-				<td><%= f.collection_select :preparedby, Staff.find(:all, :conditions =>['id IN (?)',@positions_staff_ids_of_trainer]).sort_by{|x|x.name}, :id, :name, :include_blank=> "Select" %></td>
-			</tr>
+			<!--<tr>
+				<%# @positions_staff_ids_of_trainer = Position.find(2).descendants.map(&:staff_id).compact %>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%#=t('equery.weeklytimetable.preparedby')%></label></td>
+				<td><%#= f.collection_select :preparedby, Staff.find(:all, :conditions =>['id IN (?)',@positions_staff_ids_of_trainer]).sort_by{|x|x.name}, :id, :name, :include_blank=> (t 'select') %></td>
+			</tr>-->
 		</table>
 		
 		<% end %>
-  <p><%= f.submit "Search"%>&nbsp;<font size=-2>Leaves all fields 'blank' / 'unselected' to display ALL record.</font></p>
+  <p><%= f.submit t('search')%>&nbsp;<font size=-2><%=t('equery.leaves_blank_unselected')%></font></p>
 <% end %>
 
 </div>

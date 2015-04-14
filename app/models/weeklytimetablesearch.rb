@@ -1,9 +1,20 @@
 class Weeklytimetablesearch < ActiveRecord::Base
-  attr_accessible :programme_id, :intake, :startdate, :enddate, :preparedby, :intake_id
+  attr_accessible :programme_id, :intake, :startdate, :enddate, :preparedby, :intake_id, :validintake
   attr_accessor :method
   
   def weeklytimetables
     @weeklytimetables ||= find_weeklytimetables
+  end
+  
+  def validintake_data
+    #timetable INTAKE must match with PROGRAMME, to exclude prev data entry (wrongly match data [intake_id<->programme_id])
+    valid_intakes=[]
+    weeklytimetables = Weeklytimetable.all
+    weeklytimetables.each do |y|
+        intakes_of_prog = Intake.find(:all, :conditions => ['programme_id=?', y.programme_id]).map(&:id)
+        valid_intakes << y.intake_id if intakes_of_prog.include?(y.intake_id)
+    end
+    valid_intakes.uniq
   end
   
   private
@@ -11,13 +22,25 @@ class Weeklytimetablesearch < ActiveRecord::Base
   def find_weeklytimetables
     Weeklytimetable.find(:all, :conditions => conditions,  :order => orders)   
   end
+  
+  def validintake_details
+    a="intake_id=?" if validintake_data.count > 0
+    0.upto(validintake_data.count-2) do |cnt|
+      a+=" OR intake_id=? "
+    end
+    return a if validintake==1 || validintake=='1'
+  end
+  
+  def validintake_conditions
+    ["("+validintake_details+")", validintake_data] if validintake==1 || validintake=='1'
+  end
 
   def programme_conditions
-    ["programme_id=?",programme_id] if !programme_id.blank? && intake != '1'    #if intake != 1 ##unless programme_id.blank? && 
+    ["programme_id=?",programme_id] if !programme_id.blank? &&  (intake==0 || intake=='0')   #intake != '1'  
   end
   
   def intake_id_conditions
-    ["intake_id=?", intake_id] if !intake_id.blank? && intake != '0'            #if intake != 0 ##unless intake_id.blank? && intake != 1   #intake_id exist & intake must 1  
+    ["intake_id=?", intake_id] if !intake_id.blank? && (intake==1 || intake=='1')  #intake != '0'    
   end
   
   def preparedby_conditions

@@ -93,7 +93,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :weeklytimetables, :collection => { :general_timetable => :get, :personalize_timetable => :get}
   map.resources :weeklytimetables
   #map.connect ':controller/:action.:format' #24March2013 - this will cause "No Action responded to 3.Actions:create, destroy,edit..."
-
+  
+  #for this error : Only get, put, and delete requests are allowed.
+  map.resources :weeklytimetablesearches, :collection => {:view_preparedby =>:post}  #user.resources :pictures,:collection => {:new=>:any}
+  
   map.resources :intakes
 
   map.resources :staff_shifts
