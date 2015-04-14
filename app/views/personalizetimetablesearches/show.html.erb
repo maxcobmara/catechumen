@@ -9,13 +9,29 @@
 				<%=t('equery.personalize_timetable.search_by_lecturer')%> : <b><%= Staff.find(@personalizetimetablesearch.lecturer).name %></b><br><br>
 			</span>
 		<% end %>
+		<% if !@personalizetimetablesearch.startdate.blank? || !@personalizetimetablesearch.enddate.blank? %>
+			<%=t('equery.personalize_timetable.class_date')%> : 
+		<% end %>
+		<% if @personalizetimetablesearch.startdate && (!@personalizetimetablesearch.startdate.blank? || !@personalizetimetablesearch.startdate.nil?) %>
+			<span style="text-decoration:underline;">
+				<%=t('from')%>&nbsp;&nbsp;<b><%=@personalizetimetablesearch.startdate.try(:strftime, "%d %b %Y") %></b>
+				<% if @wrongstartdate=='1'%>*<% end %>
+			</span>
+		<% end %>
+		<% if @personalizetimetablesearch.enddate && (!@personalizetimetablesearch.enddate.blank? || !@personalizetimetablesearch.enddate.nil?) %>
+			<span style="text-decoration:underline;">
+				&nbsp;<%=t('to')%>&nbsp;&nbsp;<b><%=@personalizetimetablesearch.enddate.end_of_month.try(:strftime, "%d %b %Y") %></b>
+				<% if @wrongenddate=='1' %><font color=red>*</font><% end %><br><br>
+			</span>
+		<% end %>
+
 
 		<% @all_combine = [] %>
 		<% @personalizetimetablesearch.personalizetimetables.each do |x| %>
 			<% @all_combine << Weeklytimetable.find(x.weeklytimetable_id) %>
 		<% end %>
 		<% @personalize = @all_combine.group_by{|t|t.startdate} %>
-		
+		<% if @personalizetimetablesearch.enddate.blank? %><br><br><% end %>
 		<%=t('equery.personalize_timetable.total_personalize_timetable')%> : <%= @personalize.count %><br><br>
 		
 		<!--backup--><!--
@@ -36,7 +52,7 @@
 		
 		<!---->
 		<table border=1 cellpadding=3 cellspacing=0>
-		<% @personalize.each do |startdate,personalize_timetables| %>
+		<% @personalize.sort.reverse.each do |startdate,personalize_timetables| %>
 			<% bb = 0 %>
 			<tr>
 				<th colspan=6 align="center" style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">
@@ -56,19 +72,20 @@
 								<th colspan=4><%=Staff.find(lecturer).name.upcase%> - <%=personal_timetable.main_details_for_weekly_timetable%></th>
 								<th>
 									<% if personal_timetable.hod_approved == true %>
+										<span style="color:blue;"><%=t('equery.personalize_timetable.approved')%></span><br>
 										<%= link_to (t 'equery.personalize_timetable.view_timetable'), :controller=>'weeklytimetables', :action => 'personalize_timetable', :locals=>{:id => startdate,:lecturer_id=>lecturer } %>
 									<% else %>
-										<span style="color:red;">
+										
 										<% if personal_timetable.hod_rejected == true %>
-											<%=t('equery.personalize_timetable.rejected')%>
+											<span style="color:red;"><%=t('equery.personalize_timetable.rejected')%></span>
 										<% else %>
 											<% if personal_timetable.is_submitted == true %>
-												<%=t('equery.personalize_timetable.submitted')%>
+												<span style="color:green;"><%=t('equery.personalize_timetable.submitted')%></span>
 											<% else %>
-												<%=t('equery.personalize_timetable.not_submit')%>
+												<span style="color:black;"><%=t('equery.personalize_timetable.not_submit')%></span>
 											<% end %>
 										<% end %>
-										</span>
+										
 									<% end %>
 								</th>
 							</tr>
@@ -152,4 +169,6 @@
 			<%# end %><!--end for-@personalize--><!--
 		</table>-->
 	<br>
+	<% if @wrongenddate=='1' %><font color=red>*</font><font size=-2> - <%=t('equery.personalize_timetable.set_enddate')%></font><br><% end %>
+	<% if @wrongstartdate=='1' %>*<font size=-2> - <%=t('equery.personalize_timetable.set_startdate')%></font><% end %>
 </div>

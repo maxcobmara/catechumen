@@ -7,14 +7,7 @@ class Weeklytimetablesearch < ActiveRecord::Base
   end
   
   def validintake_data
-    #timetable INTAKE must match with PROGRAMME, to exclude prev data entry (wrongly match data [intake_id<->programme_id])
-    valid_intakes=[]
-    weeklytimetables = Weeklytimetable.all
-    weeklytimetables.each do |y|
-        intakes_of_prog = Intake.find(:all, :conditions => ['programme_id=?', y.programme_id]).map(&:id)
-        valid_intakes << y.intake_id if intakes_of_prog.include?(y.intake_id)
-    end
-    valid_intakes.uniq
+    Weeklytimetable.validintake_timetable
   end
   
   private
