@@ -24,6 +24,18 @@ class WeeklytimetableDetail < ActiveRecord::Base
        end 
    end
    
+   def get_date_schedule
+     sdate = Weeklytimetable.find(weeklytimetable_id).startdate
+     endate = Weeklytimetable.find(weeklytimetable_id).enddate
+     return sdate if day2 == 1
+     return sdate+1 if day2 == 2
+     return sdate+2 if day2 == 3
+     return sdate+3 if day2 == 4
+     return sdate+4 if is_friday == true
+     return sdate+5 if day2 == 6
+     return sdate+6 if day2 == 7
+   end
+   
    def get_date_for_lesson_plan
      sdate = Weeklytimetable.find(weeklytimetable_id).startdate
      endate = Weeklytimetable.find(weeklytimetable_id).enddate

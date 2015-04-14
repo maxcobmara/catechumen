@@ -1,0 +1,11 @@
+<% unless @programme_id.blank? && @intake_id.blank? %>
+      <%# unless params[:programmeid].blank? %>
+	  <%= collection_select (:weeklytimetablesearch, :preparedby, @preparer_list, :id, :name, :include_blank => (t 'select')) %>
+      <%# end %>
+<% else %>
+	<% if @programme_id.blank? %>
+		&nbsp;&nbsp; <%=t('equery.weeklytimetable.select_programme_first')%>
+	<% elsif @intake_id.blank? %>
+		&nbsp;&nbsp; <%=t('equery.weeklytimetable.select_intake_programme_first')%>
+	<% end %>
+<% end%> 
