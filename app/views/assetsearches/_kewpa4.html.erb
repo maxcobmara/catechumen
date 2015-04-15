@@ -1,12 +1,12 @@
 <%= stylesheet_link_tag 'report', :media => "print" %>
 
 	<form action="#">
-			<script>
-			document.write("<input type='button' " +
-			"onClick='window.print()' " +
-			"class='printbutton' " +
-			"value='Print This Page'/>");
-			</script>
+		<script>
+		document.write("<input type='button' " +
+		"onClick='window.print()' " +
+		"class='printbutton' " +
+		"value='<%=escape_javascript(t 'print')%>'/>");
+		</script>
 	</form>
 	
 	<%= link_to "Back", :controller=>'assetsearches', :action => 'new', :searchtype => 2 %>
@@ -32,7 +32,8 @@
 	
 	<tbody>
 			<% bil = 0 %><% @assets = @assetsearch.assets %>
-			<% @assets.sort { |a,b| a.assetcode <=> b.assetcode }.each do |asset| %>
+			<%# @assets.sort { |a,b| a.assetcode <=> b.assetcode }.each do |asset| %>
+			<% @assets.sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}.each do |asset| %>
 			<% bil += 1 %>
 				<tr>
 					<td class="tdata" style="text-align:center;" ><%=h bil %></th>
