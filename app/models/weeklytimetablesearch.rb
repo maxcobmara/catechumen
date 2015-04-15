@@ -6,7 +6,7 @@ class Weeklytimetablesearch < ActiveRecord::Base
     @weeklytimetables ||= find_weeklytimetables
   end
   
-  def validintake_data
+  def validintake_data  #get valid Wtimetable_ids
     Weeklytimetable.validintake_timetable
   end
   
@@ -17,9 +17,13 @@ class Weeklytimetablesearch < ActiveRecord::Base
   end
   
   def validintake_details
-    a="intake_id=?" if validintake_data.count > 0
+#     a="intake_id=?" if validintake_data.count > 0
+#     0.upto(validintake_data.count-2) do |cnt|
+#       a+=" OR intake_id=? "
+#     end
+    a="id=?" if validintake_data.count > 0
     0.upto(validintake_data.count-2) do |cnt|
-      a+=" OR intake_id=? "
+      a+=" OR id=? "
     end
     return a if validintake==1 || validintake=='1'
   end
