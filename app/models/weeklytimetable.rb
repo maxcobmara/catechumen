@@ -91,17 +91,20 @@ class Weeklytimetable < ActiveRecord::Base
   
   def self.validintake_timetable
     #timetable INTAKE must match with PROGRAMME, to exclude prev data entry (wrongly match data [intake_id<->programme_id])
-    valid_intakes=[]
+    #valid_intakes=[]
+    wt_valid_intakes=[]
     weeklytimetables = Weeklytimetable.all
     weeklytimetables.each do |y|
         intakes_of_prog = Intake.find(:all, :conditions => ['programme_id=?', y.programme_id]).map(&:id)
-        valid_intakes << y.intake_id if intakes_of_prog.include?(y.intake_id)
+        #valid_intakes << y.intake_id if intakes_of_prog.include?(y.intake_id)
+	wt_valid_intakes << y.id if intakes_of_prog.include?(y.intake_id) #collect WT ids yg guna intake yg betul bkn collect
     end
-    valid_intakes.uniq
+    wt_valid_intakes.uniq
   end
   
   def self.valid_wt_ids
-     find(:all, :conditions=>['intake_id IN(?)', self.validintake_timetable]).map(&:id)
+     #find(:all, :conditions=>['intake_id IN(?)', self.validintake_timetable]).map(&:id)
+     find(:all, :conditions=>['id IN(?)', self.validintake_timetable]).map(&:id)
   end
   
   private 

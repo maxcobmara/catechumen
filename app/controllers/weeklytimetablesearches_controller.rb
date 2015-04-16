@@ -2,7 +2,7 @@ class WeeklytimetablesearchesController < ApplicationController
   def new
     @searchweeklytimetabletype = params[:searchweeklytimetabletype]
     @weeklytimetablesearch = Weeklytimetablesearch.new
-    @valid_intakes =  @weeklytimetablesearch.validintake_data
+    @valid_wtintakes =  @weeklytimetablesearch.validintake_data
   end
 
   def create
