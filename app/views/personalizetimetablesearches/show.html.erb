@@ -73,7 +73,9 @@
 								<th>
 									<% if personal_timetable.hod_approved == true %>
 										<span style="color:blue;"><%=t('equery.personalize_timetable.approved')%></span><br>
-										<%= link_to (t 'equery.personalize_timetable.view_timetable'), :controller=>'weeklytimetables', :action => 'personalize_timetable', :locals=>{:id => startdate,:lecturer_id=>lecturer } %>
+										<% if current_login.staff_id==lecturer %>
+											<%= link_to (t 'equery.personalize_timetable.view_timetable'), :controller=>'weeklytimetables', :action => 'personalize_timetable', :locals=>{:id => startdate,:lecturer_id=>lecturer } %>
+										<% end %>
 									<% else %>
 										
 										<% if personal_timetable.hod_rejected == true %>

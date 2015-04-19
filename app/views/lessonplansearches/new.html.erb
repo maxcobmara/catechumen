@@ -1,62 +1,55 @@
 <div class="tform">
-	<H2>Lesson Plan / Lesson Plan Reporting Search</H2>
+	<H2><%=t('equery.lesson_plan.search') %></H2>
 
 <% form_for @lessonplansearch do |f| %>
   <%= f.error_messages %>
 	<table width=100% >
 		<%if @searchlessonplantype=='1' || @searchlessonplantype==1 %>
-			<%= hidden_field_tag :method,  1 %>
-			<tr><td colspan=2></td>Search Lesson Plan / Lesson Plan Reporting By :</tr>
-			
-			<% @topic_ids_in_lesson_plan = LessonPlan.all.map(&:topic).uniq %>
-			<% @root_programme_ids = []%>
-			<% @topic_ids_in_lesson_plan.each do |x| %>
-				<% @root_programme_ids << Programme.find(x).root_id %>
-			<% end %>
-			<% @programme_list = Programme.find(:all, :conditions=> ['id IN(?)', @root_programme_ids.uniq])%>
+			<%= hidden_field_tag :method,  1 %><%=f.hidden_field :valid_schedule, :value => 1%><%=f.hidden_field :loggedin_staff, :value => @loggedinstaff%>
+			<tr><td colspan=2></td><%=t('equery.lesson_plan.search_by') %> :</tr>
 			<tr class="programme_item" style="display:none;">
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :programme %></td>
-				<td> <%= f.collection_select :programme_id, @programme_list, :id, :programme_list, :include_blank=> "Select" %></td>
-			</tr>
-			<!--retrieve data for intake_ids-->
-			<% @lessonplans_intake_ids = LessonPlan.all.map(&:intake_id) %>
-			<% @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN (?)',@lessonplans_intake_ids]).sort_by{|x|x.programme.course_type}%>
-			<!--retrieve data for intake_ids-->
-			<tr class="intake_item">
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;Intake - Programme</td>
-				<td>
-					<%#= date_select :intake, params[:intake], :order => [:month, :year], :include_blank => true %>
-					<%= f.collection_select :intake_id, @intake_fr_intaketable, :id, :intake_programme, :include_blank=>"Select" %><!--intake from INTAKE table-->	
-					
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.lesson_plan.programme') %></label></td>
+				<td> <%#= f.collection_select :programme_id, @programme_list, :id, :programme_list, :include_blank=> t('select') %>
+					<!---->
+					<%= f.collection_select :programme_id, @programme_list, :id, :programme_list , {:include_blank => (t 'select')},
+					:onchange => remote_function(:update => form_tag_id(f.object_name, :lecturer_list), 
+					:url => {:action => 'view_lecturer'}, 
+					:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+					<!---->
 				</td>
 			</tr>
+			<tr class="intake_item">
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%=t('equery.lesson_plan.intake_programme') %></td>
+				<td>
+					<%#= f.collection_select :intake_id, @intake_fr_intaketable, :id, :intake_programme, :include_blank=>t('select') %>
+					<!--intake from INTAKE table-->
+					<!---->
+					<%= f.collection_select :intake_id, @intake_fr_intaketable, :id, :intake_programme, {:include_blank => (t 'select')},
+					:onchange => remote_function(:update => form_tag_id(f.object_name, :lecturer_list), 
+					:url => {:action => 'view_lecturer' }, 
+					:with => "'intakeid='+$('"+form_tag_id(f.object_name, :intake_id)+"').value ") %>
+					<!---->
+				</td>
+			</tr>
+			<!--%%%%%%%%%%%%%-->
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%= t('equery.lesson_plan.lecturer')%></label></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :lecturer_list)) %>
+					</div>
+				</td>
+			</tr>
+			<!--%%%%%%%%%%%%%-->
 			<tr>
 				<td colspan=2 style="text-valign:top;">
 					&nbsp;&nbsp;&nbsp;<%= f.check_box :intake,:checked=>"checked",:class => 'intake_programme', :id=> 'intake_checker' %>&nbsp;
-					<font size=-2><b>Untick</b> to select by Programme. <b>Tick</b> to select by Intake-Programme.</font>
+					<font size=-2><b><%=t('equery.untick')%></b> <%=t('equery.lesson_plan.select_by_programme')%> <b><%=t('equery.tick')%></b> </b> <%=t('equery.lesson_plan.select_by_intake_programme')%></font>
 				</td>
 			</tr>
-			
-			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :lecturer %></td>
-				<td>
-					<% @positions_staff_ids_of_trainer = Position.find(2).descendants.map(&:staff_id).compact+Position.find(4).staff_id.to_a %>
-					<%= f.collection_select :lecturer, Staff.find(:all, :conditions =>['id IN (?)',@positions_staff_ids_of_trainer]).sort_by{|x|x.name}, :id, :name, :include_blank=> "Select" %>
-				</td>
-			<tr>
-			<!--
-			<tr>
-				<td class="leftcol"> <%#= f.label :intake_id %></td>
-				<td><%#= f.text_field :intake_id %></td>
-			<tr>
-			<tr>
-				<td class="leftcol"><%#= f.label :programme_id %></td>
-				<td><%#= f.text_field :programme_id %></td>
-			<tr>-->
 		<% end %>
 	</table>
 
-  <p><%= f.submit "Search"%>&nbsp;<font size=-2>Leaves all fields 'blank' / 'unselected' to display ALL record.</font></p>
+  <p><%= f.submit t('search')%>&nbsp;<font size=-2></b> <%=t('equery.leaves_blank_unselected')%></font></p>
 <% end %>
 
 </div>
