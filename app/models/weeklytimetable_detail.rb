@@ -150,6 +150,11 @@ class WeeklytimetableDetail < ActiveRecord::Base
    def subject_day_time_class_method
       "#{subject_day_time}"+ " ("+"#{render_class_method}"+")"
    end
+   
+   def self.valid_sch_ids
+     valid_wt_ids = Weeklytimetable.valid_wt_ids
+     WeeklytimetableDetail.find(:all, :conditions => ['weeklytimetable_id IN(?)', valid_wt_ids]).map(&:id)
+   end
 
    DAY_LIST = [
            #  Displayed       stored in db
