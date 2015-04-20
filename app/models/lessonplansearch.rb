@@ -13,17 +13,36 @@ class Lessonplansearch < ActiveRecord::Base
      LessonPlan.find(:all, :conditions => conditions,  :order => orders)   
    end
    
-   def loggedin_staff_conditions
-     #staffid = loggedin_staff
-     #user_roles = Staff.
-     staff_roles = Login.find(:first, :conditions =>[ 'staff_id=?', loggedin_staff]).roles
-     if staff_roles.include?('Administration')
+   def loggedin_staff_details
+     if loggedin_staff==0         
+       all_lecturers = LessonPlan.all.map(&:lecturer)
+       a=" lecturer=? " if all_lecturers.count > 0
+       0.upto(all_lecturers.count-2).each do |cnt|
+         a+=" OR lecturer=? "
+       end
+       b=["("+a+")", all_lecturers] 
      else
-       ["lecturer=?", loggedin_staff] unless loggedin_staff.blank?
+       if loggedin_staff.to_s.size > 3
+         comb_staff = loggedin_staff.to_s
+         progid=(comb_staff[3, comb_staff.size]).to_i
+         all_intakes = LessonPlan.all.map(&:intake_id)
+         intakes_of_prog = Intake.find(:all, :conditions => ['id IN(?) and programme_id=?',all_intakes, progid]).map(&:id)
+         a=" intake_id=? " if intakes_of_prog.count > 0
+         0.upto(intakes_of_prog.count-2).each do |cnt|
+           a+=" OR intake_id=? "
+         end
+         b=["("+a+")", intakes_of_prog]
+       else
+         b=["lecturer=?", loggedin_staff]
+       end
      end
+     return b unless loggedin_staff.blank?
    end
    
-   ####
+   def loggedin_staff_conditions
+     loggedin_staff_details unless loggedin_staff.blank?
+   end
+   
    def valid_schedule_conditions
      valid_schedule_ids = WeeklytimetableDetail.valid_sch_ids
      if valid_schedule_ids.count > 0
@@ -34,7 +53,6 @@ class Lessonplansearch < ActiveRecord::Base
        ["("+a+")", valid_schedule_ids] if valid_schedule == 1
      end
    end 
-   #### 
 
    def programme_details
        a='topic=? ' if (Programme.find(programme_id).descendants.at_depth(4)+Programme.find(programme_id).descendants.at_depth(3)).map(&:id).uniq.count!=0

@@ -19,6 +19,7 @@ class LessonplansearchesController < ApplicationController
     @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN(?)', lessonplans_intake_ids]).sort_by{|x|[x.programme.course_type, x.programme_id, x.monthyear_intake]}
     
     if loggedinstaff_roles.include?('Administration')
+      @lloginstaff=0
       @programme_list = @programme_list 
       @intake_fr_intaketable = @intake_fr_intaketable
     else
@@ -27,8 +28,10 @@ class LessonplansearchesController < ApplicationController
       prog_id = Programme.find(:first, :conditions => ['name ILIKE(?)', "%#{prog_name.strip}%"]).id
       @programme_list = Programme.find(:all, :conditions => ['id=?', prog_id])
       if post_kp
+	@lloginstaff=('999'+prog_id.to_s).to_i
         @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN(?) and programme_id IN(?)', lessonplans_intake_ids, prog_id]).sort_by{|x|[x.programme.course_type, x.programme_id, x.monthyear_intake]}
       else
+        @lloginstaff=@loggedinstaff
         staff_intakes = LessonPlan.find(:all, :conditions => ['lecturer=?', @loggedinstaff]).map(&:intake_id)
         @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN(?) and id IN(?)', lessonplans_intake_ids, staff_intakes]).sort_by{|x|[x.programme.course_type, x.programme_id, x.monthyear_intake]}
       end
