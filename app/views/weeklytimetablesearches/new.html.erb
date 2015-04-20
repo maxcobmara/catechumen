@@ -28,6 +28,7 @@
 			<%# @weeklytimetables_intake_ids = Weeklytimetable.all.map(&:intake_id) %>
 			<%# @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN (?)',@weeklytimetables_intake_ids ]).sort_by{|x|x.programme.course_type}%>
 			<!--ref : controller-->
+			<% @valid_intakes = Weeklytimetable.find(:all, :conditions => ['id IN(?)',@valid_wtintakes]).map(&:intake_id)%>
 			<% @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN (?)', @valid_intakes ]).sort_by{|x|[x.programme.course_type, x.programme_id, x.monthyear_intake]}%>
 			<!--retrieve data for intake_ids-->
 			<tr class="intake_item">

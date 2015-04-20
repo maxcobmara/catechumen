@@ -1,27 +1,28 @@
 <div>
-	<H3>LESSON PLAN / LESSON PLAN REPORTING SEARCH :</h3>
+	<H3><%=t('equery.lesson_plan.search') %> :<%=@intakeidd%></h3>
 		
-		<%= link_to "Back", :controller=>'lessonplansearches', :action => 'new', :searchlessonplantype => 1 %><br><br>
+		<%= link_to t('back'), :controller=>'lessonplansearches', :action => 'new', :searchlessonplantype => 1 %><br><br>
 		
 		<!--additional heading-->
 		<% if @lessonplansearch.lecturer && @lessonplansearch.lecturer.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Lecturer : <b><%= Staff.find(@lessonplansearch.lecturer).name %></b><br><br>
+				<%=t('equery.lesson_plan.search_lecturer') %> : <b><%= Staff.find(@lessonplansearch.lecturer).name %></b><br><br>
 			</span>
 		<% end %>
 		<% if @lessonplansearch.intake_id &&@lessonplansearch.intake_id.blank? ==false && @lessonplansearch.intake == 1%>
 			<span style="text-decoration:underline;">
-				Search by Intake: <b><%= Intake.find(@lessonplansearch.intake).name %></b><br><br>
+				<%=t('equery.lesson_plan.search_intake') %>: <b><%= Intake.find(@lessonplansearch.intake_id).name %></b>
+				<%=t('equery.weeklytimetable.of_programme')%>: <b><%=Intake.find(@lessonplansearch.intake_id).programme.programme_list %></b> <br><br>
 			</span>
 		<% end %>
 		<% if @lessonplansearch.programme_id  &&@lessonplansearch.programme_id.blank? ==false && @lessonplansearch.intake != 1%>
 			<span style="text-decoration:underline;">
-				Search by Programme: <b><%= Programme.find(@lessonplansearch.programme_id).programme_list %></b><br><br>
+				<%=t('equery.lesson_plan.search_programme') %>: <b><%= Programme.find(@lessonplansearch.programme_id).programme_list %></b><br><br>
 			</span>
 		<% end %>
 		
 		<% unless @lessonplansearch.lessonplans.nil?  %>
-			Total of Lesson Plans : <%=h @lessonplansearch.lessonplans.count %><br><br>
+			<%=t('equery.lesson_plan.total_lesson_plan') %> : <%=h @lessonplansearch.lessonplans.count %><br><br>
 		<% end %>
 
 		<% if @lessonplansearch.lessonplans.count > 0%>
@@ -29,23 +30,25 @@
 			<tr>
 				<th>No</th>
 				<% if (@lessonplansearch.lecturer.blank? && @lessonplansearch.intake_id.blank? && @lessonplansearch.programme_id.blank?)|| (@lessonplansearch.lecturer && @lessonplansearch.intake_id.blank? && @lessonplansearch.programme_id.blank?) %>
-					<th>Programme</th>
+					<th><%=t('equery.lesson_plan.programme') %></th>
 				<% end %>
-				<th>Lecturer</th>
-				<th width=65px>Intake</th>
-				<th>Total of Students</th>
-				<th>Year/Semester</th>
-				<th>Topic</th>
-				<th>Lecture Title</th>
-				<th width=65px>Lecture Date</th>
-				<th width=60px>Start</th>
-				<th width=60px>End</th>
-				<th>Status</th>
-				<th>Report</th>
-			</tr>	
-			<% @lessonplansearch.lessonplans.each_with_index do |lesson_plan, index| %>
+				<th><%=t('equery.lesson_plan.lecturer') %></th>
+				<th width=65px><%=t('equery.lesson_plan.intake') %></th>
+				<th><%=t('equery.lesson_plan.total_students') %></th>
+				<th><%=t('equery.lesson_plan.year_semester') %></th>
+				<th><%=t('equery.lesson_plan.topic') %></th>
+				<th><%=t('equery.lesson_plan.lecture_title') %></th>
+				<th width=65px><%=t('equery.lesson_plan.lecture_date') %></th>
+				<th width=60px><%=t('equery.lesson_plan.start') %></th>
+				<th width=60px><%=t('equery.lesson_plan.end') %></th>
+				<th><%=t('equery.lesson_plan.plan_status')%></th>
+				<th><%=t('equery.lesson_plan.report') %></th>
+			</tr>
+			<% index=0%>
+			<%# @lessonplansearch.lessonplans.each_with_index do |lesson_plan, index| %>
+			<% @lessonplansearch.lessonplans.sort_by{|x|[x.lessonplan_intake.programme_id, x.lessonplan_intake.monthyear_intake]}.reverse.each do |lesson_plan| %>
 			<tr>
-				<td><%=index+1%><%#=lesson_plan.id%></td>
+				<td><%=index+=1%><%=lesson_plan.id%></td>
 				<% if (@lessonplansearch.lecturer.blank? && @lessonplansearch.intake_id.blank? && @lessonplansearch.programme_id.blank?)|| (@lessonplansearch.lecturer && @lessonplansearch.intake_id.blank? && @lessonplansearch.programme_id.blank?) %>
 					<td><%=lesson_plan.schedule_item.weeklytimetable_topic.programme_coursetype_name%></td>
 				<% end %>
@@ -55,23 +58,22 @@
 				<td align="center"><%=lesson_plan.year%> / <%=lesson_plan.semester%></td> 
 				<td align="center"><%=h lesson_plan.schedule_item.weeklytimetable_topic.subject_with_topic %></td>
 				<td><%=h lesson_plan.lecture_title %></td>
-			    <td align="center"><%=h lesson_plan.lecture_date %></td>
+			    <td align="center"><%=h lesson_plan.lecture_date.try(:strftime, '%d-%m-%Y') %></td>
 			    <td align="center"><%=h lesson_plan.schedule_item.get_start_time %></td>
 			    <td align="center"><%=h lesson_plan.schedule_item.get_end_time %></td>
 				<td align="center">
-					<%= link_to "Lesson Plan", :controller=>'lesson_plans', :action => 'lesson_plan', :id => lesson_plan.id %> <br>
-					(<% if lesson_plan.hod_approved==true %>
-						Approved
+					<% if lesson_plan.hod_approved==true %>
+						<b><font color=blue><%=t('equery.lesson_plan.approved')%></font></b><br>
+						<%= link_to t('equery.lesson_plan.view_plan'), :controller=>'lesson_plans', :action => 'lesson_plan', :id => lesson_plan.id %>
 					<% else%>
-						
 						<% if lesson_plan.hod_approved==false && lesson_plan.hod_rejected==true%>
-							Rejected (<%=timetable.reason%>)
+							<font color=red><b><%=t('equery.lesson_plan.rejected') %></b> (<%=lesson_plan.reason %>)</font>
 						<% elsif lesson_plan.hod_approved.blank? && lesson_plan.hod_rejected.blank? && lesson_plan.is_submitted==true%>
-							Submitted
+							<b><font color=green><%=t('equery.lesson_plan.submitted') %></font></b>
 						<% else %>
-							Not Submitted
+							<b><%=t('equery.lesson_plan.not_submit') %></b>
 						<% end %>
-					<% end %>)
+					<% end %>
 				</td>
 				<td>
 					<% if lesson_plan.report_submit == true %>
@@ -88,3 +90,4 @@
 		<% end %>
 
 </div>
+<br><br>
