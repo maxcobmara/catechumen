@@ -12,3 +12,4 @@ gem install spreadsheet -v 0.9.7 --no-ri
 gem install to_xls -v 0.1.2 --no-ri
 gem install will_paginate -v 2.3.16 --no-ri
 gem install pg -v 0.17.1 --no-ri --no-rdoc
+gem install thin 1.6.3 --no-ri --no-rdoc
