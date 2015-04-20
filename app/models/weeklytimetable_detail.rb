@@ -151,9 +151,16 @@ class WeeklytimetableDetail < ActiveRecord::Base
       "#{subject_day_time}"+ " ("+"#{render_class_method}"+")"
    end
    
+   #for use in Equery - Lesson Plan
    def self.valid_sch_ids
      valid_wt_ids = Weeklytimetable.valid_wt_ids
-     WeeklytimetableDetail.find(:all, :conditions => ['weeklytimetable_id IN(?)', valid_wt_ids]).map(&:id)
+     #below - topic in LessonPlan & topic in WeeklytimetableDetail must match
+     valid_topics=[]
+     LessonPlan.all.each do |lp|
+       wtd_topic=WeeklytimetableDetail.find(lp.schedule).topic if WeeklytimetableDetail.all.map(&:id).include?(lp.schedule)
+       valid_topics << lp.topic if wtd_topic==lp.topic
+     end
+     WeeklytimetableDetail.find(:all, :conditions => ['weeklytimetable_id IN(?) and topic IN(?)', valid_wt_ids, valid_topics]).map(&:id)
    end
 
    DAY_LIST = [

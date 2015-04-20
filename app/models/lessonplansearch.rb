@@ -13,6 +13,17 @@ class Lessonplansearch < ActiveRecord::Base
      LessonPlan.find(:all, :conditions => conditions,  :order => orders)   
    end
    
+   def subject_conditions
+     unless subject.blank?
+       topics_ids_prog=Programme.find(subject).descendants.map(&:id) 
+       a=" topic=? " if topics_ids_prog.count > 0
+       0.upto(topics_ids_prog.count-2).each do |cnt|
+         a+=" OR topic=? "
+       end
+     end
+     ["("+a+")", topics_ids_prog] unless subject.blank?
+   end
+   
    def loggedin_staff_details
      if loggedin_staff==0         
        all_lecturers = LessonPlan.all.map(&:lecturer)

@@ -88,6 +88,36 @@ class LessonplansearchesController < ApplicationController
     render :partial => 'view_lecturer', :layout => false
   end
   
+  def view_subject
+    unless params[:lecturerid].blank?
+      lecturerid=params[:lecturerid]
+      intakeid=params[:intakeid2].to_i
+      #@intake2=params[:intakeid2].to_i
+      loggedinstaff = @current_login.staff_id
+      loggedinstaff_roles = @current_login.roles.map(&:name)
+      if loggedinstaff_roles.include?('Administration')
+        topics_ids = LessonPlan.find(:all, :conditions =>['lecturer=? and intake_id=?', lecturerid, intakeid]).map(&:topic)
+      else
+        post_kp = Position.find(:first, :conditions => ['staff_id=? and (name ILIKE(?) or tasks_main ILIKE(?) or tasks_other ILIKE(?))', loggedinstaff, '%Ketua Program%', '%Ketua Program%', '%Ketua Program%'])
+        if post_kp
+          topics_ids = LessonPlan.find(:all, :conditions =>['lecturer=? and intake_id=?', lecturerid, intakeid]).map(&:topic)
+        else
+          topics_ids = LessonPlan.find(:all, :conditions => ['lecturer=? and intake_id=?', loggedinstaff,intakeid]).map(&:topic)
+        end
+      end
+      subjects_ids=[]
+      for topicid in topics_ids # [377,393,808] 
+        ss=Programme.find(topicid).course_type
+        subjects_ids << Programme.find(topicid).parent_id if ss=='Topic'
+        subjects_ids << Programme.find(topicid).parent.parent_id if ss=='Subtopic'
+      end
+      @tt=topics_ids
+      @ssubjectids=subjects_ids
+      @subject_list = Programme.find(:all, :conditions => ['id IN (?)', subjects_ids.uniq])
+    end
+    render :partial => 'view_subject', :layout => false
+  end
+  
   def show
     @lessonplansearch = Lessonplansearch.find(params[:id])
   end
