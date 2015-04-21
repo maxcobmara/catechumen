@@ -60,6 +60,10 @@ class Programme < ActiveRecord::Base
     def subject_list
         "#{code}" + " " + "#{name}"   
     end
+    
+    def semester_list
+       "#{course_type}" + " " + "#{name}"
+    end
 
     def programme_list
       if is_root?
