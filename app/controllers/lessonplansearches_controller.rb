@@ -24,10 +24,11 @@ class LessonplansearchesController < ApplicationController
       @intake_fr_intaketable = @intake_fr_intaketable
     else
       post_kp= Position.find(:first, :conditions => ['staff_id=? and (name ILIKE(?) or tasks_main ILIKE(?) or tasks_other ILIKE(?))', @loggedinstaff, '%Ketua Program%', '%Ketua Program%', '%Ketua Program%'])
+      role_kp=Role.find_by_name('Programme Manager')
       prog_name = Position.find(:first, :conditions => ['staff_id=? and unit is not null', @loggedinstaff]).unit
       prog_id = Programme.find(:first, :conditions => ['name ILIKE(?)', "%#{prog_name.strip}%"]).id
       @programme_list = Programme.find(:all, :conditions => ['id=?', prog_id])
-      if post_kp
+      if post_kp || (role_kp && prog_name)  #Positions table : 'Ketua Program+Unit', Roles table : 'Programme Manager' only
 	@lloginstaff=('999'+prog_id.to_s).to_i
         @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN(?) and programme_id IN(?)', lessonplans_intake_ids, prog_id]).sort_by{|x|[x.programme.course_type, x.programme_id, x.monthyear_intake]}
       else
