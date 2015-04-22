@@ -3,7 +3,15 @@
 		
 		<%= link_to t('back'), :controller=>'curriculumsearches', :action => 'new', :searchcurriculumtype => 1 %><br><br>
 		<% unless @curriculumsearch.curriculums.nil?  %>
-			<%=t('equery.curriculum.total_curriculums') %> : <%=h @curriculumsearch.curriculums.count %><br>
+			<b><u><%=t('equery.curriculum.total_curriculums') %></u></b> : <br><br>
+			<% @curriculumsearch.curriculums.sort_by{|y|y.ancestry_depth}.group_by{|x|x.course_type}.each do |coursetype,items| %>
+				<% if coursetype=='Diploma' || coursetype=='Diploma Lanjutan' || coursetype=='Pengkhususan' || coursetype=='Pos Basik' || coursetype=='Semester'%>
+					<!--&nbsp;&nbsp;&nbsp;--><%#=t('equery.curriculum.programme')%>
+				<% else %>
+					&nbsp;&nbsp;&nbsp;<%=t("equery.curriculum."+"#{coursetype.downcase}")%>&nbsp;=&nbsp;<%=items.count%><br>
+				<% end %>
+				
+			<% end %>
 		<% end %>
 		
 		<% if @curriculumsearch.curriculums.count > 0%>
@@ -13,7 +21,14 @@
 				<th width="15px">&nbsp;</th>
 				<th width="15px">&nbsp;</th>
 				<th width="15px">&nbsp;</th>
-				<th>&nbsp;<%#=t('equery.curriculum.name')%></th>
+				<th width="700px">&nbsp;<%#=t('equery.curriculum.name')%></th>
+				<th width="50px" align="center" style="border-bottom: solid 1px;"><%=t('equery.curriculum.credit')%></th>
+				<th width="50px" align="center" style="border-bottom: solid 1px;">Status</th>
+				<th width="70px" align="center" style="border-bottom: solid 1px;"><%=t('equery.curriculum.duration')%></th>
+				<th width="90px" align="center" style="border-bottom: solid 1px;"><%=t('equery.curriculum.abbreviation')%></th>
+				<th width="70px" align="center" style="border-bottom: solid 1px;"><%=t('equery.curriculum.lecture')%></th>
+				<th width="70px" align="center" style="border-bottom: solid 1px;"><%=t('equery.curriculum.tutorial')%></th>
+				<th width="70px" align="center" style="border-bottom: solid 1px;"><%=t('equery.curriculum.practical')%></th>
 			</tr>
 			<% @curriculumsearch.curriculums.each do |x| %>
 			<tr>
@@ -22,13 +37,63 @@
 					<%=x.course_type.upcase%>&nbsp;<%=x.name.upcase%></u></td>
 				<% elsif x.course_type=='Semester' %>
 					<td>&nbsp;</td><td colspan=4><u><%=x.semester_list%></u></td>
-				<% elsif x.course_type=='Subject' %>
-					<td colspan=2>&nbsp;</td><td colspan=3><b><%=x.code%>&nbsp;<%=x.name%></b></td>
+				<% elsif x.course_type=='Subject' || x.course_type=='Commonsubject' %>
+					<td colspan=2 style="height: 30px;">&nbsp;</td><td colspan=3><b><%=x.code%>&nbsp;<%=x.name%></b></td>
+					<!--<td align="center"><%=x.subject_abbreviation%></td>
+					<td colspan=3>&nbsp;</td>-->
 				<% elsif x.course_type=='Topic' %>
-					<td colspan=3>&nbsp;</td><td colspan=2><%=x.code%>&nbsp;|&nbsp;<%=x.name%></td>
+					<td colspan=3>&nbsp;</td><td colspan=2 style="border-bottom: solid 1px;"><%=x.code%>&nbsp;|&nbsp;<%=x.name%></td>
 				<% elsif x.course_type=='Subtopic' %>
-					<td colspan=4>&nbsp;</td><td><%=x.code%>&nbsp;|&nbsp;<%=x.name%></td>
+					<td colspan=4>&nbsp;</td><td style="border-bottom: solid 1px;"><%=x.code%>&nbsp;|&nbsp;<%=x.name%></td>
 				<% end %>
+				<!--columns : CREDIT, STATUS & Total DURATION for Diploma, Diploma Lanjutan, Pos Basik, Pengkhususan, Semester, Subject & Commonsubject-->
+				<% if x.course_type=='Diploma' || x.course_type=='Diploma Lanjutan' || x.course_type=='Pos Basik' || x.course_type=='Pengkhususan' || x.course_type=='Semester' ||  x.course_type=='Subject' || x.course_type=='Commonsubject' %>
+					<td align="center" style="background-color:#F9F9F9;"><b><%=x.credits if x.credits.to_i !=0%></b></td>
+					<td align="center"><b><%=h (Programme::COURSE_STATUS.find_all{|disp, value| value == x.status}).map {|disp, value| disp} unless x.status.blank? %></b></td>
+					<td align="center"  style="background-color:#F9F9F9;"><b><%=x.duration%>&nbsp;<%=h (Programme::DURATION_TYPES.find_all{|disp, value| value == x.duration_type}).map {|disp, value| disp} unless x.duration.blank? %></b></td>
+					<% unless x.course_type=='Subject' || x.course_type=='Commonsubject' %>
+						<td align="center"><!--ABBR--></td>
+					<% end %>
+				<% else %>
+					<td style="border-bottom: solid 1px; background-color:#F9F9F9;">&nbsp;</td><!--Subjects, Commonsubject, Topics & Subtopics hv no values-->
+					<td style="border-bottom: solid 1px;">&nbsp;</td>
+					<td style="border-bottom: solid 1px; background-color:#F9F9F9;">&nbsp;</td>
+				<% end %>
+				<!---->
+				<!--columns : lecture, tutorial & practical for Subject, Commonsubject, Topic & Subtopic-->
+				<% if x.course_type=='Subject' || x.course_type=='Commonsubject' || x.course_type=='Topic' || x.course_type=='Subtopic'%>
+					<% if x.course_type=='Subject' || x.course_type=='Commonsubject' %>
+						<td align="center"><%=x.subject_abbreviation%></td>
+					<% else %>
+						<td align="center" style="border-bottom: solid 1px;"><%=x.subject_abbreviation%></td>
+					<% end %>
+					<% if x.course_type=='Subject' || x.course_type=='Commonsubject' %>
+						<td align="center" style="background-color:#F9F9F9;">
+					<% else %>
+						<td align="center" style="border-bottom: solid 1px; background-color:#F9F9F9;">
+					<% end %>
+						 <%=x.lecture%>&nbsp;<%=h (Programme::LECTURE_TIME.find_all{|disp, value| value == x.lecture_time}).map {|disp, value| disp} unless x.lecture.blank? %>
+					</td>
+					<% if x.course_type=='Subject' || x.course_type=='Commonsubject' %>
+						<td align="center">
+					<% else %>
+						<td align="center" style="border-bottom: solid 1px;">
+					<% end %>
+						<%=x.tutorial%>&nbsp;<%=h (Programme::LECTURE_TIME.find_all{|disp, value| value == x.tutorial_time}).map {|disp, value| disp} unless x.tutorial.blank? %>
+					</td>
+					<% if x.course_type=='Subject' || x.course_type=='Commonsubject' %>
+						<td align="center" style="background-color:#F9F9F9;">
+					<% else %>
+						<td align="center" style="border-bottom: solid 1px; background-color:#F9F9F9;">
+					<% end %>
+						<%=x.practical%>&nbsp;<%=h (Programme::LECTURE_TIME.find_all{|disp, value| value == x.practical_time}).map {|disp, value| disp} unless x.practical.blank? %>
+					</td>
+				<% else %>
+					<td style="background-color:#F9F9F9;">&nbsp;</td>
+					<td>&nbsp;</td>
+					<td style="background-color:#F9F9F9;">&nbsp;</td>
+				<% end %>
+				<!---->
 			</tr>
 			<% end %>
 			</table>

@@ -22,7 +22,7 @@ class Curriculumsearch < ActiveRecord::Base
   
   def subject_conditions
     descendants_ids = Programme.find(semester).descendants.map(&:id)
-    subjects_ids = Programme.find(:all, :conditions => ['id IN(?) and course_type=?', descendants_ids, 'Subject'])
+    subjects_ids = Programme.find(:all, :conditions => ['id IN(?) and (course_type=? or course_type=?)', descendants_ids, 'Subject', 'Commonsubject'])
     if subjects_ids.count > 0
       a="id=?"
       0.upto(subjects_ids.count-2).each do |y|
