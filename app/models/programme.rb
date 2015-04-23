@@ -21,6 +21,8 @@ class Programme < ActiveRecord::Base
     has_many :examquestion_subject, :class_name => 'Examquestion', :foreign_key => 'subject_id'
     has_many :examquestion_topic, :class_name => 'Examquestion', :foreign_key => 'topic_id'
 
+    named_scope :issubject, :conditions =>  ["course_type=?", 'Subject'].map(&:id)
+    
     def set_combo_code
       if ancestry_depth == 0
         self.combo_code = code
@@ -60,11 +62,23 @@ class Programme < ActiveRecord::Base
     def subject_list
         "#{code}" + " " + "#{name}"   
     end
+    
+    def semester_list
+       "#{course_type}" + " " + "#{name}"
+    end
 
     def programme_list
       if is_root?
         "#{course_type}" + " " + "#{name}"   
       else
+      end
+    end
+    
+    def subject_full
+      if course_type=="Topic"
+        "#{parent.code}" + " " + "#{parent.name}"   
+      elsif course_type=="Subtopic"
+        "#{parent.parent.code}" + " " + "#{parent.parent.name}"
       end
     end
     

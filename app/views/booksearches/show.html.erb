@@ -36,31 +36,39 @@
 		<!--additional heading-->
 		
 		<!--links for stock verification-->
-		<% if @booksearch.sbooks.count > 0 %>
-			<% if (@booksearch.accessionno.blank? && @booksearch.isbn.blank? && @booksearch.author.blank? && @booksearch.title.blank?) %>
-				<!--no search filter selected at all-->
-				<%= link_to (t 'equery.book.listing_stock_verification_all') , :controller=>'books', :action => 'stock_verification', :locals => {:class_type => '1',:dodo =>"All"} %><br><br>
-			<% else %>
-				<!--any of above search type selected-->
-				<% @book_ids = @booksearch.sbooks.map(&:id)%>
-				<%= link_to (t 'equery.book.listing_stock_verification'), :controller=>'books', :action => 'stock_verification', :locals => {:class_type => '4',:dodo => @book_ids, :searchby_items => @search_items} %><br><br>
+		<% permitted_to? :read, :booksearches do %>
+			<% if @booksearch.sbooks.count > 0 %>
+				<% if (@booksearch.accessionno.blank? && @booksearch.isbn.blank? && @booksearch.author.blank? && @booksearch.title.blank? && @booksearch.classno.blank? && @booksearch.publisher.blank?) %>
+					<!--no search filter selected at all-->
+					<%= link_to (t 'equery.book.listing_stock_verification_all') , :controller=>'books', :action => 'stock_verification', :locals => {:class_type => '1',:dodo =>"All"} %><br><br>
+				<% else %>
+					<!--any of above search type selected-->
+					<% @book_ids = @booksearch.sbooks.map(&:id)%>
+					<%= link_to (t 'equery.book.listing_stock_verification'), :controller=>'books', :action => 'stock_verification', :locals => {:class_type => '4',:dodo => @book_ids, :searchby_items => @search_items} %><br><br>
+				<% end %>
 			<% end %>
 		<% end %>
 		<!--links for stock verification-->
 		<%=t('equery.book.total')%> = <%=@booksearch.sbooks.count%> <br><br>
 		
 		<% if @booksearch.sbooks.count > 0%>
-			<table border=1 cellpadding=3 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;">
+			<table border=1 cellpadding=1 cellspacing=0 style="font-family: Arial, Helvetica, sans-serif;font-size:12px;" width=100%>
 				<tr>
-					<th>No</th>	
-					<th><%=t('book.title')%></th>
-					<th><%=t('book.author')%></th>
-					<th><%=t('book.quantity')%></th>
-					<th><%=t('book.accessionno')%></th>
-					<th>ISBN</th>
-					<th><%=t('book.classno')%></th>
-					<th>Status</th>
-					<th><%=t('book.publisher')%></th>
+					<th width="5%">No</th>	
+					<th width="20%"><%=t('book.title')%></th>
+					<th width="8%"><%=t('book.author')%></th>
+					<th width="5%"><%=t('book.quantity')%></th>
+					<th width="7%"><%=t('book.accessionno')%></th>
+					<th width="8%">ISBN</th>
+					<th width="5%"><%=t('book.classno')%></th>
+					<th width="7%"><%=t('book.publisher')%></th>
+					<th width="5%"><%=t('book.publish_date')%></th>
+					<th width="5%"><%=t('book.language')%></th>
+					<th width="5%"><%=t('book.pages')%></th>
+					<th width="5%">Status</th>
+					<th width="5%"><%=t('book.mediatype')%></th>
+					<th width="5%"><%=t('book.loan_type')%></th>
+					<th width="5%"><%=t('equery.book.media_location')%></th>
 				</tr>
 				<% count = 0 %>
 				<% @booksearch.sbooks.each_with_index do |sbook, index2| %>
@@ -69,17 +77,23 @@
 							<tr>
 								<td><%=count+=1%></td>
 								<td><%=sbook.title%></td>
-								<td><%=sbook.author%></td>
+								<td><%=simple_format(sbook.author)%></td>
 								<% if index==0 %>
-									<td align="center"><%=h sbook.book_quantity %></td>
+									<td align="center" rowspan=<%=sbook.book_quantity%>><%=h sbook.book_quantity %></td>
 								<% else %>
-									<td align="center" style="background-color:grey;"></td>
+									<!--<td align="center" style="background-color:grey;"></td>-->
 								<% end %>
 								<td><%=accession_item.accession_no %></td>
 								<td><%=h sbook.isbn %>&nbsp;</td>
 								<td><%=h sbook.classlcc %></td>
-								<td><%=h (Book::STATUS.find_all{|disp, value| value == sbook.status}).map {|disp, value| disp} %>&nbsp;</td>
 								<td><%=h sbook.publisher %>&nbsp;</td>
+								<td align="center"><%=h sbook.publish_date%>&nbsp;</td>
+								<td><%=h (Book::LANGUAGE.find_all{|disp, value| value == sbook.language}).map {|disp, value| disp} %>&nbsp;</td>
+								<td><%=h (sbook.pages).gsub("ms",t('equery.book.total_pages')) unless sbook.pages.blank? %></td>
+								<td><%=h (Book::STATUS.find_all{|disp, value| value == sbook.status}).map {|disp, value| disp} %>&nbsp;</td>
+								<td><%=h (Book::MEDIA.find_all{|disp, value| value == sbook.mediatype}).map {|disp, value| disp} %>&nbsp;</td>
+								<td><%=h (Book::LOAN.find_all{|disp, value| value == sbook.loantype}).map {|disp, value| disp} %>&nbsp;</td>
+								<td><%=h sbook.location %></td>
 							</tr>
 						<% end %>
 					<% else %>
@@ -91,8 +105,14 @@
 							<td><%=h sbook.accessionno %></td>
 							<td><%=h sbook.isbn %>&nbsp;</td>
 							<td><%=h sbook.classlcc %></td>
-							<td><%=h (Book::STATUS.find_all{|disp, value| value == sbook.status}).map {|disp, value| disp} %>&nbsp;</td>
 							<td><%=h sbook.publisher %>&nbsp;</td>
+							<td align="center"><%=h sbook.publish_date %>&nbsp;</td>
+							<td><%=h (Book::LANGUAGE.find_all{|disp, value| value == sbook.language}).map {|disp, value| disp} %>&nbsp;</td>
+							<td><%=h (sbook.pages).gsub("ms",t('equery.book.total_pages')) unless sbook.pages.blank? %></td>
+							<td><%=h (Book::STATUS.find_all{|disp, value| value == sbook.status}).map {|disp, value| disp} %>&nbsp;</td>
+							<td><%=h (Book::MEDIA.find_all{|disp, value| value == sbook.mediatype}).map {|disp, value| disp} %>&nbsp;</td>
+							<td><%=h (Book::LOAN.find_all{|disp, value| value == sbook.loantype}).map {|disp, value| disp} %>&nbsp;</td>
+							<td><%=h sbook.location %></td>
 						</tr>
 					<% end %>
 				<% end %>

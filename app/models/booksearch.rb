@@ -1,5 +1,5 @@
 class Booksearch < ActiveRecord::Base
-  attr_accessible :title, :author, :isbn, :accessionno, :classno, :stock_summary, :accessionno_start, :accessionno_end, :accumbookloan
+  attr_accessible :title, :author, :isbn, :accessionno, :classno, :stock_summary, :accessionno_start, :accessionno_end, :accumbookloan, :publisher
   attr_accessor :method
   
   def sbooks
@@ -39,6 +39,10 @@ class Booksearch < ActiveRecord::Base
   
   def accessionno_end_conditions
     ['accessionno<=?', accessionno_end] if (accessionno_end.blank? == false && stock_summary == 1)||(accessionno_end.blank? == false && stock_summary == 2)
+  end
+  
+  def publisher_conditions
+    ['publisher ILIKE(?)', "%#{publisher}%" ] unless publisher.blank?
   end
   
   #def accumbookloan_details

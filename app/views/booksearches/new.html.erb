@@ -10,7 +10,12 @@
 			
 			<%= hidden_field_tag :method,  1 %>
 			<%= f.hidden_field :stock_summary, :value=> 0%>
-			<tr><td colspan=2><%=t('book.listing')%> :</td></tr>
+			<tr><td colspan=2>
+				<% if permitted_to? :read, :booksearches %>
+					<%=t('book.listing')%>
+				<% else %>
+					<%=t('equery.book.listing_books')%>
+				<% end %> : </td></tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'book.title') %></td>
 				<td><%= f.text_field :title %></td>
@@ -26,6 +31,10 @@
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'book.accessionno')%></td>
 				<td><%= f.text_field :accessionno %></td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'book.publisher')%></td>
+				<td><%= f.text_field :publisher %></td>
 			</tr>
 		<% elsif @searchbooktype=='2' || @searchbooktype==2  %>
 		

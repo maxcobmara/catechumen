@@ -1,0 +1,15 @@
+<% unless params[:programmeid].blank?%>
+  <%= collection_select (:curriculumsearch, :semester, @semester_list, :id, :semester_list, :include_blank => (t 'select'))%>
+  <!--<%#@tt.each do |x|%><%#=x%> | <%# end %><%#=@intake2%>==<%#=@ssubjectids%>-->
+<% else %>
+  <%=t('equery.curriculum.select_programme_first')%>
+<% end %>
+
+<script type="text/javascript">
+	$j('#curriculumsearch_semester').change(function() {
+		if($j(this).val() == "") 
+			$j('.bong').hide();
+		else
+			$j('.bong').show();
+	});
+</script>

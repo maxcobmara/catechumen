@@ -1,0 +1,67 @@
+<div class="tform">
+	<H2><%=t('equery.curriculum.search')%></H2>
+
+<% form_for @curriculumsearch do |f| %>
+  <%= f.error_messages %>
+	<table width=100% >
+		<% if @searchcurriculumtype=='1' || @searchcurriculumtype==1 %>
+			<%= hidden_field_tag :method,  1 %>
+			<tr><td colspan=2><label><%=t('equery.curriculum.search_by')%></label> :</td></tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%=t('equery.curriculum.programme')%></td>
+				<td><%#= f.collection_select :programme_id, @programme_list, :id, :programme_list, :include_blank=> t('select') %>
+					<!---->
+					<%= f.collection_select :programme_id, @programme_list, :id, :programme_list , {:include_blank => (t 'select')},
+					:onchange => remote_function(:update => form_tag_id(f.object_name, :semester_list), 
+					:url => {:action => 'view_semester'}, 
+					:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+					<!---->
+				</td>
+			</tr>
+			<!--%%%%%%%%%%%%%-->
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label>Semester</label></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :semester_list)) %>
+					</div>
+				</td>
+			</tr>
+			<!--%%%%%%%%%%%%%-->
+			<tr class="bong" style="display:none;">
+				<td class="leftcol">&nbsp;</td>
+				<td><%= f.check_box :subject,:checked=>"unchecked", :class => 'subject_activate', :id=> 'subject_checker' %>&nbsp;<%=t('equery.curriculum.subject')%></td>
+			</tr>
+			<tr class="bong" style="display:none;">
+				<td class="leftcol">&nbsp;</td>
+				<td><%= f.check_box :topic,:checked=>"unchecked", :class =>'topic_activate',  :id=> 'topic_checker' %>&nbsp;<%=t('equery.curriculum.topic_subtopic')%></td>
+			</tr>
+			<tr class="bong" style="display:none;">
+				<td class="leftcol">&nbsp;</td>
+				<td><font size=-2><%=t('equery.curriculum.tick_include_subject_topic')%></font>
+				</td>
+			</tr>
+		<% end %>
+	</table>
+
+  <p><%= f.submit (t 'search') %>&nbsp;<font size=-2><%=t('equery.curriculum.atleast_programme_semester')%></font></P>
+<% end %>
+
+</div>
+
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+		$j("input[class='topic_activate']").change(function() {  
+			  if($j('#topic_checker').is(':checked')) { 
+				$j('#subject_checker').prop('checked', true);
+			}
+		});
+		//force to checked Subject if Topic is checked
+		$j("input[class='subject_activate']").change(function() {  
+			  if($j('#topic_checker').is(':checked')) {
+				$j('#subject_checker').prop('checked', true);
+			  }
+		});
+	});
+</script>
+

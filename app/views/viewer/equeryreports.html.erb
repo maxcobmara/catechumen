@@ -298,15 +298,18 @@
 		</tr>
 		<% end %>
 		
-		<% permitted_to? :read, :booksearches do %>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.library' %></span></td></tr>
 		<tr>
 			<td>35</td><% @searchbooktype=1%>
-			<td><%#= link_to 'Library Resources', {:controller =>'examanalyses',:action => 'index'}  %> 
-				<%= link_to (t 'book.listing'),{ :controller =>'books',:action => 'stock_verification', :locals => {:class_type => '1',:dodo =>"All"}} %>
+			<td><% if permitted_to? :read, :booksearches %>
+					<%= link_to (t 'book.listing'),{ :controller =>'books',:action => 'stock_verification', :locals => {:class_type => '1',:dodo =>"All"}} %>
+				<% else %>
+					<%= link_to (t 'equery.book.listing_books'),{ :controller =>'books',:action => 'index'} %>
+				<% end %>
 			<td><%= link_to (t 'equery.advance_search'), {:controller => 'booksearches', :action => 'new', :searchbooktype=> @searchbooktype} %></td>
 		</tr>
+		<% permitted_to? :read, :booksearches do %>
 		<tr>
 			<td>36</td><% @searchbooktype=2%>
 			<td><%= link_to (t 'book.stock_summary'), {:controller =>'books',:action => 'index'}  %> <!-- (end of the year : simple) [tertukar refer item 37]-->

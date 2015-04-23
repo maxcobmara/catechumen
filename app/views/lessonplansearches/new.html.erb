@@ -5,7 +5,7 @@
   <%= f.error_messages %>
 	<table width=100% >
 		<%if @searchlessonplantype=='1' || @searchlessonplantype==1 %>
-			<%= hidden_field_tag :method,  1 %><%=f.hidden_field :valid_schedule, :value => 1%><%=f.hidden_field :loggedin_staff, :value => @loggedinstaff%>
+			<%= hidden_field_tag :method,  1 %><%=f.hidden_field :valid_schedule, :value => 1%><%=f.hidden_field :loggedin_staff, :value => @lloginstaff%>
 			<tr><td colspan=2></td><%=t('equery.lesson_plan.search_by') %> :</tr>
 			<tr class="programme_item" style="display:none;">
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.lesson_plan.programme') %></label></td>
@@ -36,6 +36,13 @@
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%= t('equery.lesson_plan.lecturer')%></label></td>
 				<td>
 					<%= tag("div", :id => form_tag_id(f.object_name, :lecturer_list)) %>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%= t('equery.lesson_plan.subject')%></label></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
 					</div>
 				</td>
 			</tr>

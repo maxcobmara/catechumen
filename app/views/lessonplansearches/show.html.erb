@@ -20,6 +20,11 @@
 				<%=t('equery.lesson_plan.search_programme') %>: <b><%= Programme.find(@lessonplansearch.programme_id).programme_list %></b><br><br>
 			</span>
 		<% end %>
+		<% if @lessonplansearch.subject && @lessonplansearch.subject.blank? ==false%>
+			<span style="text-decoration:underline;">
+				<%=t('equery.lesson_plan.search_subject') %> : <b><%= Programme.find(@lessonplansearch.subject).subject_list %></b><br><br>
+			</span>
+		<% end %>
 		
 		<% unless @lessonplansearch.lessonplans.nil?  %>
 			<%=t('equery.lesson_plan.total_lesson_plan') %> : <%=h @lessonplansearch.lessonplans.count %><br><br>
@@ -33,15 +38,16 @@
 					<th><%=t('equery.lesson_plan.programme') %></th>
 				<% end %>
 				<th><%=t('equery.lesson_plan.lecturer') %></th>
-				<th width=65px><%=t('equery.lesson_plan.intake') %></th>
+				<th width=60px><%=t('equery.lesson_plan.intake') %></th>
 				<th><%=t('equery.lesson_plan.total_students') %></th>
 				<th><%=t('equery.lesson_plan.year_semester') %></th>
+				<th><%=t('equery.lesson_plan.subject') %></th>
 				<th><%=t('equery.lesson_plan.topic') %></th>
 				<th><%=t('equery.lesson_plan.lecture_title') %></th>
 				<th width=65px><%=t('equery.lesson_plan.lecture_date') %></th>
 				<th width=60px><%=t('equery.lesson_plan.start') %></th>
 				<th width=60px><%=t('equery.lesson_plan.end') %></th>
-				<th><%=t('equery.lesson_plan.plan_status')%></th>
+				<th><%=t('equery.lesson_plan.plan')%></th>
 				<th><%=t('equery.lesson_plan.report') %></th>
 			</tr>
 			<% index=0%>
@@ -56,7 +62,8 @@
 				<td align="center"><%=lesson_plan.lessonplan_intake.name %></td>
 				<td align="center"><%=lesson_plan.student_qty%></td>
 				<td align="center"><%=lesson_plan.year%> / <%=lesson_plan.semester%></td> 
-				<td align="center"><%=h lesson_plan.schedule_item.weeklytimetable_topic.subject_with_topic %></td>
+				<td align="center"><%=h lesson_plan.schedule_item.weeklytimetable_topic.subject_full %></td>
+				<td align="center"><%=h lesson_plan.schedule_item.weeklytimetable_topic.name %></td>
 				<td><%=h lesson_plan.lecture_title %></td>
 			    <td align="center"><%=h lesson_plan.lecture_date.try(:strftime, '%d-%m-%Y') %></td>
 			    <td align="center"><%=h lesson_plan.schedule_item.get_start_time %></td>
@@ -75,12 +82,14 @@
 						<% end %>
 					<% end %>
 				</td>
-				<td>
+				<td align="center">
 					<% if lesson_plan.report_submit == true %>
 						<% if lesson_plan.report_endorsed == true %>
-							<%= link_to "Endorsed", :controller=>'lesson_plans', :action => 'lesson_plan_report', :id => lesson_plan.id %> <br>
+							<b><font color=blue><%= t('equery.lesson_plan.endorsed')%></font></b><br>
+							<%= link_to t('equery.lesson_plan.view_report'), :controller=>'lesson_plans', :action => 'lesson_plan_report', :id => lesson_plan.id %> <br>
 						<% else %>
-							<%= link_to "Submitted", :controller=>'lesson_plans', :action => 'lesson_plan_report', :id => lesson_plan.id %> <br>
+							<b><font color=green><%=  t('equery.lesson_plan.submitted')%></font></b><br>
+							<%= link_to t('equery.lesson_plan.view_report'), :controller=>'lesson_plans', :action => 'lesson_plan_report', :id => lesson_plan.id %> <br>
 						<% end %>
 					<% end %>
 				</td>
