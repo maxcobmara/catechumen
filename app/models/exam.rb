@@ -201,7 +201,7 @@ class Exam < ActiveRecord::Base
   PAPERTYPE =[
            #  Displayed       stored in db
               ["Template",        0],
-              ["Complete Exam",  1]
+              [I18n.t('exam.complete_set'),  1]
   ]
 
 private

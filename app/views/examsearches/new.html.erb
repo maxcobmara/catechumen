@@ -1,54 +1,62 @@
 <div class="tform">
-	<H2>Exam Search</H2>
+	<H2><%=t('equery.exam.search')%></H2>
 
 <% form_for @examsearch do |f| %>
   	<%= f.error_messages %>
 	<table width=100% >
 		<% if @searchexamtype=='1' || @searchexamtype==1 %>
-			<%= hidden_field_tag :method,  1 %>
-			<tr><td colspan=2>Search Exams By :</td></tr>
-			
-			<% @subject_ids_in_exam = Exam.all.map(&:subject_id)%>
-			<% @subject_list = Programme.find(:all, :conditions=>['ancestry_depth=? AND id IN (?)',2,@subject_ids_in_exam]).sort_by{|x|x.id}%>
-			<% @programme_list=[] %>
-			<% @subject_ids_in_exam.each do |subject| %>
-				<% @programme_list << Programme.find(subject).root %>
-			<% end %>
-			<% @programme_list_ids_uniq = @programme_list.map(&:id).uniq %>
-			<% @programme_list_rev = Programme.find(@programme_list_ids_uniq) %>
+			<%= hidden_field_tag :method,  1 %><%=f.hidden_field :valid_papertype, :value => 1%>
+			<tr><td colspan=2><%=t('equery.exam.search_by')%> :</td></tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :programme_id %></td>
-				<td><%= f.collection_select :programme_id, @programme_list_rev, :id, :programme_list, :include_blank=> "Select" %></td>
-			</tr>
-			
-			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label :subject_id %></td>
-				<td><%= f.collection_select :subject_id, @subject_list, :id, :subject_list, :include_blank=> "Select" %></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.exam.programme_id')%></label></td>
+				<td><%#= f.collection_select :programme_id, @programme_list_rev, :id, :programme_list, :include_blank=> (t 'select') %>
+					<!---->
+					<%= f.collection_select :programme_id, @programme_list_rev, :id, :programme_list , {:include_blank => (t 'select')},
+					:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+					:url => {:action => 'view_subject'}, 
+					:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+					<!---->
+				</td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%=f.label :prepared_by%></td>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.exam.subject_id')%></label></td>
 				<td>
-					<% @positions_staff_ids_of_trainer = Position.find(2).descendants.map(&:staff_id).compact+Position.find(4).staff_id.to_a %>
-					<%= f.collection_select :created_by, Staff.find(:all, :conditions =>['id IN (?)',@positions_staff_ids_of_trainer]).sort_by{|x|x.name}, :id, :name, :include_blank=> "Select" %>
+					<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+						<%#= f.collection_select :subject_id, @subject_list, :id, :subject_list, :include_blank=> (t 'select') %>
+						<%= f.collection_select :subject_id, @subject_list, :id, :subject_list, {:include_blank => (t 'select')},
+						:onchange => remote_function(:update => form_tag_id(f.object_name, :lecturer_list), 
+						:url => {:action => 'view_lecturer'}, 
+						:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.exam.prepared_by')%></label></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :lecturer_list)) %>
+						<% lecturer_w_exam = Exam.find(:all, :conditions => ['klass_id is not null']).map(&:created_by) %>
+						<%= f.collection_select :created_by, Staff.find(:all, :conditions =>['id IN (?)', lecturer_w_exam]).sort_by{|x|x.name}, :id, :name, :include_blank=> (t 'select') %>
+					</div>
 				</td>	
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%=f.label :examination_type%></td>
-				<td><%= f.select :examtype, Exam::EXAMTYPE, :include_blank=>"Select" %></td>	
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.exam.examtype')%></label></td>
+				<td><%= f.select :examtype, Exam::EXAMTYPE, :include_blank=>(t 'select') %></td>	
 			</tr>
 
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%=f.label :paper_type%></td>
-				<td><%= f.select :klass_id, Exam::PAPERTYPE, :include_blank=>"Select"%></td>	
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.exam.klass_id')%></label></td>
+				<td><%= f.select :klass_id, Exam::PAPERTYPE, :include_blank=>(t 'select')%></td>	
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%=f.label :examination_date%></td>
-				<td><%= date_select :examdate, params[:examdate], :include_blank=>"Select"%></td>	
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.exam.examdate')%></label></td>
+				<td><%#= date_select :examdate, params[:examdate], :include_blank=>(t 'select')%>
+				<%= f.date_select :examdate, :include_blank=>(t 'select')%></td>	
 			</tr>
 		<% end %>
 	</table>
   
-  <p><%= f.submit "Search" %>&nbsp;<font size=-2>Leaves all fields 'blank' / 'unselected' to display ALL record.</font></p>
+  <p><%= f.submit t('search') %>&nbsp;<font size=-2><%=t('equery.leaves_blank_unselected')%></font></p>
 <% end %>
 
 </div>

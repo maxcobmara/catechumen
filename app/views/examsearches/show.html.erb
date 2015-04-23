@@ -1,56 +1,57 @@
 <div>
-	<H3>EXAMINATION PAPER SEARCH :</h3>
+	<H3><%=(t 'equery.exam.search').upcase%> :</h3>
 		
-		<%= link_to "Back", :controller=>'examsearches', :action => 'new', :searchexamtype => 1 %><br><br>
+		<%= link_to (t 'back'), :controller=>'examsearches', :action => 'new', :searchexamtype => 1 %><br><br>
 		<!--additional heading-->
 		<% if @examsearch.programme_id && @examsearch.programme_id.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Programme : <b><%= Programme.find(@examsearch.programme_id).programme_coursetype_name %></b><br><br>
+				<%=t('equery.exam.search_programme')%> : <b><%= Programme.find(@examsearch.programme_id).programme_coursetype_name %></b><br><br>
 			</span>
 		<% end %>		
 		<% if @examsearch.subject_id && @examsearch.subject_id.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Subject : <b><%= Programme.find(@examsearch.subject_id).subject_list %></b><br><br>
+				<%=t('equery.exam.search_subject')%> : <b><%= Programme.find(@examsearch.subject_id).subject_list %></b><br><br>
 			</span>
 		<% end %>
 		<% if @examsearch.examtype && @examsearch.examtype.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Examination Type : <b><%= (Exam::EXAMTYPE.find_all{|disp, value| value == @examsearch.examtype}).map {|disp, value| disp} %></b><br><br>
+				<%=t('equery.exam.search_examtype')%> : <b><%= (Exam::EXAMTYPE.find_all{|disp, value| value == @examsearch.examtype}).map {|disp, value| disp} %></b><br><br>
 			</span>
 		<% end %>
 		<% if @examsearch.examdate && @examsearch.examdate.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Examination Date : <b><%=@examsearch.examdate.strftime("%d-%m-%Y")%></b><br><br>
+				<%=t('equery.exam.search_examdate')%> : <b><%=@examsearch.examdate.strftime("%d-%m-%Y")%></b><br><br>
 			</span>
 		<% end %>
 		<% if @examsearch.created_by && @examsearch.created_by.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by - Prepared by : <b><%=Staff.find(@examsearch.created_by).name%></b><br><br>
+				<%=t('equery.exam.search_preparedby')%> : <b><%=Staff.find(@examsearch.created_by).name%></b><br><br>
 			</span>
 		<% end %>
 		<% if @examsearch.klass_id && @examsearch.klass_id.blank? ==false %>
 			<span style="text-decoration:underline;">
-				Search by Paper Type : <b><%= (Exam::PAPERTYPE.find_all{|disp, value| value == @examsearch.klass_id}).map {|disp, value| disp} %></b><br><br>
+				<%=t('equery.exam.search_klassid')%> : <b><%= (Exam::PAPERTYPE.find_all{|disp, value| value == @examsearch.klass_id}).map {|disp, value| disp} %></b><br><br>
 			</span>
 		<% end %>
 		<!--additional heading-->
 		
-		Total Examination Paper : <%=@examsearch.exams.count%><br><br>
+		<%=t('equery.exam.total_exam_paper')%> : <%=@examsearch.exams.count%><br><br>
 
 		<% if @examsearch.exams.count>0 %>
 		<table border=1 cellpadding=3 cellspacing=0>
 			<tr>
 				<th>No</th>
-				<th>Programme</th>
-				<th>Subject</th>
-				<th>Exam Type</th>
-				<th width=65>Exam Date</th>
-				<th>Prepared By</th>
-				<th>Complete Set/Template</th>
+				<th><%=t('equery.exam.programme_id')%></th>
+				<th><%=t('equery.exam.subject_id')%></th>
+				<th><%=t('equery.exam.examtype')%></th>
+				<th width=65><%=t('equery.exam.examdate')%></th>
+				<th><%=t('equery.exam.prepared_by')%></th>
+				<th><%=t('equery.exam.klass_id2')%></th>
 			</tr>
-			<% @examsearch.exams.each_with_index do |exam,index| %>
+			<%index=0%>
+			<% @examsearch.exams.sort_by{|x|[x.subject_id, x.exam_on]}.reverse.each do |exam| %>
 				<tr>
-					<td><%=index+1%></td>
+					<td><%=index+=1%></td>
 					<td><%=exam.subject.programme_coursetype_name %></td>
 					<td><%=exam.subject.subject_list %></td>
 					<td><%=exam.examtypename%></td>
@@ -58,18 +59,41 @@
 					<td><%=exam.creator.name %></td>
 					<td>
 						<% if exam.klass_id == 0%>
-							Template
+							<b>Template</b>
 						<% else %>
 							<!---->
 							<% if exam.sequ!=nil %>
 								<% sequ = exam.sequ.split(",")%>
+								<% if sequ.include?("Pilih") || sequ.include?("Select")%>
+									<font color="#FC6829"><%=t('equery.exam.sequence_setting_incomplete')%></font>
+								<% else %>
+									<% if sequ.uniq.length == sequ.length && sequ.length== exam.examquestions.count %>
+										<% if (exam.subject.root.id == 1 || exam.subject.root.id == 2 || exam.subject.root.id == 4) %>
+											<%= link_to (t 'equery.exam.exam_paper_combined'), :controller=>'exams', :action => 'exampaper_combine', :id => exam.id %>
+										<% else %>
+											  <%= link_to (t 'equery.exam.exam_paper_separated'), :controller=>'exams', :action => 'exampaper_separate', :id => exam.id %>
+										<% end %>
+									<% else %>
+										<font color="#B70396"><%=t('equery.exam.seq_question_count_not_match')%></font>
+									<% end %>
+								<%end%>
+								<!--appa<%=sequ.uniq.length%>~<%= sequ.length%>[<%=sequ%>] (<%=exam.subject.root.id%>)-->
+							<%else%>
+								<font color="red"><%=t('equery.exam.sequence_not_exist')%></font>
 							<% end %>
-							<% if sequ!=nil && sequ.uniq.length == sequ.length &&  (exam.subject.root.id == 3 || exam.subject.root.id == 5 || exam.subject.root.id == 6 || exam.subject.root.id == 7 || exam.subject.root.id == 8 || exam.subject.root.id == 9 || exam.subject.root.id == 10 || exam.subject.root.id == 11 || exam.subject.root.id == 12 || exam.subject.root.id == 13 || exam.subject.root.id == 14)%>
-								<%= link_to "Exam Paper (S)", :controller=>'exams', :action => 'exampaper_separate', :id => exam.id %>
-							<% end %>
-							<% if sequ!=nil && sequ.uniq.length == sequ.length && (exam.subject.root.id == 1 || exam.subject.root.id == 2 || exam.subject.root.id == 4) %>
-								<%= link_to "Exam Paper (C)", :controller=>'exams', :action => 'exampaper_combine', :id => exam.id %>
-							<% end %>
+							<!--<%# if sequ!=nil && sequ.uniq.length == sequ.length && sequ.length== exam.examquestions.count && !(sequ.include?("Pilih") || sequ.include?("Select")) %>
+								<%# if (exam.subject.root.id == 3 || exam.subject.root.id == 5 || exam.subject.root.id == 6 || exam.subject.root.id == 7 || exam.subject.root.id == 8 || exam.subject.root.id == 9 || exam.subject.root.id == 10 || exam.subject.root.id == 11 || exam.subject.root.id == 12 || exam.subject.root.id == 13 || exam.subject.root.id == 14|| exam.subject.root.id==1697) %>
+									<%#= link_to (t 'equery.exam.exam_paper_separated'), :controller=>'exams', :action => 'exampaper_separate', :id => exam.id %>
+								<%# elsif (exam.subject.root.id == 1 || exam.subject.root.id == 2 || exam.subject.root.id == 4) %>
+									<%#= link_to (t 'equery.exam.exam_paper_combined'), :controller=>'exams', :action => 'exampaper_combine', :id => exam.id %>
+								<%# end %>
+							<%# else %>-->
+								  <!--<%# if sequ!=nil%>
+								  appa<%#=sequ.uniq.length%>~<%#= sequ.length%>
+								  <%# else%>
+									    mmg nil kan mcm atas
+								  <%# end %>-->
+							<%# end %>
 							<!---->
 						<% end %>
 					</td>
@@ -79,4 +103,4 @@
 		</table>
 		<% end %>
 		
-</div>
+</div><br><br>

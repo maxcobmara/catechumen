@@ -1,0 +1,11 @@
+<% unless params[:programmeid].blank?%>
+  <%= collection_select (:examsearch, :subject_id, @subject_list, :id, :subject_list, {:include_blank => (t 'select')},
+		:onchange => remote_function(:update => form_tag_id(:examsearch, :lecturer_list), 
+		:url => {:action => 'view_lecturer' }, 
+		:with => "'subjectid='+$('"+form_tag_id(:examsearch, :subject_id)+"').value")) %>
+<% else %>
+  <%= collection_select (:examsearch, :subject_id, @subject_list2, :id, :subject_list, {:include_blank => (t 'select')},
+		:onchange => remote_function(:update => form_tag_id(:examsearch, :lecturer_list), 
+		:url => {:action => 'view_lecturer' }, 
+		:with => "'subjectid='+$('"+form_tag_id(:examsearch, :subject_id)+"').value")) %>
+<% end %>
