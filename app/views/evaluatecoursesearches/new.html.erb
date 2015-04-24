@@ -7,28 +7,40 @@
 		<% if @searchevaluatecoursetype=='1' || @searchevaluatecoursetype==1 %>
 			<%= hidden_field_tag :method,  1 %>
 			<tr><td colspan=2><%=t('equery.evaluate_course.search_by')%> :</td></tr>
-			
-			<% @programme_ids_in_evaluatecourse = EvaluateCourse.all.map(&:course_id).uniq %>
-			<% @programme_list = Programme.find(:all, :conditions=> ['id IN (?)',@programme_ids_in_evaluatecourse]) %>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.course_id') %></td>
-				<td><%= f.collection_select :programme_id, @programme_list, :id, :programme_list, :include_blank=> (t 'select') %></td>
+				<td><%#= f.collection_select :programme_id, @programme_list, :id, :programme_list, :include_blank=> (t 'select') %>
+					<!---->
+					<%= f.collection_select :programme_id, @programme_list, :id, :programme_list , {:include_blank => (t 'select')},
+					:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+					:url => {:action => 'view_subject'}, 
+					:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+					<!---->
+				</td>
 			</tr>
-			<% @subject_ids_in_evaluatecourse = EvaluateCourse.all.map(&:subject_id)%>
-			<% @subject_list = Programme.find(:all, :conditions=> ['id IN (?)', @subject_ids_in_evaluatecourse ])%>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'evaluate_course.subject_id') %></td>
-				<td><%=f.collection_select :subject_id, @subject_list, :id, :subject_list, :include_blank => (t 'select') %></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+						<%#=f.collection_select :subject_id, @subject_list, :id, :subject_list, :include_blank => (t 'select') %>
+						<%= f.collection_select :subject_id, @subject_list, :id, :subject_list, {:include_blank => (t 'select')},
+						:onchange => remote_function(:update => form_tag_id(f.object_name, :lecturer_list), 
+						:url => {:action => 'view_lecturer'}, 
+						:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'evaluate_course.staff_id') %></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :lecturer_list)) %>
+						<%= f.collection_select :lecturer_id, @lecturer_list, :id, :name, :include_blank=> (t 'select') %>
+					</div>
+				</td>
 			</tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'evaluate_course.evaldate') %></td>
-				<td><%= date_select :evaldate, params[:evaldate], :include_blank => true %></td>
-			</tr>
-			<% @lecturer_ids_in_evaluatecourse = EvaluateCourse.all.map(&:staff_id).uniq %>
-			<% @lecturer_list = Staff.find(:all, :conditions => ['id IN (?)',@lecturer_ids_in_evaluatecourse])%>
-			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'evaluate_course.staff_id') %></td>
-				<td><%= f.collection_select :lecturer_id, @lecturer_list, :id, :name, :include_blank => (t 'select') %></td>
+				<td><%= f.date_select :evaldate, :include_blank => true %></td>
 			</tr>
 		<% end %>
 	</table>

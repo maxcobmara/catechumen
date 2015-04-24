@@ -41,10 +41,10 @@ class ExamsearchesController < ApplicationController
     unless params[:subjectid].blank?
       subjectid = params[:subjectid]
       lecturer_ids = Exam.find(:all, :conditions=>['klass_id is not null and subject_id=?', subjectid]).map(&:created_by)
-      @lecturer_list = Staff.find(:all, :conditions => ['id IN(?)', lecturer_ids])
+      @lecturer_list = Staff.find(:all, :conditions => ['id IN(?)', lecturer_ids], :order => 'name ASC')
     else
       lecturer_ids = Exam.find(:all, :conditions=>['klass_id is not null']).map(&:created_by)
-      @lecturer_list2 = Staff.find(:all, :conditions => ['id IN(?)', lecturer_ids])
+      @lecturer_list2 = Staff.find(:all, :conditions => ['id IN(?)', lecturer_ids], :order=> 'name ASC')
     end
     render :partial => 'view_lecturer', :layout => false
   end

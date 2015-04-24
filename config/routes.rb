@@ -100,6 +100,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :curriculumsearches, :collection => {:view_semester =>:post}
   map.resources :examsearches, :collection => {:view_subject => :post, :view_lecturer => :post}
   map.resources :examresultsearches, :collection => {:view_semester => :post}
+  map.resources :evaluatecoursesearches, :colection => {:view_subject => :post, :view_lecturer => :post}
   
   map.resources :intakes
 
