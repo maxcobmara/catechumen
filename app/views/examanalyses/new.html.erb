@@ -1,13 +1,15 @@
 <h3><%=t('examanalysis.new')%></h3>
 
 <% form_for(@examanalysis) do |f| %>
-  	<%= f.error_messages %>
+	<%= f.error_messages %>
 	<%=render :partial => 'form', :locals => {:f => f} %>
-
- 
   <p>
-    <%= f.submit (t 'create') %>
+	<%= f.submit (t 'create') %>
   </p>
 <% end %>
 
 <%= link_to (t 'back'), examanalyses_path %>
+
+<!--ALL FINAL EXAMPAPER WITH EXISTING EXAMMARKS & GRADES AVAILABLE FOR ANALYSIS (total count of exammarks[distinct students] MUST MATCH with total account of grades[distinct student]) -->
+<!--AS FOR MID SEMESTER EXAMPAPER, Analysis CAN ONLY BE DONE when it's FINAL EXAMPAPER hv EXISTING EXAMMARKS & GRADES (as above conditions) -->
+<!--Note : Grades creation only available for FINAL EXAMPAPER, still exammarks can be created for all type of exampaper : Final, Mid & Repeat papers-->
