@@ -18,8 +18,9 @@
 <!--WALA<%#=exam_ids_w_exist_grades%>WALA-->
 <!--END : 24Apr2015-->
 
-<% @exam_ids_in_exammark = Exammark.all.map(&:exam_id).uniq %><br>
-<% @exam_list_index_for_analysis = Exam.find(:all, :conditions => ['id IN (?) and id IN (?) and id IN(?)', @exam_list_index, @exam_ids_in_exammark,exam_ids_w_exist_grades])%>
+<%= @exam_ids_in_exammark = Exammark.all.map(&:exam_id).uniq %><br>
+<% exist_analysis = Examanalysis.all.map(&:exam_id) %>
+<% @exam_list_index_for_analysis = Exam.find(:all, :conditions => ['id IN (?) and id IN (?) and id IN(?) and id NOT IN (?)', @exam_list_index, @exam_ids_in_exammark,exam_ids_w_exist_grades, exist_analysis])%>
 
 <!--TO continue-->
 <% complete_set_examids = Exam.find(:all, :conditions => ['klass_id=?', 1]).map(&:id) %>
@@ -38,8 +39,6 @@
 	<% end %>
 <% end %>
 <!--To continue-->
-
-
 
 <!--<%# @exam_ids_in_exammark.each do |y| %>
 	<%#=y%>, Exam of Prog : <%#=Programme.find(Exam.find(y).subject_id).root_id%><br>

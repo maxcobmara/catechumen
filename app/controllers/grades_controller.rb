@@ -3,7 +3,7 @@ class GradesController < ApplicationController
   # GET /grades.xml
   def index
     submit_val = params[:grade_search]
-    
+    valid_exams = Exammark.get_valid_exams
     ###--just added
     @grade_list_exist_subject=[]
     @existing_grade_subject_ids = Grade.find(:all,:select=>:subject_id).map(&:subject_id).uniq
@@ -18,16 +18,27 @@ class GradesController < ApplicationController
       unless @programme.nil?
         @preselect_prog = @programme.id
         @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2)  #.sort_by{|y|y.code}
-        @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.all.map(&:subject_id), common_subject_a.map(&:id)] )
+        @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.find(:all, :conditions => ['id IN(?) AND name=?', valid_exams, 'F']).map(&:subject_id), common_subject_a.map(&:id)] )
       else
         if @lecturer_programme == 'Commonsubject'
           @subjectlist_preselec_prog = common_subject_a
+          @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.find(:all, :conditions => ['id IN(?) AND name=?', valid_exams, 'F']).map(&:subject_id)] )
+        elsif @lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan' || @lecturer_programme == 'Pengkhususan'
+          posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ])
+          tasks_main = current_login.staff.position.tasks_main
+          posbasic_prog.each do |x|
+            @programme_id = x.id if tasks_main.include?(x.name)
+          end
+          @subjectlist_preselec_prog = Programme.find(@programme_id).descendants.at_depth(2)  #.sort_by{|y|y.code}
+          @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.find(:all, :conditions => ['id IN(?) AND name=?', valid_exams, 'F']).map(&:subject_id), common_subject_a.map(&:id)] )
         else
           @subjectlist_preselec_prog = Programme.at_depth(2) 
+          @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.find(:all, :conditions => ['id IN(?) AND name=?', valid_exams, 'F']).map(&:subject_id)] )
         end
-        @subjectlist_preselec_prog2 = Programme.find(:all, :conditions => ['id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.all.map(&:subject_id)] )
+        
       end
       @grade_list_exist_subject = Programme.find(:all, :conditions=>['id IN(?) and id IN(?)', @existing_grade_subject_ids, @subjectlist_preselec_prog])
+      @grade_list_index_subject = @subjectlist_preselec_prog2-@grade_list_exist_subject
       if submit_val == t('grade.search_existing_grades') #'Search Existing Grades'
         search_item = params[:subject_id]
         if search_item == '0' 
