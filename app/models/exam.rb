@@ -189,14 +189,28 @@ class Exam < ActiveRecord::Base
   	#Exam::EXAMTYPE[("#{name}".to_i)-1][0].to_s	    #Exam::EXAMTYPE[("#{examtype}".to_i)-1][0].to_s	
   end
   
+  def self.examtype_list(examtype_examanalysis)
+    examtype_arr=[]
+    examtype_examanalysis.each do |examtype|
+        if examtype == 'F' 
+          examtype_arr+= [[I18n.t('exam.final_semester'), "F"]]
+        elsif examtype == 'M'
+          examtype_arr += [[I18n.t('exam.mid_semester'), "M"]]
+        elsif examtype == 'R'
+          examtype_arr+= [[I18n.t('exam.repeat_semester'), "R"]]
+        end
+      end
+    examtype_arr
+  end
+  
   #--12June2013
   
   #----------------Coded List----------------------------------- 
   EXAMTYPE = [
             #  Displayed       stored in db
-               [ "Peperiksaan Pertengahan Semester",      "M" ],
-               [ "Peperiksaan Akhir Semester",            "F" ],
-               [ "Peperiksaan Ulangan",                   "R" ]
+               [ I18n.t('exam.mid_semester'),      "M" ],
+               [ I18n.t('exam.final_semester'),            "F" ],
+               [ I18n.t('exam.repeat_semester'),                   "R" ]
   ]
   PAPERTYPE =[
            #  Displayed       stored in db
