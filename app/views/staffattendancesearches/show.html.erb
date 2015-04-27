@@ -1,0 +1,69 @@
+<div>
+	<H3><%=t('equery.staffattendance.search')%> :</h3>
+		
+		<%= link_to (t 'back'), :controller=>'staffattendancesearches', :action => 'new', :searchstaffattendancetype => 1 %><br><br>
+		
+		<!--additional heading-->
+		<% if @staffattendancesearch.department && @staffattendancesearch.department.blank? ==false %>
+			<span style="text-decoration:underline;">
+				<%=t('equery.search_by')%> <%=t('equery.staffattendance.department')%> : <b><%=@staffattendancesearch.department %></b><br><br>
+			</span>
+		<% end %>
+		<% if @staffattendancesearch.staff && @staffattendancesearch.staff.blank? ==false %>
+			<span style="text-decoration:underline;">
+				<%=t('equery.search_by')%>  <%=t('equery.staffattendance.staff')%> : 
+				<b><%=Staff.find_by_thumb_id(@staffattendancesearch.staff).name %></b><br><br>
+			</span>
+		<% end %>
+		<% if @staffattendancesearch.logged_at && @staffattendancesearch.logged_at.blank? ==false %>
+			<span style="text-decoration:underline;">
+				<%=t('equery.search_by')%> <%=t('equery.staffattendance.logged_at')%> : <b><%= @staffattendancesearch.logged_at.strftime("%B %Y") %></b><!--<%= @staffattendancesearch.logged_at.strftime("%d-%m-%Y %H:%M:%S") %>~<%#=@staffattendancesearch.logged_at.end_of_month%>-<%#=@staffattendancesearch.logged_at.end_of_month+1.day%>--><br><br>
+			</span>
+		<% end %>
+		
+		<%=t('equery.staffattendance.total')%> : <%= @staffattendancesearch.staffattendances.count %><br><br>
+		
+		<% if @staffattendancesearch.staffattendances.count > 0 %>
+		<table border=1 cellpadding=7 cellspacing=0>
+			<tr><th colspan=7 align="center">KAD MENCATAT WAKTU</td></tr>
+			<tr><td colspan=2><b>B No</b></td>
+				<td colspan=5><b>NAMA :</b> <%=Staff.find(:first, :conditions => ['thumb_id=?',@staffattendancesearch.staffattendances.first.thumb_id]).name %></td></tr>
+			<tr><td colspan=7><b>KEM / JAB :</b> Kolej Sains Kesihatan Bersekutu Johor Bahru</td></tr>
+			<tr><td colspan=7><b>BAHAGIAN / SEKSYEN :</b> <%=@staffattendancesearch.department %></td></tr>
+			<tr><td colspan=7 height=40px valign="bottom"><b>BULAN :</b> <u><%=@staffattendancesearch.staffattendances.first.logged_at.try(:strftime, '%B %Y') %></u></td></tr>
+			<tr>
+				<th>HARI</th>
+				<th>MASUK</th>
+				<th>KELUAR</th>
+				<th>MASUK</th>
+				<th>KELUAR</th>
+				<th>KENYATAAN</th>
+				<th>T/T KETUA</th>
+			</tr>
+			
+			<% @staffattendancesearch.staffattendances.group_by{|x|(x.logged_at-8.hours).strftime('%d %b %Y')}.each do |dday, log_records| %>
+			<tr>
+				<td align="center"><%=dday[0,2]%> <%#=log_records.count%></td>
+				<% log_records.each do |log_record|%>
+					
+					<td align="center">
+						<% if log_record.log_type=="I" || log_record.log_type=="i" %>
+							<%=(log_record.logged_at-8.hours).strftime('%H:%M') %> 
+						<% elsif log_record.log_type=="O" || log_record.log_type=="o" || log_record.log_type==0 %>
+							<%=(log_record.logged_at-8.hours).strftime('%H:%M') %> 
+						<% end %>
+					</td>
+				<% end %>
+				<% if log_records.count==1 %>
+					<td align="center">&nbsp; </td>
+				<% end %>
+				<td align="center">&nbsp;</td>
+				<td align="center">&nbsp;</td>
+				<td align="center">&nbsp;</td>
+				<td align="center">&nbsp;</td>
+			</tr>
+			<% end %>
+		</table>
+		<% end %>
+	<br>
+</div> 

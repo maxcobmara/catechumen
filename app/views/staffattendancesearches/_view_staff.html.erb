@@ -1,0 +1,9 @@
+<% unless params[:department2].blank? %>
+	<% if params[:department2] == "------------------------------" %>
+		<%=t('equery.staffattendance.select_department_first')%>
+	<% else %>
+		<%= collection_select(:staffattendancesearch, :staff, @staff_list, :thumb_id, :staff_thumb, :include_blank=> (t 'select') )%>
+	<% end %>
+<% else %>
+	<%=t('equery.staffattendance.select_department_first')%>
+<% end %>
