@@ -1,8 +1,48 @@
 <%=render :partial => 'exams/position_dept' %> <!--retrieve position for current logged-in user-->
 <%=render :partial => 'exammarks/exam_listing.html.erb'%><!--retrieve exam listing, student listing for use-->
 
-<% @exam_ids_in_exammark = Exammark.all.map(&:exam_id).uniq %>
-<% @exam_list_index_for_analysis = Exam.find(:all, :conditions => ['id IN (?) and id IN (?)', @exam_list_index,@exam_ids_in_exammark ])%>
+<!--START : Fixed : error - numerical argument out of domain - sqrt-->
+<!--Exammarks table : student_id, exam_id-->
+<!--Exams table : subject_id-->
+<% exam_ids_w_exist_grades = [] %>
+<% Exammark.all.group_by{|x|x.exam_id}.each do |examid, exmrks| %>
+	<% exist_grade=0%>
+	<% subjectid=Exam.find(examid).subject_id %>
+	<% exmrks.each do |exmrk| %>
+		<% studentid=exmrk.student_id %>
+		<% grade = Grade.find(:first, :conditions => ['student_id=? and subject_id=?', studentid, subjectid])%>
+		<% exist_grade+=1 if grade %>
+	<% end %>
+	<% exam_ids_w_exist_grades << examid if exmrks.count==exist_grade %>
+<% end %>
+<!--WALA<%#=exam_ids_w_exist_grades%>WALA-->
+<!--END : 24Apr2015-->
+
+<%= @exam_ids_in_exammark = Exammark.all.map(&:exam_id).uniq %><br>
+<% exist_analysis = Examanalysis.all.map(&:exam_id) %>
+<% @exam_list_index_for_analysis = Exam.find(:all, :conditions => ['id IN (?) and id IN (?) and id IN(?) and id NOT IN (?)', @exam_list_index, @exam_ids_in_exammark,exam_ids_w_exist_grades, exist_analysis])%>
+
+<!--TO continue-->
+<% complete_set_examids = Exam.find(:all, :conditions => ['klass_id=?', 1]).map(&:id) %>
+<%=@examid_complete = Exammark.find(:all, :conditions => ['exam_id IN(?) and exam_id IN(?)', complete_set_examids, exam_ids_w_exist_grades]).map(&:exam_id).uniq %>
+
+<% @examid_complete.each do |e_id| %>
+	<br><%=e_id%>  -- jum seq <%=a=Exam.find(e_id).examquestions.seqq.count%>
+	<% if a > 0%>
+		<BR><% b=Exam.find(e_id).examquestions.seqq%>
+		<!--PENDING : TO CHECK FOR values of each student_mark for Exampaper of type Complete Set (of seqq question type - MUST EXIST)-->
+		<% b.each do |w| %>
+			<%=w.id%><!---examquestion_id-->,
+		<% end %>
+		<!--<%# if @examquestions.seqq.count > 0 %>
+		<%# @arrayfirst8<< @exammarks_mark[index][index5].student_mark  %>-->
+	<% end %>
+<% end %>
+<!--To continue-->
+
+<!--<%# @exam_ids_in_exammark.each do |y| %>
+	<%#=y%>, Exam of Prog : <%#=Programme.find(Exam.find(y).subject_id).root_id%><br>
+<%# end %>-->
 
 <div class="tform">
 <H2><%=t('examanalysis.details')%></H2>

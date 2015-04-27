@@ -13,6 +13,12 @@ class ExamsController < ApplicationController
       else
         if @lecturer_programme == 'Commonsubject'
           @programme_id ='1'
+        elsif @lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan' || @lecturer_programme == 'Pengkhususan'
+          posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ])
+          tasks_main = current_login.staff.position.tasks_main
+          posbasic_prog.each do |x|
+            @programme_id = x.id if tasks_main.include?(x.name)
+          end
         else
           @programme_id='0'
         end

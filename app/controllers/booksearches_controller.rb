@@ -26,6 +26,5 @@ class BooksearchesController < ApplicationController
 
   def show
     @booksearch = Booksearch.find(params[:id])
-    render :layout => 'report'
   end
 end

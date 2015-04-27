@@ -1,7 +1,10 @@
-<% unless @programme_id.blank? && @intake_id.blank? %>
-      <%# unless params[:programmeid].blank? %>
-	  <%= collection_select (:lessonplansearch, :lecturer, @lecturer_list, :id, :name, :include_blank => (t 'select')) %>
-      <%# end %>
+<% unless @programme_id.blank? && @intake_id.blank? %>     
+	 <%#= collection_select (:lessonplansearch, :lecturer, @lecturer_list, :id, :name, :include_blank => (t 'select')) %>
+	 <%= collection_select (:lessonplansearch, :lecturer, @lecturer_list, :id, :name, {:include_blank => (t 'select')},
+		:onchange => remote_function(:update => form_tag_id(:lessonplansearch, :subject_list), 
+		:url => {:action => 'view_subject' }, 
+		:with => "'lecturerid='+$('"+form_tag_id(:lessonplansearch, :lecturer)+"').value+'&intakeid2='+'#{@intake_id}' ")) %>
+	<%#=@intake_id%>
 <% else %>
 	<% if @programme_id.blank? %>
 		&nbsp;&nbsp; <%=t('equery.weeklytimetable.select_programme_first')%>
@@ -9,4 +12,5 @@
 		&nbsp;&nbsp; <%=t('equery.weeklytimetable.select_intake_programme_first')%>
 	<% end %>
 <% end%> 
+
  

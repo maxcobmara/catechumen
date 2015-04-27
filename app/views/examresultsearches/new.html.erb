@@ -12,19 +12,30 @@
 			<% @programme_list = Programme.find(:all, :conditions=> ['id IN (?)', @programme_list_in_examresult]) %>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.course_id') %></td>
-				<td><%= f.collection_select :programme_id, @programme_list, :id, :programme_list, :include_blank=> (t 'select') %></td>
+				<td><%#= f.collection_select :programme_id, @programme_list, :id, :programme_list, :include_blank=> (t 'select') %>
+					<!---->
+					<%= f.collection_select :programme_id, @programme_list, :id, :programme_list , {:include_blank => (t 'select')},
+					:onchange => remote_function(:update => form_tag_id(f.object_name, :semester_list), 
+					:url => {:action => 'view_semester'}, 
+					:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+					<!---->
+				</td>
 			</tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'examresult.semester')%></td>
-				<td><%= f.select :semester, Examresult::SEMESTER, :include_blank=> (t 'select') %></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :semester_list)) %>
+						<%= f.select :semester, Examresult::SEMESTER, :include_blank=> (t 'select') %>
+					</div>
+				</td>
 			</tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'examresult.examdate1') %></td>
-				<td><%= date_select :examdts, params[:examdts], :include_blank=> (t 'select') %></td>
+				<td><%= f.date_select :examdts, :include_blank=> (t 'select') %></td>
 			</tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'examresult.examdate2')  %></td>
-				<td><%= date_select :examdte, params[:examdte], :include_blank=> (t 'select') %></td>
+				<td><%= f.date_select :examdte, :include_blank=> (t 'select') %></td>
 			</tr>
 			<tr>
 				<td colspan=2 style="text-valign:top;">

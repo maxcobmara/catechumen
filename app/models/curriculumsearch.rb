@@ -13,23 +13,39 @@ class Curriculumsearch < ActiveRecord::Base
   end
 
   def programme_id_conditions
-    ["ancestry_depth=?", 0] unless programme_id==0    #if programme_id==1    
+    ["id=?", programme_id] unless programme_id.blank?
   end
   
   def semester_conditions
-    ["ancestry_depth=?",1] unless semester==0
+    ["id=?", semester] unless semester.blank?
   end
   
   def subject_conditions
-    ["ancestry_depth=?", 2] unless subject==0
+    descendants_ids = Programme.find(semester).descendants.map(&:id)
+    subjects_ids = Programme.find(:all, :conditions => ['id IN(?) and (course_type=? or course_type=?)', descendants_ids, 'Subject', 'Commonsubject'])
+    if subjects_ids.count > 0
+      a="id=?"
+      0.upto(subjects_ids.count-2).each do |y|
+        a+=" OR id=? " if subjects_ids.count > 1
+      end
+      [a, subjects_ids] if !semester.blank? && subject==1 && subjects_ids.count > 0
+    end
   end
   
   def topic_conditions
-    ["ancestry_depth=?", 3] unless topic==0
+    descendants_ids = Programme.find(semester).descendants.map(&:id)
+    topics_ids = Programme.find(:all, :conditions => ['id IN(?) and (course_type=? or course_type=?)', descendants_ids, 'Topic', 'Subtopic'])
+    if topics_ids.count > 0
+      a="id=?"
+      0.upto(topics_ids.count-2).each do |y|
+        a+=" OR id=? " if topics_ids.count
+      end
+      [a, topics_ids] if !semester.blank? && subject==1 && topic==1
+    end
   end  
   
   def orders
-    "id ASC"
+    "combo_code ASC"
   end  
 
   def conditions  #Use OR operator instead of AND operator

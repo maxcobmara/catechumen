@@ -20,6 +20,12 @@ class ExamquestionsController < ApplicationController
       else
         if @lecturer_programme == 'Commonsubject'
           @programme_id ='1'
+        elsif @lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan' || @lecturer_programme == 'Pengkhususan'
+          posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ])
+          tasks_main = current_login.staff.position.tasks_main
+          posbasic_prog.each do |x|
+            @programme_id = x.id if tasks_main.include?(x.name)
+          end
         else
           @programme_id='0'
         end
@@ -68,12 +74,26 @@ class ExamquestionsController < ApplicationController
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
       if @lecturer_programme == 'Commonsubject'
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme],:order=>'ancestry ASC') 
+        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme],:order=>'ancestry ASC')   
       else
         @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'], :order=>'ancestry ASC')  #'Subject' 
       end
     else
-      @programme_listing = Programme.roots
+      ##
+      if @lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan' || @lecturer_programme == 'Pengkhususan'
+          posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ])
+          tasks_main = current_login.staff.position.tasks_main
+          posbasic_prog.each do |x|
+            @programme_id = x.id if tasks_main.include?(x.name)
+          end
+          @programme_listing = Programme.find(:all, :conditions=> ['id=?', @programme_id]).to_a
+          @preselect_prog = @programme_id
+          @all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id) 
+          @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'], :order=>'ancestry ASC')  #'Subject' 
+      ##
+      else
+        @programme_listing = Programme.roots
+      end
     end
     #--newly added
     #@examquestion.exammcqanswers.build
@@ -120,7 +140,21 @@ class ExamquestionsController < ApplicationController
         end
       end
     else  #for admin (has no programme in current_login.staff.position.unit)
-      @programme_listing = Programme.roots
+      ##
+      if @lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan' || @lecturer_programme == 'Pengkhususan'
+          posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ])
+          tasks_main = current_login.staff.position.tasks_main
+          posbasic_prog.each do |x|
+            @programme_id = x.id if tasks_main.include?(x.name)
+          end
+          @programme_listing = Programme.find(:all, :conditions=> ['id=?', @programme_id]).to_a
+          @preselect_prog = @programme_id
+          @all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id) 
+          @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'], :order=>'ancestry ASC')  #'Subject' 
+      ##
+      else
+        @programme_listing = Programme.roots
+      end
       unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank?   #if subject already selected
         @subjects1 = Programme.find(@examquestion.subject.root_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
       else  # if subject not selected yet 
@@ -166,7 +200,21 @@ class ExamquestionsController < ApplicationController
         end
       end
     else  
-      @programme_listing = Programme.roots
+      ##
+      if @lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan' || @lecturer_programme == 'Pengkhususan'
+          posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ])
+          tasks_main = current_login.staff.position.tasks_main
+          posbasic_prog.each do |x|
+            @programme_id = x.id if tasks_main.include?(x.name)
+          end
+          @programme_listing = Programme.find(:all, :conditions=> ['id=?', @programme_id]).to_a
+          @preselect_prog = @programme_id
+          @all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id) 
+          @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'], :order=>'ancestry ASC')  #'Subject' 
+      ##
+      else
+        @programme_listing = Programme.roots
+      end
     end
     #--newly added--same as edit--required when incomplete data submitted
     

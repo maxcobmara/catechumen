@@ -7,29 +7,7 @@ class ExamresultsearchesController < ApplicationController
   def create
     @searchexamresulttype = params[:method]
     if @searchexamresulttype == '1' || @searchexamresulttype == 1
-        @examresultsearch = Examresultsearch.new(params[:examresultsearch])
-         #--exam start date---
-          @aa=params[:examdts][:"(1i)"] 
-          @bb=params[:examdts][:"(2i)"]
-          @cc=params[:examdts][:"(3i)"]
-          if @aa!='' && @bb!='' && @cc!=''
-              @dadidu=@aa+'-'+@bb+'-'+@cc 
-          else
-              @dadidu=''
-          end
-           #--exam start date---
-          #--exam end date---
-          @aa3=params[:examdte][:"(1i)"] 
-          @bb3=params[:examdte][:"(2i)"]
-          @cc3=params[:examdte][:"(3i)"]
-          if @aa3!='' && @bb3!='' && @cc3!=''
-              @dadidu3=@aa3+'-'+@bb3+'-'+@cc3 
-          else
-              @dadidu3=''
-          end
-          #--exam end date---
-          @examresultsearch.examdts = @dadidu
-          @examresultsearch.examdte = @dadidu3
+      @examresultsearch = Examresultsearch.new(params[:examresultsearch])
     end
     if @examresultsearch.save
       #flash[:notice] = "Successfully created examresultsearch."
@@ -37,6 +15,18 @@ class ExamresultsearchesController < ApplicationController
     else
       render :action => 'new'
     end
+  end
+  
+  def view_semester
+    unless params[:programmeid].blank?
+      prog_id=params[:programmeid]
+      @semesters_prog=Examresult.find(:all, :conditions => ['programme_id=?', prog_id]).map(&:semester)
+      @semester_list=[]
+      Examresult::SEMESTER.each do |disp ,v |
+        @semester_list << [disp,v] if @semesters_prog.include?(v.to_s)
+      end
+    end
+    render :partial => 'view_semester', :layout => false
   end
 
   def show

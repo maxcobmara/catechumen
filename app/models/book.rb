@@ -5,7 +5,7 @@ class Book < ActiveRecord::Base
   has_many  :accessions, :dependent => :destroy
   accepts_nested_attributes_for :accessions, :reject_if => lambda { |a| a[:accession_no].blank? }, :allow_destroy =>true
   
-  before_save :extract_roman_into_size_pages
+  before_save :extract_roman_into_size_pages, :add_space_between_author
   
   #-----------Attach Photo---------------
   has_attached_file :photo,
@@ -89,6 +89,11 @@ class Book < ActiveRecord::Base
       end
       
     end 
+  end
+  
+  def add_space_between_author
+    new_author=author.gsub(/A\/L\ /,"a/l ").gsub(/A\/P\ /,"a/p ")
+    self.author=new_author.gsub(/\/(?![p||l||" "])/," / ")  if new_author.include?("/")  #gsub(/\/(?![p||l])/," / ")
   end
   
   def tag_suggest

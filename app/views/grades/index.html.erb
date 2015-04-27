@@ -136,7 +136,9 @@
 			<div class="right">
 				<% form_tag :action => 'new' do %>
 					<%#= hidden_field_tag( "new_type","3" )%>
-					<b><%=t('grade.subject_id')%> : </b><%= select_tag('subjectid', options_from_collection_for_select(@subjectlist_preselec_prog2.sort_by{|x|x.code}, :id, :subject_list)) %>
+					<b><%=t('grade.subject_id')%> : </b><font color="red">*</font>
+					<%#= select_tag('subjectid', options_from_collection_for_select(@subjectlist_preselec_prog2.sort_by{|x|x.code}, :id, :subject_list)) %>
+					<%= select_tag('subjectid', options_from_collection_for_select(@grade_list_index_subject.sort_by{|x|x.code}, :id, :subject_list)) %>
 					<%= submit_tag (t 'grade.new_single'), :name => :submit_button1 %> <font size=3>/</font> <%#=image_submit_tag("add.png")+"New"%>
 					<%= submit_tag (t 'grade.new_multiple'), :name => :submit_button1 %><%#= submit_tag 'New Multiple Grades', :subject_id => nil %>
 				<% end %>
@@ -237,6 +239,9 @@
 <% end %>
 <% end %><!--end for @grades_group.each do |grades_group, grades| -->
 </table>
+</div>
+<div align="right">
+	<font color="red">*</font>&nbsp;<font size=-2><b><%=t('grade.final')%></b>&nbsp;<%=t('grade.must_exist_first')%></font>
 </div>
 <br />
 
