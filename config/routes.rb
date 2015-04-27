@@ -98,7 +98,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :weeklytimetablesearches, :collection => {:view_preparedby =>:post}  #user.resources :pictures,:collection => {:new=>:any}
   map.resources :lessonplansearches, :collection => {:view_lecturer => :post, :view_subject=>:post}
   map.resources :curriculumsearches, :collection => {:view_semester =>:post}
-  map.resources :examsearches, :collection => {:view_subject => :post, :view_lecturer => :post}
+  map.resources :examsearches, :collection => {:view_subject => :post, :view_lecturer => :post, :view_examtype => :post, :view_papertype => :post}
   map.resources :examresultsearches, :collection => {:view_semester => :post}
   map.resources :evaluatecoursesearches, :colection => {:view_subject => :post, :view_lecturer => :post}
   map.resources :examanalysissearches, :collection => {:view_subject => :post, :view_examtype => :post}
