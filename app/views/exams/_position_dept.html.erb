@@ -39,7 +39,7 @@
 
 <% @current_login_roles=[]%>
 <% Login.current_login.roles.each do |role|%>
-	<% @current_login_roles<<role.id%>
+	<% @current_login_roles<< role.id%>
 <% end %>
 
 <!--13/20Apr2013-DEPT UNIT for current user-->
@@ -64,7 +64,20 @@
 		<% @kupk = "yes" %>
 	<!--26 May 2013-newly added for Mdm Yap Peck Seah-ancestry_depth-1(Ketua Unit penilaian & Kualiti)-->
 	<% else %><%#=@dept_unit%><%#=@anc_depth%>
-		<% @preselect_prog = Programme.find(:first, :conditions=>['name=?',@dept_unit]).id %>
-		<% @subjectlist_preselect_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
+		<!--Check if Diploma lecturer first-->
+		<% @dip_programme = Programme.find(:first, :conditions=>['name=?',@dept_unit]) %>
+		<% unless @dip_programme.nil? %>
+			<% @preselect_prog = @dip_programme.id %>
+			<% @subjectlist_preselect_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
+		<% else %>
+			<% if @dept_unit == 'Pos Basik' || @dept_unit == 'Diploma Lanjutan' || @dept_unit == 'Pengkhususan' %>
+				<% posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ]) %>
+				<% tasks_main = current_login.staff.position.tasks_main %>
+				<% posbasic_prog.each do |x| %>
+					<% @preselect_prog = x.id if tasks_main.include?(x.name) %>
+				<% end %>
+			<% end %>
+			<% @subjectlist_preselect_prog = (Programme.find(@preselect_prog).descendants.at_depth(2)).sort_by{|y|y.code} %>
+		<% end %>
 	<% end %>
 <% end %>

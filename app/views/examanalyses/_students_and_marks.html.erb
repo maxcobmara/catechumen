@@ -48,7 +48,7 @@
 	<% @students = Student.find(:all, :conditions=>['id IN (?)',@exammark_students])%><!--REVISED-25June2013-->
 	<!---->
 	<% @students_qty = @students.count %>
-	<% @student_ca_mse = Examanalysis.set_array(@students,1,@selected_subject) %>
+	<% @student_ca_mse = Examanalysis.set_array(@students,1,@selected_subject) %><!--error: numerical argument out of domain - sqrt will arise if Grades not exist! - refer /examanalyses/_form.html.erb-->
 	<% @student_exam1marks = Examanalysis.set_array(@students,2,@selected_subject) %>
 	<% @student_finale = Examanalysis.set_array(@students,3,@selected_subject) %>
 	<% @student_NG = Examanalysis.set_array(@students,4,@selected_subject) %>
@@ -124,10 +124,10 @@
 							<th colspan='<%=@examquestions.acqq.count%>'>ACQ</th>
 						<% end %>
 						<% if @examquestions.osci2q.count!=0 %>
-							<th colspan='<%=@examquestions.osci2q.count%>'>OSCE</th>
+							<th colspan='<%=@examquestions.osci2q.count%>'>OSCI</th>
 						<% end %>
 						<% if @examquestions.osci3q.count!=0 %>
-							<th colspan='<%=@examquestions.osci3q.count%>'>OSCE</th>
+							<th colspan='<%=@examquestions.osci3q.count%>'>OSCII</th>
 						<% end %>
 						<% if @examquestions.osceq.count!=0 %>
 							<th colspan='<%=@examquestions.osceq.count%>'>OSCE</th>
@@ -380,7 +380,7 @@
 							<% else %><!--if complete exam paper-->
 								<% if @osci2q_qty > 0 %>
 									<% @examquestions2 = @examquestions.osci2q %>
-									<% @index2 = @meq_qty+@seq_qty+@acqq_qty %>
+									<% @index2 = @meq_qty+@seq_qty+@acq_qty %>
 								<% end %>
 							<% end %>
 						<% elsif count == 5 %>	
@@ -391,7 +391,7 @@
 							<% else %><!--if complete exam paper-->
 								<% if @osci3q_qty > 0 %>
 									<% @examquestions2 = @examquestions.osci3q %>
-									<% @index2 = @meq_qty+@seq_qty+@acqq_qty+@osci2q_qty %>
+									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty %>
 								<% end %>
 							<% end %>
 						<% elsif count == 6 %>	
@@ -401,8 +401,8 @@
 								<% end %>
 							<% else %><!--if complete exam paper-->
 								<% if @osceq_qty > 0 %>
-									<% @examquestions2 = @examquestions.osce %>
-									<% @index2 = @meq_qty+@seq_qty+@acqq_qty+@osci2q_qty+@osci3q_qty %>
+									<% @examquestions2 = @examquestions.osceq %>
+									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty %>
 								<% end %>
 							<% end %>
 						<% elsif count == 7 %>	
@@ -412,7 +412,7 @@
 								<% end %>
 							<% else %><!--if complete exam paper-->
 								<% if @ospeq_qty > 0 %>
-									<% @examquestions2 = @examquestions.ospe %>
+									<% @examquestions2 = @examquestions.ospeq %>
 									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty%> 
 								<% end %>
 							<% end %>
@@ -423,7 +423,7 @@
 								<% end %>
 							<% else %><!--if complete exam paper-->
 								<% if @viva_qty > 0 %>
-									<% @examquestions2 = @examquestions.viva %>
+									<% @examquestions2 = @examquestions.vivaq %>
 									<% @index2 = @meq_qty+@seq_qty+@acq_qty+@osci2q_qty+@osci3q_qty+@osceq_qty+@ospeq_qty %>
 								<% end %>
 							<% end %>
@@ -717,7 +717,7 @@
 											<% elsif index5 > @third_A  && index5 < @third_B %>
 												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
 												<!--start for osci marks-->
-												<% if @examquestions.osci.count != 0 %>
+												<% if @examquestions.osci2q.count != 0 %>
 													<% @arrayfirst4<< @exammarks_mark[index][index5].student_mark  %>
 													<% if index5 == @equal4 %>
 														<% if index==0 %>
@@ -731,7 +731,7 @@
 											<% elsif index5 > @fouth_A && index5 < @fouth_B %>
 												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
 												<!--start for oscii marks-->
-												<% if @examquestions.oscii.count != 0 %>
+												<% if @examquestions.osci3q.count != 0 %>
 													<% @arrayfirst5<< @exammarks_mark[index][index5].student_mark  %>
 													<% if index5 == @equal5 %>
 														<% if index==0 %>
@@ -745,7 +745,7 @@
 											<% elsif index5 > @fifth_A && index5 < @fifth_B %>
 												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark, :precision=>2) %></td>
 												<!--start for osce marks-->
-												<% if @examquestions.osce.count != 0 %>
+												<% if @examquestions.osceq.count != 0 %>
 													<% @arrayfirst6<< @exammarks_mark[index][index5].student_mark  %>
 													<% if index5 == @equal6 %>
 														<% if index==0 %>
@@ -759,7 +759,7 @@
 											<% elsif index5 > @sixth_A && index5 < @sixth_B  %>
 												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
 												<!--start for ospe marks-->
-												<% if @examquestions.ospe.count != 0 %>
+												<% if @examquestions.ospeq.count != 0 %>
 													<% @arrayfirst7<< @exammarks_mark[index][index5].student_mark  %>
 													<% if index5 == @equal7 %>
 														<% if index==0 %>
@@ -773,7 +773,7 @@
 											<% elsif index5 > @seventh_A && index5 < @seventh_B  %>
 												<td><%= number_with_precision(@exammarks_mark[index][index5].student_mark,:precision=>2) %></td>
 												<!--start for viva marks-->
-												<% if @examquestions.viva.count != 0 %>
+												<% if @examquestions.vivaq.count != 0 %>
 													<% @arrayfirst7<< @exammarks_mark[index][index5].student_mark  %>
 													<% if index5 == @equal7 %>
 														<% if index==0 %>
@@ -1403,11 +1403,24 @@
 										<% @examquestions_count = @vivaq_qty-1 %>
 									<% end %>
 								<% end %>
+							<% elsif count == 9 %>
+								<% if @istemplate == 0 %>
+									<% if @examtemplates.map(&:questiontype).include?("TRUEFALSE")%>
+										<% @hashitem = @hashtruefalseq %>
+										<% @examquestions_count = @truefalseq_qty-1 %>
+									<% end %>
+								<% else %>
+									<% if @examquestions.truefalseq.count > 0 %>
+										<% @hashitem = @hashtruefalseq %>
+										<% @examquestions_count = @truefalseq_qty-1 %>
+									<% end %>
+								<% end %>
 							<% end %><!--jab hide first-->
 
 							<%# @qtype_start_with = -1 %>
 
-							<% 0.upto(@examquestions_count) do |index7| %><%# 0.upto(0) do |index7| %>
+							<%# 0.upto(@examquestions_count) do |index7| %>
+							<% 0.upto(@examquestions_count-1) do |index7| %><%# 0.upto(0) do |index7| %>
 								<% @total_fr_hash = [] %>
 								<%# @hashitem.each do |k,v|%>
 									<%# v.each_with_index do |value, index6|%>

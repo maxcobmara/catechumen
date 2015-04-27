@@ -1,13 +1,32 @@
 <h3><%=t('examanalysis.new')%></h3>
 
 <% form_for(@examanalysis) do |f| %>
-  	<%= f.error_messages %>
+	<%= f.error_messages %>
 	<%=render :partial => 'form', :locals => {:f => f} %>
-
- 
   <p>
-    <%= f.submit (t 'create') %>
+	<%= f.submit (t 'create') %>
   </p>
 <% end %>
 
 <%= link_to (t 'back'), examanalyses_path %>
+
+<!--ALL FINAL EXAMPAPER WITH EXISTING EXAMMARKS & GRADES AVAILABLE FOR ANALYSIS (total count of exammarks[distinct students] MUST MATCH with total count of grades[distinct student]) -->
+<!--AS FOR MID SEMESTER EXAMPAPER, Analysis CAN ONLY BE DONE when it's FINAL EXAMPAPER hv EXISTING EXAMMARKS & GRADES (as above conditions) -->
+<!--Note : Grades creation only available for FINAL EXAMPAPER, still exammarks can be created for all type of exampaper : Final, Mid & Repeat papers-->
+
+<!--Additional Notes-Restrictions / Not yet applied as of 26Apr2015-->
+<!--1) ONLY EXAMPAPER with complete (ALL) question types (MCQ.....TRUEFALSE) can be analysed-->
+<!--2) Date Range (Academic Session) - same subject but different academic session (refer workable sample below:)-->
+
+<!--Sample (workable)
+Peperiksaan Akhir Semester (Template) 	10 Apr 2015 	XBDF 3112 Kajian Imej 3 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	2 	
+Peperiksaan Pertengahan Semester 	27 May 2013 	XBDF 3112 Kajian Imej 3 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	2 	
+Peperiksaan Akhir Semester 			16 Nov 2014 	XBDF 2112 Kajian Imej 1 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	6 	
+Peperiksaan Akhir Semester (Template) 	03 Dec 2014 	NPPD 2214 Professional Practice IV 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	7
+Peperiksaan Akhir Semester 			29 Apr 2014 	NGYN 2112 Gynaecological Nursing 	0 	0 	0 	0 	0 	0 	0 	0 	0 	0 	7
+-->
+
+<!--Item 2 & 3 : SAME subject, but Mid Exam is on 27 May 2013 & Final is on 10 April 2015-->
+
+<!--SEQ???-->
+<!--For 'complete set' of exampaper : MUST Have values for SEQ (Exammark)-->

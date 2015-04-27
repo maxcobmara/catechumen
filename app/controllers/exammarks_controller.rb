@@ -51,12 +51,25 @@ class ExammarksController < ApplicationController
       else
         if @lecturer_programme == 'Commonsubject'
           @exam_list_index_raw = Exam.find(:all, :conditions=>['subject_id IN(?) and id IN(?)', common_subject, valid_exams])
+        ####
+        elsif @lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan' || @lecturer_programme == 'Pengkhususan'
+          posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ])
+          tasks_main = current_login.staff.position.tasks_main
+          posbasic_prog.each do |x|
+            @programme_id = x.id if tasks_main.include?(x.name)
+          end
+          #---
+          subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+          @exam_list_index_raw = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?) and id IN(?)',subject_of_programme, common_subject, valid_exams])
+          #---
+        ####
         else
           @exam_list_index_raw = Exam.find(:all, :conditions=>['id IN(?)', valid_exams])
         end
       end
       @exam_list_exist_mark = Exam.find(:all, :joins=>:exammarks, :conditions => ['exam_id IN(?)', @exam_list_index_raw.map(&:id)]).uniq  #exam
-      @exam_list_index = Exam.find(:all, :conditions=>['id IN(?) and id NOT IN(?)', valid_exams, @exam_list_exist_mark.map(&:id)])
+      #@exam_list_index = Exam.find(:all, :conditions=>['id IN(?) and id NOT IN(?)', valid_exams, @exam_list_exist_mark.map(&:id)])
+      @exam_list_index = @exam_list_index_raw - @exam_list_exist_mark
       if submit_val == t('exammark.search_exammarks') #'Search Exam Marks'
         search_item = params[:exam_id]
         if search_item == '0' 
@@ -157,6 +170,15 @@ class ExammarksController < ApplicationController
       if @lecturer_programme == 'Commonsubject'
         @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) and id IN(?)', common_subject, valid_exams])
         @student_list = Student.all 
+      elsif @lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan' || @lecturer_programme == 'Pengkhususan'
+          posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ])
+          tasks_main = current_login.staff.position.tasks_main
+          posbasic_prog.each do |x|
+            @programme_id = x.id if tasks_main.include?(x.name)
+          end
+          subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+          @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?) and id IN(?)',subject_of_programme, common_subject, valid_exams])
+          @student_list = Student.find(:all,:conditions=>['course_id=?', @programme_id], :order=>'name ASC') 
       else
         @exam_list = Exam.find(:all, :conditions=>['id IN(?)', valid_exams])
         @student_list = Student.all
@@ -197,6 +219,15 @@ class ExammarksController < ApplicationController
       if @lecturer_programme == 'Commonsubject'
         @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) and id IN(?)', common_subject, valid_exams])
         @student_list = Student.all  
+      elsif @lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan' || @lecturer_programme == 'Pengkhususan'
+          posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ])
+          tasks_main = current_login.staff.position.tasks_main
+          posbasic_prog.each do |x|
+            @programme_id = x.id if tasks_main.include?(x.name)
+          end
+          subject_of_programme = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+          @exam_list = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?) and id IN(?)',subject_of_programme, common_subject, valid_exams])
+          @student_list = Student.find(:all,:conditions=>['course_id=?', @programme_id], :order=>'name ASC') 
       else
         @exam_list = Exam.find(:all, :conditions=>['id IN(?)', valid_exams])
         @student_list = Student.all

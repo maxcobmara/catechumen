@@ -96,15 +96,32 @@ class Examquestion < ActiveRecord::Base
   
   def question_creator
     programme = Login.current_login.staff.position.unit
+    ###
+    if (programme=='Diploma Lanjutan' || programme=='Pos Basik' || programme=='Pengkhususan')
+      posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ])
+      tasks_main = Login.current_login.staff.position.tasks_main
+      posbasic_prog.each do |x|
+        if tasks_main.include?(x.name)
+          @programme_name=programme+" "+x.name 
+        end
+      end
+      if @programme_name
+        creator = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND tasks_main ILIKE(?)', programme, "%#{@programme_name}%"]).map(&:id)
+      end
+    end
+    ###
+    
     programme_name = Programme.roots.map(&:name)
     creator_prog= Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', programme_name]).map(&:id)
     if programme_name.include?(programme)
       creator = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
     else
-      role_admin = Role.find_by_name('Administration')  #must have role as administrator
-      staff_with_adminrole = Login.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_admin]).map(&:staff_id).compact.uniq 
-      creator_adm = Staff.find(:all, :joins=>:position, :conditions=>['staff_id IN(?)', staff_with_adminrole]).map(&:id)
-      creator=creator_prog+creator_adm
+      unless @programme_name
+        role_admin = Role.find_by_name('Administration')  #must have role as administrator
+        staff_with_adminrole = Login.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_admin]).map(&:staff_id).compact.uniq 
+        creator_adm = Staff.find(:all, :joins=>:position, :conditions=>['staff_id IN(?)', staff_with_adminrole]).map(&:id)
+        creator=creator_prog+creator_adm
+      end
     end
     creator
   end

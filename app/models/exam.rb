@@ -67,16 +67,16 @@ class Exam < ActiveRecord::Base
     common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
     if search 
       if search == '0'
-        @exams = Exam.find(:all)
+        @exams = Exam.find(:all, :conditions => ['klass_id is not null'])
       elsif search == '1'
-        @exams = Exam.find(:all, :conditions => ["subject_id IN (?)", common_subject])
+        @exams = Exam.find(:all, :conditions => ["subject_id IN (?) and klass_id is not null", common_subject])
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
         #@exams = Exam.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
-        @exams = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
+        @exams = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?) and klass_id is not null',subject_of_programme, common_subject])
       end
     else
-       @exams = Exam.find(:all)
+       @exams = Exam.find(:all, :conditions => ['klass_id is not null'])
     end
   end
   
@@ -189,19 +189,33 @@ class Exam < ActiveRecord::Base
   	#Exam::EXAMTYPE[("#{name}".to_i)-1][0].to_s	    #Exam::EXAMTYPE[("#{examtype}".to_i)-1][0].to_s	
   end
   
+  def self.examtype_list(examtype_examanalysis)
+    examtype_arr=[]
+    examtype_examanalysis.each do |examtype|
+        if examtype == 'F' 
+          examtype_arr+= [[I18n.t('exam.final_semester'), "F"]]
+        elsif examtype == 'M'
+          examtype_arr += [[I18n.t('exam.mid_semester'), "M"]]
+        elsif examtype == 'R'
+          examtype_arr+= [[I18n.t('exam.repeat_semester'), "R"]]
+        end
+      end
+    examtype_arr
+  end
+  
   #--12June2013
   
   #----------------Coded List----------------------------------- 
   EXAMTYPE = [
             #  Displayed       stored in db
-               [ "Peperiksaan Pertengahan Semester",      "M" ],
-               [ "Peperiksaan Akhir Semester",            "F" ],
-               [ "Peperiksaan Ulangan",                   "R" ]
+               [ I18n.t('exam.mid_semester'),      "M" ],
+               [ I18n.t('exam.final_semester'),            "F" ],
+               [ I18n.t('exam.repeat_semester'),                   "R" ]
   ]
   PAPERTYPE =[
            #  Displayed       stored in db
               ["Template",        0],
-              ["Complete Exam",  1]
+              [I18n.t('exam.complete_set'),  1]
   ]
 
 private

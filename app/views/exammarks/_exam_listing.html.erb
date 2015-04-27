@@ -19,6 +19,21 @@
 	<%# @exam_list_index = Exam.all %><!--question OR question template must exist-->	
 	<% @exam_list_index = @complete_exampaper %>
 <%# end %>
+
+<!--26April2015 - START : RESET @lecturer_programme values for Pos Basik, Diploma Lanjutan & Pengkhususan-->
+<% if @lecturer_programme.nil? %>
+	<% recheck_unit = Login.current_login.staff.position.unit %>
+	<% if recheck_unit == 'Pos Basik' || recheck_unit == 'Diploma Lanjutan' || recheck_unit == 'Pengkhususan'%>
+		<% posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ]) %>
+		<% tasks_main = Login.current_login.staff.position.tasks_main %>
+		<% posbasic_prog.each do |x| %>
+			<!--RESET @lecturer_programme values for Pos Basik, Diploma Lanjutan & Pengkhususan-->
+			<% @lecturer_programme = x.name if tasks_main.include?(x.name) %>
+		<% end %>
+	<% end %>
+<% end %>
+<!--26April2015 - END : RESET @lecturer_programme values for Pos Basik, Diploma Lanjutan & Pengkhususan-->
+
 <%# if !@current_login_roles.include?(2) && @anc_depth!=1 %>
 	<% @exam_list = [] %>
 	<% @exam_list_exist_mark = [] %>
@@ -57,4 +72,5 @@
 	<% end %>
 <%# end %>
 <!--11-12Apr2013-->
+
 <%###################################################%>
