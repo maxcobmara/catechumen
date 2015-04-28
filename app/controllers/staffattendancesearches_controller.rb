@@ -25,7 +25,7 @@ class StaffattendancesearchesController < ApplicationController
   def view_staff
     unless params[:department2].blank?
       department_name = params[:department2]
-      thumb_ids=Staff.all.map(&:thumb_id).compact
+      thumb_ids=Staff.find(:all, :conditions => ['staff_shift_id is not null AND thumb_id is not null']).map(&:thumb_id)
       @staff_list=Staff.find(:all, :joins => :position, :conditions => ['(unit=? OR tasks_main ILIKE(?)) and thumb_id IN(?) and positions.name!=?', department_name, "%#{department_name}%", thumb_ids,'ICMS Vendor Admin'], :order => 'name ASC')
     end
     render :partial => 'view_staff', :layout => false
