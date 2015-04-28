@@ -1,5 +1,5 @@
 class Staffattendancesearch < ActiveRecord::Base
-  attr_accessible :department, :staff, :logged_at
+  attr_accessible :department, :thumb_id, :logged_at
   attr_accessor :method
   
   def staffattendances
@@ -12,8 +12,8 @@ class Staffattendancesearch < ActiveRecord::Base
     StaffAttendance.find(:all, :conditions => conditions,  :order => orders)   
   end
 
-   def staff_conditions
-     ["thumb_id=?", staff.to_i] #compulsory 
+   def thumb_id_conditions
+     ["thumb_id=?", thumb_id] #compulsory 
    end
    
    def logged_at_conditions
