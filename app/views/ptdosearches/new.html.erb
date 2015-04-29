@@ -1,0 +1,45 @@
+<div class="tform">
+	<H2><%=t('equery.ptdo.search')%></H2>
+	
+<% form_for @ptdosearch do |f| %>
+  <%= f.error_messages %>
+	<table width=100% >
+		<% if @searchptdotype=='1' || @searchptdotype==1 %>
+			<%= hidden_field_tag :method, 1 %><%=f.hidden_field :attended_courses, :value => 1 %>
+			<tr><td colspan=2><%=t('equery.ptdo.search_by')%> :</td></tr>
+			<!--WORKING : Department part - hide 29April2015<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'equery.ptdo.department') %></td>
+				<td>
+					<%#= f.select :department, @department_list, {:include_blank => (t 'select')},
+					:onchange => remote_function(:update => form_tag_id(f.object_name, :staff_list), 
+					:url => {:action => 'view_staff'}, 
+					:with => "'department2='+$('"+form_tag_id(f.object_name, :department)+"').value ") %>
+				</td>
+			</tr>-->
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'equery.ptdo.staff')%></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :staff_list)) %>
+						<!--display text field by default-->
+						<%=f.text_field :staff_name %>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'equery.ptdo.icno')%></td>
+				<td><%=f.text_field :icno%></td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'equery.ptdo.schedule_date')%></td>
+				<td><%=f.date_select :schedulestart_start, :order => [:day, :month, :year], :include_blank => true%>&nbsp;&nbsp;<%=t('to')%>
+				&nbsp;&nbsp;<%=f.date_select :schedulestart_end, :order => [:day, :month, :year], :include_blank => true%></td>
+			</tr>
+		<% end %>
+	</table>
+
+  <p><%= f.submit (t 'search') %>&nbsp;<font size=-2><%=t('equery.leaves_all_blank_all_records')%></font></p>
+<% end %>
+
+
+</div>
+

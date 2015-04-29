@@ -22,13 +22,21 @@
 			<td><%= link_to (t 'menu.maklumat_perjawatan'), {:controller => 'positions',:action => 'maklumat_perjawatan_LA'}  %></td>
 			<td><%= link_to (t 'equery.advance_search'), {:controller => 'staffsearch2s',:action => 'new'}  %></td>
 		</tr>
+		<% end %>
+		<% permitted_to? :read, :staffattendancesearches do %>
 		<tr>
 			<td><%=no+=1%></td>
 			<td><%= link_to (t 'menu.attend')+" - "+(t 'attendance.punchcard_status'), {:controller => 'staff_attendances', :action => 'status'} %>&nbsp;|&nbsp;<%= link_to (t 'equery.staffattendance.report'), {:controller => 'staff_attendances', 	:action => 'report'} %></td>
 			<td><%= link_to (t 'equery.advance_search'), {:controller => 'staffattendancesearches', :action => 'new', :searchattendancetype=>1} %></td>
 		</tr>
 		<% end %>
-				
+		<% permitted_to? :read, :ptdosearches do %>
+		<tr>
+			<td><%=no+=1%></td>
+			<td><%= link_to (t 'ptdos.viewsummary'),{:controller => 'ptdos', :action => 'show_total_days', :id => Login.current_login.staff_id} %></td>
+			<td><%= link_to (t 'equery.advance_search'), {:controller => 'ptdosearches',:action => 'new', :searchptdotype=>1}  %></td>
+		</tr>	
+		<% end %>
 		<% permitted_to? :read, :assetsearches do %>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.assets' %></span></td></tr>

@@ -46,6 +46,7 @@ authorization do
     
     #Equery Menu Items
     has_permission_on :staffsearch2s, :to => :read
+    has_permission_on :staffattendancesearches, :to => :read
     has_permission_on :assetsearches, :to => :read
     has_permission_on :documentsearches, :to => :read
     has_permission_on :studentsearches, :to => :read
@@ -63,6 +64,7 @@ authorization do
     has_permission_on :booksearches, :to => :read
     has_permission_on :librarytransactionsearches, :to => :read
     has_permission_on :stationerysearches, :to => :read
+    has_permission_on :ptdosearches, :to => :read
   end
   
   
@@ -172,6 +174,7 @@ authorization do
      has_permission_on :attendances, :to => :manage
      has_permission_on :staff_attendances, :to => :manage   #29Apr2013-refer routes.rb
      has_permission_on :staffsearch2s, :to => :read
+     has_permission_on :staffattendancesearches, :to => :read
   end
   
   role :finance_unit do
@@ -180,11 +183,13 @@ authorization do
   
   role :training_manager do
     has_permission_on [:ptbudgets, :ptcourses, :ptschedules], :to => :manage
+    has_permission_on :ptdosearches, :to => :read
   end
   
   role :training_administration do
     has_permission_on [:ptcourses, :ptschedules], :to => :manage
     has_permission_on :ptdos, :to => :approve
+    has_permission_on :ptdosearches, :to => :read
   end
   
   #Group Assets  -------------------------------------------------------------------------------
