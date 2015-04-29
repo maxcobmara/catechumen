@@ -12,8 +12,18 @@ class Examsearch < ActiveRecord::Base
     Exam.find(:all, :conditions => conditions,  :order => orders)   
   end
   
-   def valid_papertype_conditions
-     ["klass_id is not null"] unless valid_papertype.blank?
+  def valid_papertype_conditions
+     unless valid_papertype.blank?
+       subject_ids = Exam.valid_subject_lecturer
+       if subject_ids.count > 0
+         cc="klass_id is not null AND" 
+         a="subject_id=? "
+         0.upto(subject_ids.count-2).each do |x|
+           a+=" OR subject_id=? " 
+         end
+       end
+     end
+     [cc+"("+a+")", subject_ids] unless valid_papertype.blank? && subject_ids.count > 0
    end
    
    def programme_id_conditions

@@ -1,5 +1,11 @@
 <% unless params[:subjectid].blank?%>
-  <%= collection_select (:examsearch, :created_by, @lecturer_list, :id, :name, :include_blank=> (t 'select') )%>
+  <%= collection_select (:examsearch, :created_by, @lecturer_list, :id, :name, {:include_blank => (t 'select')},
+		:onchange => remote_function(:update => form_tag_id(:examsearch, :examtype_list), 
+		:url => {:action => 'view_examtype' }, 
+		:with => "'createdby='+$('"+form_tag_id(:examsearch, :created_by)+"').value +'&subject='+'#{@subject}'")) %>
 <% else %>
-  <%= collection_select (:examsearch, :created_by, @lecturer_list2, :id, :name, :include_blank=> (t 'select') )%>
+  <%= collection_select (:examsearch, :subject_id, @lecturer_list2, :id, :name, {:include_blank => (t 'select')},
+		:onchange => remote_function(:update => form_tag_id(:examsearch, :examtype_list), 
+		:url => {:action => 'view_examtype' }, 
+		:with => "'createdby='+$('"+form_tag_id(:examsearch, :created_by)+"').value")) %>
 <% end %>

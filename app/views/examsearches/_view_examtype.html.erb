@@ -1,0 +1,11 @@
+<% unless params[:createdby].blank?%>
+  <%= select (:examsearch, :examtype, @examtype_array, {:include_blank => (t 'select')},
+		:onchange => remote_function(:update => form_tag_id(:examsearch, :papertype_list), 
+		:url => {:action => 'view_papertype' }, 
+		:with => "'examtype2='+$('"+form_tag_id(:examsearch, :examtype)+"').value +'&creator='+'#{@creator}'")) %>
+<% else %>
+  <%= select (:examsearch, :examtype, @examtype_array, {:include_blank => (t 'select')},
+		:onchange => remote_function(:update => form_tag_id(:examsearch, :papertype_list), 
+		:url => {:action => 'view_papertype' }, 
+		:with => "'examtype2='+$('"+form_tag_id(:examsearch, :examtype)+"').value ")) %>
+<% end %>

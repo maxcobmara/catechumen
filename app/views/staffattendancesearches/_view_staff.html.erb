@@ -1,0 +1,13 @@
+<% unless params[:department2].blank? %>
+	<% if params[:department2] == "------------------------------" %>
+		<%=t('equery.staffattendance.select_department_first')%>
+	<% else %>
+		<%#= collection_select(:staffattendancesearch, :thumb_id, @staff_list, :thumb_id, :staff_thumb, :include_blank=> (t 'select') )%>
+		<%= collection_select (:staffattendancesearch, :thumb_id, @staff_list, :thumb_id, :staff_thumb, {:include_blank => (t 'select')},
+		:onchange => remote_function(:update => form_tag_id(:staffattendancesearch, :monthyear_list), 
+		:url => {:action => 'view_monthyear' }, 
+		:with => "'thumbid='+$('"+form_tag_id(:staffattendancesearch, :thumb_id)+"').value")) %>
+	<% end %>
+<% else %>
+	<%=t('equery.staffattendance.select_department_first')%>
+<% end %>
