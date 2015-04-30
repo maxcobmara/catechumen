@@ -48,7 +48,41 @@ class Ptdo < ActiveRecord::Base
        end
   end
   
+  #used in Ptdosearches : Show
+  def self.staff_total_days(ptdoids_staff)
+    total_days=0
+    ptcourse_ids = Ptdo.find(:all, :conditions => ['id IN(?) AND final_approve=? AND trainee_report is not null', ptdoids_staff, true]).map(&:ptcourse_id)  #valid attended courses
+    ptcourse_ids.each do |ptcourse_id|
+      attended = Ptcourse.find(ptcourse_id)
+      if attended.duration_type == 1
+        total_days += attended.duration*1
+      elsif attended.duration_type == 2
+        total_days += attended.duration*30 
+      elsif attended.duration_type == 3
+        total_days += attended.duration*365
+      end
+    end
+    total_days 
+  end
   
-
+  #used in Ptdosearches : Show
+  def self.staff_unit(curr_staff)
+    unit_staff=curr_staff.try(:position).try(:unit)
+    unit_staff=unit_staff.lstrip unless unit_staff.blank?
+    if unit_staff =='Pos Basik' || unit_staff == 'Pengkhususan' || unit_staff== 'Diploma Lanjutan'
+      @a_unit_staff=""
+      pos_basic_name = Programme.find(:all, :conditions => ['ancestry_depth=? AND (course_type=? OR course_type=? OR course_type=?)', 0, 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).map(&:name) 
+      staff_tasks_main=curr_staff.try(:position).try(:tasks_main)
+      unless staff_tasks_main.blank?
+        pos_basic_name.each do |pb_name| 
+          @a_unit_staff=pb_name if staff_tasks_main.include?(pb_name)
+        end
+      end
+      dept=@a_unit_staff
+    else
+      dept=unit_staff if unit_staff!='' 
+    end
+    dept
+  end
   
 end

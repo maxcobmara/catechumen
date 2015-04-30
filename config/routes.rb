@@ -103,6 +103,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :evaluatecoursesearches, :colection => {:view_subject => :post, :view_lecturer => :post}
   map.resources :examanalysissearches, :collection => {:view_subject => :post, :view_examtype => :post}
   map.resources :staffattendancesearches, :collection => {:view_staff => :post, :view_monthyear => :post}
+  map.resources :ptdosearches, :collection => {:view_staff => :post}
   
   map.resources :intakes
 
