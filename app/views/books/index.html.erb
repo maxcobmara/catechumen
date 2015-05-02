@@ -24,10 +24,15 @@
 			</th>
 			<th style="text-align:right;">
 				<% permitted_to? :manage, :books do %>
+					<%= link_to (t 'book.list_all'), :action => 'stock_listing', :locals => {:class_type => '1'} %>
+				<% end %>
+			</th>
+			<th style="text-align:right;">
+				<% permitted_to? :manage, :books do %>
 					<%= link_to_function (t 'book.stock_listing_by'), "$('byclass').toggle(); $('byaccessno').toggle();" %>
 				<% end %>
 			</th>
-			<th colspan=3 style="text-align:left;">
+			<th colspan=2 style="text-align:left;">
 				<% permitted_to? :manage, :books do %>
 					<div id="byclass" style="display:block;">
 					<% form_tag(:action => :stock_listing) do %>
@@ -40,8 +45,8 @@
 					<div id="byaccessno" style="display:none;">
 					<% form_tag(:action => :stock_listing) do %>
 						<%=t('book.accessionno')%>
-						<%= text_field_tag(:isbn_search, params[:isbn_search], :size=>5, :placeholder=> (t 'from')) %>
-						<%= text_field_tag(:isbn_search2, params[:isbn_search2], :size=>5, :placeholder=> (t 'to')) %>
+						<%= text_field_tag(:isbn_search, params[:isbn_search], :size=>10, :placeholder=> (t 'from')) %>
+						<%= text_field_tag(:isbn_search2, params[:isbn_search2], :size=>10, :placeholder=> (t 'to')) %>
 						<%= submit_tag t('book.list_by_accessionno'), :name => :list_submit_button %>
 					<% end %>
 					</div>
@@ -63,7 +68,7 @@
 			<th><%= t('book.media') %></th>
 			<th><%= t('book.image') %></th>
 			<th><%= t('book.title') %><BR><%= t('book.author') %><BR></th>
-			<th><%= t('book.quantity') %></th>
+			<th width=70px align=center><%= t('book.quantity') %></th>
 			<th><%= t('book.accessionno') %><BR><%= t('book.classno') %></th>
 			<!--<th>Loan Type</th>-->
 			<th><%= t('menu.locations') %><BR>Status</th>
@@ -86,9 +91,9 @@
 							<% else %>
 							<%= image_tag book.photo.url, :class => 'list-image' %>
 							<% end %> </td>
-				<td><b><span STYLE="font-size:1.1em"><%=h book.title %></span></b><BR><%=h book.author %><BR>ISBN : <%=h book.isbn %></td>
+				<td><b><span STYLE="font-size:1.1em"><%=h book.title %></span></b><BR><%=h book.author %><BR>ISBN / ISSN : <%=h book.isbn %></td>
 				
-				<td><%=h book.book_quantity if index==0 %></td><!--1April2013-->
+				<td align=center><%=h book.book_quantity if index==0 %></td><!--1April2013-->
 				<td>
 					<br>
 					<!--1April2013-from table : ACCESSIONS-->
@@ -194,18 +199,55 @@
 			<% end %><%# end for -----> if book.accessions.count != 0 %>
 			
 		<% end %>
+		<!---->
+		<tr>
+			<th colspan=3 >
+				<% permitted_to? :manage, :books do %>
+					<%= link_to image_tag("add.png", :border => 0, :title => (t 'book.new')) + (t 'book.new'), new_book_path %>
+				<% end %>
+			</th>
+			<th style="text-align:right;">
+				<% permitted_to? :manage, :books do %>
+					<%#=t('book.listing')%>
+					 <%= link_to (t 'book.summary_all'), :action => 'stock_verification', :locals => {:class_type => '1',:dodo =>params[:search]} %>
+					<!--HIDE ON 16JULY2013- |
+					<%= link_to 'Books of class NLM', :action => 'stock_verification', :locals => {:class_type => '2'} %> | 
+					<%= link_to 'Books of class LC', :action => 'stock_verification', :locals => {:class_type => '3'} %>  -->
+				<% end %>
+			</th>
+			<th style="text-align:right;">
+				<% permitted_to? :manage, :books do %>
+					<%= link_to_function (t 'book.stock_listing_by2'), "$('byclass2').toggle(); $('byaccessno2').toggle();" %>
+				<% end %>
+			</th>
+			<th colspan=3 style="text-align:left;">
+				<% permitted_to? :manage, :books do %>
+					<div id="byclass2" style="display:block;">
+					<% form_tag(:action => :stock_verification) do %>
+						<%=t('book.classno')%>
+						<%= text_field_tag(:isbn_search, params[:isbn_search], :size=>14, :placeholder=> ".."+(t 'starting_with')) %>
+						<%= submit_tag t('book.list_by_classno2'), :name => :list_submit_button %>
+					<% end %>
+					</div>
+				
+					<div id="byaccessno2" style="display:none;">
+					<% form_tag(:action => :stock_verification) do %>
+						<%=t('book.accessionno')%>
+						<%= text_field_tag(:isbn_search, params[:isbn_search], :size=>10, :placeholder=> (t 'from')) %>
+						<%= text_field_tag(:isbn_search2, params[:isbn_search2], :size=>10, :placeholder=> (t 'to')) %>
+						<%= submit_tag t('book.list_by_accessionno2'), :name => :list_submit_button %>
+					<% end %>
+					</div>
+				<% end %>
+			</th>
+			<th colspan=3>&nbsp;</th>
+		</tr>
+		<!---->
 	</table>
 </div>
+<br />
 <div class="pagination">
  <%= will_paginate @books %>  
 </div>
 
-<br />
 
-<% permitted_to? :manage, :books do %>
-	<%= link_to image_tag("add.png", :border => 0, :title => (t 'book.new')) + (t 'book.new'), new_book_path %> |
-	<%= link_to (t 'book.listing'), :action => 'stock_verification', :locals => {:class_type => '1',:dodo =>params[:search]} %>
-	<!--HIDE ON 16JULY2013- |
-	<%= link_to 'Books of class NLM', :action => 'stock_verification', :locals => {:class_type => '2'} %> | 
-	<%= link_to 'Books of class LC', :action => 'stock_verification', :locals => {:class_type => '3'} %>  -->
-<% end %>

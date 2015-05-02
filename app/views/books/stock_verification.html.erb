@@ -24,11 +24,18 @@
 				</tr>
 				<tr>
 					<th colspan=6 style="text-align:left;">
-						<%=t('book.total_books')%> / <%=t('book.titles')%> : <%#= @bob %><%=@books.count%>/<%= Book.count('title', :distinct => true)%>
+						<%=t('book.total_books')%> / <%=t('book.titles')%> : <%#= @bob %><%=@books.count%>/<%= Book.count('title',:conditions=>['id IN(?)', @books.map(&:id)], :distinct => true)%>
+						<br>
+						<%=(t 'book.search_by_classno2')+(t 'book.start_w_letter')+" : " + @class_no if @class_no != nil%> 
+						<% if @accs_no != nil %> 
+							<%=t('book.search_by_accessionno2')%>
+							<%= @accs_no if @accs_no != nil %> -
+							<%= @accs_no_end if @accs_no_end != nil %>)
+						<% end %>
 						<%if @bb==''||@bb=='2'||@bb=='3'%>
 							 / <%= Book.count('title', :distinct => true)%>
 						<% end%>
-						<% if @bb == '1' %> - <%=t('book.listing_all_books')%>
+						<% if @bb == '1' %> - <%=t('book.summary_all')%>
 						<% elsif @bb == '2' %> - <%=t('book.listing_by_class_nlm')%>
 						<% elsif @bb == '3' %> - <%=t('book.listing_by_class_lc')%>
 						<% elsif @bb == '4' %> - <%=t('book.listing_books')%> <br>(<%=@searchby_items%>)
@@ -100,7 +107,7 @@
 </table>
 <div>	
 	
-
+<br>
 <div id="hideLink">
-<%= link_to 'Back', books_path %>
+<%= link_to t('back'), books_path %>
 </div>

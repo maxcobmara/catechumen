@@ -110,28 +110,38 @@ class BooksController < ApplicationController
   #2Apr2013-after UAT
   def stock_listing
     if request.post?
-        @find_type = params[:list_submit_button]
-    		  if @find_type == t('book.list_by_classno') #"List by class no"
-    		      @class_no = params[:isbn_search].to_s.upcase   
-              #@book_by_class = Book.find(:all, :conditions => ["classlcc ILIKE ?", "%#{@class_no}%"])  #pg 328 - use this for classlcc containing of string...
-              @book_by_class2 = Book.find(:all, :conditions => ["classlcc LIKE ?", "#{@class_no}%"])  #use this for classlcc STARTING WITH.. #http://stackoverflow.com/questions/251345/activerecord-find-starts-with
-    		  elsif @find_type == t('book.list_by_accessionno') #"List by accession no"
-              @accs_no = params[:isbn_search].to_s.strip#.upcase   
-              @accs_no_end = params[:isbn_search2].to_s.strip
-              #@book_by_class = Book.find(:all, :conditions => ["classlcc ILIKE ?", "%#{@class_no}%"])  #pg 328 - use this for classlcc containing of string...
-              #temporary - use accessionno in books table (later - TO DO : use accession_no in accessions table)
-              #@book_by_class2 = Book.find(:all, :conditions => ["accessionno LIKE ?", "#{@accs_no}%"])  #use this for classlcc STARTING WITH.. #http://stackoverflow.com/questions/251345/activerecord-find-starts-with
-              #@book_by_class2 = Book.find(:all, :conditions => {:accessionno => @accs_no..@accs_no_end}, :order => :accession_no) 
-              
-	      #@book_ids_in_accessions = Accession.find(:all, :conditions => {:accession_no => '0000001694'..'0000001694'}).map(&:book_id) 
-	      @book_ids_in_accessions = Accession.find(:all, :conditions => {:accession_no => @accs_no..@accs_no_end}).map(&:book_id) 
-	      @book_by_class2 = Book.find(:all, :conditions => ['id IN (?)', @book_ids_in_accessions])
-              #:row_date => start_date..end_date
-          end
-        
-        
-        render :layout => 'report'
+      @find_type = params[:list_submit_button]
+      if @find_type == t('book.list_by_classno') #"List by class no"
+        @class_no = params[:isbn_search].to_s.upcase
+        unless @class_no.blank?
+          #@book_by_class = Book.find(:all, :conditions => ["classlcc ILIKE ?", "%#{@class_no}%"])  #pg 328 - use this for classlcc containing of string...
+          @book_by_class2 = Book.find(:all, :conditions => ["classlcc LIKE ?", "#{@class_no}%"])  #use this for classlcc STARTING WITH.. #http://stackoverflow.com/questions/251345/activerecord-find-starts-with
+        else
+          @book_by_class2=[]
+        end
+      elsif @find_type == t('book.list_by_accessionno') #"List by accession no"
+        @accs_no = params[:isbn_search].to_s.strip#.upcase   
+        @accs_no_end = params[:isbn_search2].to_s.strip
+        #@book_by_class = Book.find(:all, :conditions => ["classlcc ILIKE ?", "%#{@class_no}%"])  #pg 328 - use this for classlcc containing of string...
+        #temporary - use accessionno in books table (later - TO DO : use accession_no in accessions table)
+        #@book_by_class2 = Book.find(:all, :conditions => ["accessionno LIKE ?", "#{@accs_no}%"])  #use this for classlcc STARTING WITH.. #http://stackoverflow.com/questions/251345/activerecord-find-starts-with
+        #@book_by_class2 = Book.find(:all, :conditions => {:accessionno => @accs_no..@accs_no_end}, :order => :accession_no) 
+        if @accs_no.size==10 && @accs_no_end.size==10
+          #@book_ids_in_accessions = Accession.find(:all, :conditions => {:accession_no => '0000001694'..'0000001694'}).map(&:book_id) 
+          @book_ids_in_accessions = Accession.find(:all, :conditions => {:accession_no => @accs_no..@accs_no_end}).map(&:book_id) 
+          @book_by_class2 = Book.find(:all, :conditions => ['id IN (?)', @book_ids_in_accessions])
+          #:row_date => start_date..end_date
+        else
+          @book_by_class2=[]
+        end
+      end
+    else
+       @bb = params[:locals][:class_type]
+        if @bb == '1'
+          @book_by_class2=Book.all
+        end
     end
+    render :layout => 'report'  
   end
   #2Apr2013-after UAT
   
@@ -143,22 +153,45 @@ class BooksController < ApplicationController
   end
 
   def stock_verification
-     @bb = params[:locals][:class_type]
-     @bob = params[:locals][:dodo]
-     if @bb == '1'
-       #if @bob
-         #@books = Book.find(:all, :conditions=>['title =?', 'Abc of otolaryngology-4th edLLLL'])
-         @books = Book.search(@bob)
-       #else
-         #@books = Book.find(:all, :order => :classlcc) 
-       #end
-     end
-     @books = Book.find(:all, :conditions =>["classlcc LIKE ? OR classlcc LIKE ?", "Q%", "W%"], :order => :classlcc) if @bb == '2'
-     if @bb == '3'
-       @books_nlm = Book.find(:all, :conditions =>["classlcc LIKE ? OR classlcc LIKE ?", "Q%", "W%"], :select=>:classlcc).map {|x|x.classlcc}
-       @books = Book.find(:all, :conditions => ["classlcc not in (?)", @books_nlm])
-     end
-     render :layout => 'report'
+    unless request.post?
+      ###
+      @bb = params[:locals][:class_type]
+      @bob = params[:locals][:dodo]
+      if @bb == '1'
+        #if @bob
+        #@books = Book.find(:all, :conditions=>['title =?', 'Abc of otolaryngology-4th edLLLL'])
+        @books = Book.search(@bob)
+      #else
+        #@books = Book.find(:all, :order => :classlcc) 
+      #end
+      end
+      @books = Book.find(:all, :conditions =>["classlcc LIKE ? OR classlcc LIKE ?", "Q%", "W%"], :order => 'classlcc ASC') if @bb == '2'
+      if @bb == '3'
+        @books_nlm = Book.find(:all, :conditions =>["classlcc LIKE ? OR classlcc LIKE ?", "Q%", "W%"], :select=>:classlcc).map {|x|x.classlcc}
+        @books = Book.find(:all, :conditions => ["classlcc not in (?)", @books_nlm], :order => 'classlcc ASC')
+      end
+      ###
+    else
+      @find_type = params[:list_submit_button]
+      if @find_type == t('book.list_by_classno2')
+        @class_no = params[:isbn_search].to_s.upcase
+        unless @class_no.blank?
+          @books = Book.find(:all, :conditions => ["classlcc LIKE ?", "#{@class_no}%"], :order => 'classlcc ASC') 
+        else
+          @books=[]
+        end
+      elsif @find_type == t('book.list_by_accessionno2')
+        @accs_no = params[:isbn_search].to_s.strip#.upcase   
+        @accs_no_end = params[:isbn_search2].to_s.strip
+        if @accs_no.size==10 && @accs_no_end.size==10
+          @book_ids_in_accessions = Accession.find(:all, :conditions => {:accession_no => @accs_no..@accs_no_end}).map(&:book_id) 
+          @books = Book.find(:all, :conditions => ['id IN (?)', @book_ids_in_accessions], :order => 'classlcc ASC')
+        else
+          @books=[]
+        end
+      end
+    end
+    render :layout => 'report'
   end
   
 end

@@ -119,9 +119,9 @@ class Book < ActiveRecord::Base
     
 def self.search(search)
     if search
-        @book = Book.find(:all, :conditions => ["isbn LIKE ? or title ILIKE ? or author ILIKE ? or location ILIKE ?" , "%#{search}%","%#{search}%","%#{search}%", "%#{search}%"], :order => :title)
+        @book = Book.find(:all, :conditions => ["isbn LIKE ? or title ILIKE ? or author ILIKE ? or location ILIKE ?" , "%#{search}%","%#{search}%","%#{search}%", "%#{search}%"], :order => 'classlcc ASC')
     else
-       @book = Book.find(:all, :order => :title)
+       @book = Book.find(:all, :order => 'classlcc ASC')
     end
 end
   
