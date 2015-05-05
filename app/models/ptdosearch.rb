@@ -68,24 +68,46 @@ class Ptdosearch < ActiveRecord::Base
     unless schedulestart_start.blank?
       ptschedule_ids = Ptschedule.find(:all, :conditions => ['start >=?', schedulestart_start]).map(&:id)
       ptdo_ids = Ptdo.find(:all, :conditions => ['ptschedule_id IN(?)', ptschedule_ids]).map(&:id)
+      ptdo_ids2 = Ptdo.all.map(&:id)
       a="id=?" if ptdo_ids.count > 0
       0.upto(ptdo_ids.count-2) do |x|
         a+=" OR id=? "
       end
+      b="id!=?" if ptdo_ids2.count > 0
+      0.upto(ptdo_ids2.count-2) do |x|
+        b+=" AND id!=? "
+      end
     end
-    ["("+a+")", ptdo_ids] unless schedulestart_start.blank?
+     if !schedulestart_end.blank? 
+      if ptdo_ids.count > 0
+        ["("+a+")", ptdo_ids] 
+      else
+	 ["("+b+")", ptdo_ids2] 
+      end
+    end
   end
   
   def schedulestart_end_conditions
     unless schedulestart_end.blank?
       ptschedule_ids = Ptschedule.find(:all, :conditions => ['start <=?', schedulestart_end]).map(&:id)
       ptdo_ids = Ptdo.find(:all, :conditions => ['ptschedule_id IN(?)', ptschedule_ids]).map(&:id)
+      ptdo_ids2 = Ptdo.all.map(&:id)
       a="id=?" if ptdo_ids.count > 0
       0.upto(ptdo_ids.count-2) do |x|
         a+=" OR id=? "
       end
+      b="id!=?" if ptdo_ids2.count > 0
+      0.upto(ptdo_ids2.count-2) do |x|
+        b+=" AND id!=? "
+      end
     end
-    ["("+a+")", ptdo_ids] unless schedulestart_end.blank?
+    if !schedulestart_end.blank? 
+      if ptdo_ids.count > 0
+        ["("+a+")", ptdo_ids] 
+      else
+	 ["("+b+")", ptdo_ids2] 
+      end
+    end
   end
   
   def orders
