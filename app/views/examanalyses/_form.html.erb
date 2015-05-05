@@ -16,11 +16,19 @@
 	<% exam_ids_w_exist_grades << examid if exmrks.count==exist_grade %>
 <% end %>
 <!--WALA<%#=exam_ids_w_exist_grades%>WALA-->
-<!--END : 24Apr2015-->
+<!--END : 24Apr2015--><p>
 
-<%= @exam_ids_in_exammark = Exammark.all.map(&:exam_id).uniq %><br>
+<% @exam_ids_in_exammark = Exammark.all.map(&:exam_id).uniq %><br>
 <% exist_analysis = Examanalysis.all.map(&:exam_id) %>
-<% @exam_list_index_for_analysis = Exam.find(:all, :conditions => ['id IN (?) and id IN (?) and id IN(?) and id NOT IN (?)', @exam_list_index, @exam_ids_in_exammark,exam_ids_w_exist_grades, exist_analysis])%>
+<% if exist_analysis.count==0 %>
+	<% if @exam_list_index.count==0 %>
+		<% @exam_list_index_for_analysis = Exam.find(:all, :conditions => ['id IN (?) and id IN(?)', @exam_ids_in_exammark, exam_ids_w_exist_grades])%>
+	<% else %>
+		<% @exam_list_index_for_analysis = Exam.find(:all, :conditions => ['id IN (?) and id IN (?) and id IN(?)', @exam_list_index, @exam_ids_in_exammark,exam_ids_w_exist_grades])%>
+	<% end %>
+<% else %>
+	<% @exam_list_index_for_analysis = Exam.find(:all, :conditions => ['id IN (?) and id IN (?) and id IN(?) and id NOT IN (?)', @exam_list_index, @exam_ids_in_exammark,exam_ids_w_exist_grades, exist_analysis])%>
+<% end %>
 
 <!--TO continue-->
 <% complete_set_examids = Exam.find(:all, :conditions => ['klass_id=?', 1]).map(&:id) %>
@@ -73,16 +81,4 @@
 	</tr>
 </table>
 <br>
-
 </div>
-
-
-
-   
-   
-   
-   
-   
-   
-   
-   

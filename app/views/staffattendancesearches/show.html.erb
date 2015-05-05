@@ -49,7 +49,8 @@
 			
 				<% first_rec=(@staffattendancesearch.staffattendances.first.logged_at-8.hours).strftime('%d').to_i %>
 				<% last_rec=(@staffattendancesearch.staffattendances.last.logged_at-8.hours).strftime('%d').to_i %>
-				<% last_day=(@staffattendancesearch.staffattendances.first.logged_at-8.hours).end_of_month.strftime('%d').to_i %>
+				<%# last_day=(@staffattendancesearch.staffattendances.first.logged_at-8.hours).end_of_month.strftime('%d').to_i %>
+				<% last_day=31 %>
 				<% @current_day=0 %>
 			
 				<% @staffattendancesearch.staffattendances.group_by{|x|(x.logged_at-8.hours).strftime('%d %b %Y')}.each do |dday, log_records| %>
@@ -145,6 +146,7 @@
 						<td align="center">&nbsp;</td>
 					</tr>
 				<% end %>
+				
 				<!--START : additional for monthly attendance without records on the last day of work!!-->
 				<% if last_day!=last_rec %>
 					<% if last_rec < 16 %>
@@ -218,6 +220,7 @@
 					<% end %>
 				<% end %>
 				<!--END : additional for monthly attendance without records on the last day of work!!-->
+				
 				<tr>
 					<td colspan=7 height=50px align=center><BR><u><b>AMARAN</b></u>
 					<br>Sesiapa yang didapati mengetik kad orang lain, <br>tindakan tatatertib akan diambil ke atasnya.</td>

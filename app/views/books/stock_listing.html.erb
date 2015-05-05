@@ -44,7 +44,7 @@ SEARCH BY - CLASS NO (LC) / (NLM) STARTING WITH LETTER : <b><%#=@class_no%> OR <
 				</tr>
 				<tr>
 					<th colspan=6 style="text-align:left;">
-						<%=t('book.total_books')%> / <%=t('book.titles')%> : <%=@book_by_class2.count%> / <%= Book.count('title', :distinct => true)%>&nbsp;-&nbsp;
+						<%=t('book.total_books')%> / <%=t('book.titles')%> : <%=@book_by_class2.count%> / <%= Book.count('title' ,:conditions=>['id IN(?)', @book_by_class2.map(&:id)], :distinct => true)%>&nbsp;-&nbsp;
 						<%=(t 'book.search_by_classno')+(t 'book.start_w_letter')+" : " + @class_no if @class_no != nil%> 
 						<% if @accs_no != nil %> 
 							<%=t('book.search_by_accessionno')%>

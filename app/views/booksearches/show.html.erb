@@ -33,6 +33,12 @@
 				<% @search_items=@search_items+"Accession No : '"+@booksearch.accessionno+"'" %>
 			</span>
 		<% end %>
+		<% if @booksearch.publisher && @booksearch.publisher.blank? ==false %>
+			<span style="text-decoration:underline;">
+				<%=t('equery.search_by')%> <%=t('book.publisher')%>: <b><%=@booksearch.publisher %></b><br><br>
+				<% @search_items=@search_items+"Publisher : '"+@booksearch.publisher+"'" %>
+			</span>
+		<% end %>
 		<!--additional heading-->
 		
 		<!--links for stock verification-->
