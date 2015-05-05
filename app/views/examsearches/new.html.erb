@@ -6,6 +6,7 @@
 	<table width=100% >
 		<% if @searchexamtype=='1' || @searchexamtype==1 %>
 			<%= hidden_field_tag :method,  1 %><%=f.hidden_field :valid_papertype, :value => 1%>
+			<%=f.hidden_field :valid_subject_lecturer, :value => 1%>
 			<tr><td colspan=2><%=t('equery.exam.search_by')%> :</td></tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.exam.programme_id')%></label></td>
@@ -34,24 +35,37 @@
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.exam.prepared_by')%></label></td>
 				<td>
 					<%= tag("div", :id => form_tag_id(f.object_name, :lecturer_list)) %>
-						<% lecturer_w_exam = Exam.find(:all, :conditions => ['klass_id is not null']).map(&:created_by) %>
-						<%= f.collection_select :created_by, Staff.find(:all, :conditions =>['id IN (?)', lecturer_w_exam]).sort_by{|x|x.name}, :id, :name, :include_blank=> (t 'select') %>
+						<%#= f.collection_select :created_by, Staff.find(:all, :conditions =>['id IN (?)', @lecturer_w_exam]).sort_by{|x|x.name}, :id, :name, :include_blank=> (t 'select') %>
+						<%= f.collection_select :created_by, Staff.find(:all, :conditions =>['id IN (?)', @lecturer_w_exam]).sort_by{|x|x.name}, :id, :name, {:include_blank => (t 'select')},
+						:onchange => remote_function(:update => form_tag_id(f.object_name, :examtype_list), 
+						:url => {:action => 'view_examtype'}, 
+						:with => "'createdby='+$('"+form_tag_id(f.object_name, :created_by)+"').value ") %>
 					</div>
 				</td>	
 			</tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.exam.examtype')%></label></td>
-				<td><%= f.select :examtype, Exam::EXAMTYPE, :include_blank=>(t 'select') %></td>	
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :examtype_list)) %>
+						<%= f.select :examtype, @examtype_array, {:include_blank => (t 'select')},
+						:onchange => remote_function(:update => form_tag_id(f.object_name, :papertype_list), 
+						:url => {:action => 'view_papertype'}, 
+						:with => "'examtype2='+$('"+form_tag_id(f.object_name, :examtype)+"').value ") %>
+					</div>
+				</td>	
 			</tr>
 
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.exam.klass_id')%></label></td>
-				<td><%= f.select :klass_id, Exam::PAPERTYPE, :include_blank=>(t 'select')%></td>	
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :papertype_list)) %>
+						<%= f.select :klass_id, @papertype_array, :include_blank=>(t 'select')%>
+					</div>
+				</td>
 			</tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<label><%=t('equery.exam.examdate')%></label></td>
-				<td><%#= date_select :examdate, params[:examdate], :include_blank=>(t 'select')%>
-				<%= f.date_select :examdate, :include_blank=>(t 'select')%></td>	
+				<td><%= f.date_select :examdate, :include_blank=>(t 'select')%></td>	
 			</tr>
 		<% end %>
 	</table>

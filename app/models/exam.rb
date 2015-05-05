@@ -203,6 +203,49 @@ class Exam < ActiveRecord::Base
     examtype_arr
   end
   
+  def self.papertype_list(klassids)
+    papertype_arr=[]
+    klassids.each do |papertype|
+      if papertype == 0
+        papertype_arr+=[["Template", 0]]
+      elsif papertype == 1
+        papertype_arr+=[[I18n.t('exam.complete_set'), 1]]
+      end
+    end
+    papertype_arr
+  end
+  
+  #use in Equery - Examsearch
+  def self.valid_subject_lecturer
+    valid_subjectids=[] #own by lecturer
+    all_exam=Exam.find(:all, :conditions => ['klass_id is not null'])
+    all_exam.group_by{|x|x.created_by}.each do |creator, exams|
+      post_creator=Position.find(:first, :conditions => ['staff_id=?', creator])
+      ##--restrict - EXAMS with VALID subjects own by lecturer available for search - BEWARE sometimes, Positions table is not complete!
+      if post_creator
+        unit_creator=post_creator.unit
+        dip_progname=Programme.find(:all, :conditions => ['course_type=? and ancestry_depth=?', 'Diploma', 0]).map(&:name)
+        if dip_progname.include?(unit_creator)
+          @programme_id = Programme.find(:first, :conditions => ['name=?', unit_creator]).id
+        elsif unit_creator == 'Pos Basik' || unit_creator == 'Diploma Lanjutan' || unit_creator == 'Pengkhususan'
+          posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ])
+          tasks_main = post_creator.tasks_main
+          posbasic_prog.each do |x|
+            @programme_id = x.id if tasks_main.include?(x.name)
+          end
+        end
+      end
+      ##--restrict - EXAMS - created_by of an exam must be among lecturers of a given programme
+      if @programme_id
+        subjects = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+        exams.each do |ee|
+          valid_subjectids << ee.subject_id if subjects.include?(ee.subject_id)
+        end
+      end
+    end
+    valid_subjectids
+  end
+  
   #--12June2013
   
   #----------------Coded List----------------------------------- 

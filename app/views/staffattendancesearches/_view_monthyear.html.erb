@@ -1,0 +1,5 @@
+<% unless params[:thumbid].blank? %>
+	<%= datetime_select :staffattendancesearch, :logged_at, :include_blank=> (t 'select'), :order => [:month, :year], :discard_hour=> true, :discard_minute => true, :default => {:day => 01, :hour => 00, :minute => 00 }%><%=@startyear%>
+<% else %>
+	<%=t('equery.staffattendance.select_staff_first')%>
+<% end %>

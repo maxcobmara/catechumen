@@ -1,0 +1,52 @@
+<div class="tform">
+	<H2><%=t('equery.staffattendance.search')%></H2>
+	
+<% form_for @staffattendancesearch do |f| %>
+  <%= f.error_messages %>
+	<table width=100% >
+		<% if @searchstaffattendancetype=='1' || @searchstaffattendancetype==1 %>
+			<%= hidden_field_tag :method,  1 %>
+			<tr><td colspan=2><%=t('equery.staffattendance.search_by')%> :</td></tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'equery.staffattendance.department') %></td>
+				<td>
+					<%# @department_list=Position.find(:all, :conditions => ['unit is not null'], :order => 'unit ASC').map(&:unit).uniq.compact %>
+					<% progdip_name = Programme.find(:all, :conditions => ['course_type=?', 'Diploma'], :order => 'name ASC').map(&:name).uniq.compact %>
+					<% progbasic_name=Programme.find(:all, :conditions => ['course_type IN(?)', ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']], :order => 'name ASC').map(&:name).uniq.compact %>
+					<% other_department_name=Position.find(:all, :conditions => ['unit is not null and unit NOT IN (?) and unit NOT IN (?)', ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan'], progdip_name], :order => 'unit ASC').map(&:unit).uniq.compact %>
+					<%# sep=["------------------------------"]%>
+					<%# @department_list=other_department_name+sep+progdip_name+sep+progbasic_name%>
+					<% @department_list=(other_department_name+progdip_name+progbasic_name).sort%>
+					<!---->
+					<%= f.select :department, @department_list, {:include_blank => (t 'select')},
+					:onchange => remote_function(:update => form_tag_id(f.object_name, :staff_list), 
+					:url => {:action => 'view_staff'}, 
+					:with => "'department2='+$('"+form_tag_id(f.object_name, :department)+"').value ") %>
+					<!---->
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'equery.staffattendance.staff')%></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :staff_list)) %>
+						<!--must select department first-->
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'equery.staffattendance.month_year') %></td>
+				<td>
+					<%= tag("div", :id => form_tag_id(f.object_name, :monthyear_list)) %>
+						<!--must select staff first-->
+					</div>
+				</td>
+			</tr>
+		<% end %>
+	</table>
+
+  <p><%= f.submit (t 'search') %></p>
+<% end %>
+
+
+</div>
+
