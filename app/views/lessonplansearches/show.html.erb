@@ -54,7 +54,7 @@
 			<%# @lessonplansearch.lessonplans.each_with_index do |lesson_plan, index| %>
 			<% @lessonplansearch.lessonplans.sort_by{|x|[x.lessonplan_intake.programme_id, x.lessonplan_intake.monthyear_intake]}.reverse.each do |lesson_plan| %>
 			<tr>
-				<td><%=index+=1%><%=lesson_plan.id%></td>
+				<td><%=index+=1%><%#=lesson_plan.id%></td>
 				<% if (@lessonplansearch.lecturer.blank? && @lessonplansearch.intake_id.blank? && @lessonplansearch.programme_id.blank?)|| (@lessonplansearch.lecturer && @lessonplansearch.intake_id.blank? && @lessonplansearch.programme_id.blank?) %>
 					<td><%=lesson_plan.schedule_item.weeklytimetable_topic.programme_coursetype_name%></td>
 				<% end %>

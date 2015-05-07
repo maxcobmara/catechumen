@@ -16,13 +16,20 @@ class PtdosearchesController < ApplicationController
     if @searchptdotype == '1' || @searchptdotype == 1
       @ptdosearch = Ptdosearch.new(params[:ptdosearch])
     end
-    if @ptdosearch.save
-      #flash[:notice] = "Successfully created staffattendancesearch."
-      redirect_to @ptdosearch
-    else
-      #render "new"
-      redirect_to new_staffattendancesearch_path(@ptdosearch,  :searchptdotype =>1)
-    end
+    #firstdate=Ptschedule.find(:all, :order =>'start ASC').first.start
+    #lastdate=Ptschedule.find(:all, :order =>'start ASC').last.start
+    #if (@ptdosearch.schedulestart_start && @ptdosearch.schedulestart_start.to_date < firstdate) || (@ptdosearch.schedulestart_end && @ptdosearch.schedulestart_end.to_date > lastdate)
+      #flash[:notice]=t('equery.ptdo.date_out_of_range')+firstdate.strftime('%d %b %Y')+" "+t('and')+" "+lastdate.strftime('%d %b %Y')
+      #redirect_to new_ptdosearch_path(@ptdosearch,  :searchptdotype =>'1') #@searchptdotype
+    #else 
+      if @ptdosearch.save
+        #flash[:notice] = "Successfully created staffattendancesearch."
+        redirect_to @ptdosearch
+      else
+        #render "new"
+        redirect_to new_ptdosearch_path(@ptdosearch,  :searchptdotype =>'1')
+      end
+    #end 
   end
   
   def view_staff
@@ -35,5 +42,7 @@ class PtdosearchesController < ApplicationController
  
   def show
     @ptdosearch = Ptdosearch.find(params[:id])
+    @firstdate=Ptschedule.find(:all, :order =>'start ASC').first.start
+    @lastdate=Ptschedule.find(:all, :order =>'start ASC').last.start
   end
 end

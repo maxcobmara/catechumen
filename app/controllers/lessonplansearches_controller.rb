@@ -24,17 +24,29 @@ class LessonplansearchesController < ApplicationController
       @intake_fr_intaketable = @intake_fr_intaketable
     else
       post_kp= Position.find(:first, :conditions => ['staff_id=? and (name ILIKE(?) or tasks_main ILIKE(?) or tasks_other ILIKE(?))', @loggedinstaff, '%Ketua Program%', '%Ketua Program%', '%Ketua Program%'])
-      role_kp=Role.find_by_name('Programme Manager')
+      role_kp=Role.find_by_name('Programme Manager').id
       prog_name = Position.find(:first, :conditions => ['staff_id=? and unit is not null', @loggedinstaff]).unit
-      prog_id = Programme.find(:first, :conditions => ['name ILIKE(?)', "%#{prog_name.strip}%"]).id
+      if prog_name.strip =='Pos Basik' || prog_name.strip=='Pengkhususan' || prog_name.strip=='Diploma Lanjutan'
+        tasks_main=Position.find(:first, :conditions => ['staff_id=?', @loggedinstaff]).tasks_main
+        posbasic_prog= Programme.find(:all, :conditions =>['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Pengkhususan', 'Diploma Lanjutan'])
+        posbasic_prog.each do |pb|
+	  if tasks_main.include?(pb.name)
+            @prog_name=pb.name 
+	    @prog_id=pb.id
+	  end
+        end
+         prog_id=@prog_id
+      else
+        prog_id = Programme.find(:first, :conditions => ['name ILIKE(?)', "%#{prog_name.strip}%"]).id
+      end
       @programme_list = Programme.find(:all, :conditions => ['id=?', prog_id])
-      if post_kp || (role_kp && prog_name)  #Positions table : 'Ketua Program+Unit', Roles table : 'Programme Manager' only
+      if (post_kp && (prog_name==@programme_list.first.name)) || (loggedinstaff_roles.include?(role_kp))  #Positions table : 'Ketua Program+Unit', Roles table : 'Programme Manager' only
 	@lloginstaff=('999'+prog_id.to_s).to_i
         @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN(?) and programme_id IN(?)', lessonplans_intake_ids, prog_id]).sort_by{|x|[x.programme.course_type, x.programme_id, x.monthyear_intake]}
       else
         @lloginstaff=@loggedinstaff
         staff_intakes = LessonPlan.find(:all, :conditions => ['lecturer=?', @loggedinstaff]).map(&:intake_id)
-        @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN(?) and id IN(?)', lessonplans_intake_ids, staff_intakes]).sort_by{|x|[x.programme.course_type, x.programme_id, x.monthyear_intake]}
+        @intake_fr_intaketable = Intake.find(:all, :conditions => ['id IN(?)', staff_intakes]).sort_by{|x|[x.programme.course_type, x.programme_id, x.monthyear_intake]}
       end
     end
   end

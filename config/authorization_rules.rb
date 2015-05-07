@@ -290,6 +290,7 @@ authorization do
     has_permission_on :weeklytimetables, :to => :manage do
       if_attribute :prepared_by => is {Login.current_login.staff_id}
     end
+    has_permission_on :curriculumsearches, :to => :read
  end
 #--21march2013-new role added    
 #note for Coordinator : previously, this role is required for Penyelaras Kumpulan to manage :(1) programme, timetable, weeklytimetable.(just tick role),
@@ -343,7 +344,6 @@ authorization do
    
     has_permission_on :studentattendancesearches, :to => :read
     has_permission_on :weeklytimetablesearches, :to => :read
-    has_permission_on :curriculumsearches, :to => :read
     has_permission_on :lessonplansearches, :to => :read
     has_permission_on :personalizetimetablesearches, :to => :read
     has_permission_on :examsearches, :to => :read
