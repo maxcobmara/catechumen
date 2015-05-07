@@ -5,6 +5,11 @@
 			<td class="leftcol"><label for="name"><%= t 'ptcourse.name' %> : </label></td>
 			<td> <%=h @ptcourse.name %></td>
 		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="course_type"><%= t 'ptcourse.training_classification' %> : </label></td>
+			<td><%=h (Ptcourse::PROGRAMME_CLASSIFICATION.find_all{|disp, value| value == @ptcourse.training_classification}).map {|disp, value| disp} %></td>
+		</tr>
 	
 		<tr>
 			<td class="leftcol"><label for="course_type"><%= t 'ptcourse.course_type' %> : </label></td>

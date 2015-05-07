@@ -6,13 +6,52 @@
 		<td> <%= f.text_field :name, :size => '40' %></td>
 	</tr>
 
-	<tr>
-		<td class="leftcol"><label for="course_type"><%= t 'ptcourse.course_type' %> : </label></td>
-		<td><%= f.select :course_type,
+	<!--<tr>
+		<td class="leftcol"><label for="course_type"><%#= t 'ptcourse.course_type' %> : </label></td>
+		<td><%#= f.select :course_type,
 		                 Ptcourse::COURSE_TYPE,
 		                 :prompt => (t 'select') %></td>
+	</tr>-->
+	<tr>
+		<td class="leftcol"><label for="course_type"><%= t 'ptcourse.training_classification' %> : </label></td>
+		<td><%= f.select :training_classification, Ptcourse::PROGRAMME_CLASSIFICATION, :include_blank => (t 'select') %></td>
 	</tr>
-
+	<tr>
+		<td class="leftcol"><label for="course_type"><%= t 'ptcourse.course_type' %> : </label></td>
+		<td>
+			<SPAN class="training", style="display: none;"><!--Latihan-->
+			<%= f.radio_button :course_type, 1 %><%=t('ptcourse.course')%>
+			<%= f.radio_button :course_type, 2 %><%=t('ptcourse.seminar')%>
+			<%= f.radio_button :course_type, 3 %><%=t('ptcourse.convention')%>
+			<%= f.radio_button :course_type, 4 %><%=t('ptcourse.workshop')%>
+			<%= f.radio_button :course_type, 5 %><%=t('ptcourse.forum')%>
+			<%= f.radio_button :course_type, 6 %><%=t('ptcourse.symposium')%>
+			</span>
+			<SPAN class="confront", style="display: none;"><!--Bersemuka-->
+			<%= f.radio_button :course_type, 7 %><%=t('ptcourse.learning_session')%><br>
+			<%= f.radio_button :course_type, 8 %><%=t('ptcourse.monthly_assembly')%><br>
+			<%= f.radio_button :course_type, 9 %><%=t('ptcourse.special_talk')%><br>
+			<%= f.radio_button :course_type, 10 %><%=t('ptcourse.celebration')%><br>
+			<%= f.radio_button :course_type, 11 %><%=t('ptcourse.presentation')%><br>
+			<%= f.radio_button :course_type, 12 %><%=t('ptcourse.speaker')%>
+			</span>
+			<SPAN class="non_confront", style="display: none;"><!--Tidak Bersemuka-->
+			<%= f.radio_button :course_type, 13 %><%=t('ptcourse.job_visit')%><br>
+			<%= f.radio_button :course_type, 14 %><%=t('ptcourse.on_job_training')%><br>
+			<%= f.radio_button :course_type, 15 %><%=t('ptcourse.attachment_training')%><br>
+			<%= f.radio_button :course_type, 16 %><%=t('ptcourse.simulation')%><br>
+			<%= f.radio_button :course_type, 17 %><%=t('ptcourse.others')%>
+			</span>
+			<SPAN class="self_training", style="display: none;"><!--Pembelajaran Kendiri-->
+			<%= f.radio_button :course_type, 18 %><%=t('ptcourse.epsa_portal')%><br>
+			<%= f.radio_button :course_type, 19 %><%=t('ptcourse.e_learning_portal')%><br>
+			<%= f.radio_button :course_type, 20 %><%=t('ptcourse.hr_knowledge_repo')%><br>
+			<%= f.radio_button :course_type, 21 %><%=t('ptcourse.book_reading')%><br>
+			<%= f.radio_button :course_type, 22 %><%=t('ptcourse.jurnal_reading')%><br>
+			</span>
+		</td>
+	</tr>
+	
 	<tr>
 		<td class="leftcol"><label for="provider"><%= t 'ptcourse.provider' %> : </label></td>
 		<td><%= f.collection_select :provider_id, AddressBook.find(:all), :id, :name, :prompt => (t 'select') %>
@@ -47,3 +86,64 @@
 <% end %>
 </table>
 </div>
+	
+<script type="text/javascript">
+	$j(document).ready(function(){
+		$j('#ptcourse_training_classification').change(function() {
+			if($j(this).val() == 1) {
+				$j('.training').show();
+				$j('.confront').hide();
+				$j('.non_confront').hide();
+				$j('.self_training').hide();
+			}else if ($j(this).val() == 2) {
+				$j('.training').hide();
+				$j('.confront').show();
+				$j('.non_confront').hide();
+				$j('.self_training').hide();
+			}else if ($j(this).val() == 3) {
+				$j('.training').hide();
+				$j('.confront').hide();
+				$j('.non_confront').show();
+				$j('.self_training').hide();
+			}else if ($j(this).val() == 4) {
+				$j('.training').hide();
+				$j('.confront').hide();
+				$j('.non_confront').hide();
+				$j('.self_training').show();
+			}else {
+				$j('.training').hide();
+				$j('.confront').hide();
+				$j('.non_confront').hide();
+				$j('.self_training').hide();
+			}
+		});
+		$j('#ptcourse_training_classification').each(function() {
+			if($j(this).val() == 1) {
+				$j('.training').show();
+				$j('.confront').hide();
+				$j('.non_confront').hide();
+				$j('.self_training').hide();
+			}else if ($j(this).val() == 2) {
+				$j('.training').hide();
+				$j('.confront').show();
+				$j('.non_confront').hide();
+				$j('.self_training').hide();
+			}else if ($j(this).val() == 3) {
+				$j('.training').hide();
+				$j('.confront').hide();
+				$j('.non_confront').show();
+				$j('.self_training').hide();
+			}else if ($j(this).val() == 4) {
+				$j('.training').hide();
+				$j('.confront').hide();
+				$j('.non_confront').hide();
+				$j('.self_training').show();
+			}else {
+				$j('.training').hide();
+				$j('.confront').hide();
+				$j('.non_confront').hide();
+				$j('.self_training').hide();
+			}
+		});
+	});
+</script>
