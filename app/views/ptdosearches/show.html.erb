@@ -21,8 +21,16 @@
 				<b><%=@ptdosearch.staff_name %></b><br><br>
 			</span>
 		<% end %>
+		<% if @ptdosearch.icno && @ptdosearch.icno.blank? ==false %>
+			<span style="text-decoration:underline;">
+				<%=t('equery.search_by')%> <%=t('equery.ptdo.icno')%> : 
+				<b><%=@ptdosearch.icno %></b><br><br>
+			</span>
+		<% end %>
 		<% if !@ptdosearch.schedulestart_start.blank? || !@ptdosearch.schedulestart_end.blank? %>
-			<%=t('equery.ptdo.schedule_date')%> : 
+			<span style="text-decoration:underline;">
+			<%=t('equery.search_by')%> <%=t('equery.ptdo.schedule_date')%> : 
+			</span>
 		<% end %>
 		<% if @ptdosearch.schedulestart_start && (!@ptdosearch.schedulestart_start.blank? || !@ptdosearch.schedulestart_start.nil?) %>
 			<span style="text-decoration:underline;">
@@ -35,7 +43,11 @@
 				<br><br>
 			</span>
 		<% end %>
+		<% if @ptdosearch.staff_id.blank? && @ptdosearch.staff_name.blank? && @ptdosearch.icno.blank? && @ptdosearch.schedulestart_start.blank? && @ptdosearch.schedulestart_end.blank? %>
+			 <%=t('equery.ptdo.schedule_date')%> : <%=@firstdate.strftime('%d %b %Y')%> <%=t('to')%> <%=@lastdate.strftime('%d %b %Y')%>
+		<% end %>
 		<% if @ptdosearch.schedulestart_end.blank? %><br><br><% end %>
+		
 		<%=t('equery.ptdo.total')%> : <%= @ptdosearch.ptdos.group_by{|x|x.staff_id}.count %><br><br>
 		
 		<% if @ptdosearch.ptdos.count > 0 %>
