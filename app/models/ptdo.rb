@@ -49,10 +49,7 @@ class Ptdo < ActiveRecord::Base
   end
   
   def self.staff_course_days(attended)
-      #total_days=0
-      #total_hours=0
       if attended.duration_type == 0
-        #total_hours = attended.duration % 6
         total_days = (attended.duration / 6).to_f
       elsif attended.duration_type == 1
         total_days = attended.duration*1
@@ -64,37 +61,15 @@ class Ptdo < ActiveRecord::Base
       total_days  #hours in decimal
   end
   
-  #used in Ptdosearches : Show
+  #used in Ptdosearches : Show & Ptdo : show_total_days
   def self.staff_total_days(ptdoids_staff)
-#     total_days=0
     sum_total_days = 0
     ptcourse_ids = Ptdo.find(:all, :conditions => ['id IN(?) AND final_approve=? AND trainee_report is not null', ptdoids_staff, true]).map(&:ptcourse_id)  #valid attended courses
     ptcourse_ids.each do |ptcourse_id|
       attended = Ptcourse.find(ptcourse_id)
       total_days=self.staff_course_days(attended)
       sum_total_days+=total_days
-#       if attended.duration_type == 0
-#         total_days = total_days.to_s
-#         bal_hours = attended.duration % 6
-#         days_count = (attended.duration/ 6).to_i
-#         total_days = days_count.to_i.to_s+" "+I18n.t('time.days') if days_count > 0 
-#         total_days += " "+bal_hours.to_i.to_s+" "+I18n.t('time.hours') if bal_hours > 0 
-#         
-#       elsif attended.duration_type == 1
-#         total_days += (attended.duration*1).to_i.to_s+" "+I18n.t('time.days') if days_count > 0 
-#       elsif attended.duration_type == 2
-#         total_days += (attended.duration*30).to_i.to_s+" "+I18n.t('time.days') if days_count > 0 
-#       elsif attended.duration_type == 3
-#         total_days += (attended.duration*365).to_i.to_s+" "+I18n.t('time.days') if days_count > 0 
-#       end
     end
-#     if total_days!=0 
-#       ptdosdays = total_days
-#     else
-#       ptdosdays = 0
-#     end
-#     ptdosdays
-    #sum_total_days #hours in decimal
     days_count = sum_total_days * 6 / 6
     bal_hours = sum_total_days * 6 % 6
     if bal_hours > 0
