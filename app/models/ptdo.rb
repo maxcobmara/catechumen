@@ -73,7 +73,11 @@ class Ptdo < ActiveRecord::Base
     days_count = sum_total_days * 6 / 6
     bal_hours = sum_total_days * 6 % 6
     if bal_hours > 0
-      total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days')+" "+bal_hours.to_i.to_s+" "+I18n.t('time.hours')
+      if days_count.to_i > 0
+        total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days')+" "+bal_hours.to_i.to_s+" "+I18n.t('time.hours')
+      else
+        total_days_instring=bal_hours.to_i.to_s+" "+I18n.t('time.hours')
+      end
     else
       total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days')
     end
