@@ -8,12 +8,12 @@
 		
 		<tr>
 			<td class="leftcol"><label for="course_type"><%= t 'ptcourse.training_classification' %> : </label></td>
-			<td><%=h (Ptcourse::PROGRAMME_CLASSIFICATION.find_all{|disp, value| value == @ptcourse.training_classification}).map {|disp, value| disp} %></td>
+			<td><%=h @ptcourse.rendered_programme_classification %></td>
 		</tr>
 	
 		<tr>
 			<td class="leftcol"><label for="course_type"><%= t 'ptcourse.course_type' %> : </label></td>
-			<td><%=h (Ptcourse::COURSE_TYPE.find_all{|disp, value| value == @ptcourse.course_type}).map {|disp, value| disp} %></td>
+			<td><%=h @ptcourse.rendered_course_type %></td>
 		</tr>
 	
 		<tr>
@@ -23,7 +23,7 @@
 	
 		<tr>
 			<td class="leftcol"><label for="duration"><%= t 'ptcourse.duration' %> : </label></td>
-			<td><%=h @ptcourse.duration %> <%=h (Ptcourse::DUR_TYPE.find_all{|disp, value| value == @ptcourse.duration}).map {|disp, value| disp} %></td>
+			<td><%=h @ptcourse.duration.to_i %> <%=h @ptcourse.rendered_course_duration %></td>
 		</tr>
 	
 		<tr>
@@ -40,7 +40,7 @@
 	<% permitted_to? :approve, :ptcourses do %>
 		<tr>
 			<td class="leftcol"><label for="approved"><%= t 'ptcourse.approved' %>? : </label></td>
-			<td> <%=h @ptcourse.approved? ? "Approved" : "Not Approved"  %></td>
+			<td> <%=h @ptcourse.approved? ? (t 'approved') : (t 'not_approved') %></td>
 		</tr>
 	<% end %>
 	</table>

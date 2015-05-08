@@ -84,7 +84,8 @@ class PtdosController < ApplicationController
   end
   
   def show_total_days
-    @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and staff_id=? and trainee_report is not null',true,params[:id]]) 
+    currentyear_schedule = Ptschedule.find(:all, :conditions =>['start >=? and start <=?', Date.today.beginning_of_year, Date.today.end_of_year]).map(&:id)
+    @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and staff_id=? and trainee_report is not null and ptschedule_id IN(?)', true, params[:id], currentyear_schedule]) 
     #to retrieve --> http://localhost:3000/ptdos/show_total_days/1.....http://localhost:3000/ptdos/show_total_days/3.....1,3 --> staff_id!
    
    respond_to do |format|

@@ -4,7 +4,9 @@ class Ptcourse < ActiveRecord::Base
   
   validates_presence_of :name, :provider
   
-  
+  def rendered_programme_classification
+    (Ptcourse::PROGRAMME_CLASSIFICATION.find_all{|disp, value| value == training_classification}).map {|disp, value| disp} 
+  end
   
   def rendered_course_type
     (Ptcourse::COURSE_TYPE.find_all{|disp, value| value == course_type }).map {|disp, value| disp}
