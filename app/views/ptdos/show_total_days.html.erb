@@ -11,6 +11,7 @@
 	<th><%= t 'ptdos.cos_date' %></th>
 	<th><%= t 'ptdos.location' %></th>
 	<th><%= t 'ptcourse.training_classification' %> - <%= t 'ptcourse.course_type' %></th>
+	<th><%= t 'ptcourse.level' %></th>
 	<th><%= t 'ptdos.duration' %></th>
 	<th><%= t 'ptdos.tduration' %></th>
  	<th><%= t 'ptdos.total' %></th>
@@ -27,6 +28,7 @@
 	<td><%=h @ptcourse.rendered_programme_classification %>
 		 - <%=h @ptschedule.ptcourse.rendered_course_type %>
 	</td>
+	<td align=center><%=h @ptcourse.rendered_level %></td>
 	<td align=center><%=h duration_qty = @ptcourse.duration.to_i %></td>
     	<td align=center><% duration_type = @ptcourse.duration_type %><%=h @ptcourse.rendered_course_duration.first.titleize %></td>
 	<td align=center>
@@ -46,7 +48,7 @@
   </tr>
 <% end %>
 <tr>
-	<td colspan ="5" align="right"><b><%= t 'ptdos.total_day_attended' %></b></td>
+	<td colspan =6 align="right"><b><%= t 'ptdos.total_day_attended' %></b></td>
 	<td colspan=2 align=center><b><%=Ptdo.staff_total_days(@ptdos.map(&:id)) %></b></td>
 <tr>
 </table>
