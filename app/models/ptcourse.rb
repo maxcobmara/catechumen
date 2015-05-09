@@ -3,9 +3,18 @@ class Ptcourse < ActiveRecord::Base
   has_many :ptschedules, :dependent => :destroy
   
   validates_presence_of :name, :provider
+  validates_presence_of :level, :if => :trainingclass?
+  
+  def trainingclass?
+    training_classification == 1
+  end
   
   def rendered_programme_classification
     (Ptcourse::PROGRAMME_CLASSIFICATION.find_all{|disp, value| value == training_classification}).map {|disp, value| disp} 
+  end
+  
+  def rendered_level
+    (Ptcourse::LEVEL.find_all{|disp, value| value == level}).map {|disp, value| disp} 
   end
   
   def rendered_course_type
@@ -66,6 +75,12 @@ class Ptcourse < ActiveRecord::Base
        [ I18n.t("ptcourse.confront"), 2],
        [ I18n.t("ptcourse.non_confront"), 3],
        [ I18n.t("ptcourse.self_training"), 4]
+  ]
+  
+  LEVEL = [
+       #  Displayed       stored in db
+       [ I18n.t("ptcourse.domestic"), 1],
+       [ I18n.t("ptcourse.overseas"), 2]
   ]
   
   COURSE_TYPE = [

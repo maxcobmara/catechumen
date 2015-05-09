@@ -16,6 +16,15 @@
 		<td class="leftcol"><label for="course_type"><%= t 'ptcourse.training_classification' %> : </label></td>
 		<td><%= f.select :training_classification, Ptcourse::PROGRAMME_CLASSIFICATION, :include_blank => (t 'select') %></td>
 	</tr>
+	<tr class="training_level", style="display: none;">
+		<td class="leftcol"><label for="level"><%= t 'ptcourse.level' %> : </label></td>
+		<td>
+			<!--<SPAN class="training_level", style="display: none;">--><!--Peringkat-->
+				<%=f.radio_button :level, 1 %><%=t('ptcourse.domestic')%>
+				<%=f.radio_button :level, 2 %><%=t('ptcourse.overseas')%>
+			<!--</SPAN>-->
+		</td>
+	</tr>
 	<tr>
 		<td class="leftcol"><label for="course_type"><%= t 'ptcourse.course_type' %> : </label></td>
 		<td>
@@ -91,26 +100,31 @@
 	$j(document).ready(function(){
 		$j('#ptcourse_training_classification').change(function() {
 			if($j(this).val() == 1) {
+				$j('.training_level').show();
 				$j('.training').show();
 				$j('.confront').hide();
 				$j('.non_confront').hide();
 				$j('.self_training').hide();
 			}else if ($j(this).val() == 2) {
+				$j('.training_level').hide();
 				$j('.training').hide();
 				$j('.confront').show();
 				$j('.non_confront').hide();
 				$j('.self_training').hide();
 			}else if ($j(this).val() == 3) {
+				$j('.training_level').hide();
 				$j('.training').hide();
 				$j('.confront').hide();
 				$j('.non_confront').show();
 				$j('.self_training').hide();
 			}else if ($j(this).val() == 4) {
+				$j('.training_level').hide();
 				$j('.training').hide();
 				$j('.confront').hide();
 				$j('.non_confront').hide();
 				$j('.self_training').show();
 			}else {
+				$j('.training_level').hide();
 				$j('.training').hide();
 				$j('.confront').hide();
 				$j('.non_confront').hide();
@@ -119,26 +133,31 @@
 		});
 		$j('#ptcourse_training_classification').each(function() {
 			if($j(this).val() == 1) {
+				$j('.training_level').show();
 				$j('.training').show();
 				$j('.confront').hide();
 				$j('.non_confront').hide();
 				$j('.self_training').hide();
 			}else if ($j(this).val() == 2) {
+				$j('.training_level').hide();
 				$j('.training').hide();
 				$j('.confront').show();
 				$j('.non_confront').hide();
 				$j('.self_training').hide();
 			}else if ($j(this).val() == 3) {
+				$j('.training_level').hide();
 				$j('.training').hide();
 				$j('.confront').hide();
 				$j('.non_confront').show();
 				$j('.self_training').hide();
 			}else if ($j(this).val() == 4) {
+				$j('.training_level').hide();
 				$j('.training').hide();
 				$j('.confront').hide();
 				$j('.non_confront').hide();
 				$j('.self_training').show();
 			}else {
+				$j('.training_level').hide();
 				$j('.training').hide();
 				$j('.confront').hide();
 				$j('.non_confront').hide();
