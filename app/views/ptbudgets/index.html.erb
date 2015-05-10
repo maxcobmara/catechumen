@@ -6,36 +6,112 @@
 <div class="toolbar">
 	<p><%= link_to image_tag("money_add.png", :border => 0, :title => (t 'ptbudget.newbudget')) + " "+(t 'ptbudget.newbudget'), :action =>'new', :newtype=> "1" %></p>
 </div>
-<div class="indextable">
 <BR><BR>
+<div class="indextable">
 <table>
   <tr>
-	  <th><%= t 'ptbudget.fiscalstart' %></th>
-    <th><%= t 'ptbudget.budget' %></th>
-    <th><%= t 'ptbudget.used' %></th>
-    <th><%= t 'ptbudget.balance' %></th>
+    <th><%= t 'ptbudget.fiscalstart' %></th>
+    <th width=15%><%= t 'ptbudget.budget' %></th>
+    <th width=15%><%= t 'ptbudget.used' %></th>
+    <th width=15%><%= t 'ptbudget.balance' %><!--Hash- create-values fr Array--></th>
+    <th width=15%><%= t 'ptbudget.balance' %> (%)</th>
     <th colspan=3 class="ac"><%= t 'control' %></th>
   </tr>
-<%=l(@ptbudgets.last.fiscalstart)%>
-<% @ptbudgets.each do |ptbudget| %>
+<!--<%#=l(@ptbudgets.last.fiscalstart)%>
+<%# @ptbudgets.each do |ptbudget| %>
   <tr>
-    <td><%=h l(ptbudget.fiscalstart) %> to <%=h l(ptbudget.fiscal_end) %>&nbsp;
-		<%= link_to "+ "+(t 'ptbudget.additional_budget'), :action => 'new', :newtype =>"2" %>
-    </td><!--19/10/2011-Shaliza changed date format -->
-    <td><%=h ringgols(ptbudget.budget) %></td><!--19/10/2011-Shaliza remove word RM-->
-	<td><%=h ringgols(ptbudget.used_budget) %></td>
-	<td><%=h ringgols(ptbudget.budget_balance) %></td>
-    <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptbudget %></td>
-    <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptbudget %></td>
-    <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptbudget, :confirm => (t 'are_you_sure'), :method => :delete %></td>
+    <td><%#=h l(ptbudget.fiscalstart) %> to <%#=h l(ptbudget.fiscal_end) %>&nbsp;
+		<%#= link_to "+ "+(t 'ptbudget.additional_budget'), :action => 'new', :newtype =>"2" %>
+    </td>--><!--19/10/2011-Shaliza changed date format --><!--
+    <td><%#=h ringgols(ptbudget.budget) %></td>--><!--19/10/2011-Shaliza remove word RM--><!--
+    <td><%#=h ringgols(ptbudget.used_budget) %></td>
+    <td><%#=h ringgols(ptbudget.budget_balance) %></td>
+    <td><%#=h number_with_precision((ptbudget.budget_balance.to_f / ptbudget.budget.to_f) *  100, :precision => 2)%></td>
+    <td width=10px><%#= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptbudget %></td>
+    <td width=10px><%#= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptbudget %></td>
+    <td width=10px><%#= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptbudget, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   </tr>
+<%# end %>
+<tr><td colspan=8>&nbsp;</td></tr>-->
+<%# sorted_ptbudget_ids=[] %>
+<% @ptbudgets.group_by{|x|x.fiscal_end}.each do |fiscal_ending, budgets| %>
+	<% if budgets.count>1%>
+		<% main_budget_id=0 %>
+		<% budgets.each do |ptbudget| %>
+			<% if ptbudget.fiscalstart.month==ptbudget.budget_start.month && ptbudget.fiscalstart.day==ptbudget.budget_start.day %>
+				<% main_budget_id=ptbudget.id %>
+				<%# sorted_ptbudget_ids << ptbudget.id%>
+				<tr>
+				<td><%=h l(ptbudget.fiscalstart) %> to <%=h l(ptbudget.fiscal_end) %>
+					 <% if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year %>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to image_tag("money_add.png", :border => 0, :title => (t 'ptbudget.additional_budget')) + " "+(t 'ptbudget.additional_budget'), :action =>'new', :newtype=> "2" %>
+						<!--aaa-->
+					 <% end %>&nbsp;
+				</td>
+				<td align=right><%=h ringgols(ptbudget.budget) %></td><!--19/10/2011-Shaliza remove word RM-->
+				<td align=right valign="top" rowspan="<%=budgets.count%>"><%=h ringgols(ptbudget.used_budget) %></td>
+				<td align=right><%=h ringgols(ptbudget.budget_balance) %></td>
+				<td align=center><%=h number_with_precision((ptbudget.budget_balance.to_f / ptbudget.budget.to_f) *  100, :precision => 2)%></td>
+				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptbudget %></td>
+				<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptbudget if ptbudget.fiscalstart > Date.today %></td>
+				<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptbudget, :confirm => (t 'are_you_sure'), :method => :delete if ptbudget.fiscalstart > Date.today %></td>
+				</tr>
+			<% end %>
+		<% end %>
+		<% @ptbudgets_multiple=Ptbudget.find(:all, :conditions => ['id IN(?) and id!=?', budgets.map(&:id), main_budget_id], :order => 'fiscalstart ASC')%>
+		<% @ptbudgets_multiple.each do |ptbudget| %>
+			<%# sorted_ptbudget_ids << ptbudget.id%>
+			<tr>
+				<td><font color=green>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					 <%=h l(ptbudget.fiscalstart) %> to <%=h l(ptbudget.fiscal_end) %></font><!--bbb--></td>
+				<td align=right><font color=green>&nbsp;&nbsp;&nbsp;+ <%=h ringgols(ptbudget.budget) %></font></td><!--19/10/2011-Shaliza remove word RM-->
+				<!--<td><font size=-2><%#=h ringgols(ptbudget.used_budget) %></font></td>-->
+				<td align=right><%=h ringgols(ptbudget.budget_balance) %></td>
+				<td align=center><%=h number_with_precision((ptbudget.budget_balance.to_f / ptbudget.acc_budget.to_f) *  100, :precision => 2)%></td>
+				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptbudget %></td>
+				<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptbudget %></td>
+				<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptbudget, :confirm => (t 'are_you_sure'), :method => :delete %></td>
+			</tr>
+		<% end %>
+		<!---->
+		<% heading_budget=Ptbudget.find(main_budget_id) %>
+		<% all_budget_recs=Ptbudget.find(:all, :conditions=>['fiscalstart >=? and fiscalstart <=?', heading_budget.fiscalstart, heading_budget.fiscalstart+1.year-1.day]) %>
+		<% all_budget=all_budget_recs.map(&:budget).sum %>
+		<% latest_balance=all_budget-all_budget_recs[0].used_budget %>
+		<tr>
+			<td>&nbsp;</td>
+			<td align=right><u><b><%=h ringgols(all_budget) %></b></u></td><!--19/10/2011-Shaliza remove word RM-->
+			<td align=right><u><b><%=h ringgols(all_budget_recs[0].used_budget) %></b></u></td>
+			<td align=right><u><b><%=h ringgols(latest_balance) %></b></u></td>
+			<td align=center><u><b><%=h number_with_precision((latest_balance.to_f / all_budget.to_f) *  100, :precision => 2)%></b></u></td>
+			<td colspan=3></td>
+		</tr>
+		<!---->
+	<% else %>
+		<% ptbudget=budgets[0]%>
+		<%# sorted_ptbudget_ids << ptbudget.id%>
+		<tr>
+			<td><%=h l(ptbudget.fiscalstart) %> to <%=h l(ptbudget.fiscal_end) %>
+				<% if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year %>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to image_tag("money_add.png", :border => 0, :title => (t 'ptbudget.additional_budget')) + " "+(t 'ptbudget.additional_budget'), :action =>'new', :newtype=> "2" %>
+				<% end %>&nbsp;
+				<!--ccc-->
+			</td>
+			<td align=right><%=h ringgols(ptbudget.budget) %></td><!--19/10/2011-Shaliza remove word RM-->
+			<td align=right><%=h ringgols(ptbudget.used_budget) %></td>
+			<td align=right><%=h ringgols(ptbudget.budget_balance) %></td>
+			<td align=center><%=h number_with_precision((ptbudget.budget_balance.to_f / ptbudget.budget.to_f) *  100, :precision => 2)%></td>
+			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptbudget %></td>
+			<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptbudget if ptbudget.fiscalstart > Date.today %></td>
+			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptbudget, :confirm => (t 'are_you_sure'), :method => :delete if ptbudget.fiscalstart > Date.today %></td>
+		</tr>
+	<% end %>
 <% end %>
-</table>
 
+</table>
 <br />
 </div>
 
-<%#= link_to image_tag("money_add.png", :border => 0, :title => 'Enter New Budget') + (t 'ptbudget.createnewbudget'), new_ptbudget_path %>
-<%= link_to (t 'ptbudget.createnewbudget'), new_ptbudget_path%>
+<%= link_to (t 'ptbudget.newbudget'), new_ptbudget_path(:newtype=> "1")%>
 <!-- will need to create logic -->
 <!-- 1. countdown to new budget -->

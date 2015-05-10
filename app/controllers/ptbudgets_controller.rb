@@ -42,15 +42,24 @@ class PtbudgetsController < ApplicationController
   # POST /ptbudgets
   # POST /ptbudgets.xml
   def create
+    @newtype = params[:newtype]
     @ptbudget = Ptbudget.new(params[:ptbudget])
-
+    if @newtype.nil?
+      ab=@ptbudget.fiscalstart
+      if ab.month==@ptbudget.budget_start.month && ab.day==@ptbudget.budget_start.day
+        @newtype="1"
+      else
+        @newtype="2"
+      end
+    end
     respond_to do |format|
       if @ptbudget.save
         flash[:notice] =  t('ptbudget.new')+" "+t('created')
         format.html { redirect_to(@ptbudget) }
         format.xml  { render :xml => @ptbudget, :status => :created, :location => @ptbudget }
       else
-        format.html { render :action => "new" }
+        flash[:notice]=t('ptbudget.budget_start_compulsory')
+	format.html { redirect_to new_ptbudget_path(@ptbudget,  :newtype => @newtype) }
         format.xml  { render :xml => @ptbudget.errors, :status => :unprocessable_entity }
       end
     end
