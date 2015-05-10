@@ -69,13 +69,7 @@
 						<td><%=curr_staff.icno%><%#=curr_staff.formatted_mykad %></td>
 						<td><%=Ptdo.staff_unit(curr_staff) %></td>
 						<td><%=curr_staff.try(:position).try(:name)%></td>
-						<td align=center>
-							<%=total_days=Ptdo.staff_total_days(attended_trainings.map(&:id)) %>&nbsp;<%=t('time.days')%> 
-							<!--HIDE first : for test ~~~
-							<%# attended_trainings.each do |at|%>
-								<%#=Ptdo.find(at).ptschedule.start %> / 
-							<%# end %>-->
-						</td>
+						<td align=center><%=Ptdo.staff_total_days(attended_trainings.map(&:id)) %></td>
 					</tr>
 				<% end %>
 			</table>

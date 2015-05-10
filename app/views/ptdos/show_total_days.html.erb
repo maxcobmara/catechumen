@@ -1,8 +1,6 @@
-
-
 <div class="box">
 	<div class="box-head">
-		<h2 class="left"><%= t 'ptdos.viewsummary' %> - <%= current_login.staff.name %><%#= current_login.name%> </h2>
+		<h2 class="left"><%= t 'ptdos.viewsummary' %>&nbsp;<%=Date.today.year%> - <%= current_login.staff.name %></h2>
 	</div>
 </div>
 
@@ -10,50 +8,54 @@
 <table>
   <tr>
 	<th><%= t 'ptdos.cos_name' %></th>
-    <th><%= t 'ptdos.cos_date' %></th>
+	<th><%= t 'ptdos.cos_date' %></th>
 	<th><%= t 'ptdos.location' %></th>
-    <th><%= t 'ptdos.duration' %></th>
+	<th><%= t 'ptcourse.training_classification' %> - <%= t 'ptcourse.course_type' %></th>
+	<th><%= t 'ptcourse.level' %></th>
+	<th><%= t 'ptdos.duration' %></th>
 	<th><%= t 'ptdos.tduration' %></th>
- 	<th><%= t 'ptdos.total_day' %></th>
-<!-- 30 Apr 2012 
-    <th colspan=3 class="ac">Control</th>
--->
+ 	<th><%= t 'ptdos.total' %></th>
   </tr>
 <% sum_days = 0 %>
-<%#= @ptdos.count %><!--records-->
-<% @ptdos.each do |ptdo| %>
+<% sum_bal_hours=0%>
+<% @ptdos.sort_by{|x|[x.ptschedule.ptcourse.training_classification, x.ptschedule.ptcourse.course_type]}.each do |ptdo| %>
 	<% @ptcourse = Ptcourse.find(ptdo.ptcourse_id) %>	
 	<% @ptschedule = Ptschedule.find(ptdo.ptschedule_id)%>
   	<tr>
       	<td><%=h course_name = @ptcourse.name %></td>
-    	<td><%=h start_date = @ptschedule.start %></td>
-		<td><%=h location = @ptschedule.location %></td>
-	  	<td><%=h duration_qty = @ptcourse.duration.to_f %></td>
-    	<td><% duration_type = @ptcourse.duration_type %><%=h @ptcourse.rendered_course_duration.first.titleize %></td>
-		<td>
-			<% if duration_type == 1 %>
-				<%=h total_days = duration_qty*1 %>
-			<% elsif duration_type == 2 %>
-				<%=h total_days = duration_qty*30 %> <!-- start date?-->
+    	<td><%=h start_date = @ptschedule.start.try(:strftime, '%d-%m-%Y') %></td>
+	<td><%=h location = @ptschedule.location %></td>
+	<td><%=h @ptcourse.rendered_programme_classification %>
+		 - <%=h @ptschedule.ptcourse.rendered_course_type %>
+	</td>
+	<td align=center><%=h @ptcourse.rendered_level %></td>
+	<td align=center><%=h duration_qty = @ptcourse.duration.to_i %></td>
+    	<td align=center><% duration_type = @ptcourse.duration_type %><%=h @ptcourse.rendered_course_duration.first.titleize %></td>
+	<td align=center>
+		<% course_days=Ptdo.staff_course_days(Ptcourse.find(ptdo.ptcourse_id)) * 6%>
+		<% days_count = course_days / 6%>
+		<% bal_hours = course_days % 6 %>
+		<% if bal_hours > 0 %>
+			<% if days_count.to_i > 0 %>
+				<%=days_count.to_i.to_s+" "+I18n.t('time.days')+" "+bal_hours.to_i.to_s+" "+I18n.t('time.hours')%>
 			<% else %>
-				<%=h total_days = duration_qty*365 %>
+				<%=bal_hours.to_i.to_s+" "+I18n.t('time.hours')%>
 			<% end %>
-		</td>
-<!-- 30 Apr 2012		
-		<td width=10px><%#= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => ptdo %></td>
-		<td width=10px><%#= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => ptdo %></td>
-	  	<td width=10px><%#= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), ptdo, :confirm => 'Are you sure?', :method => :delete  %></td>
--->
-	  
+		<% else %>
+			 <%=days_count.to_i.to_s+" "+I18n.t('time.days') %>
+		<% end %>
+	</td>
   </tr>
-	<% sum_days+=total_days %>
-	
 <% end %>
-<tr><td colspan ="5" align="right"><b><%= t 'ptdos.total_day_attended' %></b></td><td><b><%= sum_days %>  <%= t 'ptdos.days' %></b></td>
-		<!-- 30 Apr 2012 <td colspan="3">&nbsp;</td> --><tr>
+<tr>
+	<td colspan =6 align="right"><b><%= t 'ptdos.total_day_attended' %></b></td>
+	<td colspan=2 align=center><b><%=Ptdo.staff_total_days(@ptdos.map(&:id)) %></b></td>
+<tr>
 </table>
+<div align=right>
+	<a href="http://<%= request.host  %>:3003/staff_training/ptdos/training_report.pdf?locale=ms_MY&q[ptschedule_start_gteq]=<%=Date.today.beginning_of_year%>&q[ptschedule_start_lteq]=<%=Date.today%>"><%= t('ptdos.download') %></a>
+</div>
+<div align=left><font size=-2 color=blue><%=t('ptdos.note_hours_day')%></font></div>
 
 <br />
-
-<!--<#%= link_to 'New ptdo', new_ptdo_path %>-->
 </div>
