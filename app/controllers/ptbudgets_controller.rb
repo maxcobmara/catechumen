@@ -3,8 +3,15 @@ class PtbudgetsController < ApplicationController
   # GET /ptbudgets
   # GET /ptbudgets.xml
   def index
-    @ptbudgets = Ptbudget.find(:all, :order => 'fiscalstart DESC')
-
+    @filters=Ptbudget.filters
+    if params[:show] && params[:show]!="all2" #&& @filters.collect{|f| f[:scope]}.include?(params[:show])
+      budgetstart=Ptbudget.all[0].budget_start
+      begindate=Date.new(params[:show].to_i, budgetstart.month, budgetstart.day)
+      enddate=begindate+1.year-1.day
+      @ptbudgets = Ptbudget.find(:all, :conditions => ['fiscalstart >=? and fiscalstart <?', begindate, enddate])
+    else
+      @ptbudgets = Ptbudget.find(:all, :order => 'fiscalstart DESC')
+    end 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @ptbudgets }

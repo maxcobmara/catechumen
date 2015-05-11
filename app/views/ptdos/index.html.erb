@@ -1,14 +1,23 @@
 <div class="box">
 	<div class="box-head">
-		<h2 class="left"><%= t 'ptdos.title' %> &nbsp; 
+		<h2 class="left"><%= t 'ptdos.title' %></h2>
+		<div class="right">
+			<% form_tag ptdos_path, :method => 'get' do %>
+				<%= text_field_tag :search, params[:search], :placeholder =>( t 'ptdos.staff' )+","+(t 'ptdos.cos_name')%>
+				<%= submit_tag (t 'search'), :title => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
-
+<div class="pagination">
+ <%= will_paginate @ptdos %>  
+</div>
+<br>
 <div class="indextable">
 <table>
   <tr>
     <th><%= t 'ptdos.ptschedule' %></th>
-	<th><%= t 'ptdos.cos_name' %></th>
+    <th><%= t 'ptdos.cos_name' %></th>
     <th><%= t 'ptdos.staff' %></th>
     <th><%= t 'ptdos.status' %></th>
     <th colspan=3 class="ac"><%= t 'control' %></th>
@@ -21,7 +30,13 @@
     <td><%=h ptdo.applicant_details %></td>
     <td><%=h ptdo.apply_dept_status %></td>
 	  <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptdo %></td>
-	  <td width=10px><% if ptdo.dept_approve? && ptdo.final_approve? && ptdo.staff_id == current_login.staff_id %><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptdo %><% end %></td>
+	  <td width=10px>
+		<% total_applicant=Ptdo.find(:all, :conditions => ['ptschedule_id=?', ptdo.ptschedule_id]).count%>
+		<% minimum_participant=Ptschedule.find(ptdo.ptschedule_id).min_participants %>
+		<% if ptdo.dept_approve? && ptdo.final_approve? && ptdo.staff_id == current_login.staff_id && total_applicant >= minimum_participant && ptdo.ptschedule.budget_ok==true %>
+			<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptdo %>
+		<% end %>
+	  </td>
 	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptdo, :confirm => (t 'are_you_sure'), :method => :delete %></td>
   </tr>
 <% end %>
@@ -30,4 +45,8 @@
 <br />
 <%= link_to (t 'ptdos.viewsummary'), :action => 'show_total_days', :id => Login.current_login.staff_id %>
 <!--<#%= link_to 'New ptdo', new_ptdo_path %>-->
+</div>
+<BR>
+<div class="pagination">
+ <%= will_paginate @ptdos %>  
 </div>

@@ -14,9 +14,14 @@ class Ptschedule < ActiveRecord::Base
     start+duration.to_i.day
   end
   
-#   def course_duration
-#     duration=Ptdo.staff_course_days(Ptcourse.find(ptcourse_id))
-#     duration_in_string=Ptdo.staff_total_days(ptdos.map(&:id))
-#   end
+  def self.search(search)
+    if search
+      searched_ptcourses_ids=Ptcourse.find(:all, :conditions =>['name ILIKE (?)', "%#{search}%"]).map(&:id)
+      ptschedules=Ptschedule.find(:all, :conditions => ['ptcourse_id IN(?) or location ILIKE (?)', searched_ptcourses_ids,"%#{search}%"])
+    else
+      ptschedules=Ptschedule.find(:all, :order => "start DESC")
+    end 
+    ptschedules
+  end
   
 end

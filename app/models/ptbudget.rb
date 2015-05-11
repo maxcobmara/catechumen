@@ -3,6 +3,14 @@ class Ptbudget < ActiveRecord::Base
   validates_presence_of :budget
   #Addsupplier.sum(:quantity, :conditions => ["supplier_id = ?", id])
   
+  def self.filters
+    filtering=[{:scope => "all2", :label => I18n.t('ptdos.all_records')}]
+    Ptbudget.find(:all, :order => 'fiscalstart ASC').group_by{|x|x.fiscal_end.strftime("%Y")}.each do |year2, ptbudgets|
+      filtering << {:scope=>"#{year2}", :label =>"#{year2}"}
+    end
+    filtering
+  end
+  
   def budget_start
    Ptbudget.first.fiscalstart
   end

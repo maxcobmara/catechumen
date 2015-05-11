@@ -1,9 +1,18 @@
 <div class="box">
 	<div class="box-head">
-		<h2 class="left"><%= t 'ptdos.manager' %> &nbsp; 
+		<h2 class="left"><%= t 'ptdos.expenses' %> &nbsp; </h2>
+		<div class="right">
+			<% form_tag organized_course_manager_ptdos_path, :method => 'get' do %>
+				<%= text_field_tag :search, params[:search], :placeholder => (t 'ptdos.cos_name')%>
+				<%= submit_tag (t 'search'), :title => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
 
+<div class="toolbar" align=right>
+	<%= select_tag_for_filter("organized_course_manager_ptdos", @filters, params) %>
+</div>
 <div class="indextable">
 <table>
   <tr>
@@ -14,10 +23,10 @@
 	<th><%= t 'ptschedule.start' %> - <%= t 'ptschedule.end' %></th>
 	<th width=4%><%= t 'ptschedule.duration' %></th>
 	<th><%= t 'ptschedule.final_price' %></th><!--amount-->
-	<th><font color=green><%= t 'ptschedule.budget_ok' %></font></th>
+	<th width=5%><font color=green><%= t 'ptschedule.budget_ok2' %></font></th>
 	<th width=5%><font color=green><%= t 'ptschedule.minparticipant' %></font></th>
-	<th width=7%><font color=red><%= t 'ptschedule.payment_method' %></font></th><!--kaedah pembayaran-->
 	<th width=5%><%= t 'ptdos.evaluation_submitted' %><%#= t 'ptdos.report_submitted' %></th><!--Penilaian kursus-->
+	<th width=7%><font color=red><%= t 'ptschedule.payment_method' %></font></th><!--kaedah pembayaran-->
 	<th width=7%><font color=red><%= t 'ptschedule.lo_tunai' %></font></th>
 	<th width=7%><font color=red><%= t 'ptschedule.paid_submission' %></font></th><!--Telah / Belum Dihantar (pembayaran)-->
 	<th colspan=3 class="ac"><%= t 'control' %></th>
@@ -43,8 +52,8 @@
 			<% end %>
 		</td>
 	<% end %>
-	<td>&nbsp;</td>
 	<td align=center><%=ptdo.trainee_report.nil? ? image_tag('cross.png') : image_tag('tick.png') %></td>
+	<td>&nbsp;</td>
 	<td width=10px><%#= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptdo %></td>
 	<td width=10px><%# if ptdo.dept_approve? && ptdo.final_approve? && ptdo.staff_id == current_login.staff_id %><%#= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptdo %><%# end %></td>
 	<td width=10px><%#= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptdo, :confirm => (t 'are_you_sure'), :method => :delete %></td>
@@ -54,6 +63,4 @@
 </table>
 
 <br />
-<%= link_to (t 'ptdos.viewsummary'), :action => 'show_total_days', :id => Login.current_login.staff_id %>
-<!--<#%= link_to 'New ptdo', new_ptdo_path %>-->
 </div>
