@@ -93,4 +93,15 @@ class PtdosController < ApplicationController
       format.xml  { render :xml => @ptdos }
     end
   end
+  
+  def organized_course_manager
+    approved_budget_sch_ids= Ptschedule.find(:all, :conditions => ['budget_ok=?', true]).map(&:id)
+    @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and ptschedule_id IN(?)', true, approved_budget_sch_ids], :order => "ptschedule_id ASC")
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @ptschedules }
+    end
+  end
+  
 end

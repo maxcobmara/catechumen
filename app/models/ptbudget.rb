@@ -21,12 +21,29 @@ class Ptbudget < ActiveRecord::Base
     sibs
   end
   
-  def used_budget  #final amount
+  def schedule_used_budget  #ptschedule of used budget
+    rev_schedule_ids=[]
     if siblings_budget.count==1
-      usedbudget=Ptschedule.sum(:final_price, :conditions =>['start >=? AND start <?', fiscalstart, fiscalstart + 1.year])
+      schedule_ids=Ptschedule.find(:all, :conditions =>['start >=? AND start <? AND budget_ok=?', fiscalstart, fiscalstart + 1.year, true]).map(&:id)
     else
       previous_fiscaldate=Date.new(fiscalstart.year, budget_start.month, budget_start.day)-1.year
-      usedbudget=Ptschedule.sum(:final_price, :conditions => ["start >=? AND start <?", previous_fiscaldate, fiscal_end])
+      schedule_ids=Ptschedule.find(:all, :conditions => ["start >=? AND start <? AND budget_ok=?", previous_fiscaldate, fiscal_end, true]).map(&:id)
+    end 
+    schedule_ids.each do |schedule_id|
+      total_participants=Ptdo.find(:all, :conditions => ['ptschedule_id=?', schedule_id]).count
+      min_participants=Ptschedule.find(schedule_id).min_participants
+      rev_schedule_ids << schedule_id if total_participants >= min_participants  
+    end
+    #schedule_ids
+    rev_schedule_ids #schedule - attended by min participants!
+  end
+  
+  def used_budget  #final amount
+    if siblings_budget.count==1
+      usedbudget=Ptschedule.sum(:final_price, :conditions =>['start >=? AND start <? AND budget_ok=? AND id IN(?)', fiscalstart, fiscalstart + 1.year, true, schedule_used_budget])
+    else
+      previous_fiscaldate=Date.new(fiscalstart.year, budget_start.month, budget_start.day)-1.year
+      usedbudget=Ptschedule.sum(:final_price, :conditions => ["start >=? AND start <? AND budget_ok=? AND id IN(?)", previous_fiscaldate, fiscal_end, true, schedule_used_budget])
     end 
     usedbudget
   end

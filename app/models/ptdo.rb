@@ -61,7 +61,7 @@ class Ptdo < ActiveRecord::Base
       total_days  #hours in decimal
   end
   
-  #used in Ptdosearches : Show & Ptdo : show_total_days
+  #used in Ptdosearches : Show & Ptdo : show_total_days, Ptdo.rb : model
   def self.staff_total_days(ptdoids_staff)
     sum_total_days = 0
     ptcourse_ids = Ptdo.find(:all, :conditions => ['id IN(?) AND final_approve=? AND trainee_report is not null', ptdoids_staff, true]).map(&:ptcourse_id)  #valid attended courses

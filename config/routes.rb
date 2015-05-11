@@ -189,7 +189,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :assetcategories
 
-  map.resources :ptdos
+  map.resources :ptdos, :collection => {:organized_course_manager => :get}
 
   map.resources :ptschedules, :collection => { :apply => :get }
 
