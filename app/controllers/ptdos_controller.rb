@@ -2,7 +2,7 @@ class PtdosController < ApplicationController
   # GET /ptdos
   # GET /ptdos.xml
   def index
-    @ptdos = Ptdo.with_permissions_to(:index)
+    @ptdos = Ptdo.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page]) 
 
     respond_to do |format|
       format.html # index.html.erb
@@ -84,6 +84,8 @@ class PtdosController < ApplicationController
   end
   
   def show_total_days
+    #restrict attendance by trainee_report (NOT NULL) whereby..
+    #training really happen when : (1) schedule start (date) >= Date.today, (2) schedule budget must be approved (3) must meet minimum participant
     currentyear_schedule = Ptschedule.find(:all, :conditions =>['start >=? and start <=?', Date.today.beginning_of_year, Date.today.end_of_year]).map(&:id)
     @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and staff_id=? and trainee_report is not null and ptschedule_id IN(?)', true, params[:id], currentyear_schedule]) 
     #to retrieve --> http://localhost:3000/ptdos/show_total_days/1.....http://localhost:3000/ptdos/show_total_days/3.....1,3 --> staff_id!
@@ -93,4 +95,33 @@ class PtdosController < ApplicationController
       format.xml  { render :xml => @ptdos }
     end
   end
+  
+  def organized_course_manager
+    @filters=Ptdo.filters
+    if params[:show] && params[:show]!="all2" #&& @filters.collect{|f| f[:scope]}.include?(params[:show])
+      startbegindate=Date.new(params[:show].to_i,1,1)
+      startenddate=Date.new(params[:show].to_i,12,31)
+      unless params[:search].nil?
+        searched_course_ids=Ptcourse.find(:all, :conditions => ['name ILIKE(?)', "%#{params[:search]}%"]).map(&:id)
+        approved_budget_sch_ids= Ptschedule.find(:all, :conditions => ['budget_ok=? and start>=? and start<=? and ptcourse_id IN(?)', true, startbegindate, startenddate, searched_course_ids]).map(&:id)
+        @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and ptschedule_id IN(?)', true, approved_budget_sch_ids], :order => "ptschedule_id ASC")
+      else
+        approved_budget_sch_ids= Ptschedule.find(:all, :conditions => ['budget_ok=? and start>=? and start<=?', true, startbegindate, startenddate]).map(&:id)
+        @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and ptschedule_id IN(?)', true, approved_budget_sch_ids], :order => "ptschedule_id ASC")
+      end
+    else
+      unless params[:search].nil?
+        searched_course_ids=Ptcourse.find(:all, :conditions => ['name ILIKE(?)', "%#{params[:search]}%"]).map(&:id)
+        @ptdos=Ptdo.find(:all, :conditions => ['id IN(?) and ptcourse_id IN(?)',Ptdo.all2.map(&:id), searched_course_ids])
+      else
+        @ptdos=Ptdo.send("all2")
+        #@ptdos = Ptdo.all2
+      end
+    end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @ptschedules }
+    end
+  end
+  
 end

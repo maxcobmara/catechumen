@@ -1,7 +1,12 @@
 <div class="box">
 	<div class="box-head">
-		<h2 class="left"><%= t 'ptschedule.list' %> &nbsp;</h2>
-		<h2><%= link_to image_tag("add.png", :border => 0, :title => (t 'ptschedule.schedule_training')), new_ptschedule_path %></h2>
+		<h2 class="left"><%= t 'ptschedule.list' %> &nbsp;<%= link_to image_tag("add.png", :border => 0, :title => (t 'ptschedule.schedule_training')), new_ptschedule_path %></h2>
+		<div class="right">
+			<% form_tag ptschedules_path, :method => 'get' do %>
+				<%= text_field_tag :search, params[:search], :placeholder => (t 'ptschedule.location')+","+(t 'ptdos.cos_name')%>
+				<%= submit_tag (t 'search'), :title => nil %>
+			<% end %>
+		</div>
 	</div>
 </div>
 

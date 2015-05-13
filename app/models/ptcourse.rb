@@ -116,4 +116,15 @@ class Ptcourse < ActiveRecord::Base
        [ I18n.t("time.months"),2 ],
        [ I18n.t("time.years"), 3 ],
   ]
+  
+  def self.search(search)
+    if search
+      searched_provider_ids=AddressBook.find(:all, :conditions =>['name ILIKE (?)', "%#{search}%"]).map(&:id)
+      ptcourses=Ptcourse.find(:all, :conditions =>['name ILIKE (?) or provider_id IN(?)', "%#{search}%", searched_provider_ids])
+    else
+      ptcourses=Ptcourse.find(:all, :order => "name ASC")
+    end 
+    ptcourses
+  end
+  
 end

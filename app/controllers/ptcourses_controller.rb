@@ -2,7 +2,7 @@ class PtcoursesController < ApplicationController
   # GET /ptcourses
   # GET /ptcourses.xml
   def index
-    @ptcourses = Ptcourse.all
+    @ptcourses = Ptcourse.search(params[:search])  
 
     respond_to do |format|
       format.html # index.html.erb
