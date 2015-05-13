@@ -31,9 +31,10 @@
     <td><%=h ptdo.apply_dept_status %></td>
 	  <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptdo %></td>
 	  <td width=10px>
+		<!--#restrict attendance by trainee_report (NOT NULL) whereby....training really happen when : (1) schedule start (date) >= Date.today, (2) schedule budget must be approved (3) must meet minimum participant-->
 		<% total_applicant=Ptdo.find(:all, :conditions => ['ptschedule_id=?', ptdo.ptschedule_id]).count%>
 		<% minimum_participant=Ptschedule.find(ptdo.ptschedule_id).min_participants %>
-		<% if ptdo.dept_approve? && ptdo.final_approve? && ptdo.staff_id == current_login.staff_id && total_applicant >= minimum_participant && ptdo.ptschedule.budget_ok==true %>
+		<% if ptdo.dept_approve? && ptdo.final_approve? && ptdo.staff_id == current_login.staff_id && total_applicant >= minimum_participant && ptdo.ptschedule.budget_ok==true && ptdo.ptschedule.start <= Date.today%>
 			<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptdo %>
 		<% end %>
 	  </td>

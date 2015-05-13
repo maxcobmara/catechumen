@@ -72,7 +72,10 @@
 		<% end %>
 	<% end %>
 	
-	<% if @ptdo.dept_approve? && @ptdo.final_approve? && @ptdo.staff_id == current_login.staff_id %>	
+	<%# if @ptdo.dept_approve? && @ptdo.final_approve? && @ptdo.staff_id == current_login.staff_id %>
+	<% total_applicant=Ptdo.find(:all, :conditions => ['ptschedule_id=?', @ptdo.ptschedule_id]).count%>
+	<% minimum_participant=Ptschedule.find(@ptdo.ptschedule_id).min_participants %>
+	<% if @ptdo.dept_approve? && @ptdo.final_approve? && @ptdo.staff_id == current_login.staff_id && total_applicant >= minimum_participant && @ptdo.ptschedule.budget_ok==true && @ptdo.ptschedule.start <= Date.today%>
 		<tr>
 			<td class="leftcol"><label for="trainee_report"><%= t 'ptdos.trainereport' %>:</label></td>
 			<td><%= f.text_area :trainee_report, :size => '60x10' %></td>
