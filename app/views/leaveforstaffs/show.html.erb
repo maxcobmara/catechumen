@@ -32,7 +32,7 @@
 			<td class="leftcol"><label for="approval1_id"><b><%= t 'staffleave.approval1_id' %> :</b></label></td>
 			<td><%#=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.name %>
 			         <% if @leaveforstaff.approval1_id.blank? %>
-					<%= @leaveforstaff.applicant.position.unit.blank? ? (t 'staffleave.unit_not_defined') : "" %>
+					<%= @leaveforstaff.applicant.try(:position).try(:unit) %><%#= (t 'staffleave.unit_not_defined')%>
 				<% else %>
 					<%=@leaveforstaff.seconder.name%>
 				<% end %>
