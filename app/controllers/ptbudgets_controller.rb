@@ -3,8 +3,15 @@ class PtbudgetsController < ApplicationController
   # GET /ptbudgets
   # GET /ptbudgets.xml
   def index
-    @ptbudgets = Ptbudget.find(:all, :order => 'fiscalstart DESC')
-
+    @filters=Ptbudget.filters
+    if params[:show] && params[:show]!="all2" #&& @filters.collect{|f| f[:scope]}.include?(params[:show])
+      budgetstart=Ptbudget.all[0].budget_start
+      begindate=Date.new(params[:show].to_i, budgetstart.month, budgetstart.day)
+      enddate=begindate+1.year-1.day
+      @ptbudgets = Ptbudget.find(:all, :conditions => ['fiscalstart >=? and fiscalstart <?', begindate, enddate])
+    else
+      @ptbudgets = Ptbudget.find(:all, :order => 'fiscalstart DESC')
+    end 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @ptbudgets }
@@ -42,15 +49,24 @@ class PtbudgetsController < ApplicationController
   # POST /ptbudgets
   # POST /ptbudgets.xml
   def create
+    @newtype = params[:newtype]
     @ptbudget = Ptbudget.new(params[:ptbudget])
-
+    if @newtype.nil?
+      ab=@ptbudget.fiscalstart
+      if ab.month==@ptbudget.budget_start.month && ab.day==@ptbudget.budget_start.day
+        @newtype="1"
+      else
+        @newtype="2"
+      end
+    end
     respond_to do |format|
       if @ptbudget.save
         flash[:notice] =  t('ptbudget.new')+" "+t('created')
         format.html { redirect_to(@ptbudget) }
         format.xml  { render :xml => @ptbudget, :status => :created, :location => @ptbudget }
       else
-        format.html { render :action => "new" }
+        flash[:notice]=t('ptbudget.budget_start_compulsory')
+	format.html { redirect_to new_ptbudget_path(@ptbudget,  :newtype => @newtype) }
         format.xml  { render :xml => @ptbudget.errors, :status => :unprocessable_entity }
       end
     end

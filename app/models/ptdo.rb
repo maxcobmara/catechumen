@@ -5,15 +5,31 @@ class Ptdo < ActiveRecord::Base
   belongs_to  :staff
   belongs_to  :applicant, :class_name => 'Staff',   :foreign_key => 'staff_id'
   belongs_to  :replacement, :class_name => 'Staff', :foreign_key => 'replacement_id'
-  
-  
   has_many    :staff_appraisals, :through => :staff
   
+  named_scope :all2,  :conditions => ['final_approve=? and ptschedule_id IN(?)', true, Ptschedule.find(:all, :conditions => ['budget_ok=?', true]).map(&:id)]
   
+  def self.filters
+    filtering=[{:scope => "all2", :label => I18n.t('ptdos.all_records')}]
+    Ptdo.all2.group_by{|x|x.ptschedule.start.strftime("%Y")}.each do |year2, ptdos|
+      filtering << {:scope=>"#{year2}", :label =>"#{year2}"}
+    end
+    filtering
+  end
   
   def whoami
     #self.staff_id = Login.current_login.staff.id
     self.ptcourse_id = ptschedule.ptcourse.id
+  end
+  
+  def self.search(search)
+    if search
+       searched_ptcourses_ids=Ptcourse.find(:all, :conditions =>['name ILIKE (?)', "%#{search}%"]).map(&:id)
+       searched_staff_ids=Staff.find(:all, :conditions =>['name ILIKE (?)', "%#{search}%"]).map(&:id)
+       ptdos=Ptdo.find(:all, :conditions => ['ptcourse_id IN(?) or staff_id IN(?)', searched_ptcourses_ids, searched_staff_ids])
+    else 
+      ptdos=Ptdo.find(:all, :order=>'ptschedule_id ASC')
+    end
   end
   
   def apply_dept_status
@@ -48,21 +64,40 @@ class Ptdo < ActiveRecord::Base
        end
   end
   
-  #used in Ptdosearches : Show
+  def self.staff_course_days(attended)
+      if attended.duration_type == 0
+        total_days = (attended.duration / 6).to_f
+      elsif attended.duration_type == 1
+        total_days = attended.duration*1
+      elsif attended.duration_type == 2
+        total_days = attended.duration*30
+      elsif attended.duration_type == 3
+        total_days = attended.duration*365
+      end
+      total_days  #hours in decimal
+  end
+  
+  #used in Ptdosearches : Show & Ptdo : show_total_days, Ptdo.rb : model
   def self.staff_total_days(ptdoids_staff)
-    total_days=0
+    sum_total_days = 0
     ptcourse_ids = Ptdo.find(:all, :conditions => ['id IN(?) AND final_approve=? AND trainee_report is not null', ptdoids_staff, true]).map(&:ptcourse_id)  #valid attended courses
     ptcourse_ids.each do |ptcourse_id|
       attended = Ptcourse.find(ptcourse_id)
-      if attended.duration_type == 1
-        total_days += attended.duration*1
-      elsif attended.duration_type == 2
-        total_days += attended.duration*30 
-      elsif attended.duration_type == 3
-        total_days += attended.duration*365
-      end
+      total_days=self.staff_course_days(attended)
+      sum_total_days+=total_days
     end
-    total_days 
+    days_count = sum_total_days * 6 / 6
+    bal_hours = sum_total_days * 6 % 6
+    if bal_hours > 0
+      if days_count.to_i > 0
+        total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days')+" "+bal_hours.to_i.to_s+" "+I18n.t('time.hours')
+      else
+        total_days_instring=bal_hours.to_i.to_s+" "+I18n.t('time.hours')
+      end
+    else
+      total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days')
+    end
+    total_days_instring
   end
   
   #used in Ptdosearches : Show
