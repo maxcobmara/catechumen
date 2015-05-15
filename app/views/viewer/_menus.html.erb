@@ -1,3 +1,4 @@
+<% if logged_in? %>
 <ul class="dropdown">
 	<!-- Home -->
 	<li><%= link_to (t 'menu.home'),  root_url %>
@@ -239,8 +240,7 @@
 	<% end %>
 
 	<!-- Training Menu -->
-	<%# permitted_to? :menu, :programmes do %>
-	<% permitted_to? :read, :trainingnotes do %>
+	<% permitted_to? :menu, :programmes do %>
 	<li><a href="#"><%= t('menu.training') %></a>
 			<ul class="sub_menu">
 				<!--21March2013-have to give programme manager access to these menu without giving :manage -->
@@ -359,7 +359,7 @@
 
 
 </ul>
-
+<% end %>
 
 <!-- old code>
 <ul>
