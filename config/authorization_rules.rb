@@ -27,7 +27,7 @@ authorization do
     
     #Student Menu Items
     #has_permission_on :students,        :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
-    has_permission_on [:leaveforstudents],  :to => [:manage, :approve, :approve_warden]
+    has_permission_on [:leaveforstudents],  :to => [:manage, :approve_coordinator, :approve_warden]
     
     #Exam Menu Items
     has_permission_on :examquestions,   :to => :manage
@@ -301,7 +301,7 @@ authorization do
   role :lecturer do
     
     #restricted access for penyelaras - [relationship: approver, FK: staff_id, page: approve], in case of non-exist of penyelaras other lecturer fr the same programme
-    has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve], :join_by => :and do
+    has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve_coordinator], :join_by => :and do
       if_attribute :studentsubmit => true
       if_attribute :student_id => is_in {Login.current_login.staff.under_my_supervision}
     end

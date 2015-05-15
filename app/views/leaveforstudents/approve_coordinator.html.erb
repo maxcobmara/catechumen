@@ -1,0 +1,41 @@
+<h3><%=t('leaveforstudent.approval')%></h3>
+
+<% form_for(@leaveforstudent) do |f| %>
+  <%= f.error_messages %>
+
+<div class="tform">
+	<%= render :partial => 'applyshow' %>
+	<H2><%=t('leaveforstudent.approval')%></H2>
+	<table width=100% >
+		<tr>
+			<td class="leftcol"><label for="approved"><b><%=t('leaveforstudent.approval2')%>:</b></label></td>
+			<td><%= f.radio_button :approved,'false' %><%=t('not_approved')%>&nbsp;<%= f.radio_button :approved,'true' %><%=t('approved')%></td>
+		</tr>
+		<tr><!-- 07/10/2011 - Shaliza fixed Current Login logged in -->
+			<td class="leftcol"><label for="staff_id"><b><%=t('leaveforstudent.staff_id')%>:</b></label></td>
+			<td>
+				<% if @leaveforstudent.group_coordinator %>
+					<%= f.collection_select :staff_id, Staff.find(:all, :conditions => ['id =?', current_login.staff_id]), :id, :staff_name_with_position %>
+					<%#= f.text_field :staff, :value => @leaveforstudent.group_coordinator.name, :readonly => true %>
+					<%#= f.text_field :staff_id, :value=>@leaveforstudent.group_coordinator.id.to_i %>
+				<% else %>
+					<%=t('leaveforstudent.coordinator_not_available') %>
+					<br>
+					<%= f.collection_select :staff_id, Staff.find(:all, :joins=>:position, :conditions=> ['unit=?', Programme.find(@leaveforstudent.student.course_id).name]), :id, :staff_name_with_position, :include_blank => t('select')  %>
+				<% end %>
+			</td>
+		</tr>
+		<tr>
+		   <td class="leftcol"><label for="approvedate"><b><%=t('leaveforstudent.approvedate')%>:</b></label></td>
+			<td><%= f.date_select :approvedate, :order => [:day, :month, :year] %></td>
+		</tr>
+  </table>
+</div>
+  <p>
+    <%= f.submit t('update') %>
+  </p>
+
+<% end %>
+
+<%= link_to t('show'), @leaveforstudent %> |
+<%= link_to t('back'), leaveforstudents_path %>

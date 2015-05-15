@@ -546,18 +546,18 @@ class Staff < ActiveRecord::Base
   def under_my_supervision
     unit= Login.current_login.staff.position.unit
     if Programme.roots.map(&:name).include?(unit)
-      course_id = Programme.find_by_name(unit).id
+      course_id = Programme.find(:first, :conditions =>['name=? and ancestry_depth=?', unit,0]).id
       main_task = Login.current_login.staff.position.tasks_main
       coordinator=main_task[/Penyelaras Kumpulan \d{1,}/]   
       if coordinator
         intake_group=coordinator.split(" ")[2]   #should match 'descripton' field in Intakes table
         intake = Intake.find(:first, :conditions=>['programme_id=? and description=?', course_id, intake_group]).monthyear_intake
         if intake
-          supervised_student = Student.find(:all, :conditions=>['intake=? and course_id=?', intake, course_id]).map(&:id)
+          @supervised_student = Student.find(:all, :conditions=>['intake=? and course_id=?', intake, course_id]).map(&:id)
         end
       end
     
-      supervised_student=[] if !supervised_student
+      @supervised_student=[] if !@supervised_student
       sib_lect_maintask= Position.find(:all, :conditions=>['unit=? and staff_id!=?', unit, Login.current_login.staff_id]).map(&:tasks_main)
       sib_lect_coordinates_groups=[]
       sib_lect_maintask.each do |y|
@@ -575,19 +575,21 @@ class Staff < ActiveRecord::Base
       #intake_for_applicant_current_prog = Student.find(:all, :conditions=>['id IN (?)', applicant_of_current_prog]).map(&intake)
       #intake_for_applicant_current_prog = Student.find(:all, :conditions=>['id IN(?) and course_id=?', leave_applicant_ids, course_id]).map(&:intake)
       applicant_of_current_prog.group_by{|x|x.intake}.each do |intatake, applicants|
-        intake2 = Intake.find(:first, :conditions=>['programme_id=? and monthyear_intake=?', course_id, intatake])
+        intake2 = Intake.find(:first, :conditions=>['programme_id=? and monthyear_intake=?', course_id, intatake.beginning_of_month])
         if intake2
 	  intake2_group = intake2.description
           w_coordinator=sib_lect_coordinates_groups.include?(intake2_group)
-	  supervised_student+= applicants if !w_coordinator
+	  @supervised_student+= applicants if !w_coordinator
         else
 	  #this student group definitely got no coordinator as their intake not even exist in Intakes table
 	  #add these applicants to supervised_student array! note 'applicants' is an array
-	  supervised_student+= applicants 
+	  @supervised_student+= applicants 
         end
       end 
-      return supervised_student
+      return @supervised_student
     else
+      
+      
       return []
     end
   end

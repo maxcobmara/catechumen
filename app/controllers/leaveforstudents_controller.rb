@@ -1,20 +1,24 @@
 class LeaveforstudentsController < ApplicationController
-  filter_resource_access
+  #filter_resource_access
+  filter_access_to :all
 
   # GET /leaveforstudents
   # GET /leaveforstudents.xml
   def index
-    @position_exist = current_login.staff.position
-    if @position_exist     
-      @leaveforstudents = Leaveforstudent.with_permissions_to(:index).search(params[:search])
-    end 
+    @position_exist = current_login.staff.position if current_login.isstaff==true
+    @leaveforstudents = Leaveforstudent.with_permissions_to(:index).search(params[:search])
     respond_to do |format|
-      if @position_exist
+      if current_login.isstaff==true 
+        if @position_exist 
+          format.html # index.html.erb
+          format.xml  { render :xml => @leaveforstudents }
+        else
+          format.html {redirect_to "/home", :notice =>t('position_required')+ t('leaveforstudent.title2')}
+          format.xml  { render :xml => @leaveforstudent.errors, :status => :unprocessable_entity }
+        end
+      else
         format.html # index.html.erb
         format.xml  { render :xml => @leaveforstudents }
-      else
-        format.html {redirect_to "/home", :notice =>t('position_required')+ t('leaveforstudent.title2')}
-        format.xml  { render :xml => @leaveforstudent.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -43,7 +47,7 @@ class LeaveforstudentsController < ApplicationController
 
   # GET /leaveforstudents/1/edit
   def edit
-    #@leaveforstudent = Leaveforstudent.find(params[:id])
+    @leaveforstudent = Leaveforstudent.find(params[:id])
   end
 
   # POST /leaveforstudents
@@ -91,4 +95,13 @@ class LeaveforstudentsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def approve_coordinator
+    @leaveforstudent = Leaveforstudent.find(params[:id])
+  end
+  
+  def approve_warden
+    @leaveforstudent = Leaveforstudent.find(params[:id])
+  end
+  
 end

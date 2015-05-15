@@ -255,7 +255,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :staffgrades
 
-  map.connect '/leaveforstudents/approve', :controller => 'leaveforstaffs', :action => 'approve'
+  map.connect '/leaveforstudents/approve_coordinator', :controller => 'leaveforstaffs', :action => 'approve_coordinator'
   map.connect '/leaveforstudents/approve_warden', :controller => 'leaveforstaffs', :action => 'approve_warden'
   map.resources :leaveforstudents
 
