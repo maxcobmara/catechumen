@@ -7,12 +7,15 @@
 
 <div class="indextable">
 	<table width=100% border="0" cellpadding="0" cellspacing="0">
+		<%no=0%>
 		<tr>
 			<th>No</td>
-		  	<th><%= t 'menu.reports' %></th>
-		  	<th><%= t 'equery.advance_search' %></th>
+			<th><%= t 'menu.reports' %></th>
+			<th><%= t 'equery.advance_search' %></th>
 		</tr>
-		<%no=0%>
+
+	<% if @query_module=='1'%>
+		
 		<% permitted_to? :read, :staffsearch2s do %>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.staff' %></span></td></tr>
@@ -37,6 +40,9 @@
 			<td><%= link_to (t 'equery.advance_search'), {:controller => 'ptdosearches',:action => 'new', :searchptdotype=>1}  %></td>
 		</tr>	
 		<% end %>
+	
+	<% elsif @query_module=='2' %>
+		
 		<% permitted_to? :read, :assetsearches do %>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.assets' %></span></td></tr>
@@ -160,7 +166,9 @@
 			<td><%= link_to (t 'equery.advance_search'), {:controller => 'assetsearches',:action => 'new', :searchtype=>@searchtype}  %></td>
 		</tr>
 		<% end %>
-		
+
+	<% elsif @query_module=='3' %>
+	
 		<% permitted_to? :read, :documentsearches do %>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.e_filing' %></span></td></tr>
@@ -171,6 +179,8 @@
 		</tr>
 		<% end %>
 		
+	<% elsif @query_module=='4' %>
+
 		<!--double title-->
 		<% permitted_to? :read, :students do %>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
@@ -214,7 +224,9 @@
 			<td><%= link_to (t 'equery.advance_search'), {:controller => 'studentcounselingsearches', 	:action => 'new', :searchstudentcounselingtype=>@searchstudentcounselingtype} %></td>
 		</tr>	
 		<% end %>
-		
+	
+	<% elsif @query_module=='5' %>
+	
 		<% permitted_to? :read, :weeklytimetablesearches do %>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.training' %></span></td></tr>
@@ -264,6 +276,8 @@
 		</tr>
 		<% end %>
 		
+	<% elsif @query_module=='6' %>
+		
 		<% permitted_to? :read, :examsearches do %>	
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.exams' %></span></td></tr>
@@ -305,7 +319,9 @@
 			<td><%= link_to (t 'equery.advance_search'), {:controller => 'examanalysissearches', 	:action => 'new', :searchexamanalysistype=>@searchexamanalysistype} %></td>
 		</tr>
 		<% end %>
-		
+	
+	<% elsif @query_module=='7' %>
+	
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.library' %></span></td></tr>
 		<tr>
@@ -333,11 +349,14 @@
 		<% permitted_to? :read, :librarytransactionsearches do %>
 		<tr>
 			<td><%=no+=1%></td><% @searchlibrarytransactiontype=1%>
-			<td><%= link_to (t 'book.statistics')+" / "+(t 'librarytransaction.analysis'), {:controller =>'librarystats',:action => 'index'}  %> 
+			<td><%#= link_to (t 'book.statistics')+" / "+(t 'librarytransaction.analysis'), {:controller =>'librarystats',:action => 'index'}  %> 
+			         <a href="http://<%= request.host  %>:3003/library/librarytransactions/analysis_statistic?locale=en"><%= t('menu.new_analysis_statistic') %></a></td>
 			<td><%= link_to (t 'equery.advance_search'), {:controller => 'librarytransactionsearches', :action => 'new', :searchlibrarytransactiontype=> @searchlibrarytransactiontype} %></td>
 		</tr>
 		<% end %>
-		
+	
+	<% end %>
+	
 	</table>
 	<br>
 </div>

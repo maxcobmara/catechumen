@@ -9,7 +9,8 @@
 		</script>
 	</form>
 <div id="hideLink">
-<%= link_to (t 'back'), books_path %>
+<%= link_to (t 'book.back_to_index'), books_path %><br>
+<%= link_to (t 'book.back_to_search'), :controller=>'booksearches', :action => 'new', :searchbooktype => 1 %>
 </div><BR>
 	
 <div class="A4potrait" style="border: none;">
@@ -35,7 +36,7 @@
 						<%if @bb==''||@bb=='2'||@bb=='3'%>
 							 / <%= Book.count('title', :distinct => true)%>
 						<% end%>
-						<% if @bb == '1' %> - <%=t('book.summary_all')%>
+						<% if @bb == '1' %> - <% if @books.count==Book.all.count%><%=t('book.summary_all')%><%else%><%=t('equery.book.summary_search')%><%end%>
 						<% elsif @bb == '2' %> - <%=t('book.listing_by_class_nlm')%>
 						<% elsif @bb == '3' %> - <%=t('book.listing_by_class_lc')%>
 						<% elsif @bb == '4' %> - <%=t('book.listing_books')%> <br>(<%=@searchby_items%>)
@@ -109,5 +110,6 @@
 	
 <br>
 <div id="hideLink">
-<%= link_to t('back'), books_path %>
-</div>
+<%= link_to (t 'book.back_to_index'), books_path %><br>
+<%= link_to (t 'book.back_to_search'), :controller=>'booksearches', :action => 'new', :searchbooktype => 1 %>
+</div><BR>

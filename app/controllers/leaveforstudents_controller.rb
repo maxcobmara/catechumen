@@ -4,11 +4,18 @@ class LeaveforstudentsController < ApplicationController
   # GET /leaveforstudents
   # GET /leaveforstudents.xml
   def index
-    @leaveforstudents = Leaveforstudent.with_permissions_to(:index).search(params[:search])
-
+    @position_exist = current_login.staff.position
+    if @position_exist     
+      @leaveforstudents = Leaveforstudent.with_permissions_to(:index).search(params[:search])
+    end 
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @leaveforstudents }
+      if @position_exist
+        format.html # index.html.erb
+        format.xml  { render :xml => @leaveforstudents }
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+ t('leaveforstudent.title2')}
+        format.xml  { render :xml => @leaveforstudent.errors, :status => :unprocessable_entity }
+      end
     end
   end
 

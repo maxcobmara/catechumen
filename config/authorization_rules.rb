@@ -179,6 +179,7 @@ authorization do
   
   role :finance_unit do
     has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve, :claimprint]
+    has_permission_on :ptbudgets, :to => :manage
   end
   
   role :training_manager do
@@ -342,6 +343,7 @@ authorization do
       if_attribute :timetable_id => is {nil}
     end
    
+    has_permission_on :studentsearches, :to => :read
     has_permission_on :studentattendancesearches, :to => :read
     has_permission_on :weeklytimetablesearches, :to => :read
     has_permission_on :lessonplansearches, :to => :read
