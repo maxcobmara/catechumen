@@ -198,6 +198,7 @@
   <% if permitted_to? :approve_coordinator, :leaveforstudents %>
 	<% c1 = Login.find(:all, :select => "id", :conditions => ['roles.id =?',14 ], :include => :roles).map(&:id) %>
 	<% d1 = Array(Login.current_login.id) %>
+	<% a = Leaveforstudent.find(:all, :conditions => ["studentsubmit =? AND approved IS ? AND leave_startdate >=?", true, nil, Date.tomorrow]) %>
 	<% dash_lfs1 = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved IS ? AND leave_startdate >=?", true, nil, Date.tomorrow]) %>
 	<!--hack : restrict warden fr becoming 'coordinator' if warden also a lecturer UNLESS this warden/lecturer is Penyelaras for this student leave-->
 	<% unless Login.current_login.staff.position.nil?%>
@@ -217,23 +218,27 @@
 		<% end %>
 	<% end %>
 	<!--hack-end-redundant auth rules...-->
+	
+	<% if (Login.current_login.roles.map(&:id).include?(7)==false|| (Login.current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true) || Login.current_login.roles.map(&:id).include?(2)==true) %>
+		<% dash_lfs1b=((Login.current_login.staff.under_my_supervision.map(&:id).uniq & a.map(&:student_id))).count %>
+	<% end %>
+	<!--admin may get duplicates, as admin can edit both approved & approved2, note : uniq-->
+		
   <% end %> 
   <!--warden-->
   <% if permitted_to? :approve_warden, :leaveforstudents %>
 	<% c2 = Login.find(:all, :select => "id", :conditions => ['roles.id =?',7 ], :include => :roles).map(&:id) %>
 	<% d2 = Array(Login.current_login.id) %>
+	<% b = Leaveforstudent.find(:all, :conditions => ["studentsubmit =? AND approved2 IS ? and leave_startdate >=?", true, nil, Date.tomorrow]) %>
 	<% dash_lfs2 = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved2 IS ? and leave_startdate >=?", true, nil, Date.tomorrow]) %>
    <% end %>
-   <% if ((d2 & c2 == d2) && dash_lfs2 > 0) && ((d1 & c1 == d1) && dash_lfs1 > 0) &&  (Login.current_login.roles.map(&:id).include?(7)==false|| (Login.current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true) || Login.current_login.roles.map(&:id).include?(2)) %>
-	<%= link_to "#{dash_lfs1+dash_lfs2} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
-   <% else %>
+   
 	<% if (d2 & c2 == d2) && dash_lfs2 > 0 %>
 		<%= link_to "#{dash_lfs2} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
-	<% elsif (d1 & c1 == d1) && dash_lfs1 > 0 %>
-		<%= link_to "#{dash_lfs1} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
-	<% else %>
+	<% elsif (d1 & c1 == d1) && dash_lfs1b > 0%>
+		<%= link_to "#{dash_lfs1b} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
 	<% end %>
-  <% end %>
+   
 
 	<!-- Notification for Documents-->
 	<!-- Case for CC1 -->

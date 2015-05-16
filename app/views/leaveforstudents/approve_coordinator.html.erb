@@ -21,7 +21,16 @@
 				<% else %>
 					<%=t('leaveforstudent.coordinator_not_available') %>
 					<br>
-					<%= f.collection_select :staff_id, Staff.find(:all, :joins=>:position, :conditions=> ['unit=?', Programme.find(@leaveforstudent.student.course_id).name]), :id, :staff_name_with_position, :include_blank => t('select')  %>
+					<% if Programme.find(@leaveforstudent.student.course_id).course_type=='Diploma' %>
+						<%= f.collection_select :staff_id, Staff.find(:all, :joins=>:position, :conditions=> ['unit=?', Programme.find(@leaveforstudent.student.course_id).name]), :id, :staff_name_with_position, :include_blank => t('select')  %>
+					<% else %>
+						<% posbasic_prog=Programme.find(:all, :conditions => ['course_type=? OR course_type=? OR course_type=?', 'Pos Basik', 'Diploma Lanjutan', 'Pengkhususan' ]) %>
+						<% tasks_main = @current_login.staff.position.tasks_main %>
+						<% posbasic_prog.each do |x| %>
+							<% @programme_id = x.id if tasks_main.include?(x.name) %>
+						<% end %>
+						<%= f.collection_select :staff_id, Staff.find(:all, :joins=>:position, :conditions=> ['tasks_main ILIKE (?)', "%#{Programme.find(@programme_id).name}"]), :id, :staff_name_with_position, :include_blank => t('select')  %>
+					<% end %>
 				<% end %>
 			</td>
 		</tr>

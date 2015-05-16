@@ -82,7 +82,7 @@
 			<% @is_coordinator=true if group_intake && group_coor==group_intake%>
 		<% end %>
 		<!--hack-end-redundant auth rules...-->
-		<% if leaveforstudent.leave_startdate >= Date.tomorrow && leaveforstudent.approved != true && (@current_login.roles.map(&:id).include?(7)==false|| (@current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true) ) %>
+		<% if leaveforstudent.leave_startdate >= Date.tomorrow && leaveforstudent.approved != true && (@current_login.roles.map(&:id).include?(7)==false|| (@current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true) || @current_login.roles.map(&:id).include?(2)==true ) %>
 			<%= link_to image_tag("approval.png", :border => 0, :title => (t 'leaveforstudent.coordinator_approval')), :action => 'approve_coordinator', :id =>leaveforstudent %>
 		<% end %>
 		
