@@ -200,19 +200,21 @@
 	<% d1 = Array(Login.current_login.id) %>
 	<% dash_lfs1 = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved IS ? AND leave_startdate >=?", true, nil, Date.tomorrow]) %>
 	<!--hack : restrict warden fr becoming 'coordinator' if warden also a lecturer UNLESS this warden/lecturer is Penyelaras for this student leave-->
-	<% maintask=Login.current_login.staff.position.tasks_main%>
-	<% unitstaff=Login.current_login.staff.try(:position).try(:unit) %>
-	<% coor=maintask[/Penyelaras Kumpulan \d{1,}/] %>
-	<% if !coor.nil? && !unitstaff.nil? %>
-		<% group_coor=coor.split(" ")[2] %>
-		<% stu_ids=Leaveforstudent.all.map(&:student_id)%>
-		<% intake_date=Student.find(stu_ids).map(&:intake)%>
-		<% intt=[] %>
-		<% intake_date.each{|ii| intt << ii.beginning_of_month}%>
-		<% prog_id=Programme.find(:first, :conditions =>['name ILIKE(?) and ancestry_depth=?', unitstaff,0])%>
-		<% intake_monthyear=Intake.find(:all, :conditions => ['programme_id=? and monthyear_intake IN(?)', prog_id, intt])%>
-		<% group_intake=intake_monthyear.map(&:description) unless intake_monthyear.nil?%>
-		<% @is_coordinator=true if group_intake && group_intake.include?(group_coor)%>
+	<% unless Login.current_login.staff.position.nil?%>
+		<% maintask=Login.current_login.staff.position.tasks_main %>
+		<% unitstaff=Login.current_login.staff.try(:position).try(:unit) %>
+		<% coor=maintask[/Penyelaras Kumpulan \d{1,}/] %>
+		<% if !coor.nil? && !unitstaff.nil? %>
+			<% group_coor=coor.split(" ")[2] %>
+			<% stu_ids=Leaveforstudent.all.map(&:student_id)%>
+			<% intake_date=Student.find(stu_ids).map(&:intake)%>
+			<% intt=[] %>
+			<% intake_date.each{|ii| intt << ii.beginning_of_month}%>
+			<% prog_id=Programme.find(:first, :conditions =>['name ILIKE(?) and ancestry_depth=?', unitstaff,0])%>
+			<% intake_monthyear=Intake.find(:all, :conditions => ['programme_id=? and monthyear_intake IN(?)', prog_id, intt])%>
+			<% group_intake=intake_monthyear.map(&:description) unless intake_monthyear.nil?%>
+			<% @is_coordinator=true if group_intake && group_intake.include?(group_coor)%>
+		<% end %>
 	<% end %>
 	<!--hack-end-redundant auth rules...-->
   <% end %> 
@@ -222,7 +224,7 @@
 	<% d2 = Array(Login.current_login.id) %>
 	<% dash_lfs2 = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved2 IS ? and leave_startdate >=?", true, nil, Date.tomorrow]) %>
    <% end %>
-   <% if ((d2 & c2 == d2) && dash_lfs2 > 0) && ((d1 & c1 == d1) && dash_lfs1 > 0) &&  (Login.current_login.roles.map(&:id).include?(7)==false|| (Login.current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true)) %>
+   <% if ((d2 & c2 == d2) && dash_lfs2 > 0) && ((d1 & c1 == d1) && dash_lfs1 > 0) &&  (Login.current_login.roles.map(&:id).include?(7)==false|| (Login.current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true) || Login.current_login.roles.map(&:id).include?(2)) %>
 	<%= link_to "#{dash_lfs1+dash_lfs2} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
    <% else %>
 	<% if (d2 & c2 == d2) && dash_lfs2 > 0 %>
@@ -244,7 +246,7 @@
 	<% end %>
 
 	<!-- Notification for Students Leave is approved -->
-	<% al = Leaveforstudent.find(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', Login.current_login.student_id, true, DateTime.now]).map(&:leave_startdate) %>
+	<% al = Leaveforstudent.find(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', Login.current_login.student_id, true, DateTime.now], :order => 'leave_startdate ASC').map(&:leave_startdate) %>
 	<% alc = Leaveforstudent.count(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND approved2=? AND leave_startdate >?', Login.current_login.student_id, true, true, DateTime.now]) %>
 	<% if alc > 0 %>
 		<%= link_to (t 'notifications.leave_request_for')+" #{al[0].strftime('%d-%m-%Y')} "+(t 'notifications.has_been_approved'), { :controller => "leaveforstudents", :action => "index" } %><br/>

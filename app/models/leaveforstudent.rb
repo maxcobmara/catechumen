@@ -15,10 +15,30 @@ class Leaveforstudent < ActiveRecord::Base
   def self.find_main
     Staff.find(:all, :condition => ['staff_id IS NULL'])
   end
+  
+  named_scope :all
+  named_scope :completed, :conditions => ['approved=? and approved2=?', true, true]
+  named_scope :expired, :conditions => ['studentsubmit=? and leave_startdate<? and id not in(?)', true, Date.tomorrow, Leaveforstudent.completed.map(&:id)]
+  named_scope :approved_coordinator, :conditions => ['studentsubmit=? and approved=?', true, true]
+  named_scope :approved_warden, :conditions => ['studentsubmit=? and approved2=?', true, true]
+  named_scope :pending_coordinator, :conditions => ['studentsubmit=? and id not in(?)', true, Leaveforstudent.approved_coordinator.map(&:id)]
+  named_scope :pending_warden, :conditions => ['studentsubmit=? and id not in(?)', true, Leaveforstudent.approved_warden.map(&:id)]
+  
+  FILTERS = [
+    {:scope => "all", :label => I18n.t('asset.all')},
+    {:scope => "pending_coordinator",    :label => I18n.t('leaveforstudent.pending_coordinator')},
+    {:scope => "pending_warden",  :label => I18n.t('leaveforstudent.pending_warden')},
+    {:scope => "approved_coordinator",    :label => I18n.t('leaveforstudent.approved_coordinator')},
+    {:scope => "approved_warden",  :label => I18n.t('leaveforstudent.approved_warden')},
+    {:scope => "completed", :label => I18n.t('leaveforstudent.completed')},
+    {:scope => "expired", :label => I18n.t('leaveforstudent.expired')}
+  ]
 
   def self.search(search)
      if search
-       @leaveforstudent = Leaveforstudent.find(:all, :conditions => ['leavetype LIKE ?' , "%#{search}%"], :order=>'leave_startdate DESC')
+       prod_ids=Programme.find(:all, :conditions => ['name ILIKE ? and ancestry_depth=?', "%#{search}%", 0]).map(&:id)
+       student_ids=Student.find(:all, :conditions =>['name ILIKE ? or course_id IN(?)',"%#{search}%", prod_ids]).map(&:id)
+       @leaveforstudent = Leaveforstudent.find(:all, :conditions => ['leavetype ILIKE ? or student_id IN(?)' , "%#{search}%", student_ids], :order=>'leave_startdate DESC')
      else
       @leaveforstudent = Leaveforstudent.find(:all, :order=>'leave_startdate DESC')
      end

@@ -588,8 +588,6 @@ class Staff < ActiveRecord::Base
       end 
       return @supervised_student
     else
-      
-      
       return []
     end
   end

@@ -6,7 +6,14 @@ class LeaveforstudentsController < ApplicationController
   # GET /leaveforstudents.xml
   def index
     @position_exist = current_login.staff.position if current_login.isstaff==true
-    @leaveforstudents = Leaveforstudent.with_permissions_to(:index).search(params[:search])
+    @filters = Leaveforstudent::FILTERS
+
+    if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+       @leaveforstudents = Leaveforstudent.with_permissions_to(:index).send(params[:show]).paginate(:order => 'leave_startdate', :per_page => 20, :page => params[:page])
+    else
+      @leaveforstudents = Leaveforstudent.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page]) 
+    end
+
     respond_to do |format|
       if current_login.isstaff==true 
         if @position_exist 

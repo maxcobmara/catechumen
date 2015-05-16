@@ -5,7 +5,7 @@
     <h2 class="left"><%=t('leaveforstudent.title')%></h2>
 	 	<div class="right">
 			<% form_tag leaveforstudents_path, :method => 'get' do %>
-			<%= text_field_tag :search, params[:search], :placeholder => t('leaveforstudent.leavetype') %>
+			<%= text_field_tag :search, params[:search], :placeholder => t('leaveforstudent.leavetype')+", "+t('leaveforstudent.student_id') %>
 			<%= submit_tag I18n.t('search') %>
 			<% end %>
 		</div>
@@ -15,7 +15,11 @@
 	<div class="toolbar">
 		<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'leaveforstudent.apply')) + (t 'leaveforstudent.apply'), new_leaveforstudent_path %></p>
 	</div>
-<% end %><BR><BR>
+<% end %>
+<div class=right>
+	<%= select_tag_for_filter("leaveforstudents", @filters, params) %>
+</div>
+<BR><BR>
 <div class="tlist">
 <table width=100%>
   <tr>
@@ -23,7 +27,7 @@
     <th><%=t('student.course_id')%></th>
     <th><%=t('student.intake')%></th>
     <th><%=t('leaveforstudent.leavetype')%></th>
-    <th width="10px"><%=t('leaveforstudent.requestdate')%></th>
+    <th width="80px"><%=t('leaveforstudent.requestdate')%></th>
     <th><%=t('leaveforstudent.leave_startdate2')%></th>
     <th><%=t('submitted')%></th>
         <th><%=t('leaveforstudent.staff_id')%></th>
@@ -33,7 +37,7 @@
     <th colspan=6 class="ac"><%=t('control')%></th>
   </tr>
 <%#=@current_login.staff.under_my_supervision.include?(334) %>
-<% @leaveforstudents.each do |leaveforstudent| %>
+<% @leaveforstudents.sort_by{|x|[x.student.course_id, x.student.intake, x.leave_startdate]}.each do |leaveforstudent| %>
   <tr>
 	<td><%=h leaveforstudent.student_details %></td>
 	<td><%=h leaveforstudent.student.course.name%></td>
@@ -78,19 +82,15 @@
 			<% @is_coordinator=true if group_intake && group_coor==group_intake%>
 		<% end %>
 		<!--hack-end-redundant auth rules...-->
-		<%unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved==nil %>
-			<% if leaveforstudent.approved != true && leaveforstudent.studentsubmit==true && (@current_login.roles.map(&:id).include?(7)==false|| (@current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true)) %>
-				<%= link_to image_tag("approval.png", :border => 0, :title => (t 'leaveforstudent.coordinator_approval')), :action => 'approve_coordinator', :id => leaveforstudent %>
-	  		<% end %>
+		<% if leaveforstudent.leave_startdate >= Date.tomorrow && leaveforstudent.approved != true && (@current_login.roles.map(&:id).include?(7)==false|| (@current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true) ) %>
+			<%= link_to image_tag("approval.png", :border => 0, :title => (t 'leaveforstudent.coordinator_approval')), :action => 'approve_coordinator', :id =>leaveforstudent %>
 		<% end %>
 		
 	<% end %></td>
 	<td width=10px>
 	<% if permitted_to? :approve_warden, :leaveforstudents %>
-		<%unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved2==nil %>
-			<% if leaveforstudent.approved2 != true && leaveforstudent.studentsubmit==true %>
-				<%= link_to image_tag("approval.png", :border => 0, :title => (t 'leaveforstudent.warden_approval')), :action => 'approve_warden', :id => leaveforstudent %>
-	  		<% end %>
+		<% if leaveforstudent.leave_startdate >= Date.tomorrow && leaveforstudent.approved2 != true %>
+			<%= link_to image_tag("approval.png", :border => 0, :title => (t 'leaveforstudent.warden_approval')), :action => 'approve_warden', :id => leaveforstudent %>
 	  	<% end %>
 	<% end %></td>
 	<td width=10px>
@@ -106,6 +106,7 @@
 <% end %>
 </table>
 <br>
+
 <% if @current_login.isstaff==true %>
 	<div align=left><font color=blue size=-2>
 	<ul>
@@ -120,6 +121,10 @@
 	</div>
 <% end %>
 <br /><BR>
+</div>
+
+<div class="pagination">
+	<%= will_paginate @leaveforstudents %>  
 </div>
 
 <% if permitted_to? :create, Leaveforstudent.new %>
