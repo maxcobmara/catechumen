@@ -23,6 +23,7 @@ class Leaveforstudent < ActiveRecord::Base
   named_scope :approved_warden, :conditions => ['studentsubmit=? and approved2=?', true, true]
   named_scope :pending_coordinator, :conditions => ['studentsubmit=? and id not in(?)', true, Leaveforstudent.approved_coordinator.map(&:id)]
   named_scope :pending_warden, :conditions => ['studentsubmit=? and id not in(?)', true, Leaveforstudent.approved_warden.map(&:id)]
+  named_scope :pending_both, :conditions => ['id not in(?) and (approved!=? or approved2 !=?)', Leaveforstudent.expired.map(&:id), true, true]
   
   FILTERS = [
     {:scope => "all", :label => I18n.t('asset.all')},

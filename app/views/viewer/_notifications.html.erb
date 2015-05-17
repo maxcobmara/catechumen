@@ -219,8 +219,7 @@
 	<% end %>
 	<!--hack-end-redundant auth rules...-->
 	
-	<% if (Login.current_login.roles.map(&:id).include?(7)==false|| (Login.current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true) || Login.current_login.roles.map(&:id).include?(2)==true) %>
-		<%# dash_lfs1b=((Login.current_login.staff.under_my_supervision.map(&:id).uniq & a.map(&:student_id))).count %>
+	<% if (Login.current_login.roles.map(&:id).include?(7)==false|| (Login.current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true))%>
 		<% dash_lfs1b=Leaveforstudent.find(:all, :conditions =>['student_id IN(?) and id IN(?)', Login.current_login.staff.under_my_supervision.map(&:id).uniq, a.map(&:id).uniq]).count %>
 	<% end %>
 	<!--admin may get duplicates, as admin can edit both approved & approved2, note : uniq-->
@@ -236,11 +235,16 @@
 	<% end %>
    <% end %>
    
-	<% if (d2 & c2 == d2) && dash_lfs2 > 0 %>
-		<%= link_to "#{dash_lfs2} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
-	<% elsif (d1 & c1 == d1) && dash_lfs1b > 0%>
-		<%= link_to "#{dash_lfs1b} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
+	<% if Login.current_login.roles.map(&:id).include?(2)==true%>
+		<%= link_to "#{(a + b).uniq.count} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
+	<% else %>
+		<% if (d2 & c2 == d2) && dash_lfs2 > 0 %>
+			<%= link_to "#{dash_lfs2} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
+		<% elsif (d1 & c1 == d1) && dash_lfs1b > 0%>
+			<%= link_to "#{dash_lfs1b} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
+		<% end %>
 	<% end %>
+	
    
 
 	<!-- Notification for Documents-->
