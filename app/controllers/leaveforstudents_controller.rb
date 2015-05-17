@@ -7,12 +7,22 @@ class LeaveforstudentsController < ApplicationController
   def index
     @position_exist = current_login.staff.position if current_login.isstaff==true
     @filters = Leaveforstudent::FILTERS
-
+    
     if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-       @leaveforstudents = Leaveforstudent.with_permissions_to(:index).send(params[:show]).paginate(:order => 'leave_startdate', :per_page => 20, :page => params[:page])
+       @leaveforstudents2 = Leaveforstudent.with_permissions_to(:index).send(params[:show])
     else
-      @leaveforstudents = Leaveforstudent.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page]) 
+      @leaveforstudents2 = Leaveforstudent.with_permissions_to(:index).search(params[:search])
     end
+    if current_login.roles.map(&:id).include?(7)  #warden
+      if current_login.staff.position.tasks_main.include?('Penyelaras Kumpulan')
+	@leaveforstudents = Leaveforstudent.find(:all, :conditions => ['student_id IN(?) and id IN(?)', current_login.staff.under_my_supervision, @leaveforstudents2.map(&:id)])
+      else
+        @leaveforstudents =  @leaveforstudents2
+      end
+    else
+       @leaveforstudents = @leaveforstudents2
+    end
+    @leaveforstudents = @leaveforstudents.paginate(:order => 'leave_startdate', :per_page => 20, :page => params[:page])
 
     respond_to do |format|
       if current_login.isstaff==true 

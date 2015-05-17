@@ -5,7 +5,7 @@
     <h2 class="left"><%=t('leaveforstudent.title')%></h2>
 	 	<div class="right">
 			<% form_tag leaveforstudents_path, :method => 'get' do %>
-			<%= text_field_tag :search, params[:search], :placeholder => t('leaveforstudent.leavetype')+", "+t('leaveforstudent.student_id') %>
+			<%= text_field_tag :search, params[:search], :placeholder => t('leaveforstudent.leavetype')+", "+t('leaveforstudent.student_id')+", "+t('student.course_id') %>
 			<%= submit_tag I18n.t('search') %>
 			<% end %>
 		</div>
@@ -79,7 +79,7 @@
 			<% prog_id=leaveforstudent.student.course_id %>
 			<% intake_monthyear=Intake.find(:first, :conditions => ['programme_id=? and monthyear_intake=?', prog_id, intake_date])%>
 			<% group_intake=intake_monthyear.description unless intake_monthyear.nil?%>
-			<% @is_coordinator=true if group_intake && group_coor==group_intake%>
+			<% @is_coordinator=true if group_intake && group_coor.to_i==group_intake.to_i%>
 		<% end %>
 		<!--hack-end-redundant auth rules...-->
 		<% if leaveforstudent.leave_startdate >= Date.tomorrow && leaveforstudent.approved != true && (@current_login.roles.map(&:id).include?(7)==false|| (@current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true) || @current_login.roles.map(&:id).include?(2)==true ) %>
@@ -89,13 +89,13 @@
 	<% end %></td>
 	<td width=10px>
 	<% if permitted_to? :approve_warden, :leaveforstudents %>
-		<% if leaveforstudent.leave_startdate >= Date.tomorrow && leaveforstudent.approved2 != true %>
+		<% if leaveforstudent.leave_startdate >= Date.tomorrow && leaveforstudent.approved2 != true && (@current_login.roles.map(&:id).include?(7)==true && @is_coordinator.nil?) %>
 			<%= link_to image_tag("approval.png", :border => 0, :title => (t 'leaveforstudent.warden_approval')), :action => 'approve_warden', :id => leaveforstudent %>
 	  	<% end %>
 	<% end %></td>
 	<td width=10px>
 		 <% if leaveforstudent.approved==true && leaveforstudent.approved2==true %>
-			<a href="http://<%= request.host  %>:3003/student/leaveforstudents/<%=leaveforstudent.id%>/slip_pengesahan_cuti_pelajar.pdf"><%=image_tag("printer.png", :border => 0, :title => (t 'leaveforstudent.leave_approval_slip'))%></a>
+			<a href="http://<%= request.host  %>:3003/student/leaveforstudents/<%=leaveforstudent.id%>/slip_pengesahan_cuti_pelajar.pdf?locale=ms_MY"><%=image_tag("printer.png", :border => 0, :title => (t 'leaveforstudent.leave_approval_slip'))%></a>
 			
 		<% end %> 
 	</td>
@@ -130,3 +130,5 @@
 <% if permitted_to? :create, Leaveforstudent.new %>
 <%= link_to t('leaveforstudent.apply'), new_leaveforstudent_path %>
  <% end %>
+ <%#=@is_coordinator%>
+ <%#=Leaveforstudent.find(:all, :conditions => ['student_id IN(?)', @current_login.staff.under_my_supervision]).count %>

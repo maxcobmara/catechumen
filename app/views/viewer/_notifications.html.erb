@@ -220,17 +220,20 @@
 	<!--hack-end-redundant auth rules...-->
 	
 	<% if (Login.current_login.roles.map(&:id).include?(7)==false|| (Login.current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true) || Login.current_login.roles.map(&:id).include?(2)==true) %>
-		<% dash_lfs1b=((Login.current_login.staff.under_my_supervision.map(&:id).uniq & a.map(&:student_id))).count %>
+		<%# dash_lfs1b=((Login.current_login.staff.under_my_supervision.map(&:id).uniq & a.map(&:student_id))).count %>
+		<% dash_lfs1b=Leaveforstudent.find(:all, :conditions =>['student_id IN(?) and id IN(?)', Login.current_login.staff.under_my_supervision.map(&:id).uniq, a.map(&:id).uniq]).count %>
 	<% end %>
 	<!--admin may get duplicates, as admin can edit both approved & approved2, note : uniq-->
 		
   <% end %> 
   <!--warden-->
   <% if permitted_to? :approve_warden, :leaveforstudents %>
-	<% c2 = Login.find(:all, :select => "id", :conditions => ['roles.id =?',7 ], :include => :roles).map(&:id) %>
-	<% d2 = Array(Login.current_login.id) %>
-	<% b = Leaveforstudent.find(:all, :conditions => ["studentsubmit =? AND approved2 IS ? and leave_startdate >=?", true, nil, Date.tomorrow]) %>
-	<% dash_lfs2 = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved2 IS ? and leave_startdate >=?", true, nil, Date.tomorrow]) %>
+	<% unless @is_coordinator==true %>
+		<% c2 = Login.find(:all, :select => "id", :conditions => ['roles.id =?',7 ], :include => :roles).map(&:id) %>
+		<% d2 = Array(Login.current_login.id) %>
+		<% b = Leaveforstudent.find(:all, :conditions => ["studentsubmit =? AND approved2 IS ? and leave_startdate >=?", true, nil, Date.tomorrow]) %>
+		<% dash_lfs2 = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved2 IS ? and leave_startdate >=?", true, nil, Date.tomorrow]) %>
+	<% end %>
    <% end %>
    
 	<% if (d2 & c2 == d2) && dash_lfs2 > 0 %>
