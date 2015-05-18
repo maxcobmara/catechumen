@@ -25,7 +25,7 @@ class Studentattendancesearch < ActiveRecord::Base
   end  
   
   def intake_id_conditions
-    [intake_id_details, Student.find(:all, :conditions=>['intake=?',Intake.find(intake_id).monthyear_intake])] unless intake_id.blank?
+    [intake_id_details, Student.find(:all, :conditions=>['intake=?',Intake.find(intake_id).monthyear_intake]).map(&:id)] unless intake_id.blank?
   end
   
   def student_id_conditions

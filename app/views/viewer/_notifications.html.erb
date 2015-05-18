@@ -194,14 +194,58 @@
   <% end %>
 
   <!-- Notification for Student Leave Approval -->
-  <% c = Login.find(:all, :select => "id", :conditions => ['roles.id =?', 7], :include => :roles).map(&:id) %>
-  <% d = Array(Login.current_login.id) %>
-  <% dash_lfs = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved IS ?", true, nil]) %>
-
-  <% if (d & c == d) && dash_lfs > 0 %>
-  	<%= link_to "#{dash_lfs} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
-  <% else %>
+  <!--group coordinator-->
+  <% if permitted_to? :approve_coordinator, :leaveforstudents %>
+	<% c1 = Login.find(:all, :select => "id", :conditions => ['roles.id =?',14 ], :include => :roles).map(&:id) %>
+	<% d1 = Array(Login.current_login.id) %>
+	<% a = Leaveforstudent.find(:all, :conditions => ["studentsubmit =? AND approved IS ? AND leave_startdate >=?", true, nil, Date.tomorrow]) %>
+	<% dash_lfs1 = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved IS ? AND leave_startdate >=?", true, nil, Date.tomorrow]) %>
+	<!--hack : restrict warden fr becoming 'coordinator' if warden also a lecturer UNLESS this warden/lecturer is Penyelaras for this student leave-->
+	<% unless Login.current_login.staff.position.nil?%>
+		<% maintask=Login.current_login.staff.position.tasks_main %>
+		<% unitstaff=Login.current_login.staff.try(:position).try(:unit) %>
+		<% coor=maintask[/Penyelaras Kumpulan \d{1,}/] %>
+		<% if !coor.nil? && !unitstaff.nil? %>
+			<% group_coor=coor.split(" ")[2] %>
+			<% stu_ids=Leaveforstudent.all.map(&:student_id)%>
+			<% intake_date=Student.find(stu_ids).map(&:intake)%>
+			<% intt=[] %>
+			<% intake_date.each{|ii| intt << ii.beginning_of_month}%>
+			<% prog_id=Programme.find(:first, :conditions =>['name ILIKE(?) and ancestry_depth=?', unitstaff,0])%>
+			<% intake_monthyear=Intake.find(:all, :conditions => ['programme_id=? and monthyear_intake IN(?)', prog_id, intt])%>
+			<% group_intake=intake_monthyear.map(&:description) unless intake_monthyear.nil?%>
+			<% @is_coordinator=true if group_intake && group_intake.include?(group_coor)%>
+		<% end %>
 	<% end %>
+	<!--hack-end-redundant auth rules...-->
+	
+	<% if (Login.current_login.roles.map(&:id).include?(7)==false|| (Login.current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true))%>
+		<% dash_lfs1b=Leaveforstudent.find(:all, :conditions =>['student_id IN(?) and id IN(?)', Login.current_login.staff.under_my_supervision.map(&:id).uniq, a.map(&:id).uniq]).count %>
+	<% end %>
+	<!--admin may get duplicates, as admin can edit both approved & approved2, note : uniq-->
+		
+  <% end %> 
+  <!--warden-->
+  <% if permitted_to? :approve_warden, :leaveforstudents %>
+	<% unless @is_coordinator==true %>
+		<% c2 = Login.find(:all, :select => "id", :conditions => ['roles.id =?',7 ], :include => :roles).map(&:id) %>
+		<% d2 = Array(Login.current_login.id) %>
+		<% b = Leaveforstudent.find(:all, :conditions => ["studentsubmit =? AND approved2 IS ? and leave_startdate >=?", true, nil, Date.tomorrow]) %>
+		<% dash_lfs2 = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved2 IS ? and leave_startdate >=?", true, nil, Date.tomorrow]) %>
+	<% end %>
+   <% end %>
+   
+	<% if Login.current_login.roles.map(&:id).include?(2)==true%>
+		<%= link_to "#{(a + b).uniq.count} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
+	<% else %>
+		<% if (d2 & c2 == d2) && dash_lfs2 > 0 %>
+			<%= link_to "#{dash_lfs2} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
+		<% elsif (d1 & c1 == d1) && dash_lfs1b > 0%>
+			<%= link_to "#{dash_lfs1b} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
+		<% end %>
+	<% end %>
+	
+   
 
 	<!-- Notification for Documents-->
 	<!-- Case for CC1 -->
@@ -213,13 +257,13 @@
   <% else %>
 	<% end %>
 
-
 	<!-- Notification for Students Leave is approved -->
-	<% al = Leaveforstudent.find(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', Login.current_login.student_id, true, DateTime.now]).map(&:leave_startdate) %>
-	<% alc = Leaveforstudent.count(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', Login.current_login.student_id, true, DateTime.now]) %>
+	<% al = Leaveforstudent.find(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND leave_startdate >?', Login.current_login.student_id, true, DateTime.now], :order => 'leave_startdate ASC').map(&:leave_startdate) %>
+	<% alc = Leaveforstudent.count(:all, :select => "leave_startdate", :conditions => ['student_id=? AND approved =? AND approved2=? AND leave_startdate >?', Login.current_login.student_id, true, true, DateTime.now]) %>
 	<% if alc > 0 %>
-		<%= link_to (t 'notifications.leave_request_for')+" #{al} "+(t 'notifications.has_been_approved'), { :controller => "leaveforstudents", :action => "index" } %><br/>
+		<%= link_to (t 'notifications.leave_request_for')+" #{al[0].strftime('%d-%m-%Y')} "+(t 'notifications.has_been_approved'), { :controller => "leaveforstudents", :action => "index" } %><br/>
 	<% end %>
+
 <% permitted_to? :manage, :student_counseling_sessions do %><!--1Apr2013-->
 	<% counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed !=? OR is_confirmed ISNULL', true])%>
 	<%# counsel_appt = StudentCounselingSession.count(:all, :conditions => ['is_confirmed !=?', true])%>

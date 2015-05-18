@@ -64,10 +64,15 @@ class PtbudgetsController < ApplicationController
         flash[:notice] =  t('ptbudget.new')+" "+t('created')
         format.html { redirect_to(@ptbudget) }
         format.xml  { render :xml => @ptbudget, :status => :created, :location => @ptbudget }
-      else
-        flash[:notice]=t('ptbudget.budget_start_compulsory')
-	format.html { redirect_to new_ptbudget_path(@ptbudget,  :newtype => @newtype) }
-        format.xml  { render :xml => @ptbudget.errors, :status => :unprocessable_entity }
+       else
+           if @ptbudget.fiscalstart.blank? || @ptbudget.budget.blank?
+             flash[:notice]=t('ptbudget.budget_start_compulsory')
+	   end
+	   if Ptbudget.all.map(&:fiscalstart).include?(@ptbudget.fiscalstart)
+             flash[:notice]= I18n.t('activerecord.attributes.ptbudget.fiscalstart')+" "+I18n.t('activerecord.errors.messages.taken')
+           end
+           format.html { redirect_to new_ptbudget_path(@ptbudget,  :newtype => @newtype) }
+           format.xml  { render :xml => @ptbudget.errors, :status => :unprocessable_entity }
       end
     end
   end

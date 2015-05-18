@@ -117,15 +117,27 @@ class Book < ActiveRecord::Base
   #end
 
     
-def self.search(search)
+  def self.search(search)
     if search
+      if search=="All"
+        @book = Book.find(:all, :order => 'classlcc ASC')
+      else
         @book = Book.find(:all, :conditions => ["isbn LIKE ? or title ILIKE ? or author ILIKE ? or location ILIKE ?" , "%#{search}%","%#{search}%","%#{search}%", "%#{search}%"], :order => 'classlcc ASC')
-    else
-       @book = Book.find(:all, :order => 'classlcc ASC')
+      end
+    else 
+      @book = Book.find(:all, :conditions => ["isbn LIKE ? or title ILIKE ? or author ILIKE ? or location ILIKE ?" , "%#{search}%","%#{search}%","%#{search}%", "%#{search}%"], :order => 'classlcc ASC')
     end
-end
+  end
   
- def book_quantity
+  def self.search2(search)
+    if search=="All"
+      @book = Book.find(:all, :order => 'classlcc ASC')
+    else
+      @book = Book.find(search)
+    end
+  end
+  
+  def book_quantity
       counter = Accession.count(:all, :conditions => ["book_id = ?", id])
   end
     

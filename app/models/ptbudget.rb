@@ -1,6 +1,7 @@
 class Ptbudget < ActiveRecord::Base
   
-  validates_presence_of :budget
+  validates_presence_of :budget, :fiscalstart
+  validates_uniqueness_of :fiscalstart
   #Addsupplier.sum(:quantity, :conditions => ["supplier_id = ?", id])
   
   def self.filters
@@ -72,14 +73,15 @@ class Ptbudget < ActiveRecord::Base
   
   def next_budget_date
     #Ptbudget.last.fiscalstart + 1.year
-    last_fiscalstart=Ptbudget.find(:all, :order =>'fiscalstart ASC').last.fiscalstart
-    last_fiscalend=Ptbudget.find(:all, :order =>'fiscalstart ASC').last.fiscal_end           #for all MAIN records, fiscal_end always same month & day
-    if last_fiscalstart.month==budget_start.month && last_fiscalstart.day==budget_start.day 
-      next_date=last_fiscalstart+1.year
-    else
-      next_date=Date.new(last_fiscalend.year, budget_start.month, budget_start.day)
+    budget_all=Ptbudget.find(:all, :order =>'fiscalstart DESC')          #for all MAIN records, fiscal_end always same month & day
+    count=0
+    budget_all.each do |yy|
+      if yy.fiscalstart.month==budget_start.month && yy.fiscalstart.day==budget_start.day && count==0
+        @last_main=yy.fiscalstart
+        count+=1
+      end
     end
-    next_date
+    @last_main+1.year
   end 
   
 end

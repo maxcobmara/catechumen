@@ -182,7 +182,6 @@
 				<!--<li><%#= link_to 'Equery/Reports', 		'/Reports' %></li>-->
 				<% end %>
 				<!--17Jun2013-use viewer-->
-				<li><%= link_to (t 'menu.equery_reports'), {:controller => 'viewer', 	:action => 'equeryreports'} %></li>
 				<li><%= link_to (t 'menu.document_registry'), 	{:controller => 'documents', 		:action => 'index'} %></li>
 				<li><%= link_to (t 'menu.file_registry'), 			{:controller => 'cofiles', 			:action => 'index'} %></li>
 			</ul>
@@ -356,8 +355,31 @@
 			</ul>
 	</li>
 	<% end %>
-
-
+        <!--Equery Menu-->
+        <li><a href="#" class="equery"><%= t('menu.equery_reports')%></a>
+		<ul>
+			<% if (permitted_to? :read, :staffsearch2s) || (permitted_to? :read, :staffattendancesearches) || (permitted_to? :read, :ptdosearches) %>
+				<li class="sub_menu"><%= link_to (t 'menu.staff'), {:controller => 'viewer', :action => 'equeryreports', :query_module =>'1'} %></li>
+			<% end %>
+			<% permitted_to? :read, :assetsearches do %>
+				<li class="sub_menu"><%= link_to (t 'menu.assets'), {:controller => 'viewer', :action => 'equeryreports', :query_module =>'2'} %></li>
+			<% end %>
+			<% permitted_to? :read, :documentsearches do %>
+				<li class="sub_menu"><%= link_to (t 'menu.e_filing'), {:controller => 'viewer', :action => 'equeryreports', :query_module =>'3'} %></li>
+			<% end %>
+			<% if (permitted_to? :read, :studentsearches) || (permitted_to? :read, :studentattendancesearches) || (permitted_to? :read, :studentdisciplinesearches) || (permitted_to? :read, :studentcounselingsearches) %>
+				<li class="sub_menu"><%= link_to (t 'menu.students'), {:controller => 'viewer', :action => 'equeryreports', :query_module =>'4'} %></li>
+			<% end %>
+			<% if (permitted_to? :read, :weeklytimetablesearches) || (permitted_to? :read, :curriculumsearches) || (permitted_to? :read, :lessonplansearches) || (permitted_to? :read, :personalizetimetablesearches) %>
+				<li class="sub_menu"><%= link_to (t 'menu.training'), {:controller => 'viewer', :action => 'equeryreports', :query_module =>'5'} %></li>
+			<% end %>
+			<% if (permitted_to? :read, :examsearches) || (permitted_to? :read, :examresultsearches) || (permitted_to? :read, :evaluatecoursesearches) || (permitted_to? :read, :examanalysissearches)%>
+				<li class="sub_menu"><%= link_to (t 'menu.exams'), {:controller => 'viewer', :action => 'equeryreports', :query_module =>'6'} %></li>
+			<% end %>
+			<li class="sub_menu"><%= link_to (t 'menu.library'), {:controller => 'viewer', :action => 'equeryreports', :query_module =>'7'} %></li>
+		</u>
+        <%#= link_to (t 'menu.equery_reports'), {:controller => 'viewer', 	:action => 'equeryreports'} %>
+        </li>
 </ul>
 <% end %>
 

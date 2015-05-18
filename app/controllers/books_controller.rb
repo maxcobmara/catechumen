@@ -160,7 +160,7 @@ class BooksController < ApplicationController
       if @bb == '1'
         #if @bob
         #@books = Book.find(:all, :conditions=>['title =?', 'Abc of otolaryngology-4th edLLLL'])
-        @books = Book.search(@bob)
+        @books = Book.search2(@bob)
       #else
         #@books = Book.find(:all, :order => :classlcc) 
       #end
