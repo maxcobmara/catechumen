@@ -106,7 +106,7 @@ class StudentsController < ApplicationController
 
     respond_to do |format|
       if @student.update_attributes(params[:student])
-        flash[:notice] =  t('student.title')+" "+t('created')
+        flash[:notice] =  t('student.title')+" "+t('updated')
         format.html { redirect_to(@student) }
         format.xml  { head :ok }
       else

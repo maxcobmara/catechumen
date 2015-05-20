@@ -42,7 +42,10 @@ class StaffAppraisalsController < ApplicationController
   def edit
     @staff_appraisal = StaffAppraisal.find(params[:id])
     #2.times {@staff_appraisal.staff_appraisal_skts.build}
-    
+    if params[:job_type] && params[:job_level]
+      @job_type=params[:job_type] #redo_performance
+      @job_level=params[:job_level]
+    end
   end
 
   # POST /staff_appraisals
@@ -70,7 +73,7 @@ class StaffAppraisalsController < ApplicationController
         format.html { redirect_to(@staff_appraisal, :notice => t('evaluation.appraisal.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => "edit", :job_type=>"redo_performance", :job_level => "skt_revision"}
         format.xml  { render :xml => @staff_appraisal.errors, :status => :unprocessable_entity }
       end
     end
