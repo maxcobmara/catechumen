@@ -1,11 +1,31 @@
 <div class="fields">
 	
-	<table>
+	
+	<% if f.object.description.blank? != true && (f.object.half == 1 || f.object.half==2)%>
 		<tr>
+			<td><%= f.object.priority %></td>
+			<td><%= f.object.description %></td>
+			<td><%= f.object.render_indicator%> : <%=f.object.target %></td>
+			<td><%= f.text_field :acheivment, :size => 50 %></th>
+			<td><%= f.text_field :progress, :size => 5 %></th>
+			<td>
+				<% if f.object.half == 1%>
+					<%= f.check_box :is_dropped %> <%= f.hidden_field :dropped_on, :default => Date.today %>
+				<% elsif f.object.half == 2 %>
+					<%= f.check_box '_destroy'%>
+				<% end %>
+			</td>
+		</tr>
+	<% else %>
+		 <table>
+		 <tr>
 			<td width=10%> <%= f.select :priority, 1..5  %></td>
 			<td width=40%> <%= f.text_field :description, :size => 50 %></td>
-			<td width=40%> <%= f.text_field :indicator, :size => 50 %></td><%= f.hidden_field :_destroy %>
+			<td width=10%><%= f.select :indicator, StaffAppraisalSkt::INDICATORS, :include_blank => t('select') %></td>
+			<td width=30%> <%= f.text_field :target, :size => 50 %></td><%= f.hidden_field :_destroy %>
 			<td align="right" width=10%><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>   </td>
 		</tr>
-	</table>
+		</table>
+	<% end %>
+	
 </div>
