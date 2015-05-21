@@ -1,13 +1,14 @@
 <div class="fields">
 	
 	
-	<% if f.object.description.blank? != true && (f.object.half == 1 || f.object.half==2)%>
+	<% if f.object.description.blank? != true &&  f.object.indicator.blank? != true && f.object.target.blank? != true && (f.object.half == 1 || f.object.half==2) && joblevel=="skt_revision" && f.object.id!=nil%>
 		<tr>
 			<td><%= f.object.priority %></td>
 			<td><%= f.object.description %></td>
 			<td><%= f.object.render_indicator%> : <%=f.object.target %></td>
-			<td><%= f.text_field :acheivment, :size => 50 %></th>
+			<td><%= f.text_field :acheivment, :size => 40%></th>
 			<td><%= f.text_field :progress, :size => 5 %></th>
+			<td><%= f.text_area :notes, :size => "20x2" %></td>
 			<td>
 				<% if f.object.half == 1%>
 					<%= f.check_box :is_dropped %> <%= f.hidden_field :dropped_on, :default => Date.today %>
@@ -17,6 +18,20 @@
 			</td>
 		</tr>
 	<% else %>
+		 <% if params[:job_level]=="skt_revision"%>
+		 <table>
+		 <tr>
+			<td width=4%><%= f.select :priority, 1..5  %></th>
+			<td width=15%><%= f.text_area :description, :size => "23x2" %></th>
+			<td width=25%><%= f.select :indicator, StaffAppraisalSkt::INDICATORS, :include_blank => t('select') %>
+			<%= f.text_area :target, :size => "23x1" %></td><%= f.hidden_field :_destroy %>
+			<td width=40%><%= f.text_area :acheivment, :size => "27x2"%><%=f.hidden_field :half, :value => 2 %></th>
+			<td width=3%><%= f.text_field :progress, :size => 5 %></th>
+			<td width=20%><%= f.text_area :notes, :size => "20x2" %></th>
+			<td width=5%><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %> </th>
+		 </tr>
+		<!-- </table>-->
+		 <% else %>
 		 <table>
 		 <tr>
 			<td width=10%> <%= f.select :priority, 1..5  %></td>
@@ -26,6 +41,7 @@
 			<td align="right" width=10%><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>   </td>
 		</tr>
 		</table>
+		<% end %>
 	<% end %>
 	
 </div>

@@ -12,7 +12,7 @@ class StaffAppraisal < ActiveRecord::Base
   
   has_many :staff_appraisal_skts, :dependent => :destroy
   accepts_nested_attributes_for :staff_appraisal_skts, :allow_destroy => true #, :reject_if => lambda { |a| a[:description].blank? }
-  validates_associated :staff_appraisal_skts, :if => :is_skt_pyd_report_done?
+  validates_associated :staff_appraisal_skts#, :if => :is_skt_pyd_report_done?
   #ref: http://homeonrails.com/2012/10/validating-nested-associations-in-rails/
   
   has_many :evactivities, :foreign_key => 'appraisal_id', :dependent => :destroy

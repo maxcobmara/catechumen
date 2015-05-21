@@ -10,7 +10,7 @@
 			<%=render :partial => 'show_skt' %>
 			<%=render :partial => 'skt_endorse', :locals => {:f => f} %> 
 		<%# elsif @staff_appraisal.evaluation_status == t('evaluation.appraisal.skt_review') && @staff_appraisal.staff_id == Login.current_login.staff_id%>	
-		<% elsif (@staff_appraisal.evaluation_status == t('evaluation.appraisal.skt_review') && @staff_appraisal.staff_id == Login.current_login.staff_id) || (@job_type="redo_performance" && @job_level="skt_revision")%>
+		<% elsif (@staff_appraisal.evaluation_status == t('evaluation.appraisal.skt_review') && @staff_appraisal.staff_id == Login.current_login.staff_id) || (@job_type="redo_performance" && @job_level="skt_revision" && @staff_appraisal.staff_id == Login.current_login.staff_id && @staff_appraisal.is_skt_ppp_report_done!=true)%>
 			<%=render :partial => 'skt_review_staff', :locals => {:f => f} %>
 		<% elsif @staff_appraisal.evaluation_status == t('evaluation.appraisal.ready_for_ppp_skt_report') && @staff_appraisal.eval1_by == Login.current_login.staff_id %>
 			<%=render :partial => 'show_skt' %> 
