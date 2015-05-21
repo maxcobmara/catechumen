@@ -10,7 +10,7 @@
 
 	<% skt_pyd_complete = StaffAppraisal.count(:all, :conditions => ["eval1_by=? AND is_skt_pyd_report_done =? AND skt_ppp_report  IS ?", Login.current_login.staff_id, true, nil]) %>
 	<% if skt_pyd_complete > 0 %>
-	  <%= skt_pyd_complete %> <%= link_to +(t 'notifications.skt_ready_annual_review'), { :controller => "staff_appraisals", :action => "index" } %><br>
+	  <%= link_to "#{skt_pyd_complete} " +(t 'notifications.skt_ready_annual_review'), { :controller => "staff_appraisals", :action => "index" } %><br>
 	<% end %>
 
 	<!-- Notification for Appraisal Request -->

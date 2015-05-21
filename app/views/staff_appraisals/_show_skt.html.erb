@@ -1,10 +1,13 @@
 <fieldset>
 	<legend class='togvis'><%= t 'evaluation.skt.title' %></legend>
-		<table width=85% >
+		<table width=95% >
 					<tr>
 						<th>S/N</th>
 						<th><%= t 'evaluation.skt.description' %></th>
-						<th><%= t 'evaluation.skt.performance' %></th>
+						<th><%= t 'evaluation.skt.performance' %> : <%= t 'evaluation.skt.target' %></th>
+						<th><%=t('evaluation.skt_review.acheivment')%></th>
+						<th><%=t('evaluation.skt_review.progress')%></th>
+						<th><%=t('evaluation.skt_review.notes')%></th>
 					</tr>
 					<% just_a_counter = 0 %>
 					<%# for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half IS ?', nil], :order => :priority) %>	<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half =?', 1], :order => :priority) %>
@@ -16,7 +19,10 @@
 					<tr>
 						<td <%= format %>><%= just_a_counter %></td>
 						<td <%= format %>><%= staff_appraisal_skt.description %></td>
-						<td <%= format %>><%= staff_appraisal_skt.indicator %></td>
+						<td <%= format %>><%= staff_appraisal_skt.render_indicator %> : <%= staff_appraisal_skt.target %></td>
+						<td><%=staff_appraisal_skt.acheivment if staff_appraisal_skt.is_dropped != true %></td>
+						<td><% if staff_appraisal_skt.is_dropped != true && staff_appraisal_skt.progress!=nil%><%=staff_appraisal_skt.progress %><%=t('evaluation.skt_review.progress')%><% end %></td>
+						<td><%=staff_appraisal_skt.notes if staff_appraisal_skt.is_dropped != true %></td>
 					</tr>
 					<% end -%>
 		</table>
@@ -24,13 +30,16 @@
 
 <% if @staff_appraisal.is_skt_submit == true && @staff_appraisal.is_skt_endorsed == true %>
 <fieldset>
-	<legend class='togvis'><%= t 'evaluation.skt.title2' %></legend>
+	<legend class='togvis'><%= t 'evaluation.skt_review.title2' %></legend>
 		<p><i><%= t 'evaluation.skt_review.add' %></i></p>
-		<table width=85% >
+		<table width=95% >
 					<tr>
 						<th>S/N</th>
 						<th><%= t 'evaluation.skt.description' %></th>
 						<th><%= t 'evaluation.skt.performance' %></th>
+						<th><%=t('evaluation.skt_review.acheivment')%></th>
+						<th><%=t('evaluation.skt_review.progress')%></th>
+						<th><%=t('evaluation.skt_review.notes')%></th>
 					</tr>
 					<% just_a_counter = 0 %>
 					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half = ?', 2], :order => :priority) %>
@@ -38,13 +47,16 @@
 					<tr>
 						<td><%= just_a_counter %></td>
 						<td><%= staff_appraisal_skt.description %></td>
-						<td><%= staff_appraisal_skt.indicator %></td>
+						<td><%= staff_appraisal_skt.render_indicator %> : <%= staff_appraisal_skt.target %></td>
+						<td><%=staff_appraisal_skt.acheivment%></td>
+						<td><%=staff_appraisal_skt.progress %><%=t('evaluation.skt_review.progress') unless staff_appraisal_skt.progress.nil?%></td>
+						<td><%=staff_appraisal_skt.notes %></td>
 					</tr>
 					<% end -%>
 		</table>
 		
 		<p><i><%= t 'evaluation.skt_review.drop' %></i></p>
-		<table width=85% >
+		<table width=95% >
 					<tr>
 						<th>S/N</th>
 						<th><%= t 'evaluation.skt.description' %></th>
@@ -56,7 +68,7 @@
 					<tr>
 						<td><%= just_a_counter %></td>
 						<td><%= staff_appraisal_skt.description %></td>
-						<td><%= staff_appraisal_skt.indicator %></td>
+						<td><%= staff_appraisal_skt.render_indicator %> : <%= staff_appraisal_skt.target %></td>
 					</tr>
 					<% end -%>
 		</table>
@@ -72,7 +84,10 @@
 			
 			<tr>
 				<td class="leftcol"><%= t 'evaluation.skt_review.report_ppp' %></td>
-				<td><%=h @staff_appraisal.is_skt_pyd_report_done? ? "Yes, on " + l(@staff_appraisal.skt_pyd_report_on) : "No" %></td>
+				<td><% unless @staff_appraisal.skt_pyd_report_on.nil? %>
+						<%=h @staff_appraisal.is_skt_pyd_report_done? ? "Yes, on " + l(@staff_appraisal.skt_pyd_report_on) : "No" %>
+					<% end %>
+				</td>
 			</tr>
 			
 			<% if @staff_appraisal.is_skt_ppp_report_done ==  true %>
@@ -83,7 +98,10 @@
 			
 			<tr>
 				<td class="leftcol"><%= t 'evaluation.skt_review.ppp_complete' %></td>
-				<td><%=h @staff_appraisal.is_skt_ppp_report_done? ? "Yes, on " + l(@staff_appraisal.skt_ppp_report_on)   : "No" %></td>
+				<td><% unless @staff_appraisal.skt_ppp_report_on.nil? %>
+						<%=h @staff_appraisal.is_skt_ppp_report_done? ? "Yes, on " + l(@staff_appraisal.skt_ppp_report_on)   : "No" %>
+					<% end %>
+				</td>
 			</tr>
 			<% end %>	
 		</table>
