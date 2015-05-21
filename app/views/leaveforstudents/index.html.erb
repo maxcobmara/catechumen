@@ -19,6 +19,17 @@
 <div class=right>
 	<%= select_tag_for_filter("leaveforstudents", @filters, params) %>
 </div>
+<div class=right>
+	<% form_tag '', :method => 'get' do %>
+	<%=t('leaveforstudent.leave_startdate2')%> - <%=(t 'from').downcase%>: <%= date_select :search_from, params[:search_from], :include_blank => :true %>
+	&nbsp; &nbsp;<%=t('to')%>: <%= date_select :search_to, params[:search_to], :include_blank => :true %>
+	<%= submit_tag (t 'search'), :name => :submit_button1 %>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <% end %>
+
+</div>
+
+<%=params[:search_from]%>
+<%=params[:search_to]%>
 <BR><BR>
 <div class="tlist">
 <table width=100%>
@@ -26,9 +37,10 @@
     <th><%=t('leaveforstudent.student_id')%></th>
     <th><%=t('student.course_id')%></th>
     <th><%=t('student.intake')%></th>
+    <th><%=t('leaveforstudent.hostel_block')%></th>
     <th><%=t('leaveforstudent.leavetype')%></th>
     <th width="80px"><%=t('leaveforstudent.requestdate')%></th>
-    <th><%=t('leaveforstudent.leave_startdate2')%></th>
+    <th width="70px"><%=t('leaveforstudent.leave_dates')%></th>
     <th><%=t('submitted')%></th>
         <th><%=t('leaveforstudent.staff_id')%></th>
     <th><%=t('leaveforstudent.approved')%></th>
@@ -42,9 +54,10 @@
 	<td><%=h leaveforstudent.student_details %></td>
 	<td><%=h leaveforstudent.student.course.name%></td>
 	<td><%=h leaveforstudent.student.intake.strftime('%b %Y')%></td>
+	<td><%=h leaveforstudent.student.tenants.last.location.root.code if !leaveforstudent.student.tenants.nil? && leaveforstudent.student.tenants.count > 0 %></td>
 	<td><%= (Leaveforstudent::STUDENTLEAVETYPE.find_all{|disp, value| value ==leaveforstudent.leavetype }).map {|disp, value| disp}%></td>
         <td align="center"><%=h leaveforstudent.requestdate.try(:strftime, '%d %b %Y') %></td>
-        <td align="center"><%=h leaveforstudent.leave_startdate.try(:strftime, '%d %b %Y') %></td>
+        <td align="center"><%=h leaveforstudent.leave_startdate.try(:strftime, '%d %b %Y') %> -<%=h leaveforstudent.leave_enddate.try(:strftime, '%d %b %Y') %></td>
         <td align="center"><%=h leaveforstudent.studentsubmit? ? image_tag("tick.png") : image_tag("cross.png") %></td>
         <td><%=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : "" %></td>
         <td align="center">
