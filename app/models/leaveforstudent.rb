@@ -3,7 +3,7 @@ class Leaveforstudent < ActiveRecord::Base
   belongs_to :staff
   belongs_to :second_approver, :class_name=>'Staff', :foreign_key=>"staff_id2"
 
-  validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate
+  validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate, :reason, :address
   validates_numericality_of :telno
   validate :validate_kin_exist
   validate :validate_end_date_before_start_date
@@ -43,6 +43,17 @@ class Leaveforstudent < ActiveRecord::Base
      else
       @leaveforstudent = Leaveforstudent.find(:all, :order=>'leave_startdate DESC')
      end
+  end
+  
+  def self.search_by_date(startdt, enddt)
+    if startdt && enddt
+      startdte=startdt.strftime('%Y-%m-%d')
+      enddte =enddt.strftime('%Y-%m-%d') 
+      @leaveforstudent = Leaveforstudent.find(:all, :conditions => ['leave_startdate >=? and leave_startdate<?', startdte, enddte], :order=>'leave_startdate DESC')
+      #@leaveforstudent = Leaveforstudent.find(:all, :conditions => ['leave_startdate >? and leave_startdate<?', '2015-05-16', '2015-05-18'], :order=>'leave_startdate DESC')
+    else
+      @leaveforstudent = Leaveforstudent.find(:all, :order=>'leave_startdate DESC')
+    end
   end
 
   #<07/10/2011 - Shaliza fixed for error when staff no longer exists>

@@ -8,7 +8,29 @@ class LeaveforstudentsController < ApplicationController
     @position_exist = current_login.staff.position if current_login.isstaff==true
     @filters = Leaveforstudent::FILTERS
     
-    if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+    if params[:submit_button1]==t('search') && (params[:search_from] || params[:search_to])
+      if params[:search_from]
+	startdate =StudentCounselingSession.get_start_date(params[:search_from][:"(1i)"],params[:search_from][:"(2i)"], params[:search_from][:"(3i)"])
+      end
+      if params[:search_to]
+	enddate = StudentCounselingSession.get_end_date(params[:search_to][:"(1i)"],params[:search_to][:"(2i)"],params[:search_to][:"(3i)"])
+      end 
+      unless startdate && enddate
+	if !startdate && enddate
+	  startdate=enddate-1.days
+	end
+	if startdate && !enddate
+	  enddate=startdate+1.days
+	end
+      end
+      if startdate && enddate
+	@leaveforstudents2 = Leaveforstudent.with_permissions_to(:index).search_by_date(startdate, enddate)
+      else
+	flash[:error] = 'Wrong date value entered.'
+	@leaveforstudents2 = Leaveforstudent.with_permissions_to(:index).search(params[:search])
+      end
+    
+    elsif params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
        @leaveforstudents2 = Leaveforstudent.with_permissions_to(:index).send(params[:show])
     else
       @leaveforstudents2 = Leaveforstudent.with_permissions_to(:index).search(params[:search])
@@ -23,7 +45,8 @@ class LeaveforstudentsController < ApplicationController
        @leaveforstudents = @leaveforstudents2
     end
     @leaveforstudents = @leaveforstudents.paginate(:order => 'leave_startdate', :per_page => 20, :page => params[:page])
-
+    params[:search_from]=nil  #this line is required
+    params[:search_to]=nil    #this line is required
     respond_to do |format|
       if current_login.isstaff==true 
         if @position_exist 
