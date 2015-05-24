@@ -104,15 +104,15 @@ class PtdosController < ApplicationController
       unless params[:search].nil?
         searched_course_ids=Ptcourse.find(:all, :conditions => ['name ILIKE(?)', "%#{params[:search]}%"]).map(&:id)
         approved_budget_sch_ids= Ptschedule.find(:all, :conditions => ['budget_ok=? and start>=? and start<=? and ptcourse_id IN(?)', true, startbegindate, startenddate, searched_course_ids]).map(&:id)
-        @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and ptschedule_id IN(?)', true, approved_budget_sch_ids], :order => "ptschedule_id ASC")
+        @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and ptschedule_id IN(?)', true, approved_budget_sch_ids], :order => "ptschedule_id DESC")
       else
         approved_budget_sch_ids= Ptschedule.find(:all, :conditions => ['budget_ok=? and start>=? and start<=?', true, startbegindate, startenddate]).map(&:id)
-        @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and ptschedule_id IN(?)', true, approved_budget_sch_ids], :order => "ptschedule_id ASC")
+        @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and ptschedule_id IN(?)', true, approved_budget_sch_ids], :order => "ptschedule_id DESC")
       end
     else
       unless params[:search].nil?
         searched_course_ids=Ptcourse.find(:all, :conditions => ['name ILIKE(?)', "%#{params[:search]}%"]).map(&:id)
-        @ptdos=Ptdo.find(:all, :conditions => ['id IN(?) and ptcourse_id IN(?)',Ptdo.all2.map(&:id), searched_course_ids])
+        @ptdos=Ptdo.find(:all, :conditions => ['id IN(?) and ptcourse_id IN(?)',Ptdo.all2.map(&:id), searched_course_ids], :order => "ptschedule_id DESC")
       else
         @ptdos=Ptdo.send("all2")
         #@ptdos = Ptdo.all2
