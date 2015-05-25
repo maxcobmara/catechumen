@@ -187,7 +187,7 @@ authorization do
   role :training_manager do
     has_permission_on [:ptbudgets, :ptcourses, :ptschedules], :to => :manage
     has_permission_on :ptdosearches, :to => :read
-    has_permission_on :ptdo, :to => :participant_expenses
+    has_permission_on :ptdos, :to => :participant_expenses
   end
   
   role :training_administration do

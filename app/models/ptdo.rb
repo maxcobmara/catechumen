@@ -99,7 +99,8 @@ class Ptdo < ActiveRecord::Base
         total_days_instring=bal_hours.to_i.to_s+" "+I18n.t('time.hours')
       end
     else
-      total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days')
+      total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days') if days_count.to_i > 0
+      total_days_instring=I18n.t('ptdos.nil') if days_count.to_i ==0
     end
     total_days_instring
   end
@@ -132,7 +133,6 @@ class Ptdo < ActiveRecord::Base
   
   def render_payment
     (Ptdo::PAYMENT.find_all{|disp, value| value == payment}).map{|disp, value| disp}
-    #(Asset::ASSETTYPE.find_all{|disp, value| value == assettype}).map {|disp, value| disp}
   end
   
 end
