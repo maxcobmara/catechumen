@@ -61,7 +61,7 @@ class PtdosController < ApplicationController
 
     respond_to do |format|
       if @ptdo.update_attributes(params[:ptdo])
-        flash[:notice] =  t('ptdos.title')+" "+t('updated')
+        flash[:notice] =  t('ptdos.title2')+" "+t('updated')
         format.html { redirect_to(@ptdo) }
         format.xml  { head :ok }
       else
@@ -118,6 +118,7 @@ class PtdosController < ApplicationController
         #@ptdos = Ptdo.all2
       end
     end
+    @ptdos = @ptdos.paginate(:per_page => 20, :page => params[:page]) 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @ptschedules }

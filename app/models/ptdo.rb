@@ -124,4 +124,15 @@ class Ptdo < ActiveRecord::Base
     dept
   end
   
+  PAYMENT=[
+    #  Displayed       stored in db
+    [I18n.t('ptdos.local_order'), 1],
+    [I18n.t('ptdos.cash'), 2]
+  ]
+  
+  def render_payment
+    (Ptdo::PAYMENT.find_all{|disp, value| value == payment}).map{|disp, value| disp}
+    #(Asset::ASSETTYPE.find_all{|disp, value| value == assettype}).map {|disp, value| disp}
+  end
+  
 end

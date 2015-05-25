@@ -25,10 +25,8 @@
 	<th><%= t 'ptschedule.final_price' %></th><!--amount-->
 	<th width=5%><font color=green><%= t 'ptschedule.budget_ok2' %></font></th>
 	<th width=5%><font color=green><%= t 'ptschedule.minparticipant' %></font></th>
-	<th width=5%><%= t 'ptdos.evaluation_submitted' %><%#= t 'ptdos.report_submitted' %></th><!--Penilaian kursus-->
-	<th width=7%><font color=red><%= t 'ptschedule.payment_method' %></font></th><!--kaedah pembayaran-->
-	<th width=7%><font color=red><%= t 'ptschedule.lo_tunai' %></font></th>
-	<th width=7%><font color=red><%= t 'ptschedule.paid_submission' %></font></th><!--Telah / Belum Dihantar (pembayaran)-->
+	<th width=7%><%= t 'ptdos.lo_tunai' %></th>
+	<th width=7%><%= t 'ptdos.remark' %></th>
 	<th colspan=3 class="ac"><%= t 'control' %></th>
   </tr>
 <% no=0%>
@@ -45,22 +43,27 @@
 		<td rowspan="<%=ptdos.count%>" align=right><%=h ringgols(ptdo.ptschedule.final_price) %></td>
 		<td rowspan="<%=ptdos.count%>" align=center><%=h ptdo.ptschedule.budget_ok? ? image_tag('tick.png') : image_tag('cross.png') %></td>
 		<td rowspan="<%=ptdos.count%>" align=center>
-			<% if ptdos.count >= ptdo.ptschedule.min_participants %>
+			<% participants_no=Ptdo.count(:all, :conditions =>['ptschedule_id=?',schedule_id])%>
+			<% if participants_no >= ptdo.ptschedule.min_participants %>
 				<%= image_tag('tick.png') %>
 			<% else %>
 				<%= image_tag('cross.png') %>
 			<% end %>
+			<br><%= participants_no%> / <%=ptdo.ptschedule.min_participants%>&nbsp;(<%=ptdo.ptschedule.max_participants%>)
 		</td>
 	<% end %>
-	<td align=center><%=ptdo.trainee_report.nil? ? image_tag('cross.png') : image_tag('tick.png') %></td>
-	<td>&nbsp;</td>
-	<td width=10px><%#= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptdo %></td>
-	<td width=10px><%# if ptdo.dept_approve? && ptdo.final_approve? && ptdo.staff_id == current_login.staff_id %><%#= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptdo %><%# end %></td>
-	<td width=10px><%#= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptdo, :confirm => (t 'are_you_sure'), :method => :delete %></td>
+	<td align=center><%=h ptdo.render_payment %></td>
+	<td><%=h ptdo.remark %></td>
+	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptdo.id %></td>
+	<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptdo.id %></td>
 	</tr>
 	<% end %>
 <% end %>
 </table>
 
 <br />
+</div>
+<BR>
+<div class="pagination">
+ <%= will_paginate @ptdos %>  
 </div>
