@@ -84,7 +84,7 @@
 	<% end %>
 </table>
 
-<% permitted_to? :participant_expenses, :ptdos do %>
+<% permitted_to? :manage, :ptbudgets do %>
 	<% if @ptdo.final_approve? %>
 		<H2><%=t('ptdos.payment_method')%></H2>
 		<table width=100%>
@@ -108,6 +108,6 @@
 
 <%= link_to (t 'show'), @ptdo %> |
 <%= link_to (t 'ptdos.back_status'), ptdos_path %>
-<% permitted_to? :participant_expenses do %>
+<% permitted_to? :manage, :ptbudgets do %>
 	&nbsp;|&nbsp;<%= link_to (t 'ptdos.back_expenses'), organized_course_manager_ptdos_path %>
 <% end %>
