@@ -82,8 +82,24 @@
 		</tr>
 	
 	<% end %>
-
 </table>
+
+<% permitted_to? :participant_expenses, :ptdos do %>
+	<% if @ptdo.final_approve? %>
+		<H2><%=t('ptdos.payment_method')%></H2>
+		<table width=100%>
+			<tr>
+				<td class="leftcol"><label for="payment_method"><%= t 'ptdos.payment_method' %>:</label></td>
+				<td><%= f.select :payment, Ptdo::PAYMENT, :include_blank => t('select')%></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="remark"><%= t 'ptdos.remark' %>:</label></td>
+				<td><%= f.text_area :remark, :size => "50x2" %></td>
+			</tr>
+		</table>	
+	<% end %>
+<% end %>
+
 </div>
   <p>
     <%= f.submit (t 'update') %>
@@ -91,4 +107,7 @@
 <% end %>
 
 <%= link_to (t 'show'), @ptdo %> |
-<%= link_to (t 'back'), ptdos_path %>
+<%= link_to (t 'ptdos.back_status'), ptdos_path %>
+<% permitted_to? :participant_expenses do %>
+	&nbsp;|&nbsp;<%= link_to (t 'ptdos.back_expenses'), organized_course_manager_ptdos_path %>
+<% end %>

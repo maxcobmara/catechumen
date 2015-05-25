@@ -194,6 +194,7 @@
   <% end %>
 
   <!-- Notification for Student Leave Approval -->
+  <% if Login.current_login.staff.position!=nil%>
   <!--group coordinator-->
   <% if permitted_to? :approve_coordinator, :leaveforstudents %>
 	<% c1 = Login.find(:all, :select => "id", :conditions => ['roles.id =?',14 ], :include => :roles).map(&:id) %>
@@ -235,7 +236,7 @@
 	<% end %>
    <% end %>
    
-	<% if Login.current_login.roles.map(&:id).include?(2)==true%>
+	<% if Login.current_login.roles.map(&:id).include?(2)==true && (a + b).uniq.count > 0%>
 		<%= link_to "#{(a + b).uniq.count} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
 	<% else %>
 		<% if (d2 & c2 == d2) && dash_lfs2 > 0 %>
@@ -245,6 +246,7 @@
 		<% end %>
 	<% end %>
 	
+  <% end %>	
    
 
 	<!-- Notification for Documents-->

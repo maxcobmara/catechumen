@@ -7,7 +7,11 @@ class Ptdo < ActiveRecord::Base
   belongs_to  :replacement, :class_name => 'Staff', :foreign_key => 'replacement_id'
   has_many    :staff_appraisals, :through => :staff
   
-  named_scope :all2,  :conditions => ['final_approve=? and ptschedule_id IN(?)', true, Ptschedule.find(:all, :conditions => ['budget_ok=?', true]).map(&:id)]
+  #named_scope :all2,  :conditions => ['final_approve=? and ptschedule_id IN(?)', true, Ptschedule.find(:all, :conditions => ['budget_ok=?', true].map(&:id)]
+  
+  def self.all2
+    Ptdo.find(:all, :conditions => ['final_approve=? and ptschedule_id IN(?)', true, Ptschedule.find(:all, :conditions => ['budget_ok=?', true]).map(&:id)],  :order => 'ptschedule_id DESC')
+  end
   
   def self.filters
     filtering=[{:scope => "all2", :label => I18n.t('ptdos.all_records')}]
@@ -118,6 +122,17 @@ class Ptdo < ActiveRecord::Base
       dept=unit_staff if unit_staff!='' 
     end
     dept
+  end
+  
+  PAYMENT=[
+    #  Displayed       stored in db
+    [I18n.t('ptdos.local_order'), 1],
+    [I18n.t('ptdos.cash'), 2]
+  ]
+  
+  def render_payment
+    (Ptdo::PAYMENT.find_all{|disp, value| value == payment}).map{|disp, value| disp}
+    #(Asset::ASSETTYPE.find_all{|disp, value| value == assettype}).map {|disp, value| disp}
   end
   
 end

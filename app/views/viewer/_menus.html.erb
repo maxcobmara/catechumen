@@ -71,6 +71,9 @@
 						<% permitted_to? :index, :ptdos do %>
 							<li><%= link_to (t 'menu.train_status'), ptdos_path %></li>
 						<% end %>
+						<% permitted_to? :manage, :ptbudgets do %>
+							<li><%= link_to (t 'ptdos.expenses_menu'), organized_course_manager_ptdos_path %> </li>
+						<% end %>
 					</ul>
 				</li>
 				<li><%= link_to (t 'menu.status_movement'), 					{:controller => 'travel_requests', 	:action => 'index'} %></li>

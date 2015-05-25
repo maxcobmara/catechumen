@@ -56,11 +56,26 @@
 		<td class="leftcol"><label for="trainee_report"><%= t 'ptdos.trainereport' %>:</label></td>
 		<td> <%=h @ptdo.trainee_report %></td>
 	</tr>
-
+</table>
+<H2><%=t('ptdos.payment_method')%></H2>
+<table width=100%>
+	<tr>
+		<td class="leftcol"><label for="lo_tunai"><%= t 'ptdos.lo_tunai' %>:</label></td>
+		<td> <%=h @ptdo.render_payment %></td>
+	</tr>
+	
+	<tr>
+		<td class="leftcol"><label for="remark"><%= t 'ptdos.remark' %>:</label></td>
+		<td> <%=h @ptdo.remark %></td>
+	</tr>
+	
 </table>
 </div>
 <% permitted_to? :approve, :ptdos do %>
       <%= link_to (t 'edit'), edit_ptdo_path(@ptdo) %> |
 <% end %> 
-<%= link_to (t 'back'), ptdos_path %>
+<%= link_to (t 'ptdos.back_status'), ptdos_path %>
+<% permitted_to? :participant_expenses do %>
+	&nbsp;|&nbsp;<%= link_to (t 'ptdos.back_expenses'), organized_course_manager_ptdos_path %>
+<% end %>
 

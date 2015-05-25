@@ -24,7 +24,8 @@ class Leaveforstudent < ActiveRecord::Base
   named_scope :pending_coordinator, :conditions => ['studentsubmit=? and id not in(?)', true, Leaveforstudent.approved_coordinator.map(&:id)]
   named_scope :pending_warden, :conditions => ['studentsubmit=? and id not in(?)', true, Leaveforstudent.approved_warden.map(&:id)]
   named_scope :pending_both, :conditions => ['id not in(?) and (approved!=? or approved2 !=?)', Leaveforstudent.expired.map(&:id), true, true]
-  
+  named_scope :valid, :conditions => ['id not in(?)', Leaveforstudent.expired.map(&:id)]
+
   FILTERS = [
     {:scope => "all", :label => I18n.t('asset.all')},
     {:scope => "pending_coordinator",    :label => I18n.t('leaveforstudent.pending_coordinator')},
@@ -32,7 +33,8 @@ class Leaveforstudent < ActiveRecord::Base
     {:scope => "approved_coordinator",    :label => I18n.t('leaveforstudent.approved_coordinator')},
     {:scope => "approved_warden",  :label => I18n.t('leaveforstudent.approved_warden')},
     {:scope => "completed", :label => I18n.t('leaveforstudent.completed')},
-    {:scope => "expired", :label => I18n.t('leaveforstudent.expired')}
+    {:scope => "expired", :label => I18n.t('leaveforstudent.expired')},
+    {:scope => "valid", :label => I18n.t('leaveforstudent.valid') }
   ]
 
   def self.search(search)
