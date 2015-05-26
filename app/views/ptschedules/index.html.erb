@@ -28,17 +28,29 @@
     <td><%=h ptschedule.ptcourse.course_total_days %></td>
     <td><%=h ptschedule.ptcourse.name %></td>
     <td><%=h ptschedule.location %></td>
-    <td><%=h ptschedule.min_participants %></td>
+    <td>
+	   <% attended_ptdos = ptschedule.ptdos.count(:all, :conditions => ['trainee_report is not null']) %>
+	   <% all_ptdos = ptschedule.ptdos.count(:all) %>
+	   <%=h ptschedule.min_participants %>
+	   <% if attended_ptdos < ptschedule.min_participants && all_ptdos > 0 %>&nbsp;<font color=red>*</font><% end %>
+    </td>
     <td><%=h ptschedule.max_participants %></td>
 	  <td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptschedule %></td>
 	  <td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptschedule %></td>
-	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptschedule, :confirm => (t 'are_you_sure'), :method => :delete %></td>
+	  <td width=10px>
+		<% if all_ptdos==0%>
+			<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptschedule, :confirm => (t 'are_you_sure'), :method => :delete %>
+		<% end %>
+	  </td>
 	</tr>
 <% end %>
 </table>
 
 <br />
+<div align="right">
+	<font color="red">*</font>&nbsp;<%=t('ptschedule.min_participants_not_fulfill')%>
+</div>
 
-<%= link_to (t 'ptschedule.newcreate'), new_ptschedule_path %>
+<%= link_to (t 'ptschedule.new'), new_ptschedule_path %>
 
 </div>

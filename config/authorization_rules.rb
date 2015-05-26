@@ -189,7 +189,7 @@ authorization do
   end
   
   role :training_administration do
-    has_permission_on [:ptcourses, :ptschedules], :to => :manage
+    has_permission_on [:ptbudgets, :ptcourses, :ptschedules], :to => :manage
     has_permission_on :ptdos, :to =>:approve
     has_permission_on :ptdosearches, :to => :read
   end
