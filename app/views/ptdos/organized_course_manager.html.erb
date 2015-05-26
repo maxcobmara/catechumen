@@ -39,7 +39,10 @@
 	<% if indexx==0%>
 		<td rowspan="<%=ptdos.count%>"><%=h ptdo.ptschedule.ptcourse.name %></td>
 		<td rowspan="<%=ptdos.count%>" align=center><%=h ptdo.ptschedule.start.try(:strftime, '%d-%m-%Y') %> - <%= ptdo.ptschedule.enddate.try(:strftime, '%d-%m-%Y') %></td>
-		<td rowspan="<%=ptdos.count%>" align=center><%=duration_in_string=Ptdo.staff_total_days([ptdo.id]) %></td>
+	<% end %>
+		<!--<td rowspan="<%=ptdos.count%>" align=center><%=duration_in_string=Ptdo.staff_total_days([ptdo.id]) %></td>-->
+		<td align=center><%=duration_in_string=Ptdo.staff_total_days([ptdo.id]) %></td>
+	<% if indexx==0%>
 		<td rowspan="<%=ptdos.count%>" align=right><%=h ringgols(ptdo.ptschedule.final_price) %></td>
 		<td rowspan="<%=ptdos.count%>" align=center><%=h ptdo.ptschedule.budget_ok? ? image_tag('tick.png') : image_tag('cross.png') %></td>
 		<td rowspan="<%=ptdos.count%>" align=center>
