@@ -29,28 +29,7 @@
   <tr>
     <td><%=h ptcourse.name %></td>
     <td><%=h ptcourse.try(:provider).try(:name) %></td>
-    <td><% bal_hours=0 %>
-	     <% if ptcourse.duration_type==0 %>
-		    <% course_days=ptcourse.duration %>
-		    <% days_count = course_days / 6 %>
-		    <% bal_hours = course_days % 6 %>
-             <% elsif ptcourse.duration_type==1 %>
-		    <% days_count=ptcourse.duration %>
-	     <% elsif ptcourse.duration_type==2 %>
-		    <% days_count=ptcourse.duration*30 %>
-	     <% elsif ptcourse.duration_type==3 %>
-		    <% days_count=ptcourse.duration*365 %>
-	     <% end %>
-	     <% if bal_hours > 0 %>
-		    <% if days_count.to_i > 0 %>
-			  <%=days_count.to_i.to_s+" "+I18n.t('time.days')+" "+bal_hours.to_i.to_s+" "+I18n.t('time.hours')%>
-		    <% else %>
-			  <%=bal_hours.to_i.to_s+" "+I18n.t('time.hours')%>
-		    <% end %>
-	     <% else %>
-		    <%=days_count.to_i.to_s+" "+I18n.t('time.days') %>
-	     <% end %>
-    </td>
+    <td><%=h ptcourse.course_total_days %></td>
     <td><%=h ringgols(ptcourse.cost) %></td>
     <td><%=  truncate(ptcourse.description, :length => 65, :omission => (link_to "... [#{t('more')}]", ptcourse)) %></td>
     <td><%=h ptcourse.approved? ? (t 'approved') : "" %></td>

@@ -93,15 +93,18 @@
 		      <th>Tarikh/Tempoh</th>
 		      <th>Tempat</th>
 		    </tr>
-
-			<% if Ptdo.find(:all, :conditions => ['staff_id = ?', @staff_appraisal.staff_id]).count == 0 %>	
+			<% ptdoyear=@staff_appraisal.evaluation_year.year %>
+			<% year_start=Date.new(ptdoyear,1,1) %>
+			<% nextyear_start=year_start+1.year %>
+			<% schedule_of_ptdoyear=Ptschedule.find(:all, :conditions => ['start >=? and start <?', year_start, nextyear_start]).map(&:id)%>
+			<% if Ptdo.find(:all, :conditions => ['staff_id = ? and ptschedule_id IN(?)', @staff_appraisal.staff_id, schedule_of_ptdoyear]).count == 0 %>	
 				<tr>
 					      <td width="259" height="50">-</td>
 					      <td width="161">-</td>
 					      <td width="217">-</td>
 				</tr>
 			<% else %>	
-				<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', @staff_appraisal.staff_id]) %>
+				<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ? and ptschedule_id IN(?)', @staff_appraisal.staff_id, schedule_of_ptdoyear]) %>
 		    <tr>
 		      <td width="259" height="50"><%= ptdo.ptschedule.ptcourse.name %></td>
 		      <td width="161"><%= l(ptdo.ptschedule.start) %></td>
@@ -422,16 +425,18 @@
 						      <td >-</td>
 					</tr>
 				<% else %>	
-				  <% just_a_counter = 0 %>
+				  <% just_a_counter = 0 %><% @aa=[] %>
 					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :order => :priority) %>
 					<% if staff_appraisal_skt.half != 2%>
 					<% just_a_counter += 1 %>
 					<tr>
 						<td><%= just_a_counter %></td>
 						<td><%= staff_appraisal_skt.description %></td>
-						<td><%= staff_appraisal_skt.indicator %></td>
+						<td><%= staff_appraisal_skt.render_indicator %> : <%= staff_appraisal_skt.target %></td>
 					</tr>
-					<% end -%><% end -%>
+					<% end -%>
+					<!--capture all skt's achievement, progress & notes here-->
+					<% @aa << (staff_appraisal_skt.acheivment.to_s+" "+staff_appraisal_skt.progress.to_s+"%,  "+staff_appraisal_skt.notes.to_s)  if staff_appraisal_skt.progress!=nil %><% end -%>
 				<% end %>	
 			  </table><br />
 
@@ -484,7 +489,7 @@
 				<tr>
 					<td><%= just_a_counter %></td>
 					<td><%= staff_appraisal_skt.description %></td>
-					<td><%= staff_appraisal_skt.indicator %></td>
+					<td><%= staff_appraisal_skt.render_indicator %> : <%= staff_appraisal_skt.target %></td>
 				</tr>
 				<% end -%>
 			<% end %>	
@@ -526,7 +531,11 @@
 
 			<table class="centre">
 				<tr>
-					<td style="height:3cm;vertical-align:top; text-align:left; padding:1mm;"><%=h @staff_appraisal.skt_pyd_report %></td>
+					<td style="height:3cm;vertical-align:top; text-align:left; padding:1mm;">
+					<% @aa.each_with_index do |skt_achieve, ind| %>
+						<%=ind+1%>) <%=skt_achieve%><br>
+					<% end %>
+					<%=h @staff_appraisal.skt_pyd_report %></td>
 				</tr>
 			</table>
 

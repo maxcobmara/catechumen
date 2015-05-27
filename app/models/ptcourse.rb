@@ -134,4 +134,31 @@ class Ptcourse < ActiveRecord::Base
     ptcourses
   end
   
+  ##-individual duration IN STRING of a ptcourse-start : usage (ptschedules/index.html.erb)
+  def course_total_days
+    if duration_type == 0
+      total_days = (duration / 6).to_f
+    elsif duration_type == 1
+      total_days = duration*1
+    elsif duration_type == 2
+      total_days = duration*30
+    elsif duration_type == 3
+      total_days = duration*365
+    end
+    days_count = total_days * 6 / 6
+    bal_hours = total_days * 6 % 6
+    if bal_hours > 0
+      if days_count.to_i > 0
+        total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days')+" "+bal_hours.to_i.to_s+" "+I18n.t('time.hours')
+      else
+        total_days_instring=bal_hours.to_i.to_s+" "+I18n.t('time.hours')
+      end
+    else
+      total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days') if days_count.to_i > 0
+      total_days_instring=I18n.t('ptdos.nil') if days_count.to_i ==0
+    end
+    total_days_instring
+  end
+  ##-individual duration IN STRING of a ptcourse-end
+  
 end

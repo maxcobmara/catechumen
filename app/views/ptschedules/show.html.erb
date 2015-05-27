@@ -35,12 +35,27 @@
 			<td class="leftcol"><label for="Conducted by"><%= t 'ptschedule.conducted_by' %> : </label></td>
 			<td><%=h @ptschedule.ptcourse.provider.try(:name) %></td>
 		</tr>
-	</table>		
+	</table>
+	
+	<H2><%=t('ptschedule.payment_method')%></H2>
+	<table width=100%>
+		<tr>
+			<td class="leftcol"><label for="lo_tunai"><%= t 'ptschedule.lo_tunai' %>:</label></td>
+			<td> <%=h @ptschedule.render_payment %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><label for="remark"><%= t 'ptschedule.remark' %>:</label></td>
+			<td> <%=h @ptschedule.remark %></td>
+		</tr>
+	</table>
 </div>
 <BR>
 
 <% permitted_to? :manage, :ptschedules do %>
 <%= link_to (t 'edit'), edit_ptschedule_path(@ptschedule) %> |
-<%= link_to (t 'icms.back'), ptschedules_path %>
+<%= link_to (t 'ptschedule.listing'), ptschedules_path %>
 <% end %>|
 <%= link_to (t 'ptschedule.overview'), apply_ptschedules_path %>
+<% permitted_to? :manage, :ptbudgets do %>
+	&nbsp;|&nbsp;<%= link_to (t 'ptschedule.back_expenses'), organized_course_manager_ptschedules_path %>
+<% end %>

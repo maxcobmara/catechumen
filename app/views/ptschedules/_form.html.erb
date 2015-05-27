@@ -32,14 +32,29 @@
 	</tr>
 
     <% permitted_to? :approve, :ptcourses do %>
-
-    <tr>
+	<tr>
 		<td class="leftcol"><label for="budget_ok"><%= t 'ptschedule.budget_ok' %> : </label></td>
 		<td> <%= f.check_box :budget_ok %><font color="grey", size="-2"> <%=t('ptschedule.tick_to_approve')%> </font></td>
 	</tr>
-
-	
+     <% end %>
+</table>	
+     
+<% permitted_to? :manage, :ptbudgets do %>
+	<% @participants_count = @ptschedule.ptdos.find(:all, :conditions => ['trainee_report is not null']).count %>
+	<% if @ptschedule.budget_ok==true && @participants_count >= @ptschedule.min_participants%>
+		<H2><%=t('ptschedule.payment_method')%></H2>
+		<table width=100%>
+			<tr>
+				<td class="leftcol"><label for="payment_method"><%= t 'ptschedule.payment_method' %>:</label></td>
+				<td><%= f.select :payment, Ptschedule::PAYMENT, :include_blank => t('select')%></td>
+			</tr>
+			<tr>
+				<td class="leftcol"><label for="remark"><%= t 'ptschedule.remark' %>:</label></td>
+				<td><%= f.text_area :remark, :size => "50x2" %></td>
+			</tr>
+		</table>	
+	<% end %>
 <% end %>
 	
-</table>		
+	
 </div>

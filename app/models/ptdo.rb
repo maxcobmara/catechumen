@@ -7,20 +7,6 @@ class Ptdo < ActiveRecord::Base
   belongs_to  :replacement, :class_name => 'Staff', :foreign_key => 'replacement_id'
   has_many    :staff_appraisals, :through => :staff
   
-  #named_scope :all2,  :conditions => ['final_approve=? and ptschedule_id IN(?)', true, Ptschedule.find(:all, :conditions => ['budget_ok=?', true].map(&:id)]
-  
-  def self.all2
-    Ptdo.find(:all, :conditions => ['final_approve=? and ptschedule_id IN(?)', true, Ptschedule.find(:all, :conditions => ['budget_ok=?', true]).map(&:id)],  :order => 'ptschedule_id DESC')
-  end
-  
-  def self.filters
-    filtering=[{:scope => "all2", :label => I18n.t('ptdos.all_records')}]
-    Ptdo.all2.group_by{|x|x.ptschedule.start.strftime("%Y")}.each do |year2, ptdos|
-      filtering << {:scope=>"#{year2}", :label =>"#{year2}"}
-    end
-    filtering
-  end
-  
   def whoami
     #self.staff_id = Login.current_login.staff.id
     self.ptcourse_id = ptschedule.ptcourse.id
@@ -99,7 +85,8 @@ class Ptdo < ActiveRecord::Base
         total_days_instring=bal_hours.to_i.to_s+" "+I18n.t('time.hours')
       end
     else
-      total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days')
+      total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days') if days_count.to_i > 0
+      total_days_instring=I18n.t('ptdos.nil') if days_count.to_i ==0
     end
     total_days_instring
   end
@@ -122,17 +109,6 @@ class Ptdo < ActiveRecord::Base
       dept=unit_staff if unit_staff!='' 
     end
     dept
-  end
-  
-  PAYMENT=[
-    #  Displayed       stored in db
-    [I18n.t('ptdos.local_order'), 1],
-    [I18n.t('ptdos.cash'), 2]
-  ]
-  
-  def render_payment
-    (Ptdo::PAYMENT.find_all{|disp, value| value == payment}).map{|disp, value| disp}
-    #(Asset::ASSETTYPE.find_all{|disp, value| value == assettype}).map {|disp, value| disp}
   end
   
 end
