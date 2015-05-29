@@ -56,7 +56,10 @@
 					<%=h ringgols(ptbudget.used_budget) %><!--||||<%#=ptbudget.schedule_used_budget%>-->
 				</td>
 				<td align=right><%=h ringgols(ptbudget.budget_balance) %></td>
-				<td align=center><%=h number_with_precision((ptbudget.budget_balance.to_f / ptbudget.budget.to_f) *  100, :precision => 2)%></td>
+				<td align=center>
+					<!--<%=h number_to_percentage((ptbudget.budget_balance / ptbudget.budget)*100) %> %-->
+					<%=h number_to_percentage((ptbudget.budget_balance / ptbudget.budget)*100, :locale => "en") %>
+					</td>
 				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptbudget %></td>
 				<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptbudget if ptbudget.fiscalstart > Date.today %></td>
 				<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptbudget, :confirm => (t 'are_you_sure'), :method => :delete if ptbudget.fiscalstart > Date.today %></td>
@@ -72,7 +75,7 @@
 				<td align=right><font color=green>&nbsp;&nbsp;&nbsp;+ <%=h ringgols(ptbudget.budget) %></font></td><!--19/10/2011-Shaliza remove word RM-->
 				<!--<td><font size=-2><%#=h ringgols(ptbudget.used_budget) %></font></td>-->
 				<td align=right><%=h ringgols(ptbudget.budget_balance) %></td>
-				<td align=center><%=h number_with_precision((ptbudget.budget_balance.to_f / ptbudget.acc_budget.to_f) *  100, :precision => 2)%></td>
+				<td align=center><%=h  number_to_percentage((ptbudget.budget_balance.to_f / ptbudget.acc_budget.to_f) *  100, :locale => "en")%></td>
 				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptbudget %></td>
 				<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptbudget %></td>
 				<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptbudget, :confirm => (t 'are_you_sure'), :method => :delete %></td>
@@ -88,7 +91,7 @@
 			<td align=right><u><b><%=h ringgols(all_budget) %></b></u></td><!--19/10/2011-Shaliza remove word RM-->
 			<td align=right><u><b><%=h ringgols(all_budget_recs[0].used_budget) %></b></u></td>
 			<td align=right><u><b><%=h ringgols(latest_balance) %></b></u></td>
-			<td align=center><u><b><%=h number_with_precision((latest_balance.to_f / all_budget.to_f) *  100, :precision => 2)%></b></u></td>
+			<td align=center><u><b><%=h  number_to_percentage((latest_balance.to_f / all_budget.to_f) *  100, :locale => "en")%></b></u></td>
 			<td colspan=3></td>
 		</tr>
 		<!---->
@@ -105,7 +108,7 @@
 			<td align=right><%=h ringgols(ptbudget.budget) %></td><!--19/10/2011-Shaliza remove word RM-->
 			<td align=right><%=h ringgols(ptbudget.used_budget) %><!--||||<%#=ptbudget.schedule_used_budget%>--></td>
 			<td align=right><%=h ringgols(ptbudget.budget_balance) %></td>
-			<td align=center><%=h number_with_precision((ptbudget.budget_balance.to_f / ptbudget.budget.to_f) *  100, :precision => 2)%></td>
+			<td align=center><%=h number_to_percentage((ptbudget.budget_balance.to_f / ptbudget.budget.to_f) *  100, :locale => "en")%></td>
 			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => ptbudget %></td>
 			<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptbudget if ptbudget.fiscalstart > Date.today %></td>
 			<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptbudget, :confirm => (t 'are_you_sure'), :method => :delete if ptbudget.fiscalstart > Date.today %></td>
