@@ -1,30 +1,72 @@
 <fieldset>
 	<legend class='togvis'><%= t 'evaluation.skt.title' %></legend>
-		<table width=95% >
-					<tr>
-						<th>S/N</th>
-						<th><%= t 'evaluation.skt.description' %></th>
-						<th><%= t 'evaluation.skt.performance' %> : <%= t 'evaluation.skt.target' %></th>
-						<th><%=t('evaluation.skt_review.acheivment')%></th>
-						<th><%=t('evaluation.skt_review.progress')%></th>
-						<th><%=t('evaluation.skt_review.notes')%></th>
-					</tr>
-					<% just_a_counter = 0 %>
-					<%# for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half IS ?', nil], :order => :priority) %>	<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half =?', 1], :order => :priority) %>
-					<% just_a_counter += 1 %>
-					<% if staff_appraisal_skt.is_dropped == true %>
-						<% format = 'style="text-decoration: line-through;"' %>
-					<% else format = "" %>
-					<% end %>
-					<tr>
-						<td <%= format %>><%= just_a_counter %></td>
-						<td <%= format %>><%= staff_appraisal_skt.description %></td>
-						<td <%= format %>><%= staff_appraisal_skt.render_indicator %> : <%= staff_appraisal_skt.target %></td>
-						<td><%=staff_appraisal_skt.acheivment if staff_appraisal_skt.is_dropped != true %></td>
-						<td><% if staff_appraisal_skt.is_dropped != true && staff_appraisal_skt.progress!=nil%><%=staff_appraisal_skt.progress %><%=t('evaluation.skt_review.progress')%><% end %></td>
-						<td><%=staff_appraisal_skt.notes if staff_appraisal_skt.is_dropped != true %></td>
-					</tr>
-					<% end -%>
+		<table width=100% >
+			<tr>
+				<th>S/N</th>
+				<th width=15%><%= t 'evaluation.skt.description' %></th>
+				<th width=20%><%= t 'evaluation.skt.performance' %> </th>
+				<th width=17%><%= t 'evaluation.skt.target' %></th>
+				<th width=18%><%=t('evaluation.skt_review.acheivment')%></th>
+				<th width=5%><%=t('evaluation.skt_review.progress')%></th>
+				<th width=20%><%=t('evaluation.skt_review.notes')%></th>
+			</tr>
+			<% just_a_counter = 0 %>
+			<%# for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half IS ?', nil], :order => :priority) %>	
+			<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half =?', 1], :order => :priority) %>
+				<% just_a_counter += 1 %>
+				<% if staff_appraisal_skt.is_dropped == true %>
+					<% format = 'style="text-decoration: line-through;"' %>
+				<% else format = "" %>
+				<% end %>
+				<tr>
+					<td <%= format %> rowspan=4><%= just_a_counter %></td>
+					<td <%= format %> rowspan=4><%= staff_appraisal_skt.description %></td>
+					<td <%= format %>>
+						<b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 1}).map {|disp, value| disp}%>
+						</u></b> : <%= staff_appraisal_skt.indicator_desc_quality %>
+					</td>
+					<td <%= format %>><%= staff_appraisal_skt.target_quality %></td>
+					<td <%= format %>><%=staff_appraisal_skt.achievement_quality if staff_appraisal_skt.is_dropped != true %></td>
+					<td <%= format %>><% if staff_appraisal_skt.is_dropped != true && staff_appraisal_skt.progress_quality!=nil%>
+							<%=staff_appraisal_skt.progress_quality %>
+						<% end %>
+					</td>
+					<td <%= format %>><%=staff_appraisal_skt.notes_quality if staff_appraisal_skt.is_dropped != true %></td>
+				</tr>
+				<tr>
+					<td <%= format %>><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 2}).map {|disp, value| disp}%>
+					</u></b> : <%= staff_appraisal_skt.indicator_desc_time %></td>
+					<td <%= format %>><%=  staff_appraisal_skt.target_time %></td>
+					<td <%= format %>><%=staff_appraisal_skt.achievement_time if staff_appraisal_skt.is_dropped != true %></td>
+					<td <%= format %>><% if staff_appraisal_skt.is_dropped != true && staff_appraisal_skt.progress_time!=nil%>
+							<%=staff_appraisal_skt.progress_time %>
+						<% end %>
+					</td>
+					<td <%= format %>><%=staff_appraisal_skt.notes_time if staff_appraisal_skt.is_dropped != true %></td>
+				</tr>
+				<tr>
+					<td <%= format %>><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 3}).map {|disp, value| disp}%>
+					</u></b> : <%= staff_appraisal_skt.indicator_desc_quantity%></td>
+					<td <%= format %>><%= staff_appraisal_skt.target_quantity %></td>
+					<td <%= format %>><%=staff_appraisal_skt.achievement_quantity if staff_appraisal_skt.is_dropped != true %></td>
+					<td <%= format %>><% if staff_appraisal_skt.is_dropped != true && staff_appraisal_skt.progress_quantity!=nil%>
+							<%=staff_appraisal_skt.progress_quantity %>
+						<% end %>
+					</td>
+					<td <%= format %>><%=staff_appraisal_skt.notes_quantity if staff_appraisal_skt.is_dropped != true %></td>
+				</tr>
+				<tr>
+					<td <%= format %>><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 4}).map {|disp, value| disp}%>
+					</u></b> : <%= staff_appraisal_skt.indicator_desc_cost%></td>
+					<td <%= format %>><%=  staff_appraisal_skt.target_cost %></td>
+					<td <%= format %>><%=staff_appraisal_skt.achievement_cost if staff_appraisal_skt.is_dropped != true %></td>
+					<td <%= format %>><% if staff_appraisal_skt.is_dropped != true && staff_appraisal_skt.progress_cost!=nil%>
+							<%=staff_appraisal_skt.progress_cost %>
+						<% end %>
+					</td>
+					<td <%= format %>><%=staff_appraisal_skt.notes_cost if staff_appraisal_skt.is_dropped != true %></td>
+				</tr>
+			<% end -%>
 		</table>
 </fieldset>
 
@@ -32,44 +74,105 @@
 <fieldset>
 	<legend class='togvis'><%= t 'evaluation.skt_review.title2' %></legend>
 		<p><i><%= t 'evaluation.skt_review.add' %></i></p>
-		<table width=95% >
-					<tr>
-						<th>S/N</th>
-						<th><%= t 'evaluation.skt.description' %></th>
-						<th><%= t 'evaluation.skt.performance' %></th>
-						<th><%=t('evaluation.skt_review.acheivment')%></th>
-						<th><%=t('evaluation.skt_review.progress')%></th>
-						<th><%=t('evaluation.skt_review.notes')%></th>
-					</tr>
-					<% just_a_counter = 0 %>
-					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half = ?', 2], :order => :priority) %>
-					<% just_a_counter += 1 %>
-					<tr>
-						<td><%= just_a_counter %></td>
-						<td><%= staff_appraisal_skt.description %></td>
-						<td><%= staff_appraisal_skt.render_indicator %> : <%= staff_appraisal_skt.target %></td>
-						<td><%=staff_appraisal_skt.acheivment%></td>
-						<td><%=staff_appraisal_skt.progress %><%=t('evaluation.skt_review.progress') unless staff_appraisal_skt.progress.nil?%></td>
-						<td><%=staff_appraisal_skt.notes %></td>
-					</tr>
-					<% end -%>
+		<table width=100% >
+			<tr>
+				<th>S/N</th>
+				<th width=15%><%= t 'evaluation.skt.description' %></th>
+				<th width=20%><%= t 'evaluation.skt.performance' %> </th>
+				<th width=17%><%= t 'evaluation.skt.target' %></th>
+				<th width=18%><%=t('evaluation.skt_review.acheivment')%></th>
+				<th width=5%><%=t('evaluation.skt_review.progress')%></th>
+				<th width=20%><%=t('evaluation.skt_review.notes')%></th>
+			</tr>
+			<% just_a_counter = 0 %>
+			<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half = ?', 2], :order => :priority) %>
+				<% just_a_counter += 1 %>
+					<!--<tr>
+						<td><%#= just_a_counter %></td>
+						<td><%#= staff_appraisal_skt.description %></td>
+						<td><%#= staff_appraisal_skt.render_indicator %> : <%#= staff_appraisal_skt.target %></td>
+						<td><%#=staff_appraisal_skt.acheivment%></td>
+						<td><%#=staff_appraisal_skt.progress %><%#=t('evaluation.skt_review.progress') unless staff_appraisal_skt.progress.nil?%></td>
+						<td><%#=staff_appraisal_skt.notes %></td>
+					</tr>-->
+				<tr>
+					<td rowspan=4><%= just_a_counter %></td>
+					<td rowspan=4><%= staff_appraisal_skt.description %></td>
+					<td>
+						<b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 1}).map {|disp, value| disp}%>
+						</u></b> : <%= staff_appraisal_skt.indicator_desc_quality %>
+					</td>
+					<td><%= staff_appraisal_skt.target_quality %></td>
+					<td><%=staff_appraisal_skt.achievement_quality if staff_appraisal_skt.is_dropped != true %></td>
+					<td><% if staff_appraisal_skt.is_dropped != true && staff_appraisal_skt.progress_quality!=nil%>
+							<%=staff_appraisal_skt.progress_quality %>
+						<% end %>
+					</td>
+					<td><%=staff_appraisal_skt.notes_quality if staff_appraisal_skt.is_dropped != true %></td>
+				</tr>
+				<tr>
+					<td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 2}).map {|disp, value| disp}%>
+					</u></b> : <%= staff_appraisal_skt.indicator_desc_time %></td>
+					<td><%=  staff_appraisal_skt.target_time %></td>
+					<td><%=staff_appraisal_skt.achievement_time if staff_appraisal_skt.is_dropped != true %></td>
+					<td><% if staff_appraisal_skt.is_dropped != true && staff_appraisal_skt.progress_time!=nil%>
+							<%=staff_appraisal_skt.progress_time %>
+						<% end %>
+					</td>
+					<td><%=staff_appraisal_skt.notes_time if staff_appraisal_skt.is_dropped != true %></td>
+				</tr>
+				<tr>
+					<td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 3}).map {|disp, value| disp}%>
+					</u></b> : <%= staff_appraisal_skt.indicator_desc_quantity%></td>
+					<td><%= staff_appraisal_skt.target_quantity %></td>
+					<td><%=staff_appraisal_skt.achievement_quantity if staff_appraisal_skt.is_dropped != true %></td>
+					<td><% if staff_appraisal_skt.is_dropped != true && staff_appraisal_skt.progress_quantity!=nil%>
+							<%=staff_appraisal_skt.progress_quantity %>
+						<% end %>
+					</td>
+					<td><%=staff_appraisal_skt.notes_quantity if staff_appraisal_skt.is_dropped != true %></td>
+				</tr>
+				<tr>
+					<td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 4}).map {|disp, value| disp}%>
+					</u></b> : <%= staff_appraisal_skt.indicator_desc_cost%></td>
+					<td><%=  staff_appraisal_skt.target_cost %></td>
+					<td><%=staff_appraisal_skt.achievement_cost if staff_appraisal_skt.is_dropped != true %></td>
+					<td><% if staff_appraisal_skt.is_dropped != true && staff_appraisal_skt.progress_cost!=nil%>
+							<%=staff_appraisal_skt.progress_cost %>
+						<% end %>
+					</td>
+					<td><%=staff_appraisal_skt.notes_cost if staff_appraisal_skt.is_dropped != true %></td>
+				</tr>
+			<% end -%>
 		</table>
 		
 		<p><i><%= t 'evaluation.skt_review.drop' %></i></p>
-		<table width=95% >
+		<table width=60% >
 					<tr>
 						<th>S/N</th>
 						<th><%= t 'evaluation.skt.description' %></th>
 						<th><%= t 'evaluation.skt.performance' %></th>
+						<th><%= t 'evaluation.skt.target' %></th>
 					</tr>
 					<% just_a_counter = 0 %>
 					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['is_dropped = ?', true], :order => :priority) %>
 					<% just_a_counter += 1 %>
 					<tr>
-						<td><%= just_a_counter %></td>
-						<td><%= staff_appraisal_skt.description %></td>
-						<td><%= staff_appraisal_skt.render_indicator %> : <%= staff_appraisal_skt.target %></td>
+						<td rowspan=4><%= just_a_counter %></td>
+						<td rowspan=4><%= staff_appraisal_skt.description %></td>
+						<td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 1}).map {|disp, value| disp}%>
+						</u></b> : <%= staff_appraisal_skt.indicator_desc_quality %></td>
+						<td><%= staff_appraisal_skt.target_quality%></td>
 					</tr>
+					<tr><td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 2}).map {|disp, value| disp}%>
+					</u></b> : <%= staff_appraisal_skt.indicator_desc_time %></td>
+					<td><%= staff_appraisal_skt.target_time%></td></tr>
+					<tr><td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 3}).map {|disp, value| disp}%>
+					</u></b> : <%= staff_appraisal_skt.indicator_desc_quantity %></td>
+					<td><%= staff_appraisal_skt.target_quantity %></td></tr>
+					<tr><td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 4}).map {|disp, value| disp}%>
+					</u></b> : <%= staff_appraisal_skt.indicator_desc_cost %></td>
+					<td><%= staff_appraisal_skt.target_cost %></td></tr>
 					<% end -%>
 		</table>
 </fieldset>
