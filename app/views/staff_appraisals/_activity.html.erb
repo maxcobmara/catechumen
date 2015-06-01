@@ -26,6 +26,7 @@
 				<th><%= t 'evaluation.form.type' %></th>
 				<th><%= t 'evaluation.form.date' %></th>
 				<th><%= t 'evaluation.form.duration' %></th>
+				<th><%= t 'ptschedule.location' %></th>
 			</tr>
 			<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', Login.current_login.staff_id]) %>
 				<% if ptdo.ptschedule.start.year==@staff_appraisal.evaluation_year.year%>
@@ -33,9 +34,10 @@
 			<tr>
 				<td><%= ptdo.ptschedule.ptcourse.name %><%=%></td>
 			
-				<td><%= (Ptcourse::COURSE_TYPE.find_all{|disp, value| value == ptdo.ptschedule.ptcourse.course_type}).map {|disp, value| disp} %></td>
+				<td><%= ptdo.ptschedule.ptcourse.rendered_programme_classification %> - <%= ptdo.ptschedule.ptcourse.rendered_course_type %></td>
 				<td><%= l(ptdo.ptschedule.start) %></td>
-				<td><%= ptdo.ptschedule.ptcourse.duration %> Days</td>
+				<td><%= ptdo.ptschedule.ptcourse.course_total_days %></td>
+				<td><%= ptdo.ptschedule.location %></td>
 			</tr>
 			<!---->
 				<% end %>
