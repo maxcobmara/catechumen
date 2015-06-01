@@ -1,7 +1,7 @@
 class StaffAppraisalSkt < ActiveRecord::Base
   belongs_to :staff_appraisal
   
-  before_save :set_to_nil_where_false, :set_review, :at_least_one_indicator_target_exist
+  before_save :set_to_nil_where_false, :set_review, :at_least_one_indicator_target_exist,  :new_cost_must_complete, :new_quality_must_complete, :new_time_must_complete, :new_quantity_must_complete
   validates_presence_of :achievement_quality, :progress_quality, :if => :xtvt_not_dropped_quality?
   validates_presence_of :achievement_time, :progress_time, :if => :xtvt_not_dropped_time?
   validates_presence_of :achievement_quantity, :progress_quantity, :if => :xtvt_not_dropped_quantity?
@@ -32,35 +32,76 @@ class StaffAppraisalSkt < ActiveRecord::Base
     if half==2 && (indicator_desc_quality.blank? && target_quality.blank? && achievement_quality.blank? && progress_quality.blank?) && (indicator_desc_time.blank? && target_time.blank? && achievement_time.blank? && progress_time.blank?) && (indicator_desc_quantity.blank? && target_quantity.blank? && achievement_quantity.blank? && progress_quantity.blank?) && (indicator_desc_cost.blank? && target_cost.blank? && achievement_cost.blank? && progress_cost.blank?)
       return false 
       errors.add("aa","error la")
-    elsif id.nil? && half==2 
-      
-      #when user selected 'Sent to PPP for Report' - with INCOMPLETE NEWly inserted xtvt(not yet saved) - (render fields although record not yet saved due to errors)
-      #RESTRICTIONS : requires 'Target fields' to be completed for repeating fields to be rendered when error occurs
-      if ( !indicator_desc_quality.blank? && !target_quality.blank? && !achievement_quality.blank? && !progress_quality.blank?)
-        return true
-      else
-        return false
-      end
-      if ( !indicator_desc_time.blank? && !target_time.blank? && !achievement_time.blank? && !progress_time.blank?)
-        return true
-      else
-        return false
-      end
-      if ( !indicator_desc_quantity.blank? && !target_quantity.blank? && !achievement_quantity.blank? && progress_quantity.blank?)
-        return true
-      else
-        return false
-      end
-      if ( !indicator_desc_cost.blank? && !target_cost.blank? && !achievement_cost.blank? && !progress_cost.blank?)
-        return true
-      else
-        return false
-      end
+#     elsif id.nil? && half==2 
+#       
+#       #when user selected 'Sent to PPP for Report' - with INCOMPLETE NEWly inserted xtvt(not yet saved) - (render fields although record not yet saved due to errors)
+#       #RESTRICTIONS : requires 'Target fields' to be completed for repeating fields to be rendered when error occurs
+#       if ( !indicator_desc_quality.blank? && !target_quality.blank? && !achievement_quality.blank? && !progress_quality.blank?)
+#         return true
+#       else
+#         return false
+#       end
+#       if ( !indicator_desc_time.blank? && !target_time.blank? && !achievement_time.blank? && !progress_time.blank?)
+#         return true
+#       else
+#         return false
+#       end
+#       if ( !indicator_desc_quantity.blank? && !target_quantity.blank? && !achievement_quantity.blank? && progress_quantity.blank?)
+#         return true
+#       else
+#         return false
+#       end
+#       if ( !indicator_desc_cost.blank? && !target_cost.blank? && !achievement_cost.blank? && !progress_cost.blank?)
+#         return true
+#       else
+#         return false
+#       end
 
     elsif half==1 && (indicator_desc_quality.blank? && target_quality.blank?) && (indicator_desc_time.blank? && target_time.blank?) && (indicator_desc_quantity.blank? && target_quantity.blank?) && (indicator_desc_cost.blank? && target_cost.blank?)
       return false
     end
   end
+  
+  #when user selected 'Sent to PPP for Report' - with INCOMPLETE NEWly inserted xtvt(not yet saved) - (render fields although record not yet saved due to errors)
+  #RESTRICTIONS : requires 'Target fields' to be completed for repeating fields to be rendered when error occurs
+  ###note : checking for target not required here - refer above targets.. validations
+  def new_quality_must_complete
+    if (id.nil? && half==2)
+      if (!indicator_desc_quality.blank? && !target_quality.blank? && !achievement_quality.blank? && !progress_quality.blank?)
+        return true
+      elsif (!indicator_desc_quality.blank? && target_quality.blank? && achievement_quality.blank? && progress_quality.blank?) || (!indicator_desc_quality.blank? && !target_quality.blank? && achievement_quality.blank? && progress_quality.blank?) || (!indicator_desc_quality.blank? && !target_quality.blank? && !achievement_quality.blank? && progress_quality.blank?) || (!indicator_desc_quality.blank? && !target_quality.blank? && achievement_quality.blank? && !progress_quality.blank?) || (indicator_desc_quality.blank? && !target_quality.blank? && !achievement_quality.blank? && !progress_quality.blank?)||  (indicator_desc_quality.blank? && target_quality.blank? && !achievement_quality.blank? && !progress_quality.blank?) || (indicator_desc_quality.blank? && target_quality.blank? && achievement_quality.blank? && !progress_quality.blank?) || (indicator_desc_quality.blank? && target_quality.blank? && !achievement_quality.blank? && progress_quality.blank?) 
+        return false
+      end
+    end 
+  end
+  def new_time_must_complete
+    if (id.nil? && half==2)
+      if (!indicator_desc_time.blank? && !target_time.blank? && !achievement_time.blank? && !progress_time.blank?)
+        return true
+      elsif (!indicator_desc_time.blank? && target_time.blank? && achievement_time.blank? && progress_time.blank?) || (!indicator_desc_time.blank? && !target_time.blank? && achievement_time.blank? && progress_time.blank?) || (!indicator_desc_time.blank? && !target_time.blank? && !achievement_time.blank? && progress_time.blank?) || (!indicator_desc_time.blank? && !target_time.blank? && achievement_time.blank? && !progress_time.blank?) || (indicator_desc_time.blank? && !target_time.blank? && !achievement_time.blank? && !progress_time.blank?) || (indicator_desc_time.blank? && target_time.blank? && !achievement_time.blank? && !progress_time.blank?)   || (indicator_desc_time.blank? && target_time.blank? && achievement_time.blank? && !progress_time.blank?) || (indicator_desc_time.blank? && target_time.blank? && !achievement_time.blank? && progress_time.blank?) 
+        return false
+      end
+    end
+  end
+  def new_quantity_must_complete
+    if (id.nil? && half==2)
+      if (!indicator_desc_quantity.blank? && !target_quantity.blank? && !achievement_quantity.blank? && !progress_quantity.blank?)
+        return true
+      elsif (!indicator_desc_quantity.blank? && target_quantity.blank? && achievement_quantity.blank? && progress_quantity.blank?) || (!indicator_desc_quantity.blank? && !target_quantity.blank? && achievement_quantity.blank? && progress_quantity.blank?) || (!indicator_desc_quantity.blank? && !target_quantity.blank? && !achievement_quantity.blank? && progress_quantity.blank?) || (!indicator_desc_quantity.blank? && !target_quantity.blank? && achievement_quantity.blank? && !progress_quantity.blank?) || (indicator_desc_quantity.blank? && !target_quantity.blank? && !achievement_quantity.blank? && !progress_quantity.blank?) ||  (indicator_desc_quantity.blank? && target_quantity.blank? && !achievement_quantity.blank? && !progress_quantity.blank?) || (indicator_desc_quantity.blank? && target_quantity.blank? && achievement_quantity.blank? && !progress_quantity.blank?) || (indicator_desc_quantity.blank? && target_quantity.blank? && !achievement_quantity.blank? && progress_quantity.blank?) 
+        return false
+      end
+    end
+  end
+  def new_cost_must_complete
+    if ( id.nil? && half==2 )
+      if (!indicator_desc_cost.blank? && !target_cost.blank? && !achievement_cost.blank? && !progress_cost.blank?)
+        return true
+      elsif (!indicator_desc_cost.blank? && target_cost.blank? && achievement_cost.blank? && progress_cost.blank?) || (!indicator_desc_cost.blank? && !target_cost.blank? && achievement_cost.blank? && progress_cost.blank?) || (!indicator_desc_cost.blank? && !target_cost.blank? && !achievement_cost.blank? && progress_cost.blank?) || (!indicator_desc_cost.blank? && !target_cost.blank? && achievement_cost.blank? && !progress_cost.blank?) || (indicator_desc_cost.blank? && !target_cost.blank? && !achievement_cost.blank? && !progress_cost.blank?) || (indicator_desc_cost.blank? && target_cost.blank? && !achievement_cost.blank? && !progress_cost.blank?)  || (indicator_desc_cost.blank? && target_cost.blank? && achievement_cost.blank? && !progress_cost.blank?) || (indicator_desc_cost.blank? && target_cost.blank? && !achievement_cost.blank? && progress_cost.blank?) 
+        return false
+      end
+    end
+  end
+  ###
  
   #FOR SAVED xtvt (half==1 OR half==2)
   def xtvt_not_dropped_quality?

@@ -420,7 +420,7 @@
 			    </tr>-->
 
 				<% if @staff_appraisal.staff_appraisal_skts.count == 0 %>
-				        <table class="centre">
+				        <table class="centre" width=95%>
 					<tr>
 						<td align="center" height="48">Bil.</td>
 						<td align="center"><b>Ringkasan Aktiviti/Projek</b><BR>(Senaraikan Aktiviti/projek)</td>
@@ -433,15 +433,16 @@
 					</tr>
 					</table>
 				<% else %>	
+				
+				<% @skt_dirancang=@staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=?', 1], :order => :priority) %>
 				  <% just_a_counter = 0 %><% @aa=[] %><% item_count=0%>
 					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :order => :priority) %>
 					<% if staff_appraisal_skt.half != 2%>
 					<% just_a_counter += 1 %>
-					<table class="centre">
+					<table class="centre" width=95%>
 					<tr bgcolor="#F0EEEE">
 						<td align="center" height="48"><%= just_a_counter %></td>
-						<th align="center">Ringkasan Aktiviti/Projek</th>
-						<td class="left" colspan=4><%= staff_appraisal_skt.description %></td>
+						<td class="left" colspan=5><b>Ringkasan Aktiviti/Projek :</b><br><%= staff_appraisal_skt.description %></td>
 					</tr>
 					<tr bgcolor="#F0EEEE" >
 						<th colspan=2>Petunjuk Prestasi</th>
@@ -490,9 +491,10 @@
 						<td width=20% class="left"><%= staff_appraisal_skt.notes_cost %></td>
 					</tr>
 					<% end %>
-					</table><br>
+					</table><br><BR>
 	
-<% if item_count == 4 %>
+<%# if item_count == 4 %>
+<% if @skt_dirancang.count > 1 && (just_a_counter==1 || just_a_counter==3) %>
 	</div>
 		<div class="page_number"><% page_number += 1 %><%= page_number %></div>
 	</div>
@@ -538,9 +540,11 @@
 		<H4><%= t 'evaluation.jpa.common.skt_II_title' %></H4>
 		<H4>1.&nbsp; &nbsp;<%= t 'evaluation.jpa.common.skt_II_1' %></H4>
 		<H5><%= t 'evaluation.jpa.common.skt_II_1_text' %></H5>
-
-			<% if @staff_appraisal.staff_appraisal_skts.count == 0 %>
-				        <table class="centre">
+      
+			<% skt_ditambah=@staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=?', 2], :order => :priority) %>
+			<% skt_digugur=@staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=? and is_dropped=?', 1, true], :order => :priority) %>
+			<% if @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=?', 2], :order => :priority).count == 0 %>
+				        <table class="centre" width=95%>
 					<tr>
 						<td align="center" height="48">Bil.</td>
 						<td align="center"><b>Ringkasan Aktiviti/Projek</b><BR>(Senaraikan Aktiviti/projek)</td>
@@ -554,14 +558,13 @@
 					</table>
 				<% else %>	
 				  <% just_a_counter = 0 %><% @aa=[] %><% item_count=0%>
-					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :order => :priority) %>
-					<% if staff_appraisal_skt.half == 2%>
+					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=?', 2], :order => :priority) %>
+					<%# if staff_appraisal_skt.half == 2%>
 					<% just_a_counter += 1 %>
-					<table class="centre">
+					<table class="centre" width=95%>
 					<tr bgcolor="#F0EEEE">
 						<td width=7% align="center" height="48"><%= just_a_counter %></td>
-						<th width=22% align="center">Ringkasan Aktiviti/Projek</th>
-						<td width=71% class="left" colspan=4><%= staff_appraisal_skt.description %></td>
+						<td width=71% class="left" colspan=5><b>Ringkasan Aktiviti/Projek :</b><br><%= staff_appraisal_skt.description %></td>
 					</tr>
 					<tr bgcolor="#F0EEEE">
 						<th width=29% colspan=2>Petunjuk Prestasi</th>
@@ -611,7 +614,7 @@
 					</tr>
 					<% end %>
 					</table><br>
-					<% end %>
+					<%# end %>
 				<% end %>
 			<% end -%>
 			<H4><%= t 'evaluation.jpa.common.skt_II_title' %></H4>
@@ -625,7 +628,7 @@
 		    </tr>
 			
 			
-			<% if @staff_appraisal.staff_appraisal_skts.count == 0 %>
+			<% if @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=? and is_dropped=? ', 1, true], :order => :priority).count == 0 %>
 				<tr>
 					      <td height="6cm">-</td>
 					      <td >-</td>
@@ -655,7 +658,7 @@
 				</tr>
 			</table>
 			
-<% if item_count >= 3 %>
+<% if skt_ditambah.count >= 1 || skt_digugur.count >=2 %>
 	</div>
 		<div class="page_number"><% page_number += 1 %><%= page_number %></div>
 	</div>
@@ -691,7 +694,7 @@
 				</tr>
 			</table>
 		</div>
-		<div class="page_number">8</div>
+		<div class="page_number"><%= page_number+=1 %></div>
 </div>
 
 
