@@ -5,7 +5,14 @@ class StaffAppraisalsController < ApplicationController
   filter_resource_access
   
   def index
-    @staff_appraisals = StaffAppraisal.with_permissions_to(:index).find(:all)
+    all2a=StaffAppraisal.with_permissions_to(:index)
+    @filters=StaffAppraisal.filters(all2a)
+    if params[:show] && params[:search]
+      @staff_appraisals = StaffAppraisal.with_permissions_to(:index).search(params[:show], params[:search])
+    else
+      @staff_appraisals = StaffAppraisal.with_permissions_to(:index)
+    end
+    @staff_appraisals = @staff_appraisals.paginate(:per_page => 20, :page => params[:page]) 
 
     respond_to do |format|
       format.html # index.html.erb

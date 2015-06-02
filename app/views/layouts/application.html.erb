@@ -99,7 +99,7 @@ $j(document).ready(function(){
 		
 		//prompt user to save first or proceed with changing language, when page is a form (contains other than translation form)
 		//$j("form").length) - gives total count of forms available in a current page (note - translation already 1 form, search form in index - another 1 form)
-		//all seach forms in index page must have a field called 'search'
+		//all seach forms in index page must have a field called 'search', for below jquery to diff if other form is New/Edit form or just a Search form in Index
 		$j('#locale').change(function(){
 		        //var aa=$j("form").length;
 			//alert('total form (inc language form) = '+$j("form").length);
@@ -121,7 +121,7 @@ $j(document).ready(function(){
 		 
 //              //below - this part working - activate above button to utilize
 // 		$j('#button_form').click(function(){
-// 		        var user_choice2 = confirm("You are about to leave a page. You have unsaved data. Click Ok and save form first or click Cancel to proceed changing language.") ;
+// 		        var user_choice2 = confirm("<%=escape_javascript(t 'prompt_language')%>");
 //  			if (user_choice2==true){
 // 				//alert("Save form first.")
 //  			}else{
