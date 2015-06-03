@@ -2,6 +2,11 @@
 	<div class="box-head">
 		<h2 class="left"><%= t 'evaluation.form.list' %></h2>
 		<div class="right">
+			<% form_tag staff_appraisals_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'staff.name')  %>
+			<%= select_tag :show, options_for_select(@filters) %>
+			<%= submit_tag I18n.t('search') %>
+			<% end %>
 		</div>
 	</div>
 </div>
@@ -9,6 +14,7 @@
 <div class="toolbar">
 	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'evaluation.form.new')) + (t 'evaluation.form.new'), new_staff_appraisal_path %></p>
 </div>
+
 <BR><BR>
 <div class="indextable">
 	<table>
@@ -46,4 +52,4 @@
 </div>
 <br />
 
-<%= link_to (t 'staff.newstaffappraisal'), new_staff_appraisal_path %>
+<%= link_to (t 'evaluation.form.new'), new_staff_appraisal_path %>

@@ -1,15 +1,28 @@
 <div class="fields">
 	
-	
-	<% if f.object.description.blank? != true &&  f.object.indicator.blank? != true && f.object.target.blank? != true && (f.object.half == 1 || f.object.half==2) && joblevel=="skt_revision" && f.object.id!=nil%>
+	<!--SKT Review (SKT Dirancang)-->
+	<%# if f.object.description.blank? != true &&  f.object.indicator.blank? != true && f.object.target.blank? != true && (f.object.half == 1 || f.object.half==2) && joblevel=="skt_revision" && f.object.id!=nil%>
+	<% if f.object.description.blank? != true && (f.object.half == 1 || f.object.half==2) && joblevel=="skt_revision" && f.object.id!=nil%>
+		<% indicator_count = 1 %>
+		<% indicator_count+=1 if f.object.indicator_desc_time!='' && f.object.target_time!='' %>
+		<% indicator_count+=1 if f.object.indicator_desc_quantity!='' && f.object.target_quantity!='' %>
+		<% indicator_count+=1 if f.object.indicator_desc_cost!='' && f.object.target_cost!='' %>
 		<tr>
-			<td><%= f.object.priority %></td>
-			<td><%= f.object.description %></td>
-			<td><%= f.object.render_indicator%> : <%=f.object.target %></td>
-			<td><%= f.text_field :acheivment, :size => 40%></th>
-			<td><%= f.text_field :progress, :size => 5 %></th>
-			<td><%= f.text_area :notes, :size => "20x2" %></td>
-			<td>
+			<td width=5% rowspan=<%=indicator_count%>><%= f.object.priority %></td>
+			<td width=30% rowspan=<%=indicator_count%>> <%= f.object.description %></td>
+			
+			<% if f.object.indicator_desc_quality!='' && f.object.target_quality!='' %>
+			<td width=20%><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 1}).map {|disp, value| disp}%> : </u></b>
+						    <%= f.object.indicator_desc_quality%><%#= f.object.render_indicator%></td>
+			<td width=25%><%= f.object.target_quality %><%#=f.object.target %></td>
+			<td><%= f.text_area :achievement_quality, :size => "28x1" %><%#= f.text_field :acheivment, :size => 40%></td>
+			<td><%= f.text_field :progress_quality, :size => 5 %><%#= f.text_field :progress, :size => 5 %></td>
+			<td><%= f.text_area :notes_quality, :size => "20x2" %><%#= f.text_area :notes, :size => "20x2" %></td>
+			<% else%>
+				<td colspan=5><!--dummy-->&nbsp;</td>
+			<% end %>
+			
+			<td width=25% rowspan=<%=indicator_count%>>
 				<% if f.object.half == 1%>
 					<%= f.check_box :is_dropped %> <%= f.hidden_field :dropped_on, :default => Date.today %>
 				<% elsif f.object.half == 2 %>
@@ -17,30 +30,117 @@
 				<% end %>
 			</td>
 		</tr>
-	<% else %>
-		 <% if params[:job_level]=="skt_revision"%>
-		 <table>
-		 <tr>
-			<td width=4%><%= f.select :priority, 1..5  %></th>
-			<td width=15%><%= f.text_area :description, :size => "23x2" %></th>
-			<td width=25%><%= f.select :indicator, StaffAppraisalSkt::INDICATORS, :include_blank => t('select') %>
-			<%= f.text_area :target, :size => "23x1" %></td><%= f.hidden_field :_destroy %>
-			<td width=40%><%= f.text_area :acheivment, :size => "27x2"%><%=f.hidden_field :half, :value => 2 %></th>
-			<td width=3%><%= f.text_field :progress, :size => 5 %></th>
-			<td width=20%><%= f.text_area :notes, :size => "20x2" %></th>
-			<td width=5%><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %> </th>
+		<% if f.object.indicator_desc_time!='' && f.object.target_time!='' %>
+		<tr>
+			<td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 2}).map {|disp, value| disp}%> : </u>
+			</b><%= f.object.indicator_desc_time %></td>
+			<td><%= f.object.target_time %></td>
+			<td><%= f.text_area :achievement_time, :size => "28x1" %></td>
+			<td><%= f.text_field :progress_time, :size => 5 %></td>
+			<td><%= f.text_area :notes_time, :size => "20x2" %></td>
 		 </tr>
-		<!-- </table>-->
-		 <% else %>
-		 <table>
+		 <% end %>
+		 <% if f.object.indicator_desc_quantity!= '' && f.object.target_quantity!='' %>
 		 <tr>
-			<td width=10%> <%= f.select :priority, 1..5  %></td>
-			<td width=40%> <%= f.text_field :description, :size => 50 %></td>
-			<td width=10%><%= f.select :indicator, StaffAppraisalSkt::INDICATORS, :include_blank => t('select') %></td>
-			<td width=30%> <%= f.text_field :target, :size => 50 %></td><%= f.hidden_field :_destroy %>
-			<td align="right" width=10%><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>   </td>
-		</tr>
+			<td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 3}).map {|disp, value| disp}%> : </u>
+			</b><%= f.object.indicator_desc_quantity %></td>
+			<td><%= f.object.target_quantity %></td>
+			<td><%= f.text_area :achievement_quantity, :size => "28x1" %></td>
+			<td><%= f.text_field :progress_quantity, :size => 5 %></td>
+			<td><%= f.text_area :notes_quantity, :size => "20x2" %></td>
+		 </tr>
+		<% end %>
+		<% if f.object.indicator_desc_cost!='' && f.object.target_cost!='' %> 
+		<tr>
+			<td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 4}).map {|disp, value| disp}%> : </u>
+			</b><%= f.object.indicator_desc_cost %></td>
+			<td><%= f.object.target_cost %></td>
+			<td><%= f.text_area :achievement_cost, :size => "28x1" %></td>
+			<td><%= f.text_field :progress_cost, :size => 5 %></td>
+			<td><%= f.text_area :notes_cost, :size => "20x2" %></td>
+		 </tr>
+		 <% end %>
+		 <tr><td colspan=8><hr></td></tr>
+	<% else %>
+		 <!--SKT untuk ditambah(mid year),  in SKT Review Page-->
+		 <% if params[:job_level]=="skt_revision"%>
+		 <table width=110%>
+		 <!--<tr>
+			<td width=4%><%#= f.select :priority, 1..5  %></th>
+			<td width=15%><%#= f.text_area :description, :size => "23x2" %></th>
+			<td width=25%><%#= f.select :indicator, StaffAppraisalSkt::INDICATORS, :include_blank => t('select') %>
+			<%#= f.text_area :target, :size => "23x1" %></td><%#= f.hidden_field :_destroy %>
+			<td width=40%><%#= f.text_area :acheivment, :size => "27x2"%><%#=f.hidden_field :half, :value => 2 %></th>
+			<td width=3%><%#= f.text_field :progress, :size => 5 %></th>
+			<td width=20%><%#= f.text_area :notes, :size => "20x2" %></th>
+			<td width=5%><%#= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %> </th>
+		 </tr>-->
+		<!-- </table>-->
+		<tr>
+			<td rowspan=4> <%= f.select :priority, 1..5  %></td>
+			<td rowspan=4> <%= f.text_area :description, :size => "20x12" %></td>
+			<td><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 1}).map {|disp, value| disp}%>
+			<%= f.text_area :indicator_desc_quality, :size => "15x1" %></td>
+			<td><br><%= f.text_area :target_quality, :size => "15x1" %></td><%= f.hidden_field :_destroy %>
+			<td><br><%= f.text_area :achievement_quality, :size => "15x1" %></td>
+			<td><br><%= f.text_field :progress_quality, :size => 5 %></td>
+			<td><br><%= f.text_area :notes_quality, :size => "15x2" %></td>
+			<td align="right" width=5% rowspan=4><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>   </td>
+		 </tr>
+		  <tr>
+			<td><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 2}).map {|disp, value| disp}%>
+			<%= f.text_area :indicator_desc_time, :size => "15x1" %></td>
+			<td><br><%= f.text_area :target_time, :size =>  "15x1" %></td>
+			<td><br><%= f.text_area :achievement_time, :size => "15x1" %></td>
+			<td><br><%= f.text_field :progress_time, :size => 5 %></td>
+			<td><br><%= f.text_area :notes_time, :size => "15x2" %></td>
+		 </tr>
+		  <tr>
+			<td><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 3}).map {|disp, value| disp}%>
+			<%= f.text_area :indicator_desc_quantity, :size => "15x1" %></td>
+			<td><br><%= f.text_area :target_quantity, :size => "15x1" %></td>
+			<td><br><%= f.text_area :achievement_quantity, :size => "15x1" %></td>
+			<td><br><%= f.text_field :progress_quantity, :size => 5 %></td>
+			<td><br><%= f.text_area :notes_quantity, :size => "15x2" %></td>
+		 </tr>
+		  <tr>
+			<td><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 4}).map {|disp, value| disp}%>
+			<%= f.text_area :indicator_desc_cost, :size => "15x1" %></td>
+			<td><br><%= f.text_area :target_cost, :size => "15x1" %></td>
+			<td><br><%= f.text_area :achievement_cost, :size => "15x1" %></td>
+			<td><br><%= f.text_field :progress_cost, :size => 5 %></td>
+			<td><br><%= f.text_area :notes_cost, :size => "15x2" %></td>
+		 </tr>
+		 <tr><td colspan=8><hr></td></tr>
+		 <% else %>
+		 <!--SKT - new beginning of the year-->
+		 <table width=100%>
+		 <tr>
+			<td width=10% rowspan=4> <%= f.select :priority, 1..5  %></td>
+			<td width=30% rowspan=4> <%= f.text_area :description, :size => "40x5" %></td>
+			<td width=3%><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 1}).map {|disp, value| disp}%>
+						 <%#= f.select :indicator, StaffAppraisalSkt::INDICATORS, :include_blank => t('select') %></td>
+			<td width=27%><%= f.text_area :indicator_desc_quality, :size => "28x1" %></td>
+			<td width=25%><%= f.text_area :target_quality, :size => "28x1" %><%#= f.text_field :target, :size => 50 %></td><%= f.hidden_field :_destroy %>
+			<td align="right" width=5% rowspan=4><%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>   </td>
+		 </tr>
+		  <tr>
+			<td><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 2}).map {|disp, value| disp}%></td>
+			<td><%= f.text_area :indicator_desc_time, :size => "28x1" %></td>
+			<td> <%= f.text_area :target_time, :size =>  "28x1" %></td>
+		 </tr>
+		  <tr>
+			<td><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 3}).map {|disp, value| disp}%></td>
+			<td><%= f.text_area :indicator_desc_quantity, :size => "28x1" %></td>
+			<td><%= f.text_area :target_quantity, :size => "28x1" %></td>
+		 </tr>
+		  <tr>
+			<td><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 4}).map {|disp, value| disp}%></td>
+			<td><%= f.text_area :indicator_desc_cost, :size => "28x1" %></td>
+			<td><%= f.text_area :target_cost, :size => "28x1" %></td>
+		 </tr>
 		</table>
+		<br>
 		<% end %>
 	<% end %>
 	

@@ -308,6 +308,31 @@ class StaffAppraisal < ActiveRecord::Base
     (e1_total + e2_total)/2
   end
   
-  
+  def self.search(selected_year, searched_name)
+    if searched_name!=""
+      staff_ids=Staff.find(:all, :conditions => ['name ILIKE(?)', "%#{searched_name}%"]).map(&:id)
+    end
+    if staff_ids 
+      if selected_year!="all2"
+        @staff_appraisals=StaffAppraisal.find(:all, :conditions => ['evaluation_year=? and staff_id IN(?)', Date.new(selected_year.to_i,1,1), staff_ids], :order => 'evaluation_year DESC, staff_id ASC')
+      else
+        @staff_appraisals=StaffAppraisal.find(:all, :conditions => ['staff_id IN(?)', staff_ids], :order => 'evaluation_year DESC, staff_id ASC')
+      end
+    else
+      if selected_year!="all2"
+        @staff_appraisals=StaffAppraisal.find(:all, :conditions => ['evaluation_year=?', Date.new(selected_year.to_i,1,1)], :order => 'evaluation_year DESC, staff_id ASC')
+      else
+        @staff_appraisals=StaffAppraisal.find(:all, :order => 'evaluation_year DESC, staff_id ASC')
+      end
+    end
+  end
+    
+  def self.filters(all2a)
+    filtering=[[ I18n.t('ptschedule.all_records'), "all2"]]
+    StaffAppraisal.find(:all, :conditions => ['id IN(?)', all2a], :order => 'evaluation_year DESC').group_by{|x|x.evaluation_year.strftime("%Y")}.each do |year2, appraisals|
+      filtering << [year2, year2]
+    end
+    filtering
+  end
   
 end

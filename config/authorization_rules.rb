@@ -91,7 +91,7 @@ authorization do
     end
     
     has_permission_on :staff_appraisals, :to => :create
-    has_permission_on :staff_appraisals, :to => :manage, :join_by => :or do 
+    has_permission_on :staff_appraisals, :to => [:manage, :appraisal_form], :join_by => :or do 
         if_attribute :staff_id => is {Login.current_login.staff_id}
         if_attribute :eval1_by => is {Login.current_login.staff_id}
         if_attribute :eval2_by => is {Login.current_login.staff_id}

@@ -31,8 +31,10 @@
   <div id='header'>
 	    <%= image_tag("kskb4.png") %>
 			<% form_tag '', :method => 'GET', :class => 'locale' do %>
-			 <%= select_tag 'locale', options_for_select(LANGUAGES, I18n.locale), :onchange => 'this.form.submit();' %>
-			 <%= submit_tag (t 'submit') %>
+			 <%#= select_tag 'locale', options_for_select(LANGUAGES, I18n.locale), :onchange => 'this.form.submit();' %>
+			 <%#= submit_tag (t 'submit') %>
+			 <%= select_tag 'locale', options_for_select(LANGUAGES, params[:locale])%>
+			 <!--This button is working, activate below JS to utilize<input type="button" id='button_form' value='<%=t('submit')%>'/>-->
 			 <%= javascript_tag "$('.locale input').each(Element.hide);" %>
 	    <% end %>
 			<% if logged_in? %>
@@ -94,6 +96,39 @@ $j(document).ready(function(){
 		        function() {  return this.nodeType == 3; }).wrap('<span></span>');//wrap any stray text nodes
 		    $j(this).siblings().toggle();
 		});
+		
+		//prompt user to save first or proceed with changing language, when page is a form (contains other than translation form)
+		//$j("form").length) - gives total count of forms available in a current page (note - translation already 1 form, search form in index - another 1 form)
+		//all seach forms in index page must have a field called 'search', for below jquery to diff if other form is New/Edit form or just a Search form in Index
+		$j('#locale').change(function(){
+		        //var aa=$j("form").length;
+			//alert('total form (inc language form) = '+$j("form").length);
+			var uu = $j("input[id=search]").length
+			//alert(uu);
+			if($j("form").length > 1 && uu==0 ) 
+			{	
+				var user_choice = confirm("<%=escape_javascript(t 'prompt_language')%>");
+				if (user_choice==true){
+					//alert("Save form first.")
+				}else{
+					$j(this).parent().submit();
+				}
+			}else
+			{ 
+				$j(this).parent().submit();
+			}
+		});
+		 
+//              //below - this part working - activate above button to utilize
+// 		$j('#button_form').click(function(){
+// 		        var user_choice2 = confirm("<%=escape_javascript(t 'prompt_language')%>");
+//  			if (user_choice2==true){
+// 				//alert("Save form first.")
+//  			}else{
+// 				$j(this).parent().submit();
+//  			}
+// 		 });
+		
 });
 </script>
 </html>

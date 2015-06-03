@@ -1,14 +1,16 @@
 <% params[:job_level]= "skt_revision"%>
 <H2><%= t 'evaluation.skt_review.title2' %></H2>
-<p><i><%= t 'evaluation.skt_review.drop_select' %></i></p>
+<p><i><%= t 'evaluation.skt_review.drop_select' %>&nbsp;&nbsp;
+(<font color=red>*</font> <%= t 'evaluation.skt_review.drop_select2' %><b><%= t 'evaluation.skt.performance' %></b> <%=t('and')%> <b><%= t 'evaluation.skt.target' %></b><%= t 'evaluation.skt_review.drop_select3' %></i></p>
 <table width=100%>
 	<tr>
 		<th width=5%><%= t 'evaluation.skt.priority' %></th>
-		<th width=25%><%= t 'evaluation.skt.description' %></th>
-		<th width=20%><%= t 'evaluation.skt.performance' %> : <%= t 'evaluation.skt.target' %></th>
-		<th width=25%><%=t('evaluation.skt_review.acheivment')%></th>
-		<th width=5%><%=t('evaluation.skt_review.progress')%></th>
-		<th width=15%><%=t('evaluation.skt_review.notes')%></th>
+		<th width=15%><%= t 'evaluation.skt.description' %></th>
+		<th width=15%><%= t 'evaluation.skt.performance' %></th>
+		<th width=15%> <%= t 'evaluation.skt.target' %></th>
+		<th width=20%><%=t('evaluation.skt_review.acheivment')%>&nbsp;<font color=red>*</font></th>
+		<th width=5%><%=t('evaluation.skt_review.progress')%>&nbsp;<font color=red>*</font></th>
+		<th width=20%><%=t('evaluation.skt_review.notes')%></th>
 		<th width=5%><%= t 'evaluation.skt_review.drop2' %></th>
 	</tr>	
 	<% f.fields_for :staff_appraisal_skts do |builder| %>
@@ -23,11 +25,12 @@
 <table width=100%>
 	<tr>
 		<th width=5%><%= t 'evaluation.skt.priority' %></th>
-		<th width=25%><%= t 'evaluation.skt.description' %></th>
-		<th width=20%><%= t 'evaluation.skt.performance' %> : <%= t 'evaluation.skt.target' %></th>
-		<th width=25%><%=t('evaluation.skt_review.acheivment')%></th>
+		<th width=15%><%= t 'evaluation.skt.description' %></th>
+		<th width=15%><%= t 'evaluation.skt.performance' %></th>
+		<th width=15%> <%= t 'evaluation.skt.target' %></th>
+		<th width=20%><%=t('evaluation.skt_review.acheivment')%></th>
 		<th width=5%><%=t('evaluation.skt_review.progress')%></th>
-		<th width=15%><%=t('evaluation.skt_review.notes')%></th>
+		<th width=20%><%=t('evaluation.skt_review.notes')%></th>
 		<th width=5%><%=t('evaluation.skt_review.cancel')%></th>
 	</tr>
 	<% f.fields_for :staff_appraisal_skts do |builder| %>
@@ -39,7 +42,7 @@
 
 <p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Log'), f, :staff_appraisal_skts %> - <%=t('addmore')%></p>
 <BR/>
-<p><i><%= t 'evaluation.skt_review.cancel_select' %></i></p>
+<p><i><%= t 'evaluation.skt_review.cancel_select' %><br><%= t 'evaluation.skt_review.new_additional' %><br><font color=red><%= t 'evaluation.skt_review.new_additional2' %></font><%= t 'evaluation.skt_review.new_additional3' %></i></p>
 <!--SUBMISSION-->
 <H2><%= t 'evaluation.skt_review.title3' %></H2>
 <table width=100%>

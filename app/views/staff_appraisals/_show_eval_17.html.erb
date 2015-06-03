@@ -90,11 +90,11 @@
 					<td class="leftcolwide"><label for="eval1_effective"><%= t 'evaluation.form.total' %></label></td>
 					<td><%=h @staff_appraisal.e1g2_total %><label> &divide; 
 							<%= (@staff_appraisal.g2_questions)*10 %> x 25 = 
-							<%=h @staff_appraisal.e1g2_percent %>%</label></td>
+							<%=h number_with_precision(@staff_appraisal.e1g2_percent, :locale => "en", :precision => 2) %>%</label></td>
 					<td style='display: "#{show_ppk_in_show}";'>
 							<%=h @staff_appraisal.e2g2_total %><label> &divide; 
 							<%= (@staff_appraisal.g2_questions)*10 %> x 25 = 
-							<%=h @staff_appraisal.e2g2_percent %>%</label><BR/><BR/></td>	
+							<%=h number_with_precision(@staff_appraisal.e2g2_percent, :locale => "en", :precision =>2) %>%</label><BR/><BR/></td>	
 				</tr>
 
 	
@@ -176,8 +176,8 @@
 	
 				<tr  valign=bottom>
 					<td class="leftcolwide"><%= t 'evaluation.form.total' %></td>
-					<td><%=@staff_appraisal.e1_total %>%</td>
-					<td style='display: "#{show_ppk_in_show}";'><%=h @staff_appraisal.e2_total %>%</td>
+					<td><%=number_with_precision(@staff_appraisal.e1_total, :locale => "en", :precision => 2) %>%</td>
+					<td style='display: "#{show_ppk_in_show}";'><%=h number_with_precision(@staff_appraisal.e2_total, :locale => "en", :precision => 2) %>%</td>
 					<td class="pagenote">Percent [Part II 50% and Part III 50%]<BR/><BR/><BR/><BR/></td>
 				</tr>
 
