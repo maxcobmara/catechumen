@@ -12,7 +12,7 @@ module StaffAppraisalsHelper
       #Academician--start---
       highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
       highest_grade = highest_rank.staffgrade.name[-2,2]
-      maintasks = applicant.position.tasks_main
+      maintasks = appraised.position.tasks_main
       if maintasks.include?("Ketua Program")
         approver1 =  Position.find(:first, :conditions => ['name=?', "Timbalan Pengarah Akademik (Pengajar)"]).staff_id
       #elsif maintasks.include?("Ketua Teras")
@@ -48,7 +48,7 @@ module StaffAppraisalsHelper
       if highest_grade > applicant_grade #staffs
         approver1 = highest_rank.staff_id
       elsif highest_grade == applicant_grade #Ketua Unit
-        approver1 =  applicant.position.parent.staff_id
+        approver1 =  appraised.position.parent.staff_id
       end
       #Administration--end---
 
@@ -56,7 +56,7 @@ module StaffAppraisalsHelper
       approver1 = Position.find(:first, :conditions => ['unit=?', "Pentadbiran"]).staff_id
 
     elsif applicant_unit == "Pengurusan Tertinggi"
-      if applicant.position.name=="Pengarah"
+      if appraised.position.name=="Pengarah"
         approver1=nil
       else
         approver1=Position.find(:first, :conditions => ['name=?', "Pengarah"]).staff_id
