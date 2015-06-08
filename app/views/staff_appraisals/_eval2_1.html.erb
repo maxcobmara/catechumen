@@ -58,18 +58,18 @@
 	
 	<tr valign=bottom>
 		<td class="leftcolwide" rowspan=2><label for="eval1_effective"><%= t 'evaluation.form.total' %></label></td>
-		<td><%#=h @staff_appraisal.e1g1_total %><%=h number_with_precision(@staff_appraisal.e1g1_percent, :precision => 2, :locale =>"en") %>%</td>
+		<td rowspan=2><%=h @staff_appraisal.e1g1_total %> / <%= (@staff_appraisal.g1_questions)*10 %> x 50 =<%=h number_with_precision(@staff_appraisal.e1g1_percent, :precision => 2, :locale =>"en") %>%</td>
 		<td colspan=2><%= f.text_field :e2g1_total, :class => "subtotals", :size => 4, :readonly => true %><label> x 50 = <%= f.text_field :e2g1_percent, :size => 4, :readonly => true %>%</label></td>
 	</tr>
 	<tr valign=bottom>
-		<td>&nbsp; <%#= (@staff_appraisal.g1_questions)*10 %></td>
+		<td>&nbsp; <%= (@staff_appraisal.g1_questions)*10 %></td>
 		<td class="pagenote"><BR/><BR/><BR/><BR/></td>
 	</tr>
 	
 	
 
 	<tr>
-		<th><%= t 'evaluation.form.title_part4' %></th>
+		<th><%= t 'evaluation.form.title_part4_sokong1' %></th>
 		<th>PPP</th>
 		<th>PPK</th>
 		<th></th>
@@ -105,18 +105,18 @@
 	
 	<tr valign=bottom>
 		<td class="leftcolwide" rowspan=2><label for="eval1_effective"><%= t 'evaluation.form.total' %></label></td>
-		<td><%#=h @staff_appraisal.e1g2_total %><%=h number_with_precision(@staff_appraisal.e1g2_percent, :locale => "en", :precision => 2) %>%</td>
+		<td rowspan=2><%=h @staff_appraisal.e1g2_total %> / <%= (@staff_appraisal.g2_questions)*10 %> x 25 = <%=h number_with_precision(@staff_appraisal.e1g2_percent, :locale => "en", :precision => 2) %>%</td>
 		<td colspan=2><%= f.text_field :e2g2_total, :class => "subtotals", :size => 4, :readonly => true %><label> x 25 = <%= f.text_field :e2g2_percent, :size => 7, :readonly => true %>%</label></td>
 	</tr>
 	<tr valign=bottom>
-		<td>&nbsp; <%#= (@staff_appraisal.g2_questions)*10 %></td>
+		<td>&nbsp; <%= (@staff_appraisal.g2_questions)*10 %></td>
 		<td class="pagenote"><BR/><BR/><BR/><BR/></td>
 	</tr>
 	
 	
 	
 	<tr>
-		<th><%= t 'evaluation.form.title_part5' %></th>
+		<th><%= t 'evaluation.form.title_part5_sokong1' %></th>
 		<th>PPP</th>
 		<th>PPK</th>
 		<th></th>
@@ -145,11 +145,11 @@
 	
 	<tr valign=bottom>
 		<td class="leftcolwide" rowspan=2><label for="e2g3_total"><%= t 'evaluation.form.total' %></label></td>
-		<td><%#=h @staff_appraisal.e1g3_total %><%=h number_with_precision(@staff_appraisal.e1g3_total, :precision => 2, :locale => "en") %>%</td>
+		<td rowspan=2><%=h @staff_appraisal.e1g3_total %> / <%= (@staff_appraisal.g3_questions)*10 %> x 20 = <%=h number_with_precision(@staff_appraisal.e1g3_percent, :precision => 2, :locale => "en") %>%</td>
 		<td colspan=2><%= f.text_field :e2g3_total, :class => "subtotals", :size => 4, :readonly => true %><label> x 20 = <%= f.text_field :e2g3_percent, :size => 7, :readonly => true %>%</label></td>
 	</tr>
 	<tr valign=bottom>
-		<td>&nbsp; <%#= (@staff_appraisal.g3_questions)*10 %></td>
+		<td>&nbsp; <%= (@staff_appraisal.g3_questions)*10 %></td>
 		<td class="pagenote"><BR/><BR/><BR/><BR/></td>
 	</tr>
 
@@ -163,13 +163,13 @@
 	
 	<tr valign=bottom>
 		<td class="leftcolwide"><label for="eval1_part_ii"><%= t 'evaluation.form.parttwo' %></label></td>
-		<td><%=h @staff_appraisal.e1g4 %></td>
-		<td><%= f.text_field :e2g4, :class => "e2g4", :size => 5, :placeholder => 0  %>  <label> x 5 = <%= f.text_field :e2g4_percent, :class => "subtotals", :size => 7, :readonly => true %>%</label></td>
+		<td><%=h @staff_appraisal.e1g4 %>  <label> / 10 x 5 = <%=number_with_precision(@staff_appraisal.e1g4_percent, :precision => 2, :locale => "en") %></label></td>
+		<td><%= f.text_field :e2g4, :class => "e2g4", :size => 5, :placeholder => 0  %>  <label> /10 x 5 = <%= f.text_field :e2g4_percent, :class => "subtotals", :size => 7, :readonly => true %>%</label></td>
 		<td class="pagenote"><%= t 'evaluation.form.parttwo_desc' %><BR/><BR/><BR/><BR/></td>
 	</tr>
 
 	<tr valign=bottom>
-		<td>&nbsp; 10 %</td>
+		<td>&nbsp;</td>
 		<td class="pagenote"><BR/><BR/><BR/><BR/></td>
 	</tr>
 	
