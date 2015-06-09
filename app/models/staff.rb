@@ -66,6 +66,9 @@ class Staff < ActiveRecord::Base
   belongs_to :level,  :class_name => 'Qualification', :foreign_key => 'level_id'
   belongs_to :staffgrade, :class_name => 'Employgrade', :foreign_key => 'staffgrade_id'
   has_many   :ptdos #staff training
+  has_many   :mycpds, :dependent => :destroy
+  accepts_nested_attributes_for :mycpds, :allow_destroy => true #, :reject_if => lambda { |a| a[:cpd_year].blank? }
+  validates_associated :mycpds
   #-------------display data for different table-----------------------------------------------
  
   #Link to model bulletin

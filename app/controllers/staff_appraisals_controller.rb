@@ -10,7 +10,7 @@ class StaffAppraisalsController < ApplicationController
     if params[:show] && params[:search]
       @staff_appraisals = StaffAppraisal.with_permissions_to(:index).search(params[:show], params[:search])
     else
-      @staff_appraisals = StaffAppraisal.with_permissions_to(:index)
+      @staff_appraisals = StaffAppraisal.with_permissions_to(:index).find(:all, :order => 'evaluation_year DESC, staff_id ASC')
     end
     @staff_appraisals = @staff_appraisals.paginate(:per_page => 20, :page => params[:page]) 
 
