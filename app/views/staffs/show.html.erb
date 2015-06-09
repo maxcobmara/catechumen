@@ -389,6 +389,21 @@
 		</tr>
 		<% end %>
 	</table>
+	<H2><%= t 'training.accumulated_cpd_points' %></H2>
+	<table>
+		<tr>
+			<th><%=t 'training.cpd_year' %></th>
+			<th><%=t 'training.cpd_value' %></th>
+		</tr>
+		<% for mycpd in @staff.mycpds.sort_by{|x|x.cpd_year} %>
+			<tr>
+				<td><%=h mycpd.cpd_year.year %></td>
+				<td align="center"><%=h mycpd.cpd_value%></td>
+			</tr>
+		<% end %>
+	</table>
+	<font size=-2><%=t 'training.inserted_values' %>
+                <%= link_to ((t 'ptdos.viewsummary')+" "+Date.today.year.to_s), :controller => 'ptdos', :action => 'show_total_days', :id => Login.current_login.staff_id %></font>
 <BR>
 </div>	
 	
