@@ -64,10 +64,10 @@ module StaffAppraisalsHelper
 
     else
       #Administration2--start---
-      if applicant.position.parent.staff.id == []
+      if appraised.position.parent.staff.id == []
         approver1 = nil
       else
-        approver1 = applicant.position.parent.staff.id   #if pentadbiran OK - applicant.position.unit=="Pentadbiran"
+        approver1 = appraised.position.parent.staff.id   #if pentadbiran OK - applicant.position.unit=="Pentadbiran"
       end
       #Administration2--end---
       #-----------------------------------
