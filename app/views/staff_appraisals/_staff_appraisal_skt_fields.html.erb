@@ -12,7 +12,7 @@
 			<td width=30% rowspan=<%=indicator_count%>> <%= f.object.description %></td>
 			
 			<% if f.object.indicator_desc_quality!='' && f.object.target_quality!='' %>
-			<td width=20%><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 1}).map {|disp, value| disp}%> : </u></b>
+			<td width=20%><b><u><%=t('evaluation.skt.quality')%> : </u></b>
 						    <%= f.object.indicator_desc_quality%><%#= f.object.render_indicator%></td>
 			<td width=25%><%= f.object.target_quality %><%#=f.object.target %></td>
 			<td><%= f.text_area :achievement_quality, :size => "28x1" %><%#= f.text_field :acheivment, :size => 40%></td>
@@ -32,7 +32,7 @@
 		</tr>
 		<% if f.object.indicator_desc_time!='' && f.object.target_time!='' %>
 		<tr>
-			<td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 2}).map {|disp, value| disp}%> : </u>
+			<td><b><u><%=t('evaluation.skt.time')%> : </u>
 			</b><%= f.object.indicator_desc_time %></td>
 			<td><%= f.object.target_time %></td>
 			<td><%= f.text_area :achievement_time, :size => "28x1" %></td>
@@ -42,7 +42,7 @@
 		 <% end %>
 		 <% if f.object.indicator_desc_quantity!= '' && f.object.target_quantity!='' %>
 		 <tr>
-			<td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 3}).map {|disp, value| disp}%> : </u>
+			<td><b><u><%=t('evaluation.skt.quantity')%> : </u>
 			</b><%= f.object.indicator_desc_quantity %></td>
 			<td><%= f.object.target_quantity %></td>
 			<td><%= f.text_area :achievement_quantity, :size => "28x1" %></td>
@@ -52,7 +52,7 @@
 		<% end %>
 		<% if f.object.indicator_desc_cost!='' && f.object.target_cost!='' %> 
 		<tr>
-			<td><b><u><%=(StaffAppraisalSkt::INDICATORS.find_all{|disp, value| value == 4}).map {|disp, value| disp}%> : </u>
+			<td><b><u><%=t('evaluation.skt.cost')%> : </u>
 			</b><%= f.object.indicator_desc_cost %></td>
 			<td><%= f.object.target_cost %></td>
 			<td><%= f.text_area :achievement_cost, :size => "28x1" %></td>
