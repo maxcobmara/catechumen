@@ -76,9 +76,10 @@ authorization do
     has_permission_on [:attendances, :assets, :documents],     :to => :menu              # Access for Menus
     has_permission_on :books, :to => :core
     has_permission_on :ptdos, :to => :create
-    has_permission_on :ptdos, :to => :index do
+    has_permission_on :ptdos, :to => :index do 
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
+    
     has_permission_on :staffs, :to => [:show, :menu]
     has_permission_on :staffs, :to => [:edit, :update, :menu] do
       if_attribute :id => is {Login.current_login.staff_id}
@@ -185,6 +186,7 @@ authorization do
   
   role :training_manager do
     has_permission_on [:ptbudgets, :ptcourses, :ptschedules], :to => :manage
+    has_permission_on :ptdos, :to =>:approve
     has_permission_on :ptdosearches, :to => :read
   end
   
@@ -283,6 +285,9 @@ authorization do
     has_permission_on :timetables, :to => :manage#:to => [:index, :show, :edit, :update, :menu, :calendar]
     has_permission_on :topics, :to => :manage
     has_permission_on :weeklytimetables, :to => :manage #21March2013 added
+    has_permission_on :ptdos, :to => :approve do
+      if_attribute :staff_id => is_in {Login.current_login.staff.unit_members}
+    end
   end
 #--21march2013-new role added  
   role :coordinator do
@@ -371,6 +376,12 @@ authorization do
   role :guest do
     has_permission_on :users, :to => :create
     has_permission_on :books, :to => :core
+  end
+  
+  role :unit_leader do
+    has_permission_on :ptdos, :to => :approve do
+      if_attribute :staff_id => is_in { Login.current_login.staff.unit_members}
+    end
   end
   
 end

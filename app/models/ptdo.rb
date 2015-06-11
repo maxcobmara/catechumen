@@ -1,5 +1,5 @@
 class Ptdo < ActiveRecord::Base
-  before_save  :whoami
+  before_save  :whoami, :auto_unit_approval_for_academician
   
   belongs_to  :ptschedule
   belongs_to  :staff
@@ -10,6 +10,16 @@ class Ptdo < ActiveRecord::Base
   def whoami
     #self.staff_id = Login.current_login.staff.id
     self.ptcourse_id = ptschedule.ptcourse.id
+  end
+  
+  def auto_unit_approval_for_academician
+    if unit_approve.blank? 
+      if applicant.logins.first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(applicant.position.unit)
+        self.unit_approve=true
+        self.unit_review="Auto-approved"
+        self.justification="Not applicable for academician"
+      end
+    end
   end
   
   def self.search(search)
@@ -28,7 +38,11 @@ class Ptdo < ActiveRecord::Base
     elsif unit_approve.nil? == true
       I18n.t("ptdos.awaiting_unit_approval")#"Awaiting Unit Approval"
     elsif unit_approve == true && dept_approve.nil? == true
-      I18n.t("ptdos.approved_unit_head_await_dept_approval")#"Approved by Unit head, awaiting Dept approval"
+      if applicant.logins.first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(applicant.position.unit)
+        I18n.t("ptdos.awaiting_dept_approval")#unit approval - not applicable for academician
+      else
+        I18n.t("ptdos.approved_unit_head_await_dept_approval")#"Approved by Unit head, awaiting Dept approval"
+      end
     elsif dept_approve == true && dept_approve == true && final_approve.nil? == true
       I18n.t("ptdos.approved_dept_head_await_pengarah_approval")#"Approved by Dept head, awaiting Pengarah approval"
     elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == true
@@ -110,5 +124,30 @@ class Ptdo < ActiveRecord::Base
     end
     dept
   end
+  
+  def unit_members
+    #Academicians & Mgmt staff : "Teknologi Maklumat", "Perpustakaan", "Kewangan & Akaun", "Sumber Manusia","logistik", "perkhidmatan" ETC.. - by default staff with the same unit in Position will become unit members, whereby Ketua Unit='unit_leader' role & Ketua Program='programme_manager' role.
+    #Exceptional for - "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor" (subunit of Pentadbiran), Ketua Unit='unit_leader' with unit in Position="Pentadbiran"
+    
+    exist_unit_of_staff_in_position = Position.find(:all, :conditions =>['unit is not null and staff_id is not null']).map(&:staff_id).uniq
+    if exist_unit_of_staff_in_position.include?(Login.current_login.staff_id)
+      current_unit = Position.find_by_staff_id(Login.current_login.staff_id).unit
+      if current_unit=="Pentadbiran"
+        unit_members = Position.find(:all, :conditions=>['unit=? OR unit=? OR unit=? OR unit=?', "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor"]).map(&:staff_id).uniq-[nil]+Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
+      else
+        unit_members = Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
+      end
+    else
+      unit_members = []#Position.find(:all, :conditions=>['unit=?', 'Teknologi Maklumat']).map(&:staff_id).uniq-[nil]
+    end
+    unit_members    #collection of staff_id (member of a unit/dept)
+  end
+  
+#   def applicant_siblings
+#     applicant_unit=applicant.position.unit
+#     siblings=Position.find(:all, :conditions=>['unit=?', applicant_unit]).map(&:staff_id).uniq-[nil]
+#     siblings+=Position.find(:all, :conditions=>['unit=?', "Pentadbiran"]).map(&:staff_id).uniq-[nil] if ["Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor"].include?(applicant_unit)
+#     siblings
+#   end
   
 end

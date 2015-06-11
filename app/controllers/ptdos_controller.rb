@@ -2,11 +2,18 @@ class PtdosController < ApplicationController
   # GET /ptdos
   # GET /ptdos.xml
   def index
-    @ptdos = Ptdo.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page]) 
-
+    @position_exist = current_login.staff.position
+    if @position_exist && @position_exist.unit
+      @ptdos = Ptdo.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page]) 
+    end
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @ptdos }
+      if @position_exist && @position_exist.unit
+        format.html # index.html.erb
+        format.xml  { render :xml => @ptdos}
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('ptdos.title')}
+        format.xml  { render :xml => @grade.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
