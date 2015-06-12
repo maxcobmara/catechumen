@@ -192,7 +192,9 @@ authorization do
   
   role :training_administration do
     has_permission_on [:ptbudgets, :ptcourses, :ptschedules], :to => :manage
-    has_permission_on :ptdos, :to =>:approve
+    has_permission_on :ptdos, :to =>:approve #do
+      #if_attribute :staff_id => is_not_in {Login.current_login.staff.unit_members}  #En Zahar can't see Fazrina's ptdo at all in index
+    #end
     has_permission_on :ptdosearches, :to => :read
   end
   

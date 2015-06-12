@@ -22,6 +22,8 @@
 
   <!--  Unit Approval Block --><!--role:programme_manager (academician)--><!--role:testing role (mgmt staff)--><!--Prog Mgr/Unit Leader & STAFF must fr same unit-->
   <% permitted_to? :approve, :ptdos do %>
+        <!--Hack : Training Administration should not approved siblings application, must be done by Training Manager-->
+        <% if (current_login.roles.include?("Training Administration") && @ptdo.unit_members.include?(@ptdo.staff_id)==false) || current_login.roles.map(&:name).include?("Training Manager") || (current_login.roles.map(&:name).include?("Training Administration")==false && current_login.roles.map(&:name).include?("Training Manager")==false)%>
 		<% if @ptdo.unit_approve.blank? %>
 		<tr>
 			<td class="leftcol"><label for="justification"><%= t 'ptdos.justification' %>:</label></td>
@@ -44,11 +46,12 @@
 		</tr>
 		
 		<% end %>
-       <% end %>
+	<% end %>
+  <% end %>
 
 
   <!-- Department Approval Block -->
-  <% permitted_to? :approve, :ptdos do %>
+  <% permitted_to? :approve, :ptdos do %><!--Training Administration:may approve siblings but AS Timbalan Pengarah Pengurusan not Training Manager-->
 		<% if @ptdo.unit_approve? && @ptdo.dept_approve.blank? %>
 			<% if ( (@ptdo.applicant.logins.first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(@ptdo.applicant.position.unit)) && current_login.staff.position.name != "Timbalan Pengarah (Pengurusan)" ) || (@ptdo.applicant.logins.first.roles.map(&:name).include?("Lecturer")==false && Programme.roots.map(&:name).include?(@ptdo.applicant.position.unit)==false && current_login.staff.position.name == "Timbalan Pengarah (Pengurusan)") || current_login.roles.map(&:name).include?("Training Manager") || current_login.roles.map(&:name).include?("Training Administration") %>
 			<tr>
