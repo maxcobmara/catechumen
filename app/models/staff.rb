@@ -640,8 +640,10 @@ class Staff < ActiveRecord::Base
       current_unit = Position.find_by_staff_id(Login.current_login.staff_id).unit
       if current_unit=="Pentadbiran"
         unit_members = Position.find(:all, :conditions=>['unit=? OR unit=? OR unit=? OR unit=?', "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor"]).map(&:staff_id).uniq-[nil]+Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
-      else
+      elsif ["Teknologi Maklumat", "Pusat Sumber", "Kewangan & Akaun", "Sumber Manusia"].include?(current_unit)
         unit_members = Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
+      else #logistik & perkhidmatan inc. "Unit Perkhidmatan diswastakan / Logistik"
+        unit_members = Position.find(:all, :conditions=>['unit ILIKE(?)', "%#{current_unit}%"]).map(&:staff_id).uniq-[nil] 
       end
     else
       unit_members = []#Position.find(:all, :conditions=>['unit=?', 'Teknologi Maklumat']).map(&:staff_id).uniq-[nil]

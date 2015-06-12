@@ -4,7 +4,17 @@ class PtdosController < ApplicationController
   def index
     @position_exist = current_login.staff.position
     if @position_exist && @position_exist.unit
-      @ptdos = Ptdo.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page]) 
+      #@ptdos = Ptdo.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page]) 
+      ###
+      all2a=Ptdo.with_permissions_to(:index)
+      @filters=Ptdo.filters(all2a)
+      if params[:show] && params[:search]
+        @ptdos = Ptdo.with_permissions_to(:index).search(params[:show], params[:search])
+      else
+        @ptdos = Ptdo.with_permissions_to(:index).find(:all, :order => 'ptschedule_id DESC')
+      end
+      @ptdos = @ptdos.paginate(:per_page => 20, :page => params[:page]) 
+      ###
     end
     respond_to do |format|
       if @position_exist && @position_exist.unit
@@ -12,7 +22,7 @@ class PtdosController < ApplicationController
         format.xml  { render :xml => @ptdos}
       else
         format.html {redirect_to "/home", :notice =>t('position_required')+t('ptdos.title')}
-        format.xml  { render :xml => @grade.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @ptdos.errors, :status => :unprocessable_entity }
       end
     end
   end

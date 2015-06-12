@@ -41,7 +41,7 @@ module StaffAppraisalsHelper
       end
       #Academician--end---
 
-    elsif ["Teknologi Maklumat", "Perpustakaan", "Kewangan & Akaun", "Sumber Manusia"].include?(applicant_unit) || applicant_unit.include?("logistik") || applicant_unit.include?("perkhidmatan")
+    elsif ["Teknologi Maklumat", "Pusat Sumber", "Kewangan & Akaun", "Sumber Manusia"].include?(applicant_unit) || applicant_unit.include?("logistik") || applicant_unit.include?("perkhidmatan")
       #Administration--start--
       highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
       highest_grade = highest_rank.staffgrade.name[-2,2]

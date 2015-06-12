@@ -22,13 +22,37 @@ class Ptdo < ActiveRecord::Base
     end
   end
   
-  def self.search(search)
-    if search
-       searched_ptcourses_ids=Ptcourse.find(:all, :conditions =>['name ILIKE (?)', "%#{search}%"]).map(&:id)
-       searched_staff_ids=Staff.find(:all, :conditions =>['name ILIKE (?)', "%#{search}%"]).map(&:id)
-       ptdos=Ptdo.find(:all, :conditions => ['ptcourse_id IN(?) or staff_id IN(?)', searched_ptcourses_ids, searched_staff_ids])
-    else 
-      ptdos=Ptdo.find(:all, :order=>'ptschedule_id ASC')
+  def self.search(selected_status, search)
+    if search!=""
+      searched_ptcourses_ids=Ptcourse.find(:all, :conditions =>['name ILIKE (?)', "%#{search}%"]).map(&:id)
+      searched_staff_ids=Staff.find(:all, :conditions =>['name ILIKE (?)', "%#{search}%"]).map(&:id)
+      ptdos=Ptdo.find(:all, :conditions => ['ptcourse_id IN(?) or staff_id IN(?)', searched_ptcourses_ids, searched_staff_ids], :order=>'ptschedule_id DESC')
+      ptdos_ids=ptdos.map(&:id)
+    end
+    if ptdos_ids 
+      if selected_status!="all2"
+        ptdos1_ids=Ptdo.rejected.map(&:id) if selected_status=="rejected"
+        ptdos1_ids=Ptdo.a_unit_approval.map(&:id) if selected_status=="a_unit_approval"
+        ptdos1_ids=Ptdo.a_dept_approval.map(&:id) if selected_status=="a_dept_approval"
+        ptdos1_ids=Ptdo.approval_completed.map(&:id) if selected_status=="approval_completed"
+        ptdos1_ids=Ptdo.report_submitted.map(&:id) if selected_status=="report_submitted"
+        ptdos1_ids=Ptdo.a_pengarah_approval.map(&:id) if selected_status=="a_pengarah_approval"
+        @ptdos=Ptdo.find(:all, :conditions => ['id IN(?) and id IN(?)', ptdos_ids, ptdos1_ids], :order=>'ptschedule_id DESC')
+      else
+        @ptdos=ptdos
+      end
+    else
+      if selected_status!="all2"
+        ptdos1_ids=Ptdo.rejected.map(&:id) if selected_status=="rejected"
+        ptdos1_ids=Ptdo.a_unit_approval.map(&:id) if selected_status=="a_unit_approval"
+        ptdos1_ids=Ptdo.a_dept_approval.map(&:id) if selected_status=="a_dept_approval"
+        ptdos1_ids=Ptdo.approval_completed.map(&:id) if selected_status=="approval_completed"
+        ptdos1_ids=Ptdo.report_submitted.map(&:id) if selected_status=="report_submitted"
+        ptdos1_ids=Ptdo.a_pengarah_approval.map(&:id) if selected_status=="a_pengarah_approval"
+        @ptdos=Ptdo.find(:all, :conditions => ['id IN(?)', ptdos1_ids], :order=>'ptschedule_id DESC')
+      else
+        @ptdos=Ptdo.find(:all, :order=>'ptschedule_id DESC')
+      end
     end
   end
   
@@ -43,7 +67,7 @@ class Ptdo < ActiveRecord::Base
       else
         I18n.t("ptdos.approved_unit_head_await_dept_approval")#"Approved by Unit head, awaiting Dept approval"
       end
-    elsif dept_approve == true && dept_approve == true && final_approve.nil? == true
+    elsif unit_approve == true && dept_approve == true && final_approve.nil? == true
       I18n.t("ptdos.approved_dept_head_await_pengarah_approval")#"Approved by Dept head, awaiting Pengarah approval"
     elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == true
       I18n.t("ptdos.all_approvals_complete")#"All approvals complete"
@@ -52,6 +76,25 @@ class Ptdo < ActiveRecord::Base
     else
       I18n.t("ptdos.status_not_available")#"Status Not Available"
     end
+  end
+  
+  named_scope :rejected,                           :conditions => ["unit_approve is false or dept_approve is false or final_approve is false"]
+  named_scope :a_unit_approval,               :conditions => ["unit_approve is null"]
+  named_scope :a_dept_approval,              :conditions => ["unit_approve is true and dept_approve is null"]
+  named_scope :approval_completed,        :conditions => ["dept_approve is true and dept_approve is true and final_approve is true and trainee_report is null"]
+  named_scope :report_submitted,            :conditions =>  ["dept_approve is true and dept_approve is true and final_approve is true and trainee_report is not null"]
+  named_scope :a_pengarah_approval,      :conditions => ["unit_approve is true and dept_approve is true and final_approve is null"]
+  
+  def self.filters(all2a)
+    filtering=[[ I18n.t('ptschedule.all_records'), "all2"]]
+    filtering << [ I18n.t("ptdos.awaiting_unit_approval"), "a_unit_approval"]
+    filtering << [ I18n.t("ptdos.awaiting_dept_approval"), "a_dept_approval"]
+    filtering << [ I18n.t("ptdos.approved_dept_head_await_pengarah_approval"), "a_pengarah_approval"]
+    filtering << [ I18n.t("ptdos.all_approvals_complete"), "approval_completed"]
+    filtering << [ I18n.t("ptdos.report_submitted"), "report_submitted"] 
+    filtering << [ I18n.t("ptdos.application_rejected"), "rejected"]
+    
+    filtering
   end
   
   def applicant_details 
@@ -134,8 +177,10 @@ class Ptdo < ActiveRecord::Base
       current_unit = Position.find_by_staff_id(Login.current_login.staff_id).unit
       if current_unit=="Pentadbiran"
         unit_members = Position.find(:all, :conditions=>['unit=? OR unit=? OR unit=? OR unit=?', "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor"]).map(&:staff_id).uniq-[nil]+Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
-      else
+      elsif ["Teknologi Maklumat", "Pusat Sumber", "Kewangan & Akaun", "Sumber Manusia"].include?(current_unit)
         unit_members = Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
+      else #logistik & perkhidmatan inc."Unit Perkhidmatan diswastakan / Logistik" or other UNIT just in case - change of unit name, eg. Perpustakaan renamed as Pusat Sumber
+        unit_members = Position.find(:all, :conditions=>['unit ILIKE(?)', "%#{current_unit}%"]).map(&:staff_id).uniq-[nil] 
       end
     else
       unit_members = []#Position.find(:all, :conditions=>['unit=?', 'Teknologi Maklumat']).map(&:staff_id).uniq-[nil]

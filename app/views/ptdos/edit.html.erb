@@ -50,7 +50,7 @@
   <!-- Department Approval Block -->
   <% permitted_to? :approve, :ptdos do %>
 		<% if @ptdo.unit_approve? && @ptdo.dept_approve.blank? %>
-			<% if ( (@ptdo.applicant.logins.first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(@ptdo.applicant.position.unit)) && current_login.staff.position.name != "Timbalan Pengarah (Pengurusan)" ) || (@ptdo.applicant.logins.first.roles.map(&:name).include?("Lecturer")==false && Programme.roots.map(&:name).include?(@ptdo.applicant.position.unit)==false && current_login.staff.position.name == "Timbalan Pengarah (Pengurusan)") %>
+			<% if ( (@ptdo.applicant.logins.first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(@ptdo.applicant.position.unit)) && current_login.staff.position.name != "Timbalan Pengarah (Pengurusan)" ) || (@ptdo.applicant.logins.first.roles.map(&:name).include?("Lecturer")==false && Programme.roots.map(&:name).include?(@ptdo.applicant.position.unit)==false && current_login.staff.position.name == "Timbalan Pengarah (Pengurusan)") || current_login.roles.map(&:name).include?("Training Manager") || current_login.roles.map(&:name).include?("Training Administration") %>
 			<tr>
 				<td class="leftcol"><label for="dept_review"><%= t 'ptdos.deptreview' %>:</label></td>
 				<td><%= f.text_field :dept_review %></td>

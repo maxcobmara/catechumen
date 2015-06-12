@@ -4,6 +4,7 @@
 		<div class="right">
 			<% form_tag ptdos_path, :method => 'get' do %>
 				<%= text_field_tag :search, params[:search], :placeholder =>( t 'ptdos.staff' )+","+(t 'ptdos.cos_name')%>
+				<%= select_tag :show, options_for_select(@filters) %>
 				<%= submit_tag (t 'search'), :title => nil %>
 			<% end %>
 		</div>
@@ -25,7 +26,7 @@
 
 <% @ptdos.each do |ptdo| %>
   <tr>
-	  <td><%=t('groupby')%>&nbsp;<%=h ptdo.ptschedule_id %></td>
+	  <td><%=t('groupby')%>&nbsp;<%=h ptdo.ptschedule_id %>&nbsp;&nbsp;<font size=-2 color=grey><%=h ptdo.ptschedule.start.try(:strftime, '%d %b %y')%></font></td>
     <td><%=h ptdo.ptschedule.ptcourse.name %></td>
     <td><%=h ptdo.applicant_details %></td>
     <td><%=h ptdo.apply_dept_status %></td>
