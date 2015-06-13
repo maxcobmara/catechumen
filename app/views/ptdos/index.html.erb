@@ -39,7 +39,13 @@
 			<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => ptdo %>
 		<% end %>
 	  </td>
-	  <td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptdo, :confirm => (t 'are_you_sure'), :method => :delete %></td>
+	  <td width=10px>
+		<% permitted_to? :approve, :ptdos do %>
+			<% if ptdo.trainee_report.blank? %>
+				<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), ptdo, :confirm => (t 'are_you_sure'), :method => :delete %>
+			<% end %>
+		<% end %>
+	  </td>
   </tr>
 <% end %>
 </table>

@@ -23,7 +23,7 @@
   <!--  Unit Approval Block --><!--role:programme_manager (academician)--><!--role:testing role (mgmt staff)--><!--Prog Mgr/Unit Leader & STAFF must fr same unit-->
   <% permitted_to? :approve, :ptdos do %>
         <!--Hack : Training Administration should not approved siblings application, must be done by Training Manager-->
-        <% if (current_login.roles.include?("Training Administration") && @ptdo.unit_members.include?(@ptdo.staff_id)==false) || current_login.roles.map(&:name).include?("Training Manager") || (current_login.roles.map(&:name).include?("Training Administration")==false && current_login.roles.map(&:name).include?("Training Manager")==false)%>
+        <% if (current_login.roles.map(&:name).include?("Training Administration") && @ptdo.unit_members.include?(@ptdo.staff_id)==false) || current_login.roles.map(&:name).include?("Training Manager") || (current_login.roles.map(&:name).include?("Training Administration")==false && current_login.roles.map(&:name).include?("Training Manager")==false)%>
 		<% if @ptdo.unit_approve.blank? %>
 		<tr>
 			<td class="leftcol"><label for="justification"><%= t 'ptdos.justification' %>:</label></td>
