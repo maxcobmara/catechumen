@@ -7,6 +7,8 @@ class Ptdo < ActiveRecord::Base
   belongs_to  :replacement, :class_name => 'Staff', :foreign_key => 'replacement_id'
   has_many    :staff_appraisals, :through => :staff
   
+  validates_uniqueness_of :staff_id, :scope => :ptschedule_id, :message => I18n.t("ptdos.staff_must_unique")
+  
   def whoami
     #self.staff_id = Login.current_login.staff.id
     self.ptcourse_id = ptschedule.ptcourse.id

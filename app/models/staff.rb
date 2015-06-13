@@ -646,7 +646,7 @@ class Staff < ActiveRecord::Base
         unit_members = Position.find(:all, :conditions=>['unit=? OR unit=? OR unit=? OR unit=?', "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor"]).map(&:staff_id).uniq-[nil]+Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
       elsif ["Teknologi Maklumat", "Pusat Sumber", "Kewangan & Akaun", "Sumber Manusia"].include?(current_unit) || Programme.roots.map(&:name).include?(current_unit)
         unit_members = Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
-      else #logistik & perkhidmatan inc. "Unit Perkhidmatan diswastakan / Logistik"
+      else #logistik & perkhidmatan inc. "Unit Perkhidmatan diswastakan / Logistik" or other UNIT just in case - change of unit name, eg. Perpustakaan renamed as Pusat Sumber
         unit_members = Position.find(:all, :conditions=>['unit ILIKE(?)', "%#{current_unit}%"]).map(&:staff_id).uniq-[nil] 
       end
     else

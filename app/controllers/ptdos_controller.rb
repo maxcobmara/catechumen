@@ -44,8 +44,13 @@ class PtdosController < ApplicationController
     @ptdo = Ptdo.new(:ptschedule_id => params[:ptschedule_id])
 
     respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @ptdo }
+      unless params[:ptschedule_id].nil?
+        format.html # new.html.erb
+        format.xml  { render :xml => @ptdo }
+      else
+        format.html {redirect_to apply_ptschedules_path}
+        format.xml  { render :xml => @ptdos.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
