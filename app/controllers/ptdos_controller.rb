@@ -2,11 +2,28 @@ class PtdosController < ApplicationController
   # GET /ptdos
   # GET /ptdos.xml
   def index
-    @ptdos = Ptdo.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page]) 
-
+    @position_exist = current_login.staff.position
+    if @position_exist && @position_exist.unit
+      #@ptdos = Ptdo.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page]) 
+      ###
+      all2a=Ptdo.with_permissions_to(:index)
+      @filters=Ptdo.filters(all2a)
+      if params[:show] && params[:search]
+        @ptdos = Ptdo.with_permissions_to(:index).search(params[:show], params[:search])
+      else
+        @ptdos = Ptdo.with_permissions_to(:index).find(:all, :order => 'ptschedule_id DESC')
+      end
+      @ptdos = @ptdos.paginate(:per_page => 20, :page => params[:page]) 
+      ###
+    end
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @ptdos }
+      if @position_exist && @position_exist.unit
+        format.html # index.html.erb
+        format.xml  { render :xml => @ptdos}
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('ptdos.title')}
+        format.xml  { render :xml => @ptdos.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
@@ -27,8 +44,13 @@ class PtdosController < ApplicationController
     @ptdo = Ptdo.new(:ptschedule_id => params[:ptschedule_id])
 
     respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @ptdo }
+      unless params[:ptschedule_id].nil?
+        format.html # new.html.erb
+        format.xml  { render :xml => @ptdo }
+      else
+        format.html {redirect_to apply_ptschedules_path}
+        format.xml  { render :xml => @ptdos.errors, :status => :unprocessable_entity }
+      end
     end
   end
 

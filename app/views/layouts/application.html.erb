@@ -34,7 +34,7 @@
 			 <%#= select_tag 'locale', options_for_select(LANGUAGES, I18n.locale), :onchange => 'this.form.submit();' %>
 			 <%#= submit_tag (t 'submit') %>
 			 <%= select_tag 'locale', options_for_select(LANGUAGES, params[:locale])%>
-			 <!--This button is working, activate below JS to utilize<input type="button" id='button_form' value='<%=t('submit')%>'/>-->
+			 <!--This button is working, activate below JS to utilize--><input type="button" id='button_form' value='<%=t('submit')%>'/>
 			 <%= javascript_tag "$('.locale input').each(Element.hide);" %>
 	    <% end %>
 			<% if logged_in? %>
@@ -120,14 +120,14 @@ $j(document).ready(function(){
 		});
 		 
 //              //below - this part working - activate above button to utilize
-// 		$j('#button_form').click(function(){
-// 		        var user_choice2 = confirm("<%=escape_javascript(t 'prompt_language')%>");
-//  			if (user_choice2==true){
-// 				//alert("Save form first.")
-//  			}else{
-// 				$j(this).parent().submit();
-//  			}
-// 		 });
+ 		$j('#button_form').click(function(){
+ 		        var user_choice2 = confirm("<%=escape_javascript(t 'prompt_language')%>");
+  			if (user_choice2==true){
+ 				//alert("Save form first.")
+  			}else{
+ 				$j(this).parent().submit();
+  			}
+ 		 });
 		
 });
 </script>
