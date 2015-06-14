@@ -37,10 +37,10 @@
 <table width=100%>
   <% if Login.current_login.staff.position.is_root? == false %>
 	<tr>
-	  <td class="leftcolwide"><label for="submit_for_appraisal1_on">Submit for evaluation</label></td>
+	  <td class="leftcolwide"><label for="submit_for_appraisal1_on"><%=t('evaluation.form.submit_for_evaluation2')%></label></td>
 		<td><%= f.check_box :is_submit_e2, :id => 'submit_for_evaluation2' %>
 				<SPAN id="span_submit2" style="display: none;"><%= f.date_select :submit_e2_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
-		<td class="pagenote">Clicking on submit notifies the Second Evaluating Officer (PPK)<BR/> and disables your editing this record further</td>
+		<td class="pagenote"><%=t('evaluation.form.submit_notify_ppk')%><BR/><%=t('evaluation.form.disable_editing')%></td>
 	</tr>
 	
 	<% else %>
