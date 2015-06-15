@@ -131,6 +131,25 @@ class StaffAppraisal < ActiveRecord::Base
     end
   end
   
+  def viewable
+    curr_roles=Login.current_login.roles.map(&:authname)
+    curr_login = Login.current_login.staff
+    
+    if Login.current_login.staff_id==eval2_by || curr_roles.include?("administration") || (curr_roles.include?("staff_administrator") && curr_roles.include?("unit_leader"))
+      "display"
+    elsif curr_login.position.unit=="Sumber Manusia"
+      unit_members=Position.find(:all, :joins => :staff, :conditions => ['unit=?', "Sumber Manusia"], :order => "ancestry_depth ASC")
+      highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
+      highest_grade = highest_rank.staffgrade.name[-2,2]
+      curr_grade = curr_login.staffgrade.name[-2,2] 
+      if highest_grade==curr_grade
+        "display"
+      end
+    else
+      "not visible"
+    end
+  end
+  
   def evaluation_status
      if is_skt_submit != true
        I18n.t('evaluation.appraisal.skt_being_formulated')
