@@ -666,6 +666,18 @@ class Staff < ActiveRecord::Base
     mgmt_unit
   end
   
+  #for Timbalan Pengarah Pengurusan only - for accessible of staff training application status list w/o assignment on 'Administration' role
+  def admin_subordinates
+    mypost=Login.current_login.staff.position
+    post_name=mypost.name
+    if post_name=="Timbalan Pengarah (Pengurusan)"
+      adm_sub=mypost.descendants.map(&:staff_id)
+    else
+      adm_sub=[]
+    end
+    adm_sub
+  end
+  
 end
  
                       
