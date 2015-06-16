@@ -9,7 +9,11 @@ class Staff < ActiveRecord::Base
   has_many :vehicles, :dependent => :destroy
   accepts_nested_attributes_for :vehicles, :allow_destroy => true, :reject_if => lambda {|a| a[:cylinder_capacity].blank? }##|| a[:reg_no].blank?}
   validates_associated :vehicles
-    
+  
+  has_many :shift_histories, :dependent => :destroy
+  accepts_nested_attributes_for :shift_histories#, :reject_if => lambda {|a| a[:deactivate_date].blank?}
+  validates_associated :shift_histories  
+  
   has_attached_file :photo,
                     :url => "/assets/staffs/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
@@ -229,6 +233,18 @@ class Staff < ActiveRecord::Base
      
      
 #--------------------Declerations----------------------------------------------------
+  
+  def create_shift_history_nodate(saved_shift, current_shift, new_deactivate_date)
+    new_shift = ShiftHistory.new
+    new_shift.shift_id = saved_shift #should save history not new one
+    new_shift.deactivate_date = Date.today
+    new_shift.staff_id =self.id #for checking = (current_shift.to_s+"0"+saved_shift.to_s).to_i
+    new_shift.save
+    #By default, 'deactivate_date is hidden && 'if 'deactivate_date' is blank - no 'shift history' will be saved'
+    #If 'staff_shift_id' CHANGED - 'deactivate_date' will be displayed - if date is entered record will be saved & vice versa.
+    #create/save 'shift history' here by giving default value as Date.today for condition when 'staff_shift_id' is changed but 'deactivate_date' not entered.
+  end
+
   def age
     Date.today.year - cobirthdt.year
   end
