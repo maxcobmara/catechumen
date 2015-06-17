@@ -57,6 +57,7 @@ class StaffsController < ApplicationController
   def edit
     @staff = Staff.find(params[:id])
     @staff.vehicles.build if (@staff.vehicles && @staff.vehicles.count==0) || @staff.vehicles[0].nil?
+    @staff.shift_histories.build if @staff.staff_shift_id!=nil
   end
   
   def borang_maklumat_staff
@@ -122,9 +123,14 @@ def ruport
   # PUT /staffs/1.xml
   def update
     #params[:staff][:existing_qualification_attributes] ||= {}
-    
+    #raise params.inspect
     @staff = Staff.find(params[:id])
-
+    c_shift = params[:staff][:staff_shift_id]
+    if params[:staff][:shift_histories_attributes]
+      s_shift = params[:staff][:shift_histories_attributes]["#{@staff.shift_histories.count}"][:shift_id]
+      new_ddate= params[:staff][:shift_histories_attributes]["#{@staff.shift_histories.count}"][:deactivate_date]
+      @staff.create_shift_history_nodate(s_shift, c_shift, new_ddate) if (c_shift!=s_shift) && new_ddate==""
+    end
     respond_to do |format|
       if @staff.update_attributes(params[:staff])
         flash[:notice] = t('staff.title')+" "+t('updated')

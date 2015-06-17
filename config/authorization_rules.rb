@@ -386,6 +386,12 @@ authorization do
     end
   end
   
+  role :administration_staff do
+    has_permission_on :ptdos, :to => :approve do
+      if_attribute :staff_id => is_in { Login.current_login.staff.admin_subordinates}
+    end
+  end
+  
 end
   
   privileges do

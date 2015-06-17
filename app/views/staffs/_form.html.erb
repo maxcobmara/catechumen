@@ -19,8 +19,33 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="shift"><%= t 'staff.shift' %></td>
-			<td><%= f.collection_select :staff_shift_id, StaffShift.find(:all), :id, :start_end, :include_blank=> t ('select_staff_shift') %></td>
+			<td>
+				<%#= f.collection_select :staff_shift_id, StaffShift.find(:all), :id, :start_end, :include_blank=> t ('select_staff_shift') %>
+				<% if @staff.new_record? %>
+					<%= f.collection_select :staff_shift_id, StaffShift.find(:all), :id, :start_end, :include_blank=> t ('select_staff_shift') %>
+				<% else %>
+					<% if @staff.staff_shift_id.blank? %>
+						<%= f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, :include_blank=> t ('select_staff_shift') %>
+					<% else %>
+						<%= f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true, :selected=>@staff.staff_shift_id}%>
+					<% end %>
+				<% end %>
+				<div class="previous_shift" style="display: none;">
+					<% f.fields_for :shift_histories do |builder| %>
+						<% if builder.object.deactivate_date.blank? == true %>
+							<%=t 'staff.shift_histories.deactivate_date'%>
+							<%= builder.date_select :deactivate_date, :start_year => Date.today.year, :end_year => Date.today.next_year.year, :order => [:day, :month, :year] %>
+							<%= builder.hidden_field :shift_id, :value =>@staff.staff_shift_id %>
+						<% end %>
+					<% end %>
+				</div>
+			</td>
 		</tr>
+		
+		 
+              
+		
+		
 		<tr>
 			<td class="leftcol"><label for="fileno"><b><%= t 'staff.fileno' %></b></label><font color="red"> * </font></td>
 			<td><%= f.text_field :fileno %></td>
@@ -333,4 +358,15 @@
 		
 	
 </div>	
+
+<script>
+  var current_shift = $j("#staff_staff_shift_id").val();
+  $j("#staff_staff_shift_id").change(function() {
+    if ($j('#staff_staff_shift_id option:selected').val()==current_shift)
+      $j('.previous_shift').hide();
+    else{
+      $j('.previous_shift').show();
+    }
+  });
+</script>
 	
