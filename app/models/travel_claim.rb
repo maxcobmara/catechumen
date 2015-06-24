@@ -2,6 +2,7 @@ class TravelClaim < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
   before_save :set_to_nil_where_false, :set_total
+  before_destroy :remove_claim_from_travel_request
   
   belongs_to :staff
   belongs_to :approver,           :class_name => 'Staff',      :foreign_key => 'approved_by'
@@ -42,6 +43,11 @@ class TravelClaim < ActiveRecord::Base
     else
       self.submitted_on= nil
     end
+  end
+  
+  def remove_claim_from_travel_request
+    travel_requests_ids=TravelRequest.find(:all, :conditions => ['travel_claim_id=?', id]).map(&:id)
+    TravelRequest.update_all(["travel_claim_id=?", nil], :id => travel_requests_ids)
   end
   
   def set_total
