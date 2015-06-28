@@ -53,10 +53,11 @@ class Leaveforstaff < ActiveRecord::Base
     Login.current_login.staff_id unless Login.current_login.staff_id.blank?
   end
 
-  named_scope :relevant,    :conditions =>  ["staff_id=? OR approval1_id=? OR approval2_id=?", (Login.current_login.staff_id rescue 0), (Login.current_login.staff_id rescue 0), (Login.current_login.staff_id rescue 0)]
-  named_scope :mine,        :conditions =>  ["staff_id=?", (Login.current_login[:staff_id] rescue [0])]
-  named_scope :forsupport,  :conditions =>  ["approval1_id=? AND approval1 IS ?", (Login.current_login.staff_id rescue 0), nil]
-  named_scope :forapprove,  :conditions =>  ["approval2_id=? AND approver2 IS ? AND approval1=?", (Login.current_login.staff_id rescue 0), nil, true]
+  #add lambda - to work in production mode-http://stackoverflow.com/questions/1476678/rails-named-scope-lambda-and-blocks
+  named_scope :relevant,  (lambda do |staff_id| {:conditions =>  ["staff_id=? OR approval1_id=? OR approval2_id=?", (Login.current_login.staff_id rescue 0), (Login.current_login.staff_id rescue 0), (Login.current_login.staff_id rescue 0)]} end )
+  named_scope :mine,  (lambda do |staff_id|     { :conditions =>  ["staff_id=?", (Login.current_login[:staff_id] rescue [0])]} end)
+  named_scope :forsupport, (lambda do |approval1_id| { :conditions =>  ["approval1_id=? AND approval1 IS ?", (Login.current_login.staff_id rescue 0), nil]} end)
+  named_scope :forapprove, (lambda do |approval2_id| { :conditions =>  ["approval2_id=? AND approver2 IS ? AND approval1=?", (Login.current_login.staff_id rescue 0), nil, true]} end )
 
   FILTERS = [
     {:scope => "relevant",        :label => I18n.t('staffleave.all')},
