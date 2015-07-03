@@ -29,7 +29,7 @@ class WeeklytimetablesController < ApplicationController
       params[:search]=nil    #this line is required
       @weeklytimetables = Weeklytimetable.with_permissions_to(:index).search(@programme_id, @dadidu) 
       
-      common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
+      common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
       @common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
       current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
       @is_admin=true if current_roles.include?("Administration")
@@ -128,7 +128,7 @@ class WeeklytimetablesController < ApplicationController
     @weeklytimetable = Weeklytimetable.find(params[:id])
     prog_name = Programme.find(@weeklytimetable.programme_id).name
     
-    common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
+    common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
     common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
     pengkhususan_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%"]).map(&:id)
       

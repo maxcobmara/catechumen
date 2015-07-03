@@ -20,20 +20,22 @@
     	<th><%=t('intake.description')%></th><!--20March2013-->
     	<th><%=t('intake.register_on')%></th>
     	<th><%=t('intake.programme_id')%></th>
+    	<th><%=t('intake.staff_id')%></th>
     	<th><%=t('intake.is_active')%></th>
 	<th colspan=3 class="ac"><%=t('control')%></th>
        </tr>
 <!--28March2013-group display by intake name-->
 <% @intakes.each do |intakename,intakedetails| %>
   <!--Display intake name first-->
-  <tr><td colspan="7" style="background-color:#eee;font-weight:bold;"><%=t('intake.title2')%> : <%=h intakename %></td></tr>
+  <tr><td colspan="8" style="background-color:#eee;font-weight:bold;"><%=t('intake.title2')%> : <%=h intakename %></td></tr>
   <!--Display intake details accordingly-->
 	<% for details in intakedetails %>
 	<tr>
     	<td><%=h details.description %></td>
     	<td><%=h l(details.register_on, :format => '%d %b %Y') %></td>
     	<td><%=h details.programme.programme_list %></td>
-    	<td><%=h details.is_active? ? (t 'yes2') : (t 'no2') %></td>
+    	<td><%=h details.coordinator.try(:name) %></td>
+    	<td><%=h details.is_active? ? image_tag('tick.png') : image_tag('cross.png') %></td>
     	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => details %></td>
     	<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => details %></td>
  	<td width=10px><%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), details, :confirm => (t 'are_you_sure'), :method => :delete %></td>

@@ -54,6 +54,7 @@ class Staff < ActiveRecord::Base
   has_many :events,       :foreign_key => 'createdby'                                      #link to created by in events
   has_many :logins
   has_many :timetables
+  has_many :intakes  #upon graduation, may become coordinator for other intakes
   has_one  :staff_shift
   # has_many :topics, :foreign_key => 'creator_id' 
   #has_many :curriculums, :foreign_key => 'staff_id'
