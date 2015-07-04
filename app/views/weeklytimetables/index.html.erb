@@ -10,7 +10,9 @@
 	</div>
 </div>	
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => 'New Weekly Timetable') + t('weeklytimetable.new'), new_weeklytimetable_path %></p>
+	<% if Intake.all.map(&:staff_id).include?(current_login.staff_id) %>
+		 <p><%= link_to image_tag("add.png", :border => 0, :title => 'New Weekly Timetable') + t('weeklytimetable.new'), new_weeklytimetable_path %></p>
+	<% end %>
 </div>
 <BR><BR>
 
@@ -59,7 +61,7 @@
 					((weeklytimetable.prepared_by == Login.current_login.staff_id) || @is_admin|| @is_common_lecturer) ) %>
 						<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => weeklytimetable %>
 					<% elsif (weeklytimetable.is_submitted == true && weeklytimetable.hod_approved!= true && 
-					((weeklytimetable.endorsed_by == Login.current_login.staff_id)|| @is_admin || @is_common_lecturer))  %>
+					((weeklytimetable.endorsed_by == Login.current_login.staff_id)|| @is_admin ))  %>
 						<%= link_to image_tag("approval.png", :border => 0, :title => (t 'approval')), :action => 'edit', :id => weeklytimetable %>
 					<% end %>
 				<!--hack-->	
@@ -72,7 +74,8 @@
 	</table>
 	<BR>
 </div>
-
-<%= link_to t('weeklytimetable.new'), new_weeklytimetable_path %>
+<% if Intake.all.map(&:staff_id).include?(current_login.staff_id) %>
+	<%= link_to t('weeklytimetable.new'), new_weeklytimetable_path %>
+<% end %>
 
 
