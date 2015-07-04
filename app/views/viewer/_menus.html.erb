@@ -295,6 +295,9 @@
 						  <li><a href="http://<%= request.host  %>:3003/training/weeklytimetables"><%= t('menu.new_timetable_entries') %></a></li>
 					 <% end %>
 				<% end %>
+				<% permitted_to? :personalize_index, :weeklytimetables do %>
+					<li><a href="http://<%= request.host  %>:3003/training/weeklytimetables/personalize_index"><%= t('menu.new_personalised_timetable') %></a></li>
+				<% end %>
 			</ul>
 	</li>
 	<% end %>
