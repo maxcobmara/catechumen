@@ -107,6 +107,21 @@ class Weeklytimetable < ActiveRecord::Base
      find(:all, :conditions=>['id IN(?)', self.validintake_timetable]).map(&:id)
   end
   
+  def self.other_lects
+    common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
+    common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    is_admin=true if current_roles.include?("Administration")
+    is_programme_mgr=true if current_roles.include?("Programme Manager")
+    is_common_lecturer=true if common_subject_lecturers_ids.include?(Login.current_login.staff_id)
+    if !is_admin && !is_programme_mgr && !is_common_lecturer && !Intake.all.map(&:staff_id).include?(Login.current_login.staff_id) && !Weeklytimetable.all.map(&:prepared_by).include?(Login.current_login.staff_id)
+      other_lecturers=true
+    else
+      other_lecturers=false
+    end
+    other_lecturers
+  end
+  
   private 
     def intake_must_match_with_programme
       valid_intakes = Intake.find(:all, :conditions => ['programme_id=?', programme_id]).map(&:id)
