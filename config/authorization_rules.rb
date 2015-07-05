@@ -252,7 +252,7 @@ authorization do
         #if_attribute :student_id => is {Login.current_login.student_id}
       #end
     
-      has_permission_on :programmes, :to => :menu
+      has_permission_on :trainingnotes, :to => :menu
       has_permission_on :books, :to => :core
       has_permission_on :students, :to => [:read, :update, :menu, :show, :formforstudent] do
         if_attribute :student_id => is {Login.current_login.student_id}
@@ -285,20 +285,25 @@ authorization do
   role :programme_manager do
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => :manage#:to => [:index, :show, :edit, :update, :menu, :calendar]
+    has_permission_on :intakes, :to => :manage
     has_permission_on :topics, :to => :manage
-    has_permission_on :weeklytimetables, :to => :manage #21March2013 added
+    has_permission_on :weeklytimetables, :to => :read 
+    has_permission_on :weeklytimetables, :to => :update do #:manage #21March2013 added
+      if_attribute :endorsed_by => is {Login.current_login.staff_id}
+    end
     has_permission_on :ptdos, :to => :approve do
       if_attribute :staff_id => is_in {Login.current_login.staff.unit_members}
     end
   end
 #--21march2013-new role added  
   role :coordinator do
-    has_permission_on :programmes, :to => :manage
-    has_permission_on :timetables, :to => :manage
-    #below - manage or just edit, update (can approve?), Penyelaras Kumpulan (of each Intake, of each Programme)
-    has_permission_on :weeklytimetables, :to => :manage do
-      if_attribute :prepared_by => is {Login.current_login.staff_id}
-    end
+#     has_permission_on :programmes, :to => :manage
+#     has_permission_on :timetables, :to => :manage
+#     #below - manage or just edit, update (can approve?), Penyelaras Kumpulan (of each Intake, of each Programme)
+#     has_permission_on :weeklytimetables, :to => :manage do
+#       if_attribute :prepared_by => is {Login.current_login.staff_id}
+#     end
+    #all above removed to role : lecturer
     has_permission_on :curriculumsearches, :to => :read
  end
 #--21march2013-new role added    
@@ -315,30 +320,44 @@ authorization do
     end
     
     has_permission_on :examquestions, :to => :manage
-    has_permission_on :programmes, :to => [:core,:menu]
-    has_permission_on :topics, :to => :manage
-    has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar] do
-      if_attribute :staff_id => is {Login.current_login.staff_id}
-    end
-    has_permission_on :trainingreports, :to => :manage, :join_by => :or do
-      if_attribute :staff_id => is {Login.current_login.staff_id}
-      if_attribute :tpa_id => is {Login.current_login.staff_id}
-    end
-    has_permission_on :timetables, :to => [:create]
+    
     has_permission_on :students, :to => [:menu, :index, :show, :formforstudent]
     has_permission_on :student_attendances, :to => :create
     has_permission_on :student_attendances, :to => :manage do
       if_attribute :weeklytimetable_id => is_in {Login.current_login.classes_taughtby}
     end
+    
+    #TRAININGs - START
+#     has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar] do
+#       if_attribute :staff_id => is {Login.current_login.staff_id}
+#     end   
+    has_permission_on :programmes, :to => :read
+    has_permission_on :topics, :to => :manage
+    
+    #HACK : restrict commonsubject lecturer fr accessing in menu, but gives programme/postbasic lecturer access (if they ARE in prepared_by(WTs) or staff_id(Intakes))
+    has_permission_on [:timetables, :intakes], :to => :manage
+
+    has_permission_on :trainingreports, :to => :manage, :join_by => :or do
+      if_attribute :staff_id => is {Login.current_login.staff_id}
+      if_attribute :tpa_id => is {Login.current_login.staff_id}
+    end
+    
+    #HACK : weeklytimetables - CREATE restricted in Index (if exist in Intakes)
+     has_permission_on :weeklytimetables, :to => [:read, :update] , :join_by => :or do
+       if_attribute :prepared_by => is_in {Login.current_login.staff_id} 
+       if_attribute :intake_id => is_in {Intake.find(:all, :conditions => ['staff_id=?', Login.current_login.staff_id]).map(&:id)} #should include those being coordinate by me
+     end
+    
     has_permission_on :weeklytimetables, :to => :personalize_index do
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
-    
-    #giving full access to Pengajar Subjek Asas on Weeklytimetable (of ALL programmes) - refer authorization rules under LECTURER role
-    #related to this comment (1) 2.1.2 Student Attendance, item no.3, (2) 2.3.1 Scheduling, comment no.11 (part B)
-    has_permission_on :weeklytimetables, :to => :manage do
-      if_attribute :programme_id => is_in {Login.current_login.staff.commonsubject_lecturer_programmeid_list}
-    end
+
+#removed to Unit Leader role    
+#     #giving full access to Pengajar Subjek Asas on Weeklytimetable (of ALL programmes) - refer authorization rules under LECTURER role
+#     #related to this comment (1) 2.1.2 Student Attendance, item no.3, (2) 2.3.1 Scheduling, comment no.11 (part B)
+#     has_permission_on :weeklytimetables, :to => [:read, :update] do
+#       if_attribute :programme_id => is_in {Login.current_login.staff.commonsubject_lecturer_programmeid_list}
+#     end
 
     #from Ogma
     has_permission_on :trainingnotes, :to => :manage, :join_by => :or do
@@ -350,7 +369,8 @@ authorization do
       if_attribute :topicdetail_id => is {nil}
       if_attribute :timetable_id => is {nil}
     end
-   
+    #TRAININGs - END
+    
     has_permission_on :studentsearches, :to => :read
     has_permission_on :studentattendancesearches, :to => :read
     has_permission_on :weeklytimetablesearches, :to => :read
@@ -383,6 +403,11 @@ authorization do
   role :unit_leader do
     has_permission_on :ptdos, :to => :approve do
       if_attribute :staff_id => is_in { Login.current_login.staff.unit_members}
+    end
+    #giving full access to Pengajar Subjek Asas on Weeklytimetable (of ALL programmes) - refer authorization rules under LECTURER role
+    #related to this comment (1) 2.1.2 Student Attendance, item no.3, (2) 2.3.1 Scheduling, comment no.11 (part B)
+    has_permission_on :weeklytimetables, :to => [:read, :update] do
+      if_attribute :programme_id => is_in {Login.current_login.staff.commonsubject_lecturer_programmeid_list}
     end
   end
   

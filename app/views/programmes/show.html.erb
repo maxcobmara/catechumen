@@ -20,5 +20,7 @@
 		</table>
 </fieldset>
 </div>
-<%= link_to t('edit'), edit_programme_path(@programme) %> |
+<% permitted_to? :update, :programmes do %>
+	<%= link_to t('edit'), edit_programme_path(@programme) %> |
+<% end %>
 <%= link_to t('back'), programmes_path %>
