@@ -2,6 +2,12 @@ class WeeklytimetablesController < ApplicationController
   # GET /weeklytimetables
   # GET /weeklytimetables.xml
   def index
+    #common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
+    #@common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
+    #@is_common_lecturer=true if @common_subject_lecturers_ids.include?(Login.current_login.staff_id)
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    @is_admin=true if current_roles.include?("Administration")
+    
     @position_exist = current_login.staff.position
     if @position_exist  
       @lecturer_programme = current_login.staff.position.unit
@@ -9,7 +15,17 @@ class WeeklytimetablesController < ApplicationController
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end 
       unless @programme.nil?     #works for both Admin & Pengajar SUBJEK ASAS
-        @programme_id = @programme.id 
+        @programme_id = @programme.id
+      else
+        if @lecturer_programme=="Pengkhususan"
+          if @position_exist.tasks_main.include?("Ketua Program Pengkhususan")==true
+            @programme_ids=Programme.find(:all, :conditions => ['course_type IN(?)', ["Diploma Lanjutan","Pos Basik", "Pengkhususan"]]).map(&:id)
+          else
+            @programme_ids = Intake.find(:all, :conditions => ['staff_id=?', current_login.staff_id]).map(&:programme_id)
+          end
+        else 
+          @programme_ids=Programme.roots.map(&:id) if @is_admin==true
+        end
       end
       #note - restriction : refer authorization rules
       #note - Weeklytimetable listing : based on @programme_id value being sent to 'search' method in staff.rb
@@ -27,14 +43,11 @@ class WeeklytimetablesController < ApplicationController
 	@dadidu=''
       end
       params[:search]=nil    #this line is required
-      @weeklytimetables = Weeklytimetable.with_permissions_to(:index).search(@programme_id, @dadidu) 
-      
-      common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
-      @common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
-      current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
-      @is_admin=true if current_roles.include?("Administration")
-      @is_common_lecturer=true if @common_subject_lecturers_ids.include?(Login.current_login.staff_id)
-
+      if @programme_ids.nil?
+        @weeklytimetables = Weeklytimetable.with_permissions_to(:index).search(@programme_id, @dadidu) 
+      else
+        @weeklytimetables = Weeklytimetable.with_permissions_to(:index).find(:all, :conditions =>['programme_id IN(?)', @programme_ids])
+      end
     end
     respond_to do |format|
       if @position_exist
