@@ -570,29 +570,35 @@ class Staff < ActiveRecord::Base
         course_id = Programme.find(:first, :conditions =>['name=? and ancestry_depth=?', unit,0]).id
       elsif ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"].include?(unit)
         main_task_first = Login.current_login.staff.position.tasks_main
-         prog_name_full = main_task_first[/Diploma Lanjutan \D{1,}/] if ["Diploma Lanjutan"].include?(unit)
-         prog_name_full = main_task_first[/Pos Basik \d{1,}/] if ["Pos Basik"].include?(unit)
-         prog_name_full = main_task_first[/Pengkhususan \d{1,}/] if ["Pengkhususan"].include?(unit)
+        if main_task_first.include?("Ketua Program Pengkhususan")==false
+          prog_name_full = main_task_first[/Diploma Lanjutan \D{1,}/] if ["Diploma Lanjutan"].include?(unit)
+          prog_name_full = main_task_first[/Pos Basik \D{1,}/] if ["Pos Basik"].include?(unit)
+          prog_name_full = main_task_first[/Pengkhususan \D{1,}/] if ["Pengkhususan"].include?(unit)
 #         prog_name_full = main_task_first[/"#{unit}" \D{1,}/]
-        prog_name = prog_name_full.split(" ")[prog_name_full.split(" ").size-1]
-        course_id = Programme.find(:first, :conditions =>['name ILIKE(?) and course_type=?', "%#{prog_name}%", unit]).id
-      end 
-      main_task = Login.current_login.staff.position.tasks_main
-      coordinator=main_task[/Penyelaras Kumpulan \d{1,}/]   
-      if coordinator
-        intake_group=coordinator.split(" ")[2]   #should match 'descripton' field in Intakes table
-        intake = Intake.find(:first, :conditions=>['programme_id=? and description=?', course_id, intake_group]).monthyear_intake
-        if intake
-          @supervised_student = Student.find(:all, :conditions=>['intake=? and course_id=?', intake, course_id]).map(&:id)
+          prog_name = prog_name_full.split(" ")[prog_name_full.split(" ").size-1] 
+          course_id = Programme.find(:first, :conditions =>['name ILIKE(?) and course_type=?', "%#{prog_name}%", unit]).id
+          main_task = Login.current_login.staff.position.tasks_main
+          coordinator=main_task[/Penyelaras Kumpulan \D{1,}/]   
+          if coordinator
+            intake_group=coordinator.split(" ")[2]   #should match 'descripton' field in Intakes table
+            intake = Intake.find(:first, :conditions=>['programme_id=? and description=?', course_id, intake_group]).monthyear_intake
+            if intake
+              @supervised_student = Student.find(:all, :conditions=>['intake=? and course_id=?', intake, course_id]).map(&:id)
+           end
+          end
+        elsif main_task_first.include?("Ketua Program Pengkhususan")==false
+          course_ids=Programme.find(:all, :conditions => ['course_type IN(?)', ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"]]).map(&:id)
+          @supervised_student = Student.find(:all, :conditions => ['course_id IN(?)', course_ids]).map(&:id)
         end
-      end
+      end 
+      
     
       @supervised_student=[] if !@supervised_student
       sib_lect_coordinates_groups=[]
       if Programme.roots.map(&:name).include?(unit)
         sib_lect_maintask= Position.find(:all, :conditions=>['unit=? and staff_id!=?', unit, Login.current_login.staff_id]).map(&:tasks_main)
         sib_lect_maintask.each do |y|
-          coordinator2 =  y[/Penyelaras Kumpulan \d{1,}/]
+          coordinator2 =  y[/Penyelaras Kumpulan \D{1,}/]
           if coordinator2
             sib_lect_coordinates_groups << coordinator2.split(" ")[2]     #collect group with coordinator
           end
@@ -600,13 +606,17 @@ class Staff < ActiveRecord::Base
       elsif ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"].include?(unit)
         sib_lect_maintask_all_posbasik= Position.find(:all, :conditions=>['unit=? and staff_id!=?', unit, Login.current_login.staff_id]).map(&:tasks_main)
         sib_lect_maintask_all_posbasik.each do |x|
-          coordinator2 =  x[/Penyelaras Kumpulan \d{1,}/]
+          coordinator2 =  x[/Penyelaras Kumpulan \D{1,}/]
           prog_name_full2 = main_task_first[/Diploma Lanjutan \D{1,}/] if ["Diploma Lanjutan"].include?(unit)
-          prog_name_full2 = main_task_first[/Pos Basik \d{1,}/] if ["Pos Basik"].include?(unit)
-          prog_name_full2 = main_task_first[/Pengkhususan \d{1,}/] if ["Pengkhususan"].include?(unit)
-          prog_name2 =prog_name_full2.split(" ")[prog_name_full2.split(" ").size-1]
-          if coordinator2 && prog_name==prog_name2
-            sib_lect_coordinates_groups << coordinator2.split(" ")[2]     #collect group with coordinator
+          prog_name_full2 = main_task_first[/Pos Basik \D{1,}/] if ["Pos Basik"].include?(unit)
+          prog_name_full2 = main_task_first[/Pengkhususan \D{1,}/] if ["Pengkhususan"].include?(unit)
+          if main_task_first.include?("Ketua Program Pengkhususan")==false
+	    prog_name2 =prog_name_full2.split(" ")[prog_name_full2.split(" ").size-1]
+            if coordinator2 && prog_name==prog_name2
+              sib_lect_coordinates_groups << coordinator2.split(" ")[2]     #collect group with coordinator
+            end
+          else
+            sib_lect_coordinates_groups << coordinator2.split(" ")[2] unless coordinator2.nil?
           end
         end
       end

@@ -49,7 +49,17 @@ class Weeklytimetable < ActiveRecord::Base
         @weeklytimetables = Weeklytimetable.find(:all,:conditions => ['programme_id=?', programmeid])
       end
     else
-      @weeklytimetables = Weeklytimetable.find(:all)
+       current_roles=Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+       if current_roles.include?("Administration")
+         @weeklytimetables = Weeklytimetable.find(:all)
+       else 
+         post=Position.find(:first, :conditions => ['staff_id=? and unit IN(?)', Login.current_login.staff_id, Programme.roots.map(&:name)])
+         unless post.nil?
+           @weeklytimetables = Weeklytimetable.find(:all,:conditions => ['programme_id=?', Programme.find(:first, :conditions => ['name=?', post.unit])])
+         else
+          @weeklytimetables=Weeklytimetable.find(:all)
+         end
+       end 
     end
   end
 
