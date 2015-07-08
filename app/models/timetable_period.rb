@@ -1,5 +1,7 @@
 class TimetablePeriod < ActiveRecord::Base
   belongs_to :timetable
+ 
+  validates_uniqueness_of :sequence, :scope => :timetable_id
   
   DAY_CHOICE = [
        #  Displayed       stored in db
