@@ -37,12 +37,19 @@
     <td><%=h timetable.description %></td>
     <td><%=h check_kin{timetable.creator.name} %></td>
 		<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => timetable %></td>
-		<td width=10px><%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => timetable %></td>
-		<td width=10px ><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), timetable, :confirm => (t 'are_you_sure'), :method => :delete %></td>
+		<td width=10px><% if timetable.timetable_activated==false %><%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => timetable %><% end%></td>
+		<td width=10px ><% if timetable.valid_for_removal==true %><%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), timetable, :confirm => (t 'are_you_sure'), :method => :delete %><% end %></td>
   </tr>
 <% end %>
 </table>
-
+<div align="right">
+<font size="-2" color="blue">
+	<ul>
+		<li><%=t('timetable.editable_removal_restricted')%></li>
+		<li><%=t('timetable.editing_restricted')%></li>
+	</ul>
+</font>
+</div>
 <br />
 </div>
 
