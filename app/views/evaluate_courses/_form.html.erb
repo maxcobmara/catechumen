@@ -21,29 +21,43 @@
 					<% end %>
 				</td>
 			</tr>
-				
+			
 			<tr>
-				<td class="leftcol"><label for="subject_id"><%=t('evaluate_course.subject_id')%></label></td>
+				<td class="leftcol">
+					<SPAN class="span_staff" style="display: block;"><label for="staff_id"><%=t('evaluate_course.staff_id')%></span></label> 
+					<SPAN class="span_invited" style="display: none;"><label for="invite_lec"><%=t('evaluate_course.invite_lec')%></span></label>
+				</td>
 				<td>:</td>
-				<td><%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank =>(t 'select') %></td>
-				
-			</tr>
-	
-			<tr>
-				<td class="leftcol"><label for="staff_id"><%=t('evaluate_course.staff_id')%></label></td>
-				<td>:</td>
-					<%# @dept_position_staff_ids = Position.find_by_unit(@dept_unit).subtree.map(&:staff_id) %>
-					<%# @dept_staff = Staff.find(:all, :conditions => ['id IN(?)', @dept_position_staff_ids])%>
-				<td><%= f.collection_select :staff_id, @lecturer_list, :id, :name, :include_blank => (t 'select') %>
-					<%#= f.collection_select :staff_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+				<td>
+					<% if @evaluate_course.new_record? %>
+						<% isstaff="unchecked" %>
+					<% else %>
+						<% unless @evaluate_course.staff_id.blank? %>
+							<% isstaff="unchecked" %>
+						<% else %>
+							<% isstaff="checked" %>
+						<% end %>
+					<% end %>
+					<%= f.check_box :is_staff, :checked => isstaff, :id => 'is_staff' %><%=t('evaluate_course.staff_or_invited')%>
+					<SPAN class="span_staff" style="display: block;">
+						<%= f.collection_select :staff_id, @lecturer_list, :id, :name, :include_blank => (t 'select') %>
+					</SPAN>
+					<SPAN class="span_invited" style="display: none;"><br><%= f.text_field :invite_lec%></SPAN>
+				</td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="staff_id"><%=t('evaluate_course.invite_lec')%></label></td>
+				<td class="leftcol">
+					<SPAN class="span_staff" style="display: block;"><label for="subject_id"><%=t('evaluate_course.subject_id')%></label></span>
+					<SPAN class="span_invited" style="display: none;"><label for="invite_lec_topic"><%=t('evaluate_course.invite_lec_topic')%></label></span>
+				</td>
 				<td>:</td>
-				<td><%= f.text_field :invite_lec %></td>
+				<td>
+					<SPAN class="span_staff" style="display: block;"><%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank =>(t 'select') %></SPAN>
+					<SPAN class="span_invited" style="display: none;"><%= f.text_field :invite_lec_topic %></SPAN>
+				</td>
 			</tr>
-			
+
 			<tr>
 				<td class="leftcol"><label for="comment"><%=t('evaluate_course.comment')%></label></td>
 				<td>:</td>
@@ -212,3 +226,31 @@
 			
 </table>
 </div>
+
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			//show submit date
+
+			$j("input[id='is_staff']").change(function() {  
+			 if($j('#is_staff').is(':checked')) { 
+			    $j(".span_invited").show("highlight"); 
+				$j(".span_staff").hide(""); 
+			 }else		{
+			    $j(".span_invited").hide(""); 
+				$j(".span_staff").show("highlight"); 
+			 }	
+			});
+
+			$j("input[id='is_staff']").each(function() {  
+			 if($j('#is_staff').is(':checked')) { 
+			    $j(".span_invited").show("highlight"); 
+				$j(".span_staff").hide(""); 
+			 }else		{
+			    $j(".span_invited").hide(""); 
+				$j(".span_staff").show("highlight"); 
+			 }	
+			});
+
+	});
+</script>

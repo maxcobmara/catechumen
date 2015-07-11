@@ -17,7 +17,7 @@
     <!--<th>Student Name</th>-->
     <th><%=t('evaluate_course.programme_subjectname')%></th>
     <th><%=t('evaluate_course.evaldate')%></th>
-    <th><%=t('evaluate_course.staff_id')%></th>
+    <th><%=t('evaluate_course.staff_id')%> / <%=t('evaluate_course.invite_lec')%></th>
     <th colspan=4 class="ac"><%= t 'action' %></th>
     
   </tr>
@@ -25,11 +25,10 @@
 <% @evaluate_courses.each do |evaluate_course| %>
   <tr>
 	<!--<td><%#= evaluate_course.student_id.blank? ? "No Student" : evaluate_course.studentevaluate.name %></td>-->
-	<!--20Feb2013-subject added-->
-	<td><%= evaluate_course.course_id.blank? ? (t 'evaluate_course.no_course') : evaluate_course.stucourse.programme_coursetype_name+" - "+evaluate_course.subjectevaluate.subject_list %></td>
-	<!--20Feb2013-subject added-->
+	<td><%=evaluate_course.stucourse.programme_coursetype_name+" - "%>
+		<%= evaluate_course.subject_id.blank? ? "<b>"+(t 'evaluate_course.invite_lec_topic')+" : </b>"+evaluate_course.invite_lec_topic : evaluate_course.subjectevaluate.subject_list %></td>
 	<td ><%= evaluate_course.evaluate_date.blank? ? "-" : l(evaluate_course.evaluate_date) %></td>
-	<td><%= evaluate_course.staff_id.blank? ? (t 'evaluate_course.no_staff') : evaluate_course.staffevaluate.name %></td>
+	<td><%= evaluate_course.staff_id.blank? ? "<b>"+(t 'evaluate_course.no_staff')+"</b>"+evaluate_course.invite_lec : evaluate_course.staffevaluate.name %></td>
 	
 	<td width=10px >
 	<%# if permitted_to? :show, evaluate_course %>
