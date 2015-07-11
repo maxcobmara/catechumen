@@ -281,11 +281,11 @@
 				<%# permitted_to? :read, :trainingnotes do %>
 				<li><%= link_to (t 'menu.training_notes'),  {:controller => 'trainingnotes',	:action => 'index'} %></li>
 				<%# end %>
-				<% permitted_to? :personalize_index, :weeklytimetables do %>
-					<li><%#= link_to (t 'menu.personalised_timetable'),  {:controller => 'timetables', :action => 'calendar'} %>
-					<%= link_to (t 'menu.personalised_timetable'),  {:controller => 'weeklytimetables', :action => 'personalize_index'} %>
-					</li>
-				<% end %>
+				<%# permitted_to? :personalize_index, :weeklytimetables do %>
+					<!--<li><%#= link_to (t 'menu.personalised_timetable'),  {:controller => 'timetables', :action => 'calendar'} %>
+					<%#= link_to (t 'menu.personalised_timetable'),  {:controller => 'weeklytimetables', :action => 'personalize_index'} %>
+					</li>-->
+				<%# end %>
 				<% permitted_to? :manage, :topics do %>
 					 <li><a href="http://<%= request.host  %>:3003/training/lesson_plans"><%= t('menu.new_lesson_plan_report') %></a></li>
 					 <li><a href="http://<%= request.host  %>:3003/training/trainingnotes"><%= t('menu.new_training_notes') %></a></li>
@@ -293,11 +293,11 @@
 				<% permitted_to? :update, :weeklytimetables do %>
 					 <!--restrict all programmes/posbasic lecturer not managing any WT -->
 					 <% if Weeklytimetable.other_lects!=true%>
-						  <li><a href="http://<%= request.host  %>:3003/training/weeklytimetables"><%= t('menu.new_timetable_entries') %></a></li>
+						  <li><a href="http://<%= request.host  %>:3003/training/weeklytimetables"><%= t('menu.timetable_entries') %></a></li>
 					 <% end %>
 				<% end %>
 				<% permitted_to? :personalize_index, :weeklytimetables do %>
-					<li><a href="http://<%= request.host  %>:3003/training/weeklytimetables/personalize_index"><%= t('menu.new_personalised_timetable') %></a></li>
+					<li><a href="http://<%= request.host  %>:3003/training/weeklytimetables/personalize_index"><%= t('menu.personalised_timetable') %></a></li>
 				<% end %>
 			</ul>
 	</li>

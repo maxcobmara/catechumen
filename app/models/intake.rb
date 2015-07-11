@@ -1,5 +1,6 @@
 class Intake < ActiveRecord::Base
   before_save :apply_month_year_if_nil
+  before_destroy :valid_for_removal
   
   belongs_to :programme, :foreign_key => 'programme_id'
   belongs_to :coordinator, :class_name => 'Staff', :foreign_key => 'staff_id'
@@ -118,5 +119,14 @@ class Intake < ActiveRecord::Base
    
   #24March2013==========
   
+  private
+  
+  def valid_for_removal
+    if weeklytimetables.count > 0
+      return false
+    else
+      return true
+    end
+  end
     
 end
