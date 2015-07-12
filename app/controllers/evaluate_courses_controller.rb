@@ -32,12 +32,13 @@ class EvaluateCoursesController < ApplicationController
             if params[:search]
               @evaluate_courses = EvaluateCourse.with_permissions_to(:index).search3(params[:search])
             else
-              @evaluate_courses = EvaluateCourse.with_permissions_to(:index).sort_by{|x|[x.staff_id, x.subject_id]}
+              @evaluate_courses = EvaluateCourse.with_permissions_to(:index).find(:all, :order =>'course_id, staff_id, subject_id ASC')
             end
           end
         end
       end 
     end
+    @evaluate_courses=@evaluate_courses.paginate(:per_page => 10, :page => params[:page])
 
     respond_to do |format|
       if (@position_exist && current_login.isstaff==true) || current_login.isstaff==false

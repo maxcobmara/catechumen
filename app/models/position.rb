@@ -145,7 +145,7 @@ class Position < ActiveRecord::Base
      end
   end
   
-  #use in authrules - only for Programme Manager, Admin
+  #use in authrules - only for Programme Manager, Admin (for Course Evaluation)
   def self.my_programmeid(staffid)
     staffpost=Position.find(:first, :conditions => ['staff_id=?', staffid])
     unitname=staffpost.unit

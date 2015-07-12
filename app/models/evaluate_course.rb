@@ -81,19 +81,19 @@ class EvaluateCourse < ActiveRecord::Base
   end
   
   def self.search(programmeid)
-    find(:all, :conditions => ['course_id=?', programmeid], :order =>'staff_id, subject_id ASC')
+    find(:all, :conditions => ['course_id=?', programmeid], :order =>'course_id, staff_id, subject_id ASC')
   end
   
   def self.search2(programmeid, search)
     ec_ids=EvaluateCourse.search3(search).map(&:id)
-    @evaluate_courses=EvaluateCourse.find(:all, :conditions => ['course_id=? and id IN(?)', programmeid, ec_ids])
+    @evaluate_courses=EvaluateCourse.find(:all, :conditions => ['course_id=? and id IN(?)', programmeid, ec_ids], :order =>'course_id, staff_id, subject_id ASC')
   end
   
   def self.search3(search)
     if search
       staff_ids=Staff.find(:all, :conditions => ['name ILIKE(?)', "%#{search}%"]).map(&:id)
       subject_ids=Programme.find(:all, :conditions => ['(name ILIKE(?) or code ILIKE(?)) and course_type=?',"%#{search}%", "%#{search}%", "Subject"]).map(&:id)
-      @evaluate_courses = EvaluateCourse.find(:all, :conditions => ['staff_id IN(?) or subject_id IN(?) or invite_lec ILIKE(?)', staff_ids, subject_ids, "%#{search}%"])
+      @evaluate_courses = EvaluateCourse.find(:all, :conditions => ['staff_id IN(?) or subject_id IN(?) or invite_lec ILIKE(?)', staff_ids, subject_ids, "%#{search}%"], :order =>'course_id, staff_id, subject_id ASC')
     end
   end
   

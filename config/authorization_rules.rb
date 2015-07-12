@@ -263,7 +263,7 @@ authorization do
       end
       has_permission_on :leaveforstudents, :to => [:create]
       has_permission_on :evaluate_courses, :to => :create
-      has_permission_on :evaluate_courses, :to => [:read, :update] do
+      has_permission_on :evaluate_courses, :to => [:read, :update, :courseevaluation] do
         if_attribute :student_id => is {Login.current_login.student_id}
       end
   end

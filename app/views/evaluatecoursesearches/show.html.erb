@@ -36,6 +36,7 @@
 			<% @ev_topic_sum=0 %>
 			<% @ev_work_sum=0 %>
 			<% @ev_note_sum=0 %>
+			<% @ev_assessment_sum=0 %>
 			<% @total_sum=0%>
 			<% @total_student=@evaluatecoursesearch.evaluatecourses.count%>
 			<%# if !@evaluatecoursesearch.subject_id.blank? || !@evaluatecoursesearch.programme_id.blank? %>
@@ -71,6 +72,7 @@
 							<th><%=t('equery.evaluate_course.question')%>6</th>
 							<th><%=t('equery.evaluate_course.question')%>7</th>
 							<th><%=t('equery.evaluate_course.question')%>8</th>
+							<th><%=t('equery.evaluate_course.question')%>9</th>
 							<th><%=t('equery.total')%></th>
 							<th><%=t('equery.links')%></th>
 						</tr>
@@ -88,7 +90,8 @@
 						<td align="center"><%=evaluate_course.ev_topic %><% @ev_topic_sum+=evaluate_course.ev_topic %></td>
 						<td align="center"><%=evaluate_course.ev_work %><% @ev_work_sum+=evaluate_course.ev_work %></td>
 						<td align="center"><%=evaluate_course.ev_note %><% @ev_note_sum+=evaluate_course.ev_note %></td>
-						<td align="center"><%=@total_each = evaluate_course.ev_obj+evaluate_course.ev_knowledge+evaluate_course.ev_deliver+evaluate_course.ev_content+evaluate_course.ev_tool+evaluate_course.ev_topic+evaluate_course.ev_work+evaluate_course.ev_note%><%@total_sum+=@total_each%></td>
+						<td align="center"><%=evaluate_course.ev_assessment %><% @ev_assessment_sum+=evaluate_course.ev_assessment %></td>
+						<td align="center"><%=@total_each = evaluate_course.ev_obj+evaluate_course.ev_knowledge+evaluate_course.ev_deliver+evaluate_course.ev_content+evaluate_course.ev_tool+evaluate_course.ev_topic+evaluate_course.ev_work+evaluate_course.ev_note+evaluate_course.ev_assessment %><%@total_sum+=@total_each%></td>
 						<td>
 							<% if Position.my_programmeid(Login.current_login.staff_id).include?(evaluate_course.course_id) %>
 								<%= link_to (t 'equery.evaluate_course.evaluation_form'),:controller=>'evaluate_courses', :action => 'courseevaluation', :id => evaluate_course.id %>
@@ -108,6 +111,7 @@
 					<td align="center"><%=@ev_topic_sum%></td>
 					<td align="center"><%=@ev_work_sum%></td>
 					<td align="center"><%=@ev_note_sum%></td>
+					<td align="center"><%=@ev_assessment_sum%></td>
 					<td align="center"><%=@total_sum%></td>
 					<td align="center">&nbsp;</td>
 				</tr>
@@ -181,6 +185,14 @@
 						<% end %>
 					</td>
 					<td align="center">
+					<%@avg9=@ev_assessment_sum/@total_student%>
+						<% if @avg9 % 1 == 0 %><!--if returns integer-->
+							<%=@avg9%>
+						<% else %>
+							<%=number_with_precision(@avg9,:precision=>2)%>
+						<% end %>
+					</td>
+					<td align="center">
 						<% @average=@total_sum/@total_student%>
 						<% if @average % 1 == 0 %><!--if returns integer-->
 							<%=@average%>
@@ -190,7 +202,7 @@
 					</td>
 					<td align="center">&nbsp;</td><!--blank field-->
 				</tr>
-				<tr><td colspan=13>&nbsp;</td></tr><!--blank row-->
+				<tr><td colspan=14>&nbsp;</td></tr><!--blank row-->
 			<% end %>
 		</table>
 	<br>
