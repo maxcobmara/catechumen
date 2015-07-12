@@ -1,6 +1,8 @@
 class EvaluateCoursesController < ApplicationController
   # GET /evaluate_courses
   # GET /evaluate_courses.xml
+  #filter_resource_access
+  filter_access_to :all
   def index
     #@evaluate_courses = EvaluateCourse.all
     ###--just added
@@ -11,11 +13,11 @@ class EvaluateCoursesController < ApplicationController
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end
       unless @programme.nil?
-        @evaluate_courses = EvaluateCourse.find(:all, :conditions => ['course_id=?',@programme.id])
+        @evaluate_courses = EvaluateCourse.with_permissions_to(:index).find(:all, :conditions => ['course_id=?',@programme.id])
       else
         if @lecturer_programme == 'Commonsubject'
         else
-          @evaluate_courses = EvaluateCourse.all
+          @evaluate_courses = EvaluateCourse.with_permissions_to(:index)  #.all
         end
       end
     end 

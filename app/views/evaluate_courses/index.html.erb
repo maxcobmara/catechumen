@@ -8,7 +8,9 @@
 	</div>
 </div>	
 <div class="toolbar">
-	<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'evaluate_course.new')) + (t 'evaluate_course.new'), new_evaluate_course_path %></p>
+	<% permitted_to? :create, :evaluate_courses do %>
+		<p><%= link_to image_tag("add.png", :border => 0, :title => (t 'evaluate_course.new')) + (t 'evaluate_course.new'), new_evaluate_course_path %></p>
+	<% end %>
 </div>
 <BR><BR>
 <div class="indextable">
@@ -30,35 +32,38 @@
 	<td ><%= evaluate_course.evaluate_date.blank? ? "-" : l(evaluate_course.evaluate_date) %></td>
 	<td><%= evaluate_course.staff_id.blank? ? "<b>"+(t 'evaluate_course.no_staff')+"</b>"+evaluate_course.invite_lec : evaluate_course.staffevaluate.name %></td>
 	
-	<td width=10px >
-	<%# if permitted_to? :show, evaluate_course %>
-	<%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => evaluate_course %><%# end %></td>
-	
-	
+    <td width=10px >
+        <% permitted_to? :show, :evaluate_courses do %>
+	      <%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => evaluate_course %>
+	<% end %>
+    </td>
+
     <td width=10px>
-	<%# if permitted_to? :update, evaluate_course %>
-	<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => evaluate_course %><%# end %></td>
+	<% permitted_to? :update, :evaluate_courses do %>
+	      <%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => evaluate_course %>
+	<% end %>
+    </td>
    
-  	<%# if permitted_to? :penilaipensyarah, evaluate_lecturer %>
-	<td width=10px>
-	<%= link_to image_tag("printer.png", :border => 0, :title =>(t 'evaluate_course.eval_form')), :action => 'courseevaluation', :id => evaluate_course %>
-	</td><%# end %>
-	
-	
-	<%# if permitted_to? :destroy, evaluate_course %>
     <td width=10px>
-	<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), evaluate_course, :confirm => (t 'are_you_sure'), :method => :delete %></td><%# end %>
+        <% permitted_to? :courseevaluation, :evaluate_courses do %>
+	      <%= link_to image_tag("printer.png", :border => 0, :title =>(t 'evaluate_course.eval_form')), :action => 'courseevaluation', :id => evaluate_course %>
+	<% end %>
+    </td>
 
-  
-
+    <td width=10px>
+	<% permitted_to? :destroy, :evaluate_courses do %>
+	      <%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), evaluate_course, :confirm => (t 'are_you_sure'), :method => :delete %>
+	<% end %>
+    </td>
+    
   </tr>
 <% end %>
 </table>
 </div>
 <br />
-<%# if permitted_to? :create, @evaluate_lecturer %>
-<%= link_to (t 'evaluate_course.new'), new_evaluate_course_path %>
-<%# end %>
+<% permitted_to? :create, :evaluate_courses do %>
+	<%= link_to (t 'evaluate_course.new'), new_evaluate_course_path %>
+<% end %>
 
 
 

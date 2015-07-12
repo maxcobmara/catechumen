@@ -19,7 +19,7 @@
 <table width=100% border="0">
 	<tr>
 		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="108" height="86.4"/></th>
-		<th valign="centre"><b>Kolej Sains Kesihatan Bersekutu Johor Bahru<br>Penilaian / Maklum Balas Kursus</b></th>
+		<th valign="centre"><b>Kolej Sains Kesihatan Bersekutu Johor Bahru<br><%=t('evaluate_course.title2')%></b></th>
 		<th width="2%"><img border="0" src="/images/kskb_logo-6.png" alt="kskbjb" /></th>
 	</tr>
 </table>
@@ -28,7 +28,7 @@
 
 <table width=100% cellspacing="0" cellpadding="7" border="0">
 	<tr>
-		<td colspan=4 align="center"><font color="black", size="3">(Diisi oleh Pelatih)</td>	
+		<td colspan=4 align="center"><font color="black", size="3"><%=t('evaluate_course.by_students')%></td>
 	</tr>
 
 </table>
@@ -38,15 +38,17 @@
 		<td>
 			<table width=100% border="0" cellspacing="0" cellpadding="10">
 			<tr>
-			<td>Kursus : <%= @evaluate_course.stucourse.programme_list %></td>
+			<td><%=t('evaluate_course.course_id')%> : <%= @evaluate_course.stucourse.programme_list %></td>
 		    <td></td>
 	        </tr>
 	        <tr>
-		    <td>Subjek / Topik : <%= @evaluate_course.subject_id.blank? ? @evaluate_course.invite_lec_topic : @evaluate_course.subjectevaluate.subject_list %> </td>
-		    <td>Tarikh: <%= @evaluate_course.evaluate_date.blank? ? "-" : l(@evaluate_course.evaluate_date, :format=>"%d-%b-%Y")  %></td>
+		    <td><%= @evaluate_course.subject_id.blank? ? (t 'evaluate_course.invite_lec_topic') : (t 'evaluate_course.subject_id') %>
+			  : <%= @evaluate_course.subject_id.blank? ? @evaluate_course.invite_lec_topic : @evaluate_course.subjectevaluate.subject_list %> </td>
+		    <td align="right"><%=t('evaluate_course.evaldate')%>: <%= @evaluate_course.evaluate_date.blank? ? "-" : l(@evaluate_course.evaluate_date, :format=>"%d-%b-%Y")  %></td>
             </tr>
             <tr>
-            <td>Nama Pensyarah / Pensyarah Jemputan : <%= @evaluate_course.staff_id.blank? ? @evaluate_course.invite_lec : @evaluate_course.staffevaluate.name %> </td>
+            <td><%= @evaluate_course.staff_id.blank? ? (t 'evaluate_course.invite_lec') : (t 'evaluate_course.staff_id') %>
+		    : <%= @evaluate_course.staff_id.blank? ? @evaluate_course.invite_lec : @evaluate_course.staffevaluate.name %> </td>
             <td></td>
             </tr>
             </table>
@@ -78,13 +80,13 @@
 <BR>
 <table width=100% cellspacing="0" cellpadding="6" font size="5px" border="1">
 	<tr>
-		<th align="center">BIL</th>
-		<th align="center">PERKARA</th>
-		<th align="center" colspan=9><center>SKOR</center></th>
+		<th align="center">NO</th>
+		<th align="center"><%=t('evaluate_course.description').upcase%></th>
+		<th align="center" colspan=9><center><%=t('evaluate_course.score').upcase%></center></th>
 		</tr>
 	<tr>
 		<td align="center">1.</td>
-		<td>Pencapaian Objektif Pelajaran</td>	
+		<td><%=t('evaluate_course.objective_achieved')%></td>	
 		<td><center><% if @evaluate_course.ev_obj == 1  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#D5D3D3"><font color="#D5D3D3">1</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_obj == 2  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_obj == 3  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
@@ -98,7 +100,7 @@
 		
 	<tr>
 		<td align="center">2.</td>
-		<td>Pengetahuan Pensyarah Tentang Pelajaran yang Diajar</td>	
+		<td><%=t('evaluate_course.lecturer_knowledge')%></td>	
 		<td><center><% if @evaluate_course.ev_knowledge == 1  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_knowledge == 2  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_knowledge == 3  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
@@ -112,7 +114,7 @@
 
 	<tr>
 		<td align="center">3.</td>
-		<td>Syarahan Menepati Masa yang Ditetapkan</td>	
+		<td><%=t('evaluate_course.lecturer_q_achievement')%></td>	
 		<td><center><% if @evaluate_course.ev_deliver == 1  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_deliver == 2  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_deliver == 3  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
@@ -126,7 +128,7 @@
 		
 	<tr>
 		<td align="center">4.</td>
-		<td>Isi Kandungan Pelajaran</td>	
+		<td><%=t('evaluate_course.content')%></td>	
 		<td><center><% if @evaluate_course.ev_content == 1  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_content == 2  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_content == 3  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
@@ -140,7 +142,7 @@
 		
 	<tr>
 		<td align="center">5.</td>
-		<td>Mutu Alat Pandang Dengar yang Digunakan</td>	
+		<td><%=t('evaluate_course.training_aids_quality')%></td>	
 		<td><center><% if @evaluate_course.ev_tool == 1  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_tool == 2  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_tool == 3  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
@@ -154,7 +156,7 @@
 		
 	<tr>
 		<td align="center">6.</td>
-		<td>Kesesuaian Turutan Topik Dalam Jadual</td>	
+		<td><%=t('evaluate_course.suitability_topic_sequence')%> </td>	
 		<td><center><% if @evaluate_course.ev_topic == 1  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_topic == 2  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_topic == 3  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
@@ -168,7 +170,7 @@
 		
 	<tr>
 		<td align="center">7.</td>
-		<td>Keberkesanan pengajaran dan pembelajaran dengan interaksi antara pensyarah dan pelajar.</td>	
+		<td><%=t('evaluate_course.effectiveness_teaching_learning')%></td>	
 		<td><center><% if @evaluate_course.ev_work == 1  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_work == 2  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_work == 3  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
@@ -182,7 +184,7 @@
 		
 	<tr>
 		<td align="center">8.</td>
-		<td>Faedah Bahan/Nota yang Diedarkan</td>	
+		<td><%=t('evaluate_course.benefit_notes')%></td>	
 		<td><center><% if @evaluate_course.ev_note == 1  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_note == 2  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_note == 3  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
@@ -196,7 +198,7 @@
 	
 	<tr>
 		<td align="center">9.</td>
-		<td>Penilaian yang dilakukan bersesuaian dengan topik.</td>	
+		<td><%=t('evaluate_course.suitable_assessment')%></td>	
 		<td><center><% if @evaluate_course.ev_assessment == 1  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_assessment == 2  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
 		<td><center><% if @evaluate_course.ev_assessment == 3  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
@@ -211,7 +213,7 @@
 <br>
 <table width=100% cellspacing="0" cellpadding="3" font size="5px" border="0">
 	<tr>
-		<td colspan=2><b>CATATAN/KOMEN</H3> : <%= @evaluate_course.comment %><BR><BR></td>
+		<td colspan=2><b><%=t('evaluate_course.comment').upcase %></H3> : <%= @evaluate_course.comment %><BR><BR></td>
 	</tr>
 	
 	<tr>
@@ -228,19 +230,13 @@
 	
 	<tr>
 		<td>&nbsp;<!--<b>No. K/Pengenalan : <%#= @evaluate_course.student_id.blank? ? "No Student" : @evaluate_course.studentevaluate.icno %></b>--></td>
-		<td align="right"><b>Tarikh:</b> <%= @evaluate_course.evaluate_date.blank? ? "-" : l(@evaluate_course.evaluate_date, :format => "%d-%b-%Y")  %></td>
+		<td align="right"><b><%=t('evaluate_course.evaldate')%>:</b> <%= @evaluate_course.evaluate_date.blank? ? "-" : l(@evaluate_course.evaluate_date, :format => "%d-%b-%Y")  %></td>
 	</tr>
 
 </table>
 
-	<table width=100% cellspacing="0" cellpadding="5" border="0">
-		<tr>
-			<td colspan=2 align="center">1 daripada 1</td>
-		</tr>
-	</table>
 </div>
 </div>
-<p align="center"><i>Dokumen ini adalah cetakan komputer dan tidak memerlukan tandatangan.</i></p>
 </fieldset>
 
 <BR>

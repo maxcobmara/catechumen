@@ -30,12 +30,12 @@
 				<td>:</td>
 				<td>
 					<% if @evaluate_course.new_record? %>
-						<% isstaff="unchecked" %>
+						<% isstaff="checked" %>
 					<% else %>
 						<% unless @evaluate_course.staff_id.blank? %>
-							<% isstaff="unchecked" %>
-						<% else %>
 							<% isstaff="checked" %>
+						<% else %>
+							<% isstaff="unchecked" %>
 						<% end %>
 					<% end %>
 					<%= f.check_box :is_staff, :checked => isstaff, :id => 'is_staff' %><%=t('evaluate_course.staff_or_invited')%>
@@ -247,21 +247,21 @@
 
 			$j("input[id='is_staff']").change(function() {  
 			 if($j('#is_staff').is(':checked')) { 
-			    $j(".span_invited").show("highlight"); 
-				$j(".span_staff").hide(""); 
-			 }else		{
 			    $j(".span_invited").hide(""); 
 				$j(".span_staff").show("highlight"); 
+			 }else		{
+			    $j(".span_invited").show("highlight");  
+				$j(".span_staff").hide("");
 			 }	
 			});
 
 			$j("input[id='is_staff']").each(function() {  
 			 if($j('#is_staff').is(':checked')) { 
+			    $j(".span_invited").hide("");
+				$j(".span_staff").show("highlight"); 
+			 }else		{
 			    $j(".span_invited").show("highlight"); 
 				$j(".span_staff").hide(""); 
-			 }else		{
-			    $j(".span_invited").hide(""); 
-				$j(".span_staff").show("highlight"); 
 			 }	
 			});
 

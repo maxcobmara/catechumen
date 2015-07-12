@@ -38,6 +38,7 @@ authorization do
     has_permission_on :timetables, :to => :manage
     has_permission_on :weeklytimetables, :to => :manage
     has_permission_on :trainingnotes, :to => :manage
+    has_permission_on :evaluate_courses, :to => :manage
     
     #Library Menu Items
     has_permission_on [:librarytransactions, :books], :to => :manage
@@ -294,6 +295,10 @@ authorization do
     has_permission_on :ptdos, :to => :approve do
       if_attribute :staff_id => is_in {Login.current_login.staff.unit_members}
     end
+    has_permission_on :evaluate_courses, :to => [:read, :courseevaluation] do
+      if_attribute :course_id => is_in {Position.my_programmeid(Login.current_login.staff_id)} # is_in {[5]}
+    end
+    has_permission_on :evaluatecoursesearches, :to => :manage
   end
 #--21march2013-new role added  
   role :coordinator do
@@ -341,7 +346,7 @@ authorization do
       if_attribute :staff_id => is {Login.current_login.staff_id}
       if_attribute :tpa_id => is {Login.current_login.staff_id}
     end
-    
+    Programme
     #HACK : weeklytimetables - CREATE restricted in Index (if exist in Intakes)
      has_permission_on :weeklytimetables, :to => [:read, :update] , :join_by => :or do
        if_attribute :prepared_by => is_in {Login.current_login.staff_id} 
@@ -378,7 +383,6 @@ authorization do
     has_permission_on :personalizetimetablesearches, :to => :read
     has_permission_on :examsearches, :to => :read
     has_permission_on :examresultsearches, :to => :read
-    has_permission_on :evaluatecoursesearches, :to => :read
     has_permission_on :examanalysissearches, :to => :read
   end
   

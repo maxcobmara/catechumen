@@ -13,7 +13,7 @@ class EvaluatecoursesearchesController < ApplicationController
   def create
     @searchevaluatecoursetype = params[:method]
     if @searchevaluatecoursetype=='1' || @searchevaluatecoursetype == 1
-        @evaluatecoursesearch = Evaluatecoursesearch.new(params[:evaluatecoursesearch])
+      @evaluatecoursesearch = Evaluatecoursesearch.new(params[:evaluatecoursesearch])
     end
     if @evaluatecoursesearch.save
       #flash[:notice] = "Successfully created evaluatecoursesearch."
@@ -45,6 +45,18 @@ class EvaluatecoursesearchesController < ApplicationController
       @lecturer_list2 = Staff.find(:all, :conditions => ['id IN(?)', lecturer_ids], :order=> 'name ASC')
     end
     render :partial => 'view_lecturer', :layout => false
+  end
+  
+  def view_invitation
+     unless params[:programmeid].blank?
+       programmeid=params[:programmeid]
+       invitation_names = EvaluateCourse.find(:all, :conditions => ['invite_lec is not null and course_id=?', programmeid]).map(&:invite_lec).uniq
+     else
+       invitation_names = EvaluateCourse.find(:all, :conditions => ['invite_lec is not null']).map(&:invite_lec).uniq
+     end
+     @invite_lecturer_list=[]
+     invitation_names.each{|x|@invite_lecturer_list << [x, x]}
+     render :partial => 'view_invitation', :layout => false
   end
 
   def show

@@ -27,7 +27,6 @@
 		
 		<%=t('equery.evaluate_course.total')%> : <%=@evaluatecoursesearch.evaluatecourses.count%><br><br>
 		
-		<!---->	
 		<table border=1 cellpadding=3 cellspacing=0>
 			<% @ev_obj_sum=0 %>
 			<% @ev_knowledge_sum=0 %>
@@ -38,15 +37,25 @@
 			<% @ev_work_sum=0 %>
 			<% @ev_note_sum=0 %>
 			<% @total_sum=0%>
-			<% @total_student=@evaluatecoursesearch.evaluatecourses.count%>	
-			<% @by_subject = @evaluatecoursesearch.evaluatecourses.group_by{|x|x.subject_id}%>
+			<% @total_student=@evaluatecoursesearch.evaluatecourses.count%>
+			<%# if !@evaluatecoursesearch.subject_id.blank? || !@evaluatecoursesearch.programme_id.blank? %>
+			<% if @evaluatecoursesearch.is_staff==true %>
+				<% @by_subject = @evaluatecoursesearch.evaluatecourses.group_by{|x|x.subject_id}%>
+			<!--###############-->
+			<% else %>
+				<%# @by_subject= @evaluatecoursesearch.evaluatecourses.group_by(&:invite_lec) %>
+				<% @by_subject= @evaluatecoursesearch.evaluatecourses.group_by(&:course_id) %>
+			<% end %>
+			<!--###############-->
 			<% @by_subject.each do |subject,evaluations|%>
 				<tr style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">
 					<td colspan=15>
-						<%=t('student.course_id')%> : <%=Programme.find(subject).root.programme_coursetype_name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<%=t('evaluate_course.subject_id')%> : <%=Programme.find(subject).subject_list %>
+						<%=t('student.course_id')%> : 
+							<%=Programme.find(evaluations.first.course_id).programme_coursetype_name%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<%=evaluations.first.subject_id.blank? ? t('evaluate_course.invite_lec_topic') : t('evaluate_course.subject_id')%> : 
+							<%= evaluations.first.subject_id.blank? ? evaluations.first.invite_lec_topic : Programme.find(subject).subject_list %>
 					</td>
-			</tr>
+				</tr>
 				<% evaluations.each_with_index do |evaluate_course, index| %>
 					<!--display heading before first record only-->
 					<% if index == 0 %>
@@ -70,7 +79,7 @@
 					<tr>
 						<td><%=index+1%></td>
 						<td align="center"><%=evaluate_course.evaluate_date.strftime("%d-%m-%Y") %></td>
-						<td><%=evaluate_course.staffevaluate.name %></td>
+						<td><%=evaluate_course.staff_id.blank? ? evaluate_course.invite_lec : evaluate_course.staffevaluate.name %></td>
 						<td align="center"><%=evaluate_course.ev_obj %><% @ev_obj_sum+=evaluate_course.ev_obj %></td>
 						<td align="center"><%=evaluate_course.ev_knowledge %><% @ev_knowledge_sum+=evaluate_course.ev_knowledge%></td>
 						<td align="center"><%=evaluate_course.ev_deliver %><% @ev_deliver_sum+=evaluate_course.ev_deliver%></td>
@@ -80,7 +89,11 @@
 						<td align="center"><%=evaluate_course.ev_work %><% @ev_work_sum+=evaluate_course.ev_work %></td>
 						<td align="center"><%=evaluate_course.ev_note %><% @ev_note_sum+=evaluate_course.ev_note %></td>
 						<td align="center"><%=@total_each = evaluate_course.ev_obj+evaluate_course.ev_knowledge+evaluate_course.ev_deliver+evaluate_course.ev_content+evaluate_course.ev_tool+evaluate_course.ev_topic+evaluate_course.ev_work+evaluate_course.ev_note%><%@total_sum+=@total_each%></td>
-						<td><%= link_to (t 'equery.evaluate_course.evaluation_form'),:controller=>'evaluate_courses', :action => 'courseevaluation', :id => evaluate_course.id %></td>
+						<td>
+							<% if Position.my_programmeid(Login.current_login.staff_id).include?(evaluate_course.course_id) %>
+								<%= link_to (t 'equery.evaluate_course.evaluation_form'),:controller=>'evaluate_courses', :action => 'courseevaluation', :id => evaluate_course.id %>
+							<% end %>
+						</td>
 					</tr>
 				<% end %>
 			
@@ -180,6 +193,5 @@
 				<tr><td colspan=13>&nbsp;</td></tr><!--blank row-->
 			<% end %>
 		</table>
-		<!---->
 	<br>
 </div>

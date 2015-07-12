@@ -320,7 +320,11 @@
 						</ul></li>
 					</ul>
 				</li>
-				<li><%= link_to t('menu.feedback_courseevaluate'), {:controller => 'evaluate_courses', :action => 'index'} %></li>
+				<% permitted_to? :read, :evaluate_courses do %>
+					<li><%= link_to t('menu.feedback_courseevaluate'), {:controller => 'evaluate_courses', :action => 'index'} %></li>
+					<li><a href="http://<%= request.host  %>:3003/exam/evaluate_courses"><%= t('menu.new_feedback_courseevaluate')%></a>
+					</li>
+				<% end %>
 				<li><%= link_to t('menu.exam_analysis'), {:controller => 'examanalyses', :action => 'index'} %></li>
 			</ul>
 	</li>
