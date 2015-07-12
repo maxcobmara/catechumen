@@ -262,6 +262,10 @@ authorization do
         if_attribute :student_id => is {Login.current_login.student_id}
       end
       has_permission_on :leaveforstudents, :to => [:create]
+      has_permission_on :evaluate_courses, :to => :create
+      has_permission_on :evaluate_courses, :to => [:read, :update] do
+        if_attribute :student_id => is {Login.current_login.student_id}
+      end
   end
   
   role :student_administrator do

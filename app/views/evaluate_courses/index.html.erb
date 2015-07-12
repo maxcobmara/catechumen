@@ -4,6 +4,10 @@
   <div class="box-head">
     <h2 class="left"><%=t('evaluate_course.title')%></h2>
 		<div class="right">
+			<% form_tag evaluate_courses_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search], :placeholder => (t 'evaluate_course.staff_id')+", "+(t 'evaluate_course.subject_id') %>
+			<%= submit_tag (t 'search'), :name => :searchby %>
+			<% end %>
 		</div>
 	</div>
 </div>	

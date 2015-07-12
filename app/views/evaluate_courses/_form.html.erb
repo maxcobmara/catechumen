@@ -3,13 +3,17 @@
 <div class="tform">
 	<H2><%=t('evaluate_course.info')%></H2>
   <table width=100% >
-			<!--
-			<tr>
-				<td class="leftcol"><label for="student_id">Student Name</label></td>
-				<td>:</td>
-				<td><%#= f.collection_select :student_id, Student.find(:all), :id, :name, :include_blank => true %></td>
-			</tr>-->
-			
+	<% permitted_to? :create, :evaluate_courses do %>
+		<% if Login.current_login.isstaff==true%>
+		<tr>
+			<td class="leftcol"><label for="student_id"><%=t('evaluate_course.student_id')%></label></td>
+			<td>:</td>
+			<td><%= f.collection_select :student_id, Student.find(:all, :order =>'course_id ASC'), :id, :matrix_name, :include_blank => (t 'select') %></td>
+		</tr>
+		<% else %>
+			<%=f.hidden_field :student_id, :value => @studentid%>
+		<% end %>
+	<% end %>
 			<tr>
 				<td class="leftcol"><label for="course_id"><%=t('evaluate_course.course_id')%></label></td>
 				<td>:</td>
@@ -21,7 +25,7 @@
 					<% end %>
 				</td>
 			</tr>
-			
+		
 			<tr>
 				<td class="leftcol">
 					<SPAN class="span_staff" style="display: block;"><label for="staff_id"><%=t('evaluate_course.staff_id')%></span></label> 
@@ -95,7 +99,7 @@
 <table width=80% border=1 cellspacing=0 cellpadding=7 BORDERCOLOR="#C0C0C0 ">	
 			
 			<tr>
-				<td width="10" ><font size=2><b>BIL</b></font></td>
+				<td width="10" ><font size=2><b>No</b></font></td>
 				<td align="center" width=35%><font size=2 ><b><%=t('evaluate_course.description')%></b></font></th>
 				<td width="10" colspan=9 align="center"><font size=2><b><%=(t 'evaluate_course.score').upcase %></b></font></td>
 			</tr>

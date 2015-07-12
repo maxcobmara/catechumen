@@ -224,5 +224,7 @@
 </div>
 
 <BR>
-<%= link_to (t 'edit'), edit_evaluate_course_path(@evaluate_course) %> |
+<% permitted_to? :update, :evaluate_courses do %>
+	<%= link_to (t 'edit'), edit_evaluate_course_path(@evaluate_course) %> |
+<% end %>
 <%= link_to (t 'back'), evaluate_courses_path %>
