@@ -112,14 +112,22 @@
 					<td><#%= f.text_field :specilisation %></td>
 			</tr>-->
 			
-			<tr>
-					<td class="leftcol"><label for="group_id"><%=t('student.group_id')%></label></td>
-					<td><%= f.text_field :group_id %></td>
+			<!--<tr>
+					<td class="leftcol"><label for="group_id"><%#=t('student.group_id')%></label></td>
+					<td><%#= f.text_field :group_id %></td>
 			</tr>
-			
+			-->
 			<tr><!-- 21/10/2011 - Shaliza add red star (*) or validates_presence_of for Intake session to avoid it's got error in index page if its empty -->
-					<td class="leftcol"><label for="intake"><%=t('student.intake_id')%></label><font color="red"> * </font></td>
-					<td><%= f.date_select :intake, :order => [:month, :year], :class => 'compulsory' %></td>
+				<td class="leftcol"><label for="intake">
+					<%=t('student.group_id')%>/<%=t('student.intake_id')%></label><font color="red"> * </font>
+				</td>
+				<td><%#= f.date_select :intake, :order => [:month, :year], :class => 'compulsory' %>
+					<% unless @student.new_record? %>
+						<% curr_intake=Intake.get_intake(@student.intake, @student.course_id) %>
+					<% end %>
+					<%= f.collection_select :intake_id, Intake.all(:order=>'programme_id ASC, monthyear_intake DESC'), :id, :programme_group_intake,{:include_blank=> (t 'select'), :selected => curr_intake}%>
+					<font size="-2px" color="grey"><%=h @student.intake.try(:strftime, '%b %Y') %></font>
+				</td>
 			</tr>
 			<!-- Note : Training Modules -> create intake -->
 			<!--

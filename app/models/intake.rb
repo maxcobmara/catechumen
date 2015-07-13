@@ -119,6 +119,10 @@ class Intake < ActiveRecord::Base
    
   #24March2013==========
   
+  def self.get_intake(student_intake, courseid)
+    Intake.find(:first, :conditions =>['monthyear_intake=? and programme_id=?', student_intake, courseid]).id
+  end
+  
   private
   
   def valid_for_removal

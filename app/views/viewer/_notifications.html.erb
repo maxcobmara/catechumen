@@ -194,7 +194,7 @@
   <% end %>
 
   <!-- Notification for Student Leave Approval -->
-  <% if Login.current_login.staff.position!=nil%>
+  <% if Login.current_login.isstaff && Login.current_login.staff.position!=nil%>
   <!--group coordinator-->
   <% if permitted_to? :approve_coordinator, :leaveforstudents %>
 	<% c1 = Login.find(:all, :select => "id", :conditions => ['roles.id =?',14 ], :include => :roles).map(&:id) %>
