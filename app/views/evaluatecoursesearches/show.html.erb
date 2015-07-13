@@ -28,16 +28,8 @@
 		<%=t('equery.evaluate_course.total')%> : <%=@evaluatecoursesearch.evaluatecourses.count%><br><br>
 		
 		<table border=1 cellpadding=3 cellspacing=0>
-			<% @ev_obj_sum=0 %>
-			<% @ev_knowledge_sum=0 %>
-			<% @ev_deliver_sum=0 %>
-			<% @ev_content_sum=0 %>
-			<% @ev_tool_sum=0 %>
-			<% @ev_topic_sum=0 %>
-			<% @ev_work_sum=0 %>
-			<% @ev_note_sum=0 %>
-			<% @ev_assessment_sum=0 %>
-			<% @total_sum=0%>
+			
+			<%# @total_sum=[]%>
 			<% @total_student=@evaluatecoursesearch.evaluatecourses.count%>
 			<%# if !@evaluatecoursesearch.subject_id.blank? || !@evaluatecoursesearch.programme_id.blank? %>
 			<% if @evaluatecoursesearch.is_staff==true %>
@@ -48,7 +40,29 @@
 				<% @by_subject= @evaluatecoursesearch.evaluatecourses.group_by(&:course_id) %>
 			<% end %>
 			<!--###############-->
-			<% @by_subject.each do |subject,evaluations|%>
+			<% index2=0 %>
+			<% @by_subject.each do |subject,evaluations|%><% @total_sum=0%>
+			
+				<% @ev_obj_sum=[] %>
+				<% @ev_knowledge_sum=[] %>
+				<% @ev_deliver_sum=[] %>
+				<% @ev_content_sum=[] %>
+				<% @ev_tool_sum=[] %>
+				<% @ev_topic_sum=[] %>
+				<% @ev_work_sum=[] %>
+				<% @ev_note_sum=[] %>
+				<% @ev_assessment_sum=[] %>
+			
+				<% @ev_obj_sum << evaluations.sum(&:ev_obj) %>
+				<% @ev_knowledge_sum << evaluations.sum(&:ev_knowledge)%>
+				<% @ev_deliver_sum << evaluations.sum(&:ev_deliver) %>
+				<% @ev_content_sum << evaluations.sum(&:ev_content) %>
+				<% @ev_tool_sum << evaluations.sum(&:ev_tool) %>
+				<% @ev_topic_sum << evaluations.sum(&:ev_topic) %>
+				<% @ev_work_sum << evaluations.sum(&:ev_work)%>
+				<% @ev_note_sum << evaluations.sum(&:ev_note) %>
+				<% @ev_assessment_sum<< evaluations.sum(&:ev_assessment) %>
+			
 				<tr style="background-color:#EFF1F1;color:#218AFB;font-weight:bold;">
 					<td colspan=15>
 						<%=t('student.course_id')%> : 
@@ -82,15 +96,15 @@
 						<td><%=index+1%></td>
 						<td align="center"><%=evaluate_course.evaluate_date.strftime("%d-%m-%Y") %></td>
 						<td><%=evaluate_course.staff_id.blank? ? evaluate_course.invite_lec : evaluate_course.staffevaluate.name %></td>
-						<td align="center"><%=evaluate_course.ev_obj %><% @ev_obj_sum+=evaluate_course.ev_obj %></td>
-						<td align="center"><%=evaluate_course.ev_knowledge %><% @ev_knowledge_sum+=evaluate_course.ev_knowledge%></td>
-						<td align="center"><%=evaluate_course.ev_deliver %><% @ev_deliver_sum+=evaluate_course.ev_deliver%></td>
-						<td align="center"><%=evaluate_course.ev_content %><% @ev_content_sum+=evaluate_course.ev_content %></td>
-						<td align="center"><%=evaluate_course.ev_tool %><% @ev_tool_sum+=evaluate_course.ev_tool %></td>
-						<td align="center"><%=evaluate_course.ev_topic %><% @ev_topic_sum+=evaluate_course.ev_topic %></td>
-						<td align="center"><%=evaluate_course.ev_work %><% @ev_work_sum+=evaluate_course.ev_work %></td>
-						<td align="center"><%=evaluate_course.ev_note %><% @ev_note_sum+=evaluate_course.ev_note %></td>
-						<td align="center"><%=evaluate_course.ev_assessment %><% @ev_assessment_sum+=evaluate_course.ev_assessment %></td>
+						<td align="center"><%=evaluate_course.ev_obj %><%# @ev_obj_sum+=evaluate_course.ev_obj %></td>
+						<td align="center"><%=evaluate_course.ev_knowledge %><%# @ev_knowledge_sum+=evaluate_course.ev_knowledge%></td>
+						<td align="center"><%=evaluate_course.ev_deliver %><%# @ev_deliver_sum+=evaluate_course.ev_deliver%></td>
+						<td align="center"><%=evaluate_course.ev_content %><%# @ev_content_sum+=evaluate_course.ev_content %></td>
+						<td align="center"><%=evaluate_course.ev_tool %><%# @ev_tool_sum+=evaluate_course.ev_tool %></td>
+						<td align="center"><%=evaluate_course.ev_topic %><%# @ev_topic_sum+=evaluate_course.ev_topic %></td>
+						<td align="center"><%=evaluate_course.ev_work %><%# @ev_work_sum+=evaluate_course.ev_work %></td>
+						<td align="center"><%=evaluate_course.ev_note %><%# @ev_note_sum+=evaluate_course.ev_note %></td>
+						<td align="center"><%=evaluate_course.ev_assessment %><%# @ev_assessment_sum+=evaluate_course.ev_assessment %></td>
 						<td align="center"><%=@total_each = evaluate_course.ev_obj+evaluate_course.ev_knowledge+evaluate_course.ev_deliver+evaluate_course.ev_content+evaluate_course.ev_tool+evaluate_course.ev_topic+evaluate_course.ev_work+evaluate_course.ev_note+evaluate_course.ev_assessment %><%@total_sum+=@total_each%></td>
 						<td>
 							<% if Position.my_programmeid(Login.current_login.staff_id).include?(evaluate_course.course_id) %>
@@ -103,25 +117,25 @@
 				<!--display total scores-->
 				<tr style="background-color:#eeecec;font-weight:bold;">
 					<td colspan=3 style="text-align:right;padding-right:15px;"><%=t('equery.evaluate_course.total_scores')%> :</td>
-					<td align="center"><%=@ev_obj_sum%></td>
-					<td align="center"><%=@ev_knowledge_sum%></td>
-					<td align="center"><%=@ev_deliver_sum%></td>
-					<td align="center"><%=@ev_content_sum%></td>
-					<td align="center"><%=@ev_tool_sum%></td>
-					<td align="center"><%=@ev_topic_sum%></td>
-					<td align="center"><%=@ev_work_sum%></td>
-					<td align="center"><%=@ev_note_sum%></td>
-					<td align="center"><%=@ev_assessment_sum%></td>
+					<td align="center"><%=@ev_obj_sum[index2]%></td>
+					<td align="center"><%=@ev_knowledge_sum[index2]%></td>
+					<td align="center"><%=@ev_deliver_sum[index2]%></td>
+					<td align="center"><%=@ev_content_sum[index2]%></td>
+					<td align="center"><%=@ev_tool_sum[index2]%></td>
+					<td align="center"><%=@ev_topic_sum[index2]%></td>
+					<td align="center"><%=@ev_work_sum[index2]%></td>
+					<td align="center"><%=@ev_note_sum[index2]%></td>
+					<td align="center"><%=@ev_assessment_sum[index2]%></td>
 					<td align="center"><%=@total_sum%></td>
 					<td align="center">&nbsp;</td>
-				</tr>
+				</tr><%#index2+=1%>
 				<!--display total scores-->	
 			
 				<!--display average scores-->
 				<tr style="background-color:#eeecec;font-weight:bold;">
 					<td colspan=3 style="text-align:right;padding-right:15px;"><%=t('equery.evaluate_course.average_scores')%> :</td>
 					<td align="center">
-						<%@avg1=@ev_obj_sum/@total_student%>
+						<%@avg1=@ev_obj_sum.sum/evaluations.count%>
 						<% if @avg1 % 1 == 0 %><!--returns integer-->
 							<%=@avg1%>
 						<% else %>
@@ -129,7 +143,7 @@
 						<% end %>
 					</td>
 					<td align="center">
-						<%@avg2=@ev_knowledge_sum/@total_student%>
+						<%@avg2=@ev_knowledge_sum.sum/evaluations.count%>
 						<% if @avg2 % 1 == 0 %><!--returns integer-->
 							<%=@avg2%>
 						<% else %>
@@ -137,7 +151,7 @@
 						<% end %>
 					</td>
 					<td align="center">
-						<%@avg3=@ev_deliver_sum/@total_student%>
+						<%@avg3=@ev_deliver_sum.sum/evaluations.count%>
 						<% if @avg3 % 1 == 0 %><!--if returns integer-->
 							<%=@avg3%>
 						<% else %>
@@ -145,7 +159,7 @@
 						<% end %>
 					</td>
 					<td align="center">
-						<%@avg4=@ev_content_sum/@total_student%>
+						<%@avg4=@ev_content_sum.sum/evaluations.count%>
 						<% if @avg4 % 1 == 0 %><!--if returns integer-->
 							<%=@avg4%>
 						<% else %>
@@ -153,7 +167,7 @@
 							<% end %>
 					</td>
 					<td align="center">
-						<%@avg5=@ev_tool_sum/@total_student%>
+						<%@avg5=@ev_tool_sum.sum/evaluations.count%>
 						<% if @avg5 % 1 == 0 %><!--if returns integer-->
 							<%=@avg5%>
 						<% else %>
@@ -161,7 +175,7 @@
 						<% end %>
 					</td>
 					<td align="center">
-					<%@avg6=@ev_topic_sum/@total_student%>
+					<%@avg6=@ev_topic_sum.sum/evaluations.count%>
 						<% if @avg6 % 1 == 0 %><!--if returns integer-->
 							<%=@avg6%>
 						<% else %>
@@ -169,7 +183,7 @@
 						<% end %>
 					</td>
 					<td align="center">
-						<%@avg7=@ev_work_sum/@total_student%>
+						<%@avg7=@ev_work_sum.sum/evaluations.count%>
 						<% if @avg7 % 1 == 0 %><!--if returns integer-->
 							<%=@avg7%>
 						<% else %>
@@ -177,7 +191,7 @@
 						<% end %>
 					</td>
 					<td align="center">
-					<%@avg8=@ev_note_sum/@total_student%>
+					<%@avg8=@ev_note_sum.sum/evaluations.count%>
 						<% if @avg8 % 1 == 0 %><!--if returns integer-->
 							<%=@avg8%>
 						<% else %>
@@ -185,7 +199,7 @@
 						<% end %>
 					</td>
 					<td align="center">
-					<%@avg9=@ev_assessment_sum/@total_student%>
+					<%@avg9=@ev_assessment_sum.sum/evaluations.count%>
 						<% if @avg9 % 1 == 0 %><!--if returns integer-->
 							<%=@avg9%>
 						<% else %>
@@ -193,9 +207,9 @@
 						<% end %>
 					</td>
 					<td align="center">
-						<% @average=@total_sum/@total_student%>
+						<% @average=@total_sum.to_f/evaluations.count%>
 						<% if @average % 1 == 0 %><!--if returns integer-->
-							<%=@average%>
+							<%=@average.to_i%>
 						<% else %>
 							<%=number_with_precision(@average,:precision=>2)%>
 						<% end %>
