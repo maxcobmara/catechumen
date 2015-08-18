@@ -55,16 +55,16 @@
 				<tr class="span_is_processed" style="display: none;">
 					<td class="leftcol"><label for="approved_date"><%=t('assetdefects.notify_hod')%></label></td>
 			    	<td>
-            <!-->  
-            <%# if Login.current_login.staff.position == true %>
-  						<%# if Login.current_login.staff.position.is_root? == false %>
-  							<%#= f.collection_select :decision_by, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %>				
-  						<%# else %>
-  							<%# myhod = Login.current_login.staff.id %>
-  							<%#= f.collection_select :decision_by, Staff.find(:all, :conditions => ['id=?', myhod]), :id, :name %>
-  						<%# end %>
-            <%# end %>
-            <-->  
+            <!----> 
+            <% if Login.current_login.staff.position %>
+  						<% if Login.current_login.staff.position.is_root? == false %>
+  							<%= f.collection_select :decision_by, Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name %>				
+  						<% else %>
+  							<% myhod = Login.current_login.staff.id %>
+  							<%= f.collection_select :decision_by, Staff.find(:all, :conditions => ['id=?', myhod]), :id, :name %>
+  						<% end %>
+            <% end %>
+            <!---->  
 					</td>
 				</tr>
 			</table>
