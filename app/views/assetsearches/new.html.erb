@@ -281,13 +281,13 @@
 				<%= f.hidden_field :disposal, :value => 1 %>
 				<tr><td colspan=2><%=t('equery.asset.disposed_asset_yearly_report_examiner')%></td></tr>
 				<tr>
-					<% @disposals_disposed = AssetDisposal.find(:all, :conditions=>['is_disposed is TRUE and disposed_on is not null'])%><!--for checking:AssetDisposal.all-->
+					<% @disposals_disposed = AssetDisposal.find(:all, :conditions=>['is_disposed is not TRUE'])%><!--for checking:AssetDisposal.all-->
 					
 					<td class="leftcol"><%=t('equery.asset.yearly_report')%> : </td>
 					<td>
 						<% 0.upto (@disposals_disposed.count-1) do |no| %>
 							<%= check_box_tag "disposal_for_reports[#{@disposals_disposed[no].id}]", true, @disposals_disposed[no].id %>
-							<%=@disposals_disposed[no].complete_for_report %>
+							<%=@disposals_disposed[no].asset.code_asset %>
 							<!--for checking-<%#=@disposals_disposed[no].id%>~<%#=AssetDisposal.find(@disposals_disposed[no].id).asset_id %>--><br>
 						<% end %>
 					</td>
