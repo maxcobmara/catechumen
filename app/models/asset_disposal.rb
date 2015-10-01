@@ -18,7 +18,8 @@ class AssetDisposal < ActiveRecord::Base
   validates_presence_of :examiner_staff2, :if => :is_staff2?
   validates_presence_of :checked_by, :checked_on, :verified_by, :if => :check_checked?
   validates_presence_of :type_others_desc, :if => :disposaltype_others?
-    
+  validates_presence_of :current_value
+
   def check_checked?
     is_checked == true
   end
