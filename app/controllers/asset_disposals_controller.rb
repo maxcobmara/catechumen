@@ -83,7 +83,7 @@ class AssetDisposalsController < ApplicationController
   end
   
   def kewpa17
-    @asset_disposals = AssetDisposal.find(:all, :order => 'created_at DESC')
+    @asset_disposals =  AssetDisposal.find(:all, :conditions=>['is_disposed is not TRUE'], :order => 'created_at DESC')
     render :layout => 'report'
   end
   
