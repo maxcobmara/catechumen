@@ -1,7 +1,9 @@
 <div class="fields" style='float: left;'>
 <%= f.text_field :accession_no, :size => 12, :placeholder => (t 'book.accessionno') %>
 <%= f.hidden_field :_destroy %>
+<% if f.object.valid_for_removal %>
 <%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => (t 'icms.remove')), f %>
+<% end %>
 </div>
 
 

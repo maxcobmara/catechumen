@@ -1,6 +1,7 @@
 class Accession < ActiveRecord::Base
   has_many :librarytransactions
   belongs_to :book
+  before_destroy :valid_for_removal
   
   def acc_book
     "#{accession_no} - #{book.title}"
@@ -13,6 +14,15 @@ class Accession < ActiveRecord::Base
      else
       @accessions3 = Accession.find(:all,  :order => :accession_no)
      end
+  end
+  
+  #restrict deletion if exist in transaction
+  def valid_for_removal 
+    if Librarytransaction.all.map(&:accession_id).include?(id)
+      return false
+    else
+      return true
+    end
   end
   
 end
