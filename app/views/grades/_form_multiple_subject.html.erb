@@ -13,7 +13,7 @@
 
 			  <H2><%=t('grade.details')%></H2>
 
-
+<%=hidden_field_tag :subjectid, @subjectid%>
 						<table width=100%>
 							<tr>
 								<td class="leftcol"><label><%=t('grade.subject_id')%></label></td>
@@ -108,7 +108,7 @@
 							<!---->
 							<tr>
 								<td class="leftcol"><%=(t 'grade.summative_weightage').titleize %></td>
-								<td>	
+								<td>
 									<!---->
 									<!--if formative_scores_var==1-->
 									<SPAN class="bong", style="display:none;">
@@ -273,7 +273,7 @@
 			<!--******************-->
 			
 		<% end %>	<!-- end of - @grades.each_with_index -->
-	<% end %>	<!-- end of - fields_for "grades[#{index}]"-->
+	<% end %>	<!-- end of - fields_for "grades[#{index}]"--><%=@curr_exammark%>
 	<p><%= f.submit t('grade.create_by_subject'), :name => :new_submit %></p>
 <% end %>	<!-- end of - form_tag :action => 'create' do |f| %>-->
 <!--end-trial new grades by subject 3June2013-->

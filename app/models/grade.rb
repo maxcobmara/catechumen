@@ -173,7 +173,7 @@ class Grade < ActiveRecord::Base
        exammarksub.errors.each do |key,value|
            @key2 = key
            #@exammarkerrors << '<b>'+I18n.t('activerecord.attributes.exammark.'+key)+'</b>'+' '+value+'<br>'
- 			    @exammarkerrors << '<b>'+I18n.t('activerecord.attribute.grade.'+key)+'</b>'+' '+value+'<br>'
+ 			    @exammarkerrors << '<b>'+I18n.t('activerecord.attributes.grade.'+key)+'</b>'+' '+value+'<br>'
  			    @errors_qty+=1
  		  end 	# end of exammarksub.errors.each do |key,value|
  	  end		# end of exammark_list.each do |exammarksub|

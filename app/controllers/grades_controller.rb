@@ -197,6 +197,36 @@ class GradesController < ApplicationController
   # POST /grades
   # POST /grades.xml
   def create
+    
+    ###from new
+    #---just added
+    @lecturer_programme = current_login.staff.position.unit
+    common_subject_a = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
+    unless @lecturer_programme.nil?
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    end
+    unless @programme.nil?
+      @preselect_prog = @programme.id
+      @student_list = Student.find(:all,:conditions=>['course_id=?', @preselect_prog], :order=>'name ASC')
+      @subject_list = Programme.find(@preselect_prog).descendants.at_depth(2)
+      @intake_list = @student_list.group_by{|l|l.intake}
+    else
+      if @lecturer_programme == 'Commonsubject'
+         @student_list = Student.all 
+         @subject_list = common_subject_a
+      else
+         @student_list = Student.all 
+         @subject_list = Programme.at_depth(2) 
+      end
+      #for administrator & Commonsubject lecturer : to assign programme, based on selected exampaper 
+      @subjectid2 = params[:subjectid]  #force - Retrieve this params value TWICE
+      @dept_unit = Programme.find(@subjectid2).root  
+      @intake_list = Student.find(:all, :conditions=>['course_id=?',@dept_unit.id]).group_by{|l|l.intake}
+    end
+    arr = []
+    @intakes = @intake_list.each {|i,k| arr << i} 
+    #---just added
+    ###from new 
     @create_type = params[:new_submit]            #3June2013
     if @create_type == "Create"   
         @new_type ="0"                            # Assign same value as defined value in new action (:new_type value for 'New grade' link in index page!)
@@ -247,12 +277,13 @@ class GradesController < ApplicationController
               
         else                                  
             #@exammarkerrormsg = Exammark.set_error_messages(@exammarks) 
-		        #@gradeerrormsg = Exammark.set_error_messages(@grades) 
-		        @gradeerrormsg = Grade.set_error_messages(@grades) 
-		        @new_type = "3"
-		        #flash[:error] = @exammarkerrormsg	#red box  
-		        flash[:error] = @gradeerrormsg	#red box      
-		        flash[:notice] = t('data_invalid')                      
+            #@gradeerrormsg = Exammark.set_error_messages(@grades) 
+            @gradeerrormsg = Grade.set_error_messages(@grades) 
+            @new_type = "3"
+            #flash[:error] = @exammarkerrormsg	#red box  
+            ### flash[:error] = @gradeerrormsg	#red box  ####HIDE FIRST - 2Nov2015
+            # TODO (2Nov2015) - Check if we still need to use this here as it's only describe error only
+            flash[:notice] = t('grade.data_invalid')                   
             #flash[:notice] = 'Data supplied was invalid. Please insert all data accordingly. All fields are compulsory.'
             render :action => 'new'
             
@@ -383,9 +414,10 @@ class GradesController < ApplicationController
     @formative_desc4 =params[:formativedesc4]
     @formative_desc5 =params[:formativedesc5]
 
-    @students = Student.find(:all, :conditions=>['course_id=? and intake=?',@programme_id,@intake_id.to_s])
-    @students_count = @students.count 
-		
+    unless @intake_id.nil? || @intake_id.blank?
+        @students = Student.find(:all, :conditions=>['course_id=? and intake=?',@programme_id,@intake_id.to_s])
+        @students_count = @students.count 
+    end
     render :partial => 'update_weightage', :layout => false
   end
   
