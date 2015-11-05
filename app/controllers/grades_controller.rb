@@ -202,6 +202,7 @@ class GradesController < ApplicationController
     #---just added
     @lecturer_programme = current_login.staff.position.unit
     common_subject_a = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
+    common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end
@@ -211,7 +212,7 @@ class GradesController < ApplicationController
       @subject_list = Programme.find(@preselect_prog).descendants.at_depth(2)
       @intake_list = @student_list.group_by{|l|l.intake}
     else
-      if @lecturer_programme == 'Commonsubject'
+      if common_subjects.include?(@lecturer_programme)
          @student_list = Student.all 
          @subject_list = common_subject_a
       else
