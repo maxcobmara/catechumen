@@ -2,6 +2,8 @@ class Grade < ActiveRecord::Base
   
   validates_presence_of :student_id, :subject_id, :examweight#, :exam1marks #added examweight for multiple edit - same subject - this item must exist
   validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
+  validates_numericality_of :exam1marks, :finalscore
+  validates_inclusion_of :exam1marks, :finalscore, :in => 0..100, :message => " - must be between 0..100"
   
   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
   belongs_to :subjectgrade, :class_name => 'Programme', :foreign_key => 'subject_id'  #Link to Model subject
@@ -9,7 +11,9 @@ class Grade < ActiveRecord::Base
   has_many :scores, :dependent => :destroy
   accepts_nested_attributes_for :scores,:allow_destroy => true, :reject_if => lambda { |a| a[:description].blank? } #allow for destroy - 17June2013
   
-  attr_accessor :programme_id, :final_exam_paper, :intake_id, :summative_weightage, :formative_scores_var,:summative_weightage2,:summative_weightage3,:summative_weightage4,:summative_weightage5,:summative_weightage6,:score_count,:student_count,:column_count, :form_weight, :formative_count
+  before_save :check_formative_valid
+  
+  attr_accessor :programme_id, :final_exam_paper, :intake_id, :summative_weightage, :formative_scores_var,:summative_weightage2,:summative_weightage3,:summative_weightage4,:summative_weightage5,:summative_weightage6,:score_count,:student_count,:column_count, :form_weight, :formative_count, :marks_70
   before_save :save_bpl_sent_date
   
     def save_bpl_sent_date
@@ -66,15 +70,11 @@ class Grade < ActiveRecord::Base
     end
     
     def total_formative
-      Score.sum(:score, :conditions => ["grade_id = ?", id])
-    end
-    
-    def total_formative2  #temporary - to confirm with user-marks to be entered in weightage or %
       Score.sum(:marks, :conditions => ["grade_id = ?", id])
     end
     
     def total_summative
-      if exam1marks == 0
+      if exam1marks == 0 || exam1marks == nil
         0
       else
         (exam1marks * examweight)/100
@@ -82,7 +82,8 @@ class Grade < ActiveRecord::Base
     end
     
     def finale
-      score.to_f + total_summative    #23August2013
+      total_formative+total_summative #8Nov2015
+      #score.to_f + total_summative    #23August2013
       #((exam1marks * examweight)/100) + ((total_formative * (100 - examweight)/100))
     end
     
@@ -178,9 +179,9 @@ class Grade < ActiveRecord::Base
  		  end 	# end of exammarksub.errors.each do |key,value|
  	  end		# end of exammark_list.each do |exammarksub|
      if @errors_qty == 1
- 			  @exammarkerrors2 <<'<b>'+@errors_qty.to_s+' error '
+ 			  @exammarkerrors2 << '<b>'+@errors_qty.to_s+' error '
  	  elsif @errors_qty > 1
- 			  @exammarkerrors2 <<'<b>'+@errors_qty.to_s+' errors '
+ 			  @exammarkerrors2 << '<b>'+@errors_qty.to_s+' errors '
  	  end
  	  @exammarkerrors2 << 'prohibited this record from being saved</b><br><br>'
  	  @exammarkerrors_full << @exammarkerrors2.to_s+@exammarkerrors.to_s
@@ -250,5 +251,18 @@ WEIGHTAGE = [
 
 # code for repeating field score
 # ---------------------------------------------------------------------------------
-
+  private 
+  
+    def check_formative_valid #add error msg in controller
+       if Programme.find(:all, :conditions =>['course_type=?', 'Diploma']).map(&:id).include?(subjectgrade.root_id)
+         if scores && scores.count > 0
+           if scores.map(&:weightage).sum > 30 || scores.map(&:marks).sum > 30
+             return false
+           else
+             return true
+           end
+         end
+       end
+    end
+    
 end

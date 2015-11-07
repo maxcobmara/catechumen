@@ -35,8 +35,8 @@
 					  <tr>
 				      <td width=130px ><label for="type_id"><b><%=t('grade.type_id')%>:</b></label></td>
 				      <td width=240px ><label for="description"><b><%=t('grade.description')%>:</b></label><font color="blue"> * </font></td>
+				      <td width=80px><label for="weightage"><b><%=t('grade.weightage')%>:</b></label></td>
 				      <td width=120px><label for="marks"><b><%=t('grade.marks')%>:</b></label><font color="red"> * </font></td>
-						  <td width=80px><label for="weightage"><b><%=t('grade.weightage')%>:</b></label></td>
 				      <td width=70px></td>
 			      </tr>
 				 </table>
@@ -78,13 +78,19 @@
 		<tr>
 			<th><%=t('grade.exam1name')%></th>
 			<th><%=t('grade.description')%></th>
-			<th><label for="exam1marks"><%=t('grade.marks')%></th>
+			<th><label for="exam1marks"><%=t('grade.marks')%> (100%)</th>
+			<th><%=t('grade.marks')%>
+				  <% if Programme.find(:all, :conditions =>['course_type=?', 'Diploma']).map(&:id).include?(@grade.subjectgrade.root_id) %>
+					  (70%)
+				  <% end %>
+			</th>
 		</tr>
 	
 		<tr>
 			<td><%= f.text_field :exam1name, :size => 15 %></td>
 			<td><%= f.text_field :exam1desc %></td>
 			<td><%= f.text_field :exam1marks, :size => 5 , :class=>'i1'%><!--%--></td>
+			<td><%= f.text_field :marks_70, :value=>@grade.total_summative, :readonly => 'readonly', :size => 5%></td>
 		</tr>
 	</table>
 	
@@ -138,19 +144,23 @@
 				
 				//retrieve variable to assign data
 				var finalscore = document.getElementById("grade_finalscore");
-				var setgrade = document.getElementById("grade_grading_id")
+				var setgrade = document.getElementById("grade_grading_id");
+				var marks70 = document.getElementById("grade_marks_70");
 				
 				//calculate & assign data into variable
 				totalformative = 0
 				for (var i=0;i<formativecount;i++)
 				{
-					totalformative = totalformative+(window["fmark"+i]*1)*((window["fweight"+i]*1)/100)
+					//totalformative = totalformative+(window["fmark"+i]*1)*((window["fweight"+i]*1)/100)
+					 totalformative = totalformative+(window["fmark"+i]*1)
 				}
 				
-				caplusmse = (totalformative*1)*(100-examweight)/100;
+				//caplusmse = (totalformative*1)*(100-examweight)/100;
+				caplusmse = (totalformative*1);
 				summative = (exam1marks*1)*(examweight*1)/100;
 				forgrade = caplusmse+summative;
 				finalscore.value = caplusmse+summative;
+				marks70.value = summative;
 			
 				if ((caplusmse+summative) > 79)
 				{

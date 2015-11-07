@@ -325,6 +325,13 @@ class GradesController < ApplicationController
         format.html { redirect_to(@grade) }
         format.xml  { head :ok }
       else
+        if Programme.find(:all, :conditions =>['course_type=?', 'Diploma']).map(&:id).include?(@grade.subjectgrade.root_id)
+         if @grade.scores && @grade.scores.count > 0
+           if @grade.scores.map(&:weightage).sum > 30 || @grade.scores.map(&:marks).sum > 30
+             flash[:notice]= t('grade.max_weightage_marks_30')
+           end
+         end
+        end
         format.html { render :action => "edit" }
         format.xml  { render :xml => @grade.errors, :status => :unprocessable_entity }
       end

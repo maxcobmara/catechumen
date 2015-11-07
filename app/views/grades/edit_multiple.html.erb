@@ -415,7 +415,12 @@
 				<!--</td>-->
 				
 				<!--23June2013-no changes here but pls refer js part-->
-				<td style="background-color:#E5ECE5;text-align:center;"><%= text_field_tag "scores[]", sprintf('%.2f', grade.score), :size=> 4,:id=>"caplusmse"+no.to_s %></td>
+				<td style="background-color:#E5ECE5;text-align:center;">
+					<% if grade.score%>
+						<%= text_field_tag "scores[]", sprintf('%.2f', grade.score), :size=> 4,:id=>"caplusmse"+no.to_s %>
+					<% else %>
+						<%= text_field_tag "scores[]", {}, :size=> 4,:id=>"caplusmse"+no.to_s %>
+					<%end%></td>
 				<!--23June2013-->
 				
 				<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different-->
@@ -425,7 +430,13 @@
 				<% else %>
 						<%= hidden_field_tag "examweights[]", sprintf('%.2f', grade.examweight), :id=>"examweight"+no.to_s %>
 				<% end %>
-				<td style="background-color:#FEE;text-align:center;"><%= text_field_tag "exam1markss[]", sprintf('%.2f', grade.exam1marks), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1' %></th>
+				<td style="background-color:#FEE;text-align:center;">
+					<% if grade.exam1marks %>
+						<%= text_field_tag "exam1markss[]", sprintf('%.2f', grade.exam1marks), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1' %>
+					<% else %>
+						<%= text_field_tag "exam1markss[]", {}, :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1' %>
+					<% end %>
+				</th>
 				<td style="background-color:#FEE;text-align:center;">
 					<% if grade.summative.nil? %>
 						<%= text_field_tag "summatives[]", grade.summative, :size=> 4,:id=>"summative"+no.to_s %>
