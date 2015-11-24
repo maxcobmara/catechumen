@@ -202,7 +202,7 @@
 				<%#= grade.ca_plus_mse %>
 				<!--16June2013-use this instead-->
 				<%#=h number_with_precision(grade.score,:precision=>2) %><!--use score field to save CA+MSE value, from model exammark-->
-				<%=sprintf('%.2f', grade.score)%>
+				<%=h grade.score.nil? ? "" : sprintf('%.2f', grade.score)%>
 			<% end %>
 		</td>
 		<td><%#=h grade.sent_to_BPL %><% if grade.sent_to_BPL == true %> &#10003;<% end %></td>
@@ -229,7 +229,7 @@
 		<% end %>
 		</td>
 		<td style="text-align:center;"><%##=h (Grade::GRADE.find_all{|disp, value| value == grade.grading_id.to_s}).map {|disp, value| disp} %>
-			<%=h grade.finale.blank? ? "" : grade.set_gred %>
+			<%=h grade.finale.nil? ? "" : grade.set_gred %>
 		</td>
 		<td width=10px ><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => grade %></td>
 		<td width=10px><%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => grade %></td>
