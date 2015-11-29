@@ -96,6 +96,7 @@ ms_MY:
   view_pdf: Papar PDF
   starting_with: bermula dengan
   others_specify: "Jika Lain-lain, Sila nyatakan"
+  prompt_language: "Anda sedang meninggalkan laman ini. Data belum disimpan. Klik Ok dan simpan borang terlebih dahulu atau klik Cancel untuk meneruskan pertukaran bahasa."
   
   will_paginate:
     previous_label: "&#0171; Sebelum"
@@ -135,6 +136,17 @@ ms_MY:
             stationery_use: Pengeluaran Keperluan Pejabat
             examanalysis: Analisis Peperiksaan
             ptcourse: Kursus Latihan
+            ptbudget: Belanjawan Latihan
+            ptdo: Permohonan Menyertai Latihan
+            leaveforstudent: Cuti Pelajar
+            staff_appraisal: Penilaian Kakitangan
+            staff_appraisal_skt: Sasaran Kerja Tahunan
+            mycpd: MyCPD
+            timetable: Format Jadual Waktu
+            timetable_period: Butiran Jadual Waktu
+            academic_session: Sesi Akademik
+            evaluate_course: Penilaian Program
+            grade: Gred
         attributes:
             staff:
               icno: "No MyKad"
@@ -154,6 +166,7 @@ ms_MY:
               kins:
                 one: Maklumat Waris Terdekat
                 other: Maklumat Waris Terdekat
+              mycpds: Butiran MyCPD
             student:
               kins:
                 one: Maklumat Perhubungan dan Penjamin
@@ -181,6 +194,12 @@ ms_MY:
             disposal:
               asset_id: "Kod Aset"
               currentvalue: "Nilai Semasa"
+            grade:
+              examweight: "Pemberat Sumatif"
+              exam1marks: "Markah (100%)"
+              student_id: Pelajar
+              subject_id: Subjek
+              finalscore: Jumlah Markah
             assetloss:
               reportcode: "Internal Loss Report Code"
               losstype: "Lost Type"
@@ -218,7 +237,56 @@ ms_MY:
               exam_id: Kertas Peperiksaan
             ptcourse:
               level: Peringkat
-              
+            ptbudget:
+              fiscalstart: Tarikh
+            ptdo:
+              staff_id: Nama Kakitangan
+            leaveforstudent:
+              leavetype: Jenis Cuti
+              leave_startdate: Tarikh Mula Cuti
+              leave_enddate: Tarikh Akhir Cuti
+              telno: No Telefon
+              reason: Sebab
+              address: Alamat
+            staff_appraisal:
+              e2_performance: Pencapaian keseluruhan PYD
+              is_completed_on: Tarikh penilaian prestasi selesai
+              e2_months: Bulan
+              e1_months: Bulan
+              e1_performance: Pencapaian Keseluruhan
+              e1_progress: Perkembangan Karier
+              submit_e2_on: Tarikh hantar ke PPK
+              staff_appraisal_skts: Sasaran Kerja Tahunan
+              skt_pyd_report: Laporan oleh PYD
+            staff_appraisal_skt:
+              acheivment: Pencapaian
+              progress: Peratusan pencapaian
+              notes: Ulasan
+            mycpd:
+              cpd_year: Tahun
+              cpd_value: Jumlah Mata Kumulatif
+            timetable:
+              timetable_periods: Butiran Jadual Waktu
+            timetable_period:
+              sequence: Slot
+            academic_session:
+              total_week: Jumlah Minggu
+            evaluate_course:
+              staff_id: Pengajar
+              invite_lec: Pengajar Jemputan
+              subject_id: Subjek
+              invite_lec_topic: Topik
+              evaluate_date: Tarikh Penilaian
+              course_id: Program
+              ev_obj: Skor soalan 1
+              ev_knowledge: Skor soalan 2
+              ev_deliver: Skor soalan 3
+              ev_content: Skor soalan 4
+              ev_tool: Skor soalan 5
+              ev_topic: Skor soalan 6
+              ev_work: Skor soalan 7
+              ev_note: Skor soalan 8
+              ev_assessment: Skor soalan 9
         errors:
           template:
             body: "Berikut adalah beberapa masalah:"
@@ -233,6 +301,13 @@ ms_MY:
             taken: "sudah digunakan"
             illegal_char: mengandungi aksara yang tidak sah
             invalid: adalah tidak sah
+          models:
+            staff_appraisal:
+              attributes: 
+                e2_months:
+                  greater_than: mesti lebih besar dari 0 jika kurang dari setahun
+                e1_months:
+                  greater_than: mesti lebih besar dari 0 jika kurang dari setahun
   icms: 
     login:  Daftar Masuk
     logout: Keluar
@@ -289,7 +364,8 @@ ms_MY:
     programme_manager: Pengurus Program
     disciplinary_officer: Pegawai Disiplin
     coordinator: Penyelaras
-    testing_role: Peranan Cubaan
+    #testing_role: Peranan Cubaan
+    unit_leader: Ketua Unit
     e_filing: Fail Elektronik
     registered: "Terima kasih kerana mendaftar! Permohonan anda akan diproses oleh Unit Teknologi Maklumat."
     registration_failed: "Maaf, akaun tidak dapat didaftarkan. Sila cuba lagi, atau hubungi pentadbir sistem."
@@ -485,6 +561,7 @@ ms_MY:
     students: Pelajar
     student_info: Maklumat Pelajar
     student_leave: Cuti
+    new_student_leave: Cuti Baru
     discipline: Kes Disiplin
     counselling: Kaunseling
     new_ethnic_group: "Kumpulan Etnik (Baru)"
@@ -505,9 +582,10 @@ ms_MY:
     lesson_reporting: Laporan Pengajaran
     training_notes: Nota Latihan
     personalised_timetable: Jadual Waktu Mingguan Individu
-    new_lesson_plan: Pelan Pengajaran Baru
-    new_lesson_report: Laporan Pengajaran Baru
+    new_lesson_plan_report: "Pelan & Laporan Pengajaran Baru"
     new_training_notes: Nota Latihan Baru
+    new_timetable_entries: Jadual Watu Mingguan Baru
+    new_personalised_timetable: Jadual Waktu Mingguan Individu Baru
     
     exams: Peperiksaan
     exam_dev: Soalan Peperiksaan
@@ -518,6 +596,7 @@ ms_MY:
     exam_result: Keputusan Peperiksaan
     result_program: Keputusan Mengikut Program
     exam_slip: Slip Peperiksaan
+    new_feedback_courseevaluate: Penilaian / Maklum Balas Kursus Baru
     feedback_courseevaluate: Penilaian / Maklum Balas Kursus 
     exam_analysis: Analisis Peperiksaan
     
@@ -561,6 +640,9 @@ ms_MY:
     code: Kod Kakitangan
     thumb: Thumb ID
     shift: Waktu Anjal
+    shift_start: " bermula "
+    shift_end: " sehingga "
+    shift_history: Sejarah Waktu Anjal
     fileno: No Fail Peribadi
     cobirthdt: Tarikh Lahir
     birthcertno: No Surat Beranak
@@ -642,7 +724,6 @@ ms_MY:
     employeegradedetails: Butiran Gred Pekerja
     editstaffemployee: Penyuntingan Kakitangan Perkerja
     
-    newstaffappraisal: Penilaian Kakitangan Baru
     newemploygrade: Gred Kakitangan Baru
     group_grade: Kumpulan Perkhidmatan
 
@@ -675,6 +756,9 @@ ms_MY:
     phone: Telefon
     kinaddr: Alamat
     profession: Jawatan
+    
+    shift_histories:
+      deactivate_date: Tarikh aktif
 
   attendance:
     attend: Kehadiran
@@ -688,6 +772,7 @@ ms_MY:
     time_in: Masa Masuk
     time_out: Masa Keluar
     lateness_earlyreturn: Pengurusan Datang Lambat / Pulang Awal
+    fingerprint_statement_notfingerprint: 'Kenyataan Fingerprint (Tidak Fingerprint)'
     report_monthlylisting: Laporan / Senarai Bulanan
     daily_weekly_monthly_report: "Laporan Harian / Mingguan / Bulanan"
     monthly_listing: Senarai Bulanan
@@ -1051,6 +1136,11 @@ ms_MY:
     reason: Tujuan
     confirmedby_id: Disahkan Oleh
     create: Cipta Perlu Latihan Baru
+    accumulated_cpd_points: "Jumlah Mata Kumulatif (myCPD)"
+    cpd_year: Tahun
+    cpd_value: Jumlah Mata Kumulatif
+    inserted_values: "Nilai yang dimasukkan akan dipaparkan dalam item no.5, 'Rekod Pengesahan Kehadiran Program Latihan' dan 'Rumusan Latihan Yang Dihadiri Sepanjang Tahun'."
+    uniq_msg: "CPD bagi tahun yang dipilih telah wujud"
     
   ptbudget:
     title: Belanjawan Tahunan
@@ -1128,15 +1218,15 @@ ms_MY:
     title: Jadual Kursus Latihan
     create: Jadual Kursus Latihan Baru
     new: Jadual Kursus Latihan Baru
-    newcreate: Cipta Kursus Latihan Baru
     edit: Kemaskini Jadual Kursus Latihan
     list: Senarai Jadual Kursus Untuk Kakitangan
+    listing: Kembali ke Jadual Kursus
     start: Tarikh Mula
     end: Tarikh Tamat
     ptcourse_id: Nama Kursus Latihan
     location: Lokasi
-    minparticipant: Jumlah Minimum Peserta
-    maxparticipant: Jumlah Maksimum Peserta
+    minparticipant: Jumlah Minima Peserta
+    maxparticipant: Jumlah Maksima Peserta
     schedule_details: Butiran Jadual Kursus Latihan
     final_price: Harga Akhir
     budget_ok: Belanja
@@ -1152,9 +1242,16 @@ ms_MY:
     overview: Senarai Kursus Ditawarkan
     tick_to_approve: Pilih kotak semak untuk meluluskan
     duration: Jangka Masa
+    min_participants_not_fulfill: "menunjukkan 'Laporan Peserta' daripada jumlah minima peserta belum direkodkan."
+    expenses: Latihan Kakitangan - Kehadiran Peserta & Perbelanjaan Latihan
+    expenses_menu: "Penyertaan & Perbelanjaan"
+    all_records: Semua Rekod
+    back_expenses: Kembali ke Perbelanjaan Penyertaan 
     payment_method: Kaedah Pembayaran
     lo_tunai: "Pesanan Tempatan / Tunai"
-    paid_submission: "Telah / Belum Dihantar"
+    local_order: Pesanan Tempanan
+    cash: Tunai
+    remark: Catatan
     
   ptdos:
     title: Senarai Status Kursus Latihan Kakitangan
@@ -1176,7 +1273,7 @@ ms_MY:
     deptapprove: Kelulusan Jabatan
     replacementstaff: Kakitangan Gantian
     finalapprove: Kelulusan Akhir
-    trainereport: Laporan Pelatih
+    trainereport: Laporan Peserta
     applytraining: Permohonan Menyertai Latihan
     trainingapp: Permohonan Latihan
     coursename: Nama Kursus
@@ -1189,6 +1286,7 @@ ms_MY:
     application_rejected: Permohonan Ditolak
     awaiting_unit_approval: Menunggu Kelulusan Unit
     approved_unit_head_await_dept_approval: "Diluluskan oleh ketua Unit, menunggu kelulusan Jabatan"
+    awaiting_dept_approval: Menunggu Kelulusan Jabatan
     approved_dept_head_await_pengarah_approval: "Diluluskan oleh ketua Jabatan, menunggu kelulusan Pengarah"
     all_approvals_complete: Kelulusan telah selesai
     report_submitted: Laporan telah dihantar
@@ -1196,9 +1294,8 @@ ms_MY:
     status_not_available: Tiada Status
     note_hours_day: "Nota : 6 jam bersamaan 1 hari berkursus"
     download: Muat Turun
-    expenses: Senarai Perbelanjaan Latihan Kakitangan
-    manager: Pengurusan Belanjawan Latihan Kakitangan
-    all_records: Semua Rekod
+    nil: Belum Hadir
+    staff_must_unique: " - Permohonan menyertai latihan bagi jadual kursus yang dipilih hanya boleh dibuat sekali sahaja."
     
   supplier:
     list: Senarai Keperluan Pejabat
@@ -1608,15 +1705,20 @@ ms_MY:
     common:
     skt:
       title: "BAHAGIAN I - Penetapan Sasaran Kerja Tahunan"
-      title2: "Bahagian II - Kajian Semula Sasaran Kerja Tahunan Pertengahan Tahun"
       submission: "Penghantaran"
       submit_evaluation: "Penghantaran untuk penilaian"
       description: "Deskripsi Aktiviti & Projek"
-      performance: Penunjuk Prestasi
+      performance: Petunjuk Prestasi
       priority: Keutamaan
       submiteval: Hantar untuk penilaian
+      target: Sasaran Kerja
+      quality: Kualiti
+      time: Masa
+      quantity: Kuantiti
+      cost: Kos
     
     skt_review:
+      title2: "Bahagian II - Kajian Semula Sasaran Kerja Tahunan Pertengahan Tahun"
       add: "Aktiviti / Projek Yang Ditambah"
       drop: "Aktiviti / Projek Yang Digugurkan"
       title3: "Bahagian III - Laporan & Ulasan"
@@ -1624,6 +1726,20 @@ ms_MY:
       report_ppp: "Hantar kepada PPP untuk laporan"
       ppp_report: "Laporan Oleh PPP"
       ppp_complete: "Laporan selesai?"
+      drop2: Gugur
+      drop_select: "Pilih kotak semak 'Gugur' untuk gugurkan aktiviti / projek"
+      drop_select2: "medan-medan wajib diisi bagi aktiviti / projek yang mempunyai : "
+      drop_select3: ", jika aktiviti / projek tidak digugurkan)"
+      submit_ppp_report: Hantar kepada PPP untuk laporan
+      submit_note: "Sebaik dihantar kepada PPP, rekod tidak lagi boleh disunting"
+      acheivment: Pencapaian Sebenar
+      notes: Ulasan
+      progress: " %"
+      cancel: Batal
+      cancel_select: "Pilih kotak semak 'Batal' untuk memadam aktiviti / projek tambahan yang telah disimpan atau klik ikon 'tong sampah' untuk mengeluarkan aktiviti yang belum disimpan daripada senarai ."
+      new_additional: "Bagi penambahan rekod baru, klik 'Tambah rekod' untuk menambah aktiviti / projek tambahan lain."
+      new_additional2: " Nota, medan-medan wajib diisi: "
+      new_additional3: "'Deskripsi Aktiviti / Projek' beserta sekurang-kurangnya 1 set (Petunjuk Prestasi dan Sasaran + Pencapaian + % Pencapaian yang sepadan)."
       
     form:
       list: Penilaian Prestasi Kakitangan
@@ -1660,6 +1776,7 @@ ms_MY:
       effective: 4. KEBERKESANAN HASIL KERJA
       effective_desc: 'Dinilai dari segi memenuhi kehendak stake-holder atau pelanggan.'
       title_part4: 'Bahagian IV: Kemahiran (20%)'
+      title_part4_sokong1: 'Bahagian IV: Peribadi (25%)'
       knowledge: 5. ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA
       knowledge_desc: 'Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.'
       rules: 6. PELAKSANAAN DASAR PERATURAN DAN ARAHAN PENTADBIRAN
@@ -1667,6 +1784,7 @@ ms_MY:
       communication: 7. KEBERKESANAN KOMUNIKASI
       communication_desc: 'Kebolehan menyampaikan maksud,pendapat,kefahaman atau arahan secara lisan dan tulisan berkaitan denganbidang tugas merangkumi penguasaan menggunakan tatabahasa dan persembahan yang baik.'
       title_part5: 'Bahagian V: Peribadi (20%)'
+      title_part5_sokong1: 'Bahagian V: Kemahiran (20%)'
       leadership: 8. CIRI-CIRI PEMIMPIN
       leadership_desc: 'Mempunyai wawasan, komitment, kebolehan, membuat, keputusan, menggerak dan memberi dorongan kepada pegawai ke arah pencapaian objecktif orgnisasi.'
       management: 9. KEBOLEHAN MENGELOLA
@@ -1689,7 +1807,13 @@ ms_MY:
       pppid: 'Nama PPP'
       title_part9: Bahagian IX - Ulasan Keseluruhan Oleh Pegawai Penilai Kedua
       part9_desc: 'PPK hendaklah memberi ulasan keseluruhan pencapaian PYD berasaskan ulasan keseluruhan oleh PPP'
-      ppkid: 'Name Pegawai Penilai Kedua (PPK)'
+      ppkid: 'Nama Pegawai Penilai Kedua (PPK)'
+      submit_for_evaluation2: Hantar untuk penilaian PPK
+      submit_notify_ppk: "Sebaik sahaja dihantar, Pegawai Penilai Kedua (PPK) dimaklumkan"
+      click_complete: Sebaik sahaja dilengkapkan, akses dihadkan
+      disable_editing: " dan rekod tidak boleh lagi disunting"
+      evaluation_complete: Penilaian Prestasi Lengkap
+      percent_notes: "Peratusan [Bahagian II 50% dan Bahagian III 50%]"
       
       nm: Nama
       type: Jenis
@@ -1722,9 +1846,9 @@ ms_MY:
         skt_peringatan_5: "sila rujuk Panduan Penyediaan Sasaran Kerja Tahunan (SKT) untuk mendapat keterangan lanjut."
         skt_II_title : "BAHAGIAN II -- Kajian Semula Sasaran Kerja Tahun Pertengahan Tahun"
         skt_II_1 : "Aktiviti/Projek Yang Ditambah"
-        skt_II_1_text : (PYD hendaklah menyeneraikan aktiviti/projek yang ditambah berserta petunjuk prestasinya setelah berbincang dengan PPP)
+        skt_II_1_text : (PYD hendaklah menyenaraikan aktiviti/projek yang ditambah berserta petunjuk prestasinya setelah berbincang dengan PPP)
         skt_II_2 : "Aktiviti/Projek Yang Digugurkan"
-        skt_II_2_text : (PYD hendaklah menyeneraikan aktiviti/projek yang digugurkan setelah berbincang dengan PPP)
+        skt_II_2_text : (PYD hendaklah menyenaraikan aktiviti/projek yang digugurkan setelah berbincang dengan PPP)
         skt_III_title: "BAHAGIAN III - Laporan dan Ulasan Keseluruhan Pencapaian Sasaran Kerja Tahunan Pada Akhir <BR/>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;           Tahun Oleh PYD dan PPP"
         skt_III_1: Laporan/Ulasan Oleh PYD
         skt_III_2: Laporan/Ulasan Oleh PPP
@@ -1811,6 +1935,7 @@ ms_MY:
     leaves_other_blanks: " & 'kosongkan' medan - medan lain untuk papar SEMUA rekod."
     no_result: Tiada data
     leaves_all_blank_all_records: "'Kosongkan' semua medan dan klik 'Cari' untuk papar SEMUA rekod."
+    leaves_all_blank_all_records_tick: "'Kosongkan' semua medan, pilih / nyahpilih kotak semak dan klik 'Cari' untuk papar SEMUA rekod."
     leaves_blank_unselected: "Kosongkan / nyahpilih semua medan untuk papar SEMUA rekod."
     select_record: Pilih rekod mengikut
     data_based_existing_records: " adalah bergantung kepada rekod - rekod yang wujud."
@@ -2096,8 +2221,9 @@ ms_MY:
       stock_listing_by: Senarai Stok Mengikut
       stock_summary_by: Rinkasan Stok Mengikut
       listing_stock_verification_all: "Senarai Buku untuk Pengesahan Stok-Semua Buku"
-      listing_stock_verification: Senarai Buku untuk Pengesahan Stok
+      listing_stock_verification: "Senarai Buku untuk Pengesahan Stok-Hasil Carian Buku"
       listing_books: Senarai Buku
+      summary_search: Ringkasan hasil carian stok
       total: Jumlah Buku
       stock_summary: Ringkasan Stok
       book_listing: Senarai Buku
@@ -2398,6 +2524,20 @@ ms_MY:
     application_due: "Permohonan cuti telah tamat tempoh dan tidak dapat diproses."
     expired: Tamat tempoh
     leave_approval_slip: Slip Kelulusan Cuti Pelajar
+    note_one: "Data 'Penyelaras Kumpulan XXX' perlu dimasukkan ke dalam medan 'Tugas Utama' dalam rekod perjawatan pengajar. 'XXX' merujuk kepada medan 'Kumpulan' dalam submodul 'Ambilan'"
+    note_two: "Sekiranya Penyelaras Kumpulan bagi satu-satu permohonan tiada, mana-mana Pengajar dari Program yang sama boleh bertindak sebagai pelulus :"
+    note_twoa: "Penyelaras Kumpulan boleh mengakses permohonan dari pelatih yang diselaras dan permohonan dari pelatih tanpa Penyelaras Kumpulan"
+    note_twob: "Kesemua Pengajar bagi satu-satu Program boleh mengakses semua permohonan dari pelatih tanpa Penyelaras Kumpulan"
+    note_three: "Semua Warden boleh meluluskan mana-mana permohonan kelulusan cuti"
+    pending_coordinator: Menunggu Kelulusan Penyelaras
+    pending_warden: Menunggu Kelulusan Warden
+    approved_coordinator: Diluluskan Penyelaras
+    approved_warden: Diluluskan Warden
+    completed: Kelulusan Selesai
+    expired: Tamat Tempoh
+    approval_status: Status Kelulusan
+    hostel_block: Blok
+    valid: Masih Sah 
     
   studentdiscipline:
     title: Senarai Kes Disiplin Pelajar
@@ -2583,6 +2723,8 @@ ms_MY:
     bookcode: Kod Perpustakaan
     accession: No Panggilan
     accessionno: No Panggilan
+    remark_accessionno: "Catatan : Hanya No. Panggilan dengan ikon "
+    remark_accessionno2: " boleh dibuang."
     catsource: Sumber Katalog
     classno: No Kelas
     description: Huraian Fizikal
@@ -2621,6 +2763,8 @@ ms_MY:
     available: disertakan
     bibliography: Bibliografi
     check_availability: Semak Ketersediaan
+    back_to_index: Kembali ke Senarai Buku
+    back_to_search: Kembali ke Carian Buku
     
   librarytransaction:
     new: Transaksi Baru Perpustakaan
@@ -2720,13 +2864,15 @@ ms_MY:
     description: Deskripsi 
     created_by: Disediakan Oleh
     details: Butiran Jadual Waktu
-    period: Tempoh
+    period: Slot
     day: Hari
     start_at: Masa mula
     end_at: Masa tamat
     is_break: Rehat
     period_timings: Aturan jangka masa
     code_name_description: "Kod, Nama, Deskripsi"
+    editable_removal_restricted: "Format Jadual Waktu sedang digunakan : suntingan hanya dibenarkan bagi jangka masa sahaja dan rekod tidak boleh dipadam."
+    editing_restricted: "Format Jadual Waktu yang digunakan dalam Jadual Waktu Mingguan yang telah DILULUSKAN sudah tidak boleh disunting."
   
   intake:
     list: Senarai Ambilan Pelajar
@@ -2742,6 +2888,7 @@ ms_MY:
     sample: "(Cth.: Jan 2013, Mac 2013, Julai 2013)"
     details: Butiran Ambilan
     description_programme: "Kumpulan, Nama Program"
+    staff_id: Penyelaras Kumpulan
   
   academic_session:
     title: Senarai Sesi Akademik
@@ -3183,6 +3330,8 @@ ms_MY:
     edit_marks: Sila SUNTING markah berkenaan
     final: Peperiksaan Akhir
     must_exist_first: "mesti wujud terlebih dahulu."
+    data_invalid: 'Data yang diberikan adalah tidak sah. Markah peperiksaan pelajar bagi kertas peperiksaan (subjek) yang dipilih mestilah diwujudkan terlebih dahulu sebelum Gred boleh dicipta.'
+    max_weightage_marks_30: "Nilai Maksima Skor Formatif (Jumlah Wajaran dan Jumlah Markah) bagi program Diploma adalah 30."
   
   examresult: 
     title: Keputusan Peperiksaan Mengikut Program
@@ -3230,15 +3379,17 @@ ms_MY:
     new:  "Maklumbalas / Penilaian Kursus Baru"
     edit: "Sunting Maklumbalas / Penilaian Kursus"
     staff_id: Pengajar
+    student_id: Pelatih
     course_id: Program
     invite_lec: Pensyarah Jemputan
+    invite_lec_topic: Topik
     staff_invitation_must_exist: " : samada Pengajar (staf) ATAU Pengajar Jemputan mesti wujud."
     evaldate: Tarikh Penilaian
     subject_id: Subjek
     comment: Komen
-    programme_subjectname: "Program - Nama Subjek"
+    programme_subjectname: "Program - Nama Subjek / Topik"
     no_course: Tiada Kursus
-    no_staff: Tiada Pengajar
+    no_staff: "Jemputan - "
     eval_form: Borang Penilaian Pengajar
     info: Maklumat Penilaian
     details: Butiran Penilaian
@@ -3246,18 +3397,22 @@ ms_MY:
     score: Skor
     objective_achieved: "Pencapaian objektif pelajaran."
     lecturer_knowledge: "Pengetahuan pensyarah tentang pelajaran yang diajar."
-    lecturer_q_achievement: "Mutu pencapaian pensyarah."
+    lecturer_q_achievement: "Syarahan menepati masa yang ditetapkan."
     content: "Isi kandungan pelajaran"
     training_aids_quality: "Mutu alat pandang dengar yang digunakan."
     suitability_topic_sequence: "Kesesuaian turutan topik dalam jadual."
-    effectiveness_teaching_learning: "Keberkesanan pengajaran dan pembelajaran (interaksi antara pensyarah dan pelajar)."
-    benefit_notes: "Faedah bahan/nota yang diedarkan"
+    effectiveness_teaching_learning: "Interaksi antara pensyarah dan pelajar."
+    benefit_notes: "Faedah bahan/nota yang diedarkan."
+    suitable_assessment: "Penilaian yang dilakukan bersesuaian dengan topik."
     evaluation_scale: Skala Penilaian
     unsatisfactory: Tidak Memuaskan 
     average: Sederhana 
     satisfactory: Memuaskan 
     good: Baik 
     excellent: Sangat Baik
+    staff_or_invited: "Pilih kotak semak jika Pensyarah Jemputan, nyahpilih jika Pengajar KSKB."
+    by_students: "(Diisi oleh Pelatih)"
+    evaluation_once: " - Penilaian bagi Subjek yang diajar hanya dibenarkan sekali"
     
   examanalysis:
     title: Analisis Peperiksaan Mengikut Kertas Peperiksaan
@@ -3342,3 +3497,7 @@ ms_MY:
         precision: 2
         separator: '.'
         delimiter: ','
+    #percentage:
+    #  format:
+    #    format: "%n %"
+    #    precision: 2

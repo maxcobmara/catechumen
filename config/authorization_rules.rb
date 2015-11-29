@@ -10,7 +10,8 @@ authorization do
     #positions
     has_permission_on :leaveforstaffs,  :to => [:manage, :approve1, :approve2]
     #claims
-    has_permission_on [:ptbudgets, :ptcourses, :ptschedules, :ptdos],  :to => :manage   #Professional Development
+    has_permission_on [:ptbudgets, :ptcourses, :ptschedules],  :to => :manage   #Professional Development
+    has_permission_on :ptdos, :to => :manage
     #status & movement
     #reports
     
@@ -27,7 +28,7 @@ authorization do
     
     #Student Menu Items
     #has_permission_on :students,        :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
-    has_permission_on [:leaveforstudents],  :to => [:manage, :approve, :approve_warden]
+    has_permission_on [:leaveforstudents],  :to => [:manage, :approve_coordinator, :approve_warden]
     
     #Exam Menu Items
     has_permission_on :examquestions,   :to => :manage
@@ -37,6 +38,7 @@ authorization do
     has_permission_on :timetables, :to => :manage
     has_permission_on :weeklytimetables, :to => :manage
     has_permission_on :trainingnotes, :to => :manage
+    has_permission_on :evaluate_courses, :to => :manage
     
     #Library Menu Items
     has_permission_on [:librarytransactions, :books], :to => :manage
@@ -75,9 +77,10 @@ authorization do
     has_permission_on [:attendances, :assets, :documents],     :to => :menu              # Access for Menus
     has_permission_on :books, :to => :core
     has_permission_on :ptdos, :to => :create
-    has_permission_on :ptdos, :to => :index do
+    has_permission_on :ptdos, :to => :index do 
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
+    
     has_permission_on :staffs, :to => [:show, :menu]
     has_permission_on :staffs, :to => [:edit, :update, :menu] do
       if_attribute :id => is {Login.current_login.staff_id}
@@ -90,7 +93,7 @@ authorization do
     end
     
     has_permission_on :staff_appraisals, :to => :create
-    has_permission_on :staff_appraisals, :to => :manage, :join_by => :or do 
+    has_permission_on :staff_appraisals, :to => [:manage, :appraisal_form], :join_by => :or do 
         if_attribute :staff_id => is {Login.current_login.staff_id}
         if_attribute :eval1_by => is {Login.current_login.staff_id}
         if_attribute :eval2_by => is {Login.current_login.staff_id}
@@ -179,16 +182,20 @@ authorization do
   
   role :finance_unit do
     has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve, :claimprint]
+    has_permission_on :ptbudgets, :to => :manage
   end
   
   role :training_manager do
     has_permission_on [:ptbudgets, :ptcourses, :ptschedules], :to => :manage
+    has_permission_on :ptdos, :to =>:approve
     has_permission_on :ptdosearches, :to => :read
   end
   
   role :training_administration do
-    has_permission_on [:ptcourses, :ptschedules], :to => :manage
-    has_permission_on :ptdos, :to => :approve
+    has_permission_on [:ptbudgets, :ptcourses, :ptschedules], :to => :manage
+    has_permission_on :ptdos, :to =>:approve #do
+      #if_attribute :staff_id => is_not_in {Login.current_login.staff.unit_members}  #En Zahar can't see Fazrina's ptdo at all in index
+    #end
     has_permission_on :ptdosearches, :to => :read
   end
   
@@ -246,7 +253,7 @@ authorization do
         #if_attribute :student_id => is {Login.current_login.student_id}
       #end
     
-      has_permission_on :programmes, :to => :menu
+      has_permission_on :trainingnotes, :to => :menu
       has_permission_on :books, :to => :core
       has_permission_on :students, :to => [:read, :update, :menu, :show, :formforstudent] do
         if_attribute :student_id => is {Login.current_login.student_id}
@@ -255,6 +262,10 @@ authorization do
         if_attribute :student_id => is {Login.current_login.student_id}
       end
       has_permission_on :leaveforstudents, :to => [:create]
+      has_permission_on :evaluate_courses, :to => :create
+      has_permission_on :evaluate_courses, :to => [:read, :update, :courseevaluation] do
+        if_attribute :student_id => is {Login.current_login.student_id}
+      end
   end
   
   role :student_administrator do
@@ -279,17 +290,29 @@ authorization do
   role :programme_manager do
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => :manage#:to => [:index, :show, :edit, :update, :menu, :calendar]
+    has_permission_on :intakes, :to => :manage
     has_permission_on :topics, :to => :manage
-    has_permission_on :weeklytimetables, :to => :manage #21March2013 added
+    has_permission_on :weeklytimetables, :to => :read 
+    has_permission_on :weeklytimetables, :to => :update do #:manage #21March2013 added
+      if_attribute :endorsed_by => is {Login.current_login.staff_id}
+    end
+    has_permission_on :ptdos, :to => :approve do
+      if_attribute :staff_id => is_in {Login.current_login.staff.unit_members}
+    end
+    has_permission_on :evaluate_courses, :to => [:read, :courseevaluation] do
+      if_attribute :course_id => is_in {Position.my_programmeid(Login.current_login.staff_id)} # is_in {[5]}
+    end
+    has_permission_on :evaluatecoursesearches, :to => :manage
   end
 #--21march2013-new role added  
   role :coordinator do
-    has_permission_on :programmes, :to => :manage
-    has_permission_on :timetables, :to => :manage
-    #below - manage or just edit, update (can approve?), Penyelaras Kumpulan (of each Intake, of each Programme)
-    has_permission_on :weeklytimetables, :to => :manage do
-      if_attribute :prepared_by => is {Login.current_login.staff_id}
-    end
+#     has_permission_on :programmes, :to => :manage
+#     has_permission_on :timetables, :to => :manage
+#     #below - manage or just edit, update (can approve?), Penyelaras Kumpulan (of each Intake, of each Programme)
+#     has_permission_on :weeklytimetables, :to => :manage do
+#       if_attribute :prepared_by => is {Login.current_login.staff_id}
+#     end
+    #all above removed to role : lecturer
     has_permission_on :curriculumsearches, :to => :read
  end
 #--21march2013-new role added    
@@ -300,36 +323,50 @@ authorization do
   role :lecturer do
     
     #restricted access for penyelaras - [relationship: approver, FK: staff_id, page: approve], in case of non-exist of penyelaras other lecturer fr the same programme
-    has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve], :join_by => :and do
+    has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve_coordinator], :join_by => :and do
       if_attribute :studentsubmit => true
       if_attribute :student_id => is_in {Login.current_login.staff.under_my_supervision}
     end
     
     has_permission_on :examquestions, :to => :manage
-    has_permission_on :programmes, :to => [:core,:menu]
-    has_permission_on :topics, :to => :manage
-    has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar] do
-      if_attribute :staff_id => is {Login.current_login.staff_id}
-    end
-    has_permission_on :trainingreports, :to => :manage, :join_by => :or do
-      if_attribute :staff_id => is {Login.current_login.staff_id}
-      if_attribute :tpa_id => is {Login.current_login.staff_id}
-    end
-    has_permission_on :timetables, :to => [:create]
+    
     has_permission_on :students, :to => [:menu, :index, :show, :formforstudent]
     has_permission_on :student_attendances, :to => :create
     has_permission_on :student_attendances, :to => :manage do
       if_attribute :weeklytimetable_id => is_in {Login.current_login.classes_taughtby}
     end
+    
+    #TRAININGs - START
+#     has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar] do
+#       if_attribute :staff_id => is {Login.current_login.staff_id}
+#     end   
+    has_permission_on :programmes, :to => :read
+    has_permission_on :topics, :to => :manage
+    
+    #HACK : restrict commonsubject lecturer fr accessing in menu, but gives programme/postbasic lecturer access (if they ARE in prepared_by(WTs) or staff_id(Intakes))
+    has_permission_on [:timetables, :intakes], :to => :manage
+
+    has_permission_on :trainingreports, :to => :manage, :join_by => :or do
+      if_attribute :staff_id => is {Login.current_login.staff_id}
+      if_attribute :tpa_id => is {Login.current_login.staff_id}
+    end
+    Programme
+    #HACK : weeklytimetables - CREATE restricted in Index (if exist in Intakes)
+     has_permission_on :weeklytimetables, :to => [:read, :update] , :join_by => :or do
+       if_attribute :prepared_by => is_in {Login.current_login.staff_id} 
+       if_attribute :intake_id => is_in {Intake.find(:all, :conditions => ['staff_id=?', Login.current_login.staff_id]).map(&:id)} #should include those being coordinate by me
+     end
+    
     has_permission_on :weeklytimetables, :to => :personalize_index do
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
-    
-    #giving full access to Pengajar Subjek Asas on Weeklytimetable (of ALL programmes) - refer authorization rules under LECTURER role
-    #related to this comment (1) 2.1.2 Student Attendance, item no.3, (2) 2.3.1 Scheduling, comment no.11 (part B)
-    has_permission_on :weeklytimetables, :to => :manage do
-      if_attribute :programme_id => is_in {Login.current_login.staff.commonsubject_lecturer_programmeid_list}
-    end
+
+#removed to Unit Leader role    
+#     #giving full access to Pengajar Subjek Asas on Weeklytimetable (of ALL programmes) - refer authorization rules under LECTURER role
+#     #related to this comment (1) 2.1.2 Student Attendance, item no.3, (2) 2.3.1 Scheduling, comment no.11 (part B)
+#     has_permission_on :weeklytimetables, :to => [:read, :update] do
+#       if_attribute :programme_id => is_in {Login.current_login.staff.commonsubject_lecturer_programmeid_list}
+#     end
 
     #from Ogma
     has_permission_on :trainingnotes, :to => :manage, :join_by => :or do
@@ -341,14 +378,15 @@ authorization do
       if_attribute :topicdetail_id => is {nil}
       if_attribute :timetable_id => is {nil}
     end
-   
+    #TRAININGs - END
+    
+    has_permission_on :studentsearches, :to => :read
     has_permission_on :studentattendancesearches, :to => :read
     has_permission_on :weeklytimetablesearches, :to => :read
     has_permission_on :lessonplansearches, :to => :read
     has_permission_on :personalizetimetablesearches, :to => :read
     has_permission_on :examsearches, :to => :read
     has_permission_on :examresultsearches, :to => :read
-    has_permission_on :evaluatecoursesearches, :to => :read
     has_permission_on :examanalysissearches, :to => :read
   end
   
@@ -368,6 +406,23 @@ authorization do
   role :guest do
     has_permission_on :users, :to => :create
     has_permission_on :books, :to => :core
+  end
+  
+  role :unit_leader do
+    has_permission_on :ptdos, :to => :approve do
+      if_attribute :staff_id => is_in { Login.current_login.staff.unit_members}
+    end
+    #giving full access to Pengajar Subjek Asas on Weeklytimetable (of ALL programmes) - refer authorization rules under LECTURER role
+    #related to this comment (1) 2.1.2 Student Attendance, item no.3, (2) 2.3.1 Scheduling, comment no.11 (part B)
+    has_permission_on :weeklytimetables, :to => [:read, :update] do
+      if_attribute :programme_id => is_in {Login.current_login.staff.commonsubject_lecturer_programmeid_list}
+    end
+  end
+  
+  role :administration_staff do
+    has_permission_on :ptdos, :to => :approve do
+      if_attribute :staff_id => is_in { Login.current_login.staff.admin_subordinates}
+    end
   end
   
 end

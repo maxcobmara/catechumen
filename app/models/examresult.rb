@@ -50,12 +50,18 @@ class Examresult < ActiveRecord::Base
         	  if @dept_unit == "Pos Basik" && @anc_depth == 3
         			@dept_unit = Login.current_login.staff.position.unit 
         	 end 
-        end 
+        end
+        #####--Pos Basik / Diploma Lanjutan / Kebidanan -- 1Nov2015 -- note latest format - Position for Pos Basik / Diploma Lanjutan / Pengkhususan
+        if ['Pos Basik', 'Kebidanan', 'Diploma Lanjutan'].include?(@dept_unit)
+           maintask=Login.current_login.staff.position.tasks_main
+           @dept_unit="Kebidanan" if maintask.include?('Kebidanan')
+        end
+        #####
        end
        
        @current_login_roles=[]
        Login.current_login.roles.each do |role|
-       	  @current_login_roles<<role.id
+       	  @current_login_roles<< role.id
        end 
 
      

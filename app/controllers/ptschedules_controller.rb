@@ -92,4 +92,30 @@ class PtschedulesController < ApplicationController
     end
   end
   
+  ###removed from ptdo - 26May2015
+  def organized_course_manager
+    @filters=Ptschedule.filters
+    if params[:show] && params[:show]!="all2" 
+      startbegindate=Date.new(params[:show].to_i,1,1)
+      startenddate=Date.new(params[:show].to_i,12,31)
+      unless params[:search].nil?
+        @ptschedules=Ptschedule.find(:all, :conditions => ['budget_ok=? and start>=? and start<=? and ptcourse_id IN(?)', true, startbegindate, startenddate, searched_course_ids], :order => 'start DESC')
+      else
+        @ptschedules=Ptschedule.find(:all, :conditions => ['budget_ok=? and start>=? and start<=?', true, startbegindate, startenddate], :order => 'start DESC')
+      end
+    else
+      unless params[:search].nil?
+        searched_course_ids=Ptcourse.find(:all, :conditions => ['name ILIKE(?)', "%#{params[:search]}%"]).map(&:id)
+        @ptschedules=Ptschedule.find(:all, :conditions => ['ptcourse_id IN(?)', searched_course_ids], :order => 'start DESC')
+      else
+        @ptschedules=Ptschedule.send("all2")
+      end
+    end
+    @ptschedules = @ptschedules.paginate(:per_page => 5, :page => params[:page]) 
+    respond_to do |format|
+      format.html 
+      format.xml  { render :xml => @ptschedules }
+    end
+  end
+  
 end

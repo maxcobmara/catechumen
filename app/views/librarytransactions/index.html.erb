@@ -38,7 +38,7 @@
 			<tr><td colspan=12 style="background-color:#EFF1F1";><span style="color:#218AFB;font-weight:bold;"><%= l(checkoutdate, :format => "%A, %v") %></span></td></tr>
 	    <% for librarytransaction in librarytransactions%>
 	    <tr>
-		  	<td><%=h librarytransaction.accession.accession_no unless librarytransaction.accession_id.blank? %></td>
+		  	<td><%=h librarytransaction.accession.try(:accession_no) unless librarytransaction.accession_id.blank? %></td>
 		    <td> 
 			<% if librarytransaction.accession %>
 			<%=h librarytransaction.accession.book.classlcc? ?  librarytransaction.accession.book.classlcc : librarytransaction.accession.book.classddc %>

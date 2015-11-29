@@ -64,9 +64,9 @@
 						<!--yg asal-->
 						<!--modified one 13dec2012-->
 						<% if @asset_disposal.examiner_staff1.blank? || @asset_disposal.examiner_staff1.to_s.nil?%>
-							<%= select_tag "asset_disposal[examiner_staff1]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+							<%= select_tag "asset_disposal[examiner_staff1]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all, :order => 'name ASC'), :id, :staff_name_with_position) %>
 						<% else %>
-							<%= select_tag "asset_disposal[examiner_staff1]","<option value='"+@asset_disposal.examiner_staff1.to_s+"'>" +Staff.find(@asset_disposal.examiner_staff1).staff_name_with_position+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+							<%= select_tag "asset_disposal[examiner_staff1]","<option value='"+@asset_disposal.examiner_staff1.to_s+"'>" +Staff.find(@asset_disposal.examiner_staff1).staff_name_with_position+"</option>"+options_from_collection_for_select(Staff.find(:all, :order => 'name ASC'), :id, :staff_name_with_position) %>
 						<% end %>
 						<!--modified one 13dec2012-->
 						<%#= f.collection_select :examiner_staff1, Staff.find(:all), :id, :staff_name_with_position %>
@@ -92,9 +92,9 @@
 						<!--yg asal-->
 						<!--modified one 13dec2012-->
 						<% if @asset_disposal.examiner_staff2.blank? || @asset_disposal.examiner_staff2.to_s.nil?%>
-							<%= select_tag "asset_disposal[examiner_staff2]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+							<%= select_tag "asset_disposal[examiner_staff2]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all, :order => 'name ASC'), :id, :staff_name_with_position) %>
 						<% else %>
-							<%= select_tag "asset_disposal[examiner_staff2]","<option value='"+@asset_disposal.examiner_staff2.to_s+"'>" +Staff.find(@asset_disposal.examiner_staff2).staff_name_with_position+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+							<%= select_tag "asset_disposal[examiner_staff2]","<option value='"+@asset_disposal.examiner_staff2.to_s+"'>" +Staff.find(@asset_disposal.examiner_staff2).staff_name_with_position+"</option>"+options_from_collection_for_select(Staff.find(:all, :order => 'name ASC'), :id, :staff_name_with_position) %>
 						<% end %>
 						<!--modified one 13dec2012-->
 						<%#= f.collection_select :examiner_staff2, Staff.find(:all), :id, :staff_name_with_position %>

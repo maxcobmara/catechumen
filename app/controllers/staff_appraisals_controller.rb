@@ -5,7 +5,14 @@ class StaffAppraisalsController < ApplicationController
   filter_resource_access
   
   def index
-    @staff_appraisals = StaffAppraisal.with_permissions_to(:index).find(:all)
+    all2a=StaffAppraisal.with_permissions_to(:index)
+    @filters=StaffAppraisal.filters(all2a)
+    if params[:show] && params[:search]
+      @staff_appraisals = StaffAppraisal.with_permissions_to(:index).search(params[:show], params[:search])
+    else
+      @staff_appraisals = StaffAppraisal.with_permissions_to(:index).find(:all, :order => 'evaluation_year DESC, staff_id ASC')
+    end
+    @staff_appraisals = @staff_appraisals.paginate(:per_page => 20, :page => params[:page]) 
 
     respond_to do |format|
       format.html # index.html.erb
@@ -42,7 +49,10 @@ class StaffAppraisalsController < ApplicationController
   def edit
     @staff_appraisal = StaffAppraisal.find(params[:id])
     #2.times {@staff_appraisal.staff_appraisal_skts.build}
-    
+    if params[:job_type] && params[:job_level]
+      @job_type=params[:job_type] #redo_performance
+      @job_level=params[:job_level]
+    end
   end
 
   # POST /staff_appraisals
@@ -70,7 +80,7 @@ class StaffAppraisalsController < ApplicationController
         format.html { redirect_to(@staff_appraisal, :notice => t('evaluation.appraisal.title')+" "+t('updated')) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => "edit", :job_type=>"redo_performance", :job_level => "skt_revision"}
         format.xml  { render :xml => @staff_appraisal.errors, :status => :unprocessable_entity }
       end
     end

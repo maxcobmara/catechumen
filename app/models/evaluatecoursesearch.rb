@@ -1,5 +1,5 @@
 class Evaluatecoursesearch < ActiveRecord::Base
-  attr_accessible :programme_id, :subject_id, :evaldate, :lecturer_id
+  attr_accessible :programme_id, :subject_id, :evaldate, :evaldate_end, :lecturer_id, :invite_lecturer, :programme_id2, :is_staff
   attr_accessor :method
   
   def evaluatecourses
@@ -16,12 +16,33 @@ class Evaluatecoursesearch < ActiveRecord::Base
     ["course_id=?", programme_id] unless programme_id.blank?      
   end
   
+  def programme_id2_conditions
+    ["course_id=?", programme_id2] unless programme_id2.blank?   
+  end
+  
+  def is_staff_conditions
+    if is_staff==false
+      aa=["invite_lec !=?", ""]
+    elsif is_staff==true
+      aa=["subject_id is not null"]
+    end 
+    return aa if is_staff==true || is_staff==false
+  end
+  
+  def invite_lecturer_conditions
+    ["invite_lec=?", invite_lecturer] unless invite_lecturer.blank?
+  end
+  
   def subject_id_conditions
     ["subject_id=?", subject_id] unless subject_id.blank?      
   end
   
   def evaldate_conditions
-    ["evaluate_date=?", evaldate] unless evaldate.blank?      
+    ["evaluate_date>=?", evaldate] unless evaldate.blank?      
+  end
+  
+  def evaldate_end_conditions
+    ["evaluate_date<=?", evaldate_end] unless evaldate_end.blank?      
   end
   
   def lecturer_id_conditions

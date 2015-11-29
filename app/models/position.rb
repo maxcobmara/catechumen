@@ -137,7 +137,6 @@ class Position < ActiveRecord::Base
         [ "KUP",3]
   ]
   
-  
   def self.search(search)
      if search
         @positions = Position.find(:all, :conditions => ['name ILIKE ?', "%#{search}%"], :order => 'combo_code')
@@ -145,4 +144,22 @@ class Position < ActiveRecord::Base
         @positions = Position.find(:all,  :order => 'combo_code')
      end
   end
+  
+  #use in authrules - only for Programme Manager, Admin (for Course Evaluation)
+  def self.my_programmeid(staffid)
+    staffpost=Position.find(:first, :conditions => ['staff_id=?', staffid])
+    unitname=staffpost.unit
+    if unitname=="Pengkhususan"  #definitely KP Pengkhususan only
+      programmeids=Programme.find(:all, :conditions => ['course_type IN (?)', ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]]).map(&:id)
+    else
+      if Login.current_login.roles.map(&:authname).include?("administration")
+        programmeids=Programme.roots.map(&:id)
+      else
+        programmeid=Programme.find(:first, :conditions => ['name=?', unitname]).id
+        programmeids=[programmeid]
+      end
+    end
+    programmeids
+  end
+  
 end

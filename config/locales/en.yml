@@ -98,6 +98,7 @@ en:
   view_pdf: View PDF
   starting_with: starting with
   others_specify: "If Others, Please Specify"
+  prompt_language: "You are about to leave a page. You have unsaved data. Click Ok and save form first or click Cancel to proceed changing language."
   
   will_paginate:
     previous_label: "&#0171; Previous"
@@ -137,6 +138,17 @@ en:
           statonery_use: Office Supplies Deductions
           examanalysis: Examination Analysis
           ptcourse: Training Course
+          ptbudget: Training Budget
+          ptdo: Training Application
+          leaveforstudent: Student Leave
+          staff_appraisal: Staff Appraisal
+          staff_appraisal_skt: Annual Work Targets
+          mycpd: MyCPD
+          timetable: Timetable Format
+          timetable_period: Timetable Details
+          academic_session: Academic Session
+          evaluate_course: Course Evaluation
+          grade: Grade
       attributes:
           staff:
               icno: "MyKad No"
@@ -156,6 +168,7 @@ en:
               kins:
                  one: Emergency Contact Information
                  other: Emergency Contact Information
+              mycpds: MyCPD details
           student:
               kins:
                  one: Contact Information and Guarantor
@@ -183,7 +196,10 @@ en:
              currentvalue: "Current Value"
           grade:
              examweight: "Summative Weightage"
-             exam1marks: "Summative Marks"
+             exam1marks: "Marks (100%)"
+             student_id: Student
+             subject_id: Subject
+             finalscore: Total Marks
           asset_loss:
              reportcode: "Internal Loss Report Code"
              losstype: "Lost Type"
@@ -226,6 +242,57 @@ en:
               exam_id: Examination Paper 
           ptcourse:
               level: Level
+          ptdo:
+              staff_id: Staff Name
+          ptbudget:
+              fiscalstart: Date
+          leaveforstudent:
+              leavetype: Leave Type
+              leave_startdate: Start Date
+              leave_enddate: End Date
+              telno: Phone No
+              reason: Reason
+              address: Address
+          staff_appraisal:
+              e2_performance: "Overall performance - PYD"
+              is_completed_on: Date appraisal completed
+              e2_months: Months
+              e1_months: Months
+              e1_performance: Overall Performance
+              e1_progress: Career Progress
+              submit_e2_on: Submission date to PPK
+              staff_appraisal_skts: Annual Work Targets
+              skt_pyd_report: Report by PYD
+          staff_appraisal_skt:
+              acheivment: Achievement
+              progress: Achievement Percentage
+              notes: Reviews
+          mycpd:
+              cpd_year: Year
+              cpd_value: Accumulated Points
+          timetable:
+              timetable_periods: Timetable Details
+          timetable_period:
+              sequence: Period
+          academic_session:
+              total_week: Total Week
+          evaluate_course:
+            staff_id: Lecturer
+            invite_lec: Invitation Lecturer
+            subject_id: Subject
+            invite_lec_topic: Topic
+            evaluate_date: Evaluation Date
+            course_id: Programme
+            ev_obj: Score question 1
+            ev_knowledge: Score question 2
+            ev_deliver: Score question 3
+            ev_content: Score question 4
+            ev_tool: Score question 5
+            ev_topic: Score question 6
+            ev_work: Score question 7
+            ev_note: Score question 8
+            ev_assessment: Score question 9
+          
       errors:
           template:
             body: "There were problems with the following fields:"
@@ -239,6 +306,13 @@ en:
               taken: "has already been taken"
               illegal_char: contains illegal characters
               invalid: is invalid
+          models:
+              staff_appraisal:
+                attributes: 
+                  e2_months:
+                    greater_than: must greater than 0 if less than 1 year
+                  e1_months:
+                    greater_than: must greater than 0 if less than 1 year
 
   icms: 
     login:  Log In
@@ -296,7 +370,8 @@ en:
     programme_manager: Programme Manager
     disciplinary_officer: Disciplinary Officer
     coordinator: Coordinator
-    testing_role: Testing Role
+    #testing_role: Testing Role
+    unit_leader: Unit Leader
     e_filing: "E-Filing"
     registered: "Thanks for signing up!  The IT team will process your application as soon as possible."
     registration_failed: "We couldn't set up that account, sorry.  Please try again, or contact an admin."
@@ -492,6 +567,7 @@ en:
     students: Student
     student_info: Student Information
     student_leave: Student Leave
+    new_student_leave: New Student Leave
     discipline: Discipline Cases
     counselling: Counselling
     new_ethnic_group: New Ethnic Group
@@ -512,9 +588,10 @@ en:
     lesson_reporting: Lesson Report
     training_notes: Training Notes
     personalised_timetable: Personalised Time Table
-    new_lesson_plan: New Lesson Plan
-    new_lesson_report: New Lesson Report
+    new_lesson_plan_report: "New Lesson Plan & Report"
     new_training_notes: New Training Notes
+    new_timetable_entries: New Time Table Entries
+    new_personalised_timetable: New Personalised Time Table
     
     exams: Exams
     exam_dev: Examination Development
@@ -525,6 +602,7 @@ en:
     exam_result: Examination Result
     result_program: Result by Programme
     exam_slip: Examination Slip
+    new_feedback_courseevaluate: "New Feedback / Course Evaluation"
     feedback_courseevaluate: "Feedback / Course Evaluation"
     exam_analysis: Examination Analysis
     
@@ -568,6 +646,9 @@ en:
     code: Staff Code
     thumb: Thumb ID
     shift: Staff Shift
+    shift_start: " starting "
+    shift_end: " until "
+    shift_history: Shift Histories
     fileno: Personal File No
     cobirthdt: Date Of Birth
     birthcertno: Birth Cert No
@@ -685,6 +766,9 @@ en:
     kinaddr: Address
     profession: Profession
     
+    shift_histories:
+      deactivate_date: Activate date
+    
   attendance:
      attend: Attend
      title: Staff Attendance
@@ -697,6 +781,7 @@ en:
      time_in: Time In
      time_out: Time Out
      lateness_earlyreturn:  'Manage Lateness / Early Return '
+     fingerprint_statement_notfingerprint: 'Fingerprint Statement (Not Fingerprint)'
      report_monthlylisting: Report / Monthly Listing 
      daily_weekly_monthly_report: "Daily / Weekly / Monthly Report"
      monthly_listing: Monthly Listing
@@ -1061,6 +1146,11 @@ en:
      reason: Reason
      confirmedby_id: Confirmed By
      create: New Training
+     accumulated_cpd_points: "Accumulated CPD Points (myCPD)"
+     cpd_year: Year 
+     cpd_value: Accumulated Points
+     inserted_values: "Inserted values shall appear in item no.5 of 'Rekod Pengesahan Kehadiran Program Latihan' and 'Yearly Summary of Training Attended'."
+     uniq_msg: "CPD for selected year already exist"
      
   ptbudget:
     title: Annual Budget
@@ -1138,9 +1228,9 @@ en:
     title: Training Schedule
     create: New Training Schedule
     new: New Training Schedule
-    newcreate: Create Training Schedule
     edit: Edit Training Schedule
     list: Training Schedule For Staff Listing
+    listing: Back to Schedule Listing
     schedule_details: Training Course Details
     start: Start
     end: End
@@ -1162,9 +1252,16 @@ en:
     overview: Overview
     tick_to_approve: Tick to approve
     duration: Duration
+    min_participants_not_fulfill: "indicates 'Participant Report' from minimum participant not yet recorded."
+    expenses: Staff Training - Attended Participants & Expenses
+    expenses_menu: "Participations & Expenses"
+    all_records: All records
+    back_expenses: Back to Participation Expenses
     payment_method: Payment Method
     lo_tunai: "Local Order / Cash"
-    paid_submission: "Submitted / Not Submitted"
+    local_order: Local Order
+    cash: Cash
+    remark: Remark
   
   ptdos:
     title: Staff Training Courses Status Listing
@@ -1186,7 +1283,7 @@ en:
     deptapprove: Dept Approve
     replacementstaff: Replacement Staff
     finalapprove: Final Approve
-    trainereport: Trainee Report
+    trainereport: Participant Report
     applytraining: Apply for Training
     trainingapp: Training Application
     coursename: Course Name
@@ -1199,6 +1296,7 @@ en:
     application_rejected: Application Rejected
     awaiting_unit_approval: Awaiting Unit Approval
     approved_unit_head_await_dept_approval: "Approved by Unit head, awaiting Dept approval"
+    awaiting_dept_approval: Awaiting Dept Approval
     approved_dept_head_await_pengarah_approval: "Approved by Dept head, awaiting Director approval"
     all_approvals_complete: All approvals completed
     report_submitted: Report Submitted
@@ -1206,9 +1304,8 @@ en:
     status_not_available: Status Not Available
     note_hours_day: "Note : 6 hours equal to 1 day of training"
     download: Download
-    expenses: Listing of Staff Training Expenses
-    manager: Training Budget Management
-    all_records: All records
+    nil: Not yet attended
+    staff_must_unique: " - Application for training of selected course schedule can only be done once."
   
   supplier:
     list: List of Office Supplies
@@ -1468,7 +1565,7 @@ en:
     asset_register_no: Asset Regitration No
     report_by: Reported By
     action_type: Action Type
-    recommendation: Recommendation
+    recommend: Recommendation
     recommend_submit: Recommendation Submitted
     approval: Approval
     defect_description: Defect Description
@@ -1645,15 +1742,20 @@ en:
     common:
     skt: 
       title: "Attachment A Part I - Setting Annual Work Targets"
-      title2: "Attachment A Part II - Mid Year Review"
       submission: "Submission"
       submit_evaluation: "Submit to PPP for Report"
       description: Description of Activities and Projects
-      performance:  Performance Indicators
+      performance: Performance Indicators
       priority: Priority
       submiteval: Submit for evaluation
+      target: Work Target
+      quality: Quality
+      time: Time
+      quantity: Quantity
+      cost: Cost
       
     skt_review:
+      title2: "Attachment A Part II - Mid Year Review"
       drop: "Drop existing Activity/Project"
       add: "Additional Activity/Project"
       title3: "Attachment A Part III - Report & Summary"
@@ -1661,6 +1763,20 @@ en:
       ppp_report: "2. Report by PPP"
       report_ppp: "Sent to PPP for Report"
       ppp_complete: "Laporan selesai?"
+      drop2: Drop
+      drop_select: "Tick 'Drop' checkbox to drop an activity / project"
+      drop_select2: "compulsory fields for existing "
+      drop_select3: ", if activity / project is not drop)"
+      submit_ppp_report: Submit to PPP for report
+      submit_note: Clicking on submit notifies your Evaluating Officer (PPP) and disables your editing this record further
+      acheivment: Achievement
+      notes: Reviews
+      progress: " %"
+      cancel: Cancel
+      cancel_select: "Tick 'Cancel' checkbox to remove saved additional activity / project OR click 'dustbin' icon to remove unsaved activity from the list. "
+      new_additional: "For new additional activity, click 'Add More'."
+      new_additional2: " Note, compulsory fields: "
+      new_additional3: "'Description of Activities and Projects' plus at least 1 set of (Performance Indicator and corresponding : Target + Achievement + % of achievement)."
       
     yellow_form:
       quantity: 1. WORK OUTPUT QUANTITY
@@ -1700,7 +1816,8 @@ en:
       ontime_desc: 'Ability to produce work or perform tasks in a specified time period..'
       effective:  4. EFFECTIVENESS OF THE WORK
       effective_desc: 'Evaluated in terms of stake-holder requirements or customer.'
-      title_part4: 'Part IV: Skills (25%)'
+      title_part4: 'Part IV: Skills (20%)'
+      title_part4_sokong1: 'Part IV: Personal (25%)'
       knowledge:  1. KNOWLEDGE AND SKILLS IN THE FIELD OF WORK
       knowledge_desc: 'Have the knowledge and skills / expertise in producing work includes the ability to identify, analyze and solve problems.'
       rules:      2. POLICY IMPLEMENTATION ADMINISTRATIVE RULES AND INSTRUCTIONS
@@ -1708,6 +1825,7 @@ en:
       communication: 3. COMMUNICATION
       communication_desc: 'Able to express opinions, ideas, understanding or oral or written instructions relating to the terms of reference include domination using good grammar and presentation.'
       title_part5: 'Part V: Personal (20%)'
+      title_part5_sokong1: 'Part V: Skills (20%)'
       leadership: LEADERSHIP CRITERIA
       leadership_desc: 'Have a vision, commitment, ability, decision making, move and motivate officers to the achievement of the objectives orgnisation.'
       management: ADMINISTRATION CAPABILITIES
@@ -1733,9 +1851,15 @@ en:
       part9_desc: 'PPK should provide an overall performance summary for the PYD bases on the full statement of the PPP'
       ppkid: 'Name of Second Evaluating Officer (PPK)'
       title_part10: 'Part IV: '
+      submit_for_evaluation2: Submit for evaluation by PPK
+      submit_notify_ppk: "Clicking on submit notifies the Second Evaluating Officer (PPK)"
+      click_complete: Clicking on complete will lock this record
+      disable_editing: " and disables your editing this record further"
+      evaluation_complete: Evaluation is complete
+      percent_notes: "Percent [Part II 50% and Part III 50%]"
       
       nm: Name
-      type: Typle
+      type: Type
       date: Date
       activity: Activity
       level: Level
@@ -1854,6 +1978,7 @@ en:
     leaves_other_blanks: " & leaves other fields 'blank' to display ALL record."
     no_result: Search return no result
     leaves_all_blank_all_records: "Leaves all fields 'blank' and click 'Search' to display ALL record."
+    leaves_all_blank_all_records_tick: "Leaves all fields 'blank', 'tick / untick' checkbox and click 'Search' to display ALL record."
     leaves_blank_unselected: "Leaves all fields 'blank' / 'unselected' to display ALL record."
     select_record: Select record by
     data_based_existing_records: " data are based on existing records."
@@ -2140,8 +2265,9 @@ en:
       stock_listing_by: Stock Listing By
       stock_summary_by: Stock Summary By
       listing_stock_verification_all: "Book Listing For Stock Verification-All Books"
-      listing_stock_verification: Book Listing For Stock Verification
+      listing_stock_verification: "Book Listing For Stock Verification-Searched Books"
       listing_books: Book Listing
+      summary_search: Summary of stock search result
       total: Total Books
       stock_summary: Stock Summary
       book_listing: Book Listing
@@ -2443,6 +2569,20 @@ en:
     application_due: "Leave application has expired and could not be processed."
     expired: Expired
     leave_approval_slip: Student Leave Approval Slip
+    note_one: "Group coordinator assignment - include 'Penyelaras Kumpulan XXX' into 'Main Task' field in selected lecturer's 'Position' record. 'XXX' refers to 'Group' field in 'Intakes' submodule"
+    note_two: "Should there's no existing group coordinator to approve a leave application, any lecturer from the same Programme may act as one :"
+    note_twoa: "Group coordinator have access to application submitted by students being coordinated and application by students of intakes without a group coordinator"
+    note_twob: "All lecturer of a programme have access to all applications submitted by students of intakes without a group coordinator"
+    note_three: "All wardens may approve all student leave applications"
+    pending_coordinator: Pending Coordinator Approval
+    pending_warden: Pending Warden Approval
+    approved_coordinator: Coordinator Approved
+    approved_warden: Warden Approved
+    completed: Approval Completed
+    expired: Expired
+    approval_status: Approval Status
+    hostel_block: Hostel
+    valid: Valid
     
   studentdiscipline:
     title: Student Discipline Case Listing
@@ -2631,6 +2771,8 @@ en:
     bookcode: Library Code
     accession: Accession
     accessionno: Accession No
+    remark_accessionno: "Remark : Only accessions with "
+    remark_accessionno2: " icon are allowed for deletion."
     catsource: Cataloging Source To
     classno: Class No
     description: Physical Description
@@ -2669,6 +2811,8 @@ en:
     available: available
     bibliography: Bibliography
     check_availability: Check Availability
+    back_to_index: Back to Book Listing
+    back_to_search: Back to Book Search
       
   librarytransaction:
     new: New Library Transaction
@@ -2775,6 +2919,8 @@ en:
     is_break: Break
     period_timings: Period Timings
     code_name_description: "Code, Name, Description"
+    editable_removal_restricted: "Timetable in use : modification allowed for timing/period only and record is no longer removable."
+    editing_restricted: "Timetable being used in an APPROVED Weeklytimetable is restricted for editing at all."
     
   intake:
     list: Student Intake Listing
@@ -2790,6 +2936,7 @@ en:
     sample: "(Eg.: Jan 2013, March 2013, July 2013)"
     details: Intake Details
     description_programme: "Group, Programme name"
+    staff_id: Group Coordinator
     
   academic_session:
     title: Academic Session Listing
@@ -3234,6 +3381,8 @@ en:
     edit_marks: Please EDIT marks accordingly
     final: Final Examination
     must_exist_first: "must exist first."
+    data_invalid: "Data supplied was invalid. Student examination marks for selected examination paper(subject) must exist, before grades could be created."
+    max_weightage_marks_30: "Maximum value for Formative Scores (Total Weightage and Total Marks) is 30."
       
   examresult: 
     title: Examination Result by Programme
@@ -3281,15 +3430,17 @@ en:
     new: "New Feedback / Course Evaluation"
     edit: "Edit Feedback / Course Evaluation"
     staff_id: Lecturer
+    student_id: Student
     course_id: Programme
     invite_lec: Invitation Lecturer
+    invite_lec_topic: Topic
     staff_invitation_must_exist: " : either Lecturer (staff) Invitation Lecturer must exist."
     evaldate: Evaluation Date
     subject_id: Subject
     comment: Comment
-    programme_subjectname: "Programme - Subject Name"
+    programme_subjectname: "Programme - Subject Name / Topik"
     no_course: No course
-    no_staff: No lecturer
+    no_staff: "Invitation - "
     eval_form: Lecturer Evaluation Form
     info: Appraisal Information
     details: Appraisal Details
@@ -3297,18 +3448,22 @@ en:
     score: Score
     objective_achieved: "Achievement of lesson objectives."
     lecturer_knowledge: "Lecturer's knowledge on lesson being taught."
-    lecturer_q_achievement: "Quality of lecturer's achievement."
+    lecturer_q_achievement: "Lecture completed on set time."
     content: "Content of lesson."
     training_aids_quality: "Quality of training aids in use."
     suitability_topic_sequence: "Suitability of topic sequence in schedule."
-    effectiveness_teaching_learning: "Effectiveness of teaching and learning (interaction between lecturer and student)."
+    effectiveness_teaching_learning: "Interaction between lecturer and student."
     benefit_notes: "Benefit of distributed material / notes."
+    suitable_assessment: "The assessment carried out in accordance with the topic."
     evaluation_scale: Evaluation Scale
     unsatisfactory: Unsatisfactory
     average: Average
     satisfactory: Satisfactory
     good: Good
     excellent: Excellent
+    staff_or_invited: "Tick if KSKB lecturers, untick if Invitation Lecturer."
+    by_students: "(Evaluated by students)"
+    evaluation_once: " - Evaluation for a taught Subject can only be done once"
     
   examanalysis:
     title: Examination Analysis by Examination Paper
@@ -3389,3 +3544,7 @@ en:
         precision: 2
         separator: '.'
         delimiter: ','
+    percentage:
+      format:
+        format: "%n %"
+        precision: 2

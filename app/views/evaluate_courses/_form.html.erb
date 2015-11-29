@@ -3,13 +3,17 @@
 <div class="tform">
 	<H2><%=t('evaluate_course.info')%></H2>
   <table width=100% >
-			<!--
-			<tr>
-				<td class="leftcol"><label for="student_id">Student Name</label></td>
-				<td>:</td>
-				<td><%#= f.collection_select :student_id, Student.find(:all), :id, :name, :include_blank => true %></td>
-			</tr>-->
-			
+	<% permitted_to? :create, :evaluate_courses do %>
+		<% if Login.current_login.isstaff==true%>
+		<tr>
+			<td class="leftcol"><label for="student_id"><%=t('evaluate_course.student_id')%></label></td>
+			<td>:</td>
+			<td><%= f.collection_select :student_id, Student.find(:all, :order =>'course_id ASC'), :id, :matrix_name, :include_blank => (t 'select') %></td>
+		</tr>
+		<% else %>
+			<%=f.hidden_field :student_id, :value => @studentid%>
+		<% end %>
+	<% end %>
 			<tr>
 				<td class="leftcol"><label for="course_id"><%=t('evaluate_course.course_id')%></label></td>
 				<td>:</td>
@@ -21,29 +25,43 @@
 					<% end %>
 				</td>
 			</tr>
-				
+		
 			<tr>
-				<td class="leftcol"><label for="subject_id"><%=t('evaluate_course.subject_id')%></label></td>
+				<td class="leftcol">
+					<SPAN class="span_staff" style="display: block;"><label for="staff_id"><%=t('evaluate_course.staff_id')%></span></label> 
+					<SPAN class="span_invited" style="display: none;"><label for="invite_lec"><%=t('evaluate_course.invite_lec')%></span></label>
+				</td>
 				<td>:</td>
-				<td><%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank =>(t 'select') %></td>
-				
-			</tr>
-	
-			<tr>
-				<td class="leftcol"><label for="staff_id"><%=t('evaluate_course.staff_id')%></label></td>
-				<td>:</td>
-					<%# @dept_position_staff_ids = Position.find_by_unit(@dept_unit).subtree.map(&:staff_id) %>
-					<%# @dept_staff = Staff.find(:all, :conditions => ['id IN(?)', @dept_position_staff_ids])%>
-				<td><%= f.collection_select :staff_id, @lecturer_list, :id, :name, :include_blank => (t 'select') %>
-					<%#= f.collection_select :staff_id, Staff.find(:all), :id, :name, :include_blank => true %></td>
+				<td>
+					<% if @evaluate_course.new_record? %>
+						<% isstaff="checked" %>
+					<% else %>
+						<% unless @evaluate_course.staff_id.blank? %>
+							<% isstaff="checked" %>
+						<% else %>
+							<% isstaff="unchecked" %>
+						<% end %>
+					<% end %>
+					<%= f.check_box :is_staff, :checked => isstaff, :id => 'is_staff' %><%=t('evaluate_course.staff_or_invited')%>
+					<SPAN class="span_staff" style="display: block;">
+						<%= f.collection_select :staff_id, @lecturer_list, :id, :name, :include_blank => (t 'select') %>
+					</SPAN>
+					<SPAN class="span_invited" style="display: none;"><br><%= f.text_field :invite_lec%></SPAN>
+				</td>
 			</tr>
 			
 			<tr>
-				<td class="leftcol"><label for="staff_id"><%=t('evaluate_course.invite_lec')%></label></td>
+				<td class="leftcol">
+					<SPAN class="span_staff" style="display: block;"><label for="subject_id"><%=t('evaluate_course.subject_id')%></label></span>
+					<SPAN class="span_invited" style="display: none;"><label for="invite_lec_topic"><%=t('evaluate_course.invite_lec_topic')%></label></span>
+				</td>
 				<td>:</td>
-				<td><%= f.text_field :invite_lec %></td>
+				<td>
+					<SPAN class="span_staff" style="display: block;"><%= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, :include_blank =>(t 'select') %></SPAN>
+					<SPAN class="span_invited" style="display: none;"><%= f.text_field :invite_lec_topic %></SPAN>
+				</td>
 			</tr>
-			
+
 			<tr>
 				<td class="leftcol"><label for="comment"><%=t('evaluate_course.comment')%></label></td>
 				<td>:</td>
@@ -81,7 +99,7 @@
 <table width=80% border=1 cellspacing=0 cellpadding=7 BORDERCOLOR="#C0C0C0 ">	
 			
 			<tr>
-				<td width="10" ><font size=2><b>BIL</b></font></td>
+				<td width="10" ><font size=2><b>No</b></font></td>
 				<td align="center" width=35%><font size=2 ><b><%=t('evaluate_course.description')%></b></font></th>
 				<td width="10" colspan=9 align="center"><font size=2><b><%=(t 'evaluate_course.score').upcase %></b></font></td>
 			</tr>
@@ -210,5 +228,46 @@
 				<td align="center"><%= f.radio_button :ev_note,'9' %></td>
 			</tr>
 			
+			<tr>
+				<td>9.</td>
+				<td><%=t('evaluate_course.suitable_assessment')%></td>
+				<td align="center"><%= f.radio_button :ev_assessment,'1' %></td>
+				<td align="center"><%= f.radio_button :ev_assessment,'2' %></td>
+				<td align="center"><%= f.radio_button :ev_assessment,'3' %></td>
+				<td align="center"><%= f.radio_button :ev_assessment,'4' %></td>
+				<td align="center"><%= f.radio_button :ev_assessment,'5' %></td>
+				<td align="center"><%= f.radio_button :ev_assessment,'6' %></td>
+				<td align="center"><%= f.radio_button :ev_assessment,'7' %></td>
+				<td align="center"><%= f.radio_button :ev_assessment,'8' %></td>
+				<td align="center"><%= f.radio_button :ev_assessment,'9' %></td>
+			</tr>
 </table>
 </div>
+
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			//show submit date
+
+			$j("input[id='is_staff']").change(function() {  
+			 if($j('#is_staff').is(':checked')) { 
+			    $j(".span_invited").hide(""); 
+				$j(".span_staff").show("highlight"); 
+			 }else		{
+			    $j(".span_invited").show("highlight");  
+				$j(".span_staff").hide("");
+			 }	
+			});
+
+			$j("input[id='is_staff']").each(function() {  
+			 if($j('#is_staff').is(':checked')) { 
+			    $j(".span_invited").hide("");
+				$j(".span_staff").show("highlight"); 
+			 }else		{
+			    $j(".span_invited").show("highlight"); 
+				$j(".span_staff").hide(""); 
+			 }	
+			});
+
+	});
+</script>

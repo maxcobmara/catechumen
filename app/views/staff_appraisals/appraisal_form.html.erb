@@ -93,15 +93,18 @@
 		      <th>Tarikh/Tempoh</th>
 		      <th>Tempat</th>
 		    </tr>
-
-			<% if Ptdo.find(:all, :conditions => ['staff_id = ?', @staff_appraisal.staff_id]).count == 0 %>	
+			<% ptdoyear=@staff_appraisal.evaluation_year.year %>
+			<% year_start=Date.new(ptdoyear,1,1) %>
+			<% nextyear_start=year_start+1.year %>
+			<% schedule_of_ptdoyear=Ptschedule.find(:all, :conditions => ['start >=? and start <?', year_start, nextyear_start]).map(&:id)%>
+			<% if Ptdo.find(:all, :conditions => ['staff_id = ? and ptschedule_id IN(?)', @staff_appraisal.staff_id, schedule_of_ptdoyear]).count == 0 %>	
 				<tr>
 					      <td width="259" height="50">-</td>
 					      <td width="161">-</td>
 					      <td width="217">-</td>
 				</tr>
 			<% else %>	
-				<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', @staff_appraisal.staff_id]) %>
+				<% for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ? and ptschedule_id IN(?)', @staff_appraisal.staff_id, schedule_of_ptdoyear]) %>
 		    <tr>
 		      <td width="259" height="50"><%= ptdo.ptschedule.ptcourse.name %></td>
 		      <td width="161"><%= l(ptdo.ptschedule.start) %></td>
@@ -408,32 +411,106 @@
 			<H4>BAHAGIAN I - MAKLUMAT PEGAWAI</H4>
 			<H5>(PYD dan PPP hendaklah berbincang bersama sebelum menetapkan SKT dan petunjuk prestasinya)</H5>
 
-				<table class="centre">
+			    <!--
+			    <table class="centre">
 			    <tr>
 			      <td align="center" height="48">Bil.</td>
 			      <td align="center"><b>Ringkasan Aktiviti/Projek</b><BR>(Senaraikan Aktiviti/projek)</td>
 			      <td align="center"><b>Petunjuk Prestasi</b><BR>(Kuantiti/Kualiti/Masa/Kos)</td>
-			    </tr>
+			    </tr>-->
 
 				<% if @staff_appraisal.staff_appraisal_skts.count == 0 %>
+				        <table class="centre" width=95%>
+					<tr>
+						<td align="center" height="48">Bil.</td>
+						<td align="center"><b>Ringkasan Aktiviti/Projek</b><BR>(Senaraikan Aktiviti/projek)</td>
+						<td align="center"><b>Petunjuk Prestasi</b><BR>(Kuantiti/Kualiti/Masa/Kos)</td>
+					</tr>
 					<tr>
 						      <td height="6cm">-</td>
 						      <td >-</td>
 						      <td >-</td>
 					</tr>
+					</table>
 				<% else %>	
-				  <% just_a_counter = 0 %>
+				
+				<% @skt_dirancang=@staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=?', 1], :order => :priority) %>
+				  <% just_a_counter = 0 %><% @aa=[] %><% item_count=0%>
 					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :order => :priority) %>
 					<% if staff_appraisal_skt.half != 2%>
 					<% just_a_counter += 1 %>
-					<tr>
-						<td><%= just_a_counter %></td>
-						<td><%= staff_appraisal_skt.description %></td>
-						<td><%= staff_appraisal_skt.indicator %></td>
+					<table class="centre" width=95%>
+					<tr bgcolor="#F0EEEE">
+						<td align="center" height="48"><%= just_a_counter %></td>
+						<td class="left" colspan=5><b>Ringkasan Aktiviti/Projek :</b><br><%= staff_appraisal_skt.description %></td>
 					</tr>
-					<% end -%><% end -%>
+					<tr bgcolor="#F0EEEE" >
+						<th colspan=2>Petunjuk Prestasi</th>
+						<th>Sasaran</th>
+						<th>Pencapaian</th>
+						<th>%</th>
+						<th>Ulasan</th>
+					</tr>
+					<% if staff_appraisal_skt.indicator_desc_quality!='' && staff_appraisal_skt.target_quality!=''%>
+					<tr><% item_count+=1%>
+						<th width=7%>Kualiti</th>
+						<td width=22% class="left"><%= staff_appraisal_skt.indicator_desc_quality %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.target_quality %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.achievement_quality %></td>
+						<td width=7% class="left"><%= staff_appraisal_skt.progress_quality %></td>
+						<td width=20% class="left"><%= staff_appraisal_skt.notes_quality %></td>
+					</tr>
+					<% end %>
+					<% if staff_appraisal_skt.indicator_desc_time!='' && staff_appraisal_skt.target_time!=''%>
+					<tr><% item_count+=1%>
+						<th width=7%>Masa</th>
+						<td width=22% class="left"><%= staff_appraisal_skt.indicator_desc_time %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.target_time %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.achievement_time %></td>
+						<td width=7% class="left"><%= staff_appraisal_skt.progress_time %></td>
+						<td width=20% class="left"><%= staff_appraisal_skt.notes_time %></td>
+					</tr>
+					<% end %>
+					<% if staff_appraisal_skt.indicator_desc_quantity!='' && staff_appraisal_skt.target_quantity!=''%>
+					<tr><% item_count+=1%>
+						<th width=7%>Kuantiti</th>
+						<td width=22% class="left"><%= staff_appraisal_skt.indicator_desc_quantity %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.target_quantity %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.achievement_quantity %></td>
+						<td width=7% class="left"><%= staff_appraisal_skt.progress_quantity %></td>
+						<td width=20% class="left"><%= staff_appraisal_skt.notes_quantity %></td>
+					</tr>
+					<% end %>
+					<% if staff_appraisal_skt.indicator_desc_cost!='' && staff_appraisal_skt.target_cost!=''%>
+					<tr><% item_count+=1%>
+						<th width=7%>Kos</th>
+						<td width=22% class="left"><%= staff_appraisal_skt.indicator_desc_cost %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.target_cost %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.achievement_cost %></td>
+						<td width=7% class="left"><%= staff_appraisal_skt.progress_cost %></td>
+						<td width=20% class="left"><%= staff_appraisal_skt.notes_cost %></td>
+					</tr>
+					<% end %>
+					</table><br><BR>
+	
+<%# if item_count == 4 %>
+<% if @skt_dirancang.count > 1 && (just_a_counter==1 || just_a_counter==3) %>
+	</div>
+		<div class="page_number"><% page_number += 1 %><%= page_number %></div>
+	</div>
+	<P CLASS="breakhere">
+	<div class='A4potrait_<%= "#{@staff_appraisal.person_type}" %>'><br /><br /><br />
+	<div class="bahagian">
+		<H4>BAHAGIAN I - MAKLUMAT PEGAWAI</H4>
+		<H5>(PYD dan PPP hendaklah berbincang bersama sebelum menetapkan SKT dan petunjuk prestasinya)</H5>
+<% end %>				
+					
+					
+					<% end -%>
+					<!--capture all skt's achievement, progress & notes here-->
+					<%# @aa << (staff_appraisal_skt.acheivment.to_s+" "+staff_appraisal_skt.progress.to_s+"%,  "+staff_appraisal_skt.notes.to_s)  if staff_appraisal_skt.progress!=nil %><% end -%>
 				<% end %>	
-			  </table><br />
+			  <!--</table>--><br />
 
 				<table class="signature">
 					<tr>
@@ -463,45 +540,95 @@
 		<H4><%= t 'evaluation.jpa.common.skt_II_title' %></H4>
 		<H4>1.&nbsp; &nbsp;<%= t 'evaluation.jpa.common.skt_II_1' %></H4>
 		<H5><%= t 'evaluation.jpa.common.skt_II_1_text' %></H5>
-
-			<table class="centre">
-		    <tr>
-		      <td align="center" height="48">Bil.</td>
-		      <td align="center"><b>Ringkasan Aktiviti/Projek</b><BR>(Senaraikan Aktiviti/projek)</td>
-		      <td align="center"><b>Petunjuk Prestasi</b><BR>(Kuantiti/Kualiti/Masa/Kos)</td>
-		    </tr>
-
-			<% if @staff_appraisal.staff_appraisal_skts.count == 0 %>
-				<tr>
-					      <td height="6cm">-</td>
-					      <td >-</td>
-					      <td >-</td>
-				</tr>
-			<% else %>	
-			  <% just_a_counter = 0 %>
-				<% if @staff_appraisal.is_skt_submit == true && @staff_appraisal.is_skt_endorsed == true %>
-				<% just_a_counter += 1 %>
-				<tr>
-					<td><%= just_a_counter %></td>
-					<td><%= staff_appraisal_skt.description %></td>
-					<td><%= staff_appraisal_skt.indicator %></td>
-				</tr>
-				<% end -%>
-			<% end %>	
-		  </table><br />
-		
+      
+			<% skt_ditambah=@staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=?', 2], :order => :priority) %>
+			<% skt_digugur=@staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=? and is_dropped=?', 1, true], :order => :priority) %>
+			<% if @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=?', 2], :order => :priority).count == 0 %>
+				        <table class="centre" width=95%>
+					<tr>
+						<td align="center" height="48">Bil.</td>
+						<td align="center"><b>Ringkasan Aktiviti/Projek</b><BR>(Senaraikan Aktiviti/projek)</td>
+						<td align="center"><b>Petunjuk Prestasi</b><BR>(Kuantiti/Kualiti/Masa/Kos)</td>
+					</tr>
+					<tr>
+						      <td height="6cm">-</td>
+						      <td >-</td>
+						      <td >-</td>
+					</tr>
+					</table>
+				<% else %>	
+				  <% just_a_counter = 0 %><% @aa=[] %><% item_count=0%>
+					<% for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=?', 2], :order => :priority) %>
+					<%# if staff_appraisal_skt.half == 2%>
+					<% just_a_counter += 1 %>
+					<table class="centre" width=95%>
+					<tr bgcolor="#F0EEEE">
+						<td width=7% align="center" height="48"><%= just_a_counter %></td>
+						<td width=71% class="left" colspan=5><b>Ringkasan Aktiviti/Projek :</b><br><%= staff_appraisal_skt.description %></td>
+					</tr>
+					<tr bgcolor="#F0EEEE">
+						<th width=29% colspan=2>Petunjuk Prestasi</th>
+						<th width=22%>Sasaran</th>
+						<th width=22%>Pencapaian</th>
+						<th width=7%>%</th>
+						<th width=20%>Ulasan</th>
+					</tr>
+					<% if staff_appraisal_skt.indicator_desc_quality!='' && staff_appraisal_skt.target_quality!=''%>
+					<tr><% item_count+=1%>
+						<th width=7%>Kualiti</th>
+						<td width=22% class="left"><%= staff_appraisal_skt.indicator_desc_quality %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.target_quality %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.achievement_quality %></td>
+						<td width=7% class="left"><%= staff_appraisal_skt.progress_quality %></td>
+						<td width=20% class="left"><%= staff_appraisal_skt.notes_quality %></td>
+					</tr>
+					<% end %>
+					<% if staff_appraisal_skt.indicator_desc_time!='' && staff_appraisal_skt.target_time!=''%>
+					<tr><% item_count+=1%>
+						<th width=7%>Masa</th>
+						<td width=22% class="left"><%= staff_appraisal_skt.indicator_desc_time %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.target_time %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.achievement_time %></td>
+						<td width=7% class="left"><%= staff_appraisal_skt.progress_time %></td>
+						<td width=20% class="left"><%= staff_appraisal_skt.notes_time %></td>
+					</tr>
+					<% end %>
+					<% if staff_appraisal_skt.indicator_desc_quantity!='' && staff_appraisal_skt.target_quantity!=''%>
+					<tr><% item_count+=1%>
+						<th width=7%>Kuantiti</th>
+						<td width=22% class="left"><%= staff_appraisal_skt.indicator_desc_quantity %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.target_quantity %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.achievement_quantity %></td>
+						<td width=7% class="left"><%= staff_appraisal_skt.progress_quantity %></td>
+						<td width=20% class="left"><%= staff_appraisal_skt.notes_quantity %></td>
+					</tr>
+					<% end %>
+					<% if staff_appraisal_skt.indicator_desc_cost!='' && staff_appraisal_skt.target_cost!=''%>
+					<tr><% item_count+=1%>
+						<th width=7%>Kos</th>
+						<td width=22% class="left"><%= staff_appraisal_skt.indicator_desc_cost %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.target_cost %></td>
+						<td width=22% class="left"><%= staff_appraisal_skt.achievement_cost %></td>
+						<td width=7% class="left"><%= staff_appraisal_skt.progress_cost %></td>
+						<td width=20% class="left"><%= staff_appraisal_skt.notes_cost %></td>
+					</tr>
+					<% end %>
+					</table><br>
+					<%# end %>
+				<% end %>
+			<% end -%>
 			<H4><%= t 'evaluation.jpa.common.skt_II_title' %></H4>
 			<H4>1.&nbsp; &nbsp;<%= t 'evaluation.jpa.common.skt_II_2' %></H4>
 			<H5><%= t 'evaluation.jpa.common.skt_II_2_text' %></H5>
 			
-			<table class="centre">
+			<table class="centre" width=95%>
 		    <tr>
-		      <td align="center" height="48">Bil.</td>
-		      <td align="center"><b>Aktiviti/Projek</b></td>
+		      <td align="center" height="48" width=10%>Bil.</td>
+		      <td align="center" width=90%><b>Aktiviti/Projek</b></td>
 		    </tr>
 			
 			
-			<% if @staff_appraisal.staff_appraisal_skts.count == 0 %>
+			<% if @staff_appraisal.staff_appraisal_skts.find(:all, :conditions => ['half=? and is_dropped=? ', 1, true], :order => :priority).count == 0 %>
 				<tr>
 					      <td height="6cm">-</td>
 					      <td >-</td>
@@ -513,8 +640,8 @@
 				<% if staff_appraisal_skt.is_dropped == true %>
 				<% just_a_counter += 1 %>
 				<tr>
-					<td><%= just_a_counter %></td>
-					<td><%= staff_appraisal_skt.description %></td>
+					<td class="left"><%= just_a_counter %></td>
+					<td class="left"><%= staff_appraisal_skt.description %></td>
 				</tr>
 				<% end -%><% end -%>
 			<% end %>	
@@ -524,15 +651,25 @@
 			<H4><%= t 'evaluation.jpa.common.skt_III_title' %></H4>
 			<H4>1.&nbsp; &nbsp;<%= t 'evaluation.jpa.common.skt_III_1' %></H4>
 
-			<table class="centre">
+			<table class="centre" width=95%>
 				<tr>
-					<td style="height:3cm;vertical-align:top; text-align:left; padding:1mm;"><%=h @staff_appraisal.skt_pyd_report %></td>
+					<td style="height:3cm;vertical-align:top; text-align:left; padding:1mm;">
+					<%=h @staff_appraisal.skt_pyd_report %></td>
 				</tr>
 			</table>
+			
+<% if skt_ditambah.count >= 1 || skt_digugur.count >=2 %>
+	</div>
+		<div class="page_number"><% page_number += 1 %><%= page_number %></div>
+	</div>
+	<P CLASS="breakhere">
+	<div class='A4potrait_<%= "#{@staff_appraisal.person_type}" %>'><br /><br /><br />
+	<div class="bahagian">
+<% end %>	
 
 			<H4>2.&nbsp; &nbsp;<%= t 'evaluation.jpa.common.skt_III_2' %></H4>
 
-			<table class="centre">
+			<table class="centre" width=95%>
 				<tr>
 					<td style="height:3cm;vertical-align:top; text-align:left; padding:1mm;"><%=h @staff_appraisal.skt_ppp_report %></td>
 				</tr>
@@ -557,7 +694,7 @@
 				</tr>
 			</table>
 		</div>
-		<div class="page_number">8</div>
+		<div class="page_number"><%= page_number+=1 %></div>
 </div>
 
 

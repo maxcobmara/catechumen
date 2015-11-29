@@ -18,24 +18,17 @@
 <div id="title">
 <table width=100% border="0">
 	<tr>
-		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="120" height="100"/></th>
-		<th><!--<H4>PPL APMM<BR><BR>NO.DOKUMEN: BK-KKM-KS-04-04<BR>Maklum Balas/ Penilaian Kursus</H4>--> </th>
-		<th width="2%"><!--<img border="0" src="/images/maritim.png" alt="" width="100" height="100"/>--></th>
+		<th width="2%"><img border="0" src="/images/KM.jpg" alt="km" width="108" height="86.4"/></th>
+		<th valign="centre"><b>Kolej Sains Kesihatan Bersekutu Johor Bahru<br><%=t('evaluate_course.title2')%></b></th>
+		<th width="2%"><img border="0" src="/images/kskb_logo-6.png" alt="kskbjb" /></th>
 	</tr>
 </table>
 
 <div id="title">
-	<table width=100% cellspacing="0" border="1">
-		<tr>
-			<th colspan=4 align="left"> DISEDIAKAN OLEH: </th>
-			<th colspan=2 align="left">TARIKH KEMASKINI: </th>
-		</tr>
-	</table>
-<br>
 
 <table width=100% cellspacing="0" cellpadding="7" border="0">
 	<tr>
-		<td colspan=4 align="center"><font color="black", size="3">(Diisi oleh Pelatih)</td>	
+		<td colspan=4 align="center"><font color="black", size="3"><%=t('evaluate_course.by_students')%></td>
 	</tr>
 
 </table>
@@ -45,15 +38,17 @@
 		<td>
 			<table width=100% border="0" cellspacing="0" cellpadding="10">
 			<tr>
-			<td>Kursus: <%= @evaluate_course.course_id.blank? ? "No Course" : @evaluate_course.stucourse.name %></td>
+			<td><%=t('evaluate_course.course_id')%> : <%= @evaluate_course.stucourse.programme_list %></td>
 		    <td></td>
 	        </tr>
 	        <tr>
-		    <td>Modul/Matapelajaran : <%= @evaluate_course.subject_id.blank? ? "No Subject" : @evaluate_course.subjectevaluate.name %> </td>
-		    <td>Tarikh: <%= @evaluate_course.evaluate_date.blank? ? "-" : l(@evaluate_course.evaluate_date, :format=>"%d-%b-%Y")  %></td>
+		    <td><%= @evaluate_course.subject_id.blank? ? (t 'evaluate_course.invite_lec_topic') : (t 'evaluate_course.subject_id') %>
+			  : <%= @evaluate_course.subject_id.blank? ? @evaluate_course.invite_lec_topic : @evaluate_course.subjectevaluate.subject_list %> </td>
+		    <td align="right"><%=t('evaluate_course.evaldate')%>: <%= @evaluate_course.evaluate_date.blank? ? "-" : l(@evaluate_course.evaluate_date, :format=>"%d-%b-%Y")  %></td>
             </tr>
             <tr>
-            <td>Nama Pensyarah : <%= @evaluate_course.staff_id.blank? ? "No Staff" : @evaluate_course.staffevaluate.name %> </td>
+            <td><%= @evaluate_course.staff_id.blank? ? (t 'evaluate_course.invite_lec') : (t 'evaluate_course.staff_id') %>
+		    : <%= @evaluate_course.staff_id.blank? ? @evaluate_course.invite_lec : @evaluate_course.staffevaluate.name %> </td>
             <td></td>
             </tr>
             </table>
@@ -63,128 +58,162 @@
 
 <center><!--<img src="/images/skala.png">--></center>
 <BR>
+<table width=100% border=0 >
+		<tr>
+			<td colspan=4 ><font size=2><b> <i><%=t('evaluate_course.evaluation_scale')%> : </i></b></font></td>	
+		</tr>
+		<tr>
+			<td align="center"><font size=2><b> 0 &#x2194;  1 </b></font></td>
+			<td align="center"><font size=2><b> 2 &#x2194;  3 </b></font></td>	
+			<td align="center"><font size=2><b> 4 &#x2194;  5 </b></font></td>	
+			<td align="center"><font size=2><b> 6 &#x2194;  7 </b></font></td>	
+			<td align="center"><font size=2><b> 8 &#x2194;  9 </b></font></td>	
+		</tr>
+		<tr>
+			<td align="center"><font size=2><b> <%=t('evaluate_course.unsatisfactory')%> </b></font></td>
+			<td align="center"><font size=2><b> <%=t('evaluate_course.average')%> </b></font></td>	
+			<td align="center"><font size=2><b> <%=t('evaluate_course.satisfactory')%> </b></font></td>	
+			<td align="center"><font size=2><b> <%=t('evaluate_course.good')%> </b></font></td>	
+			<td align="center"><font size=2><b> <%=t('evaluate_course.excellent')%> </b></font></td>	
+		</tr>
+</table>
+<BR>
 <table width=100% cellspacing="0" cellpadding="6" font size="5px" border="1">
 	<tr>
-		<th align="center">BIL</th>
-		<th align="center">PERKARA</th>
-		<th align="center" colspan=9><center>SKOR</center></th>
+		<th align="center">NO</th>
+		<th align="center"><%=t('evaluate_course.description').upcase%></th>
+		<th align="center" colspan=9><center><%=t('evaluate_course.score').upcase%></center></th>
 		</tr>
 	<tr>
 		<td align="center">1.</td>
-		<td>Pencapaian Objektif Pelajaran</td>	
-		<td><center><% if @evaluate_course.ev_obj == 1  %><u><b><%= @evaluate_course.ev_obj %></b></u><% else %>1<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_obj == 2  %><u><b><%= @evaluate_course.ev_obj %></b></u><% else %>2<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_obj == 3  %><u><b><%= @evaluate_course.ev_obj %></b></u><% else %>3<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_obj == 4  %><u><b><%= @evaluate_course.ev_obj %></b></u><% else %>4<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_obj == 5  %><u><b><%= @evaluate_course.ev_obj %></b></u><% else %>5<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_obj == 6  %><u><b><font size=3><%= @evaluate_course.ev_obj %></font></b></u><% else %>6<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_obj == 7  %><u><b><%= @evaluate_course.ev_obj %></b></u><% else %>7<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_obj == 8  %><u><b><%= @evaluate_course.ev_obj %></b></u><% else %>8<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_obj == 9  %><u><b><%= @evaluate_course.ev_obj %></b></u><% else %>9<% end %></center></td>
-		</tr>
+		<td><%=t('evaluate_course.objective_achieved')%></td>	
+		<td><center><% if @evaluate_course.ev_obj == 1  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#D5D3D3"><font color="#D5D3D3">1</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_obj == 2  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_obj == 3  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_obj == 4  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#D5D3D3">4</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_obj == 5  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#D5D3D3"></font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_obj == 6  %><b><font size=3><%= @evaluate_course.ev_obj %></font></b><% else %><font color="#D5D3D3">6</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_obj == 7  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#D5D3D3">7</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_obj == 8  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#D5D3D3">8</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_obj == 9  %><b><%= @evaluate_course.ev_obj %></b><% else %><font color="#D5D3D3">9</font><% end %></center></td>
+	</tr>
 		
-		<tr>
-			<td align="center">2.</td>
-			<td>Pengetahuan Pensyarah Tentang Pelajaran yang Diajar</td>	
-	<td><center><% if @evaluate_course.ev_knowledge == 1  %><u><b><%= @evaluate_course.ev_knowledge %></b></u><% else %>1<% end %></center></td>
-	<td><center><% if @evaluate_course.ev_knowledge == 2  %><u><b><%= @evaluate_course.ev_knowledge %></b></u><% else %>2<% end %></center></td>
-	<td><center><% if @evaluate_course.ev_knowledge == 3  %><u><b><%= @evaluate_course.ev_knowledge %></b></u><% else %>3<% end %></center></td>
-	<td><center><% if @evaluate_course.ev_knowledge == 4  %><u><b><%= @evaluate_course.ev_knowledge %></b></u><% else %>4<% end %></center></td>
-	<td><center><% if @evaluate_course.ev_knowledge == 5  %><u><b><%= @evaluate_course.ev_knowledge %></b></u><% else %>5<% end %></center></td>
-	<td><center><% if @evaluate_course.ev_knowledge == 6  %><u><b><%= @evaluate_course.ev_knowledge %></b></u><% else %>6<% end %></center></td>
-	<td><center><% if @evaluate_course.ev_knowledge == 7  %><u><b><%= @evaluate_course.ev_knowledge %></b></u><% else %>7<% end %></center></td>
-	<td><center><% if @evaluate_course.ev_knowledge == 8  %><u><b><%= @evaluate_course.ev_knowledge %></b></u><% else %>8<% end %></center></td>
-	<td><center><% if @evaluate_course.ev_knowledge == 9  %><u><b><%= @evaluate_course.ev_knowledge %></b></u><% else %>9<% end %></center></td>
-		</tr>
-		<tr>
-			<td align="center">3.</td>
-			<td>Mutu Penyampaian Pensyarah</td>	
-		<td><center><% if @evaluate_course.ev_deliver == 1  %><u><b><%= @evaluate_course.ev_deliver %></b></u><% else %>1<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_deliver == 2  %><u><b><%= @evaluate_course.ev_deliver %></b></u><% else %>2<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_deliver == 3  %><u><b><%= @evaluate_course.ev_deliver %></b></u><% else %>3<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_deliver == 4  %><u><b><%= @evaluate_course.ev_deliver %></b></u><% else %>4<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_deliver == 5  %><u><b><%= @evaluate_course.ev_deliver %></b></u><% else %>5<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_deliver == 6  %><u><b><%= @evaluate_course.ev_deliver %></b></u><% else %>6<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_deliver == 7  %><u><b><%= @evaluate_course.ev_deliver %></b></u><% else %>7<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_deliver == 8  %><u><b><%= @evaluate_course.ev_deliver %></b></u><% else %>8<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_deliver == 9  %><u><b><%= @evaluate_course.ev_deliver %></b></u><% else %>9<% end %></center></td>
-		</tr>
+	<tr>
+		<td align="center">2.</td>
+		<td><%=t('evaluate_course.lecturer_knowledge')%></td>	
+		<td><center><% if @evaluate_course.ev_knowledge == 1  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_knowledge == 2  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_knowledge == 3  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_knowledge == 4  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">4</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_knowledge == 5  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">5</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_knowledge == 6  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">6</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_knowledge == 7  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">7</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_knowledge == 8  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">8</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_knowledge == 9  %><b><%= @evaluate_course.ev_knowledge %></b><% else %><font color="#D5D3D3">9</font><% end %></center></td>
+	</tr>
+
+	<tr>
+		<td align="center">3.</td>
+		<td><%=t('evaluate_course.lecturer_q_achievement')%></td>	
+		<td><center><% if @evaluate_course.ev_deliver == 1  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_deliver == 2  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_deliver == 3  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_deliver == 4  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">4</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_deliver == 5  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">5</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_deliver == 6  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">6</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_deliver == 7  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">7</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_deliver == 8  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">8</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_deliver == 9  %><b><%= @evaluate_course.ev_deliver %></b><% else %><font color="#D5D3D3">9</font><% end %></center></td>
+	</tr>
 		
-		<tr>
-			<td align="center">4.</td>
-			<td>Isi Kandungan Pelajaran</td>	
-		<td><center><% if @evaluate_course.ev_content == 1  %><u><b><%= @evaluate_course.ev_content %></b></u><% else %>1<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_content == 2  %><u><b><%= @evaluate_course.ev_content %></b></u><% else %>2<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_content == 3  %><u><b><%= @evaluate_course.ev_content %></b></u><% else %>3<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_content == 4  %><u><b><%= @evaluate_course.ev_content %></b></u><% else %>4<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_content == 5  %><u><b><%= @evaluate_course.ev_content %></b></u><% else %>5<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_content == 6  %><u><b><%= @evaluate_course.ev_content %></b></u><% else %>6<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_content == 7  %><u><b><%= @evaluate_course.ev_content %></b></u><% else %>7<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_content == 8  %><u><b><%= @evaluate_course.ev_content %></b></u><% else %>8<% end %></center></td>
-		<td><center><% if @evaluate_course.ev_content == 9  %><u><b><%= @evaluate_course.ev_content %></b></u><% else %>9<% end %></center></td>
-		</tr>
+	<tr>
+		<td align="center">4.</td>
+		<td><%=t('evaluate_course.content')%></td>	
+		<td><center><% if @evaluate_course.ev_content == 1  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_content == 2  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_content == 3  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_content == 4  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">4</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_content == 5  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">5</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_content == 6  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">6</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_content == 7  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">7</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_content == 8  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">8</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_content == 9  %><b><%= @evaluate_course.ev_content %></b><% else %><font color="#D5D3D3">9</font><% end %></center></td>
+	</tr>
 		
-		<tr>
-			<td align="center">5.</td>
-			<td>Mutu Alat Pandang Dengar yang Digunakan</td>	
-			<td><center><% if @evaluate_course.ev_tool == 1  %><u><b><%= @evaluate_course.ev_tool %></b></u><% else %>1<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_tool == 2  %><u><b><%= @evaluate_course.ev_tool %></b></u><% else %>2<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_tool == 3  %><u><b><%= @evaluate_course.ev_tool %></b></u><% else %>3<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_tool == 4  %><u><b><%= @evaluate_course.ev_tool %></b></u><% else %>4<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_tool == 5  %><u><b><%= @evaluate_course.ev_tool %></b></u><% else %>5<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_tool == 6  %><u><b><%= @evaluate_course.ev_tool %></b></u><% else %>6<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_tool == 7  %><u><b><%= @evaluate_course.ev_tool %></b></u><% else %>7<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_tool == 8  %><u><b><%= @evaluate_course.ev_tool %></b></u><% else %>8<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_tool == 9  %><u><b><%= @evaluate_course.ev_tool %></b></u><% else %>9<% end %></center></td>
-		</tr>
+	<tr>
+		<td align="center">5.</td>
+		<td><%=t('evaluate_course.training_aids_quality')%></td>	
+		<td><center><% if @evaluate_course.ev_tool == 1  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_tool == 2  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_tool == 3  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_tool == 4  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">4</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_tool == 5  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">5</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_tool == 6  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">6</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_tool == 7  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">7</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_tool == 8  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">8</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_tool == 9  %><b><%= @evaluate_course.ev_tool %></b><% else %><font color="#D5D3D3">9</font><% end %></center></td>
+	</tr>
 		
-		<tr>
-			<td align="center">6.</td>
-			<td>Kesesuaian Turutan Topik Dalam Jadual</td>	
-			<td><center><% if @evaluate_course.ev_topic == 1  %><u><b><%= @evaluate_course.ev_topic %></b></u><% else %>1<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_topic == 2  %><u><b><%= @evaluate_course.ev_topic %></b></u><% else %>2<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_topic == 3  %><u><b><%= @evaluate_course.ev_topic %></b></u><% else %>3<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_topic == 4  %><u><b><%= @evaluate_course.ev_topic %></b></u><% else %>4<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_topic == 5  %><u><b><%= @evaluate_course.ev_topic %></b></u><% else %>5<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_topic == 6  %><u><b><%= @evaluate_course.ev_topic %></b></u><% else %>6<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_topic == 7  %><u><b><%= @evaluate_course.ev_topic %></b></u><% else %>7<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_topic == 8  %><u><b><%= @evaluate_course.ev_topic %></b></u><% else %>8<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_topic == 9  %><u><b><%= @evaluate_course.ev_topic %></b></u><% else %>9<% end %></center></td>
-						
-		</tr>
+	<tr>
+		<td align="center">6.</td>
+		<td><%=t('evaluate_course.suitability_topic_sequence')%> </td>	
+		<td><center><% if @evaluate_course.ev_topic == 1  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_topic == 2  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_topic == 3  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_topic == 4  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">4</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_topic == 5  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">5</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_topic == 6  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">6</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_topic == 7  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">7</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_topic == 8  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">8</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_topic == 9  %><b><%= @evaluate_course.ev_topic %></b><% else %><font color="#D5D3D3">9</font><% end %></center></td>
+	</tr>
 		
-		<tr>
-			<td align="center">7.</td>
-			<td>Keberkesanan pengajaran dan pembelajaran (interaksi antara pensyarah dan pelajar).</td>	
-			<td><center><% if @evaluate_course.ev_work == 1  %><u><b><%= @evaluate_course.ev_work %></b></u><% else %>1<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_work == 2  %><u><b><%= @evaluate_course.ev_work %></b></u><% else %>2<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_work == 3  %><u><b><%= @evaluate_course.ev_work %></b></u><% else %>3<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_work == 4  %><u><b><%= @evaluate_course.ev_work %></b></u><% else %>4<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_work == 5  %><u><b><%= @evaluate_course.ev_work %></b></u><% else %>5<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_work == 6  %><u><b><%= @evaluate_course.ev_work %></b></u><% else %>6<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_work == 7  %><u><b><%= @evaluate_course.ev_work %></b></u><% else %>7<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_work == 8  %><u><b><%= @evaluate_course.ev_work %></b></u><% else %>8<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_work == 9  %><u><b><%= @evaluate_course.ev_work %></b></u><% else %>9<% end %></center></td>
-		</tr>
+	<tr>
+		<td align="center">7.</td>
+		<td><%=t('evaluate_course.effectiveness_teaching_learning')%></td>	
+		<td><center><% if @evaluate_course.ev_work == 1  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_work == 2  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_work == 3  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_work == 4  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">4</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_work == 5  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">5</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_work == 6  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">6</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_work == 7  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">7</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_work == 8  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">8</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_work == 9  %><b><%= @evaluate_course.ev_work %></b><% else %><font color="#D5D3D3">9</font><% end %></center></td>
+	</tr>
 		
-		<tr>
-			<td align="center">8.</td>
-			<td>Faedah Bahan/Nota yang Diedarkan</td>	
-			<td><center><% if @evaluate_course.ev_note == 1  %><u><b><%= @evaluate_course.ev_note %></b></u><% else %>1<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_note == 2  %><u><b><%= @evaluate_course.ev_note %></b></u><% else %>2<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_note == 3  %><u><b><%= @evaluate_course.ev_note %></b></u><% else %>3<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_note == 4  %><u><b><%= @evaluate_course.ev_note %></b></u><% else %>4<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_note == 5  %><u><b><%= @evaluate_course.ev_note %></b></u><% else %>5<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_note == 6  %><u><b><%= @evaluate_course.ev_note %></b></u><% else %>6<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_note == 7  %><u><b><%= @evaluate_course.ev_note %></b></u><% else %>7<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_note == 8  %><u><b><%= @evaluate_course.ev_note %></b></u><% else %>8<% end %></center></td>
-			<td><center><% if @evaluate_course.ev_note == 9  %><u><b><%= @evaluate_course.ev_note %></b></u><% else %>9<% end %></center></td>
-		</tr>		
+	<tr>
+		<td align="center">8.</td>
+		<td><%=t('evaluate_course.benefit_notes')%></td>	
+		<td><center><% if @evaluate_course.ev_note == 1  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_note == 2  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_note == 3  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_note == 4  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">4</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_note == 5  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">5</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_note == 6  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">6</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_note == 7  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">7</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_note == 8  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">8</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_note == 9  %><b><%= @evaluate_course.ev_note %></b><% else %><font color="#D5D3D3">9<% end %></center></td>
+	</tr>
+	
+	<tr>
+		<td align="center">9.</td>
+		<td><%=t('evaluate_course.suitable_assessment')%></td>	
+		<td><center><% if @evaluate_course.ev_assessment == 1  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">1</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_assessment == 2  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">2</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_assessment == 3  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">3</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_assessment == 4  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">4</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_assessment == 5  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">5</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_assessment == 6  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">6</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_assessment == 7  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">7</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_assessment == 8  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">8</font><% end %></center></td>
+		<td><center><% if @evaluate_course.ev_assessment == 9  %><b><%= @evaluate_course.ev_assessment %></b><% else %><font color="#D5D3D3">9<% end %></center></td>
+	</tr>
 </table>
 <br>
 <table width=100% cellspacing="0" cellpadding="3" font size="5px" border="0">
 	<tr>
-		<td colspan=2><b>CATATAN/KOMEN</H3> : <%= @evaluate_course.comment %><BR><BR></td>
+		<td colspan=2><b><%=t('evaluate_course.comment').upcase %></H3> : <%= @evaluate_course.comment %><BR><BR></td>
 	</tr>
 	
 	<tr>
@@ -201,19 +230,13 @@
 	
 	<tr>
 		<td>&nbsp;<!--<b>No. K/Pengenalan : <%#= @evaluate_course.student_id.blank? ? "No Student" : @evaluate_course.studentevaluate.icno %></b>--></td>
-		<td align="right"><b>Tarikh:</b> <%= @evaluate_course.evaluate_date.blank? ? "-" : l(@evaluate_course.evaluate_date, :format => "%d-%b-%Y")  %></td>
+		<td align="right"><b><%=t('evaluate_course.evaldate')%>:</b> <%= @evaluate_course.evaluate_date.blank? ? "-" : l(@evaluate_course.evaluate_date, :format => "%d-%b-%Y")  %></td>
 	</tr>
 
 </table>
 
-	<table width=100% cellspacing="0" cellpadding="5" border="0">
-		<tr>
-			<td colspan=2 align="center">1 daripada 1</td>
-		</tr>
-	</table>
 </div>
 </div>
-<p align="center"><i>Dokumen ini adalah cetakan komputer dan tidak memerlukan tandatangan.</i></p>
 </fieldset>
 
 <BR>

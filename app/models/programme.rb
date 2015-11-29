@@ -3,14 +3,16 @@ class Programme < ActiveRecord::Base
     #controller searches, variables, lists, relationship checking
     before_save :set_combo_code
     after_save :copy_topic_topicdetail
-    before_destroy :check_examquestion_of_subject_exist, :check_examquestion_of_topic_exist
+    before_destroy :check_examquestion_of_subject_exist, :check_examquestion_of_topic_exist, :valid_for_removal
     has_ancestry :cache_depth => true
 
     has_many :schedule_programmes, :class_name => 'Weeklytimetable', :foreign_key => 'programme_id'
-    has_many :schedule_semesters, :class_name => 'Weeklytimetable', :foreign_key => 'semester'
+    #has_many :schedule_semesters, :class_name => 'Weeklytimetable', :foreign_key => 'semester'
     
     has_many :schedule_details_subjects, :class_name => 'WeeklytimetableDetail', :foreign_key => 'subject'
     has_many :schedule_details_topics,  :class_name => 'WeeklytimetableDetail', :foreign_key => 'topic'
+
+    has_many :intakes
 
     #has_many :topic_details, :class_name => 'Topicdetail', :foreign_key => 'topic_code'   #26March2013
     #has_many :topic_details, :class_name => 'Topicdetail',:dependent => :destroy, :foreign_key => 'topic_code'   #30Oct2013
@@ -160,6 +162,14 @@ class Programme < ActiveRecord::Base
       topic_exist = Examquestion.find(:all, :conditions=>['topic_id=?',id])
       if topic_exist.count>0
         return false
+      end
+    end
+    
+    def valid_for_removal
+      if  schedule_programmes.count > 0 || intakes.count > 0 || schedule_details_topics.count > 0
+        return false
+      else
+        return true
       end
     end
   

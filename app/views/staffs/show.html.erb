@@ -25,7 +25,42 @@
 			<td class="leftcol"><label for="code"><%= t 'staff.code' %> :</label></td>
 			 <td><%=h @staff.code %>
 		</tr>
-	
+		
+		<tr>
+			<td class="leftcol"><label for="thumb"><%= t 'staff.thumb' %> :</label></td>
+			 <td><%=h @staff.thumb_id %>
+		</tr>
+		
+		<tr>
+			<td class="leftcol"><label for="shift"><%= t 'staff.shift' %> :</label></td>
+			 <td><%=h StaffShift.find(@staff.staff_shift_id).start_end unless @staff.staff_shift_id.nil? %>
+				<%  if @staff.shift_histories.count > 0 %>&nbsp;&nbsp;&nbsp;<b><%=t 'staff.shift_start'%></b>
+				<%= @staff.shift_histories.sort_by{|x|x.created_at}.last.deactivate_date.try(:strftime, '%d %b %Y')%><% end %>
+			</td>
+		</tr>
+		
+		<% if @staff.shift_histories.count > 0 %>
+			<% shifthistories = @staff.shift_histories.sort_by{|x|x.created_at}.reverse!%>
+			<tr>
+				<td class="leftcol"><label for="shift_histories"><%= t 'staff.shift_history' %> :</label></td>
+				<td>
+				<% shifthistories = @staff.shift_histories.sort_by{|x|x.created_at}.reverse! %>
+				<% shifthistories.each_with_index do |shift, ind| %>
+					<%= shift.staff_shift.start_end %>
+					<% if ind!=shifthistories.count-1 %>
+						&nbsp;&nbsp;&nbsp;                  
+						<%= shifthistories[ind+1].deactivate_date.try(:strftime, '%d %b %Y')+" - " %>
+					<% else %>
+						&nbsp;&nbsp;&nbsp;
+						<b><%=t 'staff.shift_end'%></b>
+					<% end %>
+					<%= (shift.deactivate_date-1.day).try(:strftime, '%d %b %Y')%>
+					<br>
+				<% end %>
+				</td>
+			</tr>
+		<% end %>
+    
 		<tr>
 			<td class="leftcol"><label for="fileno"><%= t 'staff.fileno' %> :</label></td>
 		    <td><%=h @staff.fileno %></td>
@@ -43,7 +78,7 @@
 	
 		<tr>
 			<td class="leftcol"><label for="cobirthdt"><%= t 'staff.cobirthdt' %> :</label></td>
-			<td><%#=h l(@staff.cobirthdt) %><%=h @staff.cobirthdt.blank? ? "-" : @staff.cobirthdt.strftime('%d %m %Y') %></td>
+			<td><%#=h l(@staff.cobirthdt) %><%=h @staff.cobirthdt.blank? ? "-" : @staff.cobirthdt.strftime('%d-%m-%Y') %></td>
 		</tr>
 	
 		<tr>
@@ -389,6 +424,21 @@
 		</tr>
 		<% end %>
 	</table>
+	<H2><%= t 'training.accumulated_cpd_points' %></H2>
+	<table>
+		<tr>
+			<th><%=t 'training.cpd_year' %></th>
+			<th><%=t 'training.cpd_value' %></th>
+		</tr>
+		<% for mycpd in @staff.mycpds.sort_by{|x|x.cpd_year} %>
+			<tr>
+				<td><%=h mycpd.cpd_year.year %></td>
+				<td align="center"><%=h mycpd.cpd_value%></td>
+			</tr>
+		<% end %>
+	</table>
+	<font size=-2><%=t 'training.inserted_values' %>
+                <%= link_to ((t 'ptdos.viewsummary')+" "+Date.today.year.to_s), :controller => 'ptdos', :action => 'show_total_days', :id => Login.current_login.staff_id %></font>
 <BR>
 </div>	
 	

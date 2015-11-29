@@ -1,17 +1,18 @@
 <H2><%= t 'evaluation.skt.title' %></H2>
-<table width=90%>
+<table width=95%>
 	<tr>
 		<td width=10%><%= t 'evaluation.skt.priority' %></td>
-		<td width=40%><%= t 'evaluation.skt.description' %></td>
-		<td width=40%><%= t 'evaluation.skt.performance' %></td>
+		<td width=35%><%= t 'evaluation.skt.description' %></td>
+		<td width=25%><%= t 'evaluation.skt.performance' %></td>
+		<td width=15%><%= t 'evaluation.skt.target' %></td>
 		<td width=10%></td>
 	</tr>
 </table>
 	<% f.fields_for :staff_appraisal_skts do |builder| %>
-	  <%= render 'staff_appraisal_skt_fields', :f => builder %>
+	  <%= render 'staff_appraisal_skt_fields',{:f => builder, :joblevel=>"skt_issuance"} %>
 	<% end %>
 
-	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Log'), f, :staff_appraisal_skts %> - <%= "Add Log" %></p>
+	<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Log'), f, :staff_appraisal_skts %> - <%=t('addmore')%></p>
 
 	<table  width=100%>
 		<tr>
@@ -19,14 +20,15 @@
 			<td><%= f.check_box :is_skt_submit, :id => 'is_skt_submit' %>
 					<SPAN id="span_skt_submit" style="display: none;">
 					<%= f.date_select :skt_submit_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
-			<td class="pagenote">Clicking on submit notifies your Evaluating Officer (PPP) and disables your editing this record further</td>
+			<td class="pagenote"><%= t 'evaluation.skt_review.submit_note' %></td>
 		</tr>
 	</table>
 	
 	<% if Login.current_login.staff.position.is_root? == true %>
 		<%= f.hidden_field :eval1_by, :value => Login.current_login.staff.position.staff_id %>
 	<% else %>
-		<%= f.hidden_field :eval1_by, :value => Login.current_login.staff.position.parent.staff_id %>
+		<%#= f.hidden_field :eval1_by, :value => Login.current_login.staff.position.parent.staff_id %>
+		<%= f.hidden_field :eval1_by, :value => @staff_appraisal.set_approver1%>
 	<% end %>
 	
 	

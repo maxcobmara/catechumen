@@ -117,7 +117,8 @@
 					<% end %>
 				<% end %>
 				<th><%=t('exammark.total')%> <font size=-2>(<%=@fullmarks%>)</font></th>
-				<th><%=t('exammark.summative')%></th>
+				<th>&nbsp;&nbsp;100%</th>
+				<th><%=t('exammark.summative')%>&nbsp;70%</th>
 			</tr>
 		
 			<% @b_count=0 %><% @diff_total_mcq=0%>
@@ -200,10 +201,13 @@
 						
 						<%= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true %>
 					</td>
+					<td>
+						<%= text_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100,2) ,:id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true %>
+					</td>
 					<!--23June2013-TEMPORARY USE FIXED FORMULA : TOTAL MARKS OF WRITTEN PAPER * 0.70 -->
 					<!--suppose...depends on struktur penilaian-for final exam : eg:fisioteraphy-mcq=40%(40 que), seq=30%(4 que=40marks)-->
 					<td>
-						<%= text_field_tag "total_summative[]", number_with_precision(exammark.total_marks/Exammark.fullmarks(@examid)*70,2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true %>
+						<%= text_field_tag "total_summative[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100*0.70,2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true %>
 					</td>	
 					<!--23June2013-->
 					<% @b_count+=1%>
@@ -264,6 +268,12 @@
 					window["totalsummative"+i] = document.getElementById("total_summative"+i);			
 				}
 				//-23June2013-assign values into variable total_summative (for viewing)
+				//-5Nov2015
+				for (var i=0;i<studentcount;i++)
+				{
+					window["marksinhundred"+i] = document.getElementById("marks_in_hundred"+i);			
+				}
+				//-5Nov2015
 				for (var i=0;i<studentcount;i++)
 				{					
 					var a = 0
@@ -272,6 +282,7 @@
 						a=a*1+((window["other"+i+k])*1);
 					}
 						window["totalmarksview"+i].value = window["totalmcq"+i]*1+a
+						window["marksinhundred"+i].value = (window["totalmcq"+i]*1+a)/fullmarks*100
 						window["totalsummative"+i].value = (window["totalmcq"+i]*1+a)/fullmarks*70
 				}
 			});		

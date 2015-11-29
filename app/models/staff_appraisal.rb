@@ -1,4 +1,5 @@
 class StaffAppraisal < ActiveRecord::Base
+  include StaffAppraisalsHelper
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
   before_validation :set_year_to_start
@@ -10,7 +11,9 @@ class StaffAppraisal < ActiveRecord::Base
   belongs_to :eval2_officer,  :class_name => 'Staff', :foreign_key => 'eval2_by'
   
   has_many :staff_appraisal_skts, :dependent => :destroy
-  accepts_nested_attributes_for :staff_appraisal_skts, :allow_destroy => true, :reject_if => lambda { |a| a[:description].blank? }
+  accepts_nested_attributes_for :staff_appraisal_skts, :allow_destroy => true #, :reject_if => lambda { |a| a[:description].blank? }
+  validates_associated :staff_appraisal_skts#, :if => :is_skt_pyd_report_done?
+  #ref: http://homeonrails.com/2012/10/validating-nested-associations-in-rails/
   
   has_many :evactivities, :foreign_key => 'appraisal_id', :dependent => :destroy
   accepts_nested_attributes_for :evactivities, :allow_destroy => true, :reject_if => lambda { |a| a[:evactivity].blank? }
@@ -18,11 +21,31 @@ class StaffAppraisal < ActiveRecord::Base
   has_many :trainneeds, :foreign_key => 'evaluation_id', :dependent => :destroy
   accepts_nested_attributes_for :trainneeds, :allow_destroy => true, :reject_if => lambda { |a| a[:name].blank? }
   
-  
+  validates_presence_of :skt_pyd_report, :if => :is_skt_pyd_report_done?
   validates_uniqueness_of :evaluation_year, :scope => :staff_id, :message => "Your evaluation for this year already exists"
   #validates_presence_of  :e1g1q1, :e1g1q2,:e1g1q3, :e1g1q4, :e1g1q5,:e1g1_total, :e1g1_percent,:e1g2q1, :e1g2q2, :e1g2q3, :e1g2q4, :e1g2_total, :e1g2_percent, :e1g3q1, :e1g3q2, :e1g3q3, :e1g3q4, :e1g3q5, :e1g3_total, :e1g3_percent,:e1g4,:e1g4_percent, :e1_total, :e1_years, :e1_months,  :e1_performance, :e1_progress, :if => :is_submit_e2? #pending - update page (when validation fails)
   #validates_presence_of :e2g1q1, :e2g1q2, :e2g1q3,:e2g1q4, :e2g1q5,:e2g1_total, :e2g1_percent, :e2g2q1, :e2g2q2,:e2g2q3, :e2g2q4, :e2g2_total, :e2g2_percent, :e2g3q1, :e2g3q2, :e2g3q3,:e2g3q4,:e2g3q5, :e2g3_total,:e2g3_percent, :e2g4, :e2g4_percent,:e2_total, :e2_years, :e2_months, :e2_performance, :if => :is_complete? #pending - update page (when validation fails)
+  validates_presence_of :e1_performance, :e1_progress, :submit_e2_on, :if => :ppp_eval?
+  validates_numericality_of :e1_months,  :greater_than => 0, :if => :ppp_eval2?
+  validates_presence_of :e2_performance, :is_completed_on, :if => :ppk_eval?
+  validates_numericality_of :e2_months,  :greater_than => 0 , :if => :ppk_eval2?  
   
+   def ppp_eval?
+     is_submit_e2 == true 
+   end 
+   
+   def ppp_eval2?
+     is_submit_e2 == true && e1_years==0 
+   end 
+   
+   def ppk_eval?
+     is_complete ==true 
+   end
+   
+    def ppk_eval2?
+     is_complete ==true && e2_years==0 
+   end
+   
   #before logic
   def set_to_nil_where_false
     if is_skt_submit != true
@@ -105,6 +128,25 @@ class StaffAppraisal < ActiveRecord::Base
       "noedit"
     else
       "edit.png"
+    end
+  end
+  
+  def viewable
+    curr_roles=Login.current_login.roles.map(&:authname)
+    curr_login = Login.current_login.staff
+    
+    if Login.current_login.staff_id==eval2_by || curr_roles.include?("administration") || (curr_roles.include?("staff_administrator") && curr_roles.include?("unit_leader"))
+      "display"
+    elsif curr_login.position.unit=="Sumber Manusia"
+      unit_members=Position.find(:all, :joins => :staff, :conditions => ['unit=?', "Sumber Manusia"], :order => "ancestry_depth ASC")
+      highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
+      highest_grade = highest_rank.staffgrade.name[-2,2]
+      curr_grade = curr_login.staffgrade.name[-2,2] 
+      if highest_grade==curr_grade
+        "display"
+      end
+    else
+      "not visible"
     end
   end
   
@@ -285,6 +327,31 @@ class StaffAppraisal < ActiveRecord::Base
     (e1_total + e2_total)/2
   end
   
-  
+  def self.search(selected_year, searched_name)
+    if searched_name!=""
+      staff_ids=Staff.find(:all, :conditions => ['name ILIKE(?)', "%#{searched_name}%"]).map(&:id)
+    end
+    if staff_ids 
+      if selected_year!="all2"
+        @staff_appraisals=StaffAppraisal.find(:all, :conditions => ['evaluation_year=? and staff_id IN(?)', Date.new(selected_year.to_i,1,1), staff_ids], :order => 'evaluation_year DESC, staff_id ASC')
+      else
+        @staff_appraisals=StaffAppraisal.find(:all, :conditions => ['staff_id IN(?)', staff_ids], :order => 'evaluation_year DESC, staff_id ASC')
+      end
+    else
+      if selected_year!="all2"
+        @staff_appraisals=StaffAppraisal.find(:all, :conditions => ['evaluation_year=?', Date.new(selected_year.to_i,1,1)], :order => 'evaluation_year DESC, staff_id ASC')
+      else
+        @staff_appraisals=StaffAppraisal.find(:all, :order => 'evaluation_year DESC, staff_id ASC')
+      end
+    end
+  end
+    
+  def self.filters(all2a)
+    filtering=[[ I18n.t('ptschedule.all_records'), "all2"]]
+    StaffAppraisal.find(:all, :conditions => ['id IN(?)', all2a], :order => 'evaluation_year DESC').group_by{|x|x.evaluation_year.strftime("%Y")}.each do |year2, appraisals|
+      filtering << [year2, year2]
+    end
+    filtering
+  end
   
 end

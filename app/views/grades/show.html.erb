@@ -17,7 +17,6 @@
 						<tr>
 							<th><%=t('grade.formative')%></th>
 							<th><%=t('grade.description')%></th>
-							<th><%=t('grade.marks')%></th>
 							<th><%=t('grade.weightage')%></th>
 							<th><%=t('grade.marks')%></th>
 						</tr>	
@@ -25,15 +24,13 @@
 					  <tr>
 						  <td><%=h (Score::E_TYPES.find_all{|disp, value| value == score.type_id}).map {|disp, value| disp} %></td>
 				      <td><%=h score.description %></td>
-				      <td><%=h sprintf('%.2f', score.marks) %><!--%--></td>
 							<td><%=h sprintf('%.2f', score.weightage) %><!--% of total--></td>
-							<td><%=h sprintf('%.2f', score.type_marks) %></td>
+							<td><%=h sprintf('%.2f', score.marks) %></td>
 						</tr>
 						<% end %>
 						<tr>
 						  <td></td>
 				      <td></td>
-				      <td><b><%=h sprintf('%.2f', @grade.total_formative2) %></b></td>
 							<td><%=h sprintf('%.2f', @grade.total_per) %>%</td>
 							<td><b><%=h sprintf('%.2f',@grade.total_formative) %>%</b></td> 
 						</tr>
@@ -45,7 +42,7 @@
 	<table width=100%>
 		<tr>
 			<td class="leftcol"><label for="total_formative"><%=t('grade.total_formative')%>:</label></td>
-			<td><%=h sprintf('%.2f', @grade.total_formative2) %> | <%=h sprintf('%.2f', @grade.total_formative) %>%</td>
+			<td><%=h sprintf('%.2f', @grade.total_formative) %>%</td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="sent_to_BPL"><%=t('grade.sent_to_bpl')%>?:</label></td>

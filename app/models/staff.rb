@@ -9,7 +9,11 @@ class Staff < ActiveRecord::Base
   has_many :vehicles, :dependent => :destroy
   accepts_nested_attributes_for :vehicles, :allow_destroy => true, :reject_if => lambda {|a| a[:cylinder_capacity].blank? }##|| a[:reg_no].blank?}
   validates_associated :vehicles
-    
+  
+  has_many :shift_histories, :dependent => :destroy
+  accepts_nested_attributes_for :shift_histories#, :reject_if => lambda {|a| a[:deactivate_date].blank?}
+  validates_associated :shift_histories  
+  
   has_attached_file :photo,
                     :url => "/assets/staffs/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
@@ -50,6 +54,7 @@ class Staff < ActiveRecord::Base
   has_many :events,       :foreign_key => 'createdby'                                      #link to created by in events
   has_many :logins
   has_many :timetables
+  has_many :intakes  #upon graduation, may become coordinator for other intakes
   has_one  :staff_shift
   # has_many :topics, :foreign_key => 'creator_id' 
   #has_many :curriculums, :foreign_key => 'staff_id'
@@ -66,6 +71,9 @@ class Staff < ActiveRecord::Base
   belongs_to :level,  :class_name => 'Qualification', :foreign_key => 'level_id'
   belongs_to :staffgrade, :class_name => 'Employgrade', :foreign_key => 'staffgrade_id'
   has_many   :ptdos #staff training
+  has_many   :mycpds, :dependent => :destroy
+  accepts_nested_attributes_for :mycpds, :allow_destroy => true #, :reject_if => lambda { |a| a[:cpd_year].blank? }
+  validates_associated :mycpds
   #-------------display data for different table-----------------------------------------------
  
   #Link to model bulletin
@@ -226,6 +234,18 @@ class Staff < ActiveRecord::Base
      
      
 #--------------------Declerations----------------------------------------------------
+  
+  def create_shift_history_nodate(saved_shift, current_shift, new_deactivate_date)
+    new_shift = ShiftHistory.new
+    new_shift.shift_id = saved_shift #should save history not new one
+    new_shift.deactivate_date = Date.today
+    new_shift.staff_id =self.id #for checking = (current_shift.to_s+"0"+saved_shift.to_s).to_i
+    new_shift.save
+    #By default, 'deactivate_date is hidden && 'if 'deactivate_date' is blank - no 'shift history' will be saved'
+    #If 'staff_shift_id' CHANGED - 'deactivate_date' will be displayed - if date is entered record will be saved & vice versa.
+    #create/save 'shift history' here by giving default value as Date.today for condition when 'staff_shift_id' is changed but 'deactivate_date' not entered.
+  end
+
   def age
     Date.today.year - cobirthdt.year
   end
@@ -545,25 +565,59 @@ class Staff < ActiveRecord::Base
   
   def under_my_supervision
     unit= Login.current_login.staff.position.unit
-    if Programme.roots.map(&:name).include?(unit)
-      course_id = Programme.find_by_name(unit).id
-      main_task = Login.current_login.staff.position.tasks_main
-      coordinator=main_task[/Penyelaras Kumpulan \d{1,}/]   
-      if coordinator
-        intake_group=coordinator.split(" ")[2]   #should match 'descripton' field in Intakes table
-        intake = Intake.find(:first, :conditions=>['programme_id=? and description=?', course_id, intake_group]).monthyear_intake
-        if intake
-          supervised_student = Student.find(:all, :conditions=>['intake=? and course_id=?', intake, course_id]).map(&:id)
+    if Programme.roots.map(&:name).include?(unit) || ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"].include?(unit)
+      if Programme.roots.map(&:name).include?(unit)
+        course_id = Programme.find(:first, :conditions =>['name=? and ancestry_depth=?', unit,0]).id
+      elsif ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"].include?(unit)
+        main_task_first = Login.current_login.staff.position.tasks_main
+        if main_task_first.include?("Ketua Program Pengkhususan")==false
+          prog_name_full = main_task_first[/Diploma Lanjutan \D{1,}/] if ["Diploma Lanjutan"].include?(unit)
+          prog_name_full = main_task_first[/Pos Basik \D{1,}/] if ["Pos Basik"].include?(unit)
+          prog_name_full = main_task_first[/Pengkhususan \D{1,}/] if ["Pengkhususan"].include?(unit)
+#         prog_name_full = main_task_first[/"#{unit}" \D{1,}/]
+          prog_name = prog_name_full.split(" ")[prog_name_full.split(" ").size-1] 
+          course_id = Programme.find(:first, :conditions =>['name ILIKE(?) and course_type=?', "%#{prog_name}%", unit]).id
+          main_task = Login.current_login.staff.position.tasks_main
+          coordinator=main_task[/Penyelaras Kumpulan \D{1,}/]   
+          if coordinator
+            intake_group=coordinator.split(" ")[2]   #should match 'descripton' field in Intakes table
+            intake = Intake.find(:first, :conditions=>['programme_id=? and description=?', course_id, intake_group]).monthyear_intake
+            if intake
+              @supervised_student = Student.find(:all, :conditions=>['intake=? and course_id=?', intake, course_id]).map(&:id)
+           end
+          end
+        elsif main_task_first.include?("Ketua Program Pengkhususan")==false
+          course_ids=Programme.find(:all, :conditions => ['course_type IN(?)', ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"]]).map(&:id)
+          @supervised_student = Student.find(:all, :conditions => ['course_id IN(?)', course_ids]).map(&:id)
         end
-      end
+      end 
+      
     
-      supervised_student=[] if !supervised_student
-      sib_lect_maintask= Position.find(:all, :conditions=>['unit=? and staff_id!=?', unit, Login.current_login.staff_id]).map(&:tasks_main)
+      @supervised_student=[] if !@supervised_student
       sib_lect_coordinates_groups=[]
-      sib_lect_maintask.each do |y|
-        coordinator2 =  y[/Penyelaras Kumpulan \d{1,}/]
-        if coordinator2
-          sib_lect_coordinates_groups << coordinator2.split(" ")[2]     #collect group with coordinator
+      if Programme.roots.map(&:name).include?(unit)
+        sib_lect_maintask= Position.find(:all, :conditions=>['unit=? and staff_id!=?', unit, Login.current_login.staff_id]).map(&:tasks_main)
+        sib_lect_maintask.each do |y|
+          coordinator2 =  y[/Penyelaras Kumpulan \D{1,}/]
+          if coordinator2
+            sib_lect_coordinates_groups << coordinator2.split(" ")[2]     #collect group with coordinator
+          end
+        end
+      elsif ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"].include?(unit)
+        sib_lect_maintask_all_posbasik= Position.find(:all, :conditions=>['unit=? and staff_id!=?', unit, Login.current_login.staff_id]).map(&:tasks_main)
+        sib_lect_maintask_all_posbasik.each do |x|
+          coordinator2 =  x[/Penyelaras Kumpulan \D{1,}/]
+          prog_name_full2 = main_task_first[/Diploma Lanjutan \D{1,}/] if ["Diploma Lanjutan"].include?(unit)
+          prog_name_full2 = main_task_first[/Pos Basik \D{1,}/] if ["Pos Basik"].include?(unit)
+          prog_name_full2 = main_task_first[/Pengkhususan \D{1,}/] if ["Pengkhususan"].include?(unit)
+          if main_task_first.include?("Ketua Program Pengkhususan")==false
+	    prog_name2 =prog_name_full2.split(" ")[prog_name_full2.split(" ").size-1]
+            if coordinator2 && prog_name==prog_name2
+              sib_lect_coordinates_groups << coordinator2.split(" ")[2]     #collect group with coordinator
+            end
+          else
+            sib_lect_coordinates_groups << coordinator2.split(" ")[2] unless coordinator2.nil?
+          end
         end
       end
       
@@ -575,21 +629,80 @@ class Staff < ActiveRecord::Base
       #intake_for_applicant_current_prog = Student.find(:all, :conditions=>['id IN (?)', applicant_of_current_prog]).map(&intake)
       #intake_for_applicant_current_prog = Student.find(:all, :conditions=>['id IN(?) and course_id=?', leave_applicant_ids, course_id]).map(&:intake)
       applicant_of_current_prog.group_by{|x|x.intake}.each do |intatake, applicants|
-        intake2 = Intake.find(:first, :conditions=>['programme_id=? and monthyear_intake=?', course_id, intatake])
+        intake2 = Intake.find(:first, :conditions=>['programme_id=? and monthyear_intake=?', course_id, intatake.beginning_of_month])
         if intake2
 	  intake2_group = intake2.description
           w_coordinator=sib_lect_coordinates_groups.include?(intake2_group)
-	  supervised_student+= applicants if !w_coordinator
+	  @supervised_student+= applicants if !w_coordinator
         else
 	  #this student group definitely got no coordinator as their intake not even exist in Intakes table
 	  #add these applicants to supervised_student array! note 'applicants' is an array
-	  supervised_student+= applicants 
+	  @supervised_student+= applicants 
         end
       end 
-      return supervised_student
+      return @supervised_student
     else
       return []
     end
+  end
+  
+#   def unit_members
+#     exist_unit_of_staff_in_position = Position.find(:all, :conditions =>['unit is not null and staff_id is not null']).map(&:staff_id).uniq
+#     if exist_unit_of_staff_in_position.include?(Login.current_login.staff_id)
+#       current_unit = Position.find_by_staff_id(Login.current_login.staff_id).unit    
+#       unit_members = Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
+#     else
+#       unit_members = []#Position.find(:all, :conditions=>['unit=?', 'Teknologi Maklumat']).map(&:staff_id).uniq-[nil]
+#     end
+#     unit_members    #collection of staff_id (member of a unit/dept)
+#   end
+  
+  def unit_members
+    #Academicians & Mgmt staff : "Teknologi Maklumat", "Perpustakaan", "Kewangan & Akaun", "Sumber Manusia","logistik", "perkhidmatan" ETC.. - by default staff with the same unit in Position will become unit members, whereby Ketua Unit='unit_leader' role & Ketua Program='programme_manager' role.
+    #Exceptional for - "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor" (subunit of Pentadbiran), Ketua Unit='unit_leader' with unit in Position="Pentadbiran", Note: whoever within these unit if wrongly assigned as 'unit_leader' will also hv access for all ptdos on these unit staff
+    
+    exist_unit_of_staff_in_position = Position.find(:all, :conditions =>['unit is not null and staff_id is not null']).map(&:staff_id).uniq
+    if exist_unit_of_staff_in_position.include?(Login.current_login.staff_id)
+      current_unit = Position.find_by_staff_id(Login.current_login.staff_id).unit
+      
+      #replace current_unit value if academician also a Unit Leader
+      current_roles=Login.current_login.roles.map(&:name)
+      current_unit=unit_lead_by_academician if current_roles.include?("Unit Leader") && Programme.roots.map(&:name).include?(current_unit)
+      
+      if current_unit=="Pentadbiran"
+        unit_members = Position.find(:all, :conditions=>['unit=? OR unit=? OR unit=? OR unit=?', "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor"]).map(&:staff_id).uniq-[nil]+Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
+      elsif ["Teknologi Maklumat", "Pusat Sumber", "Kewangan & Akaun", "Sumber Manusia"].include?(current_unit) || Programme.roots.map(&:name).include?(current_unit)
+        unit_members = Position.find(:all, :conditions=>['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
+      else #logistik & perkhidmatan inc. "Unit Perkhidmatan diswastakan / Logistik" or other UNIT just in case - change of unit name, eg. Perpustakaan renamed as Pusat Sumber
+        unit_members = Position.find(:all, :conditions=>['unit ILIKE(?)', "%#{current_unit}%"]).map(&:staff_id).uniq-[nil] 
+      end
+    else
+      unit_members = []#Position.find(:all, :conditions=>['unit=?', 'Teknologi Maklumat']).map(&:staff_id).uniq-[nil]
+    end
+    unit_members    #collection of staff_id (member of a unit/dept)
+  end
+
+  #call this method if academician also lead a mgmt unit
+  def unit_lead_by_academician
+    main_tasks=Login.current_login.staff.position.tasks_main
+    if main_tasks.include?("Ketua Unit")   
+      mgmt_unit=main_tasks.scan(/Ketua Unit(.*),/)[0][0].strip
+    else
+      mgmt_unit=""
+    end
+    mgmt_unit
+  end
+  
+  #for Timbalan Pengarah Pengurusan only - for accessible of staff training application status list w/o assignment on 'Administration' role
+  def admin_subordinates
+    mypost=Login.current_login.staff.position
+    post_name=mypost.name
+    if post_name=="Timbalan Pengarah (Pengurusan)"
+      adm_sub=mypost.descendants.map(&:staff_id)
+    else
+      adm_sub=[]
+    end
+    adm_sub
   end
   
 end

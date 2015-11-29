@@ -57,12 +57,12 @@
 						
 						<span class="span_wstaff1_on" style="display: none;">
 							<% if @asset_disposal.discard_witness_1.blank? || @asset_disposal.discard_witness_1.to_s.nil?%>
-								<%= select_tag "asset_disposal[discard_witness_1]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+								<%= select_tag "asset_disposal[discard_witness_1]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all, :order => 'name ASC'), :id, :staff_name_with_position) %>
 							<% else %>
-								<%= select_tag "asset_disposal[discard_witness_1]","<option value='"+@asset_disposal.discard_witness_1.to_s+"'>" +Staff.find(@asset_disposal.discard_witness_1).staff_name_with_position+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+								<%= select_tag "asset_disposal[discard_witness_1]","<option value='"+@asset_disposal.discard_witness_1.to_s+"'>" +Staff.find(@asset_disposal.discard_witness_1).staff_name_with_position+"</option>"+options_from_collection_for_select(Staff.find(:all, :order => 'name ASC'), :id, :staff_name_with_position) %>
 							<% end %>
 						</span>
-						<%#= f.collection_select :discard_witness_1, Staff.find(:all), :id, :staff_name_with_position, options ={:prompt => "Select discard witness"} %>
+						<%#= f.collection_select :discard_witness_1, Staff.find(:all, :order => 'name ASC'), :id, :staff_name_with_position, options ={:prompt => "Select discard witness"} %>
 					<!--witness number 1 - 14 dec 2012-->
 					</td>
 				</tr>
@@ -79,9 +79,9 @@
 						
 						<span class="span_wstaff2_on" style="display: none;">
 							<% if @asset_disposal.discard_witness_2.blank? || @asset_disposal.discard_witness_2.to_s.nil?%>
-								<%= select_tag "asset_disposal[discard_witness_2]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+								<%= select_tag "asset_disposal[discard_witness_2]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all, :order => 'name ASC'), :id, :staff_name_with_position) %>
 							<% else %>
-								<%= select_tag "asset_disposal[discard_witness_2]","<option value='"+@asset_disposal.discard_witness_2.to_s+"'>" +Staff.find(@asset_disposal.discard_witness_2).staff_name_with_position+"</option>"+options_from_collection_for_select(Staff.find(:all), :id, :staff_name_with_position) %>
+								<%= select_tag "asset_disposal[discard_witness_2]","<option value='"+@asset_disposal.discard_witness_2.to_s+"'>" +Staff.find(@asset_disposal.discard_witness_2).staff_name_with_position+"</option>"+options_from_collection_for_select(Staff.find(:all, :order => 'name ASC'), :id, :staff_name_with_position) %>
 							<% end %>
 						</span>
 						<%#= f.collection_select :discard_witness_2, Staff.find(:all), :id, :staff_name_with_position, options ={:prompt => "Select discard witness"}  %>

@@ -11,4 +11,9 @@
 <% end %>
 
 <%= link_to (t 'show'), @ptschedule %> |
-<%= link_to (t 'back'), ptschedules_path %>
+<%= link_to (t 'ptschedule.listing'), ptschedules_path %>
+<% permitted_to? :manage, :ptbudgets do %>
+	<% if @ptschedule.budget_ok==true && @participants_count >= @ptschedule.min_participants%>
+		&nbsp;|&nbsp;<%= link_to (t 'ptschedule.back_expenses'), organized_course_manager_ptschedules_path %>
+	<% end %>
+<% end %>

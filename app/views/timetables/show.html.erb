@@ -29,7 +29,7 @@
 		<table width=100% style="border:none">
 		<!--<#% for timetable in @timetable.timetable_periods %>-->
 		<% @hello = (@timetable.timetable_periods.maximum("sequence")).to_i %>	
-		<% @timetable.timetable_periods.in_groups_of(7, false) do |row_things| %>
+		<% @timetable.timetable_periods.sort_by{|x|x.sequence}.in_groups_of(7, false) do |row_things| %>
 		<tr>
 			<td align=center style=" text-align:center; padding:4px; vertical-align:middle;">
 				<%= (TimetablePeriod::DAY_CHOICE.find_all{|disp, value| value == (row_things.map(&:day_name)[0]) }).map {|disp, value| disp} %></td>

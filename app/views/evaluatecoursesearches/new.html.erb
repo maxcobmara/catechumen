@@ -8,44 +8,110 @@
 			<%= hidden_field_tag :method,  1 %>
 			<tr><td colspan=2><%=t('equery.evaluate_course.search_by')%> :</td></tr>
 			<tr>
+				<td class="leftcol"></td>
+				<td>
+			        <%= f.check_box :is_staff, :checked => "checked", :id => 'is_staff' %><%=t('evaluate_course.staff_or_invited')%>
+				<!--<SPAN class="span_staff" style="display: block;">
+					staff sini
+				</SPAN>
+				<SPAN class="span_invited" style="display: none;"><br>invited dini</SPAN>-->
+				</td>
+			</tr>
+			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'student.course_id') %></td>
-				<td><%#= f.collection_select :programme_id, @programme_list, :id, :programme_list, :include_blank=> (t 'select') %>
+				<td>
+					<SPAN class="span_invited" style="display: none;">
+						  <%#= f.collection_select :programme_id2, @programme_list, :id, :programme_list, :include_blank=> (t 'select') %>
+						  <%= f.collection_select :programme_id2, @programme_list, :id, :programme_list , {:include_blank => (t 'select')},
+						  :onchange => remote_function(:update => form_tag_id(f.object_name, :invitation_list), 
+						  :url => {:action => 'view_invitation'}, 
+						  :with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id2)+"').value ") %>
+					</SPAN>
 					<!---->
-					<%= f.collection_select :programme_id, @programme_list, :id, :programme_list , {:include_blank => (t 'select')},
-					:onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
-					:url => {:action => 'view_subject'}, 
-					:with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+					<SPAN class="span_staff" style="display: block;">
+						  <%= f.collection_select :programme_id, @programme_list, :id, :programme_list , {:include_blank => (t 'select')},
+						  :onchange => remote_function(:update => form_tag_id(f.object_name, :subject_list), 
+						  :url => {:action => 'view_subject'}, 
+						  :with => "'programmeid='+$('"+form_tag_id(f.object_name, :programme_id)+"').value ") %>
+					</SPAN>
 					<!---->
 				</td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'evaluate_course.subject_id') %></td>
+				<td class="leftcol">
+					<SPAN class="span_staff" style="display: block;">
+						&nbsp;&nbsp;&nbsp;<%= f.label (t 'evaluate_course.subject_id') %>
+					</SPAN>
+				</td>
 				<td>
-					<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
-						<%#=f.collection_select :subject_id, @subject_list, :id, :subject_list, :include_blank => (t 'select') %>
-						<%= f.collection_select :subject_id, @subject_list, :id, :subject_list, {:include_blank => (t 'select')},
-						:onchange => remote_function(:update => form_tag_id(f.object_name, :lecturer_list), 
-						:url => {:action => 'view_lecturer'}, 
-						:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
-					</div>
+					<SPAN class="span_staff" style="display: block;">
+						<%= tag("div", :id => form_tag_id(f.object_name, :subject_list)) %>
+							<%#=f.collection_select :subject_id, @subject_list, :id, :subject_list, :include_blank => (t 'select') %>
+							<%= f.collection_select :subject_id, @subject_list, :id, :subject_list, {:include_blank => (t 'select')},
+							:onchange => remote_function(:update => form_tag_id(f.object_name, :lecturer_list), 
+							:url => {:action => 'view_lecturer'}, 
+							:with => "'subjectid='+$('"+form_tag_id(f.object_name, :subject_id)+"').value ") %>
+						</div>
+					</SPAN>
 				</td>
 			</tr>
 			<tr>
-				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'evaluate_course.staff_id') %></td>
+				<td class="leftcol">
+					<SPAN class="span_staff" style="display: block;">&nbsp;&nbsp;&nbsp;<%= f.label (t 'evaluate_course.staff_id') %></SPAN>
+					<SPAN class="span_invited" style="display: none;">&nbsp;&nbsp;&nbsp;<%=f.label (t 'evaluate_course.invite_lec')%></SPAN>
+				</td>
 				<td>
-					<%= tag("div", :id => form_tag_id(f.object_name, :lecturer_list)) %>
-						<%= f.collection_select :lecturer_id, @lecturer_list, :id, :name, :include_blank=> (t 'select') %>
-					</div>
+					<SPAN class="span_staff" style="display: block;">
+						<%= tag("div", :id => form_tag_id(f.object_name, :lecturer_list)) %>
+							<%= f.collection_select :lecturer_id, @lecturer_list, :id, :name, :include_blank=> (t 'select') %>
+						</div>
+					</SPAN>
+					<SPAN class="span_invited" style="display: none;">
+						<%= tag("div", :id => form_tag_id(f.object_name, :invitation_list)) %>
+							<% @invite_lecturers=EvaluateCourse.find(:all, :conditions => ['staff_id is null and invite_lec is not null']).map(&:invite_lec).uniq %>
+							<% @invite_lecturer_list=[]%>
+							<% @invite_lecturers.each{|x|@invite_lecturer_list << [x, x]}%>	
+							<%=f.select :invite_lecturer, @invite_lecturer_list, :include_blank => (t 'select') %>
+						</div>
+					</SPAN>
 				</td>
 			</tr>
 			<tr>
 				<td class="leftcol">&nbsp;&nbsp;&nbsp;<%= f.label (t 'evaluate_course.evaldate') %></td>
-				<td><%= f.date_select :evaldate, :include_blank => true %></td>
+				<td><%= f.date_select :evaldate, :include_blank => true %> - <%= f.date_select :evaldate_end, :include_blank => true %></td>
 			</tr>
 		<% end %>
 	</table>
 
-  <p><%= f.submit (t 'search') %>&nbsp;<font size=-2><%=t('equery.leaves_all_blank_all_records')%></font></p>
+  <p><%= f.submit (t 'search') %>&nbsp;<font size=-2><%=t('equery.leaves_all_blank_all_records_tick')%></font></p>
 <% end %>
 
 </div>
+
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+			//show submit date
+
+			$j("input[id='is_staff']").change(function() {  
+			 if($j('#is_staff').is(':checked')) { 
+			    $j(".span_invited").hide(""); 
+				$j(".span_staff").show("highlight"); 
+			 }else		{
+			    $j(".span_invited").show("highlight"); 
+				$j(".span_staff").hide(""); 
+			 }	
+			});
+
+			$j("input[id='is_staff']").each(function() {  
+			 if($j('#is_staff').is(':checked')) { 
+			    $j(".span_invited").hide("");
+				$j(".span_staff").show("highlight"); 
+			 }else		{
+			    $j(".span_invited").show("highlight"); 
+				$j(".span_staff").hide(""); 
+			 }	
+			});
+
+	});
+</script>

@@ -2,11 +2,28 @@ class PtdosController < ApplicationController
   # GET /ptdos
   # GET /ptdos.xml
   def index
-    @ptdos = Ptdo.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page]) 
-
+    @position_exist = current_login.staff.position
+    if @position_exist && @position_exist.unit
+      #@ptdos = Ptdo.with_permissions_to(:index).search(params[:search]).paginate(:per_page => 20, :page => params[:page]) 
+      ###
+      all2a=Ptdo.with_permissions_to(:index)
+      @filters=Ptdo.filters(all2a)
+      if params[:show] && params[:search]
+        @ptdos = Ptdo.with_permissions_to(:index).search(params[:show], params[:search])
+      else
+        @ptdos = Ptdo.with_permissions_to(:index).find(:all, :order => 'ptschedule_id DESC')
+      end
+      @ptdos = @ptdos.paginate(:per_page => 20, :page => params[:page]) 
+      ###
+    end
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @ptdos }
+      if @position_exist && @position_exist.unit
+        format.html # index.html.erb
+        format.xml  { render :xml => @ptdos}
+      else
+        format.html {redirect_to "/home", :notice =>t('position_required')+t('ptdos.title')}
+        format.xml  { render :xml => @ptdos.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
@@ -27,8 +44,13 @@ class PtdosController < ApplicationController
     @ptdo = Ptdo.new(:ptschedule_id => params[:ptschedule_id])
 
     respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @ptdo }
+      unless params[:ptschedule_id].nil?
+        format.html # new.html.erb
+        format.xml  { render :xml => @ptdo }
+      else
+        format.html {redirect_to apply_ptschedules_path}
+        format.xml  { render :xml => @ptdos.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
@@ -61,7 +83,7 @@ class PtdosController < ApplicationController
 
     respond_to do |format|
       if @ptdo.update_attributes(params[:ptdo])
-        flash[:notice] =  t('ptdos.title')+" "+t('updated')
+        flash[:notice] =  t('ptdos.title2')+" "+t('updated')
         format.html { redirect_to(@ptdo) }
         format.xml  { head :ok }
       else
@@ -93,34 +115,6 @@ class PtdosController < ApplicationController
    respond_to do |format|
       format.html # show_total_days.html.erb
       format.xml  { render :xml => @ptdos }
-    end
-  end
-  
-  def organized_course_manager
-    @filters=Ptdo.filters
-    if params[:show] && params[:show]!="all2" #&& @filters.collect{|f| f[:scope]}.include?(params[:show])
-      startbegindate=Date.new(params[:show].to_i,1,1)
-      startenddate=Date.new(params[:show].to_i,12,31)
-      unless params[:search].nil?
-        searched_course_ids=Ptcourse.find(:all, :conditions => ['name ILIKE(?)', "%#{params[:search]}%"]).map(&:id)
-        approved_budget_sch_ids= Ptschedule.find(:all, :conditions => ['budget_ok=? and start>=? and start<=? and ptcourse_id IN(?)', true, startbegindate, startenddate, searched_course_ids]).map(&:id)
-        @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and ptschedule_id IN(?)', true, approved_budget_sch_ids], :order => "ptschedule_id ASC")
-      else
-        approved_budget_sch_ids= Ptschedule.find(:all, :conditions => ['budget_ok=? and start>=? and start<=?', true, startbegindate, startenddate]).map(&:id)
-        @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and ptschedule_id IN(?)', true, approved_budget_sch_ids], :order => "ptschedule_id ASC")
-      end
-    else
-      unless params[:search].nil?
-        searched_course_ids=Ptcourse.find(:all, :conditions => ['name ILIKE(?)', "%#{params[:search]}%"]).map(&:id)
-        @ptdos=Ptdo.find(:all, :conditions => ['id IN(?) and ptcourse_id IN(?)',Ptdo.all2.map(&:id), searched_course_ids])
-      else
-        @ptdos=Ptdo.send("all2")
-        #@ptdos = Ptdo.all2
-      end
-    end
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @ptschedules }
     end
   end
   

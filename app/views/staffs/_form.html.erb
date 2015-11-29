@@ -19,8 +19,33 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="shift"><%= t 'staff.shift' %></td>
-			<td><%= f.collection_select :staff_shift_id, StaffShift.find(:all), :id, :start_end, :include_blank=> t ('select_staff_shift') %></td>
+			<td>
+				<%#= f.collection_select :staff_shift_id, StaffShift.find(:all), :id, :start_end, :include_blank=> t ('select_staff_shift') %>
+				<% if @staff.new_record? %>
+					<%= f.collection_select :staff_shift_id, StaffShift.find(:all), :id, :start_end, :include_blank=> t ('select_staff_shift') %>
+				<% else %>
+					<% if @staff.staff_shift_id.blank? %>
+						<%= f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, :include_blank=> t ('select_staff_shift') %>
+					<% else %>
+						<%= f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true, :selected=>@staff.staff_shift_id}%>
+					<% end %>
+				<% end %>
+				<div class="previous_shift" style="display: none;">
+					<% f.fields_for :shift_histories do |builder| %>
+						<% if builder.object.deactivate_date.blank? == true %>
+							<%=t 'staff.shift_histories.deactivate_date'%>
+							<%= builder.date_select :deactivate_date, :start_year => Date.today.year, :end_year => Date.today.next_year.year, :order => [:day, :month, :year] %>
+							<%= builder.hidden_field :shift_id, :value =>@staff.staff_shift_id %>
+						<% end %>
+					<% end %>
+				</div>
+			</td>
 		</tr>
+		
+		 
+              
+		
+		
 		<tr>
 			<td class="leftcol"><label for="fileno"><b><%= t 'staff.fileno' %></b></label><font color="red"> * </font></td>
 			<td><%= f.text_field :fileno %></td>
@@ -312,5 +337,36 @@
 <!--		<p><%#= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :vehicles %> - <%#= t 'addmore' %> </p>-->
 	</div>
 
+<!--MyCPD Details-->
+	
+	<div>
+	  <H2><%= t 'training.accumulated_cpd_points' %></H2>
+		<p><strong>
+			<div style="width: 70px; float: left;">| <%= t 'training.cpd_year' %> </div>
+			<div style="width: 170px; float: left;">| <%= t 'training.cpd_value' %> </div>
+			</strong>
+		</p><br>
+		<% f.fields_for :mycpds do |builder| %>
+			<%= render 'mycpd_fields', :f => builder -%>
+		<% end %>
+		<BR>
+		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :mycpds %> - <%= t 'addmore' %> </p>
+		<BR>
+                <font size=-2><%=t 'training.inserted_values' %>
+                <%= link_to ((t 'ptdos.viewsummary')+" "+Date.today.year.to_s), :controller => 'ptdos', :action => 'show_total_days', :id => Login.current_login.staff_id %></font>
+	</div>
+		
+	
 </div>	
+
+<script>
+  var current_shift = $j("#staff_staff_shift_id").val();
+  $j("#staff_staff_shift_id").change(function() {
+    if ($j('#staff_staff_shift_id option:selected').val()==current_shift)
+      $j('.previous_shift').hide();
+    else{
+      $j('.previous_shift').show();
+    }
+  });
+</script>
 	

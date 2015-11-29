@@ -189,9 +189,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :assetcategories
 
-  map.resources :ptdos, :collection => {:organized_course_manager => :get}
+  map.resources :ptdos
 
-  map.resources :ptschedules, :collection => { :apply => :get }
+  map.resources :ptschedules, :collection => { :apply => :get, :organized_course_manager => :get}
 
   map.resources :ptcourses
 
@@ -255,7 +255,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :staffgrades
 
-  map.connect '/leaveforstudents/approve', :controller => 'leaveforstaffs', :action => 'approve'
+  map.connect '/leaveforstudents/approve_coordinator', :controller => 'leaveforstaffs', :action => 'approve_coordinator'
   map.connect '/leaveforstudents/approve_warden', :controller => 'leaveforstaffs', :action => 'approve_warden'
   map.resources :leaveforstudents
 

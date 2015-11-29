@@ -95,7 +95,13 @@
 		</tr>-->	
 		<tr>
 			<td class="leftcol"><label for="intake"><%= t 'student.intake_id' %> :</label></td>
-			<td><%=h @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y") %></td>
+			<td>
+				<% unless @student.intake_id.blank? %>
+					<%= @student.intakestudent.monthyear_intake.strftime("%B %Y")%>
+				<% else %>
+					<%=h @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y") %>
+				<% end %>
+			</td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="remarks">Remarks :</label></td>

@@ -34,17 +34,17 @@
 		<% end %>
 		<% if @ptdosearch.schedulestart_start && (!@ptdosearch.schedulestart_start.blank? || !@ptdosearch.schedulestart_start.nil?) %>
 			<span style="text-decoration:underline;">
-				<%=t('from')%>&nbsp;&nbsp;<b><%=@ptdosearch.schedulestart_start.try(:strftime, "%d %b %Y") %></b>
+				<%=t('from')%>&nbsp;&nbsp;<b><%=start_training_date=@ptdosearch.schedulestart_start.try(:strftime, "%d %b %Y") %></b>
 			</span>
 		<% end %>
 		<% if @ptdosearch.schedulestart_end && (!@ptdosearch.schedulestart_end.blank? || !@ptdosearch.schedulestart_end.nil?) %>
 			<span style="text-decoration:underline;">
-				&nbsp;<%=t('to')%>&nbsp;&nbsp;<b><%=@ptdosearch.schedulestart_end.end_of_month.try(:strftime, "%d %b %Y") %></b>
+				&nbsp;<%=t('to')%>&nbsp;&nbsp;<b><%=startend_training_date=@ptdosearch.schedulestart_end.try(:strftime, "%d %b %Y") %></b>
 				<br><br>
 			</span>
 		<% end %>
 		<% if @ptdosearch.staff_id.blank? && @ptdosearch.staff_name.blank? && @ptdosearch.icno.blank? && @ptdosearch.schedulestart_start.blank? && @ptdosearch.schedulestart_end.blank? %>
-			 <%=t('equery.ptdo.schedule_date')%> : <%=@firstdate.strftime('%d %b %Y')%> <%=t('to')%> <%=@lastdate.strftime('%d %b %Y')%>
+			 <%=t('equery.ptdo.schedule_date')%> : <%=start_training_date=@firstdate.strftime('%d %b %Y')%> <%=t('to')%> <%=startend_training_date=@lastdate.strftime('%d %b %Y')%>
 		<% end %>
 		<% if @ptdosearch.schedulestart_end.blank? %><br><br><% end %>
 		
@@ -59,6 +59,7 @@
 					<th><%=t('equery.ptdo.department')%></th>
 					<th><%=t('equery.ptdo.position')%></th>
 					<th><%=t('equery.ptdo.total_days')%></th>
+					<th><%=t('ptdos.download')%></th>
 				</tr>
 				<%nos=0%>
 				<% @ptdosearch.ptdos.sort_by{|y|y.staff.name}.group_by{|x|x.staff_id}.each do |staffid, attended_trainings| %>
@@ -70,6 +71,7 @@
 						<td><%=Ptdo.staff_unit(curr_staff) %></td>
 						<td><%=curr_staff.try(:position).try(:name)%></td>
 						<td align=center><%=Ptdo.staff_total_days(attended_trainings.map(&:id)) %></td>
+						<td><a href="http://<%= request.host  %>:3003/staff_training/ptdos/training_report.pdf?locale=ms_MY&q[staff_id]=<%=staffid%>&q[ptschedule_start_gteq]=<%=start_training_date%>&q[ptschedule_start_lteq]=<%=startend_training_date%>"><%= t('ptdos.download') %></a></td>
 					</tr>
 				<% end %>
 			</table>
