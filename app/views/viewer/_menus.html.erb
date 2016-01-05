@@ -41,6 +41,7 @@
 							<li><%= link_to (t 'staff.employscheme'), {:controller => 'employgrades', :action => 'index'} %></li>
 							<li><%= link_to t('postinfos.title'), {:controller => 'postinfos', :action => 'index'} %></li>
 							<li><%= link_to (t 'menu.tasks_respons'), 		{:controller => 'positions', 	:action => 'index'} %></li>
+							<li><a href="http://<%= request.host  %>:3003/staff/positions"><%=t('positions.organisation_chart')%></a></li>
 						</ul>
 					</li>
 				<% end %>
@@ -309,25 +310,27 @@
 			<ul class="sub_menu">
 				<% permitted_to? :manage, :examquestions do %>
 				<li><%= link_to (t 'menu.exam_dev'), {:controller => 'examquestions', :action => 'index'} %></li>
-				<li><%= link_to (t 'menu.exam_maker'), {:controller => 'exams', :action => 'index'} %></li>
-				<li><a href="#"><%= t('menu.exam_manage') %></a>
+				<!--
+				<li><%#= link_to (t 'menu.exam_maker'), {:controller => 'exams', :action => 'index'} %></li>
+				<li><a href="#"><%#= t('menu.exam_manage') %></a>
 					<ul class="sub_menu">
-						<li><%= link_to t('menu.marks_exam_paper'), {:controller => 'exammarks', :action => 'index'} %></li>
-						<li><%= link_to t('menu.student_grades'), {:controller => 'grades', :action => 'index'} %></li>
-						<li><a href="#"><%= t('menu.exam_result') %></a>
+						<li><%#= link_to t('menu.marks_exam_paper'), {:controller => 'exammarks', :action => 'index'} %></li>
+						<li><%#= link_to t('menu.student_grades'), {:controller => 'grades', :action => 'index'} %></li>
+						<li><a href="#"><%#= t('menu.exam_result') %></a>
 						<ul class="sub_menu">
-							<li><%= link_to t('menu.result_program'), {:controller => 'examresults', :action => 'index'} %></li>
-							<li><%= link_to t('menu.exam_slip'), {:controller => 'examresults', :action => 'index2'} %></li>
+							<li><%#= link_to t('menu.result_program'), {:controller => 'examresults', :action => 'index'} %></li>
+							<li><%#= link_to t('menu.exam_slip'), {:controller => 'examresults', :action => 'index2'} %></li>
 						</ul></li>
 					</ul>
-				</li>
+				</li>-->
 				<% end %>
 				<% permitted_to? :read, :evaluate_courses do %>
 					<li><%= link_to t('menu.feedback_courseevaluate'), {:controller => 'evaluate_courses', :action => 'index'} %></li>
 				<% end %>
-				<% permitted_to? :manage, :examquestions do %>
-					<li><%= link_to t('menu.exam_analysis'), {:controller => 'examanalyses', :action => 'index'} %></li>
-				<% end %>
+				<!--
+				<%# permitted_to? :manage, :examquestions do %>
+					<li><%#= link_to t('menu.exam_analysis'), {:controller => 'examanalyses', :action => 'index'} %></li>
+				<%# end %>-->
 				<!--Ogma (exams) : STARTs here-->
 				<% permitted_to? :manage, :examquestions do %>
 					<li><a href="http://<%= request.host%>:3003/exam/examquestions"><%= t('menu.new_exam_dev')%></a></li>
