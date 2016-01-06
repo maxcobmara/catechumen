@@ -178,7 +178,10 @@
 	<li><a href="#"><%= t('menu.e_filing') %></a>
 			<ul class="sub_menu">
 				<% permitted_to? :manage, :pages do %>
-				<li><%= link_to (t 'menu.campus_info'), 			  {:controller => 'pages', 				:action => 'edit',  :id => 1} %></li>
+				<li><a href="#"><%=(t 'menu.campus_info')%></a><ul class="sub_menu">
+					<li><%= link_to (t 'photo.list'), {:controller => 'photos', :action => 'index'} %></li>
+					<li><%= link_to (t 'menu.campus_info'),  {:controller => 'pages', :action => 'edit',  :id => 1} %></li>
+				</ul></li>
 				<% end %>
 				<li><%= link_to (t 'menu.campus_events'), 			{:controller => 'events', 			:action => 'index'} %></li>
 				<li><%= link_to (t 'menu.events_calender'), {:controller => 'events', :action => 'calendar'} %></li>
