@@ -9,16 +9,26 @@
 </div>
 
 <div class="indextable">
-	<table>
-	  <tr><th colspan=10><%= t 'photo.list'%></td></tr>
-	  <% @photos.in_groups_of(10, false) do |photos| %>
-		<tr><% for photo in photos%><td><%= image_tag photo.diagram.url,  :size => '50x50' %></td><% end %></tr>
-		<tr><% for photo in photos%><td><%=h truncate(photo.caption, 10) %></td><% end%></tr>
+	<table cellpadding=0 cellspacing=0>
+	  <tr><th colspan=20><%= t 'photo.list'%></td></tr>
+	  <% @photos.in_groups_of(20, false) do |photos| %>
+		<tr><% for photo in photos%><td><%= link_to image_tag(photo.diagram.url,  :size => '50x50', :border => 1), photo_path(photo) %></td><% end %></tr>
+		<tr><% for photo in photos%><td><% note=truncate(photo.caption, 8) %><%= link_to note, edit_photo_path(photo) %>
+		<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), photo, :confirm => (t 'are_you_sure'), :method => :delete if photo.valid_for_removal %></td><% end%></tr>
 	  <% end %>
 	</table>
 <br />
 </div>
 
+<div class="left">
+	<b><%=t 'photo.remark'%></b>
+	<ol>
+		<li><%= t 'photo.usage'%></li>
+		<li><%= t 'photo.removable'%></li>
+		<li><%= t 'photo.allowed_format' %>
+	</ol>
+</div>
+<BR><BR><BR><BR><BR><BR>
 <%= link_to (t 'photo.new'), new_photo_path %>
 
 <!--<td width=10px><%#= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id =>photo %></td>

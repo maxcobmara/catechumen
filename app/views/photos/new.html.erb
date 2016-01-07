@@ -1,20 +1,23 @@
-<h3><%=t('examquestion.new')%></h3>
+<h3><%=t('photo.new')%></h3>
+<div class="tform">
+	<H2><%= t('photo.details') %></H2>
+	<% form_for(@photo, :html => { :multipart => true}) do |f| %>
+	<%= f.error_messages %>
 
-<% form_for(@photo, :html => { :multipart => true}) do |f| %>
-  <%= f.error_messages %>
-
-	<div class="tform">
 		<table>
 			<tr>
-				<td class="leftcol"><%=t('examquestion.add_graphic_image')%> :</td>
+				<td class="leftcol"><%=t('photo.select_image')%> :</td>
 				<td><%= f.file_field :diagram %></td>
 			</tr>
 			<tr>
-				<td class="leftcol">Caption :</td>
+				<td class="leftcol"><%=t('photo.caption') %> :</td>
 				<td><%= f.text_field :caption %></td>
 			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;</td>
+				<td><font style="font-style: italic; color: grey;"><%= t('photo.allowed_format') %></td>
+			</tr>
 		</table>
-	</div>
 
   <p>
     <%= f.submit (t 'create') %>
