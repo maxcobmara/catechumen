@@ -50,23 +50,41 @@
     <%= render '/viewer/menus' %>
   </div>
 
-  <div id='content'>
-		<% flash.each do |key, msg| %>
-			<%= content_tag :div, msg, :id => key %>
-		<% end %>
-		<% if logged_in? %>
-	  <% if (request.request_uri == "/" || request.request_uri == "/home") %>  <!-- show only if at root -->
-			<%= render '/viewer/notifications' %>
-	  <% end %>
-	  <% end %>
-		<div>
-		<%= yield %>
+	<% if @page && (@page.name=='home' || @page.id==1)%>
+		<div id='content2'>
+			<% flash.each do |key, msg| %>
+				<%= content_tag :div, msg, :id => key %>
+			<% end %>
+			<% if logged_in? %>
+				<% if (request.request_uri == "/" || request.request_uri == "/home") %>  <!-- show only if at root -->
+					<%= render '/viewer/notifications' %>
+				<% end %>
+			<% end %>
+			<div><%= yield %></div>
 		</div>
-  </div>
+         <%else %>
+		<div id='content'>
+			<% flash.each do |key, msg| %>
+				<%= content_tag :div, msg, :id => key %>
+			<% end %>
+			<% if logged_in? %>
+				 <% if (request.request_uri == "/" || request.request_uri == "/home") %>  <!-- show only if at root -->
+					<%= render '/viewer/notifications' %>
+				<% end %>
+			<% end %>
+			<div><%= yield %></div>
+		</div>
+	<% end %>
 
-  <div id="event_bar">
-    <%= render '/viewer/event' %>
-  </div>
+	<% if @page && (@page.name=='home' || @page.id==1)%>
+		<div id="event_bar2">
+			<%= render '/viewer/event' %>
+		</div>
+	<% else %>
+		<div id="event_bar">
+			<%= render '/viewer/event' %>
+		</div>
+	<% end %>
 
   <div id="bulletin">
   		<%= render '/viewer/bulletin' %>
