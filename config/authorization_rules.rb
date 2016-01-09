@@ -218,11 +218,11 @@ authorization do
   role :facilities_administrator do
     has_permission_on :locations, :to => [:manage, :indextree]
     has_permission_on :tenants, :to => :manage
-    #has_permission_on :leaveforstudents, :to => :manage
   end
   
   role :warden do
-    has_permission_on :locations, :to => :core
+    has_permission_on :locations, :to => :read #:core
+    has_permission_on :tenants, :to => :read #:manage
     has_permission_on :students, :to => [:menu, :show, :formforstudent]
     #all wardens have access - [relationship: second_approver, FK: staff_id2, page: aptdprove_warden]
     has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve_warden] do
