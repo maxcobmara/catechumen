@@ -343,6 +343,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session
 
   map.resources :pages
+  
+  map.resources :photos
 
   map.with_options :controller => 'viewer' do |viewer|
     viewer.librarystats 'library_rules', :action => 'library_rules'

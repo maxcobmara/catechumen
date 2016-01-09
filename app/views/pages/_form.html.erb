@@ -10,7 +10,13 @@ bkLib.onDomLoaded(function() {
 //]]>
 </script>
 
-<div class="tform">
+<!--7-8Jan2016-->
+<% if @page.name=='home' || @page.id==1%>
+	<div class="tform" style="width:105%">
+<%else%>
+	<div class="tform">
+<% end %>
+
 <H2><%= t 'pages.page_details' %></H2>
 <table width=100%>
  
@@ -23,7 +29,49 @@ bkLib.onDomLoaded(function() {
 		<td class="leftcol"><label for="title"><%= t 'pages.title' %> :</label></td>
 	    <td><%= f.text_field :title %></td>
 	</tr>
-	
+	<tr><td class="leftcol">
+			<label for="title"><%=t 'photo.available_images'%> :</label>
+		</td>
+		<td>
+			<% @photos=Photo.find(:all, :conditions => ['diagram_file_name is not null'], :order => "created_at DESC")%>
+			<% @latest_photos=Photo.find(:all, :conditions => ['diagram_file_name is not null'], :order => "created_at DESC").last(10)%>
+			<% @remaining_photos=Photo.find(:all, :conditions => ['diagram_file_name is not null and id not in(?)', @latest_photos.map(&:id)], :order => "created_at DESC") %>
+			
+			<table>
+				<tr id="latest" style="display: block;">
+					<% if @photos.count==0 %>
+						<font color="red"><%=t 'photo.image_not_exist'%></font><%=link_to (t 'photo.list'), photos_path, :class => "link_images", :alt => (t 'photo.list') %>
+					<% else %>
+					<% for photo in @latest_photos %>
+						<%url= photo.diagram.url.split("?")[0]%>
+						<td><a href="http://<%= request.host%>:3000<%=url%>"><%= image_tag photo.diagram.url,  :size => '50x50', :border=>1, :alt => (t 'photo.actual_size'),  :class => "link_images"%></a>
+						<br><%#= "http://localhost:3000"+url%> 
+						 <% note=truncate(photo.caption, 10)%>
+						<%= link_to note, photo_path(photo), :class => "link_images"%>
+						</td>
+					<% end %>
+					<% end %>
+				</tr>
+				<tr><td colspan=10>
+					<font style="color: grey; font-style: italic;"><%= t 'photo.get_url'%></font><br>
+					<%= link_to (t 'photo.more_images'), "#", :id => "linkme", :class=>"link_images", :alt =>(t 'photo.hide_show')  if @photos.count > 10%>
+				</td><tr>
+			</table>
+			<table>
+				<% @remaining_photos.in_groups_of(9, false) do |photos| %>
+				<tr id="remaining" style="display: none;">
+					<% for photo in photos %>
+						<%url= photo.diagram.url.split("?")[0]%>
+						<td><a href="http://<%= request.host%>:3000<%=url%>"><%= image_tag photo.diagram.url,  :size => '50x50', :border=>1, :alt => (t 'photo.actual_size'),  :class => "link_images"%></a>
+						<br><%#= "http://localhost:3000"+url%> 
+						 <% note=truncate(photo.caption, 10)%>
+						<%= link_to note, photo_path(photo), :class => "link_images" %></td>
+					<% end %><!--<td>&nbsp;</td>-->
+				<tr>
+			<% end%>
+			</table>
+		</td>
+	</tr>
 	<tr>
 		<td class="leftcol"><label for="body"><%= t 'pages.body' %> :</label></td>
 	    <td><%= f.text_area :body, :size => '100x40', :id => 'myNicEditor' %></td>
@@ -75,6 +123,14 @@ bkLib.onDomLoaded(function() {
 	
 </table>
 </div>	
+
+<script type="text/javascript">
+	$j(document).ready(function(){
+		$j("#linkme").click(function() {  
+			$j("#remaining").toggle("highlight"); 
+		});
+	});
+</script>
 	
 
 

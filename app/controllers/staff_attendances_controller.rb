@@ -1,4 +1,5 @@
 class StaffAttendancesController < ApplicationController
+  filter_access_to :all
   # GET /staff_attendances
   # GET /staff_attendances.xml
   def index

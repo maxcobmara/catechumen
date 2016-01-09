@@ -18,7 +18,7 @@
 						<ul class="sub_menu">
 							<!--<li><%= link_to t('attendance.lateness_earlyreturn'),{:controller => 'staff_attendances', :action => 'manage'} %></li>-->
 							<%# if permitted_to? :destroy, @attendance %>
-							<% permitted_to? :manage, :staffs do %>
+							<% permitted_to? :manage, :staff_attendances do %>
 							<!--
 							<li><%#= link_to 'Staff Attendance', 	{:controller => 'staff_attendances', 	:action => 'index'} %></li>
 							<li><%#= link_to 'Status', 						{:controller => 'staff_attendances', 	:action => 'status'} %></li>-->
@@ -35,12 +35,13 @@
 
 				<li><%= link_to (t 'menu.staff_appraisal'), 		{:controller => 'staff_appraisals', 	:action => 'index'} %></li>
 
-				<% permitted_to? :manage, :staffs do %>
+				<% permitted_to? :manage, :positions do %>
 					<li><a href="#"><%= t('menu.tasks_respons')%> ></a>
 						<ul class="sub_menu">
 							<li><%= link_to (t 'staff.employscheme'), {:controller => 'employgrades', :action => 'index'} %></li>
 							<li><%= link_to t('postinfos.title'), {:controller => 'postinfos', :action => 'index'} %></li>
 							<li><%= link_to (t 'menu.tasks_respons'), 		{:controller => 'positions', 	:action => 'index'} %></li>
+							<li><a href="http://<%= request.host  %>:3003/staff/positions"><%=t('positions.organisation_chart')%></a></li>
 						</ul>
 					</li>
 				<% end %>
@@ -137,29 +138,41 @@
 
 
 	<!-- Locations Menu -->
-	<% permitted_to? :read, :locations do %><%# permitted_to? :menu, :locations do %>
+	<% permitted_to? :read, :locations do %>
 	<li><a href="#"><%= t('menu.locations') %></a>
 	<ul class="sub_menu">
-	<% permitted_to? :read, :locations do %>
+	
 	<!--<li><%#= link_to 'Residences', 	{:controller => 'locations', 		:action => 'index'} %></li>-->
         <li><a href="http://<%= request.host  %>:3003/campus/locations"><%= t('menu.new_location') %></a></li>
 	<li><a href="#"><%= t('menu.student_residence') %> ></a>
 	<ul class="sub_menu">
-            <li><a href="http://<%= request.host  %>:3003/student/tenants/room_map"><%= t('menu.room_map') %></a></li>
-            <li><a href="http://<%= request.host  %>:3003/student/tenants"><%= t('menu.new_student_tenants') %></a></li>
-            <li><a href="http://<%= request.host  %>:3003/student/tenants/return_key"><%= t('menu.return_key') %></a></li>
+	    <% permitted_to? :manage, :locations do %>
+		  <li><a href="http://<%= request.host  %>:3003/student/tenants/room_map"><%= t('menu.room_map') %></a></li>
+            <% end %>
+            <% permitted_to? :read, :tenants do %>
+		  <li><a href="http://<%= request.host  %>:3003/student/tenants"><%= t('menu.new_student_tenants') %></a></li>
+	    <% end %>
+	    <% permitted_to? :manage, :locations do %>
+		  <li><a href="http://<%= request.host  %>:3003/student/tenants/return_key"><%= t('menu.return_key') %></a></li>
+	    <% end %>
             <li><a href="http://<%= request.host  %>:3003/campus/location_damages"><%= t('menu.damage_list') %></a></li>
-            <li><a href="http://<%= request.host  %>:3003/student/tenants/reports"><%= t('menu.report_census') %></a></li>             
-            <li><a href="http://<%= request.host  %>:3003/student/tenants/statistics"><%= t('menu.room_statistics') %></a></li>
+            <% permitted_to? :manage, :tenants do %>
+		  <li><a href="http://<%= request.host  %>:3003/student/tenants/reports"><%= t('menu.report_census') %></a></li>             
+		  <li><a href="http://<%= request.host  %>:3003/student/tenants/statistics"><%= t('menu.room_statistics') %></a></li>
+	    <% end %>
           </ul>
         <li><a href="#"><%= t('menu.staff_residence') %> ></a>
 	<ul class="sub_menu">
-            <li><a href="http://<%= request.host  %>:3003/student/tenants/room_map2"><%= t('menu.room_map2') %></a></li>
-            <li><a href="http://<%= request.host  %>:3003/student/tenants/index_staff?locale=en"><%= t('menu.new_staff_tenants') %></a></li>
-            <li><a href="http://<%= request.host  %>:3003/student/tenants/return_key2"><%= t('menu.return_key') %></a></li>
+	    <% permitted_to? :manage, :locations do %>
+		  <li><a href="http://<%= request.host  %>:3003/student/tenants/room_map2"><%= t('menu.room_map2') %></a></li>
+	    <% end %>
+	    <% permitted_to? :manage, :tenants do %>
+		  <li><a href="http://<%= request.host  %>:3003/student/tenants/index_staff?locale=en"><%= t('menu.new_staff_tenants') %></a></li>
+		  <li><a href="http://<%= request.host  %>:3003/student/tenants/return_key2"><%= t('menu.return_key') %></a></li>
+	    <% end %>
             <li><a href="http://<%= request.host  %>:3003/campus/location_damages/index_staff?locale=en"><%= t('menu.damage_list') %></a></li>
         </ul>
-	<% end %>
+	<%# end %>
 			  <!--
 				<li><%#= link_to 'Tenants', {:controller => 'tenants', 		:action => 'index'} %></li>-->
 				<!--<li><%#= link_to 'Student Leave', 			{:controller => 'leaveforstudents', 	:action => 'index'} %></li>-->
@@ -177,7 +190,10 @@
 	<li><a href="#"><%= t('menu.e_filing') %></a>
 			<ul class="sub_menu">
 				<% permitted_to? :manage, :pages do %>
-				<li><%= link_to (t 'menu.campus_info'), 			  {:controller => 'pages', 				:action => 'edit',  :id => 1} %></li>
+				<li><a href="#"><%=(t 'menu.campus_info')%></a><ul class="sub_menu">
+					<li><%= link_to (t 'photo.list'), {:controller => 'photos', :action => 'index'} %></li>
+					<li><%= link_to (t 'menu.campus_info'),  {:controller => 'pages', :action => 'edit',  :id => 1} %></li>
+				</ul></li>
 				<% end %>
 				<li><%= link_to (t 'menu.campus_events'), 			{:controller => 'events', 			:action => 'index'} %></li>
 				<li><%= link_to (t 'menu.events_calender'), {:controller => 'events', :action => 'calendar'} %></li>
@@ -196,7 +212,6 @@
 
 	<!-- Student Menu -->
 	<% permitted_to? [:menu, :index], :students do %>
-	<%# permitted_to? :menu, :student_discipline_cases do %>
 	<li><a href="#"><%= t('menu.students') %></a>
 		<ul class="sub_menu">
 				<% permitted_to? :index, :students do %>
@@ -219,7 +234,7 @@
 				<% end %>
 
 				<% permitted_to? :manage, :student_attendances do %>
-				<li><%= link_to (t 'menu.attend'), 			{:controller => 'student_attendances', :action=>'index' } %></li>
+				<li><%= link_to (t 'menu.attend'), {:controller => 'student_attendances', :action=>'index' } %></li>
 				<% end %>
 				<!--  Deprecated to Student_discipline_cases
 
@@ -229,12 +244,12 @@
 
 
 				<% permitted_to? :create, :student_discipline_cases do %>
-				<li><%= link_to (t 'menu.discipline'), 				{:controller => 'Student_discipline_cases', 	:action => 'index'} %></li>
+				<li><%= link_to (t 'menu.discipline'), {:controller => 'Student_discipline_cases', 	:action => 'index'} %></li>
 				<% end %>
 
 
 				<% permitted_to? :index, :student_counseling_sessions do %>
-					<li><%= link_to (t 'menu.counselling'), 	  		{:controller => 'student_counseling_sessions', :action => 'index'} %></li>
+					<li><%= link_to (t 'menu.counselling'), {:controller => 'student_counseling_sessions', :action => 'index'} %></li>
 				<% end %>
 					<!--
 				<%# permitted_to? :create, :student_counseling_sessions do %>
@@ -309,25 +324,27 @@
 			<ul class="sub_menu">
 				<% permitted_to? :manage, :examquestions do %>
 				<li><%= link_to (t 'menu.exam_dev'), {:controller => 'examquestions', :action => 'index'} %></li>
-				<li><%= link_to (t 'menu.exam_maker'), {:controller => 'exams', :action => 'index'} %></li>
-				<li><a href="#"><%= t('menu.exam_manage') %></a>
+				<!--
+				<li><%#= link_to (t 'menu.exam_maker'), {:controller => 'exams', :action => 'index'} %></li>
+				<li><a href="#"><%#= t('menu.exam_manage') %></a>
 					<ul class="sub_menu">
-						<li><%= link_to t('menu.marks_exam_paper'), {:controller => 'exammarks', :action => 'index'} %></li>
-						<li><%= link_to t('menu.student_grades'), {:controller => 'grades', :action => 'index'} %></li>
-						<li><a href="#"><%= t('menu.exam_result') %></a>
+						<li><%#= link_to t('menu.marks_exam_paper'), {:controller => 'exammarks', :action => 'index'} %></li>
+						<li><%#= link_to t('menu.student_grades'), {:controller => 'grades', :action => 'index'} %></li>
+						<li><a href="#"><%#= t('menu.exam_result') %></a>
 						<ul class="sub_menu">
-							<li><%= link_to t('menu.result_program'), {:controller => 'examresults', :action => 'index'} %></li>
-							<li><%= link_to t('menu.exam_slip'), {:controller => 'examresults', :action => 'index2'} %></li>
+							<li><%#= link_to t('menu.result_program'), {:controller => 'examresults', :action => 'index'} %></li>
+							<li><%#= link_to t('menu.exam_slip'), {:controller => 'examresults', :action => 'index2'} %></li>
 						</ul></li>
 					</ul>
-				</li>
+				</li>-->
 				<% end %>
 				<% permitted_to? :read, :evaluate_courses do %>
 					<li><%= link_to t('menu.feedback_courseevaluate'), {:controller => 'evaluate_courses', :action => 'index'} %></li>
 				<% end %>
-				<% permitted_to? :manage, :examquestions do %>
-					<li><%= link_to t('menu.exam_analysis'), {:controller => 'examanalyses', :action => 'index'} %></li>
-				<% end %>
+				<!--
+				<%# permitted_to? :manage, :examquestions do %>
+					<li><%#= link_to t('menu.exam_analysis'), {:controller => 'examanalyses', :action => 'index'} %></li>
+				<%# end %>-->
 				<!--Ogma (exams) : STARTs here-->
 				<% permitted_to? :manage, :examquestions do %>
 					<li><a href="http://<%= request.host%>:3003/exam/examquestions"><%= t('menu.new_exam_dev')%></a></li>
@@ -359,7 +376,14 @@
 	<!-- Library Menu -->
 	<li><a href="#"><%= t('menu.library') %></a>
 			<ul class="sub_menu">
-				<li><%= link_to t('menu.rules_regulations'), '/rules' %></li>
+			        <% if current_login.roles.map(&:authname).include?("administration")%>
+				        <li><%= link_to t('menu.rules_regulations'), '/rules' %></li>
+				<% else %>
+				<li><a href="#"><%= t('menu.rules_regulations')%></a><ul class="sub_menu">
+					<li><%= link_to (t 'photo.list'), {:controller => 'photos', :action => 'index'} %></li>
+					<li><%= link_to t('menu.rules_regulations'), '/rules' %></li>
+				</ul></li>
+				<% end %>
 				<% permitted_to? :manage, :librarytransactions do %>
 					<li><%= link_to t('menu.library_transactions'),   {:controller => 'librarytransactions', 	:action => 'index'} %></li>
 					<li><a href="http://<%= request.host  %>:3003/library/librarytransactions/manager"><%= t('menu.create_library_transactions') %></a></li>

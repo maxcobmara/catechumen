@@ -178,6 +178,7 @@ authorization do
      has_permission_on :staff_attendances, :to => :manage   #29Apr2013-refer routes.rb
      has_permission_on :staffsearch2s, :to => :read
      has_permission_on :staffattendancesearches, :to => :read
+     has_permission_on :positions, :to => [:manage, :maklumat_perjawatan_LA]
   end
   
   role :finance_unit do
@@ -217,16 +218,20 @@ authorization do
   role :facilities_administrator do
     has_permission_on :locations, :to => [:manage, :indextree]
     has_permission_on :tenants, :to => :manage
-    #has_permission_on :leaveforstudents, :to => :manage
   end
   
   role :warden do
-    has_permission_on :locations, :to => :core
+    has_permission_on :locations, :to => :read #:core
+    has_permission_on :tenants, :to => :read #:manage
     has_permission_on :students, :to => [:menu, :show, :formforstudent]
+    #has_permission_on :student_attendances, :to => :read #override by role: lecturer - but not ok if commonsubject lecturer is also a warden
     #all wardens have access - [relationship: second_approver, FK: staff_id2, page: aptdprove_warden]
     has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve_warden] do
       if_attribute :studentsubmit => true
     end
+    #both-below not ok in Ogma
+    #has_permission_on :student_discipline_cases, :to => :read  #when activated, syst running correctly but permission checking fail (icon display)in Index not ok
+    #has_permission_on :student_counseling_sessions, :to => :read 
   end
   
   #Group E-Filing ------------------------------------------------------------------------------- 

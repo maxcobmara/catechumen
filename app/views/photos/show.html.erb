@@ -1,0 +1,27 @@
+<div class="tform">
+	<H2><%= t 'photo.details' %></H2>
+	<table width=100% >
+		<tr>
+			<td class="leftcol"><%=t('photo.title')%> :</td>
+			<td><% if @photo.diagram_file_name == nil %>
+					<%=t('examquestion.no_diagram_attached')%>
+				<% else %>
+					<%#= image_tag @photo.diagram.url, :class => 'diagram', :size => '250x250', :border => 1%>
+					<%url= @photo.diagram.url.split("?")[0]%>
+					<a href="http://<%= request.host%>:3000<%=url%>">
+					<%= image_tag @photo.diagram.url, :class => 'diagram', :size => '250x250', :border => 1, :title => (t 'photo.actual_size')%></a>
+				<% end %>
+			</td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%=t('photo.name')%> :</td>
+			<td><%= @photo.try(:diagram_file_name) %></td>
+		</tr>
+		<tr>
+			<td class="leftcol"><%=t('photo.caption')%> :</td>
+			<td><%=h @photo.try(:caption) %></td>
+		</tr>
+	</table>
+</div>
+<%= link_to (t 'edit'), edit_photo_path(@photo) %> |
+<%= link_to (t 'back'), photos_path %>

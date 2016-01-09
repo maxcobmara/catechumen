@@ -1,0 +1,37 @@
+<h3><%=t('photo.edit')%></h3>
+<div class="tform">
+	<H2><%= t('photo.details') %></H2>
+	<% form_for(@photo, :html =>{ :multipart => true}) do |f| %>
+	<%= f.error_messages %>
+
+		<table>
+			<tr>
+				<td class="leftcol"><label for="data"><%=t('photo.current_image')%></label></td>
+				<td>
+				<% if @photo.diagram.exists? then %>
+					<%url= @photo.diagram.url.split("?")[0]%>
+					<a href="http://<%= request.host%>:3000<%=url%>"><%=image_tag @photo.diagram.url, :size => '70x70', :border=>1%></a>
+					<%= @photo.diagram_file_name %> &nbsp;&nbsp;&nbsp;
+				<% else %>
+					<%=t('photo.no_attachment')%>
+				<% end %>
+			</td>
+			<tr>
+				<td class="leftcol"><label for="data"><%=t('upload_change_file')%></label></td>
+				<td><%= f.file_field :diagram %>
+			</tr>
+	
+			<tr>
+				<td class="leftcol"><%=t('photo.caption') %> :</td>
+				<td><%= f.text_field :caption %></td>
+			</tr>
+			<tr>
+				<td class="leftcol">&nbsp;</td>
+				<td><font style="font-style: italic; color: grey;"><%= t('photo.allowed_format') %></td>
+			</tr>
+		</table>
+		<p><%= f.submit (t 'update')%></p>
+	<% end %>
+</div>
+<%= link_to (t 'show'), @photo %> |
+<%= link_to (t 'back'), photos_path %>
