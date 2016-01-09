@@ -224,10 +224,14 @@ authorization do
     has_permission_on :locations, :to => :read #:core
     has_permission_on :tenants, :to => :read #:manage
     has_permission_on :students, :to => [:menu, :show, :formforstudent]
+    #has_permission_on :student_attendances, :to => :read #override by role: lecturer - but not ok if commonsubject lecturer is also a warden
     #all wardens have access - [relationship: second_approver, FK: staff_id2, page: aptdprove_warden]
     has_permission_on :leaveforstudents, :to => [:index,:create, :show, :update, :approve_warden] do
       if_attribute :studentsubmit => true
     end
+    #both-below not ok in Ogma
+    #has_permission_on :student_discipline_cases, :to => :read  #when activated, syst running correctly but permission checking fail (icon display)in Index not ok
+    #has_permission_on :student_counseling_sessions, :to => :read 
   end
   
   #Group E-Filing ------------------------------------------------------------------------------- 

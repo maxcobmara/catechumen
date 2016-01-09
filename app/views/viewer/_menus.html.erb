@@ -212,7 +212,6 @@
 
 	<!-- Student Menu -->
 	<% permitted_to? [:menu, :index], :students do %>
-	<%# permitted_to? :menu, :student_discipline_cases do %>
 	<li><a href="#"><%= t('menu.students') %></a>
 		<ul class="sub_menu">
 				<% permitted_to? :index, :students do %>
@@ -235,7 +234,7 @@
 				<% end %>
 
 				<% permitted_to? :manage, :student_attendances do %>
-				<li><%= link_to (t 'menu.attend'), 			{:controller => 'student_attendances', :action=>'index' } %></li>
+				<li><%= link_to (t 'menu.attend'), {:controller => 'student_attendances', :action=>'index' } %></li>
 				<% end %>
 				<!--  Deprecated to Student_discipline_cases
 
@@ -245,12 +244,12 @@
 
 
 				<% permitted_to? :create, :student_discipline_cases do %>
-				<li><%= link_to (t 'menu.discipline'), 				{:controller => 'Student_discipline_cases', 	:action => 'index'} %></li>
+				<li><%= link_to (t 'menu.discipline'), {:controller => 'Student_discipline_cases', 	:action => 'index'} %></li>
 				<% end %>
 
 
 				<% permitted_to? :index, :student_counseling_sessions do %>
-					<li><%= link_to (t 'menu.counselling'), 	  		{:controller => 'student_counseling_sessions', :action => 'index'} %></li>
+					<li><%= link_to (t 'menu.counselling'), {:controller => 'student_counseling_sessions', :action => 'index'} %></li>
 				<% end %>
 					<!--
 				<%# permitted_to? :create, :student_counseling_sessions do %>
