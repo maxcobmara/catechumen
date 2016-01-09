@@ -1,4 +1,5 @@
 class PositionsController < ApplicationController
+  filter_access_to :all
   # GET /positions
   # GET /positions.xml
   

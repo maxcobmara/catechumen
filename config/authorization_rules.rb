@@ -178,6 +178,7 @@ authorization do
      has_permission_on :staff_attendances, :to => :manage   #29Apr2013-refer routes.rb
      has_permission_on :staffsearch2s, :to => :read
      has_permission_on :staffattendancesearches, :to => :read
+     has_permission_on :positions, :to => [:manage, :maklumat_perjawatan_LA]
   end
   
   role :finance_unit do
