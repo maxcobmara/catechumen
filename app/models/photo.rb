@@ -15,7 +15,7 @@ class Photo < ActiveRecord::Base
     image_exist=0
     bodies=Page.all.map(&:body)
     for body in bodies
-      if body.include?(diagram_file_name)
+      if body.include?(diagram_file_name.gsub(" ", "%20") || body.include?(diagram_file_name))
         image_exist=1
       end
     end
