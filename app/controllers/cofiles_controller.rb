@@ -1,4 +1,5 @@
 class CofilesController < ApplicationController
+  filter_resource_access
   # GET /cofiles
   # GET /cofiles.xml
   def index

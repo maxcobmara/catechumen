@@ -13,6 +13,7 @@ authorization do
     has_permission_on [:ptbudgets, :ptcourses, :ptschedules],  :to => :manage   #Professional Development
     has_permission_on :ptdos, :to => :manage
     #status & movement
+    has_permission_on [:travel_requests, :travel_claims], :to => :manage
     #reports
     
     #Asset Menu Items
@@ -126,15 +127,19 @@ authorization do
         if_attribute :decision_by => is {Login.current_login.staff_id}
     end
     
+    has_permission_on :locations, :to => :read
+    
+    has_permission_on :events, :to => [:create, :read, :calendar]
+    has_permission_on :events, :to => :update do
+      if_attribute :createdby => is {Login.current_login.staff_id}
+    end
+    has_permission_on :bulletins, :to => :read
+    
     has_permission_on :documents, :to => [:approve,:menu], :join_by => :or do 
         if_attribute :stafffiled_id => is {Login.current_login.staff_id}
         if_attribute :cc1staff_id => is {Login.current_login.staff_id}
         if_attribute :cc2staff_id => is {Login.current_login.staff_id}
-    end  
-    
-    #to works in travel request..28 August 2013
-    #has_permission_on :documents, :to => :index 
-
+    end
    
     has_permission_on :student_discipline_cases, :to => :create
     has_permission_on :student_discipline_cases, :to => :approve do
@@ -149,9 +154,10 @@ authorization do
       if_attribute :assigned2_to => is {Login.current_login.staff_id}
     end
 
-    has_permission_on :librarytransactions, :to => :read do
-      if_attribute :staff_id => is {Login.current_login.staff_id}
-    end
+#     has_permission_on :librarytransactions, :to => :read do
+#       if_attribute :staff_id => is {Login.current_login.staff_id}
+#     end
+    has_permission_on :librarytransactions, :to => :analysis_statistic
     
     has_permission_on :asset_loans, :to => [:read, :update, :approve, :lampiran] do
       if_attribute :loaned_by => is_in {AssetLoan.find(asset_id).unit_members}
@@ -170,6 +176,10 @@ authorization do
       if_attribute :endorsed_hod_by => is {Login.current_login.staff_id}
       if_attribute :is_submit_to_hod => true
     end
+  end
+  
+  role :staffs_module do
+     has_permission_on :student_discipline_cases, :to =>[ :index, :read]
   end
   
   role :staff_administrator do
@@ -406,6 +416,7 @@ authorization do
     has_permission_on :students, :to => [:index, :show, :formforstudent]
     has_permission_on :booksearches, :to => :read
     has_permission_on :librarytransactionsearches, :to => :read
+    has_permission_on :photos, :to => :manage
   end 
   
   role :guest do
