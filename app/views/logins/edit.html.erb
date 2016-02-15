@@ -1,5 +1,6 @@
 <%= error_messages_for :login %>
 <%#form_for @login,  :url => edit_login_path(@login) do |f| -%>
+<!-- = form_for [@user], html: { multipart: true, class: 'edit_form', id: 'form1'}, remote: true  do |f|  -->
 <% form_for @login,  :url =>logins_path do |f| -%>
 <%= hidden_field_tag :id, @login.id %>
 <!-- Edit Login -->
@@ -37,27 +38,3824 @@
 		<td><%= f.text_field :password_confirmation, :size => 12 %></td>
 	</tr>
 </table>
-
+<div style="display: none;">hhh
+</div>
 
 	<H2><%= t 'login.login_roles' %></H2>
 	<P><strong><%= t 'login.select_role' %></strong></P>	
 	<table width=100% border=0>
-		<% Role.all.in_groups_of(5, false) do |row_roles| %>
+		<% Role.find(:all, :conditions => ['authname NOT ILIKE(?)', "%Module%"]).in_groups_of(5, false) do |row_roles| %>
 		<tr>
 			<% for role in row_roles %>
-			<td><%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role) %> <%#= role.name %><%=h t('login.'+role.authname) %>
+			<% if role.name=="Coordinator"%>
+				<div style="display: none;">
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class =>"byrole" %> <%#= role.name %><%=h t('login.'+role.authname) %>
+				</div>
+			<% else %>
+			<td>
+				<div style="display: block;">
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "byrole" %> <%#= role.name %><%=h t('login.'+role.authname) %>
+				</div>
 			</td>
+			<% end %>
 		  <% end %>
 		</tr>
 		<% end %>
 
 	</table>
 
+<!-- 	<P><strong><%= t 'login.select_module' %></strong></P> -->
+
+	
+	<table>
+	<tr>
+		<td colspan=2>
+			<p><i><u><%=t('login.roles_modules')%></u></i></p>
+			<table>
+				<tr>
+					<td style="vertical-align: top; width: 30%; padding: 5px;">
+						<strong><%=t('login.staff_administrator')%></strong>
+						<font size="-2"><%=t('login.staff_administrator_modules')%></font>
+						<br>
+						<strong><%=t('login.finance_unit')%></strong>
+						<font size="-2"><%=t('login.finance_unit_modules')%></font>
+						<br>
+						<strong><%=t('login.training_administration')%></strong>
+						<font size="-2"><%=t('login.training_administration_modules')%></font>
+						<br>
+						<strong><%=t('login.training_manager')%></strong>
+						<font size="-2"><%=t('login.training_manager_modules')%></font>
+						<br>
+						<strong><%=t('login.staff')%></strong>
+						<font size="-2"><%=t('login.staff_modules')%></font>
+						<br>
+						<strong><%=t('login.e_filing')%></strong>
+						<font size="-2"><%=t('login.e_filing_modules')%></font>
+					</td>
+					<td style="vertical-align: top; width: 30%; padding: 5px;">
+						<strong><%=t('login.asset_administrator')%></strong>
+						<font size="-2"><%=t('login.asset_administrator_modules')%></font>
+						<br>
+						<strong><%=t('login.facilities_administrator')%></strong>
+						<font size="-2"><%=t('login.facilities_administrator_modules')%></font>
+						<br>
+						<strong><%=t('login.warden')%></strong>
+						<font size="-2"><%=t('login.warden_modules')%></font>
+						<br>
+						<strong><%=t('login.student_administrator')%></strong>
+						<font size="-2"><%=t('login.student_administrator_modules')%></font>
+						<br>
+						<strong><%=t('login.student_counsellor')%></strong>
+						<font size="-2"><%=t('login.student_counsellor_modules')%></font>
+						<br>
+						<strong><%=t('login.disciplinary_officer')%></strong>
+						<font size="-2"><%=t('login.disciplinary_officer_modules')%></font>
+						<br>
+						<strong><%=t('login.student')%></strong>
+						<font size="-2"><%=t('login.student_modules')%></font>
+					</td>
+					<td style="vertical-align: top; width: 30%; padding: 5px;">
+						<strong><%=t('login.lecturer')%></strong>
+						<font size="-2"><%=t('login.lecturer_modules')%></font>
+						<br>
+						<strong><%=t('login.programme_manager')%></strong>
+						<font size="-2"><%=t('login.programme_manager_modules')%></font>
+						<br>
+						<strong><%=t('login.exam_administration')%></strong>
+						<font size="-2"><%=t('login.exam_administration_modules')%></font>
+						<br>
+						<strong><%=t('login.unit_leader')%></strong>
+						<font size="-2"><%=t('login.unit_leader_modules')%></font>
+						<br>
+						<strong><%=t('login.administration_staff')%></strong>
+						<font size="-2"><%=t('login.administration_staff_modules')%></font>
+						<br>
+						<strong><%=t('login.librarian')%></strong>
+						<font size="-2"><%=t('login.librarian_modules')%></font>
+					</td>
+				</tr>
+			</table>
+			
+			<strong><%= t 'login.select_module' %></strong><br>
+		</td>
+
+<!-- 	 -->
+<td rowspan="2" width=30%>
+	<!-- Column 3 -->
+		<br>
+		<i><u><%=t('login.access_module')%></u></i>
+		        <br><br>
+			<strong> <%=t('login.admin')%> :</strong> <%=t('login.admin_access')%> (CRUD/A)
+			<br>
+			<strong> <%=t('login.viewer')%> :</strong> <%=t('login.viewer_access')%> (R/A)
+			<br>
+			<strong> <%=t('login.user')%> :</strong> <%=t('login.user_access')%> (RU/A)
+			<br>
+			<strong> <%=t('login.member')%> :</strong> <%=t('login.member_access')%> (CRUD/O)
+		<br>
+		<br>
+		<i><u> <%=t('login.related_rules')%> : </u></i>
+		<!--<ol> 
+			<li>For all modules to works, either activate 'Staff' role or activate access by module ie. 'Staff Module' (Admin/Viewer/User/Member).</li>
+			<li>Staff Attendance should come with Fingerprints, for Manage Lateness and Early Return to works.</li>
+			<li>Travel Claim should come with Travel Request, for approved travel records.</li>
+			<li>Travel Claims Module (Member) - applicable for Applicant & Final Approver only. Finance Checker require 'Finance Unit' role to be activated. Please note, assigning user with 'Finance Unit' role shall disable all types of module access for Travel Claims & Training Budget.</li>
+			<li>Training Budget Module and Training Courses Module require access of Training Attendance Module (Viewer or Member).</li>
+			<li>Training Attendance Module require access of Training Schedule Module (Viewer or Member).</li>
+			<li>Training Attendance Module (Member) only applicable for applicants. Approvers require additional / replacement role activation as follows :
+				<ul>
+				<li> Department Approval (Academic) - require additional 'Programme Manager' role to be activated.</li>
+				<li> Unit Approval (Management), Department Approval (Management) & Final Approval (Director) -  these 3 functions are not available at all. Uncheck Training Attendance Module (Member) and activate 'Finance Unit' role instead.</li>
+				</ul>
+			</li>
+			<li>Student Leaves Module (Member) only applicable for applicants. For approving purposes (Warden & Penyelaras) activate Warden and / or Lecturer role instead.
+			<li>Student Discipline Cases :
+				<ul>
+				<li> Activate 'Staff' role OR Student Discipline Module Member for Case reporter, Programme Manager and TPHEP.</li>
+				<li> Activate 'Disciplinary Officer' role for Discipline Officer access.</li>
+				</ul>
+			</li>
+			<li>Training Notes Module (Admin/Viewer/User) must be activated for menu listing of :
+				<ul>
+				<li> Training support tables (setup) : Academic Sessions, Student Intakes, Timetables.</li>
+				<li> Training related modules : Weeklytimetables (Timetable Entries) and Lesson Plan & Report, Topic Details</li>
+				</ul>
+			</li>
+			<li>Topic Details Module require access of Lesson Plan & Report Module (Admin/Viewer/User)</li>
+			<li>Exam Templates to be used with Exampaper</li>
+			<li>Examination Management (Exammarks, Exam Grade) requires Examresults Module (Admin/Viewer/Users/Member) to be activated.</li>
+			<li>Asset Loan, Asset Disposals and Asset Defect (loanable & menu items) requires Asset List (Admin/Viewer/User/Member) to be activated.</li>
+			<li>Asset Defect Module (Member) only workable for defective reporter and decisioner, for processing purpose, please use 'Asset Administrator' role instead.</li>
+			<li>Asset pricing details viewable only to user with 'Administration' or 'Asset Administrator' roles or those with Asset List Module (Admin/User) access.</li>
+			<li>E-Filing modules (Events, Bulletins, Files) requires access to Documents modules (Admin/Viewer/User/Member) to be activated.</li>
+		</ol>-->
+		<ol> 
+			<li><%=t('login.rule1')%></li>
+			<li><%=t('login.rule2')%></li>
+			<li><%=t('login.rule3')%></li>
+			<li><%=t('login.rule4')%></li>
+			<li><%=t('login.rule5')%></li>
+			<li><%=t('login.rule6')%></li>
+			<li><%=t('login.rule7')%>
+				<ul>
+				<li><%=t('login.rule7a')%></li>
+				<li><%=t('login.rule7b')%></li>
+				</ul>
+			</li>
+			<li><%=t('login.rule8')%>
+			<li><%=t('studentdiscipline.title2')%> :
+				<ul>
+				<li><%=t('login.rule9a')%></li>
+				<li><%=t('login.rule9b')%></li>
+				</ul>
+			</li>
+			<li><%=t('login.rule10')%>
+				<ul>
+				<li><%=t('login.rule10a')%>.</li>
+				<li><%=t('login.rule10b')%></li>
+				</ul>
+			</li>
+			<li><%=t('login.rule11')%></li>
+			<li><%=t('login.rule12')%></li>
+			<li><%=t('login.rule13')%></li>
+			<li><%=t('login.rule14')%></li>
+			<li><%=t('login.rule15')%></li>
+			<li><%=t('login.rule16')%></li>
+			<li><%=t('login.rule17')%></li>
+		</ol>
+	<!-- End of Column 3 -->
+        </td>
+<!--  -->
+
+
+	</tr>
+	<tr><td width=35%>
+	<!-- 	Column 1 -->
+	<!-- 	E-FIlling Modules-->
+	<table>
+		<head>
+			<tr><th colspan="6">E-FIling</tr>
+			<tr>
+			<th align="left" width="5%"><font style="color: red;">*</font></td>
+			<th align="centre" width="47%"><%=t('login.modules')%></td>
+			<th align="centre" width="12%"><%=t('login.admin')%></td>
+			<th align="centre" width="12%"><%=t('login.viewer')%></td>
+			<th align="centre" width="12%"><%=t('login.user')%></td>
+			<th align="centre" width="12%"><%=t('login.member')%></td>
+			</tr>
+		</head>
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Events", "Bulletins", "Files", "Documents"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: block;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "efilingmanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "efilingread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "efilinguser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "efilingowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "filemain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "efilingmanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "efilingread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "efilinguser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "efilingowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+
+        <!--E-Library Modules-->
+        <table>
+		<head>
+			<tr><th colspan="6"><%=t('login.e_library')%></tr>
+			<tr>
+			<th align="left" width="5%"><font style="color: red;">*</font></td>
+			<th align="centre" width="47%"><%=t('login.modules')%></td>
+			<th align="centre" width="12%"><%=t('login.admin')%></td>
+			<th align="centre" width="12%"><%=t('login.viewer')%></td>
+			<th align="centre" width="12%"><%=t('login.user')%></td>
+			<th align="centre" width="12%"><%=t('login.member')%></td>
+			</tr>
+		</head>
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%',  ["Library Books", "Library Transactions"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: none;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "librarymanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "libraryread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "libraryuser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "libraryowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "librarymain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "librarymanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "libraryread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "libraryuser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "libraryowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+        
+	<!-- Examination Development & Management Modules-->
+	<table>
+		<head>
+			<tr><th colspan="6"><%=t('login.exam')%></tr>
+			<tr>
+			<th align="left" width="5%"><font style="color: red;">*</font></td>
+			<th align="centre" width="47%"><%=t('login.modules')%></td>
+			<th align="centre" width="12%"><%=t('login.admin')%></td>
+			<th align="centre" width="12%"><%=t('login.viewer')%></td>
+			<th align="centre" width="12%"><%=t('login.user')%></td>
+			<th align="centre" width="12%"><%=t('login.member')%></td>
+			</tr>
+		</head>
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Exam Templates", "Examresults", "Exam Grade", "Exammarks", "Exam Analysis", "Exampaper", "Examquestions"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: none;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "exammanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "examread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "examuser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "examowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "exammain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "exammanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "examread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "examuser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "examowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+        <hr>
+	<!-- 	Course Evaluation -->
+	<table>
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%',["Course Evaluation"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: none;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "courseevalmanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "courseevalread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "courseevaluser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "courseevalowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "courseevalmain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "courseevalmanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "courseevalread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "courseevaluser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "courseevalowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+	<!-- 	Training Support Modules-->
+	<table>
+		<head>
+			<tr><th colspan="6"><%=t('login.training')%></tr>
+			<tr>
+			<th align="left" width="5%"><font style="color: red;">*</font></td>
+			<th align="centre" width="47%"><%=t('login.modules')%></td>
+			<th align="centre" width="12%"><%=t('login.admin')%></td>
+			<th align="centre" width="12%"><%=t('login.viewer')%></td>
+			<th align="centre" width="12%"><%=t('login.user')%></td>
+			<th align="centre" width="12%"><%=t('login.member')%></td>
+			</tr>
+		</head>
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%',["Training Notes", "Academic Session", "Student Intake", "Timetables", "Lesson Plans", "Topic Details", "Programmes", "Weeklytimetables"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: none;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "trainingmanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "trainingread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "traininguser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "trainingowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "trainingmain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "trainingmanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "trainingread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "traininguser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "trainingowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+	<!-- 	Administration / Support Tables -->
+	<table>
+		<head>
+			<tr><th colspan="6"><%=t('login.support')%></tr>
+			<tr>
+			<th align="left" width="5%"><font style="color: red;">*</font></td>
+			<th align="centre" width="47%"><%=t('login.modules')%></td>
+			<th align="centre" width="12%"><%=t('login.admin')%></td>
+			<th align="centre" width="12%"><%=t('login.viewer')%></td>
+			<th align="centre" width="12%"><%=t('login.user')%></td>
+			<th align="centre" width="12%"><%=t('login.member')%></td>
+			</tr>
+		</head>
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Address Book", "Banks"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<span style= 'display: block;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "supportmanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "supportread" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "supportmain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "supportmanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "supportread2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+	
+	<!--	End of Column 1-->
+	</td>
+	
+	<td width=35%>
+	<!-- 	Column 2 -->
+	<!-- 	Staff - Part 1 -->
+	<table>
+		<head>
+			<tr><th colspan="6"><%=t('login.staff_registry')%></tr>
+			<tr>
+			<th align="left" width="5%"><font style="color: red;">*</font></td>
+			<th align="centre" width="47%"><%=t('login.modules')%></td>
+			<th align="centre" width="12%"><%=t('login.admin')%></td>
+			<th align="centre" width="12%"><%=t('login.viewer')%></td>
+			<th align="centre" width="12%"><%=t('login.user')%></td>
+			<th align="centre" width="12%"><%=t('login.member')%></td>
+			</tr>
+		</head>
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Staffs", "Positions","Staff Attendances","Fingerprints"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+	 			<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: none;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "a_staffmanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "a_staffread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "a_staffuser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "a_staffowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "a_staffmain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "a_staffmanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "a_staffread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "a_staffuser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "a_staffowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+        <hr>
+        
+        <!-- 	Staff - Part 2 -->
+        <table>
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Travel Requests", "Travel Claims"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: none;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "b_staffmanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "b_staffread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "b_staffuser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "b_staffowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "b_staffmain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "b_staffmanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "b_staffread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "b_staffuser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "b_staffowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+        <hr>
+        
+        <!-- 	Staff - Part 3 -->
+        <table>
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Training Budget", "Training Courses", "Training Schedule", "Training Attendance"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: none;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "c_staffmanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "c_staffread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "c_staffuser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "c_staffowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "c_staffmain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "c_staffmanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "c_staffread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "c_staffuser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "c_staffowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+        <hr>
+        
+         <!-- 	Staff - Part 4 -->
+        <table>
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Staff Appraisals", "Staff Leaves"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: none;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "d_staffmanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "d_staffread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "d_staffuser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "d_staffowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "d_staffmain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "d_staffmanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "d_staffread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "d_staffuser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "d_staffowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+	<!-- Student Affairs Modules-->
+	<table>
+		<head>
+			<tr><th colspan="6"><%=t('login.student_affairs')%></tr>
+			<tr>
+			<th align="left" width="5%"><font style="color: red;">*</font></td>
+			<th align="centre" width="47%"><%=t('login.modules')%></td>
+			<th align="centre" width="12%"><%=t('login.admin')%></td>
+			<th align="centre" width="12%"><%=t('login.viewer')%></td>
+			<th align="centre" width="12%"><%=t('login.user')%></td>
+			<th align="centre" width="12%"><%=t('login.member')%></td>
+			</tr>
+		</head>
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Student Leaves", "Student Attendances", "Student Counseling", "Student Discipline", "Student Infos"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: none;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "studentmanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "studentread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "studentuser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "studentowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "studentmain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "studentmanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "studentread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "studentuser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "studentowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+	<!-- Asset, Facilities & Residences Modules-->
+	<table>
+		<head>
+			<tr><th colspan="6"><%=t('login.asset_facilities_residences')%></tr>
+			<tr>
+			<th align="left" width="5%"><font style="color: red;">*</font></td>
+			<th align="centre" width="47%"><%=t('login.modules')%></td>
+			<th align="centre" width="12%"><%=t('login.admin')%></td>
+			<th align="centre" width="12%"><%=t('login.viewer')%></td>
+			<th align="centre" width="12%"><%=t('login.user')%></td>
+			<th align="centre" width="12%"><%=t('login.member')%></td>
+			</tr>
+		</head>
+		<!-- Asset related modules -->
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Stationeries", "Asset List", "Asset Losses", "Asset Defect", "Asset Disposals", "Asset Loans"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: none;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "assetmanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "assetread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "assetuser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "assetowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "assetmain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "assetmanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "assetread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "assetuser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "assetowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+        <hr>
+        <table>
+        <!-- Locations, residences related modules -->
+		<body>
+			<% cnt=0%>
+			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Tenants", "Locations", "Location Damages"]], :order => "id ASC") %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<span style= 'display: none;'>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "locationmanage" %>
+					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "locationread" %>
+					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "locationuser" %>
+					<%= check_box_tag "login[role_ids][]", owner.id, @login.roles.include?(owner), :class => "locationowner" %>
+				</span>
+				<% rolename1=role.authname.split("_module")[0].strip %>
+				<% rolename= t('login.'+rolename1) %>
+				<% rolename2=rolename1.downcase %>
+				<tr>
+					<td align="left"><%=check_box_tag "efilemain_#{cnt}", cnt, false, :class => "locationmain" %>
+					<td align="left"><%=rolename %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", role.id, @login.roles.include?(role), :class => "locationmanage2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", read.id, @login.roles.include?(read), :class => "locationread2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", user.id, @login.roles.include?(user), :class => "locationuser2" %>
+					<td align="centre"><%=radio_button_tag "user_role_#{rolename2}", owner.id, @login.roles.include?(owner), :class => "locationowner2" %>
+				</tr>
+				<% cnt+=1%>
+			<% end %>
+		</body>
+        </table>
+        <font size="-2">
+		<%=t('uncheck')%>
+		<font style="color: red;">*</font>
+		<%=t('login.remove_selected_module_access')%>
+        </font>
+        <p></p>
+        
+	<!--	End of Column 2-->
+	</td>
+
+<!--          -->
+<!--  -->
+        
+	</tr></table>
+	
+ 
 <p><%= submit_tag (t 'update') %></p>
+
 <% end -%>
 
 <%= link_to (t 'show'),  :action => 'show', :id => @login.id %>
 <%#= link_to (t 'show'), login_path(@login) %>|
 <%= link_to (t 'back'), logins_path %>
 
+
 </div>
+
+<script type="text/javascript">
+
+$j(function(){
+//   $j('input[type=submit]').remove();
+  
+  $j('input[type=radio]').click(function(){
+    
+    /*E-Filing*/
+    /*var filemg_id = document.getElementById('user_role_files_73');*/
+    /*var filerd_id = document.getElementById('user_role_files_125');*/
+    /*var fileusr_id = document.getElementById('user_role_files_129');*/
+    /*var fileown_id = document.getElementById('user_role_files_130');*/
+    var filemg = document.getElementsByClassName('efilingmanage2');
+    var filerd = document.getElementsByClassName('efilingread2');
+    var fileusr = document.getElementsByClassName('efilinguser2');
+    var fileown = document.getElementsByClassName('efilingowner2');
+
+    /*var efilemn = document.getElementById('efilemain_3'); */
+    var efilemn = document.getElementsByClassName('filemain');
+    
+    var efilingmg = document.getElementsByClassName('efilingmanage');
+    var efilingrd = document.getElementsByClassName('efilingread');
+    var efilingusr = document.getElementsByClassName('efilinguser');
+    var efilingown = document.getElementsByClassName('efilingowner');
+    
+    for(i=0; i<4; i++)
+    {
+      if(filemg[i].checked) {
+        efilingmg[i].checked=true;
+        efilingrd[i].checked=false;
+        efilingusr[i].checked=false;
+        efilingown[i].checked=false;
+      }
+      else if(filerd[i].checked) {
+        efilingmg[i].checked=false;
+        efilingrd[i].checked=true;
+        efilingusr[i].checked=false;
+        efilingown[i].checked=false;
+      }
+      else if(fileusr[i].checked) {
+        efilingmg[i].checked=false;
+        efilingrd[i].checked=false;
+        efilingusr[i].checked=true;
+        efilingown[i].checked=false;
+      }
+      else if(fileown[i].checked) {
+        efilingmg[i].checked=false;
+        efilingrd[i].checked=false;
+        efilingusr[i].checked=false;
+        efilingown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((filemg[i].checked) || (filerd[i].checked) || (fileusr[i].checked) || (fileown[i].checked)){
+        efilemn[i].checked=true;
+        efilemn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    
+    /* 2) E-Library*/
+    var librarymg = document.getElementsByClassName('librarymanage2');
+    var libraryrd = document.getElementsByClassName('libraryread2');
+    var libraryusr = document.getElementsByClassName('libraryuser2');
+    var libraryown = document.getElementsByClassName('libraryowner2');
+
+    var elibrarymn = document.getElementsByClassName('librarymain');
+    
+    var elibrarymg = document.getElementsByClassName('librarymanage');
+    var elibraryrd = document.getElementsByClassName('libraryread');
+    var elibraryusr = document.getElementsByClassName('libraryuser');
+    var elibraryown = document.getElementsByClassName('libraryowner');
+    
+    for(i=0; i<2; i++)
+    {
+      if(librarymg[i].checked) {
+        elibrarymg[i].checked=true;
+        elibraryrd[i].checked=false;
+        elibraryusr[i].checked=false;
+        elibraryown[i].checked=false;
+      }
+      else if(libraryrd[i].checked) {
+        elibrarymg[i].checked=false;
+        elibraryrd[i].checked=true;
+        elibraryusr[i].checked=false;
+        elibraryown[i].checked=false;
+      }
+      else if(libraryusr[i].checked) {
+        elibrarymg[i].checked=false;
+        elibraryrd[i].checked=false;
+        elibraryusr[i].checked=true;
+        elibraryown[i].checked=false;
+      }
+      else if(libraryown[i].checked) {
+        elibrarymg[i].checked=false;
+        elibraryrd[i].checked=false;
+        elibraryusr[i].checked=false;
+        elibraryown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((librarymg[i].checked) || (libraryrd[i].checked) || (libraryusr[i].checked) || (libraryown[i].checked)){
+        elibrarymn[i].checked=true;
+        elibrarymn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    
+    /* 3) Examinations*/
+    var exammg = document.getElementsByClassName('exammanage2');
+    var examrd = document.getElementsByClassName('examread2');
+    var examusr = document.getElementsByClassName('examuser2');
+    var examown = document.getElementsByClassName('examowner2');
+
+    var eexammn = document.getElementsByClassName('exammain');
+    
+    var eexammg = document.getElementsByClassName('exammanage');
+    var eexamrd = document.getElementsByClassName('examread');
+    var eexamusr = document.getElementsByClassName('examuser');
+    var eexamown = document.getElementsByClassName('examowner');
+    
+    for(i=0; i<7; i++)
+    {
+      if(exammg[i].checked) {
+        eexammg[i].checked=true;
+        eexamrd[i].checked=false;
+        eexamusr[i].checked=false;
+        eexamown[i].checked=false;
+      }
+      else if(examrd[i].checked) {
+        eexammg[i].checked=false;
+        eexamrd[i].checked=true;
+        eexamusr[i].checked=false;
+        eexamown[i].checked=false;
+      }
+      else if(examusr[i].checked) {
+        eexammg[i].checked=false;
+        eexamrd[i].checked=false;
+        eexamusr[i].checked=true;
+        eexamown[i].checked=false;
+      }
+      else if(examown[i].checked) {
+        eexammg[i].checked=false;
+        eexamrd[i].checked=false;
+        eexamusr[i].checked=false;
+        eexamown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((exammg[i].checked) || (examrd[i].checked) || (examusr[i].checked) || (examown[i].checked)){
+        eexammn[i].checked=true;
+        eexammn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    
+    /* 4) Staff part 1 : Staffs, Positions, Staff Attendances & Fingerprint*/
+    var a_staffmg = document.getElementsByClassName('a_staffmanage2');
+    var a_staffrd = document.getElementsByClassName('a_staffread2');
+    var a_staffusr = document.getElementsByClassName('a_staffuser2');
+    var a_staffown = document.getElementsByClassName('a_staffowner2');
+
+    var ea_staffmn = document.getElementsByClassName('a_staffmain');
+    
+    var ea_staffmg = document.getElementsByClassName('a_staffmanage');
+    var ea_staffrd = document.getElementsByClassName('a_staffread');
+    var ea_staffusr = document.getElementsByClassName('a_staffuser');
+    var ea_staffown = document.getElementsByClassName('a_staffowner');
+    
+    for(i=0; i<4; i++)
+    {
+      if(a_staffmg[i].checked) {
+        ea_staffmg[i].checked=true;
+        ea_staffrd[i].checked=false;
+        ea_staffusr[i].checked=false;
+        ea_staffown[i].checked=false;
+      }
+      else if(a_staffrd[i].checked) {
+        ea_staffmg[i].checked=false;
+        ea_staffrd[i].checked=true;
+        ea_staffusr[i].checked=false;
+        ea_staffown[i].checked=false;
+      }
+      else if(a_staffusr[i].checked) {
+        ea_staffmg[i].checked=false;
+        ea_staffrd[i].checked=false;
+        ea_staffusr[i].checked=true;
+        ea_staffown[i].checked=false;
+      }
+      else if(a_staffown[i].checked) {
+        ea_staffmg[i].checked=false;
+        ea_staffrd[i].checked=false;
+        ea_staffusr[i].checked=false;
+        ea_staffown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((a_staffmg[i].checked) || (a_staffrd[i].checked) || (a_staffusr[i].checked) || (a_staffown[i].checked)){
+        ea_staffmn[i].checked=true;
+        ea_staffmn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    
+    /* 5) Staff part 2 : Travel Requests, Travel Claims */
+    /* 6) Staff part 3 : Training Budget, Training Courses, Training Schedule, Training Attendance */
+    var b_staffmg = document.getElementsByClassName('b_staffmanage2');
+    var b_staffrd = document.getElementsByClassName('b_staffread2');
+    var b_staffusr = document.getElementsByClassName('b_staffuser2');
+    var b_staffown = document.getElementsByClassName('b_staffowner2');
+
+    var eb_staffmn = document.getElementsByClassName('b_staffmain');
+    
+    var eb_staffmg = document.getElementsByClassName('b_staffmanage');
+    var eb_staffrd = document.getElementsByClassName('b_staffread');
+    var eb_staffusr = document.getElementsByClassName('b_staffuser');
+    var eb_staffown = document.getElementsByClassName('b_staffowner');
+    
+    for(i=0; i<2; i++)
+    {
+      if(b_staffmg[i].checked) {
+        eb_staffmg[i].checked=true;
+        eb_staffrd[i].checked=false;
+        eb_staffusr[i].checked=false;
+        eb_staffown[i].checked=false;
+      }
+      else if(b_staffrd[i].checked) {
+        eb_staffmg[i].checked=false;
+        eb_staffrd[i].checked=true;
+        eb_staffusr[i].checked=false;
+        eb_staffown[i].checked=false;
+      }
+      else if(b_staffusr[i].checked) {
+        eb_staffmg[i].checked=false;
+        eb_staffrd[i].checked=false;
+        eb_staffusr[i].checked=true;
+        eb_staffown[i].checked=false;
+      }
+      else if(b_staffown[i].checked) {
+        eb_staffmg[i].checked=false;
+        eb_staffrd[i].checked=false;
+        eb_staffusr[i].checked=false;
+        eb_staffown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((b_staffmg[i].checked) || (b_staffrd[i].checked) || (b_staffusr[i].checked) || (b_staffown[i].checked)){
+        eb_staffmn[i].checked=true;
+        eb_staffmn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    
+    /* 6) Staff part 3 : Training Budget, Training Courses, Training Schedule, Training Attendance */
+    var c_staffmg = document.getElementsByClassName('c_staffmanage2');
+    var c_staffrd = document.getElementsByClassName('c_staffread2');
+    var c_staffusr = document.getElementsByClassName('c_staffuser2');
+    var c_staffown = document.getElementsByClassName('c_staffowner2');
+
+    var ec_staffmn = document.getElementsByClassName('c_staffmain');
+    
+    var ec_staffmg = document.getElementsByClassName('c_staffmanage');
+    var ec_staffrd = document.getElementsByClassName('c_staffread');
+    var ec_staffusr = document.getElementsByClassName('c_staffuser');
+    var ec_staffown = document.getElementsByClassName('c_staffowner');
+    
+    for(i=0; i<4; i++)
+    {
+      if(c_staffmg[i].checked) {
+        ec_staffmg[i].checked=true;
+        ec_staffrd[i].checked=false;
+        ec_staffusr[i].checked=false;
+        ec_staffown[i].checked=false;
+      }
+      else if(c_staffrd[i].checked) {
+        ec_staffmg[i].checked=false;
+        ec_staffrd[i].checked=true;
+        ec_staffusr[i].checked=false;
+        ec_staffown[i].checked=false;
+      }
+      else if(c_staffusr[i].checked) {
+        ec_staffmg[i].checked=false;
+        ec_staffrd[i].checked=false;
+        ec_staffusr[i].checked=true;
+        ec_staffown[i].checked=false;
+      }
+      else if(c_staffown[i].checked) {
+        ec_staffmg[i].checked=false;
+        ec_staffrd[i].checked=false;
+        ec_staffusr[i].checked=false;
+        ec_staffown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((c_staffmg[i].checked) || (c_staffrd[i].checked) || (c_staffusr[i].checked) || (c_staffown[i].checked)){
+        ec_staffmn[i].checked=true;
+        ec_staffmn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    
+    /* 7) Staff part 4 : Staff Appraisals, Staff Leaves */
+    var d_staffmg = document.getElementsByClassName('d_staffmanage2');
+    var d_staffrd = document.getElementsByClassName('d_staffread2');
+    var d_staffusr = document.getElementsByClassName('d_staffuser2');
+    var d_staffown = document.getElementsByClassName('d_staffowner2');
+
+    var ed_staffmn = document.getElementsByClassName('d_staffmain');
+    
+    var ed_staffmg = document.getElementsByClassName('d_staffmanage');
+    var ed_staffrd = document.getElementsByClassName('d_staffread');
+    var ed_staffusr = document.getElementsByClassName('d_staffuser');
+    var ed_staffown = document.getElementsByClassName('d_staffowner');
+    
+    for(i=0; i<2; i++)
+    {
+      if(d_staffmg[i].checked) {
+        ed_staffmg[i].checked=true;
+        ed_staffrd[i].checked=false;
+        ed_staffusr[i].checked=false;
+        ed_staffown[i].checked=false;
+      }
+      else if(d_staffrd[i].checked) {
+        ed_staffmg[i].checked=false;
+        ed_staffrd[i].checked=true;
+        ed_staffusr[i].checked=false;
+        ed_staffown[i].checked=false;
+      }
+      else if(d_staffusr[i].checked) {
+        ed_staffmg[i].checked=false;
+        ed_staffrd[i].checked=false;
+        ed_staffusr[i].checked=true;
+        ed_staffown[i].checked=false;
+      }
+      else if(d_staffown[i].checked) {
+        ed_staffmg[i].checked=false;
+        ed_staffrd[i].checked=false;
+        ed_staffusr[i].checked=false;
+        ed_staffown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((d_staffmg[i].checked) || (d_staffrd[i].checked) || (d_staffusr[i].checked) || (d_staffown[i].checked)){
+        ed_staffmn[i].checked=true;
+        ed_staffmn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    
+    /* 8) Assets*/
+    var assetmg = document.getElementsByClassName('assetmanage2');
+    var assetrd = document.getElementsByClassName('assetread2');
+    var assetusr = document.getElementsByClassName('assetuser2');
+    var assetown = document.getElementsByClassName('assetowner2');
+
+    var eassetmn = document.getElementsByClassName('assetmain');
+    
+    var eassetmg = document.getElementsByClassName('assetmanage');
+    var eassetrd = document.getElementsByClassName('assetread');
+    var eassetusr = document.getElementsByClassName('assetuser');
+    var eassetown = document.getElementsByClassName('assetowner');
+    
+    for(i=0; i<6; i++)
+    {
+      if(assetmg[i].checked) {
+        eassetmg[i].checked=true;
+        eassetrd[i].checked=false;
+        eassetusr[i].checked=false;
+        eassetown[i].checked=false;
+      }
+      else if(assetrd[i].checked) {
+        eassetmg[i].checked=false;
+        eassetrd[i].checked=true;
+        eassetusr[i].checked=false;
+        eassetown[i].checked=false;
+      }
+      else if(assetusr[i].checked) {
+        eassetmg[i].checked=false;
+        eassetrd[i].checked=false;
+        eassetusr[i].checked=true;
+        eassetown[i].checked=false;
+      }
+      else if(assetown[i].checked) {
+        eassetmg[i].checked=false;
+        eassetrd[i].checked=false;
+        eassetusr[i].checked=false;
+        eassetown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((assetmg[i].checked) || (assetrd[i].checked) || (assetusr[i].checked) || (assetown[i].checked)){
+        eassetmn[i].checked=true;
+        eassetmn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    /* 9) Tenants, Locations, Location Damages */
+    var locationmg = document.getElementsByClassName('locationmanage2');
+    var locationrd = document.getElementsByClassName('locationread2');
+    var locationusr = document.getElementsByClassName('locationuser2');
+    var locationown = document.getElementsByClassName('locationowner2');
+
+    var elocationmn = document.getElementsByClassName('locationmain');
+    
+    var elocationmg = document.getElementsByClassName('locationmanage');
+    var elocationrd = document.getElementsByClassName('locationread');
+    var elocationusr = document.getElementsByClassName('locationuser');
+    var elocationown = document.getElementsByClassName('locationowner');
+    
+    for(i=0; i<3; i++)
+    {
+      if(locationmg[i].checked) {
+        elocationmg[i].checked=true;
+        elocationrd[i].checked=false;
+        elocationusr[i].checked=false;
+        elocationown[i].checked=false;
+      }
+      else if(locationrd[i].checked) {
+        elocationmg[i].checked=false;
+        elocationrd[i].checked=true;
+        elocationusr[i].checked=false;
+        elocationown[i].checked=false;
+      }
+      else if(locationusr[i].checked) {
+        elocationmg[i].checked=false;
+        elocationrd[i].checked=false;
+        elocationusr[i].checked=true;
+        elocationown[i].checked=false;
+      }
+      else if(locationown[i].checked) {
+        elocationmg[i].checked=false;
+        elocationrd[i].checked=false;
+        elocationusr[i].checked=false;
+        elocationown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((locationmg[i].checked) || (locationrd[i].checked) || (locationusr[i].checked) || (locationown[i].checked)){
+        elocationmn[i].checked=true;
+        elocationmn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    /* 10) Student Affairs */
+    var studentmg = document.getElementsByClassName('studentmanage2');
+    var studentrd = document.getElementsByClassName('studentread2');
+    var studentusr = document.getElementsByClassName('studentuser2');
+    var studentown = document.getElementsByClassName('studentowner2');
+
+    var estudentmn = document.getElementsByClassName('studentmain');
+    
+    var estudentmg = document.getElementsByClassName('studentmanage');
+    var estudentrd = document.getElementsByClassName('studentread');
+    var estudentusr = document.getElementsByClassName('studentuser');
+    var estudentown = document.getElementsByClassName('studentowner');
+    
+    for(i=0; i<5; i++)
+    {
+      if(studentmg[i].checked) {
+        estudentmg[i].checked=true;
+        estudentrd[i].checked=false;
+        estudentusr[i].checked=false;
+        estudentown[i].checked=false;
+      }
+      else if(studentrd[i].checked) {
+        estudentmg[i].checked=false;
+        estudentrd[i].checked=true;
+        estudentusr[i].checked=false;
+        estudentown[i].checked=false;
+      }
+      else if(studentusr[i].checked) {
+        estudentmg[i].checked=false;
+        estudentrd[i].checked=false;
+        estudentusr[i].checked=true;
+        estudentown[i].checked=false;
+      }
+      else if(studentown[i].checked) {
+        estudentmg[i].checked=false;
+        estudentrd[i].checked=false;
+        estudentusr[i].checked=false;
+        estudentown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((studentmg[i].checked) || (studentrd[i].checked) || (studentusr[i].checked) || (studentown[i].checked)){
+        estudentmn[i].checked=true;
+        estudentmn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    /* 11) Trainings*/
+    var trainingmg = document.getElementsByClassName('trainingmanage2');
+    var trainingrd = document.getElementsByClassName('trainingread2');
+    var trainingusr = document.getElementsByClassName('traininguser2');
+    var trainingown = document.getElementsByClassName('trainingowner2');
+
+    var etrainingmn = document.getElementsByClassName('trainingmain');
+    
+    var etrainingmg = document.getElementsByClassName('trainingmanage');
+    var etrainingrd = document.getElementsByClassName('trainingread');
+    var etrainingusr = document.getElementsByClassName('traininguser');
+    var etrainingown = document.getElementsByClassName('trainingowner');
+    
+    for(i=0; i<8; i++)
+    {
+      if(trainingmg[i].checked) {
+        etrainingmg[i].checked=true;
+        etrainingrd[i].checked=false;
+        etrainingusr[i].checked=false;
+        etrainingown[i].checked=false;
+      }
+      else if(trainingrd[i].checked) {
+        etrainingmg[i].checked=false;
+        etrainingrd[i].checked=true;
+        etrainingusr[i].checked=false;
+        etrainingown[i].checked=false;
+      }
+      else if(trainingusr[i].checked) {
+        etrainingmg[i].checked=false;
+        etrainingrd[i].checked=false;
+        etrainingusr[i].checked=true;
+        etrainingown[i].checked=false;
+      }
+      else if(trainingown[i].checked) {
+        etrainingmg[i].checked=false;
+        etrainingrd[i].checked=false;
+        etrainingusr[i].checked=false;
+        etrainingown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((trainingmg[i].checked) || (trainingrd[i].checked) || (trainingusr[i].checked) || (trainingown[i].checked)){
+        etrainingmn[i].checked=true;
+        etrainingmn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    
+    /* 12) Exam - COURSE EVALUATION*/
+    var courseevalmg = document.getElementsByClassName('courseevalmanage2');
+    var courseevalrd = document.getElementsByClassName('courseevalread2');
+    var courseevalusr = document.getElementsByClassName('courseevaluser2');
+    var courseevalown = document.getElementsByClassName('courseevalowner2');
+
+    var ecourseevalmn = document.getElementsByClassName('courseevalmain');
+    
+    var ecourseevalmg = document.getElementsByClassName('courseevalmanage');
+    var ecourseevalrd = document.getElementsByClassName('courseevalread');
+    var ecourseevalusr = document.getElementsByClassName('courseevaluser');
+    var ecourseevalown = document.getElementsByClassName('courseevalowner');
+    
+    for(i=0; i<1; i++)
+    {
+      if(courseevalmg[i].checked) {
+        ecourseevalmg[i].checked=true;
+        ecourseevalrd[i].checked=false;
+        ecourseevalusr[i].checked=false;
+        ecourseevalown[i].checked=false;
+      }
+      else if(courseevalrd[i].checked) {
+        ecourseevalmg[i].checked=false;
+        ecourseevalrd[i].checked=true;
+        ecourseevalusr[i].checked=false;
+        ecourseevalown[i].checked=false;
+      }
+      else if(courseevalusr[i].checked) {
+        ecourseevalmg[i].checked=false;
+        ecourseevalrd[i].checked=false;
+        ecourseevalusr[i].checked=true;
+        ecourseevalown[i].checked=false;
+      }
+      else if(courseevalown[i].checked) {
+        ecourseevalmg[i].checked=false;
+        ecourseevalrd[i].checked=false;
+        ecourseevalusr[i].checked=false;
+        ecourseevalown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((courseevalmg[i].checked) || (courseevalrd[i].checked) || (courseevalusr[i].checked) || (courseevalown[i].checked)){
+        ecourseevalmn[i].checked=true;
+        ecourseevalmn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+      
+    /* 13) Administration / Support Tables*/
+    var supportmg = document.getElementsByClassName('supportmanage2');
+    var supportrd = document.getElementsByClassName('supportread2');
+
+    var esupportmn = document.getElementsByClassName('supportmain');
+    
+    var esupportmg = document.getElementsByClassName('supportmanage');
+    var esupportrd = document.getElementsByClassName('supportread');
+    
+    for(i=0; i<2; i++)
+    {
+      if(supportmg[i].checked) {
+        esupportmg[i].checked=true;
+        esupportrd[i].checked=false;
+      }
+      else if(supportrd[i].checked) {
+        esupportmg[i].checked=false;
+        esupportrd[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((supportmg[i].checked) || (supportrd[i].checked)){
+        esupportmn[i].checked=true;
+        esupportmn[i].disabled=false;
+      }
+//       $j("#form1").submit();
+    }
+    /*other modules*/
+    
+    /SAME AS - EACH part - default value - at any time/
+    /*set by default at all time - Student Attendance (Member) not applicable - refer auth rules*/
+    studentown[1].checked=false;
+    studentown[1].disabled=true;
+    
+    /*set by default at all time - Student Counseling Sessions (Member) not applicable - refer auth rules*/
+    studentown[2].checked=false;
+    studentown[2].disabled=true;
+    
+    /*set by default at all time - Tenants (Member) not applicable - refer auth rules*/
+    locationown[0].checked=false;
+    locationown[0].disabled=true;
+    
+    /*set by default at all time - Locations (Member) not applicable - refer auth rules*/
+    locationown[1].checked=false;
+    locationown[1].disabled=true;
+    
+    /*set by default at all time - Location Damages (Member) not applicable - refer auth rules*/
+    locationown[2].checked=false;
+    locationown[2].disabled=true;
+    
+    /*set by default at all time - Student Info (Member) not applicable - refer auth rules*/
+    studentown[4].checked=false;
+    studentown[4].disabled=true;
+
+    /*set by default at all time - Training Notes (Member) not applicable - refer auth rules*/
+    trainingown[0].checked=false;
+    trainingown[0].disabled=true;
+
+    /*set by default at all time - Academic Sessions (Member) not applicable - refer auth rules*/
+    trainingown[1].checked=false;
+    trainingown[1].disabled=true;
+    
+    /*set by default at all time - Lesson Plan & Report (Member) not applicable - refer auth rules*/
+    trainingown[4].checked=false;
+    trainingown[4].disabled=true;
+    
+    /*set by default at all time - Topic Details (Member) not applicable - refer auth rules*/
+    trainingown[5].checked=false;
+    trainingown[5].disabled=true;
+    
+    /*set by default at all time - Programmes (Member) not applicable - refer auth rules*/
+    trainingown[6].checked=false;
+    trainingown[6].disabled=true;
+    
+    /*set by default at all time - Library Transactions & Library Books (Member) not applicable - refer auth rules*/
+    libraryown[0].checked=false;
+    libraryown[0].disabled=true;
+    libraryown[1].checked=false;
+    libraryown[1].disabled=true;
+    
+    /*set by default at all time - Stationeries (Member) not applicable - refer auth rules*/
+    assetown[0].checked=false;
+    assetown[0].disabled=true;
+    
+    /*set by default at all time - Asset Losses (Member) not applicable - refer auth rules*/
+    assetown[1].checked=false;
+    assetown[1].disabled=true;
+    
+    /*set by default at all time - Asset Disposals (Member) not applicable - refer auth rules*/
+    assetown[3].checked=false;
+    assetown[3].disabled=true;
+    
+  });
+  
+    
+  $j('input[type=checkbox]').each(function(){
+    var inputElements = document.getElementsByClassName('byrole');
+    
+    /* 1) E-Filing*/
+    /*var filemg = document.getElementById('user_role_files_73');*/
+    /*var filerd = document.getElementById('user_role_files_125');*/
+    /*var fileusr = document.getElementById('user_role_files_129');*/
+    /*var fileown = document.getElementById('user_role_files_130');*/
+    var filemg = document.getElementsByClassName('efilingmanage2');
+    var filerd = document.getElementsByClassName('efilingread2');
+    var fileusr = document.getElementsByClassName('efilinguser2');
+    var fileown = document.getElementsByClassName('efilingowner2');
+    var efilemn = document.getElementsByClassName('filemain');
+    
+    /*EACH - requires for each RADIO BUTTONS (saved values) - START*/
+    var efilingmg = document.getElementsByClassName('efilingmanage');
+    var efilingrd = document.getElementsByClassName('efilingread');
+    var efilingusr = document.getElementsByClassName('efilinguser');
+    var efilingown = document.getElementsByClassName('efilingowner');
+    
+    for(i=0; i<4; i++){
+      if(filemg[i].checked)
+      {  efilingmg[i].checked=true;}
+      else if(filerd[i].checked)
+      {  efilingrd[i].checked=true;}
+      else if(fileusr[i].checked)
+      {  efilingusr[i].checked=true;}
+      else if(fileown[i].checked)
+      {  efilingown[i].checked=true;}
+      if ((filemg[i].checked) || (filerd[i].checked) || (fileusr[i].checked) || (fileown[i].checked))
+      /* main must be checked*/
+      {  efilemn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+    
+    /*when E-Filling is selected, uncheck Cofiles & Documents*/
+    if(inputElements[15].checked){
+      for(i=2; i<4; i++){
+        filemg[i].disabled=true;
+        filerd[i].disabled=true;
+        fileusr[i].disabled=true;
+        fileown[i].disabled=true;
+        efilemn[i].disabled=true;
+      }
+    }
+    
+    /*disable this main checkbox if no file module selected*/
+    for(i=0; i<4; i++){
+      if ((filemg[i].checked==false) && (filerd[i].checked==false) && (fileusr[i].checked==false) && (fileown[i].checked==false)){
+        efilemn[i].disabled=true;
+      }
+    }
+    
+    /* 2)  E-Library*/
+    var librarymg = document.getElementsByClassName('librarymanage2');
+    var libraryrd = document.getElementsByClassName('libraryread2');
+    var libraryusr = document.getElementsByClassName('libraryuser2');
+    var libraryown = document.getElementsByClassName('libraryowner2');
+    var elibrarymn = document.getElementsByClassName('librarymain');
+    
+    /*bring from below - Students*/
+    var studentrd = document.getElementsByClassName('studentread2');
+    
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var elibrarymg = document.getElementsByClassName('librarymanage');
+    var elibraryrd = document.getElementsByClassName('libraryread');
+    var elibraryusr = document.getElementsByClassName('libraryuser');
+    var elibraryown = document.getElementsByClassName('libraryowner');
+    
+    for(i=0; i<2; i++){
+      if(librarymg[i].checked)
+      {  elibrarymg[i].checked=true;}
+      else if(libraryrd[i].checked)
+      {  elibraryrd[i].checked=true;}
+      else if(libraryusr[i].checked)
+      {  elibraryusr[i].checked=true;}
+      else if(libraryown[i].checked)
+      {  elibraryown[i].checked=true;}
+      if ((librarymg[i].checked) || (libraryrd[i].checked) || (libraryusr[i].checked) || (libraryown[i].checked))
+      /* main must be checked*/
+      {  elibrarymn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+    
+    /*when Librarian is selected, uncheck Student(R), Library Book(both) & Library Transactions(both)*/
+    if(inputElements[4].checked){
+      for(i=0; i<2; i++){
+        librarymg[i].disabled=true;
+        libraryrd[i].disabled=true;
+        libraryusr[i].disabled=true;
+        libraryown[i].disabled=true;
+        elibrarymn[i].disabled=true;
+        studentrd[4].disabled=true;
+      }
+    }
+    
+    /*disable this main checkbox if no file module selected*/
+    for(i=0; i<2; i++){
+      if ((librarymg[i].checked==false) && (libraryrd[i].checked==false) && (libraryusr[i].checked==false) && (libraryown[i].checked==false)){
+        elibrarymn[i].disabled=true;
+      }
+    }
+    
+    /* 3) Examinations*/
+    var exammg = document.getElementsByClassName('exammanage2');
+    var examrd = document.getElementsByClassName('examread2');
+    var examusr = document.getElementsByClassName('examuser2');
+    var examown = document.getElementsByClassName('examowner2');
+    var eexammn = document.getElementsByClassName('exammain');
+    
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var eexammg = document.getElementsByClassName('exammanage');
+    var eexamrd = document.getElementsByClassName('examread');
+    var eexamusr = document.getElementsByClassName('examuser');
+    var eexamown = document.getElementsByClassName('examowner');
+    
+    for(i=0; i<7; i++){
+      if(exammg[i].checked)
+      {  eexammg[i].checked=true;}
+      else if(examrd[i].checked)
+      {  eexamrd[i].checked=true;}
+      else if(examusr[i].checked)
+      {  eexamusr[i].checked=true;}
+      else if(examown[i].checked)
+      {  eexamown[i].checked=true;}
+      if ((exammg[i].checked) || (examrd[i].checked) || (examusr[i].checked) || (examown[i].checked))
+      /* main must be checked*/
+      {  eexammn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+
+    /*when Exam Admin is selected, uncheck all exams modules*/
+    if(inputElements[22].checked){
+      for(i=0; i<7; i++){
+        exammg[i].disabled=true;
+        examrd[i].disabled=true;
+        examusr[i].disabled=true;
+        examown[i].disabled=true;
+        eexammn[i].disabled=true;
+      }
+    }
+    
+    /*disable this main checkbox if no file module selected*/
+    for(i=0; i<7; i++){
+      if ((exammg[i].checked==false) && (examrd[i].checked==false) && (examusr[i].checked==false) && (examown[i].checked==false)){
+        eexammn[i].disabled=true;
+      }
+    }
+    
+    /* 4) Staff part 1 : Staffs, Positions, Staff Attendances, Fingerprint */
+    var a_staffmg = document.getElementsByClassName('a_staffmanage2');
+    var a_staffrd = document.getElementsByClassName('a_staffread2');
+    var a_staffusr = document.getElementsByClassName('a_staffuser2');
+    var a_staffown = document.getElementsByClassName('a_staffowner2');
+    var ea_staffmn = document.getElementsByClassName('a_staffmain');
+    
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var ea_staffmg = document.getElementsByClassName('a_staffmanage');
+    var ea_staffrd = document.getElementsByClassName('a_staffread');
+    var ea_staffusr = document.getElementsByClassName('a_staffuser');
+    var ea_staffown = document.getElementsByClassName('a_staffowner');
+    
+    for(i=0; i<4; i++){
+      if(a_staffmg[i].checked)
+      {  ea_staffmg[i].checked=true;}
+      else if(a_staffrd[i].checked)
+      {  ea_staffrd[i].checked=true;}
+      else if(a_staffusr[i].checked)
+      {  ea_staffusr[i].checked=true;}
+      else if(a_staffown[i].checked)
+      {  ea_staffown[i].checked=true;}
+      if ((a_staffmg[i].checked) || (a_staffrd[i].checked) || (a_staffusr[i].checked) || (a_staffown[i].checked))
+      /* main must be checked*/
+      {  ea_staffmn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+
+    /*when Exam Admin is selected, uncheck all exams modules*/
+    if(inputElements[14].checked){
+      for(i=0; i<4; i++){
+        a_staffmg[i].disabled=true;
+        a_staffrd[i].disabled=true;
+        a_staffusr[i].disabled=true;
+        a_staffown[i].disabled=true;
+        ea_staffmn[i].disabled=true;
+      }
+    }
+    
+    /*disable this main checkbox if no file module selected*/
+    for(i=0; i<4; i++){
+      if ((a_staffmg[i].checked==false) && (a_staffrd[i].checked==false) && (a_staffusr[i].checked==false) && (a_staffown[i].checked==false)){
+        ea_staffmn[i].disabled=true;
+      }
+    }
+    
+    /* 5 & 6) Staff part 2 : Travel Requests, Travel Claims, Staff part 3 : Training Budget, Training Courses, Training Schedule, Training Attendance */
+    var b_staffmg = document.getElementsByClassName('b_staffmanage2');
+    var b_staffrd = document.getElementsByClassName('b_staffread2');
+    var b_staffusr = document.getElementsByClassName('b_staffuser2');
+    var b_staffown = document.getElementsByClassName('b_staffowner2');
+    var eb_staffmn = document.getElementsByClassName('b_staffmain');
+    
+    var c_staffmg = document.getElementsByClassName('c_staffmanage2');
+    var c_staffrd = document.getElementsByClassName('c_staffread2');
+    var c_staffusr = document.getElementsByClassName('c_staffuser2');
+    var c_staffown = document.getElementsByClassName('c_staffowner2');
+    var ec_staffmn = document.getElementsByClassName('c_staffmain');
+
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var eb_staffmg = document.getElementsByClassName('b_staffmanage');
+    var eb_staffrd = document.getElementsByClassName('b_staffread');
+    var eb_staffusr = document.getElementsByClassName('b_staffuser');
+    var eb_staffown = document.getElementsByClassName('b_staffowner');
+    
+    for(i=0; i<2; i++){
+      if(b_staffmg[i].checked)
+      {  eb_staffmg[i].checked=true;}
+      else if(b_staffrd[i].checked)
+      {  eb_staffrd[i].checked=true;}
+      else if(b_staffusr[i].checked)
+      {  eb_staffusr[i].checked=true;}
+      else if(b_staffown[i].checked)
+      {  eb_staffown[i].checked=true;}
+      if ((b_staffmg[i].checked) || (b_staffrd[i].checked) || (b_staffusr[i].checked) || (b_staffown[i].checked))
+      /* main must be checked*/
+      {  eb_staffmn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var ec_staffmg = document.getElementsByClassName('c_staffmanage');
+    var ec_staffrd = document.getElementsByClassName('c_staffread');
+    var ec_staffusr = document.getElementsByClassName('c_staffuser');
+    var ec_staffown = document.getElementsByClassName('c_staffowner');
+    
+    for(i=0; i<4; i++){
+      if(c_staffmg[i].checked)
+      {  ec_staffmg[i].checked=true;}
+      else if(c_staffrd[i].checked)
+      {  ec_staffrd[i].checked=true;}
+      else if(c_staffusr[i].checked)
+      {  ec_staffusr[i].checked=true;}
+      else if(c_staffown[i].checked)
+      {  ec_staffown[i].checked=true;}
+      if ((c_staffmg[i].checked) || (c_staffrd[i].checked) || (c_staffusr[i].checked) || (c_staffown[i].checked))
+      /* main must be checked*/
+      {  ec_staffmn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+    
+    /*when Finance Unit is selected, uncheck Travel Claim & Training Budget only*/
+    if(inputElements[19].checked){
+        b_staffmg[1].disabled=true;
+        b_staffrd[1].disabled=true;
+        b_staffusr[1].disabled=true;
+        b_staffown[1].disabled=true;
+        eb_staffmn[1].disabled=true;
+        c_staffmg[0].disabled=true;
+        c_staffrd[0].disabled=true;
+        c_staffusr[0].disabled=true;
+        c_staffown[0].disabled=true;
+        ec_staffmn[0].disabled=true;
+    }
+    
+    /*when Training Manager OR Training Administration is selected, uncheck all Training modules*/
+    if(inputElements[7].checked || inputElements[8].checked){
+      for(i=0; i < 4; i++)
+      {
+        c_staffmg[i].disabled=true;
+        c_staffrd[i].disabled=true;
+        c_staffusr[i].disabled=true;
+        c_staffown[i].disabled=true;
+        ec_staffmn[i].disabled=true;
+      }
+    }
+    
+    /*disable this main checkbox if no file module selected - staff part 2*/
+    for(i=0; i<2; i++){
+      if ((b_staffmg[i].checked==false) && (b_staffrd[i].checked==false) && (b_staffusr[i].checked==false) && (b_staffown[i].checked==false)){
+        eb_staffmn[i].disabled=true;
+      }
+    }
+    
+    /*disable this main checkbox if no file module selected - staff part 3*/
+    for(i=0; i<4; i++){
+      if ((c_staffmg[i].checked==false) && (c_staffrd[i].checked==false) && (c_staffusr[i].checked==false) && (c_staffown[i].checked==false)){
+        ec_staffmn[i].disabled=true;
+      }
+    }
+    
+    /* 7) Staff part 4 : Staff Appraisals, Staff Leaves */
+    var d_staffmg = document.getElementsByClassName('d_staffmanage2');
+    var d_staffrd = document.getElementsByClassName('d_staffread2');
+    var d_staffusr = document.getElementsByClassName('d_staffuser2');
+    var d_staffown = document.getElementsByClassName('d_staffowner2');
+    var ed_staffmn = document.getElementsByClassName('d_staffmain');
+
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var ed_staffmg = document.getElementsByClassName('d_staffmanage');
+    var ed_staffrd = document.getElementsByClassName('d_staffread');
+    var ed_staffusr = document.getElementsByClassName('d_staffuser');
+    var ed_staffown = document.getElementsByClassName('d_staffowner');
+    
+    for(i=0; i<2; i++){
+      if(d_staffmg[i].checked)
+      {  ed_staffmg[i].checked=true;}
+      else if(d_staffrd[i].checked)
+      {  ed_staffrd[i].checked=true;}
+      else if(d_staffusr[i].checked)
+      {  ed_staffusr[i].checked=true;}
+      else if(d_staffown[i].checked)
+      {  ed_staffown[i].checked=true;}
+      if ((d_staffmg[i].checked) || (d_staffrd[i].checked) || (d_staffusr[i].checked) || (d_staffown[i].checked))
+      /* main must be checked*/
+      {  ed_staffmn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+
+    /* when Staff role is selected, checking this 2 modules shall override Staff role access */
+    
+    /*disable this main checkbox if no file module selected*/
+    for(i=0; i<2; i++){
+      if ((d_staffmg[i].checked==false) && (d_staffrd[i].checked==false) && (d_staffusr[i].checked==false) && (d_staffown[i].checked==false)){
+        ed_staffmn[i].disabled=true;
+      }
+    }
+    
+    /* 8) Assets */
+    /* 9) Tenants, Locations, Location Damages */ 
+    /* 10) Students modules */
+    /* 11) Trainings modules */
+    var assetmg = document.getElementsByClassName('assetmanage2');
+    var assetrd = document.getElementsByClassName('assetread2');
+    var assetusr = document.getElementsByClassName('assetuser2');
+    var assetown = document.getElementsByClassName('assetowner2');
+    var eassetmn = document.getElementsByClassName('assetmain');
+     
+    var locationmg = document.getElementsByClassName('locationmanage2');
+    var locationrd = document.getElementsByClassName('locationread2');
+    var locationusr = document.getElementsByClassName('locationuser2');
+    var locationown = document.getElementsByClassName('locationowner2');
+    var elocationmn = document.getElementsByClassName('locationmain');
+    
+    var studentmg = document.getElementsByClassName('studentmanage2');
+    /*bring studentrd upwards -  refer Librarian */
+    /*var studentrd = document.getElementsByClassName('studentread2');*/
+    var studentusr = document.getElementsByClassName('studentuser2');
+    var studentown = document.getElementsByClassName('studentowner2');
+    var estudentmn = document.getElementsByClassName('studentmain');
+    
+    var trainingmg = document.getElementsByClassName('trainingmanage2');
+    var trainingrd = document.getElementsByClassName('trainingread2');
+    var trainingusr = document.getElementsByClassName('traininguser2');
+    var trainingown = document.getElementsByClassName('trainingowner2');
+    var etrainingmn = document.getElementsByClassName('trainingmain');
+    
+    /* 12) Examinations - COURSE EVALUATION */
+    var courseevalmg = document.getElementsByClassName('courseevalmanage2');
+    var courseevalrd = document.getElementsByClassName('courseevalread2');
+    var courseevalusr = document.getElementsByClassName('courseevaluser2');
+    var courseevalown = document.getElementsByClassName('courseevalowner2');
+    var ecourseevalmn = document.getElementsByClassName('courseevalmain');
+
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var eassetmg = document.getElementsByClassName('assetmanage');
+    var eassetrd = document.getElementsByClassName('assetread');
+    var eassetusr = document.getElementsByClassName('assetuser');
+    var eassetown = document.getElementsByClassName('assetowner');
+    
+    for(i=0; i<6; i++){
+      if(assetmg[i].checked)
+      {  eassetmg[i].checked=true;}
+      else if(assetrd[i].checked)
+      {  eassetrd[i].checked=true;}
+      else if(assetusr[i].checked)
+      {  eassetusr[i].checked=true;}
+      else if(assetown[i].checked)
+      {  eassetown[i].checked=true;}
+      if ((assetmg[i].checked) || (assetrd[i].checked) || (assetusr[i].checked) || (assetown[i].checked))
+      /* main must be checked*/
+      {  eassetmn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+    
+    /* 13) Admin / Support Tables */
+    var supportmg = document.getElementsByClassName('supportmanage2');
+    var supportrd = document.getElementsByClassName('supportread2');
+    var esupportmn = document.getElementsByClassName('supportmain');
+
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var esupportmg = document.getElementsByClassName('supportmanage');
+    var esupportrd = document.getElementsByClassName('supportread');
+    
+    for(i=0; i<2; i++){
+      if(supportmg[i].checked)
+      {  esupportmg[i].checked=true;}
+      else if(supportrd[i].checked)
+      {  esupportrd[i].checked=true;}
+     
+      if ((supportmg[i].checked) || (supportrd[i].checked))
+      /* main must be checked*/
+      {  esupportmn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var elocationmg = document.getElementsByClassName('locationmanage');
+    var elocationrd = document.getElementsByClassName('locationread');
+    var elocationusr = document.getElementsByClassName('locationuser');
+    var elocationown = document.getElementsByClassName('locationowner');
+    
+    for(i=0; i<3; i++){
+      if(locationmg[i].checked)
+      {  elocationmg[i].checked=true;}
+      else if(locationrd[i].checked)
+      {  elocationrd[i].checked=true;}
+      else if(locationusr[i].checked)
+      {  elocationusr[i].checked=true;}
+      else if(locationown[i].checked)
+      {  elocationown[i].checked=true;}
+      if ((locationmg[i].checked) || (locationrd[i].checked) || (locationusr[i].checked) || (locationown[i].checked))
+      /* main must be checked*/
+      {  elocationmn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+    
+    /*When Asset Administrator OR Facilities Administrator is selected*/
+    if((inputElements[9].checked) || (inputElements[11].checked))
+    {
+      locationmg[1].disabled=true;
+      locationrd[1].disabled=true;
+      locationusr[1].disabled=true;
+      locationown[1].disabled=true;
+      elocationmn[1].disabled=true;
+
+      /*when Asset Admin is selected, uncheck all asset modules except for stationeries + location*/
+      if(inputElements[9].checked){
+        for(i=1; i<6; i++){
+          assetmg[i].disabled=true;
+          assetrd[i].disabled=true;
+          assetusr[i].disabled=true;
+          assetown[i].disabled=true;
+          eassetmn[i].disabled=true;
+        } 
+      }
+ 
+      /* when Facilites Administrator is selected, uncheck Location & Tenant*/
+      if(inputElements[11].checked){
+        locationmg[0].disabled=true;
+        locationrd[0].disabled=true;
+        locationusr[0].disabled=true;
+        locationown[0].disabled=true;
+        elocationmn[0].disabled=true;
+        locationmg[2].disabled=true;
+        locationrd[2].disabled=true;
+        locationusr[2].disabled=true;
+        locationown[2].disabled=true;
+        elocationmn[2].disabled=true;
+      }
+    }
+    
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var estudentmg = document.getElementsByClassName('studentmanage');
+    var estudentrd = document.getElementsByClassName('studentread');
+    var estudentusr = document.getElementsByClassName('studentuser');
+    var estudentown = document.getElementsByClassName('studentowner');
+    
+    for(i=0; i<5; i++){
+      if(studentmg[i].checked)
+      {  estudentmg[i].checked=true;}
+      else if(studentrd[i].checked)
+      {  estudentrd[i].checked=true;}
+      else if(studentusr[i].checked)
+      {  estudentusr[i].checked=true;}
+      else if(studentown[i].checked)
+      {  estudentown[i].checked=true;}
+      if ((studentmg[i].checked) || (studentrd[i].checked) || (studentusr[i].checked) || (studentown[i].checked))
+      /* main must be checked*/
+      {  estudentmn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+    
+    /* when Student administrator is selected, uncheck Student Info, Student Attendance*/
+    if(inputElements[13].checked){
+      /*student attendance*/
+      studentmg[1].disabled=true;
+      studentrd[1].disabled=true;
+      studentusr[1].disabled=true;
+      studentown[1].disabled=true;
+      estudentmn[1].disabled=true;
+      /*student infos*/
+      studentmg[4].disabled=true;
+      studentrd[4].disabled=true;
+      studentusr[4].disabled=true;
+      studentown[4].disabled=true;
+      estudentmn[4].disabled=true;
+    }
+
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var etrainingmg = document.getElementsByClassName('trainingmanage');
+    var etrainingrd = document.getElementsByClassName('trainingread');
+    var etrainingusr = document.getElementsByClassName('traininguser');
+    var etrainingown = document.getElementsByClassName('trainingowner');
+    
+    for(i=0; i<4; i++){
+      if(trainingmg[i].checked)
+      {  etrainingmg[i].checked=true;}
+      else if(trainingrd[i].checked)
+      {  etrainingrd[i].checked=true;}
+      else if(trainingusr[i].checked)
+      {  etrainingusr[i].checked=true;}
+      else if(trainingown[i].checked)
+      {  etrainingown[i].checked=true;}
+      if ((trainingmg[i].checked) || (trainingrd[i].checked) || (trainingusr[i].checked) || (trainingown[i].checked))
+      /* main must be checked*/
+      {  etrainingmn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+
+    /When Warden OR Lecturer is selected/
+    if((inputElements[6].checked) || (inputElements[12].checked))
+    {
+      /* student leaves*/
+      studentmg[0].disabled=true;
+      studentrd[0].disabled=true;
+      studentusr[0].disabled=true;
+      studentown[0].disabled=true;
+      
+      /* when Warden is selected, uncheck Location(R), Tenant(R), Student Infos(R) + Student Leaves module manage & read*/
+      if(inputElements[6].checked){
+        for(i=0; i<2; i++){
+          locationrd[i].disabled=true;
+        }
+        studentrd[1].disabled=true;
+        studentrd[2].disabled=true;
+        studentrd[3].disabled=true;
+        studentrd[4].disabled=true;
+      }
+      
+      /* when Lecturer OR/AND Warden is/are selected, uncheck Student Leaves module manage & read*/
+      /*when Lecturer is checked, uncheck Student Attendance + Student Leaves module manage & read*/
+      /*when Lecturer is selected, uncheck training notes, 2 rules already define 4 lecturer*/
+      if(inputElements[12].checked){
+        for(i=1; i<2; i++){
+          /*student attendance*/
+          studentmg[i].disabled=true;
+          studentrd[i].disabled=true;
+          studentusr[i].disabled=true;
+          studentown[i].disabled=true;
+        }
+        trainingmg[0].disabled=true;
+        trainingrd[0].disabled=true;
+        trainingusr[0].disabled=true;
+        trainingown[0].disabled=true;
+        trainingmg[4].disabled=true;
+        trainingrd[4].disabled=true;
+        trainingusr[4].disabled=true;
+        trainingown[4].disabled=true;
+        trainingmg[7].disabled=true;
+        trainingrd[7].disabled=true;
+        trainingusr[7].disabled=true;
+        trainingown[7].disabled=true;
+        examown[6].disabled=true;
+      }
+    }
+    
+    /*when Disciplinary Officer is selected, uncheck Student Discipline & Student Counseling, must follow assigned rules in Disciplinary officer*/
+    if(inputElements[18].checked){
+      for(i=3; i<4; i++){
+        studentmg[i].disabled=true;
+        studentrd[i].disabled=true;
+        studentusr[i].disabled=true;
+        studentown[i].disabled=true;
+      }
+      studentrd[2].disabled=true;
+      studentrd[1].disabled=true;
+      studentrd[4].disabled=true;
+    }
+    /*when Student Counsellor is selected, uncheck Student Counseling & Student(R)+Student Discipline too, counselor should not hv access 4 discipline*/
+    /*must follows rules as specified for Student Counselor*/
+    if(inputElements[10].checked){
+      for(i=2; i<3; i++){
+        studentmg[i].disabled=true;
+        studentrd[i].disabled=true;
+        studentusr[i].disabled=true;
+        studentown[i].disabled=true;
+      }
+      studentrd[3].disabled=true;
+      studentrd[1].disabled=true;
+      studentrd[4].disabled=true;
+    }
+
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var ecourseevalmg = document.getElementsByClassName('courseevalmanage');
+    var ecourseevalrd = document.getElementsByClassName('courseevalread');
+    var ecourseevalusr = document.getElementsByClassName('courseevaluser');
+    var ecourseevalown = document.getElementsByClassName('courseevalowner');
+    
+    for(i=0; i<1; i++){
+      if(courseevalmg[i].checked)
+      {  ecourseevalmg[i].checked=true;}
+      else if(courseevalrd[i].checked)
+      {  ecourseevalrd[i].checked=true;}
+      else if(courseevalusr[i].checked)
+      {  ecourseevalusr[i].checked=true;}
+      else if(courseevalown[i].checked)
+      {  ecourseevalown[i].checked=true;}
+      if ((courseevalmg[i].checked) || (courseevalrd[i].checked) || (courseevalusr[i].checked) || (courseevalown[i].checked))
+      /* main must be checked*/
+      {  ecourseevalmn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+
+    /*when Programme Manager is selected, uncheck Training Programmes, Training Academic Sessions, Training Intakes, Training Timetables, Training Topic Details*/
+    if(inputElements[17].checked){
+      for(i=1; i<4; i++){
+        trainingmg[i].disabled=true;
+        trainingrd[i].disabled=true;
+        trainingusr[i].disabled=true;
+        trainingown[i].disabled=true;
+      }
+      for(i=5; i<7; i++){
+        trainingmg[i].disabled=true;
+        trainingrd[i].disabled=true;
+        trainingusr[i].disabled=true;
+        trainingown[i].disabled=true;
+      }
+      for(i=0; i<1; i++){
+        courseevalmg[i].disabled=true;
+        courseevalrd[i].disabled=true;
+        courseevalusr[i].disabled=true;
+        courseevalown[i].disabled=true;
+        ecourseevalmn[i].disabled=true;
+      }
+    }
+    
+    /*when role : Unit Leader is selected, uncheck Training Attendance(O-Ptdo), Staff Attendance(O), Programmes*/
+    if(inputElements[21].checked){
+      c_staffown[3].disabled=true;
+      a_staffown[2].disabled=true;
+      trainingmg[6].disabled=true;
+    }
+    /*when role : Administration Staff is selected, uncheck Training Attendance(O-Ptdo), Staff Attendance(O), Programmes*/
+    if(inputElements[3].checked){
+      c_staffown[3].disabled=true;
+      a_staffown[2].disabled=true;
+    }
+    /*when role : Staff is selected, uncheck Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R)*/
+    if(inputElements[5].checked){
+      a_staffown[2].disabled=true;
+      c_staffown[3].disabled=true;
+      d_staffown[0].disabled=true;
+      d_staffown[1].disabled=true;
+      b_staffown[0].disabled=true;
+      b_staffown[1].disabled=true;
+      assetrd[5].disabled=true;
+      assetown[4].disabled=true;
+      assetown[1].disabled=true;
+      studentown[3].disabled=true;
+      fileown[0].disabled=true;
+      filerd[1].disabled=true;
+      fileown[3].disabled=true;
+      libraryrd[1].disabled=true;
+      libraryrd[0].disabled=true;
+    }
+
+    /*8) assets - disable this main checkbox if no file module selected*/
+    for(i=0; i<6; i++){
+      if ((assetmg[i].checked==false) && (assetrd[i].checked==false) && (assetusr[i].checked==false) && (assetown[i].checked==false)){
+        eassetmn[i].disabled=true;
+      }
+    }
+    
+    /* 9) locations - disable this main checkbox if no file module selected*/
+    for(i=0; i<2; i++){
+      if ((locationmg[i].checked==false) && (locationrd[i].checked==false) && (locationusr[i].checked==false) && (locationown[i].checked==false)){
+        elocationmn[i].disabled=true;
+      }
+    }
+    /* 10) students - disable this main checkbox if no file module selected*/
+    for(i=0; i<5; i++){
+      if ((studentmg[i].checked==false) && (studentrd[i].checked==false) && (studentusr[i].checked==false) && (studentown[i].checked==false)){
+        estudentmn[i].disabled=true;
+      }
+    }
+    /* 11) trainings - disable this main checkbox if no file module selected*/
+    for(i=0; i<8; i++){
+      if ((trainingmg[i].checked==false) && (trainingrd[i].checked==false) && (trainingusr[i].checked==false) && (trainingown[i].checked==false)){
+        etrainingmn[i].disabled=true;
+      }
+    }
+    
+    /*when role : STUDENT is selected, uncheck all exams modules*/
+    if(inputElements[2].checked){
+      for(i=0; i<1; i++){
+        courseevalmg[i].disabled=true;
+        courseevalrd[i].disabled=true;
+        courseevalusr[i].disabled=true;
+        courseevalown[i].disabled=true;
+        ecourseevalmn[i].disabled=true;
+      }
+      studentown[4].disabled=true;
+      studentown[0].disabled=true;
+    }
+    
+    /*disable this main checkbox if no file module selected*/
+    for(i=0; i<1; i++){
+      if ((courseevalmg[i].checked==false) && (courseevalrd[i].checked==false) && (courseevalusr[i].checked==false) && (courseevalown[i].checked==false)){
+        ecourseevalmn[i].disabled=true;
+      }
+    }
+    
+    /*disable this main checkbox if no file module selected*/
+    for(i=0; i<1; i++){
+      if ((courseevalmg[i].checked==false) && (courseevalrd[i].checked==false) && (courseevalusr[i].checked==false) && (courseevalown[i].checked==false)){
+        ecourseevalmn[i].disabled=true;
+      }
+    }
+    
+    /*set by default at all time - Student Attendance (Member) not applicable - refer auth rules*/
+    studentown[1].checked=false;
+    studentown[1].disabled=true;
+    
+    /*set by default at all time - Student Counseling Sessions (Member) not applicable - refer auth rules*/
+    studentown[2].checked=false;
+    studentown[2].disabled=true;
+    
+    /*set by default at all time - Tenants (Member) not applicable - refer auth rules*/
+    locationown[0].checked=false;
+    locationown[0].disabled=true;
+    
+    /*set by default at all time - Locations (Member) not applicable - refer auth rules*/
+    locationown[1].checked=false;
+    locationown[1].disabled=true;
+    
+    /*set by default at all time - Location Damages (Member) not applicable - refer auth rules*/
+    locationown[2].checked=false;
+    locationown[2].disabled=true;
+    
+    /*set by default at all time - Student Info (Member) not applicable - refer auth rules*/
+    studentown[4].checked=false;
+    studentown[4].disabled=true;
+        
+    /*set by default at all time - Training Notes (Member) not applicable - refer auth rules*/
+    trainingown[0].checked=false;
+    trainingown[0].disabled=true;
+
+    /*set by default at all time - Academic Sessions (Member) not applicable - refer auth rules*/
+    trainingown[1].checked=false;
+    trainingown[1].disabled=true
+    
+    /*set by default at all time - Lesson Plan & Report (Member) not applicable - refer auth rules*/
+    trainingown[4].checked=false;
+    trainingown[4].disabled=true;
+    
+    /*set by default at all time - Topic Details (Member) not applicable - refer auth rules*/
+    trainingown[5].checked=false;
+    trainingown[5].disabled=true;
+    
+    /*set by default at all time - Programmes (Member) not applicable - refer auth rules*/
+    trainingown[6].checked=false;
+    trainingown[6].disabled=true;
+    
+    /*set by default at all time - Library Transactions & Library Books (Member) not applicable - refer auth rules*/
+    libraryown[0].checked=false;
+    libraryown[0].disabled=true;
+    libraryown[1].checked=false;
+    libraryown[1].disabled=true;
+    
+    /*set by default at all time - Stationeries (Member) not applicable - refer auth rules*/
+    assetown[0].checked=false;
+    assetown[0].disabled=true;
+    
+    /*set by default at all time - Asset Losses (Member) not applicable - refer auth rules*/
+    assetown[1].checked=false;
+    assetown[1].disabled=true;
+    
+    /*set by default at all time - Asset Disposals (Member) not applicable - refer auth rules*/
+    assetown[3].checked=false;
+    assetown[3].disabled=true;
+    
+  });
+  
+  $j('input[type=checkbox]').click(function(){
+   
+    var inputElements = document.getElementsByClassName('byrole');
+    /*var staffmg = document.getElementsByClassName('staffmanage');*/
+    /*var staffrd = document.getElementsByClassName('staffread');*/
+    /*var staffmg2 = document.getElementsByClassName('staffmanage2');*/
+    /*var staffrd2 = document.getElementsByClassName('staffread2');*/
+    /*var staffmg3 = document.getElementsByClassName('staffmanage3');*/
+    /*var staffrd3 = document.getElementsByClassName('staffread3');*/
+    /*var assetmg = document.getElementsByClassName('assetmanage');*/
+    /*var assetrd = document.getElementsByClassName('assetread');*/
+    /*var locationmg = document.getElementsByClassName('locationmanage');*/
+    /*var locationrd = document.getElementsByClassName('locationread');*/
+    /*var studentmg = document.getElementsByClassName('studentmanage');*/
+    /*var studentrd = document.getElementsByClassName('studentread');*/
+    /*var trainingmg = document.getElementsByClassName('trainingmanage');*/
+    /*var trainingrd = document.getElementsByClassName('trainingread');*/
+    /*var exammg = document.getElementsByClassName('exammanage');*/
+    /*var examrd = document.getElementsByClassName('examread');*/
+    
+    /*E-Filing checkboxes*/
+    var efilingmg = document.getElementsByClassName('efilingmanage');
+    var efilingrd = document.getElementsByClassName('efilingread');
+    var efilingusr = document.getElementsByClassName('efilinguser');
+    var efilingown = document.getElementsByClassName('efilingowner');
+    
+    /*E-Filing radio buttons*/
+    /*var filemg = document.getElementById('user_role_files_73');*/
+    /*var filerd = document.getElementById('user_role_files_125');*/
+    /*var fileusr = document.getElementById('user_role_files_129');*/
+    /*var fileown = document.getElementById('user_role_files_130');*/
+    var filemg = document.getElementsByClassName('efilingmanage2');
+    var filerd = document.getElementsByClassName('efilingread2');
+    var fileusr = document.getElementsByClassName('efilinguser2');
+    var fileown = document.getElementsByClassName('efilingowner2');
+    
+    /*E-Filing main UNCHECK checkbox*/
+    /*var efilem2 = document.getElementById('efilemain_2');*/
+    var efilem = document.getElementsByClassName('filemain');
+    
+    /*when UNCHECK events, bulletins, cofiles, documents main is false*/
+    for(i=0; i < 4; i++){
+      if (efilem[i].checked==false) {
+        filemg[i].checked=false;
+        filerd[i].checked=false;
+        fileusr[i].checked=false;
+        fileown[i].checked=false;
+        efilingmg[i].checked=false;
+        efilingrd[i].checked=false;
+        efilingusr[i].checked=false;
+        efilingown[i].checked=false;
+      }
+      
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((filemg[i].checked==false) && (filerd[i].checked==false) && (fileusr[i].checked==false) && (fileown[i].checked==false)){
+        efilem[i].checked=false;
+        /*efilem.disabled=true;*/
+      }
+    }
+    
+    /*when E-Filling is selected, uncheck Cofiles & Documents*/
+    if(inputElements[15].checked){
+      for(i=2; i<4; i++)
+      {
+        efilingmg[i].checked=false;
+        efilingrd[i].checked=false;
+        efilingusr[i].checked=false;
+        efilingown[i].checked=false;
+      
+        filemg[i].checked=false;
+        filemg[i].disabled=true;
+        filerd[i].checked=false;
+        filerd[i].disabled=true;
+        fileusr[i].checked=false;
+        fileusr[i].disabled=true;
+        fileown[i].checked=false;
+        fileown[i].disabled=true;
+      
+        efilem[i].checked=false;
+        efilem[i].disabled=true;
+      }
+    } 
+    else
+    {
+      /*when E-filing is not selected, but Staff role is selected, disable Events(O), Bulletins(R), Document Registry(O)*/
+      /*for(i=2; i < 4; i++)*/
+      if(inputElements[5].checked)
+      {  fileown[3].disabled=true;}
+      else
+      {  fileown[3].disabled=false;}
+      filemg[2].disabled=false;
+      filerd[2].disabled=false;
+      fileusr[2].disabled=false;
+      fileown[2].disabled=false;
+      efilem[2].disabled=false;
+      
+      filemg[3].disabled=false;
+      filerd[3].disabled=false;
+      fileusr[3].disabled=false;
+      efilem[3].disabled=false;
+      
+    } 
+
+    /* 2) E-Library Section*/
+    /*E-Library checkboxes*/
+    var elibrarymg = document.getElementsByClassName('librarymanage');
+    var elibraryrd = document.getElementsByClassName('libraryread');
+    var elibraryusr = document.getElementsByClassName('libraryuser');
+    var elibraryown = document.getElementsByClassName('libraryowner');
+    
+    /*E-Filing radio buttons*/
+    var librarymg = document.getElementsByClassName('librarymanage2');
+    var libraryrd = document.getElementsByClassName('libraryread2');
+    var libraryusr = document.getElementsByClassName('libraryuser2');
+    var libraryown = document.getElementsByClassName('libraryowner2');
+    
+    /*E-Library main UNCHECK checkbox*/
+    var elibrarym = document.getElementsByClassName('librarymain');
+    
+    /*when UNCHECK Transactions, Books main is false*/
+    for(i=0; i < 2; i++){
+      if (elibrarym[i].checked==false) {
+        librarymg[i].checked=false;
+        libraryrd[i].checked=false;
+        libraryusr[i].checked=false;
+        libraryown[i].checked=false;
+        elibrarymg[i].checked=false;
+        elibraryrd[i].checked=false;
+        elibraryusr[i].checked=false;
+        elibraryown[i].checked=false;
+      }
+      
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((librarymg[i].checked==false) && (libraryrd[i].checked==false) && (libraryusr[i].checked==false) && (libraryown[i].checked==false)){
+        elibrarym[i].checked=false;
+      }
+    }
+    /MOVED From Students module - requires usage starting fr Library/
+    var studentrd = document.getElementsByClassName('studentread2');
+    /*when Librarian is selected, uncheck Student(R), Library Book(both) & Library Transactions(both)*/
+    if(inputElements[4].checked){
+      for(i=0; i<2; i++){
+        elibrarymg[i].checked=false;
+        elibraryrd[i].checked=false;
+        elibraryusr[i].checked=false;
+        elibraryown[i].checked=false;
+      
+        librarymg[i].checked=false;
+        librarymg[i].disabled=true;
+        libraryrd[i].checked=false;
+        libraryrd[i].disabled=true;
+        libraryusr[i].checked=false;
+        libraryusr[i].disabled=true;
+        libraryown[i].checked=false;
+        libraryown[i].disabled=true;
+      
+        elibrarym[i].checked=false;
+        elibrarym[i].disabled=true;
+      }
+      /*when student INFO available for selection*/
+      /*if(studentrd[4].disabled==false)*/
+      /*{ */
+        /*studentrd[4].checked=false;*/
+        /*studentrd[4].disabled=true;*/
+      /*}*/
+      /*Refer role: Warden Only(else - Student Info(R)) */
+    } 
+    else
+    {
+      /* When Librarian is not selected, but Staff role is selected, disable Library Books(R), Library Analysis & Statistics(R) */
+      if(inputElements[5].checked)
+      {
+        libraryrd[1].disabled=true;
+        libraryrd[0].disabled=true;
+      }
+      else
+      {
+        libraryrd[1].disabled=false;
+        libraryrd[0].disabled=false;
+      }
+      librarymg[0].disabled=false;
+      libraryusr[0].disabled=false;
+      libraryown[0].disabled=false;
+      elibrarym[0].disabled=false;
+      
+      librarymg[1].disabled=false;
+      libraryusr[1].disabled=false;
+      libraryown[1].disabled=false;
+      elibrarym[1].disabled=false;
+      
+      /*when student INFO available for selection*/
+      /*if(studentrd[4].disabled==true)*/
+      /*{ */
+        /*studentrd[4].disabled=false;*/
+      /*}*/
+    }
+      
+    /* 3) Examination Section*/
+    /*Examinations checkboxes*/
+    var eexammg = document.getElementsByClassName('exammanage');
+    var eexamrd = document.getElementsByClassName('examread');
+    var eexamusr = document.getElementsByClassName('examuser');
+    var eexamown = document.getElementsByClassName('examowner');
+    
+    /*Examinations radio buttons*/
+    var exammg = document.getElementsByClassName('exammanage2');
+    var examrd = document.getElementsByClassName('examread2');
+    var examusr = document.getElementsByClassName('examuser2');
+    var examown = document.getElementsByClassName('examowner2');
+    
+    /*Examinations main UNCHECK checkbox*/
+    var eexamm = document.getElementsByClassName('exammain');
+    
+    /*when UNCHECK , all exams main is false*/
+    for(i=0; i < 7; i++){
+      if (eexamm[i].checked==false) {
+        exammg[i].checked=false;
+        examrd[i].checked=false;
+        examusr[i].checked=false;
+        examown[i].checked=false;
+        eexammg[i].checked=false;
+        eexamrd[i].checked=false;
+        eexamusr[i].checked=false;
+        eexamown[i].checked=false;
+      }
+      
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((exammg[i].checked==false) && (examrd[i].checked==false) && (examusr[i].checked==false) && (examown[i].checked==false)){
+        eexamm[i].checked=false;
+      }
+    }
+    
+    /*when Exam Admin is selected, uncheck all exam modules*/
+    if(inputElements[22].checked){
+      for(i=0; i<7; i++){
+        eexammg[i].checked=false;
+        eexamrd[i].checked=false;
+        eexamusr[i].checked=false;
+        eexamown[i].checked=false;
+      
+        exammg[i].checked=false;
+        exammg[i].disabled=true;
+        examrd[i].checked=false;
+        examrd[i].disabled=true;
+        examusr[i].checked=false;
+        examusr[i].disabled=true;
+        examown[i].checked=false;
+        examown[i].disabled=true;
+      
+        eexamm[i].checked=false;
+        eexamm[i].disabled=true;
+      }
+    } 
+    else
+    {
+      /* When Exam not selected, Lecturer */
+      for(i=0; i < 6; i++)
+      {
+        exammg[i].disabled=false;
+        examrd[i].disabled=false;
+        examusr[i].disabled=false;
+        examown[i].disabled=false;
+        eexamm[i].disabled=false;
+      }
+      exammg[i].disabled=false;
+      examrd[i].disabled=false;
+      examusr[i].disabled=false;  
+      eexamm[i].disabled=false;
+      if(inputElements[12].checked)
+      {  examown[6].disabled=true;}
+      else
+      {  examown[6].disabled=false;}
+    }
+    
+    /* 4) Staff part 1 : Staffs, Positions, Staff Attendances, Fingerprints */
+    /*Staff part 1 checkboxes*/
+    var ea_staffmg = document.getElementsByClassName('a_staffmanage');
+    var ea_staffrd = document.getElementsByClassName('a_staffread');
+    var ea_staffusr = document.getElementsByClassName('a_staffuser');
+    var ea_staffown = document.getElementsByClassName('a_staffowner');
+    
+    /*Staff part 1 radio buttons*/
+    var a_staffmg = document.getElementsByClassName('a_staffmanage2');
+    var a_staffrd = document.getElementsByClassName('a_staffread2');
+    var a_staffusr = document.getElementsByClassName('a_staffuser2');
+    var a_staffown = document.getElementsByClassName('a_staffowner2');
+    
+    /*Staff part 1 main UNCHECK checkbox*/
+    var ea_staffm = document.getElementsByClassName('a_staffmain');
+    
+    /*when UNCHECK , all staffs part 1 main is false*/
+    for(i=0; i < 4; i++){
+      if (ea_staffm[i].checked==false) {
+        a_staffmg[i].checked=false;
+        a_staffrd[i].checked=false;
+        a_staffusr[i].checked=false;
+        a_staffown[i].checked=false;
+        ea_staffmg[i].checked=false;
+        ea_staffrd[i].checked=false;
+        ea_staffusr[i].checked=false;
+        ea_staffown[i].checked=false;
+      }
+      
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((a_staffmg[i].checked==false) && (a_staffrd[i].checked==false) && (a_staffusr[i].checked==false) && (a_staffown[i].checked==false)){
+        ea_staffm[i].checked=false;
+      }
+    }
+    
+    /*when Staff Admin is selected, uncheck all staff part 1 modules*/
+    if(inputElements[14].checked){
+      for(i=0; i<4; i++){
+        ea_staffmg[i].checked=false;
+        ea_staffrd[i].checked=false;
+        ea_staffusr[i].checked=false;
+        ea_staffown[i].checked=false;
+      
+        a_staffmg[i].checked=false;
+        a_staffmg[i].disabled=true;
+        a_staffrd[i].checked=false;
+        a_staffrd[i].disabled=true;
+        a_staffusr[i].checked=false;
+        a_staffusr[i].disabled=true;
+        a_staffown[i].checked=false;
+        a_staffown[i].disabled=true;
+      
+        ea_staffm[i].checked=false;
+        ea_staffm[i].disabled=true;
+      }
+    } 
+    else
+    {
+      /*when staff admin not selected, but Unit Leader OR Administration Staff OR Staff is selected, Staff Attendance is not activated */
+      if((inputElements[21].checked) || (inputElements[3].checked) || (inputElements[5].checked) )
+      {
+        a_staffown[2].disabled=true;
+      }
+      else
+      {
+        a_staffown[2].disabled=false;
+      }
+      
+      for(i=0; i < 2; i++){
+        a_staffmg[i].disabled=false;
+        a_staffrd[i].disabled=false;
+        a_staffusr[i].disabled=false;
+        a_staffown[i].disabled=false;
+        ea_staffm[i].disabled=false;
+      }
+      a_staffmg[2].disabled=false;
+      a_staffrd[2].disabled=false;
+      a_staffusr[2].disabled=false;
+      ea_staffm[2].disabled=false;
+      
+      a_staffmg[3].disabled=false;
+      a_staffrd[3].disabled=false;
+      a_staffusr[3].disabled=false;
+      a_staffown[3].disabled=false;
+      ea_staffm[3].disabled=false;
+    }
+        
+    /* 5) Staff part 2 : Travel Requests & Travel Claims & part 3 : Training Budget, Training Courses, Training Schedule, Training Attendances */
+    /*Staff part 2 checkboxes*/
+    var eb_staffmg = document.getElementsByClassName('b_staffmanage');
+    var eb_staffrd = document.getElementsByClassName('b_staffread');
+    var eb_staffusr = document.getElementsByClassName('b_staffuser');
+    var eb_staffown = document.getElementsByClassName('b_staffowner');
+    /*Staff part 3 checkboxes*/
+    var ec_staffmg = document.getElementsByClassName('c_staffmanage');
+    var ec_staffrd = document.getElementsByClassName('c_staffread');
+    var ec_staffusr = document.getElementsByClassName('c_staffuser');
+    var ec_staffown = document.getElementsByClassName('c_staffowner');
+    
+    /*Staff part 2 radio buttons*/
+    var b_staffmg = document.getElementsByClassName('b_staffmanage2');
+    var b_staffrd = document.getElementsByClassName('b_staffread2');
+    var b_staffusr = document.getElementsByClassName('b_staffuser2');
+    var b_staffown = document.getElementsByClassName('b_staffowner2');
+    /*Staff part 3 radio buttons*/
+    var c_staffmg = document.getElementsByClassName('c_staffmanage2');
+    var c_staffrd = document.getElementsByClassName('c_staffread2');
+    var c_staffusr = document.getElementsByClassName('c_staffuser2');
+    var c_staffown = document.getElementsByClassName('c_staffowner2');
+    
+    /*Staff part 2 main UNCHECK checkbox*/
+    var eb_staffm = document.getElementsByClassName('b_staffmain');
+    /*Staff part 3 main UNCHECK checkbox*/
+    var ec_staffm = document.getElementsByClassName('c_staffmain');
+    
+    /*when UNCHECK , all staffs part 1 main is false*/
+    /* Staff part 2*/
+    for(i=0; i < 2; i++){
+      if (eb_staffm[i].checked==false) {
+        b_staffmg[i].checked=false;
+        b_staffrd[i].checked=false;
+        b_staffusr[i].checked=false;
+        b_staffown[i].checked=false;
+        eb_staffmg[i].checked=false;
+        eb_staffrd[i].checked=false;
+        eb_staffusr[i].checked=false;
+        eb_staffown[i].checked=false;
+      }
+      
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((b_staffmg[i].checked==false) && (b_staffrd[i].checked==false) && (b_staffusr[i].checked==false) && (b_staffown[i].checked==false)){
+        eb_staffm[i].checked=false;
+      }
+    }
+    /*Staff part 3*/
+    for(i=0; i < 4; i++){
+      if (ec_staffm[i].checked==false) {
+        c_staffmg[i].checked=false;
+        c_staffrd[i].checked=false;
+        c_staffusr[i].checked=false;
+        c_staffown[i].checked=false;
+        ec_staffmg[i].checked=false;
+        ec_staffrd[i].checked=false;
+        ec_staffusr[i].checked=false;
+        ec_staffown[i].checked=false;
+      }
+      
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((c_staffmg[i].checked==false) && (c_staffrd[i].checked==false) && (c_staffusr[i].checked==false) && (c_staffown[i].checked==false)){
+        ec_staffm[i].checked=false;
+      }
+    } 
+    
+    
+    /*when Finance Unit selected, uncheck Training Budget & Travel Claim are disable*/
+    if(inputElements[19].checked){
+      /*Travel Claim*/
+      eb_staffmg[1].checked=false;
+      eb_staffrd[1].checked=false;
+      eb_staffusr[1].checked=false;
+      eb_staffown[1].checked=false;
+      
+      b_staffmg[1].checked=false;
+      b_staffmg[1].disabled=true;
+      b_staffrd[1].checked=false;
+      b_staffrd[1].disabled=true;
+      b_staffusr[1].checked=false;
+      b_staffusr[1].disabled=true;
+      b_staffown[1].checked=false;
+      b_staffown[1].disabled=true;
+      
+      eb_staffm[1].checked=false;
+      eb_staffm[1].disabled=true;
+      
+      /*Training Budget*/
+      ec_staffmg[0].checked=false;
+      ec_staffrd[0].checked=false;
+      ec_staffusr[0].checked=false;
+      ec_staffown[0].checked=false;
+      
+      c_staffmg[0].checked=false;
+      c_staffmg[0].disabled=true;
+      c_staffrd[0].checked=false;
+      c_staffrd[0].disabled=true;
+      c_staffusr[0].checked=false;
+      c_staffusr[0].disabled=true;
+      c_staffown[0].checked=false;
+      c_staffown[0].disabled=true;
+      
+      ec_staffm[0].checked=false;
+      ec_staffm[0].disabled=true;
+      
+    } 
+    else
+    {
+      /*when Finance Unit is not selected, but Staff role is selected, disable Travel Claims(O)*/
+      if(inputElements[5].checked)
+      {  b_staffown[1].disabled=true;}
+      else
+      {  b_staffown[1].disabled=false;}
+      b_staffmg[1].disabled=false;
+      b_staffrd[1].disabled=false;
+      b_staffusr[1].disabled=false;
+      eb_staffm[1].disabled=false;
+        
+      c_staffmg[0].disabled=false;
+      c_staffrd[0].disabled=false;
+      c_staffusr[0].disabled=false;
+      c_staffown[0].disabled=false;
+      ec_staffm[0].disabled=false;
+    }
+    
+    /*when Training Manager OR Training Administration is selected, uncheck Training Budget, Training Schedule, Training Courses, Training Attendance*/
+    if(inputElements[7].checked || inputElements[8].checked){
+      /*********Training Budget is part of Finance Unit (role) & Training Manager, Training Administration (role)*********/
+      if(inputElements[19].checked==false)
+      {
+        ec_staffmg[0].checked=false;
+        ec_staffrd[0].checked=false;
+        ec_staffusr[0].checked=false;
+        ec_staffown[0].checked=false;
+      
+        c_staffmg[0].checked=false;
+        c_staffmg[0].disabled=true;
+        c_staffrd[0].checked=false;
+        c_staffrd[0].disabled=true;
+        c_staffusr[0].checked=false;
+        c_staffusr[0].disabled=true;
+        c_staffown[0].checked=false;
+        c_staffown[0].disabled=true;
+      
+        ec_staffm[0].checked=false;
+        ec_staffm[0].disabled=true;
+      }
+      for(i=1; i<4; i++){
+        ec_staffmg[i].checked=false;
+        ec_staffrd[i].checked=false;
+        ec_staffusr[i].checked=false;
+        ec_staffown[i].checked=false;
+      
+        c_staffmg[i].checked=false;
+        c_staffmg[i].disabled=true;
+        c_staffrd[i].checked=false;
+        c_staffrd[i].disabled=true;
+        c_staffusr[i].checked=false;
+        c_staffusr[i].disabled=true;
+        c_staffown[i].checked=false;
+        c_staffown[i].disabled=true;
+      
+        ec_staffm[i].checked=false;
+        ec_staffm[i].disabled=true;
+      }
+    } 
+    else
+    {
+      /*when Training Manager OR Training Administration is not selected, but Unit Leader OR Administration Staff OR Staff is selected, Training Attendance(O-Ptdo) is disable*/
+      if((inputElements[21].checked) || (inputElements[3].checked) || (inputElements[5].checked))
+      {  
+        c_staffown[3].checked=false;
+        c_staffown[3].disabled=true;
+      }
+      else
+      {  c_staffown[3].disabled=false;}
+      
+      if(inputElements[19].checked==false)
+      {
+        c_staffmg[0].disabled=false;
+        c_staffrd[0].disabled=false;
+        c_staffusr[0].disabled=false;
+        c_staffown[0].disabled=false;
+        ec_staffm[0].disabled=false;
+      }
+      for(i=1; i<3; i++){
+        c_staffmg[i].disabled=false;
+        c_staffrd[i].disabled=false;
+        c_staffusr[i].disabled=false;
+        c_staffown[i].disabled=false;
+        ec_staffm[i].disabled=false;
+      }
+      c_staffmg[3].disabled=false;
+      c_staffrd[3].disabled=false;
+      c_staffusr[3].disabled=false;
+      ec_staffm[3].disabled=false;
+    }
+    
+    /* 7) Staff part 4 : Staff Appraisals, Staff Leaves */
+    /*Staff part 4 checkboxes*/
+    var ed_staffmg = document.getElementsByClassName('d_staffmanage');
+    var ed_staffrd = document.getElementsByClassName('d_staffread');
+    var ed_staffusr = document.getElementsByClassName('d_staffuser');
+    var ed_staffown = document.getElementsByClassName('d_staffowner');
+    
+    /*Staff part 4 radio buttons*/
+    var d_staffmg = document.getElementsByClassName('d_staffmanage2');
+    var d_staffrd = document.getElementsByClassName('d_staffread2');
+    var d_staffusr = document.getElementsByClassName('d_staffuser2');
+    var d_staffown = document.getElementsByClassName('d_staffowner2');
+    
+    /*Staff part 4 main UNCHECK checkbox*/
+    var ed_staffm = document.getElementsByClassName('d_staffmain');
+    
+    /*when UNCHECK , all staffs part 4 main is false*/
+    for(i=0; i < 2; i++){
+      if (ed_staffm[i].checked==false) {
+        d_staffmg[i].checked=false;
+        d_staffrd[i].checked=false;
+        d_staffusr[i].checked=false;
+        d_staffown[i].checked=false;
+        ed_staffmg[i].checked=false;
+        ed_staffrd[i].checked=false;
+        ed_staffusr[i].checked=false;
+        ed_staffown[i].checked=false;
+      }
+      
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((d_staffmg[i].checked==false) && (d_staffrd[i].checked==false) && (d_staffusr[i].checked==false) && (d_staffown[i].checked==false)){
+        ed_staffm[i].checked=false;
+      }
+    }
+    
+    /*Staff - part 4 : Staff Appraisals & Staff Leaves - when Staff role is selected, selecting these 2 roles shall override Staff role access*/
+    /*When Staff role is selected, Staff Appraisal(O) & Staff Leaves(O) will be disabled*/
+    if(inputElements[5].checked){
+      d_staffown[0].disabled=true;
+      d_staffown[1].disabled=true;
+    }
+    else
+    {
+      d_staffown[0].disabled=false;
+      d_staffown[1].disabled=false;
+    }
+    
+    /* 8) Asset Section*/
+    /*Assets checkboxes*/
+    var eassetmg = document.getElementsByClassName('assetmanage');
+    var eassetrd = document.getElementsByClassName('assetread');
+    var eassetusr = document.getElementsByClassName('assetuser');
+    var eassetown = document.getElementsByClassName('assetowner');
+    
+    /*Assets radio buttons*/
+    var assetmg = document.getElementsByClassName('assetmanage2');
+    var assetrd = document.getElementsByClassName('assetread2');
+    var assetusr = document.getElementsByClassName('assetuser2');
+    var assetown = document.getElementsByClassName('assetowner2');
+    
+    /*Assets main UNCHECK checkbox*/
+    var eassetm = document.getElementsByClassName('assetmain');
+    
+    
+    /***********/
+    /* 9) Location Section */
+    /* 10) Students Section */
+    /* 11) Trainings Section */
+    
+    /* 9) Locations checkboxes*/
+    var elocationmg = document.getElementsByClassName('locationmanage');
+    var elocationrd = document.getElementsByClassName('locationread');
+    var elocationusr = document.getElementsByClassName('locationuser');
+    var elocationown = document.getElementsByClassName('locationowner');
+    
+    /* 10) Students checkboxes*/
+    var estudentmg = document.getElementsByClassName('studentmanage');
+    var estudentrd = document.getElementsByClassName('studentread');
+    var estudentusr = document.getElementsByClassName('studentuser');
+    var estudentown = document.getElementsByClassName('studentowner');
+    
+    /* 11) Trainings checkboxes*/
+    var etrainingmg = document.getElementsByClassName('trainingmanage');
+    var etrainingrd = document.getElementsByClassName('trainingread');
+    var etrainingusr = document.getElementsByClassName('traininguser');
+    var etrainingown = document.getElementsByClassName('trainingowner');
+    
+    /* 9) Locations radio buttons*/
+    var locationmg = document.getElementsByClassName('locationmanage2');
+    var locationrd = document.getElementsByClassName('locationread2');
+    var locationusr = document.getElementsByClassName('locationuser2');
+    var locationown = document.getElementsByClassName('locationowner2');
+    
+    /* 10) Students radio buttons*/
+    var studentmg = document.getElementsByClassName('studentmanage2');
+    /*MOVED ABOVE : LIBRARY - var studentrd = document.getElementsByClassName('studentread2');*/
+    var studentusr = document.getElementsByClassName('studentuser2');
+    var studentown = document.getElementsByClassName('studentowner2');
+    
+    /* 11) Trainings radio buttons*/
+    var trainingmg = document.getElementsByClassName('trainingmanage2');
+    var trainingrd = document.getElementsByClassName('trainingread2');
+    var trainingusr = document.getElementsByClassName('traininguser2');
+    var trainingown = document.getElementsByClassName('trainingowner2');
+    
+    /*Location, Students, Trainings main UNCHECK checkbox*/
+    var elocationm = document.getElementsByClassName('locationmain');
+    var estudentm = document.getElementsByClassName('studentmain');
+    var etrainingm = document.getElementsByClassName('trainingmain');
+    
+    /* 8) when UNCHECK , all asset main is false*/
+    for(i=0; i < 6; i++){
+      if (eassetm[i].checked==false) {
+        assetmg[i].checked=false;
+        assetrd[i].checked=false;
+        assetusr[i].checked=false;
+        assetown[i].checked=false;
+        eassetmg[i].checked=false;
+        eassetrd[i].checked=false;
+        eassetusr[i].checked=false;
+        eassetown[i].checked=false;
+      }
+      
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((assetmg[i].checked==false) && (assetrd[i].checked==false) && (assetusr[i].checked==false) && (assetown[i].checked==false)){
+        eassetm[i].checked=false;
+      }
+    }
+    
+    /* 9) LOCATION when UNCHECK , all location main are false*/
+    for(i=0; i < 3; i++){
+      if (elocationm[i].checked==false) {
+        locationmg[i].checked=false;
+        locationrd[i].checked=false;
+        locationusr[i].checked=false;
+        locationown[i].checked=false;
+        elocationmg[i].checked=false;
+        elocationrd[i].checked=false;
+        elocationusr[i].checked=false;
+        elocationown[i].checked=false;
+      }
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((locationmg[i].checked==false) && (locationrd[i].checked==false) && (locationusr[i].checked==false) && (locationown[i].checked==false)){
+        elocationm[i].checked=false;
+      }
+    }
+    /* 10) STUDENT when UNCHECK , all student main are false*/
+    for(i=0; i < 5; i++){
+      if (estudentm[i].checked==false) {
+        studentmg[i].checked=false;
+        studentrd[i].checked=false;
+        studentusr[i].checked=false;
+        studentown[i].checked=false;
+        estudentmg[i].checked=false;
+        estudentrd[i].checked=false;
+        estudentusr[i].checked=false;
+        estudentown[i].checked=false;
+      }
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((studentmg[i].checked==false) && (studentrd[i].checked==false) && (studentusr[i].checked==false) && (studentown[i].checked==false)){
+        estudentm[i].checked=false;
+      }
+    }
+    /* 11) TRAINING when UNCHECK , all training main is false*/
+    for(i=0; i < 8; i++){
+      if (etrainingm[i].checked==false) {
+        trainingmg[i].checked=false;
+        trainingrd[i].checked=false;
+        trainingusr[i].checked=false;
+        trainingown[i].checked=false;
+        etrainingmg[i].checked=false;
+        etrainingrd[i].checked=false;
+        etrainingusr[i].checked=false;
+        etrainingown[i].checked=false;
+      }
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((trainingmg[i].checked==false) && (trainingrd[i].checked==false) && (trainingusr[i].checked==false) && (trainingown[i].checked==false)){
+        etrainingm[i].checked=false;
+      }
+    }
+    
+    /* 12) Exam - COURSE EVALUATION*/
+    /*Course Evaluation checkboxes*/
+    var ecourseevalmg = document.getElementsByClassName('courseevalmanage');
+    var ecourseevalrd = document.getElementsByClassName('courseevalread');
+    var ecourseevalusr = document.getElementsByClassName('courseevaluser');
+    var ecourseevalown = document.getElementsByClassName('courseevalowner');
+    
+    /*Course Evaluation radio buttons*/
+    var courseevalmg = document.getElementsByClassName('courseevalmanage2');
+    var courseevalrd = document.getElementsByClassName('courseevalread2');
+    var courseevalusr = document.getElementsByClassName('courseevaluser2');
+    var courseevalown = document.getElementsByClassName('courseevalowner2');
+    
+    /*Course Evaluation main UNCHECK checkbox*/
+    var ecourseevalm = document.getElementsByClassName('courseevalmain');
+    
+    /* 12) Exam - COURSE EVALUATION when UNCHECK , all training main is false*/
+    for(i=0; i < 1; i++){
+      if (ecourseevalm[i].checked==false) {
+        courseevalmg[i].checked=false;
+        courseevalrd[i].checked=false;
+        courseevalusr[i].checked=false;
+        courseevalown[i].checked=false;
+        ecourseevalmg[i].checked=false;
+        ecourseevalrd[i].checked=false;
+        ecourseevalusr[i].checked=false;
+        ecourseevalown[i].checked=false;
+      }
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((courseevalmg[i].checked==false) && (courseevalrd[i].checked==false) && (courseevalusr[i].checked==false) && (courseevalown[i].checked==false)){
+        ecourseevalm[i].checked=false;
+      }
+    }
+    
+    /* 13) Admin / Support Tables*/
+    /*Admin & support tables checkboxes*/
+    var esupportmg = document.getElementsByClassName('supportmanage');
+    var esupportrd = document.getElementsByClassName('supportread');
+    
+    /*Admin & support tables radio buttons*/
+    var supportmg = document.getElementsByClassName('supportmanage2');
+    var supportrd = document.getElementsByClassName('supportread2');
+    
+    /*Admin & support tables main UNCHECK checkbox*/
+    var esupportm = document.getElementsByClassName('supportmain');
+    
+    /* 12) Admin & support tables when UNCHECK , all training main is false*/
+    for(i=0; i < 2; i++){
+      if (esupportm[i].checked==false) {
+        supportmg[i].checked=false;
+        supportrd[i].checked=false;
+        esupportmg[i].checked=false;
+        esupportrd[i].checked=false;
+      }
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no file module selected*/
+      if ((supportmg[i].checked==false) && (supportrd[i].checked==false)){
+        esupportm[i].checked=false;
+      }
+    }
+    ///////////////
+    /*When Asset Administrator OR Facilities Administrator is selected*/
+    if((inputElements[9].checked) || (inputElements[11].checked))
+    {
+      /*hide location R*/
+      /*if((inputElements[6].checked==false){*/
+      /*if(locationrd[1].disabled==false)*/
+     /*{*/
+        /*elocationrd[1].checked=false;*/
+        /*locationrd[1].checked=false;*/
+        /*locationrd[1].disabled=true;*/
+      /*}*/
+      
+      elocationmg[1].checked=false;
+      elocationusr[1].checked=false;
+      elocationown[1].checked=false;
+
+      locationmg[1].checked=false;
+      locationmg[1].disabled=true;
+      locationusr[1].checked=false;
+      locationusr[1].disabled=true;
+      locationown[1].checked=false;
+      locationown[1].disabled=true;
+      
+      elocationm[1].checked=false;
+      elocationm[1].disabled=true;
+    }
+    else
+    {
+      /*if(locationrd[1].disabled==true)*/
+      /*{*/
+        /*locationrd[1].disabled=false;*/
+      /*}*/
+      locationmg[1].disabled=false;
+      locationusr[1].disabled=false;
+      locationown[1].disabled=false;
+      elocationm[1].disabled=false;
+    }
+    
+    /*when Asset Admin is selected, uncheck all asset modules except for stationeries + location*/
+    if(inputElements[9].checked)
+    {
+      for(i=1; i<6; i++){
+        eassetmg[i].checked=false;
+        eassetrd[i].checked=false;
+        eassetusr[i].checked=false;
+        eassetown[i].checked=false;
+      
+        assetmg[i].checked=false;
+        assetmg[i].disabled=true;
+        assetrd[i].checked=false;
+        assetrd[i].disabled=true;
+        assetusr[i].checked=false;
+        assetusr[i].disabled=true;
+        assetown[i].checked=false;
+        assetown[i].disabled=true;
+      
+        eassetm[i].checked=false;
+        eassetm[i].disabled=true;
+      }
+    } 
+    else
+    {
+      /* when Asset Administrator is not selected, but Staff role is selected, disable Asset List(R), Asset Defect(O), Asset Loan(O)*/
+      if(inputElements[5].checked){
+        assetrd[5].disabled=true;
+        assetown[4].disabled=true;
+        assetown[1].disabled=true;
+      }
+      else
+      {
+        assetrd[5].disabled=false;
+        assetown[4].disabled=false;
+        assetown[1].disabled=false; 
+      }
+      assetmg[5].disabled=false;
+      assetusr[5].disabled=false;
+      assetown[5].disabled=false;
+      eassetm[5].disabled=false;
+      
+      assetmg[4].disabled=false;
+      assetrd[4].disabled=false;
+      assetusr[4].disabled=false;
+      eassetm[4].disabled=false;
+      
+      assetmg[1].disabled=false;
+      assetrd[1].disabled=false;
+      assetusr[1].disabled=false;
+      eassetm[1].disabled=false;
+
+      assetmg[2].disabled=false;
+      assetrd[2].disabled=false;
+      assetusr[2].disabled=false;
+      assetown[2].disabled=false;
+      eassetm[2].disabled=false;
+      
+      assetmg[3].disabled=false;
+      assetrd[3].disabled=false;
+      assetusr[3].disabled=false;
+      /*assetown[i].disabled=false; NOTE - already disabled at any time*/
+      eassetm[3].disabled=false;
+    }
+    
+    /* when Facilites Administrator is selected, uncheck Location & Tenant*/
+    /* if not a warden - hide location read & tenant read too */
+    if(inputElements[11].checked){
+      /* hide tenant R*/
+      /*if(locationrd[0].disabled==false)*/
+      /*{*/
+        /*elocationrd[0].checked=false;*/
+        /*locationrd[0].checked=false;*/
+        /*locationrd[0].disabled=true;*/
+      /*}*/
+      elocationmg[0].checked=false;
+      elocationusr[0].checked=false;
+      elocationown[0].checked=false;
+
+      locationmg[0].checked=false;
+      locationmg[0].disabled=true;
+      locationusr[0].checked=false;
+      locationusr[0].disabled=true;
+      locationown[0].checked=false;
+      locationown[0].disabled=true;
+      
+      elocationm[0].checked=false;
+      elocationm[0].disabled=true;
+      
+      elocationrd[2].checked=false;
+      elocationmg[2].checked=false;
+      elocationusr[2].checked=false;
+      elocationown[2].checked=false;
+
+      locationrd[2].checked=false;
+      locationrd[2].disabled=true;
+      locationmg[2].checked=false;
+      locationmg[2].disabled=true;
+      locationusr[2].checked=false;
+      locationusr[2].disabled=true;
+      locationown[2].checked=false;
+      locationown[2].disabled=true;
+      
+      elocationm[2].checked=false;
+      elocationm[2].disabled=true;
+      
+      
+    } 
+    else
+    {
+      if(locationrd[0].disabled==true)
+      {
+        locationrd[0].disabled=false;
+      }
+      locationmg[0].disabled=false;
+      locationusr[0].disabled=false;
+      locationown[0].disabled=false;
+      elocationm[0].disabled=false;
+      
+      locationrd[2].disabled=false;
+      locationmg[2].disabled=false;
+      locationusr[2].disabled=false;
+      locationown[2].disabled=false;
+      elocationm[2].disabled=false;
+    }
+
+    /* when Student administrator is selected, uncheck Student Info*/
+    if(inputElements[13].checked){
+      
+      /*when student INFO read available for selection*/
+      /*if(studentrd[4].disabled==false)*/
+      /*{*/
+        /*estudentrd[4].checked=false;*/
+        /*studentrd[4].checked=false;*/
+        /*studentrd[4].disabled=true;*/
+      /*}*/
+      /*estudentrd[1].checked=false;*/
+      /*studentrd[1].checked=false;*/
+      /*studentrd[1].disabled=true;*/
+      
+      /*refer Warden OR Lecturer (else part) for Student Attendance*/
+      /*refer Warden ONLY (elsepart) for Student INFOs*/
+      
+      estudentmg[1].checked=false;
+      estudentusr[1].checked=false;
+      estudentown[1].checked=false;
+        
+      studentmg[1].checked=false;
+      studentmg[1].disabled=true;
+      studentusr[1].checked=false;
+      studentusr[1].disabled=true;
+      studentown[1].checked=false;
+      studentown[1].disabled=true;
+      
+      estudentm[1].checked=false;
+      estudentm[1].disabled=true;
+      
+      estudentmg[4].checked=false;
+      estudentusr[4].checked=false;
+      estudentown[4].checked=false;
+        
+      studentmg[4].checked=false;
+      studentmg[4].disabled=true;
+      studentusr[4].checked=false;
+      studentusr[4].disabled=true;
+      studentown[4].checked=false;
+      studentown[4].disabled=true;
+      
+      estudentm[4].checked=false;
+      estudentm[4].disabled=true;
+    } 
+    else
+    {
+      /*when student INFO available for selection*/
+      /*if(studentrd[4].disabled==true)*/
+      /*{*/
+        /*studentrd[4].disabled=false;*/
+      /*}*/
+      /*studentrd[1].disabled=false;*/
+      studentmg[1].disabled=false;
+      studentusr[1].disabled=false;
+      studentown[1].disabled=false;
+      estudentm[1].disabled=false;
+      
+      studentmg[4].disabled=false;
+      studentusr[4].disabled=false;
+      studentown[4].disabled=false;
+      estudentm[4].disabled=false;
+    }
+    
+    /*Warden || Lecturer*/
+    if((inputElements[6].checked) || (inputElements[12].checked))
+    {
+        /*student leave*/
+        estudentmg[0].checked=false;
+        estudentrd[0].checked=false;
+        estudentusr[0].checked=false;
+        estudentown[0].checked=false;
+      
+        studentmg[0].checked=false;
+        studentmg[0].disabled=true;
+        studentrd[0].checked=false;
+        studentrd[0].disabled=true;
+        studentusr[0].checked=false;
+        studentusr[0].disabled=true;
+        studentown[0].checked=false;
+        studentown[0].disabled=true;
+      
+        estudentm[0].checked=false;
+        estudentm[0].disabled=true;
+        
+        if(studentrd[1].disabled==false)
+       {
+          /*student attendance*/
+          estudentrd[1].checked=false;
+      
+          studentrd[1].checked=false;
+          studentrd[1].disabled=true;
+        }
+        if(inputElements[12].checked)
+        {
+          /*student attendance : admin, user, owner*/
+          for(i=1; i < 2; i++){
+
+            estudentmg[i].checked=false;
+            estudentusr[i].checked=false;
+            estudentown[i].checked=false;
+
+            studentmg[i].checked=false;
+            studentmg[i].disabled=true;
+            studentusr[i].checked=false;
+            studentusr[i].disabled=true;
+            studentown[i].checked=false;
+            studentown[i].disabled=true;
+        
+            estudentm[i].checked=false;
+            estudentm[i].disabled=true;  
+          }
+        }
+    }
+    else
+    {
+      studentmg[0].disabled=false;
+      studentrd[0].disabled=false;
+      studentusr[0].disabled=false;
+      studentown[0].disabled=false;
+      
+      /*Requires checking here - warden OR lecturer not selected, but Student Administrator OR Counselor OR Disciplinary Officer is selected*/
+      /*if(studentrd[1].disabled==true)*/
+      if((inputElements[13].checked) || (inputElements[10].checked) || (inputElements[18].checked))
+      /*student attendance*/
+      { studentrd[1].disabled=true;}
+      else
+      { studentrd[1].disabled=false;}
+      
+      if(inputElements[12].checked)
+      {
+        for(i=1; i < 2; i++){
+          studentrd[i].disabled=false;
+          studentmg[i].disabled=false;
+          studentusr[i].disabled=false;
+          studentown[i].disabled=false;
+          estudentm[i].disabled=false;
+        }
+      }
+    }
+
+    /* when Warden is selected, uncheck Location(R), Tenant(R), Student Infos(R) + Student Leaves module manage & read*/
+    if(inputElements[6].checked){
+      if(locationrd[0].disabled==false)
+      {
+        elocationrd[0].checked=false;
+        locationrd[0].checked=false;
+        locationrd[0].disabled=true;
+      }
+      if(locationrd[1].disabled==false)
+      {
+        elocationrd[1].checked=false;
+        locationrd[1].checked=false;
+        locationrd[1].disabled=true;
+      }
+      
+      /* when student INFO available for selection*/
+      if(studentrd[4].disabled==false)
+      {
+        /*student info*/
+        estudentrd[4].checked=false;
+      
+        studentrd[4].checked=false;
+        studentrd[4].disabled=true;
+      }
+      
+      if(studentrd[2].disabled==false)
+      {
+        /*student counseling*/
+        estudentrd[2].checked=false;
+      
+        studentrd[2].checked=false;
+        studentrd[2].disabled=true;
+      }
+      if(studentrd[3].disabled==false)
+      {
+        /*student discipline*/
+        estudentrd[3].checked=false;
+      
+        studentrd[3].checked=false;
+        studentrd[3].disabled=true;
+      }
+
+    } 
+    else
+    {
+      /*Requires checking here, IF NOT a Warden, but either Asset Administrator OR Facilities Administrator*/
+      if(inputElements[11].checked)
+      {  locationrd[0].disabled=true;}
+      else
+      {  locationrd[0].disabled=false;}
+      /* When warden is not selected, but Asset Administrator OR Facilities Administrator */
+      /*OR Staff role is selected, disable Location(R) - NOTE - staff role exclude Location reporting-PDF / Excel  */
+      /*|| (inputElements[5].checked))*/
+      if((inputElements[9].checked) || (inputElements[11].checked) )
+      {  locationrd[1].disabled=true;}
+      else
+      {  locationrd[1].disabled=false;}
+      
+      /*Requires checking here - WARDEN not selected, but Student Administrator OR Counselor OR Disciplinary Officer OR Librarian is selected*/
+      /*if(studentrd[1].disabled==true)*/
+      if((inputElements[13].checked) || (inputElements[10].checked) || (inputElements[18].checked) || (inputElements[4].checked))
+      /*student Info*/
+      { studentrd[4].disabled=true;}
+      else
+      { studentrd[4].disabled=false;}
+      
+      
+      /*student counseling, discipline*/      
+      if(inputElements[10].checked)
+      { studentrd[2].disabled=true;}
+      else
+      { studentrd[2].disabled=false;}
+      
+      if(inputElements[18].checked)
+      { studentrd[3].disabled=true;}
+      else
+      { studentrd[3].disabled=false;}
+      
+      
+    }
+
+    /* when Lecturer OR/AND Warden is/are selected, uncheck Student Leaves module manage & read*/
+    /*when Lecturer is checked, uncheck Student Attendance + Student Leaves module manage & read*/
+    /*when Lecturer is selected, uncheck training notes, 2 rules already define 4 lecturer + (manage & read)Training Notes, Lesson Plans, Weeklytimetables*/
+    if(inputElements[12].checked){  
+      etrainingmg[0].checked=false;
+      etrainingrd[0].checked=false;
+      etrainingusr[0].checked=false;
+      etrainingown[0].checked=false;
+      
+      trainingmg[0].checked=false;
+      trainingmg[0].disabled=true;
+      trainingrd[0].checked=false;
+      trainingrd[0].disabled=true;
+      trainingusr[0].checked=false;
+      trainingusr[0].disabled=true;
+      trainingown[0].checked=false;
+      trainingown[0].disabled=true;
+      
+      etrainingm[0].checked=false;
+      etrainingm[0].disabled=true;
+      
+      etrainingmg[4].checked=false;
+      etrainingrd[4].checked=false;
+      etrainingusr[4].checked=false;
+      etrainingown[4].checked=false;
+      
+      trainingmg[4].checked=false;
+      trainingmg[4].disabled=true;
+      trainingrd[4].checked=false;
+      trainingrd[4].disabled=true;
+      trainingusr[4].checked=false;
+      trainingusr[4].disabled=true;
+      trainingown[4].checked=false;
+      trainingown[4].disabled=true;
+      
+      etrainingm[4].checked=false;
+      etrainingm[4].disabled=true;
+        
+      etrainingmg[7].checked=false;
+      etrainingrd[7].checked=false;
+      etrainingusr[7].checked=false;
+      etrainingown[7].checked=false;
+      
+      trainingmg[7].checked=false;
+      trainingmg[7].disabled=true;
+      trainingrd[7].checked=false;
+      trainingrd[7].disabled=true;
+      trainingusr[7].checked=false;
+      trainingusr[7].disabled=true;
+      trainingown[7].checked=false;
+      trainingown[7].disabled=true;
+      
+      etrainingm[7].checked=false;
+      etrainingm[7].disabled=true;
+      
+      /* EXAM OWN */
+      
+    }
+    else
+    {
+      
+      trainingmg[0].disabled=false;
+      trainingrd[0].disabled=false;
+      trainingusr[0].disabled=false;
+      trainingown[0].disabled=false;
+      etrainingm[0].disabled=false;
+      
+      trainingmg[4].disabled=false;
+      trainingrd[4].disabled=false;
+      trainingusr[4].disabled=false;
+      trainingown[4].disabled=false;
+      etrainingm[4].disabled=false;
+      
+      trainingmg[7].disabled=false;
+      trainingrd[7].disabled=false;
+      trainingusr[7].disabled=false;
+      trainingown[7].disabled=false;
+      etrainingm[7].disabled=false;
+    }
+    
+    /*when Disciplinary Officer is selected, uncheck Student Discipline & Student Counseling, must follow assigned rules in Disciplinary officer*/
+    if(inputElements[18].checked)
+    {
+      estudentmg[3].checked=false;
+      estudentrd[3].checked=false;
+      estudentusr[3].checked=false;
+      estudentown[3].checked=false;
+
+      studentmg[3].checked=false;
+      studentmg[3].disabled=true;
+      studentrd[3].checked=false;
+      studentmg[3].disabled=true;
+      studentusr[3].checked=false;
+      studentmg[3].disabled=true;
+      studentown[3].checked=false;
+      studentmg[3].disabled=true;
+        
+      estudentm[3].checked=false;
+      estudentm[3].disabled=true;
+        
+      studentrd[2].checked=false
+      studentrd[2].disabled=true;
+    }
+    else
+    {
+      if(inputElements[10].checked)
+      {
+        studentrd[2].disabled=true;
+        studentmg[2].disabled=true;
+        studentusr[2].disabled=true;
+        studentown[2].disabled=true;
+        studentrd[3].disabled=true;
+      }
+      else
+      {
+        studentrd[2].disabled=false;
+        studentmg[2].disabled=false;
+        studentusr[2].disabled=false;
+        studentown[2].disabled=false;
+        studentrd[3].disabled=false;
+      }
+      studentmg[3].disabled=false;
+      studentusr[3].disabled=false;
+      
+      /*When Disciplinary Officer is not selected, but Staff role is selected, disable Student Discipline Case(O)*/
+      if(inputElements[5].checked)
+      {  
+        studentown[3].disabled=true;
+        studentown[3].checked=false;
+      }
+      else
+      {  studentown[3].disabled=false;}
+      
+      /* refer for (Disciplinary Officer(else-Student Discipline Case(R)), Warden Only(else - Student Info(R)) & Warden OR Lecturer(Student Attendance(R)) */
+    }
+    
+    /*when Student Counsellor is selected, uncheck Student Counseling & Student(R)+Student Discipline too, counselor should not hv access 4 discipline*/
+    /*must follows rules as specified for Student Counselor*/
+    if(inputElements[10].checked)
+    {
+      estudentmg[2].checked=false;
+      estudentrd[2].checked=false;
+      estudentusr[2].checked=false;
+      estudentown[2].checked=false;
+
+      studentmg[2].checked=false;
+      studentmg[2].disabled=true;
+      studentrd[2].checked=false;
+      studentmg[2].disabled=true;
+      studentusr[2].checked=false;
+      studentmg[2].disabled=true;
+      studentown[2].checked=false;
+      studentmg[2].disabled=true;
+        
+      estudentm[2].checked=false;
+      estudentm[2].disabled=true;
+      
+      studentrd[3].checked=false
+      studentrd[3].disabled=true;
+    }
+    else
+    {
+      if(inputElements[18].checked)
+     {
+        studentrd[3].disabled=true;
+        studentmg[3].disabled=true;
+        studentusr[3].disabled=true;
+        studentrd[2].disabled=true;
+      }
+      else
+      {
+        studentrd[3].disabled=false;
+        studentmg[3].disabled=false;
+        studentusr[3].disabled=false;
+        studentrd[2].disabled=false;
+      }
+      
+      studentmg[2].disabled=false;
+      studentusr[2].disabled=false;
+      studentown[2].disabled=false;
+      
+      /*When Student Counsellor is not selected, but Staff role OR Disciplinary Officer is selected, disable Student Discipline Case(O)*/
+      if((inputElements[5].checked) || (inputElements[18].checked))
+      {  studentown[3].disabled=true;}
+      else
+      {  studentown[3].disabled=false;}
+      
+      /* refer for (Student Counselor(else-Feedback), Warden Only(else - Student Info(R)) & Warden OR Lecturer(Student Attendance(R) */
+    }
+    
+    
+    /*when Programme Manager is selected, uncheck Training Programmes, Training Academic Sessions, Training Intakes, Training Timetables, Training Topic Details*/
+    if(inputElements[17].checked){
+      for(i=1;i<4;i++){
+        etrainingmg[i].checked=false;
+        etrainingrd[i].checked=false;
+        etrainingusr[i].checked=false;
+        etrainingown[i].checked=false;
+        
+        trainingmg[i].checked=false;
+        trainingmg[i].disabled=true;
+        trainingrd[i].checked=false;
+        trainingrd[i].disabled=true;
+        trainingusr[i].checked=false;
+        trainingusr[i].disabled=true;
+        trainingown[i].checked=false;
+        trainingown[i].disabled=true;
+        
+        etrainingm[i].checked=false;
+        etrainingm[i].disabled=true;
+      }
+      for(i=5;i<7;i++){
+        etrainingmg[i].checked=false;
+        etrainingrd[i].checked=false;
+        etrainingusr[i].checked=false;
+        etrainingown[i].checked=false;
+        
+        trainingmg[i].checked=false;
+        trainingmg[i].disabled=true;
+        trainingrd[i].checked=false;
+        trainingrd[i].disabled=true;
+        trainingusr[i].checked=false;
+        trainingusr[i].disabled=true;
+        trainingown[i].checked=false;
+        trainingown[i].disabled=true;
+        
+        etrainingm[i].checked=false;
+        etrainingm[i].disabled=true;
+      }
+      for(i=0; i<1; i++){
+        courseevalmg[i].checked=false;
+        courseevalrd[i].checked=false;
+        courseevalusr[i].checked=false;
+        ecourseevalown[i].checked=false;
+        
+        courseevalmg[i].checked=false;
+        courseevalmg[i].disabled=true;
+        courseevalrd[i].checked=false;
+        courseevalrd[i].disabled=true;
+        courseevalusr[i].checked=false;
+        courseevalusr[i].disabled=true;
+        courseevalown[i].checked=false;
+        courseevalown[i].disabled=true;
+        
+        ecourseevalm[i].checked=false;
+        ecourseevalm[i].disabled=true;
+      }
+    }
+    else
+    {
+      for(i=1;i<4;i++){
+        trainingmg[i].disabled=false;
+        trainingrd[i].disabled=false;
+        trainingusr[i].disabled=false;
+        trainingown[i].disabled=false;
+        etrainingm[i].disabled=false;
+      }
+      for(i=5;i<6;i++){
+        trainingmg[i].disabled=false;
+        trainingrd[i].disabled=false;
+        trainingusr[i].disabled=false;
+        trainingown[i].disabled=false;
+        etrainingm[i].disabled=false;
+      }
+      trainingrd[6].disabled=false;
+      trainingusr[6].disabled=false;
+      trainingown[6].disabled=false;
+      etrainingm[6].disabled=false;
+      
+      /* When PROGRAMME MANAGER is not selected, hide access for ALL unless assign role as STUDENT*/
+      if(inputElements[2].checked)
+      {
+        courseevalmg[0].disabled=false;
+        courseevalrd[0].disabled=false;
+        courseevalusr[0].disabled=false;
+        courseevalown[0].disabled=true;
+        ecourseevalm[0].disabled=false;
+      }
+      else
+      {
+        for(i=0; i<1; i++){
+          courseevalmg[i].disabled=false;
+          courseevalrd[i].disabled=false;
+          courseevalusr[i].disabled=false;
+          courseevalown[i].disabled=false;
+          ecourseevalm[i].disabled=false;
+        }
+      }
+      /*when PROGRAMME MANAGER is not selected, but Unit Leader is selected, programme (Manage) is hide*/
+      if(inputElements[21].checked)
+      {  trainingmg[6].disabled=true;}
+      else
+      {  trainingmg[6].disabled=false;}
+    }
+    
+    /*when role : STUDENT is selected, uncheck course evaluation, student info(O), student leaves(O)*/
+    if(inputElements[2].checked){
+      for(i=0; i<1; i++){
+        courseevalmg[i].checked=false;
+        courseevalrd[i].checked=false;
+        courseevalusr[i].checked=false;
+        ecourseevalown[i].checked=false;
+        
+        courseevalmg[i].checked=false;
+        courseevalmg[i].disabled=true;
+        courseevalrd[i].checked=false;
+        courseevalrd[i].disabled=true;
+        courseevalusr[i].checked=false;
+        courseevalusr[i].disabled=true;
+        courseevalown[i].checked=false;
+        courseevalown[i].disabled=true;
+        
+        ecourseevalm[i].checked=false;
+        ecourseevalm[i].disabled=true;
+      }
+      studentown[4].disabled=true;
+      studentown[0].disabled=true;
+    }
+    
+    
+    ///
+    /*when role : Staff is selected, uncheck Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Locations(R), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R)*/
+    if(inputElements[5].checked){
+      /*a_staffown[2].disabled=true;*/
+      /*c_staffown[3].disabled=true;*/
+      /*d_staffown[0].disabled=true;*/
+      /*d_staffown[1].disabled=true;*/
+      b_staffown[0].disabled=true;
+      /*b_staffown[1].disabled=true;*/
+      /*assetrd[5].disabled=true;*/
+      /*assetown[4].disabled=true;*/
+      /*assetown[1].disabled=true;*/
+      /*studentown[3].disabled=true;*/
+      /*locationrd[1].disabled=true;*/
+      fileown[0].disabled=true;
+      filerd[1].disabled=true;
+      /*fileown[3].disabled=true;*/
+      /*libraryrd[1].disabled=true;*/
+      /*libraryrd[0].disabled=true;*/
+    }
+    else
+    {
+      b_staffown[0].disabled=false;
+      fileown[0].disabled=false;
+      filerd[1].disabled=false;
+    }
+    ///
+    
+    /SAME AS - EACH part - default value - at any time/
+    /*set by default at all time - Student Attendance (Member) not applicable - refer auth rules*/
+    studentown[1].checked=false;
+    studentown[1].disabled=true;
+    
+    /*set by default at all time - Student Counseling Sessions (Member) not applicable - refer auth rules*/
+    studentown[2].checked=false;
+    studentown[2].disabled=true;
+    
+    /*set by default at all time - Tenants (Member) not applicable - refer auth rules*/
+    locationown[0].checked=false;
+    locationown[0].disabled=true;
+    
+    /*set by default at all time - Locations (Member) not applicable - refer auth rules*/
+    locationown[1].checked=false;
+    locationown[1].disabled=true;
+    
+    /*set by default at all time - Location Damages (Member) not applicable - refer auth rules*/
+    locationown[2].checked=false;
+    locationown[2].disabled=true;
+    
+    /*set by default at all time - Student Info (Member) not applicable - refer auth rules*/
+    studentown[4].checked=false;
+    studentown[4].disabled=true;
+    
+    /*set by default at all time - Training Notes (Member) not applicable - refer auth rules*/
+    trainingown[0].checked=false;
+    trainingown[0].disabled=true;
+
+    /*set by default at all time - Academic Sessions (Member) not applicable - refer auth rules*/
+    trainingown[1].checked=false;
+    trainingown[1].disabled=true;
+    
+    /*set by default at all time - Lesson Plan & Report (Member) not applicable - refer auth rules*/
+    trainingown[4].checked=false;
+    trainingown[4].disabled=true;
+    
+    /*set by default at all time - Topic Details (Member) not applicable - refer auth rules*/
+    trainingown[5].checked=false;
+    trainingown[5].disabled=true;
+    
+    /*set by default at all time - Programmes (Member) not applicable - refer auth rules*/
+    trainingown[6].checked=false;
+    trainingown[6].disabled=true;
+    
+    /*set by default at all time - Library Transactions & Library Books (Member) not applicable - refer auth rules*/
+    libraryown[0].checked=false;
+    libraryown[0].disabled=true;
+    libraryown[1].checked=false;
+    libraryown[1].disabled=true;
+    
+    /*set by default at all time - Stationeries (Member) not applicable - refer auth rules*/
+    assetown[0].checked=false;
+    assetown[0].disabled=true;
+    
+    /*set by default at all time - Asset Losses (Member) not applicable - refer auth rules*/
+    assetown[1].checked=false;
+    assetown[1].disabled=true;
+    
+    /*set by default at all time - Asset Disposals (Member) not applicable - refer auth rules*/
+    assetown[3].checked=false;
+    assetown[3].disabled=true;
+    
+//     $j("#form1").submit();
+  });
+
+  
+  
+});
+
+</script>

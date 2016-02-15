@@ -1,5 +1,8 @@
 class EventsController < ApplicationController
-  filter_access_to :all
+  #filter_access_to :all
+  filter_resource_access
+  filter_access_to :index, :new, :create, :calendar, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   # GET /events
   # GET /events.xml
   def index

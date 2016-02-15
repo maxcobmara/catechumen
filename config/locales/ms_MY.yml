@@ -80,6 +80,7 @@ ms_MY:
   not_required: Tidak Diperlukan
   note: Nota
   check_uncheck_all: "Pilih / Nyahpilih semua rekod"
+  uncheck: Nyahpilih
   select_one: "Sila pilih sekurang - kurangnya 1 rekod untuk disunting."
   all: Semua
   reservable: Boleh dipinjam
@@ -343,6 +344,7 @@ ms_MY:
     cpassword: Pengesahan Kata Laluan
     login_roles: Peranan Log Masuk
     select_role: Pilih peranan tambahan untuk pengguna ini
+    select_module: atau Pillih akses berdasarkan modul untuk pengguna ini
     signup: Daftar
     all: Semua
     verify: Untuk disahkan
@@ -372,10 +374,339 @@ ms_MY:
     #testing_role: Peranan Cubaan
     unit_leader: Ketua Unit
     e_filing: Fail Elektronik
+    exam_administration: Pentadbir Peperiksaan
     registered: "Terima kasih kerana mendaftar! Permohonan anda akan diproses oleh Unit Teknologi Maklumat."
     registration_failed: "Maaf, akaun tidak dapat didaftarkan. Sila cuba lagi, atau hubungi pentadbir sistem."
     provide_login_password: Sila masukkan log masuk dan kata laluan dan klik ikon Log Masuk
     problem_signing: "Hubungi pentadbir sistem untuk sebarang masalah ketika log masuk ke dalam ICMS."
+    remove_selected_module_access: " untuk mengeluarkan capaian modul yang dipilih"
+      
+    staff_administrator_modules: "Staf, Kedatangan Staf, Fingerprint, Perjawatan"
+    finance_unit_modules: "Tuntutan Perjalanan, Belanjawan Latihan"
+    training_administration_modules: "Belanjawan Latihan, Kursus Latihan, Jadual Latihan, Kedatangan Latihan"
+    training_manager_modules: "Belanjawan Latihan, Kursus Latihan, Jadual Latihan, Kedatangan Latihan"
+    staff_modules: "Staf(O), Kedatangan Staf(O), Kedatangan Latihan(O), Penilaian Staf(O), Cuti Staf(O), Permohonan Perjalanan(O), Tuntutan Perjalanan(O), Senarai Aset(R), Kerosakan Aset(O), Peminjaman Aset(O), Kes Disiplin Pelajar(O), Lokasi(R), Acara(O), Buletin(R), Daftar Dokumen(O), Buku Perpustakaan(R), Analisis & Statistik Perpustakaan(R)"
+    asset_administrator_modules: "Kehilangan Aset, Peminjaman Aset, Pelupusan Aset, Kerosakan Aset, Senarai Aset, Lokasi"
+    e_filing_modules: "Daftar Fail, Daftar Dokumen"
+    facilities_administrator_modules: "Lokasi, Kerosakan di Lokasi, Kediaman Pelajar, Kediaman Staf"
+    warden_modules: "Lokasi(R), Kediaman Pelajar(R), Cuti Pelajar, Maklumat Pelajar(R), Kedatangan Pelajar(R), Kes Disiplin Pelajar(R), Sesi Kaunseling Pelajar(R)"
+    student_administrator_modules: "Maklumat Pelajar, Kedatangan Pelajar"
+    student_counsellor_modules: "Sesi Kaunseling Pelajar, Kes Disiplin Pelajar(R), Maklumat Pelajar(R), Kedatangan Pelajar(R)"
+    disciplinary_officer_modules: "Kes Disiplin Pelajar, Sesi Kaunseling Pelajar(Kes), Maklumat Pelajar(R), Kedatangan Pelajar(R)"
+    student_modules: "Penilaian Kursus, Maklumat Pelajar(O), Cuti Pelajar(O)"
+    lecturer_modules: "Cuti Pelajar(Penyelaras), Kedatangan Pelajar, Jadual Waktu Mingguan(Penyelaras), Jadual Waktu Mingguan(O:Jadual Waktu Individu), Nota Latihan(O), Pelan Pengajaran(O), Soalan Peperiksaan(O)"
+    programme_manager_modules: "Program, Sesi Akademik, Ambilan Pelajar, Jadual Waktu, Butiran Topik, Soalan Peperiksaan, Penilaian Kursus, Keputusan Peperiksaan(R), Analisis Peperiksaan(R), Kedatangan Latihan(O), Kedatangan Staf(O), Jadual Waktu Mingguan(O), Pelan Pengajaran(O)"
+    exam_administration_modules: "Soalan Peperiksaan, Template Peperiksaan, Kertas Peperiksaan, Markah Peperiksaan, Gred Peperiksaan, Keputusan Peperiksaan, Analisis Peperiksaan"
+    unit_leader_modules: "Kedatangan Latihan(O), Kedatangan Staf(O), Program(Subjek Asas)"
+    administration_staff_modules: "Kedatangan Latihan(HOD), Kedatangan Staf(HOD)"
+    librarian_modules: "Buku Perpustakaan, Transaksi Peperiksaan, Maklumat Pelajar(R)"
+
+    modules: Modul
+    admin: Pentadbir
+    viewer: Paparan
+    user: Pengguna
+    member: Pemilik
+    admin_access: boleh lakukan kesemuanya
+    viewer_access: "boleh menyenarai, mencetak rekod serta menyemak laporan sahaja"
+    user_access: "boleh memapar & mengemaskini semua rekod"
+    member_access: "hanya boleh memapar dan menyunting rekod sendiri"
+
+    ###
+    rule1: "Aktifkan peranan 'Staf' atau akses bagi modul Staf (Pentadbir/Paparan/Pengguna/Pemilik) bagi memastikan semua akses mengikut dapat berfungsi."
+    rule2: "Kedatangan Staf perlu digunakan bersama Fingerprint, bagi membolehkan 'Pengurusan Datang Lewat dan Pulang Awal' berfungsi."
+    rule3: "Tuntutan Perjalanan perlu digunakan bersama Permohonan Perjalanan, bagi capaian rekod kelulusan Permohonan Perjalanan."
+    rule4: "Modul Tuntutan Perjalanan (Pemilik) - berfungsi hanya untuk Pemohon & Pelulus Akhir. Penyemak Kewangan memerlukan peranan 'Unit Kewangan'. Sila beri perhatian, sebaik peranan 'Unit Kewangan' diaktifkan, kesemua jenis capaian mengikut bagi modul Tuntutan Perjalanan & Belanjawan Latihan tidak boleh dipilih."
+    rule5: "Modul Belanjawan Latihan dan Kursus Latihan memerlukan akses ke atas modul Kedatangan Latihan terlebih dahulu (Paparan atau Pemilik)."
+    rule6: "Modul Kehadiran Latihan memrlukan akses ke atas modul Jadual Latihan (Paparan atau Pemilik) diaktifkan."
+    rule7: "Modul Kehadiran Latihan (Pemilik) hanya berfungsi bagi pemohon. Pelulus memerlukan peranan tambahan / gantian seperti berikut :"
+    rule7a: "Kelulusan Jabatan (Akademik) - memerlukan peranan tambahan 'Ketua Program' diaktifkan."
+    rule7b: "Kelulusan Unit (Pengurusan), Kelulusan Jabatan (Pengurusan) & Kelulusan Akhir (Pengarah) tidak dapat berfungsi. Penyelesaiannya, nyahpilih modul Kehadiran Latihan (Pemilik) dan aktifkan peranan 'Unit Kewangan'."
+    rule8: "Modul Cuti Pelajar (Pemilik) hanya berfungsi bagi pemohon. Bagi tujuan kelulusan (Warden & Penyelaras) aktifkan peranan Wardan dan / atauPengajar."                   
+    rule9a: "Aktifkan peranan 'Staf' atau modul Kes Disiplin Pelajar (pemilik) bagi menggunakan fungsian pelapor kes, Ketua Program dan TPHEP."
+    rule9b: "Aktifkan peranan 'Pegawai Disiplin' bagi mendapatkan akses Pegawai Disiplin."
+    rule10: "Modul Nota Latihan (Pentadbir/Paparan/Pengguna) perlu diaktifkan bagi paparan item - item menu :"
+    rule10a: "Data Sokongan : Sesi Akademik, Ambilan Pelajar, Jadual Waktu."
+    rule10b: "Modul berkaitan Latihan : Jadual Waktu Mingguan, Pelan & Laporan Pengajaran, Butiran Topik."
+    rule11: "Modul Butiran Topik memerlukan akses modul Pelan & Laporan Pengajaran (Pentadbir/Paparan/Pengguna)."
+    rule12: "Template Peperiksaan mesti digunakan bersama modul Kertas Peperiksaan."
+    rule13: "Pengurusan Peperiksaan (Markah Peperiksaan, Gred Peperiksaan) memerlukan akses modul Keputusan Peperiksaan (Pentadbir/Paparan/Pengguna/Pemilik) diaktifkan."
+    rule14: "Peminjaman Aset, Pelupusan Aset dan Kerosakan Asset (aset boleh dipinjam & item menu), perlu aktifkan modul Senarai Aset (Pentadbir/Paparan/Pengguna/Pemilik)."
+    rule15: "Modul Kerosakan Aset (Pemilik) hanya berfungsi untuk pelapor kerosakan dan pembuat keputusan. Bagi memproses kerosakan aset yang dilaporkan, sila gunakan peranan 'Pentadbir Aset'."
+    rule16: "Butiran harga aset hanya boleh disemak oleh pengguna dengan peranan 'Pentadbiran' atau 'Pentadbir Aset' atau pengguna yang mempunyai akses kepada modul Senarai Aset (Pentadbir/Pengguna)."
+    rule17: "Modul E-Filing modules (Acara, Buletin, Daftar Fail) memerlukan akses kepada modul Daftar Dokumen (Pentadbir/Paparan/Pengguna/Pemilik) diaktifkan."
+    ###
+    
+    e_library: "E-Perpustakaan"
+    exam: "Penyediaan & Pengurusan Peperiksaan"
+    training: Sokongan Pembelajaran
+    support: "Pentadbiran / Data Sokongan"
+    staff_registry: Daftar Staf
+    student_affairs: Hal Ehwal Pelajar
+    asset_facilities_residences: "Aset, Kemudahan & Kediaman"
+    
+    roles_modules: "Peranan & Modul Berkaitan"
+    access_module: Capaian Mengikut Modul
+    related_rules: Peraturan Berkaitan
+    
+    events_module_admin: Pentadbir Modul Acara
+    bulletins_module_admin: Pentadbir Modul Buletin
+    files_module_admin: Pentadbir Modul Fail
+    documents_module_admin: Pentadbir Modul Daftar Dokumen
+    events_module_viewer: Paparan Modul Acara
+    bulletins_module_viewer: Paparan Modul Buletin
+    files_module_viewer: Paparan Modul Fail
+    documents_module_viewer: Paparan Modul Daftar Dokumen
+    events_module_user: Pengguna Modul Acara
+    bulletins_module_user: Pengguna Modul Buletin
+    files_module_user: Pengguna Modul Fail
+    documents_module_user: Pengguna Modul Daftar Dokumen
+    events_module_member: Pemilik Modul Acara
+    bulletins_module_member: Pemilik Modul Buletin
+    files_module_member: Pemilik Modul Fail
+    documents_module_member: Pemilik Modul Daftar Dokumen
+    events: Acara
+    bulletins: Buletin
+    files: Daftar Fail
+    documents: Daftar Dokumen
+    
+    library_transactions_module_admin: Pentadbir Modul Transaksi Perpustakaan
+    library_books_module_admin: Pentadbir Modul Buku Perpustakaan
+    library_transactions_module_viewer: Paparan Modul Transaksi Perpustakaan
+    library_books_module_viewer: Paparan Modul Buku Perpustakaan
+    library_transactions_module_user: Pengguna Modul Transaksi Perpustakaan
+    library_books_module_user: Pengguna Modul Buku Perpustakaan
+    library_transactions_module_member: Pemilik Modul Transaksi Perpustakaan
+    library_books_module_member: Pemilik Modul Buku Perpustakaan
+    library_transactions: Transaksi Perpustakaan
+    library_books: Buku Perpustakaan
+    
+    exam_templates_module_admin: Pentadbir Modul Template Peperiksaan
+    examresults_module_admin: Pentadbir Modul Keputusan Peperiksaan
+    exam_grade_module_admin: Pentadbir Modul Gred Peperiksaan
+    exammarks_module_admin: Pentadbir Modul Markah Peperiksaan
+    exam_analysis_module_admin: Pentadbir Modul Analisis Peperiksaan
+    exampaper_module_admin: Pentadbir Modul Kertas Peperiksaan
+    examquestions_module_admin: Pentadbir Modul Soalan Peperiksaan
+    course_evaluation_module_admin: Pentadbir Modul Penilaian Kursus
+    exam_templates_module_viewer: Paparan Modul Template Peperiksaan
+    examresults_module_viewer: Paparan Modul Keputusan Peperiksaan
+    exam_grade_module_viewer: Paparan Modul Gred Peperiksaan
+    exammarks_module_viewer: Paparan Modul Markah Peperiksaan
+    exam_analysis_module_viewer: Paparan Modul Analisis Peperiksaan
+    exampaper_module_viewer: Paparan Modul Kertas Peperiksaan
+    examquestions_module_viewer: Paparan Modul Soalan Peperiksaan
+    course_evaluation_module_viewer: Paparan Modul Penilaian Kursus
+    exam_templates_module_user: Pengguna Modul Template Peperiksaan
+    examresults_module_user: Pengguna Modul Keputusan Peperiksaan
+    exam_grade_module_user: Pengguna Modul Gred Peperiksaan
+    exammarks_module_user: Pengguna Modul Markah Peperiksaan
+    exam_analysis_module_user: Pengguna Modul Analisis Peperiksaan
+    exampaper_module_user: Pengguna Modul Kertas Peperiksaan
+    examquestions_module_user: Pengguna Modul Soalan Peperiksaan
+    course_evaluation_module_user: Pengguna Modul Penilaian Kursus
+    exam_templates_module_member: Pemilik Modul Template Peperiksaan
+    examresults_module_member: Pemilik Modul Keputusan Peperiksaan
+    exam_grade_module_member: Pemilik Modul Gred Peperiksaan
+    exammarks_module_member: Pemilik Modul Markah Peperiksaan
+    exam_analysis_module_member: Pemilik Modul Analisis Peperiksaan
+    exampaper_module_member: Pemilik Modul Kertas Peperiksaan
+    examquestions_module_member: Pemilik Modul Soalan Peperiksaan
+    course_evaluation_module_member: Pemilik Modul Penilaian Kursus
+    exam_templates: Template Peperiksaan
+    examresults: Keputusan Peperiksaan
+    exam_grade: Gred Peperiksaan
+    exammarks: Markah Peperiksaan
+    exam_analysis: Analisis Peperiksaan
+    exampaper: Kertas Peperiksaan
+    examquestions: Soalan Peperiksaan
+    course_evaluation: Penilaian Kursus
+    
+    training_notes_module_admin: Pentadbir Modul Nota Pembelajaran
+    academic_session_module_admin: Pentadbir Modul Sesi Akademik
+    student_intake_module_admin: Pentadbir Modul Ambilan Pelajar
+    timetables_module_admin: Pentadbir Modul Jadual Waktu
+    lesson_plans_module_admin: Pentadbir Modul Pelan Pembelajaran
+    topic_details_module_admin: Pentadbir Modul Butiran Topik
+    programmes_module_admin: Pentadbir Modul Program
+    weeklytimetables_module_admin: Pentadbir Modul Jadual Waktu Mingguan
+    training_notes_module_viewer: Paparan Modul Nota Pembelajaran
+    academic_session_module_viewer: Paparan Modul Sesi Akademik
+    student_intake_module_viewer: Paparan Modul Ambilan Pelajar
+    timetables _module_viewer: Paparan Modul Jadual Waktu
+    lesson_plans_module_viewer: Paparan Modul Pelan Pembelajaran
+    topic_details_module_viewer: Paparan Modul Butiran Topik
+    programmes_module_viewer: Paparan Modul Program
+    weeklytimetables_module_viewer: Paparan Modul Jadual Waktu Mingguan
+    training_notes_module_user: Pengguna Modul Nota Pembelajaran
+    academic_session_module_user: Pengguna Modul Sesi Akademik
+    student_intake_module_user: Pengguna Modul Ambilan Pelajar
+    timetables_module_user: Pengguna Modul Jadual Waktu
+    lesson_plans_module_user: Pengguna Modul Pelan Pembelajaran
+    topic_details_module_user: Pengguna Modul Butiran Topik
+    programmes_module_user: Pengguna Modul Program
+    weeklytimetables_module_user: Pengguna Modul Jadual Waktu Mingguan
+    training_notes_module_member: Pemilik Modul Nota Pembelajaran
+    academic_session_module_member: Pemilik Modul Sesi Akademik
+    student_intake_module_member: Pemilik Modul Ambilan Pelajar
+    timetables_module_member: Pemilik Modul Jadual Waktu
+    lesson_plans_module_member: Pemilik Modul Pelan Pembelajaran
+    topic_details_module_member: Pemilik Modul Butiran Topik
+    programmes_module_member: Pemilik Modul Program
+    weeklytimetables_module_member: Pemilik Modul Jadual Waktu Mingguan
+    training_notes: Nota Pembelajaran
+    academic_session: Sesi Akademik
+    student_intake: Ambilan Pelajar
+    timetables: Jadual Waktu
+    lesson_plans: Pelan Pembelajaran
+    topic_details: Butiran Topik
+    programmes: Program
+    weeklytimetables: Jadual Waktu Mingguan
+    
+    banks_module_admin: Pentadbir Modul Bank
+    address_book_module_admin: Pentadbir Modul Buku Alamat
+    banks_module_viewer: Paparan Modul Bank
+    address_book_module_viewer: Paparan Modul Buku Alamat
+    banks_module_user: Pengguna Modul Bank
+    address_book_module_user: Pengguna Modul Buku Alamat
+    banks_module_member: Pemilik Modul Bank
+    address_book_module_member: Pemilik Modul Buku Alamat
+    banks: Bank
+    address_book: Buku Alamat
+    
+    staffs_module_admin: Pentadbir Modul Staf
+    positions_module_admin: Pentadbir Modul Perjawatan
+    staff_attendances_module_admin: Pentadbir Modul Kedatangan Staf
+    fingerprints_module_admin: Pentadbir Modul Fingerprints
+    travel_claims_module_admin: Pentadbir Modul Tuntutan Perjalanan
+    travel_requests_module_admin: Pentadbir Modul Permohonan Perjalanan
+    training_budget_module_admin: Pentadbir Modul Belanjawan Latihan
+    training_courses_module_admin: Pentadbir Modul Kursus Latihan
+    training_schedule_module_admin: Pentadbir Modul Jadual Latihan
+    training_attendance_module_admin: Pentadbir Modul Kedatangan Latihan
+    staff_appraisals_module_admin: Pentadbir Modul Penilaian Staf
+    staff_leaves_module_admin: Pentadbir Modul Cuti Staf
+    staffs_module_viewer: Paparan Modul Staf
+    positions_module_viewer: Paparan Modul Perjawatan
+    staff_attendances_module_viewer: Paparan Modul Kedatangan Staf
+    fingerprints_module_viewer: Paparan Modul Fingerprints
+    travel_claims_module_viewer: Paparan Modul Tuntutan Perjalanan
+    travel_requests_module_viewer: Paparan Modul Permohonan Perjalanan
+    training_budget_module_viewer: Paparan Modul Belanjawan Latihan
+    training_courses_module_viewer: Paparan Modul Kursus Latihan
+    training_schedule_module_viewer: Paparan Modul Jadual Latihan
+    training_attendance_module_viewer: Paparan Modul Kedatangan Latihan
+    staff_appraisals_module_viewer: Paparan Modul Penilaian Staf
+    staff_leaves_module_viewer: Paparan Modul Cuti Staf
+    staffs_module_user: Pengguna Modul Staf
+    positions_module_user: Pengguna Modul Perjawatan
+    staff_attendances_module_user: Pengguna Modul Kedatangan Staf
+    fingerprints_module_user: Pengguna Modul Fingerprints
+    travel_claims_module_user: Pengguna Modul Tuntutan Perjalanan
+    travel_requests_module_user: Pengguna Modul Permohonan Perjalanan
+    training_budget_module_user: Pengguna Modul Belanjawan Latihan
+    training_courses_module_user: Pengguna Modul Kursus Latihan
+    training_schedule_module_user: Pengguna Modul Jadual Latihan
+    training_attendance_module_user: Pengguna Modul Kedatangan Latihan
+    staff_appraisals_module_user: Pengguna Modul Penilaian Staf
+    staff_leaves_module_user: Pengguna Modul Cuti Staf
+    staffs_module_member: Pemilik Modul Staf
+    positions_module_member: Pemilik Modul Perjawatan
+    staff_attendances_module_member: Pemilik Modul Kedatangan Staf
+    fingerprints_module_member: Pemilik Modul Fingerprints
+    travel_claims_module_member: Pemilik Modul Tuntutan Perjalanan
+    travel_requests_module_member: Pemilik Modul Permohonan Perjalanan
+    training_budget_module_member: Pemilik Modul Belanjawan Latihan
+    training_courses_module_member: Pemilik Modul Kursus Latihan
+    training_schedule_module_member: Pemilik Modul Jadual Latihan
+    training_attendance_module_member: Pemilik Modul Kedatangan Latihan
+    staff_appraisals_module_member: Pemilik Modul Penilaian Staf
+    staff_leaves_module_member: Pemilik Modul Cuti Staf
+    staffs: Staf
+    positions: Perjawatan
+    staff_attendances: Kedatangan Staf
+    fingerprints: Fingerprints
+    travel_claims: Tuntutan Perjalanan
+    travel_requests: Permohonan Perjalanan
+    training_budget: Belanjawan Latihan
+    training_courses: Kursus Latihan
+    training_schedule: Jadual Latihan
+    training_attendance: Kedatangan Latihan
+    staff_appraisals: Penilaian Staf
+    staff_leaves: Cuti Staf
+    
+    student_leaves_module_admin: Pentadbir Modul Cuti Pelajar
+    student_attendances_module_admin: Pentadbir Modul Kedatangan Pelajar
+    student_counseling_module_admin: Pentadbir Modul Sesi Kaunseling Pelajar
+    student_discipline_module_admin: Pentadbir Modul Kes Disiplin Pelajar
+    student_infos_module_admin: Pentadbir Modul Maklumat Pelajar
+    student_leaves_module_viewer: Paparan Modul Cuti Pelajar
+    student_attendances_module_viewer: Paparan Modul Kedatangan Pelajar
+    student_counseling_module_viewer: Paparan Modul Sesi Kaunseling Pelajar
+    student_discipline_module_viewer: Paparan Modul Kes Disiplin Pelajar
+    student_infos_module_viewer: Paparan Modul Maklumat Pelajar
+    student_leaves_module_user: Pengguna Modul Cuti Pelajar
+    student_attendances_module_user: Pengguna Modul Kedatangan Pelajar
+    student_counseling_module_user: Pengguna Modul Sesi Kaunseling Pelajar
+    student_discipline_module_user: Pengguna Modul Kes Disiplin Pelajar
+    student_infos_module_user: Pengguna Modul Maklumat Pelajar
+    student_leaves_module_member: Pemilik Modul Cuti Pelajar
+    student_attendances_module_member: Pemilik Modul Kedatangan Pelajar
+    student_counseling_module_member: Pemilik Modul Sesi Kaunseling Pelajar
+    student_discipline_module_member: Pemilik Modul Kes Disiplin Pelajar
+    student_infos_module_member: Pemilik Modul Maklumat Pelajar
+    student_leaves: Cuti Pelajar
+    student_attendances: Kedatangan Pelajar
+    student_counseling: Sesi Kaunseling Pelajar
+    student_discipline: Kes Disiplin Pelajar
+    student_infos: Maklumat Pelajar
+    
+    stationeries_module_admin: Pentadbir Modul Alat Tulis
+    asset_losses_module_admin: Pentadbir Modul Kehilangan Aset
+    asset_loans_module_admin: Pentadbir Modul Peminjaman Aset
+    asset_disposals_module_admin: Pentadbir Modul Pelupusan Aset
+    asset_defect_module_admin: Pentadbir Modul Kerosakan Aset
+    asset_list_module_admin: Pentadbir Modul Senarai Aset
+    stationeries_module_viewer: Paparan Modul Alat Tulis
+    asset_losses_module_viewer: Paparan Modul Kehilangan Aset
+    asset_loans_module_viewer: Paparan Modul Peminjaman Aset
+    asset_disposals_module_viewer: Paparan Modul Pelupusan Aset
+    asset_defect_module_viewer: Paparan Modul Kerosakan Aset
+    asset_list_module_viewer: Paparan Modul Senarai Aset
+    stationeries_module_user: Pengguna Modul Alat Tulis
+    asset_losses_module_user: Pengguna Modul Kehilangan Aset
+    asset_loans_module_user: Pengguna Modul Peminjaman Aset
+    asset_disposals_module_user: Pengguna Modul Pelupusan Aset
+    asset_defect_module_user: Pengguna Modul Kerosakan Aset
+    asset_list_module_user: Pengguna Modul Senarai Aset
+    stationeries_module_member: Pemilik Modul Alat Tulis
+    asset_losses_module_member: Pemilik Modul Kehilangan Aset
+    asset_loans_module_member: Pemilik Modul Peminjaman Aset
+    asset_disposals_module_member: Pemilik Modul Pelupusan Aset
+    asset_defect_module_member: Pemilik Modul Kerosakan Aset
+    asset_list_module_member: Pemilik Modul Senarai Aset
+    stationeries: Alat Tulis
+    asset_losses: Kehilangan Aset
+    asset_loans: Peminjaman Aset
+    asset_disposals: Pelupusan Aset
+    asset_defect: Kerosakan Aset
+    asset_list: Senarai Aset
+    
+    tenants_module_admin: Pentadbir Modul Penghuni
+    locations_module_admin: Pentadbir Modul Lokasi
+    location_damages_module_admin: Pentadbir Modul Kerosakan di Lokasi
+    tenants _module_viewer: Paparan Modul Penghuni
+    locations_module_viewer: Paparan Modul Lokasi
+    location_damages_module_viewer: Paparan Modul Kerosakan di Lokasi
+    tenants_module_user: Pengguna Modul Penghuni
+    locations_module_user: Pengguna Modul Lokasi
+    location_damages_module_user: Pengguna Modul Kerosakan di Lokasi
+    tenants_module_member: Pemilik Modul Penghuni
+    locations_module_member: Pemilik Modul Lokasi
+    location_damages_module_member: Pemilik Modul Kerosakan di Lokasi
+    tenants: Penghuni
+    locations: Lokasi
+    location_damages: Kerosakan di Lokasi
+    
     
   role:
     list: Senarai Peranan

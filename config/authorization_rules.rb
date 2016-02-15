@@ -26,6 +26,7 @@ authorization do
     
     #E-Filing Menu Items
     has_permission_on :documents, :to => [:manage, :generate_report]                 #e-filing items
+    has_permission_on :events, :to => [:manage, :calendar]
     
     #Student Menu Items
     #has_permission_on :students,        :to => [:manage, :formforstudent, :maklumat_pelatih_intake]
@@ -75,15 +76,17 @@ authorization do
   
   role :staff do
     has_permission_on :authorization_rules, :to => :read
-    has_permission_on [:attendances, :assets, :documents],     :to => :menu              # Access for Menus
+    has_permission_on [:attendances, :documents],     :to => :menu              # Access for Menus
+    has_permission_on :assets, :to => [:menu, :loanables]                              # Access for Menus, items available for loans
     has_permission_on :books, :to => :core
     has_permission_on :ptdos, :to => :create
     has_permission_on :ptdos, :to => :index do 
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
+    has_permission_on :ptschedules, :to => :apply
     
     has_permission_on :staffs, :to => [:show, :menu]
-    has_permission_on :staffs, :to => [:edit, :update, :menu] do
+    has_permission_on :staffs, :to => [:edit, :update, :menu, :borang_maklumat_staff] do
       if_attribute :id => is {Login.current_login.staff_id}
     end
     has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update] do
@@ -110,7 +113,7 @@ authorization do
     has_permission_on :leaveforstaffs, :to => [:index, :show, :approve2, :update] do
         if_attribute :approval2_id => is {Login.current_login.staff_id}
     end
-    has_permission_on :ptdos, :to => :delete do
+    has_permission_on :ptdos, :to => [:delete, :show_total_days] do
         if_attribute :staff_id => is {Login.current_login.staff_id}
     end
     

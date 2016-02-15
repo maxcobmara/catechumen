@@ -1,4 +1,5 @@
 class PtdosController < ApplicationController
+  filter_access_to :all
   # GET /ptdos
   # GET /ptdos.xml
   def index

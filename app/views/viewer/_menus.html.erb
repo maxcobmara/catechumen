@@ -79,13 +79,15 @@
 						<% end %>
 					</ul>
 				</li>
-				<li><%= link_to (t 'menu.status_movement'), 					{:controller => 'travel_requests', 	:action => 'index'} %></li>
+				<li><%= link_to (t 'menu.status_movement'), {:controller => 'travel_requests', 	:action => 'index'} %></li>
+				<% permitted_to? :maklumat_perjawatan_LA, :positions do %>
 				<li><a href="#"><%= t('menu.reports') %> ></a>
 					<ul class="sub_menu">
 							<li><%= link_to (t 'menu.maklumat_perjawatan'), 	{:controller => 'positions', 	:action => 'maklumat_perjawatan_LA', :ppp =>'1'} %></li>
 							<!--<li><%#= link_to 'Maklumat Perjawatan', 	{:controller => 'positions', 	:action => 'maklumat_perjawatan_LA', :ppp =>'2'} %></li>-->
 					</ul>
 				</li>
+				<% end %>
 			</ul>
 		</li>
 	<% end %><!--end for staff menu-->
@@ -95,13 +97,14 @@
 	<li><a href="#"><%= t ('menu.assets') %></a>
 		<!--link_to "Future events", events_path(:scope => "future")-->
 			<ul class="sub_menu">
-				<% permitted_to? :manage, :assets do %>
-				<li><%= link_to (t 'menu.fix_assets'), 	assets_path(:show => "fixed") %></li>
-				<li><%= link_to (t 'menu.inventory'), 			assets_path(:show => "inventory") %></li>
-				<!--<li><%#= link_to 'Current Assets', 		{:controller => 'assets', 			:action => 'index'} %></li>-->
-				<li><%= link_to (t 'menu.off_supplies'), 		{:controller => 'stationeries', :action => 'index'} %></li>
+				<% permitted_to? :menu, :assets do %>
+					<li><%= link_to (t 'menu.fix_assets'), assets_path(:show => "fixed") %></li>
+					<li><%= link_to (t 'menu.inventory'), assets_path(:show => "inventory") %></li>
 				<% end %>
-				<li><%= link_to (t 'menu.defects'), 						{:controller => 'asset_defects', :action => 'index'} %></li>
+				<% permitted_to? :menu, :stationeries do %>
+					<li><%= link_to (t 'menu.off_supplies'), {:controller => 'stationeries', :action => 'index'} %></li>
+				<% end %>
+				<li><%= link_to (t 'menu.defects'), {:controller => 'asset_defects', :action => 'index'} %></li>
 				<% permitted_to? :manage, :asset_losses do %><!--kewpa28-->
 				<li><%= link_to (t 'menu.loss_write'), 	{:controller => 'asset_losses', 	:action => 'index'} %></li>
 				<% end %>
@@ -114,24 +117,12 @@
 						<li><%= link_to (t 'menu.asset_on_loan'), {:controller => 'asset_loans', 	:action => 'index'} %></li>
 					</ul>
 				</li>
-
-				<%# permitted_to? :manage, :assets do %>
 				<li><%= link_to (t 'menu.report_downloads'), {:controller => 'viewer', 	:action => 'assetreports'} %></li>
 				<% permitted_to? :manage, :assets do %>
-				<li><a href="http://<%= request.host  %>:3003/asset/assets"><%= t('menu.new_assets') %></a></li>
-				<li><a href="http://<%= request.host  %>:3003/asset/asset_disposals?locale=en"><%= t('menu.new_asset_disposal') %></a></li>
-				<li><a href="http://<%= request.host  %>:3003/asset_report"><%= t('menu.new_report_downloads') %></a></li>
+					<li><a href="http://<%= request.host  %>:3003/asset/assets"><%= t('menu.new_assets') %></a></li>
+					<li><a href="http://<%= request.host  %>:3003/asset/asset_disposals?locale=en"><%= t('menu.new_asset_disposal') %></a></li>
+					<li><a href="http://<%= request.host  %>:3003/asset_report"><%= t('menu.new_report_downloads') %></a></li>
 				<% end %>
-<!--
-					<ul class="sub_menu">
-						  <li><%= link_to 'KEW.PA 4', 		{:controller => 'assets', 	:action => 'kewpa4'} %></li>
-							<li><%= link_to 'KEW.PA 5', 		{:controller => 'assets', 	:action => 'registerinventory'} %></li>
-							<li><%= link_to 'KEW.PA 8', 		{:controller => 'assets', 	:action => 'kewpa8'} %></li>
-							<li><%= link_to 'KEW.PA 11', 		{:controller => 'suppliers', 	:action => 'kewpa11'} %></li>
-					</ul>
-
-				</li>-->
-				<%# end %>
 			</ul>
 	</li>
 	<% end %>
