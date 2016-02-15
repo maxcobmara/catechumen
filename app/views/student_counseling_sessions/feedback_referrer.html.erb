@@ -10,8 +10,16 @@
 	</script>
 </form>
 <div id="hideLink">
-<%#= link_to (t 'edit'), edit_asset_path(@asset) %> <!--|-->
-<%= link_to (t 'back'), student_counseling_sessions_path %>
+	<% permitted_to? :index, :student_counseling_sessions do %>
+		<%= link_to (t 'back')+" ("+(t 'studentcounseling.title2')+")", student_counseling_sessions_path %>
+	<% end %><br>
+	<% permitted_to? :index, :student_discipline_cases do %>
+		<%= link_to (t 'back')+" ("+(t 'studentdiscipline.title')+")", student_discipline_cases_path %>
+	<% end %><br>
+	<% permitted_to? :read, :studentdisciplinesearches do %>
+		<% sdiscipline=Studentdisciplinesearch.last %>
+		<%= link_to (t 'back')+" ("+(t 'studentdiscipline.search')+")", studentdisciplinesearch_path(sdiscipline) %>
+	<% end %>
 </div>
 <div class="A4potrait_paged">
 

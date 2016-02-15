@@ -217,19 +217,25 @@
 	<% permitted_to? [:menu, :index], :students do %>
 	<li><a href="#"><%= t('menu.students') %></a>
 		<ul class="sub_menu">
-				<% permitted_to? :index, :students do %>
-					<li><a href="#"><%= t('menu.student_info') %></a>
+			<% permitted_to? :index, :students do %>
+				<li><a href="#"><%= t('menu.student_info') %></a>
+					<ul class="sub_menu">
+						<li><%= link_to (t 'student.list'), {:controller => 'students', :action => 'index'} %></li>
+						<li><a href="http://<%= request.host  %>:3003/students?locale=ms_MY"><%=t('menu.new_student_list')%></a></li>
+						<% permitted_to? :manage, :students do %>
+							<li><a href="http://<%= request.host  %>:3003/students/import_excel?locale=ms_MY"><%=t('student.import_excel')%></a></li>
+						<% end %>
+					</ul>
+				<% permitted_to? :manage, :students do %>
+					<li><a href="#"><%= t('menu.reports') %></a>
 						<ul class="sub_menu">
-							<li><%= link_to (t 'student.list'), {:controller => 'students', :action => 'index'} %></li>
-							<% permitted_to? :manage, :students do %>
-								 <li><a href="http://<%= request.host  %>:3003/students/import_excel?locale=ms_MY"><%=t('student.import_excel')%></a></li>
-								  <li><a href="http://<%= request.host  %>:3003/students/reports?locale=en"><%= t('menu.new_ethnic_group') %></a></li>
-								  <li><a href="http://<%= request.host  %>:3003/students/students_quantity_sponsor.pdf?locale=en"><%= t('menu.students_quantity_sponsor') %></a></li>
-								  <li><a href="http://<%= request.host  %>:3003/students/students_quantity_report.pdf?locale=en"><%= t('menu.students_quantity_report') %></a></li>
-							<% end %>
+							  <li><a href="http://<%= request.host  %>:3003/students/reports?locale=en"><%= t('menu.new_ethnic_group') %></a></li>
+							  <li><a href="http://<%= request.host  %>:3003/students/students_quantity_sponsor.pdf?locale=en"><%= t('menu.students_quantity_sponsor') %></a></li>
+							  <li><a href="http://<%= request.host  %>:3003/students/students_quantity_report.pdf?locale=en"><%= t('menu.students_quantity_report') %></a></li>
 						</ul>
 					</li>
 				<% end %>
+			<% end %>
 
 				<% permitted_to? :index, :leaveforstudents do %>
 				<li><%= link_to (t 'menu.student_leave'), {:controller => 'leaveforstudents', 	:action => 'index'} %></li>
@@ -239,26 +245,22 @@
 				<% permitted_to? :manage, :student_attendances do %>
 				<li><%= link_to (t 'menu.attend'), {:controller => 'student_attendances', :action=>'index' } %></li>
 				<% end %>
+				
 				<!--  Deprecated to Student_discipline_cases
 
 								<#% permitted_to? :create, :sdiciplines do %>
 								<li><#%= link_to 'Discipline', 				{:controller => 'sdiciplines', 	:action => 'index'} %></li>
 								<#% end %>-->
-
-
-				<% permitted_to? :create, :student_discipline_cases do %>
-				<li><%= link_to (t 'menu.discipline'), {:controller => 'Student_discipline_cases', 	:action => 'index'} %></li>
-				<% end %>
-
-
-				<% permitted_to? :index, :student_counseling_sessions do %>
-					<li><%= link_to (t 'menu.counselling'), {:controller => 'student_counseling_sessions', :action => 'index'} %></li>
-				<% end %>
-					<!--
-				<%# permitted_to? :create, :student_counseling_sessions do %>
-					<li><%#= link_to 'Request Counseling Session', {:controller => 'student_counseling_sessions', :action => 'new'} %></li>
-				<%# end %>-->
-			</ul>
+								
+			<% permitted_to? :create, :student_discipline_cases do %>
+				<li><%= link_to (t 'menu.discipline'), {:controller => 'student_discipline_cases', 	:action => 'index'} %></li>
+			<% end %>
+			<% permitted_to? :index, :student_counseling_sessions do %>
+				<li><%= link_to (t 'menu.counselling'), {:controller => 'student_counseling_sessions', :action => 'index'} %></li>
+				<li><a href="http://<%= request.host  %>:3003/student/student_counseling_sessions"><%= t('menu.new_counselling') %></a>
+				</li>
+			<% end %>
+		</ul>
 	</li>
 	<% end %>
 
@@ -393,9 +395,9 @@
 					<li><%= link_to t('menu.library_transactions'),   {:controller => 'librarytransactions', 	:action => 'index'} %></li>
 					<li><a href="http://<%= request.host  %>:3003/library/librarytransactions/manager"><%= t('menu.create_library_transactions') %></a></li>
 				<% end %>
-				<li><%= link_to t('menu.resources'), {:controller => 'books', :action => 'index'} %></li>
-				<% permitted_to? :manage, :books do %>
-				    <li><a href="http://<%= request.host  %>:3003/library/books"><%= t('menu.new_resources') %></a></li>
+				<% permitted_to? :core, :books do %>
+					<li><%= link_to t('menu.resources'), {:controller => 'books', :action => 'index'} %></li>
+					<li><a href="http://<%= request.host  %>:3003/library/books"><%= t('menu.new_resources') %></a></li>
 				 <% end %>
 				<% permitted_to? :analysis_statistic, :librarytransactions do %>
 					<!--<li><%#= link_to t('menu.analysis'), {:controller => 'viewer', 	:action => 'librarystats'} %></li>

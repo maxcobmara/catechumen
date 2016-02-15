@@ -299,7 +299,7 @@ authorization do
   
   role :student_counsellor do
     has_permission_on :student_counseling_sessions, :to => [:manage, :feedback_referrer]
-    has_permission_on :students, :to => :core
+    has_permission_on :students, :to => :read
     has_permission_on :studentcounselingsearches, :to => :read
   end
   
