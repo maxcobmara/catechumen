@@ -1,5 +1,5 @@
 class PhotosController < ApplicationController
-  
+  filter_resource_access
   def index
     @photos=Photo.find(:all, :order => "caption ASC")
     respond_to do |format|
