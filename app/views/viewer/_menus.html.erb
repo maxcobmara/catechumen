@@ -322,7 +322,7 @@
 	<% end %>
 
 	<!-- Examination Menu -->
-	<%# permitted_to? :manage, :examquestions do %>
+	<% permitted_to? :read, :examquestions do %>
 	<li><a href="#"><%= t('menu.exams') %></a>
 			<ul class="sub_menu">
 				<% permitted_to? :manage, :examquestions do %>
@@ -374,7 +374,7 @@
 				<% end %>
 			</ul>
 	</li>
-	<%# end %>
+	<% end %>
 
 	<!-- Library Menu -->
 	<li><a href="#"><%= t('menu.library') %></a>
@@ -447,7 +447,7 @@
 			<% if (permitted_to? :read, :studentsearches) || (permitted_to? :read, :studentattendancesearches) || (permitted_to? :read, :studentdisciplinesearches) || (permitted_to? :read, :studentcounselingsearches) %>
 				<li class="sub_menu"><%= link_to (t 'menu.students'), {:controller => 'viewer', :action => 'equeryreports', :query_module =>'4'} %></li>
 			<% end %>
-			<% if (permitted_to? :read, :weeklytimetablesearches) || (permitted_to? :read, :curriculumsearches) || (permitted_to? :read, :lessonplansearches) || (permitted_to? :read, :personalizetimetablesearches) %>
+			<% if  (permitted_to? :read, :weeklytimetablesearches) || (permitted_to? :read, :curriculumsearches) || (permitted_to? :read, :lessonplansearches) || (permitted_to? :read, :personalizetimetablesearches) %>
 				<li class="sub_menu"><%= link_to (t 'menu.training'), {:controller => 'viewer', :action => 'equeryreports', :query_module =>'5'} %></li>
 			<% end %>
 			<% if (permitted_to? :read, :examsearches) || (permitted_to? :read, :examresultsearches) || (permitted_to? :read, :evaluatecoursesearches) || (permitted_to? :read, :examanalysissearches)%>

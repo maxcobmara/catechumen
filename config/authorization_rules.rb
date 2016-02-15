@@ -331,7 +331,7 @@ authorization do
 #       if_attribute :prepared_by => is {Login.current_login.staff_id}
 #     end
     #all above removed to role : lecturer
-    has_permission_on :curriculumsearches, :to => :read
+    #has_permission_on :curriculumsearches, :to => :read
  end
 #--21march2013-new role added    
 #note for Coordinator : previously, this role is required for Penyelaras Kumpulan to manage :(1) programme, timetable, weeklytimetable.(just tick role),
