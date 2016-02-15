@@ -1,4 +1,5 @@
 class LessonPlansController < ApplicationController
+  filter_access_to :all
   # GET /lesson_plans
   # GET /lesson_plans.xml
   def index

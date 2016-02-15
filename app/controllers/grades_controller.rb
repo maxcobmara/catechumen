@@ -1,4 +1,5 @@
 class GradesController < ApplicationController
+  filter_access_to :all
   # GET /grades
   # GET /grades.xml
   def index

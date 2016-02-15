@@ -1,4 +1,5 @@
 class ExammarksController < ApplicationController
+  filter_access_to :all
   # GET /exammarks
   # GET /exammarks.xml
   def index

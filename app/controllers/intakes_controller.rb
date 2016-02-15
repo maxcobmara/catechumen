@@ -1,4 +1,5 @@
 class IntakesController < ApplicationController
+  filter_resource_access
   # GET /intakes
   # GET /intakes.xml
   def index

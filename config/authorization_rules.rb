@@ -34,10 +34,12 @@ authorization do
     
     #Exam Menu Items
     has_permission_on :examquestions,   :to => :manage
-    
+   
     #Training Menu Items
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => :manage
+    has_permission_on :intakes, :to => :manage
+    has_permission_on :academic_sessions, :to => :manage
     has_permission_on :weeklytimetables, :to => :manage
     has_permission_on :trainingnotes, :to => :manage
     has_permission_on :evaluate_courses, :to => :manage
@@ -309,7 +311,8 @@ authorization do
     has_permission_on :programmes, :to => :manage
     has_permission_on :timetables, :to => :manage#:to => [:index, :show, :edit, :update, :menu, :calendar]
     has_permission_on :intakes, :to => :manage
-    has_permission_on :topics, :to => :manage
+    has_permission_on [:topics, :lesson_plans], :to => :manage
+    has_permission_on :academic_sessions, :to => :manage
     has_permission_on :weeklytimetables, :to => :read 
     has_permission_on :weeklytimetables, :to => :update do #:manage #21March2013 added
       if_attribute :endorsed_by => is {Login.current_login.staff_id}
@@ -346,7 +349,12 @@ authorization do
       if_attribute :student_id => is_in {Login.current_login.staff.under_my_supervision}
     end
     
-    has_permission_on :examquestions, :to => :manage
+    #has_permission_on :examquestions, :to => :manage
+    has_permission_on :examquestions, :to => [:menu, :create] #[:menu, :read, :index, :create]
+    has_permission_on :examquestions, :to => [:read,  :update] do
+      if_attribute :programme_id => is_in {Login.current_login.lecturers_programme}
+    end
+    
     
     has_permission_on :students, :to => [:menu, :index, :show, :formforstudent]
     has_permission_on :student_attendances, :to => :create
@@ -358,17 +366,38 @@ authorization do
 #     has_permission_on :timetables, :to => [:index, :show, :edit, :update, :menu, :calendar] do
 #       if_attribute :staff_id => is {Login.current_login.staff_id}
 #     end   
-    has_permission_on :programmes, :to => :read
-    has_permission_on :topics, :to => :manage
     
+    # TODO - to remove below 2 lines - once access by modules for --> timetables, intakes & academic sessions are added (User other than Programme MGR may use these module access ie. Coordinator, Ketua Subjek, Pos Basic prog Mgr?)
     #HACK : restrict commonsubject lecturer fr accessing in menu, but gives programme/postbasic lecturer access (if they ARE in prepared_by(WTs) or staff_id(Intakes))
-    has_permission_on [:timetables, :intakes], :to => :manage
+    #has_permission_on [:timetables, :intakes], :to => :manage ##academic_sessions too
+
+    # TODO - to remove below 1 line - once access by modules 4 programmes & topic details added (User other than Programme MGR may use these module access ie. Coordinator, Ketua Subjek, Pos Basic prog Mgr?)
+    #has_permission_on :topics, :to => :manage
+
+    has_permission_on :programmes, :to => :read 
+    
+    has_permission_on :lesson_plans, :to => :create
+    has_permission_on :lesson_plans, :to => [:read, :update] do
+      if_attribute :lecturer => is {Login.current_login.staff_id}
+    end
+    has_permission_on :lesson_plans, :to => :update, :join_by => :and do
+      if_attribute :lecturer => is {Login.current_login.staff_id}
+      if_attribute :is_submitted => is_not {true}
+    end
+    has_permission_on :lesson_plans, :to => [:lesson_plan, :lessonplan_reporting, :lesson_plan_report, :update], :join_by => :and do
+      if_attribute :lecturer => is {Login.current_login.staff_id}
+      if_attribute :is_submitted => is {true}
+      if_attribute :hod_approved => is {true}
+      if_attribute :report_submit => is_not {true}
+    end
+    
+    
 
     has_permission_on :trainingreports, :to => :manage, :join_by => :or do
       if_attribute :staff_id => is {Login.current_login.staff_id}
       if_attribute :tpa_id => is {Login.current_login.staff_id}
     end
-    Programme
+ 
     #HACK : weeklytimetables - CREATE restricted in Index (if exist in Intakes)
      has_permission_on :weeklytimetables, :to => [:read, :update] , :join_by => :or do
        if_attribute :prepared_by => is_in {Login.current_login.staff_id} 
@@ -410,7 +439,10 @@ authorization do
   
   
   #Group Exams   -------------------------------------------------------------------------------
-  
+  role :exam_administration do
+    has_permission_on :examquestions, :to => :manage
+    has_permission_on [:exams, :exammarks, :grades, :examresults, :examanalyses], :to => :core
+  end
   #Group Library   -------------------------------------------------------------------------------
   
   role :librarian do

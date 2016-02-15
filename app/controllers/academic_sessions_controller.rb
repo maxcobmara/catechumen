@@ -1,4 +1,5 @@
 class AcademicSessionsController < ApplicationController
+  filter_resource_access
   # GET /academic_sessions
   # GET /academic_sessions.xml
   def index

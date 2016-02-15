@@ -121,6 +121,30 @@ class Login < ActiveRecord::Base
       return []
     end
   end
+  
+  #use in - auth_rules(examquestion) - return [programme_id] for academician
+  def lecturers_programme
+    mypost = Position.find(:first, :conditions => ['staff_id=?',staff_id])
+    myunit = mypost.unit
+    postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+    post_prog=Programme.find(:all, :conditions => ['course_type IN(?)', postbasics])
+    dip_prog=Programme.find(:all, :conditions => ['course_type=?', 'Diploma']).map(&:name)
+    if dip_prog.include?(myunit)
+      programmeid=Programme.roots.find(:all, :conditions => ['name=?', myunit]).map(&:id)
+    else
+      if myunit=="Pengkhususan" && roles.map(&:authname).include?("programme_manager")
+        programmeid=post_prog.map(&:id)
+      elsif postbasics.include?(myunit)
+        post_prog.map(&:name).each do |pname|
+          @programmeid=Programme.roots.find(:all, :conditions => ['name=?', pname]) if mypost.tasks_main.include?(pname).pluck(&:id)
+        end
+        programmeid=@programmeid
+      else
+        programmeid=0 #default val for admin, common_subjects lecturer too
+      end
+    end
+    programmeid
+  end
 
   named_scope :all
   named_scope :approval,  :conditions =>  ["student_id IS? AND staff_id IS ?", nil, nil]
