@@ -1,4 +1,5 @@
 class TitlesController < ApplicationController
+  filter_resource_access
   # GET /titles
   # GET /titles.xml
   def index

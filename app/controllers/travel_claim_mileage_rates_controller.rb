@@ -1,4 +1,5 @@
 class TravelClaimMileageRatesController < ApplicationController
+  filter_resource_access
   # GET /travel_claim_mileage_rates
   # GET /travel_claim_mileage_rates.xml
   def index

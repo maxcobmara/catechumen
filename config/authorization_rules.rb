@@ -189,8 +189,9 @@ authorization do
   
   role :staff_administrator do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
+     has_permission_on [:titles, :banks], :to => :manage
      has_permission_on :attendances, :to => :manage
-     has_permission_on :staff_attendances, :to => :manage   #29Apr2013-refer routes.rb
+     has_permission_on [:staff_attendances, :staff_shifts], :to => :manage   #29Apr2013-refer routes.rb
      has_permission_on :staffsearch2s, :to => :read
      has_permission_on :staffattendancesearches, :to => :read
      has_permission_on [:employgrades, :postinfos], :to => :manage
@@ -199,6 +200,7 @@ authorization do
   
   role :finance_unit do
     has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve, :claimprint]
+    has_permission_on [:travel_claims_transport_groups, :travel_claim_mileage_rates], :to => :manage
     has_permission_on :ptbudgets, :to => :manage
   end
   
@@ -220,7 +222,7 @@ authorization do
   
   #Group Assets  -------------------------------------------------------------------------------
   role :asset_administrator do
-    has_permission_on :assets, :to => :manage
+    has_permission_on [:assets, :assetcategories], :to => :manage
     has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
     has_permission_on :assetsearches, :to => :read
     has_permission_on :locations, :to => [:manage, :kewpa7]

@@ -1,4 +1,5 @@
 class AddressBooksController < ApplicationController
+  filter_access_to :all
   # GET /address_books
   # GET /address_books.xml
   def index

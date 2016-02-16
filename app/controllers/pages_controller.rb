@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+  filter_resource_access
   before_filter :login_required
   before_filter :loadmetadata
   

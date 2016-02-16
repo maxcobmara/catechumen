@@ -1,4 +1,5 @@
 class RolesController < ApplicationController
+  filter_resource_access
   # GET /roles
   # GET /roles.xml
   def index
