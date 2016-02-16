@@ -81,7 +81,10 @@
 		<tr>
 			<td>KEW.PA-7</td>
 			<td>Senarai Aset Alih Kerajaan (mengikut lokasi)</td>
-			<td><% permitted_to? :manage, :assets do %><%= link_to (t 'link'), 		{:controller => 'locations', 	:action => 'index'} %> |<% end %> 			
+			<td><% permitted_to? :manage, :assets do %>
+				  <%#= link_to (t 'link'), {:controller => 'locations', :action => 'index'} %>
+				  <a href="http://<%= request.host%>:3003/campus/locations"><%= t('link')%></a>
+			|<% end %> 			
 				 	<a href='assets/kewpas/kewpa7.pdf'>PDF</a>
 				</td>
 		</tr>

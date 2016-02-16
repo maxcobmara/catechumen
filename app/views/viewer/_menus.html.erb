@@ -16,20 +16,19 @@
 
 				<li><a href="#"><%= t 'menu.attend' %> ></a>
 						<ul class="sub_menu">
-							<!--<li><%= link_to t('attendance.lateness_earlyreturn'),{:controller => 'staff_attendances', :action => 'manage'} %></li>-->
-							<%# if permitted_to? :destroy, @attendance %>
+							<li><a href="http://<%= request.host  %>:3003/attendance/manager"><%=t('attendance.lateness_earlyreturn')%></a></li>
+							<li><a href="http://<%= request.host  %>:3003/staff/fingerprints?locale=en"><%=t('attendance.fingerprint_statement_notfingerprint')%></a></li>
 							<% permitted_to? :manage, :staff_attendances do %>
 							<!--
 							<li><%#= link_to 'Staff Attendance', 	{:controller => 'staff_attendances', 	:action => 'index'} %></li>
 							<li><%#= link_to 'Status', 						{:controller => 'staff_attendances', 	:action => 'status'} %></li>-->
 								<li><a href="http://<%= request.host  %>:3003/staff/staff_attendances?locale=ms_MY"><%=t('attendance.list')%></a></li>
+								<li><a href="http://<%= request.host  %>:3003/staff/staff_attendances/import_excel?locale=ms_MY"><%=t('attendance.import_excel')%></a></li>
 								<li><a href="http://<%= request.host  %>:3003/attendance/status"><%=t('attendance.punchcard_status')%></a></li>
 								<!--<li><%#= link_to t('attendance.report_monthlylisting'),{:controller => 'staff_attendances', 	:action => 'report'} %></li>-->
 								<li><a href="http://<%= request.host  %>:3003/staff/staff_attendances/attendance_report?locale=ms_MY"><%=t('attendance.report_monthlylisting')%></a></li>
-								<li><a href="http://<%= request.host  %>:3003/staff/staff_attendances/import_excel?locale=ms_MY"><%=t('attendance.import_excel')%></a></li>
 							<% end -%>
-							<li><a href="http://<%= request.host  %>:3003/attendance/manager"><%=t('attendance.lateness_earlyreturn')%></a></li>
-							<li><a href="http://<%= request.host  %>:3003/staff/fingerprints?locale=en"><%=t('attendance.fingerprint_statement_notfingerprint')%></a></li>
+							
 						</ul>
 				</li>
 
@@ -74,7 +73,7 @@
 						<% permitted_to? :index, :ptdos do %>
 							<li><%= link_to (t 'menu.train_status'), ptdos_path %></li>
 						<% end %>
-						<% permitted_to? :manage, :ptbudgets do %>
+						<% permitted_to? :organized_course_manager, :ptschedules do %>
 							<li><%= link_to (t 'ptschedule.expenses_menu'), organized_course_manager_ptschedules_path %></li>
 						<% end %>
 					</ul>
@@ -285,6 +284,13 @@
 							<% permitted_to? :read, :academic_sessions do %>
 								<li><%= link_to (t 'menu.create_academic_session'), {:controller => 'academic_sessions', :action => 'index'} %></li>
 							<% end %>
+							<li><a href="http://<%= request.host  %>:3003/training/timetables"><%= t('menu.new_create_timetable') %></a></li>
+							<% permitted_to? :read, :intakes do %>
+								<li><a href="http://<%= request.host  %>:3003/training/intakes"><%= t('menu.new_create_intakes') %></a></li>
+							<% end %>
+							<% permitted_to? :read, :academic_sessions do %>
+								<li><a href="http://<%= request.host  %>:3003/training/academic_sessions"><%= t('menu.new_create_academic_session') %></a></li>
+							<% end %>
 						</ul>
 					</li>
 <!-- 					<%# end %><%# end %> -->
@@ -359,9 +365,11 @@
 				<% permitted_to? :create, :examquestions do %>
 					<li><a href="http://<%= request.host%>:3003/exam/examquestions"><%= t('menu.new_exam_dev')%></a></li>
 				<% end %>
-				<% permitted_to? :core, :exams do %>
-					<li><a href="http://<%= request.host%>:3003/exam/exams"><%= t('menu.new_exam_maker')%></a></li>
-					<li><a href="#"><%= t('menu.new_exam_manage') %></a>
+				<% permitted_to? :core, :examresults do %>
+					<% permitted_to? :core, :exams do %>
+						<li><a href="http://<%= request.host%>:3003/exam/exams"><%= t('menu.exam_maker')%></a></li>
+					<% end %>
+					<li><a href="#"><%= t('menu.exam_manage') %></a>
 						<ul class="sub_menu">
 							<% permitted_to? :core, :exammarks do %>
 								<li><a href="http://<%= request.host%>:3003/exam/exammarks"><%= t('menu.marks_exam_paper')%></a></li>
@@ -369,16 +377,15 @@
 							<% permitted_to? :core, :grades do %>
 								<li><a href="http://<%= request.host%>:3003/exam/grades"><%= t('menu.student_grades')%></a></li>
 							<% end %>
-							<% permitted_to? :core, :examresults do %>
-								<li><a href="#"><%= t('menu.exam_result') %></a>
-									<ul class="sub_menu">
-										<li><a href="http://<%= request.host%>:3003/exam/examresults"><%= t('menu.result_program')%></a></li>
+							<li><a href="#"><%= t('menu.exam_result') %></a>
+								<ul class="sub_menu">
+									<li><a href="http://<%= request.host%>:3003/exam/examresults"><%= t('menu.result_program')%></a></li>
+									<% permitted_to? :manage, :examresults do %>
 										<li><a href="http://<%= request.host%>:3003/exam/examresults/index2"><%= t('menu.exam_slip_transcript')%></a></li>
-									</ul>
-								</li>
-							<% end %>
+									<% end %>
+								</ul>
+							</li>
 						</ul>
-						
 					</li>
 				<% end %>
 				<% permitted_to? :read, :evaluate_courses do %>
@@ -386,7 +393,7 @@
 					<li><a href="http://<%= request.host%>:3003/exam/evaluate_courses"><%= t('menu.new_feedback_courseevaluate')%></a></li>
 				<% end %>
 				<% permitted_to? :core, :examanalyses do %>
-					<li><a href="http://<%= request.host%>:3003/exam/examanalyses"><%= t('menu.new_exam_analysis')%></a></li>
+					<li><a href="http://<%= request.host%>:3003/exam/examanalyses"><%= t('menu.exam_analysis')%></a></li>
 				<% end %>
 			</ul>
 	</li>
@@ -440,7 +447,6 @@
 							<li><%= link_to t('menu.transport_groups'), {:controller => 'travel_claims_transport_groups', :action => 'index'} %></li>
 							<li><%= link_to t('menu.mileage_rates'), 		{:controller => 'travel_claim_mileage_rates', :action => 'index'} %></li>
 							<li><%= link_to t('menu.banks'), 						{:controller => 'banks', 				:action => 'index'} %></li>
-							<!--<li><%= link_to 'Student Intakes', 	{:controller => 'intakes', 	:action => 'index'} %></li>-->
 							<li><%= link_to t('menu.asset_categories'), {:controller => 'assetcategories', :action => 'index'} %></li>
 					</ul>
 				</li>

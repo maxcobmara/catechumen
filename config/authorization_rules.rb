@@ -33,7 +33,7 @@ authorization do
     has_permission_on [:leaveforstudents],  :to => [:manage, :approve_coordinator, :approve_warden]
     
     #Exam Menu Items
-    has_permission_on :examquestions,   :to => :manage
+    has_permission_on [:examquestions, :exams, :exammarks, :grades, :examresults, :examanalyses, :evaluate_courses],  :to => :manage
    
     #Training Menu Items
     has_permission_on :programmes, :to => :manage
@@ -193,6 +193,7 @@ authorization do
      has_permission_on :staff_attendances, :to => :manage   #29Apr2013-refer routes.rb
      has_permission_on :staffsearch2s, :to => :read
      has_permission_on :staffattendancesearches, :to => :read
+     has_permission_on [:employgrades, :postinfos], :to => :manage
      has_permission_on :positions, :to => [:manage, :maklumat_perjawatan_LA]
   end
   
@@ -202,13 +203,15 @@ authorization do
   end
   
   role :training_manager do
-    has_permission_on [:ptbudgets, :ptcourses, :ptschedules], :to => :manage
+    has_permission_on [:ptbudgets, :ptcourses], :to => :manage
+    has_permission_on :ptschedules, :to => [:manage, :organized_course_manager]
     has_permission_on :ptdos, :to =>:approve
     has_permission_on :ptdosearches, :to => :read
   end
   
   role :training_administration do
-    has_permission_on [:ptbudgets, :ptcourses, :ptschedules], :to => :manage
+    has_permission_on [:ptbudgets, :ptcourses], :to => :manage
+    has_permission_on :ptschedules, :to => [:manage, :organized_course_manager]
     has_permission_on :ptdos, :to =>:approve #do
       #if_attribute :staff_id => is_not_in {Login.current_login.staff.unit_members}  #En Zahar can't see Fazrina's ptdo at all in index
     #end
@@ -308,23 +311,21 @@ authorization do
   #Group Training  -------------------------------------------------------------------------------
 
   role :programme_manager do
-    has_permission_on :programmes, :to => :manage
-    has_permission_on :timetables, :to => :manage#:to => [:index, :show, :edit, :update, :menu, :calendar]
-    has_permission_on :intakes, :to => :manage
-    has_permission_on [:topics, :lesson_plans], :to => :manage
-    has_permission_on :academic_sessions, :to => :manage
+    has_permission_on [:programmes, :timetables, :intakes, :academic_sessions, :topics, :lesson_plans], :to => :manage
     has_permission_on :weeklytimetables, :to => :read 
     has_permission_on :weeklytimetables, :to => :update do #:manage #21March2013 added
       if_attribute :endorsed_by => is {Login.current_login.staff_id}
     end
+    has_permission_on [:examresults, :examanalyses], :to => :core
     has_permission_on :ptdos, :to => :approve do
       if_attribute :staff_id => is_in {Login.current_login.staff.unit_members}
     end
     has_permission_on :evaluate_courses, :to => [:read, :courseevaluation] do
-      if_attribute :course_id => is_in {Position.my_programmeid(Login.current_login.staff_id)} # is_in {[5]}
+      if_attribute :course_id => is_in {Position.my_programmeid(Login.current_login.staff_id)}
     end
     has_permission_on :evaluatecoursesearches, :to => :manage
   end
+
 #--21march2013-new role added  
   role :coordinator do
 #     has_permission_on :programmes, :to => :manage
@@ -440,8 +441,8 @@ authorization do
   
   #Group Exams   -------------------------------------------------------------------------------
   role :exam_administration do
-    has_permission_on :examquestions, :to => :manage
-    has_permission_on [:exams, :exammarks, :grades, :examresults, :examanalyses], :to => :core
+    has_permission_on [:examquestions, :examresults], :to => :manage
+    has_permission_on [:exams, :exammarks, :grades, :examanalyses], :to => :core
   end
   #Group Library   -------------------------------------------------------------------------------
   

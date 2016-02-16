@@ -1,4 +1,5 @@
 class AssetLoansController < ApplicationController
+  filter_access_to :all
   # GET /asset_loans
   # GET /asset_loans.xml
   def index
