@@ -145,6 +145,99 @@ class Login < ActiveRecord::Base
     end
     programmeid
   end
+  
+  #####
+  def admin_unitleaders_thumb
+    ############
+    mypost = Position.find(:first, :conditions => ['staff_id=?', userable_id])
+    myunit = mypost.unit
+    mythumbid = userable.thumb_id
+    iamleader=Position.am_i_leader(userable_id)
+    if iamleader== true   #check by roles
+      thumbs=Staff.find(:joins => :positions, :conditions => ['staffs.thumb_id!=? and unit=?', 5328, 'Teknologi Maklumat']).pluck(&:thumb_id)
+#Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+    else #check by rank / grade
+      leader_staffid=Position.unit_department_leader(myunit).id   #return Staff(id) record ofunit/dept leader
+      @head_thumb_ids=[]
+      
+      #academic programmes-start
+      postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+      dip_prog=Programme.find(:all, :conditions =>['course_type=?', 'Diploma']).map(&:name)
+      post_prog=Programme.find(:all, :conditions => ['course_type=?', postbasics]).map(&:name)
+      commonsubject=Programme.find(:all, :conditions=> ['course_type=?', 'Commonsubject']).map(&:name).uniq
+      #temp-rescue - make sure this 2 included in Programmes table @ production svr as commonsubject type
+      etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
+      #academic programmes-end 
+      
+      if leader_staffid==userable_id #when current user is unit/department leader
+        thumbs=Staff.find(:joins => :positions, :conditions => ['staffs.thumb_id!=? and unit=?', 5328, 'Teknologi Maklumat']).pluck(&:thumb_id)
+#Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+        #when current user is Pengarah, above shall collect all timbalans thumb id plus academicians leader (Ketua Program)
+        if userable_id==Position.roots.first.staff_id
+          academic_programmes=dip_prog+post_prog+commonsubject
+          academic_programmes.each do |prog|
+            @head_thumb_ids << Position.unit_department_leader(prog).thumb_id if Position.find(:all, :conditions =>['staff_id is not null and unit=?', prog]).count > 0 #staff_id must exist 
+          end
+          thumbs+=@head_thumb_ids
+        end
+      else 
+        #when superior for current user is Pengarah, then she must be one of timbalans-"Ketua Unit Pengurusan Tertinggi"
+        if leader_staffid==Position.roots.first.staff_id 
+          if mypost.name.include?("Pengurusan") #Timbalan Pengarah (Pengurusan)
+            #management units
+            mgmt_units= Position.find(:all, :conditions => ['staff_id is not null and unit is not null and unit!=? and unit not in (?) and unit not in (?) and unit not in (?) and unit not in (?)', '', dip_prog, commonsubject, postbasics, etc_subject]).map(&:unit).uniq
+            mgmt_units.each do |department|
+              @head_thumb_ids << Position.unit_department_leader(department).thumb_id unless Position.unit_department_leader(department).nil?
+            end
+            thumbs=@head_thumb_ids
+          else #other timbalans
+            thumbs=[]
+          end
+        else   
+          thumbs=[]
+        end
+      end
+    end
+    thumbs
+    ############
+  end
+  
+  #use in - auth_rules(staff attendance)
+  def unit_members_thumb
+    Staff.find(:all, :conditions=> ['id IN?', unit_members]).map(&:thumb_id).compact #[5658]
+  end
+     
+  ###Use in Ptdo(for use in auth_rules & Edit pages (approve)) - start
+  def unit_members#(current_unit, current_staff, current_roles)
+    #Academicians & Mgmt staff : "Teknologi Maklumat", "Perpustakaan", "Kewangan & Akaun", "Sumber Manusia","logistik", "perkhidmatan" ETC.. - by default staff with the same unit in Position will become unit members, whereby Ketua Unit='unit_leader' role & Ketua Program='programme_manager' role.
+    #Exceptional for - "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor" (subunit of Pentadbiran), Ketua Unit='unit_leader' with unit in Position="Pentadbiran" Note: whoever within these unit if wrongly assigned as 'unit_leader' will also hv access for all ptdos on these unit staff
+    
+    current_staff=staff
+    exist_unit_of_staff_in_position = Position.find(:all, :conditions => ['unit is not null and staff_id is not null']).map(&:staff_id).uniq
+    if exist_unit_of_staff_in_position.include?(current_staff)   
+      
+      current_unit=staff.position.unit #staff.positions.first.unit
+      #replace current_unit value if academician also a Unit Leader (23)
+      #current_roles=User.where(userable_id: userable_id).first.roles.map(&:name) ##"Unit Leader" #userable.roles.map(&:role_id) 
+      current_roles=roles.map(&:name)
+      current_unit=unit_lead_by_academician if current_roles.include?("Unit Leader") && Programme.roots.map(&:name).include?(current_unit)
+      
+      if current_unit=="Pentadbiran"
+        unit_members = Position.find(:all, :conditions => ['unit=? OR unit=? OR unit=? OR unit=?', "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor"]).map(&:staff_id).uniq-[nil]+Position.find(:all, :conditions => ['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
+      elsif ["Teknologi Maklumat", "Pusat Sumber", "Kewangan & Akaun", "Sumber Manusia"].include?(current_unit) || Programme.roots.map(&:name).include?(current_unit)
+        unit_members = Position.find(:all, :conditions => ['unit=?', current_unit]).map(&:staff_id).uniq-[nil]
+      else #logistik & perkhidmatan inc."Unit Perkhidmatan diswastakan / Logistik" or other UNIT just in case - change of unit name, eg. Perpustakaan renamed as Pusat Sumber
+        unit_members = Position.find(:all, :conditions => ['unit ILIKE(?)', "%#{current_unit}%"]).map(&:staff_id).uniq-[nil] 
+      end
+    else
+      unit_members = []#Position.find(:all, :conditions=>['unit=?', 'Teknologi Maklumat']).map(&:staff_id).uniq-[nil]
+    end
+    unit_members   #collection of staff_id (member of a unit/dept) - use in model/user.rb (for auth_rules)
+    #where('staff_id IN(?)', unit_members) ##use in ptdo.rb (controller - index)
+  end                                                    
+
+                                                    
+  #####
 
   named_scope :all
   named_scope :approval,  :conditions =>  ["student_id IS? AND staff_id IS ?", nil, nil]

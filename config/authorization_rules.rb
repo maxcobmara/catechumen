@@ -183,10 +183,6 @@ authorization do
     end
   end
   
-#   role :staffs_module do
-#      has_permission_on :student_discipline_cases, :to =>[ :index, :read]
-#   end
-  
   role :staff_administrator do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
      has_permission_on [:titles, :banks], :to => :manage
@@ -491,12 +487,13 @@ authorization do
     has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
   end
   role :staffs_module_viewer do
-    has_permission_on :staffs, :to => [:read, :borang_maklumat_staff]
+    has_permission_on :staffs, :to => [:menu, :read, :borang_maklumat_staff]
   end
   role :staffs_module_user do
-    has_permission_on :staffs, :to => [:read, :update, :borang_maklumat_staff]
+    has_permission_on :staffs, :to => [:menu, :read, :update, :borang_maklumat_staff]
   end
   role :staffs_module_member do
+    has_permission_on :staffs, :to => :menu
     has_permission_on :staffs, :to => [:read, :update, :borang_maklumat_staff] do
       if_attribute :id => is {Login.current_login.staff_id}
     end
@@ -522,6 +519,57 @@ authorization do
     has_permission_on [:employgrades, :postinfos], :to => :read
   end
   
+  #3)OK - all 4 - 16Feb2016
+  # NOTE - a) Staff Attendance should come with Fingerprints, + support table : StaffShifts
+  # NOTE - Staff Attendance in Catechumen is deprecated, should rely on Ogma
+  role :staff_attendances_module_admin do
+    has_permission_on :staff_attendances, :to => [:manager, :manage]
+  end
+  role :staff_attendances_module_viewer do
+    #1) OK, but if READ only - can only read attendance list for all staff +manage own lateness/early (MANAGER) - as this is default for all staff UNLESS if MANAGE given.
+    has_permission_on :staff_attendances, :to =>[:manager, :read]
+  end
+  role :staff_attendances_module_user do 
+    has_permission_on :staff_attendances, :to => [:read, :update, :manager]
+  end
+  role :staff_attendances_module_member do
+    #own records
+    has_permission_on :staff_attendances, :to => :manager
+    has_permission_on :staff_attendances, :to => [:show, :update] do                        # show & update - to enter reason
+      if_attribute :thumb_id => is {Login.current_login.staff.thumb_id}
+    end
+    #own (approver) #refer Administration role(Timbalans) & Programme Manager
+    #own (approver) - refer Unit Leader role
+    has_permission_on :staff_attendances, :to => [:approval, :update, :show], :join_by => :or do
+      if_attribute :thumb_id => is_in {Login.current_login.admin_unitleaders_thumb}
+      if_attribute :thumb_id => is_in {Login.current_login.unit_members_thumb}
+    end
+  end
+ 
+  #4-OK - all 4 - 16Feb2016
+  #4-OK - for read, but manage - requires role: MANAGE for staff_attendances to be activated as well
+  #restriction - INDEX - @fingerprints restricted to own record, @approvefingerprints restricted to unit members, BUT INDEX_ADMIN OK
+  # NOTE - menu items ONLY requires READ access for all kind of access(Index), keep to avoid confusion, refer Ogma for actual workable application of access by module
+  role :fingerprints_module_admin do
+    has_permission_on :fingerprints, :to =>[:manage, :approval, :index_admin]
+  end
+  role :fingerprints_module_viewer do
+    has_permission_on :fingerprints, :to => [:read, :index_admin]
+  end
+  role :fingerprints_module_user do
+    has_permission_on :fingerprints, :to => [:read, :index_admin, :approval, :update]
+  end
+  role :fingerprints_module_member do
+    #own record
+    has_permission_on :fingerprints, :to => [:read, :update] do                                   
+      if_attribute :thumb_id => is {Login.current_login.staff.thumb_id}
+    end
+    #own (approver) - Timbalans / HOD - refer Administration Staff roles
+    has_permission_on :fingerprints, :to => [:read, :index_admin, :approval, :update] do
+      if_attribute :thumb_id => is_in {Login.current_login.admin_unitleaders_thumb}
+    end
+  end
+  
   
   
   #Catechumen
@@ -529,55 +577,9 @@ authorization do
   ###############
   
   
-  #3)OK - all 4 - 4Feb2016
-  #NOTE - a) Staff Attendance should come with Fingerprints.
-  # TODO - addin StaffShift when ready in Ogma - Admin/User(manage), Viewer/Member(read) #has_permission_on :staff_shifts, :to => :manage
-  role :staff_attendances_module_admin do
-    has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details] 
-  end
-  role :staff_attendances_module_viewer do
-    #1) OK, but if READ only - can only read attendance list for all staff +manage own lateness/early (MANAGER) - as this is default for all staff UNLESS if MANAGE given.
-    has_permission_on :staff_staff_attendances, :to => [:read, :manager, :manager_admin, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details]
-  end
-  role :staff_attendances_module_user do 
-    has_permission_on :staff_staff_attendances, :to => [:read, :update, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details]
-  end
-  role :staff_attendances_module_member do
-    #own records
-    has_permission_on [:staff_staff_attendances], :to => :manager                                   
-    has_permission_on :staff_staff_attendances, :to => [:show, :update] do                        # show & update - to enter reason
-      if_attribute :thumb_id => is {user.userable.thumb_id}
-    end
-    #own (approver) #refer Administration role(Timbalans) & Programme Manager
-    #own (approver) - refer Unit Leader role
-    has_permission_on :staff_staff_attendances, :to => [:approval, :update, :show], :join_by => :or do
-      if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
-      if_attribute :thumb_id => is_in {user.unit_members_thumb}
-    end
-  end
- 
-  #4-OK - all 4 - 4Feb2016
-  #4-OK - for read, but manage - requires role: MANAGE for staff_attendances to be activated as well
-  #restriction - INDEX - @fingerprints restricted to own record, @approvefingerprints restricted to unit members, BUT INDEX_ADMIN OK
-  role :fingerprints_module_admin do
-    has_permission_on :staff_fingerprints, :to =>[:manage, :approval, :index_admin]
-  end
-  role :fingerprints_module_viewer do
-    has_permission_on :staff_fingerprints, :to => [:read, :index_admin]
-  end
-  role :fingerprints_module_user do
-    has_permission_on :staff_fingerprints, :to => [:read, :index_admin, :approval, :update]
-  end
-  role :fingerprints_module_member do
-    #own record
-    has_permission_on :staff_fingerprints, :to => [:read, :update] do                                   
-      if_attribute :thumb_id => is {user.userable.thumb_id}
-    end
-    #own (approver) - Timbalans / HOD - refer Administration Staff roles
-    has_permission_on :staff_fingerprints, :to => [:read, :index_admin, :approval, :update] do
-      if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
-    end
-  end
+  
+  
+  
   #############
     
   

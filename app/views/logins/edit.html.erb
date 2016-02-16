@@ -43,24 +43,16 @@
 
 	<H2><%= t 'login.login_roles' %></H2>
 	<P><strong><%= t 'login.select_role' %></strong></P>	
-	<table width=100% border=0><!--Role.where.not('authname ILIKE(?)', '%module%').order(id: :asc)-->
+	<table width=100% border=0>
 		<% Role.find(:all, :conditions => ['authname NOT ILIKE(?) and authname!=?', "%module%", "coordinator"], :order => 'id ASC').in_groups_of(5, false) do |row_roles| %>
 		<tr>
 			<% for role in row_roles %>
-<!-- 			<%# if role.authname!="coordinator"%> -->
 			<td>
 				<div style="display: block;">
-					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "byrole" %> <%#= role.name %><%=h 			t('login.'+role.authname) %><%=role.id%>
+					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "byrole" %> <%#= role.name %><%=h 			t('login.'+role.authname) %><!--<%#=role.id%>-->
 				</div>
 			</td>
-			<!--<%# else %>
-			
-				<div style="display: block;">
-					<%#= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class =>"byrole" %> <%#= role.name %><%=h t('login.'+role.authname) %>
-				</div>
-
-			<%#end %>-->
-		  <% end %>
+			<% end %>
 		</tr>
 		<% end %>
 
@@ -190,6 +182,13 @@
 			<li>Asset Defect Module (Member) only workable for defective reporter and decisioner, for processing purpose, please use 'Asset Administrator' role instead.</li>
 			<li>Asset pricing details viewable only to user with 'Administration' or 'Asset Administrator' roles or those with Asset List Module (Admin/User) access.</li>
 			<li>E-Filing modules (Events, Bulletins, Files) requires access to Documents modules (Admin/Viewer/User/Member) to be activated.</li>
+			<li>Support Tables :
+				<ul>
+					<li> Activate 'Titles', 'Banks' & 'Staff Shifts' in addition to access by Staffs modules.</li>
+					<li> Activate 'Travel Claims Transport Groups' & 'Travel Claim Mileage Rates'in addition to access by Travel Claims modules.</li>
+					<li> Activate 'Asset Categories' in addition to access by Asset List modules.</li>
+				</ul>
+			</li>
 		</ol>-->
 		<ol> 
 			<li><%=t('login.rule1')%></li>
@@ -224,6 +223,14 @@
 			<li><%=t('login.rule15')%></li>
 			<li><%=t('login.rule16')%></li>
 			<li><%=t('login.rule17')%></li>
+			<li><%=t('login.rule18')%>
+				<ul>
+					<li><%=t('login.rule18a')%></li>
+					<li><%=t('login.rule18b')%></li>
+					<li><%=t('login.rule18c')%></li>
+				</ul>
+			</li>
+			<li><%=t('login.rule19')%></li>
 		</ol>
 	<!-- End of Column 3 -->
         </td>
@@ -249,9 +256,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Events", "Bulletins", "Files", "Documents"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: block;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "efilingmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "efilingread" %>
@@ -296,9 +303,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%',  ["Library Books", "Library Transactions"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "librarymanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "libraryread" %>
@@ -343,9 +350,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Exam Templates", "Examresults", "Exam Grade", "Exammarks", "Exam Analysis", "Exampaper", "Examquestions"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "exammanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "examread" %>
@@ -379,9 +386,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%',["Course Evaluation"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "courseevalmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "courseevalread" %>
@@ -425,9 +432,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%',["Training Notes", "Academic Session", "Student Intake", "Timetables", "Lesson Plans", "Topic Details", "Programmes", "Weeklytimetables"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "trainingmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "trainingread" %>
@@ -471,7 +478,7 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Address Book", "Banks", "Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
 				<span style= 'display: block;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "supportmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "supportread" %>
@@ -517,9 +524,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Staffs", "Positions","Staff Attendances","Fingerprints"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-	 			<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+	 			<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "a_staffmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "a_staffread" %>
@@ -554,9 +561,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Travel Requests", "Travel Claims"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "b_staffmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "b_staffread" %>
@@ -591,9 +598,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Training Budget", "Training Courses", "Training Schedule", "Training Attendance"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "c_staffmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "c_staffread" %>
@@ -628,9 +635,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Staff Appraisals", "Staff Leaves"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "d_staffmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "d_staffread" %>
@@ -674,9 +681,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Student Leaves", "Student Attendances", "Student Counseling", "Student Discipline", "Student Infos"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "studentmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "studentread" %>
@@ -721,9 +728,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Stationeries", "Asset List", "Asset Losses", "Asset Defect", "Asset Disposals", "Asset Loans"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "assetmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "assetread" %>
@@ -757,9 +764,9 @@
 		<body>
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Tenants", "Locations", "Location Damages"]], :order => "id ASC") %>
-				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description]) %>
-				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description]) %>
-				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description]) %>
+				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
+				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
+				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
 				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "locationmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "locationread" %>
@@ -1654,7 +1661,7 @@ $j(function(){
     }
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
 
-    /*when Exam Admin is selected, uncheck all exams modules*/
+    /*when Staff Admin is selected, uncheck all exams modules*/
     if(inputElements[14].checked){
       for(i=0; i<4; i++){
         a_staffmg[i].disabled=true;
@@ -2112,7 +2119,7 @@ $j(function(){
     }
     
     /*when role : Unit Leader is selected, uncheck Training Attendance(O-Ptdo), Staff Attendance(O), Programmes*/
-    if(inputElements[21].checked){
+    if(inputElements[20].checked){
       c_staffown[3].disabled=true;
       a_staffown[2].disabled=true;
       trainingmg[6].disabled=true;
@@ -2592,7 +2599,7 @@ $j(function(){
     else
     {
       /*when staff admin not selected, but Unit Leader OR Administration Staff OR Staff is selected, Staff Attendance is not activated */
-      if((inputElements[21].checked) || (inputElements[3].checked) || (inputElements[5].checked) )
+      if((inputElements[20].checked) || (inputElements[3].checked) || (inputElements[5].checked) )
       {
         a_staffown[2].disabled=true;
       }
@@ -2789,7 +2796,7 @@ $j(function(){
     else
     {
       /*when Training Manager OR Training Administration is not selected, but Unit Leader OR Administration Staff OR Staff is selected, Training Attendance(O-Ptdo) is disable*/
-      if((inputElements[21].checked) || (inputElements[3].checked) || (inputElements[5].checked))
+      if((inputElements[20].checked) || (inputElements[3].checked) || (inputElements[5].checked))
       {  
         c_staffown[3].checked=false;
         c_staffown[3].disabled=true;
@@ -3733,7 +3740,7 @@ $j(function(){
         }
       }
       /*when PROGRAMME MANAGER is not selected, but Unit Leader is selected, programme (Manage) is hide*/
-      if(inputElements[21].checked)
+      if(inputElements[20].checked)
       {  trainingmg[6].disabled=true;}
       else
       {  trainingmg[6].disabled=false;}
