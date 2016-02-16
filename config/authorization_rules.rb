@@ -183,9 +183,9 @@ authorization do
     end
   end
   
-  role :staffs_module do
-     has_permission_on :student_discipline_cases, :to =>[ :index, :read]
-  end
+#   role :staffs_module do
+#      has_permission_on :student_discipline_cases, :to =>[ :index, :read]
+#   end
   
   role :staff_administrator do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
@@ -478,6 +478,166 @@ authorization do
       if_attribute :staff_id => is_in { Login.current_login.staff.admin_subordinates}
     end
   end
+  
+  ##Access by Modules starts here
+  #(CRUD/A), (R/A), (RU/A), (CRUD/O)
+  #Admin : can do everything (CRUD/A)
+  #Viewer(Read) : can list, print & reports only (R/A)
+  #User : can view everything & update data (RU/A)
+  #Member(Owner) : should only see his own record & be able to edit it (CRUD/O)
+  #####start of Staff Module#######################################
+  #1)OK - all 4 - 16Feb2016
+  role :staffs_module_admin do
+    has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
+  end
+  role :staffs_module_viewer do
+    has_permission_on :staffs, :to => [:read, :borang_maklumat_staff]
+  end
+  role :staffs_module_user do
+    has_permission_on :staffs, :to => [:read, :update, :borang_maklumat_staff]
+  end
+  role :staffs_module_member do
+    has_permission_on :staffs, :to => [:read, :update, :borang_maklumat_staff] do
+      if_attribute :id => is {Login.current_login.staff_id}
+    end
+  end
+  
+  #2)OK - all 4 - 16Feb2016, NOTE - activate employgrades & postinfos as well
+  role :positions_module_admin do
+     has_permission_on :positions, :to => [:manage, :maklumat_perjawatan_LA]
+     has_permission_on [:employgrades, :postinfos], :to => :manage
+  end
+  role :positions_module_viewer do
+     has_permission_on :positions, :to => [:read, :maklumat_perjawatan_LA]
+     has_permission_on [:employgrades, :postinfos], :to => :read
+  end
+  role :positions_module_user do
+     has_permission_on :positions, :to => [:read, :update, :maklumat_perjawatan_LA]
+     has_permission_on [:employgrades, :postinfos], :to => [:read, :update]
+  end
+  role :positions_module_member do
+    has_permission_on :positions, :to =>  [:read, :update, :maklumat_perjawatan_LA] do
+      if_attribute :staff_id => is {Login.current_login.staff_id}
+    end
+    has_permission_on [:employgrades, :postinfos], :to => :read
+  end
+  
+  
+  
+  #Catechumen
+  #OK until here - 16Feb2016
+  ###############
+  
+  
+  #3)OK - all 4 - 4Feb2016
+  #NOTE - a) Staff Attendance should come with Fingerprints.
+  # TODO - addin StaffShift when ready in Ogma - Admin/User(manage), Viewer/Member(read) #has_permission_on :staff_shifts, :to => :manage
+  role :staff_attendances_module_admin do
+    has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details] 
+  end
+  role :staff_attendances_module_viewer do
+    #1) OK, but if READ only - can only read attendance list for all staff +manage own lateness/early (MANAGER) - as this is default for all staff UNLESS if MANAGE given.
+    has_permission_on :staff_staff_attendances, :to => [:read, :manager, :manager_admin, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details]
+  end
+  role :staff_attendances_module_user do 
+    has_permission_on :staff_staff_attendances, :to => [:read, :update, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details]
+  end
+  role :staff_attendances_module_member do
+    #own records
+    has_permission_on [:staff_staff_attendances], :to => :manager                                   
+    has_permission_on :staff_staff_attendances, :to => [:show, :update] do                        # show & update - to enter reason
+      if_attribute :thumb_id => is {user.userable.thumb_id}
+    end
+    #own (approver) #refer Administration role(Timbalans) & Programme Manager
+    #own (approver) - refer Unit Leader role
+    has_permission_on :staff_staff_attendances, :to => [:approval, :update, :show], :join_by => :or do
+      if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
+      if_attribute :thumb_id => is_in {user.unit_members_thumb}
+    end
+  end
+ 
+  #4-OK - all 4 - 4Feb2016
+  #4-OK - for read, but manage - requires role: MANAGE for staff_attendances to be activated as well
+  #restriction - INDEX - @fingerprints restricted to own record, @approvefingerprints restricted to unit members, BUT INDEX_ADMIN OK
+  role :fingerprints_module_admin do
+    has_permission_on :staff_fingerprints, :to =>[:manage, :approval, :index_admin]
+  end
+  role :fingerprints_module_viewer do
+    has_permission_on :staff_fingerprints, :to => [:read, :index_admin]
+  end
+  role :fingerprints_module_user do
+    has_permission_on :staff_fingerprints, :to => [:read, :index_admin, :approval, :update]
+  end
+  role :fingerprints_module_member do
+    #own record
+    has_permission_on :staff_fingerprints, :to => [:read, :update] do                                   
+      if_attribute :thumb_id => is {user.userable.thumb_id}
+    end
+    #own (approver) - Timbalans / HOD - refer Administration Staff roles
+    has_permission_on :staff_fingerprints, :to => [:read, :index_admin, :approval, :update] do
+      if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
+    end
+  end
+  #############
+    
+  
+  
+  #48-OK
+  role :banks_module_admin do
+     has_permission_on :banks, :to => :manage
+  end
+  role :banks_module_viewer do
+     has_permission_on :banks, :to => :read
+  end
+  
+  #49-OK
+  role :address_book_module_admin do
+     has_permission_on :address_books, :to => :manage
+  end
+  role :address_book_module_viewer do
+     has_permission_on :address_books, :to => :read
+  end
+  
+  #50-OK
+  role :titles_module_admin do
+     has_permission_on :titles, :to => :manage
+  end
+  role :titles_module_viewer do
+     has_permission_on :titles, :to => :read
+  end
+  
+  #51-OK
+  role :staff_shifts_module_admin do
+     has_permission_on :staff_shifts, :to => :manage
+  end
+  role :staff_shifts_module_viewer do
+     has_permission_on :staff_shifts, :to => :read
+  end
+  
+  #52-OK
+  role :travel_claims_transport_groups_module_admin do
+     has_permission_on :travel_claims_transport_groups, :to => :manage
+  end
+  role :travel_claims_transport_groups_module_viewer do
+     has_permission_on :travel_claims_transport_groups, :to => :read
+  end
+  
+  #53-OK
+  role :travel_claim_mileage_rates_module_admin do
+     has_permission_on :travel_claim_mileage_rates, :to => :manage
+  end
+  role :travel_claim_mileage_rates_module_viewer do
+     has_permission_on :travel_claim_mileage_rates, :to => :read
+  end
+  
+  #54-OK
+  role :asset_categories_module_admin do
+     has_permission_on :asset_categories, :to => :manage
+  end
+  role :asset_categories_module_viewer do
+     has_permission_on :asset_categories, :to => :read
+  end
+  ##Access by Modules ended here
   
 end
   

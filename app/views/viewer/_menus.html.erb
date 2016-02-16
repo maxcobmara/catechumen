@@ -34,7 +34,7 @@
 
 				<li><%= link_to (t 'menu.staff_appraisal'), 		{:controller => 'staff_appraisals', 	:action => 'index'} %></li>
 
-				<% permitted_to? :manage, :positions do %>
+				<% permitted_to? :read, :positions do %>
 					<li><a href="#"><%= t('menu.tasks_respons')%> ></a>
 						<ul class="sub_menu">
 							<li><%= link_to (t 'staff.employscheme'), {:controller => 'employgrades', :action => 'index'} %></li>
@@ -433,21 +433,42 @@
 	</li>
 
 	<!-- Administration Menu -->
-	<% permitted_to? :core, :roles do %>
+	<%# permitted_to? :core, :roles do %>
+	<% if (permitted_to? :read, :titles) || (permitted_to? :read, :staff_shifts) || (permitted_to? :read, :travel_claims_transport_groups) || (permitted_to? :read, :travel_claim_mileage_rates) || (permitted_to? :read, :banks) || (permitted_to? :read, :assetcategories) %>
 	<li><a href="#"><%= t('menu.admin') %></a>
 			<ul class="sub_menu">
-				<li><%= link_to t('menu.user_logins'),   				{:controller => 'logins', 	:action => 'index'} %></li>
-				<li><%= link_to t('menu.roles'),   				{:controller => 'roles', 	:action => 'index'} %></li>
-				<li><%= link_to t('menu.pages'),   				{:controller => 'pages', 	:action => 'index'} %></li>
-				<li><%= link_to t('menu.address_book'),   {:controller => 'address_books', :action => 'index'} %></li>
+				<% permitted_to? :manage, :logins do %>
+					<li><%= link_to t('menu.user_logins'), {:controller => 'logins', :action => 'index'} %></li>
+				<% end %>
+				<% permitted_to? :manage, :roles do %>
+					<li><%= link_to t('menu.roles'), {:controller => 'roles', :action => 'index'} %></li>
+				<% end %>
+				<% permitted_to? :manage, :pages do %>
+					<li><%= link_to t('menu.pages'), {:controller => 'pages', :action => 'index'} %></li>
+				<% end %>
+				<% permitted_to? :read, :address_books do %>
+					<li><%= link_to t('menu.address_book'),   {:controller => 'address_books', :action => 'index'} %></li>
+				<% end %>
 				<li><a href="#"><%= t('menu.support_tables') %> ></a>
 					<ul class="sub_menu">
-							<li><%= link_to t('menu.staff_titles'), 		{:controller => 'titles', 			:action => 'index'} %></li>
-							<li><%= link_to t('menu.staff_shifts'), 		{:controller => 'staff_shifts', :action => 'index'} %></li>
+						<% permitted_to? :read, :titles do %>
+							<li><%= link_to t('menu.staff_titles'), {:controller => 'titles', :action => 'index'} %></li>
+						<% end %>
+						<% permitted_to? :read, :staff_shifts do %>
+							<li><%= link_to t('menu.staff_shifts'), {:controller => 'staff_shifts', :action => 'index'} %></li>
+						<% end %>
+						<% permitted_to? :read, :travel_claims_transport_groups do %>
 							<li><%= link_to t('menu.transport_groups'), {:controller => 'travel_claims_transport_groups', :action => 'index'} %></li>
-							<li><%= link_to t('menu.mileage_rates'), 		{:controller => 'travel_claim_mileage_rates', :action => 'index'} %></li>
-							<li><%= link_to t('menu.banks'), 						{:controller => 'banks', 				:action => 'index'} %></li>
+						<% end %>
+						<% permitted_to? :read, :travel_claim_mileage_rates do %>
+							<li><%= link_to t('menu.mileage_rates'), {:controller => 'travel_claim_mileage_rates', :action => 'index'} %></li>
+						<% end %>
+						<% permitted_to? :read, :banks do %>
+							<li><%= link_to t('menu.banks'), {:controller => 'banks', :action => 'index'} %></li>
+						<% end %>
+						<% permitted_to? :read, :assetcategories do %>
 							<li><%= link_to t('menu.asset_categories'), {:controller => 'assetcategories', :action => 'index'} %></li>
+						<% end %>
 					</ul>
 				</li>
 				<li><%= link_to t('menu.release_notes'),   '/releasenotes' %>
