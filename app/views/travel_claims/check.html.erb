@@ -181,12 +181,18 @@
 					</tr>
 					<tr>
 						<td><%= t 'claim.verification' %></td><!-- refer model for is_returned assignment -->
-						<td><%= f.radio_button :is_checked, 'false' %>  <%=t('claim.return_to_staff')%> &nbsp; &nbsp;
-							  <%= f.radio_button :is_checked, 'true'  %>  <%=t('claim.verified_ok')%> &nbsp; &nbsp; </td>
+						<td><%= f.radio_button :is_checked, 'false',  :id => 'approve2'  %>  <%=t('claim.return_to_staff')%> &nbsp; &nbsp;
+							  <%= f.radio_button :is_checked, 'true',  :id=> 'approve1' %>  <%=t('claim.verified_ok')%> &nbsp; &nbsp; </td>
 					</tr>
 					<tr>
 						<td><%= t 'claim.note_for_finance' %></td>
 						<td><%=f.text_field :notes, :size => 60 %></td>
+					</tr>
+					<tr class="span_submit1" style="display: none;">
+						<td><%= t 'claim.to_approved' %></td>
+						<td><%= f.collection_select :approved_by, Staff.find(:all, :conditions => ['id IN (?)', Position.find(:all, :conditions => ['name=? or name ilike(?) and staff_id is not null','Pengarah', 'Timbalan%']).map(&:staff_id)]), :id, :name %></td>
+						<%= f.hidden_field :checked_by, :value => @current_login.staff_id %>
+						<%= f.hidden_field :checked_on, :value => Date.today %>
 					</tr>
 
 				</table>
@@ -201,3 +207,16 @@
 </p>
 
 <% end %>
+
+
+<script type="text/javascript">
+
+$j(function(){
+  $j('input[type=radio]').click(function(){
+    if($j('#approve1').is(':checked'))
+    { $j(".span_submit1").show("highlight"); }
+    else
+    { $j(".span_submit1").hide(""); }
+  });
+});
+</script>

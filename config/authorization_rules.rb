@@ -118,11 +118,29 @@ authorization do
     has_permission_on :ptdos, :to => [:delete, :show_total_days] do
         if_attribute :staff_id => is {Login.current_login.staff_id}
     end
-    
+
+    #restrictions between applicant & approver done in Edit page
+    has_permission_on :travel_requests, :to => [:menu, :create, :travel_log_index]
+    has_permission_on :travel_requests, :to => [:read, :update, :travel_log] do                                    #status_movement (PDF form in Ogma)
+      if_attribute :staff_id => is {Login.current_login.staff_id}
+    end
+    has_permission_on :travel_requests, :to => [:read, :update] do
+      if_attribute :hod_id => is {Login.current_login.staff_id}
+    end
+
     has_permission_on :travel_claims, :to => :create
     has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:index, :show, :update, :claimprint]do 
         if_attribute :staff_id => is {Login.current_login.staff_id}
     end
+    has_permission_on :travel_claims, :to => :read, :join_by => :and do
+       if_attribute :approved_by => is {Login.current_login.staff_id}
+    end
+    has_permission_on :travel_claims, :to =>  :update, :join_by => :and do        # Approver may approve if not yet approve (approve=read+update)
+      if_attribute :approved_by => is {Login.current_login.staff_id}
+      if_attribute :is_checked => is {true}
+      if_attribute :is_approved => is_not {true}
+    end
+    
     
     has_permission_on :asset_defects, :to => :create
     has_permission_on :asset_defects, :to => [:read, :update]  do
@@ -549,7 +567,7 @@ authorization do
   #4-OK - all 4 - 16Feb2016
   #4-OK - for read, but manage - requires role: MANAGE for staff_attendances to be activated as well
   #restriction - INDEX - @fingerprints restricted to own record, @approvefingerprints restricted to unit members, BUT INDEX_ADMIN OK
-  # NOTE - menu items ONLY requires READ access for all kind of access(Index), keep to avoid confusion, refer Ogma for actual workable application of access by module
+  # NOTE - menu items ONLY requires READ access for all kind of access(Index), keep below to avoid confusion, refer Ogma for actual workable application of access by module
   role :fingerprints_module_admin do
     has_permission_on :fingerprints, :to =>[:manage, :approval, :index_admin]
   end
@@ -569,17 +587,177 @@ authorization do
       if_attribute :thumb_id => is_in {Login.current_login.admin_unitleaders_thumb}
     end
   end
+
+  #5-OK - all 4 - 17Feb2016
+  #5-OK - for read, but for manage with restrictions as of super admin (PYD, PPP, PPK)
+  role :staff_appraisals_module_admin do
+    has_permission_on :staff_appraisals, :to => [:manage, :appraisal_form]
+  end
+  role :staff_appraisals_module_viewer do
+    has_permission_on :staff_appraisals, :to => [:read, :appraisal_form]
+  end
+  role :staff_appraisals_module_user do
+    has_permission_on :staff_appraisals, :to => [:create, :read, :update, :appraisal_form]
+  end
+  role :staff_appraisals_module_member do
+    has_permission_on :staff_appraisals, :to => :create
+    has_permission_on :staff_appraisals, :to => [:manage, :appraisal_form], :join_by => :or do 
+        if_attribute :staff_id => is {Login.current_login.staff_id}
+        if_attribute :eval1_by => is {Login.current_login.staff_id}
+        if_attribute :eval2_by => is {Login.current_login.staff_id}
+    end
+  end
   
+  #6-OK - Member only, other type of access are disable
+#   role :staff_leaves_module_admin do
+#      has_permission_on :leaveforstaffs, :to => [:manage, :approve1, :approve2]
+#   end
+#   role :staff_leaves_module_viewer do
+#     has_permission_on :leaveforstaffs, :to => :read
+#   end
+#   role :staff_leaves_module_user do
+#     has_permission_on :leaveforstaffs, :to => [:read, :update, :approve1, :approve2]
+#   end
+  role :staff_leaves_module_member do
+    has_permission_on :leaveforstaffs, :to => :create
+    has_permission_on :leaveforstaffs, :to => [:read, :edit, :update] do
+      if_attribute :staff_id => is {Login.current_login.staff_id}
+    end
+    has_permission_on :leaveforstaffs, :to => [:read, :approve1, :update] do
+        if_attribute :approval1_id => is {Login.current_login.staff_id}
+    end
+    has_permission_on :leaveforstaffs, :to => [:read, :approve2, :update] do
+        if_attribute :approval2_id => is {Login.current_login.staff_id}
+    end
+  end
+  
+  #7-Ogma:OK - 3/4 (Admin, Viewer & User), Member : applicable only for applicant & final approver (To assign user with Finance Check, use 'Finance Unit' role instead, which will disable all type of module access for Travel Claims Module & Training Budget Module)
+  #7-Catechumen - , Admin & User not applicable at all, except for Member (access same as Ogma) & Viewer (but NOTE - read only)
+  # NOTE Travel Claim should come with Travel Request
+  role :travel_claims_module_viewer do
+    has_permission_on :travel_claims, :to => :read
+  end
+  role :travel_claims_module_member do
+    #owner
+    has_permission_on :travel_claims, :to => :create
+    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:index, :show, :update, :claimprint]do 
+      if_attribute :staff_id => is {Login.current_login.staff_id}
+    end
+    #own (Final Approver)
+    has_permission_on :travel_claims, :to => :approve, :join_by => :and do        # Approver may approve if not yet approve  (approve=read+update)
+      if_attribute :approved_by => is {Login.current_login.staff_id}
+      if_attribute :is_checked => is {true}
+      if_attribute :is_approved => is_not {true}
+    end
+  end
+
+  #8-OK only for Member
+  # NOTE - Restriction as of in Catechumen - INDEX page shall personalize to current user, containing 2 listing ie. 'in_need_of_approval' & 'my_travel_request',
+  #whereas Admin, Viewer & User requires listing for ALL travel requests records.????then what's the use of hvg these 3??? Member already enough! to discuss!
+  # TODO TODO TODO- To confirm / discuss / revise upon completion of these Auth Rules (access by module : Admin, Viewer, User & Member)
+  role :travel_requests_module_admin do
+    has_permission_on :travel_requests, :to => [:manage, :travel_log_index, :travel_log]
+  end                                                                                                                                                     # Admin - can do everything (restrictions: own recs only)
+  role :travel_requests_module_viewer do
+    has_permission_on :travel_requests, :to => [:read, :travel_log_index] 
+  end                                                                                                                                                     # Viewer - can view everything (restrictions : own recs only)
+  role :travel_requests_module_user do
+    has_permission_on :travel_requests, :to => [:approve, :travel_log, :travel_log_index]     # NOTE - approve : Read+Update
+  end   
+  role :travel_requests_module_member do
+    #own records
+    has_permission_on :travel_requests, :to => [:menu, :create, :travel_log_index]
+    has_permission_on :travel_requests, :to => [:read, :update, :travel_log] do                                    #status_movement (PDF form in Ogma)
+      if_attribute :staff_id => is {Login.current_login.staff_id}
+    end
+    #own (Approver)
+    has_permission_on :travel_requests, :to => [:read, :update] do                                    
+      if_attribute :hod_id => is {Login.current_login.staff_id}
+    end
+  end
+
+  #9-OK - 2/4 OK (Manage & User) whereas Viewer & Member access are similar? - 6Feb2016
+  # NOTE - for access by 'Training Budget Module'/'Training Courses Module' (Admin/Viewer/User/Member), must activate at least 'Training Attendance Module'(Member/Viewer)
+  # NOTE 'Training Budget Module' - Viewer & Member access are similar?, Member (disable) - as records has no ownership data
+  role :training_budget_module_admin do
+     has_permission_on :ptbudgets, :to => :manage
+  end
+  role :training_budget_module_viewer do
+     has_permission_on :ptbudgets, :to => :read
+  end
+  role :training_budget_module_user do
+     has_permission_on :ptbudgets, :to => [:read, :update]
+  end
+#   role :training_budget_module_member do
+#      has_permission_on :ptbudgets, :to => :read
+#   end 
+
+  #10 - 2/4 OK (Manage & Viewer) 
+  # NOTE - for access by 'Training Budget Module'/'Training Courses Module' (Admin/Viewer/User/Member), must activate at least 'Training Attendance Module'(Member/Viewer)
+  # NOTE 'Training Courses Module' - Viewer & Member access are similar?, Member (disable) - as records has no ownership data
+  #10-OK, in show - link 'schedule a course' requires manage for ptschedules
+  role :training_courses_module_admin do
+     has_permission_on :ptcourses, :to =>:manage
+  end
+  role :training_courses_module_viewer do
+     has_permission_on :ptcourses, :to =>:read
+  end
+  role :training_courses_module_user do
+     has_permission_on :ptcourses, :to =>[:read, :update]
+  end
+#   role :training_courses_module_member do
+#      has_permission_on :ptcourses, :to =>[:read, :update]
+#   end
+  
+  #11 - 2/4 OK (Manage & Viewer) 
+  #11-OK - note pending 'Apply for Training' menu link
+  # NOTE 'Training Schedule Module' - Viewer & Member access are similar?, Member (disable) - as records has no ownership data
+  role :training_schedule_module_admin do
+     has_permission_on :ptschedules, :to => [:manage, :apply, :organized_course_manager]
+  end
+  role :training_schedule_module_viewer do
+     has_permission_on :ptschedules, :to => [:read, :participants_expenses]
+  end
+  role :training_schedule_module_user do
+     has_permission_on :ptschedules, :to => [:read, :organized_course_manager, :apply, :update]
+  end
+#   role :training_schedule_module_member do
+#      has_permission_on :ptschedules, :to => [:read, :participants_expenses, :apply, :update]
+#   end 
+
+  #12-OK, but 'Show Total Days' restricted to own record only.
+  #12 - 3/4 OK (Admin, Viewer & User)
+  role :training_attendance_module_admin do
+    has_permission_on :ptdos, :to => [:manage, :show_total_days]   
+  end
+  role :training_attendance_module_viewer do
+     has_permission_on :ptdos, :to => [:read, :show_total_days]
+  end
+   role :training_attendance_module_user do
+     has_permission_on :ptdos, :to => [:read, :update, :show_total_days]
+  end
+  role :training_attendance_module_member do
+    #own record
+    has_permission_on :ptdos, :to =>:create
+    has_permission_on :ptdos, :to => :index do 
+      if_attribute :staff_id => is {Login.current_login.staff_id}
+    end
+    has_permission_on :ptdos, :to => [:delete, :show_total_days] do
+        if_attribute :staff_id => is {Login.current_login.staff_id}
+    end
+    # NOTE - 'Training Attendance Module' (Member) should come with Programme Manager role(Dept Approval-Academician section) in order to get Dept Approval (Academics) works,
+    # NOTE - 'Training Attendance Module' (Member) is not available for Unit Approval(Management) & Department Approval(Timb Pengarah Pengurusan) & Final Approval(Director) - use 'Administration Staff' role instead. 'Administration Staff' role already covers these 3 positions functions in staff Training Attendance
+  end
+  
+  
+    
   
   
   #Catechumen
-  #OK until here - 16Feb2016
+  #OK until here - 17Feb2016
   ###############
   
-  
-  
-  
-  
+   
   #############
     
   

@@ -27,61 +27,70 @@
 							<% end -%>
 							<% permitted_to? :manage, :staff_attendances do %>
 								<li><a href="http://<%= request.host  %>:3003/staff/staff_attendances/import_excel?locale=ms_MY"><%=t('attendance.import_excel')%></a></li>
-								<li><a href="http://<%= request.host  %>:3003/attendance/status"><%=t('attendance.punchcard_status')%></a></li>
 							<% end %>
 							<% permitted_to? :read, :staff_attendances do %>
+								<li><a href="http://<%= request.host  %>:3003/attendance/status"><%=t('attendance.punchcard_status')%></a></li>
 								<li><a href="http://<%= request.host  %>:3003/staff/staff_attendances/attendance_report?locale=ms_MY"><%=t('attendance.report_monthlylisting')%></a></li>
 							<% end -%>
 							
 						</ul>
 				</li>
-
-				<li><%= link_to (t 'menu.staff_appraisal'), 		{:controller => 'staff_appraisals', 	:action => 'index'} %></li>
-
+				<% permitted_to? :read, :staff_appraisals do %>
+					<li><%= link_to (t 'menu.staff_appraisal'), {:controller => 'staff_appraisals', :action => 'index'} %></li>
+				<% end %>
 				<% permitted_to? :read, :positions do %>
 					<li><a href="#"><%= t('menu.tasks_respons')%> ></a>
 						<ul class="sub_menu">
 							<li><%= link_to (t 'staff.employscheme'), {:controller => 'employgrades', :action => 'index'} %></li>
 							<li><%= link_to t('postinfos.title'), {:controller => 'postinfos', :action => 'index'} %></li>
-							<li><%= link_to (t 'menu.tasks_respons'), 		{:controller => 'positions', 	:action => 'index'} %></li>
+							<li><%= link_to (t 'menu.tasks_respons'), {:controller => 'positions', 	:action => 'index'} %></li>
 							<li><a href="http://<%= request.host  %>:3003/staff/positions"><%=t('positions.organisation_chart')%></a></li>
 						</ul>
 					</li>
 				<% end %>
-
-			  <li><a href="#"><%= t('menu.leave') %> ></a>
-					<ul class="sub_menu">
-							<li><%= link_to (t 'menu.apply'), 				{:controller => 'leaveforstaffs', 	:action => 'new'} %></li>
-							<li><%= link_to (t 'menu.list_approve'), 			{:controller => 'leaveforstaffs', 	:action => 'index'} %></li>
-					</ul>
-				</li>
-				<li><a href="#"><%= t('menu.claims') %> ></a>
-					<ul class="sub_menu">
-							<li><%= link_to (t 'menu.travel_request'), 	{:controller => 'travel_requests', 	:action => 'index'} %></li>
-							<li><%= link_to (t 'menu.logs'), 	    {:controller => 'travel_requests', 	:action => 'travel_log_index'} %></li>
-							<li><%= link_to (t 'menu.travel_claims'), 					{:controller => 'travel_claims', 		:action => 'index'} %></li>
-					</ul>
-				</li>
-				<li><a href="#"><%= t('menu.pro_dev') %> ></a>
-					<ul class="sub_menu">
-						<% permitted_to? :manage, :ptbudgets do %>
-						  <li><%= link_to (t 'menu.ptbudget'), 	ptbudgets_path %> </li>
+				<% permitted_to? :read, :leaveforstaffs do %>
+					<li><a href="#"><%= t('menu.leave') %> ></a>
+						<ul class="sub_menu">
+							<% permitted_to? :create, :leaveforstaffs do %>
+							<li><%= link_to (t 'menu.apply'), {:controller => 'leaveforstaffs', 	:action => 'new'} %></li>
 							<% end %>
-						<% permitted_to? :manage, :ptcourses do %>
-							<li><%= link_to (t 'menu.ptcourse'), ptcourses_path %></li>
+							<li><%= link_to (t 'menu.list_approve'), {:controller => 'leaveforstaffs', :action => 'index'} %></li>
+						</ul>
+					</li>
+				<% end %>
+				<% permitted_to? :menu, :travel_requests do %>
+					<li><a href="#"><%= t('menu.claims') %> ></a>
+						<ul class="sub_menu">
+							<li><%= link_to (t 'menu.travel_request'), {:controller => 'travel_requests', :action => 'index'} %></li>
+							<% permitted_to? :travel_log_index, :travel_requests do %>
+								<li><%= link_to (t 'menu.logs'), {:controller => 'travel_requests', :action => 'travel_log_index'} %></li>
 							<% end %>
-						<% permitted_to? :manage, :ptschedules do %>
-							<li><%= link_to (t 'menu.ptschedule'), ptschedules_path %></li>
+							<li><%= link_to (t 'menu.travel_claims'), {:controller => 'travel_claims', :action => 'index'} %></li>
+						</ul>
+					</li>
+				<% end %>
+				<% permitted_to? :read, :ptdos do%>
+					 <li><a href="#"><%= t('menu.pro_dev') %> ></a>
+						<ul class="sub_menu">
+							<% permitted_to? :read, :ptbudgets do %>
+								<li><%= link_to (t 'menu.ptbudget'), ptbudgets_path %> </li>
 							<% end %>
-							<li><%= link_to (t 'menu.apply_train'), 	{:controller => 'ptschedules', :action => 'apply'} %></li>
-						<% permitted_to? :index, :ptdos do %>
+							<% permitted_to? :read, :ptcourses do %>
+								<li><%= link_to (t 'menu.ptcourse'), ptcourses_path %></li>
+							<% end %>
+							<% permitted_to? :read, :ptschedules do %>
+								<li><%= link_to (t 'menu.ptschedule'), ptschedules_path %></li>
+							<% end %>
+							<% permitted_to? :apply, :ptschedules do %>
+								<li><%= link_to (t 'menu.apply_train'), {:controller => 'ptschedules', :action => 'apply'} %></li>
+							<% end %>
 							<li><%= link_to (t 'menu.train_status'), ptdos_path %></li>
-						<% end %>
-						<% permitted_to? :organized_course_manager, :ptschedules do %>
-							<li><%= link_to (t 'ptschedule.expenses_menu'), organized_course_manager_ptschedules_path %></li>
-						<% end %>
-					</ul>
-				</li>
+							<% permitted_to? :organized_course_manager, :ptschedules do %>
+								<li><%= link_to (t 'ptschedule.expenses_menu'), organized_course_manager_ptschedules_path %></li>
+							<% end %>
+						</ul>
+					</li>
+				<% end %>
 				<li><%= link_to (t 'menu.status_movement'), {:controller => 'travel_requests', 	:action => 'index'} %></li>
 				<% permitted_to? :maklumat_perjawatan_LA, :positions do %>
 				<li><a href="#"><%= t('menu.reports') %> ></a>

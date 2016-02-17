@@ -196,7 +196,7 @@
 			<li><%=t('login.rule3')%></li>
 			<li><%=t('login.rule4')%></li>
 			<li><%=t('login.rule5')%></li>
-			<li><%=t('login.rule6')%></li>
+<!-- 			<li><%#=t('login.rule6')%></li> -->
 			<li><%=t('login.rule7')%>
 				<ul>
 				<li><%=t('login.rule7a')%></li>
@@ -1480,6 +1480,34 @@ $j(function(){
     assetown[3].checked=false;
     assetown[3].disabled=true;
     
+    /*set by default at all time - Staff Leave (Admin, Viewer, User) not applicable - refer auth rules*/
+    d_staffmg[1].checked=false;
+    d_staffmg[1].disabled=true;
+    d_staffrd[1].checked=false;
+    d_staffrd[1].disabled=true;
+    d_staffusr[1].checked=false;
+    d_staffusr[1].disabled=true;
+    
+    /*set by default at all time - Travel Claim (Admin, User) not applicable - refer auth rules - (Viewer - read only)*/
+    b_staffmg[0].checked=false;
+    b_staffmg[0].disabled=true;
+    /*b_staffrd[0].checked=false;*/
+    /*b_staffrd[0].disabled=true;*/
+    b_staffusr[0].checked=false;
+    b_staffusr[0].disabled=true;
+    
+    /*set by default at all time - Staff Training Budget (ptbudget) has no owner*/
+    c_staffown[0].checked=false;
+    c_staffown[0].disabled=true;
+    
+    /*set by default at all time - Staff Training Courses (ptcourse) has no owner*/
+    c_staffown[1].checked=false;
+    c_staffown[1].disabled=true;
+    
+    /*set by default at all time - Staff Training Schedule (ptschedule) has no owner*/
+    c_staffown[2].checked=false;
+    c_staffown[2].disabled=true;
+    
   });
   
     
@@ -2001,7 +2029,7 @@ $j(function(){
     }
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
 
-    /When Warden OR Lecturer is selected/
+    /*When Warden OR Lecturer is selected*/
     if((inputElements[6].checked) || (inputElements[12].checked))
     {
       /* student leaves*/
@@ -2116,11 +2144,17 @@ $j(function(){
         courseevalown[i].disabled=true;
         ecourseevalmn[i].disabled=true;
       }
+      c_staffown[3].disabled=true;
+      c_staffown[3].checked=false;
+      ec_staffmn[3].checked=false;
     }
     
     /*when role : Unit Leader is selected, uncheck Training Attendance(O-Ptdo), Staff Attendance(O), Programmes*/
     if(inputElements[20].checked){
       c_staffown[3].disabled=true;
+      c_staffown[3].checked=false;
+      ec_staffmn[3].checked=false;
+      
       a_staffown[2].disabled=true;
       trainingmg[6].disabled=true;
     }
@@ -2262,6 +2296,34 @@ $j(function(){
     /*set by default at all time - Asset Disposals (Member) not applicable - refer auth rules*/
     assetown[3].checked=false;
     assetown[3].disabled=true;
+    
+    /*set by default at all time - Staff Leave (Admin, Viewer, User) not applicable - refer auth rules*/
+    d_staffmg[1].checked=false;
+    d_staffmg[1].disabled=true;
+    d_staffrd[1].checked=false;
+    d_staffrd[1].disabled=true;
+    d_staffusr[1].checked=false;
+    d_staffusr[1].disabled=true;
+    
+    /*set by default at all time - Travel Claim (Admin, User) not applicable - refer auth rules - (Viewer - read only)*/
+    b_staffmg[0].checked=false;
+    b_staffmg[0].disabled=true;
+    /*b_staffrd[0].checked=false;*/
+    /*b_staffrd[0].disabled=true;*/
+    b_staffusr[0].checked=false;
+    b_staffusr[0].disabled=true;
+    
+    /*set by default at all time - Staff Training Budget (ptbudget) has no owner*/
+    c_staffown[0].checked=false;
+    c_staffown[0].disabled=true;
+    
+    /*set by default at all time - Staff Training Courses (ptcourse) has no owner*/
+    c_staffown[1].checked=false;
+    c_staffown[1].disabled=true;
+    
+    /*set by default at all time - Staff Training Schedule (ptschedule) has no owner*/
+    c_staffown[2].checked=false;
+    c_staffown[2].disabled=true;
     
   });
   
@@ -2795,11 +2857,15 @@ $j(function(){
     } 
     else
     {
-      /*when Training Manager OR Training Administration is not selected, but Unit Leader OR Administration Staff OR Staff is selected, Training Attendance(O-Ptdo) is disable*/
-      if((inputElements[20].checked) || (inputElements[3].checked) || (inputElements[5].checked))
+      /*when Training Manager OR Training Administration is not selected, but Unit Leader OR Programme Mgr OR Administration Staff OR Staff is selected, Training Attendance(O-Ptdo) is disable*/
+      if((inputElements[20].checked) || (inputElements[17].checked) || (inputElements[3].checked) || (inputElements[5].checked))
       {  
         c_staffown[3].checked=false;
         c_staffown[3].disabled=true;
+        if ((c_staffmg[3].checked==false) && (c_staffrd[3].checked==false) && (c_staffusr[3].checked==false) )
+        { ec_staffm[3].checked=false;}
+        else
+        { ec_staffm[3].checked=true;}
       }
       else
       {  c_staffown[3].disabled=false;}
@@ -3799,7 +3865,7 @@ $j(function(){
     }
     ///
     
-    /SAME AS - EACH part - default value - at any time/
+    /*SAME AS - EACH part - default value - at any time*/
     /*set by default at all time - Student Attendance (Member) not applicable - refer auth rules*/
     studentown[1].checked=false;
     studentown[1].disabled=true;
@@ -3861,6 +3927,34 @@ $j(function(){
     /*set by default at all time - Asset Disposals (Member) not applicable - refer auth rules*/
     assetown[3].checked=false;
     assetown[3].disabled=true;
+    
+    /*set by default at all time - Staff Leave (Admin, Viewer, User) not applicable - refer auth rules*/
+    d_staffmg[1].checked=false;
+    d_staffmg[1].disabled=true;
+    d_staffrd[1].checked=false;
+    d_staffrd[1].disabled=true;
+    d_staffusr[1].checked=false;
+    d_staffusr[1].disabled=true;
+    
+    /*set by default at all time - Travel Claim (Admin, User) not applicable - refer auth rules - (Viewer - read only)*/
+    b_staffmg[0].checked=false;
+    b_staffmg[0].disabled=true;
+    /*b_staffrd[0].checked=false;*/
+    /*b_staffrd[0].disabled=true;*/
+    b_staffusr[0].checked=false;
+    b_staffusr[0].disabled=true;
+    
+    /*set by default at all time - Staff Training Budget (ptbudget) has no owner*/
+    c_staffown[0].checked=false;
+    c_staffown[0].disabled=true;
+    
+    /*set by default at all time - Staff Training Courses (ptcourse) has no owner*/
+    c_staffown[1].checked=false;
+    c_staffown[1].disabled=true;
+    
+    /*set by default at all time - Staff Training Schedule (ptschedule) has no owner*/
+    c_staffown[2].checked=false;
+    c_staffown[2].disabled=true;
     
 //     $j("#form1").submit();
   });

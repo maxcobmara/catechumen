@@ -60,7 +60,11 @@
 			<%# if travel_claim.my_claim_status == t('claim.for_checking') || travel_claim.my_claim_status == t('claim.resubmitted_to_finance') %>
 			<% if travel_claim.my_claim_status == t('claim.for_checking') %>
 				<%= link_to image_tag("joystick_error.png", :border => 0,:title=>(t 'claim.finance_check2')), :action => 'check', :id => travel_claim %>
-			<% end %></td>
+			<% end %>
+			<% if travel_claim.my_claim_status == t('claim.processed') && travel_claim.approved_by==current_login.staff_id%>
+				<%= link_to image_tag("approval.png", :border => 0,:title=>(t 'edit')), :action => 'edit', :id => travel_claim %>
+			<% end %>
+		</td>
 		<td width=10px >
 			<%# if travel_claim.my_claim_status ==  (t('claim.processed') || t('claim.approved')) %>
 				<%#= link_to image_tag("printer.png", :border => 0,:title=>(t 'print')), :action => 'claimprint', :id => travel_claim %>
