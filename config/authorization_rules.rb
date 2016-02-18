@@ -1089,6 +1089,38 @@ authorization do
 #     end
   end
   #####end for Training modules####################################
+  #####start of Library modules####################################
+  #29-OK, but note pending extend, extend2, return & return2
+  #29 - 3/4 OK (Admin/Viewer/User)
+  role :library_transactions_module_admin do
+    has_permission_on :librarytransactions, :to => [:manage, :check_availability, :multiple_edit, :check_availability2, :multiple_update, :form_try, :extend2, :extend, :return, :analysis_statistic]
+    # TODO extend, extend2, return, return2 in Ogma
+  end
+  role :library_transactions_module_viewer do
+    has_permission_on :librarytransactions, :to => [:read, :analysis_statistic]
+    # TODO extend, extend2, return, return2 in Ogma
+  end
+  role :library_transactions_module_user do
+    has_permission_on :librarytransactions, :to => [:read, :update, :check_availability, :multiple_edit, :check_availability2, :multiple_update, :form_try, :extend2, :extend, :return, :analysis_statistic]
+  end
+# NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role
+#   role :library_transactions_module_member do
+#   end
+  
+  #30-OK
+  role :library_books_module_admin do
+     has_permission_on :books, :to => :manage
+  end
+  role :library_books_module_viewer do
+     has_permission_on :books, :to => [:core, :read]
+  end
+  role :library_books_module_user do
+    has_permission_on :books, :to => [:core, :read, :update]
+  end
+# NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role
+#   role :library_books_module_member do
+#   end
+  #####end for Library modules####################################
   
   
   
@@ -1100,8 +1132,6 @@ authorization do
   #Catechumen
   #OK until here - 19Feb2016
   ###############
-  
-  
   #############
     
   
