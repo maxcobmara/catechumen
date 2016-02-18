@@ -1,4 +1,5 @@
 class LessonplansearchesController < ApplicationController
+  filter_access_to :all
   def new
     @loggedinstaff = @current_login.staff_id
     loggedinstaff_roles = @current_login.roles.map(&:name)

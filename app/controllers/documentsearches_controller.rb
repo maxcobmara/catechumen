@@ -1,4 +1,5 @@
 class DocumentsearchesController < ApplicationController
+  filter_resource_access
   def new
     @searchdoctype = params[:searchdoctype]
     @documentsearch = Documentsearch.new

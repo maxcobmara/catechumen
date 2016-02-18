@@ -1,4 +1,5 @@
 class StudentsearchesController < ApplicationController
+  filter_resource_access
   def new
     @searchstudenttype = params[:searchstudenttype]
     @studentsearch = Studentsearch.new

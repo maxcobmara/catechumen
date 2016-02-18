@@ -1,4 +1,5 @@
 class CurriculumsearchesController < ApplicationController
+  filter_access_to :all
   def new
     @searchcurriculumtype = params[:searchcurriculumtype]
     @curriculumsearch = Curriculumsearch.new

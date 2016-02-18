@@ -1,4 +1,5 @@
 class StudentcounselingsearchesController < ApplicationController
+  filter_resource_access
   def new
     @studentcounselingsearch = Studentcounselingsearch.new
     @searchstudentcounselingtype = params[:searchstudentcounselingtype]

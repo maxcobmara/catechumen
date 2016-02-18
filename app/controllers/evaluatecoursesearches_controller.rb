@@ -1,4 +1,5 @@
 class EvaluatecoursesearchesController < ApplicationController
+  filter_access_to :all
   def new
     @searchevaluatecoursetype = params[:searchevaluatecoursetype]
     @evaluatecoursesearch = Evaluatecoursesearch.new

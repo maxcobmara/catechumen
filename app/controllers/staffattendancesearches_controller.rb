@@ -1,4 +1,5 @@
 class StaffattendancesearchesController < ApplicationController
+  filter_access_to :all
   def new
     @searchstaffattendancetype = params[:searchattendancetype]
     @staffattendancesearch = Staffattendancesearch.new

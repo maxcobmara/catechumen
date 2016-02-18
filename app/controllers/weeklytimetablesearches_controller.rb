@@ -1,4 +1,5 @@
 class WeeklytimetablesearchesController < ApplicationController
+  filter_access_to :all
   def new
     @searchweeklytimetabletype = params[:searchweeklytimetabletype]
     @weeklytimetablesearch = Weeklytimetablesearch.new

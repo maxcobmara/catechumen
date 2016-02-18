@@ -1,4 +1,5 @@
 class StudentdisciplinesearchesController < ApplicationController
+  filter_access_to :all
   def new
     @searchstudentdisciplinetype = params[:searchstudentdisciplinetype]
     @studentdisciplinesearch = Studentdisciplinesearch.new

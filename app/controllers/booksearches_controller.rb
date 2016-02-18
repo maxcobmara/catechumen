@@ -1,4 +1,5 @@
 class BooksearchesController < ApplicationController
+  filter_resource_access
   def new
     @searchbooktype = params[:searchbooktype]
     @booksearch = Booksearch.new
