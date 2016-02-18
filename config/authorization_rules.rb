@@ -937,6 +937,78 @@ authorization do
 #      #Warden, Counselor, Disciplinary Officer, Student, Student Admnistrator, Librarian, Lecturer
 #   end
   #####end for Student's related modules################################# 
+  #####starts of Training modules####################################
+  #Training menus require - training notes (menu) access 
+  #21-OK
+  #21 - 3/4 OK - 9Feb2016
+  role :training_notes_module_admin do
+     has_permission_on :trainingnotes, :to => [:menu, :manage]
+  end
+  role :training_notes_module_viewer do
+     has_permission_on :trainingnotes, :to => [:menu, :read]
+  end
+  role :training_notes_module_user do
+     has_permission_on :trainingnotes, :to => [:menu, :read, :update]
+  end
+# NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[0].disabled=true as the only owner of this module requires 'Lecturer' role 
+#   role :training_notes_module_member do
+#     #own records (lecturer only)
+#     has_permission_on :trainingnotes, :to => :manage, :join_by => :or do
+#       if_attribute :topicdetail_id => is_in {user.topicdetails_of_programme}
+#       if_attribute :timetable_id => is_in {user.timetables_of_programme} 
+#     end
+#     has_permission_on :trainingnotes, :to => :manage, :join_by => :and do
+#       if_attribute :topicdetail_id => is {nil}
+#       if_attribute :timetable_id => is {nil}
+#     end
+#   end
+
+  #22-OK
+  #22 - 3/4 OK - 9Feb2016
+  role :academic_session_module_admin do
+     has_permission_on :academic_sessions, :to => :manage
+  end
+  role :academic_session_module_viewer do
+     has_permission_on :academic_sessions, :to => :read
+  end
+  role :academic_session_module_user do
+     has_permission_on :academic_sessions, :to =>[:read, :update]
+  end
+# NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[1].disabled=true as the only owner of this module requires 'Programme Manager' role 
+
+  #23-OK 
+  role :student_intake_module_admin do
+     has_permission_on :intakes, :to => :manage
+  end
+  role :student_intake_module_viewer do
+     has_permission_on :intakes, :to => :read
+  end
+  role :student_intake_module_user do
+    has_permission_on :intakes, :to => [:read, :update]
+  end
+  role :student_intake_module_member do
+    has_permission_on :intakes, :to => :read
+    # NOTE - restriction on updates - lecturers of the same programme only
+    has_permission_on :intakes, :to => :update do
+      if_attribute :programme_id => is_in {Programme.find(:all, :conditions => ['name=?', Position.find(:first, :conditions => ['staff_id=?', Login.current_login.staff_id]).unit]).map(&:id)}
+    end
+  end
+
+  #24-OK
+  role :timetables_module_admin do
+     has_permission_on :timetables, :to => :manage
+  end
+  role :timetables_module_viewer do
+     has_permission_on :timetables, :to => :read
+  end
+  role :timetables_module_user do
+     has_permission_on :timetables, :to => [:read, :update]
+  end
+  role :timetables_module_member do
+     has_permission_on :timetables, :to => :manage do
+       if_attribute :created_by => is {Login.current_login.staff_id}
+     end
+  end
   
   
   
@@ -946,6 +1018,119 @@ authorization do
   #Catechumen
   #OK until here - 18Feb2016
   ###############
+      
+  #25-OK
+  #25 - 3/4 OK (Admin/Viewer/User)
+  role :lesson_plans_module_admin do
+     has_permission_on :lesson_plans, :to => [:manage, :lesson_plan, :lessonplan_reporting, :lesson_plan_report]
+  end
+  role :lesson_plans_module_viewer do
+     has_permission_on :lesson_plans, :to => [:read, :lesson_plan, :lesson_plan_report]
+  end
+  role :lesson_plans_module_user do
+     has_permission_on :lesson_plans, :to => [:read, :update, :lessonplan_reporting, :lesson_plan, :lesson_plan_report]
+  end
+# NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[0].disabled=true as the only owner of this module requires 'Lecturer' & 'Programme Manager' role 
+#   role :lesson_plans_module_member do
+#      #own (Programme Manager)
+#      has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report, :delete] do
+#       if_attribute :lecturer => is_in {user.unit_members}
+#     end
+#     has_permission_on :training_lesson_plans, :to =>:update, :join_by => :and do
+#       if_attribute :lecturer => is_in {user.unit_members}
+#       if_attribute :is_submitted => is {true}
+#       if_attribute :hod_approved => is_not {true}
+#     end
+#     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by  => :and do
+#       if_attribute :lecturer => is {user.userable_id}
+#       if_attribute :is_submitted => is {true}
+#       if_attribute :hod_approved => is {true}
+#       if_attribute :report_submit => is {true}
+#     end
+#     #own (lecturer)
+#     has_permission_on :training_lesson_plans, :to => :create
+#     has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report] do
+#       if_attribute :lecturer => is {user.userable_id}
+#     end
+#     has_permission_on :training_lesson_plans, :to => :update, :join_by => :and do
+#       if_attribute :lecturer => is {user.userable_id}
+#       if_attribute :is_submitted => is_not {true}
+#     end
+#     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by => :and do
+#       if_attribute :lecturer => is {user.userable_id}
+#       if_attribute :is_submitted => is {true}
+#       if_attribute :hod_approved => is {true}
+#       if_attribute :report_submit => is_not {true}
+#     end
+#   end
+  
+  #26-OK
+  #26 - 3/4 OK (Admin/Viewer/User) - 9Feb2016
+  role :topic_details_module_admin do
+    has_permission_on :training_topicdetails, :to => :manage
+  end
+  role :topic_details_module_viewer do
+    has_permission_on :training_topicdetails, :to => :read
+  end
+  role :topic_details_module_user do
+    has_permission_on :training_topicdetails, :to => [:read, :update]
+  end
+  # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[5].disabled=true as the only owner of this module requires 'Programme Manager' role
+  
+  #27-OK
+  #27 - 3/4 OK (Admin/Viewer/User) - 9Feb2016
+  role :programmes_module_admin do
+    has_permission_on :training_programmes, :to => :manage
+  end
+  role :programmes_module_viewer do
+    has_permission_on :training_programmes, :to => :read
+  end
+  role :programmes_module_user do
+    has_permission_on :training_programmes, :to => [:read, :update]
+  end
+# NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[6].disabled=true as the only owner of this module requires 'Programme Manager' role
+  
+  #28-OK but requires additional rules as personalize pages is based on logged-in user (existing one requires lecturer's role)
+  role :weeklytimetables_module_admin do
+     has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable, :approval]
+     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable] do
+       #if_attribute :staff_id =>  is {user.userable_id}
+     end
+  end
+  role :weeklytimetables_module_viewer do
+     has_permission_on :training_weeklytimetables, :to => [:read, :weekly_timetable]
+     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable] do
+      # if_attribute :staff_id =>  is {user.userable_id}
+     end
+  end
+  role :weeklytimetables_module_user do
+    has_permission_on :training_weeklytimetables, :to => [:read, :update, :approval, :weekly_timetable]
+     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable] do
+      # if_attribute :staff_id =>  is {user.userable_id}
+     end
+  end
+  role :weeklytimetables_module_member do
+    #own (lecturer / coordinator) - lecturer role?, Coordinator may use this to manage Weeklytimetable
+    #HACK : INDEX (new) - restricted access except for Penyelaras Kumpulan (diploma & posbasics)
+    has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create]
+   
+    #HACK : INDEX (list+show)- restricted access except for Penyelaras Kumpulan/Ketua Program/Ketua Subjek(+'unit_leader' role)/Administration/creator(prepared_by)
+    #HACK : SHOW (+edit) - restricted access UNLESS is_submitted!=true (+submission only allowed for Penyelaras Kumpulan)
+    has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] do
+      #if_attribute :programme_id => is_in {Programme.where(name: Position.where(staff_id: user.userable.id).first.unit).pluck(:id)}
+    end
+
+    has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do
+     # if_attribute :staff_id => is {user.userable_id}
+    end
+    #programme mgr
+    #SHOW (approval button) & approval action
+    has_permission_on :training_weeklytimetables, :to => :approval, :join_by => :and do
+      if_attribute :is_submitted => is {true}
+     # if_attribute :programme_id => is_in {Programme.where(name: Position.where(staff_id: user.userable.id).first.unit).pluck(:id)}
+    end
+  end
+  #####end for Training modules####################################
   #############
     
   

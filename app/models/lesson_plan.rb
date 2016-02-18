@@ -112,7 +112,12 @@ class LessonPlan < ActiveRecord::Base
       #programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
       #approver = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
       programme_name = Login.current_login.staff.position.unit
-      approver = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND staff_id IN(?)', programme_name, staff_with_kprole])
+      current_roles=Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+      if current_roles.include?("lesson_plans_module_admin")
+        approver = Staff.find(:all, :joins=>:position, :conditions=>['staff_id IN(?)',  staff_with_kprole])
+      else
+        approver = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND staff_id IN(?)', programme_name, staff_with_kprole])     
+      end
       approver  
   end
   

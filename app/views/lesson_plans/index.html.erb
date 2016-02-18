@@ -89,9 +89,9 @@
 		<!--PLAN SECTION-end-->
 	
 		<!--REPORT SECTION-start-->
-		<% if (lesson_plan.hod_approved ==true && lesson_plan.report_submit != true && lesson_plan.prepared_by == Login.current_login.staff_id) %>
+		<% if (lesson_plan.hod_approved ==true && lesson_plan.report_submit != true && (lesson_plan.prepared_by == Login.current_login.staff_id || @is_admin)) %>
 			<div class="noti_Container"><%= link_to image_tag("edit.png", :border => 0, :title => (t 'lesson_plan.submit_report')), :action => 'lessonplan_reporting', :id => lesson_plan %><div class="noti_bubble"><%=t('lesson_plan.report_bubble')%></div></div>
-		<% elsif (lesson_plan.report_submit == true && lesson_plan.endorsed_by == Login.current_login.staff_id && (lesson_plan.report_endorsed != true||lesson_plan.report_endorsed==false))  %>
+		<% elsif (lesson_plan.report_submit == true && (lesson_plan.endorsed_by == Login.current_login.staff_id || @is_admin) && (lesson_plan.report_endorsed != true||lesson_plan.report_endorsed==false))  %>
 			<div class="noti_Container">
 			<%= link_to image_tag("approval.png", :border => 0, :title => (t 'lesson_plan.endorse_report')), :action => 'lessonplan_reporting', :id => lesson_plan %><div class="noti_bubble"><%=t('lesson_plan.report_bubble')%></div></div>
 		<% end %>
