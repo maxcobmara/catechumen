@@ -91,7 +91,9 @@
 						</ul>
 					</li>
 				<% end %>
-				<li><%= link_to (t 'menu.status_movement'), {:controller => 'travel_requests', 	:action => 'index'} %></li>
+				<% permitted_to? :menu, :travel_requests do %>
+					<li><%= link_to (t 'menu.status_movement'), {:controller => 'travel_requests', 	:action => 'index'} %></li>
+				<% end %>
 				<% permitted_to? :maklumat_perjawatan_LA, :positions do %>
 				<li><a href="#"><%= t('menu.reports') %> ></a>
 					<ul class="sub_menu">
@@ -257,9 +259,9 @@
 				</li>
 			<% end %>
 
-				<% permitted_to? :manage, :student_attendances do %>
-				<li><%= link_to (t 'menu.attend'), {:controller => 'student_attendances', :action=>'index' } %></li>
-				<% end %>
+			<% permitted_to? :read, :student_attendances do %>
+				  <li><%= link_to (t 'menu.attend'), {:controller => 'student_attendances', :action=>'index' } %></li>
+			<% end %>
 				
 				<!--  Deprecated to Student_discipline_cases
 
@@ -268,11 +270,19 @@
 								<#% end %>-->
 								
 			<% permitted_to? :create, :student_discipline_cases do %>
-				<li><%= link_to (t 'menu.discipline'), {:controller => 'student_discipline_cases', 	:action => 'index'} %></li>
+				<li><a href="#"><%= t('menu.discipline') %></a>
+					<ul class="sub_menu">
+						<li><%= link_to (t 'menu.discipline'), {:controller => 'student_discipline_cases', 	:action => 'index'} %></li>
+						<li><a href="http://<%= request.host  %>:3003/student/student_discipline_cases"><%= t('menu.new_discipline') %></a></li>
+					</ul>
+				</li>
 			<% end %>
 			<% permitted_to? :index, :student_counseling_sessions do %>
-				<li><%= link_to (t 'menu.counselling'), {:controller => 'student_counseling_sessions', :action => 'index'} %></li>
-				<li><a href="http://<%= request.host  %>:3003/student/student_counseling_sessions"><%= t('menu.new_counselling') %></a>
+				<li><a href="#"><%= t('menu.counselling') %></a>
+					<ul class="sub_menu">
+						<li><%= link_to (t 'menu.counselling'), {:controller => 'student_counseling_sessions', :action => 'index'} %></li>
+						<li><a href="http://<%= request.host  %>:3003/student/student_counseling_sessions"><%= t('menu.new_counselling') %></a></li>
+					</ul>
 				</li>
 			<% end %>
 		</ul>

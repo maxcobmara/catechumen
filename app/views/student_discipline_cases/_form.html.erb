@@ -60,10 +60,10 @@
 	<% end %>
 
 	<!--add-in  && @student_discipline_case.assigned2_to == Login.current_login.staff_id below condition - only TPHEP can view action details-19dec2012-->
-	<% if (["Refer to TPHEP"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == Login.current_login.staff_id) %>
+	<% if (["Refer to TPHEP"].include? (@student_discipline_case.status) && (@student_discipline_case.assigned2_to == Login.current_login.staff_id) || @is_admin) %>
 	
-	<%# if (["Refer to TPHEP"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == Login.current_login.staff_id) ||
-	(["Open"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == Login.current_login.staff_id) 	%>
+	<%# if (["Refer to TPHEP"].include? (@student_discipline_case.status) && (@student_discipline_case.assigned2_to == Login.current_login.staff_id) || @is_admin) ||
+	(["Open"].include? (@student_discipline_case.status) && (@student_discipline_case.assigned2_to == Login.current_login.staff_id) || @is_admin)%>
 	<%= render :partial => 'show_case_info' %>	
 	<H2><%=t('studentdiscipline.action_details')%></H2>
 		<table width=100%>	

@@ -503,14 +503,18 @@ authorization do
   #1)OK - all 4 - 16Feb2016
   role :staffs_module_admin do
     has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
+    has_permission_on :staffsearch2s, :to => :read
   end
   role :staffs_module_viewer do
     has_permission_on :staffs, :to => [:menu, :read, :borang_maklumat_staff]
+    has_permission_on :staffsearch2s, :to => :read
   end
   role :staffs_module_user do
     has_permission_on :staffs, :to => [:menu, :read, :update, :borang_maklumat_staff]
+    has_permission_on :staffsearch2s, :to => :read
   end
   role :staffs_module_member do
+    has_permission_on :staffsearch2s, :to => :read
     has_permission_on :staffs, :to => :menu
     has_permission_on :staffs, :to => [:read, :update, :borang_maklumat_staff] do
       if_attribute :id => is {Login.current_login.staff_id}
@@ -542,15 +546,19 @@ authorization do
   # NOTE - Staff Attendance in Catechumen is deprecated, should rely on Ogma
   role :staff_attendances_module_admin do
     has_permission_on :staff_attendances, :to => [:manager, :manage]
+    has_permission_on :staffattendancesearches, :to => :read
   end
   role :staff_attendances_module_viewer do
     #1) OK, but if READ only - can only read attendance list for all staff +manage own lateness/early (MANAGER) - as this is default for all staff UNLESS if MANAGE given.
     has_permission_on :staff_attendances, :to =>[:manager, :read]
+    has_permission_on :staffattendancesearches, :to => :read
   end
   role :staff_attendances_module_user do 
     has_permission_on :staff_attendances, :to => [:read, :update, :manager]
+    has_permission_on :staffattendancesearches, :to => :read
   end
   role :staff_attendances_module_member do
+    has_permission_on :staffattendancesearches, :to => :read
     #own records
     has_permission_on :staff_attendances, :to => :manager
     has_permission_on :staff_attendances, :to => [:show, :update] do                        # show & update - to enter reason
@@ -729,14 +737,18 @@ authorization do
   #12 - 3/4 OK (Admin, Viewer & User)
   role :training_attendance_module_admin do
     has_permission_on :ptdos, :to => [:manage, :show_total_days]   
+    has_permission_on :ptdosearches, :to => :read
   end
   role :training_attendance_module_viewer do
      has_permission_on :ptdos, :to => [:read, :show_total_days]
+     has_permission_on :ptdosearches, :to => :read
   end
    role :training_attendance_module_user do
      has_permission_on :ptdos, :to => [:read, :update, :show_total_days]
+     has_permission_on :ptdosearches, :to => :read
   end
   role :training_attendance_module_member do
+    has_permission_on :ptdosearches, :to => :read
     #own record
     has_permission_on :ptdos, :to =>:create
     has_permission_on :ptdos, :to => :index do 
@@ -749,6 +761,106 @@ authorization do
     # NOTE - 'Training Attendance Module' (Member) is not available for Unit Approval(Management) & Department Approval(Timb Pengarah Pengurusan) & Final Approval(Director) - use 'Administration Staff' role instead. 'Administration Staff' role already covers these 3 positions functions in staff Training Attendance
   end
   
+  #####end for STAFF modules#######################################
+  #####starts of Student's related modules###############################
+  
+  #13-OK, but note - lecturers & warden has related access rules too, use other user for checking
+  #13 - 3/4 OK (Admin, Viewer, User)
+  role :student_leaves_module_admin do
+     has_permission_on :leaveforstudents, :to => [:manage, :approve_coordinator, :approve_warden]
+  end
+  role :student_leaves_module_viewer do
+     has_permission_on :leaveforstudents, :to => :read
+  end
+  role :student_leaves_module_user do
+     has_permission_on :leaveforstudents, :to => [:read, :approve_coordinator, :approve_warden, :update]
+  end
+  role :student_leaves_module_member do
+    #own records (student)
+    has_permission_on :leaveforstudents, :to =>[:menu, :create]
+    has_permission_on :leaveforstudents, :to => :read do
+      if_attribute :student_id => is {Login.current_login.staff_id}
+    end
+    # NOTE approver (Warden & Lecturer[penyelaras]) not applicable, activate Warden and / or Lecturer role accordingly
+  end
+  
+  #14-OK, but note - in controller, ':attribute_check => true' only applicable for show, edit, update & destroy of SINGLE record
+  #14 - 3/4 OK (Admin, Viewer, User) OK - 8Feb2016
+  role :student_attendances_module_admin do
+    has_permission_on :student_attendances, :to =>[:manage, :new_multiple, :create_multiple, :edit_multiple, :update_multiple, :borang_kehadiran]
+    has_permission_on :studentattendancesearches, :to => :read
+  end
+  role :student_attendances_module_viewer do
+    has_permission_on :student_attendances, :to =>[:read, :borang_kehadiran]
+    has_permission_on :studentattendancesearches, :to => :read
+  end
+  role :student_attendances_module_user do
+    has_permission_on :student_attendances, :to =>[:read, :update, :edit_multiple, :update_multiple, :borang_kehadiran]
+    has_permission_on :studentattendancesearches, :to => :read
+  end
+# NOTE - DISABLE(in EACH radio buttons - studentown[1].disabled=true) as the one & only owner of this module is Lecturer, use 'Lecturer' role instead.
+#   role :student_attendances_module_member do
+#      has_permission_on :studentattendancesearches, :to => :read
+#      has_permission_on :student_attendances, :to => [:create, :new_multiple, :new_multiple_intake] do
+#        if_attribute :student_id => is_in {Student.where(course_id: Programme.where(name: user.userable.positions.first.unit).first.id).pluck(:id)}
+#      end
+#      has_permission_on :student_attendances, :to => [:update, :create_multiple, :edit_multiple, :update_multiple, :student_attendan_form] do
+#        if_attribute :weeklytimetable_details_id => is_in {WeeklytimetableDetail.where(lecturer_id: user.userable.id).pluck(:id)}
+#      end
+#   end
+    
+  #15-OK 
+  #15 - 3/4 (Admin, Viewer, User) OK - 8Feb2016
+  role :student_counseling_module_admin do
+     has_permission_on :student_counseling_sessions, :to => [:manage, :feedback_referrer] 
+     has_permission_on :studentcounselingsearches, :to => :read
+  end
+  role :student_counseling_module_viewer do
+     has_permission_on :student_counseling_sessions, :to =>[:read, :feedback_referrer]
+     has_permission_on :studentcounselingsearches, :to => :read
+  end
+  role :student_counseling_module_user do
+     has_permission_on :student_counseling_sessions, :to =>[:read, :update, :feedback_referrer]
+     has_permission_on :studentcounselingsearches, :to => :read
+  end
+# NOTE - DISABLE(in EACH radio buttons - studentown[2].disabled=true) as the one & only owner of this module is Counsellor, use 'Student Counsellor' role instead.  
+#   role :student_counseling_module_member do
+#   end
+
+  #16-OK - 1) for READ & Manage, note 'discipline_report' & 'anacdotal_report' accessibility is same as INDEX pg, 2) New - open for all staff
+  #3) additional report - fr menu, Students | Reporting -- (i) Discipline Case Listing by Students, (ii) Student Discipline Case Listing
+  role :student_discipline_module_admin do
+     has_permission_on :student_discipline_cases, :to => :manage
+     has_permission_on :studentdisciplinesearches, :to => :read
+  end
+  role :student_discipline_module_viewer do
+     has_permission_on [:student_discipline_cases, :studentdisciplinesearches], :to => :read 
+  end
+  role :student_discipline_module_user do
+     has_permission_on :student_discipline_cases, :to => [:read, :update] 
+     has_permission_on :studentdisciplinesearches, :to => :read
+  end
+  # NOTE workable SELECTION of auth rules for members: (positions data must complete) 
+  #1) Reporter, Programme Manager & TPHEP - 'Staff' role / Student Discipline Module Member
+  #2) Discipline Officer - must activate 'Disciplinary Officer 'role
+  role :student_discipline_module_member do
+    has_permission_on :studentdisciplinesearches, :to => :read
+    #own records
+    has_permission_on :student_discipline_cases, :to => :create
+    has_permission_on :student_discipline_cases, :to => :read, :join_by => :or do
+      if_attribute :reported_by => is {Login.current_login.staff_id}
+      if_attribute :assigned_to => is {Login.current_login.staff_id}
+      if_attribute :assigned2_to => is {Login.current_login.staff_id}
+    end
+    #own (programme mgr)
+    has_permission_on :student_discipline_cases, :to => :approve do
+      if_attribute :assigned_to => is {Login.current_login.staff_id}
+    end
+    #own (approver - TPHEP)
+    has_permission_on :student_discipline_cases, :to => :manage do
+      if_attribute :assigned2_to => is {Login.current_login.staff_id}
+    end
+  end
   
     
   
@@ -756,8 +868,7 @@ authorization do
   #Catechumen
   #OK until here - 17Feb2016
   ###############
-  
-   
+
   #############
     
   

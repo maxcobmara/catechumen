@@ -95,14 +95,14 @@
 			<% @is_coordinator=true if group_intake && group_coor.to_i==group_intake.to_i%>
 		<% end %>
 		<!--hack-end-redundant auth rules...-->
-		<% if leaveforstudent.leave_startdate >= Date.tomorrow && leaveforstudent.approved != true && (@current_login.roles.map(&:id).include?(7)==false|| (@current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true) || @current_login.roles.map(&:id).include?(2)==true ) %>
+		<% if leaveforstudent.leave_startdate >= Date.tomorrow && leaveforstudent.approved != true && (@current_login.roles.map(&:id).include?(7)==false|| (@current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true) || @current_login.roles.map(&:id).include?(2)==true || @current_login.roles.map(&:authname).include?("student_leaves_module_admin") || @current_login.roles.map(&:authname).include?("student_leaves_module_user")) %>
 			<%= link_to image_tag("approval.png", :border => 0, :title => (t 'leaveforstudent.coordinator_approval')), :action => 'approve_coordinator', :id =>leaveforstudent %>
 		<% end %>
 		
 	<% end %></td>
 	<td width=10px>
 	<% if permitted_to? :approve_warden, :leaveforstudents %>
-		<% if leaveforstudent.leave_startdate >= Date.tomorrow && leaveforstudent.approved2 != true && (@current_login.roles.map(&:id).include?(7)==true && @is_coordinator.nil?) %>
+		<% if leaveforstudent.leave_startdate >= Date.tomorrow && leaveforstudent.approved2 != true && ((@current_login.roles.map(&:id).include?(7)==true && @is_coordinator.nil?) || @current_login.roles.map(&:id).include?(2)==true || @current_login.roles.map(&:authname).include?("student_leaves_module_admin") || @current_login.roles.map(&:authname).include?("student_leaves_module_user") )%>
 			<%= link_to image_tag("approval.png", :border => 0, :title => (t 'leaveforstudent.warden_approval')), :action => 'approve_warden', :id => leaveforstudent %>
 	  	<% end %>
 	<% end %></td>
