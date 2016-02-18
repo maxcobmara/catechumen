@@ -234,7 +234,28 @@ class Login < ActiveRecord::Base
     end
     unit_members   #collection of staff_id (member of a unit/dept) - use in model/user.rb (for auth_rules)
     #where('staff_id IN(?)', unit_members) ##use in ptdo.rb (controller - index)
-  end                                                    
+  end    
+  
+  def same_programme
+    current_staff=staff
+    unit=staff.position.unit
+    if Programme.roots.map(&:name).include?(unit)
+      course_id = Programme.where('name=? and ancestry_depth=?', unit,0).first.id
+    elsif ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"].include?(unit)
+      main_task_first = userable.positions.first.tasks_main
+      prog_name_full = main_task_first.scan(/Diploma Lanjutan (.*)/)[0][0].strip if ["Diploma Lanjutan"].include?(unit)    #main_task_first[/Diploma Lanjutan \D{1,}/]  
+      prog_name_full = main_task_first.scan(/Pos Basik (.*)/)[0][0].strip if ["Pos Basik"].include?(unit)                            #main_task_first[/Pos Basik \D{1,}/]
+      prog_name_full = main_task_first.scan(/Pengkhususan (.*)/)[0][0].strip if ["Pengkhususan"].include?(unit)            #main_task_first[/Pengkhususan \D{1,}/] 
+      if prog_name_full.include?(" ")  #space exist, others may exist too
+        a_rev=prog_name_full.gsub!(/[^a-zA-Z]/," ")   #in case a consist of comma, etc 
+        prog_name=a_rev.split(" ")[0] #intake_desc=group
+      else
+        prog_name=prog_name_full
+      end
+      course_id = Programme.where('name ILIKE(?)', "%#{prog_name}%").first.id
+    end 
+    course_id
+  end
 
                                                     
   #####

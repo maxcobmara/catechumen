@@ -1009,15 +1009,6 @@ authorization do
        if_attribute :created_by => is {Login.current_login.staff_id}
      end
   end
-  
-  
-  
-    
-  
-  
-  #Catechumen
-  #OK until here - 18Feb2016
-  ###############
       
   #25-OK
   #25 - 3/4 OK (Admin/Viewer/User)
@@ -1031,106 +1022,86 @@ authorization do
      has_permission_on :lesson_plans, :to => [:read, :update, :lessonplan_reporting, :lesson_plan, :lesson_plan_report]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[0].disabled=true as the only owner of this module requires 'Lecturer' & 'Programme Manager' role 
-#   role :lesson_plans_module_member do
-#      #own (Programme Manager)
-#      has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report, :delete] do
-#       if_attribute :lecturer => is_in {user.unit_members}
-#     end
-#     has_permission_on :training_lesson_plans, :to =>:update, :join_by => :and do
-#       if_attribute :lecturer => is_in {user.unit_members}
-#       if_attribute :is_submitted => is {true}
-#       if_attribute :hod_approved => is_not {true}
-#     end
-#     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by  => :and do
-#       if_attribute :lecturer => is {user.userable_id}
-#       if_attribute :is_submitted => is {true}
-#       if_attribute :hod_approved => is {true}
-#       if_attribute :report_submit => is {true}
-#     end
-#     #own (lecturer)
-#     has_permission_on :training_lesson_plans, :to => :create
-#     has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report] do
-#       if_attribute :lecturer => is {user.userable_id}
-#     end
-#     has_permission_on :training_lesson_plans, :to => :update, :join_by => :and do
-#       if_attribute :lecturer => is {user.userable_id}
-#       if_attribute :is_submitted => is_not {true}
-#     end
-#     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by => :and do
-#       if_attribute :lecturer => is {user.userable_id}
-#       if_attribute :is_submitted => is {true}
-#       if_attribute :hod_approved => is {true}
-#       if_attribute :report_submit => is_not {true}
-#     end
-#   end
   
   #26-OK
   #26 - 3/4 OK (Admin/Viewer/User) - 9Feb2016
   role :topic_details_module_admin do
-    has_permission_on :training_topicdetails, :to => :manage
+    has_permission_on :topicdetails, :to => :manage
   end
   role :topic_details_module_viewer do
-    has_permission_on :training_topicdetails, :to => :read
+    has_permission_on :topicdetails, :to => :read
   end
   role :topic_details_module_user do
-    has_permission_on :training_topicdetails, :to => [:read, :update]
+    has_permission_on :topicdetails, :to => [:read, :update]
   end
   # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[5].disabled=true as the only owner of this module requires 'Programme Manager' role
   
   #27-OK
   #27 - 3/4 OK (Admin/Viewer/User) - 9Feb2016
   role :programmes_module_admin do
-    has_permission_on :training_programmes, :to => :manage
+    has_permission_on :programmes, :to => :manage
   end
   role :programmes_module_viewer do
-    has_permission_on :training_programmes, :to => :read
+    has_permission_on :programmes, :to => :read
   end
   role :programmes_module_user do
-    has_permission_on :training_programmes, :to => [:read, :update]
+    has_permission_on :programmes, :to => [:read, :update]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[6].disabled=true as the only owner of this module requires 'Programme Manager' role
   
+  # TODO - owner of time slot, but may ignore too - to discuss
   #28-OK but requires additional rules as personalize pages is based on logged-in user (existing one requires lecturer's role)
+  #should rely on Ogma
   role :weeklytimetables_module_admin do
-     has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable, :approval]
-     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable] do
-       #if_attribute :staff_id =>  is {user.userable_id}
-     end
+     has_permission_on :weeklytimetables, :to => :manage
+     has_permission_on :weeklytimetables, :to => :personalize_index #do
+     #  if_attribute :id => is_in{WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?', Login.current_login.staff_id]).map(&:weeklytimetable_id).uniq}
+     #end
   end
   role :weeklytimetables_module_viewer do
-     has_permission_on :training_weeklytimetables, :to => [:read, :weekly_timetable]
-     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable] do
-      # if_attribute :staff_id =>  is {user.userable_id}
-     end
+     has_permission_on :weeklytimetables, :to => :read
+     has_permission_on :weeklytimetables, :to => :personalize_index #do
+     #  if_attribute :id => is_in{WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?', Login.current_login.staff_id]).map(&:weeklytimetable_id).uniq}
+     #end
   end
   role :weeklytimetables_module_user do
-    has_permission_on :training_weeklytimetables, :to => [:read, :update, :approval, :weekly_timetable]
-     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable] do
-      # if_attribute :staff_id =>  is {user.userable_id}
-     end
+    has_permission_on :weeklytimetables, :to => [:read, :update]
+    has_permission_on :weeklytimetables, :to => :personalize_index #do
+    #  if_attribute :id => is_in{WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?', Login.current_login.staff_id]).map(&:weeklytimetable_id).uniq}
+    #end
   end
   role :weeklytimetables_module_member do
-    #own (lecturer / coordinator) - lecturer role?, Coordinator may use this to manage Weeklytimetable
-    #HACK : INDEX (new) - restricted access except for Penyelaras Kumpulan (diploma & posbasics)
-    has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create]
-   
-    #HACK : INDEX (list+show)- restricted access except for Penyelaras Kumpulan/Ketua Program/Ketua Subjek(+'unit_leader' role)/Administration/creator(prepared_by)
-    #HACK : SHOW (+edit) - restricted access UNLESS is_submitted!=true (+submission only allowed for Penyelaras Kumpulan)
-    has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] do
-      #if_attribute :programme_id => is_in {Programme.where(name: Position.where(staff_id: user.userable.id).first.unit).pluck(:id)}
+    #1-own records (creator of WT)
+    has_permission_on :weeklytimetables, :to => [:menu, :read, :create]
+    has_permission_on :weeklytimetables, :to => [:manage, :weekly_timetable], :join_by => :or do
+      if_attribute :prepared_by => is {Login.current_login.staff_id}
     end
-
-    has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do
-     # if_attribute :staff_id => is {user.userable_id}
+    #2-own records (owner of a SLOT of WT)
+    #wt_ids=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?', Login.current_login.staff_id]).map(&:weeklytimetable_id)
+    has_permission_on :weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do
+      if_attribute :id => is_in{WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?', Login.current_login.staff_id]).map(&:weeklytimetable_id)}
     end
-    #programme mgr
-    #SHOW (approval button) & approval action
-    has_permission_on :training_weeklytimetables, :to => :approval, :join_by => :and do
-      if_attribute :is_submitted => is {true}
-     # if_attribute :programme_id => is_in {Programme.where(name: Position.where(staff_id: user.userable.id).first.unit).pluck(:id)}
-    end
+#     # TODO - approval for KP -  Not applicable at this moment - temp solution in Ogma (hack in Show), advise user use 'Programme Mgr' role.
+#     #3-own (approver KP - SHOW (approval button) & approval action) - Diploma ONLY?
+#     has_permission_on :weeklytimetables, :to => :approval, :join_by => :and do
+#       if_attribute :is_submitted => is {true}
+#       if_attribute :programme_id => is {Login.current_login.same_programme}
+#     end
   end
   #####end for Training modules####################################
+  
+  
+  
+  
+  
+    
+  
+  
+  #Catechumen
+  #OK until here - 19Feb2016
+  ###############
+  
+  
   #############
     
   
