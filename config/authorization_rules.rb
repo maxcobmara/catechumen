@@ -503,18 +503,18 @@ authorization do
   #1)OK - all 4 - 16Feb2016
   role :staffs_module_admin do
     has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
-    has_permission_on :staffsearch2s, :to => :read
+    has_permission_on :staffsearch2s, :to => :manage
   end
   role :staffs_module_viewer do
     has_permission_on :staffs, :to => [:menu, :read, :borang_maklumat_staff]
-    has_permission_on :staffsearch2s, :to => :read
+    has_permission_on :staffsearch2s, :to => :manage
   end
   role :staffs_module_user do
     has_permission_on :staffs, :to => [:menu, :read, :update, :borang_maklumat_staff]
-    has_permission_on :staffsearch2s, :to => :read
+    has_permission_on :staffsearch2s, :to => :manage
   end
   role :staffs_module_member do
-    has_permission_on :staffsearch2s, :to => :read
+    has_permission_on :staffsearch2s, :to => :manage
     has_permission_on :staffs, :to => :menu
     has_permission_on :staffs, :to => [:read, :update, :borang_maklumat_staff] do
       if_attribute :id => is {Login.current_login.staff_id}
@@ -546,19 +546,19 @@ authorization do
   # NOTE - Staff Attendance in Catechumen is deprecated, should rely on Ogma
   role :staff_attendances_module_admin do
     has_permission_on :staff_attendances, :to => [:manager, :manage]
-    has_permission_on :staffattendancesearches, :to => :read
+    has_permission_on :staffattendancesearches, :to => :manage
   end
   role :staff_attendances_module_viewer do
     #1) OK, but if READ only - can only read attendance list for all staff +manage own lateness/early (MANAGER) - as this is default for all staff UNLESS if MANAGE given.
     has_permission_on :staff_attendances, :to =>[:manager, :read]
-    has_permission_on :staffattendancesearches, :to => :read
+    has_permission_on :staffattendancesearches, :to => :manage
   end
   role :staff_attendances_module_user do 
     has_permission_on :staff_attendances, :to => [:read, :update, :manager]
-    has_permission_on :staffattendancesearches, :to => :read
+    has_permission_on :staffattendancesearches, :to => :manage
   end
   role :staff_attendances_module_member do
-    has_permission_on :staffattendancesearches, :to => :read
+    has_permission_on :staffattendancesearches, :to => :manage
     #own records
     has_permission_on :staff_attendances, :to => :manager
     has_permission_on :staff_attendances, :to => [:show, :update] do                        # show & update - to enter reason
@@ -737,18 +737,18 @@ authorization do
   #12 - 3/4 OK (Admin, Viewer & User)
   role :training_attendance_module_admin do
     has_permission_on :ptdos, :to => [:manage, :show_total_days]   
-    has_permission_on :ptdosearches, :to => :read
+    has_permission_on :ptdosearches, :to => :manage
   end
   role :training_attendance_module_viewer do
      has_permission_on :ptdos, :to => [:read, :show_total_days]
-     has_permission_on :ptdosearches, :to => :read
+     has_permission_on :ptdosearches, :to => :manage
   end
    role :training_attendance_module_user do
      has_permission_on :ptdos, :to => [:read, :update, :show_total_days]
-     has_permission_on :ptdosearches, :to => :read
+     has_permission_on :ptdosearches, :to => :manage
   end
   role :training_attendance_module_member do
-    has_permission_on :ptdosearches, :to => :read
+    has_permission_on :ptdosearches, :to => :manage
     #own record
     has_permission_on :ptdos, :to =>:create
     has_permission_on :ptdos, :to => :index do 
@@ -788,15 +788,15 @@ authorization do
   #14 - 3/4 OK (Admin, Viewer, User) OK - 8Feb2016
   role :student_attendances_module_admin do
     has_permission_on :student_attendances, :to =>[:manage, :new_multiple, :create_multiple, :edit_multiple, :update_multiple, :borang_kehadiran]
-    has_permission_on :studentattendancesearches, :to => :read
+    has_permission_on :studentattendancesearches, :to => :manage
   end
   role :student_attendances_module_viewer do
     has_permission_on :student_attendances, :to =>[:read, :borang_kehadiran]
-    has_permission_on :studentattendancesearches, :to => :read
+    has_permission_on :studentattendancesearches, :to => :manage
   end
   role :student_attendances_module_user do
     has_permission_on :student_attendances, :to =>[:read, :update, :edit_multiple, :update_multiple, :borang_kehadiran]
-    has_permission_on :studentattendancesearches, :to => :read
+    has_permission_on :studentattendancesearches, :to => :manage
   end
 # NOTE - DISABLE(in EACH radio buttons - studentown[1].disabled=true) as the one & only owner of this module is Lecturer, use 'Lecturer' role instead.
 #   role :student_attendances_module_member do
@@ -813,15 +813,15 @@ authorization do
   #15 - 3/4 (Admin, Viewer, User) OK - 8Feb2016
   role :student_counseling_module_admin do
      has_permission_on :student_counseling_sessions, :to => [:manage, :feedback_referrer] 
-     has_permission_on :studentcounselingsearches, :to => :read
+     has_permission_on :studentcounselingsearches, :to =>  :manage
   end
   role :student_counseling_module_viewer do
      has_permission_on :student_counseling_sessions, :to =>[:read, :feedback_referrer]
-     has_permission_on :studentcounselingsearches, :to => :read
+     has_permission_on :studentcounselingsearches, :to =>  :manage
   end
   role :student_counseling_module_user do
      has_permission_on :student_counseling_sessions, :to =>[:read, :update, :feedback_referrer]
-     has_permission_on :studentcounselingsearches, :to => :read
+     has_permission_on :studentcounselingsearches, :to =>  :manage
   end
 # NOTE - DISABLE(in EACH radio buttons - studentown[2].disabled=true) as the one & only owner of this module is Counsellor, use 'Student Counsellor' role instead.  
 #   role :student_counseling_module_member do
@@ -831,20 +831,21 @@ authorization do
   #3) additional report - fr menu, Students | Reporting -- (i) Discipline Case Listing by Students, (ii) Student Discipline Case Listing
   role :student_discipline_module_admin do
      has_permission_on :student_discipline_cases, :to => :manage
-     has_permission_on :studentdisciplinesearches, :to => :read
+     has_permission_on :studentdisciplinesearches, :to => :manage
   end
   role :student_discipline_module_viewer do
-     has_permission_on [:student_discipline_cases, :studentdisciplinesearches], :to => :read 
+     has_permission_on :student_discipline_cases, :to => :read
+     has_permission_on :studentdisciplinesearches, :to =>  :manage
   end
   role :student_discipline_module_user do
      has_permission_on :student_discipline_cases, :to => [:read, :update] 
-     has_permission_on :studentdisciplinesearches, :to => :read
+     has_permission_on :studentdisciplinesearches, :to => :manage
   end
   # NOTE workable SELECTION of auth rules for members: (positions data must complete) 
   #1) Reporter, Programme Manager & TPHEP - 'Staff' role / Student Discipline Module Member
   #2) Discipline Officer - must activate 'Disciplinary Officer 'role
   role :student_discipline_module_member do
-    has_permission_on :studentdisciplinesearches, :to => :read
+    has_permission_on :studentdisciplinesearches, :to =>  :manage
     #own records
     has_permission_on :student_discipline_cases, :to => :create
     has_permission_on :student_discipline_cases, :to => :read, :join_by => :or do
@@ -862,13 +863,89 @@ authorization do
     end
   end
   
+  #Modules : Tenants & Locations
+  #laporan_penginapan(PDF)==statistic_level(xls),  laporan_penginapan2(PDF)==statistic_block(xls), census_level(haml)->census(PDF)==census_level2(xls)
+ 
+  #17-OK - but note read/manage - xls links accessible via INDEX pg, when index accessible(index.xls)
+  #17 - 3/4 OK(Admin, Viewer, User) - 18Feb2016
+  role :tenants_module_admin do
+     has_permission_on :tenants, :to =>:manage
+  end
+  role :tenants_module_viewer do
+     has_permission_on :tenants, :to => :read
+  end
+  role :tenants_module_user do
+     has_permission_on :tenants, :to => [:read, :update]
+  end
+# NOTE - DISABLE(in EACH radio buttons - locationown[0].disabled=true) as the owner of this module requires 'Facilities Administrator' role + warden requires read only
+#   role :tenants_module_member do
+#   end
+
+  #18-OK
+  #18 - 3/4 OK (Admin, Viewer, User) - 18Feb2016
+  role :locations_module_admin do
+    has_permission_on :locations, :to => :manage
+  end
+  role :locations_module_viewer do
+    has_permission_on :locations, :to => :read
+  end
+  role :locations_module_user do
+    has_permission_on :locations, :to => [:read, :update]
+  end
+# NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - locationown[1].disabled=true) as the owner of this module requires 'Asset Administrator' / 'Facilities Administrator' role & 'Staff' / 'Warden' requires read only
+#   role :locations_module_member do
+#   end
+  
+  #19-OK
+  #19 - 3/4 OK (Admin, Viewer, User) - 18Feb2016
+  # NOTE - Location Damages - never exist in Catechumen, refer Ogma
+   role :location_damages_module_admin do
+    has_permission_on :location_damages, :to => :manage
+  end
+  role :location_damages_module_viewer do
+    has_permission_on :location_damages, :to => :read
+  end
+  role :location_damages_module_user do
+    has_permission_on :location_damages, :to => [:read, :update]
+  end
+    
+  #20-OK -  but note read/manage - xls links accessible via INDEX pg, when index accessible(index.xls)
+  #kumpulan_etnik_main->kumpulan_etnik(PDF)==kumpulan_etnik_excel(xls)
+  role :student_infos_module_admin do
+     has_permission_on :students, :to => [:manage, :report, :formforstudent, :ethnic_listing, :maklumat_pelatih_intake] 
+     has_permission_on :studentsearches, :to => :manage
+  end
+  role :student_infos_module_viewer do
+     has_permission_on :students, :to => [:read, :report, :formforstudent, :ethnic_listing, :maklumat_pelatih_intake]
+     has_permission_on :studentsearches, :to => :manage
+  end
+  role :student_infos_module_user do
+     has_permission_on :students, :to => [:read, :update, :formforstudent, :report, :ethnic_listing, :maklumat_pelatih_intake]
+     has_permission_on :studentsearches, :to =>  :manage
+  end
+# NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - studentown[4].disabled=true as the owner of this module requires 'Student' or 'Student Administration'
+# Note too, most roles have at least READ access for this module
+#   role :student_infos_module_member do
+#     has_permission_on :studentsearches, :to =>  :manage
+#     #own record
+#      has_permission_on :students, :to => [:update, :show, :formforstudent] do 
+#        if_attribute :id => is {Login.current_login.staff_id}
+#      end
+#      #own (Student Administrator)
+#      has_permission_on :students, :to => [:manage, :report, :formforstudent, :ethnic_listing, :maklumat_pelatih_intake]
+#      #own (read only)
+#      #Warden, Counselor, Disciplinary Officer, Student, Student Admnistrator, Librarian, Lecturer
+#   end
+  #####end for Student's related modules################################# 
+  
+  
+  
     
   
   
   #Catechumen
-  #OK until here - 17Feb2016
+  #OK until here - 18Feb2016
   ###############
-
   #############
     
   
