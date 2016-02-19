@@ -256,6 +256,7 @@ class Login < ActiveRecord::Base
     end 
     course_id
   end
+  
 
                                                     
   #####

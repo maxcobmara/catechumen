@@ -458,7 +458,7 @@ authorization do
   #Group Exams   -------------------------------------------------------------------------------
   role :exam_administration do
     has_permission_on [:examquestions, :examresults], :to => :manage
-    has_permission_on [:exams, :exammarks, :grades, :examanalyses], :to => :core
+    has_permission_on [:exams, :exammarks, :grades, :examanalyses], :to => :menu
   end
   #Group Library   -------------------------------------------------------------------------------
   
@@ -1121,6 +1121,134 @@ authorization do
 #   role :library_books_module_member do
 #   end
   #####end for Library modules####################################
+  #start of Examination modules####################################
+  # NOTE - Catechumen : Examquestions only, other exam modules should rely on Ogma 
+  # TODO - to check & remove Exam parts
+  #31-OK
+  #31 OK - 19Feb2016
+  role :exam_templates_module_admin do
+     has_permission_on :exam_templates, :to => :manage
+  end
+  role :exam_templates_module_viewer do
+     has_permission_on :exam_templates, :to => :read
+  end
+  role :exam_templates_module_user do
+    has_permission_on :exam_templates, :to => [:read, :update]
+  end
+  role :exam_templates_module_member do
+    has_permission_on :exam_templates, :to => [:read, :update] do
+      if_attribute :created_by => is_in {Login.current_login.unit_members}
+    end
+  end
+  
+  #32-OK
+  #32-OK - 19Feb2016
+  role :examresults_module_admin do
+     has_permission_on :examresults, :to => [:manage, :examination_slip]
+  end
+  role :examresults_module_viewer do
+     has_permission_on :examresults, :to => [:menu, :read, :examination_slip]
+  end
+  role :examresults_module_user do
+    has_permission_on :examresults, :to => [:menu, :read, :update, :examination_slip]
+  end
+  role :examresults_module_member do
+    has_permission_on :examresults, :to => [:manage, :examination_slip] do
+      if_attribute :programme_id => is_in {Programme.find(:all, :conditions => ['name=?', Position.find(:first, :conditions => ['staff_id=?', Login.current_login.staff_id]).unit]).map(&:id)}
+    end
+  end
+  
+  #33-OK
+  #33 OK - 19Feb2016
+  role :exam_grade_module_admin do
+     has_permission_on :grades, :to => :manage
+  end
+  role :exam_grade_module_viewer do
+     has_permission_on :grades, :to =>[:menu, :read]
+  end
+  role :exam_grade_module_user do
+     has_permission_on :grades, :to =>[:menu, :read, :update]
+  end
+  role :exam_grade_module_member do
+    ###own (of same programme)
+    has_permission_on :grades, :to => [:menu, :read, :create]
+    has_permission_on :grades, :to => [:update, :delete] do
+      #if_attribute :id => is_in {user.grades_of_programme}
+    end
+  end
+
+  #34-OK
+  #34 OK - 19Feb2016
+  role :exammarks_module_admin do
+     has_permission_on :exammarks, :to => :manage
+  end
+  role :exammarks_module_viewer do
+     has_permission_on :exammarks, :to => [:menu, :read]
+  end
+  role :exammarks_module_user do
+     has_permission_on :exammarks, :to => [:menu, :read, :update]
+  end
+  role :exammarks_module_member do
+    ###own (of same programme)
+    has_permission_on :exammarks, :to => [:menu, :read, :create]
+    has_permission_on :exammarks, :to =>[:update, :delete] do
+      #if_attribute :exam_id => is_in {user.exams_of_programme}
+    end
+  end
+  
+  #35-OK
+  #35 OK - 19Feb2016
+  role :exam_analysis_module_admin do
+     has_permission_on :examanalyses, :to => [:manage, :analysis_data]
+  end
+  role :exam_analysis_module_viewer do
+     has_permission_on :examanalyses, :to => [:menu, :read, :analysis_data]
+  end
+  role :exam_analysis_module_user do
+     has_permission_on :examanalyses, :to => [:menu, :read, :update, :analysis_data]
+  end
+  role :exam_analysis_module_member do
+    #own (exam admin - creator)
+    has_permission_on :examanalyses, :to => [:menu, :read, :create]
+    has_permission_on :examanalyses, :to => [:edit, :update, :delete, :analysis_data] do
+     # if_attribute :exam_id => is_in {user.by_programme_exams}  
+    end
+    #own (programme mgr)
+    has_permission_on :examanalyses, :to => [:menu, :read] do
+      #if_attribute :exam_id => is_in {user.by_programme_exams}  
+    end
+  end
+  
+  #36-OK - 19Feb2016
+  role :exampaper_module_admin do
+     has_permission_on :exams, :to => :manage
+  end
+  role :exampaper_module_viewer do
+     has_permission_on :exams, :to => [:menu, :read]
+  end
+  role :exampaper_module_user do
+    has_permission_on :exams, :to => [:menu, :read, :update]
+  end
+  role :exampaper_module_member do
+    has_permission_on :exams, :to => [:menu, :read, :update] do
+     # if_attribute :created_by => is_in {user.unit_members}
+    end
+  end
+  
+  #37-OK - 3/4 OK, except for Member
+  role :examquestions_module_admin do
+     has_permission_on :examquestions, :to => :manage
+  end
+  role :examquestions_module_viewer do
+     has_permission_on :examquestions, :to => [:menu, :read]
+  end
+  role :examquestions_module_user do
+     has_permission_on :examquestions, :to => [:menu, :read, :update]
+  end
+  # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - examown[6].disabled=true as the only owner of this module requires 'Lecturer' role
+  #role :examquestions_module_member do
+  #end
+  
   
   
   

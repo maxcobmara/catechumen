@@ -360,7 +360,7 @@
 	<% permitted_to? :read, :examquestions do %>
 	<li><a href="#"><%= t('menu.exams') %></a>
 			<ul class="sub_menu">
-				<% permitted_to? :create, :examquestions do %>
+				<% permitted_to? :read, :examquestions do %>
 				<li><%= link_to (t 'menu.exam_dev'), {:controller => 'examquestions', :action => 'index'} %></li>
 				<!--
 				<li><%#= link_to (t 'menu.exam_maker'), {:controller => 'exams', :action => 'index'} %></li>
@@ -382,25 +382,30 @@
 					<li><%#= link_to t('menu.exam_analysis'), {:controller => 'examanalyses', :action => 'index'} %></li>
 				<%# end %>-->
 				<!--Ogma (exams) : STARTs here-->
-				<% permitted_to? :create, :examquestions do %>
+				<% permitted_to? :menu, :examquestions do %>
 					<li><a href="http://<%= request.host%>:3003/exam/examquestions"><%= t('menu.new_exam_dev')%></a></li>
 				<% end %>
-				<% permitted_to? :core, :examresults do %>
-					<% permitted_to? :core, :exams do %>
-						<li><a href="http://<%= request.host%>:3003/exam/exams"><%= t('menu.exam_maker')%></a></li>
-					<% end %>
+				<% permitted_to? :menu, :exams do %>
+					<li><a href="#"><%= t('menu.exam_maker') %></a>
+						<ul class="sub_menu">
+							<li><a href="http://<%= request.host%>:3003/exam/exam_templates"><%= t('menu.exam_template')%></a></li>
+							<li><a href="http://<%= request.host%>:3003/exam/exams"><%= t('menu.exam_maker')%></a></li>
+						</ul>
+					</li>
+				<% end %>
+				<% permitted_to? :menu, :examresults do %>
 					<li><a href="#"><%= t('menu.exam_manage') %></a>
 						<ul class="sub_menu">
-							<% permitted_to? :core, :exammarks do %>
+							<% permitted_to? :menu, :exammarks do %>
 								<li><a href="http://<%= request.host%>:3003/exam/exammarks"><%= t('menu.marks_exam_paper')%></a></li>
 							<% end %>
-							<% permitted_to? :core, :grades do %>
+							<% permitted_to? :menu, :grades do %>
 								<li><a href="http://<%= request.host%>:3003/exam/grades"><%= t('menu.student_grades')%></a></li>
 							<% end %>
 							<li><a href="#"><%= t('menu.exam_result') %></a>
 								<ul class="sub_menu">
 									<li><a href="http://<%= request.host%>:3003/exam/examresults"><%= t('menu.result_program')%></a></li>
-									<% permitted_to? :manage, :examresults do %>
+									<% permitted_to? :examination_slip, :examresults do %>
 										<li><a href="http://<%= request.host%>:3003/exam/examresults/index2"><%= t('menu.exam_slip_transcript')%></a></li>
 									<% end %>
 								</ul>
@@ -408,11 +413,13 @@
 						</ul>
 					</li>
 				<% end %>
+				
+				
 				<% permitted_to? :read, :evaluate_courses do %>
 					<li><%= link_to t('menu.feedback_courseevaluate'), {:controller => 'evaluate_courses', :action => 'index'} %></li>
 					<li><a href="http://<%= request.host%>:3003/exam/evaluate_courses"><%= t('menu.new_feedback_courseevaluate')%></a></li>
 				<% end %>
-				<% permitted_to? :core, :examanalyses do %>
+				<% permitted_to? :menu, :examanalyses do %>
 					<li><a href="http://<%= request.host%>:3003/exam/examanalyses"><%= t('menu.exam_analysis')%></a></li>
 				<% end %>
 			</ul>
