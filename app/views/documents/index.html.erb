@@ -116,13 +116,13 @@ tome = <%=@tome.count%>-->
 	<!--***************************************************-->
     <% @document_files.each do |filedocer, documents| %>
 		<% documents.each_with_index do |document,count| %>
-			<% if (document.owner_ids.include? current_login.staff_id) && count == 0%>
+			<% if ((document.owner_ids.include? current_login.staff_id) || @is_admin) && count == 0%>
     			<tr><td colspan=13 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;"><%=h filedocer %></span></td></tr>
 			<% end %>
 		<% end %>
 		<!--5Apr2013-->
         <% for document in documents %>
-			<% if (document.owner_ids.include? current_login.staff_id) %>
+			<% if ((document.owner_ids.include? current_login.staff_id) || @is_admin) %>
 				<tr>
 					<td><%=h document.serialno %></td>
 					<td><%=h document.refno %></td>
@@ -131,7 +131,7 @@ tome = <%=@tome.count%>-->
 					<td><%=h l(document.letterdt) %></td>
 					<td><%=h l(document.letterxdt) %></td>
 					<td><%=h document.from %></td>
-					<td><%=h l(document.cc1date)%>- <%=h document.otherinfo %></td>
+					<td><%=h (document.try(:cc1date).try(:strftime, '%d-%m-%Y'))%>- <%=h document.otherinfo %></td>
 					<td><%#=h check_kin {document.cc1staff.name} %> <!--5Apr2013-to move this line later (single circulation)-->
 						<% document.circulations.each_with_index do |circulation,ind| %>
 							<%if ind!=0 %><br><%end%>
@@ -145,12 +145,12 @@ tome = <%=@tome.count%>-->
 					<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => document %></td>
 					<td width=10px>
 						<!--if document administrator (note: E-FIlling), to EDIT document & circulation details-->
-						<% if (document.closed != true && (document.stafffiled_id == current_login.staff_id || document.prepared_by == current_login.staff_id)) %>
+						<% if (document.closed != true && (document.stafffiled_id == current_login.staff_id || document.prepared_by == current_login.staff_id) || @is_admin) %><% permitted_to? :update, :documents do %>
 							<%= link_to image_tag("edit.png",     :border => 0, :title => (t 'edit')), :action => 'edit', :id => document %>
-						<% end %>
+						<% end %><% end %>
 						<!--if administrator (System administrator), to log ACTION taken-->
 						<% document.circulations.each_with_index do |circulation,ind|%>
-							<% if (circulation.staff_id == current_login.staff_id && circulation.action_closed!=true) %>
+							<% if ((circulation.staff_id == current_login.staff_id) && circulation.action_closed!=true) %>
 								<% if !(document.stafffiled_id == current_login.staff_id || document.prepared_by == current_login.staff_id)%>
 									<%= link_to image_tag("approval.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => document, :acc =>"1" %>
 								<% elsif (document.stafffiled_id == current_login.staff_id || document.prepared_by == current_login.staff_id)%>
@@ -160,7 +160,7 @@ tome = <%=@tome.count%>-->
 						<% end %>
 					</td>
 					<td width=10px>
-						<% if (document.stafffiled_id == current_login.staff_id || document.prepared_by == current_login.staff_id)%>
+						<% if (document.stafffiled_id == current_login.staff_id || document.prepared_by == current_login.staff_id) || @is_admin%>
 				   			<%= link_to image_tag("delete.png",   :border => 0, :title => (t 'delete')), document, :confirm => (t 'are_you_sure'), :method => :delete %>
 						<% end %>
 					</td>

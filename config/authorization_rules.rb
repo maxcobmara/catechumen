@@ -1427,18 +1427,93 @@ authorization do
     has_permission_on :assetsearches, :to => :manage
   end
   #end for Assets modules#######################################
-    
- 
+  #start of Support table / E FIlling modules##################################
+  #44-OK - 20Feb2016
+  role :events_module_admin do
+     has_permission_on :events, :to => :manage
+  end
+  role :events_module_viewer do
+     has_permission_on :events, :to => :read
+  end
+  role :events_module_user do
+     has_permission_on :events, :to => [:read, :update]
+  end
+  role :events_module_member do
+    has_permission_on :events, :to => [:create, :read]                                                             # A staff can read, create but update own
+    has_permission_on :events, :to => :update do
+      if_attribute :createdby => is {Login.current_login.staff_id}
+    end
+  end
   
-  #Catechumen
-  #OK until here - 19Feb2016
-  ###############
-  
-  
-  #############
-    
-  
-  
+  #45-OK - 20Feb2016
+  role :bulletins_module_admin do
+     has_permission_on :bulletins, :to =>:manage
+  end
+  role :bulletins_module_viewer do
+     has_permission_on :bulletins, :to => :read
+  end
+  role :bulletins_module_user do
+    has_permission_on :bulletins, :to => [:read, :update]
+  end
+  role :bulletins_module_member do
+    has_permission_on :bulletins, :to => [:create, :read]                                                             # A staff can read, create but update own
+    has_permission_on :bulletins, :to => :update do
+      if_attribute :postedby_id => is {Login.current_login.staff_id}
+    end
+  end
+
+  #46-OK - 20Feb2016
+  role :files_module_admin do
+     has_permission_on :cofiles, :to => :manage
+  end
+  role :files_module_viewer do
+     has_permission_on :cofiles, :to => :read
+  end
+  role :files_module_user do
+    has_permission_on :cofiles, :to => [:read, :update]
+  end
+  role :files_module_member do
+    has_permission_on :cofiles, :to => [:read, :create]
+    has_permission_on :cofiles, :to => :update do
+      if_attribute :owner_id => is {Login.current_login.staff_id}
+    end
+  end
+
+  #47-OK, but create & restrictions - 20Feb2016
+  #Restriction : Update (Admin/User) - may edit document BUT cannot insert action taken by each recipient of circulation
+  role :documents_module_admin do
+    has_permission_on :documents, :to => [:manage, :generate_report]
+    has_permission_on :documentsearches, :to => :manage
+  end
+  # NOTE shall override owner (recipient) access (cannot enter action taken)
+  role :documents_module_viewer do
+    has_permission_on :documents, :to => [:menu, :read, :generate_report]
+    has_permission_on :documentsearches, :to => :manage
+  end
+  role :documents_module_user do
+    has_permission_on :documents, :to => [:menu, :read, :update, :generate_report]
+    has_permission_on :documentsearches, :to => :manage
+  end
+  role :documents_module_member do
+    has_permission_on :documentsearches, :to => :manage
+    #own (document creator)
+    has_permission_on :documents, :to => [:menu, :read, :create]
+    # TODO - updates will let user update (as creator / filer) & update (as circulations recepient) simultaneously?
+#     has_permission_on :documents, :to => [:update] do 
+#       if_attribute :stafffiled_id => is {163}#{Login.current_login.staff_id}
+#     end
+#     #own (recipient of circulations)
+#     has_permission_on :circulations, :to => :update do
+#        #if_attribute :document_id => is_in {Document.find(:all, :joins => :staffs, :conditions => ['staffs.id=?',163]).map(&:id)}
+#        if_attribute :staff_id => is {Login.current_login.staff_id}
+#     end
+    has_permission_on :documents, :to => :update do
+      if_attribute :id => is_in {Document.find(:all, :joins => :staffs, :conditions => ['staffs.id=?',163]).map(&:id)}  
+      if_attribute :stafffiled_id => is {Login.current_login.staff_id}
+      if_attribute :prepared_by => is {Login.current_login.staff_id}
+    end
+  end
+
   #48-OK
   role :banks_module_admin do
      has_permission_on :banks, :to => :manage
@@ -1495,6 +1570,14 @@ authorization do
      has_permission_on :asset_categories, :to => :read
   end
   ##Access by Modules ended here
+  
+  
+  #Catechumen
+  #OK until here - 20Feb2016
+  ###############
+  #############
+    
+  
   
 end
   

@@ -210,12 +210,13 @@
 				<% permitted_to? :read, :bulletins do %>
 				      <li><%= link_to (t 'menu.bulletin_board'), {:controller => 'bulletins', :action => 'index'} %></li>
 				<% end %>
-				<% permitted_to? :manage, :pages do %><!--17Jul2013-use page-->
-				<!--<li><%#= link_to 'Equery/Reports', 		'/Reports' %></li>-->
-				<% end %>
-				<!--17Jun2013-use viewer-->
 				<% permitted_to? :menu, :documents do %>
-					<li><%= link_to (t 'menu.document_registry'), {:controller => 'documents', :action => 'index'} %></li>
+					<li><a href="#"><%= (t 'menu.document_registry') %></a>
+						<ul class="sub_menu">
+							<li><%= link_to (t 'menu.document_registry'), {:controller => 'documents', :action => 'index'} %></li>
+							<li><a href="http://<%= request.host  %>:3003/documents"><%= t('menu.new_document_registry') %></a></li>
+						</ul>
+					</li>
 				<% end %>
 				<% permitted_to? :read, :cofiles do %>
 					<li><%= link_to (t 'menu.file_registry'), {:controller => 'cofiles', :action => 'index'} %></li>

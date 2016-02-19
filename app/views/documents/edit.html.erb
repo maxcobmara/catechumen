@@ -4,7 +4,7 @@
   <%= f.error_messages %>
 	<!--EDIT part : start-->
 	<% unless @acc %>
-		<% if (current_login.staff_id == @document.prepared_by) || (current_login.staff_id == @document.stafffiled_id) %>
+		<% if (current_login.staff_id == @document.prepared_by) || (current_login.staff_id == @document.stafffiled_id) || @is_admin %>
 			<%=render :partial => 'form', :locals => {:f => f} %> 
 		<% end %>
 	<% end %>
