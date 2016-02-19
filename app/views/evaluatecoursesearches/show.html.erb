@@ -107,7 +107,7 @@
 						<td align="center"><%=evaluate_course.ev_assessment %><%# @ev_assessment_sum+=evaluate_course.ev_assessment %></td>
 						<td align="center"><%=@total_each = evaluate_course.ev_obj+evaluate_course.ev_knowledge+evaluate_course.ev_deliver+evaluate_course.ev_content+evaluate_course.ev_tool+evaluate_course.ev_topic+evaluate_course.ev_work+evaluate_course.ev_note+evaluate_course.ev_assessment %><%@total_sum+=@total_each%></td>
 						<td>
-							<% if Position.my_programmeid(Login.current_login.staff_id).include?(evaluate_course.course_id) %>
+							<% if (@is_lecturer && Position.my_programmeid(Login.current_login.staff_id).include?(evaluate_course.course_id)) || @is_admin %>
 								<%= link_to (t 'equery.evaluate_course.evaluation_form'),:controller=>'evaluate_courses', :action => 'courseevaluation', :id => evaluate_course.id %>
 							<% end %>
 						</td>

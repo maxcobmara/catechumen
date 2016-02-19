@@ -37,8 +37,8 @@
 					<% end %>
 				</div>
 			</td>
-			<td align="right" width=5%>
-			      <div class="noti_Container"><a href="http://<%= request.host  %>:3003/asset/stationeries/kewps13.pdf?locale=ms_MY&yyear=<%=Date.today.year%>"><%=image_tag("printer.png", :border => 0, :title=>(t 'print'))%></a><div class="noti_bubble">13</div></div>
+			<td align="right" width=5%><% permitted_to? :supplies, :stationeries do %>
+			      <div class="noti_Container"><a href="http://<%= request.host  %>:3003/asset/stationeries/kewps13.pdf?locale=ms_MY&yyear=<%=Date.today.year%>"><%=image_tag("printer.png", :border => 0, :title=>(t 'print'))%></a><div class="noti_bubble">13</div></div><% end %>
 			</td>
 		<% end %>
 		</tr>
@@ -65,7 +65,11 @@
 			<td><%=h stationery.current_quantity.to_i %> &nbsp; <%=h stationery.unittype %></td>
 			<td><%=h stationery.maxquantity.to_i %></td>
 			<td><%=h stationery.minquantity.to_i %></td>
-			<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => stationery %></td>
+			<td width=10px>
+				<% permitted_to? :supplies, :stationeries do %>
+					<%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => stationery %>
+				<% end %>
+			</td>
 			<td width=10px>
 				<% permitted_to? :update, :stationeries do %>
 					<%= link_to image_tag("edit.png", :border => 0, :title=>(t 'edit')), :action => 'edit', :id => stationery %>

@@ -130,7 +130,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/asset_defects/approve/', :controller => 'asset_defects', :action => 'approve'
   map.resources :asset_defects, :collection => { :kewpa9 => :get }
 
-  map.connect '/asset_loans/approve/', :controller => 'asset_loans', :action => 'approve'
+  map.connect '/asset_loans/approval/', :controller => 'asset_loans', :action => 'approval'
   map.resources :asset_loans, :collection => { :lampiran => :get}
 
   map.connect '/travel_claims/check/', :controller => 'travel_claims', :action => 'check'

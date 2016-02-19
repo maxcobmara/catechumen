@@ -62,5 +62,8 @@ class EvaluatecoursesearchesController < ApplicationController
 
   def show
     @evaluatecoursesearch = Evaluatecoursesearch.find(params[:id])
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("course_evaluation_module_admin")|| current_roles.include?("course_evaluation_module_viewer")|| current_roles.include?("course_evaluation_module_user")
+    @is_lecturer=Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname).include?('lecturer')
   end
 end

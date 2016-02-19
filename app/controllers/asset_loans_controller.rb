@@ -3,6 +3,8 @@ class AssetLoansController < ApplicationController
   # GET /asset_loans
   # GET /asset_loans.xml
   def index
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("asset_loans_module_admin")|| current_roles.include?("asset_loans_module_viewer")|| current_roles.include?("asset_loans_module_user")
     @asset_loans = AssetLoan.find(:all).sort_by{|item|item.asset_id}
     #@asset_loans = AssetLoan.borrowings
     #-----------
@@ -44,6 +46,8 @@ class AssetLoansController < ApplicationController
   # GET /asset_loans/1/edit
   def edit
     @asset_loan = AssetLoan.find(params[:id])
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("asset_loans_module_admin")|| current_roles.include?("asset_loans_module_viewer")|| current_roles.include?("asset_loans_module_user")
   end
 
   # POST /asset_loans
@@ -90,7 +94,7 @@ class AssetLoansController < ApplicationController
     end
   end
   
-  def approve
+  def approval
     @asset_loan = AssetLoan.find(params[:id])
   end
   

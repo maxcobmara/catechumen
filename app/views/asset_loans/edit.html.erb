@@ -7,7 +7,7 @@
 		<H2><%= t('menu.asset_on_loan') %></H2>
 		<% if @asset_loan.is_approved == nil %>
 			<%= render :partial => 'form', :locals => {:f => f} %>
-		<% elsif (@asset_loan.is_approved == true && @asset_loan.loaned_by == Login.current_login.staff_id) || (@asset_loan.is_approved == true && @unit_members.include?(current_login.staff_id)) %>
+		<% elsif (@asset_loan.is_approved == true && (@asset_loan.loaned_by == Login.current_login.staff_id || @unit_members.include?(current_login.staff_id) || @is_admin)) %>
 			<%= render :partial => 'show_request' %>
 			<%= render :partial => 'show_approval' %>
 			<%= render :partial => 'return_loan', :locals => {:f => f} %>

@@ -4,6 +4,8 @@ class AssetLossesController < ApplicationController
   # GET /asset_losses
   # GET /asset_losses.xml
   def index
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("asset_losses_module_admin")|| current_roles.include?("asset_losses_module_viewer")|| current_roles.include?("asset_losses_module_user")
     @asset_losses = AssetLoss.with_permissions_to(:kewpa28).all #find(:all)#, :order => 'lost_at DESC')
     @asset_losses_group_writeoff = @asset_losses.group_by{|x|x.document_id}
     respond_to do |format|
@@ -37,6 +39,8 @@ class AssetLossesController < ApplicationController
   # GET /asset_losses/1/edit
   def edit
     @asset_loss = AssetLoss.find(params[:id])
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("asset_losses_module_admin")|| current_roles.include?("asset_losses_module_viewer")|| current_roles.include?("asset_losses_module_user")
   end
 
   # POST /asset_losses

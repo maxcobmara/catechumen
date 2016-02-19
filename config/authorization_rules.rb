@@ -238,7 +238,7 @@ authorization do
   role :asset_administrator do
     has_permission_on [:assets, :assetcategories], :to => :manage
     has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
-    has_permission_on :assetsearches, :to => :read
+    has_permission_on :assetsearches, :to => :manage
     has_permission_on :locations, :to => [:manage, :kewpa7]
     has_permission_on :stationeries, :to => [:manage, :supplies]
     has_permission_on :stationerysearches, :to => :manage
@@ -1248,18 +1248,193 @@ authorization do
   # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - examown[6].disabled=true as the only owner of this module requires 'Lecturer' role
   #role :examquestions_module_member do
   #end
+
+  #50-added 10Feb2016
+  #50 OK but (Admin/Viewer/User-may be assigned to anybody-All records whereas MEMBER - must be assigned to lecturers to get this programme mgr's access)
+  role :course_evaluation_module_admin do
+    has_permission_on :evaluate_courses, :to => [:manage, :courseevaluation]
+    has_permission_on :evaluatecoursesearches, :to => :manage
+  end
+  role :course_evaluation_module_viewer do
+    has_permission_on :evaluate_courses, :to => [:read, :courseevaluation]
+    has_permission_on :evaluatecoursesearches, :to => :manage
+  end
+  role :course_evaluation_module_user do
+    has_permission_on :evaluate_courses, :to => [:read, :courseevaluation, :update]
+    has_permission_on :evaluatecoursesearches, :to => :manage
+  end
+  role :course_evaluation_module_member do
+    has_permission_on :evaluatecoursesearches, :to => :manage
+    #own record (student)
+    has_permission_on :evaluate_courses, :to => [:index, :create] do
+      has_permission_on :evaluate_courses, :to => [:read, :update, :courseevaluation] do
+        if_attribute :student_id => is {Login.current_login.staff_id}
+      end
+    end
+    #own (programme manager-reader)
+    has_permission_on :evaluate_courses, :to => [:read, :courseevaluation] do
+      if_attribute :course_id => is_in {Position.my_programmeid(Login.current_login.staff_id)}
+    end
+  end
+  #end for Examination modules####################################
+  #start of Assets modules#######################################
   
+  #38-OK - 19Feb2016
+  role :stationeries_module_admin do
+     has_permission_on :stationeries, :to => [:manage, :supplies]
+     has_permission_on :stationerysearches, :to => :manage
+  end
+  role :stationeries_module_viewer do
+     has_permission_on :stationeries, :to => [:read, :supplies]
+     has_permission_on :stationerysearches, :to => :manage
+  end
+  role :stationeries_module_user do
+     has_permission_on :stationeries, :to => [:read, :update, :supplies]
+     has_permission_on :stationerysearches, :to => :manage
+  end
+# NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - assetown[0].disabled=true as there's no specific role & above 3 access are adequate
+#   role :stationeries_module_member do
+#      has_permission_on :asset_stationeries, :to => [:read, :update, :kewps13]
+#   end
+ 
+  #39-OK for Catechumen 19Feb2016 - but Ogma - kewpa31 link not ready (write-off) - TODO - to check kewpa29?
+  role :asset_losses_module_admin do
+     has_permission_on :asset_losses, :to => [:manage, :edit_multiple, :update_multiple, :kewpa28, :kewpa30, :kewpa31]
+  end
+  role :asset_losses_module_viewer do
+     has_permission_on :asset_losses, :to => [:read, :kewpa28, :kewpa30, :kewpa31] 
+  end
+  role :asset_losses_module_user do
+    has_permission_on :asset_losses, :to => [:read, :update, :edit_multiple, :update_multiple, :kewpa28, :kewpa30, :kewpa31] 
+  end
+# NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - assetown[1].disabled=true as the only owner is asset_administrator
+
+  #40-OK
+  #40 - OK 19Feb2016, 3/4 OK (Admin, Viewer, User), Member - only applicable to member of responsible Unit (of loaned asset)
+  role :asset_loans_module_admin do
+     has_permission_on :asset_loans, :to => [:manage, :approval, :lampiran]
+  end
+  role :asset_loans_module_viewer do
+     has_permission_on :asset_loans, :to => [:read, :lampiran]
+  end
+  role :asset_loans_module_user do
+    has_permission_on :asset_loans, :to => [:read, :approval, :update, :lampiran]
+  end
+  role :asset_loans_module_member do
+    #own record (staff - loaner / unit members)
+    has_permission_on :asset_loans, :to => :create                                                          # A staff can create loan
+    has_permission_on :asset_loans, :to =>:read do 
+      if_attribute :staff_id => is {Login.current_login.staff_id}
+    end
+    has_permission_on :asset_loans, :to =>:update, :join_by => :and do                         # applicant can update unless loan is approved
+      if_attribute :staff_id => is {Login.current_login.staff_id}
+      if_attribute :is_approved => is_not {true}
+    end
+    has_permission_on :asset_loans, :to => [:read, :lampiran] do                                 # loan can be viewed by Unit Members
+      if_attribute :loaned_by => is_in {Login.current_login.unit_members}
+    end
+    has_permission_on :asset_loans, :to => [:update, :approval], :join_by => :and do     # loan can be approved by Unit Members when not yet approved 
+      if_attribute :loaned_by => is_in {Login.current_login.unit_members}
+      if_attribute :is_approved => is_not {true}
+    end
+    has_permission_on :asset_loans, :to => :update, :join_by => :and do                         # As of Travel Request,Claim, AssetDefect - loaner must not hv access to EDIT 
+      if_attribute :loaned_by => is_in {Login.current_login.unit_members}                                                           # temp - hide in Edit as of Travel Claim & AssetDefect
+      if_attribute :is_approved => is {true}
+      if_attribute :is_returned => is_not {true}
+    end
+# NOTE - similar to Admin (this module) & Asset Admin access
+#     #own (approval - asset admin)
+#     has_permission_on :asset_loans, :to => [:read, :lampiran]
+#     has_permission_on :asset_loans, :to => [:update, :approval] , :join_by => :and do
+#       if_attribute :is_returned => is_not {true}
+#     end
+  end
   
+  #41-OK
+  role :asset_disposals_module_admin do
+     has_permission_on :asset_disposals, :to => [:manage, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :revalue, :dispose]
+     #[:manage, :kewpa17_20, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :dispose, :revalue, :verify, :view_close]
+  end
+  role :asset_disposals_module_viewer do
+     has_permission_on :asset_disposals, :to => [:read, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :revalue, :dispose]
+  end
+  role :asset_disposals_module_user do
+     has_permission_on :asset_disposals, :to =>[:read, :update, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :dispose, :revalue]
+  end
+# NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - assetown[1].disabled=true as the only owner is asset_administrator
+
+  #42-OK
+  #42 3/4 OK (Admin/Viewer/User) - Member : workable for reporter & decisioner only
+  role :asset_defect_module_admin do
+    has_permission_on :asset_defects, :to => [:manage, :kewpa9]
+  end
+  role :asset_defect_module_viewer do
+    has_permission_on :asset_defects, :to => [:read, :kewpa9]
+  end
+  role :asset_defect_module_user do
+    has_permission_on :asset_defects, :to => [:read, :update, :kewpa9]
+  end
+  # NOTE - workable only for defect reporter & decisioner, still require 'Asset Administrator' role for 1st time access of defectives one, for processing purpose.
+  role :asset_defect_module_member do
+    #own records (Staff role)
+    has_permission_on :asset_defects, :to => :create                                                        # A staff can register & update defect
+    has_permission_on :asset_defects, :to => :read do
+      if_attribute :reported_by => is {user.userable.id}
+    end
+    has_permission_on :asset_defects, :to => :update, :join_by => :and do                     # Applicant may update unless defect processed
+      if_attribute :reported_by => is {user.userable.id}
+      if_attribute :is_processed => is_not {true}
+    end
+    #own (processor or decisioner)
+    has_permission_on :asset_defects, :to => [:read, :kewpa9], :join_by => :and do        # Processor & decision maker may show / pdf
+      if_attribute :processed_by => is {user.userable.id}
+      if_attribute :decision_by => is {user.userable.id}
+    end
+    #own (processor)
+    has_permission_on :asset_defects, :to => [:update, :kewpa9], :join_by => :and do  # previous Asset Admin - pending - may process unless defect processed
+      if_attribute :processed_by => is {user.userable.id}
+      if_attribute :is_processed => is_not {true}
+    end
+    #own (decisioner)
+    has_permission_on :asset_defects, :to => [:update, :kewpa9], :join_by => :and do   # Decision maker may decide unless decision has been made
+      if_attribute :decision_by => is {user.userable.id}
+      if_attribute :decision => is_not {true}
+    end
+    #own (processor - use of 'Asset Administrator' role)
+    has_permission_on :asset_defects, :to =>[:read, :kewpa9]
+    has_permission_on :asset_defects, :to =>:update, :join_by => :and do #3nov2013, 21Jan2016
+      if_attribute :is_processed => is_not {true}
+    end
+  end
   
-  
-  
-  
+  #43-OK, but for read - price is hidden & visible only to those with update access
+  #43 3/4 OK (Admin/User/Member), Viewer - restricted access for document containing pricing details : cost/maintenance
+  role :asset_list_module_admin do
+    has_permission_on :assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
+    has_permission_on :assetsearches, :to => :manage
+  end
+  #restriction - no PDF allowed : contains pricing details 2, 3, 4, 5 & 8 (kos perolehan) 13 & 14 (maintenance) 
+  role :asset_list_module_viewer do
+    has_permission_on :assets, :to => [:read, :kewpa6, :loanables] 
+    has_permission_on :assetsearches, :to => :manage
+  end
+  role :asset_list_module_user do
+    has_permission_on :assets, :to => [:read, :update, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
+    has_permission_on :assetsearches, :to => :manage
+  end
+  role :asset_list_module_member do
+    has_permission_on :assets, :to => [:read, :loanables]
+    has_permission_on :assetsearches, :to => :manage
+  end
+  #end for Assets modules#######################################
     
-  
+ 
   
   #Catechumen
   #OK until here - 19Feb2016
   ###############
+  
+  
   #############
     
   

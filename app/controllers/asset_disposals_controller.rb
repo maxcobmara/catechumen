@@ -36,6 +36,8 @@ class AssetDisposalsController < ApplicationController
   # GET /asset_disposals/1/edit
   def edit
     @asset_disposal = AssetDisposal.find(params[:id])
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("asset_disposals_module_admin")|| current_roles.include?("asset_disposals_module_viewer")|| current_roles.include?("asset_disposals_module_user")
   end
 
   # POST /asset_disposals

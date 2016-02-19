@@ -107,19 +107,19 @@
 	<% end %><!--end for staff menu-->
 
 	<!-- Asset Menu -->
-	<% permitted_to? :menu, :assets do %>
+	<% permitted_to? :read, :assets do %>
 	<li><a href="#"><%= t ('menu.assets') %></a>
 		<!--link_to "Future events", events_path(:scope => "future")-->
 			<ul class="sub_menu">
-				<% permitted_to? :menu, :assets do %>
+				<% permitted_to? :read, :assets do %>
 					<li><%= link_to (t 'menu.fix_assets'), assets_path(:show => "fixed") %></li>
 					<li><%= link_to (t 'menu.inventory'), assets_path(:show => "inventory") %></li>
 				<% end %>
-				<% permitted_to? :menu, :stationeries do %>
+				<% permitted_to? :read, :stationeries do %>
 					<li><%= link_to (t 'menu.off_supplies'), {:controller => 'stationeries', :action => 'index'} %></li>
 				<% end %>
 				<li><%= link_to (t 'menu.defects'), {:controller => 'asset_defects', :action => 'index'} %></li>
-				<% permitted_to? :manage, :asset_losses do %><!--kewpa28-->
+				<% permitted_to? :read, :asset_losses do %><!--kewpa28-->
 				<li><%= link_to (t 'menu.loss_write'), 	{:controller => 'asset_losses', 	:action => 'index'} %></li>
 				<% end %>
 				<% permitted_to? :manage, :asset_disposals do %><!--edit-->

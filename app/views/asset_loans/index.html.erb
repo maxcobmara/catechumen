@@ -30,7 +30,7 @@
     <th><%= t('assetloan.requestfor') %>/<BR/><%= t('assetloan.to_be_return') %></th>
 	<th><%= t('assetloan.approved_on') %></th>
 	<th style="text-align:center;">Status</th>
-	<th colspan=4 class="ac"><%= t('control') %></th>
+	<th colspan=5 class="ac"><%= t('control') %></th>
   </tr>
 
 <% @asset_loans.each do |asset_loan| %>
@@ -77,18 +77,18 @@
     	<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => asset_loan %></td>
 
 		<%#-------------------------------------------------%>
-		<% if @unit_members.include?(current_login.staff_id) || current_login_roles.include?(11)%><!--2Feb2015-->
+		<% if @unit_members.include?(current_login.staff_id) || @is_admin%><!--2Feb2015-->
   		<%# if @unit_members.include?(current_login.staff_id) %><%## if asset_loan.loaned_by == Login.current_login.staff_id %>
 	
 			<td width=10px>
 				<!---->
 				<%# if (asset_loan.is_approved == nil && asset_loan.loaned_by == Login.current_login.staff_id) %>
-				<%# if (asset_loan.is_approved == nil && asset_loan.loaned_by == Login.current_login.staff_id) || (asset_loan.is_approved == nil && current_login_roles.include?(11)) %>
+				<%# if (asset_loan.is_approved == nil && asset_loan.loaned_by == Login.current_login.staff_id) || (asset_loan.is_approved == nil && @is_admin) %>
 				<%# elsif (asset_loan.is_approved == true && asset_loan.loaned_by == Login.current_login.staff_id) %>
-				<%# elsif (asset_loan.is_approved == true && asset_loan.loaned_by == Login.current_login.staff_id) || (asset_loan.is_approved == true && current_login_roles.include?(11)) %>
+				<%# elsif (asset_loan.is_approved == true && asset_loan.loaned_by == Login.current_login.staff_id) || (asset_loan.is_approved == true && @is_admin) %>
 		
 				<% if (asset_loan.is_approved == nil) %>
-					<%= link_to image_tag("approval.png", :border => 0, :title => (t 'approval')), :action => 'approve', :id => asset_loan %>
+					<%= link_to image_tag("approval.png", :border => 0, :title => (t 'approval')), :action => 'approval', :id => asset_loan %>
 				<% elsif (asset_loan.is_approved == true && asset_loan.is_returned != true) %>
 					<%= link_to image_tag("cog_go.png", :border => 0, :title => (t 'return')), :action => 'edit', :id => asset_loan %>
 				<% elsif asset_loan.is_approved == false %>
@@ -114,7 +114,7 @@
 		<%#-------------------------------------------------%>
 		
 		<!--special for hod only (Pengarah-external)- those not in hods list-->
-		<% if (asset_loan.hod == current_login.staff_id) && (@unit_members.include?(current_login.staff_id)==false) %>
+		<% if ((asset_loan.hod == current_login.staff_id) && (@unit_members.include?(current_login.staff_id)==false) || @is_admin) %>
 			<td class="action">
 				<% if (asset_loan.is_approved == true) %>
 					<div class="noti_Container">
@@ -134,17 +134,17 @@
 				<%#= link_to image_tag("printer.png", :border => 0, :title => 'Lampiran A'), :action => 'lampiran', :id => asset_loan %>
 			<%# end %>
 		</td>-->
-		<%# if @unit_members.include?(current_login.staff_id) || current_login_roles.include?(11) %>
-		<%# if current_login_roles.include?([11, 2]) %><% permitted_to? :delete, :asset_loans do%><!--deletion restricted to administrator & asset administrator-->
+		<%# if @unit_members.include?(current_login.staff_id) || @is_admin%>
+		<%# if @is_admin %><% permitted_to? :delete, :asset_loans do%><!--deletion restricted to administrator & asset administrator-->
    			<td width=10px>
 				<%= link_to image_tag("delete.png", :border => 0, :title => (t 'delete')), asset_loan, :confirm => 'Are you sure?', :method => :delete %>
 			</td>
 		<% end %>
   		<!--for better view only-screen-loaner(peminjam) & bukan asset administrator-->
-		<% if (current_login.staff == asset_loan.staff) && current_login_roles.include?(11)==false %><td>&nbsp;</td><% end %>
+		<% if (current_login.staff == asset_loan.staff) && @is_admin==false %><td>&nbsp;</td><% end %>
   		<!--for better view only-screen-loaner(peminjam) & bukan asset administrator-->
 		<!--for better view only-screen-loaner(peminjam)-yg pd ms sama merupakan (peg pengeluar) member of responsible unit bagi ASEI di baris2 lain TETAPI BUKAN (peg pengeluar) BAGI ASET PADA BARIS NIH & & bukan asset administrator-->
-		<% if current_login.staff == asset_loan.staff && @unit_members.include?(current_login.staff_id)==false && current_login_roles.include?(11)==false %>
+		<% if current_login.staff == asset_loan.staff && @unit_members.include?(current_login.staff_id)==false && @is_admin==false %>
 			<td>&nbsp;</td><td>&nbsp;</td>
 		<% end %>
 		<!--for better view only-screen-loaner(peminjam)-yg pd ms sama merupakan (peg pengeluar) member of responsible unit bagi ASEI di baris2 lain TETAPI BUKAN (peg pengeluar) BAGI ASET PADA BARIS NIH & bukan asset administrator-->
