@@ -3,6 +3,8 @@ class StudentDisciplineCasesController < ApplicationController
   # GET /student_discipline_cases
   # GET /student_discipline_cases.xml
   def index
+    roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if roles.include?("administration") || roles.include?("student_discipline_module_admin")|| roles.include?("student_discipline_module_viewer")|| roles.include?("student_discipline_module_user")
     #@student_discipline_cases = StudentDisciplineCase.with_permissions_to(:index).find(:all, :order => "reported_on DESC")
     @filters = StudentDisciplineCase::FILTERS
     if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
@@ -42,6 +44,8 @@ class StudentDisciplineCasesController < ApplicationController
 
   # GET /student_discipline_cases/1/edit
   def edit
+    roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if roles.include?("administration") || roles.include?("student_discipline_module_admin")|| roles.include?("student_discipline_module_viewer")|| roles.include?("student_discipline_module_user")
     @student_discipline_case = StudentDisciplineCase.find(params[:id])
   end
 

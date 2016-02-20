@@ -1,4 +1,5 @@
 class ExamanalysissearchesController < ApplicationController
+  filter_access_to :all
   def new
     @searchexamanalysistype = params[:searchexamanalysistype]
     @examanalysissearch = Examanalysissearch.new

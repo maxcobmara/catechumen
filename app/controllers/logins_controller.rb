@@ -1,6 +1,6 @@
 class LoginsController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
-  
+  filter_resource_access
    
   #before_filter :login_required   #for NEW(SIGNUP) - MUST LOGIN ???
   before_filter :login_required, :except => [:new, :create]  

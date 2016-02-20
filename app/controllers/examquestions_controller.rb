@@ -1,4 +1,5 @@
 class ExamquestionsController < ApplicationController
+  filter_access_to :all
   # GET /examquestions
   # GET /examquestions.xml
   def index

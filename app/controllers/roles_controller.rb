@@ -1,4 +1,5 @@
 class RolesController < ApplicationController
+  filter_resource_access
   # GET /roles
   # GET /roles.xml
   def index
@@ -20,6 +21,7 @@ class RolesController < ApplicationController
     end
   end
 
+  # NOTE 20Feb2016 - to remove this function - upon completion of updates of User / Login roles @ production server 
   # GET /roles/new
   # GET /roles/new.xml
   def new
@@ -36,6 +38,7 @@ class RolesController < ApplicationController
     @role = Role.find(params[:id])
   end
 
+  # NOTE 20Feb2016 - to remove this function - upon completion of updates of User / Login roles @ production server 
   # POST /roles
   # POST /roles.xml
   def create

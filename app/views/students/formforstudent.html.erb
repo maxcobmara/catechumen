@@ -12,7 +12,11 @@
 
 
 <div id="hideLink">
-<%= link_to (t 'back'), students_path %>
+	<%= link_to (t 'back'), students_path %><br>
+	<% permitted_to? :read, :studentdisciplinesearches do %>
+		<% sstudent=Studentsearch.last %>
+		<%= link_to (t 'back')+" ("+(t 'equery.student.search')+")", studentsearch_path(sstudent) %>
+	<% end %>
 </div>
 	
 <div id="title" width=21cm>	

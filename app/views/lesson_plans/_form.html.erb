@@ -19,8 +19,8 @@
 						
 					<% end %>
 				<% end %>
-				 <% @current_roles = Login.current_login.roles.map(&:name) %>
-				<% if @current_roles.include?('Administration') %>
+				 <% @current_roles = Login.current_login.roles.map(&:authname) %>
+				<% if @current_roles.include?('administration') || @current_roles.include?("lesson_plans_module_admin") || @current_roles.include?("lesson_plans_module_viewer")|| @current_roles.include?("lesson_plans_module_user")%>
 					 <!--admin-->
 					 <% @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact %>
 					 <% alltimetables = WeeklytimetableDetail.find(:all, :conditions => ['id NOT IN(?)', schedule_approved_plan]).sort_by{|x|x.weeklytimetable_lecturer.name}%>

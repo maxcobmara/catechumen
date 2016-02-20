@@ -6,7 +6,7 @@ class TrainingnotesController < ApplicationController
     @position_exist = Login.current_login.staff.position
     if @position_exist     
       #@trainingnotes = Trainingnote.with_permissions_to(:edit).find(:all, :order => 'topicdetail_id')#:order => 'topic_id')
-      @trainingnotes = Trainingnote.with_permissions_to(:edit).search(params[:search])
+      @trainingnotes = Trainingnote.with_permissions_to(:index).search(params[:search])
     end
     respond_to do |format|
       if @position_exist

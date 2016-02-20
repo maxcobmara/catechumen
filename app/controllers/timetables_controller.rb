@@ -1,4 +1,5 @@
 class TimetablesController < ApplicationController
+  filter_resource_access
   # GET /timetables
   # GET /timetables.xml
   def index

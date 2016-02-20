@@ -1,4 +1,5 @@
 class PtschedulesController < ApplicationController
+  filter_access_to :all
   # GET /ptschedules
   # GET /ptschedules.xml
   def index

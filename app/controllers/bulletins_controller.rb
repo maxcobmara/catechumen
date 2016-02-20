@@ -1,4 +1,5 @@
 class BulletinsController < ApplicationController
+  filter_resource_access
   # GET /bulletins
   # GET /bulletins.xml
   def index

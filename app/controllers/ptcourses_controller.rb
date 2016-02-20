@@ -1,4 +1,5 @@
 class PtcoursesController < ApplicationController
+  filter_resource_access
   # GET /ptcourses
   # GET /ptcourses.xml
   def index

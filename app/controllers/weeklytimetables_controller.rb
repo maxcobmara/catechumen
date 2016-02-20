@@ -1,12 +1,13 @@
 class WeeklytimetablesController < ApplicationController
+  filter_access_to :all
   # GET /weeklytimetables
   # GET /weeklytimetables.xml
   def index
     #common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
     #@common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
     #@is_common_lecturer=true if @common_subject_lecturers_ids.include?(Login.current_login.staff_id)
-    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
-    @is_admin=true if current_roles.include?("Administration")
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("weeklytimetables_module_admin") || current_roles.include?("weeklytimetables_module_viewer") || current_roles.include?("weeklytimetables_module_user")
     
     @position_exist = current_login.staff.position
     if @position_exist  
@@ -76,8 +77,8 @@ class WeeklytimetablesController < ApplicationController
 
     common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
     @common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', common_subjects]).map(&:id)
-    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
-    @is_admin=true if current_roles.include?("Administration")
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("weeklytimetables_module_admin") || current_roles.include?("weeklytimetables_module_viewer") || current_roles.include?("weeklytimetables_module_user")
     @is_common_lecturer=true if @common_subject_lecturers_ids.include?(Login.current_login.staff_id)
     
     respond_to do |format|
@@ -85,6 +86,8 @@ class WeeklytimetablesController < ApplicationController
       format.xml  { render :xml => @weeklytimetable }
     end
   end
+  
+  def personalize_index
   
   def personalize_show  #yg dihantar : startdate
     @selected_date = params[:id]
@@ -105,11 +108,11 @@ class WeeklytimetablesController < ApplicationController
     #to restrict - programme & intake listing based on logged-in user --- but ALL for common lecturer subject & administrator
     @intake_list=[]
     @lecturer_programme = current_login.staff.position.unit
-    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("weeklytimetables_module_admin") || current_roles.include?("weeklytimetables_module_viewer") || current_roles.include?("weeklytimetables_module_user")
     common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
     programme_list = Programme.find(:all, :conditions =>['course_type=?',"Diploma"]).map(&:name)
     pengkhususan_list = Programme.find(:all, :conditions =>['course_type=? OR course_type=? OR course_type=?',"Diploma Lanjutan","Pos Basik", "Pengkhususan"]).map(&:name)
-    @is_admin=true if current_roles.include?("Administration")
     @is_common_lecturer=true if common_subjects.include?(@lecturer_programme)
     if @is_admin || @is_common_lecturer
       @intake_list += Programme.roots.map(&:id)
@@ -147,13 +150,13 @@ class WeeklytimetablesController < ApplicationController
     common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) and unit=?', common_subjects, unit_name]).map(&:id)
     pengkhususan_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%"]).map(&:id)
       
-    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("weeklytimetables_module_admin") || current_roles.include?("weeklytimetables_module_viewer") || current_roles.include?("weeklytimetables_module_user")
     
     @programme_lecturers = Staff.find(:all, :joins=>:position, :conditions=>['positions.name=? AND positions.unit=?','Pengajar',Programme.find(@weeklytimetable.programme_id).name],:order=>'name ASC')
     @commonsubject_lecturers = Staff.find(:all, :conditions=>['id IN(?)', common_subject_lecturers_ids],:order=>'name ASC')   
     @pengkhususan_lecturers = Staff.find(:all, :conditions=>['id IN(?)', pengkhususan_lecturers_ids],:order=>'name ASC')
     
-    @is_admin=true if current_roles.include?("Administration")
     @is_common_lecturer=true if common_subject_lecturers_ids.include?(Login.current_login.staff_id)
     @is_prog_lecturer=true if @programme_lecturers.map(&:id).include?(Login.current_login.staff_id)
     @is_pengkhususan_lecturer=true if pengkhususan_lecturers_ids.include?(Login.current_login.staff_id)
@@ -190,13 +193,13 @@ class WeeklytimetablesController < ApplicationController
     common_subject_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) and unit=?', common_subjects, unit_name]).map(&:id)
     pengkhususan_lecturers_ids = Staff.find(:all, :joins=>:position, :conditions=>['(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%"]).map(&:id)
       
-    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("weeklytimetables_module_admin") || current_roles.include?("weeklytimetables_module_viewer") || current_roles.include?("weeklytimetables_module_user")
     
     @programme_lecturers = Staff.find(:all, :joins=>:position, :conditions=>['positions.name=? AND positions.unit=?','Pengajar',Programme.find(@weeklytimetable.programme_id).name],:order=>'name ASC')
     @commonsubject_lecturers = Staff.find(:all, :conditions=>['id IN(?)', common_subject_lecturers_ids],:order=>'name ASC')   
     @pengkhususan_lecturers = Staff.find(:all, :conditions=>['id IN(?)', pengkhususan_lecturers_ids],:order=>'name ASC')
     
-    @is_admin=true if current_roles.include?("Administration")
     @is_common_lecturer=true if common_subject_lecturers_ids.include?(Login.current_login.staff_id)
     @is_prog_lecturer=true if @programme_lecturers.map(&:id).include?(Login.current_login.staff_id)
     @is_pengkhususan_lecturer=true if pengkhususan_lecturers_ids.include?(Login.current_login.staff_id)

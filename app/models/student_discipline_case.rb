@@ -60,10 +60,10 @@ class StudentDisciplineCase < ActiveRecord::Base
       self.status = "Refer to BPL"		#baru
     end
     #tumpang - for testing
-    if Student.find(student_id).course_id == 4
-    	self.assigned_to = Position.find_by_positioncode('1.1.04').staff_id  #self.assigned_to = 69
-    else
-    end
+#     if Student.find(student_id).course_id == 4
+#     	self.assigned_to = Position.find_by_positioncode('1.1.04').staff_id  #self.assigned_to = 69
+#     else
+#     end
   end
   
   # Data Stuff-----------------------------------------------

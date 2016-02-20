@@ -1,4 +1,5 @@
 class EmploygradesController < ApplicationController
+  filter_resource_access
   # GET /employgrades
   # GET /employgrades.xml
   def index

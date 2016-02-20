@@ -1,4 +1,5 @@
 class TopicdetailsController < ApplicationController
+  filter_resource_access
   # GET /topicdetails
   # GET /topicdetails.xml
   def index

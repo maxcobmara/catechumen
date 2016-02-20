@@ -1,4 +1,5 @@
 class StationerysearchesController < ApplicationController
+  filter_resource_access
   def new
     #@searchtype = params[:searchtype]
     @stationerysearch = Stationerysearch.new

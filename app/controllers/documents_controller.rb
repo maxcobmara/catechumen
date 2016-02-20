@@ -1,8 +1,10 @@
 class DocumentsController < ApplicationController
-  filter_access_to :all#filter_resource_access #temp 5Apr2013
+  filter_access_to :all
   # GET /documents
   # GET /documents.xml
   def index
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("documents_module_admin")|| current_roles.include?("documents_module_viewer")|| current_roles.include?("documents_module_user")
     #-----####-DO NOT REMOVE THIS PART--COMPULSORY FOR AUTOCOMPLETE IN NEW TRAVEL REQUEST (DOCUMENT REF NO) TO WORK -- 29 August 2013
     @documents = Document.find(:all, :conditions => ['refno ILIKE ?', "%#{params[:search4]}%"])#.search(params[:search])
     #-----####-DO NOT REMOVE THIS PART--COMPULSORY FOR AUTOCOMPLETE IN NEW TRAVEL REQUEST (DOCUMENT REF NO) TO WORK -- 29 August 2013
@@ -100,6 +102,8 @@ class DocumentsController < ApplicationController
   def edit
     @acc=params[:acc]
     @document = Document.find(params[:id])
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("documents_module_admin")|| current_roles.include?("documents_module_viewer")|| current_roles.include?("documents_module_user")
   end
   
   def download

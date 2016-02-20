@@ -1,4 +1,5 @@
 class Staffsearch2sController < ApplicationController
+  filter_resource_access
   def new
     @staffsearch2 = Staffsearch2.new
   end

@@ -1,4 +1,5 @@
 class AssetcategoriesController < ApplicationController
+  filter_resource_access
   # GET /assetcategories
   # GET /assetcategories.xml
   def index

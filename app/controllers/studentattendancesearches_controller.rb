@@ -1,4 +1,5 @@
 class StudentattendancesearchesController < ApplicationController
+  filter_resource_access
   def new
       @studentattendancesearch = Studentattendancesearch.new
       @searchstudentattendancetype = params[:searchstudentattendancetype]

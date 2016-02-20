@@ -3,18 +3,19 @@
   <div class="tform">
 	
 		<% if @asset_loss.is_submit_to_hod != true %>
-		<H2><%=t('edit')%> <%= t 'asset_losses.assetloses_details' %></H2>
-				<%=render :partial => 'form', :locals => {:f => f} %> 
-
-		
+			<H2><%=t('edit')%> <%= t 'asset_losses.assetloses_details' %></H2>
+			<%=render :partial => 'form', :locals => {:f => f} %> 
+			
 		<%# elsif @asset_loss.is_submit_to_hod == true && @asset_loss.endorsed_on.blank? == true && Login.current_login.staff.position.name == "1" %>
-		<% elsif @asset_loss.is_submit_to_hod == true && @asset_loss.endorsed_on.blank? == true &&AssetLoss.all.map(&:endorsed_hod_by).include?(Login.current_login.staff_id) %>
-		<%= render :partial => 'show_asset_details' %>
-		<%= render :partial => 'show_loss_initial' %>
-		<%= render :partial => 'endorse_hod', :locals => {:f => f} %>
+		<% elsif @asset_loss.is_submit_to_hod == true && @asset_loss.endorsed_on.blank? == true &&(AssetLoss.all.map(&:endorsed_hod_by).include?(Login.current_login.staff_id) || @is_admin) %>
+			<H2><%= t 'asset_losses.assetloses_details' %></H2>
+			<%= render :partial => 'show_asset_details' %>
+			<%= render :partial => 'show_loss_initial' %>
+			<%= render :partial => 'endorse_hod', :locals => {:f => f} %>
 		
 		<% else %>
-		else text
+			<H2><%= t 'asset_losses.assetloses_details' %></H2>
+			<%=t 'asset_losses.report_endorsed' %> <%=@asset_loss.endorsed_on.try(:strftime, '%d %b %Y')%>
 		<% end %>
 	</div>
   <p>

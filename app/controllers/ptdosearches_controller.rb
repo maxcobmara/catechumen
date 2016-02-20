@@ -1,4 +1,5 @@
 class PtdosearchesController < ApplicationController
+  filter_access_to :all
   def new
     @searchptdotype = params[:searchptdotype]
     @ptdosearch = Ptdosearch.new

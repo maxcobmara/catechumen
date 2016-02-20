@@ -74,6 +74,7 @@ en:
   edit_checked: Edit Checked
   saved_all_records: Successfully saved all records
   check_uncheck: "Check/Uncheck all"
+  uncheck: Uncheck
   tick: Tick
   untick: Untick
   none: None
@@ -348,6 +349,7 @@ en:
     cpassword: Confirm Password
     login_roles: Login Roles
     select_role: Select role to add to this user
+    select_module: or Select module access to add to this user
     signup: Sign Up
     all: All 
     verify: Verify 
@@ -377,10 +379,370 @@ en:
     #testing_role: Testing Role
     unit_leader: Unit Leader
     e_filing: "E-Filing"
+    exam_administration: Exam Administration
     registered: "Thanks for signing up!  The IT team will process your application as soon as possible."
     registration_failed: "We couldn't set up that account, sorry.  Please try again, or contact an admin."
     provide_login_password: Please provide your 'Login' and 'Password' and click the LOGIN button 
     problem_signing: "If you have problem signing in, please contact your system administration."
+    remove_selected_module_access: " to remove selected module access"
+    
+    staff_administrator_modules: "Staffs, Staff Attendances, Fingerprints, Positions"
+    finance_unit_modules: "Travel Claims, Training Budget"
+    training_administration_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
+    training_manager_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
+    staff_modules: "Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Locations(R), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R)"
+    asset_administrator_modules: "Asset Losses, Asset Loans, Asset Disposals, Asset Defect, Asset List, Locations"
+    e_filing_modules: "File Registry, Document Registry"
+    facilities_administrator_modules: "Locations, Location Damages, Student Residences, Staff Residences"
+    warden_modules: "Locations(R), Student Residences(R), Student Leaves, Student Infos(R), Student Attendances(R), Student Discipline Cases(R), Student Counseling Session(R)"
+    student_administrator_modules: "Student Infos, Student Attendances"
+    student_counsellor_modules: "Student Counselling, Student Discipline Case(R), Student Infos(R), Student Attendances(R)"
+    disciplinary_officer_modules: "Student Discipline Case, Student Counseling Session(Case), Student Infos(R), Student Attendances(R)"
+    student_modules: "Course Evaluation, Student Infos(O), Student Leaves(O)"
+    lecturer_modules: "Student Leaves(Coordinator), Student Attendances, Weeklytimetables(Coordinator), Weeklytimetables(O:Personalize Timetables), Training Notes(O), Lesson Plans(O), Examquestions(O)"
+    programme_manager_modules: "Programmes, Academic Sessions, Intakes, Timetables, Topic Details, Examquestions, Course Evaluation, Examresults(R), Examanalysis(R), Training Attendance(O), Staff Attendance(O), Weeklytimetables(O), Lesson Plans(O)"
+    exam_administration_modules: "Examquestions, Exam Templates, Exampaper, Exammarks, Exam Grade, Examresults, Exam Analysis"
+    unit_leader_modules: "Training Attendance(O), Staff Attendance(O), Programmes(Common Subjects)"
+    administration_staff_modules: "Training Attendance(HOD), Staff Attendance(HOD)"
+    librarian_modules: "Library Books, Library Transactions, Student Info(R)"
+
+    modules: Modules
+    admin: Admin
+    viewer: Viewer
+    user: User
+    member: Member
+    admin_access: can do everything
+    viewer_access: "can list, print & reports only"
+    user_access: "can view everything & update data"
+    member_access: should only see his own record & be able to edit it
+    
+    ###
+    rule1: "For all modules to works, either activate 'Staff' role or activate access by module ie. 'Staff Module' (Admin/Viewer/User/Member)."
+    rule2: "Staff Attendance should come with Fingerprints, for Manage Lateness and Early Return to works."
+    rule3: "Travel Claim should come with Travel Request, for approved travel records."
+    rule4: "Travel Claims Module (Member) - applicable for Applicant & Final Approver only. Finance Checker require 'Finance Unit' role to be activated. Please note, assigning user with 'Finance Unit' role shall disable all types of module access for Travel Claims & Training Budget."
+    rule5: "Menu access for Training Budget and Training Courses Modules require access of Training Attendance Module (Viewer or Member)."
+    rule6: "Training Attendance Module require access of Training Schedule Module (Viewer or Member)."
+    rule7: "Training Attendance Module (Member) only applicable for applicants. Approvers require additional / replacement role activation as follows :"
+    rule7a: "Department Approval (Academic) - require additional 'Programme Manager' role to be activated."
+    rule7b: "Unit Approval (Management), Department Approval (Management) & Final Approval (Director) -  these 3 functions are not available at all. Uncheck Training Attendance Module (Member) and activate 'Finance Unit' role instead."
+    rule8: "Student Leaves Module (Member) only applicable for applicants. For approving purposes (Warden & Penyelaras) activate Warden and / or Lecturer role instead."
+    rule9a: "Activate 'Staff' role OR Student Discipline Module Member for Case reporter, Programme Manager and TPHEP."
+    rule9b: "Activate 'Disciplinary Officer' role for Discipline Officer access."
+    rule10: "Training Notes Module (Admin/Viewer/User) must be activated for menu listing of :"
+    rule10a: "Training support tables (setup) : Academic Sessions, Student Intakes, Timetables."
+    rule10b:" Training related modules : Weeklytimetables (Timetable Entries) and Lesson Plan & Report, Topic Details"
+    rule11: "Topic Details Module require access of Lesson Plan & Report Module (Admin/Viewer/User)"
+    rule12: "Exam Templates to be used with Exampaper"
+    rule13: "Examination Management (Exammarks, Exam Grade) requires Examresults Module (Admin/Viewer/Users/Member) to be activated."
+    rule14: "Asset Loan, Asset Disposals and Asset Defect (loanable & menu items) requires Asset List (Admin/Viewer/User/Member) to be activated."
+    rule15: "Asset Defect Module (Member) only workable for defective reporter and decisioner, for processing purpose, please use 'Asset Administrator' role instead."
+    rule20: "Asset Loan Module (Member) only applicable for members of responsible Unit (of loaned asset). For full access on asset loan, please activate either Asset Loan Module (Admin) or 'Asset Administrator' role."
+    rule16: "Asset pricing details viewable only to user with 'Administration' or 'Asset Administrator' roles or those with Asset List Module (Admin/User) access."
+    rule17: "E-Filing modules (Events, Bulletins, Files) requires access to Documents modules (Admin/Viewer/User/Member) to be activated."
+    rule18: "Support Tables :"
+    rule18a: "Activate 'Titles', 'Banks' & 'Staff Shifts' in addition to access by Staffs modules."
+    rule18b: "Activate 'Travel Claims Transport Groups' & 'Travel Claim Mileage Rates'in addition to access by Travel Claims modules."
+    rule18c: "Activate 'Asset Categories' in addition to access by Asset List modules."
+    rule19: "Weeklytimetable Module (Member) only applicable to creator of Weeklytimetable (Penyelaras) and Weeklytimetable time slot owner. For approval of weeklytimetable, please use 'Programme Manager' role."
+    ###
+    
+    e_library: "E-Library"
+    exam: Examination Development & Management
+    training: Training Support
+    support: "Administration / Support Tables"
+    staff_registry: Staff Registry
+    student_affairs: Student Affairs
+    asset_facilities_residences: "Asset, Facilities & Residences"
+    
+    roles_modules: "Roles & Corresponding Modules"
+    access_module: Access by Module
+    related_rules: Related Rules
+    
+    events_module_admin: Events Module Admin
+    bulletins_module_admin: Bulletins Module Admin
+    files_module_admin: Files Module Admin
+    documents_module_admin: Documents Module Admin
+    events_module_viewer: Events Module Viewer
+    bulletins_module_viewer: Bulletins Module Viewer
+    files_module_viewer: Files Module Viewer
+    documents_module_viewer: Documents Module Viewer
+    events_module_user: Events Module User
+    bulletins_module_user: Bulletins Module User
+    files_module_user: Files Module User
+    documents_module_user: Documents Module User
+    events_module_member: Events Module Member
+    bulletins_module_member: Bulletins Module  Member
+    files_module_member: Files Module Member
+    documents_module_member: Documents Module Member
+    events: Events
+    bulletins: Bulletins
+    files: File Registry
+    documents: Document Registry
+    
+    library_transactions_module_admin: Library Transactions Module Admin
+    library_books_module_admin: Library Books Module Admin
+    library_transactions_module_viewer: Library Transactions Module Viewer
+    library_books_module_viewer: Library Books Module Viewer
+    library_transactions_module_user: Library Transactions Module User
+    library_books_module_user: Library Books Module User
+    library_transactions_module_member: Library Transactions Module Member
+    library_books_module_member: Library Books Module  Member
+    library_transactions: Library Transactions
+    library_books: Library Books
+    
+    exam_templates_module_admin: Examination Templates Module Admin
+    examresults_module_admin: Examination Result Module Admin
+    exam_grade_module_admin: Examination Grade Module Admin
+    exammarks_module_admin: Examination Marks Module Admin
+    exam_analysis_module_admin: Examination Analysis Module Admin
+    exampaper_module_admin: Examination Paper Module Admin
+    examquestions_module_admin: Examquestions Module Admin
+    course_evaluation_module_admin: Course Evaluation Module Admin
+    exam_templates_module_viewer: Examination Templates Module Viewer
+    examresults_module_viewer: Examination Result Module Viewer
+    exam_grade_module_viewer: Examination Grade Module Viewer
+    exammarks_module_viewer: Examination Marks Module Viewer
+    exam_analysis_module_viewer: Examination Analysis Module Viewer
+    exampaper_module_viewer: Examination Paper Module Viewer
+    examquestions_module_viewer: Examquestions Module Viewer
+    course_evaluation_module_viewer: Course Evaluation Module Viewer
+    exam_templates_module_user: Examination Templates Module User
+    examresults_module_user: Examination Result Module User
+    exam_grade_module_user: Examination Grade Module User
+    exammarks_module_user: Examination Marks Module User
+    exam_analysis_module_user: Examination Analysis Module User
+    exampaper_module_user: Examination Paper Module User
+    examquestions_module_user: Examquestions Module User
+    course_evaluation_module_user: Course Evaluation Module User
+    exam_templates_module_member: Examination Templates Module  Member
+    examresults_module_member: Examination Result Module Member
+    exam_grade_module_member: Examination Grade Module Member
+    exammarks_module_member: Examination Marks Module Member
+    exam_analysis: Examination Analysis Module Member
+    exampaper_module_member: Examination Paper Module Member
+    examquestions_module_member: Examquestions Module Member
+    course_evaluation_module_member: Course Evaluation Module Member
+    exam_templates: Examination Templates
+    examresults: Examination Result
+    exam_grade: Examination Grade
+    exammarks: Examination Marks
+    exam_analysis: Examination Analysis
+    exampaper: Examination Paper
+    examquestions: Examquestions
+    course_evaluation: Course Evaluation
+    
+    training_notes_module_admin: Training Notes Module Admin
+    academic_session_module_admin: Academic Session Module Admin
+    student_intake_module_admin: Student Intake Module Admin
+    timetables_module_admin: Timetable Module Admin
+    lesson_plans_module_admin: Lesson Plans Module Admin
+    topic_details_module_admin: Topic Details Module Admin
+    programmes_module_admin: Programmes Module Admin
+    weeklytimetables_module_admin: Weeklytimetables Module Admin
+    training_notes_module_viewer: Training Notes Module Viewer
+    academic_session_module_viewer: Academic Session Module Viewer
+    student_intake_module_viewer: Student Intake Module Viewer
+    timetables_module_viewer: Timetable Module Viewer
+    lesson_plans_module_viewer: Lesson Plans Module Viewer
+    topic_details_module_viewer: Topic Details Module Viewer
+    programmes_module_viewer: Programmes Module Viewer
+    weeklytimetables_module_viewer: Weeklytimetables Module Viewer
+    training_notes_module_user: Training Notes Module User
+    academic_session_module_user: Academic Session Module User
+    student_intake_module_user: Student Intake Module User
+    timetables_module_user: Timetable Module User
+    lesson_plans_module_user: Lesson Plans Module User
+    topic_details_module_user: Topic Details Module User
+    programmes_module_user: Programmes Module User
+    weeklytimetables_module_user: Weeklytimetables Module User
+    training_notes_module_member: Training Notes Module Member
+    academic_session_module_member: Academic Session Module Member
+    student_intake_module_member: Student Intake Module Member
+    timetables_module_member: Timetable Module Member
+    lesson_plans_module_member: Lesson Plans Module Member
+    topic_details_module_member: Topic Details Module Member
+    programmes_module_member: Programmes Module Member
+    weeklytimetables_module_member: Weeklytimetables Module Member
+    training_notes: Training Notes
+    academic_session: Academic Session
+    student_intake: Student Intake
+    timetables: Timetable
+    lesson_plans: Lesson Plans
+    topic_details: Topic Details
+    programmes: Programmes
+    weeklytimetables: Weeklytimetables
+    
+    banks_module_admin: Banks Module Admin
+    address_book_module_admin: Address Book Module Admin
+    banks_module_viewer: Banks Module Viewer
+    address_book_module_viewer: Address Book Module Viewer
+    #banks_module_user: Banks Module User
+    #address_book_module_user: Address Book Module User
+    #banks_module_member: Banks Module Member
+    #address_book_module_member: Address Book Module Member
+    banks: Banks
+    address_book: Address Book
+    
+    titles_module_admin: Titles Module Admin
+    titles_module_viewer: Titles Module Viewer
+    staff_shifts_module_admin: Staff Shifts Module Admin
+    staff_shifts_module_viewer: Staff Shifts Module Viewer
+    travel_claims_transport_groups_module_admin: Transport Groups Module Admin
+    travel_claims_transport_groups_module_viewer: Transport Groups Module Viewer
+    travel_claim_mileage_rates_module_admin: Mileage Rates Module Admin
+    travel_claim_mileage_rates_module_viewer: Mileage Rates Module Viewer
+    asset_categories_module_admin: Asset Categories Module Admin
+    asset_categories_module_viewer: Asset Categories Module Viewer
+    
+    titles: Titles
+    staff_shifts: Staff Shifts
+    travel_claims_transport_groups: Transport Groups
+    travel_claim_mileage_rates: Mileage Rates
+    asset_categories: Asset Categories
+    
+    ###- use in Roles - Index pg
+    roles_module_admin: Roles Module Admin
+    users_module_admin: Users Module Admin
+    roles_module_viewer: Roles Module Viewer
+    users_module_viewer: Users Module Viewer
+    library_mailer_module_admin: Library Mailer Module Admin
+    library_mailer_module_viewer: Library Mailer Module Viewer
+    ###- use in Roles - Index pg
+
+    staffs_module_admin: Staffs Module Admin
+    positions_module_admin: Positions Module Admin
+    staff_attendances_module_admin: Staff Attendances Module Admin
+    fingerprints_module_admin: Fingerprints Module Admin
+    travel_claims_module_admin: Travel Claims Module Admin
+    travel_requests_module_admin: Travel Requests Module Admin
+    training_budget_module_admin: Training Budget Module Admin
+    training_courses_module_admin: Training Courses Module Admin
+    training_schedule_module_admin: Training Schedule Module Admin
+    training_attendance_module_admin: Training Attendance Module Admin
+    staff_appraisals_module_admin: Staff Appraisals Module Admin
+    staff_leaves_module_admin: Staff Leaves Module Admin
+    staffs_module_viewer: Staffs Module Viewer
+    positions_module_viewer: Positions Module Viewer
+    staff_attendances_module_viewer: Staff Attendances Module Viewer
+    fingerprints_module_viewer: Fingerprints Module Viewer
+    travel_claims_module_viewer: Travel Claims Module Viewer
+    travel_requests_module_viewer: Travel Requests Module Viewer
+    training_budget_module_viewer: Training Budget Module Viewer
+    training_courses_module_viewer: Training Courses Module Viewer
+    training_schedule_module_viewer: Training Schedule Module Viewer
+    training_attendance_module_viewer: Training Attendance Module Viewer
+    staff_appraisals_module_viewer: Staff Appraisals Module Viewer
+    staff_leaves_module_viewer: Staff Leaves Module Viewer
+    staffs_module_user: Staffs Module User
+    positions_module_user: Positions Module User
+    staff_attendances_module_user: Staff Attendances Module User
+    fingerprints_module_user: Fingerprints Module User
+    travel_claims_module_user: Travel Claims Module User
+    travel_requests_module_user: Travel Requests Module User
+    training_budget_module_user: Training Budget Module User
+    training_courses_module_user: Training Courses Module User
+    training_schedule_module_user: Training Schedule Module User
+    training_attendance_module_user: Training Attendance Module User
+    staff_appraisals_module_user: Staff Appraisals Module User
+    staff_leaves_module_user: Staff Leaves Module User
+    staffs_module_member: Staffs Module Member
+    positions_module_member: Positions Module Member
+    staff_attendances_module_member: Staff Attendances Module Member
+    fingerprints_module_member: Fingerprints Module Member
+    travel_claims_module_member: Travel Claims Module Member
+    travel_requests_module_member: Travel Requests Module Member
+    training_budget_module_member: Training Budget Module Member
+    training_courses_module_member: Training Courses Module Member
+    training_schedule_module_member: Training Schedule Module Member
+    training_attendance_module_member: Training Attendance Module Member
+    staff_appraisals_module_member: Staff Appraisals Module Member
+    staff_leaves_module_member: Staff Leaves Module Member
+    staffs: Staffs
+    positions: Positions
+    staff_attendances: Staff Attendances
+    fingerprints: Fingerprints
+    travel_claims: Travel Claims
+    travel_requests: Travel Requests
+    training_budget: Training Budget
+    training_courses: Training Courses
+    training_schedule: Training Schedule
+    training_attendance: Training Attendance
+    staff_appraisals: Staff Appraisals
+    staff_leaves: Staff Leaves
+    
+    student_leaves_module_admin: Student Leaves Module Admin
+    student_attendances_module_admin: Student Attendance Module Admin
+    student_counseling_module_admin: Student Counseling Sessions Module Admin
+    student_discipline_module_admin: Student Discipline Cases Module Admin
+    student_infos_module_admin: Student Information Module Admin
+    student_leaves_module_viewer: Student Leaves Module Viewer
+    student_attendances_module_viewer: Student Attendance Module Viewer
+    student_counseling_module_viewer: Student Counseling Sessions Module Viewer
+    student_discipline_module_viewer: Student Discipline Cases Module Viewer
+    student_infos_module_viewer: Student Information Module Viewer
+    student_leaves_module_user: Student Leaves Module User
+    student_attendances_module_user: Student Attendance Module User
+    student_counseling_module_user: Student Counseling Sessions Module User
+    student_discipline_module_user: Student Discipline Cases Module User
+    student_infos_module_user: Student Information Module User
+    student_leaves_module_member: Student Leaves Module Member
+    student_attendances_module_member: Student Attendance Module Member
+    student_counseling_module_member: Student Counseling Sessions Module Member
+    student_discipline_module_member: Student Discipline Cases Module Member
+    student_infos_module_member: Student Information Module Member
+    student_leaves: Student Leaves
+    student_attendances: Student Attendance
+    student_counseling: Student Counseling Sessions
+    student_discipline: Student Discipline Cases
+    student_infos: Student Information
+    
+    stationeries_module_admin: Stationeries Module Admin
+    asset_losses_module_admin: Asset Losses Module Admin
+    asset_loans_module_admin: Asset Loans Module Admin
+    asset_disposals_module_admin: Asset Disposals Module Admin
+    asset_defect_module_admin: Asset Defect Module Admin
+    asset_list_module_admin: Asset List Module Admin
+    stationeries_module_viewer: Stationeries
+    asset_losses_module_viewer: Asset Losses Module Viewer
+    asset_loans_module_viewer: Asset Loans Module Viewer
+    asset_disposals_module_viewer: Asset Disposals Module Viewer
+    asset_defect_module_viewer: Asset Defect Module Viewer
+    asset_list_module_viewer: Asset List Module Viewer
+    stationeries_module_user: Stationeries Module User
+    asset_losses_module_user: Asset Losses Module User
+    asset_loans_module_user: Asset Loans Module User
+    asset_disposals_module_user: Asset Disposals Module User
+    asset_defect_module_user: Asset Defect Module User
+    asset_list_module_user: Asset List Module User
+    stationeries_module_member: Stationeries Module Member
+    asset_losses_module_member: Asset Losses Module Member
+    asset_loans_module_member: Asset Loans Module Member
+    asset_disposals_module_member: Asset Disposals Module Member
+    asset_defect_module_member: Asset Defect Module Member
+    asset_list_module_member:  Asset List Module Member
+    stationeries: Stationeries
+    asset_losses: Asset Losses
+    asset_loans: Asset Loans
+    asset_disposals: Asset Disposals
+    asset_defect: Asset Defect
+    asset_list: Asset List
+    
+    tenants_module_admin: Tenants Module Admin
+    locations_module_admin: Locations Module Admin
+    location_damages_module_admin: Location Damages Module Admin
+    tenants_module_viewer: Tenants Module Viewer
+    locations_module_viewer: Locations Module Viewer
+    location_damages_module_viewer: Location Damages Module Viewer
+    tenants_module_user: Tenants Module User
+    locations_module_user: Locations Module User
+    location_damages_module_user: Location Damages Module User
+    tenants_module_member: Tenants Module Member
+    locations_module_member: Locations Module Member
+    location_damages_module_member: Location Damages Module Member
+    tenants: Tenants
+    locations: Locations
+    location_damages: Location Damages
     
   role:
     list: Lists of Roles
@@ -511,7 +873,7 @@ en:
     staff_appraisal: Staff Appraisal
     tasks_respons: Task & Responsibilities
     
-    leave: Leave
+    leave: Staff Leave
     apply: Apply
     list_approve: "List / Support / Approve"
     claims: Claims
@@ -566,14 +928,18 @@ en:
     bulletin_board: Bulletin Board
     equery_reports: "Equery / Reports"
     document_registry: Document Registry
+    new_document_registry: New Document Registry
     file_registry: File Registry
     
     students: Student
     student_info: Student Information
+    new_student_list: New Student List
     student_leave: Student Leave
     new_student_leave: New Student Leave
     discipline: Discipline Cases
+    new_discipline: "Discipline Cases (New)"
     counselling: Counselling
+    new_counselling: New Counselling
     new_ethnic_group: New Ethnic Group
     students_quantity_sponsor: "Students Quantity (Sponsor)"
     students_quantity_report: "Students Quantity (Report)"
@@ -583,12 +949,16 @@ en:
     create_timetable: Create Time table
     create_intakes: Create Intakes
     create_academic_session: Create Academic Session
+    new_create_timetable: New Create Time table
+    new_create_intakes: New Create Intakes
+    new_create_academic_session: New Create Academic Session
     timetable_entries: Time Table Entries
     curriculum_management: Curriculum Management
     teaching_and_learning: "Teaching & Learning"
     plan_report: "Lesson Plan & Report"
     lesson_plan: Lesson Plan
-    create_topics_details: Topic Details
+    create_topic_details: Topic Details
+    new_topic_details: New Topic Details
     lesson_reporting: Lesson Report
     training_notes: Training Notes
     personalised_timetable: Personalised Time Table
@@ -600,6 +970,7 @@ en:
     exams: Exams
     exam_dev: Examination Development
     exam_maker: Examination Maker
+    exam_template: Examination Template
     exam_manage: Examination Management
     marks_exam_paper: Marks by Examination Paper
     student_grades: Student Grades
@@ -1540,6 +1911,7 @@ en:
     disposal_complete: "Asset Disposal Completed."
     remark: "- indicates disposal of asset already approved by Treasury (Disposal Method registered), but not yet 'view & close' by HOD."
     view_close: "View & Close"
+    verify_disposal: Verify Asset Disposal
     
   assetloan:
     title: Asset Loan
@@ -1657,6 +2029,7 @@ en:
       is_submit_to_hod: Submit to Head of Dept
       endorsed_hod_by: Head of Dept
       endorsed_on: Date of HOD Endorsement
+      report_endorsed:  Reported Asset Loss was endorsed by HOD on
 
       preventfuture: What actions will be taken to prevent recurrence in future?
       remarks: Other remarks (if any)
@@ -2691,7 +3064,7 @@ en:
     counselor: Counselor 
     new: New student counseling session
     edit: "Edit Counseling Appointment / Session"
-    title: Student Counseling Appointments & Sessions
+    title2: Student Counseling Appointments & Sessions
     appointmentfor: Appointment For
     is_confirm: Is confirmed
     confirmed_at: Confirmed at
@@ -2897,6 +3270,7 @@ en:
     search_select_student: Search & Select Student Name
     update_multiple_return: Updated multiple return of loans
     paid: paid
+    transaction_extend_return: 'Librarytransaction was successfully updated (Extended/Returned).'
     
   librarystats:
     quicklinks: Quicklinks

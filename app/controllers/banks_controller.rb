@@ -1,4 +1,5 @@
 class BanksController < ApplicationController
+  filter_resource_access
   # GET /banks
   # GET /banks.xml
   def index

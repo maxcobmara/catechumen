@@ -1,5 +1,5 @@
 class TravelClaimsController < ApplicationController
-  filter_resource_access
+  filter_access_to :all
   # GET /travel_claims
   # GET /travel_claims.xml
   def index

@@ -1,4 +1,5 @@
 class PostinfosController < ApplicationController
+  filter_resource_access
   # GET /postinfos
   # GET /postinfos.xml
   def index

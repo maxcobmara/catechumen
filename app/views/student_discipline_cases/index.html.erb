@@ -64,13 +64,13 @@
     <td width=10px ><%= link_to image_tag("document.png", :border => 0, :title=>(t 'show')), :action => 'show', :id => student_discipline_case %></td>
     <td width=10px>
     
-	<% if permitted_to? :manage, :student_discipline_cases %>
+	<% if permitted_to? :update, :student_discipline_cases %>
 		<% if (student_discipline_case.status=="Refer to BPL")%>
 			<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => student_discipline_case %>
 		<% end %>
 	<% end %>
 
-	<% if (student_discipline_case.status=="New" && student_discipline_case.assigned_to == current_login.staff_id) || (student_discipline_case.status == "Refer to TPHEP" && student_discipline_case.assigned2_to == current_login.staff_id)%>
+	<% if (student_discipline_case.status=="New" &&( student_discipline_case.assigned_to == current_login.staff_id || @is_admin)) || (student_discipline_case.status == "Refer to TPHEP" && (student_discipline_case.assigned2_to == current_login.staff_id || @is_admin))%>
 		<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => student_discipline_case %>
 	<% end %>
       </td>

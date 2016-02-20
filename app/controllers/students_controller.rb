@@ -1,5 +1,4 @@
 class StudentsController < ApplicationController
-  #filter_resource_access
   filter_access_to :all
   # GET /students
   # GET /students.xml

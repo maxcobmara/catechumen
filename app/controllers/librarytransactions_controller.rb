@@ -155,13 +155,13 @@ class LibrarytransactionsController < ApplicationController
       if @librarytransaction.update_attributes(params[:librarytransaction])
         
         if @update_type == "Extend" || @update_type == "Return"
-            flash[:notice] = 'Librarytransaction was successfully updated (Extended/Returned).'
+            flash[:notice] = t('librarytransaction.transaction_extend_return') 
             #format.html { redirect_to :action => 'new' }
             format.html{render(:action => 'new',:librarytransaction => @librarytransaction)}
             
             flash.discard
         else
-            flash[:notice] = 'Librarytransaction was successfully updated.'
+            flash[:notice] =t('librarytransaction.transaction_details')+t('updated')
             format.html { redirect_to(@librarytransaction) }
         end
         format.xml  { head :ok }

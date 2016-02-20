@@ -1,5 +1,5 @@
 class AssetsController < ApplicationController
-  
+  filter_access_to :all
   # GET /assets
   # GET /assets.xml
   def index

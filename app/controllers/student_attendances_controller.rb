@@ -1,5 +1,5 @@
 class StudentAttendancesController < ApplicationController
-   #filter_resource_access
+  filter_access_to :all
   # GET /student_attendances
   # GET /student_attendances.xml
   def index
@@ -18,8 +18,8 @@ class StudentAttendancesController < ApplicationController
       end
     
       #admin
-      current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
-      @is_admin=true if current_roles.include?("Administration")
+      current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+      @is_admin=true if current_roles.include?("administration") || current_roles.include?("student_attendances_module_admin")|| current_roles.include?("student_attendances_module_viewer")|| current_roles.include?("student_attendances_module_user")
     
       #common subject lecturers
       common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
@@ -235,8 +235,8 @@ class StudentAttendancesController < ApplicationController
     end
 
     #admin
-    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
-    @is_admin=true if current_roles.include?("Administration")
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("student_attendances_module_admin")|| current_roles.include?("student_attendances_module_viewer")|| current_roles.include?("student_attendances_module_user")
 
     #common subject lecturers
     common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
@@ -336,6 +336,7 @@ class StudentAttendancesController < ApplicationController
   # GET /student_attendances/1/edit
   def edit
     @student_attendance = StudentAttendance.find(params[:id])
+    @programme_list_ids = Programme.roots.map(&:id)
     ####from index-start##############################################
     @lecturer_programme = current_login.staff.position.unit
     unless @lecturer_programme.nil?
@@ -343,8 +344,8 @@ class StudentAttendancesController < ApplicationController
     end
 
     #admin
-    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
-    @is_admin=true if current_roles.include?("Administration")
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("student_attendances_module_admin")|| current_roles.include?("student_attendances_module_viewer")|| current_roles.include?("student_attendances_module_user")
     
     #common subject lecturers
     common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
@@ -379,11 +380,13 @@ class StudentAttendancesController < ApplicationController
       @preselect_prog= @programme2.id     #@preselect_prog (programme_id)
       @student_list = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes])
       @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id)
+      @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and lecturer_id=?',@topics_ids_this_prog, Login.current_login.staff_id])
     else 
       if @is_pengkhususan_lecturer
         @preselect_prog=Programme.find_by_name(@pengkhususan_name).id
         @student_list = Student.find(:all, :conditions => ['course_id=? and intake IN(?)',@preselect_prog, student_intakes])
         @topics_ids_this_prog = Programme.find(@preselect_prog).descendants.at_depth(3).map(&:id)
+	@schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and lecturer_id=?',@topics_ids_this_prog, Login.current_login.staff_id])
       end
       if @is_common_lecturer
         @details2 = WeeklytimetableDetail.find(:all, :conditions=>['lecturer_id=?', Login.current_login.staff_id], :select =>"DISTINCT weeklytimetable_id, topic")
@@ -398,13 +401,16 @@ class StudentAttendancesController < ApplicationController
         thistopic = WeeklytimetableDetail.find(schedule_id).topic
         courseid = Programme.find(thistopic).root_id
         @student_list=Student.find(:all, :conditions=>['course_id=? and intake=?', courseid, intake])
+	@schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and lecturer_id=?',@topics_ids_this_prog, Login.current_login.staff_id])
       end
       if @is_admin
-        @student_list= Student.find(:all, :conditions => ['course_id IN(?) and intake IN(?)',@programme_list_ids, student_intakes],:order=>"course_id,intake") 
+        #intakes not applicable to admin (not a lecturer)
+        @student_list= Student.find(:all, :conditions => ['course_id IN(?)',@programme_list_ids],:order=>"course_id,intake") 
         @topics_ids_this_prog = Programme.at_depth(3).map(&:id)+Programme.at_depth(4).map(&:id)
+	@schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?)',@topics_ids_this_prog])
       end
     end
-    @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and lecturer_id=?',@topics_ids_this_prog, Login.current_login.staff_id])
+#     @schedule_list = WeeklytimetableDetail.find(:all, :conditions => ['topic IN(?) and lecturer_id=?',@topics_ids_this_prog, Login.current_login.staff_id])
     ####from index-end##############################################
   end
 
@@ -492,8 +498,8 @@ class StudentAttendancesController < ApplicationController
        
       ####from index-start##############################################
       #admin
-      current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
-      @is_admin=true if current_roles.include?("Administration")
+      current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+      @is_admin=true if current_roles.include?("administration") || current_roles.include?("student_attendances_module_admin")|| current_roles.include?("student_attendances_module_viewer")|| current_roles.include?("student_attendances_module_user")
        
       #common subject lectureres
       common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]

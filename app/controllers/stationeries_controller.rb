@@ -1,4 +1,5 @@
 class StationeriesController < ApplicationController
+  filter_access_to :all
   helper_method :sort_column, :sort_direction
   
   # GET /stationeries

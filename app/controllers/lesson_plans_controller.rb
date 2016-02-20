@@ -1,4 +1,5 @@
 class LessonPlansController < ApplicationController
+  filter_access_to :all
   # GET /lesson_plans
   # GET /lesson_plans.xml
   def index
@@ -7,8 +8,8 @@ class LessonPlansController < ApplicationController
       #@lesson_plans = LessonPlan.find(:all, :order => "lecturer ASC, lecture_date DESC")
       @lesson_plans = LessonPlan.search(params[:search])
     end
-    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
-    @is_admin=true if current_roles.include?("Administration")
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("lesson_plans_module_admin")|| current_roles.include?("lesson_plans_module_viewer")|| current_roles.include?("lesson_plans_module_user")
     respond_to do |format|
       if @position_exist
         format.html # index.html.erb
@@ -24,8 +25,8 @@ class LessonPlansController < ApplicationController
   # GET /lesson_plans/1.xml
   def show
     @lesson_plan = LessonPlan.find(params[:id])
-    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
-    @is_admin=true if current_roles.include?("Administration")
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("lesson_plans_module_admin")|| current_roles.include?("lesson_plans_module_viewer")|| current_roles.include?("lesson_plans_module_user")
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @lesson_plan }
@@ -48,8 +49,8 @@ class LessonPlansController < ApplicationController
     @lesson_plan = LessonPlan.find(params[:id])
     @job_type = params[:job_type]
     #admin
-    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
-    @is_admin=true if current_roles.include?("Administration")
+    current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:authname)
+    @is_admin=true if current_roles.include?("administration") || current_roles.include?("lesson_plans_module_admin")|| current_roles.include?("lesson_plans_module_viewer")|| current_roles.include?("lesson_plans_module_user")
   end
 
   # POST /lesson_plans
@@ -120,14 +121,14 @@ class LessonPlansController < ApplicationController
     current_roles = Role.find(:all, :joins=>:logins, :conditions=>['logins.id=?', Login.current_login.id]).map(&:name)
     @is_admin=true if current_roles.include?("Administration")
   end
-  def index_report
-    @position_exist = Login.current_login.staff.position
-    if @position_exist 
-      @lesson_plans = LessonPlan.find(:all, :conditions=> ['hod_approved=?', true])
-    else
-       redirect_to "/home", :notice =>t('position_required')+t('lesson_plan.title')
-    end
-  end
+#   def index_report
+#     @position_exist = Login.current_login.staff.position
+#     if @position_exist 
+#       @lesson_plans = LessonPlan.find(:all, :conditions=> ['hod_approved=?', true])
+#     else
+#        redirect_to "/home", :notice =>t('position_required')+t('lesson_plan.title')
+#     end
+#   end
   def lesson_plan_report
       @lesson_plan = LessonPlan.find(params[:id])
       render :layout => 'report'

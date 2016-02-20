@@ -21,32 +21,37 @@
 		<!--amend this part accordingly-->
 		
 		<!--this part changed too-13dec2012-->
-		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified != true %>
-			<%=t('disposal.awaiting_verification')%>&nbsp;<%=h @asset_disposal.verifier.name %>
-		<% end %> 
+		<% if @is_admin==false %>
+			<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified != true %>
+				<%=t('disposal.awaiting_verification')%>&nbsp;<%=h @asset_disposal.verifier.name %>
+			<% end %> 
+		<% end %>
 		
-		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by == Login.current_login.staff_id && @asset_disposal.is_verified != true %>
+		<% if @asset_disposal.is_checked == true && (@asset_disposal.verified_by == Login.current_login.staff_id  || @is_admin) && @asset_disposal.is_verified != true %>
 			<%= render :partial => 'show_process' %>
 			<%=render :partial => 'verify', :locals => {:f => f} %>
 		<% end %>
 		
-		<% if @asset_disposal.is_disposed == true && @asset_disposal.verified_by == Login.current_login.staff_id && @asset_disposal.is_verified == true %>
+		<% if @asset_disposal.is_disposed == true && (@asset_disposal.verified_by == Login.current_login.staff_id  || @is_admin) && @asset_disposal.is_verified == true %>
 			<%= render :partial => 'show_process' %>
 			<%= render :partial => 'show_disposal' %>
 			
 			<%=render :partial => 'close', :locals => {:f => f} %>
 		<% end %>
-		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified == true && @asset_disposal.is_disposed != true %>
-			<%=t('disposal.checked_and_verified')%>
-		<% end %>
-		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified == true && @asset_disposal.is_disposed == true && @asset_disposal.disposed_by == nil%>
-			<%=t('disposal.require_case_close_hod')%>
-		<% end %>
-		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by == Login.current_login.staff_id && @asset_disposal.is_verified == true && @asset_disposal.is_disposed != true %>
-			<%=t('disposal.awaiting_disposal_registration')%>
-		<% end %>
-		<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified == true && @asset_disposal.is_disposed == true && @asset_disposal.disposed_by != nil %>
-			<%=t('disposal.disposal_complete')%>
+		
+		<% if @is_admin==false %>
+			<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified == true && 	@asset_disposal.is_disposed != true %>
+				<%=t('disposal.checked_and_verified')%>
+			<% end %>
+			<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified == true && @asset_disposal.is_disposed == true && @asset_disposal.disposed_by == nil%>
+				<%=t('disposal.require_case_close_hod')%>
+			<% end %>
+			<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by == Login.current_login.staff_id && @asset_disposal.is_verified == true && @asset_disposal.is_disposed != true %>
+				<%=t('disposal.awaiting_disposal_registration')%>
+			<% end %>
+			<% if @asset_disposal.is_checked == true && @asset_disposal.verified_by != Login.current_login.staff_id && @asset_disposal.is_verified == true && @asset_disposal.is_disposed == true && @asset_disposal.disposed_by != nil %>
+				<%=t('disposal.disposal_complete')%>
+			<% end %>
 		<% end %>
 		<!--this part changed too-13dec2012-->
 	</div>

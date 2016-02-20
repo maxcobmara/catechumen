@@ -1,4 +1,5 @@
 class ExamquestionanalysesController < ApplicationController
+  filter_resource_access
   # GET /examquestionanalyses
   # GET /examquestionanalyses.xml
   def index

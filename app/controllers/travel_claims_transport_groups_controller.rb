@@ -1,4 +1,5 @@
 class TravelClaimsTransportGroupsController < ApplicationController
+  filter_resource_access
   # GET /travel_claims_transport_groups
   # GET /travel_claims_transport_groups.xml
   def index

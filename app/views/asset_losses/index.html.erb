@@ -55,12 +55,12 @@
 				<td><%=h asset_loss.is_writeoff? ? asset_loss.document.refno : ""%></td>
 				<td width=10px><%= link_to image_tag("document.png", :border => 0, :title => (t 'show')), :action => 'show', :id => asset_loss %></td>
 				<td width=10px>
-					<% if asset_loss.is_submit_to_hod != true %>
-						<% permitted_to? :update, :asset_losses do %>
+					<% permitted_to? :update, :asset_losses do %>
+						<% if asset_loss.is_submit_to_hod != true %>
 							<%= link_to image_tag("edit.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => asset_loss %>
+						<% elsif asset_loss.is_submit_to_hod == true && asset_loss.endorsed_on.blank? == true && (Login.current_login.staff.position.code == "1" || @is_admin)%>
+							<%= link_to image_tag("approval.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => asset_loss %>
 						<% end %>
-					<%# elsif asset_loss.is_submit_to_hod == true && asset_loss.endorsed_on.blank? == true && Login.current_login.staff.position.code == "1" %>
-						<%#= link_to image_tag("approval.png", :border => 0, :title => (t 'edit')), :action => 'edit', :id => asset_loss %>
 					<% end %>
 				</td>
 				<td class="action">

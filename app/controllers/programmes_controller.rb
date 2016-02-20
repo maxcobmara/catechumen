@@ -1,4 +1,5 @@
 class ProgrammesController < ApplicationController
+  filter_resource_access
   # GET /programmes
   # GET /programmes.xml
   def index

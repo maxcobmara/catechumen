@@ -1,4 +1,5 @@
 class TravelRequestsController < ApplicationController
+  filter_access_to :all
   # GET /travel_requests
   # GET /travel_requests.xml
   def index
