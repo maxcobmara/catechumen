@@ -1,5 +1,5 @@
 class StaffShiftsController < ApplicationController
-  filter_resources_access
+  filter_resource_access
   # GET /staff_shifts
   # GET /staff_shifts.xml
   def index

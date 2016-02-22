@@ -87,8 +87,6 @@ class WeeklytimetablesController < ApplicationController
     end
   end
   
-  def personalize_index
-  
   def personalize_show  #yg dihantar : startdate
     @selected_date = params[:id]
     @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',Login.current_login.staff_id])
