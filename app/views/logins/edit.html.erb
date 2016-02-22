@@ -260,7 +260,7 @@
 				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
 				<% user=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id], role.description], :order => "id ASC") %>
 				<% owner=Role.find(:first, :conditions => ['id NOT IN(?) and description=?', [role.id, read.id, user.id], role.description], :order => "id ASC") %>
-				<span style= 'display: block;'>
+				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "efilingmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "efilingread" %>
 					<%= check_box_tag "login[role_ids][]", user.id, @login.roles.include?(user), :class => "efilinguser" %>
@@ -480,7 +480,7 @@
 			<% cnt=0%>
 			<% for role in Role.find(:all, :conditions => ['authname ILIKE(?) and name not ILIKE(?) and description IN(?)', '%module_admin', '%Mailer%', ["Address Book", "Banks", "Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories"]], :order => "id ASC") %>
 				<% read=Role.find(:first, :conditions => ['id !=? and description=?', role.id, role.description], :order => "id ASC") %>
-				<span style= 'display: block;'>
+				<span style= 'display: none;'>
 					<%= check_box_tag "login[role_ids][]", role.id, @login.roles.include?(role), :class => "supportmanage" %>
 					<%= check_box_tag "login[role_ids][]", read.id, @login.roles.include?(read), :class => "supportread" %>
 				</span>
