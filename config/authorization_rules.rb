@@ -79,7 +79,7 @@ authorization do
   role :staff do
     has_permission_on :authorization_rules, :to => :read
     has_permission_on [:attendances, :documents],     :to => :menu              # Access for Menus
-    has_permission_on :assets, :to => [:menu, :loanables]                              # Access for Menus, items available for loans
+    has_permission_on :assets, :to => [:read, :loanables]                              # Access for Menus, items available for loans
     has_permission_on :books, :to => :core
     has_permission_on :ptdos, :to => :create
     has_permission_on :ptdos, :to => :index do 
@@ -503,18 +503,14 @@ authorization do
   #1)OK - all 4 - 16Feb2016
   role :staffs_module_admin do
     has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
-    has_permission_on :staffsearch2s, :to => :manage
   end
   role :staffs_module_viewer do
     has_permission_on :staffs, :to => [:menu, :read, :borang_maklumat_staff]
-    has_permission_on :staffsearch2s, :to => :manage
   end
   role :staffs_module_user do
     has_permission_on :staffs, :to => [:menu, :read, :update, :borang_maklumat_staff]
-    has_permission_on :staffsearch2s, :to => :manage
   end
   role :staffs_module_member do
-    has_permission_on :staffsearch2s, :to => :manage
     has_permission_on :staffs, :to => :menu
     has_permission_on :staffs, :to => [:read, :update, :borang_maklumat_staff] do
       if_attribute :id => is {Login.current_login.staff_id}
@@ -523,18 +519,22 @@ authorization do
   
   #2)OK - all 4 - 16Feb2016, NOTE - activate employgrades & postinfos as well
   role :positions_module_admin do
+     has_permission_on :staffsearch2s, :to => :manage
      has_permission_on :positions, :to => [:manage, :maklumat_perjawatan_LA]
      has_permission_on [:employgrades, :postinfos], :to => :manage
   end
   role :positions_module_viewer do
+     has_permission_on :staffsearch2s, :to => :manage
      has_permission_on :positions, :to => [:read, :maklumat_perjawatan_LA]
      has_permission_on [:employgrades, :postinfos], :to => :read
   end
   role :positions_module_user do
+     has_permission_on :staffsearch2s, :to => :manage
      has_permission_on :positions, :to => [:read, :update, :maklumat_perjawatan_LA]
      has_permission_on [:employgrades, :postinfos], :to => [:read, :update]
   end
   role :positions_module_member do
+    has_permission_on :staffsearch2s, :to => :manage
     has_permission_on :positions, :to =>  [:read, :update, :maklumat_perjawatan_LA] do
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
@@ -1110,12 +1110,15 @@ authorization do
   #30-OK
   role :library_books_module_admin do
      has_permission_on :books, :to => :manage
+     has_permission_on :booksearches, :to => :manage
   end
   role :library_books_module_viewer do
      has_permission_on :books, :to => [:core, :read]
+     has_permission_on :booksearches, :to => :manage
   end
   role :library_books_module_user do
     has_permission_on :books, :to => [:core, :read, :update]
+    has_permission_on :booksearches, :to => :manage
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role
 #   role :library_books_module_member do

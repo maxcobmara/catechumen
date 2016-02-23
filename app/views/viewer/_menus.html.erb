@@ -509,7 +509,7 @@
 			<% if (permitted_to? :read, :staffsearch2s) || (permitted_to? :read, :staffattendancesearches) || (permitted_to? :read, :ptdosearches) %>
 				<li class="sub_menu"><%= link_to (t 'menu.staff'), {:controller => 'viewer', :action => 'equeryreports', :query_module =>'1'} %></li>
 			<% end %>
-			<% permitted_to? :read, :assetsearches do %>
+			<% if (permitted_to? :read, :assetsearches) || (permitted_to? :read, :stationerysearches) %>
 				<li class="sub_menu"><%= link_to (t 'menu.assets'), {:controller => 'viewer', :action => 'equeryreports', :query_module =>'2'} %></li>
 			<% end %>
 			<% permitted_to? :read, :documentsearches do %>

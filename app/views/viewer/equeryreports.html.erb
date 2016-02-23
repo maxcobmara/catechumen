@@ -43,15 +43,20 @@
 	
 	<% elsif @query_module=='2' %>
 		
-		<% permitted_to? :read, :assetsearches do %>
+		<% permitted_to? :read, :stationerysearches do %>
 		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
 			<%= t 'equery.module' %> : <%= t 'menu.assets' %></span></td></tr>
-		<tr>	
+		<tr>
 		<tr>
 			<td><%=no+=1%></td>
 			<td><%=t 'supplier.title'%><%#= link_to (t 'supplier.title'), {:controller => 'stationeries',:action => 'index'}  %></td>
 			<td><%= link_to (t 'equery.advance_search'), {:controller => 'stationerysearches',:action => 'new'}  %></td>
 		</tr>
+		<% end %>
+		<% permitted_to? :read, :assetsearches do %>
+		<tr><td colspan=4 style="background-color:#EFF1F1;"><BR><span style="color:#218AFB;font-weight:bold;">
+			<%= t 'equery.module' %> : <%= t 'menu.assets' %></span></td></tr>
+		<tr>
 		<tr>
 			<td><%=no+=1%></td><% @searchtype=1 %>
 			<td>KEW.PA-2 (Daftar Harta Modal)<%#= link_to 'KEW.PA-2 (Daftar Harta Modal)', {:controller => 'assets', :action => 'index',:show => "fixed"} %></td>
