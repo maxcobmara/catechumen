@@ -91,11 +91,20 @@ authorization do
     has_permission_on :staffs, :to => [:edit, :update, :menu, :borang_maklumat_staff] do
       if_attribute :id => is {Login.current_login.staff_id}
     end
-    has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update] do
-      if_attribute :staff_id => is {Login.current_login.staff_id}
+#     has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update] do
+#       if_attribute :staff_id => is {Login.current_login.staff_id}
+#     end
+#     has_permission_on :attendances, :to => [:index, :show, :approve, :update] do
+#         if_attribute :approve_id => is {Login.current_login.staff_id}
+#     end
+
+    #applicable for all staff for OWN record, BUT for approval - use Unit Leader, Programme Manager or Administration Staff role accordingly.
+    has_permission_on :staff_attendances, :to => :manager                                  
+    has_permission_on :staff_attendances, :to => [:show, :update] do                                         # show & update - to enter reason
+      if_attribute :thumb_id => is {Login.current_login.staff.thumb_id}
     end
-    has_permission_on :attendances, :to => [:index, :show, :approve, :update] do
-        if_attribute :approve_id => is {Login.current_login.staff_id}
+    has_permission_on :fingerprints, :to => [:read, :update] do                                   
+      if_attribute :thumb_id => is {Login.current_login.staff.thumb_id}
     end
     
     has_permission_on :staff_appraisals, :to => :create
@@ -204,7 +213,7 @@ authorization do
   role :staff_administrator do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
      has_permission_on [:titles, :banks], :to => :manage
-     has_permission_on :attendances, :to => :manage
+     #has_permission_on :attendances, :to => :manage
      has_permission_on [:staff_attendances, :staff_shifts], :to => :manage   #29Apr2013-refer routes.rb
      has_permission_on :staffsearch2s, :to => :read
      has_permission_on :staffattendancesearches, :to => :read
@@ -564,7 +573,7 @@ authorization do
     has_permission_on :staff_attendances, :to => [:show, :update] do                        # show & update - to enter reason
       if_attribute :thumb_id => is {Login.current_login.staff.thumb_id}
     end
-    #own (approver) #refer Administration role(Timbalans) & Programme Manager
+    #own (approver) #refer Administration Staff role(Timbalans) & Programme Manager
     #own (approver) - refer Unit Leader role
     has_permission_on :staff_attendances, :to => [:approval, :update, :show], :join_by => :or do
       if_attribute :thumb_id => is_in {Login.current_login.admin_unitleaders_thumb}
@@ -1578,6 +1587,13 @@ authorization do
   #Catechumen
   #OK until here - 20Feb2016
   ###############
+  # NOTE 
+  # 1) Staff Attendances 
+  #(a) All staffs : Staff role, Approvers : Unit Leader / Programme Manager / Administration Staff role
+  #(b) Approvers only (CRUD/A) : Staff Attendance Module (Admin)
+  #(c) Approvers only (RU/A) : Staff Attendance Module (User)
+  #(d) All staffs & Approvers - Staff Attendance Module (Member)
+  
   #############
     
   
