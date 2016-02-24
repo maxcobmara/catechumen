@@ -79,7 +79,7 @@ authorization do
   role :staff do
     has_permission_on :authorization_rules, :to => :read
     has_permission_on [:attendances, :documents],     :to => :menu              # Access for Menus
-    has_permission_on :assets, :to => [:menu, :loanables]                              # Access for Menus, items available for loans
+    has_permission_on :assets, :to => [:read, :loanables]                              # Access for Menus, items available for loans
     has_permission_on :books, :to => :core
     has_permission_on :ptdos, :to => :create
     has_permission_on :ptdos, :to => :index do 
@@ -91,11 +91,20 @@ authorization do
     has_permission_on :staffs, :to => [:edit, :update, :menu, :borang_maklumat_staff] do
       if_attribute :id => is {Login.current_login.staff_id}
     end
-    has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update] do
-      if_attribute :staff_id => is {Login.current_login.staff_id}
+#     has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update] do
+#       if_attribute :staff_id => is {Login.current_login.staff_id}
+#     end
+#     has_permission_on :attendances, :to => [:index, :show, :approve, :update] do
+#         if_attribute :approve_id => is {Login.current_login.staff_id}
+#     end
+
+    #applicable for all staff for OWN record, BUT for approval - use Unit Leader, Programme Manager or Administration Staff role accordingly.
+    has_permission_on :staff_attendances, :to => :manager                                  
+    has_permission_on :staff_attendances, :to => [:show, :update] do                                         # show & update - to enter reason
+      if_attribute :thumb_id => is {Login.current_login.staff.thumb_id}
     end
-    has_permission_on :attendances, :to => [:index, :show, :approve, :update] do
-        if_attribute :approve_id => is {Login.current_login.staff_id}
+    has_permission_on :fingerprints, :to => [:read, :update] do                                   
+      if_attribute :thumb_id => is {Login.current_login.staff.thumb_id}
     end
     
     has_permission_on :staff_appraisals, :to => :create
@@ -204,7 +213,7 @@ authorization do
   role :staff_administrator do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
      has_permission_on [:titles, :banks], :to => :manage
-     has_permission_on :attendances, :to => :manage
+     #has_permission_on :attendances, :to => :manage
      has_permission_on [:staff_attendances, :staff_shifts], :to => :manage   #29Apr2013-refer routes.rb
      has_permission_on :staffsearch2s, :to => :read
      has_permission_on :staffattendancesearches, :to => :read
@@ -503,18 +512,14 @@ authorization do
   #1)OK - all 4 - 16Feb2016
   role :staffs_module_admin do
     has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
-    has_permission_on :staffsearch2s, :to => :manage
   end
   role :staffs_module_viewer do
     has_permission_on :staffs, :to => [:menu, :read, :borang_maklumat_staff]
-    has_permission_on :staffsearch2s, :to => :manage
   end
   role :staffs_module_user do
     has_permission_on :staffs, :to => [:menu, :read, :update, :borang_maklumat_staff]
-    has_permission_on :staffsearch2s, :to => :manage
   end
   role :staffs_module_member do
-    has_permission_on :staffsearch2s, :to => :manage
     has_permission_on :staffs, :to => :menu
     has_permission_on :staffs, :to => [:read, :update, :borang_maklumat_staff] do
       if_attribute :id => is {Login.current_login.staff_id}
@@ -523,18 +528,22 @@ authorization do
   
   #2)OK - all 4 - 16Feb2016, NOTE - activate employgrades & postinfos as well
   role :positions_module_admin do
+     has_permission_on :staffsearch2s, :to => :manage
      has_permission_on :positions, :to => [:manage, :maklumat_perjawatan_LA]
      has_permission_on [:employgrades, :postinfos], :to => :manage
   end
   role :positions_module_viewer do
+     has_permission_on :staffsearch2s, :to => :manage
      has_permission_on :positions, :to => [:read, :maklumat_perjawatan_LA]
      has_permission_on [:employgrades, :postinfos], :to => :read
   end
   role :positions_module_user do
+     has_permission_on :staffsearch2s, :to => :manage
      has_permission_on :positions, :to => [:read, :update, :maklumat_perjawatan_LA]
      has_permission_on [:employgrades, :postinfos], :to => [:read, :update]
   end
   role :positions_module_member do
+    has_permission_on :staffsearch2s, :to => :manage
     has_permission_on :positions, :to =>  [:read, :update, :maklumat_perjawatan_LA] do
       if_attribute :staff_id => is {Login.current_login.staff_id}
     end
@@ -564,7 +573,7 @@ authorization do
     has_permission_on :staff_attendances, :to => [:show, :update] do                        # show & update - to enter reason
       if_attribute :thumb_id => is {Login.current_login.staff.thumb_id}
     end
-    #own (approver) #refer Administration role(Timbalans) & Programme Manager
+    #own (approver) #refer Administration Staff role(Timbalans) & Programme Manager
     #own (approver) - refer Unit Leader role
     has_permission_on :staff_attendances, :to => [:approval, :update, :show], :join_by => :or do
       if_attribute :thumb_id => is_in {Login.current_login.admin_unitleaders_thumb}
@@ -1110,12 +1119,15 @@ authorization do
   #30-OK
   role :library_books_module_admin do
      has_permission_on :books, :to => :manage
+     has_permission_on :booksearches, :to => :manage
   end
   role :library_books_module_viewer do
      has_permission_on :books, :to => [:core, :read]
+     has_permission_on :booksearches, :to => :manage
   end
   role :library_books_module_user do
     has_permission_on :books, :to => [:core, :read, :update]
+    has_permission_on :booksearches, :to => :manage
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role
 #   role :library_books_module_member do
@@ -1575,6 +1587,13 @@ authorization do
   #Catechumen
   #OK until here - 20Feb2016
   ###############
+  # NOTE 
+  # 1) Staff Attendances 
+  #(a) All staffs : Staff role, Approvers : Unit Leader / Programme Manager / Administration Staff role
+  #(b) Approvers only (CRUD/A) : Staff Attendance Module (Admin)
+  #(c) Approvers only (RU/A) : Staff Attendance Module (User)
+  #(d) All staffs & Approvers - Staff Attendance Module (Member)
+  
   #############
     
   
