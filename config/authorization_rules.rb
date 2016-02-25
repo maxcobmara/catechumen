@@ -215,8 +215,8 @@ authorization do
      has_permission_on [:titles, :banks], :to => :manage
      #has_permission_on :attendances, :to => :manage
      has_permission_on [:staff_attendances, :staff_shifts], :to => :manage   #29Apr2013-refer routes.rb
-     has_permission_on :staffsearch2s, :to => :read
-     has_permission_on :staffattendancesearches, :to => :read
+     has_permission_on :staffsearch2s, :to => :manage
+     has_permission_on :staffattendancesearches, :to => :manage
      has_permission_on [:employgrades, :postinfos], :to => :manage
      has_permission_on :positions, :to => [:manage, :maklumat_perjawatan_LA]
   end
@@ -249,8 +249,8 @@ authorization do
     has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
     has_permission_on :assetsearches, :to => :manage
     has_permission_on :locations, :to => [:manage, :kewpa7]
-    has_permission_on :stationeries, :to => [:manage, :supplies]
-    has_permission_on :stationerysearches, :to => :manage
+    #has_permission_on :stationeries, :to => [:manage, :supplies]
+    #has_permission_on :stationerysearches, :to => :manage
     has_permission_on :asset_loans, :to=>[:manage, :approve, :lampiran]
     has_permission_on :asset_disposals, :to =>[ :manage, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :revalue, :dispose]
     has_permission_on :asset_losses, :to => [:manage, :kewpa28, :kewpa30, :kewpa31, :edit_multiple, :update_multiple] 
