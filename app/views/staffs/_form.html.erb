@@ -7,7 +7,7 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="name"><b><%= t 'staff.name' %></b></label><font color="red"> * </font></td>
-			<td><%= f.collection_select :titlecd_id, Title.find(:all), :id, :name, :include_blank => t ('select') %><%= f.text_field :name %></td>
+			<td><%= f.collection_select :titlecd_id, Title.find(:all), :id, :name, :include_blank =>t ('select') %><%= f.text_field :name %></td>
 		</tr>	
 		<tr>
 			<td class="leftcol"><label for="code"><b><%= t 'staff.code' %></b></label><font color="red"> * </font></td>
@@ -22,10 +22,10 @@
 			<td>
 				<%#= f.collection_select :staff_shift_id, StaffShift.find(:all), :id, :start_end, :include_blank=> t ('select_staff_shift') %>
 				<% if @staff.new_record? %>
-					<%= f.collection_select :staff_shift_id, StaffShift.find(:all), :id, :start_end, :include_blank=> t ('select_staff_shift') %>
+					<%= f.collection_select :staff_shift_id, StaffShift.find(:all), :id, :start_end, :include_blank=>t('select_staff_shift') %>
 				<% else %>
 					<% if @staff.staff_shift_id.blank? %>
-						<%= f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, :include_blank=> t ('select_staff_shift') %>
+						<%= f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, :include_blank=>t('select_staff_shift') %>
 					<% else %>
 						<%= f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true, :selected=>@staff.staff_shift_id}%>
 					<% end %>
@@ -66,7 +66,7 @@
 			<td class="leftcol"><label for="bloodtype"><b><%= t 'staff.bloodtype' %></b></label></td>
 			<td><%= f.select :bloodtype,
 			                 Staff::BLOOD_TYPE,
-			                 :prompt => t ('select') %></td>
+			                 :prompt =>t('select') %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="gender"><b><%= t 'staff.gender' %></b></label></td>
@@ -97,31 +97,31 @@
 			<td class="leftcol"><label for="mrtlstatuscd"><b><%= t 'staff.mrtlstatuscd' %></b></label></td>
 			<td><%= f.select :mrtlstatuscd, 
 			                 Staff::MARITAL_STATUS,
-			                 :prompt => t ('select')  %></td>
+			                 :prompt =>t('select')  %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="statecd"><b><%= t 'staff.statecd' %></b></label><font color="red"> * </font></td>
 			<td><%= f.select :statecd, 
 			                  Staff::STATECD,
-			                 :prompt => t ('select') %></td>
+			                 :prompt =>t('select') %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="race"><b><%= t 'staff.race' %></b></label></td>
 			<td><%= f.select :race, 
 			                  Staff::RACE,
-			                 :prompt => t ('select') %></td>
+			                 :prompt =>t('select') %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="religion"><b><%= t 'staff.religion' %></b></label></td>
 			<td><%= f.select :religion, 
 			                  Staff::RELIGION,
-			                 :prompt => t ('select')  %></td>
+			                 :prompt =>t('select')  %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="country_cd"><b><%= t 'staff.country_cd' %></b></label><font color="red"> * </font></td>
 			<td><%= f.select :country_cd, 
 			                 Staff::NATIONALITY,
-			                 :prompt => t ('select') %></td>
+			                 :prompt =>t('select') %></td>
 		</tr>
 		
 		<!--<tr>
@@ -149,13 +149,13 @@
 	<table  width=100% >
 		<tr>
 			<td class="leftcol"><label for="staffgrade_id"><b><%= t 'staff.staffgrade_id' %></b></label><font color="red"> * </font></td>
-			<td><%= f.collection_select :staffgrade_id, Employgrade.find(:all, :order => 'name'), :id, :name_and_group, :include_blank => t ('select') %></td>
+			<td><%= f.collection_select :staffgrade_id, Employgrade.find(:all, :order => 'name'), :id, :name_and_group, :include_blank =>t('select') %></td>
 		</tr><!--#:conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]-->
 		<tr>
 			<td class="leftcol"><label for="employstatus"><b><%= t 'staff.employstatus' %></b></label></td>
 			<td><%= f.select :employstatus, 
 			                  Staff::STATUS,
-			                 :prompt => t ('select')  %></td>
+			                 :prompt =>t('select')  %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="appointstatus"><b><%= t 'staff.appointstatus' %></b></label></td>
@@ -179,7 +179,7 @@
 			<td class="leftcol"><label for="pensionstat"><b><%= t 'staff.pensionstat' %></b></label></td>
 			<td><%= f.select :pensionstat, 
 			                  Staff::PENSION,
-			                 :prompt => t ('select')  %></td>
+			                 :prompt =>t('select')  %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="pensiondt"><b><%= t 'staff.pensiondt' %></b></label></td>
@@ -232,26 +232,26 @@
 			<td class="leftcol"><label for="appointby"><b><%= t 'staff.appointby' %></b></label></td>
 			<td><%= f.select :appointby, 
 			                  Staff::APPOINTED,
-			                 :prompt => t ('select')  %></td>
+			                 :prompt =>t('select')  %></td>
 		</tr>	
 		<tr>
 			<td class="leftcol"><label for="svchead"><b><%= t 'staff.svchead' %></b></label></td>
 			<td><%= f.select :svchead, 
 			                  Staff::HOS,
-			                 :prompt => t ('select')  %></td>
+			                 :prompt =>t('select')  %></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="svctype"><b><%= t 'staff.svctype' %></b></label></td>
 			<td><%= f.select :svctype, 
 			                  Staff::TOS,
-			                 :prompt => t ('select')  %></td>
+			                 :prompt =>t('select')  %></td>
 		</tr>	
 
 		<tr>
 			<td class="leftcol"><label for="uniformstat"><b><%= t 'staff.uniformstat' %></b></label></td>
 			<td><%= f.select :uniformstat, 
 			                  Staff::UNIFORM,
-			                 :prompt => t ('select')  %></td>
+			                 :prompt =>t('select')  %></td>
 		</tr>
 	</table>
 	
