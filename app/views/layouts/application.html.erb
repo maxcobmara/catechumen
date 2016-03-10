@@ -20,7 +20,11 @@
 		<div id="account">
 				<% if logged_in? %>
 			  	<%=t('login.welcome')%> <%=h  Login.current_login.login %> &nbsp
-					<%= link_to t('login.logout'), logout_path %>
+					<!-- This one logout Catechumen only -->
+					<%#= link_to t('login.logout'), logout_path %>
+					<%#= form_authenticity_token%>
+					<!--This one will sign_out Ogma & redirect to logout Catechumen, but NOTE - error in log:Can't verify CSRF token authenticity, temp solution -in Ogma - application_controller - using 'protect_from_forgery with: :reset_session' suppose to be 'protect_from_forgery with: :exception '-->
+					<%= link_to t('login.logout'), "http://#{request.host}:3003/users/sign_out", :method => :delete %>
 				<% else %>
 					<%= link_to t('login.login'), login_path %><%=t('or')%>&nbsp;<%= link_to (t 'login.sign_up'), "http://#{request.host}:3003/users/sign_up" %>
 
