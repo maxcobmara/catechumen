@@ -138,7 +138,7 @@ def ruport
     end
     respond_to do |format|
       if @staff.update_attributes(params[:staff])
-        flash[:notice] = t('staff.title')+" "+t('updated')+new_ddate.to_s
+        flash[:notice] = t('staff.title')+" "+t('updated')
         format.html { redirect_to staff_path(@staff) }
         format.xml  { head :ok }
       else
