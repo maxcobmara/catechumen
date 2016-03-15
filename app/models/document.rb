@@ -165,11 +165,11 @@ CATEGORY = [
   			staff_names << staff.name
   		end
   	end 
-  	return staff_names
+  	return staff_names  ###["aa","bb"]
   end
 
   def to_name=(name)
-	  self.staffs = Staff.find_by_name(name) unless name.blank?
+	  self.staffs = Staff.find_by_name("Nabilah Al-Muna bt Mohd Nor") unless name.blank?
   end
   
   #5Apr2013  -------------------------------------
