@@ -126,10 +126,15 @@ def ruport
     #raise params.inspect
     @staff = Staff.find(params[:id])
     c_shift = params[:staff][:staff_shift_id]
+    if @staff.shift_histories.count > 0
+      ind=@staff.shift_histories.count-1
+    else
+      ind=0
+    end
     if params[:staff][:shift_histories_attributes]
-      s_shift = params[:staff][:shift_histories_attributes]["#{@staff.shift_histories.count}"][:shift_id]
-      new_ddate= params[:staff][:shift_histories_attributes]["#{@staff.shift_histories.count}"][:deactivate_date]
-      @staff.create_shift_history_nodate(s_shift, c_shift, new_ddate) if (c_shift!=s_shift) && new_ddate==""
+      s_shift = params[:staff][:shift_histories_attributes]["#{ind}"][:shift_id]
+      new_ddate= params[:staff][:shift_histories_attributes]["#{ind}"][:deactivate_date]
+      @staff.create_shift_history_nodate(s_shift, c_shift, new_ddate) if (c_shift!=s_shift) && @staff.shift_histories.count==0 #&& new_ddate==""
     end
     respond_to do |format|
       if @staff.update_attributes(params[:staff])

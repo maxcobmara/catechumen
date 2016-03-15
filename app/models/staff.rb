@@ -3,7 +3,16 @@ class Staff < ActiveRecord::Base
   before_save  :titleize_name
 
   def titleize_name
-    self.name = name.titleize
+    unless name.include?("-")
+      self.name = name.titleize 
+    else
+      aname=""
+      name.split("-").each_with_index do |nn, ind|
+        aname+=nn.titleize
+        aname+="-" if ind < name.split("-").count-1
+      end
+      self.name = aname
+    end
   end
   
   has_many :vehicles, :dependent => :destroy
@@ -27,7 +36,7 @@ class Staff < ActiveRecord::Base
   validates_length_of       :icno, :is =>12
   validates_presence_of     :icno, :name, :coemail, :code, :appointdt #appointment date must exist be4 can apply leave
   validates_uniqueness_of   :icno, :fileno, :coemail, :code
-  validates_format_of       :name, :with => /^[a-zA-Z'`\/\.\@\ ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add allowed chars between bracket
+  validates_format_of       :name, :with => /^[a-zA-Z'`\/\.\@\-\ ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add allowed chars between bracket
   validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd, :fileno
   #validates_length_of      :cooftelno, :is =>10
   #validates_length_of      :cooftelext, :is =>5

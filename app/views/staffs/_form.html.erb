@@ -36,6 +36,9 @@
 							<%=t 'staff.shift_histories.deactivate_date'%>
 							<%= builder.date_select :deactivate_date, :start_year => Date.today.year, :end_year => Date.today.next_year.year, :order => [:day, :month, :year] %>
 							<%= builder.hidden_field :shift_id, :value =>@staff.staff_shift_id %>
+							<% if @staff.shift_histories.count == 0 %>
+								<%= builder.hidden_field :_destroy, :value => 1%>
+							<% end %>
 						<% end %>
 					<% end %>
 				</div>

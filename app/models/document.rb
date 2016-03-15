@@ -165,7 +165,7 @@ CATEGORY = [
   			staff_names << staff.name
   		end
   	end 
-  	return staff_names
+  	return staff_names  ###["aa","bb"]
   end
 
   def to_name=(name)
