@@ -219,14 +219,14 @@
 		<% end %>
 	<% end %>
 	<!--hack-end-redundant auth rules...-->
-	
+
 	<%# if (Login.current_login.roles.map(&:id).include?(7)==false|| (Login.current_login.roles.map(&:id).include?(7)==true && @is_coordinator==true))%>
-	<% if (Login.current_login.roles.map(&:id).include?(7)==false|| (Login.current_login.roles.map(&:id).include?(7)==true && Intake.all.map(&:staff_id).include?(Login.current_login.staff_id)))%>
-		<% dash_lfs1b=Leaveforstudent.find(:all, :conditions =>['student_id IN(?) and id IN(?)', Login.current_login.staff.under_my_supervision.map(&:id).uniq, a.map(&:id).uniq]).count %>
-	<% end %>
+	<%# if (Login.current_login.roles.map(&:id).include?(7)==false|| (Login.current_login.roles.map(&:id).include?(7)==true && Intake.all.map(&:staff_id).include?(Login.current_login.staff_id)))	%>
+		<%# dash_lfs1b=Leaveforstudent.find(:all, :conditions =>['student_id IN(?) and id IN(?)', Login.current_login.staff.under_my_supervision.map(&:id).uniq, a.map(&:id).uniq]).count %>
+	<%# end %>
 	<!--admin may get duplicates, as admin can edit both approved & approved2, note : uniq-->
-		
-  <% end %> 
+
+  <% end %>
   <!--warden-->
   <% if permitted_to? :approve_warden, :leaveforstudents %>
 	<% unless @is_coordinator==true %>
@@ -236,7 +236,7 @@
 		<% dash_lfs2 = Leaveforstudent.count(:all, :conditions => ["studentsubmit =? AND approved2 IS ? and leave_startdate >=?", true, nil, Date.tomorrow]) %>
 	<% end %>
    <% end %>
-   
+
 	<% if Login.current_login.roles.map(&:id).include?(2)==true %>
 		<% if (a + b).uniq.count > 0 %>
 			<%= link_to "#{(a + b).uniq.count} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
@@ -248,9 +248,9 @@
 			<%= link_to "#{dash_lfs1b} "+(t 'notifications.student_leave_for_approval'), { :controller => "leaveforstudents", :action => "index" } %><br/>
 		<% end %>
 	<% end %>
-	
-  <% end %>	
-   
+
+  <% end %>
+
 
 	<!-- Notification for Documents-->
 	<!-- Case for CC1 -->
@@ -333,7 +333,7 @@
 
 	<%# tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =?', Login.current_login.staff_id," "], :order => "created_at DESC").count %>
 	<%# tome = Document.find(:all, :joins => :circulations, :conditions => ['circulations.staff_id =? and circulations.action_taken=?', Login.current_login.staff_id," "], :order => "created_at DESC").count %>
-	
+
 	<% tomedoc = Document.find(:all, :joins => :staffs, :conditions => ['staffs.id=?',Login.current_login.staff_id]).map(&:id)%>
 	<% tome = Circulation.find(:all, :conditions=>['document_id IN(?) and staff_id=? and (action_taken=? or action_taken is null)', tomedoc, Login.current_login.staff_id,""]).count%>
 	<% if tome > 0 %>

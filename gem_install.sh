@@ -5,6 +5,7 @@ update_rubygems
 gem update --system 1.4.2
 gem install rdoc -v 4.1.1 --no-ri
 gem install i18n -v 0.6.11 --no-ri
+gem install rake -v 10.1.1 --no-ri
 gem install rails -v 2.3.10 --no-ri
 gem install ancestry -v 1.2.0 --no-ri
 gem install declarative_authorization -v 0.5.1 --no-ri

@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.10' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.12' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -10,11 +10,11 @@ Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
-  #config.after_initialize do 
-  #     require "ruport" 
+  #config.after_initialize do
+  #     require "ruport"
   #     require "ruport/acts_as_reportable"
   #end
-  
+
   config.gem 'will_paginate', :version => '~> 2.3.14' ###this one used at mac book pro
   #config.gem 'will_paginate', :version => '~> 2.3.16' ## use this one at tpsb server
   #config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"  ###this one used at KSKB server & Win7's notebook
@@ -26,7 +26,7 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
-  
+
   #config.gem "declarative_authorization", :source => "http://gemcutter.org"
   config.gem "declarative_authorization", :version => '~> 0.5.1'
   config.gem "ancestry", :version => '~> 1.2.0'
@@ -50,14 +50,14 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
   config.i18n.enforce_available_locales = false
-  
+
   #Extends Array and creates a groupby
   class Array
     def in_groups_by
       # Group elements into individual array's by the result of a block
       # Similar to the in_groups_of function.
       # NOTE: assumes array is already ordered/sorted by group !!
-      curr=nil.class 
+      curr=nil.class
       result=[]
       each do |element|
          group=yield(element) # Get grouping value
@@ -68,5 +68,5 @@ Rails::Initializer.run do |config|
       result
     end
   end
-  
+
 end
