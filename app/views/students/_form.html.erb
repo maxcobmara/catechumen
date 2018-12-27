@@ -15,7 +15,7 @@
 			</tr>
 			<tr>
 					<td class="leftcol"><%= t 'student.sstatus' %><font color="red"> * </font></td>
-					<td><%= f.select :sstatus, 
+					<td><%= f.select :sstatus,
 					           Student::STATUS,
 					           :prompt => t ('select') %>
 					</td>
@@ -32,17 +32,17 @@
 					<td class="leftcol"><%= t 'student.stelno' %><font color="red"> * </font></td>
 					<td><%= f.text_field :stelno %></td>
 			</tr>
-			
+
 			<tr><!--17/11/2011 - Shaliza added translation for address and address duty-->
 					<td class="leftcol"><label for="remarks"><%= t 'student.address' %>:</label></td>
 					<td><%= f.text_area :address, :size => "40x7" %></td>
 			</tr>
-			
+
 			<tr>
 					<td class="leftcol"><label for="remarks"><%= t 'student.address_posbasik' %> :</label></td>
 					<td><%= f.text_area :address_posbasik, :size => "40x7" %></td>
 			</tr>
-						
+
 			<tr>
 					<td class="leftcol"><label for="ssponsor"><%=t('student.ssponsor')%></label><font color="red"> * </font></td>
 					<td><%= f.select :ssponsor,
@@ -55,44 +55,44 @@
 			</tr>
 			<tr>
 					<td class="leftcol"><label for="sbirthdt"><%=t('student.dob')%></label></td>
-					<td><%= f.date_select :sbirthdt, :start_year => 1965, :end_year => 1995, :order => [:day, :month, :year] %></td>
+					<td><%= f.date_select :sbirthdt, :start_year => 55.years.ago.year, :end_year => 15.years.ago.year, :order => [:day, :month, :year] %></td>
 			</tr>
 			<tr>
 					<td class="leftcol"><label for="mrtlstatuscd"><%= t('student.mrtlstatuscd')%></label><font color="red"> * </font></td>
-					<td><%= f.select :mrtlstatuscd, 
+					<td><%= f.select :mrtlstatuscd,
 					           Student::MARITAL_STATUS,
 					           :prompt => t('select')  %></td>
 			</tr>
 			<tr>
 					<td class="leftcol"><%= t 'student.race' %></td>
-					<td><%= f.select :race2, 
+					<td><%= f.select :race2,
 					           Student::RACE,
 					           :prompt => t('select')  %>
 						<!--display previously entered race-->
 						<font color="blue"><%=t('student.previous_race')%>: <%= @student.race.blank? ? "" : @student.race %></font>
 					</td>
 			</tr>
-		
+
 			<tr class="bong", style="display: none;">
 					<td class="leftcol"><%= t 'student.etnic' %></td>
 					<td><%= f.text_field :race %>
 						<!--'race' is now use to store ethnic, field only displayed upon selection of LAIN-LAIN RACE-->
 					</td>
 			</tr>
-		
+
 			<tr>
 					<td class="leftcol"><label for="semail"><%= t 'student.semail' %></label></td>
 					<td><%= f.text_field :semail %></td>
 			</tr>
 			<tr>
 					<td class="leftcol"><%= t 'student.regdate' %></td>
-					<td><%= f.date_select :regdate, :start_year => 2007, :end_year => 2050, :order => [:day, :month, :year] %></td>
+					<td><%= f.date_select :regdate, :start_year => 2007, :end_year => 10.years.from_now.year, :order => [:day, :month, :year] %></td>
 			</tr>
 			<tr>
 					<td class="leftcol"><%= t 'student.offer_letter_serial' %></td>
 					<td><%= f.text_field :offer_letter_serial %></td>
 			</tr>
-			
+
 			<tr>
 					<td class="leftcol"><label for="upload"><b><%= t 'staff.upload' %></b></label></td>
 					<td><%= f.file_field :photo %></td>
@@ -111,7 +111,7 @@
 					<td class="leftcol"><label for="specilisation">Specialisation:</label></td>
 					<td><#%= f.text_field :specilisation %></td>
 			</tr>-->
-			
+
 			<!--<tr>
 					<td class="leftcol"><label for="group_id"><%#=t('student.group_id')%></label></td>
 					<td><%#= f.text_field :group_id %></td>
@@ -123,7 +123,7 @@
 				</td>
 				<td><%#= f.date_select :intake, :order => [:month, :year], :class => 'compulsory' %>
 					<% unless @student.new_record? %>
-						<% curr_intake=Intake.get_intake(@student.intake, @student.course_id) %>
+						<% curr_intake=Intake.get_intake(@student.intake, @student.course_id) rescue Intake.last %>
 					<% end %>
 					<%= f.collection_select :intake_id, Intake.all(:order=>'programme_id ASC, monthyear_intake DESC'), :id, :programme_group_intake,{:include_blank=> (t 'select'), :selected => curr_intake}%>
 					<font size="-2px" color="grey"><%=h @student.intake.try(:strftime, '%b %Y') %></font>
@@ -133,13 +133,13 @@
 			<!--
 			<tr>
 					<td class="leftcol"><label for="intake">Intake Session:</label><font color="red"> * </font></td>
-					
+
 					<td><%#= f.collection_select :intake_id, Intake.find(:all, :conditions => ['is_active = ?', true ], :order => 'register_on DESC'), :id, :name, :include_blank => true %></td>
 			</tr>-->
-			
+
 			<tr>
-					<td class="leftcol"><label for="sbirthdt"><%=t('student.end_training')%></label></td>
-					<td><%= f.date_select :end_training, :order => [:day, :month, :year] %></td>
+					<td class="leftcol"><label for="end_training"><%=t('student.end_training')%></label></td>
+					<td><%= f.date_select :end_training, :end_year => 12.years.from_now.year, :order => [:day, :month, :year] %></td>
 			</tr>
 			<tr>
 					<td class="leftcol"><label for="remarks"><%=t('student.remark')%></label></td>
@@ -147,7 +147,7 @@
 			</tr>
 	</table>
 	<BR><BR>
-	
+
 	<H2><%=t('student.health_status')%></H2>
 	<table width=100%>
 			<tr>
@@ -178,7 +178,7 @@
 			</tr>
 	</table><BR><BR>
 
-	
+
 	<div>
 	  <H2><%=t('student.qualification')%></H2>
 		<p><strong>
@@ -191,7 +191,7 @@
 		<% end %>
 		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :qualifications %> - <%=t('addmore')%> </p>
 	</div><BR><BR>
-		
+
 	<div>
 	  <H2><%=t('student.spm_results')%></H2>
 		<p><strong>
@@ -203,8 +203,8 @@
 		<% end %>
 		<p><%= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :spmresults %> - <%=t('addmore')%> </p>
 	</div><BR><BR>
-	
- 
+
+
 
 	<div>
 	  <H2><%=t('student.contact_guarantor')%></H2>
@@ -234,7 +234,7 @@
 					 //$j('.koik').show();
 		    }
 		});
-		
+
 		$j('#student_sstatus').change(function() {
 		    if($j(this).val() == "Transfer College") {
 		      $j('.bong2').show();
@@ -249,7 +249,7 @@
 		      $j('.bong2').hide();
 		    }
 		});
-		
+
 		$j('#student_sstatus').change(function() {
 		    if($j(this).val() == "Repeat") {
 		      $j('.bong3').show();
@@ -265,14 +265,6 @@
 		    }
 		});
 	});
-	
-		
+
+
 </script>
-
-
-
-	
-
-
-
-	
